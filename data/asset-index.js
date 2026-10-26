@@ -433,6 +433,10 @@
     "garment-overblouse-female-long-sleeve-flat-right": "garments/garment-overblouse-female-long-sleeve-flat-right.svg",
     "garment-overblouse-female-sleeve-flat-left": "garments/garment-overblouse-female-sleeve-flat-left.svg",
     "garment-overblouse-female-sleeve-flat-right": "garments/garment-overblouse-female-sleeve-flat-right.svg",
+    "garment-polo-female": "garments/garment-polo-female.svg",
+    "garment-polo-female-long": "garments/garment-polo-female-long.svg",
+    "garment-polo-male": "garments/garment-polo-male.svg",
+    "garment-polo-male-long": "garments/garment-polo-male-long.svg",
     "garment-semiformal-class-a-coat-female": "garments/garment-semiformal-class-a-coat-female.svg",
     "garment-semiformal-class-a-coat-female-cord-aide-de-camp": "garments/garment-semiformal-class-a-coat-female-cord-aide-de-camp.svg",
     "garment-semiformal-class-a-coat-female-cord-color-guard": "garments/garment-semiformal-class-a-coat-female-cord-color-guard.svg",
@@ -1114,7 +1118,7 @@
     "uas-technician-senior-field": "field/uas-technician-senior-field/uas-technician-senior-field.svg",
     "uas-technician-senior-mini": "mini/uas-technician-senior-mini/uas-technician-senior-mini.svg"
   };
-  Object.defineProperty(index, 'version', { value: "29d49fde01", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "d6106952bd", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "29d49fde01"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "d6106952bd"; }
 })(typeof self !== 'undefined' ? self : this);

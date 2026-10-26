@@ -1,0 +1,254 @@
+{
+ "asset_id": "garment-polo-male",
+ "name": "Men's CAP dark blue polo, short sleeves, left chest pocket, with medium gray trousers and black belt (embroidery positions only)",
+ "size_in": {
+  "w": 25.058,
+  "h": 29.48
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2505.8,
+  2948
+ ],
+ "size_source": "estimated",
+ "size_basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.0309 in per figure pixel: the figure's belt buckle is 64 x 66 px, so 1.98 x 2.04 in at this scale against the 2 in limit of CAPR 39-1 5.3.5 (the figure draws the buckle at the limit), and the armhole-seam width (2 x 9.53 in) equals the men's Class B shirt sheet's (167 px x 0.0474 x 1.2171 = 9.63 in half width), i.e. the same wearer. At this scale the figure's embroidered seal is 2.93 in across, the placket 1.30 x 5.41 in, the pocket 4.17 in wide, the belt 1.79 in. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing. Colours sampled from the figure: shirt #001b52, belt #201a18, trousers #746f6c, skirt #86827e.",
+ "anchors": {
+  "top_center": [
+   1252.9,
+   0
+  ],
+  "bottom_center": [
+   1252.9,
+   2948
+  ],
+  "center": [
+   1252.9,
+   1474
+  ],
+  "left_edge": [
+   0,
+   1474
+  ],
+  "right_edge": [
+   2505.8,
+   1474
+  ],
+  "shoulder_seam_right": [
+   299.63,
+   402.43
+  ],
+  "shoulder_seam_left": [
+   2206.16,
+   402.43
+  ],
+  "collar_apex": [
+   1252.9,
+   585.8
+  ],
+  "hem_center": [
+   1252.9,
+   2398.57
+  ],
+  "hat_attach": [
+   1252.9,
+   10
+  ],
+  "button_1_center": [
+   1249.81,
+   697.22
+  ],
+  "button_2_center": [
+   1248.26,
+   969.44
+  ],
+  "placket_top_center": [
+   1252.9,
+   594.01
+  ],
+  "seal_center": [
+   796.2,
+   805.37
+  ],
+  "name_center": [
+   1731.85,
+   841.52
+  ],
+  "badge_center": [
+   1731.85,
+   714.43
+  ],
+  "print_seal_center": [
+   1709.6,
+   805.37
+  ],
+  "pocket_top_center": [
+   1731.85,
+   912.28
+  ],
+  "belt_buckle_center": [
+   1252.9,
+   2308.96
+  ]
+ },
+ "landmarks": {
+  "collar_right": [
+   [
+    1541.8,
+    13.1
+   ],
+   [
+    1810.6,
+    495.1
+   ],
+   [
+    1517.1,
+    476.6
+   ],
+   [
+    1252.9,
+    594
+   ]
+  ],
+  "collar_left": [
+   [
+    964,
+    13.1
+   ],
+   [
+    695.2,
+    495.1
+   ],
+   [
+    988.7,
+    476.6
+   ],
+   [
+    1252.9,
+    594
+   ]
+  ],
+  "pocket": {
+   "x": 1523.27,
+   "y": 912.28,
+   "w": 417.15,
+   "h": 448.05
+  },
+  "belt_buckle": {
+   "x": 1154.02,
+   "y": 2206.99,
+   "w": 197.76,
+   "h": 203.94
+  },
+  "placket": {
+   "x": 1188,
+   "y": 594,
+   "w": 129.8,
+   "h": 540.7
+  },
+  "seal_slot": {
+   "x": 796.2,
+   "y": 805.37,
+   "w_in": 2.93,
+   "h_in": 2.93
+  },
+  "name_slot": {
+   "x": 1731.85,
+   "y": 841.52,
+   "w_in": 4.2,
+   "h_in": 0.4
+  },
+  "badge_slot": {
+   "x": 1731.85,
+   "y": 714.43,
+   "w_in": 1.2,
+   "h_in": 1.14,
+   "gap_to_name_in": 0.5
+  },
+  "print_seal_slot": {
+   "x": 1709.6,
+   "y": 805.37,
+   "w_in": 2.93,
+   "h_in": 2.93
+  },
+  "pen_pocket_slot": {
+   "x": 2264.25,
+   "y": 897.4,
+   "w_in": 1.4,
+   "h_in": 5.5,
+   "angle_deg": -0.8,
+   "flap_in": 1.35
+  },
+  "hat_view": {
+   "front": {
+    "x": 852.9,
+    "y": -645,
+    "w": 800,
+    "h": 680
+   },
+   "back": {
+    "x": 1702.9,
+    "y": -455,
+    "w": 800,
+    "h": 490
+   }
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} (top-left); polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. The *_slot entries that carry w_in / h_in are {x,y} = the CENTRE of the slot in user units, w_in / h_in in inches. seal_slot: embroidered CAP seal, wearer's RIGHT breast (the picture's left), w_in = the figure-measured seal (2.93 in; the insignia-cap-seal asset is 2.50 in, CAPR 39-1 Fig A6-4: the figure draws the polo seal larger, the engine places the asset at the slot centre). pen_pocket_slot: the tactical polo's pen pocket on the wearer's LEFT sleeve (the picture's right), {x,y} its centre, w_in x h_in its size (1.4 x 5.5 in, estimate), angle_deg the SVG rotate() that turns an upright box onto the sleeve's axis, flap_in the flap depth. name_slot: the embroidered name line on the wearer's LEFT breast, w_in = the pocket width 4.17 rounded to 4.2 in; the name sits above the pocket, as Figure 5.5 draws it (0.53 in clear of the pocket top), h_in = the figure's cap height. badge_slot: centre of the badge / duty title line, h_in 1.14 (the figure's badge), 1/2 in above the name_slot top (CAPR 39-1 5.3.2.1.1; the figure draws 0.65 in), w_in nominal. print_seal_slot: the screen-printed CAP seal (5.3.1.2) on the wearer's LEFT breast, the seal_slot mirrored about the centre line; the men's sheet's pocket group (id pocket) is hidden for the printed polo, which has no pocket or accoutrements (5.3.1.2, 5.3.2.1.2). collar_left / collar_right name the leaf on the PICTURE's left / right (as the Class B sheets do); shoulder_seam_right / left and every anchor named left / right are the WEARER's (right = the picture's left). hat_view {front, back}: where the cap assets hat-baseball-cap-blue and hat-baseball-cap-blue-back sit (their boxes, bottoms 0.25 in below the collar-tip line, the back view 0.5 in to the picture's right of the front); they lie above this artwork box. hat_attach: the collar-tip line on the centre line.",
+ "dimensions": {
+  "scale": {
+   "in_per_px": 0.0309,
+   "basis": "belt buckle 64 x 66 px = the 2 in limit of 5.3.5; same-wearer shoulder width of the Class B shirt",
+   "size_source": "estimated"
+  },
+  "height_in": 29.28,
+  "max_width_in": 24.66,
+  "collar_tip_to_apex_in": 5.76,
+  "placket_in": [
+   1.3,
+   5.41
+  ],
+  "buttons": 2,
+  "button_diameter_in": 0.43,
+  "seal_in": 2.93,
+  "hem_stitch_in": 0.83,
+  "pocket_in": [
+   4.17,
+   4.48
+  ],
+  "belt_in": [
+   1.79
+  ],
+  "buckle_in": [
+   1.98,
+   2.04
+  ],
+  "belt_loop_in": [
+   0.65
+  ],
+  "sleeve": {
+   "kind": "short, hem stitch line",
+   "shoulder_to_hem_in": 10.64
+  }
+ },
+ "documented": [
+  "dark blue knit polo shirt, short or long sleeves, embroidered CAP seal on the RIGHT breast, male version with a left-chest pocket (CAPR 39-1 5.3.1.1)",
+  "first and last name embroidered in white thread on the LEFT breast (above the pocket, as Figure 5.5 draws it); one badge or duty title 1/2 in over the name; no grade insignia (5.3.1.1, 5.3.2, 5.3.2.1.1)",
+  "tucked into the trousers (5.3.1)",
+  "medium gray trousers, slim, straight or loose (5.3.3); plain black belt with a plain buckle not over 2 in, 2 in wide at most (5.3.5)"
+ ],
+ "assumed": [
+  "garment dimensions (scale from the 2 in buckle limit and the Class B same-wearer shoulder width)",
+  "no photograph of a real CAP polo was available offline (the charter forbids downloads): colours are sampled from Figure 5.5",
+  "collar leaf, placket, button, pocket, belt, loop and buckle geometry read off Figure 5.5 (pixel table FIG in make-polo.js)",
+  "seams, stitches and the ribbed cuff are shown as flat geometric lines, no knit texture",
+  "short sleeve as drawn in Figure 5.5 (it reaches the elbow, longer than a real polo sleeve of about 9 in)",
+  "trousers and belt cut off at the sheet crop line, trouser flare continued past the figure's crop at the measured slope"
+ ],
+ "fit": {
+  "method": "traced from the raster (Figure 5.5)",
+  "score": null
+ },
+ "grade": "garment"
+}
