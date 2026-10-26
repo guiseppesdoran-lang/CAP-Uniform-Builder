@@ -216,11 +216,11 @@
       }else ctx.note('The graduated commander insignia has no place on this uniform');
     }
     // Pocket badges: from their reference line (welt or nametag) to the badge's top edge (or its
-    // centre, for a spot anchored at the centre), or centred halfway between the flap and the bottom
-    // of the pocket (`span`).
+    // centre, for a spot anchored at the centre), or 'centered on the lower portion of the pocket, between ... bottom of
+    // flap and pocket' (`span`, 4.1.11.1.1.2.3.2), labelled with the regulation's word.
     const pocketMeasure = spot => {
       if(!spot) return;
-      if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'halfway', { mid: { x: spot.x, y: spot.y } });
+      if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'centered', { mid: { x: spot.x, y: spot.y } });
       else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, spot.anchor === 'top_center' ? null : { center: 'to' });
     };
     // The over-nametag line, 1/2 in above the nametag.

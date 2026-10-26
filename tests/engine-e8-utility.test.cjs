@@ -232,41 +232,40 @@ test('OCP: every edge-view patch is clipped to its Velcro and to the coat silhou
 
 // ---- D26: the measurement overlay ------------------------------------------------------------------
 
-test('every measurement is labelled with its own length, except the one marked approximate', async () => {
+// D8 (Ethan, MEAS): the overlay shows only distances the member sets. The chest square's 2 in sides and the 'about 4.9 in' from the
+// collar to it (the square is bought and goes on the Velcro sewn at the factory), the patches' and chevrons' widths (their bought size)
+// are gone; a distance the regulation states as a position, not a length ('centered', 'halfway'), is labelled with its word.
+const WORDS = new Set(['centered', 'halfway', 'halfway to elbow', 'midway']);
+test('every measurement is labelled with its own length or with the regulation\'s word for the position', async () => {
   for(const u of ['ocp', 'abu', 'corporate_field']){
     for(const [m, r] of [['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'SMSgt'], ['cadet', 'C/SSgt']]){
       if(u === 'corporate_field' && m === 'cadet') continue;
       const scene = await P.composeUniform(build(u, m, r, { badges: [PILOT, GT], patches: [UNIT, WING], command: PIN }), store());
       for(const l of measures(scene)){
-        if(/^about /.test(l.label)){ assert.ok(Math.abs(Number(l.label.replace(/[^\d.]/g, '')) - len(l)) < 0.06, `${u} ${r}: ${l.label} for ${len(l)}`); continue; }
+        assert.ok(!/^about /.test(l.label), `${u} ${r}: no approximate measure (${l.label})`);
+        if(WORDS.has(l.label)) continue;
         assert.equal(l.label, C.inchesLabel(len(l)), `${u} ${r}: label ${l.label} on a ${len(l).toFixed(3)} in line`);
       }
     }
   }
 });
 
-test('OCP overlay: chest square size, the collar-to-zipper drop from the garment apex, badges, tapes and caps', async () => {
+test('OCP overlay: no chest square measures, badges and the cap, the unit patch centred on its Velcro (7.1.1.3.1, 7.1.1.4.1.2, 7.1.1.8)', async () => {
   const scene = await P.composeUniform(build('ocp', 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
-  const spec = await ST.load(OCP);
-  const apex = core.anchor(spec, 'collar_apex'), sq = await rectOf('rank_square');
   const ms = measures(scene);
-  // the square: 2 in each way
-  const twos = ms.filter(m => m.label === '2 in');
-  assert.equal(twos.length, 2, 'both sides of the 2 x 2 in square');
-  assert.ok(twos.some(m => Math.abs(m.from.y - m.to.y) < 1e-6) && twos.some(m => Math.abs(m.from.x - m.to.x) < 1e-6));
-  // from the point where the collar meets the zipper to the top of the square
-  const drop = ms.find(m => /^about /.test(m.label));
-  assert.ok(drop, 'collar to square');
-  assert.ok(Math.abs(drop.from.x - apex.x) < 1e-6 && Math.abs(drop.from.y - apex.y) < 1e-6, 'starts at the collar_apex anchor');
-  assert.ok(Math.abs(drop.to.y - sq.y) < 1e-6 && Math.abs(drop.to.x - apex.x) < 1e-6, 'ends on the placket at the top of the square');
+  assert.equal(ms.filter(m => m.label === '2 in' || /^about /.test(m.label)).length, 0, 'the bought square on the factory Velcro is not measured');
   // two badges, 1/2 in each; the cap grade 1/2 in above the visor on the cap worn (the front only, LIVE-ENGINE 3)
   assert.ok(ms.filter(m => m.label === '½ in').length >= 3, 'badges and the cap');
-  // patch widths and the equal gaps that centre each under the flag and AUX
-  assert.equal(ms.filter(m => m.label === '3½ in').length, 2, 'both patches');
-  assert.equal(ms.filter(m => m.label === '0.47 in').length, 4, 'gap above and below each patch');
+  // no patch widths; the unit patch 'centered in the middle of the Velcro area under the U.S. Flag', the HHQ patch has no stated place
+  assert.equal(ms.filter(m => m.label === '3½ in').length, 0, 'no patch width');
+  const flag = await rectOf('patch_flag_right'), velcro = await rectOf('sleeve_flap_velcro_right');
+  const centred = ms.filter(m => m.label === 'centered');
+  assert.equal(centred.length, 1, 'the unit patch only');
+  assert.ok(Math.abs(centred[0].from.y - (flag.y + flag.h)) < 1e-6 && Math.abs(centred[0].to.y - (velcro.y + velcro.h)) < 1e-6, 'from the flag to the bottom of the Velcro');
+  const unit = scene.layers.find(l => /^patch:sequoyah[^:]*:R_SHOULDER:0$/.test(l.key));
+  assert.ok(Math.abs(centred[0].opts.mid.y - (unit.y + unit.h / 2)) < 1e-6, 'the tick at the patch centre');
   // the CAP tape's lettering is kept clear of overlay labels
   assert.ok(scene.layers.some(l => l.type === 'clear' && l.key === 'clear:cap_tape'));
-  assert.ok(ms.length >= 12, `${ms.length} measurements`);
 });
 
 test('OCP overlay: no square, no square measurements for a Cadet Airman Basic (7.1.1.2.2)', async () => {
@@ -287,28 +286,17 @@ test('badges over the CAP tape: three then four, every regulation gap is measure
   assert.equal(four.filter(l => l === '¼ in').length, 2, '1/4 in between the badges of each stack');
 });
 
-test('ABU and CFU overlay: grade centred on the collar, chevron width, patch widths, badges (5.1.1.1.1, 5.2.1.1.1, 5.1.1.1.2)', async () => {
+test('ABU and CFU overlay: grade centred on the collar, no chevron or patch widths, badges (5.1.1.1.1, 5.2.1.1.1, 5.1.1.1.2)', async () => {
   for(const u of ['abu', 'corporate_field']){
-    const garment = u === 'abu' ? 'garment-abu-coat' : 'garment-cfu-coat';
-    const spec = await ST.load(garment);
-    const apex = core.anchor(spec, 'collar_apex');
-    assert.ok(apex);
     // an officer: the grade is centred on each collar leaf (COLLAR6), so no 1 in measure is drawn on the collar
     const scene = await P.composeUniform(build(u, 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
     const ms = measures(scene);
     assert.equal(ms.filter(m => m.label === '1 in').length, 0, `${u}: nothing is 1 in from an edge`);
     assert.ok(ms.filter(m => m.label === '½ in').length >= 2, `${u}: badges`);
-    // a senior NCO: the chevron's width on each sleeve view the sheet draws
-    const nco = await P.composeUniform(build(u, 'senior', 'SMSgt', { opt: { headgear: 'auto', chevron: '3.5' } }), store());
-    const chev = nco.layers.filter(l => /^grade:sleeve-/.test(l.key) && !/:edge$/.test(l.key)); // the flat views; the arms' edge-on copies are narrowed (FIX-R-OTHER-r2 #7)
-    assert.ok(chev.length >= 1);
-    for(const c of chev) assert.ok(measures(nco).some(m => Math.abs(m.from.x - c.x) < 1e-6 && Math.abs(len(m) - c.w) < 1e-6), `${u}: chevron width`);
+    // D8 (MEAS): the chevron's 4 or 3 1/2 in and the patches' widths are the sizes they are bought in; none is measured.
+    const nco = await P.composeUniform(build(u, 'senior', 'SMSgt', { opt: { headgear: 'auto', chevron: '3.5' }, patches: [UNIT, WING] }), store());
+    assert.equal(measures(nco).filter(m => /^(4|3½|3) in$/.test(m.label)).length, 0, `${u}: no chevron or patch width`);
   }
-  // patches: each one's width
-  const cfu = await P.composeUniform(build('corporate_field', 'senior', 'Capt', { patches: [UNIT, WING, { id: 'cos_patch', title: 'COS', href: 'images/patches/cos_patch.webp', aspect: 1, slot: 'CHEST_LEFT', kind: 'general' }] }), store());
-  const patches = cfu.layers.filter(l => l.role === 'patch' && !/:edge$/.test(l.key));
-  assert.equal(patches.length, 3);
-  for(const p of patches) assert.ok(measures(cfu).some(m => Math.abs(m.from.x - p.x) < 1e-6 && Math.abs(len(m) - p.w) < 1e-6), `${p.key} width`);
 });
 
 test('the CAP tape is kept clear of overlay labels on ABU and CFU too', async () => {

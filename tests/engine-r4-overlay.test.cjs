@@ -27,7 +27,7 @@ const overlap = (a, b) => {
 // Length of segment p-q inside box r (the segment is axis-aligned or short in these overlays; sampled).
 const crosses = (p, q, r) => { for(let i = 0; i <= 40; i++){ const t = i / 40, x = p.x + (q.x - p.x) * t, y = p.y + (q.y - p.y) * t; if(x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h) return true; } return false; };
 
-test('OCP overlay: no label lies over another label, a patch, the flag or AUX patch, or another dimension; the patch width is below the Velcro (D26)', async () => {
+test('OCP overlay: no label lies over another label, a patch, the flag or AUX patch, or another dimension; no patch carries a width measure (D26, MEAS)', async () => {
   for(const name of ['ocp-male-senior-LtCol-patches-overlay', 'ocp-male-senior-LtCol-graduated-commander', 'ocp-male-cadet-CSSgt-patches']){
     const spec = critique.find(x => x.name === name);
     const b = HARNESS.makeBuild(Object.assign({}, spec.build, { opt: Object.assign({}, spec.build.opt, { overlay: true }) }));
@@ -45,13 +45,8 @@ test('OCP overlay: no label lies over another label, a patch, the flag or AUX pa
         assert.ok(!crosses(d.dim[0], d.dim[1], e.label), `${name}: a dimension runs over the ${e.label.text} label`);
       });
     });
-    // The width measures (3 1/2 in, along the patch's width) lie below the Velcro's bottom edge.
-    const widths = scene.layers.filter(l => l.type === 'measure' && Math.abs(l.from.y - l.to.y) < 1e-6 && Math.abs(Math.abs(l.to.x - l.from.x) - 3.5) < 0.01 && l.opts && l.opts.minOffsetIn);
-    assert.equal(widths.length, 2, `${name}: both sleeve patches carry a width measure with a minimum offset`);
-    for(const w of widths){
-      const d = drawings.find(x => x.key === w.key);
-      assert.ok(d, `${name}: the width measure is laid out`);
-      assert.ok(d.dim[0].y > 20.4, `${name}: the 3 1/2 in line at ${d.dim[0].y.toFixed(2)} in lies below the Velcro (20.40)`);
-    }
+    // D8 (Ethan, MEAS: "the 2x2 square isn't needed (you just buy it from Vanguard)"): a patch's width is the size it is bought in,
+    // not a distance the member sets, so the sleeve patches carry no width measure (the test held the 3 1/2 in line below the Velcro).
+    assert.equal(scene.layers.filter(l => l.type === 'measure' && l.label === '3½ in').length, 0, `${name}: no patch width`);
   }
 });
