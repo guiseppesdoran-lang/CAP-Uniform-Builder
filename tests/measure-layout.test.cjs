@@ -97,10 +97,12 @@ test('the lapel insignia seam is measured halfway, below the seam, with its tick
   }
 });
 
-test('sleeve chevrons are measured halfway between the shoulder seam and the elbow', async () => {
+test('sleeve chevrons are measured halfway between the shoulder seam and the elbow, on the wearer\'s right flat sleeve beside the figure (SLEEVE-ENG)', async () => {
   const { scene } = await laidOut(CASES[1][1]);
-  const m = scene.layers.find(l => l.type === 'measure' && l.label === 'halfway' && l.opts && l.opts.side && l.opts.side.x < 0);
+  const m = scene.layers.find(l => l.type === 'measure' && l.label === 'halfway to elbow' && l.opts && l.opts.side && l.opts.side.x > 0);
   assert.ok(m, 'a halfway measure on the sleeve');
+  const flat = scene.layers.find(l => l.role === 'sleeve-flat' && /-sleeve-flat-right$/.test(l.id));
+  assert.ok(m.from.x > flat.x && m.from.x < flat.x + flat.w, 'on the flat sleeve, the wearer\'s right');
   const mid = m.opts.mid;
   const t = ((mid.x - m.from.x) * (m.to.x - m.from.x) + (mid.y - m.from.y) * (m.to.y - m.from.y)) / ((m.to.x - m.from.x) ** 2 + (m.to.y - m.from.y) ** 2);
   assert.ok(Math.abs(t - 0.5) < 0.05, `the chevron is halfway (${t.toFixed(3)})`);

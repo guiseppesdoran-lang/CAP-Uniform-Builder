@@ -413,10 +413,49 @@
         : { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0 };
       await ctx.place(id, Object.assign(place, { z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side }, sil, opts || {}));
     }
+    // The same chevron whole on each sleeve laid flat beside the figure (SLEEVE-ENG); where the sheet has no such views the distance is shown on the figure's arm.
+    if(await sleeveFlatViews(ctx, id)) return;
     // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve; on a short sleeve, which has no
     // elbow, halfway between the seam and the bottom edge of the sleeve (4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3).
     const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right') || ctx.point('sleeve_bottom_right'), c = ctx.point('chevron_halfway_right');
     if(s && e && c) ctx.measure(s, e, 'halfway', { mid: c, side: { x: -1, y: 0 }, offsetOnly: true });
+  }
+
+  // The flat sleeve views (Ethan: "senior member NCOs for their blues need to have that sleeve pop out like everyone does on the utilities"). The figure's arm hangs at its side and shows the
+  // sleeve chevron edge-on; the dress sheets also state, as the landmark sleeve_flat_view, where the top_center of each sleeve laid flat (the asset `<sheet>-sleeve-flat-<side>`, outer arm
+  // toward the viewer, shoulder seam at the top) stands beside the figure: outboard of that arm, level with the seam, 1 in clear, outside the sheet's box (the scene's bounds grow to take them,
+  // as they do for the cap views). One rule for every sheet that states the landmark: wherever the engine hangs a sleeve chevron on one of those sheets (sleeveChevrons), the two flats are
+  // placed there and the chevron, at its regulation size and unrotated, is centred on each flat's own chevron_center anchor (halfway between the shoulder seam and the elbow, or the bottom
+  // edge of a short sleeve: 4.1.5.2.1.2, 4.1.9.3.3, 4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3). The left flat is the mirror of the right and states its own anchor, so nothing is mirrored here.
+  // No chevron, no views: the sleeve is plain and there is nothing to show. The distance the tailor sets is drawn on the wearer's right flat (sleeveFlatMeasure).
+  const toIn = v => v / core.UNITS_PER_INCH;
+  function sleeveFlatId(ctx, side){ return ctx.base && ctx.base.id ? `${ctx.base.id}-sleeve-flat-${side}` : null; }
+  async function sleeveFlatViews(ctx, chevronId){
+    const view = ctx.landmark('sleeve_flat_view');
+    if(!view || !chevronId || !ctx.has(chevronId)) return false;
+    const placed = {};
+    for(const side of ['right', 'left']){
+      const id = sleeveFlatId(ctx, side), at = view[side];
+      if(!at || !ctx.has(id)) continue;
+      const spec = await ctx.spec(id), top = core.anchor(spec, 'top_center'), chev = core.anchor(spec, 'chevron_center');
+      if(!top || !chev) continue;
+      const layer = await ctx.place(id, { pieceAnchor: 'top_center', at: { x: toIn(at.x), y: toIn(at.y) }, z: Z.garmentLayer, role: 'sleeve-flat', key: 'sleeve-flat:' + side, className: 'sleeve-flat',
+        title: `${side === 'right' ? 'Right' : 'Left'} sleeve, laid flat` });
+      if(!layer) continue;
+      await ctx.place(chevronId, { pieceAnchor: 'visual_center', at: { x: layer.x + chev.x, y: layer.y + chev.y }, z: Z.insignia, role: 'grade', key: 'grade:flat-sleeve-' + side });
+      placed[side] = { layer, spec };
+    }
+    if(!placed.right) return !!placed.left;
+    sleeveFlatMeasure(ctx, placed.right.layer, placed.right.spec);
+    return true;
+  }
+  // Halfway from the shoulder seam to the elbow (a short sleeve has none: to the sleeve's bottom edge), set where the chevron's centre is. The flat states the chevron's centre and the far end, and the
+  // chevron was centred halfway, so the seam point is as far above the centre as the far end is below it (it is the crown of the sleeve head, 0.12 in inside the flat's box).
+  function sleeveFlatMeasure(ctx, layer, spec){
+    const chev = core.anchor(spec, 'chevron_center'), end = core.anchor(spec, 'elbow_center') || core.anchor(spec, 'cuff_center');
+    if(!chev || !end) return;
+    const x = layer.x + chev.x, seam = { x, y: layer.y + 2 * chev.y - end.y };
+    ctx.measure(seam, { x, y: layer.y + end.y }, core.anchor(spec, 'elbow_center') ? 'halfway to elbow' : 'halfway', { mid: { x, y: layer.y + chev.y }, side: { x: 1, y: 0 }, offsetOnly: true });
   }
 
   // Sleeve chevron points from the sheet: centred halfway between the shoulder seam and the elbow,

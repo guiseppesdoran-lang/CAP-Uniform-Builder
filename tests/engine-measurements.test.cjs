@@ -29,7 +29,8 @@ const CITE = {
   aboveNametag: '½ in: badge or command pin above the nametag (4.1.9.4.4.2, 4.1.12.2.5.2, 4.2.6.2.7.2)',
   welt: '1½ in: pocket badge below the welt top / nametag (4.1.5.2.2.4.2)',
   lapel: 'halfway: lapel insignia halfway up the gorge seam (4.1.5.2.2.1, 4.1.9.4.1)',
-  sleeveChevron: 'halfway: NCO chevron between the shoulder seam and the elbow or sleeve bottom (4.1.5.2.1.2, 4.1.9.3.3, 4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.1.1.1.1.4, 4.1.2.1.1.4)',
+  sleeveChevron: 'halfway: NCO chevron between the shoulder seam and the bottom of a short sleeve, on the sleeve laid flat (4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3), or on the mess dress sleeve (4.1.1.1.1.4, 4.1.2.1.1.4)',
+  sleeveChevronElbow: 'halfway to elbow: NCO chevron between the shoulder seam and the elbow, on the sleeve laid flat beside the figure (4.1.5.2.1.2, 4.1.9.3.3, 4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3)',
   braid: '3 in: officer sleeve braid from the end of the sleeve (4.1.5.2, 4.1.9.3, 4.1.1.1)',
   braidMessW: '2½ in: officer sleeve braid from the end of the sleeve, women\'s mess dress (4.1.2.1)',
   flightCap: '1½ in: flight cap device from the front of the cap (6.2.2.2.1-3)',
@@ -62,7 +63,7 @@ const L = key => CITE[key].split(':')[0];
 const TABLE = [
   ['blues_a-male-senior-Capt', ['braid', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap']],
   ['blues_a-male-cadet-C-Maj', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap']],
-  ['blues_a-female-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap']],
+  ['blues_a-female-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap']],
   ['blues_a-female-senior-MajGen', ['braid', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap']],
   ['blues_b-male-cadet-C-SSgt', ['collarChevron', 'collarChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
   ['blues_b-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
@@ -98,7 +99,15 @@ const TABLE = [
   ['x-abu-male-Capt-patches-cmd', ['blue', 'fieldBadge', 'fieldBadge', 'blue', 'command', 'sleevePatch', 'pocketPatch']],
   ['x-abu-male-Capt-gradcmd', ['blue', 'fieldBadge', 'fieldBadge', 'blue', 'command']],
   ['x-cfu-male-Capt-patches-es', ['blue', 'fieldBadge', 'fieldBadge', 'blue', 'command', 'sleevePatch', 'sleevePatch', 'pocketPatch', 'pocketPatch', 'esPatch']],
-  ['x-semi-female-Col-chaplain', ['crest', 'chaplainSemi']]
+  ['x-semi-female-Col-chaplain', ['crest', 'chaplainSemi']],
+  // The long sleeves and the coats have an elbow; the flat sleeves beside the figure carry the distance (SLEEVE-ENG), one per build.
+  ['blues_a-male-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap']],
+  ['x-blues_b-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
+  ['x-blues_b-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'flightCap']],
+  ['x-aviator-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons']],
+  ['x-aviator-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']],
+  ['x-overblouse-short-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag']],
+  ['x-overblouse-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']]
 ];
 
 const UNIT = { id: 'sequoyah_cadet_squadron_patch', title: 'Unit', href: 'images/patches/sequoyah_cadet_squadron_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit' };
@@ -123,6 +132,12 @@ function spec(name){
     case 'x-abu-male-Capt-gradcmd': return from('abu-male-senior-Capt', { command: GRAD });
     case 'x-cfu-male-Capt-patches-es': return from('corporate_field-male-senior-Capt', { patches: [UNIT, WING, ACT, POCKET], command: CMD, opt: { esPatch: 'style-1' } });
     case 'x-semi-female-Col-chaplain': return from('semi_formal-female-senior-Col', { badgeIds: ['christian_chaplin'] });
+    case 'x-blues_b-male-long-SMSgt': return from('blues_b-male-senior-SMSgt', { opt: { sleeve: 'long' } });
+    case 'x-blues_b-female-long-SMSgt': return from('blues_b-female-senior-SMSgt', { opt: { sleeve: 'long' } });
+    case 'x-aviator-male-long-SMSgt': return from('aviator-male-senior-SMSgt', { opt: { sleeve: 'long' } });
+    case 'x-aviator-female-long-SMSgt': return from('aviator-female-senior-SMSgt', { opt: { sleeve: 'long' } });
+    case 'x-overblouse-short-SMSgt': return from('aviator-female-senior-SMSgt', { opt: { sleeve: 'short', femaleTop: 'overblouse' } });
+    case 'x-overblouse-long-SMSgt': return from('aviator-female-senior-SMSgt', { opt: { sleeve: 'long', femaleTop: 'overblouse' } });
     default: return from(name, {});
   }
 }
