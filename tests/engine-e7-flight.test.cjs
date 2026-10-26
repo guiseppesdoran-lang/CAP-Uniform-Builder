@@ -23,10 +23,10 @@ const ST = store();
 function build(uniform, membership, rank, extra){
   const b = Object.assign({
     uniform, gender: 'male', grade: G.gradeInfo(membership, rank, {}),
-    opt: { headgear: 'auto' }, name: { first: 'Pat', last: 'Doe', show: true },
+    opt: { headgear: 'auto', jacket: true }, name: { first: 'Pat', last: 'Doe', show: true },
     ribbons: [], medals: [], badges: [], command: null, militaryBadges: [], patches: [], cord: null
   }, extra || {});
-  if(extra && extra.opt) b.opt = Object.assign({ headgear: 'auto' }, extra.opt);
+  if(extra && extra.opt) b.opt = Object.assign({ headgear: 'auto', jacket: true }, extra.opt);
   return b;
 }
 const PILOT = { id: 'CAPPilot1_FA9D33EA587D8', title: 'Pilot Badge' };

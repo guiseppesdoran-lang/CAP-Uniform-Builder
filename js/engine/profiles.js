@@ -781,9 +781,10 @@
     if(h) await hat(ctx, h.hat, h.device);
   }
 
-  // The flight jacket is drawn beside the suit (8.2.7, 8.3.7) unless the member hides it.
+  // The flight jacket is an optional add-on beside the suit (8.2.7, 8.3.7), drawn only when the member adds it (opt.jacket, off by default; Ethan: "make
+  // the jacket an optional addon like the covers on Class A's"), level with the suit (see composeUniform).
   function flightJacket(b){
-    if(b.opt.jacket === false) return null;
+    if(!b.opt.jacket) return null;
     return Object.assign({}, b, { opt: Object.assign({}, b.opt, { asJacket: true, scarf: false, headgear: 'none' }) });
   }
 
@@ -826,11 +827,21 @@
     if(!other.layers.length) return scene;
     const gap = 2;
     const dx = scene.bounds.x + scene.bounds.w + gap - other.bounds.x;
-    other.layers.forEach(l => { shiftLayer(l, dx, 0); l.figure = 2; });
+    // FIELD7-3 (Ethan: "i dont like how the jacket is slightly above the flight suit"): the second figure is level with the first at the line the sheets
+    // share, the top line each sheet states (dimensions.sheet_alignment.top_line_y_in: the collar tips / top of the sleeve arch, the shoulder seam the
+    // flag hangs 1/2 in from, 8.2.4.4): the sheets are drawn at different heights (2.663 in on the suit, 0.9 in on the jacket), so equal sheet tops put the
+    // jacket's shoulders 1.76 in too high. Sheets that state no such line (the shirt beside a blazer) stay top to top.
+    const topLine = (c, sc) => {
+      const a = c.base && c.base.raw && c.base.raw.dimensions && c.base.raw.dimensions.sheet_alignment, g = sc.layers.find(l => l.role === 'garment');
+      return a && a.top_line_y_in != null && g ? g.y + a.top_line_y_in : null;
+    };
+    const t1 = topLine(ctx, scene), t2 = topLine(ctx2, other);
+    const dy = t1 != null && t2 != null ? t1 - t2 : 0;
+    other.layers.forEach(l => { shiftLayer(l, dx, dy); l.figure = 2; });
     scene.layers.push(...other.layers);
     other.notes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
     (other.conflicts || []).forEach(c => { if(!(scene.conflicts || []).some(x => x.position === c.position && JSON.stringify(x.candidates) === JSON.stringify(c.candidates))) scene.conflicts.push(c); });
-    scene.bounds = core.unionBounds([scene.bounds, { x: other.bounds.x + dx, y: other.bounds.y, w: other.bounds.w, h: other.bounds.h }]);
+    scene.bounds = core.unionBounds([scene.bounds, { x: other.bounds.x + dx, y: other.bounds.y + dy, w: other.bounds.w, h: other.bounds.h }]);
     return scene;
   }
 

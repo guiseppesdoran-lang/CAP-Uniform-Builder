@@ -84,3 +84,34 @@ test('FIELD7-5: the command pin stays an alternative on the tag and can be chose
   const stale = await compose(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT], badgeChoices: { tag: MASTER_GT.id } }));
   assert.deepEqual(onSuit(stale, l => l.role === 'badge').map(l => l.key), ['badge:' + PILOT.id], 'a choice that is not held changes nothing');
 });
+
+// ---- 3. the flight jacket: an optional add-on, level with the suit -------------------------------------------------------------------------
+
+test('FIELD7-3: the flight jacket is drawn only when opt.jacket is on, with none of its pieces otherwise, FDU and CFDU, both sexes', async () => {
+  for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+    for(const gender of ['male', 'female']){
+      for(const opt of [{}, { jacket: false }]){
+        const scene = await compose(build(uniform, 'senior', 'Col', { gender, opt, badges: [PILOT], patches: [] }));
+        assert.equal(scene.layers.filter(l => l.role === 'garment').length, 1, `${uniform} ${gender} ${JSON.stringify(opt)}: the suit only`);
+        assert.ok(!scene.layers.some(l => l.figure === 2), `${uniform} ${gender}: no second figure`);
+      }
+      const on = await compose(build(uniform, 'senior', 'Col', { gender, opt: { jacket: true }, badges: [PILOT] }));
+      assert.deepEqual(on.layers.filter(l => l.role === 'garment').map(l => l.id), [uniform === 'flight_suit' ? 'garment-fdu-flight-suit' : 'garment-cfdu-flight-suit', uniform === 'flight_suit' ? 'garment-flight-jacket-green' : 'garment-flight-jacket-blue']);
+    }
+  }
+});
+
+test('FIELD7-3: with the jacket on, its shoulder line (the sheets\' top_line_y_in, where the flag hangs 1/2 in from the seam) is level with the suit\'s, and so are the two flags', async () => {
+  for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+    for(const gender of ['male', 'female']){
+      const scene = await compose(build(uniform, 'senior', 'Col', { gender, opt: { jacket: true }, badges: [PILOT] }));
+      const [suit, jacket] = scene.layers.filter(l => l.role === 'garment');
+      const top = async l => (await ST.load(l.id)).raw.dimensions.sheet_alignment.top_line_y_in + l.y;
+      assert.ok(Math.abs((await top(suit)) - (await top(jacket))) < 1e-6, `${uniform} ${gender}: shoulder lines ${(await top(suit)).toFixed(3)} vs ${(await top(jacket)).toFixed(3)}`);
+      assert.ok(jacket.y > suit.y + 1, 'the jacket sheet sits lower than the suit sheet by the difference of their top lines');
+      // The flags (both 1/2 in below the shoulder seam) are level.
+      const flag = async l => { const s = await ST.load(l.id); return l.y + core.landmarkBounds(s, 'patch_flag_left').y; };
+      assert.ok(Math.abs((await flag(suit)) - (await flag(jacket))) < 1e-6, `${uniform} ${gender}: flags level`);
+    }
+  }
+});

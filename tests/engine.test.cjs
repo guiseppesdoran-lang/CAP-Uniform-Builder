@@ -189,8 +189,10 @@ test('cadet semi-formal: the right pocket badge stays level with the left one (4
   assert.ok(es.x > comms.x, 'ES on the wearer\'s left, comms on the right');
 });
 
-test('the flight jacket is drawn beside the flight suit, and the shirt beside the blazer', async () => {
-  const fs = await P.composeUniform(build('flight_suit', 'senior', 'Capt'), store());
+test('the flight jacket is an optional add-on: drawn beside the flight suit once added (FIELD7-3), and the shirt beside the blazer', async () => {
+  const off = await P.composeUniform(build('flight_suit', 'senior', 'Capt'), store());
+  assert.equal(off.layers.filter(l => l.role === 'garment').length, 1, 'no jacket until the member adds it');
+  const fs = await P.composeUniform(build('flight_suit', 'senior', 'Capt', { opt: { jacket: true } }), store());
   const garments = fs.layers.filter(l => l.role === 'garment').map(l => l.id);
   assert.deepEqual(garments, ['garment-fdu-flight-suit', 'garment-flight-jacket-green']);
   const jacket = fs.layers.find(l => l.id === 'garment-flight-jacket-green');
