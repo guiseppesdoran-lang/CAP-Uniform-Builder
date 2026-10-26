@@ -50,8 +50,9 @@ test('edge-on epaulet grades keep their true length along the strap and are sque
       const r = rad(fr.deg);
       const axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
       const lvl = { x: 1, y: 0 };
-      assert.ok(along(edge, cross) <= 0.32 + 0.005 || along(edge, axis) >= along(edge, cross), `${label}: edge-on grade fits the 0.4 in strip (${along(edge, cross).toFixed(3)} across)`);
-      assert.ok(along(edge, cross) <= 0.32 + 0.005, `${label}: squeezed to the strip (${along(edge, cross).toFixed(3)} across)`);
+      // The shirts' strip is 0.5 in thick since LIVE7-2 (the Class A boards' strip), the grade squeezed to 0.08 in less.
+      assert.ok(along(edge, cross) <= 0.42 + 0.005 || along(edge, axis) >= along(edge, cross), `${label}: edge-on grade fits the 0.5 in strip (${along(edge, cross).toFixed(3)} across)`);
+      assert.ok(along(edge, cross) <= 0.42 + 0.005, `${label}: squeezed to the strip (${along(edge, cross).toFixed(3)} across)`);
       if(top){
         assert.ok(Math.abs(along(edge, axis) - along(top, lvl)) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, lvl).toFixed(3)}`);
         compared++;

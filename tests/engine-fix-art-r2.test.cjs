@@ -54,7 +54,9 @@ test('Class B shirt and blouse: officers and cadet officers wear the epaulet sle
   for(const [sex, sleeve, garment] of CLASS_B){
     for(const [m, r, id] of [['senior', 'Capt', 'officer'], ['cadet', 'C/Maj', 'cadet-officer']]){
       const scene = await compose(build('blues_b', sex, m, r, {}, { sleeve: sleeve || 'short' }));
-      assert.ok(scene.layers.find(l => l.id === `${garment}-epaulet-sleeve-${id}`), `${garment} ${r}: sleeve`);
+      // LIVE7-2: the slide-on sleeve is drawn edge-on from the sleeve art (epauletStrips), the sheet's own strip overlay is left unused.
+      assert.equal(scene.layers.filter(l => l.role === 'epaulet').length, 2, `${garment} ${r}: sleeve strips`);
+      assert.equal(scene.layers.filter(l => l.id === `${garment}-epaulet-sleeve-${id}`).length, 0, `${garment} ${r}: the sheet's strip overlay is unused`);
       assert.equal(scene.layers.filter(l => l.id === `${garment}-epaulet-plain`).length, 0, `${garment} ${r}: no plain strap under the sleeve`);
     }
   }

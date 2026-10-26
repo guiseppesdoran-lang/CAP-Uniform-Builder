@@ -60,8 +60,10 @@ test('the scene of a Capt and a C/Maj on the Class B shirt and the aviator shirt
     const top = scene.layers.find(l => l.role === 'epaulet-top');
     assert.ok(top, `${uniform} ${gender} ${rank}: top view`);
     assert.equal(bodyFill(top.id), want, `${uniform} ${gender} ${rank}: top view fill`);
-    const strip = scene.layers.find(l => /-epaulet-sleeve-(officer|cadet-officer)$/.test(l.id || ''));
+    // LIVE7-2: the strip is the sleeve art itself squeezed to the edge-on strip (the sheets' own strip overlays are left unused).
+    const strip = scene.layers.find(l => l.role === 'epaulet');
     assert.ok(strip, `${uniform} ${gender} ${rank}: strip`);
+    assert.equal(strip.id, top.id, `${uniform} ${gender} ${rank}: strip and top view are one sleeve`);
     assert.equal(bodyFill(strip.id), want, `${uniform} ${gender} ${rank}: strip fill`);
   }
 });
