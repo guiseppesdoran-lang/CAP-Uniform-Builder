@@ -223,9 +223,6 @@ function precedenceIndex(){
   return new Map(list.map((id, i) => [id, i]));
 }
 
-// A uniform whose garment sheet is not synced from the art tree yet is skipped (and listed) rather than failing the whole matrix.
-const SHEET_REQUIRED = { polo: 'garment-polo-male' };
-
 function matrix(){
   const prec = precedenceIndex();
   const ok = [], skipped = [], warnings = [];
@@ -235,10 +232,6 @@ function matrix(){
     for(const gender of ['male', 'female']){
       for(const m of MEMBERS){
         const name = `${uniform}-${gender}-${m.tag}`;
-        if(SHEET_REQUIRED[uniform] && !manifestIds.has(SHEET_REQUIRED[uniform])){
-          skipped.push({ name, reason: `${SHEET_REQUIRED[uniform]} is not in images/MANIFEST.json yet` });
-          continue;
-        }
         if(!RULES.isUniformAllowedFor(uniform, m.membership, { rank: m.rank })){
           skipped.push({ name, reason: `${uniform} is not offered to ${m.membership} ${m.rank}` });
           continue;
@@ -270,22 +263,19 @@ function matrix(){
   // the badge, no name, the baseball cap, and the women's choice of the men's cut. One senior Capt each, both cuts; a variant waits for the art it draws.
   if(RULES.RULES.polo){
     const POLO_VARIANTS = [
-      ['long', { sleeve: 'long' }, []],
-      ['tactical', { poloShirt: 'tactical' }, ['-tactical']],
-      ['tactical-long', { poloShirt: 'tactical', sleeve: 'long' }, ['-long-tactical']],
-      ['print', { poloShirt: 'print' }, ['-seal-print']],
-      ['print-long', { poloShirt: 'print', sleeve: 'long' }, ['-long-seal-print']],
-      ['title', { poloMark: 'title', dutyTitle: 'Squadron Commander' }, []],
-      ['no-name', { poloName: false }, []],
-      ['cap', { baseballCap: true }, ['HAT']],
-      ['cap-long-tactical', { baseballCap: true, poloShirt: 'tactical', sleeve: 'long' }, ['HAT', '-long-tactical']]
+      ['long', { sleeve: 'long' }],
+      ['tactical', { poloShirt: 'tactical' }],
+      ['tactical-long', { poloShirt: 'tactical', sleeve: 'long' }],
+      ['print', { poloShirt: 'print' }],
+      ['print-long', { poloShirt: 'print', sleeve: 'long' }],
+      ['title', { poloMark: 'title', dutyTitle: 'Squadron Commander' }],
+      ['no-name', { poloName: false }],
+      ['cap', { baseballCap: true }],
+      ['cap-long-tactical', { baseballCap: true, poloShirt: 'tactical', sleeve: 'long' }]
     ];
     for(const gender of ['male', 'female']){
-      const sheet = `garment-polo-${gender}`;
-      for(const [tag, opt, needs] of POLO_VARIANTS){
+      for(const [tag, opt] of POLO_VARIANTS){
         const name = `polo-${gender}-senior-Capt-${tag}`;
-        const missing = needs.map(n => n === 'HAT' ? 'hat-baseball-cap-blue' : sheet + n).find(id => !manifestIds.has(id));
-        if(missing){ skipped.push({ name, reason: `${missing} is not in images/MANIFEST.json yet` }); continue; }
         ok.push({ name, build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3 }, opt), badgeIds: [AVIATION_BADGE.senior] } });
       }
       if(gender === 'female') ok.push({ name: 'polo-female-senior-Capt-mens-cut', build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { poloCut: 'male' }, badgeIds: [AVIATION_BADGE.senior] } });

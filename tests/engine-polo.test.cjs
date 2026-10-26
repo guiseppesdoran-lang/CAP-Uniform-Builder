@@ -2,8 +2,7 @@
 // The Corporate Working Uniform, the polo (CAPR 39-1 5.3, Figure 5.5): three dark blue shirts, the embroidered seal on the right
 // breast (5.3.1.1, 5.3.1.3) or the seal screen-printed on the left (5.3.1.2), the optional embroidered name in white thread and
 // ONE badge or duty title 1/2 inch over it (5.3.2.1.1), no accoutrements on the printed shirt (5.3.2.1.2), no grade insignia (5.3.2),
-// no ribbons (11.1.3), the CAP baseball cap optional (5.3.7). Run on the synced sheets when they are in images/, otherwise on synthetic
-// sheets with the same landmark contract (tests/helpers/polo-sheets.cjs).
+// no ribbons (11.1.3), the CAP baseball cap optional (5.3.7). Run on the synced sheets (tests/helpers/polo-sheets.cjs).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -259,7 +258,7 @@ test('no epaulet, sleeve flat, cord or collar views are drawn, and the scene is 
   assert.ok(!scene.layers.some(l => /sleeve-flat|epaulet|cord|collar/.test((l.id || '') + (l.role || ''))));
 });
 
-test('with the polo sheets synced: every slot is on the sheet, the seal on the right breast, the print and name on the left (5.3.1)', { skip: polo.real ? false : 'polo sheets not synced yet (garment-polo-male ... not in images/MANIFEST.json)' }, async () => {
+test('on the polo sheets: every slot is on the sheet, the seal on the right breast, the print and name on the left (5.3.1)', async () => {
   for(const [sex, long] of CUTS){
     const sheet = await store.load(sheetOf(sex, long));
     for(const name of ['seal_slot', 'name_slot', 'badge_slot', 'print_seal_slot']){
@@ -276,5 +275,18 @@ test('with the polo sheets synced: every slot is on the sheet, the seal on the r
     assert.equal(!!polo.slot(sheet, 'pocket'), sex === 'male', `${sheet.id}: the left chest pocket is the men's (5.3.1.1)`);
     assert.ok(sheet.anchors.top_center && sheet.raw.landmarks.hat_view.front, `${sheet.id}: hat_view for the cap`);
     near(polo.slot(sheet, 'badge_slot').y + polo.slot(sheet, 'badge_slot').h + 0.5, nm.y, 0.02, `${sheet.id}: the badge slot ends 1/2 in over the name slot (5.3.2.1.1)`);
+  }
+});
+
+test('the tactical overlay\'s pen pocket is on the wearer\'s LEFT sleeve and the printed overlay carries the white seal (5.3.1.3, 5.3.1.2)', async () => {
+  for(const [sex, long] of CUTS){
+    const id = sheetOf(sex, long);
+    for(const part of ['-tactical', '-seal-print']) assert.ok(polo.manifest.assets.some(a => a.id === id + part), `${id}${part} is synced`);
+    const tactical = await store.load(id + '-tactical');
+    const pen = polo.slot(tactical, 'pen_pocket_slot');
+    assert.ok(pen, `${id}: pen_pocket_slot`);
+    assert.ok(pen.x + pen.w / 2 > tactical.w / 2, 'the picture\'s right is the wearer\'s left');
+    const scene = await compose(build({ build: { gender: sex }, opt: { sleeve: long ? 'long' : 'short', poloShirt: 'tactical' } }));
+    assert.ok(scene.layers.some(l => l.role === 'surface' && l.key === 'clear:pen_pocket_slot'), 'labels keep off the pen pocket');
   }
 });
