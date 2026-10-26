@@ -215,6 +215,11 @@ test('the men\'s short aviator sheet states its sleeve anchors and armhole seams
   const pts = silhouetteScene('garment-aviator-shirt-male').map(p => [p[0] - spec.size_in.w / 2, p[1] - 0.1 * k]);
   const body = pts.filter(p => Math.abs(p[0]) < 6.7 * k && p[1] > 12.5 * k);
   assert.ok(body.length >= 6, 'bodice points');
-  const traced = [[6.428, 13.002], [6.527, 23.41], [6.58, 23.29], [6.55, 23.07]];
+  // AVIATOR-ART-5 (art 01ae945f): the traced outline differed left to right by up to 0.06 in, so the picture-left half is mirrored onto the right and the armhole seam now ends on ONE armpit
+  // vertex (the old one was a two-vertex hook, so its point (6.428, 13.002) is now (6.437, 12.913): 0.09 in higher). The bodice points are re-read from the synced sheet (in inches
+  // of the unscaled sheet, divided by k); the hem and side seam points the trace gave (6.527, 23.41), (6.58, 23.29), (6.55, 23.07) are unchanged to 0.002 in.
+  const traced = [[6.437, 12.913], [6.548, 23.068], [6.58, 23.293], [6.526, 23.411]];
   for(const [x, y] of traced) assert.ok(body.some(p => Math.abs(Math.abs(p[0]) - x * k) < 0.03 * k && Math.abs(p[1] - y * k) < 0.03 * k), `side seam point (${x}, ${y}) times ${k}`);
+  // and the bodice is symmetric: every point has its mirror image on the other side within 0.01 in
+  for(const p of body) assert.ok(body.some(q => Math.abs(q[0] + p[0]) < 0.01 && Math.abs(q[1] - p[1]) < 0.01), `bodice point ${p.map(v => v.toFixed(3))} has no mirror image`);
 });
