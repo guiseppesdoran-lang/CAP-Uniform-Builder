@@ -2420,9 +2420,9 @@
    "path": "cords/cord-aide-de-camp.svg",
    "category": "cords",
    "w_in": 5,
-   "h_in": 8.9,
+   "h_in": 4.48,
    "size_source": "estimated",
-   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Shoulder run 4.2 in matches the garment shoulder seam; loop length ~7.4 in and tip ~1.15 in are estimates of a ceremonial single-loop aiguillette",
+   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Shoulder run 4.2 in matches the garment shoulder seam; braid 0.30 in; the hanging parts are measured in braid thicknesses B from Vanguard SKU 3710210 (800 x 667 screenshot, B = 21.5 px +-1.5): free loop 5.9 x 4.7 B outer = 1.77 x 1.41 in, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 88 px = 4.1 B = 1.2 in (the figure the earlier version estimated as 1.15 in); where the loop hangs from the run (3.3 in from the neck end) and the 4.0 in drop to the tip point are estimated",
    "anchors": {
     "top_center": [
      250,
@@ -2430,26 +2430,26 @@
     ],
     "bottom_center": [
      250,
-     890
+     448.00000000000006
     ],
     "center": [
      250,
-     445
+     224.00000000000003
     ],
     "left_edge": [
      0,
-     445
+     224.00000000000003
     ],
     "right_edge": [
      500,
-     445
+     224.00000000000003
     ],
     "shoulder_seam_attach": [
      450,
      20
     ],
     "shoulder_seam_attach_neck_end": [
-     80,
+     30,
      20
     ],
     "shoulder_seam_attach_arm_end": [
@@ -2457,15 +2457,23 @@
      20
     ],
     "loop_bottom": [
-     57.99999999999999,
-     738
+     330,
+     195.5
     ],
     "tip_end": [
-     57.99999999999999,
-     875
+     327,
+     432.5
+    ],
+    "aiguillette_tip": [
+     327,
+     432.5
     ]
    },
-   "landmarks": [],
+   "landmarks": [
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
+   ],
    "has_spec": true,
    "issues": []
   },
@@ -36768,7 +36776,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -36797,10 +36805,21 @@
     "cord_end": [
      2030.46666,
      1535.98
+    ],
+    "aiguillette_attach": [
+     2171.1,
+     552.91
+    ],
+    "aiguillette_tip": [
+     2037.43,
+     945.46
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -37076,7 +37095,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37105,10 +37124,21 @@
     "cord_end": [
      1921.48,
      1287.18
+    ],
+    "aiguillette_attach": [
+     1940.27,
+     444.78
+    ],
+    "aiguillette_tip": [
+     1778.57,
+     826.64
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -37384,7 +37414,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37413,10 +37443,21 @@
     "cord_end": [
      1956.36,
      1650.09
+    ],
+    "aiguillette_attach": [
+     2136.35,
+     438.57
+    ],
+    "aiguillette_tip": [
+     1935.85,
+     801.57
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -37692,7 +37733,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -37721,10 +37762,21 @@
     "cord_end": [
      1922.83,
      1650.09
+    ],
+    "aiguillette_attach": [
+     2102.81,
+     438.57
+    ],
+    "aiguillette_tip": [
+     1902.32,
+     801.57
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -38000,7 +38052,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38029,10 +38081,21 @@
     "cord_end": [
      2084.51,
      1582.12
+    ],
+    "aiguillette_attach": [
+     2261.71,
+     516.85
+    ],
+    "aiguillette_tip": [
+     2084.96,
+     891.99
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -38308,7 +38371,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38337,10 +38400,21 @@
     "cord_end": [
      2034.67,
      1582.12
+    ],
+    "aiguillette_attach": [
+     2211.87,
+     516.85
+    ],
+    "aiguillette_tip": [
+     2035.12,
+     891.99
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -38616,7 +38690,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -38645,10 +38719,21 @@
     "cord_end": [
      1921.48,
      1287.18
+    ],
+    "aiguillette_attach": [
+     1940.27,
+     444.78
+    ],
+    "aiguillette_tip": [
+     1778.57,
+     826.64
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {
@@ -38924,7 +39009,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -38953,10 +39038,21 @@
     "cord_end": [
      2030.46666,
      1535.98
+    ],
+    "aiguillette_attach": [
+     2171.1,
+     552.91
+    ],
+    "aiguillette_tip": [
+     2037.43,
+     945.46
     ]
    },
    "landmarks": [
-    "cord"
+    "cord",
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
    ]
   },
   {

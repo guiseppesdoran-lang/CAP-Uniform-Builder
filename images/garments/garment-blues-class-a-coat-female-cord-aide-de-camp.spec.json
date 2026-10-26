@@ -13,7 +13,7 @@
   2947.56
  ],
  "size_source": "estimated",
- "size_basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
+ "size_basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
  "anchors": {
   "top_center": [
    1219.42,
@@ -42,6 +42,14 @@
   "cord_end": [
    1921.48,
    1287.18
+  ],
+  "aiguillette_attach": [
+   1940.27,
+   444.78
+  ],
+  "aiguillette_tip": [
+   1778.57,
+   826.64
   ]
  },
  "landmarks": {
@@ -66,20 +74,58 @@
     1921.48,
     1287.18
    ]
-  ]
+  ],
+  "aiguillette_loop": {
+   "x": 1751.38,
+   "y": 340.96,
+   "w_in": 2.04,
+   "h_in": 1.75
+  },
+  "aiguillette_pendant": {
+   "x": 1751.38,
+   "y": 340.96,
+   "w_in": 2.04,
+   "h_in": 4.86
+  },
+  "aiguillette_tip": {
+   "x": 1778.57,
+   "y": 826.64,
+   "head_x": 1799.74,
+   "head_y": 708.52,
+   "len_in": 1.2,
+   "hang_deg": 10.16,
+   "box": {
+    "x": 1777.34,
+    "y": 707.02,
+    "w_in": 0.31,
+    "h_in": 1.2
+   }
+  }
  },
- "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in); aiguillette_loop, aiguillette_pendant: {x,y} top-left of the box in user units, w_in/h_in in inches (pendant = loop + whipping + thin cord + tip, the keep-clear box); aiguillette_tip: {x,y} the tip point, head_x/head_y the cup end where the thin cord enters, len_in, hang_deg (the pendant is rotated this many degrees clockwise about the loop contact point so it hangs along the run slope), box = the tip's own bounding box",
  "overlay_of": "garment-blues-class-a-coat-female",
  "documented": [
-  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)",
+  "CAPR 39-1 9.3.4: the USAF Aide de Camp Shoulder Cord is worn on the left sleeve, only on the Service and Service Dress uniforms; DAFI 36-2903 10.7.7.1 describes it as a single-loop aiguillette with a chrome tip"
  ],
  "assumed": [
   "cord thickness 0.36 in",
-  "path along the armhole seam"
+  "path along the armhole seam",
+  "loop, whipping and thin-cord proportions read from one product photo (Vanguard SKU 3710210, screenshot 800 x 667)",
+  "loop touches the run 1.9 in below its shoulder end, tip on the chest about 3.2 in below that contact point"
  ],
  "fit": {
   "method": "original",
   "score": null
  },
- "grade": "accessory"
+ "grade": "accessory",
+ "dimensions": {
+  "braid_thickness_in": 0.36,
+  "loop_outer_in": [
+   2.12,
+   1.69
+  ],
+  "tip_length_in": 1.2,
+  "pendant_drop_in": 5.52
+ }
 }

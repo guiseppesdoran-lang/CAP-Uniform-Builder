@@ -3,22 +3,23 @@
  "name": "USAF aide de camp aiguillette cord (silver, single loop, chrome tip)",
  "size_in": {
   "w": 5,
-  "h": 8.9
+  "h": 4.48
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   500,
-  890
+  448
  ],
  "size_source": "estimated",
- "size_basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Shoulder run 4.2 in matches the garment shoulder seam; loop length ~7.4 in and tip ~1.15 in are estimates of a ceremonial single-loop aiguillette",
- "provenance": "in-house construction from DAFI 36-2903 10.7.7.1 (\"silver, single loop, chrome tip with raised wing and star emblem\"); same braid as the shoulder cords",
+ "size_basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Shoulder run 4.2 in matches the garment shoulder seam; braid 0.30 in; the hanging parts are measured in braid thicknesses B from Vanguard SKU 3710210 (800 x 667 screenshot, B = 21.5 px +-1.5): free loop 5.9 x 4.7 B outer = 1.77 x 1.41 in, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 88 px = 4.1 B = 1.2 in (the figure the earlier version estimated as 1.15 in); where the loop hangs from the run (3.3 in from the neck end) and the 4.0 in drop to the tip point are estimated",
+ "provenance": "in-house construction from DAFI 36-2903 10.7.7.1 (\"silver, single loop, chrome tip with raised wing and star emblem\") and the proportions of the Vanguard aluminum service aiguillette photo (assets/cords/ref/); same braid as the shoulder cords; the tip is a flat silhouette without the raised emblem",
  "colours": {
   "main": "#cdd2d7",
   "groove": "#7f8790",
-  "tip": "#e6e9ec"
+  "tip": "#c9ccd2",
+  "tip_edge": "#2e3036"
  },
  "anchors": {
   "top_center": [
@@ -27,26 +28,26 @@
   ],
   "bottom_center": [
    250,
-   890
+   448.00000000000006
   ],
   "center": [
    250,
-   445
+   224.00000000000003
   ],
   "left_edge": [
    0,
-   445
+   224.00000000000003
   ],
   "right_edge": [
    500,
-   445
+   224.00000000000003
   ],
   "shoulder_seam_attach": [
    450,
    20
   ],
   "shoulder_seam_attach_neck_end": [
-   80,
+   30,
    20
   ],
   "shoulder_seam_attach_arm_end": [
@@ -54,20 +55,58 @@
    20
   ],
   "loop_bottom": [
-   57.99999999999999,
-   738
+   330,
+   195.5
   ],
   "tip_end": [
-   57.99999999999999,
-   875
+   327,
+   432.5
+  ],
+  "aiguillette_tip": [
+   327,
+   432.5
   ]
  },
+ "landmarks": {
+  "aiguillette_loop": {
+   "x": 241.5,
+   "y": 5,
+   "w_in": 1.77,
+   "h_in": 1.41
+  },
+  "aiguillette_pendant": {
+   "x": 241.5,
+   "y": 5,
+   "w_in": 1.77,
+   "h_in": 4.275
+  },
+  "aiguillette_tip": {
+   "x": 327,
+   "y": 432.5,
+   "head_x": 327,
+   "head_y": 312.5,
+   "len_in": 1.2,
+   "hang_deg": 0,
+   "box": {
+    "x": 318.5,
+    "y": 312.5,
+    "w_in": 0.17,
+    "h_in": 1.2
+   }
+  }
+ },
+ "landmarks_note": "aiguillette_loop, aiguillette_pendant: {x,y} top-left of the box in user units (0.01 in), w_in/h_in in inches (pendant = loop + whipping + thin cord + tip, the keep-clear box); aiguillette_tip: {x,y} the tip point, head_x/head_y the cup end where the thin cord enters, len_in, box = the tip's own bounding box",
  "dimensions": {
-  "form": "aiguillette, single loop with chrome tip",
+  "form": "aiguillette: braided run, hanging braided loop, whipping, thin cord, pencil tip",
   "shoulder_run_in": 4.2,
-  "loop_length_in": 7.4,
-  "thickness_in": 0.3,
-  "orientation": "top run lies along the left shoulder seam (arm end at the right of the asset, neck end at the left); the loop then hangs down the chest"
+  "braid_thickness_in": 0.3,
+  "loop_outer_in": [
+   1.77,
+   1.41
+  ],
+  "tip_length_in": 1.2,
+  "pendant_drop_in": 4.28,
+  "orientation": "run horizontal along the left shoulder seam (arm end at the right, neck end at the left); the loop hangs below it, then the whipping, the thin cord and the tip on the chest. On the dress garments the overlays draw the same parts with the run down the armhole seam and the loop on its chest side"
  },
  "garment_fit": {
   "note": "strap axis = line from the neck end to the arm end of the garment's left epaulet strap / shoulder strip (garment user units, 0.01 in; wearer's left shoulder is on the viewer's right). Place: centre the cord on the axis with shoulder_seam_attach_neck_end at the neck end, rotate so the neck->arm anchors follow the axis, shift the chord 0.125 in toward the neck side so the 0.25 in bow is centred on the strap; draw order garment, layers, cord, then the epaulet sleeve/strip over it",
