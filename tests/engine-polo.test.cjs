@@ -141,6 +141,7 @@ test('one badge goes 1/2 inch over the name, centred on the sheet\'s badge_slot,
     const badge = scene.layers.find(l => l.role === 'badge');
     assert.ok(badge, `${sex} ${long}: badge placed`);
     assert.equal(badge.id, 'pilot-field', 'the embroidered (field) form, not the enamel dress badge');
+    assert.deepEqual([...badge.hideGroups], ['backing'], 'embroidered on the shirt itself: the dark blue cloth backing is not drawn');
     near(badge.x + badge.w / 2, at.x, 0.01, 'centred on badge_slot');
     const name = text(scene)[0];
     const spec = await store.load(badge.id);
