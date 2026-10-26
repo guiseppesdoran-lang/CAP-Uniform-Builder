@@ -704,30 +704,34 @@
     // Badges embossed in silver above the name (8.2.4.1, 8.3.4.1). The regulation allows 'up to two badges' on the leather tag and the NCO and
     // cadet cloth tags (the CAP aeronautical rating and an occupational badge or, for a current group or unit commander, the Command Insignia
     // Pin rather than the occupational badge); ETHAN'S RULING (LIVE-FIELD B8, over 'up to two'): the tag carries ONE badge on every flight
-    // suit tag, officer, NCO or cadet, leather or cloth: the aviation badge if one is held (the chaplain badge, highest, if that is held),
-    // else the current command pin (it takes the occupational badge's place, 8.2.4.1), else the first occupational badge listed (the page
-    // lists them in precedence order). The note names what was left off. The cloth tag for officers 'may include one badge' anyway.
+    // suit tag, officer, NCO or cadet, leather or cloth. FIELD7-5 (Ethan, on a tag bought with his master Ground Team badge: "im pretty sure
+    // its not just an aviation badge?"): the one badge may be any badge the member holds that the tag takes (the chaplain badge, the CAP
+    // aeronautical rating, a CAP occupational badge such as the Ground Team badges, or the current command pin in place of the occupational
+    // badge), and the MEMBER chooses when he holds more than one (build.badgeChoices.tag; the scene reports the conflict, position 'tag').
+    // With no choice the default is what it was: the chaplain / aviation badge (wings, highest), else the current command pin (it takes
+    // the occupational badge's place, 8.2.4.1), else the first occupational badge listed (the page lists them in precedence order). The
+    // note names what was left off. The cloth tag for officers 'may include one badge' anyway.
+    // Military aviation and occupational badges: 8.2.4.1 allows them on the FDU tag, 8.3.4.1 does not on the CFDU tag ('are not
+    // authorized'), and the builder draws no military badge on a utility uniform (R9), so none is a candidate.
     const set = badgeSet(ctx, b, 'dress');
     const pin = commandPin(ctx, b, 'dress');
-    const wings = [...set.chaplain, ...set.aviation][0] || null;
-    const pinItem = (pin && !pin.graduated) ? { id: pin.id, art: pin.art, title: pin.title, command: true } : null;
-    const other = pinItem || set.occupational[0] || null;
-    const chosen = [wings || other].filter(Boolean);
-    const zone = pieceRect(tag, spec, 'badge_zone');
-    const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
-    // The lone badge is centred in the tag's badge_zone landmark and may use 0.7 of its width (the width the wings had beside a narrow badge).
-    if(chosen.length === 1) await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), zone.w * 0.7, zone.h, opts(chosen[0]));
-    // Something worn on the member's record is not on the tag: the command pin counts as one candidate
-    // when it is current (a graduated pin is never worn).
+    const pinItem = (pin && !pin.graduated) ? { id: pin.id, art: pin.art, title: pin.title, command: true, family: 'command' } : null;
     // The tag takes a CAP aeronautical rating, an occupational badge (or a mission-qualification description)
     // or the command pin; a specialty track, service or National Staff badge is another kind of badge and
     // is not on the tag, which is a different reason from the tag being full.
     const para = b.uniform === 'corporate_flight_suit' ? '8.3.4.1' : '8.2.4.1';
-    const candidates = [...set.chaplain, ...set.aviation, ...set.occupational, ...(pinItem ? [pinItem] : [])];
+    const candidates = [...set.chaplain, ...set.aviation, ...(pinItem ? [pinItem] : []), ...set.occupational];
+    const ordered = C.preferred(candidates, (b.badgeChoices || {}).tag);
+    if(candidates.length > 1) C.reportBadgeConflict(ctx, 'tag', 'Flight suit name tag badge', candidates, ordered, 1);
+    const chosen = ordered.slice(0, 1);
+    const zone = pieceRect(tag, spec, 'badge_zone');
+    const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
+    // The lone badge is centred in the tag's badge_zone landmark and may use 0.7 of its width (the width the wings had beside a narrow badge).
+    if(chosen.length === 1) await placeFitted(ctx, chosen[0].art, core.rectCenter(zone), zone.w * 0.7, zone.h, opts(chosen[0]));
     const other_kinds = set.all.length - set.chaplain.length - set.aviation.length - set.occupational.length;
     if(other_kinds > 0) ctx.note(`Specialty track and service badges are not worn on the flight suit name tag (CAPR 39-1, ${para})`);
     const left = candidates.filter(it => !chosen.includes(it));
-    if(left.length) ctx.note(`The flight suit name tag carries one badge here (a ruling over 'up to two' in CAPR 39-1, ${para}): the ${chosen[0].title} is shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
+    if(left.length && chosen.length) ctx.note(`The flight suit name tag carries one badge here (a ruling over 'up to two' in CAPR 39-1, ${para}): the ${chosen[0].title} is shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
   }
 
   async function flightPatches(ctx, b){
