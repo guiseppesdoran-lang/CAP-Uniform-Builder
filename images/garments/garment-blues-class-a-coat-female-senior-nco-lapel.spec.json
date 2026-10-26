@@ -36,26 +36,26 @@
    1473.78
   ],
   "lapel_us_right_center": [
-   896.76,
-   358.02
+   891.18,
+   335.11
   ],
   "lapel_us_left_center": [
-   1541.97,
-   358.02
+   1547.56,
+   335.11
   ]
  },
  "landmarks": {
   "lapel_us_right": {
-   "x": 834.77,
-   "y": 296.03,
-   "w": 123.99,
-   "h": 123.99
+   "x": 841.19,
+   "y": 285.12,
+   "w": 99.97,
+   "h": 99.97
   },
   "lapel_us_left": {
-   "x": 1479.98,
-   "y": 296.03,
-   "w": 123.99,
-   "h": 123.99
+   "x": 1497.58,
+   "y": 285.12,
+   "w": 99.97,
+   "h": 99.97
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",

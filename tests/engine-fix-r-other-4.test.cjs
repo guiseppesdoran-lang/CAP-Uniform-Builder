@@ -271,13 +271,19 @@ test('cadet NCO metal chevrons (every grade, both cuts, Class A and semi-formal)
 });
 
 test('the evidence builds: the cadet C/SSgt chevron box bottom is lower than before, the ink touches the seam (men 4.715 in box bottom, 0.095 in gap at the centre; women 4.13, 0.077)', async () => {
-  for(const [sex, oldBottom] of [['male', 4.715], ['female', 4.13]]){
+  // The numbers in the title are the evidence on the first sheets. The comparison is made on the sheet as it is: the old rule rested the BOX bottom on the seam's high point
+  // under the piece (seamRest), which a sheet lifted by art e212600b (the lapel insignia rest line 0.35 in above the drawn seam, both coats; Doran: "The US is too low")
+  // puts 0.35 in higher than the 4.13 in the women's evidence build had, so the old bottom is derived from the sheet's own seam anchors, not stated.
+  for(const sex of ['male', 'female']){
     const coat = await store.load(COATS[sex]);
     const scene = await compose(hb('blues_a', sex, 'cadet', 'C/SSgt', {}));
     const l = byKey(scene, 'grade:right');
+    const p1 = core.anchor(coat, 'gorge_seam_right_p1'), p2 = core.anchor(coat, 'gorge_seam_right_p2'), mid = core.anchor(coat, 'gorge_seam_right_mid');
+    const yAt = x => p1.y + (p2.y - p1.y) / (p2.x - p1.x) * (x - p1.x);
+    const oldBottom = Math.min(yAt(mid.x - l.w / 2), yAt(mid.x + l.w / 2));
     const bottom = l.y + l.h;
     // The shield's bottom point (the box bottom, 0.935 in down the box) is the lowest ink: it lies 0 to 0.02 in above the box edge.
-    assert.ok(bottom - oldBottom > 0.01, `${sex}: the box now sits below the old rest (${bottom.toFixed(3)} vs ${oldBottom})`);
+    assert.ok(bottom - oldBottom > 0.01, `${sex}: the box now sits below the old rest (${bottom.toFixed(3)} vs ${oldBottom.toFixed(3)})`);
     near(INK.placedInkGap(coat, 'right', l), 0, 0.003, `${sex}: ink on the seam`);
   }
 });
