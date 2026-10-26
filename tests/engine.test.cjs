@@ -33,6 +33,11 @@ function build(uniform, membership, rank, extra){
   return b;
 }
 const layersBy = (scene, pred) => scene.layers.filter(pred);
+// The men's Class A coat sheet's own numbers (read from the shipped spec, so a rescale of the coat moves the tests with it): the welt top the ribbons rest on,
+// the coat's centre line (the wearer's right pocket is left of it) and the nameplate's box.
+const SHEET = require('./helpers/class-a-sheet.cjs');
+const COAT_M = SHEET.COAT.male;
+const WELT_TOP = SHEET.anchorIn(COAT_M, 'welt_top_center').y, CENTRE_X = SHEET.anchorIn(COAT_M, 'center').x, NAMEPLATE = SHEET.rectIn(COAT_M, 'nameplate');
 
 test('every offered uniform has a profile', () => {
   for(const id of Object.keys(rules.RULES)) assert.ok(P.PROFILES[id], id);
@@ -60,7 +65,7 @@ test('ribbons rest on the welt pocket in rows of three, the short row on top and
   const tiles = layersBy(scene, l => l.role === 'ribbon');
   assert.equal(tiles.length, 5);
   const bottom = Math.max(...tiles.map(t => t.y + t.h));
-  assert.ok(Math.abs(bottom - 10.79) < 0.001, 'bottom row on the welt top');
+  assert.ok(Math.abs(bottom - WELT_TOP) < 0.001, 'bottom row on the welt top');
   const rows = [...new Set(tiles.map(t => t.y.toFixed(3)))].sort();
   assert.equal(rows.length, 2);
   const top = tiles.filter(t => t.y.toFixed(3) === rows[0]);
@@ -218,11 +223,11 @@ test('an appointed Command Chief wears the Command Chief chevron on every unifor
 
 test('men\'s Class A pocket badges: their tops 1 1/2 inch below the welt top and the nametag (4.1.5.2.2.4.2, Figure 4.6)', async () => {
   const scene = await P.composeUniform(build('blues_a', 'senior', 'Capt', { ribbons: ribbon('cap_achievment_award'), badges: [{ id: 'emergency_services_badge' }, { id: 'CAPPilot1_FA9D33EA587D8' }, { id: 'historian_senior_badge' }] }), store());
-  const tag = { y: 10.04, h: 0.75 };
-  const rp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 < 11.86)[0];
+  const tag = NAMEPLATE;
+  const rp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 < CENTRE_X)[0];
   assert.ok(Math.abs(rp.y - (tag.y + tag.h + 1.5)) < 0.01, `right pocket badge top ${rp.y.toFixed(3)} is 1 1/2 in below the nametag`);
-  const lp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 > 11.86 && l.y > 10.79)[0];
-  assert.ok(Math.abs(lp.y - (10.79 + 1.5)) < 0.01, `left pocket badge top ${lp.y.toFixed(3)} is 1 1/2 in below the welt top`);
+  const lp = layersBy(scene, l => l.role === 'badge' && l.x + l.w / 2 > CENTRE_X && l.y > WELT_TOP)[0];
+  assert.ok(Math.abs(lp.y - (WELT_TOP + 1.5)) < 0.01, `left pocket badge top ${lp.y.toFixed(3)} is 1 1/2 in below the welt top`);
 });
 
 test('mess dress miniature medals are centred midway between the shoulder seam and the top button (4.1.1.1.2.2)', async () => {
@@ -241,9 +246,9 @@ test('model rocketry and marksmanship badges take their own places (4.1.5.2.2.4.
   const rocket = layersBy(men, l => l.key === 'badge:model_rocketry_badge')[0];
   const es = layersBy(men, l => l.key === 'badge:emergency_services_badge')[0];
   const nra = layersBy(men, l => l.key === 'badge:nra_marksman_badge')[0];
-  assert.ok(rocket.x > 11.86, 'rocketry on the wearer\'s left pocket');
-  assert.ok(es.x < 11.86, 'the ES badge moves to the right pocket');
-  assert.ok(Math.abs(nra.y - 10.79) < 0.001, 'marksmanship hangs from the welt');
+  assert.ok(rocket.x > CENTRE_X, 'rocketry on the wearer\'s left pocket');
+  assert.ok(es.x < CENTRE_X, 'the ES badge moves to the right pocket');
+  assert.ok(Math.abs(nra.y - WELT_TOP) < 0.001, 'marksmanship hangs from the welt');
   const women = await P.composeUniform(build('blues_a', 'cadet', 'C/SSgt', { gender: 'female', ribbons, badges: [{ id: 'emergency_services_badge' }, { id: 'model_rocketry_badge' }] }), store());
   const wr = layersBy(women, l => l.key === 'badge:model_rocketry_badge')[0];
   const rack = layersBy(women, l => l.role === 'ribbon')[0];
