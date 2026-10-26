@@ -331,7 +331,7 @@
     //          horizontally; highest badges on top, viewer's left first               apart, the other two stacked on the centre line 1/4 in above, 1/4 in apart
     const gapX = 0.5, rowGap = 0.25, base = T.y - 0.125;
     const pair = !!(b.opt && b.opt.badgeLayout === 'pair');
-    ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: base }, '⅛ in');
+    ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: base }, '⅛ in', { callout: { gap: true, caption: 'of blue above the CAP tape' } });
     // Two badges side by side on the base line, 1/2 in apart, centred on the tape; returns their boxes.
     const sideBySide = async (i, j) => {
       const wi = specs[i].w, wj = specs[j].w, W = wi + gapX + wj;

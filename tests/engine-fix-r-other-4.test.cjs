@@ -125,8 +125,12 @@ test('overlay: the 1/2 in measure of a cap view\'s grade is drawn beside that vi
           const d = drawings.find(x => x.key === m.key);
           assert.ok(d, `${uniform} ${gender} ${rank}: ${m.key} drawn`);
           const id = `${uniform} ${gender} ${rank} ${m.key} in ${owner.key}`;
-          // The dimension line is within an inch of its own view.
-          for(const p of d.dim) assert.ok(gap1(p, owner.box) <= 1, `${id}: the dimension is ${gap1(p, owner.box).toFixed(2)} in from its view`);
+          // The dimension line is within an inch of its own view. A magnified callout (the 1/8 in of blue on the cap grade) draws its
+          // dimension inside its circle instead: the leader joins the circle to the corner on the view, and the circle lies over no view.
+          if(d.callout){
+            assert.ok(gap1(d.callout.leader[1], owner.box) <= 0.01, `${id}: the callout's leader ends on its view`);
+            for(const v of views) assert.ok(!(Math.min(d.callout.box.x + d.callout.box.w, v.box.x + v.box.w) - Math.max(d.callout.box.x, v.box.x) > 0 && Math.min(d.callout.box.y + d.callout.box.h, v.box.y + v.box.h) - Math.max(d.callout.box.y, v.box.y) > 0), `${id}: the callout lies over ${v.key}`);
+          }else for(const p of d.dim) assert.ok(gap1(p, owner.box) <= 1, `${id}: the dimension is ${gap1(p, owner.box).toFixed(2)} in from its view`);
           // And nothing of it (dimension, extension lines, label) lies over another view.
           for(const other of views.filter(v => v !== owner)){
             assert.ok(!segIn(d.dim[0], d.dim[1], other.box), `${id}: the dimension runs over ${other.key}`);

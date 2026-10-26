@@ -101,6 +101,98 @@
     return w * size;
   }
 
+  // ---- magnified callouts for small distances ----
+  //
+  // A distance of 1/8 in is a 2 to 5 px tick on the stage: it shows neither what it spans nor that it spans anything.
+  // A measure that carries `opts.callout` is drawn as a magnified inset instead: a circle beside the piece that shows
+  // the measured corner `mag` times larger, with the band highlighted and a proper dimension line across it, and a
+  // leader line from the circle to the corner. The same band is outlined on the piece itself.
+  //   opts.callout = { layer: key, border: inches, caption }   a cloth border (the blue backing past the embroidery): the
+  //                                                            band between the piece's cut edge and its embroidery edge,
+  //                                                            read from the piece's own frame (border inches in from the
+  //                                                            top-left corner of the placed layer `key`)
+  //   opts.callout = { gap: true, caption }                    a bare gap between two edges (the measure's own two ends)
+  // Sizes in preview pixels like the rest of the overlay.
+  const CO = { diameter: 84, mag: 4, rim: 2.2, gapOut: 9, over: 4, minLen: 0.5, leaderDot: 1.8, captionFont: 9, edgeLen: 0.5, search: [10, 18, 28, 40, 54, 70, 90, 115, 145, 180] };
+
+  // The frame of a placed layer: its top-left corner in the scene, and the scene directions of its own x (ex) and y (ey) axes
+  // (a piece turned or mirrored on the garment keeps its band where the piece's own edge is).
+  function pieceFrame(scene, key, near){
+    const cands = scene.layers.filter(l => l.type === 'asset' && l.key === key);
+    if(!cands.length) return null;
+    const centre = l => ({ x: l.x + l.w / 2, y: l.y + l.h / 2 });
+    const layer = cands.reduce((a, l) => (len(sub(centre(l), near)) < len(sub(centre(a), near)) ? l : a));
+    const o = layer.origin || { x: layer.x, y: layer.y }, deg = layer.rotate || 0, cx = layer.x + layer.w / 2;
+    const toScene = (x, y) => core.rotatePoint({ x: layer.flipX ? 2 * cx - x : x, y }, o, deg);
+    const p0 = toScene(layer.x, layer.y);
+    return { O: p0, ex: unit(sub(toScene(layer.x + 1, layer.y), p0)), ey: unit(sub(toScene(layer.x, layer.y + 1), p0)), w: layer.w, h: layer.h };
+  }
+
+  // Separating-axis test for two convex polygons.
+  function polysOverlap(A, B){
+    for(const poly of [A, B]){
+      for(let i = 0; i < poly.length; i++){
+        const e = sub(poly[(i + 1) % poly.length], poly[i]);
+        const ax = unit({ x: -e.y, y: e.x });
+        const pa = A.map(p => dot(p, ax)), pb = B.map(p => dot(p, ax));
+        if(Math.max(...pa) <= Math.min(...pb) + 1e-9 || Math.max(...pb) <= Math.min(...pa) + 1e-9) return false;
+      }
+    }
+    return true;
+  }
+  const rectPoly = r => [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }];
+
+  // How the band is shown inside the circle, relative to the circle's centre and measured in inches of the magnified view:
+  // the highlighted band, the dimension line across it with its extension lines and bars, and the label beside it. Tried
+  // with the band's corner at several offsets from the centre (the label needs room on the cloth side of the corner) and with
+  // the dimension on either of the corner's two edges; the first that keeps everything inside the circle and the label off the
+  // piece wins.
+  function insetArrangement(frame, b, lw, lh, P){
+    const M = CO.mag, r = CO.diameter * P / 2, mb = M * b, ex = frame.ex, ey = frame.ey;
+    const off = CO.gapOut * P, over = PX.extOver * P, gap = PX.extGap * P, bar = PX.bar * P;
+    const labelExt = v => Math.abs(v.x) * lw + Math.abs(v.y) * lh;
+    const inCircle = (p, m) => len(p) <= r - m;
+    let best = null;
+    for(const [along, across, penalty] of [[ex, ey, 0], [ey, ex, 3]]){
+      // `along`: the edge the dimension is offset from (away from the piece); `across`: the direction the band is measured in.
+      const out = mul(along, -1);
+      for(let gx = -0.45; gx <= 0.451; gx += 0.05) for(let gy = -0.45; gy <= 0.451; gy += 0.05){
+        const K = { x: gx * 2 * r, y: gy * 2 * r };
+        if(len(K) > 0.62 * 2 * r) continue;
+        // The piece's corner is the centre of the arrangement: its two edges run out from K along ex and ey.
+        const d0 = add(K, mul(out, off)), d1 = add(d0, mul(across, mb));
+        const midD = mul(add(d0, d1), 0.5);
+        const lc = add(midD, mul(out, bar / 2 + PX.labelGap * P + labelExt(out) / 2));
+        const label = { x: lc.x - lw / 2, y: lc.y - lh / 2, w: lw, h: lh };
+        const half = mul(along, bar / 2);
+        const ext = [[add(K, mul(out, gap)), add(d0, mul(out, over))], [add(add(K, mul(across, mb)), mul(out, gap)), add(d1, mul(out, over))]];
+        const pts = [d0, d1, ...ext.flat(), add(d0, half), sub(d0, half), add(d1, half), sub(d1, half), ...rectPoly(label)];
+        if(!pts.every(p => inCircle(p, 1.5 * P))) continue;
+        const quad = frame.w != null ? [K, add(K, mul(ex, M * frame.w)), add(add(K, mul(ex, M * frame.w)), mul(ey, M * frame.h)), add(K, mul(ey, M * frame.h))] : null;
+        if(quad && polysOverlap(rectPoly(grow(label, P)), quad)) continue;
+        const cost = len(K) / P + penalty;
+        if(!best || cost < best.cost) best = { cost, K, out, along, across, d0, d1, ext, label, bars: [[sub(d0, half), add(d0, half)], [sub(d1, half), add(d1, half)]] };
+      }
+    }
+    return best;
+  }
+
+  // A band's shapes in scene inches: the filled band, and the two outlines (the cut edge and the embroidery edge). `ax`/`ay` are
+  // how far the outlines run along the piece's two edges from the corner.
+  function bandShapes(frame, b, ax, ay){
+    const { O, ex, ey } = frame;
+    const at = (s, t) => add(O, add(mul(ex, s), mul(ey, t)));
+    if(frame.w == null){
+      // A gap between two edges: two lines along ex, `ax` long each way from O.
+      const l1 = [at(-ax, 0), at(ax, 0)], l2 = [at(-ax, b), at(ax, b)];
+      return { fill: [l1[0], l1[1], l2[1], l2[0]], lines: [l1, l2] };
+    }
+    return {
+      fill: [at(0, 0), at(ax, 0), at(ax, b), at(b, b), at(b, ay), at(0, ay)],
+      lines: [[at(ax, 0), at(0, 0), at(0, ay)], [at(ax, b), at(b, b), at(b, ay)]]
+    };
+  }
+
   // Lay out every measure layer of a scene. `view` = { px, area }: inches per preview pixel and the
   // drawing's visible box. Returns one drawing per measure, in the scene's order.
   function layout(scene, view){
@@ -111,13 +203,126 @@
     const shrunk = solids.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0);
     const placedLabels = [];
     const placedLines = [];
-    const out = [];
     const fontSize = PX.font * P;
 
-    for(const m of scene.layers.filter(l => l.type === 'measure')){
+      // ---- a magnified callout (opts.callout): the inset beside the piece, laid out first so that every other label keeps clear of it ----
+      const placeCallout = (m, ci) => {
+        const A = m.from, B = m.to, o = m.opts.callout;
+        const lw = textWidth(m.label, fontSize) + 2 * PX.padX * P, lh = fontSize * 1.25 + 2 * PX.padY * P;
+        const b = len(sub(B, A));
+        let frame = null;
+        if(o.layer){
+          frame = pieceFrame(scene, o.layer, A);
+          if(!frame) return null;
+        }else{
+          frame = { O: A, ex: { x: -unit(sub(B, A)).y, y: unit(sub(B, A)).x }, ey: unit(sub(B, A)), w: null, h: null };
+        }
+        const border = o.border != null ? o.border : b;
+        const arr = insetArrangement(frame, border, lw, lh, P);
+        if(!arr) return null;
+        const M = CO.mag, r = CO.diameter * P / 2;
+        // The caption under the circle: the words split into lines of at most 15 characters.
+        const capSize = CO.captionFont * P;
+        const words = String(o.caption || '').split(/\s+/).filter(Boolean), capLines = [];
+        for(const w of words){ const last = capLines[capLines.length - 1]; if(last && (last + ' ' + w).length <= 15) capLines[capLines.length - 1] = last + ' ' + w; else capLines.push(w); }
+        const capW = capLines.length ? Math.max(...capLines.map(t => textWidth(t, capSize))) + 2 * PX.padX * P : 0;
+        const capH = capLines.length ? capLines.length * capSize * 1.2 + 2 * PX.padY * P : 0;
+        const capGap = 2 * P;
+        const C = frame.O;
+        // The own piece's polygon (so the leader and the circle do not run over it).
+        const own = frame.w != null ? [C, add(C, mul(frame.ex, frame.w)), add(add(C, mul(frame.ex, frame.w)), mul(frame.ey, frame.h)), add(C, mul(frame.ey, frame.h))] : null;
+        const ownBounds = own ? { x: Math.min(...own.map(p => p.x)), y: Math.min(...own.map(p => p.y)), w: Math.max(...own.map(p => p.x)) - Math.min(...own.map(p => p.x)), h: Math.max(...own.map(p => p.y)) - Math.min(...own.map(p => p.y)) } : null;
+        // The measured piece is the one solid the circle may touch (the cap view it sits on is not: the circle stays off it). The leader
+        // starts on the piece and may cross the cloth it lies on (the cap view's own box) but no other piece.
+        const isOwn = s => ownBounds && contains(grow(s, 0.03), C) && s.w * s.h <= 1.5 * ownBounds.w * ownBounds.h;
+        const others = solids.filter(s => !isOwn(s));
+        const leaderSolids = (ownBounds ? solids.filter(s => !contains(grow(s, 0.03), C)) : solids).map(s => grow(s, -1.5 * P)).filter(s => s.w > 0 && s.h > 0);
+        const garments = scene.layers.filter(l => l.type !== 'measure' && l.role === 'garment').map(l => core.layerBounds(l));
+        let best = null;
+        for(const hard of [true, false]){
+          for(const d of CO.search){
+            for(let k = 0; k < 24; k++){
+              const ang = (k / 24) * 2 * Math.PI;
+              const dir = { x: Math.cos(ang), y: Math.sin(ang) };
+              const c = add(C, mul(dir, (CO.diameter / 2 + d) * P));
+              const circ = { x: c.x - r, y: c.y - r, w: 2 * r, h: 2 * r };
+              const cap = capLines.length ? { x: c.x - capW / 2, y: c.y + r + capGap, w: capW, h: capH } : null;
+              const boxAll = cap ? core.unionBounds([circ, cap]) : circ;
+              if(area && overlap(boxAll, area) < boxAll.w * boxAll.h - 1e-9) continue;
+              // The leader leaves the circle toward the corner and must come to it from outside the piece.
+              const v = sub(C, c);
+              if(!(len(v) > r)) continue;
+              const vu = unit(v);
+              if(frame.w != null && dot(vu, frame.ex) < -1e-9 && dot(vu, frame.ey) < -1e-9) continue;
+              const rim = add(c, mul(vu, r));
+              let cost = d + k * 0.01;
+              const hit = (list, box) => list.some(s => overlap(box, s) > 0);
+              if(hard){
+                if(hit(others.map(s => grow(s, 0.25 * P)), boxAll)) continue;
+                if(ownBounds && overlap(boxAll, ownBounds) > 0) continue;
+                if(placedLabels.some(lab => overlap(boxAll, grow(lab, 2 * P)) > 0)) continue;
+                if(placedLines.some(([p, q]) => insideLength(p, q, boxAll) > 0)) continue;
+                if(leaderSolids.some(s => insideLength(rim, C, s) > 0)) continue;
+                if(placedLabels.some(lab => insideLength(rim, C, lab) > 0)) continue;
+              }else{
+                for(const s of others) cost += 40 * overlap(boxAll, s) / (P * P);
+                if(ownBounds) cost += 40 * overlap(boxAll, ownBounds) / (P * P);
+                for(const lab of placedLabels) cost += 30 * overlap(boxAll, lab) / (P * P);
+                for(const [p, q] of placedLines) cost += 20 * insideLength(p, q, boxAll) / P;
+                for(const s of leaderSolids) cost += 60 * insideLength(rim, C, s) / P;
+              }
+              // Outboard of the figure when it can be: the garment sheet's own cloth is the last choice.
+              for(const g of garments) cost += 0.004 * overlap(circ, g) / (P * P);
+              if(!best || cost < best.cost) best = { cost, c, circ, cap, boxAll, rim, hard };
+            }
+          }
+          if(best) break;
+        }
+        if(!best) return null;
+        const { c, cap, boxAll, rim } = best;
+        const W = sub(C, mul(arr.K, 1 / M));      // the scene point at the circle's centre
+        const toInset = p => add(c, mul(sub(p, W), M));
+        const shift = p => add(c, p);
+        // On the piece: the band along its corner, the way the member will see it when pinning.
+        const edge = Math.min(CO.edgeLen, 0.5 * (frame.w != null ? Math.min(frame.w, frame.h) : 2));
+        const real = bandShapes(frame, border, edge, edge);
+        const inset = bandShapes(frame, border, frame.w != null ? frame.w : 3 * r / M, frame.h != null ? frame.h : 0);
+        const lab = shift({ x: arr.label.x, y: arr.label.y });
+        const drawing = {
+          key: m.key,
+          label: { text: m.label, x: lab.x, y: lab.y, w: lw, h: lh },
+          dim: [shift(arr.d0), shift(arr.d1)],
+          bars: arr.bars.map(([p, q]) => [shift(p), shift(q)]),
+          ext: arr.ext.map(([p, q]) => [shift(p), shift(q)]),
+          ticks: [], centres: [], reference: null,
+          callout: {
+            center: c, r, mag: M, focus: W,
+            window: { x: W.x - r / M, y: W.y - r / M, w: 2 * r / M, h: 2 * r / M },
+            box: boxAll,
+            leader: [rim, C],
+            real: { fill: real.fill, lines: real.lines },
+            inset: { fill: inset.fill.map(toInset), lines: inset.lines.map(l => l.map(toInset)) },
+            caption: cap ? Object.assign({ lines: capLines, size: capSize }, cap) : null,
+            border, kind: o.layer ? 'band' : 'gap', hard: best.hard
+          }
+        };
+        placedLabels.push(boxAll);
+        placedLines.push([rim, C]);
+        return drawing;
+      };
+
+    // The callouts go last: the plain dimensions keep the places they have always had, and each circle, which can sit a long way from its piece, finds room around them.
+    const measures = scene.layers.filter(l => l.type === 'measure');
+    const isCallout = m => !!(m.opts && m.opts.callout);
+    const order = measures.map((m, i) => i).sort((i, j) => (isCallout(measures[i]) ? 1 : 0) - (isCallout(measures[j]) ? 1 : 0));
+    const slots = new Array(measures.length).fill(null);
+
+    for(const mi of order){
+      const m = measures[mi];
       const A = m.from, B = m.to;
       const L = len(sub(B, A));
       if(L < 1e-6) continue;
+      if(isCallout(m)){ const dc = placeCallout(m, mi); if(dc){ slots[mi] = dc; continue; } }
       const u = unit(sub(B, A));
       const n = { x: -u.y, y: u.x };
       const o = m.opts || {};
@@ -268,9 +473,9 @@
       }
       placedLabels.push(box);
       placedLines.push([a, b], ...exts);
-      out.push(drawing);
+      slots[mi] = drawing;
     }
-    return out;
+    return slots.filter(Boolean);
   }
 
   // Inches per preview pixel for a viewBox shown on the builder's stage (640 px high, at most
@@ -280,5 +485,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, previewPx, obstaclesOf, textWidth, PX };
+  return { layout, previewPx, obstaclesOf, textWidth, PX, CALLOUT: CO };
 });

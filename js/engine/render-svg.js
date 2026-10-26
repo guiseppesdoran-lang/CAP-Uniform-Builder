@@ -71,11 +71,57 @@
   // halo (they read on light shirts and dark coats alike) and each length on a dark label. Widths
   // are in preview pixels (`px` inches each).
   const MEASURE = { color: '#ffd24a', halo: '#0b1020', line: 1.3, ext: 1, haloExtra: 2.2, labelStroke: 0.9 };
-  function measureNodes(drawings, px, fontPx){
+  // A magnified callout (measure-layout.js, opts.callout): the band outlined on the piece, a leader to the circle, and the circle
+  // itself, a copy of every placed layer that reaches the window, drawn `mag` times larger and clipped to the circle, with the band
+  // outlined again over it. `copies(window)` returns copies of the scene's layers (in drawing order) that reach the window.
+  function calloutNodes(d, px, defs, copies, fontPx){
+    const co = d.callout, nodes = [];
+    const pts = a => a.map(p => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
+    const line = (g, a, stroke, width, extra) => g.appendChild(el('polyline', Object.assign({ points: pts(a), fill: 'none', stroke, 'stroke-width': fmt(width), 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, extra || {})));
+    // On the piece: the band, highlighted along one corner, and the leader from the circle to that corner.
+    const real = el('g', { class: 'measure-callout-piece' });
+    real.appendChild(el('polygon', { points: pts(co.real.fill), fill: MEASURE.color, 'fill-opacity': 0.45, stroke: 'none' }));
+    for(const l of co.real.lines){ line(real, l, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 }); line(real, l, MEASURE.color, MEASURE.ext * px); }
+    const [rim, tip] = co.leader;
+    for(const [stroke, width, extra] of [[MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 }], [MEASURE.color, MEASURE.ext * px, {}]]){
+      real.appendChild(el('line', Object.assign({ x1: fmt(rim.x), y1: fmt(rim.y), x2: fmt(tip.x), y2: fmt(tip.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }, extra)));
+    }
+    real.appendChild(el('circle', { cx: fmt(tip.x), cy: fmt(tip.y), r: fmt(1.8 * px), fill: MEASURE.color, stroke: MEASURE.halo, 'stroke-width': fmt(0.8 * px) }));
+    nodes.push(real);
+    // The circle.
+    const clipId = 'callout-clip-' + (calloutNodes.count = (calloutNodes.count || 0) + 1);
+    const cp = el('clipPath', { id: clipId, clipPathUnits: 'userSpaceOnUse' });
+    cp.appendChild(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r) }));
+    defs.appendChild(cp);
+    const lens = el('g', { class: 'measure-callout', 'clip-path': `url(#${clipId})` });
+    lens.appendChild(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: '#e9edf3' }));
+    const mag = el('g', { transform: `translate(${fmt(co.center.x)} ${fmt(co.center.y)}) scale(${fmt(co.mag)}) translate(${fmt(-co.focus.x)} ${fmt(-co.focus.y)})` });
+    copies(co.window).forEach(n => mag.appendChild(n));
+    lens.appendChild(mag);
+    lens.appendChild(el('polygon', { points: pts(co.inset.fill), fill: MEASURE.color, 'fill-opacity': 0.55, stroke: 'none' }));
+    for(const l of co.inset.lines) line(lens, l, MEASURE.color, 1.1 * px);
+    nodes.push(lens);
+    nodes.push(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra + 1) * px), 'stroke-opacity': 0.6 }));
+    nodes.push(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'none', stroke: MEASURE.color, 'stroke-width': fmt(1.6 * px) }));
+    if(co.caption){
+      const c = co.caption, g = el('g', { class: 'measure-callout-caption' });
+      g.appendChild(el('rect', { x: fmt(c.x), y: fmt(c.y), width: fmt(c.w), height: fmt(c.h), rx: fmt(Math.min(c.h / 2, 3 * px)), fill: MEASURE.halo, 'fill-opacity': 0.88, stroke: MEASURE.color, 'stroke-width': fmt(0.7 * px) }));
+      c.lines.forEach((t, i) => {
+        const text = el('text', { x: fmt(c.x + c.w / 2), y: fmt(c.y + c.h / 2 + (i - (c.lines.length - 1) / 2) * c.size * 1.2), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(c.size), fill: MEASURE.color });
+        text.textContent = t;
+        g.appendChild(text);
+      });
+      nodes.push(g);
+    }
+    return nodes;
+  }
+
+  function measureNodes(drawings, px, fontPx, defs, copies){
     const out = [];
     const seg = (g, [a, b], stroke, width, extra) => g.appendChild(el('line', Object.assign({ x1: fmt(a.x), y1: fmt(a.y), x2: fmt(b.x), y2: fmt(b.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }, extra || {})));
     for(const d of drawings){
       const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
+      if(d.callout && copies) calloutNodes(d, px, defs, copies, fontPx).forEach(n => g.appendChild(n));
       const main = [d.dim, ...d.bars, ...d.ticks, ...d.centres];
       for(const s of [...main, ...d.ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
       if(d.reference){
@@ -205,6 +251,7 @@
       silIds.set(garmentId, cid);
       return cid;
     }
+    const drawn = [];
     for(const layer of layers){
       let node = null;
       if(layer.type === 'asset'){
@@ -304,13 +351,27 @@
       }
       wrap.appendChild(node);
       svg.appendChild(wrap);
+      drawn.push({ layer, wrap });
     }
     // The measurements go over everything, sized for the preview stage unless told otherwise.
     const ML = root.CAPUBEngine && root.CAPUBEngine.measureLayout;
     if(options.measure && ML){
       const px = options.measurePx || ML.previewPx(vb);
       const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] } });
-      measureNodes(drawings, px, ML.PX.font).forEach(n => svg.appendChild(n));
+      // The magnified insets draw copies of the layers that reach their window, as the page draws them but not as layers of their own.
+      const CORE = root.CAPUBEngine && root.CAPUBEngine.core;
+      const copies = win => drawn.filter(({ layer }) => layer.role !== 'measure' && layer.role !== 'clear' && (() => {
+        const bb = CORE ? CORE.layerBounds(layer) : null;
+        return !bb || (bb.x < win.x + win.w && bb.x + bb.w > win.x && bb.y < win.y + win.h && bb.y + bb.h > win.y);
+      })()).map(({ wrap }) => {
+        const c = wrap.cloneNode(true);
+        c.setAttribute('class', 'calloutLayer');
+        c.removeAttribute('data-calib-key');
+        c.removeAttribute('data-role');
+        c.querySelectorAll('title').forEach(t => t.remove());
+        return c;
+      });
+      measureNodes(drawings, px, ML.PX.font, defs, copies).forEach(n => svg.appendChild(n));
     }
     return svg;
   }

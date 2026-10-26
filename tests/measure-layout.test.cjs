@@ -115,3 +115,40 @@ test('the men\'s pocket badges are measured to their top edge, with no centre ma
   assert.ok(badge, 'the measure ends on a badge top');
   assert.equal(drawings.find(d => d.key === m.key).centres.length, 0);
 });
+
+// The 1/8 in of blue is a few pixels on the stage: its measure carries a magnified callout (4x inset, leader to the highlighted corner).
+const EIGHTH_CASES = [
+  ['OCP', build('ocp', 'senior', 'Capt', { badges: badges(['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge', 'senior_ground_team_badge', 'basic_incident_commander_badge']) })],
+  ['ABU', build('abu', 'senior', 'Capt', { badges: badges(['CAPPilot1_FA9D33EA587D8']) })],
+  ['Corporate Field Uniform', build('corporate_field', 'senior', 'Capt', { badges: badges(['CAPPilot1_FA9D33EA587D8']) })],
+  ['corporate flight suit', build('corporate_flight_suit', 'senior', 'Col')]
+];
+for(const [name, b] of EIGHTH_CASES){
+  test(`the 1/8 in measures on the ${name} carry a 4x callout, joined to the corner, clear of artwork and labels`, async () => {
+    const { scene, px, area, drawings } = await laidOut(b);
+    const eighths = drawings.filter(d => d.label.text === '⅛ in');
+    assert.ok(eighths.length > 0, 'a 1/8 in measure is drawn');
+    const solids = ML.obstaclesOf(scene);
+    for(const d of eighths){
+      const co = d.callout;
+      assert.ok(co, '1/8 in has a callout');
+      assert.equal(co.mag, 4);
+      assert.ok(co.hard, 'a place was found that covers no piece and crosses no label');
+      assert.ok(Math.abs(co.r * 2 / px - ML.CALLOUT.diameter) < 1e-6, 'inset diameter');
+      // The leader runs from the circle's rim to a point on the piece it measures, and the highlight starts there.
+      const [rim, tip] = co.leader;
+      assert.ok(Math.abs(Math.hypot(rim.x - co.center.x, rim.y - co.center.y) - co.r) < 1e-6, 'leader leaves the rim');
+      const m = scene.layers.find(l => l.type === 'measure' && l.key === d.key);
+      assert.ok(Math.hypot(tip.x - m.from.x, tip.y - m.from.y) < 3, 'leader ends at the measured piece');
+      assert.ok(Math.hypot(co.real.lines[0][1].x - tip.x, co.real.lines[0][1].y - tip.y) < 1e-6 || co.kind === 'gap', 'the cut edge is outlined from the leader tip');
+      // The inset and its caption cover no piece (the one it measures included) and no other label, and lie in the drawing.
+      assert.ok(overlap(co.box, area) >= co.box.w * co.box.h - 1e-6, 'inset inside the drawing');
+      for(const s of solids) assert.ok(overlap(co.box, grow(s, -0.25 * px)) === 0, `inset clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
+      for(const e of drawings) if(e !== d) assert.equal(overlap(co.box, e.label), 0, `inset clear of the ${e.label.text} label`);
+      // The dimension line across the band is the band's width magnified 4x.
+      const across = Math.hypot(d.dim[1].x - d.dim[0].x, d.dim[1].y - d.dim[0].y);
+      assert.ok(Math.abs(across - 4 * co.border) < 1e-6, 'dimension line is the band at 4x');
+    }
+  });
+}
+function grow(r, e){ return { x: r.x - e, y: r.y - e, w: r.w + 2 * e, h: r.h + 2 * e }; }

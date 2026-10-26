@@ -345,7 +345,9 @@
     const o = layer.origin || { x: layer.x, y: layer.y };
     const edge = core.rotatePoint({ x: layer.x + layer.w / 2, y: layer.y }, o, layer.rotate || 0);
     const inner = core.rotatePoint({ x: layer.x + layer.w / 2, y: layer.y + border * k }, o, layer.rotate || 0);
-    return ctx.measure(edge, inner, '⅛ in');
+    // A 1/8 in line is a few pixels on the stage, so the overlay magnifies this one (measure-layout.js, opts.callout): the band between
+    // the piece's cut edge and the edge of its embroidery, found from the piece's own frame (its top-left corner and its own axes).
+    return ctx.measure(edge, inner, '⅛ in', { callout: { layer: layer.key, border: border * k, caption: 'of blue around the embroidery' } });
   }
 
   async function placeFitted(ctx, id, at, maxW, maxH, opts){
