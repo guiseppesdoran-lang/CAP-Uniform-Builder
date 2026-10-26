@@ -14,6 +14,7 @@ const G = require('../js/engine/grades.js');
 const P = require('../js/engine/profiles.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
+require('../js/engine/profiles-polo.js');
 const rules = require('../data/uniform-rules.js');
 const RA = require('../data/ribbon-awards.js');
 
@@ -47,6 +48,8 @@ test('every uniform composes for every member category and cut without missing a
   const s = store();
   const members = [['cadet', 'C/AB'], ['cadet', 'C/SSgt'], ['cadet', 'C/Maj'], ['senior', 'SM'], ['senior', 'SMSgt'], ['senior', 'FO'], ['senior', 'Capt'], ['senior', 'Col'], ['senior', 'Maj Gen']];
   for(const id of Object.keys(rules.RULES)){
+    // The polo sheets come from the art tree; until they are synced the polo is composed by tests/engine-polo.test.cjs on synthetic sheets.
+    if(id === 'polo' && !manifest.assets.some(a => a.id === 'garment-polo-male')) continue;
     for(const gender of ['male', 'female']){
       for(const [m, r] of members){
         const scene = await P.composeUniform(build(id, m, r, { gender }), s);

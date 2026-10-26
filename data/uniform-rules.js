@@ -41,6 +41,11 @@
   // chaplainBadgeOnly: the only occupational badge authorized is the chaplain badge
   //               (4.2.3.1.1.3; Corporate Semi-Formal is worn as for Corporate Service
   //               Dress, 4.2.1).
+  // badgeFamilies: the Attachment 4 families the uniform authorizes, where it names them (the
+  //               polo: one service, aviation, occupational or specialty track badge, 5.3.1.1,
+  //               5.3.1.3; 5.3.2.1.1 lists the last three and a duty title); the chaplain badge is
+  //               an occupational badge. Absent where the uniform names none.
+  // noGrade:      no grade insignia is authorized on it, whoever wears it (5.3.2)
   const RULES=Object.freeze({
     blues_a:{group:'everyday',style:'usaf',membership:['cadet','senior'],adultCadet:false,
       ribbons:'required',mini:false,usafAwards:true,rackColumns:[3,4],badgeCap:4,shoulderCord:true,aideCord:true,
@@ -82,26 +87,26 @@
     // so a cadet reaches it only as an adult cadet over the weight standard.
     corporate_flight_suit:{group:'field',style:'corporate',membership:['senior'],adultCadet:true,
       ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:2,
-      refs:{who:'8.3.1',ribbons:'11.1.3',badges:'8.3.4.1',adultCadet:'1.2.5.2'}}
+      refs:{who:'8.3.1',ribbons:'11.1.3',badges:'8.3.4.1',adultCadet:'1.2.5.2'}},
+    // The Corporate Working Uniform (polo, 5.3). Cadets never wear it: 1.2.5.2 lets an adult cadet wear all the
+    // Corporate-style combinations "except the Corporate Working Uniform since it does not allow for wear of grade
+    // insignia", so adultCadet is false. A senior member wears it with or without grade (5.3.2: none is worn).
+    // No ribbons or medals (11.1.3), no military awards (11.1.6). One badge or duty title and the member's name,
+    // embroidered, are the only accoutrements, and the screen-printed shirt has none at all (5.3.2.1).
+    // 5.3.1.1 and 5.3.1.3 name a "service badge" among the badges; 5.3.2.1.1 does not. The shirt paragraphs
+    // are two against one, so the service family is authorized (the builder has no embroidered art for it).
+    polo:{group:'everyday',style:'corporate',membership:['senior'],adultCadet:false,noGrade:true,
+      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:1,
+      badgeFamilies:['service','aviation','occupational','chaplain','specialty'],
+      refs:{who:'5.3',ribbons:'11.1.3',awards:'11.1.6',badges:'5.3.2.1.1',grade:'5.3.2',adultCadet:'1.2.5.2',screenPrint:'5.3.2.1.2'}}
   });
 
   // Uniforms the regulation authorizes that the builder does not draw yet. They are listed so
-  // the table states the whole regulation; none is offered to a member.
-  const NOT_MODELLED=Object.freeze({
-    polo:{label:'Corporate Working Uniform (polo)',group:'field',style:'corporate',
-      membership:['senior'],ribbons:'none',
-      refs:{who:'5.3',ribbons:'11.1.3',badges:'5.3.2.1.1'},
-      facts:[
-        'A CAP polo shirt with gray slacks, for senior members (CAPR 39-1, 5.3).',
-        'No grade insignia; cadets do not wear it (1.2.5.2).',
-        'One optional badge may be embroidered above the name (5.3.2.1.1).'
-      ],
-      why:'Corporate polo. No polo artwork yet.'}
-  });
+  // the table states the whole regulation; none is offered to a member. The polo was the last one
+  // (it is a RULES row now), so the list is empty.
+  const NOT_MODELLED=Object.freeze({});
   // Optional badges the regulation allows on a uniform the builder offers no badge placement for.
-  const BADGES_NOT_PLACED=Object.freeze({
-    polo:{count:1,ref:'5.3.2.1.1',text:'One optional badge (aviation, occupational, specialty track or duty title) may be embroidered above the name.'}
-  });
+  const BADGES_NOT_PLACED=Object.freeze({});
 
   // Awards that are USAF-style only, other than the U.S. military catalog (which the caller
   // identifies by prefix). 39-3 Attachment 2 lists this one for seniors; 39-1 11.2.3 keeps it
@@ -164,6 +169,9 @@
     if(membership==='cadet' && rule.adultCadet){
       return `For cadets 18 and older who do not meet the USAF weight standard (CAPR 39-1, ${rule.refs.adultCadet})`;
     }
+    if(membership==='cadet' && rule.noGrade){
+      return `Not worn by cadets, adult cadets included: it allows no grade insignia (CAPR 39-1, ${rule.refs.adultCadet})`;
+    }
     if(membership==='cadet' && rule.style==='corporate'){
       return 'Not authorized with grade insignia, so not for cadets (CAPR 39-1, 1.2.5.2)';
     }
@@ -187,6 +195,18 @@
     if(!cord) return false;
     if(cord==='aide_de_camp') return allowsAideCord(uniformId);
     return allowsShoulderCord(uniformId,membership);
+  }
+  // Whether a badge of this Attachment 4 family ('aviation', 'occupational', 'chaplain', 'specialty', ...)
+  // may be worn on the uniform, where the uniform names the families it authorizes (the polo, 5.3.2.1.1).
+  function allowsBadgeFamily(uniformId,family){
+    const rule=getUniformRule(uniformId);
+    if(!rule || !rule.badgeFamilies) return true;
+    return rule.badgeFamilies.includes(String(family||''));
+  }
+  // No grade insignia is authorized on the uniform for anyone (5.3.2).
+  function allowsGrade(uniformId){
+    const rule=getUniformRule(uniformId);
+    return !(rule && rule.noGrade);
   }
   function allowsOnlyChaplainBadge(uniformId){
     const rule=getUniformRule(uniformId);
@@ -221,6 +241,6 @@
     GROUPS,RULES,NOT_MODELLED,BADGES_NOT_PLACED,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
     allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,
-    lockedReason,allowsOnlyChaplainBadge,allowsShoulderCord,allowsAideCord,allowsCord,badgeLimit,plannedUniformsFor,plannedBadge
+    lockedReason,allowsOnlyChaplainBadge,allowsBadgeFamily,allowsGrade,allowsShoulderCord,allowsAideCord,allowsCord,badgeLimit,plannedUniformsFor,plannedBadge
   };
 });

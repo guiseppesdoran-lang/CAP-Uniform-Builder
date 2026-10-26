@@ -23,6 +23,7 @@ const G = req('js/engine/grades.js');
 const P = req('js/engine/profiles.js');
 req('js/engine/profiles-field.js');
 req('js/engine/profiles-dress.js');
+req('js/engine/profiles-polo.js');
 const RULES = req('data/uniform-rules.js');
 const RA = req('data/ribbon-awards.js');
 const BADGES = req('data/badge-catalog.js');
@@ -222,6 +223,9 @@ function precedenceIndex(){
   return new Map(list.map((id, i) => [id, i]));
 }
 
+// A uniform whose garment sheet is not synced from the art tree yet is skipped (and listed) rather than failing the whole matrix.
+const SHEET_REQUIRED = { polo: 'garment-polo-male' };
+
 function matrix(){
   const prec = precedenceIndex();
   const ok = [], skipped = [], warnings = [];
@@ -231,6 +235,10 @@ function matrix(){
     for(const gender of ['male', 'female']){
       for(const m of MEMBERS){
         const name = `${uniform}-${gender}-${m.tag}`;
+        if(SHEET_REQUIRED[uniform] && !manifestIds.has(SHEET_REQUIRED[uniform])){
+          skipped.push({ name, reason: `${SHEET_REQUIRED[uniform]} is not in images/MANIFEST.json yet` });
+          continue;
+        }
         if(!RULES.isUniformAllowedFor(uniform, m.membership, { rank: m.rank })){
           skipped.push({ name, reason: `${uniform} is not offered to ${m.membership} ${m.rank}` });
           continue;
@@ -269,8 +277,8 @@ const HARNESS = `<!doctype html><meta charset="utf-8"><title>render</title>
 <style>html,body{margin:0;padding:0;background:#fff}svg{display:block}</style>
 <div id="out"></div>
 ${['core', 'awards', 'grades', 'compose'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
-<script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script><script src="/data/military-badge-sizes.js"></script>
-${['profiles', 'profiles-field', 'profiles-dress', 'measure-layout', 'render-svg'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
+<script src="/data/uniform-rules.js"></script><script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script><script src="/data/military-badge-sizes.js"></script>
+${['profiles', 'profiles-field', 'profiles-dress', 'profiles-polo', 'measure-layout', 'render-svg'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
 <script>
 window.__warnings = [];
 ['warn', 'error'].forEach(k => { const o = console[k].bind(console); console[k] = (...a) => { window.__warnings.push(a.map(String).join(' ')); o(...a); }; });

@@ -141,7 +141,9 @@ const REG={
   flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:2,shared:false,
     para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 (up to two badges on the nametag, military aviation badges allowed)'},
   corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
-    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 (up to two badges on the nametag)'}
+    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 (up to two badges on the nametag)'},
+  polo:{style:'corporate',who:['senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
+    para:'5.3 (Corporate Working Uniform), 1.2.5.2 (no adult cadets: it allows no grade insignia), 11.1.3 (no ribbons), 5.3.2.1.1 (one badge or duty title)'}
 };
 
 test('every value in the table is the one the regulation states',()=>{
@@ -180,6 +182,9 @@ test('a cadet reaches Corporate uniforms only as an adult cadet, and never the W
     assert.equal(rules.isUniformAllowedFor(id,'senior'),true,`${id}: a senior member`);
   }
   assert.equal(rules.isUniformAllowedFor('polo','cadet',{adultCadet:true}),false);
+  assert.equal(rules.isUniformAllowedFor('polo','cadet'),false);
+  assert.equal(rules.isUniformAllowedFor('polo','senior'),true);
+  assert.equal(rules.isUniformAllowedFor('polo','senior',{rank:'SM'}),true,'a senior member without grade wears it too: it carries none (5.3.2)');
   // The option never widens anything for a senior member, or onto USAF-only uniforms.
   assert.equal(rules.isUniformAllowedFor('mess_dress','cadet',{adultCadet:true}),false);
   assert.equal(rules.isUniformAllowedFor('blues_a','cadet'),true);
@@ -195,8 +200,29 @@ test('badge limits: patches count with badges on the ABU and Corporate Field onl
   assert.equal(rules.badgeLimit('aviator_blazer',{badges:9}).over,false,'no total is stated for the blazer');
 });
 
+test('the Corporate Working Uniform (polo): senior members only, no grade, no awards, one badge of three families (39-1 5.3, 1.2.5.2, 11.1.3)',()=>{
+  const polo=rules.getUniformRule('polo');
+  assert.deepEqual(rules.allowedMemberships('polo'),['senior']);
+  assert.equal(rules.allowsGrade('polo'),false,'5.3.2: no grade insignia is authorized');
+  assert.equal(rules.allowsGrade('blues_b'),true);
+  assert.equal(rules.allowsRibbons('polo'),false);
+  assert.equal(rules.allowsMiniMedals('polo'),false);
+  assert.equal(rules.allowsShoulderCord('polo','cadet'),false);
+  assert.equal(rules.allowsCord('polo','senior','aide_de_camp'),false);
+  assert.equal(rules.isAwardAllowedOnUniform('x','polo',{isMilitary:true}),false,'11.1.6');
+  assert.equal(rules.badgeLimit('polo',{badges:1}).over,false);
+  assert.equal(rules.badgeLimit('polo',{badges:2}).over,true,'5.3.2.1.1: one badge or duty title');
+  for(const f of ['service','aviation','occupational','chaplain','specialty']) assert.equal(rules.allowsBadgeFamily('polo',f),true,f);
+  for(const f of ['national-staff','rocketry','marksmanship','cadet-specialty','command']) assert.equal(rules.allowsBadgeFamily('polo',f),false,f);
+  assert.equal(rules.allowsBadgeFamily('blues_a','service'),true,'a uniform that names no families allows them all');
+  assert.match(rules.lockedReason('polo','cadet',{adultCadet:true}),/adult cadets included.*no grade insignia.*1\.2\.5\.2/);
+  assert.match(rules.lockedReason('polo','cadet'),/1\.2\.5\.2/);
+  assert.equal(polo.refs.screenPrint,'5.3.2.1.2');
+  assert.equal(polo.refs.badges,'5.3.2.1.1');
+});
+
 test('uniforms the regulation allows but the builder does not draw are listed, not offered',()=>{
-  assert.ok(rules.NOT_MODELLED.polo);
+  assert.equal(rules.getUniformRule('polo').group,'everyday','the polo is drawn now, so it is no longer only listed');
   for(const id of Object.keys(rules.NOT_MODELLED)){
     assert.equal(rules.getUniformRule(id),null,`${id} is not an offered uniform`);
     assert.ok(rules.NOT_MODELLED[id].why);
