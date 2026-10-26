@@ -1,13 +1,15 @@
 'use strict';
-// LIVE9-1 (Ethan, on the Class B shoulder: "see the issue here?"). The sheets of the Class B shirt and blouse, the aviator shirts and the overblouse draw
-// the strap at full width with its topstitching, point and button; the slide-on epaulet sleeve covers the strap (CAPR 39-1 4.1.6.1.1, 4.1.6.1.4, 4.2.5.1.1.1,
-// 4.2.6.2.1, Figs 4.8, 4.16, A5-1, A5-6). LIVE7-2's 0.5 in edge-on strip lay on the strap's upper edge and left the strap showing under and past it. The engine now
-// draws the sleeve as the strap landmark's polygon from its outer end, cut square to the strap axis short of the point and button (SLEEVE_CUT_FROM_TIP,
-// 0.8 in from the tip: 0.5 in to the button's centre, its 0.23 in radius and 0.07 in), in the sleeve art's cloth colour with the two flat shading bands, and the
-// grade face-on on its centre. The view from above beside the figure is unchanged. What the sheets state, what the engine reads, and the rules:
-//   - the sleeve polygon is the strap's outer part (the sheet's own epaulet_sleeve_poly_<side> where the aviator overlays state it, else the strap landmark cut);
-//   - its cut end is at least 0.6 in from the strap's tip, the button's centre lies outside it and the whole button disc is clear of it, the tip is not covered;
-//   - every corner of the grade's box lies inside the sleeve at least SLEEVE_MARGIN (0.1 in) from its outline, the grade at regulation size unless that would not fit, then reduced uniformly.
+// LIVE10-MASTER-2 (Ethan, on the Class B shoulder where the slide-on sleeve covered the drawn strap as a face-on polygon, LIVE9-1): "seriously? those epaulets are supposed to
+// be the same as the ones above. make them do the same thing as the class a's, on top and kind of flat, and make sure to include the CAP." The shirts' epaulet sleeves (Class B
+// shirt and blouse, the aviator shirts, the overblouse, the shirt beside the blazer) are seen the way the Class A coat's boards are: an edge-on strip on the strap axis read from
+// the sheet's epaulet_<side> landmark (CAPR 39-1 4.1.6.1.1, 4.1.6.1.4, 4.2.5.1.1.1, 4.2.6.2.1, Figs 4.8, 4.16, A5-1, A5-6; DAFI 36-2903 4.5.1.1.1). The rules:
+//   - the strip is the sleeve art (gray, or blue for cadet officers) squeezed across the strap to its thickness, along the strap's own axis;
+//   - its outer end is flush with the strap's outer end, its upper edge lies on the shoulder line (the strap's upper boundary) on average;
+//   - its thickness is the sheet's epaulet_axis.edge_thickness_in when the sheet states it (per side or for both), else 0.5 in, the Class A boards' strip;
+//   - the grade is foreshortened along the strip as the Class A strip's is (squeezed across it to the thickness less 0.08 in, true size along it), 5/8 in from the outer end;
+//   - the CAP lettering of the sleeve is on the strip at its collar end (the art's cap group is not hidden, its place is the art's cap_center on the squeezed strip);
+//   - the strip covers neither the strap's point nor its button; the top view beside the figure is the sleeve at its true size, level, as before.
+// Sheets that state no edge thickness draw the strap face-on, so the strip lies on its upper edge; sheets that state one (the redrawn ones) draw the strap as the same band.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -21,8 +23,21 @@ require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 const HARNESS = require('../scripts/render-builds.cjs');
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
-const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(ROOT, 'images', p), 'utf8'))));
+const loadRaw = p => JSON.parse(fs.readFileSync(path.join(ROOT, 'images', p), 'utf8'));
+const store = core.createSpecStore(manifest, p => Promise.resolve(loadRaw(p)));
 const svgOf = id => fs.readFileSync(path.join(ROOT, 'images', manifest.assets.find(a => a.id === id).path), 'utf8');
+
+// A store whose garment sheets state epaulet_axis.edge_thickness_in, the way the redrawn sheets do: `form` 'both' puts it on the landmark itself, 'side' on each side's entry.
+const storeStating = (thick, form) => core.createSpecStore(manifest, p => {
+  const raw = loadRaw(p);
+  if(raw.landmarks && raw.landmarks.epaulet_right && !/-(epaulet|cord|tie|collar|nametag|sleeve|general)/.test(p)){
+    const ax = Object.assign({}, raw.landmarks.epaulet_axis || {});
+    if(form === 'both') ax.edge_thickness_in = thick;
+    else for(const side of ['right', 'left']) ax[side] = Object.assign({}, ax[side] || {}, { edge_thickness_in: thick });
+    raw.landmarks = Object.assign({}, raw.landmarks, { epaulet_axis: ax });
+  }
+  return Promise.resolve(raw);
+});
 
 const CASES = [];
 for(const gender of ['male', 'female']){
@@ -37,9 +52,9 @@ const OVERBLOUSE = [
 ];
 const MEMBERS = [['senior', '2d Lt', 'gray'], ['senior', 'Capt', 'gray'], ['senior', 'Col', 'gray'], ['senior', 'Brig Gen', 'gray'], ['cadet', 'C/2d Lt', 'blue'], ['cadet', 'C/Lt Col', 'blue'], ['cadet', 'C/Col', 'blue']];
 
-const compose = (c, membership, rank) => P.composeUniform(HARNESS.makeBuild({
+const compose = (c, membership, rank, st) => P.composeUniform(HARNESS.makeBuild({
   uniform: c.uniform, gender: c.gender, membership, rank, opt: Object.assign({ sleeve: c.sleeve, headgear: 'none' }, c.opt || {})
-}), store);
+}), st || store);
 
 // ---- small geometry ----
 const inside = (poly, p) => { let c = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const a = poly[i], b = poly[j]; if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c; } return c; };
@@ -60,77 +75,154 @@ function buttonOf(garment, side){
   return { x: (tx + k * Number(m[1])) / 100, y: (ty + k * Number(m[2])) / 100, r: k * Number(m[3]) / 100 };
 }
 
+// What the strip must be on one shoulder: checks every rule above against the scene.
+async function checkStrip(scene, sheet, side, tag, rank, cloth, thick, st){
+  const strip = scene.layers.find(l => l.key === `epaulet:${side}`);
+  assert.ok(strip && strip.type === 'asset', `${tag}: the edge-on strip is drawn`);
+  assert.ok(!scene.layers.some(l => /-epaulet-sleeve-(officer|cadet-officer)$/.test(l.id || '')), `${tag}: the sheet's own strip overlay is unused`);
+  assert.ok(!scene.layers.some(l => l.key === `epaulet:${side}` && l.type === 'polygon'), `${tag}: no face-on polygon over the strap`);
+  const sleeve = await st.load(strip.id);
+  assert.equal(strip.id, scene.layers.find(l => l.key === `epaulet-top:${side}`).id, `${tag}: the strip and the view from above are one sleeve`);
+  assert.equal(sleeve.raw.colours[cloth], cloth === 'gray' ? '#5f5c5c' : '#142347', `${tag}: the sleeve art's cloth`);
+
+  const strap = sheet.landmarks[`epaulet_${side}`].points;
+  const fr = P.helpers.frameFromPolygon({ base: { w: sheet.w } }, side, strap);
+  const along = p => (p.x - fr.outer.x) * fr.axis.x + (p.y - fr.outer.y) * fr.axis.y;
+  const across = p => (p.x - fr.outer.x) * fr.normal.x + (p.y - fr.outer.y) * fr.normal.y;
+
+  // On the strap axis: the strip's long axis is the strap's, and it is T thick (what the sheet states, else 0.5 in).
+  const box = corners(strip);
+  const a = along, ends = box.map(a), lo = Math.min(...ends), hi = Math.max(...ends);
+  const cs = box.map(across), thk = Math.max(...cs) - Math.min(...cs), len = hi - lo;
+  assert.ok(Math.abs(thk - thick) < 0.02, `${tag}: the strip is ${thk.toFixed(3)} in thick (want ${thick})`);
+  assert.ok(Math.abs(len - strip.h) < 0.02, `${tag}: the strip runs along the strap axis (${len.toFixed(3)} against its length ${strip.h.toFixed(3)})`);
+  // The sleeve's own length (3.84 in) over at most 82% of the strap's length.
+  assert.ok(Math.abs(len - Math.min(sleeve.h, fr.length * 0.82)) < 0.02, `${tag}: the strip is the sleeve's length, ${len.toFixed(3)} in, within 82% of the strap`);
+  // Outer end flush with the strap's outer end.
+  assert.ok(Math.abs(lo) < 0.02, `${tag}: the strip's outer end is ${lo.toFixed(3)} in from the strap's outer end (flush)`);
+  // Upper edge on the shoulder line: the strap's top boundary at the strip's x, on average.
+  const upperA = box.filter(q => across(q) > Math.min(...cs) + thick / 2);
+  assert.equal(upperA.length, 2, `${tag}: two upper corners`);
+  const xs = strap.map(p => p.x);
+  const lo2 = Math.max(Math.min(upperA[0].x, upperA[1].x), Math.min(...xs)), hi2 = Math.min(Math.max(upperA[0].x, upperA[1].x), Math.max(...xs));
+  let sum = 0, n = 0;
+  for(let i = 0; i <= 40; i++){
+    const x = lo2 + (hi2 - lo2) * i / 40, top = P.helpers.polygonTopY(strap, x);
+    if(top == null) continue;
+    const t = (x - upperA[0].x) / ((upperA[1].x - upperA[0].x) || 1), y = upperA[0].y + (upperA[1].y - upperA[0].y) * t;
+    sum += top - y; n++;
+  }
+  assert.ok(n > 5, `${tag}: the strip overlaps the strap's top boundary`);
+  assert.ok(Math.abs(sum / n) < 0.03, `${tag}: the strip's upper edge lies ${(sum / n).toFixed(3)} in above the shoulder line on average (on it)`);
+
+  // The CAP lettering is on the strip, at its collar end, and the grade stands 5/8 in from the outer end clear of it.
+  assert.ok(!(strip.hideGroups || []).includes('cap'), `${tag}: the sleeve's CAP lettering is not hidden`);
+  assert.deepEqual(strip.hideGroups, ['grade'], `${tag}: only the art's own grade is left off (it is drawn foreshortened)`);
+  const capAnchor = sleeve.anchors.cap_center, kLen = strip.h / sleeve.h;
+  const capAlong = len - capAnchor.y * kLen;       // the art's top is the collar end
+  assert.ok(capAlong > len / 2 && capAlong < len, `${tag}: the CAP lettering is at the collar end (${capAlong.toFixed(2)} of ${len.toFixed(2)} in)`);
+  assert.ok(sleeve.raw.dimensions.cap_word_h_in * kLen < len * 0.2, `${tag}: the CAP lettering is a word on the strip, not the strip`);
+  {
+    const grade = scene.layers.find(l => l.key === `grade:edge-${side}`);
+    if(grade){
+      const gc = core.rotatePoint({ x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, grade.origin, grade.rotate || 0);
+      const gs = await st.load(grade.id);
+      assert.ok(inside(box, gc), `${tag}: the grade is on the strip`);
+      const quarter = /^(second-lieutenant|first-lieutenant|captain|flight-officer)/.test(grade.id.replace(/^rank-(senior|cadet-officer)-/, '')) && cloth === 'gray';
+      const gAlong = along(gc), gHalf = (quarter ? gs.w : gs.h) / 2;
+      assert.ok(Math.abs((gAlong - gHalf) - 0.625) < 0.03, `${tag}: the grade's outer edge is ${(gAlong - gHalf).toFixed(3)} in from the strip's end (5/8 in)`);
+      assert.ok(gAlong + gHalf < capAlong - (sleeve.raw.dimensions.cap_word_h_in * kLen) / 2 + 0.05, `${tag}: the grade does not run onto the CAP lettering`);
+      // Foreshortened as the Class A strip's grade: squeezed across the strip to its thickness less 0.08 in (never widened), true size along it.
+      const gb = corners(grade), gAcross = Math.max(...gb.map(across)) - Math.min(...gb.map(across));
+      assert.ok(gAcross <= thick - 0.08 + 0.02, `${tag}: the grade is ${gAcross.toFixed(3)} in across the ${thick} in strip`);
+      for(const q of gb) assert.ok(inside(box, q) || outlineDist(box, q) < 0.02, `${tag}: the grade lies inside the strip`);
+    }
+  }
+
+  // Neither the point nor the button of the strap under it is covered.
+  const tip = strap.reduce((best, q) => along(q) > along(best) ? q : best, strap[0]);
+  assert.ok(!inside(box, tip), `${tag}: the strap's tip is not covered`);
+  const b = buttonOf(scene.garment, side);
+  assert.ok(!inside(box, b), `${tag}: the strap's button is not covered`);
+  assert.ok(Math.max(...ends) <= along(tip) + 1e-6, `${tag}: the strip ends before the strap's tip`);
+  return { strip, box, len };
+}
+
 for(const c of [...CASES, ...OVERBLOUSE]){
   for(const [membership, rank, cloth] of MEMBERS){
-    test(`${c.name}, ${rank}: the slide-on sleeve covers the strap from its outer end, short of the point and the button, with the grade on its centre (LIVE9-1)`, async () => {
+    test(`${c.name}, ${rank}: the epaulet is an edge-on strip on the strap axis with the grade and the CAP on it (LIVE10-2)`, async () => {
       const scene = await compose(c, membership, rank);
       const sheet = await store.load(scene.garment);
-      assert.ok(!scene.layers.some(l => /-epaulet-sleeve-(officer|cadet-officer)$/.test(l.id || '')), 'the sheet\'s own strip overlay is unused');
-      for(const side of ['right', 'left']){
-        const tag = `${c.name} ${rank} ${side}`;
-        const sl = scene.layers.find(l => l.key === `epaulet:${side}`);
-        assert.ok(sl && sl.type === 'polygon', `${tag}: sleeve polygon`);
-        assert.equal(sl.fill, cloth === 'gray' ? '#5f5c5c' : '#142347', `${tag}: the sleeve art's cloth`);
-        const strap = sheet.landmarks[`epaulet_${side}`].points;
-        const fr = P.helpers.frameFromPolygon({ base: { w: sheet.w } }, side, strap);
-        const along = p => (p.x - fr.center.x) * fr.axis.x + (p.y - fr.center.y) * fr.axis.y;
+      for(const side of ['right', 'left']) await checkStrip(scene, sheet, side, `${c.name} ${rank} ${side}`, rank, cloth, 0.5, store);
+    });
+  }
+}
 
-        // The sleeve is the strap's outer part: every vertex lies on the strap (the aviator sheets' strap has a seam kink, 0.1 in past the landmark's rectangle).
-        for(const q of sl.points) assert.ok(inside(strap, q) || outlineDist(strap, q) <= 0.1, `${tag}: sleeve vertex (${q.x.toFixed(2)}, ${q.y.toFixed(2)}) is on the strap`);
-        // Its outer end is the strap's outer end: the strap's two outermost vertices (smallest distance along the axis, the corners of its seam end) are sleeve vertices.
-        for(const corner of [...strap].sort((a, b) => along(a) - along(b)).slice(0, 2)) assert.ok(Math.min(...sl.points.map(q => Math.hypot(q.x - corner.x, q.y - corner.y))) < 0.02, `${tag}: the strap's outer corner (${corner.x.toFixed(2)}, ${corner.y.toFixed(2)}) is the sleeve's`);
-
-        // Cut square to the axis, at least 0.6 in short of the tip; the tip is not covered.
-        const tip = strap.reduce((best, q) => along(q) > along(best) ? q : best, strap[0]);
-        const cutAt = Math.max(...sl.points.map(along));
-        assert.ok(along(tip) - cutAt >= 0.6, `${tag}: the sleeve ends ${(along(tip) - cutAt).toFixed(3)} in short of the tip (at least 0.6)`);
-        assert.ok(!inside(sl.points, tip), `${tag}: the tip is not covered`);
-        const cutEdge = sl.points.filter(q => along(q) > cutAt - 0.01);
-        assert.ok(cutEdge.length >= 2, `${tag}: the end is a cut edge`);
-        // The button's centre is outside the sleeve and the whole disc is clear of it.
-        const b = buttonOf(scene.garment, side);
-        assert.ok(!inside(sl.points, b), `${tag}: the button's centre is outside the sleeve`);
-        assert.ok(outlineDist(sl.points, b) >= b.r, `${tag}: the button (r ${b.r.toFixed(2)}) is clear of the sleeve by ${(outlineDist(sl.points, b) - b.r).toFixed(3)} in`);
-
-        // The grade: inside the sleeve with the margin, centred on it, at regulation size or uniformly reduced.
-        const grade = scene.layers.find(l => l.key === `grade:sleeve-${side}`);
-        assert.ok(grade, `${tag}: grade`);
-        const cs = corners(grade);
-        for(const q of cs) assert.ok(inside(sl.points, q), `${tag}: the grade lies inside the sleeve`);
-        const room = Math.min(...cs.map(q => outlineDist(sl.points, q)));
-        assert.ok(room >= 0.1 - 1e-6, `${tag}: the grade is ${room.toFixed(3)} in from the sleeve's edge`);
-        const gc = core.rotatePoint({ x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, grade.origin, grade.rotate || 0);
-        const cen = P.helpers.polygonCentroid(sl.points);
-        assert.ok(Math.hypot(gc.x - cen.x, gc.y - cen.y) < 0.2, `${tag}: the grade is on the sleeve's centre (${Math.hypot(gc.x - cen.x, gc.y - cen.y).toFixed(3)} in off)`);
-        const gs = await store.load(grade.id);
-        const k = Math.max(grade.w / gs.w, grade.h / gs.h);
-        assert.ok(k <= 1.0001, `${tag}: never enlarged (${k.toFixed(3)})`);
-        assert.ok(Math.abs(grade.w / gs.w - grade.h / gs.h) < 0.001, `${tag}: scaled uniformly, not squeezed`);
+for(const form of ['both', 'side']){
+  for(const c of [CASES[0], CASES[1], CASES[3], CASES[6], OVERBLOUSE[0]]){
+    test(`${c.name}: a sheet that states epaulet_axis.edge_thickness_in (${form === 'both' ? 'for both sides' : 'per side'}) sets the strip's thickness to it`, async () => {
+      const st = storeStating(0.3, form);
+      for(const [membership, rank, cloth] of [MEMBERS[1], MEMBERS[5]]){
+        const scene = await compose(c, membership, rank, st);
+        const sheet = await st.load(scene.garment);
+        for(const side of ['right', 'left']) await checkStrip(scene, sheet, side, `${c.name} ${rank} ${side} (0.30)`, rank, cloth, 0.3, st);
       }
     });
   }
 }
 
-test('the grade is regulation size where it fits and uniformly reduced where a corner of its box would come within 0.1 in of the sleeve\'s outline (the captain\'s 1.0 in bars on the 0.9 in aviator strap)', async () => {
-  const wide = await compose({ uniform: 'blues_b', gender: 'male', sleeve: 'short' }, 'cadet', 'C/2d Lt');   // the 0.38 in miniature diamond
-  const g1 = wide.layers.find(l => l.key === 'grade:sleeve-right'), s1 = await store.load(g1.id);
-  assert.ok(Math.abs(g1.w / s1.w - 1) < 1e-6, 'a grade that fits is drawn at regulation size');
-  const bars = await compose({ uniform: 'aviator', gender: 'male', sleeve: 'short' }, 'senior', 'Capt');
-  const g2 = bars.layers.find(l => l.key === 'grade:sleeve-right'), s2 = await store.load(g2.id);
-  assert.ok(g2.w / s2.w < 1, `the bars (${s2.h} in across) do not fit 0.9 in less 0.2 in and are reduced (${(g2.w / s2.w).toFixed(2)})`);
+test('the view from above beside each shoulder is unchanged: the sleeve at its true size, level, carrying the grade and the CAP', async () => {
+  for(const c of [CASES[0], CASES[1], OVERBLOUSE[0]]){
+    const scene = await compose(c, 'senior', 'Capt');
+    for(const side of ['right', 'left']){
+      const top = scene.layers.find(l => l.key === `epaulet-top:${side}`);
+      const s = await store.load(top.id);
+      assert.ok(top && Math.abs(top.w - s.w) < 1e-6 && Math.abs(top.h - s.h) < 1e-6, `${c.name} ${side}: the view is the sleeve at true size`);
+      assert.ok(!top.hideGroups, `${c.name} ${side}: the grade and the CAP lettering show on it`);
+      assert.equal(Math.abs(top.rotate), 90, `${c.name} ${side}: level`);
+    }
+  }
 });
 
-test('the shirt beside the blazer draws the same sleeve', async () => {
+test('the shirt beside the blazer draws the same strip', async () => {
   const scene = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator_blazer', gender: 'male', membership: 'senior', rank: 'Maj' }), store);
-  const sleeves = scene.layers.filter(l => l.role === 'epaulet');
-  assert.equal(sleeves.length, 2);
-  assert.ok(sleeves.every(l => l.type === 'polygon' && l.figure === 2));
-  assert.equal(scene.layers.filter(l => /^grade:sleeve-/.test(l.key || '')).length, 2);
+  const strips = scene.layers.filter(l => l.role === 'epaulet');
+  assert.equal(strips.length, 2);
+  assert.ok(strips.every(l => l.type === 'asset' && l.figure === 2 && !(l.hideGroups || []).includes('cap')));
+  assert.equal(scene.layers.filter(l => /^grade:edge-/.test(l.key || '')).length, 2);
 });
 
-test('NCOs and members with no grade keep the plain strap: no sleeve', async () => {
+test('NCOs and members with no grade: the engine draws no sleeve and no strip (the sheet\'s own band shows)', async () => {
   for(const uniform of ['blues_b', 'aviator']){
     const scene = await P.composeUniform(HARNESS.makeBuild({ uniform, gender: 'male', membership: 'senior', rank: 'MSgt' }), store);
     assert.equal(scene.layers.filter(l => l.role === 'epaulet').length, 0, uniform);
+    assert.equal(scene.layers.filter(l => /^grade:edge-/.test(l.key || '')).length, 0, uniform);
+  }
+});
+
+test('the Class A officers\' strip carries the sleeve\'s CAP lettering too, at its collar end under the shading, and the cadet officers\' board strip carries the board\'s crest (LIVE10-2, B3)', async () => {
+  for(const gender of ['male', 'female']){
+    for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col'], ['senior', 'Brig Gen']]){
+      const scene = await P.composeUniform(HARNESS.makeBuild({ uniform: 'blues_a', gender, membership, rank, opt: { headgear: 'none' } }), store);
+      for(const side of ['right', 'left']){
+        const cap = scene.layers.find(l => l.key === `epaulet-cap:${side}`);
+        assert.ok(cap && cap.type === 'asset', `${gender} ${rank} ${side}: the CAP lettering is on the strip`);
+        assert.deepEqual(cap.onlyGroups, ['cap'], 'only the lettering of the sleeve art is drawn');
+        const shade = scene.layers.find(l => l.key === `epaulet-shade:light:${side}`), grade = scene.layers.find(l => l.key === `grade:edge-${side}`);
+        assert.ok(cap.z < shade.z, `${gender} ${rank} ${side}: under the shading bands`);
+        // The lettering is at the strip's collar end: the art's cap_center, counted from the art's top (the collar end), turned with the strip; the grade is far from it.
+        const sleeve = await store.load(cap.id), k = cap.h / sleeve.h, r = (cap.rotate || 0) * Math.PI / 180;
+        const up = { x: Math.sin(r), y: -Math.cos(r) };
+        const lettering = { x: cap.origin.x + up.x * (cap.h / 2 - sleeve.anchors.cap_center.y * k), y: cap.origin.y + up.y * (cap.h / 2 - sleeve.anchors.cap_center.y * k) };
+        assert.ok(inside(corners(cap), lettering), `${gender} ${rank} ${side}: the lettering lies on the strip`);
+        const gc = core.rotatePoint({ x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, grade.origin, grade.rotate || 0);
+        assert.ok(Math.hypot(gc.x - lettering.x, gc.y - lettering.y) > 0.4, `${gender} ${rank} ${side}: the grade and the lettering are apart`);
+      }
+    }
+    const cadet = await P.composeUniform(HARNESS.makeBuild({ uniform: 'blues_a', gender, membership: 'cadet', rank: 'C/Lt Col', opt: { headgear: 'none' } }), store);
+    for(const side of ['right', 'left']){
+      const strip = cadet.layers.find(l => l.key === `epaulet:${side}`);
+      assert.ok(strip && /^garment-blues-shoulder-board-top-/.test(strip.id) && !strip.hideGroups && !strip.onlyGroups, `${gender} ${side}: the whole board, with its crest, is the strip`);
+    }
   }
 });

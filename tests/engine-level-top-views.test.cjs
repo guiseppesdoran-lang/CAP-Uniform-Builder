@@ -2,8 +2,8 @@
 // DORAN5-ENG-3. Doran: "the top one should be horizontal in the image". Every top-down view of an epaulet sleeve or shoulder board
 // (Class B shirt and blouse, aviator shirts, overblouse, Class A coat and cadet semi-formal, mess dress) is drawn LEVEL: its long
 // axis horizontal, its collar end toward the figure's centre, the wearer's right view a quarter turn clockwise from the art and the
-// left a quarter turn counter-clockwise, above the shoulder and clear of the garment's outline and of the other view. The sleeve
-// on the shoulder keeps its turn along the strap. CAPR 39-1 4.1.6.1.4, 4.1.11.1.1, 4.2.5.1; Figures 4.8, A5-1, A5-3.
+// left a quarter turn counter-clockwise, above the shoulder and clear of the garment's outline and of the other view. The edge-on
+// strap on the shoulder keeps its turn along the strap. CAPR 39-1 4.1.6.1.4, 4.1.11.1.1, 4.2.5.1; Figures 4.8, A5-1, A5-3.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -78,10 +78,10 @@ test('every top-down view is level, collar end toward the centre, the two views 
   assert.ok(checked >= 60, `${checked} builds checked`);
 });
 
-test('the sleeve on the shoulder keeps its turn along the strap (DORAN5-ENG-3 changes only the view from above; LIVE9-1 draws the grade on it face-on)', async () => {
+test('the edge-on strap on the shoulder keeps its turn along the strap (DORAN5-ENG-3 changes only the view from above)', async () => {
   const scene = await P.composeUniform(hb('blues_b', 'male', 'senior', 'Capt', { sleeve: 'short' }), store);
-  const edge = scene.layers.find(l => l.key === 'grade:sleeve-right');
-  assert.ok(edge, 'the grade on the sleeve is drawn');
+  const edge = scene.layers.find(l => l.key === 'grade:edge-right');
+  assert.ok(edge, 'the edge-on grade is drawn');
   const turn = turn360(edge.rotate || 0) % 90;
   assert.ok(turn > 5 && turn < 85, `turned along the sloping strap (rotate ${edge.rotate})`);
 });

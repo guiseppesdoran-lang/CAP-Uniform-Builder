@@ -96,7 +96,7 @@ function outlineDist(poly, p){
 }
 
 for(const [label, uniform, gender, opt, garment] of CUTS){
-  test(`${label}: sleeve on the strap, top view just above the shoulder, grade on both (R7, LIVE9-1)`, async () => {
+  test(`${label}: edge-on strip on the strap axis, top view just above the shoulder, grade on both (R7, LIVE10-2)`, async () => {
     const spec = await sheet(garment);
     for(const [m, r] of SLEEVE_MEMBERS){
       const scene = await P.composeUniform(build(uniform, m, r, gender, opt), store);
@@ -106,11 +106,13 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
       for(const side of SIDES){
         const poly = pts(spec.landmarks[`epaulet_${side}`]);
 
-        // The sleeve: the polygon of the strap's outer part, drawn on the epaulet landmark (every vertex on it or within 0.1 in of its outline: the
-        // aviator sheets' strap has a seam kink the landmark's rectangle smooths over).
+        // The sleeve seen from the front is the edge-on strip (LIVE10-2): the sleeve art squeezed across the strap, its long axis on the strap's, its outer end flush with the
+        // strap's outer end, its thickness what the sheet states (0.5 in on the sheets that draw a face-on strap) and no bigger than the strap is wide; the grade and the CAP lettering are
+        // inside it (tests/engine-live-shirt-strips.test.cjs holds the rule in full).
         const sl = scene.layers.find(l => l.key === `epaulet:${side}`);
-        assert.ok(sl && sl.type === 'polygon', `${tag} ${side}: the sleeve polygon is drawn`);
-        for(const q of sl.points) assert.ok(inside(poly, q) || outlineDist(poly, q) <= 0.1, `${tag} ${side}: the sleeve vertex (${q.x.toFixed(2)}, ${q.y.toFixed(2)}) lies on the strap`);
+        assert.ok(sl && sl.type === 'asset', `${tag} ${side}: the edge-on strip is drawn`);
+        const stripBox = corners(sl);
+        assert.ok(stripBox.every(q => Math.hypot(q.x - sl.origin.x, q.y - sl.origin.y) < 4.5), `${tag} ${side}: the strip is a strip, not the sheet`);
 
         // The top-down view: just above the shoulder, never over the garment.
         const top = scene.layers.find(l => l.key === `epaulet-top:${side}`);
@@ -143,11 +145,11 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
         const sleeve = g.key ? `rank-epaulet-sleeve-${cadet ? 'blue-cadet' : 'gray'}-${g.key}` : 'rank-epaulet-sleeve-gray-blank';
         assert.equal(top.id, sleeve, `${tag}: ${cadet ? 'blue' : 'gray'} sleeve`);
         if(!g.key) continue;
-        const edgeGrade = scene.layers.find(l => l.role === 'grade' && l.key === `grade:sleeve-${side}`);
+        const edgeGrade = scene.layers.find(l => l.role === 'grade' && l.key === `grade:edge-${side}`);
         if(!/^FO$|^TFO$|^SFO$/.test(r)){
           assert.ok(edgeGrade, `${tag} ${side}: the grade is on the sleeve`);
-          assert.ok(inside(sl.points, edgeGrade.origin), `${tag} ${side}: the grade sits on the sleeve`);
-          assert.ok(Math.max(edgeGrade.w, edgeGrade.h) > 0.2, `${tag} ${side}: the grade on the sleeve is big enough to see`);
+          assert.ok(inside(stripBox, edgeGrade.origin), `${tag} ${side}: the grade sits on the strip`);
+          assert.ok(Math.max(edgeGrade.w, edgeGrade.h) > 0.2, `${tag} ${side}: the grade on the strip is big enough to see`);
           assert.ok(cadet ? /metal-miniature$/.test(edgeGrade.id) : /-thread$/.test(edgeGrade.id), `${tag}: ${edgeGrade.id} is the grade for the sleeve`);
         }
       }

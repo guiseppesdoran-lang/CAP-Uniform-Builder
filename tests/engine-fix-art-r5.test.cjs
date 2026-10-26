@@ -54,16 +54,17 @@ test('the edge-on epaulet sleeve strip and the sleeve seen from above fill the s
   }
 });
 
-test('the scene of a Capt and a C/Maj on the Class B shirt and the aviator shirt draws the sleeve on the shoulder and the top view in one cloth colour', async () => {
+test('the scene of a Capt and a C/Maj on the Class B shirt and the aviator shirt draws strip and top view from the sleeve assets of one colour', async () => {
   for(const [uniform, gender, mem, rank, want] of [['blues_b', 'male', 'senior', 'Capt', '#5f5c5c'], ['blues_b', 'female', 'senior', 'Capt', '#5f5c5c'], ['blues_b', 'male', 'cadet', 'C/Maj', '#142347'], ['aviator', 'female', 'senior', 'Capt', '#5f5c5c']]){
     const scene = await P.composeUniform(build(uniform, gender, mem, rank, {}), store);
     const top = scene.layers.find(l => l.role === 'epaulet-top');
     assert.ok(top, `${uniform} ${gender} ${rank}: top view`);
     assert.equal(bodyFill(top.id), want, `${uniform} ${gender} ${rank}: top view fill`);
-    // LIVE9-1: the sleeve on the shoulder is a polygon filled with that sleeve art's own cloth colour (the sheets' own strip overlays are left unused).
+    // LIVE7-2: the strip is the sleeve art itself squeezed to the edge-on strip (the sheets' own strip overlays are left unused).
     const strip = scene.layers.find(l => l.role === 'epaulet');
-    assert.ok(strip && strip.type === 'polygon', `${uniform} ${gender} ${rank}: sleeve polygon`);
-    assert.equal(strip.fill, want, `${uniform} ${gender} ${rank}: sleeve fill is the top view's cloth`);
+    assert.ok(strip, `${uniform} ${gender} ${rank}: strip`);
+    assert.equal(strip.id, top.id, `${uniform} ${gender} ${rank}: strip and top view are one sleeve`);
+    assert.equal(bodyFill(strip.id), want, `${uniform} ${gender} ${rank}: strip fill`);
   }
 });
 

@@ -143,16 +143,20 @@ test('the cord\'s start meets the epaulet strap: the engine\'s strip on the Clas
   }
 });
 
-test('LIVE9-1: a cadet officer\'s slide-on sleeve covers the Class B strap from its outer end, so the cord\'s start still comes out from under the sleeve: the cap meets the sleeve polygon, which is drawn over the cord (9.3, 9.4.1)', async () => {
+test('LIVE10-2: a cadet officer\'s edge-on strip on the Class B shoulder lies over the cord (z), and the cord\'s start cap still meets the strap the strip lies on (9.3, 9.4.1)', async () => {
   for(const [gid, uniform, gender, opt] of GARMENTS.filter(x => x[1] === 'blues_b')){
     const scene = await P.composeUniform(hb(uniform, gender, 'cadet', 'C/Maj', opt, 'wing'), store);
-    const sl = scene.layers.find(x => x.key === 'epaulet:left'), cordLayer = scene.layers.find(l => l.id === `${gid}-cord-wing`);
-    assert.ok(sl && sl.type === 'polygon' && cordLayer, `${gid}: the sleeve polygon on the wearer's left shoulder and the cord`);
-    assert.ok(sl.z > cordLayer.z, `${gid}: the sleeve is drawn over the cord`);
+    const strip = scene.layers.find(x => x.key === 'epaulet:left'), cordLayer = scene.layers.find(l => l.id === `${gid}-cord-wing`);
+    assert.ok(strip && strip.type === 'asset' && cordLayer, `${gid}: the edge-on strip on the wearer's left shoulder and the cord`);
+    assert.ok(strip.z > cordLayer.z, `${gid}: the strip is drawn over the cord (the cord is worn under the epaulet, 9.3)`);
     const cap = startCap(cordStrokes(`${gid}-cord-wing`)[0].pts, 0.4, silhouetteOf(gid));
-    const poly = sl.points.map(q => [q.x, q.y]);
-    const gap = Math.min(...cap.map(p => polyDist(p, poly)));
-    assert.ok(gap <= (KNOWN_STRAP_GAP[gid] || CORD_MEETS_STRAP), `${gid}: the cord's start cap is ${gap.toFixed(3)} in from the sleeve`);
+    // The strap polygon the strip lies on (the sheet's epaulet_left landmark): the cord's cap meets it, and the strip lies along it from the same outer end.
+    const lm = spec(gid).landmarks.epaulet_left.map(([x, y]) => [x / 100, y / 100]);
+    const gap = Math.min(...cap.map(p => polyDist(p, lm)));
+    assert.ok(gap <= (KNOWN_STRAP_GAP[gid] || CORD_MEETS_STRAP), `${gid}: the cord's start cap is ${gap.toFixed(3)} in from the strap`);
+    const o = strip.origin, box = [[strip.x, strip.y], [strip.x + strip.w, strip.y], [strip.x + strip.w, strip.y + strip.h], [strip.x, strip.y + strip.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, strip.rotate || 0); return [q.x, q.y]; });
+    const stripGap = Math.min(...cap.map(p => polyDist(p, box)));
+    assert.ok(stripGap <= 0.6, `${gid}: the cord's start cap is ${stripGap.toFixed(3)} in from the strip, so it comes out from under it`);
   }
 });
 
