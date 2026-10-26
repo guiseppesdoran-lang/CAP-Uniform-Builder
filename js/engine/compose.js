@@ -562,9 +562,36 @@
 
   // ---- The scene ---------------------------------------------------------------------------------
 
+  // The scene frame is what is shown (LIVE9-3; Ethan: "the corporate field is significantly smaller than the abus for some reason. should be the same size"). A garment
+  // sheet's box is larger than its cloth: the field coats stack the cap views in a top margin (the CFU's boonie hats above its ball and patrol caps, 12.7 in, the ABU's
+  // 7.0 in) which the engine hides and re-places on the figure, so the whole box made the CFU frame 5.7 in taller than the ABU's for the same coat, and the page fits
+  // the frame to its stage. The sheet, and every overlay drawn to its box, count as the cloth the sheet draws (measure-layout's GARMENT_FOOTPRINT: the figure, the flat
+  // sleeves, the tapes) within the box; the cap views the build wears are layers of their own (hat-view-bounds), the sleeve views and every other piece count as before.
+  function measureLayoutModule(){
+    if(typeof module === 'object' && module.exports) return require('./measure-layout.js');
+    const g = typeof self !== 'undefined' ? self : globalThis;
+    return g.CAPUBEngine && g.CAPUBEngine.measureLayout;
+  }
+  function shownBounds(ctx){
+    const ML = measureLayoutModule(), base = ctx.base;
+    let cloth = null;
+    if(ML && ML.clothBoxes && base){
+      const g = ctx.layers.find(l => l.type === 'asset' && l.role === 'garment' && l.id === base.id);
+      const boxes = g ? ML.clothBoxes({ layers: [g] }) : [];
+      if(boxes.length){
+        const u = core.unionBounds(boxes);
+        const x0 = Math.max(g.x, u.x), y0 = Math.max(g.y, u.y), x1 = Math.min(g.x + g.w, u.x + u.w), y1 = Math.min(g.y + g.h, u.y + u.h);
+        cloth = { sheet: g, box: { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } };
+      }
+    }
+    const sameBox = l => cloth && l.type === 'asset' && (l.role === 'garment' || l.role === 'garment-layer' || l.role === 'garment-foreground') && !(l.rotate || 0)
+      && Math.abs(l.x - cloth.sheet.x) < 1e-6 && Math.abs(l.y - cloth.sheet.y) < 1e-6 && Math.abs(l.w - cloth.sheet.w) < 1e-6 && Math.abs(l.h - cloth.sheet.h) < 1e-6;
+    return core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(l => (sameBox(l) ? cloth.box : core.layerBounds(l))));
+  }
+
   function finish(ctx, title){
     settleConflicts(ctx);
-    const bounds = core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(core.layerBounds));
+    const bounds = shownBounds(ctx);
     return { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], garment: ctx.base && ctx.base.id };
   }
 
