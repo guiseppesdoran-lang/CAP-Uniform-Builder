@@ -2,29 +2,29 @@
  "asset_id": "garment-polo-male-long",
  "name": "Men's CAP dark blue polo, long sleeves, left chest pocket, with medium gray trousers and black belt (embroidery positions only)",
  "size_in": {
-  "w": 25.058,
+  "w": 25.692,
   "h": 32.91
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2505.8,
+  2569.2,
   3291
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.0309 in per figure pixel: the figure's belt buckle is 64 x 66 px, so 1.98 x 2.04 in at this scale against the 2 in limit of CAPR 39-1 5.3.5 (the figure draws the buckle at the limit), and the armhole-seam width (2 x 9.53 in) equals the men's Class B shirt sheet's (167 px x 0.0474 x 1.2171 = 9.63 in half width), i.e. the same wearer. At this scale the figure's embroidered seal is 2.93 in across, the placket 1.30 x 5.41 in, the pocket 4.17 in wide, the belt 1.79 in. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing. Long sleeves: the arm below the short sleeve's end follows the Class B long-sleeve sheet's arm (class_b_male_long_outline.json, K-scaled) shifted to the polo's sleeve width; ESTIMATE. Shirt colour #171b1f (shadow #0f1215, highlight #1d2228), sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set does not show them).",
+ "size_basis": "Measured on photographs of real CAP polo shirts and CAP's own drawing, no longer traced from CAPR 39-1 Figure 5.5 (Ethan: \"it just.... doesn't look right. look at some pictures of seniors wearing the polo\"): a small flat knit collar (points 4.2 in below the collar's top, 7.3 in tip to tip; Figure 5.5's long dress-shirt points were 11.2 in apart), a short placket (5.9 in, 3 buttons) and a shorter sleeve (8.9 in along its outer edge, was 10.6). Sources (screenshots kept in base-art/polo-ref/ with a README; measure.js repeats the pixel readings): ref4 = a knit CAP seal polo with pocket on a ghost mannequin (Edwards label; the best-resolved photo, shirt 490 px wide); ref3 = Vanguard CAP0694A, navy knit polo with pocket and a white seal; ref2 = CAP's wing page photo set of the Corporate Working Uniform shirts (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg); ref1 = CAP's own uniform-guidance drawing (https://falcon305.cap.gov/media/cms/polo_3D9EF39C1FEBB.png). SCALE (ESTIMATE; the regulation gives no garment dimension): the embroidered seal is the ruler for every local feature, 66 x 68 px on ref4 = 2.93 in (the seal slot, unchanged), K = 0.0444 in/px; body-level horizontal distances (shoulder, sleeve, side seam) keep the wearer's pit-to-pit width of the earlier sheets, 2 x 7.721 in (the Class B shirt's same-wearer width), because the ref4 mannequin is a slim 301 px = 13.4 in across at the seal ruler (stretch 0.0513 / 0.0444 = 1.16). The guidance drawing read at its own seal (20 px = 2.93 in) is 102 px = 14.9 in pit to pit, within 3 % of the sheet's 15.44 in. Measured on ref4 (K, px to in): the collar (widths at the body-level scale, because the neck sits inside the shoulders; heights at the seal ruler): the back arch is 75 px (3.85 in) wide at its top and the points hang 94 px (4.2 in) below the arch's top (the leaf's outer edge 56 px = 2.5 in), 143 px (7.3 in) tip to tip, the leaf's inner-bottom corners 47 px (2.4 in) apart, the neck opening 97 px (5.0 in) wide at row 60; the placket 29 px wide (385 to 414, 1.29 in) and 132 px long (5.9 in) with buttons 42 px (1.9 in) apart at rows 142 and 184 (the top button sits under the leaves); the pocket 94 px wide (4.17 in), 90 px (4.0 in) to the end of its sides and 109.5 px (4.9 in) to its point, its top hem with two stitch lines 11.5 and 20 px (0.5 and 0.9 in) below the top; the seal's centre 0.51 in below the pocket's top and 4.34 in right of the centre line (the pocket's centre 4.46 in the other way; positions use the body-level scale); the shoulder point 4.5 in below the collar's top, the sleeve's outer edge 8.9 in long to the hem's outer corner (the shoulder point to the corner is 8.2 in down), its hem edge slanting down 1.6 in to the armpit, the armpit 14.4 in below the collar's top. The collar's points reach about the placket's top, the same level as in ref3. Long sleeves: the arm below the short sleeve's end follows the Class B long-sleeve sheet's arm (class_b_male_long_outline.json, K-scaled) shifted to the polo's sleeve width; ESTIMATE. Everything below the armpit (the tucked body to the belt, belt, loops, buckle and trousers; the women's torso and skirt) is still read off Figure 5.5 (base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 at 300 dpi, trace-polo.js; men 0.0309 in/px from the 64 px buckle = the 2 in limit of 5.3.5, women 0.03495 in/px). Shirt colour #151f3b (shadow #0e1123, lit tone #404b6e), sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set shows no belt, trousers or skirt in these tones).",
  "anchors": {
   "top_center": [
-   1252.9,
+   1284.6,
    0
   ],
   "bottom_center": [
-   1252.9,
+   1284.6,
    3291
   ],
   "center": [
-   1252.9,
+   1284.6,
    1645.5
   ],
   "left_edge": [
@@ -32,190 +32,267 @@
    1645.5
   ],
   "right_edge": [
-   2505.8,
+   2569.2,
    1645.5
   ],
   "shoulder_seam_right": [
-   299.63,
-   402.43
+   348.33,
+   460.66
   ],
   "shoulder_seam_left": [
-   2206.16,
-   402.43
+   2220.87,
+   460.66
   ],
   "collar_apex": [
-   1252.9,
-   585.8
+   1284.6,
+   345.22
   ],
   "hem_center": [
-   1252.9,
+   1284.6,
    2398.57
   ],
   "hat_attach": [
-   1252.9,
+   1284.6,
    10
   ],
   "button_1_center": [
-   1249.81,
-   697.22
+   1284.6,
+   371.86
   ],
   "button_2_center": [
-   1248.26,
-   969.44
+   1284.6,
+   531.7
+  ],
+  "button_3_center": [
+   1284.6,
+   718.18
   ],
   "placket_top_center": [
-   1252.9,
-   594.01
+   1284.6,
+   345.22
   ],
   "seal_center": [
-   796.2,
-   805.37
+   850.58,
+   831.4
   ],
   "name_center": [
-   1731.85,
-   841.52
+   1730.93,
+   710.25
   ],
   "badge_center": [
-   1731.85,
-   714.43
+   1730.93,
+   583.17
   ],
   "print_seal_center": [
-   1709.6,
-   805.37
+   1718.62,
+   831.4
   ],
   "pocket_top_center": [
-   1731.85,
-   912.28
+   1730.93,
+   780.34
   ],
   "belt_buckle_center": [
-   1252.9,
+   1284.6,
    2308.96
   ]
  },
  "landmarks": {
   "collar_right": [
    [
-    1541.8,
-    13.1
+    1541.1,
+    34.4
    ],
    [
-    1810.6,
-    495.1
+    1571.9,
+    52.2
    ],
    [
-    1517.1,
-    476.6
+    1595,
+    87.7
    ],
    [
-    1252.9,
-    594
+    1615.5,
+    123.2
+   ],
+   [
+    1633.5,
+    158.7
+   ],
+   [
+    1654,
+    176.5
+   ],
+   [
+    1651.4,
+    427.4
+   ],
+   [
+    1405.2,
+    345.2
+   ],
+   [
+    1433.4,
+    336.3
+   ],
+   [
+    1479.5,
+    300.8
+   ],
+   [
+    1515.5,
+    238.7
+   ],
+   [
+    1533.4,
+    167.6
+   ],
+   [
+    1536,
+    78.8
    ]
   ],
   "collar_left": [
    [
-    964,
-    13.1
+    1028.1,
+    34.4
    ],
    [
-    695.2,
-    495.1
+    997.3,
+    52.2
    ],
    [
-    988.7,
-    476.6
+    974.2,
+    87.7
    ],
    [
-    1252.9,
-    594
+    953.7,
+    123.2
+   ],
+   [
+    935.7,
+    158.7
+   ],
+   [
+    915.2,
+    176.5
+   ],
+   [
+    917.8,
+    427.4
+   ],
+   [
+    1164,
+    345.2
+   ],
+   [
+    1135.8,
+    336.3
+   ],
+   [
+    1089.7,
+    300.8
+   ],
+   [
+    1053.7,
+    238.7
+   ],
+   [
+    1035.8,
+    167.6
+   ],
+   [
+    1033.2,
+    78.8
    ]
   ],
   "pocket": {
-   "x": 1523.27,
-   "y": 912.28,
-   "w": 417.15,
-   "h": 448.05
+   "x": 1522.25,
+   "y": 780.34,
+   "w": 417.36,
+   "h": 486.18
   },
   "belt_buckle": {
-   "x": 1154.02,
+   "x": 1185.72,
    "y": 2206.99,
    "w": 197.76,
    "h": 203.94
   },
   "placket": {
-   "x": 1188,
-   "y": 594,
-   "w": 129.8,
-   "h": 540.7
+   "x": 1220.2,
+   "y": 345.2,
+   "w": 128.8,
+   "h": 586.1
   },
   "seal_slot": {
-   "x": 796.2,
-   "y": 805.37,
+   "x": 850.58,
+   "y": 831.4,
    "w_in": 2.93,
    "h_in": 2.93
   },
   "name_slot": {
-   "x": 1731.85,
-   "y": 841.52,
+   "x": 1730.93,
+   "y": 710.25,
    "w_in": 4.2,
    "h_in": 0.4
   },
   "badge_slot": {
-   "x": 1731.85,
-   "y": 714.43,
+   "x": 1730.93,
+   "y": 583.17,
    "w_in": 1.2,
    "h_in": 1.14,
    "gap_to_name_in": 0.5
   },
   "print_seal_slot": {
-   "x": 1709.6,
-   "y": 805.37,
+   "x": 1718.62,
+   "y": 831.4,
    "w_in": 2.93,
    "h_in": 2.93
   },
   "pen_pocket_slot": {
-   "x": 2264.26,
-   "y": 897.4,
+   "x": 2289.79,
+   "y": 1004.78,
    "w_in": 1.4,
    "h_in": 5.5,
-   "angle_deg": -0.8,
+   "angle_deg": -4.6,
    "flap_in": 1.35
   },
   "hat_view": {
    "front": {
-    "x": 852.9,
+    "x": 884.6,
     "y": -665,
     "w": 800,
     "h": 700
    },
    "back": {
-    "x": 1702.9,
+    "x": 1734.6,
     "y": -475,
     "w": 800,
     "h": 510
    }
   }
  },
- "landmarks_note": "rects are {x,y,w,h} (top-left); polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. The *_slot entries that carry w_in / h_in are {x,y} = the CENTRE of the slot in user units, w_in / h_in in inches. seal_slot: embroidered CAP seal, wearer's RIGHT breast (the picture's left), w_in = the figure-measured seal (2.93 in; the insignia-cap-seal asset is 2.50 in, CAPR 39-1 Fig A6-4: the figure draws the polo seal larger, the engine places the asset at the slot centre). pen_pocket_slot: the tactical polo's pen pocket on the wearer's LEFT sleeve (the picture's right), {x,y} its centre, w_in x h_in its size (1.4 x 5.5 in, estimate), angle_deg the SVG rotate() that turns an upright box onto the sleeve's axis, flap_in the flap depth. name_slot: the embroidered name line on the wearer's LEFT breast, w_in = the pocket width 4.17 rounded to 4.2 in; the name sits above the pocket, as Figure 5.5 draws it (0.53 in clear of the pocket top), h_in = the figure's cap height. badge_slot: centre of the badge / duty title line, h_in 1.14 (the figure's badge), 1/2 in above the name_slot top (CAPR 39-1 5.3.2.1.1; the figure draws 0.65 in), w_in nominal. print_seal_slot: the screen-printed CAP seal (5.3.1.2) on the wearer's LEFT breast, the seal_slot mirrored about the centre line; the men's sheet's pocket group (id pocket) is hidden for the printed polo, which has no pocket or accoutrements (5.3.1.2, 5.3.2.1.2). collar_left / collar_right name the leaf on the PICTURE's left / right (as the Class B sheets do); shoulder_seam_right / left and every anchor named left / right are the WEARER's (right = the picture's left). hat_view {front, back}: where the cap assets hat-baseball-cap-blue and hat-baseball-cap-blue-back sit (their boxes, bottoms 0.25 in below the collar-tip line, the back view 0.5 in to the picture's right of the front); they lie above this artwork box. hat_attach: the collar-tip line on the centre line.",
+ "landmarks_note": "rects are {x,y,w,h} (top-left); polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. The *_slot entries that carry w_in / h_in are {x,y} = the CENTRE of the slot in user units, w_in / h_in in inches. seal_slot: embroidered CAP seal, wearer's RIGHT breast (the picture's left), w_in = 2.93 in, measured as 66 x 68 px on ref4 at the seal ruler, a circle (the insignia-cap-seal asset is 2.50 in, CAPR 39-1 Fig A6-4: the engine scales it to the slot); the seal sits 0.51 in below the pocket's top edge on ref4 (the seal's centre at pocket-top height). pen_pocket_slot: the tactical polo's pen pocket on the wearer's LEFT sleeve (the picture's right), {x,y} its centre, w_in x h_in its size (1.4 x 5.5 in, estimate; no reference shows it: ref3 is labelled tactical but shows no sleeve pocket), angle_deg the SVG rotate() that turns an upright box onto the sleeve's axis, flap_in the flap depth. name_slot: the embroidered name line on the wearer's LEFT breast, w_in = 4.2 in, the pocket width 4.17 rounded; the name sits 0.5 in above the pocket's top edge, h_in = the figure's cap height. badge_slot: centre of the badge / duty title line, h_in 1.14, 1/2 in above the name_slot top (CAPR 39-1 5.3.2.1.1), w_in nominal. print_seal_slot: the screen-printed CAP seal (5.3.1.2) on the wearer's LEFT breast, the seal_slot mirrored about the centre line; the men's sheet's pocket group (id pocket) is hidden for the printed polo, which has no pocket or accoutrements (5.3.1.2, 5.3.2.1.2). collar_left / collar_right name the leaf on the PICTURE's left / right (as the Class B sheets do); shoulder_seam_right / left and every anchor named left / right are the WEARER's (right = the picture's left). collar_apex is the bottom of the neck opening (where the leaves' inner corners are), placket_top_center the top of the placket box; button_1 to _3 centres top to bottom. hat_view {front, back}: where the cap assets hat-baseball-cap-blue and hat-baseball-cap-blue-back sit (their boxes, bottoms 0.25 in below the top of the sheet, the back view 0.5 in to the picture's right of the front); they lie above this artwork box. hat_attach: the top of the sheet (the back of the collar) on the centre line.",
  "dimensions": {
   "scale": {
-   "in_per_px": 0.0309,
-   "basis": "belt buckle 64 x 66 px = the 2 in limit of 5.3.5; same-wearer shoulder width of the Class B shirt",
+   "in_per_px_seal_ruler": 0.0444,
+   "in_per_px_body_level": 0.0513,
+   "basis": "ref4 seal 66 x 68 px = 2.93 in (local features); wearer pit-to-pit 2 x 7.721 in over ref4's 301 px (body-level horizontal distances)",
    "size_source": "estimated"
   },
   "height_in": 32.71,
-  "max_width_in": 24.66,
-  "collar_tip_to_apex_in": 5.76,
+  "max_width_in": 25.29,
+  "collar_top_to_leaf_points_in": 4.17,
+  "collar_tip_to_tip_in": 7.34,
   "placket_in": [
-   1.3,
-   5.41
+   1.29,
+   5.86
   ],
-  "buttons": 2,
-  "button_diameter_in": 0.43,
+  "buttons": 3,
+  "button_diameter_in": 0.42,
   "seal_in": 2.93,
-  "hem_stitch_in": 0.83,
   "pocket_in": [
    4.17,
-   4.48
+   4.86
   ],
   "belt_in": [
    1.79
@@ -234,20 +311,20 @@
  },
  "documented": [
   "dark blue knit polo shirt, short or long sleeves, embroidered CAP seal on the RIGHT breast, male version with a left-chest pocket (CAPR 39-1 5.3.1.1)",
-  "first and last name embroidered in white thread on the LEFT breast (above the pocket, as Figure 5.5 draws it); one badge or duty title 1/2 in over the name; no grade insignia (5.3.1.1, 5.3.2, 5.3.2.1.1)",
+  "first and last name embroidered in white thread on the LEFT breast (above the pocket); one badge or duty title 1/2 in over the name; no grade insignia (5.3.1.1, 5.3.2, 5.3.2.1.1)",
   "tucked into the trousers (5.3.1)",
   "medium gray trousers, slim, straight or loose (5.3.3); plain black belt with a plain buckle not over 2 in, 2 in wide at most (5.3.5)"
  ],
  "assumed": [
-  "garment dimensions (scale from the 2 in buckle limit and the Class B same-wearer shoulder width)",
-  "shirt colour sampled in-browser from one Vanguard product photo (SKU CAP0320, see size_basis), so estimated; belt, trousers and skirt tones sampled from Figure 5.5",
-  "collar leaf, placket, button, pocket, belt, loop and buckle geometry read off Figure 5.5 (pixel table FIG in make-polo.js)",
+  "garment dimensions (scale: the 2.93 in seal as the ruler for local features, the same-wearer pit-to-pit width for body-level distances; see size_basis)",
+  "shirt colour sampled in-browser from CAP's own mannequin photo set (see size_basis; a sample over a photo set, not a measurement of a particular shirt); belt, trousers and skirt tones sampled from Figure 5.5",
+  "collar, placket, buttons, pocket and sleeve measured on one photograph (ref4) and cross-checked on ref3, ref2 and the guidance drawing (ref1)",
   "seams, stitches and the ribbed cuff are shown as flat geometric lines, no knit texture",
   "long sleeve below the short sleeve: arm profile of the Class B long-sleeve shirt sheet (same wearer), 2.5 in ribbed cuff (ESTIMATE)",
-  "trousers and belt cut off at the sheet crop line, trouser flare continued past the figure's crop at the measured slope"
+  "belt, loops and buckle read off Figure 5.5 (pixel table FIG in make-polo.js); trousers and belt cut off at the sheet crop line, trouser flare continued past the figure's crop at the measured slope"
  ],
  "fit": {
-  "method": "traced from the raster (Figure 5.5)",
+  "method": "measured on photographs and the guidance drawing (base-art/polo-ref/)",
   "score": null
  },
  "grade": "garment"

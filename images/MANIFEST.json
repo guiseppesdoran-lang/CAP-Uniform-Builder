@@ -47073,21 +47073,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 25.058,
+   "w_in": 25.692,
    "h_in": 29.48,
    "size_source": "estimated",
-   "basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.0309 in per figure pixel: the figure's belt buckle is 64 x 66 px, so 1.98 x 2.04 in at this scale against the 2 in limit of CAPR 39-1 5.3.5 (the figure draws the buckle at the limit), and the armhole-seam width (2 x 9.53 in) equals the men's Class B shirt sheet's (167 px x 0.0474 x 1.2171 = 9.63 in half width), i.e. the same wearer. At this scale the figure's embroidered seal is 2.93 in across, the placket 1.30 x 5.41 in, the pocket 4.17 in wide, the belt 1.79 in. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing. Shirt colour #171b1f (shadow #0f1215, highlight #1d2228), sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set does not show them).",
+   "basis": "Measured on photographs of real CAP polo shirts and CAP's own drawing, no longer traced from CAPR 39-1 Figure 5.5 (Ethan: \"it just.... doesn't look right. look at some pictures of seniors wearing the polo\"): a small flat knit collar (points 4.2 in below the collar's top, 7.3 in tip to tip; Figure 5.5's long dress-shirt points were 11.2 in apart), a short placket (5.9 in, 3 buttons) and a shorter sleeve (8.9 in along its outer edge, was 10.6). Sources (screenshots kept in base-art/polo-ref/ with a README; measure.js repeats the pixel readings): ref4 = a knit CAP seal polo with pocket on a ghost mannequin (Edwards label; the best-resolved photo, shirt 490 px wide); ref3 = Vanguard CAP0694A, navy knit polo with pocket and a white seal; ref2 = CAP's wing page photo set of the Corporate Working Uniform shirts (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg); ref1 = CAP's own uniform-guidance drawing (https://falcon305.cap.gov/media/cms/polo_3D9EF39C1FEBB.png). SCALE (ESTIMATE; the regulation gives no garment dimension): the embroidered seal is the ruler for every local feature, 66 x 68 px on ref4 = 2.93 in (the seal slot, unchanged), K = 0.0444 in/px; body-level horizontal distances (shoulder, sleeve, side seam) keep the wearer's pit-to-pit width of the earlier sheets, 2 x 7.721 in (the Class B shirt's same-wearer width), because the ref4 mannequin is a slim 301 px = 13.4 in across at the seal ruler (stretch 0.0513 / 0.0444 = 1.16). The guidance drawing read at its own seal (20 px = 2.93 in) is 102 px = 14.9 in pit to pit, within 3 % of the sheet's 15.44 in. Measured on ref4 (K, px to in): the collar (widths at the body-level scale, because the neck sits inside the shoulders; heights at the seal ruler): the back arch is 75 px (3.85 in) wide at its top and the points hang 94 px (4.2 in) below the arch's top (the leaf's outer edge 56 px = 2.5 in), 143 px (7.3 in) tip to tip, the leaf's inner-bottom corners 47 px (2.4 in) apart, the neck opening 97 px (5.0 in) wide at row 60; the placket 29 px wide (385 to 414, 1.29 in) and 132 px long (5.9 in) with buttons 42 px (1.9 in) apart at rows 142 and 184 (the top button sits under the leaves); the pocket 94 px wide (4.17 in), 90 px (4.0 in) to the end of its sides and 109.5 px (4.9 in) to its point, its top hem with two stitch lines 11.5 and 20 px (0.5 and 0.9 in) below the top; the seal's centre 0.51 in below the pocket's top and 4.34 in right of the centre line (the pocket's centre 4.46 in the other way; positions use the body-level scale); the shoulder point 4.5 in below the collar's top, the sleeve's outer edge 8.9 in long to the hem's outer corner (the shoulder point to the corner is 8.2 in down), its hem edge slanting down 1.6 in to the armpit, the armpit 14.4 in below the collar's top. The collar's points reach about the placket's top, the same level as in ref3. Everything below the armpit (the tucked body to the belt, belt, loops, buckle and trousers; the women's torso and skirt) is still read off Figure 5.5 (base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 at 300 dpi, trace-polo.js; men 0.0309 in/px from the 64 px buckle = the 2 in limit of 5.3.5, women 0.03495 in/px). Shirt colour #151f3b (shadow #0e1123, lit tone #404b6e), sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set shows no belt, trousers or skirt in these tones).",
    "anchors": {
     "top_center": [
-     1252.9,
+     1284.6,
      0
     ],
     "bottom_center": [
-     1252.9,
+     1284.6,
      2948
     ],
     "center": [
-     1252.9,
+     1284.6,
      1474
     ],
     "left_edge": [
@@ -47095,63 +47095,67 @@
      1474
     ],
     "right_edge": [
-     2505.8,
+     2569.2,
      1474
     ],
     "shoulder_seam_right": [
-     299.63,
-     402.43
+     348.33,
+     460.66
     ],
     "shoulder_seam_left": [
-     2206.16,
-     402.43
+     2220.87,
+     460.66
     ],
     "collar_apex": [
-     1252.9,
-     585.8
+     1284.6,
+     345.22
     ],
     "hem_center": [
-     1252.9,
+     1284.6,
      2398.57
     ],
     "hat_attach": [
-     1252.9,
+     1284.6,
      10
     ],
     "button_1_center": [
-     1249.81,
-     697.22
+     1284.6,
+     371.86
     ],
     "button_2_center": [
-     1248.26,
-     969.44
+     1284.6,
+     531.7
+    ],
+    "button_3_center": [
+     1284.6,
+     718.18
     ],
     "placket_top_center": [
-     1252.9,
-     594.01
+     1284.6,
+     345.22
     ],
     "seal_center": [
-     796.2,
-     805.37
+     850.58,
+     831.4
     ],
     "name_center": [
-     1731.85,
-     841.52
+     1730.93,
+     710.25
     ],
     "badge_center": [
-     1731.85,
-     714.43
+     1730.93,
+     583.17
     ],
     "print_seal_center": [
-     1709.6,
-     805.37
+     1718.62,
+     831.4
     ],
     "pocket_top_center": [
-     1731.85,
-     912.28
+     1730.93,
+     780.34
     ],
     "belt_buckle_center": [
-     1252.9,
+     1284.6,
      2308.96
     ]
    },
@@ -47175,21 +47179,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 25.058,
+   "w_in": 25.692,
    "h_in": 32.91,
    "size_source": "estimated",
-   "basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.0309 in per figure pixel: the figure's belt buckle is 64 x 66 px, so 1.98 x 2.04 in at this scale against the 2 in limit of CAPR 39-1 5.3.5 (the figure draws the buckle at the limit), and the armhole-seam width (2 x 9.53 in) equals the men's Class B shirt sheet's (167 px x 0.0474 x 1.2171 = 9.63 in half width), i.e. the same wearer. At this scale the figure's embroidered seal is 2.93 in across, the placket 1.30 x 5.41 in, the pocket 4.17 in wide, the belt 1.79 in. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing. Long sleeves: the arm below the short sleeve's end follows the Class B long-sleeve sheet's arm (class_b_male_long_outline.json, K-scaled) shifted to the polo's sleeve width; ESTIMATE. Shirt colour #171b1f (shadow #0f1215, highlight #1d2228), sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set does not show them).",
+   "basis": "Measured on photographs of real CAP polo shirts and CAP's own drawing, no longer traced from CAPR 39-1 Figure 5.5 (Ethan: \"it just.... doesn't look right. look at some pictures of seniors wearing the polo\"): a small flat knit collar (points 4.2 in below the collar's top, 7.3 in tip to tip; Figure 5.5's long dress-shirt points were 11.2 in apart), a short placket (5.9 in, 3 buttons) and a shorter sleeve (8.9 in along its outer edge, was 10.6). Sources (screenshots kept in base-art/polo-ref/ with a README; measure.js repeats the pixel readings): ref4 = a knit CAP seal polo with pocket on a ghost mannequin (Edwards label; the best-resolved photo, shirt 490 px wide); ref3 = Vanguard CAP0694A, navy knit polo with pocket and a white seal; ref2 = CAP's wing page photo set of the Corporate Working Uniform shirts (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg); ref1 = CAP's own uniform-guidance drawing (https://falcon305.cap.gov/media/cms/polo_3D9EF39C1FEBB.png). SCALE (ESTIMATE; the regulation gives no garment dimension): the embroidered seal is the ruler for every local feature, 66 x 68 px on ref4 = 2.93 in (the seal slot, unchanged), K = 0.0444 in/px; body-level horizontal distances (shoulder, sleeve, side seam) keep the wearer's pit-to-pit width of the earlier sheets, 2 x 7.721 in (the Class B shirt's same-wearer width), because the ref4 mannequin is a slim 301 px = 13.4 in across at the seal ruler (stretch 0.0513 / 0.0444 = 1.16). The guidance drawing read at its own seal (20 px = 2.93 in) is 102 px = 14.9 in pit to pit, within 3 % of the sheet's 15.44 in. Measured on ref4 (K, px to in): the collar (widths at the body-level scale, because the neck sits inside the shoulders; heights at the seal ruler): the back arch is 75 px (3.85 in) wide at its top and the points hang 94 px (4.2 in) below the arch's top (the leaf's outer edge 56 px = 2.5 in), 143 px (7.3 in) tip to tip, the leaf's inner-bottom corners 47 px (2.4 in) apart, the neck opening 97 px (5.0 in) wide at row 60; the placket 29 px wide (385 to 414, 1.29 in) and 132 px long (5.9 in) with buttons 42 px (1.9 in) apart at rows 142 and 184 (the top button sits under the leaves); the pocket 94 px wide (4.17 in), 90 px (4.0 in) to the end of its sides and 109.5 px (4.9 in) to its point, its top hem with two stitch lines 11.5 and 20 px (0.5 and 0.9 in) below the top; the seal's centre 0.51 in below the pocket's top and 4.34 in right of the centre line (the pocket's centre 4.46 in the other way; positions use the body-level scale); the shoulder point 4.5 in below the collar's top, the sleeve's outer edge 8.9 in long to the hem's outer corner (the shoulder point to the corner is 8.2 in down), its hem edge slanting down 1.6 in to the armpit, the armpit 14.4 in below the collar's top. The collar's points reach about the placket's top, the same level as in ref3. Long sleeves: the arm below the short sleeve's end follows the Class B long-sleeve sheet's arm (class_b_male_long_outline.json, K-scaled) shifted to the polo's sleeve width; ESTIMATE. Everything below the armpit (the tucked body to the belt, belt, loops, buckle and trousers; the women's torso and skirt) is still read off Figure 5.5 (base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 at 300 dpi, trace-polo.js; men 0.0309 in/px from the 64 px buckle = the 2 in limit of 5.3.5, women 0.03495 in/px). Shirt colour #151f3b (shadow #0e1123, lit tone #404b6e), sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set shows no belt, trousers or skirt in these tones).",
    "anchors": {
     "top_center": [
-     1252.9,
+     1284.6,
      0
     ],
     "bottom_center": [
-     1252.9,
+     1284.6,
      3291
     ],
     "center": [
-     1252.9,
+     1284.6,
      1645.5
     ],
     "left_edge": [
@@ -47197,63 +47201,67 @@
      1645.5
     ],
     "right_edge": [
-     2505.8,
+     2569.2,
      1645.5
     ],
     "shoulder_seam_right": [
-     299.63,
-     402.43
+     348.33,
+     460.66
     ],
     "shoulder_seam_left": [
-     2206.16,
-     402.43
+     2220.87,
+     460.66
     ],
     "collar_apex": [
-     1252.9,
-     585.8
+     1284.6,
+     345.22
     ],
     "hem_center": [
-     1252.9,
+     1284.6,
      2398.57
     ],
     "hat_attach": [
-     1252.9,
+     1284.6,
      10
     ],
     "button_1_center": [
-     1249.81,
-     697.22
+     1284.6,
+     371.86
     ],
     "button_2_center": [
-     1248.26,
-     969.44
+     1284.6,
+     531.7
+    ],
+    "button_3_center": [
+     1284.6,
+     718.18
     ],
     "placket_top_center": [
-     1252.9,
-     594.01
+     1284.6,
+     345.22
     ],
     "seal_center": [
-     796.2,
-     805.37
+     850.58,
+     831.4
     ],
     "name_center": [
-     1731.85,
-     841.52
+     1730.93,
+     710.25
     ],
     "badge_center": [
-     1731.85,
-     714.43
+     1730.93,
+     583.17
     ],
     "print_seal_center": [
-     1709.6,
-     805.37
+     1718.62,
+     831.4
     ],
     "pocket_top_center": [
-     1731.85,
-     912.28
+     1730.93,
+     780.34
     ],
     "belt_buckle_center": [
-     1252.9,
+     1284.6,
      2308.96
     ]
    },
@@ -47277,21 +47285,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.964,
+   "w_in": 21.6,
    "h_in": 32.93,
    "size_source": "estimated",
-   "basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.03495 in per figure pixel: the same embroidered seal is 83.9 px across (equal-area circle) in this figure and 94.9 px (2.93 in) in the men's figure, so the women's figure is drawn 1.131 times larger on the page. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing (its waist, 11.1 in flat, is narrower than a real polo's; the Class B blouse sheet's is 12.2 in). Shirt colour #171b1f (shadow #0f1215, highlight #1d2228), sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set does not show them).",
+   "basis": "Measured on photographs of real CAP polo shirts and CAP's own drawing, no longer traced from CAPR 39-1 Figure 5.5 (Ethan: \"it just.... doesn't look right. look at some pictures of seniors wearing the polo\"): a small flat knit collar (points 3.9 in below the collar's top, 6.8 in tip to tip; Figure 5.5's long dress-shirt points were 11.2 in apart), a short placket (5.5 in, 3 buttons) and a shorter sleeve (9.0 in along its outer edge, was 10.6). Sources (screenshots kept in base-art/polo-ref/ with a README; measure.js repeats the pixel readings): ref4 = a knit CAP seal polo with pocket on a ghost mannequin (Edwards label; the best-resolved photo, shirt 490 px wide); ref3 = Vanguard CAP0694A, navy knit polo with pocket and a white seal; ref2 = CAP's wing page photo set of the Corporate Working Uniform shirts (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg); ref1 = CAP's own uniform-guidance drawing (https://falcon305.cap.gov/media/cms/polo_3D9EF39C1FEBB.png). SCALE (ESTIMATE; the regulation gives no garment dimension): the women's collar, placket and button column are the men's measurements (ref4, seal ruler K = 0.0444 in/px = the 2.93 in seal) scaled by 0.93 (the women's neck is smaller; no women's photograph is large enough to measure: ref2's women's knit is 80 px pit to pit); the shoulder line, the sleeve's outer edge and the torso below the armpit are the women's figure of CAPR 39-1 Figure 5.5 (0.03495 in/px from the seal, 94.9 px = 2.93 in on the men's figure, 83.9 px here), the same drawing as the guidance drawing ref1, whose women's pit (74 px), waist (65) and hem (97) give the same flare; the sleeve is shortened to the men's proportion (its outer edge ends 12.35 in below the collar's top, was 13.9) and its hem takes the men's measured hem curve. The women's polo is worn out over the skirt (5.3.1): the hem is straight, below the hip. Everything below the armpit (the tucked body to the belt, belt, loops, buckle and trousers; the women's torso and skirt) is still read off Figure 5.5 (base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 at 300 dpi, trace-polo.js; men 0.0309 in/px from the 64 px buckle = the 2 in limit of 5.3.5, women 0.03495 in/px). Shirt colour #151f3b (shadow #0e1123, lit tone #404b6e), sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set shows no belt, trousers or skirt in these tones).",
    "anchors": {
     "top_center": [
-     1098.2,
+     1080,
      0
     ],
     "bottom_center": [
-     1098.2,
+     1080,
      3293
     ],
     "center": [
-     1098.2,
+     1080,
      1646.5
     ],
     "left_edge": [
@@ -47299,55 +47307,59 @@
      1646.5
     ],
     "right_edge": [
-     2196.4,
+     2160,
      1646.5
     ],
     "shoulder_seam_right": [
-     252.41,
+     234.21,
      331.54
     ],
     "shoulder_seam_left": [
-     1943.99,
+     1925.79,
      331.54
     ],
     "collar_apex": [
-     1098.2,
-     560.5
+     1080,
+     321.75
     ],
     "hem_center": [
-     1098.2,
+     1080,
      2879.4
     ],
     "hat_attach": [
-     1098.2,
+     1080,
      10
     ],
     "button_1_center": [
-     1098.2,
-     674.05
+     1080,
+     346.53
     ],
     "button_2_center": [
-     1101.69,
-     960.64
+     1080,
+     495.18
+    ],
+    "button_3_center": [
+     1080,
+     668.61
     ],
     "placket_top_center": [
-     1098.2,
-     565.71
+     1080,
+     321.75
     ],
     "seal_center": [
-     689.98,
+     671.78,
      672.65
     ],
     "name_center": [
-     1541.37,
+     1523.17,
      723.68
     ],
     "badge_center": [
-     1541.37,
+     1523.17,
      597.46
     ],
     "print_seal_center": [
-     1506.42,
+     1488.22,
      672.65
     ]
    },
@@ -47372,7 +47384,7 @@
    "w_in": 22.26,
    "h_in": 32.93,
    "size_source": "estimated",
-   "basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.03495 in per figure pixel: the same embroidered seal is 83.9 px across (equal-area circle) in this figure and 94.9 px (2.93 in) in the men's figure, so the women's figure is drawn 1.131 times larger on the page. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing (its waist, 11.1 in flat, is narrower than a real polo's; the Class B blouse sheet's is 12.2 in). Long sleeves: the arm below the short sleeve's end follows the Class B long-sleeve sheet's arm (class_b_female_long_outline.json, K-scaled) shifted to the polo's sleeve width; ESTIMATE. Shirt colour #171b1f (shadow #0f1215, highlight #1d2228), sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set does not show them).",
+   "basis": "Measured on photographs of real CAP polo shirts and CAP's own drawing, no longer traced from CAPR 39-1 Figure 5.5 (Ethan: \"it just.... doesn't look right. look at some pictures of seniors wearing the polo\"): a small flat knit collar (points 3.9 in below the collar's top, 6.8 in tip to tip; Figure 5.5's long dress-shirt points were 11.2 in apart), a short placket (5.5 in, 3 buttons) and a shorter sleeve (9.0 in along its outer edge, was 10.6). Sources (screenshots kept in base-art/polo-ref/ with a README; measure.js repeats the pixel readings): ref4 = a knit CAP seal polo with pocket on a ghost mannequin (Edwards label; the best-resolved photo, shirt 490 px wide); ref3 = Vanguard CAP0694A, navy knit polo with pocket and a white seal; ref2 = CAP's wing page photo set of the Corporate Working Uniform shirts (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg); ref1 = CAP's own uniform-guidance drawing (https://falcon305.cap.gov/media/cms/polo_3D9EF39C1FEBB.png). SCALE (ESTIMATE; the regulation gives no garment dimension): the women's collar, placket and button column are the men's measurements (ref4, seal ruler K = 0.0444 in/px = the 2.93 in seal) scaled by 0.93 (the women's neck is smaller; no women's photograph is large enough to measure: ref2's women's knit is 80 px pit to pit); the shoulder line, the sleeve's outer edge and the torso below the armpit are the women's figure of CAPR 39-1 Figure 5.5 (0.03495 in/px from the seal, 94.9 px = 2.93 in on the men's figure, 83.9 px here), the same drawing as the guidance drawing ref1, whose women's pit (74 px), waist (65) and hem (97) give the same flare; the sleeve is shortened to the men's proportion (its outer edge ends 12.35 in below the collar's top, was 13.9) and its hem takes the men's measured hem curve. The women's polo is worn out over the skirt (5.3.1): the hem is straight, below the hip. Long sleeves: the arm below the short sleeve's end follows the Class B long-sleeve sheet's arm (class_b_female_long_outline.json, K-scaled) shifted to the polo's sleeve width; ESTIMATE. Everything below the armpit (the tucked body to the belt, belt, loops, buckle and trousers; the women's torso and skirt) is still read off Figure 5.5 (base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 at 300 dpi, trace-polo.js; men 0.0309 in/px from the 64 px buckle = the 2 in limit of 5.3.5, women 0.03495 in/px). Shirt colour #151f3b (shadow #0e1123, lit tone #404b6e), sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set shows no belt, trousers or skirt in these tones).",
    "anchors": {
     "top_center": [
      1113,
@@ -47404,7 +47416,7 @@
     ],
     "collar_apex": [
      1113,
-     560.5
+     321.75
     ],
     "hem_center": [
      1113,
@@ -47416,15 +47428,19 @@
     ],
     "button_1_center": [
      1113,
-     674.05
+     346.53
     ],
     "button_2_center": [
-     1116.49,
-     960.64
+     1113,
+     495.18
+    ],
+    "button_3_center": [
+     1113,
+     668.61
     ],
     "placket_top_center": [
      1113,
-     565.71
+     321.75
     ],
     "seal_center": [
      704.78,
@@ -47461,21 +47477,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 25.058,
+   "w_in": 25.692,
    "h_in": 29.48,
    "size_source": "estimated",
-   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-male: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #171b1f and lines in the sheet's tones: sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-male: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.80 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #151f3b and lines in the sheet's tones: sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.",
    "anchors": {
     "top_center": [
-     1252.9,
+     1284.6023255813955,
      0
     ],
     "bottom_center": [
-     1252.9,
+     1284.6023255813955,
      2948
     ],
     "center": [
-     1252.9,
+     1284.6023255813955,
      1474
     ],
     "left_edge": [
@@ -47483,12 +47499,12 @@
      1474
     ],
     "right_edge": [
-     2505.8,
+     2569.204651162791,
      1474
     ],
     "pen_pocket_center": [
-     2264.25,
-     897.4
+     2289.89,
+     1004.78
     ]
    },
    "landmarks": [
@@ -47501,21 +47517,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 25.058,
+   "w_in": 25.692,
    "h_in": 29.48,
    "size_source": "estimated",
-   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#171b1f, sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#151f3b, sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
    "anchors": {
     "top_center": [
-     1252.9,
+     1284.6023255813955,
      0
     ],
     "bottom_center": [
-     1252.9,
+     1284.6023255813955,
      2948
     ],
     "center": [
-     1252.9,
+     1284.6023255813955,
      1474
     ],
     "left_edge": [
@@ -47523,12 +47539,12 @@
      1474
     ],
     "right_edge": [
-     2505.8,
+     2569.204651162791,
      1474
     ],
     "print_seal_center": [
-     1709.6,
-     805.37
+     1718.62,
+     831.4
     ]
    },
    "landmarks": [
@@ -47541,21 +47557,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 25.058,
+   "w_in": 25.692,
    "h_in": 32.91,
    "size_source": "estimated",
-   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-male-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #171b1f and lines in the sheet's tones: sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-male-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.80 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #151f3b and lines in the sheet's tones: sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.",
    "anchors": {
     "top_center": [
-     1252.9,
+     1284.6023255813955,
      0
     ],
     "bottom_center": [
-     1252.9,
+     1284.6023255813955,
      3291.0000000000005
     ],
     "center": [
-     1252.9,
+     1284.6023255813955,
      1645.5000000000002
     ],
     "left_edge": [
@@ -47563,12 +47579,12 @@
      1645.5000000000002
     ],
     "right_edge": [
-     2505.8,
+     2569.204651162791,
      1645.5000000000002
     ],
     "pen_pocket_center": [
-     2264.26,
-     897.4
+     2289.79,
+     1004.78
     ]
    },
    "landmarks": [
@@ -47581,21 +47597,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 25.058,
+   "w_in": 25.692,
    "h_in": 32.91,
    "size_source": "estimated",
-   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#171b1f, sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#151f3b, sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
    "anchors": {
     "top_center": [
-     1252.9,
+     1284.6023255813955,
      0
     ],
     "bottom_center": [
-     1252.9,
+     1284.6023255813955,
      3291.0000000000005
     ],
     "center": [
-     1252.9,
+     1284.6023255813955,
      1645.5000000000002
     ],
     "left_edge": [
@@ -47603,12 +47619,12 @@
      1645.5000000000002
     ],
     "right_edge": [
-     2505.8,
+     2569.204651162791,
      1645.5000000000002
     ],
     "print_seal_center": [
-     1709.6,
-     805.37
+     1718.62,
+     831.4
     ]
    },
    "landmarks": [
@@ -47621,21 +47637,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.964,
+   "w_in": 21.6,
    "h_in": 32.93,
    "size_source": "estimated",
-   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.82 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #171b1f and lines in the sheet's tones: sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #151f3b and lines in the sheet's tones: sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.",
    "anchors": {
     "top_center": [
-     1098.1999999999998,
+     1080,
      0
     ],
     "bottom_center": [
-     1098.1999999999998,
+     1080,
      3293
     ],
     "center": [
-     1098.1999999999998,
+     1080,
      1646.5
     ],
     "left_edge": [
@@ -47643,12 +47659,12 @@
      1646.5
     ],
     "right_edge": [
-     2196.3999999999996,
+     2160,
      1646.5
     ],
     "pen_pocket_center": [
-     2003.66,
-     801.54
+     1952.46,
+     986.19
     ]
    },
    "landmarks": [
@@ -47661,21 +47677,21 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 21.964,
+   "w_in": 21.6,
    "h_in": 32.93,
    "size_source": "estimated",
-   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#171b1f, sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#151f3b, sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
    "anchors": {
     "top_center": [
-     1098.1999999999998,
+     1080,
      0
     ],
     "bottom_center": [
-     1098.1999999999998,
+     1080,
      3293
     ],
     "center": [
-     1098.1999999999998,
+     1080,
      1646.5
     ],
     "left_edge": [
@@ -47683,11 +47699,11 @@
      1646.5
     ],
     "right_edge": [
-     2196.3999999999996,
+     2160,
      1646.5
     ],
     "print_seal_center": [
-     1506.42,
+     1488.22,
      672.65
     ]
    },
@@ -47704,7 +47720,7 @@
    "w_in": 22.26,
    "h_in": 32.93,
    "size_source": "estimated",
-   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.82 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #171b1f and lines in the sheet's tones: sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #151f3b and lines in the sheet's tones: sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.",
    "anchors": {
     "top_center": [
      1113,
@@ -47727,8 +47743,8 @@
      1646.5
     ],
     "pen_pocket_center": [
-     2018.46,
-     801.54
+     1992.33,
+     986.45
     ]
    },
    "landmarks": [
@@ -47744,7 +47760,7 @@
    "w_in": 22.26,
    "h_in": 32.93,
    "size_source": "estimated",
-   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#171b1f, sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "basis": "The CAP seal asset insignia-cap-seal (the official seal vector, Fig A6-4 size) reduced to a single white print, layer by layer from the official file's own classes: the gold rings, the lettering, the 13 stars, the triangle and the eagle solid white, the cloud and torse as outlines, the shield as a white outline, the white band, the gray field and the propeller in the shirt colour (#151f3b, sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
    "anchors": {
     "top_center": [
      1113,

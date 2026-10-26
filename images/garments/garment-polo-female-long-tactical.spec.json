@@ -13,7 +13,7 @@
   3293
  ],
  "size_source": "estimated",
- "size_basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.82 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #171b1f and lines in the sheet's tones: sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated.",
+ "size_basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo. Pocket fill #151f3b and lines in the sheet's tones: sampled in-browser from the CAP wing page photo set \"Male / Female Corporate Working Uniforms\" (https://ftsnelling.cap.gov/media/cms/_Corporate_Working_header_9930F3D215143.jpg, 1900 x 1165; screenshot kept as base-art/polo-ref/ref2_corporate-working-photoset_screenshot.jpg); dark blue pixels over the whole photo set (knit and tactical, short and long, men's and women's mannequins), n = 668,936: shadow p0-p10 #0e1123, body p30-p70 #151f3b, lit p85-p97 #404b6e, p50 #1b1d34, p95 #485781. Body = the p30-p70 mean, lit tone = the p85-p97 mean (stitch and fold lines only), shadow / outline = the p0-p10 mean. The guidance drawing's flat #001a53 and Figure 5.5's #001b52 are the drawings' fills, not cloth, and are not used; the earlier single-photo sample #171b1f (Vanguard CAP0321_1.jpg) was a near-black with almost no blue and is replaced.",
  "anchors": {
   "top_center": [
    1113,
@@ -36,17 +36,17 @@
    1646.5
   ],
   "pen_pocket_center": [
-   2018.46,
-   801.54
+   1992.33,
+   986.45
   ]
  },
  "landmarks": {
   "pen_pocket_slot": {
-   "x": 2018.46,
-   "y": 801.54,
+   "x": 1992.33,
+   "y": 986.45,
    "w_in": 1.4,
    "h_in": 5.5,
-   "angle_deg": 0.2,
+   "angle_deg": 1.5,
    "flap_in": 1.35
   }
  },
