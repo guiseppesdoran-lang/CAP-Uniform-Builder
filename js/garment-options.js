@@ -40,7 +40,6 @@
       when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
     { key: 'dutyTitle', label: 'Duty title', type: 'text',
       when: c => isPolo(c) && c.o.poloMark === 'title', off: c => poloPrint(c) ? POLO_PRINT : '' },
-    { key: 'baseballCap', label: 'CAP baseball cap (5.3.7)', type: 'check', when: isPolo },
     { key: 'commandChief', label: 'Appointed Command Chief (ICL 25-02)', type: 'check',
       when: c => !c.g.cadet && State.rank === 'CMSgt' },
     { key: 'noGradeTrack', label: 'Working toward', type: 'select',

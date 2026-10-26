@@ -260,7 +260,7 @@ function matrix(){
     }
   }
   // The polo's other shirts and options (CAPR 39-1 5.3): the long sleeve, the tactical and the screen-printed shirt, the embroidered duty title in place of
-  // the badge, no name, the baseball cap, and the women's choice of the men's cut. One senior Capt each, both cuts; a variant waits for the art it draws.
+  // the badge, no name, and the women's choice of the men's cut. One senior Capt each, both cuts; a variant waits for the art it draws.
   if(RULES.RULES.polo){
     const POLO_VARIANTS = [
       ['long', { sleeve: 'long' }],
@@ -269,9 +269,7 @@ function matrix(){
       ['print', { poloShirt: 'print' }],
       ['print-long', { poloShirt: 'print', sleeve: 'long' }],
       ['title', { poloMark: 'title', dutyTitle: 'Squadron Commander' }],
-      ['no-name', { poloName: false }],
-      ['cap', { baseballCap: true }],
-      ['cap-long-tactical', { baseballCap: true, poloShirt: 'tactical', sleeve: 'long' }]
+      ['no-name', { poloName: false }]
     ];
     for(const gender of ['male', 'female']){
       for(const [tag, opt] of POLO_VARIANTS){

@@ -2,7 +2,7 @@
 // The Corporate Working Uniform, the polo (CAPR 39-1 5.3, Figure 5.5): three dark blue shirts, the embroidered seal on the right
 // breast (5.3.1.1, 5.3.1.3) or the seal screen-printed on the left (5.3.1.2), the optional embroidered name in white thread and
 // ONE badge or duty title 1/2 inch over it (5.3.2.1.1), no accoutrements on the printed shirt (5.3.2.1.2), no grade insignia (5.3.2),
-// no ribbons (11.1.3), the CAP baseball cap optional (5.3.7). Run on the synced sheets (tests/helpers/polo-sheets.cjs).
+// no ribbons (11.1.3), headgear not required and none drawn (5.3.7). Run on the synced sheets (tests/helpers/polo-sheets.cjs).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -225,23 +225,13 @@ test('a graded member is told the polo wears no grade; a member without grade is
   assert.ok(!sm.notes.some(n => /No grade insignia/.test(n)));
 });
 
-test('the CAP baseball cap is optional headgear, front and back views in the boxes the sheet states, above the shoulders (5.3.7)', async () => {
-  const off = await compose(build());
-  assert.ok(!off.layers.some(l => l.role === 'hat' || l.role === 'hat-view'), 'headgear is not required with this uniform');
+test('the polo has no headgear: no cap is drawn whatever the build asks, and the scene says why (5.3.7)', async () => {
   for(const [sex, long] of CUTS){
-    const on = await compose(build({ build: { gender: sex }, opt: { baseballCap: true, sleeve: long ? 'long' : 'short' } }));
-    const sheet = await store.load(sheetOf(sex, long));
-    const view = sheet.raw.landmarks.hat_view;
-    const front = on.layers.find(l => l.role === 'hat'), back = on.layers.find(l => l.role === 'hat-view');
-    assert.ok(front && /^hat-baseball-cap/.test(front.id), 'the cap is drawn');
-    near(front.x, view.front.x / 100, 0.01, 'front view at the sheet\'s box x');
-    near(front.y, view.front.y / 100, 0.01, 'front view at the sheet\'s box y');
-    near(front.w, view.front.w / 100, 0.01, 'front view at the box width');
-    assert.ok(front.y + front.h <= 0.6, `${sex} ${long}: the cap sits above the shoulders`);
-    assert.ok(back && /-back$/.test(back.id), 'the back view');
-    near(back.x, view.back.x / 100, 0.01, 'back view at the sheet\'s box x');
-    assert.ok(back.x >= front.x + front.w, 'the back view lies to the picture\'s right of the front');
-    assert.ok(!on.layers.some(l => l.role === 'hat-device'), 'the baseball cap carries no cap device');
+    for(const opt of [{}, { baseballCap: true }, { headgear: 'auto' }]){
+      const scene = await compose(build({ build: { gender: sex }, opt: Object.assign({ sleeve: long ? 'long' : 'short' }, opt) }));
+      assert.ok(!scene.layers.some(l => /^hat/.test(l.role) || /^hat-/.test(l.id || '')), `${sex} ${long}: no hat layer`);
+      assert.ok(scene.notes.some(n => /Headgear is not required/.test(n) && /5\.3\.7/.test(n)));
+    }
   }
 });
 
@@ -254,7 +244,7 @@ test('the printed polo hides the men\'s pocket: it has no pocket or accoutrement
 });
 
 test('no epaulet, sleeve flat, cord or collar views are drawn, and the scene is just the figure, its print or seal, name and badge', async () => {
-  const scene = await compose(build({ rank: 'SMSgt', badgeIds: [PILOT], opt: { baseballCap: true } }));
+  const scene = await compose(build({ rank: 'SMSgt', badgeIds: [PILOT] }));
   assert.ok(!scene.layers.some(l => /sleeve-flat|epaulet|cord|collar/.test((l.id || '') + (l.role || ''))));
 });
 
@@ -273,7 +263,7 @@ test('on the polo sheets: every slot is on the sheet, the seal on the right brea
     const badge = polo.point(sheet, 'badge_slot');
     assert.ok(badge && badge.y < nm.y, `${sheet.id}: badge slot above the name`);
     assert.equal(!!polo.slot(sheet, 'pocket'), sex === 'male', `${sheet.id}: the left chest pocket is the men's (5.3.1.1)`);
-    assert.ok(sheet.anchors.top_center && sheet.raw.landmarks.hat_view.front, `${sheet.id}: hat_view for the cap`);
+    assert.ok(sheet.anchors.top_center, `${sheet.id}: top_center`);
     near(polo.slot(sheet, 'badge_slot').y + polo.slot(sheet, 'badge_slot').h + 0.5, nm.y, 0.02, `${sheet.id}: the badge slot ends 1/2 in over the name slot (5.3.2.1.1)`);
   }
 });

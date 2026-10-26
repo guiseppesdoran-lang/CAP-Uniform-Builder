@@ -9,7 +9,7 @@
 //   tactical      5.3.1.3  tactical polo, seal embroidered on the right breast, pen pocket on the left sleeve; name and the one
 //                          badge or title as on the knit polo (5.3.2.1.1). Women may wear either the men's or the women's cut.
 // No grade insignia is authorized (5.3.2), no ribbons or medals (11.1.3, 11.1.6), no cords, nameplate or patches. Headgear is not
-// required; the CAP baseball cap may be worn (5.3.7).
+// required (5.3.7) and the builder draws none (Ethan: "theres no hat i dont think", his ruling over 5.3.7's "the CAP baseball cap may be worn").
 //
 // Everything is placed from the sheet's own landmarks (sheet hundredths of an inch, read by core): seal_slot, name_slot, badge_slot,
 // print_seal_slot, pen_pocket_slot, pocket. The regulation gives one distance, the badge or title "1/2 inch over the name" (5.3.2.1.1).
@@ -30,8 +30,6 @@
   // The badge or title sits 1/2 in over the name (5.3.2.1.1).
   const OVER_NAME = 0.5;
   const SEAL_ID = 'insignia-cap-seal';
-  // The CAP baseball cap (5.3.7), tried in this order: the sheet the art registers for it.
-  const CAP_IDS = ['hat-baseball-cap-blue', 'hat-baseball-cap'];
   // The families 5.3.2.1.1 names: a CAP aviation, occupational or specialty track badge (the chaplain badge is an occupational badge).
   const BADGE_ORDER = ['chaplain', 'aviation', 'occupational', 'specialty'];
 
@@ -60,24 +58,6 @@
     if(raw && Number.isFinite(raw.x) && Number.isFinite(raw.y) && !('w' in raw)) return { x: raw.x / 100, y: raw.y / 100 };
     const r = slotRect(ctx, name);
     return r ? core.rectCenter(r) : (ctx.point(name) || ctx.point(name.replace(/_slot$/, '_center')));
-  }
-
-  // The CAP baseball cap (5.3.7): the front view and the back view, each in the box the sheet's hat_view landmark states ({x, y, w, h},
-  // top-left, hundredths), the back 0.5 in to the picture's right of the front. A sheet without hat_view seats the front on the figure
-  // like the other caps.
-  async function baseballCap(ctx){
-    const front = CAP_IDS.find(h => ctx.has(h));
-    if(!front){ ctx.note('No artwork for the CAP baseball cap'); return; }
-    const view = ctx.base.raw && ctx.base.raw.landmarks && ctx.base.raw.landmarks.hat_view;
-    if(!view || !view.front) return H.hat(ctx, front, null);
-    const put = async (id, box, z, role) => {
-      const spec = await ctx.spec(id);
-      return ctx.place(id, { pieceAnchor: { x: 0, y: 0 }, at: { x: box.x / 100, y: box.y / 100 }, scale: (box.w / 100) / spec.w, z, role, key: role + ':' + id, className: role });
-    };
-    await put(front, view.front, Z.hat, 'hat');
-    const back = front + '-back';
-    if(view.back && ctx.has(back)) await put(back, view.back, Z.hat, 'hat-view');
-    else if(view.back) ctx.note('No artwork for the back of the CAP baseball cap');
   }
 
   async function seal(ctx, slot){
@@ -137,8 +117,8 @@
     // The printed polo has no pocket or accoutrements (5.3.1.2, 5.3.2.1.2): the men's sheet's pocket is hidden.
     await ctx.garment(id, shirt === 'print' ? { hideGroups: ['pocket'] } : null);
 
-    // Headgear: not required; the CAP baseball cap may be worn (5.3.7).
-    if(b.opt.baseballCap) await baseballCap(ctx);
+    // Headgear is not required with this uniform (5.3.7); none is drawn.
+    ctx.note('Headgear is not required with the polo, so none is shown (CAPR 39-1, 5.3.7)');
 
     // The tactical shirt's own cloth (pen pocket on the left sleeve, 5.3.1.3) and the screen-printed shirt's print are overlays of the sheet.
     const pen = slotRect(ctx, 'pen_pocket_slot');

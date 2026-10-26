@@ -32,9 +32,9 @@ test('the sidebar lists the polo for senior members only, beside the aviator uni
   assert.equal(rules.isUniformAllowedFor('polo', 'cadet', { adultCadet: true }), false);
 });
 
-test('the polo panel offers shirt, sleeves, name, badge or title and the cap; a woman also chooses her cut (5.3.1)', () => {
+test('the polo panel offers shirt, sleeves, name, badge or title, and no cap; a woman also chooses her cut (5.3.1)', () => {
   const man = [...panel({}).active.map(o => o.key)];
-  assert.deepEqual(man, ['poloShirt', 'poloName', 'poloMark', 'baseballCap', 'sleeve']);
+  assert.deepEqual(man, ['poloShirt', 'poloName', 'poloMark', 'sleeve']);
   const woman = panel({}, { gender: 'female' }).active.map(o => o.key);
   assert.ok(woman.includes('poloCut'));
   const sleeve = panel({}).O.OPTIONS.find(o => o.key === 'sleeve');
@@ -60,14 +60,14 @@ test('a saved setup keeps only values the panel can produce, the duty title clea
   assert.equal(out.poloShirt, 'print');
   assert.equal(out.poloCut, 'male');
   assert.equal(out.poloName, false);
-  assert.equal(out.baseballCap, true);
+  assert.ok(!('baseballCap' in out), 'the polo has no cap option');
   assert.ok(!/[<>]/.test(out.dutyTitle) && out.dutyTitle.length <= 30);
   assert.equal(Object.keys(O.sanitize({ poloShirt: 'bogus', poloMark: 'x', dutyTitle: 5 })).length, 0);
 });
 
 test('the page builds the polo options with defaults and asks for the first name (5.3.2.1.1); a polo badge choice is saved', () => {
   const view = read('js/uniform-view.js');
-  assert.match(view, /poloShirt: 'embroidered', poloCut: '', poloName: true, poloMark: 'badge', dutyTitle: '', baseballCap: false/);
+  assert.match(view, /poloShirt: 'embroidered', poloCut: '', poloName: true, poloMark: 'badge', dutyTitle: ''/);
   assert.match(read('js/garment-options.js'), /first\.hidden = !FLIGHT\.includes\(u\) && u !== 'polo'/);
   assert.match(read('js/wiring.js'), /BADGE_POSITIONS = \['aviation', 'over-pocket', 'service', 'pocket', 'polo'\]/);
   assert.match(read('js/badge-rules.js'), /allowsBadgeFamily\(State\.uniform, family\)/);
