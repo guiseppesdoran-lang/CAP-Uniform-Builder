@@ -1,0 +1,66 @@
+{
+ "asset_id": "garment-polo-male-long-seal-print",
+ "name": "Men's CAP dark blue polo long sleeves, screen-printed CAP seal in white on the left breast (overlay, registered to garment-polo-male-long)",
+ "size_in": {
+  "w": 25.058,
+  "h": 32.91
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2505.8,
+  3291
+ ],
+ "size_source": "estimated",
+ "size_basis": "The CAP seal asset insignia-cap-seal (Fig A6-4) reduced to a single white print: rings as outlines, lettering, stars, dots and the eagle solid, the blue field as an outline, the propeller and the scroll lettering knocked out in the shirt colour (#001b52). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+ "anchors": {
+  "top_center": [
+   1252.9,
+   0
+  ],
+  "bottom_center": [
+   1252.9,
+   3291.0000000000005
+  ],
+  "center": [
+   1252.9,
+   1645.5000000000002
+  ],
+  "left_edge": [
+   0,
+   1645.5000000000002
+  ],
+  "right_edge": [
+   2505.8,
+   1645.5000000000002
+  ],
+  "print_seal_center": [
+   1709.6,
+   805.37
+  ]
+ },
+ "landmarks": {
+  "print_seal": {
+   "x": 1562.98,
+   "y": 658.75,
+   "w": 293.24,
+   "h": 293.24
+  }
+ },
+ "overlay_of": "garment-polo-male-long",
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory",
+ "documented": [
+  "dark blue knit polo with the CAP seal screen-printed in white on the left breast, long or short sleeves (CAPR 39-1 5.3.1.2)",
+  "no accoutrements: no name, badge or embroidered seal (5.3.2.1.2)"
+ ],
+ "assumed": [
+  "print diameter (the embroidered seal's)",
+  "which seal parts print solid, as outline or are knocked out (single-colour reduction of the seal asset)",
+  "the men's sheet's pocket group (id pocket) is hidden by the engine for the printed polo: it has no pocket"
+ ]
+}

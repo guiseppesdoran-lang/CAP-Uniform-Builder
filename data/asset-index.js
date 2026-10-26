@@ -435,8 +435,16 @@
     "garment-overblouse-female-sleeve-flat-right": "garments/garment-overblouse-female-sleeve-flat-right.svg",
     "garment-polo-female": "garments/garment-polo-female.svg",
     "garment-polo-female-long": "garments/garment-polo-female-long.svg",
+    "garment-polo-female-long-seal-print": "garments/garment-polo-female-long-seal-print.svg",
+    "garment-polo-female-long-tactical": "garments/garment-polo-female-long-tactical.svg",
+    "garment-polo-female-seal-print": "garments/garment-polo-female-seal-print.svg",
+    "garment-polo-female-tactical": "garments/garment-polo-female-tactical.svg",
     "garment-polo-male": "garments/garment-polo-male.svg",
     "garment-polo-male-long": "garments/garment-polo-male-long.svg",
+    "garment-polo-male-long-seal-print": "garments/garment-polo-male-long-seal-print.svg",
+    "garment-polo-male-long-tactical": "garments/garment-polo-male-long-tactical.svg",
+    "garment-polo-male-seal-print": "garments/garment-polo-male-seal-print.svg",
+    "garment-polo-male-tactical": "garments/garment-polo-male-tactical.svg",
     "garment-semiformal-class-a-coat-female": "garments/garment-semiformal-class-a-coat-female.svg",
     "garment-semiformal-class-a-coat-female-cord-aide-de-camp": "garments/garment-semiformal-class-a-coat-female-cord-aide-de-camp.svg",
     "garment-semiformal-class-a-coat-female-cord-color-guard": "garments/garment-semiformal-class-a-coat-female-cord-color-guard.svg",
@@ -468,6 +476,8 @@
     "ground-team-basic-mini": "mini/ground-team-basic-mini/ground-team-basic-mini.svg",
     "group-commander": "silver/group-commander/group-commander.svg",
     "group-commander-field": "field/group-commander-field/group-commander-field.svg",
+    "hat-baseball-cap-blue": "accessories/hat-baseball-cap-blue.svg",
+    "hat-baseball-cap-blue-back": "accessories/hat-baseball-cap-blue-back.svg",
     "hat-flight-cap-cadet": "accessories/hat-flight-cap-cadet.svg",
     "hat-flight-cap-general": "accessories/hat-flight-cap-general.svg",
     "hat-flight-cap-men-cadet": "accessories/hat-flight-cap-men-cadet.svg",
@@ -1118,7 +1128,7 @@
     "uas-technician-senior-field": "field/uas-technician-senior-field/uas-technician-senior-field.svg",
     "uas-technician-senior-mini": "mini/uas-technician-senior-mini/uas-technician-senior-mini.svg"
   };
-  Object.defineProperty(index, 'version', { value: "d6106952bd", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "3b8b1b3a09", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "d6106952bd"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "3b8b1b3a09"; }
 })(typeof self !== 'undefined' ? self : this);

@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1116,
+ "count": 1126,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -47454,6 +47454,408 @@
     "pen_pocket_slot",
     "hat_view"
    ]
+  },
+  {
+   "id": "garment-polo-male-tactical",
+   "path": "garments/garment-polo-male-tactical.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.058,
+   "h_in": 29.48,
+   "size_source": "estimated",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-male: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo.",
+   "anchors": {
+    "top_center": [
+     1252.9,
+     0
+    ],
+    "bottom_center": [
+     1252.9,
+     2948
+    ],
+    "center": [
+     1252.9,
+     1474
+    ],
+    "left_edge": [
+     0,
+     1474
+    ],
+    "right_edge": [
+     2505.8,
+     1474
+    ],
+    "pen_pocket_center": [
+     2264.25,
+     897.4
+    ]
+   },
+   "landmarks": [
+    "pen_pocket_slot"
+   ]
+  },
+  {
+   "id": "garment-polo-male-seal-print",
+   "path": "garments/garment-polo-male-seal-print.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.058,
+   "h_in": 29.48,
+   "size_source": "estimated",
+   "basis": "The CAP seal asset insignia-cap-seal (Fig A6-4) reduced to a single white print: rings as outlines, lettering, stars, dots and the eagle solid, the blue field as an outline, the propeller and the scroll lettering knocked out in the shirt colour (#001b52). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "anchors": {
+    "top_center": [
+     1252.9,
+     0
+    ],
+    "bottom_center": [
+     1252.9,
+     2948
+    ],
+    "center": [
+     1252.9,
+     1474
+    ],
+    "left_edge": [
+     0,
+     1474
+    ],
+    "right_edge": [
+     2505.8,
+     1474
+    ],
+    "print_seal_center": [
+     1709.6,
+     805.37
+    ]
+   },
+   "landmarks": [
+    "print_seal"
+   ]
+  },
+  {
+   "id": "garment-polo-male-long-tactical",
+   "path": "garments/garment-polo-male-long-tactical.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.058,
+   "h_in": 32.91,
+   "size_source": "estimated",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-male-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.81 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo.",
+   "anchors": {
+    "top_center": [
+     1252.9,
+     0
+    ],
+    "bottom_center": [
+     1252.9,
+     3291.0000000000005
+    ],
+    "center": [
+     1252.9,
+     1645.5000000000002
+    ],
+    "left_edge": [
+     0,
+     1645.5000000000002
+    ],
+    "right_edge": [
+     2505.8,
+     1645.5000000000002
+    ],
+    "pen_pocket_center": [
+     2264.26,
+     897.4
+    ]
+   },
+   "landmarks": [
+    "pen_pocket_slot"
+   ]
+  },
+  {
+   "id": "garment-polo-male-long-seal-print",
+   "path": "garments/garment-polo-male-long-seal-print.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.058,
+   "h_in": 32.91,
+   "size_source": "estimated",
+   "basis": "The CAP seal asset insignia-cap-seal (Fig A6-4) reduced to a single white print: rings as outlines, lettering, stars, dots and the eagle solid, the blue field as an outline, the propeller and the scroll lettering knocked out in the shirt colour (#001b52). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-male-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "anchors": {
+    "top_center": [
+     1252.9,
+     0
+    ],
+    "bottom_center": [
+     1252.9,
+     3291.0000000000005
+    ],
+    "center": [
+     1252.9,
+     1645.5000000000002
+    ],
+    "left_edge": [
+     0,
+     1645.5000000000002
+    ],
+    "right_edge": [
+     2505.8,
+     1645.5000000000002
+    ],
+    "print_seal_center": [
+     1709.6,
+     805.37
+    ]
+   },
+   "landmarks": [
+    "print_seal"
+   ]
+  },
+  {
+   "id": "garment-polo-female-tactical",
+   "path": "garments/garment-polo-female-tactical.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.964,
+   "h_in": 32.93,
+   "size_source": "estimated",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.82 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo.",
+   "anchors": {
+    "top_center": [
+     1098.1999999999998,
+     0
+    ],
+    "bottom_center": [
+     1098.1999999999998,
+     3293
+    ],
+    "center": [
+     1098.1999999999998,
+     1646.5
+    ],
+    "left_edge": [
+     0,
+     1646.5
+    ],
+    "right_edge": [
+     2196.3999999999996,
+     1646.5
+    ],
+    "pen_pocket_center": [
+     2003.66,
+     801.54
+    ]
+   },
+   "landmarks": [
+    "pen_pocket_slot"
+   ]
+  },
+  {
+   "id": "garment-polo-female-seal-print",
+   "path": "garments/garment-polo-female-seal-print.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 21.964,
+   "h_in": 32.93,
+   "size_source": "estimated",
+   "basis": "The CAP seal asset insignia-cap-seal (Fig A6-4) reduced to a single white print: rings as outlines, lettering, stars, dots and the eagle solid, the blue field as an outline, the propeller and the scroll lettering knocked out in the shirt colour (#001b52). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "anchors": {
+    "top_center": [
+     1098.1999999999998,
+     0
+    ],
+    "bottom_center": [
+     1098.1999999999998,
+     3293
+    ],
+    "center": [
+     1098.1999999999998,
+     1646.5
+    ],
+    "left_edge": [
+     0,
+     1646.5
+    ],
+    "right_edge": [
+     2196.3999999999996,
+     1646.5
+    ],
+    "print_seal_center": [
+     1506.42,
+     672.65
+    ]
+   },
+   "landmarks": [
+    "print_seal"
+   ]
+  },
+  {
+   "id": "garment-polo-female-long-tactical",
+   "path": "garments/garment-polo-female-long-tactical.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 22.26,
+   "h_in": 32.93,
+   "size_source": "estimated",
+   "basis": "Pen pocket 1.4 x 5.5 in with a 1.35 in flap, centred on the visible face of the wearer's left sleeve (the picture's right) of garment-polo-female-long: its axis runs down the middle of the strip between the armhole seam and the outer edge, from the first row where that strip is 1.8 in wide and at least 1.5 in below the shoulder seam (here 1.82 in is the narrowest strip the pocket crosses). CAPR 39-1 5.3.1.3 gives only \"pen pocket on left sleeve\"; no dimension, and no photograph of a tactical polo on disk, so the pocket size and the flap are an ESTIMATE and nothing else is drawn: the tactical polo's embroidered seal on the right breast and the optional name and badge on the left breast are placed by the engine exactly as on the knit polo.",
+   "anchors": {
+    "top_center": [
+     1113,
+     0
+    ],
+    "bottom_center": [
+     1113,
+     3293
+    ],
+    "center": [
+     1113,
+     1646.5
+    ],
+    "left_edge": [
+     0,
+     1646.5
+    ],
+    "right_edge": [
+     2226,
+     1646.5
+    ],
+    "pen_pocket_center": [
+     2018.46,
+     801.54
+    ]
+   },
+   "landmarks": [
+    "pen_pocket_slot"
+   ]
+  },
+  {
+   "id": "garment-polo-female-long-seal-print",
+   "path": "garments/garment-polo-female-long-seal-print.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 22.26,
+   "h_in": 32.93,
+   "size_source": "estimated",
+   "basis": "The CAP seal asset insignia-cap-seal (Fig A6-4) reduced to a single white print: rings as outlines, lettering, stars, dots and the eagle solid, the blue field as an outline, the propeller and the scroll lettering knocked out in the shirt colour (#001b52). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female-long). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+   "anchors": {
+    "top_center": [
+     1113,
+     0
+    ],
+    "bottom_center": [
+     1113,
+     3293
+    ],
+    "center": [
+     1113,
+     1646.5
+    ],
+    "left_edge": [
+     0,
+     1646.5
+    ],
+    "right_edge": [
+     2226,
+     1646.5
+    ],
+    "print_seal_center": [
+     1521.22,
+     672.65
+    ]
+   },
+   "landmarks": [
+    "print_seal"
+   ]
+  },
+  {
+   "id": "hat-baseball-cap-blue",
+   "path": "accessories/hat-baseball-cap-blue.svg",
+   "category": "accessories",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 8,
+   "h_in": 7,
+   "size_source": "estimated",
+   "basis": "Same drawing and size as the OCP / ABU sheets' baseball cap (hats.js: 7.6 in wide, crown 4.7 in, visor 1.9 in); no real cap was measured: head circumference taken as about 22.5 in (size 7 1/8), a 7.2 in band diameter, as for every cap drawn in hats.js. Colour = the polo shirt colour #001b52 sampled from CAPR 39-1 Figure 5.5 (5.3.7 gives no cap colour; wing and region commanders may prescribe one). The emblem is the CAP seal at 2.2 in (ESTIMATE: no emblem size in the regulation, and the polo's own seal is 2.93 in on Figure 5.5).",
+   "anchors": {
+    "top_center": [
+     400,
+     0
+    ],
+    "bottom_center": [
+     400,
+     700
+    ],
+    "center": [
+     400,
+     350
+    ],
+    "left_edge": [
+     0,
+     350
+    ],
+    "right_edge": [
+     800,
+     350
+    ],
+    "garment_attach_center": [
+     400,
+     680
+    ],
+    "device_slot_center": [
+     400,
+     265.00000000000006
+    ]
+   },
+   "landmarks": [
+    "device_slot"
+   ]
+  },
+  {
+   "id": "hat-baseball-cap-blue-back",
+   "path": "accessories/hat-baseball-cap-blue-back.svg",
+   "category": "accessories",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 8,
+   "h_in": 5.1,
+   "size_source": "estimated",
+   "basis": "Same drawing and size as the OCP / ABU sheets' baseball cap (hats.js: 7.6 in wide, crown 4.7 in); no real cap was measured: head circumference taken as about 22.5 in (size 7 1/8), a 7.2 in band diameter, as for every cap drawn in hats.js. Colour = the polo shirt colour #001b52 sampled from CAPR 39-1 Figure 5.5 (5.3.7 gives no cap colour; wing and region commanders may prescribe one).",
+   "anchors": {
+    "top_center": [
+     400,
+     0
+    ],
+    "bottom_center": [
+     400,
+     510.00000000000006
+    ],
+    "center": [
+     400,
+     255.00000000000003
+    ],
+    "left_edge": [
+     0,
+     255.00000000000003
+    ],
+    "right_edge": [
+     800,
+     255.00000000000003
+    ],
+    "garment_attach_center": [
+     400,
+     490.00000000000006
+    ]
+   },
+   "landmarks": []
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

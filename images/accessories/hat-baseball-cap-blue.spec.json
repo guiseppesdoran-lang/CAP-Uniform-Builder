@@ -1,0 +1,70 @@
+{
+ "asset_id": "hat-baseball-cap-blue",
+ "name": "CAP baseball cap, dark blue, front",
+ "size_in": {
+  "w": 8,
+  "h": 7
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  800,
+  700
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same drawing and size as the OCP / ABU sheets' baseball cap (hats.js: 7.6 in wide, crown 4.7 in, visor 1.9 in); no real cap was measured: head circumference taken as about 22.5 in (size 7 1/8), a 7.2 in band diameter, as for every cap drawn in hats.js. Colour = the polo shirt colour #001b52 sampled from CAPR 39-1 Figure 5.5 (5.3.7 gives no cap colour; wing and region commanders may prescribe one). The emblem is the CAP seal at 2.2 in (ESTIMATE: no emblem size in the regulation, and the polo's own seal is 2.93 in on Figure 5.5).",
+ "anchors": {
+  "top_center": [
+   400,
+   0
+  ],
+  "bottom_center": [
+   400,
+   700
+  ],
+  "center": [
+   400,
+   350
+  ],
+  "left_edge": [
+   0,
+   350
+  ],
+  "right_edge": [
+   800,
+   350
+  ],
+  "garment_attach_center": [
+   400,
+   680
+  ],
+  "device_slot_center": [
+   400,
+   265.00000000000006
+  ]
+ },
+ "landmarks": {
+  "device_slot": {
+   "x": 290,
+   "y": 155,
+   "w": 220.00000000000003,
+   "h": 220.00000000000003
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left. garment_attach_center is the bottom of the cap on its centre line (the visor's lower edge on the front view, the crown's on the back view); the engine puts it on the polo sheet's hat_attach (the collar-tip line), 0.25 in seat below it, as for the sheets' own cap views (the sheets' hat_view landmark gives both boxes). device_slot is the emblem's box.",
+ "orientation": "front view",
+ "documented": [
+  "the CAP baseball cap may be worn with the CAP Corporate Working Uniform; wing and region commanders may prescribe colour, unit designation and/or emblem (CAPR 39-1 5.3.7)"
+ ],
+ "assumed": [
+  "cap size and shape (hats.js, no real cap measured)",
+  "dark blue = the polo colour",
+  "plain CAP seal as the default emblem, 2.2 in"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

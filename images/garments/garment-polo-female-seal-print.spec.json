@@ -1,0 +1,66 @@
+{
+ "asset_id": "garment-polo-female-seal-print",
+ "name": "Women's CAP dark blue polo short sleeves, screen-printed CAP seal in white on the left breast (overlay, registered to garment-polo-female)",
+ "size_in": {
+  "w": 21.964,
+  "h": 32.93
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2196.4,
+  3293
+ ],
+ "size_source": "estimated",
+ "size_basis": "The CAP seal asset insignia-cap-seal (Fig A6-4) reduced to a single white print: rings as outlines, lettering, stars, dots and the eagle solid, the blue field as an outline, the propeller and the scroll lettering knocked out in the shirt colour (#001b52). Diameter 2.93 in = the embroidered seal measured on Figure 5.5 (the printed polo has no figure of its own and no photograph is on disk; ESTIMATE that the print is the same size), centred on the wearer's left breast at the mirror of the embroidered seal's position about the centre line (print_seal_slot of garment-polo-female). CAPR 39-1 5.3.1.2 says \"screen-printed in white lettering on the left breast\" and no accoutrements (5.3.2.1.2).",
+ "anchors": {
+  "top_center": [
+   1098.1999999999998,
+   0
+  ],
+  "bottom_center": [
+   1098.1999999999998,
+   3293
+  ],
+  "center": [
+   1098.1999999999998,
+   1646.5
+  ],
+  "left_edge": [
+   0,
+   1646.5
+  ],
+  "right_edge": [
+   2196.3999999999996,
+   1646.5
+  ],
+  "print_seal_center": [
+   1506.42,
+   672.65
+  ]
+ },
+ "landmarks": {
+  "print_seal": {
+   "x": 1359.8,
+   "y": 526.04,
+   "w": 293.23,
+   "h": 293.23
+  }
+ },
+ "overlay_of": "garment-polo-female",
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory",
+ "documented": [
+  "dark blue knit polo with the CAP seal screen-printed in white on the left breast, long or short sleeves (CAPR 39-1 5.3.1.2)",
+  "no accoutrements: no name, badge or embroidered seal (5.3.2.1.2)"
+ ],
+ "assumed": [
+  "print diameter (the embroidered seal's)",
+  "which seal parts print solid, as outline or are knocked out (single-colour reduction of the seal asset)",
+  ""
+ ]
+}
