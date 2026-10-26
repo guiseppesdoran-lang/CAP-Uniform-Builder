@@ -751,7 +751,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     drops everything else, so nothing outside those lists ever reaches State or the page.
   */
   // The positions where the engine may ask which badge to show (scene.conflicts, js/engine/profiles-dress.js, profiles.js).
-  const BADGE_POSITIONS = ['aviation', 'over-pocket', 'service', 'pocket'];
+  const BADGE_POSITIONS = ['aviation', 'over-pocket', 'service', 'pocket', 'polo'];
   const SAFE_TOKEN = /^[A-Za-z0-9_.:#-]{0,80}$/;
   const has = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
   function safeToken(value){ return typeof value === 'string' && SAFE_TOKEN.test(value) ? value : ''; }
@@ -942,6 +942,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         addNotice('warn',`This uniform authorizes only the chaplain badge, and in place of the CAP Crest the CSAG, Command Council, National Board or NEC badge (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3). Not authorized here: ${notAuthorized.map(getBadgeDisplayName).join(', ')}.`,{id:'expandBadges',label:'Review badges'});
       }
       if((State.badges || []).some(isCommandInsigniaBadge)) addNotice('warn','The command insignia pin is not worn on this uniform (CAPR 39-1, Attachment 4).',{id:'expandBadges',label:'Review badges'});
+    }
+    // The polo takes one badge of the families 5.3.1.1 and 5.3.2.1.1 name, or a duty title, and no command insignia pin.
+    if(CAPUBUniformRules.getUniformRule(State.uniform)?.badgeFamilies){
+      const notAuthorized = (State.badges || []).filter(id => !isBadgeAuthorizedOnCurrentDressUniform(id));
+      if(notAuthorized.length){
+        addNotice('warn',`This uniform authorizes one service, aviation, occupational or specialty track badge, or a duty title (CAPR 39-1, 5.3.1.1, 5.3.2.1.1). Not authorized here: ${notAuthorized.map(pretty).join(', ')}.`,{id:'expandBadges',label:'Review badges'});
+      }
     }
     const unwornAwards = Object.entries(State.ribbonSelections || {})
       .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;

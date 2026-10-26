@@ -1,5 +1,5 @@
 // Choices about the garment itself: sleeve length, the women's aviator top, what is worn under the
-// blazer, the mess dress skirt, headgear, chevron size, the flight jacket and scarf, the ES patch.
+// blazer, the mess dress skirt, headgear, chevron size, the flight jacket and scarf, the ES patch, the polo's shirt.
 // Each option is offered only on the uniforms (and for the members) it applies to, and is kept in
 // State.garment. The uniform engine reads them through js/uniform-view.js.
 (function(){
@@ -18,8 +18,29 @@
     return max ? Math.min((State.badges || []).length, max) : 0;
   }
 
-  // { key, label, type: 'select' | 'check', choices: [[value, label]] | fn, when(ctx) }
+  // The polo (Corporate Working Uniform, 5.3). The screen-printed shirt has no accoutrements (5.3.2.1.2): its name and badge options
+  // stay in the list, switched off, with the paragraph.
+  const POLO_PRINT = 'No accoutrements are worn with the screen-printed seal (CAPR 39-1, 5.3.2.1.2).';
+  const isPolo = c => c.u === 'polo';
+  const poloPrint = c => isPolo(c) && c.o.poloShirt === 'print';
+  const TEXT_MAX = { dutyTitle: 30 };
+
+  // { key, label, type: 'select' | 'check' | 'text', choices: [[value, label]] | fn, when(ctx), off(ctx) -> note | '' (shown, switched off) }
   const OPTIONS = [
+    { key: 'poloShirt', label: 'Shirt', type: 'select',
+      choices: [['embroidered', 'Knit polo, seal embroidered (5.3.1.1)'], ['print', 'Knit polo, seal screen-printed (5.3.1.2)'], ['tactical', 'Tactical polo, pen pocket on the left sleeve (5.3.1.3)']],
+      when: isPolo },
+    { key: 'poloCut', label: 'Cut', type: 'select',
+      choices: [['', "Women's polo, no pocket"], ['male', "Men's polo, left chest pocket"]],
+      when: c => isPolo(c) && c.female },
+    { key: 'poloName', label: 'Name embroidered in white thread', type: 'check', defaultValue: true,
+      when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
+    { key: 'poloMark', label: 'Over the name', type: 'select',
+      choices: [['badge', 'One badge (pick it under Badges)'], ['title', 'A duty title']],
+      when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
+    { key: 'dutyTitle', label: 'Duty title', type: 'text',
+      when: c => isPolo(c) && c.o.poloMark === 'title', off: c => poloPrint(c) ? POLO_PRINT : '' },
+    { key: 'baseballCap', label: 'CAP baseball cap (5.3.7)', type: 'check', when: isPolo },
     { key: 'commandChief', label: 'Appointed Command Chief (ICL 25-02)', type: 'check',
       when: c => !c.g.cadet && State.rank === 'CMSgt' },
     { key: 'noGradeTrack', label: 'Working toward', type: 'select',
@@ -27,7 +48,7 @@
       when: c => c.g.category === 'senior-none' },
     { key: 'sleeve', label: 'Sleeves', type: 'select',
       choices: [['short', 'Short sleeves'], ['long', 'Long sleeves']],
-      when: c => ['blues_b', 'aviator'].includes(c.u) },
+      when: c => ['blues_b', 'aviator', 'polo'].includes(c.u) },
     { key: 'femaleTop', label: 'Top', type: 'select',
       choices: [['shirt', 'Aviator shirt'], ['overblouse', 'White overblouse']],
       when: c => c.u === 'aviator' && c.female },
@@ -90,7 +111,8 @@
   const ALLOWED = {
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
     underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'],
-    headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2']
+    headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2'],
+    poloShirt: ['embroidered', 'print', 'tactical'], poloCut: ['', 'male'], poloMark: ['badge', 'title']
   };
 
   // Keep only values this panel could have produced (a saved setup is untrusted input).
@@ -101,13 +123,14 @@
       if(!KEYS.has(k)) continue;
       const v = raw[k];
       if(ALLOWED[k]){ if(ALLOWED[k].includes(v)) out[k] = v; }
+      else if(TEXT_MAX[k]){ if(typeof v === 'string') out[k] = v.replace(/[^A-Za-z0-9 .,'&\/()-]/g, '').slice(0, TEXT_MAX[k]); }
       else if(typeof v === 'boolean') out[k] = v;
     }
     return out;
   }
 
   function context(){
-    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount() };
+    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount(), o: State.garment || {} };
   }
 
   // Name fields that only some uniforms use: the first name on the flight suit tags (8.2.4.1), the
@@ -116,7 +139,8 @@
     const u = State.uniform;
     const first = document.getElementById('firstNameRow');
     const plate = document.getElementById('plateLineRow');
-    if(first) first.hidden = !FLIGHT.includes(u);
+    // The polo's embroidered name is the first and last name (5.3.2.1.1).
+    if(first) first.hidden = !FLIGHT.includes(u) && u !== 'polo';
     if(plate) plate.hidden = u !== 'aviator_blazer';
   }
 
@@ -129,7 +153,8 @@
     const c = context();
     const active = OPTIONS.filter(o => o.when(c));
     const g = State.garment || {};
-    const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, active.map(o => o.key), g]);
+    // The text in a text field is not part of the signature: typing must not rebuild the field being typed in.
+    const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
     host.textContent = '';
@@ -138,7 +163,22 @@
       const id = 'garmentOpt-' + o.key;
       const row = document.createElement('div');
       row.className = 'garmentOption';
-      if(o.type === 'check'){
+      const offNote = o.off ? o.off(c) : '';
+      if(o.type === 'text'){
+        const label = document.createElement('label');
+        label.className = 'fieldLabel';
+        label.htmlFor = id;
+        label.textContent = o.label;
+        const input = document.createElement('input');
+        input.id = id;
+        input.type = 'text';
+        input.maxLength = TEXT_MAX[o.key];
+        input.autocomplete = 'off';
+        input.value = g[o.key] || '';
+        input.addEventListener('input', () => set(o.key, input.value, true));
+        row.append(label, input);
+        if(offNote) input.disabled = true;
+      }else if(o.type === 'check'){
         const label = document.createElement('label');
         label.className = 'fieldNote';
         const box = document.createElement('input');
@@ -146,6 +186,7 @@
         box.id = id;
         box.checked = g[o.key] == null ? !!o.defaultValue : !!g[o.key];
         box.addEventListener('change', () => set(o.key, box.checked));
+        if(offNote) box.disabled = true;
         label.append(box, ' ' + o.label);
         row.append(label);
       }else{
@@ -165,16 +206,23 @@
         const current = g[o.key];
         sel.value = choices.some(([v]) => v === current) ? current : choices[0][0];
         sel.addEventListener('change', () => set(o.key, sel.value));
+        if(offNote) sel.disabled = true;
         row.append(label, sel);
+      }
+      if(offNote){
+        const note = document.createElement('div');
+        note.className = 'fieldNote';
+        note.textContent = offNote;
+        row.append(note);
       }
       host.append(row);
     }
   }
 
-  function set(key, value){
+  function set(key, value, typing){
     State.garment = Object.assign({}, State.garment || {}, { [key]: value });
     if(typeof fullRender === 'function') fullRender();
-    render();
+    if(!typing) render();
   }
 
   document.addEventListener('capub:rendered', () => render());

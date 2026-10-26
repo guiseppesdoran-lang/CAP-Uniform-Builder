@@ -85,6 +85,9 @@ const CAPUB_CADET_PROGRAMS_RATED_BADGE_IDS = new Set([
 ]);
 
 function isBadgeAuthorizedOnCurrentDressUniform(id){
+  // A uniform that names the badge families it authorizes (the polo, 5.3.1.1, 5.3.2.1.1) wears no other.
+  const family = window.CAPUBBadgeCatalog?.family(id);
+  if(family && !CAPUBUniformRules.allowsBadgeFamily(State.uniform, family)) return false;
   // The Corporate Service Dress (4.2.3.1.1.3) and the Corporate Semi-Formal, which carries its rules
   // forward (4.2.1, 4.2.2): the chaplain insignia and the listed service-badge substitutes for the
   // pocket CAP crest are the only badges worn on them.
