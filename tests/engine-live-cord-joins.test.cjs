@@ -143,6 +143,19 @@ test('the cord\'s start meets the epaulet strap: the engine\'s strip on the Clas
   }
 });
 
+test('LIVE9-1: a cadet officer\'s slide-on sleeve covers the Class B strap from its outer end, so the cord\'s start still comes out from under the sleeve: the cap meets the sleeve polygon, which is drawn over the cord (9.3, 9.4.1)', async () => {
+  for(const [gid, uniform, gender, opt] of GARMENTS.filter(x => x[1] === 'blues_b')){
+    const scene = await P.composeUniform(hb(uniform, gender, 'cadet', 'C/Maj', opt, 'wing'), store);
+    const sl = scene.layers.find(x => x.key === 'epaulet:left'), cordLayer = scene.layers.find(l => l.id === `${gid}-cord-wing`);
+    assert.ok(sl && sl.type === 'polygon' && cordLayer, `${gid}: the sleeve polygon on the wearer's left shoulder and the cord`);
+    assert.ok(sl.z > cordLayer.z, `${gid}: the sleeve is drawn over the cord`);
+    const cap = startCap(cordStrokes(`${gid}-cord-wing`)[0].pts, 0.4, silhouetteOf(gid));
+    const poly = sl.points.map(q => [q.x, q.y]);
+    const gap = Math.min(...cap.map(p => polyDist(p, poly)));
+    assert.ok(gap <= (KNOWN_STRAP_GAP[gid] || CORD_MEETS_STRAP), `${gid}: the cord's start cap is ${gap.toFixed(3)} in from the sleeve`);
+  }
+});
+
 // Ethan, live: 'cord is still off a bit' on the Class A coat with a shoulder board. The cord must come out from under the board at its
 // outer (arm) end: its top end lies under the strip (inside it, to 0.02 in), within the strip's outer end (none of it past that end), its
 // path leaves the strip across the strip's lower edge, and it is drawn under the strip (9.3, 9.4.1: the cord is worn under the epaulet).

@@ -84,20 +84,19 @@ function bottomY(poly, x){
 
 async function sheet(garment){ return store.load(garment); }
 
-// The centre of the edge-on strip on one shoulder: the overlay sheet's rank-slot centre, or, on a sheet
-// with no edge-on art, the centre of the strip the engine draws.
-async function stripCenter(scene, garment, side){
-  const ov = scene.layers.find(l => l.role === 'garment-layer' && new RegExp(`^${garment}-epaulet-sleeve-(officer|cadet-officer)$`).test(l.id));
-  if(ov){
-    const s = await store.load(ov.id);
-    return { at: core.anchor(s, `rank_slot_${side}_center`), via: 'overlay' };
+// Distance from a point to a polygon's outline.
+function outlineDist(poly, p){
+  let best = Infinity;
+  for(let i = 0; i < poly.length; i++){
+    const a = poly[i], b = poly[(i + 1) % poly.length], dx = b.x - a.x, dy = b.y - a.y;
+    const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1)));
+    best = Math.min(best, Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy));
   }
-  const drawn = scene.layers.find(l => l.key === `epaulet:${side}`);
-  return drawn ? { at: drawn.origin, via: 'drawn' } : { at: null };
+  return best;
 }
 
 for(const [label, uniform, gender, opt, garment] of CUTS){
-  test(`${label}: edge-on strip on the epaulet landmark, top view just above the shoulder, grade on both (R7)`, async () => {
+  test(`${label}: sleeve on the strap, top view just above the shoulder, grade on both (R7, LIVE9-1)`, async () => {
     const spec = await sheet(garment);
     for(const [m, r] of SLEEVE_MEMBERS){
       const scene = await P.composeUniform(build(uniform, m, r, gender, opt), store);
@@ -107,13 +106,11 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
       for(const side of SIDES){
         const poly = pts(spec.landmarks[`epaulet_${side}`]);
 
-        // The edge-on strip: its centre is inside the epaulet landmark and within half the strap's
-        // depth of the shoulder line.
-        const strip = await stripCenter(scene, garment, side);
-        assert.ok(strip.at, `${tag} ${side}: an edge-on epaulet strip is drawn`);
-        assert.ok(inside(poly, strip.at), `${tag} ${side}: the strip centre (${strip.at.x.toFixed(2)}, ${strip.at.y.toFixed(2)}) is on the epaulet landmark`);
-        const drop = strip.at.y - topY(poly, strip.at.x);
-        assert.ok(drop >= 0 && drop <= 0.5, `${tag} ${side}: the strip is on the shoulder line (${drop.toFixed(2)} in below it)`);
+        // The sleeve: the polygon of the strap's outer part, drawn on the epaulet landmark (every vertex on it or within 0.1 in of its outline: the
+        // aviator sheets' strap has a seam kink the landmark's rectangle smooths over).
+        const sl = scene.layers.find(l => l.key === `epaulet:${side}`);
+        assert.ok(sl && sl.type === 'polygon', `${tag} ${side}: the sleeve polygon is drawn`);
+        for(const q of sl.points) assert.ok(inside(poly, q) || outlineDist(poly, q) <= 0.1, `${tag} ${side}: the sleeve vertex (${q.x.toFixed(2)}, ${q.y.toFixed(2)}) lies on the strap`);
 
         // The top-down view: just above the shoulder, never over the garment.
         const top = scene.layers.find(l => l.key === `epaulet-top:${side}`);
@@ -146,11 +143,11 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
         const sleeve = g.key ? `rank-epaulet-sleeve-${cadet ? 'blue-cadet' : 'gray'}-${g.key}` : 'rank-epaulet-sleeve-gray-blank';
         assert.equal(top.id, sleeve, `${tag}: ${cadet ? 'blue' : 'gray'} sleeve`);
         if(!g.key) continue;
-        const edgeGrade = scene.layers.find(l => l.role === 'grade' && l.key === `grade:edge-${side}`);
+        const edgeGrade = scene.layers.find(l => l.role === 'grade' && l.key === `grade:sleeve-${side}`);
         if(!/^FO$|^TFO$|^SFO$/.test(r)){
-          assert.ok(edgeGrade, `${tag} ${side}: the grade is on the edge-on strip`);
-          assert.ok(inside(poly, edgeGrade.origin), `${tag} ${side}: the grade sits on the epaulet landmark`);
-          assert.ok(Math.max(edgeGrade.w, edgeGrade.h) > 0.2, `${tag} ${side}: the edge-on grade is big enough to see`);
+          assert.ok(edgeGrade, `${tag} ${side}: the grade is on the sleeve`);
+          assert.ok(inside(sl.points, edgeGrade.origin), `${tag} ${side}: the grade sits on the sleeve`);
+          assert.ok(Math.max(edgeGrade.w, edgeGrade.h) > 0.2, `${tag} ${side}: the grade on the sleeve is big enough to see`);
           assert.ok(cadet ? /metal-miniature$/.test(edgeGrade.id) : /-thread$/.test(edgeGrade.id), `${tag}: ${edgeGrade.id} is the grade for the sleeve`);
         }
       }

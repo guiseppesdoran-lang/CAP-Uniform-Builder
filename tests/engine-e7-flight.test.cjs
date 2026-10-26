@@ -115,10 +115,10 @@ test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement as t
 test('flight shoulder bars match the epaulet\'s top view: the long axis of the bars is across the strap, along the seam', async () => {
   const axisOf = l => { const r = (l.rotate || 0) * Math.PI / 180; return { x: -Math.sin(r), y: Math.cos(r) }; };   // the art's height direction
   const cb = await P.composeUniform(build('blues_b', 'senior', 'Capt'), store());
-  // The Class B captain's bars are placed by gradeOnStrap (the edge-on strip) with the same quarter turn the epaulet's top view art carries;
-  // the strip's strap axis is the top view's long side.
-  const top = cb.layers.find(l => l.key === 'grade:edge-right'), view = cb.layers.find(l => l.key === 'epaulet-top:right');
-  assert.ok(top && view, 'the Class B captain has the epaulet view and the grade on the strip');
+  // The Class B captain's bars are placed by sleeveGrade (face-on on the sleeve, LIVE9-1) with the same quarter turn the epaulet's top view art carries;
+  // the strap axis is the top view's long side.
+  const top = cb.layers.find(l => l.key === 'grade:sleeve-right'), view = cb.layers.find(l => l.key === 'epaulet-top:right');
+  assert.ok(top && view, 'the Class B captain has the epaulet view and the grade on the sleeve');
   const vr = (view.rotate || 0) * Math.PI / 180, strap = { x: -Math.sin(vr), y: Math.cos(vr) };     // the view's long side
   const a = axisOf(top);
   assert.ok(Math.abs(a.x * strap.x + a.y * strap.y) < 0.45, `Class B top view: the bars' long axis is across the strap (dot ${(a.x * strap.x + a.y * strap.y).toFixed(2)})`);

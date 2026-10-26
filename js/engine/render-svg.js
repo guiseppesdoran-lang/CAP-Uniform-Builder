@@ -311,6 +311,9 @@
         }
       }else if(layer.type === 'rect'){
         node = el('rect', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), rx: layer.rx ? fmt(layer.rx) : null, fill: layer.fill || 'none', 'fill-opacity': layer.fillOpacity != null ? layer.fillOpacity : null, stroke: layer.stroke || null, 'stroke-width': layer.strokeWidth ? fmt(layer.strokeWidth) : null });
+      }else if(layer.type === 'polygon'){
+        // A flat-filled polygon in scene inches (the slide-on epaulet sleeve over its strap and its two shading bands).
+        node = el('polygon', { points: layer.points.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' '), fill: layer.fill || 'none', 'fill-opacity': layer.fillOpacity != null ? layer.fillOpacity : null, stroke: layer.stroke || null, 'stroke-width': layer.stroke ? fmt(layer.strokeWidth || 0.02) : null, 'stroke-linejoin': 'round' });
       }else if(layer.type === 'text'){
         node = el('text', {
           x: fmt(layer.x), y: fmt(layer.y),

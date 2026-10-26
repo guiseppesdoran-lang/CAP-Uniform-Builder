@@ -741,8 +741,8 @@
   }
 
   // EDGE_ON_THICK is the 0.4 in strip the sheets' own edge-on overlays drew (their size_basis), over the outer 82% of the strap landmark; it is the
-  // strap rectangle's half-width in strapFrames and the fallback thickness of epauletEdgeGrades. The strips the engine draws (epauletStrips, the Class A
-  // boards) are BOARD_STRIP_THICK (0.5 in) and the officers' Class A overlay strip the thickness its sheet states (about 0.46 in): the grade on any of them
+  // strap rectangle's half-width in strapFrames and the fallback thickness of epauletEdgeGrades. The strips the engine draws (the Class A
+  // boards; the shirts' sleeves are face-on polygons since LIVE9-1, epauletStrips) are BOARD_STRIP_THICK (0.5 in) and the officers' Class A overlay strip the thickness its sheet states (about 0.46 in): the grade on any of them
   // is squeezed to that strip's thickness less 0.08 in (gradeOnStrap), and sits 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1),
   // the same place the sleeve's own grade is drawn.
   const EDGE_ON_THICK = 0.4;
@@ -857,44 +857,139 @@
     return { min, max, mean: n ? sum / n : NaN };
   }
 
-  // The shirts' epaulet sleeves seen from the front (Class B shirt and blouse, the aviator shirts and the overblouse, the aviator shirt beside the
-  // blazer): the slide-on sleeve lies on TOP of the shoulder, so from the front only its edge shows (Ethan: "those on the shirt need to be adjusted
-  // to be partially offscreen as they are on top not on the front"). It is drawn the way the Class A boards are (boardStrips): the sleeve art
-  // squeezed across the strap to BOARD_STRIP_THICK (0.5 in, the thickness the Class A strip has; the strap itself is the 1.0 in the regulation states, DAFI
-  // 36-2903 4.5.1.1.1, seen edge-on), its length the sleeve's own over the outer 82% of the strap landmark (EDGE_ON_COVER), the outer end flush
-  // with the strap's outer end, the upper edge on the strap's upper edge and then lowered until it lies along the shoulder line on average, so where the
-  // shoulder curves away the strip's outer part stands beyond the outline, on top of the shoulder, as the board's does. The strip's axis, length and
-  // outer end are read from the sheet's epaulet_<side> landmark (H.epauletFrame), so it follows when the art redraws the strap. The grade is the
-  // foreshortened one (gradeOnStrap), 5/8 in from the outer end, with the same two shading bands as the boards (stripShading). The sheets' own
-  // epaulet-sleeve overlays (the 0.4 in strip drawn as art, `<sheet>-epaulet-sleeve-officer`, `-cadet-officer`) are left unused. Returns each
-  // side's upper edge, for the top view to clear.
+  // The shirts' slide-on epaulet sleeves seen from the front (Class B shirt and blouse, the aviator shirts, the aviator shirt beside the blazer, the
+  // overblouse). These sheets draw the strap itself, 1.0 in wide (0.9 in on the aviator shirts) with its topstitching, point and button, and a real
+  // slide-on sleeve covers the strap (Ethan, on the Class B shoulder: "see the issue here?"; the 0.5 in edge-on strip of LIVE7-2 left the strap showing
+  // under and past it; CAPR 39-1 4.1.6.1.1, 4.1.6.1.4, 4.2.5.1.1.1, 4.2.6.2.1, Figs 4.8, 4.16, A5-1, A5-6). So the sleeve is drawn flat on the shoulder, as the
+  // sheet's strap polygon from its outer end, cut square to the strap's axis SLEEVE_CUT_FROM_TIP short of the strap's tip so the point and the button
+  // stay visible: 0.5 in (the button's distance from the tip) + 0.23 in (the Class B button's radius, the largest of the sheets') + 0.07 in. The aviator
+  // overlays state that polygon themselves (epaulet_sleeve_poly_<side>, which follows the drawn strap's seam kink): where a sheet has one it is used; where
+  // the sheet states epaulet_axis (Class B) its button_from_tip_in sets the cut; the overblouse states neither, so the strap landmark itself is cut. The
+  // cloth is the sleeve art's own (its colours: gray or the cadet officers' blue) with the two flat shading bands of the edge-on views (stripShading) on
+  // the upper and lower edge. The grade is drawn full-face on the sleeve's centre (the overlay's rank_slot centre where it lies on the strap axis, else the
+  // sleeve polygon's centroid) at regulation size, reduced uniformly only if a corner of its box would come within SLEEVE_MARGIN (0.1 in) of the sleeve's outline (sleeveGrade).
+  // Returns each side's grade distance from the strap's outer end that the view from above keeps (the seat LIVE7-2 gave it, 5/8 in + half the grade).
+  const SLEEVE_CUT_FROM_TIP = 0.8;
+  const SLEEVE_MARGIN = 0.1;
+  const SLEEVE_BUTTON_R = 0.23;
+
+  // The polygon `poly` cut to the side of the line (point on the axis + along) <= limit.
+  function clipAlong(poly, f, limit){
+    const a = p => (p.x - f.center.x) * f.axis.x + (p.y - f.center.y) * f.axis.y;
+    const out = [];
+    for(let i = 0; i < poly.length; i++){
+      const p = poly[i], q = poly[(i + 1) % poly.length], ap = a(p), aq = a(q);
+      if(ap <= limit) out.push(p);
+      if((ap <= limit) !== (aq <= limit)){ const t = (limit - ap) / (aq - ap); out.push({ x: p.x + (q.x - p.x) * t, y: p.y + (q.y - p.y) * t }); }
+    }
+    return out;
+  }
+
+  // The sleeve polygon of one side and where its grade goes: { poly, center } (scene inches) or null.
+  async function sleeveOnStrap(ctx, g, side, f){
+    const cat = g.category === 'cadet-officer' ? 'cadet-officer' : 'officer';
+    const ovId = ctx.base ? `${ctx.base.id}-epaulet-sleeve-${cat}` : null;
+    const ov = ovId && ctx.has(ovId) ? await ctx.spec(ovId) : null;
+    const stated = ov && ov.landmarks['epaulet_sleeve_poly_' + side];
+    let poly;
+    if(stated && stated.points && stated.points.length >= 3) poly = stated.points.map(p => ({ x: p.x, y: p.y }));
+    else{
+      const along = p => (p.x - f.center.x) * f.axis.x + (p.y - f.center.y) * f.axis.y;
+      const tip = Math.max(...f.poly.map(along));
+      const ax = ctx.base && ctx.base.landmarks.epaulet_axis && ctx.base.landmarks.epaulet_axis[side];
+      const fromTip = ax && Number.isFinite(ax.button_from_tip_in) ? ax.button_from_tip_in + SLEEVE_BUTTON_R + 0.07 : SLEEVE_CUT_FROM_TIP;
+      poly = clipAlong(f.poly, f, tip - Math.max(fromTip, SLEEVE_CUT_FROM_TIP));
+    }
+    if(poly.length < 3) return null;
+    const c = H.polygonCentroid(poly);
+    const slot = ov && ov.anchors[`rank_slot_${side}_center`];
+    const off = slot ? Math.abs((slot.x - f.center.x) * f.normal.x + (slot.y - f.center.y) * f.normal.y) : Infinity;
+    return { poly, center: slot && off <= 0.1 && pointInPolygon(slot, poly) ? { x: slot.x, y: slot.y } : c };
+  }
+
+  function pointInPolygon(p, poly){
+    let c = false;
+    for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){
+      const a = poly[i], b = poly[j];
+      if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c;
+    }
+    return c;
+  }
+
+  // The distance from a point to a polygon's outline.
+  function outlineDistance(poly, p){
+    let best = Infinity;
+    for(let i = 0; i < poly.length; i++){
+      const a = poly[i], b = poly[(i + 1) % poly.length], dx = b.x - a.x, dy = b.y - a.y;
+      const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1)));
+      best = Math.min(best, Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy));
+    }
+    return best;
+  }
+
+  // The two long edges of the sleeve polygon as point chains (upper = the one on the shoulder side), found between the outer end edge and the cut edge.
+  function sleeveEdges(poly, f){
+    const along = p => (p.x - f.center.x) * f.axis.x + (p.y - f.center.y) * f.axis.y;
+    const n = poly.length, mid = i => (along(poly[i]) + along(poly[(i + 1) % n])) / 2;
+    let outer = 0, cut = 0;
+    for(let i = 1; i < n; i++){ if(mid(i) < mid(outer)) outer = i; if(mid(i) > mid(cut)) cut = i; }
+    const chain = (from, to) => { const pts = [poly[(from + 1) % n]]; let i = (from + 1) % n; while(i !== to){ i = (i + 1) % n; pts.push(poly[i]); } return pts; };
+    const a = chain(outer, cut), b = chain(cut, outer);
+    const across = pts => pts.reduce((s, p) => s + (p.x - f.center.x) * f.normal.x + (p.y - f.center.y) * f.normal.y, 0) / pts.length;
+    return across(a) >= across(b) ? { upper: a, lower: b } : { upper: b, lower: a };
+  }
+
+  // The sleeve's two shading bands, polygons along the upper and the lower edge (SHADE_BAND wide, clipped to the sleeve): flat tints, no gradient (R2).
+  function sleeveShading(ctx, side, poly, f, z){
+    const { upper, lower } = sleeveEdges(poly, f);
+    for(const [name, tone, chain, dir] of [['light', SHADE.light, upper, -1], ['dark', SHADE.dark, lower, 1]]){
+      const back = chain.slice().reverse().map(p => ({ x: p.x + f.normal.x * dir * SHADE_BAND, y: p.y + f.normal.y * dir * SHADE_BAND }));
+      const pts = [...chain, ...back], b = core.polygonBounds(pts);
+      ctx.layers.push({ type: 'polygon', points: pts, x: b.x, y: b.y, w: b.w, h: b.h, rotate: 0, origin: { x: b.x, y: b.y }, fill: tone.fill, fillOpacity: tone.opacity,
+        clip: poly, z, role: 'epaulet-shade', key: `epaulet-shade:${name}:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, ${name} edge`, noBounds: true });
+    }
+  }
+
+  // The grade on the sleeve's centre, face-on: its art stood with the top toward the neck (bars and stripes across the strap, ACROSS_GRADES) at regulation
+  // size; if a corner of its box would lie outside the sleeve or nearer than SLEEVE_MARGIN to its outline (on the 0.9 and 1.0 in straps the captain's 1.0 in
+  // bars, the colonel's eagle), it is reduced uniformly in 2% steps until none does (never enlarged, never squeezed).
+  async function sleeveGrade(ctx, g, side, f, sleeve){
+    const id = epauletGradeId(g);
+    if(!id || !ctx.has(id)) return null;
+    const gs = await ctx.spec(id);
+    const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
+    const deg = f.deg + (quarter ? 90 : 0), c = sleeve.center;
+    const fits = k => [[-1, -1], [1, -1], [1, 1], [-1, 1]].every(([sx, sy]) => {
+      const q = core.rotatePoint({ x: c.x + sx * gs.w * k / 2, y: c.y + sy * gs.h * k / 2 }, c, deg);
+      return pointInPolygon(q, sleeve.poly) && outlineDistance(sleeve.poly, q) >= SLEEVE_MARGIN;
+    });
+    let k = 1;
+    while(k > 0.3 && !fits(k)) k = Math.round((k - 0.02) * 100) / 100;
+    return ctx.place(id, { pieceAnchor: 'center', at: c, rotate: deg, scale: k, flipX: mirrorsEagle(g, side), z: Z.insignia, role: 'grade', key: `grade:sleeve-${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade` });
+  }
+
   async function epauletStrips(ctx, g, sleeveId){
-    const edges = {};
-    if(!ctx.has(sleeveId)) return edges;
+    const seats = {};
+    if(!ctx.has(sleeveId)) return seats;
     const s = await ctx.spec(sleeveId);
+    const gradeId = epauletGradeId(g);
+    const gs = gradeId && ctx.has(gradeId) ? await ctx.spec(gradeId) : null;
+    const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
+    const colours = (s.raw && s.raw.colours) || {};
+    const cloth = colours[(s.raw && s.raw.rank && s.raw.rank.sleeve) || (g.category === 'cadet-officer' ? 'blue' : 'gray')] || colours.gray || '#5f5c5c';
     for(const side of ['right', 'left']){
       const f = H.epauletFrame(ctx, side);
       if(!f) continue;
-      const len = f.length * EDGE_ON_COVER;
-      const scale = Math.min(1, len / s.h);
-      const half = s.h * scale / 2;
-      const T = BOARD_STRIP_THICK;
-      // Strip centre on the strap axis, outer end flush with the strap's outer end; upper edge flush
-      // with the strap's outer side, then lowered until it lies along the shoulder line on average (the
-      // shoulder curves away under a straight strip).
-      const along = { x: f.outer.x + f.axis.x * half, y: f.outer.y + f.axis.y * half };
-      const c0 = { x: along.x + f.normal.x * (f.width / 2 - T / 2), y: along.y + f.normal.y * (f.width / 2 - T / 2) };
-      const upper = bandEdge(f, c0, T / 2, half);
-      const clear = shoulderClearance(f, upper[0], upper[1]);
-      const dy = Number.isFinite(clear.mean) ? clear.mean : 0;
-      const c = { x: c0.x, y: c0.y + dy };
-      edges[side] = upper.map(q => ({ x: q.x, y: q.y + dy }));
-      await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: ['grade', 'cap'], z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
-      stripShading(ctx, side, c, f.axis, f.normal, half * 2, T, 0, Z.epauletLayer + 0.6);
-      const end = { x: c.x - f.axis.x * half, y: c.y - f.axis.y * half };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, T - 0.08, { title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      const sleeve = await sleeveOnStrap(ctx, g, side, f);
+      if(!sleeve) continue;
+      const b = core.polygonBounds(sleeve.poly);
+      ctx.layers.push({ type: 'polygon', points: sleeve.poly, x: b.x, y: b.y, w: b.w, h: b.h, rotate: 0, origin: { x: b.x, y: b.y }, fill: cloth, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
+        title: `${side === 'right' ? 'Right' : 'Left'} epaulet sleeve` });
+      sleeveShading(ctx, side, sleeve.poly, f, Z.epauletLayer + 0.6);
+      await sleeveGrade(ctx, g, side, f, sleeve);
+      if(gs) seats[side] = GRADE_FROM_END + (quarter ? gs.w : gs.h) / 2;
     }
-    return edges;
+    return seats;
   }
 
   // Every top-down view (the shirts' epaulet sleeves, the Class A shoulder boards, the mess dress boards) is drawn LEVEL, its
@@ -914,7 +1009,7 @@
   // The epaulet sleeves seen from above, each just above its shoulder: drawn level (levelFrame), its lower edge TOP_VIEW_CLEAR above
   // the garment's shoulder line (the epaulet landmark's top boundary), the grade in place. Class B, aviator shirt and overblouse
   // (R7).
-  async function epauletViews(ctx, g, strips, frames){
+  async function epauletViews(ctx, g, seats, frames){
     const sleeveId = epauletSleeveId(g);
     if(!sleeveId || !ctx.has(sleeveId)) return;
     const s = await ctx.spec(sleeveId);
@@ -930,24 +1025,14 @@
       const c0 = { x: f.center.x + f.normal.x * (f.width / 2 + half.n), y: f.center.y + f.normal.y * (f.width / 2 + half.n) };
       const lower = bandEdge(f, c0, -half.n, half.a);
       let minClear = shoulderClearance(f, lower[0], lower[1]).min;
-      // A strip drawn above the shoulder line (the overblouse's) is cleared too.
-      const st = strips && strips[side];
-      if(st){
-        const lo = Math.max(Math.min(lower[0].x, lower[1].x), Math.min(st[0].x, st[1].x)), hi = Math.min(Math.max(lower[0].x, lower[1].x), Math.max(st[0].x, st[1].x));
-        const yAt = (a, b, x) => a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x || 1);
-        for(let i = 0; i <= 20 && hi > lo; i++){
-          const x = lo + (hi - lo) * i / 20;
-          minClear = Math.min(minClear, yAt(st[0], st[1], x) - yAt(lower[0], lower[1], x));
-        }
-      }
       let c = { x: c0.x, y: c0.y - (Number.isFinite(minClear) ? TOP_VIEW_CLEAR - minClear : 0) };
-      // The grade lies the same distance from the strap's outer end on the view from above as on the edge-on strip: slide the
-      // view along the strap until its grade (the sleeve's insignia point) is as far from the outer end as the strip's.
-      const edge = ctx.layers.find(l => l.key === `grade:edge-${side}`);
-      if(edge && ins){
+      // The view keeps the seat LIVE7-2 gave it: slid along the strap until its grade is as far from the strap's outer end as the grade was when it was drawn
+      // edge-on, 5/8 in from the end (`seats`, from epauletStrips; LIVE9-1: the sleeve on the shoulder is now face-on with its grade on its centre, and the view
+      // from above is left where it was). Members with no sleeve (no seat) keep the plain placement.
+      const seat = seats && seats[side];
+      if(seat != null && ins){
         const at = core.rotatePoint({ x: c.x + (ins.x - s.w / 2), y: c.y + (ins.y - s.h / 2) }, c, f.deg);
-        const along = p => (p.x - strap.outer.x) * strap.axis.x + (p.y - strap.outer.y) * strap.axis.y;
-        const shift = along({ x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 }) - (at.x - strap.outer.x) * f.axis.x;
+        const shift = seat - (at.x - strap.outer.x) * f.axis.x;
         c = { x: c.x + f.axis.x * shift, y: c.y };
       }
       const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);

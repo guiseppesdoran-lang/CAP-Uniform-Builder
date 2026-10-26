@@ -25,12 +25,12 @@ const centreLine = (scene, l) => { const g = scene.layers.find(x => x.role === '
 
 // ---- 5. Edge-on epaulet grade: foreshortened across the strap, true length along it ----------------------------------
 
-test('edge-on epaulet grades keep their true length along the strap and are squeezed only across it (the strip keeps its length and is squeezed across); the colonel\'s eagle is as long on the strip as on the top view (R7; CAPR 39-1 4.2.5.1.1.1, 4.2.6.2.1; DAFI 36-2903 4.5.1.1.1)', async () => {
+test('LIVE9-1: the grade on the shirts\' sleeve is the top view\'s piece face-on, never larger and never squeezed; the colonel\'s eagle is not a speck (R7; CAPR 39-1 4.2.5.1.1.1, 4.2.6.2.1; DAFI 36-2903 4.5.1.1.1)', async () => {
   const along = (l, u) => {
     const R = rad(l.rotate || 0), c = Math.cos(R), s = Math.sin(R);
     return Math.abs(l.w * (c * u.x + s * u.y)) + Math.abs(l.h * (-s * u.x + c * u.y));
   };
-  let compared = 0, edgeOnly = 0;
+  let compared = 0;
   const cases = [];
   for(const gender of ['male', 'female']){
     for(const u of ['aviator', 'aviator_blazer', 'blues_b']) for(const rank of ['Capt', 'Maj', 'Lt Col', 'Col', 'Maj Gen']) cases.push([u, gender, 'senior', rank]);
@@ -39,35 +39,33 @@ test('edge-on epaulet grades keep their true length along the strap and are sque
   for(const [u, gender, membership, rank] of cases){
     const scene = await compose(hb(u, gender, membership, rank));
     for(const side of ['right', 'left']){
-      const edge = byKey(scene, `grade:edge-${side}`), top = byKey(scene, `grade:top-${side}`), view = byKey(scene, `epaulet-top:${side}`);
-      if(!edge || !view) continue;
+      const face = byKey(scene, `grade:sleeve-${side}`), top = byKey(scene, `grade:top-${side}`), view = byKey(scene, `epaulet-top:${side}`);
+      if(!face || !view) continue;
       const label = `${u} ${gender} ${rank} ${side}`;
-      // The strap axis: the sheet's epaulet landmark frame (the top view is drawn level since DORAN5-ENG-3, so its own long side is
-      // horizontal, not along the strap).
       const spec = await store.load(scene.garment);
       if(!spec.landmarks[`epaulet_${side}`]) continue; // the blazer's companion shirt sheet is not the scene's garment
       const fr = P.helpers.frameFromPolygon({ base: { w: spec.w } }, side, spec.landmarks[`epaulet_${side}`].points);
       const r = rad(fr.deg);
       const axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
-      const lvl = { x: 1, y: 0 };
-      // The shirts' strip is 0.5 in thick since LIVE7-2 (the Class A boards' strip), the grade squeezed to 0.08 in less.
-      assert.ok(along(edge, cross) <= 0.42 + 0.005 || along(edge, axis) >= along(edge, cross), `${label}: edge-on grade fits the 0.5 in strip (${along(edge, cross).toFixed(3)} across)`);
-      assert.ok(along(edge, cross) <= 0.42 + 0.005, `${label}: squeezed to the strip (${along(edge, cross).toFixed(3)} across)`);
+      const art = await store.load(face.id);
+      assert.ok(Math.abs(face.w / art.w - face.h / art.h) < 0.001 && face.w <= art.w + 0.001, `${label}: scaled uniformly, never enlarged`);
+      // The grade fits across the strap with the margin (the sleeve is the strap, 0.9 to 1.0 in wide).
+      assert.ok(along(face, cross) <= fr.width - 0.2 + 0.005 || along(face, axis) >= along(face, cross) && along(face, cross) <= fr.width, `${label}: the grade fits the strap (${along(face, cross).toFixed(3)} across ${fr.width.toFixed(2)})`);
       if(top){
-        assert.ok(Math.abs(along(edge, axis) - along(top, lvl)) < 0.01, `${label}: edge-on length ${along(edge, axis).toFixed(3)} equals the top view's ${along(top, lvl).toFixed(3)}`);
+        assert.ok(along(face, axis) <= along(top, { x: 1, y: 0 }) + 0.01, `${label}: face-on length ${along(face, axis).toFixed(3)} is at most the top view's ${along(top, { x: 1, y: 0 }).toFixed(3)}`);
         compared++;
-      }else edgeOnly++;
-      if(rank === 'Col' && membership === 'senior') assert.ok(along(edge, axis) > 0.6, `${label}: the eagle is ${along(edge, axis).toFixed(3)} in long on the strip, not a speck`);
+      }
+      if(rank === 'Col' && membership === 'senior') assert.ok(Math.max(along(face, axis), along(face, cross)) > 0.6, `${label}: the eagle is ${Math.max(along(face, axis), along(face, cross)).toFixed(3)} in wide on the sleeve, not a speck`);
     }
   }
-  assert.ok(compared >= 4, `${compared} edge/top pairs compared (${edgeOnly} grades with the edge view only)`);
+  assert.ok(compared >= 4, `${compared} face/top pairs compared`);
 });
 
 // ---- 5b. LIVE8-4: the grade on an edge-on strip is sized from that strip's thickness, on every uniform that draws one ----------------------------------
 
-test('the edge-on grade is squeezed to its strip\'s thickness less 0.08 in on the shirts (0.5 in strips), the Class A boards (0.5 in) and the Class A officers\' strap strip (the thickness its sheet states, about 0.46 in), not to a fixed 0.32 in (DAFI 36-2903 4.5.1.1.1; CAPR 39-1 4.1.5.2.1, 4.1.11.1.1, 4.2.5.1.1.1)', async () => {
-  // the shirts and the Class A cadet boards: the strip the engine draws is 0.5 in thick
-  for(const [u, gender, m, rank] of [['blues_b', 'male', 'senior', 'Col'], ['blues_b', 'female', 'cadet', 'C/Col'], ['aviator', 'male', 'senior', 'Maj'], ['aviator', 'female', 'senior', 'Col'], ['blues_a', 'male', 'cadet', 'C/Col'], ['blues_a', 'female', 'cadet', 'C/Col']]){
+test('the edge-on grade is squeezed to its strip\'s thickness less 0.08 in on the Class A boards (0.5 in; the shirts draw the sleeve face-on since LIVE9-1, tests/engine-live-shirt-strips) and the Class A officers\' strap strip (the thickness its sheet states, about 0.46 in), not to a fixed 0.32 in (DAFI 36-2903 4.5.1.1.1; CAPR 39-1 4.1.5.2.1, 4.1.11.1.1, 4.2.5.1.1.1)', async () => {
+  // the Class A cadet boards: the strip the engine draws is 0.5 in thick
+  for(const [u, gender, m, rank] of [['blues_a', 'male', 'cadet', 'C/Col'], ['blues_a', 'female', 'cadet', 'C/Col']]){
     const scene = await compose(hb(u, gender, m, rank));
     for(const side of ['right', 'left']){
       const edge = byKey(scene, `grade:edge-${side}`);

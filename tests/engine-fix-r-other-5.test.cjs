@@ -78,8 +78,8 @@ test('Class A and cadet semi-formal coats: the edge-on grade\'s centre is as far
 test('the blue shirt\'s epaulet sleeves keep the cadet officer\'s miniature metal grade (CAPR 39-1 4.1.6.1.4)', async () => {
   for(const gender of ['male', 'female']){
     const scene = await compose(hb('blues_b', gender, 'cadet', 'C/Maj', { badgeIds: [AIRCREW] }));
-    const edge = byKey(scene, 'grade:edge-right');
-    assert.ok(edge, 'edge-on grade drawn');
+    const edge = byKey(scene, 'grade:sleeve-right');
+    assert.ok(edge, 'grade on the sleeve drawn');
     assert.match(edge.id, /-metal-miniature$/);
   }
 });
