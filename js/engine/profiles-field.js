@@ -258,6 +258,14 @@
         const z = ctx.rect('chevron_zone_' + side);
         if(z){
           const l = await ctx.place(id, { pieceAnchor: 'center', at: core.rectCenter(z), z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side });
+          // 'centered on the outer arm halfway between the elbow and shoulder seam' (5.1.1.1.1.2, 5.2.1.1.1.3): the sheet states the
+          // seam (seam_top_center) but no elbow, so the line runs from the seam to the chevron's centre and says so; shown once, on
+          // the wearer's right sleeve, beside the chevron (FOLLOWUPS: art to state the elbow on the flat sleeves).
+          const seam = ctx.point('seam_top_center_' + side);
+          if(l && seam && side === 'right'){
+            const c = core.rectCenter(z);
+            ctx.measure({ x: c.x, y: seam.y }, c, 'halfway to elbow', { center: 'to', side: { x: 1, y: 0 }, offsetOnly: true });
+          }
           // The same chevron edge-on on the figure's arm.
           const e = l && armEdgeOf(ctx, side, l);
           if(e) await ctx.place(id, { pieceAnchor: 'center', at: e.at, scaleX: EDGE_SX, rotate: e.rotate, clipSil: ctx.base.id, z: Z.insignia, role: 'grade', key: `grade:sleeve-${side}:edge` });
@@ -629,7 +637,18 @@
         const want = side === 'right' ? 'CHEST_RIGHT' : 'CHEST_LEFT';
         const p = (side === 'right' && unit) || take(x => x.slot === want) || take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
         const z = pocketZone(ctx, side);
-        if(p && z){ fitPatch(ctx, p, z, want); used++; }
+        if(p && z){
+          const layer = fitPatch(ctx, p, z, want);
+          used++;
+          // 'centered on the lower portion of the breast pocket ... between left and right edges and bottom of flap and pocket'
+          // (5.1.1.1.2.3, 5.2.1.1.2.4, 5.2.1.1.2.5): from the flap's bottom to the pocket's, the tick at the patch's centre, drawn
+          // beside the pocket on its outer side.
+          const pocket = ctx.rect('chest_pocket_' + side), flap = ctx.rect('chest_flap_' + side);
+          if(layer && pocket && flap){
+            const cx = layer.x + layer.w / 2;
+            ctx.measure({ x: cx, y: flap.y + flap.h }, { x: cx, y: pocket.y + pocket.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: side === 'right' ? -1 : 1, y: 0 }, offsetOnly: true });
+          }
+        }
       }
       if(b.uniform === 'corporate_field' && b.opt.esPatch && b.opt.esPatch !== 'none'){
         // ES patch 1/2 in above the name tape (above the command insignia if worn), 5.2.1.1.2.8.

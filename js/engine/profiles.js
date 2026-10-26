@@ -670,6 +670,9 @@
       const cy = zone.y + Math.max(zone.h, high) / 2;
       await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: bars ? 0 : side === 'right' ? 90 : -90, flipX: !bars && side === 'right' && g.key === 'colonel',
         z: Z.insignia, role: 'grade', key: 'grade:' + side });
+      // 'bottom edge of insignia placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2): the sheet draws the zone's seam-side edge
+      // 1/2 in from the seam (make-fdu.js), shown once, on the wearer's right shoulder of the suit.
+      if(side === 'right' && b && !b.opt.asJacket) ctx.measure({ x: zone.x - 0.5, y: cy }, { x: zone.x, y: cy });
     }
     await border();
   }
@@ -758,6 +761,11 @@
       : (corporate ? 'garment-cfdu-flight-suit' : 'garment-fdu-flight-suit');
     await ctx.garment(garment);
     await flightGrade(ctx, b.grade, b);
+    // The U.S. flag on the left sleeve, '1/2 inch below the shoulder seam' (8.2.4.4, 8.3.4.4): from the flat sleeve's seam at its
+    // centre line (the sheet's sheet_alignment.panel_arch_top_y_in) to the top of the flag the sheet draws. On the suit only; the
+    // jacket beside it is configured the same (8.2.7.1).
+    const flag = ctx.rect('patch_flag_left'), align = ctx.base.raw && ctx.base.raw.dimensions && ctx.base.raw.dimensions.sheet_alignment;
+    if(!jacket && flag && align && align.panel_arch_top_y_in != null) ctx.measure({ x: flag.x + flag.w / 2, y: align.panel_arch_top_y_in }, { x: flag.x + flag.w / 2, y: flag.y });
     await flightNametag(ctx, b);
     await flightPatches(ctx, b);
     if(b.opt.scarf && !jacket){
