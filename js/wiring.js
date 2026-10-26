@@ -460,7 +460,7 @@ function openGalleryModal(kind){
       militaryRoot.style.cssText='margin:14px 0 12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);';
       const militarySummary=document.createElement('summary');
       militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
-      militarySummary.textContent=`U.S. Military Badges (${militaryBadges.length} with reviewed artwork)`;
+      militarySummary.textContent=`U.S. Military Badges (${militaryBadges.length})`;
       militaryRoot.appendChild(militarySummary);
       const note=document.createElement('div');
       note.className='sub'; note.style.margin='6px 0 8px';
