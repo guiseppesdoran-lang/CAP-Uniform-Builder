@@ -289,3 +289,101 @@ test('the stacked badges\' 1/2 in labels sit beside their own lines on the women
   const other = halves.find(m => m !== wings);
   assert.ok(drawings.find(x => x.key === wings.key).label.y < drawings.find(x => x.key === other.key).label.y, 'the wings label is above the other');
 });
+
+// ---- MEAS3: no dimension line, bar, tick, extension line or dashed reference crosses a piece ----
+// Ethan, on the Class A cadet officer's lapel: the 'halfway' dimension line, its bars and the dashed seam were drawn straight across the CAP
+// cutout letters: "this shouldn't overlap with each other." The lapel insignia are whole-sheet overlays whose pieces the scene does not box, so
+// the overlay reads their landmark rectangles (lapelPieces); a line that would cross a piece moves out perpendicular to its direction (extension
+// lines perpendicular to the measured edges, the label within one label height), and the dashed reference is drawn only where it crosses nothing.
+async function laidOutWithPieces(b){
+  const scene = await P.composeUniform(b, store());
+  const st = store();
+  await st.loadAll(scene.layers.filter(l => l.type === 'asset').map(l => l.id));
+  const pieces = ML.lapelPieces(scene, id => (st.has(id) ? st.get(id).landmarks : null));
+  const B = scene.bounds;
+  const vb = [B.x - 0.4, B.y - 0.4, B.w + 0.8, B.h + 0.8];
+  const px = ML.previewPx(vb);
+  const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, pieces });
+  return { scene, px, drawings, pieces, solids: ML.obstaclesOf(scene).concat(pieces) };
+}
+function drawnSegments(d){
+  const out = [d.dim, ...d.bars, ...d.ticks, ...d.ext, ...(d.referenceSegs || (d.reference ? [d.reference] : []))];
+  return out;   // (a centre mark's ring and ticks mark the piece itself, over its centre: they are not dimension lines)
+}
+const SAMPLES = 20, TOL = 0.01;
+function crossings(drawings, allSolids, tag, scene){
+  const bad = [];
+  // A measure inside a cap view belongs to it (the grade 1/2 in from the visor): the view's own cloth is not a piece to that measure.
+  const views = scene ? scene.layers.filter(l => (l.role === 'hat' || l.role === 'hat-view') && l.obstacle).map(l => l.obstacle) : [];
+  for(const d of drawings){
+    const m = scene && scene.layers.find(l => l.type === 'measure' && l.key === d.key);
+    const mid = m && { x: (m.from.x + m.to.x) / 2, y: (m.from.y + m.to.y) / 2 };
+    const own = mid && views.find(v => mid.x >= v.x && mid.x <= v.x + v.w && mid.y >= v.y && mid.y <= v.y + v.h);
+    const solids = allSolids.filter(r => r !== own);
+    if(d.callout){
+      // The magnified inset keeps its circle and caption off every piece (checked above); the plain lines of other measures keep off it.
+      continue;
+    }
+    for(const [a, b] of drawnSegments(d)) for(let i = 0; i <= SAMPLES; i++){
+      const t = i / SAMPLES, p = { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+      const hit = solids.find(r => p.x > r.x + TOL && p.x < r.x + r.w - TOL && p.y > r.y + TOL && p.y < r.y + r.h - TOL);
+      if(hit){ bad.push(`${tag}: '${d.label.text}' line crosses the piece at ${hit.x.toFixed(2)},${hit.y.toFixed(2)} ${hit.w.toFixed(2)}x${hit.h.toFixed(2)}`); break; }
+    }
+    // Nor does any line cross a 1/8 in callout's circle and caption.
+    for(const e of drawings) if(e.callout) for(const [a, b] of drawnSegments(d)){
+      const bx = e.callout.box;
+      for(let i = 0; i <= SAMPLES; i++){
+        const t = i / SAMPLES, p = { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+        if(p.x > bx.x && p.x < bx.x + bx.w && p.y > bx.y && p.y < bx.y + bx.h){ bad.push(`${tag}: '${d.label.text}' line crosses a 1/8 in callout`); break; }
+      }
+    }
+  }
+  return bad;
+}
+const LAPEL_BUILDS = [];
+for(const gender of ['male', 'female']){
+  for(const rank of ['C/Maj', 'C/Col']) LAPEL_BUILDS.push([`Class A cadet ${rank}, ${gender} (CAP cutouts)`, build('blues_a', 'cadet', rank, { gender, ribbons: rack, badges: badges(['emergency_services_badge', 'CAPPilot1_FA9D33EA587D8']), cord: 'group' })]);
+  LAPEL_BUILDS.push([`Class A senior Capt, ${gender} (US pins)`, build('blues_a', 'senior', 'Capt', { gender, ribbons: rack, badges: badges(['emergency_services_badge', 'CAPPilot1_FA9D33EA587D8']) })]);
+  LAPEL_BUILDS.push([`Class A senior MSgt, ${gender} (sleeve halfway)`, build('blues_a', 'senior', 'MSgt', { gender, ribbons: rack, badges: badges(['emergency_services_badge', 'CAPPilot1_FA9D33EA587D8', 'stem_badges']) })]);
+}
+for(const [name, b] of LAPEL_BUILDS){
+  test(`MEAS3: no dimension, bar, tick, extension line or dashed reference crosses a piece: ${name}`, async () => {
+    const { scene, drawings, pieces, solids } = await laidOutWithPieces(b);
+    assert.ok(drawings.some(d => d.label.text === 'halfway' || d.label.text === 'halfway to elbow'), 'a halfway measure is drawn');
+    if(/CAP cutouts|US pins/.test(name)) assert.ok(pieces.length >= 2, 'the lapel insignia are pieces the lines keep off');
+    assert.deepEqual(crossings(drawings, solids, name, scene), []);
+    checkAttached(scene, drawings, name);
+  });
+}
+test('MEAS3: the lapel \'halfway\' dimension moves below the seam and keeps its dashed edge off the CAP cutouts', async () => {
+  const { scene, drawings, pieces } = await laidOutWithPieces(LAPEL_BUILDS[0][1]);
+  const seams = scene.layers.filter(l => l.type === 'measure' && l.label === 'halfway' && l.opts && l.opts.reference);
+  assert.equal(seams.length, 2);
+  for(const m of seams){
+    const d = drawings.find(x => x.key === m.key);
+    assert.ok(d.dim[0].y > m.from.y && d.dim[1].y > m.to.y, 'the dimension line is below the seam');
+    assert.ok(d.referenceSegs.length >= 2, 'the dashed seam is cut where the letters lie');
+    const lens = d.referenceSegs.reduce((s, [p, q]) => s + Math.hypot(q.x - p.x, q.y - p.y), 0);
+    assert.ok(lens < Math.hypot(m.to.x - m.from.x, m.to.y - m.from.y) - 1, 'part of the seam is not drawn');
+    assert.equal(d.ticks.length, 1);
+  }
+  assert.ok(pieces.length >= 2);
+});
+test('MEAS3: every build of the standard matrix draws no line across a piece, a lapel pin or a callout', async () => {
+  const { builds } = R.matrix();
+  let n = 0, bad = [];
+  for(const { name, build: spec } of builds){
+    const r = await laidOutWithPieces(R.makeBuild(spec));
+    bad.push(...crossings(r.drawings, r.solids, name, r.scene));
+    n += r.drawings.length;
+  }
+  assert.ok(n > 100);
+  assert.deepEqual(bad, []);
+});
+test('MEAS3: the stacked-badge build keeps its 1/2 in lines off the badges and its labels beside their lines', async () => {
+  const b = R.makeBuild({ uniform: 'blues_a', gender: 'female', membership: 'cadet', rank: 'C/SSgt', badgeIds: ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge'],
+    opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, ribbonSel: [['wright_brothers_award'], ['curry_achievement'], ['encampment_ribbon']] });
+  const { scene, drawings, solids } = await laidOutWithPieces(b);
+  assert.deepEqual(crossings(drawings, solids, 'stacked badges', scene), []);
+  checkAttached(scene, drawings, 'stacked badges');
+});

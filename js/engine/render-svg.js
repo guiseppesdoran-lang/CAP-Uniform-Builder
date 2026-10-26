@@ -140,8 +140,11 @@
       for(const s of [...main, ...d.ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
       for(const m of marks) g.appendChild(el('circle', { cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra) * px), 'stroke-opacity': 0.5 }));
       if(d.reference){
-        seg(g, d.reference, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
-        seg(g, d.reference, MEASURE.color, MEASURE.ext * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2.5 * px)}`, 'stroke-linecap': 'butt' });
+        // Only the parts of the edge that cross no piece are drawn (measure-layout referenceSegs).
+        for(const r of d.referenceSegs || [d.reference]){
+          seg(g, r, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+          seg(g, r, MEASURE.color, MEASURE.ext * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2.5 * px)}`, 'stroke-linecap': 'butt' });
+        }
       }
       for(const s of d.ext) seg(g, s, MEASURE.color, MEASURE.ext * px, { 'stroke-opacity': 0.9 });
       for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
@@ -394,7 +397,14 @@
     const ML = root.CAPUBEngine && root.CAPUBEngine.measureLayout;
     if(options.measure && ML){
       const px = options.measurePx || ML.previewPx(vb);
-      const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] } });
+      // The lapel insignia are whole-sheet overlays: their sheets state where the pieces lie (landmarks), which the overlay keeps its lines off.
+      const CORE0 = root.CAPUBEngine && root.CAPUBEngine.core;
+      const lapelIds = [...new Set(scene.layers.filter(l => l.type === 'asset' && /-lapel-(cap|us|us-nco)$|-senior-nco-lapel$/.test(l.id || '')).map(l => l.id))];
+      const landmarks = new Map();
+      await Promise.all(lapelIds.map(id => fetch(assetUrl(manifestPath(id).replace(/\.svg$/, '.spec.json')), { cache: 'no-cache' })
+        .then(r => (r.ok ? r.json() : null)).then(raw => { if(raw && CORE0) landmarks.set(id, CORE0.normalizeSpec({ id }, raw).landmarks); }).catch(() => null)));
+      const pieces = ML.lapelPieces(scene, id => landmarks.get(id) || null);
+      const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, pieces });
       // The magnified insets draw copies of the layers that reach their window, as the page draws them but not as layers of their own.
       const CORE = root.CAPUBEngine && root.CAPUBEngine.core;
       const copies = win => drawn.filter(({ layer }) => layer.role !== 'measure' && layer.role !== 'clear' && (() => {

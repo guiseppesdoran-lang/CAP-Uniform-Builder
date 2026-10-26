@@ -43,6 +43,26 @@
       .filter(b => b && b.w > 0 && b.h > 0);
   }
 
+  // Pieces the garment sheets draw as part of a whole-sheet overlay layer (the lapel insignia: the cadet officers' CAP cutouts, the US pins, the NCO
+  // circle) have no box of their own in the scene, only the landmark rectangle their sheet states (lapel_cap_*, lapel_us_*, in the sheet's own inches).
+  // `landmarksOf(id)` returns a sheet's landmarks (in inches) or null; each placed overlay yields its pieces' boxes, moved to where the layer sits.
+  // An overlay shown for one side only (`onlyGroups`) yields that side's piece. Pass the result to `layout` as `view.pieces`.
+  function lapelPieces(scene, landmarksOf){
+    const out = [];
+    for(const l of scene.layers){
+      if(l.type !== 'asset' || l.role !== 'garment-layer' || !/-lapel-(cap|us|us-nco)$|-senior-nco-lapel$/.test(l.id || '') || (l.rotate || 0)) continue;
+      const lm = landmarksOf(l.id);
+      if(!lm) continue;
+      const sides = l.onlyGroups && l.onlyGroups.length ? ['right', 'left'].filter(sd => l.onlyGroups.some(g => new RegExp(`-${sd}$`).test(g))) : ['right', 'left'];
+      for(const name of Object.keys(lm)){
+        const m = /^lapel_(?:us|cap)_(right|left)$/.exec(name), r = lm[name];
+        if(!m || !sides.includes(m[1]) || !r || !(r.w > 0)) continue;
+        out.push({ x: r.x + l.x, y: r.y + l.y, w: r.w, h: r.h });
+      }
+    }
+    return out;
+  }
+
   // The cap views: a seated cap (role 'hat') and the accessory views (role 'hat-view'), each one box.
   function viewBoxes(scene){
     return scene.layers
@@ -96,6 +116,22 @@
       else { if(t < t0) return 0; if(t < t1) t1 = t; }
     }
     return t1 > t0 ? (t1 - t0) * len(d) : 0;
+  }
+  // The parts of the segment a-b that lie outside every box, as segments (dropping slivers shorter than `min`).
+  function segmentsOutside(a, b, boxes, min){
+    const d = sub(b, a), L = len(d);
+    let spans = [[0, 1]];
+    for(const r of boxes){
+      let t0 = 0, t1 = 1, ok = true;
+      for(const [p, q] of [[-d.x, a.x - r.x], [d.x, r.x + r.w - a.x], [-d.y, a.y - r.y], [d.y, r.y + r.h - a.y]]){
+        if(p === 0){ if(q < 0){ ok = false; break; } continue; }
+        const t = q / p;
+        if(p < 0){ if(t > t1){ ok = false; break; } if(t > t0) t0 = t; } else { if(t < t0){ ok = false; break; } if(t < t1) t1 = t; }
+      }
+      if(!ok || t1 <= t0) continue;
+      spans = spans.flatMap(([s0, s1]) => (t1 <= s0 || t0 >= s1) ? [[s0, s1]] : [[s0, Math.min(s1, t0)], [Math.max(s0, t1), s1]].filter(([x, y]) => y > x));
+    }
+    return spans.filter(([x, y]) => (y - x) * L >= min).map(([x, y]) => [add(a, mul(d, x)), add(a, mul(d, y))]);
   }
   // Length of the segment a-b that lies outside box `r`.
   const outsideLength = (a, b, r) => Math.max(0, len(sub(b, a)) - insideLength(a, b, r));
@@ -232,7 +268,8 @@
   function layout(scene, view){
     const P = view.px;
     const area = view.area;
-    const solids = obstaclesOf(scene);
+    const pieces = (view.pieces || []).filter(b => b && b.w > 0 && b.h > 0);
+    const solids = obstaclesOf(scene).concat(pieces);
     const views = viewBoxes(scene);
     const shrunk = solids.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0);
     const placedLabels = [];
@@ -393,10 +430,13 @@
       // `hard`: the label may not lie over any piece, over another label or over a dimension already drawn, and no dimension
       // may cross a label already placed (D26: every measurement readable). The first pass is hard; only where it finds
       // nothing does the cost-only search run, which accepts the least bad place.
-      const search = (solidsX, shrunkX, strict, outside, hard, rad) => {
+      const search = (solidsX, shrunkX, strict, outside, hard, rad, lineClear, bothSides) => {
+        // The lines are kept off a piece's box itself (to a third of a preview pixel), not off the box shrunk by the label margin.
+        const tight = solidsX.map(b => grow(b, -0.3 * P)).filter(b => b.w > 0 && b.h > 0);
         const candidates = [];
         if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
-        for(const s of sides){
+        // A side the profile asked for (`opts.side`) is kept while it has a clear place; the other side serves as the last resort before a line is drawn across a piece.
+        for(const s of bothSides ? [n, mul(n, -1)] : sides){
           // Each extension line starts at the edge of its own piece.
           const startA = clearance(A, s, solidsX, 1.5 * P), startB = clearance(B, s, solidsX, 1.5 * P);
           // `minOffsetIn`: the line moves at least this many inches (a width measure that must lie past the Velcro it hangs on).
@@ -450,8 +490,16 @@
             for(const [p, q] of exts) lineCost += 60 * outsideLength(p, q, area) / P;
           }
           for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
-          if(hard && (placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0)) || shrunkX.some(r => insideLength(a, b, r) > 0 || exts.some(([p, q]) => insideLength(p, q, r) > 0)))) continue;
+          if(hard && placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0))) continue;
           lineCost += c.d / P;
+          // The bars at the ends of the line are part of the drawing: none crosses a piece either.
+          const bh = mul(c.side, PX.bar * P / 2);
+          const barSegs = [[sub(a, bh), add(a, bh)], [sub(b, bh), add(b, bh)]];
+          // The halfway tick is a short bar across the line.
+          if(o.mid){ const tp = add(a, mul(u, dot(sub(o.mid, A), u))), tk = mul(n, PX.bar * P * 0.4); barSegs.push([sub(tp, tk), add(tp, tk)]); }
+          const crossesPiece = tight.some(r => barSegs.some(([p, q]) => insideLength(p, q, r) > 0) || insideLength(a, b, r) > 0 || exts.some(([p, q]) => insideLength(p, q, r) > 0));
+          if((hard || lineClear) && crossesPiece) continue;
+          if(!c.inline) for(const [p, q] of barSegs) for(const r of shrunkX) lineCost += 60 * insideLength(p, q, r) / P;
 
           // The halfway tick stays in view.
           const tickAt = o.mid ? add(a, mul(u, dot(sub(o.mid, A), u))) : null;
@@ -489,13 +537,19 @@
       // near); only if even the farthest offset has none does the old, unconstrained search run, so that no measure is dropped.
       const near = lh * LABEL_RADIUS;
       let best = null;
-      for(const rad of [near, Infinity]){
-        best = search(solids, shrunk, !!owner, owner, true, rad) || search(solids, shrunk, !!owner, owner, false, rad);
-        if(!best && owner){
-          const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
-          best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null, false, rad);
-        }
+      // Passes, in order: the label near its line and everything clear; the line clear of every piece with the label allowed to sit least badly (and the
+      // line allowed on the other side of the measured edge); the same with the label let go as far as it must; only then the old least-bad search, which
+      // can draw across a piece. A dimension line, its bars and its extension lines never cross a piece while any pass before the last finds a place.
+      const passes = [];
+      for(const rad of [near, Infinity]) passes.push([true, false, false, rad], [false, true, false, rad], [false, true, true, rad]);
+      passes.push([false, false, false, near], [false, false, false, Infinity]);
+      for(const [hard, lineClear, bothSides, rad] of passes){
+        best = search(solids, shrunk, !!owner, owner, hard, rad, lineClear, bothSides);
         if(best) break;
+      }
+      if(!best && owner){
+        const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
+        best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null, false, Infinity);
       }
       if(!best) continue;
 
@@ -524,6 +578,8 @@
         // The edge being measured, when the artwork does not draw it (a seam): a dashed line.
         reference: o.reference ? [A, B] : null
       };
+      // The dashed edge is drawn only where it crosses no piece (the cadet officer's CAP cutouts rest on the seam it marks).
+      if(o.reference) drawing.referenceSegs = segmentsOutside(A, B, solids.map(r => grow(r, 0.5 * P)), 2 * P);
       if(o.mid){
         const t = dot(sub(o.mid, A), u);
         const p = add(a, mul(u, t));
@@ -545,5 +601,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, previewPx, obstaclesOf, textWidth, centreMark, pointBoxDistance, labelDistance, PX, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
+  return { layout, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, PX, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
 });
