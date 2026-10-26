@@ -99,7 +99,9 @@ test('OCP, ABU and CFU: every badge in the catalog either draws its field form o
 
 // ---- LIVE-FIELD B6: the arrangement above the CAP tape, measured on the composed scene (CAPR 39-1 ICL 25-06 7.1.1.3.1.1-6) ----------------
 // Every distance is read from the badge layers' boxes (the blue cloth edges, the 1/8 in border counted) in scene inches; the single badge is
-// measured to its silver (7.1.1.3.1.1), the multi-badge layouts blue edge to blue edge (7.1.1.3.1).
+// measured to its silver (7.1.1.3.1.1), the multi-badge layouts blue edge to blue edge (7.1.1.3.1); FIELD7-1 (Ethan: "from the top of the blue on
+// the civil air patrol to the white of the first badge"): the lowest badge of every count is measured from the tape's top edge to its silver, so
+// the 1/8 in above the tape of three and four badges is to the silver and the backing lies on the tape; the gaps between badges stay blue to blue.
 
 const OCP = 'garment-ocp-coat-abu-cut';
 const CHAPLAIN = 'christian_chaplin', PILOT = 'CAPPilot1_FA9D33EA587D8', GT = 'ground_team_basic_badge', EMT = 'emt_basic_badge', MED = 'medical_officer', LEGAL = 'legal_officer';
@@ -137,7 +139,7 @@ test('two badges: the first 1/2 in above the tape, the second 1/2 in above the f
 
 test('three badges: by default a single column 1/8 in above the tape with 1/4 in between badges, each centred on the tape (7.1.1.3.1.3)', async () => {
   const { T, byId, scene } = await chest('ocp', 'senior', 'Maj', [PILOT, GT, EMT]);
-  near(blueBottom(byId[EMT]), T.y - 0.125, 'lowest badge 1/8 in above the tape');
+  near(await silverBottom(byId[EMT]), T.y - 0.125, 'lowest badge: silver 1/8 in above the tape');
   near(blueBottom(byId[GT]), byId[EMT].y - 0.25, 'middle badge 1/4 in above the lowest');
   near(blueBottom(byId[PILOT]), byId[GT].y - 0.25, 'top badge 1/4 in above the middle');
   for(const id of [PILOT, GT, EMT]) near(cx(byId[id]), T.x, `${id} centred on the tape`);
@@ -148,8 +150,8 @@ test('three badges: by default a single column 1/8 in above the tape with 1/4 in
 test('three badges, the other form: two side by side 1/8 in above the tape and 1/2 in apart, the third centred 1/4 in above them (7.1.1.3.1.3)', async () => {
   const { T, byId } = await chest('ocp', 'senior', 'Maj', [PILOT, GT, EMT], { badgeLayout: 'pair' });
   const l = byId[GT], r = byId[EMT], top = byId[PILOT];
-  near(blueBottom(l), T.y - 0.125, 'left badge 1/8 in above the tape');
-  near(blueBottom(r), T.y - 0.125, 'right badge 1/8 in above the tape');
+  near(await silverBottom(l), T.y - 0.125, 'left badge: silver 1/8 in above the tape');
+  near(await silverBottom(r), T.y - 0.125, 'right badge: silver 1/8 in above the tape');
   near(r.x - (l.x + l.w), 0.5, '1/2 in apart');
   near((l.x + r.x + r.w) / 2, T.x, 'the pair centred on the tape');
   near(blueBottom(top), Math.min(l.y, r.y) - 0.25, 'third badge 1/4 in above the lower two');
@@ -160,8 +162,8 @@ test('four badges: by default two stacks of two, 1/4 in apart vertically and 1/2
   const ids = [PILOT, GT, EMT, MED];
   const { T, byId } = await chest('ocp', 'senior', 'Maj', ids);
   const [a, b, c, d] = ids.map(id => byId[id]);        // top left, top right, bottom left, bottom right
-  near(blueBottom(c), T.y - 0.125, 'bottom left 1/8 in above the tape');
-  near(blueBottom(d), T.y - 0.125, 'bottom right 1/8 in above the tape');
+  near(await silverBottom(c), T.y - 0.125, 'bottom left: silver 1/8 in above the tape');
+  near(await silverBottom(d), T.y - 0.125, 'bottom right: silver 1/8 in above the tape');
   const rowTop = Math.min(c.y, d.y);
   near(blueBottom(a), rowTop - 0.25, 'top left 1/4 in above the taller lower badge');
   near(blueBottom(b), rowTop - 0.25, 'top right 1/4 in above the taller lower badge');
@@ -176,8 +178,8 @@ test('four badges, the other form: two side by side on the tape, the other two s
   const ids = [PILOT, GT, EMT, MED];
   const { T, byId } = await chest('ocp', 'senior', 'Maj', ids, { badgeLayout: 'pair' });
   const [a, b, c, d] = ids.map(id => byId[id]);
-  near(blueBottom(c), T.y - 0.125, 'bottom left');
-  near(blueBottom(d), T.y - 0.125, 'bottom right');
+  near(await silverBottom(c), T.y - 0.125, 'bottom left: silver');
+  near(await silverBottom(d), T.y - 0.125, 'bottom right: silver');
   near(d.x - (c.x + c.w), 0.5, '1/2 in apart');
   near(blueBottom(b), Math.min(c.y, d.y) - 0.25, 'third badge 1/4 in above the pair');
   near(blueBottom(a), b.y - 0.25, 'fourth badge 1/4 in above the third');

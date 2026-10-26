@@ -142,3 +142,80 @@ test('FIELD7-2: the ES patch is centred on the right breast pocket\'s centre lin
   }
 });
 
+// ---- 1. the chest badges' distance from the CAP tape is measured to the embroidery ---------------------------------------------------
+
+const FIELD_GARMENT = { ocp: 'garment-ocp-coat-abu-cut', abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' };
+const BADGE_IDS = ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge', 'senior_ground_team_badge', 'master_ground_team_badge'];
+const fieldBuild = (uniform, n, gender, extra) => build(uniform, 'senior', 'Capt', Object.assign({ gender, badges: BADGE_IDS.slice(0, n).map(id => ({ id, title: id })) }, extra));
+
+// The tape's top edge, and the bottom edge of each chest badge's embroidery, in scene inches.
+async function tapeAndBadges(scene, uniform){
+  const gid = FIELD_GARMENT[uniform];
+  const spec = await ST.load(gid), g = scene.layers.find(l => l.id === gid), k = g.w / spec.w;
+  const tape = core.landmarkBounds(spec, 'cap_tape');
+  const badges = [];
+  for(const l of scene.layers.filter(x => x.role === 'badge' && x.type === 'asset' && x.figure !== 2)){
+    const s = await ST.load(l.id), a = core.anchor(s, 'art_bottom_center');
+    const kk = l.h / s.h;
+    badges.push({ l, artBottom: a ? l.y + a.y * kk : l.y + l.h, blueBottom: l.y + l.h, blueTop: l.y });
+  }
+  return { tapeTop: g.y + tape.y * k, badges };
+}
+const calloutsOf = scene => scene.layers.filter(l => l.type === 'measure' && l.opts && l.opts.callout && l.opts.callout.span);
+
+test('FIELD7-1: the lowest chest badge\'s embroidery is 1/2 in above the top of the CAP tape with one or two badges (OCP 7.1.1.3.1.1-2, ABU 5.1.1.1.2.4, CFU 5.2.1.1.2.6), both sexes, and the overlay carries the inset for it', async () => {
+  for(const uniform of ['ocp', 'abu', 'corporate_field']){
+    for(const gender of ['male', 'female']){
+      for(const n of [1, 2]){
+        const scene = await compose(fieldBuild(uniform, n, gender));
+        const { tapeTop, badges } = await tapeAndBadges(scene, uniform);
+        assert.equal(badges.length, n, `${uniform} ${gender} ${n}`);
+        const lowest = badges.reduce((a, x) => (x.artBottom > a.artBottom ? x : a));
+        assert.ok(Math.abs(tapeTop - lowest.artBottom - 0.5) < 0.005, `${uniform} ${gender} ${n}: tape top to embroidery bottom ${(tapeTop - lowest.artBottom).toFixed(4)} in`);
+        // The blue backing lies 1/8 in lower than the embroidery, so it is 3/8 in from the tape, not 1/2.
+        assert.ok(Math.abs(tapeTop - lowest.blueBottom - 0.375) < 0.005, `${uniform} ${gender} ${n}: backing ${(tapeTop - lowest.blueBottom).toFixed(4)} in from the tape`);
+        const cs = calloutsOf(scene);
+        assert.equal(cs.length, 1, `${uniform} ${gender} ${n}: one inset`);
+        assert.equal(cs[0].label, '½ in');
+        assert.equal(cs[0].opts.callout.caption, 'from the tape to the embroidery');
+        assert.ok(Math.abs(cs[0].from.y - tapeTop) < 0.005 && Math.abs(cs[0].to.y - (tapeTop - 0.5)) < 0.005, `${uniform} ${gender} ${n}: measured from the tape's top edge to the embroidery's bottom edge`);
+        assert.ok(Math.abs(cs[0].opts.callout.marks[0] - 0.375) < 0.005, 'the backing edge is marked 3/8 in from the tape');
+      }
+    }
+  }
+});
+
+test('FIELD7-1: three and four OCP badges: the lowest embroidery is 1/8 in above the tape\'s top edge (7.1.1.3.1.3-4), the backing on the tape, in both layouts and both sexes', async () => {
+  for(const gender of ['male', 'female']){
+    for(const n of [3, 4]){
+      for(const badgeLayout of ['column', 'pair']){
+        const scene = await compose(fieldBuild('ocp', n, gender, { opt: { badgeLayout } }));
+        const { tapeTop, badges } = await tapeAndBadges(scene, 'ocp');
+        assert.equal(badges.length, n);
+        const lowest = badges.reduce((a, x) => (x.artBottom > a.artBottom ? x : a));
+        assert.ok(Math.abs(tapeTop - lowest.artBottom - 0.125) < 0.005, `${gender} ${n} ${badgeLayout}: tape top to embroidery bottom ${(tapeTop - lowest.artBottom).toFixed(4)} in`);
+        assert.ok(Math.abs(tapeTop - lowest.blueBottom) < 0.005, `${gender} ${n} ${badgeLayout}: the blue backing lies on the tape`);
+        const cs = calloutsOf(scene);
+        assert.equal(cs.length, 1);
+        assert.equal(cs[0].label, '⅛ in');
+        assert.equal(cs[0].opts.callout.caption, 'from the tape to the embroidery');
+      }
+    }
+  }
+});
+
+test('FIELD7-1: the gaps between OCP badges stay as 7.1.1.3.1 states them, blue backing edge to blue backing edge (Ethan ruled on the tape distance only)', async () => {
+  const two = await compose(fieldBuild('ocp', 2, 'male'));
+  const { badges } = await tapeAndBadges(two, 'ocp');
+  const [up, low] = badges.sort((a, b) => a.blueTop - b.blueTop);
+  assert.ok(Math.abs(low.blueTop - up.blueBottom - 0.5) < 0.005, `two badges: ${(low.blueTop - up.blueBottom).toFixed(4)} in between the backings`);
+  const four = await compose(fieldBuild('ocp', 4, 'male'));
+  const rows = (await tapeAndBadges(four, 'ocp')).badges;
+  const byX = new Map();
+  for(const x of rows){ const key = Math.round((x.l.x + x.l.w / 2) * 10); byX.set(key, (byX.get(key) || []).concat(x)); }
+  for(const col of byX.values()){
+    col.sort((a, b) => a.blueTop - b.blueTop);
+    for(let i = 1; i < col.length; i++) assert.ok(Math.abs(col[i].blueTop - col[i - 1].blueBottom - 0.25) < 0.005, `four badges: ${(col[i].blueTop - col[i - 1].blueBottom).toFixed(4)} in between the backings`);
+  }
+});
+

@@ -111,8 +111,10 @@
     const mag = el('g', { transform: `translate(${fmt(co.center.x)} ${fmt(co.center.y)}) scale(${fmt(co.mag)}) translate(${fmt(-co.focus.x)} ${fmt(-co.focus.y)})` });
     copies(co.window).forEach(n => mag.appendChild(n));
     lens.appendChild(mag);
-    lens.appendChild(el('polygon', { points: pts(co.inset.fill), fill: MEASURE.color, 'fill-opacity': 0.55, stroke: 'none' }));
+    // A span (CAP tape to the embroidery) is a long band: lighter, so the tape, the backing and the embroidery read through it.
+    lens.appendChild(el('polygon', { points: pts(co.inset.fill), fill: MEASURE.color, 'fill-opacity': co.kind === 'span' ? 0.22 : 0.55, stroke: 'none' }));
     for(const l of co.inset.lines) line(lens, l, MEASURE.color, 1.1 * px);
+    for(const l of co.inset.marks || []) line(lens, l, MEASURE.color, 0.8 * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2 * px)}` });
     nodes.push(lens);
     nodes.push(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra + 1) * px), 'stroke-opacity': 0.6 }));
     nodes.push(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'none', stroke: MEASURE.color, 'stroke-width': fmt(1.6 * px) }));

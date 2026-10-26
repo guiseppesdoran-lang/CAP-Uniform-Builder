@@ -240,8 +240,13 @@
   //                                                            read from the piece's own frame (border inches in from the
   //                                                            top-left corner of the placed layer `key`)
   //   opts.callout = { gap: true, caption }                    a bare gap between two edges (the measure's own two ends)
+  //   opts.callout = { gap: true, span: true, caption, marks } the same for a longer distance (the 1/2 in from the CAP tape to a badge's
+  //                                                            embroidery): a larger circle and a magnification that lets the whole span show
+  //                                                            (up to `mag`, never less than spanMinMag); `marks` are further edges inside
+  //                                                            the span, as inches from the measure's first end toward the second (the
+  //                                                            badge's blue backing), drawn across the inset
   // Sizes in preview pixels like the rest of the overlay.
-  const CO = { diameter: 84, mag: 4, rim: 2.2, gapOut: 9, over: 4, minLen: 0.5, leaderDot: 1.8, captionFont: 9, edgeLen: 0.5, search: [10, 18, 28, 40, 54, 70, 90, 115, 145, 180, 220, 265, 315, 370, 430, 500, 580, 680] };
+  const CO = { diameter: 84, spanDiameter: 120, spanFill: 0.6, spanMinMag: 1.5, mag: 4, rim: 2.2, gapOut: 9, over: 4, minLen: 0.5, leaderDot: 1.8, captionFont: 9, edgeLen: 0.5, search: [10, 18, 28, 40, 54, 70, 90, 115, 145, 180, 220, 265, 315, 370, 430, 500, 580, 680] };
 
   // The frame of a placed layer: its top-left corner in the scene, and the scene directions of its own x (ex) and y (ey) axes
   // (a piece turned or mirrored on the garment keeps its band where the piece's own edge is).
@@ -332,7 +337,7 @@
   // The room made for the callouts around a drawing (`vb` = [x, y, w, h] in inches): the box they may be set in, and then the frame that holds the drawing and
   // the callouts that were set (a callout that fits inside the drawing leaves it as it was).
   function calloutRoom(vb, px){
-    const m = (CO.diameter + 90) * px;
+    const m = (CO.spanDiameter + 90) * px;
     return { x: vb[0] - m, y: vb[1] - m, w: vb[2] + 2 * m, h: vb[3] + 2 * m };
   }
   function frameFor(vb, drawings, px){
@@ -375,7 +380,11 @@
           frame = { O: A, ex: { x: -unit(sub(B, A)).y, y: unit(sub(B, A)).x }, ey: unit(sub(B, A)), w: null, h: null };
         }
         const border = o.border != null ? o.border : b;
-        const r = CO.diameter * P / 2, M = CO.mag;
+        // A span (the 1/2 in from the CAP tape to a badge's embroidery) gets a larger circle and the magnification that shows all of it.
+        // (a span no longer than the 1/8 in border is drawn as the plain gap inset)
+        const span = !!o.span && border > 0.25;
+        const r = (span ? CO.spanDiameter : CO.diameter) * P / 2;
+        const M = span ? Math.max(CO.spanMinMag, Math.min(CO.mag, CO.spanFill * 2 * r / border)) : CO.mag;
         const arr = insetArrangement(frame, border, lw, lh, P, M, r);
         if(!arr) return null;
         // The caption under the circle: the words split into lines of at most 15 characters.
@@ -461,6 +470,8 @@
         const edge = Math.min(CO.edgeLen, 0.5 * (frame.w != null ? Math.min(frame.w, frame.h) : 2));
         const real = bandShapes(frame, border, edge, edge);
         const inset = bandShapes(frame, border, frame.w != null ? frame.w : 3 * r / M, frame.h != null ? frame.h : 0);
+        // Edges inside a span (the badge's blue backing), across the inset.
+        const marks = frame.w == null ? (o.marks || []).filter(t => t > 0 && t < border).map(t => { const q = bandShapes(frame, t, 3 * r / M, 0); return q.lines[1]; }) : [];
         const lab = shift({ x: arr.label.x, y: arr.label.y });
         const drawing = {
           key: m.key,
@@ -475,9 +486,9 @@
             box: boxAll,
             leader: [rim, C],
             real: { fill: real.fill, lines: real.lines },
-            inset: { fill: inset.fill.map(toInset), lines: inset.lines.map(l => l.map(toInset)) },
+            inset: { fill: inset.fill.map(toInset), lines: inset.lines.map(l => l.map(toInset)), marks: marks.map(l => l.map(toInset)) },
             caption: cap ? Object.assign({ lines: capLines, size: capSize }, cap) : null,
-            border, kind: o.layer ? 'band' : 'gap', hard: best.hard, offCloth: best.offCloth
+            border, kind: o.layer ? 'band' : span ? 'span' : 'gap', hard: best.hard, offCloth: best.offCloth
           }
         };
         placedLabels.push(boxAll);
