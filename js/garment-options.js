@@ -25,6 +25,12 @@
   const poloPrint = c => isPolo(c) && c.o.poloShirt === 'print';
   const TEXT_MAX = { dutyTitle: 30 };
 
+  // The tie rule for the uniform on the page (data/uniform-rules.js): { offered, defaultOn, para }.
+  function tieOf(c){
+    if(!['blues_b', 'aviator'].includes(c.u) || typeof CAPUBUniformRules === 'undefined') return { offered: false, defaultOn: false, para: null };
+    return CAPUBUniformRules.tieRule(c.u, { gender: c.female ? 'female' : 'male', sleeve: (c.o && c.o.sleeve) || 'short', overblouse: c.u === 'aviator' && c.female && (c.o && c.o.femaleTop) === 'overblouse' });
+  }
+
   // { key, label, type: 'select' | 'check' | 'text', choices: [[value, label]] | fn, when(ctx), off(ctx) -> note | '' (shown, switched off) }
   const OPTIONS = [
     { key: 'poloShirt', label: 'Shirt', type: 'select',
@@ -81,6 +87,11 @@
         return list;
       },
       when: c => ['blues_a', 'blues_b', 'flight_suit', ...FIELD].includes(c.u) },
+    // The tie (men) or tie tab (women): worn with long sleeves, optional with short ones (data/uniform-rules.js tieRule, CAPR 39-1 4.1.11.1.1.3,
+    // 4.1.12.4, 4.2.5.1.4, 4.2.6.3). The box starts at what the regulation requires for the sleeve length the member picked.
+    { key: 'tie', label: c => c.female ? 'Tie tab' : 'Tie', type: 'check', defaultValue: c => tieOf(c).defaultOn,
+      note: c => { const r = tieOf(c); return `Worn with long sleeves and optional with short sleeves (CAPR 39-1, ${r.para}).`; },
+      when: c => tieOf(c).offered },
     { key: 'chevron', label: 'Chevron size', type: 'select',
       choices: c => {
         // The default each uniform's paragraph names comes first.
@@ -168,7 +179,7 @@
         const label = document.createElement('label');
         label.className = 'fieldLabel';
         label.htmlFor = id;
-        label.textContent = o.label;
+        label.textContent = labelOf(o, c);
         const input = document.createElement('input');
         input.id = id;
         input.type = 'text';
@@ -184,16 +195,16 @@
         const box = document.createElement('input');
         box.type = 'checkbox';
         box.id = id;
-        box.checked = g[o.key] == null ? !!o.defaultValue : !!g[o.key];
+        box.checked = g[o.key] == null ? !!(typeof o.defaultValue === 'function' ? o.defaultValue(c) : o.defaultValue) : !!g[o.key];
         box.addEventListener('change', () => set(o.key, box.checked));
         if(offNote) box.disabled = true;
-        label.append(box, ' ' + o.label);
+        label.append(box, ' ' + labelOf(o, c));
         row.append(label);
       }else{
         const label = document.createElement('label');
         label.className = 'fieldLabel';
         label.htmlFor = id;
-        label.textContent = o.label;
+        label.textContent = labelOf(o, c);
         const sel = document.createElement('select');
         sel.id = id;
         const choices = typeof o.choices === 'function' ? o.choices(c) : o.choices;
@@ -209,6 +220,12 @@
         if(offNote) sel.disabled = true;
         row.append(label, sel);
       }
+      if(o.note){
+        const hint = document.createElement('div');
+        hint.className = 'fieldNote';
+        hint.textContent = o.note(c);
+        row.append(hint);
+      }
       if(offNote){
         const note = document.createElement('div');
         note.className = 'fieldNote';
@@ -218,6 +235,8 @@
       host.append(row);
     }
   }
+
+  const labelOf = (o, c) => typeof o.label === 'function' ? o.label(c) : o.label;
 
   function set(key, value, typing){
     State.garment = Object.assign({}, State.garment || {}, { [key]: value });

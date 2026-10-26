@@ -233,6 +233,18 @@
   function plannedBadge(uniformId){
     return BADGES_NOT_PLACED[String(uniformId||'')] || null;
   }
+  // The tie (men) or tie tab (women) on the shirts (CAPR 39-1): worn with the long-sleeved shirt and optional with the short-sleeved one on the Class B
+  // (men 4.1.11.1.1.3, women 4.1.12.4) and the aviator shirt (men 4.2.5.1.4, women 4.2.6.3). The shirt drawn beside the Corporate Service Dress blazer
+  // keeps it (men 4.2.3.4 "mandatory with this uniform combination unless wearing the turtleneck", women 4.2.4.3 "worn with the aviator shirt"). The
+  // overblouse takes none. Returns { offered, defaultOn, para }: whether the page offers the choice, what is drawn until the member chooses, the paragraph.
+  const TIE_PARAS={blues_b:{male:'4.1.11.1.1.3',female:'4.1.12.4'},aviator:{male:'4.2.5.1.4',female:'4.2.6.3'}};
+  function tieRule(uniformId,{gender='male',sleeve='short',overblouse=false,withBlazer=false}={}){
+    const sex=gender==='female' ? 'female' : 'male';
+    if(withBlazer) return {offered:false,defaultOn:true,para:sex==='female' ? '4.2.4.3' : '4.2.3.4'};
+    const paras=TIE_PARAS[uniformId];
+    if(!paras || overblouse) return {offered:false,defaultOn:false,para:null};
+    return {offered:true,defaultOn:sleeve==='long',para:paras[sex]};
+  }
   function uniformIdsInGroup(group){
     return Object.keys(RULES).filter(id=>RULES[id].group===group);
   }
@@ -241,6 +253,6 @@
     GROUPS,RULES,NOT_MODELLED,BADGES_NOT_PLACED,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
     allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,
-    lockedReason,allowsOnlyChaplainBadge,allowsBadgeFamily,allowsGrade,allowsShoulderCord,allowsAideCord,allowsCord,badgeLimit,plannedUniformsFor,plannedBadge
+    lockedReason,allowsOnlyChaplainBadge,allowsBadgeFamily,allowsGrade,allowsShoulderCord,allowsAideCord,allowsCord,tieRule,badgeLimit,plannedUniformsFor,plannedBadge
   };
 });

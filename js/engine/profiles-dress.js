@@ -5,10 +5,10 @@
 (function(root, factory){
   const node = typeof module === 'object' && module.exports;
   const deps = node
-    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js'), M: require('../../data/military-badge-sizes.js') }
-    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog, M: root.CAPUBMilitaryBadgeSizes };
-  factory(deps.core, deps.C, deps.G, deps.P, deps.B, deps.M);
-})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B, MIL_SIZES){
+    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js'), R: require('../../data/uniform-rules.js'), M: require('../../data/military-badge-sizes.js') }
+    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog, R: root.CAPUBUniformRules, M: root.CAPUBMilitaryBadgeSizes };
+  factory(deps.core, deps.C, deps.G, deps.P, deps.B, deps.M, deps.R);
+})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B, MIL_SIZES, RULES){
   'use strict';
   const Z = C.Z;
   const H = P.helpers;
@@ -1411,7 +1411,8 @@
     const long = b.opt.sleeve === 'long';
     const V = CLASS_B[(female ? 'female' : 'male') + (long ? '-long' : '-short')];
     const base = V.garment;
-    await ctx.garment(base);
+    const tie = tieOn(b, 'blues_b', long, false);
+    await ctx.garment(base, tie ? null : { hideGroups: ['tie'] });
 
     // The officers' and cadet officers' slide-on sleeves lie on top of the shoulder: seen edge-on from the front (epauletStrips), with the top view above.
     const sleeveId = epauletSleeveId(g);
@@ -1701,7 +1702,8 @@
     const top = female ? (b.opt.femaleTop === 'overblouse' ? 'garment-overblouse-female' : 'garment-aviator-shirt-female') : 'garment-aviator-shirt-male';
     const garment = top + (long ? '-long' : '');
     const V = AVIATOR[garment];
-    await ctx.garment(garment);
+    const tie = tieOn(b, 'aviator', long, !!V.overblouse);
+    await ctx.garment(garment, tie ? null : { hideGroups: ['tie'] });
     if(g.cadet) ctx.note('Cadets wear corporate uniforms only when 18 or older and not eligible for the USAF-style uniform (CAPR 39-1, 1.2.5.2)');
 
     // Grade. The shirts draw the epaulet sleeve edge-on; its top view (with the grade) goes above.
@@ -1772,11 +1774,22 @@
     }
     await dressBadges(ctx, b, geo);
     collarOverBadges(ctx, null);
-    // The long-sleeve shirt is worn with a tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3).
-    if(long && !V.overblouse){
-      const tie = `${garment}-${female ? 'tie-tab' : 'tie'}`;
-      if(ctx.has(tie)) await ctx.overlay(tie, Z.garmentLayer + 0.5);
+    // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3): worn with long sleeves, optional with short ones (tieOn). A sheet that states a `tie`
+    // landmark draws it in its own `tie` group (hidden above when off); the others have the separate tie overlay.
+    if(tie && !V.overblouse && !ctx.landmark('tie')){
+      const overlay = `${garment}-${female ? 'tie-tab' : 'tie'}`;
+      if(ctx.has(overlay)) await ctx.overlay(overlay, Z.garmentLayer + 0.5);
     }
+  }
+
+  // The tie (men) or tie tab (women) on a shirt: the member's choice (build.opt.tie, a boolean) or, until they choose, what the regulation
+  // requires for the sleeve length (RULES.tieRule: worn with long sleeves, optional with short ones, CAPR 39-1 4.1.11.1.1.3, 4.1.12.4, 4.2.5.1.4,
+  // 4.2.6.3). The shirt beside the blazer (opt.withBlazer, set by the blazer's companion) keeps it (4.2.3.4, 4.2.4.3). Drawn by the sheet's group
+  // `tie` (the group is hidden when off); a sheet that states no `tie` landmark draws it as the separate tie overlay, as before.
+  function tieOn(b, uniform, long, overblouse){
+    const r = RULES.tieRule(uniform, { gender: b.gender, sleeve: long ? 'long' : 'short', overblouse, withBlazer: !!b.opt.withBlazer });
+    if(!r.offered) return r.defaultOn;
+    return typeof b.opt.tie === 'boolean' ? b.opt.tie : r.defaultOn;
   }
 
   // ---- Corporate Service Dress (blazer, 4.2.3 / 4.2.4) and Corporate Semi-Formal (4.2.1 / 4.2.2) ---------
@@ -2031,6 +2044,6 @@
   // drawn beside it.
   P.register('aviator_blazer', { title: 'Corporate Service Dress', compose: composeBlazer,
     companion: b => b.opt.underlayer === 'turtleneck' || b.opt.underlayer === 'shell' ? null
-      : Object.assign({}, b, { uniform: 'aviator', opt: Object.assign({}, b.opt, { sleeve: 'long', femaleTop: 'shirt', headgear: 'none' }) }) });
+      : Object.assign({}, b, { uniform: 'aviator', opt: Object.assign({}, b.opt, { sleeve: 'long', femaleTop: 'shirt', headgear: 'none', withBlazer: true }) }) });
   P.register('semi_formal', { title: 'Corporate Semi-Formal', compose: composeBlazer });
 });
