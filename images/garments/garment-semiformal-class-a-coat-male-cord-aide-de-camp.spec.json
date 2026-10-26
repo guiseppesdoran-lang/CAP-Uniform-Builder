@@ -13,7 +13,7 @@
   3255.95
  ],
  "size_source": "estimated",
- "size_basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. Aiguillette parts (loop, whipping, thin cord, pencil tip) are drawn as the overlay's own groups: proportions in braid thicknesses B (0.36 in here) from Vanguard SKU 3710210 (assets/cords/ref/README.md): free loop 5.9 x 4.7 B outer = 2.1 x 1.7 in, an oval with its inner edge on the run, whipping 0.9 x 2.6 B, thin cord 3.9 B long and 0.14 B thick, pencil tip 1.2 in (4.1 B at the 0.30 in braid of cord-aide-de-camp), so the tip point hangs about 4.0 in below the contact point. Where the loop leaves the run (1.9 in down the run from its shoulder end) is estimated.",
+ "size_basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE9-ART 2: the aiguillette is drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README): from under the epaulet the braid continues as two draped loops hanging down the chest, a short one (legs 2.24 B apart, bottom 10.0 B below the epaulet edge) beside the run and a long one (the run is its right leg; legs 4.14 B apart, bottom 15.0 B), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in at the 0.36 in braid, B = 0.36 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offset, drape depths and widths are read in B from the same picture. The pendant is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
  "anchors": {
   "top_center": [
    1288.72666,
@@ -44,12 +44,12 @@
    1535.98
   ],
   "aiguillette_attach": [
-   2171.1,
-   552.91
+   2170.04,
+   407.91
   ],
   "aiguillette_tip": [
-   2037.43,
-   945.46
+   1957.47,
+   924.9
   ]
  },
  "landmarks": {
@@ -72,33 +72,47 @@
    ]
   ],
   "aiguillette_loop": {
-   "x": 1979.45,
-   "y": 457.04,
-   "w_in": 2.079,
-   "h_in": 1.729
+   "x": 1972.45,
+   "y": 343.15,
+   "w_in": 1.888,
+   "h_in": 6.166
   },
   "aiguillette_pendant": {
-   "x": 1979.45,
-   "y": 457.04,
-   "w_in": 2.079,
-   "h_in": 4.885
+   "x": 1926.28,
+   "y": 343.15,
+   "w_in": 2.35,
+   "h_in": 6.166
   },
   "aiguillette_tip": {
-   "x": 2037.43,
-   "y": 945.46,
-   "head_x": 2050,
-   "head_y": 826.12,
-   "len_in": 1.2,
-   "hang_deg": 6,
+   "x": 1957.47,
+   "y": 924.9,
+   "head_x": 1964.64,
+   "head_y": 809.92,
+   "len_in": 1.152,
+   "hang_deg": 3.57,
    "box": {
-    "x": 2036.05,
-    "y": 825.23,
-    "w_in": 0.224,
-    "h_in": 1.204
-   }
+    "x": 1926.28,
+    "y": 807.6,
+    "w_in": 0.468,
+    "h_in": 1.174
+   },
+   "tips": [
+    {
+     "x": 1957.47,
+     "y": 924.9,
+     "head_x": 1964.64,
+     "head_y": 809.92
+    },
+    {
+     "x": 1928.73,
+     "y": 923.11,
+     "head_x": 1935.89,
+     "head_y": 808.13
+    }
+   ]
   }
  },
- "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in); aiguillette_loop, aiguillette_pendant: {x,y} top-left of the box in user units, w_in/h_in in inches (pendant = loop + whipping + thin cord + tip, the keep-clear box); aiguillette_tip: {x,y} the tip point, head_x/head_y the cup end where the thin cord enters, len_in, hang_deg (the pendant is rotated this many degrees clockwise about the loop contact point so it hangs along the run slope), box = the tip's own bounding box",
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in); aiguillette_loop (the two braided loops), aiguillette_pendant (the whole drape: loops, thin cords, whippings, tips, the keep-clear box): {x,y} top-left of the box in user units, w_in/h_in in inches; aiguillette_tip: {x,y} the lower tip's point, head_x/head_y its cup end, len_in, hang_deg (degrees the run leans toward the chest where the pendant hangs from it; the free ends and tips hang parallel to the run), box = both tips' bounding box, tips = both tip points {x,y,head_x,head_y}",
  "overlay_of": "garment-semiformal-class-a-coat-male",
  "documented": [
   "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)",
@@ -107,8 +121,8 @@
  "assumed": [
   "cord thickness 0.36 in",
   "path along the armhole seam",
-  "loop, whipping and thin-cord proportions read from one product photo (Vanguard SKU 3710210, screenshot 800 x 667)",
-  "loop touches the run 1.9 in below its shoulder end, tip on the chest about 3.2 in below that contact point"
+  "loop depths, widths and tip length read in braid thicknesses from one photograph of a USAF silver aiguillette on a service dress coat (assets/cords/ref/)",
+  "the drape hangs from where the braids leave the epaulet (0.45 in down the run from its shoulder end); the long loop leaves the run 12.9 B (4.6 in) below that point"
  ],
  "fit": {
   "method": "original",
@@ -117,11 +131,11 @@
  "grade": "accessory",
  "dimensions": {
   "braid_thickness_in": 0.36,
-  "loop_outer_in": [
-   2.12,
-   1.69
-  ],
-  "tip_length_in": 1.2,
-  "pendant_drop_in": 4.89
+  "short_loop_bottom_b": 10,
+  "long_loop_bottom_b": 15.2,
+  "free_ends_b": 3.9,
+  "tip_length_in": 1.15,
+  "tip_length_b": 3.2,
+  "pendant_drop_in": 6.17
  }
 }

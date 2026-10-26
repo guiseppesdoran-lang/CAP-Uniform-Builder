@@ -88,12 +88,16 @@
    2234.7
   ],
   "collar_insignia_right": [
-   1570.21,
-   275.6
+   1407.76,
+   283.07
   ],
   "collar_insignia_left": [
-   881.53,
-   275.6
+   1043.98,
+   283.07
+  ],
+  "tie_mount_center": [
+   1225.87,
+   262
   ],
   "button_1_center": [
    1225.87,
@@ -153,28 +157,36 @@
   ],
   "collar_right": [
    [
-    1518.77,
-    7.7
+    1500.47,
+    14
    ],
    [
-    1790.57,
-    436.4
+    1629.37,
+    162
    ],
    [
-    1490.67,
-    417.7
-   ],
-   [
-    1478.87,
-    492.7
-   ],
-   [
-    1366.47,
-    562.9
+    1461.87,
+    458
    ],
    [
     1225.87,
-    600.4
+    262
+   ],
+   [
+    1315.37,
+    234.7
+   ],
+   [
+    1393.57,
+    173.9
+   ],
+   [
+    1443.67,
+    103
+   ],
+   [
+    1491.07,
+    20
    ]
   ],
   "epaulet_left": [
@@ -201,28 +213,36 @@
   ],
   "collar_left": [
    [
-    932.97,
-    7.7
+    951.27,
+    14
    ],
    [
-    661.17,
-    436.4
+    822.37,
+    162
    ],
    [
-    961.07,
-    417.7
-   ],
-   [
-    972.87,
-    492.7
-   ],
-   [
-    1085.27,
-    562.9
+    989.87,
+    458
    ],
    [
     1225.87,
-    600.4
+    262
+   ],
+   [
+    1136.37,
+    234.7
+   ],
+   [
+    1058.17,
+    173.9
+   ],
+   [
+    1008.07,
+    103
+   ],
+   [
+    960.67,
+    20
    ]
   ],
   "epaulet_axis": {
@@ -285,10 +305,10 @@
    "kind": "tab",
    "knot": {
     "x": 1225.87,
-    "y": 269
+    "y": 262
    },
-   "w_in": 4.8,
-   "length_in": 3.43
+   "w_in": 5.01,
+   "length_in": 3.73
   },
   "armpit_apex": {
    "right": [
@@ -311,8 +331,8 @@
    }
   },
   "collar_insignia_angle_deg": {
-   "right": 57.6,
-   "left": 122.4
+   "right": -140.3,
+   "left": -39.7
   },
   "ribbon_slot": {
    "x": 1390.87,
@@ -356,9 +376,22 @@
   "tie": {
    "size_source": "estimated",
    "kind": "tab",
-   "w_in": 4.8,
-   "length_in": 3.43,
-   "source": "CAPR 39-1 Fig 4.11 shows a W; the Class A inverted-V construction (tie.js) is drawn, fitted to the collar opening and trimmed to it"
+   "w_in": 5.01,
+   "length_in": 3.73,
+   "source": "LIVE9-ART 1: the Class A women's coat sheet's own tab (make-blues-a-female.js, tie.js): dx 2.503, dy 2.808, ex 0.240, ey 0.927, t 1.000 in, apex at the collar junction J, the arms cut under the leaf points on a slanted line as the Class A's are cut by the coat's V edge (CAPR 39-1 4.1.12.4, Figs 4.7a, 4.11)"
+  },
+  "collar": {
+   "size_source": "estimated",
+   "junction_in": [
+    0,
+    2.52
+   ],
+   "point_from_junction_in": [
+    2.36,
+    1.96
+   ],
+   "leading_edge_in": 3.07,
+   "source": "LIVE9-ART 1: the two leaves close on the knot at the junction J (the lowest point of the neck opening, the long-sleeve outline's neck bowl on all four sheets); each leaf is top end, shoulder vertex, collar point, junction and the neck-opening vertices back up; the leading edge J to P is 3.07 in long (points about 3 in; Fig 4.8 measured 3.9 in at 48 px/in on the figure's own pocket scale, the Class A coat leaf 2.65 in); direction 50 deg from vertical (Class A coat leaf edge 37 to 40 deg men, 50 deg women; Fig 4.8 30 deg). No regulation dimension."
   },
   "finishing": {
    "note": "shoulder line straightened between the neck vertex and the shoulder point, armhole seam from the shoulder point to the armpit apex, hem hook / gap bulge removed (finishShoulderArmpit)",
@@ -429,7 +462,8 @@
   "px-to-inch scale (women's base image drawn larger on its canvas; rescaled to match the men's shirt width, then x K like the men's shirt)",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
   "epaulet strap drawn on the sheet from the shoulder line: 1.0 in wide, 0.5 in point, button 1/2 in from the tip (the brief's value), topstitch 0.1 in (dimensions.epaulet_strap)",
-  "collar leaf, pocket and seam geometry read off the base image",
+  "pocket and seam geometry read off the base image",
+  "collar leaves: the Class A coat's closed collar construction, leading edge about 3 in, an estimate (dimensions.collar)",
   "shirt, trouser/skirt and line colours sampled from the base image",
   "sleeve widening: the sleeve is drawn wider than the traced hanging view (CFG.widen, dimensions.sleeve_widening)",
   "belt strap colour #14347f (and its #7d95d6 stitching) is a choice, not sampled: the base image paints the belt the same navy as the trousers; regulation says only blue belt (4.1.11.1.1.5, 4.1.12.7)",

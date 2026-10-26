@@ -1128,7 +1128,7 @@
     "uas-technician-senior-field": "field/uas-technician-senior-field/uas-technician-senior-field.svg",
     "uas-technician-senior-mini": "mini/uas-technician-senior-mini/uas-technician-senior-mini.svg"
   };
-  Object.defineProperty(index, 'version', { value: "93cd7fb390", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "24618821de", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "93cd7fb390"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "24618821de"; }
 })(typeof self !== 'undefined' ? self : this);
