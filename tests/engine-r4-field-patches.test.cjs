@@ -77,7 +77,7 @@ test('one patch is one size on every uniform: ARCHER is 3.5 in on the OCP Velcro
 
 // ---- FIX-R-OTHER-r4 item 11: the critique set covers the flight suits' ES patch, chaplain badge, command pin and cadet C/Capt ----------------
 
-test('critique set: flight suits carry the cadet C/Capt on both suits and cuts, the ES patch at the top of the es_patch_zone in each style, the Christian chaplain badge and the command pin with two badges (D14, D15, D17; 8.2.4.1, 8.2.4.3, 8.3.4.3)', async () => {
+test('critique set: flight suits carry the cadet C/Capt on both suits and cuts, the ES patch on the right breast pocket in each style (LIVE9-4), the Christian chaplain badge and the command pin with two badges (D14, D15, D17; 8.2.4.1, 8.2.4.3, 8.3.4.3)', async () => {
   const { execFileSync } = require('node:child_process');
   const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
   const names = new Set(critique.map(x => x.name));
@@ -92,10 +92,12 @@ test('critique set: flight suits carry the cadet C/Capt on both suits and cuts, 
     const es = scene.layers.find(l => l.id === id && l.figure !== 2);
     assert.ok(es, `${u} ${g} ${style}: ES patch drawn`);
     const spec = await store.load(sheet[u]);
-    const z = core.landmarkBounds(spec, 'es_patch_zone');
+    const pocket = core.landmark(spec, 'chest_pocket_right').points;
     const garment = scene.layers.find(l => l.role === 'garment' && l.figure !== 2);
-    assert.ok(Math.abs(es.y - (garment.y + z.y * (garment.w / spec.w))) < 0.02, `${u} ${g} ${style}: top of the zone (y ${es.y})`);
-    assert.ok(Math.abs(es.x + es.w / 2 - (garment.x + (z.x + z.w / 2) * (garment.w / spec.w))) < 0.02, `${u} ${g} ${style}: centred on the zone (x ${(es.x + es.w / 2).toFixed(2)})`);
+    const k = garment.w / spec.w, c = { x: es.x + es.w / 2 - garment.x, y: es.y + es.h / 2 - garment.y };
+    let hit = false;
+    for(let i = 0, j = pocket.length - 1; i < pocket.length; j = i++){ const a = pocket[i], b = pocket[j]; if((a.y * k > c.y) !== (b.y * k > c.y) && c.x < (b.x - a.x) * k * (c.y - a.y * k) / ((b.y - a.y) * k) + a.x * k) hit = !hit; }
+    assert.ok(hit, `${u} ${g} ${style}: the patch's centre is on the right breast pocket (LIVE9-4)`);
   }
   const chap = await compose(HARNESS.makeBuild(critique.find(c => c.name === 'flight_suit-male-senior-Capt-chaplain').build));
   assert.ok(chap.layers.some(l => l.key === 'badge:christian_chaplin'), 'the chaplain badge is on the tag');

@@ -312,25 +312,31 @@ test('chest: CAP Command Patch on the wearer\'s right breast, name tag on the le
   }
 });
 
-test('ES patch: directly below and centred on the right breast pocket, at the top of the zone (8.2.4.3, 8.3.4.3)', async () => {
+test('ES patch: on the right breast pocket\'s body, centred side to side, inside the pocket polygon (8.2.4.3, 8.3.4.3; LIVE9-4, the CAPR 39-1 flight suit figure)', async () => {
   for(const f of FIGURES.filter(x => !x.jacket)){
     for(const style of ['style-1', 'style-2']){
       const scene = await P.composeUniform(build(f.uniform, 'senior', 'Capt', { opt: { esPatch: style } }), store());
       const es = onFigure(scene, f, l => l.role === 'patch')[0];
       assert.ok(es, `${f.name} ${style}: ES patch drawn`);
-      const z = await zoneOf(scene, f.garment, 'es_patch_zone');
-      assert.ok(Math.abs(es.y - z.y) < EPS, `${f.name} ${style}: top on the zone top ${z.y.toFixed(3)}, got ${es.y.toFixed(3)}`);
-      assert.ok(Math.abs(es.x + es.w / 2 - (z.x + z.w / 2)) < EPS, `${f.name} ${style}: centred on the zone`);
-      assert.ok(es.w <= z.w + EPS && es.h <= z.h + EPS, `${f.name} ${style}: inside the zone`);
-      // Below the pocket: the zone starts under the pocket's lowest edge, and the patch is centred on the pocket.
       const spec = await ST.load(f.garment);
       const g = scene.layers.find(l => l.id === f.garment), s = g.w / spec.w;
       const raw = JSON.parse(fs.readFileSync(path.join(root, 'images/garments', f.garment + '.spec.json'), 'utf8'));
-      const pocket = raw.landmarks.chest_pocket_right;
-      const pts = pocket.map(p => ({ x: g.x + p[0] * 0.01 * s, y: g.y + p[1] * 0.01 * s })); // raw landmark polygons are in 0.01 in units
-      const bottom = Math.max(...pts.map(p => p.y)), left = Math.min(...pts.map(p => p.x)), right = Math.max(...pts.map(p => p.x));
-      assert.ok(es.y >= bottom - EPS, `${f.name} ${style}: below the pocket`);
-      assert.ok(Math.abs(es.x + es.w / 2 - (left + right) / 2) < 0.3, `${f.name} ${style}: centred on the pocket (${(es.x + es.w / 2).toFixed(2)} vs ${((left + right) / 2).toFixed(2)})`);
+      const pts = raw.landmarks.chest_pocket_right.map(p => ({ x: g.x + p[0] * 0.01 * s, y: g.y + p[1] * 0.01 * s })); // raw landmark polygons are in 0.01 in units
+      const inside = q => { let c = false; for(let i = 0, j = pts.length - 1; i < pts.length; j = i++){ const a = pts[i], b = pts[j]; if((a.y > q.y) !== (b.y > q.y) && q.x < (b.x - a.x) * (q.y - a.y) / (b.y - a.y) + a.x) c = !c; } return c; };
+      const cx = es.x + es.w / 2, cy = es.y + es.h / 2;
+      for(const [i, j] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) assert.ok(inside({ x: cx + i * es.w / 2, y: cy + j * es.h / 2 }), `${f.name} ${style}: the patch's corner lies inside the pocket polygon`);
+      // The centroid's height, midway between the pocket's two sides there.
+      let a2 = 0, gx = 0, gy = 0;
+      for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length], cr = p.x * q.y - q.x * p.y; a2 += cr; gx += (p.x + q.x) * cr; gy += (p.y + q.y) * cr; }
+      const cent = { x: gx / (3 * a2), y: gy / (3 * a2) };
+      assert.ok(Math.abs(cy - cent.y) < 0.01, `${f.name} ${style}: as high as the pocket's centroid (${cy.toFixed(3)} vs ${cent.y.toFixed(3)})`);
+      const xs = [];
+      for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length]; if((p.y - cy) * (q.y - cy) < 0) xs.push(p.x + (q.x - p.x) * (cy - p.y) / (q.y - p.y)); }
+      assert.ok(Math.abs(cx - (Math.min(...xs) + Math.max(...xs)) / 2) < 0.01, `${f.name} ${style}: centred side to side on the pocket at that height (${cx.toFixed(3)} vs ${((Math.min(...xs) + Math.max(...xs)) / 2).toFixed(3)})`);
+      // On the pocket, not below it: the patch's bottom is above the pocket's bottom edge.
+      assert.ok(es.y + es.h < Math.max(...pts.map(p => p.y)), `${f.name} ${style}: on the pocket, not below it`);
+      const spec2 = await ST.load(es.id);
+      assert.ok(es.w <= spec2.w + 1e-6 && Math.abs(es.w / spec2.w - es.h / spec2.h) < 1e-3, `${f.name} ${style}: scaled uniformly, never enlarged`);
     }
   }
   const none = await P.composeUniform(build('flight_suit', 'senior', 'Capt'), store());
