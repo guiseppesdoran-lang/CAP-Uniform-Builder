@@ -115,3 +115,30 @@ test('FIELD7-3: with the jacket on, its shoulder line (the sheets\' top_line_y_i
     }
   }
 });
+// ---- 2. the ES patch below and centred on the right breast pocket of the flight suits ---------------------------------------------------
+
+test('FIELD7-2: the ES patch is centred on the right breast pocket\'s centre line and hangs 1/8 in under the pocket, FDU and CFDU, both sexes, both styles, with "centered" and the gap drawn (8.2.4.3, 8.3.4.3)', async () => {
+  for(const [uniform, gid] of [['flight_suit', 'garment-fdu-flight-suit'], ['corporate_flight_suit', 'garment-cfdu-flight-suit']]){
+    const spec = await ST.load(gid);
+    const raw = JSON.parse(fs.readFileSync(path.join(root, 'images/garments', gid + '.spec.json'), 'utf8'));
+    for(const gender of ['male', 'female']){
+      for(const style of ['style-1', 'style-2']){
+        const scene = await compose(build(uniform, 'senior', 'Capt', { gender, opt: { esPatch: style } }));
+        const g = scene.layers.find(l => l.id === gid), k = g.w / spec.w;
+        const pts = raw.landmarks.chest_pocket_right.map(p => ({ x: g.x + p[0] * 0.01 * k, y: g.y + p[1] * 0.01 * k }));
+        const left = Math.min(...pts.map(p => p.x)), right = Math.max(...pts.map(p => p.x)), bottom = Math.max(...pts.map(p => p.y));
+        const es = onSuit(scene, l => l.role === 'patch')[0];
+        const tag = `${uniform} ${gender} ${style}`;
+        assert.ok(es, tag);
+        assert.ok(Math.abs(es.x + es.w / 2 - (left + right) / 2) < 0.005, `${tag}: centred on the pocket's centre line`);
+        assert.ok(Math.abs(es.y - bottom - 0.125) < 0.005, `${tag}: ${(es.y - bottom).toFixed(4)} in under the pocket`);
+        const ms = onSuit(scene, l => l.type === 'measure');
+        const centred = ms.find(m => m.label === 'centered'), gap = ms.find(m => m.label === '⅛ in' && Math.abs(m.from.x - (es.x + es.w / 2)) < 0.005);
+        assert.ok(centred && Math.abs(centred.from.x - left) < 0.005 && Math.abs(centred.to.x - right) < 0.005 && Math.abs(centred.opts.mid.x - (es.x + es.w / 2)) < 0.005, `${tag}: "centered" spans the pocket and ticks at the patch's centre`);
+        assert.ok(gap && Math.abs(gap.from.y - bottom) < 0.005 && Math.abs(gap.to.y - es.y) < 0.005, `${tag}: the gap runs from the pocket's bottom edge to the patch`);
+        assert.ok(scene.notes.some(n => /gives no distance below it; 1\/8 in is used/.test(n)), 'the estimate is said');
+      }
+    }
+  }
+});
+

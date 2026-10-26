@@ -56,6 +56,8 @@ const CITE = {
   ocpPair: '½ in: badges side by side (7.1.1.3.1.3-4)',
   ocpStack: '¼ in: between stacked badges (7.1.1.3.1.3-4)',
   fduGrade: '½ in: officer grade from the shoulder seam (8.2.3.2, 8.3.3.2)',
+  esCentered: 'centered: ES patch on the right breast pocket\'s centre line (8.2.4.3, 8.3.4.3)',
+  esGap: '⅛ in: ES patch below the right breast pocket, an estimate (8.2.4.3, 8.3.4.3)',
   fduFlag: '½ in: U.S. flag below the shoulder seam (8.2.4.4, 8.3.4.4)',
   poloOverName: '½ in: the one badge or duty title over the name, from the top of the name to the bottom of the badge or title (5.3.2.1.1)'
 };
@@ -92,6 +94,8 @@ const TABLE = [
   ['corporate_field-female-senior-Capt', ['blue', 'fieldBadge', 'fieldBadge', 'blue']],
   ['flight_suit-male-senior-Capt', ['fduGrade', 'fduFlag', 'flightCap']],
   ['flight_suit-male-senior-MajGen', ['fduFlag', 'flightCap']],
+  ['x-flight_suit-male-Capt-es', ['fduGrade', 'fduFlag', 'flightCap', 'esCentered', 'esGap']],
+  ['x-corporate_flight_suit-female-SMSgt-es', ['fduFlag', 'esCentered', 'esGap']],
   ['flight_suit-female-cadet-C-SSgt', ['fduFlag', 'flightCap']],
   ['corporate_flight_suit-male-senior-Col', ['fduGrade', 'blue', 'fduFlag']],
   ['corporate_flight_suit-female-senior-SMSgt', ['fduFlag']],
@@ -140,6 +144,8 @@ function spec(name){
     case 'x-abu-male-Capt-patches-cmd': return from('abu-male-senior-Capt', { patches: [UNIT, WING], command: CMD });
     case 'x-abu-male-Capt-gradcmd': return from('abu-male-senior-Capt', { command: GRAD });
     case 'x-cfu-male-Capt-patches-es': return from('corporate_field-male-senior-Capt', { patches: [UNIT, WING, ACT, POCKET], command: CMD, opt: { esPatch: 'style-1' } });
+    case 'x-flight_suit-male-Capt-es': return from('flight_suit-male-senior-Capt', { opt: { esPatch: 'style-1' } });
+    case 'x-corporate_flight_suit-female-SMSgt-es': return from('corporate_flight_suit-female-senior-SMSgt', { opt: { esPatch: 'style-2' } });
     case 'x-semi-female-Col-chaplain': return from('semi_formal-female-senior-Col', { badgeIds: ['christian_chaplin'] });
     case 'x-blues_b-male-long-SMSgt': return from('blues_b-male-senior-SMSgt', { opt: { sleeve: 'long' } });
     case 'x-blues_b-female-long-SMSgt': return from('blues_b-female-senior-SMSgt', { opt: { sleeve: 'long' } });

@@ -731,16 +731,32 @@
     if(left.length && chosen.length) ctx.note(`The flight suit name tag carries one badge here (a ruling over 'up to two' in CAPR 39-1, ${para}): the ${chosen[0].title} is shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
   }
 
+  // The Emergency Services patch 'below and centered on the right breast pocket' (8.2.4.3, 8.3.4.3). FIELD7-2 (Ethan: "is this really where the ES
+  // patch goes? it needs measurements either way"): on the suit the patch is centred on the pocket's centre line (the middle of the pocket's width,
+  // read from the sheet's chest_pocket_right polygon: the sheet's own es_patch_center anchor is the same point, 0.01 in) and hangs from a line
+  // FLIGHT_ES_GAP below the pocket's bottom edge. The regulation gives no gap, so it is an estimate: 1/8 in, the 0.12 in the sheet leaves between the
+  // pocket and its es_patch_zone, a clear line of cloth under the pocket's stitched edge. The overlay says 'centered' (the pocket's width, the tick at the
+  // patch's centre) and 'below the pocket' (the gap, no number: the text states none). The jacket has no breast pocket (its pockets are the two flap
+  // pockets at the hem), so there the patch keeps the sheet's zone under the command patch.
+  const FLIGHT_ES_GAP = 0.125;
   async function flightPatches(ctx, b){
     // Optional ES patch below and centred on the right breast pocket (8.2.4.3, 8.3.4.3).
     if(b.opt.esPatch && b.opt.esPatch !== 'none'){
       const zone = ctx.rect('es_patch_zone');
       const id = b.opt.esPatch === 'style-2' ? 'patch-es-style-2' : 'patch-es-style-1';
       if(zone){
-        // Directly below the pocket (the zone's top edge is the line under the pocket), centred on it.
         const spec = await ctx.spec(id);
         const scale = Math.min(1, zone.w / spec.w, zone.h / spec.h);
-        await ctx.place(id, { pieceAnchor: 'top_center', at: { x: zone.x + zone.w / 2, y: zone.y }, scale, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
+        const pocket = !b.opt.asJacket && ctx.rect('chest_pocket_right');
+        const cx = pocket ? pocket.x + pocket.w / 2 : zone.x + zone.w / 2;
+        const top = pocket ? pocket.y + pocket.h + FLIGHT_ES_GAP : zone.y;
+        const es = await ctx.place(id, { pieceAnchor: 'top_center', at: { x: cx, y: top }, scale, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
+        if(es && pocket){
+          // The pocket's width, drawn a little above the pocket's bottom edge (the tick would reach the patch on the edge itself) with its tick at the patch's centre, and the gap between the pocket's edge and the patch.
+          ctx.measure({ x: pocket.x, y: pocket.y + pocket.h }, { x: pocket.x + pocket.w, y: pocket.y + pocket.h }, 'centered', { mid: { x: cx, y: pocket.y + pocket.h }, side: { x: 0, y: -1 }, offsetOnly: true, offsetPx: 16 });
+          ctx.measure({ x: cx, y: pocket.y + pocket.h }, { x: cx, y: es.y }, '⅛ in', { callout: { gap: true, caption: 'below the pocket, an estimate' } });
+          ctx.note(`CAPR 39-1 ${b.uniform === 'corporate_flight_suit' ? '8.3.4.3' : '8.2.4.3'} puts the Emergency Services patch below and centered on the right breast pocket and gives no distance below it; 1/8 in is used`);
+        }
       }
     }
     // One authorized patch on the right sleeve, inside the 3 1/2 in loop tape (8.2.4.5, 8.2.5.5).

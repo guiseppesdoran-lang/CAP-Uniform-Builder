@@ -458,7 +458,8 @@
           const modes = [];
           // The label goes at the middle of the line when it can, else slides along it (a long line
           // past a chevron keeps its label on clear cloth).
-          const along = L > 3 * extent(u) ? [0.5, 0.35, 0.65, 0.2, 0.8] : [0.5];
+          // A line with a halfway / centre tick (`mid`) lets its label slide along it off the tick even when it is not three labels long (the ES patch's 'centered').
+          const along = L > 3 * extent(u) || (o.mid && L > 1.6 * extent(u)) ? [0.5, 0.35, 0.65, 0.2, 0.8] : [0.5];
           for(const t of along){
             const at = add(a, mul(sub(b, a), t));
             const slide = Math.abs(t - 0.5) * 60;
