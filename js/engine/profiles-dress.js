@@ -960,6 +960,19 @@
     layer.clipSil = id;
   }
 
+  // The Aide de Camp cord overlays carry the aiguillette (9.3.4): the loop hanging from the front of the shoulder and the cord and
+  // pencil tip down the chest beside the run. The sheet states the box that holds all of it as `aiguillette_pendant` {x, y, w_in, h_in}
+  // (x, y the top-left in hundredths of an inch, the size in inches; core reads only {x, y, w, h} landmarks, so it is read from the
+  // sheet's own JSON). It is registered as a piece the measurement labels and callouts keep clear of; the badges, ribbons and nameplates
+  // stay at their regulation places and the cord, drawn above them, lies over any that reach it.
+  function aiguilletteKeepClear(ctx, spec){
+    const lm = spec && spec.raw && spec.raw.landmarks && spec.raw.landmarks.aiguillette_pendant;
+    if(!lm || !(lm.w_in > 0) || !(lm.h_in > 0)) return null;
+    const rect = { x: lm.x / 100, y: lm.y / 100, w: lm.w_in, h: lm.h_in };
+    ctx.keepClear(rect, 'aiguillette_pendant');
+    return rect;
+  }
+
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
   // cord turned to follow it and moved 1/8 in toward the neck.
   async function shoulderCord(ctx, b, axis){
@@ -971,7 +984,10 @@
     const own = ctx.base && `${ctx.base.id}-${id}`;
     if(own && ctx.has(own)){
       const s = await ctx.overlay(own, Z.epauletLayer - 0.5);
-      if(s) fitCordLayer(ctx, s);
+      if(s){
+        fitCordLayer(ctx, s);
+        aiguilletteKeepClear(ctx, s);
+      }
       return;
     }
     if(!axis) return;
