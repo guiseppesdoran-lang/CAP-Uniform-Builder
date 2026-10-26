@@ -36,7 +36,7 @@
     { key: 'poloName', label: 'Name embroidered in white thread', type: 'check', defaultValue: true,
       when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
     { key: 'poloMark', label: 'Over the name', type: 'select',
-      choices: [['badge', 'One badge (pick it under Badges)'], ['title', 'A duty title']],
+      choices: [['badge', 'One badge (chosen under Badges)'], ['title', 'A duty title']],
       when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
     { key: 'dutyTitle', label: 'Duty title', type: 'text',
       when: c => isPolo(c) && c.o.poloMark === 'title', off: c => poloPrint(c) ? POLO_PRINT : '' },
@@ -97,7 +97,8 @@
     { key: 'badgeLayout', label: 'Chest badge layout', type: 'select',
       choices: c => [['column', c.chestBadges >= 4 ? 'Two columns of two' : 'Column'], ['pair', 'Two side by side']],
       when: c => FIELD.includes(c.u) && c.chestBadges >= 3 },
-    { key: 'jacket', label: 'Show the flight jacket too', type: 'check', defaultValue: true, when: c => FLIGHT.includes(c.u) },
+    // An optional add-on like the Class A headgear: off until the member adds the jacket (8.2.7, 8.3.7); opt.jacket reaches the build.
+    { key: 'jacket', label: 'Flight jacket', type: 'check', defaultValue: false, when: c => FLIGHT.includes(c.u) },
     { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) },
     { key: 'esPatch', label: 'Emergency Services patch', type: 'select',
       choices: [['none', 'None'], ['style-1', 'ES patch'], ['style-2', 'ES patch (second style)']],

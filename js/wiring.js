@@ -85,7 +85,7 @@ function syncRibbonRackColumnsControl(){
 
   if(hint){
     hint.textContent = classA && preferredLayout === '4-center'
-      ? 'Visual realism option: the complete left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This option is not in accordance with CAPR 39-1.'
+      ? 'Display option: the left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This arrangement is not in accordance with CAPR 39-1.'
       : classA
         ? 'Choose three across, or align a four-across rack with the wearer-left/outboard pocket edge. Rows have no spacing.'
         : 'CAPR 39-1 requires rows of three on Class B and aviator shirts. Four-across is available only on Class A.';
@@ -181,7 +181,7 @@ if(ribbonRackColumnsSelect){
       ? e.target.value
       : '3';
     if(State.ribbonRackLayout === '4-center'){
-      capubNotify('The 4 across, centered above welt/pocket option is more realistic for the preview, but it is not in accordance with CAPR 39-1.', 9000);
+      capubNotify('The four-across rack centered above the welt/pocket is a display option and is not in accordance with CAPR 39-1.', 9000);
     }
     syncRibbonRackColumnsControl();
     renderRack();
@@ -962,13 +962,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
       if(State.gender === 'female' && State.uniform === 'blues_a'){
         const femaleSpecialtyCount = getFemaleClassASpecialtyBadgeIds().length;
-        if(femaleSpecialtyCount > 2) addNotice('err','Female Class A specialty-track badges above the nameplate are limited to two. Additional specialty badges will not render in that row.');
+        if(femaleSpecialtyCount > 2) addNotice('err','Female Class A specialty-track badges above the nameplate are limited to two. Additional specialty badges are not shown in that row.');
         if(State.membership === 'cadet' && femaleClassASpecialtyRowIsFull() && State.badges.includes('model_rocketry_badge')){
-          addNotice('ok','Female cadet Class A: with two specialty badges already above the nameplate, Model Rocketry renders in the same left-pocket zone used by the male uniform.');
+          addNotice('ok','Female cadet Class A: with two specialty badges already above the nameplate, Model Rocketry is shown in the left-pocket place used on the male uniform.');
         }
       }
-      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and will render under the nameplate (UN); command insignia remains outside the normal four-badge count.');
-      if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and will render over the nameplate (ON); command insignia remains outside the normal four-badge count.');
+      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and is shown under the nameplate (UN); command insignia remains outside the normal four-badge count.');
+      if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and is shown over the nameplate (ON); command insignia remains outside the normal four-badge count.');
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }
@@ -1011,7 +1011,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Tip: use this popup for fast selection; selected items stay checked.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Selected items stay checked.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');

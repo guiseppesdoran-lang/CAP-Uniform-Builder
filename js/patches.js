@@ -809,7 +809,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     getPatchAuthorizationReason = function capubGetPatchAuthorizationReasonOcpFiltered(patchId, uniformId = State.uniform, membership = State.membership){
       const uniformKey = capubFieldUniformKey(uniformId);
       if(uniformKey === 'ocp' && !capubPatchIsUnitPatchId(patchId) && !capubPatchHasOcpAsset(patchId)){
-        return 'OCP patch picker only displays/renders general patches with OCP in the file name/path. Unit patches use the separate Unit Patch selector.';
+        return 'The OCP patch list holds only general patches whose file name or path contains OCP. Unit patches use the separate Unit Patch selector.';
       }
       return capubPreviousGetPatchAuthorizationReason(patchId, uniformId, membership);
     };
@@ -837,7 +837,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(!visibleIds.length){
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
-        tile.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">No general patches available</div><div class="sub">For OCP, only general patch files with OCP in the name/path are shown. Unit patches are selected below in the Unit Patch dropdown.</div></div>`;
+        tile.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">No general patches available</div><div class="sub">On the OCP, only general patch files with OCP in the name or path are listed. Unit patches are selected in the Unit Patch list below.</div></div>`;
         wrap.appendChild(tile);
         return;
       }

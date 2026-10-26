@@ -31,7 +31,7 @@
   // Options for the garment itself (sleeve length, skirt, headgear...). Defaults per uniform.
   const GARMENT_DEFAULTS = {
     sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto',
-    chevron: '', scarf: false, jacket: true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true, badgeLayout: 'column',
+    chevron: '', scarf: false, jacket: false, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true, badgeLayout: 'column',
     poloShirt: 'embroidered', poloCut: '', poloName: true, poloMark: 'badge', dutyTitle: ''
   };
   function garmentOptions(){
