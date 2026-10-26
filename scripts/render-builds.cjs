@@ -68,7 +68,10 @@ const USAGE = `Usage:
 
 // ---- turning a build spec into the engine's build ---------------------------------------------
 
-const GARMENT_DEFAULTS = { sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto', chevron: '', scarf: false, jacket: true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true };
+// The flight jacket is an optional add-on (8.2.7, 8.3.7; LIVE7-4): the harness starts it where the page does (GARMENT_DEFAULTS in js/uniform-view.js, off), so the matrix
+// shows what a member sees first; a build that wants the jacket states opt.jacket: true (the matrix keeps flight builds that do).
+const PAGE_GARMENT_DEFAULTS = (() => { const m = /const GARMENT_DEFAULTS = (\{[\s\S]*?\n  \});/.exec(fs.readFileSync(path.join(ROOT, 'js/uniform-view.js'), 'utf8')); if(!m) throw new Error('js/uniform-view.js: GARMENT_DEFAULTS not found'); return Function(`return ${m[1]}`)(); })();
+const GARMENT_DEFAULTS = { sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto', chevron: '', scarf: false, jacket: PAGE_GARMENT_DEFAULTS.jacket === true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true };
 
 const dbg = (...a) => { if(process.env.RB_DEBUG) console.error('[render-builds]', ...a); };
 // A JROTC/ROTC ribbon is its own sheet (data/rotc-ribbons.js), not a 'ribbon-' sheet.
@@ -277,6 +280,25 @@ function matrix(){
         ok.push({ name, build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3 }, opt), badgeIds: [AVIATION_BADGE.senior] } });
       }
       if(gender === 'female') ok.push({ name: 'polo-female-senior-Capt-mens-cut', build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { poloCut: 'male' }, badgeIds: [AVIATION_BADGE.senior] } });
+    }
+  }
+  // The flight jacket is an add-on that starts off, so the plain flight builds above show the suit alone; one build per flight uniform carries it (opt.jacket: true) so
+  // the jacket stays covered (CAPR 39-1 8.2.7, 8.3.7).
+  for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+    if(!RULES.RULES[uniform]) continue;
+    ok.push({ name: `${uniform}-male-senior-Capt-jacket`, build: { uniform, gender: 'male', membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { jacket: true }, badgeIds: [AVIATION_BADGE.senior] } });
+  }
+  // The Class B and aviator shirts' tie (LIVE7-3; 4.1.11.1.1.3, 4.1.12.4, 4.2.5.1.4, 4.2.6.3): worn with the long sleeve (the default), optional with the short (off by default).
+  // A long-sleeved build with the tie on by default and a short-sleeved one with it explicitly off, both cuts, and on each aviator sheet a cadet NCO (the collar chevrons, Figure A5-5).
+  for(const uniform of ['blues_b', 'aviator']){
+    if(!RULES.RULES[uniform]) continue;
+    for(const gender of ['male', 'female']){
+      const base = { uniform, gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, badgeIds: [AVIATION_BADGE.senior] };
+      ok.push({ name: `${uniform}-${gender}-long-tie-default-senior-Capt`, build: Object.assign({}, base, { opt: { sleeve: 'long' } }) });
+      ok.push({ name: `${uniform}-${gender}-short-tie-off-senior-Capt`, build: Object.assign({}, base, { opt: { sleeve: 'short', tie: false } }) });
+      if(uniform === 'aviator'){
+        for(const sleeve of ['short', 'long']) ok.push({ name: `aviator-${gender}-${sleeve}-cadet-NCO-C-MSgt`, build: { uniform, gender, membership: 'cadet', rank: 'C/MSgt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { sleeve }, badgeIds: [AVIATION_BADGE.cadet] } });
+      }
     }
   }
   return { builds: ok, skipped, warnings };

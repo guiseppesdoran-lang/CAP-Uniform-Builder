@@ -27,6 +27,34 @@ test('the standard matrix has a Maj Gen on every uniform a general officer wears
   }
 });
 
+test('the harness starts the flight jacket where the page does (off), and the matrix keeps a flight build with it on (LIVE8-7; CAPR 39-1 8.2.7, 8.3.7)', async () => {
+  const fs = require('node:fs');
+  const page = /const GARMENT_DEFAULTS = (\{[\s\S]*?\n  \});/.exec(fs.readFileSync(require('node:path').join(__dirname, '..', 'js', 'uniform-view.js'), 'utf8'));
+  const pageDefault = Function(`return ${page[1]}`)().jacket;
+  assert.equal(pageDefault, false, 'the page starts without the jacket');
+  assert.equal(H.makeBuild({ uniform: 'flight_suit', gender: 'male' }).opt.jacket, pageDefault, 'the harness default is the page default');
+  assert.equal(H.makeBuild({ uniform: 'flight_suit', gender: 'male', opt: { jacket: true } }).opt.jacket, true);
+  const { builds } = H.matrix();
+  const jacketed = builds.filter(b => b.build.opt && b.build.opt.jacket === true).map(b => b.name);
+  assert.deepEqual(jacketed.sort(), ['corporate_flight_suit-male-senior-Capt-jacket', 'flight_suit-male-senior-Capt-jacket']);
+  const plain = builds.find(b => b.name === 'flight_suit-male-senior-Capt');
+  assert.ok(plain && !(plain.build.opt && plain.build.opt.jacket), 'the plain flight build states no jacket, so it shows the suit alone');
+});
+
+test('the standard matrix has the Class B and aviator shirts long with the tie by default and short with it off, and a cadet NCO on each aviator sheet (LIVE8-7)', () => {
+  const { builds } = H.matrix();
+  const by = n => builds.find(b => b.name === n);
+  for(const u of ['blues_b', 'aviator']) for(const g of ['male', 'female']){
+    const long = by(`${u}-${g}-long-tie-default-senior-Capt`), short = by(`${u}-${g}-short-tie-off-senior-Capt`);
+    assert.ok(long && long.build.opt.sleeve === 'long' && long.build.opt.tie === undefined, `${u} ${g}: long, tie left at its default (on)`);
+    assert.ok(short && short.build.opt.sleeve === 'short' && short.build.opt.tie === false, `${u} ${g}: short, tie off`);
+  }
+  for(const g of ['male', 'female']) for(const sleeve of ['short', 'long']){
+    const b = by(`aviator-${g}-${sleeve}-cadet-NCO-C-MSgt`);
+    assert.ok(b && b.build.membership === 'cadet' && b.build.rank === 'C/MSgt' && b.build.opt.sleeve === sleeve, `aviator ${g} ${sleeve}: cadet NCO`);
+  }
+});
+
 test('the critique build set is valid JSON the harness can turn into engine builds', () => {
   const { execFileSync } = require('node:child_process');
   const list = JSON.parse(execFileSync(process.execPath, [require('node:path').join(__dirname, '..', 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
