@@ -720,9 +720,7 @@
     // is not on the tag, which is a different reason from the tag being full.
     const para = b.uniform === 'corporate_flight_suit' ? '8.3.4.1' : '8.2.4.1';
     const candidates = [...set.chaplain, ...set.aviation, ...(pinItem ? [pinItem] : []), ...set.occupational];
-    const ordered = C.preferred(candidates, (b.badgeChoices || {}).tag);
-    if(candidates.length > 1) C.reportBadgeConflict(ctx, 'tag', 'Flight suit name tag badge', candidates, ordered, 1);
-    const chosen = ordered.slice(0, 1);
+    const chosen = candidates.length > 1 ? C.chooseBadges(ctx, 'tag', 'Flight suit name tag badge', candidates, [{ key: 'only', label: 'Name tag badge' }]) : candidates.slice(0, 1);
     const zone = pieceRect(tag, spec, 'badge_zone');
     const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
     // The lone badge is centred in the tag's badge_zone landmark and may use 0.7 of its width (the width the wings had beside a narrow badge).
