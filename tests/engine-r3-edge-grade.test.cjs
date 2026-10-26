@@ -63,6 +63,36 @@ test('edge-on epaulet grades keep their true length along the strap and are sque
   assert.ok(compared >= 4, `${compared} edge/top pairs compared (${edgeOnly} grades with the edge view only)`);
 });
 
+// ---- 5b. LIVE8-4: the grade on an edge-on strip is sized from that strip's thickness, on every uniform that draws one ----------------------------------
+
+test('the edge-on grade is squeezed to its strip\'s thickness less 0.08 in on the shirts (0.5 in strips), the Class A boards (0.5 in) and the Class A officers\' strap strip (the thickness its sheet states, about 0.46 in), not to a fixed 0.32 in (DAFI 36-2903 4.5.1.1.1; CAPR 39-1 4.1.5.2.1, 4.1.11.1.1, 4.2.5.1.1.1)', async () => {
+  // the shirts and the Class A cadet boards: the strip the engine draws is 0.5 in thick
+  for(const [u, gender, m, rank] of [['blues_b', 'male', 'senior', 'Col'], ['blues_b', 'female', 'cadet', 'C/Col'], ['aviator', 'male', 'senior', 'Maj'], ['aviator', 'female', 'senior', 'Col'], ['blues_a', 'male', 'cadet', 'C/Col'], ['blues_a', 'female', 'cadet', 'C/Col']]){
+    const scene = await compose(hb(u, gender, m, rank));
+    for(const side of ['right', 'left']){
+      const edge = byKey(scene, `grade:edge-${side}`);
+      assert.ok(edge, `${u} ${gender} ${rank} ${side}: edge-on grade`);
+      assert.ok(Math.abs(edge.w - (0.5 - 0.08)) < 0.005, `${u} ${gender} ${rank} ${side}: grade ${edge.w.toFixed(3)} in across the 0.5 in strip`);
+    }
+  }
+  // the Class A coat's officers (senior and general): the strip is the sheet's own overlay, whose thickness follows from its epaulet_sleeve box and the strap's angle
+  for(const [gender, key] of [['male', 'class_a_coat'], ['female', 'class_a_coat_female']]){
+    const cord = JSON.parse(fs.readFileSync(path.join(root, 'images', 'cords', 'cord-wing.spec.json'), 'utf8')).garment_fit[key].strap_axis;
+    const th = Math.atan2(Math.abs(cord[1][1] - cord[0][1]), Math.abs(cord[1][0] - cord[0][0])), cs = Math.cos(th), sn = Math.sin(th);
+    for(const [rank, overlay] of [['Col', 'senior-officer'], ['Maj', 'senior-officer'], ['Brig Gen', 'general-officer']]){
+      const sheet = `garment-blues-class-a-coat${gender === 'female' ? '-female' : ''}`;
+      const box = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', `${sheet}-${overlay}.spec.json`), 'utf8')).landmarks.epaulet_sleeve_right;
+      const want = ((box.h / 100) * cs - (box.w / 100) * sn) / (cs * cs - sn * sn) - 0.08;
+      const scene = await compose(hb('blues_a', gender, 'senior', rank));
+      for(const side of ['right', 'left']){
+        const edge = byKey(scene, `grade:edge-${side}`);
+        assert.ok(edge, `Class A ${gender} ${rank} ${side}: edge-on grade`);
+        assert.ok(Math.abs(edge.w - want) < 0.005 && want > 0.33, `Class A ${gender} ${rank} ${side}: grade ${edge.w.toFixed(3)} in across, the strip's thickness less 0.08 is ${want.toFixed(3)}`);
+      }
+    }
+  }
+});
+
 // ---- 6. The mess dress boards: the same rule (FIX-R-OTHER-r4 item 3) --------------------------------------------------
 
 test('mess dress boards: the edge-on grade keeps its true length along the strap and is squeezed only across the 0.4 in strip, as on the top view; 5/8 in from the outer end (R7; CAPR 39-1 4.1.1.1.1.1, 4.1.2.1.1.1; DAFI 36-2903 4.5.1.1.1)', async () => {

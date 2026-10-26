@@ -740,9 +740,11 @@
     }
   }
 
-  // The garment sheets draw the epaulet sleeve edge-on as a 0.4 in strip over the outer 82% of the
-  // strap landmark (the overlay specs' size_basis). The grade sits 5/8 in from the outer end of the
-  // epaulet (DAFI 36-2903 4.5.1.1.1), the same place the sleeve's own grade is drawn.
+  // EDGE_ON_THICK is the 0.4 in strip the sheets' own edge-on overlays drew (their size_basis), over the outer 82% of the strap landmark; it is the
+  // strap rectangle's half-width in strapFrames and the fallback thickness of epauletEdgeGrades. The strips the engine draws (epauletStrips, the Class A
+  // boards) are BOARD_STRIP_THICK (0.5 in) and the officers' Class A overlay strip the thickness its sheet states (about 0.46 in): the grade on any of them
+  // is squeezed to that strip's thickness less 0.08 in (gradeOnStrap), and sits 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1),
+  // the same place the sleeve's own grade is drawn.
   const EDGE_ON_THICK = 0.4;
   const EDGE_ON_COVER = 0.82;
   const GRADE_FROM_END = 0.625;
@@ -1219,9 +1221,11 @@
   // The officers' epaulet strips on the Class A coat (the senior and general officer overlays draw them, gray, over the outer part
   // of the strap): the same two shading bands, on the strip's own rectangle, which the overlay's epaulet_sleeve_<side> landmark
   // boxes (the box of the strip turned along the strap: its length and thickness follow from the box and the strap's angle).
+  // Returns the strip's thickness (inches, the larger of the two sides), which the grade on it is squeezed to (epauletEdgeGrades), or null when the sheet states none.
   async function officerStripShading(ctx, overlayId, frames){
-    if(!ctx.has(overlayId)) return;
+    if(!ctx.has(overlayId)) return null;
     const s = await ctx.spec(overlayId);
+    let found = null;
     for(const side of ['right', 'left']){
       const f = frames[side], box = core.landmarkBounds(s, 'epaulet_sleeve_' + side);
       if(!f || !box) continue;
@@ -1230,7 +1234,9 @@
       const length = (box.w * cs - box.h * sn) / det, thick = (box.h * cs - box.w * sn) / det;
       if(!(length > 1 && thick > 0.2 && thick < 0.8)) continue;
       stripShading(ctx, side, { x: box.x + box.w / 2, y: box.y + box.h / 2 }, f.axis, f.normal, length, thick, 0, Z.epauletLayer + 0.6);
+      found = Math.max(found || 0, thick);
     }
+    return found;
   }
 
   const CLASS_A = {
@@ -1268,6 +1274,8 @@
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
 
     // Layers: boards, epaulets and lapel insignia drawn to the coat (4.1.5.2.1, 4.1.5.2.2.1).
+    // The thickness of the officers' edge-on strap strip the sheet draws (measured from its epaulet_sleeve box), which the grade on it is sized from (LIVE8-4).
+    let stripThick = null;
     if(g.category === 'cadet-officer'){
       await cadetBoards(ctx, A, g, sex);
       // The edge-on board at the shoulder line carries the grade as well as the view from above (R7),
@@ -1286,12 +1294,12 @@
     }
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);
-      await officerStripShading(ctx, `${A.layer}-general-officer`, strapFrames(ctx, A));
+      stripThick = await officerStripShading(ctx, `${A.layer}-general-officer`, strapFrames(ctx, A));
       sleeveBraidMeasure(ctx, '3 in', 1.5);
     }
     else if(!semi && isOfficerLike(g)){
       await ctx.overlay(`${A.layer}-senior-officer`);
-      await officerStripShading(ctx, `${A.layer}-senior-officer`, strapFrames(ctx, A));
+      stripThick = await officerStripShading(ctx, `${A.layer}-senior-officer`, strapFrames(ctx, A));
       sleeveBraidMeasure(ctx, '3 in', 0.5);
     }
     else if(!semi && g.category === 'senior-nco'){
@@ -1334,7 +1342,7 @@
     }else if(!semi && isOfficerLike(g)){
       // The coat's epaulets are edge-on in the front view and carry the grade there too, 5/8 in from the
       // outer end like the Class B (D6, D42; R7), as well as on the views from above.
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A));
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), null, null, stripThick ? { thick: stripThick } : null);
       await epauletViews(ctx, g, null, strapFrames(ctx, A));
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
