@@ -948,20 +948,30 @@
 
   // ---- USAF-style Class A service dress (4.1.5, 4.1.9) and cadet semi-formal (4.1.3.2, 4.1.4) --------
 
-  // The shoulder strap on each side of a coat, from the wearer's left strap axis (neck end, arm
-  // end) mirrored about the coat's centre: its midpoint and its angle.
-  function strapPair(width, neck, arm){
-    const mid = { x: (neck[0] + arm[0]) / 2, y: (neck[1] + arm[1]) / 2 };
-    const deg = Math.atan2(arm[1] - neck[1], arm[0] - neck[0]) * 180 / Math.PI;
-    return { left: { mid, deg }, right: { mid: { x: width - mid.x, y: mid.y }, deg: -deg } };
+  // The Class A coat sheets state the shoulder strap as an axis (neck end, arm end) rather than as an
+  // epaulet landmark; the strap is the same 0.4 in edge-on epaulet the other sheets draw. The axis is
+  // read from the sheet, not kept here: every shoulder cord asset states it for each coat in its
+  // garment_fit (class_a_coat / class_a_coat_female: the wearer's left strap, from the cadet officer
+  // insignia sheet's shoulder-strip-left, garment user units of 0.01 in), so it moves with the coat
+  // when the art is rescaled (the men's coat was drawn 1.0882 times larger in art e1b1ab14 and the
+  // literals measured on the old sheet put the boards, grades and cords 0.4 to 0.9 in off).
+  // The semi-formal coats share the Class A coat's box and strap. Returns [neck end, arm end] in
+  // sheet inches, or null when no cord asset states it.
+  async function strapAxisOf(ctx, sex){
+    for(const cid of ['cord-wing', 'cord-group', 'cord-region', 'cord-national']){
+      if(!ctx.has(cid)) continue;
+      const s = await ctx.spec(cid), fit = s.raw && s.raw.garment_fit && s.raw.garment_fit[sex === 'female' ? 'class_a_coat_female' : 'class_a_coat'];
+      const ax = fit && fit.strap_axis;
+      if(Array.isArray(ax) && ax.length === 2 && ax.every(p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite))) return ax.map(([x, y]) => [x / 100, y / 100]);
+    }
+    return null;
   }
 
-  // The Class A coat sheets state the shoulder strap as an axis (neck end, arm end) rather than as an
-  // epaulet landmark; the strap is the same 0.4 in edge-on epaulet the other sheets draw. This makes
-  // the strap's frame (H.epauletFrame's shape) of each side from that axis, so the views from above sit
-  // just above the shoulder by the same rule as on the Class B and the aviator shirt (R7).
+  // The strap's frame on each side, from A.cord (the wearer's left strap axis, neck end then arm end) mirrored about the coat's centre.
   function strapFrames(ctx, A){
-    const W = ctx.base.w, [n, a] = A.cord, frames = {};
+    const W = ctx.base.w, frames = {};
+    if(!A.cord) return frames;
+    const [n, a] = A.cord;
     for(const side of ['left', 'right']){
       const neck = side === 'left' ? { x: n[0], y: n[1] } : { x: W - n[0], y: n[1] };
       const arm = side === 'left' ? { x: a[0], y: a[1] } : { x: W - a[0], y: a[1] };
@@ -1077,13 +1087,11 @@
   const CLASS_A = {
     male: {
       coat: 'garment-blues-class-a-coat', semi: 'garment-semiformal-class-a-coat-male', layer: 'garment-blues-class-a-coat',
-      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia',
-      cord: [[16.52, 2.44], [20.22, 3.41]], strap: strapPair(23.726, [16.52, 2.44], [20.22, 3.41])
+      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia'
     },
     female: {
       coat: 'garment-blues-class-a-coat-female', semi: 'garment-semiformal-class-a-coat-female', layer: 'garment-blues-class-a-coat-female',
-      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia-female',
-      cord: [[16.57, 1.91], [20.09, 2.65]], strap: strapPair(24.3883, [16.57, 1.91], [20.09, 2.65])
+      cadetOfficer: 'garment-blues-class-a-cadet-officer-insignia-female'
     }
   };
 
@@ -1091,7 +1099,9 @@
     const semi = b.uniform === 'semi_formal_usaf';
     const g = b.grade;
     const sex = b.gender === 'female' ? 'female' : 'male';
-    const A = CLASS_A[sex];
+    // The strap axis comes from the sheet (strapAxisOf), not from a table here.
+    const A = Object.assign({}, CLASS_A[sex], { cord: await strapAxisOf(ctx, sex) });
+    if(!A.cord) ctx.note('No artwork for the shoulder strap position on this coat');
     await ctx.garment(semi ? A.semi : A.coat);
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
 

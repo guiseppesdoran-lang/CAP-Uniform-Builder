@@ -26,8 +26,10 @@ const hb = (uniform, gender, rank, membership) => HARNESS.makeBuild({ uniform, g
 const rad = d => d * Math.PI / 180;
 // The strip is 0.5 in across with its upper edge on the strap's (0.4 in): its centre line lies 0.05 in below the strap axis.
 const DROP = { thick: 0.5, drop: 0.05 };
-// The coat sheets' strap axis (the wearer's left shoulder: the viewer's right), neck end then arm end, sheet inches.
-const STRAP = { male: { w: 23.726, axis: [[16.52, 2.44], [20.22, 3.41]] }, female: { w: 24.3883, axis: [[16.57, 1.91], [20.09, 2.65]] } };
+// The coat sheets' strap axis (the wearer's left shoulder: the viewer's right), neck end then arm end, sheet inches: what the sheets state
+// (the shoulder cord assets' garment_fit), read from the shipped specs.
+const SHEET = require('./helpers/class-a-sheet.cjs');
+const STRAP = { male: SHEET.strap('male'), female: SHEET.strap('female') };
 
 test('Class A and cadet semi-formal: the edge-on board is the top board flattened, on the strap axis, with the grade on its blue band (4.1.5.2.1.3)', async () => {
   for(const uniform of ['blues_a', 'semi_formal_usaf']){
@@ -107,7 +109,9 @@ test('the edge-on board keeps its whole outline: as long as the top view, so the
       const W = STRAP[sex].w, [nn, aa] = STRAP[sex].axis;
       const arm = side === 'left' ? { x: aa[0], y: aa[1] } : { x: W - aa[0], y: aa[1] };
       assert.ok(Math.hypot(tip.x - arm.x, tip.y - arm.y) >= board.w - 0.05, `${tag}: the peak's tip is ${Math.hypot(tip.x - arm.x, tip.y - arm.y).toFixed(3)} in from the outer end (the board is ${board.w})`);
-      assert.ok(board.w > strapLen + 0.5, `${tag}: the board is longer than the strap, so its peak lies past the strap's neck end`);
+      // The board is 4.55 in (true size, Fig A5-6); the strap is what the sheet states: 3.82 in on the men's coat before it was drawn at true scale
+      // (art e1b1ab14, x1.0882: 4.16 in), 3.6 in on the women's. The peak (BOARD_PEAK, 0.74 in) overhangs the neck end by what is left, 0.39 in on the men's coat.
+      assert.ok(board.w > strapLen + 0.3, `${tag}: the board is longer than the strap, so its peak lies past the strap's neck end (${(board.w - strapLen).toFixed(2)} in)`);
       // The button is inside the strip's box.
       const b = toScene(button);
       const rotBack = core.rotatePoint(b, strip.origin, -(strip.rotate || 0));

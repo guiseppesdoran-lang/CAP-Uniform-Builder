@@ -137,8 +137,9 @@ test('the cord\'s start meets the epaulet strap: the engine\'s strip on the Clas
 // outer (arm) end: its top end lies under the strip (inside it, to 0.02 in), within the strip's outer end (none of it past that end), its
 // path leaves the strip across the strip's lower edge, and it is drawn under the strip (9.3, 9.4.1: the cord is worn under the epaulet).
 test('Class A: every cord kind starts under the shoulder board\'s strip at its arm end and leaves from its lower edge, under it in z (9.3, 9.4.1)', async () => {
-  // The coat sheets' strap axis on the wearer's left (neck end, arm end), as in js/engine/profiles-dress.js CLASS_A.
-  const AXIS = { male: [[16.52, 2.44], [20.22, 3.41]], female: [[16.57, 1.91], [20.09, 2.65]] };
+  // The coat sheets' strap axis on the wearer's left (neck end, arm end): what the sheets state, not a copy of the engine's.
+  const SHEET = require('./helpers/class-a-sheet.cjs');
+  const AXIS = { male: SHEET.strap('male').axis, female: SHEET.strap('female').axis };
   let checked = 0;
   for(const [gid, uniform, gender, opt] of GARMENTS.filter(g => g[1] === 'blues_a')) for(const k of KINDS){
     const cord = k.replace(/-/g, '_');

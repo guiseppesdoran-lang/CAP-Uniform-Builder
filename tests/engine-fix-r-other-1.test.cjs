@@ -87,8 +87,8 @@ test('Class A and semi-formal: the edge-on epaulet strip carries the grade, 5/8 
 test('Class A officer: the edge-on grade lies 5/8 in from the outer end of the strap, on the strap axis (DAFI 36-2903 4.5.1.1.1)', async () => {
   const scene = await compose(build('blues_a', 'male', 'senior', 'Capt', []));
   const edge = byKey(scene, 'grade:edge-right');
-  // Right strap, from the left strap axis [16.52, 2.44] -> [20.22, 3.41] mirrored on the 23.726 in coat.
-  const neck = { x: 23.726 - 16.52, y: 2.44 }, arm = { x: 23.726 - 20.22, y: 3.41 };
+  // Right strap, from the left strap axis the coat sheet states (the cord assets' garment_fit) mirrored on the coat's width.
+  const { neck, arm } = require('./helpers/class-a-sheet.cjs').strap('male').mirror('right');
   const len = Math.hypot(arm.x - neck.x, arm.y - neck.y), u = { x: (neck.x - arm.x) / len, y: (neck.y - arm.y) / len };
   const c = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
   // Distance of the grade centre from the outer end along the axis: 5/8 in plus half the grade's length.

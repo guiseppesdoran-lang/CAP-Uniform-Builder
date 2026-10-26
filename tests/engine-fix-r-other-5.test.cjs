@@ -54,8 +54,10 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
 });
 
 test('Class A and cadet semi-formal coats: the edge-on grade\'s centre is as far from the strap\'s outer end as the top view\'s rank slot is from the board\'s outer end, on both sides and both cuts (R7; the board sheets\' rank_slot_center and board_outer_end)', async () => {
-  // The strap's arm end (its outer end) is the coat's cord line end (CLASS_A in js/engine/profiles-dress.js), mirrored for the wearer's right.
-  const ARM = { male: { W: 23.726, a: [20.22, 3.41] }, female: { W: 24.3883, a: [20.09, 2.65] } };
+  // The strap's arm end (its outer end) is the strap axis the coat sheet states (the cord assets' garment_fit, tests/helpers/class-a-sheet.cjs), mirrored for the wearer's right.
+  const SHEET = require('./helpers/class-a-sheet.cjs');
+  const ARM = {};
+  for(const sx of ['male', 'female']){ const st = SHEET.strap(sx); ARM[sx] = { W: st.w, a: st.axis[1] }; }
   let n = 0;
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const gender of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
     const scene = await compose(hb(uniform, gender, 'cadet', rank, { badgeIds: [AIRCREW] }));
