@@ -13,7 +13,7 @@
   3293
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.03495 in per figure pixel: the same embroidered seal is 83.9 px across (equal-area circle) in this figure and 94.9 px (2.93 in) in the men's figure, so the women's figure is drawn 1.131 times larger on the page. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing (its waist, 11.1 in flat, is narrower than a real polo's; the Class B blouse sheet's is 12.2 in). Colours sampled from the figure: shirt #001b52, belt #201a18, trousers #746f6c, skirt #86827e.",
+ "size_basis": "Silhouette traced from CAPR 39-1 Figure 5.5 (3 March 2020, p.80; base-art/ref_polo_CAPR_fig5-5.png, PDF page 108 rendered at 300 dpi, trace-polo.js: shirt-only mask, left half mirrored, Moore trace, RDP 1.1 px). Scale 0.03495 in per figure pixel: the same embroidered seal is 83.9 px across (equal-area circle) in this figure and 94.9 px (2.93 in) in the men's figure, so the women's figure is drawn 1.131 times larger on the page. ESTIMATE: the regulation gives no garment dimension and the figure is a schematic drawing (its waist, 11.1 in flat, is narrower than a real polo's; the Class B blouse sheet's is 12.2 in). Shirt colour #171b1f (shadow #0f1215, highlight #1d2228), sampled in-browser from the Vanguard product photo of the CAP uniform golf shirt with seal (male, not personalized), SKU CAP0320, https://www.vanguardmil.com/cdn/shop/files/CAP0321_1.jpg (1024 x 1024); shirt pixels = every pixel with max channel < 140 and blue >= red and >= green, n = 458,157 of 1,048,576, sorted by luminance; percentiles p5 #0f1317, p25 #14181b, p50 #181c1f, p75 #1a1f24, p95 #1d242d; means: shadow p0-p10 #0f1215, body p30-p70 #171b1f, lit face p60-p90 #1a1f23, lit p85-p97 #1d2228; one photo, so estimated. Body = the p30-p70 mean, highlight lines = the p85-p97 mean, shadow / outline = the p0-p10 mean. Replaces the Figure 5.5 drawing's #001b52, which was too saturated. Belt #201a18, trousers #746f6c, skirt #86827e are sampled from the Figure 5.5 drawing (the photo set does not show them).",
  "anchors": {
   "top_center": [
    1098.2,
@@ -207,7 +207,7 @@
  ],
  "assumed": [
   "garment dimensions (scale from the seal size, same in both figures)",
-  "no photograph of a real CAP polo was available offline (the charter forbids downloads): colours are sampled from Figure 5.5",
+  "shirt colour sampled in-browser from one Vanguard product photo (SKU CAP0320, see size_basis), so estimated; belt, trousers and skirt tones sampled from Figure 5.5",
   "collar leaf, placket, button, pocket, belt, loop and buckle geometry read off Figure 5.5 (pixel table FIG in make-polo.js)",
   "seams, stitches and the ribbed cuff are shown as flat geometric lines, no knit texture",
   "short sleeve as drawn in Figure 5.5 (it reaches the elbow, longer than a real polo sleeve of about 9 in)",
