@@ -413,8 +413,9 @@
         : { pieceAnchor: 'visual_center', at: { x: p[0], y: p[1] }, rotate: p[2] || 0 };
       await ctx.place(id, Object.assign(place, { z: Z.insignia, role: 'grade', key: 'grade:sleeve-' + side }, sil, opts || {}));
     }
-    // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve.
-    const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right'), c = ctx.point('chevron_halfway_right');
+    // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve; on a short sleeve, which has no
+    // elbow, halfway between the seam and the bottom edge of the sleeve (4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3).
+    const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right') || ctx.point('sleeve_bottom_right'), c = ctx.point('chevron_halfway_right');
     if(s && e && c) ctx.measure(s, e, 'halfway', { mid: c, side: { x: -1, y: 0 }, offsetOnly: true });
   }
 
@@ -1095,6 +1096,19 @@
     }
   };
 
+  // The officers' sleeve braid is sewn on 3 in from the end of the sleeve (Class A 4.1.5.2, 4.1.9.3; men's mess dress 4.1.1.1),
+  // 2 1/2 in on the women's mess dress (4.1.2.1): the tailor's distance, from the end of the wearer's right sleeve (the sheet's
+  // sleeve_bottom_right) to the braid's lower edge (the braid overlay's sleeve_braid_right, less half the braid's regulation
+  // width, 1/2 in, or 1 1/2 in for general officers), labelled with the regulation's value.
+  function sleeveBraidMeasure(ctx, label, braidWidth){
+    const end = ctx.point('sleeve_bottom_right'), r = ctx.rect('sleeve_braid_right');
+    if(!end || !r) return;
+    const c = core.rectCenter(r), d = Math.hypot(c.x - end.x, c.y - end.y);
+    if(d <= braidWidth / 2) return;
+    const t = (d - braidWidth / 2) / d;
+    ctx.measure(end, { x: end.x + (c.x - end.x) * t, y: end.y + (c.y - end.y) * t }, label);
+  }
+
   async function composeClassA(ctx, b){
     const semi = b.uniform === 'semi_formal_usaf';
     const g = b.grade;
@@ -1125,10 +1139,12 @@
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);
       await officerStripShading(ctx, `${A.layer}-general-officer`, strapFrames(ctx, A));
+      sleeveBraidMeasure(ctx, '3 in', 1.5);
     }
     else if(!semi && isOfficerLike(g)){
       await ctx.overlay(`${A.layer}-senior-officer`);
       await officerStripShading(ctx, `${A.layer}-senior-officer`, strapFrames(ctx, A));
+      sleeveBraidMeasure(ctx, '3 in', 0.5);
     }
     else if(!semi && g.category === 'senior-nco'){
       const s = await ctx.overlay(`${A.layer}-senior-nco-lapel`);
@@ -1360,9 +1376,11 @@
       const cL = { x: cB.x + lift.x, y: cB.y + lift.y };
       const onView = p => core.rotatePoint({ x: p.x + lift.x, y: p.y + lift.y }, cL, turnView);
       const pad = 0.15;
+      const clip = [{ x: box.x - pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y + box.h + pad }, { x: box.x - pad, y: box.y + box.h + pad }].map(onView);
+      // The layer is the whole overlay sheet, turned, and only its clip shows: the measurement overlay keeps clear of the board
+      // that shows (`obstacle`), not of the sheet's box, which covered the whole coat and sent every label off the figure.
       ctx.layers.push({ type: 'asset', id, x: lift.x, y: lift.y, w: s.w, h: s.h, rotate: turnView, origin: cL, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`,
-        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above`,
-        clip: [{ x: box.x - pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y + box.h + pad }, { x: box.x - pad, y: box.y + box.h + pad }].map(onView) });
+        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above`, clip, obstacle: core.polygonBounds(clip) });
       if(gradeId && ctx.has(gradeId)){
         const slot = ctx.point(`rank_slot_${side}_center`);
         const turn = boardGradeTurn(gradeId, frame.deg) + turnView;
@@ -1416,6 +1434,7 @@
       // Generals' boards are covered in silver lace, the others' in Air Force blue (Figure A5-3).
       await messBoards(ctx, g, M, female);
       await ctx.overlay(g.general ? `${M.garment}-general-officer-sleeve-braid` : `${M.garment}-officer-sleeve-braid`);
+      sleeveBraidMeasure(ctx, female ? '2½ in' : '3 in', g.general ? 1.5 : 0.5);
     }else if(g.category === 'senior-nco'){
       const size = female && b.opt.chevron === '3.5' ? '3.5' : '4';
       const pts = chevronAnchors(ctx);
@@ -1431,6 +1450,13 @@
     const box = await C.drawMiniMedals(ctx, b.medals || [], { w: slot.w, centerX: center.x, centerY: center.y }, { style: b.opt.miniStyle });
     const wrX = ctx.base.w - center.x;
     const plan = planBadges(ctx, b, {});
+    // The medals (or the first badge in their place) 'midway between the top shoulder seam and top button of the coat'
+    // (4.1.1.1.2.2, 4.1.2.1.2.2): the sheet's top of the shoulder (shoulder_left_center) and its top button, the tick at the
+    // medals' centre, drawn beside the rack toward the arm.
+    const shoulderTop = ctx.point('shoulder_left_center'), topButton = ctx.rect('button_left_1');
+    if((box || plan.olp.length) && shoulderTop && topButton){
+      ctx.measure({ x: center.x, y: shoulderTop.y }, { x: center.x, y: topButton.y + topButton.h / 2 }, 'midway', { mid: { x: center.x, y: center.y }, side: { x: -1, y: 0 }, offsetOnly: true });
+    }
     // Aviation / occupational: 1/2 in above the medals; none worn: centred on the medal spot.
     if(plan.olp.length){
       if(box) await stackBadges(ctx, plan.olp, center.x, box.y, 0.5);
@@ -1817,6 +1843,7 @@
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       const at = win && win.badgeAt ? win.badgeAt : { x: cb ? cb.x : medalX, y };
       await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: at.x, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      if(box) ctx.measure({ x: at.x, y: y + 0.5 }, { x: at.x, y });
     }
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.
     ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);

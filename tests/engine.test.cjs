@@ -129,7 +129,9 @@ test('hats are drawn on top of the uniform, with the right device', async () => 
   const device = layersBy(nco, l => l.role === 'hat-device')[0];
   assert.equal(hat.id, 'hat-flight-cap-men-cadet', 'the men\'s flight cap for a man');
   assert.equal(device.id, 'cap-device-nco-senior', 'ICL 25-02 (g): the senior member NCO device (6.2.1.1.1), not the cadet disc, on the flight cap');
-  assert.ok(hat.z > Math.max(...nco.layers.filter(l => l.role !== 'hat' && l.role !== 'hat-device').map(l => l.z)));
+  // The measurement overlay (type 'measure') is drawn by the overlay above the drawing, not stacked in it (D8: the short-sleeve
+  // chevron's 'halfway' and the flight cap's 1 1/2 in now give this build measures).
+  assert.ok(hat.z > Math.max(...nco.layers.filter(l => l.role !== 'hat' && l.role !== 'hat-device' && l.type !== 'measure').map(l => l.z)));
   const mess = await P.composeUniform(build('mess_dress', 'senior', 'Col'), store());
   assert.equal(layersBy(mess, l => l.role === 'hat').length, 0, 'no headgear with mess dress');
 });
