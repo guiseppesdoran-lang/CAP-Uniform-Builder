@@ -70,18 +70,18 @@
   "note": "strap axis = line from the neck end to the arm end of the garment's left epaulet strap / shoulder strip (garment user units, 0.01 in; wearer's left shoulder is on the viewer's right). Place: centre the cord on the axis with shoulder_seam_attach_neck_end at the neck end, rotate so the neck->arm anchors follow the axis, shift the chord 0.125 in toward the neck side so the 0.25 in bow is centred on the strap; draw order garment, layers, cord, then the epaulet sleeve/strip over it",
   "class_a_coat": {
    "asset": "garment-blues-class-a-coat",
-   "left_shoulder_seam_in": 5.04,
+   "left_shoulder_seam_in": 5.48,
    "strap_axis": [
     [
-     1652,
-     244
+     1796.1,
+     262.9
     ],
     [
-     2022,
-     341
+     2198.7,
+     368.7
     ]
    ],
-   "strap_len_in": 3.82,
+   "strap_len_in": 4.16,
    "note": "strap from the garment-blues-class-a-cadet-officer-insignia shoulder-strip-left"
   },
   "class_a_coat_female": {

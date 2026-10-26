@@ -2,60 +2,60 @@
  "asset_id": "garment-blues-class-a-coat-lapel-us-nco",
  "name": "Men's Class A coat US lapel insignia with circle, NCOs (overlay; draw above the lapel foreground)",
  "size_in": {
-  "w": 23.726,
-  "h": 29.955
+  "w": 25.7745,
+  "h": 32.5595
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2372.6,
-  2995.5
+  2577.45,
+  3255.95
  ],
  "size_source": "estimated",
  "size_basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
  "anchors": {
   "top_center": [
-   1186.3,
+   1288.725,
    0
   ],
   "bottom_center": [
-   1186.3,
-   2995.5
+   1288.725,
+   3255.95
   ],
   "center": [
-   1186.3,
-   1497.75
+   1288.725,
+   1627.975
   ],
   "left_edge": [
    0,
-   1497.75
+   1627.975
   ],
   "right_edge": [
-   2372.6,
-   1497.75
+   2577.45,
+   1627.975
   ],
   "lapel_us_right_center": [
-   905.1,
-   419.1
+   982.72,
+   437.4
   ],
   "lapel_us_left_center": [
-   1467.5,
-   419.1
+   1594.73,
+   437.4
   ]
  },
  "landmarks": {
   "lapel_us_right": {
-   "x": 843.1,
-   "y": 357.1,
-   "w": 124,
-   "h": 124
+   "x": 932.72,
+   "y": 387.4,
+   "w": 100,
+   "h": 100
   },
   "lapel_us_left": {
-   "x": 1405.5,
-   "y": 357.1,
-   "w": 124,
-   "h": 124
+   "x": 1544.73,
+   "y": 387.4,
+   "w": 100,
+   "h": 100
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in), origin top-left of the artwork box",

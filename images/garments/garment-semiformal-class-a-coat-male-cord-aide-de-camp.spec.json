@@ -2,65 +2,65 @@
  "asset_id": "garment-semiformal-class-a-coat-male-cord-aide-de-camp",
  "name": "Men's cadet semi-formal coat: USAF aide de camp aiguillette cord (silver, single loop, chrome tip) (overlay, registered to garment-semiformal-class-a-coat-male)",
  "size_in": {
-  "w": 23.726,
-  "h": 29.955
+  "w": 25.7745,
+  "h": 32.5595
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2372.6,
-  2995.5
+  2577.45,
+  3255.95
  ],
  "size_source": "estimated",
  "size_basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
  "anchors": {
   "top_center": [
-   1186.3,
+   1288.72666,
    0
   ],
   "bottom_center": [
-   1186.3,
-   2995.5
+   1288.72666,
+   3255.9545999999996
   ],
   "center": [
-   1186.3,
-   1497.75
+   1288.72666,
+   1627.9772999999998
   ],
   "left_edge": [
    0,
-   1497.75
+   1627.9772999999998
   ],
   "right_edge": [
-   2372.6,
-   1497.75
+   2577.45332,
+   1627.9772999999998
   ],
   "cord_start": [
-   1993.189839830498,
-   335.14023889577373
+   2169.704499830498,
+   362.91552513306186
   ],
   "cord_end": [
-   1866.3,
-   1412.5
+   2030.46666,
+   1535.98
   ]
  },
  "landmarks": {
   "cord": [
    [
-    1993.2,
-    335.1
+    2169.73,
+    362.9
    ],
    [
-    1996.3,
-    612.5
+    2171.93,
+    665.4
    ],
    [
-    1936.3,
-    1012.5
+    2106.63,
+    1100.7
    ],
    [
-    1866.3,
-    1412.5
+    2030.43,
+    1536
    ]
   ]
  },

@@ -13574,46 +13574,46 @@
    "id": "garment-blues-class-a-cadet-officer-insignia",
    "path": "garments/garment-blues-class-a-cadet-officer-insignia.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px). The edge-on shoulder strips take the colours of the top-down board (garment-blues-class-a-cadet-officer-board-*, board/board.json measured on that photo): body #171717, white bands #d9d9db, red #7f1b1e, blue #2a348c; the strips were #15171c / #f2f2f2 / #c8453f / #2b4aa0 (a lighter, more saturated set than the board seen from above).",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "epaulet_right_center": [
-     535.35,
-     292.5
+     580.03,
+     315.8
     ],
     "epaulet_left_center": [
-     1837.25,
-     292.5
+     1997.43,
+     315.8
     ],
     "rank_slot_right_center": [
-     535.35,
-     292.5
+     580.03,
+     315.8
     ],
     "rank_slot_left_center": [
-     1837.25,
-     292.5
+     1997.43,
+     315.8
     ]
    },
    "landmarks": [
@@ -14079,70 +14079,70 @@
    "id": "garment-blues-class-a-coat-general-officer",
    "path": "garments/garment-blues-class-a-coat-general-officer.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Sleeve braid width 1.5 in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated. Braid tone: sampled from CAPR 39-1 (3 Mar 2020) rendered at 3x, Fig 4.6 PDF p64 (p.36) braid 2.3,33.1,86.2 / 2.7,31.9,84.3; Fig 4.1 PDF p54 (p.26) 2.1,32.3,83.6; Fig 4.7a PDF p73 (p.45) 2.1,32.4,84.6 against coat 0,40,101 (the figures draw a tonal braid, ~0.72x the coat luminance); drawn in the figure's line structure, 0.04 in lines on a 0.1 in pitch, but lighter than the figure: the tonal band repeats C/Col Doran's \"too close to the jacket colour\" (mess dress braid #0b1f5e, 1.1x the coat luminance, 2026-10-12) and the flat #2149a0 (5.3x) was \"too light\" (2026-10-14), so lines #1e3c82 (3.6x), gaps #12286a (1.9x), edge #0a1740 on the coat #001c52, band mean 2.5x, the geometric mean of the two rated values.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.725,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.725,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.725,
+     1627.975
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.975
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.975
     ],
     "epaulet_sleeve_right_center": [
-     487.3,
-     309.25
+     515.63,
+     336.9
     ],
     "rank_slot_right_center": [
-     487.3,
-     309.3
+     515.63,
+     336.9
     ],
     "rank_rule_point_right_center": [
-     411.8,
-     329.1
+     440.12,
+     356.7
     ],
     "lapel_us_right_center": [
-     905.1,
-     456.1
+     982.73,
+     462.4
     ],
     "sleeve_braid_right_center": [
-     250.05,
-     2339.65
+     273.02,
+     2577.75
     ],
     "epaulet_sleeve_left_center": [
-     1885.3,
-     309.25
+     2061.82,
+     336.9
     ],
     "rank_slot_left_center": [
-     1885.3,
-     309.3
+     2061.82,
+     336.9
     ],
     "rank_rule_point_left_center": [
-     1960.8,
-     329.1
+     2137.33,
+     356.7
     ],
     "lapel_us_left_center": [
-     1467.5,
-     456.1
+     1594.72,
+     462.4
     ],
     "sleeve_braid_left_center": [
-     2123.7,
-     2341.4
+     2305.52,
+     2579.75
     ]
    },
    "landmarks": [
@@ -14166,34 +14166,34 @@
    "id": "garment-blues-class-a-coat-nametag-cadet",
    "path": "garments/garment-blues-class-a-coat-nametag-cadet.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "nametag_center": [
-     764.45,
-     1041.5
+     820.78,
+     1082
     ]
    },
    "landmarks": [
@@ -14206,34 +14206,34 @@
    "id": "garment-blues-class-a-coat-nametag-officer-nco",
    "path": "garments/garment-blues-class-a-coat-nametag-officer-nco.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Metal officer/NCO tag drawn at the same 3 3/8 x 3/4 in as the cadet plate (cross-chat standard plate size); the regulation gives no dimension and no vendor plate was cited for 3.0 x 0.7 in.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "nametag_center": [
-     764.45,
-     1041.5
+     820.78,
+     1082
     ]
    },
    "landmarks": [
@@ -14246,38 +14246,38 @@
    "id": "garment-blues-class-a-coat-senior-nco-lapel",
    "path": "garments/garment-blues-class-a-coat-senior-nco-lapel.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.725,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.725,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.725,
+     1627.975
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.975
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.975
     ],
     "lapel_us_right_center": [
-     905.1,
-     419.1
+     982.72,
+     437.4
     ],
     "lapel_us_left_center": [
-     1467.5,
-     419.1
+     1594.73,
+     437.4
     ]
    },
    "landmarks": [
@@ -14291,70 +14291,70 @@
    "id": "garment-blues-class-a-coat-senior-officer",
    "path": "garments/garment-blues-class-a-coat-senior-officer.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Sleeve braid width 0.5 in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated. Braid tone: sampled from CAPR 39-1 (3 Mar 2020) rendered at 3x, Fig 4.6 PDF p64 (p.36) braid 2.3,33.1,86.2 / 2.7,31.9,84.3; Fig 4.1 PDF p54 (p.26) 2.1,32.3,83.6; Fig 4.7a PDF p73 (p.45) 2.1,32.4,84.6 against coat 0,40,101 (the figures draw a tonal braid, ~0.72x the coat luminance); drawn in the figure's line structure, 0.04 in lines on a 0.1 in pitch, but lighter than the figure: the tonal band repeats C/Col Doran's \"too close to the jacket colour\" (mess dress braid #0b1f5e, 1.1x the coat luminance, 2026-10-12) and the flat #2149a0 (5.3x) was \"too light\" (2026-10-14), so lines #1e3c82 (3.6x), gaps #12286a (1.9x), edge #0a1740 on the coat #001c52, band mean 2.5x, the geometric mean of the two rated values.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.725,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.725,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.725,
+     1627.975
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.975
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.975
     ],
     "epaulet_sleeve_right_center": [
-     487.3,
-     309.25
+     515.63,
+     336.9
     ],
     "rank_slot_right_center": [
-     487.3,
-     309.3
+     515.63,
+     336.9
     ],
     "rank_rule_point_right_center": [
-     411.8,
-     329.1
+     440.12,
+     356.7
     ],
     "lapel_us_right_center": [
-     905.1,
-     456.1
+     982.73,
+     462.4
     ],
     "sleeve_braid_right_center": [
-     254.65,
-     2389.4
+     277.67,
+     2627.55
     ],
     "epaulet_sleeve_left_center": [
-     1885.3,
-     309.25
+     2061.82,
+     336.9
     ],
     "rank_slot_left_center": [
-     1885.3,
-     309.3
+     2061.82,
+     336.9
     ],
     "rank_rule_point_left_center": [
-     1960.8,
-     329.1
+     2137.33,
+     356.7
     ],
     "lapel_us_left_center": [
-     1467.5,
-     456.1
+     1594.72,
+     462.4
     ],
     "sleeve_braid_left_center": [
-     2118.65,
-     2391.2
+     2300.47,
+     2629.5
     ]
    },
    "landmarks": [
@@ -14378,134 +14378,134 @@
    "id": "garment-blues-class-a-coat",
    "path": "garments/garment-blues-class-a-coat.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/jacket_male.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the ABU coat; coat 29.53 in long). No real garment was measured.",
+   "basis": "Traced from images/base/jacket_male.webp, then scaled x1.0882 (shoulder seam to seam 17.00 -> 18.50 in, the width of a men's 40R service dress coat; neck seam to hem 28.68 -> 31.21 in, a 40R is about 31 in; CAPR 39-1 Fig 4.6 scaled by its 3 3/8 in nameplate gives a 25.20 x 31.99 in coat, the sheet is 25.27 x 32.09 in). Hardware is true size: buttons 7/8 in, nameplate 3 3/8 x 3/4 in, boards 4.55 in, letters. Silhouette traced from images/base/jacket_male.webp (581x719 px), true scale 0.05158 in/px, coat 32.13 in long, 25.27 in across the sleeves. Buttons (x 0.40, y 12.83/17.08/21.32 in), welt pocket (4.78 x 0.95 in at x 2.65, top y 11.07 in) and lower pocket flaps measured on CAPR 39-1 Fig 4.6 at the figure's own scale (its 3 3/8 in nameplate = 61.04 px/in); lapel, shirt and tie geometry traced.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.73,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.73,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.73,
+     1627.98
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.98
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.98
     ],
     "shoulder_seam_right": [
-     336.3,
-     332.5
+     363.73,
+     360.7
     ],
     "sleeve_bottom_right": [
-     291.5,
-     2714.8
+     315.13,
+     2953.1
     ],
     "elbow_right": [
-     231,
-     1642.8
+     249.13,
+     1786.5
     ],
     "chevron_halfway_right": [
-     262.7,
-     987.6
+     283.63,
+     1073.6
     ],
     "shoulder_seam_left": [
-     2036.3,
-     332.5
+     2213.73,
+     360.7
     ],
     "sleeve_bottom_left": [
-     2080.7,
-     2714.8
+     2261.93,
+     2953.1
     ],
     "elbow_left": [
-     2142.1,
-     1642.8
+     2328.83,
+     1786.5
     ],
     "chevron_halfway_left": [
-     2111,
-     987.6
+     2294.93,
+     1073.6
     ],
     "centerline_top": [
-     1186.3,
+     1288.73,
      12.5
     ],
     "hem_center": [
-     1186.3,
-     2965.5
+     1288.73,
+     3225.95
     ],
     "nameplate_center": [
-     764.45,
-     1041.5
+     820.78,
+     1082
     ],
     "welt_top_center": [
-     1657.9,
-     1079
+     1792.73,
+     1119.5
     ],
     "ribbon_row_bottom_center": [
-     1657.9,
-     1079
+     1792.73,
+     1119.5
     ],
     "gorge_seam_right_p1": [
-     791.93,
-     500.72
+     859.58,
+     508.78
     ],
     "gorge_seam_right_p2": [
-     1018.3,
-     461.38
+     1105.91,
+     465.97
     ],
     "gorge_seam_right_mid": [
-     905.12,
-     481.05
+     982.74,
+     487.38
     ],
     "lapel_insignia_rest_right": [
-     905.12,
-     481.05
+     982.74,
+     487.38
     ],
     "lapel_insignia_right": [
-     905.12,
-     456.05
+     982.74,
+     462.38
     ],
     "gorge_seam_left_p1": [
-     1580.67,
-     500.72
+     1717.88,
+     508.78
     ],
     "gorge_seam_left_p2": [
-     1354.3,
-     461.38
+     1471.54,
+     465.97
     ],
     "gorge_seam_left_mid": [
-     1467.48,
-     481.05
+     1594.71,
+     487.38
     ],
     "lapel_insignia_rest_left": [
-     1467.48,
-     481.05
+     1594.71,
+     487.38
     ],
     "lapel_insignia_left": [
-     1467.48,
-     456.05
+     1594.71,
+     462.38
     ],
     "button_1_center": [
-     1186.25,
-     1221.15
+     1328.78,
+     1295.55
     ],
     "button_2_center": [
-     1186.25,
-     1567.25
+     1328.78,
+     1720.45
     ],
     "button_3_center": [
-     1186.25,
-     1908.55
+     1328.78,
+     2144.55
     ]
    },
    "landmarks": [
@@ -16201,7 +16201,7 @@
    "w_in": 19.1183,
    "h_in": 35.4347,
    "size_source": "estimated",
-   "basis": "Silhouette traced from the regulation's Figure 4.15 (CAPR 39-1 p.61) and scaled to 23.0 in sleeve-to-sleeve (estimate: about 9% narrower than the men's blazer; the figures are drawn at the same width). No real garment was measured.",
+   "basis": "Silhouette traced from Vanguard's product photo of the CAP women's blue blazer (CAP4200E; the photo hangs a little lopsided, so one half is smoothed and mirrored) and scaled so that the blazer is 27.5 in from collar to hem (an estimate: 18.72 in sleeve-to-sleeve, the sleeves hanging close to the body as in the photo). Lines, skirt flare and crest position are read off CAPR 39-1 Fig 4.15 (page 89) and Fig 4.13 (page 85). No real garment was measured. Chest geometry: the crest centre is 4.47 in from the centre line (the miniature rack 3 across, 2.06 in, centred on it has its inner edge 3.44 in out); the lapel's outer edge is 4.85 / 4.55 / 3.73 / 2.89 in from the centre line at y 5.4 (peak) / 6.7 / 8.3 / 9.9 in, so it crosses the top 3.5 in of the rack and clears it from y 8.9 down. Fig 4.13 draws the rack the same way, its left edge on the lapel edge. The arm seam is 5.4 in out at the crest's height, 0.9 in from the crest centre, so the crest and rack cannot move out; see DECISIONS.md DORAN5-ART-2.",
    "anchors": {
     "top_center": [
      955.91,
@@ -16280,7 +16280,13 @@
     "nameplate_slot",
     "lapel_pin_slot_right",
     "lapel_pin_slot_left",
-    "medal_slot"
+    "medal_slot",
+    "lapel_left",
+    "arm_seam_left",
+    "shoulder_left",
+    "lapel_right",
+    "arm_seam_right",
+    "shoulder_right"
    ],
    "has_spec": true,
    "issues": []
@@ -16292,7 +16298,7 @@
    "w_in": 25.522,
    "h_in": 38.45,
    "size_source": "estimated",
-   "basis": "Silhouette traced from images/base/male_semi_formal.webp (581x719 px) at 0.0474 in/px (same canvas/scale assumption as the other garments). Trousers are added below the base image's cropped hem. No real garment was measured.",
+   "basis": "Silhouette traced from images/base/male_semi_formal.webp (581x719 px) at 0.0474 in/px, which makes the sleeve-to-sleeve 25.12 in (a men's 40R; the Class A coat at its true scale, make-blues-a.js, is 25.27 in). Trousers are added below the base image's cropped hem. No real garment was measured. Checked against CAPR 39-1 Fig 4.14 (PDF page 87 at 8x) with the figure's 1398 px sleeve-to-sleeve taken as the sheet's 25.12 in (55.6 px/in): the figure's crest centre is 5.53 in from the centre line (Fig 4.12, page 84: 5.37 in), the sheet's pocket and crest centre are 5.49 in from it; the sheet's silhouette, pocket top (12.38 in), crest and lapel overlaid on Fig 4.14 agree within 0.1 in. The lapel is the figure's: its peak is 5.58 in from the centre line at y 6.1 in, the lapel 3.9 in wide, its outer edge 5.35 / 4.44 / 3.97 / 2.84 in from the centre line at y 7.3 / 9.4 / 10.4 / 12.4 in. A rack of 4 miniatures at 11/16 in (2.75 in wide) centred on the pocket has its inner edge 4.12 in from the centre line, so the lapel edge crosses its top rows (1.23 in over the rack at y 7.3, 0.32 in at y 9.4) and clears it from y 10.4 down; Fig 4.12 draws the rack the same way, its top rows against the lapel edge. Moving the pocket out or narrowing the lapel enough to clear the top rows would leave Figs 4.12 and 4.14 (see DECISIONS.md DORAN5-ART-2).",
    "anchors": {
     "top_center": [
      1276.1,
@@ -16373,7 +16379,13 @@
     "lapel_pin_slot_right",
     "lapel_pin_slot_left",
     "medal_slot",
-    "tie"
+    "tie",
+    "lapel_left",
+    "arm_seam_left",
+    "shoulder_left",
+    "lapel_right",
+    "arm_seam_right",
+    "shoulder_right"
    ],
    "has_spec": true,
    "issues": []
@@ -17743,130 +17755,130 @@
    "id": "garment-semiformal-class-a-coat-male",
    "path": "garments/garment-semiformal-class-a-coat-male.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same coat, scale and artwork box as garment-blues-class-a-coat (traced from images/base/jacket_male.webp at 0.0474 in/px), so overlays register. No real garment was measured.",
+   "basis": "Same coat, scale and artwork box as garment-blues-class-a-coat (Traced from images/base/jacket_male.webp, then scaled x1.0882 (shoulder seam to seam 17.00 -> 18.50 in, the width of a men's 40R service dress coat; neck seam to hem 28.68 -> 31.21 in, a 40R is about 31 in; CAPR 39-1 Fig 4.6 scaled by its 3 3/8 in nameplate gives a 25.20 x 31.99 in coat, the sheet is 25.27 x 32.09 in). Hardware is true size: buttons 7/8 in, nameplate 3 3/8 x 3/4 in, boards 4.55 in, letters.), so overlays register.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.73,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.73,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.73,
+     1627.98
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.98
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.98
     ],
     "shoulder_seam_right": [
-     336.3,
-     332.5
+     363.73,
+     360.7
     ],
     "sleeve_bottom_right": [
-     291.5,
-     2714.8
+     315.13,
+     2953.1
     ],
     "elbow_right": [
-     231,
-     1642.8
+     249.13,
+     1786.5
     ],
     "chevron_halfway_right": [
-     262.7,
-     987.6
+     283.63,
+     1073.6
     ],
     "shoulder_seam_left": [
-     2036.3,
-     332.5
+     2213.73,
+     360.7
     ],
     "sleeve_bottom_left": [
-     2080.7,
-     2714.8
+     2261.93,
+     2953.1
     ],
     "elbow_left": [
-     2142.1,
-     1642.8
+     2328.83,
+     1786.5
     ],
     "chevron_halfway_left": [
-     2111,
-     987.6
+     2294.93,
+     1073.6
     ],
     "centerline_top": [
-     1186.3,
+     1288.73,
      12.5
     ],
     "hem_center": [
-     1186.3,
-     2965.5
+     1288.73,
+     3225.95
     ],
     "welt_top_center": [
-     1657.9,
-     1079
+     1792.73,
+     1119.5
     ],
     "ribbon_row_bottom_center": [
-     1657.9,
-     1079
+     1792.73,
+     1119.5
     ],
     "gorge_seam_right_p1": [
-     791.93,
-     500.72
+     859.58,
+     508.78
     ],
     "gorge_seam_right_p2": [
-     1018.3,
-     461.38
+     1105.91,
+     465.97
     ],
     "gorge_seam_right_mid": [
-     905.12,
-     481.05
+     982.74,
+     487.38
     ],
     "lapel_insignia_rest_right": [
-     905.12,
-     481.05
+     982.74,
+     487.38
     ],
     "lapel_insignia_right": [
-     905.12,
-     456.05
+     982.74,
+     462.38
     ],
     "gorge_seam_left_p1": [
-     1580.67,
-     500.72
+     1717.88,
+     508.78
     ],
     "gorge_seam_left_p2": [
-     1354.3,
-     461.38
+     1471.54,
+     465.97
     ],
     "gorge_seam_left_mid": [
-     1467.48,
-     481.05
+     1594.71,
+     487.38
     ],
     "lapel_insignia_rest_left": [
-     1467.48,
-     481.05
+     1594.71,
+     487.38
     ],
     "lapel_insignia_left": [
-     1467.48,
-     456.05
+     1594.71,
+     462.38
     ],
     "button_1_center": [
-     1186.25,
-     1221.15
+     1328.78,
+     1295.55
     ],
     "button_2_center": [
-     1186.25,
-     1567.25
+     1328.78,
+     1720.45
     ],
     "button_3_center": [
-     1186.25,
-     1908.55
+     1328.78,
+     2144.55
     ]
    },
    "landmarks": [
@@ -33946,30 +33958,30 @@
    "id": "garment-blues-class-a-coat-lapel-foreground",
    "path": "garments/garment-blues-class-a-coat-lapel-foreground.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same artwork box as garment-blues-class-a-coat; the collar and lapel faces of the coat redrawn opaque so they cover the shirt collar and any badge or device that slides under them.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ]
    },
    "landmarks": [
@@ -36282,38 +36294,38 @@
    "id": "garment-blues-class-a-coat-lapel-cap",
    "path": "garments/garment-blues-class-a-coat-lapel-cap.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; CAP letters 0.53 in tall, 1.4 in wide, centred on each lapel (CAPR 39-1 4.1.5.2.2.1.2).",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "lapel_cap_right_center": [
-     905.1,
-     454.5
+     982.73,
+     460.9
     ],
     "lapel_cap_left_center": [
-     1467.5,
-     454.5
+     1594.73,
+     460.9
     ]
    },
    "landmarks": [
@@ -36327,38 +36339,38 @@
    "id": "garment-blues-class-a-coat-lapel-us-nco",
    "path": "garments/garment-blues-class-a-coat-lapel-us-nco.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.725,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.725,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.725,
+     1627.975
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.975
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.975
     ],
     "lapel_us_right_center": [
-     905.1,
-     419.1
+     982.72,
+     437.4
     ],
     "lapel_us_left_center": [
-     1467.5,
-     419.1
+     1594.73,
+     437.4
     ]
    },
    "landmarks": [
@@ -36372,38 +36384,38 @@
    "id": "garment-blues-class-a-coat-lapel-us",
    "path": "garments/garment-blues-class-a-coat-lapel-us.svg",
    "category": "garments",
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.725,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.725,
+     3255.95
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.725,
+     1627.975
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.975
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45,
+     1627.975
     ],
     "lapel_us_right_center": [
-     905.1,
-     456.1
+     982.73,
+     462.4
     ],
     "lapel_us_left_center": [
-     1467.5,
-     456.1
+     1594.72,
+     462.4
     ]
    },
    "landmarks": [
@@ -36739,38 +36751,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -36783,38 +36795,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -36827,38 +36839,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -36871,38 +36883,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -36915,38 +36927,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -36959,38 +36971,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -37003,38 +37015,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -38895,38 +38907,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -38939,38 +38951,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -38983,38 +38995,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -39027,38 +39039,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -39071,38 +39083,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -39115,38 +39127,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [
@@ -39159,38 +39171,38 @@
    "category": "garments",
    "has_spec": true,
    "issues": [],
-   "w_in": 23.726,
-   "h_in": 29.955,
+   "w_in": 25.7745,
+   "h_in": 32.5595,
    "size_source": "estimated",
    "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
-     1186.3,
+     1288.72666,
      0
     ],
     "bottom_center": [
-     1186.3,
-     2995.5
+     1288.72666,
+     3255.9545999999996
     ],
     "center": [
-     1186.3,
-     1497.75
+     1288.72666,
+     1627.9772999999998
     ],
     "left_edge": [
      0,
-     1497.75
+     1627.9772999999998
     ],
     "right_edge": [
-     2372.6,
-     1497.75
+     2577.45332,
+     1627.9772999999998
     ],
     "cord_start": [
-     1993.189839830498,
-     335.14023889577373
+     2169.704499830498,
+     362.91552513306186
     ],
     "cord_end": [
-     1866.3,
-     1412.5
+     2030.46666,
+     1535.98
     ]
    },
    "landmarks": [

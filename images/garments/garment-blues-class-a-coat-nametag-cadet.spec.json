@@ -2,48 +2,48 @@
  "asset_id": "garment-blues-class-a-coat-nametag-cadet",
  "name": "Men's Class A coat nametag, cadet (overlay, registered to garment-blues-class-a-coat; name left blank)",
  "size_in": {
-  "w": 23.726,
-  "h": 29.955
+  "w": 25.7745,
+  "h": 32.5595
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2372.6,
-  2995.5
+  2577.45,
+  3255.95
  ],
  "size_source": "estimated",
  "size_basis": "3 3/8 x 3/4 in = Vanguard CAP0599M cadet name plate; the regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   1186.3,
+   1288.72666,
    0
   ],
   "bottom_center": [
-   1186.3,
-   2995.5
+   1288.72666,
+   3255.9545999999996
   ],
   "center": [
-   1186.3,
-   1497.75
+   1288.72666,
+   1627.9772999999998
   ],
   "left_edge": [
    0,
-   1497.75
+   1627.9772999999998
   ],
   "right_edge": [
-   2372.6,
-   1497.75
+   2577.45332,
+   1627.9772999999998
   ],
   "nametag_center": [
-   764.45,
-   1041.5
+   820.78,
+   1082
   ]
  },
  "landmarks": {
   "nametag": {
-   "x": 595.7,
-   "y": 1004,
+   "x": 652.03,
+   "y": 1044.5,
    "w": 337.5,
    "h": 75
   }

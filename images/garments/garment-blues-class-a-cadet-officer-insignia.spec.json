@@ -2,90 +2,90 @@
  "asset_id": "garment-blues-class-a-cadet-officer-insignia",
  "name": "Class A coat cadet officer insignia: shoulder boards + CAP lapel letters (overlay, registered to garment-blues-class-a-coat; blank rank)",
  "size_in": {
-  "w": 23.726,
-  "h": 29.955
+  "w": 25.7745,
+  "h": 32.5595
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2372.6,
-  2995.5
+  2577.45,
+  3255.95
  ],
  "size_source": "estimated",
  "size_basis": "Same artwork box and px-to-inch scale as garment-blues-class-a-coat so it drops on at 0,0. Board length 4.55 in (builder reference); width from the Vanguard CAP0647V product photo proportions (252 x 622 px). The edge-on shoulder strips take the colours of the top-down board (garment-blues-class-a-cadet-officer-board-*, board/board.json measured on that photo): body #171717, white bands #d9d9db, red #7f1b1e, blue #2a348c; the strips were #15171c / #f2f2f2 / #c8453f / #2b4aa0 (a lighter, more saturated set than the board seen from above).",
  "anchors": {
   "top_center": [
-   1186.3,
+   1288.72666,
    0
   ],
   "bottom_center": [
-   1186.3,
-   2995.5
+   1288.72666,
+   3255.9545999999996
   ],
   "center": [
-   1186.3,
-   1497.75
+   1288.72666,
+   1627.9772999999998
   ],
   "left_edge": [
    0,
-   1497.75
+   1627.9772999999998
   ],
   "right_edge": [
-   2372.6,
-   1497.75
+   2577.45332,
+   1627.9772999999998
   ],
   "epaulet_right_center": [
-   535.35,
-   292.5
+   580.03,
+   315.8
   ],
   "epaulet_left_center": [
-   1837.25,
-   292.5
+   1997.43,
+   315.8
   ],
   "rank_slot_right_center": [
-   535.35,
-   292.5
+   580.03,
+   315.8
   ],
   "rank_slot_left_center": [
-   1837.25,
-   292.5
+   1997.43,
+   315.8
   ]
  },
  "landmarks": {
   "epaulet_right": {
-   "x": 346.3,
-   "y": 228.4,
-   "w": 378.1,
-   "h": 128.2
+   "x": 374.63,
+   "y": 247.4,
+   "w": 410.8,
+   "h": 136.8
   },
   "rank_slot_right": {
-   "x": 346.3,
-   "y": 228.4,
-   "w": 378.1,
-   "h": 128.2
+   "x": 374.63,
+   "y": 247.4,
+   "w": 410.8,
+   "h": 136.8
   },
   "lapel_cap_right": {
-   "x": 835.1,
-   "y": 428,
+   "x": 912.73,
+   "y": 434.4,
    "w": 140,
    "h": 53
   },
   "epaulet_left": {
-   "x": 1648.2,
-   "y": 228.4,
-   "w": 378.1,
-   "h": 128.2
+   "x": 1792.03,
+   "y": 247.4,
+   "w": 410.8,
+   "h": 136.8
   },
   "rank_slot_left": {
-   "x": 1648.2,
-   "y": 228.4,
-   "w": 378.1,
-   "h": 128.2
+   "x": 1792.03,
+   "y": 247.4,
+   "w": 410.8,
+   "h": 136.8
   },
   "lapel_cap_left": {
-   "x": 1397.5,
-   "y": 428,
+   "x": 1524.73,
+   "y": 434.4,
    "w": 140,
    "h": 53
   }

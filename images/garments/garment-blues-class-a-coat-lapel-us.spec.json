@@ -2,58 +2,58 @@
  "asset_id": "garment-blues-class-a-coat-lapel-us",
  "name": "Men's Class A coat US lapel insignia, officers, no circle (overlay; draw above the lapel foreground)",
  "size_in": {
-  "w": 23.726,
-  "h": 29.955
+  "w": 25.7745,
+  "h": 32.5595
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2372.6,
-  2995.5
+  2577.45,
+  3255.95
  ],
  "size_source": "estimated",
  "size_basis": "Sleeve braid width - in and 3 in from the sleeve end per CAPR 39-1 4.1.5.2 / 4.1.9.2; epaulet width and length estimated from DAFI 36-2903 Figs 4.6-4.7 and the cadet board strips; US insignia size estimated.",
  "anchors": {
   "top_center": [
-   1186.3,
+   1288.725,
    0
   ],
   "bottom_center": [
-   1186.3,
-   2995.5
+   1288.725,
+   3255.95
   ],
   "center": [
-   1186.3,
-   1497.75
+   1288.725,
+   1627.975
   ],
   "left_edge": [
    0,
-   1497.75
+   1627.975
   ],
   "right_edge": [
-   2372.6,
-   1497.75
+   2577.45,
+   1627.975
   ],
   "lapel_us_right_center": [
-   905.1,
-   456.1
+   982.73,
+   462.4
   ],
   "lapel_us_left_center": [
-   1467.5,
-   456.1
+   1594.72,
+   462.4
   ]
  },
  "landmarks": {
   "lapel_us_right": {
-   "x": 860.1,
-   "y": 426.1,
+   "x": 937.73,
+   "y": 432.4,
    "w": 90,
    "h": 60
   },
   "lapel_us_left": {
-   "x": 1422.5,
-   "y": 426.1,
+   "x": 1549.72,
+   "y": 432.4,
    "w": 90,
    "h": 60
   }
