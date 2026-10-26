@@ -95,13 +95,15 @@ test('Class B and aviator shirts: the tie group is hidden when the tie is off an
     const longOff = await P.composeUniform(build(uniform, gender, { sleeve: 'long', tie: false }), store);
     assert.ok(!hides(baseLayer(shortOn)), `${label} short, tie on`);
     assert.ok(hides(baseLayer(longOff)), `${label} long, tie off`);
-    // the separate tie overlay of the sheets that have no tie group yet follows the same switch
+    // The sheet's group is the only tie (LIVE8-3, AVIATOR-ART follow-up 2): no -tie / -tie-tab overlay is placed in any state, so the tie is never drawn twice; off -> the group is hidden
+    // and nothing else shows a tie; on -> the group is drawn, once (one group of that id in the sheet, one layer of the sheet).
     const tieLayers = s => s.layers.filter(l => /-tie(-tab)?$/.test(l.id || ''));
-    if(uniform === 'aviator'){
-      assert.equal(tieLayers(long).length, 1, `${label} long: tie overlay`);
-      assert.equal(tieLayers(longOff).length, 0, `${label} long, tie off: no overlay`);
-      assert.equal(tieLayers(short).length, 0, `${label} short: none until chosen`);
-      assert.equal(tieLayers(shortOn).length, 1, `${label} short, tie on: overlay`);
+    for(const [state, scene, on] of [['short, default', short, false], ['long, default', long, true], ['short, tie on', shortOn, true], ['long, tie off', longOff, false]]){
+      assert.equal(tieLayers(scene).length, 0, `${label} ${state}: no separate tie overlay`);
+      const sheet = baseLayer(scene), svg = read(`images/garments/${sheet.id}.svg`);
+      assert.equal(svg.split(`id="${sheet.id}__tie"`).length - 1, 1, `${label} ${state}: the sheet draws its tie in one group`);
+      assert.equal(hides(sheet), !on, `${label} ${state}: group ${on ? 'shown' : 'hidden'}`);
+      assert.equal(scene.layers.filter(l => l.key === 'base:jacket' && l.id === sheet.id).length, 1, `${label} ${state}: the sheet is placed once`);
     }
   }
 });
@@ -115,15 +117,16 @@ test('the aviator shirt beside the blazer keeps its tie whatever the option says
   }
 });
 
-test('every Class B and aviator shirt sheet draws its tie in a group `tie` with a `tie` landmark (skips, naming the sheets, until the art lands)', async t => {
+test('every Class B and aviator shirt sheet draws its tie in a group `tie` with a `tie` landmark (kind tie for men, tab for women)', () => {
   const sheets = [];
   for(const g of ['male', 'female']) for(const s of ['', '-long']){
     sheets.push(`garment-blues-class-b-${g === 'male' ? 'shirt-male' : 'blouse-female'}${s}`, `garment-aviator-shirt-${g}${s}`);
   }
-  const missing = sheets.filter(id => {
+  assert.equal(sheets.length, 8);
+  for(const id of sheets){
     const svg = read(`images/garments/${id}.svg`), spec = JSON.parse(read(`images/garments/${id}.spec.json`));
-    return !new RegExp(`id="${id}__tie"`).test(svg) || !spec.landmarks.tie;
-  });
-  if(missing.length) return t.skip(`not yet synced: group ${missing.map(id => id + '__tie').join(', ')} and landmark tie`);
-  assert.equal(missing.length, 0);
+    assert.match(svg, new RegExp(`id="${id}__tie"`), `${id}: group tie`);
+    const tie = spec.landmarks.tie;
+    assert.ok(tie && tie.kind === (/female/.test(id) ? 'tab' : 'tie') && tie.knot && tie.w_in > 0 && tie.length_in > 0, `${id}: tie landmark ${JSON.stringify(tie)}`);
+  }
 });

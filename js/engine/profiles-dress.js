@@ -1774,18 +1774,14 @@
     }
     await dressBadges(ctx, b, geo);
     collarOverBadges(ctx, null);
-    // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3): worn with long sleeves, optional with short ones (tieOn). A sheet that states a `tie`
-    // landmark draws it in its own `tie` group (hidden above when off); the others have the separate tie overlay.
-    if(tie && !V.overblouse && !ctx.landmark('tie')){
-      const overlay = `${garment}-${female ? 'tie-tab' : 'tie'}`;
-      if(ctx.has(overlay)) await ctx.overlay(overlay, Z.garmentLayer + 0.5);
-    }
+    // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3), is the sheet's own group `tie` (hidden above when the member turns it off, tieOn): worn with long sleeves, optional with short ones.
+    // The sheets' separate -tie / -tie-tab overlays are the same shape and are no longer placed, so the tie is never drawn twice (LIVE8-3).
   }
 
   // The tie (men) or tie tab (women) on a shirt: the member's choice (build.opt.tie, a boolean) or, until they choose, what the regulation
   // requires for the sleeve length (RULES.tieRule: worn with long sleeves, optional with short ones, CAPR 39-1 4.1.11.1.1.3, 4.1.12.4, 4.2.5.1.4,
   // 4.2.6.3). The shirt beside the blazer (opt.withBlazer, set by the blazer's companion) keeps it (4.2.3.4, 4.2.4.3). Drawn by the sheet's group
-  // `tie` (the group is hidden when off); a sheet that states no `tie` landmark draws it as the separate tie overlay, as before.
+  // `tie` (the group is hidden when off); every Class B and aviator sheet states it, and no separate overlay is placed.
   function tieOn(b, uniform, long, overblouse){
     const r = RULES.tieRule(uniform, { gender: b.gender, sleeve: long ? 'long' : 'short', overblouse, withBlazer: !!b.opt.withBlazer });
     if(!r.offered) return r.defaultOn;
