@@ -122,14 +122,20 @@
     for(const d of drawings){
       const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
       if(d.callout && copies) calloutNodes(d, px, defs, copies, fontPx).forEach(n => g.appendChild(n));
-      const main = [d.dim, ...d.bars, ...d.ticks, ...d.centres];
+      const marks = d.centres || [];
+      const main = [d.dim, ...d.bars, ...d.ticks, ...marks.flatMap(m => m.ticks)];
       for(const s of [...main, ...d.ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const m of marks) g.appendChild(el('circle', { cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra) * px), 'stroke-opacity': 0.5 }));
       if(d.reference){
         seg(g, d.reference, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
         seg(g, d.reference, MEASURE.color, MEASURE.ext * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2.5 * px)}`, 'stroke-linecap': 'butt' });
       }
       for(const s of d.ext) seg(g, s, MEASURE.color, MEASURE.ext * px, { 'stroke-opacity': 0.9 });
       for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
+      // A centre mark is an open ring (nothing inside it) on the same dark halo as the lines, so it reads as overlay and never as a cross on the piece.
+      for(const m of marks){
+        g.appendChild(el('circle', { class: 'centre-mark', cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.line * px) }));
+      }
       const L = d.label;
       g.appendChild(el('rect', { x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(L.h / 2), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) }));
       const text = el('text', {
@@ -405,5 +411,5 @@
   }
 
   root.CAPUBEngine = root.CAPUBEngine || {};
-  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol };
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol, measureNodes };
 })(typeof self !== 'undefined' ? self : this);

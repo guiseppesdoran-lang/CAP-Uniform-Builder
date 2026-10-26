@@ -3,7 +3,8 @@
 // Each regulation distance is drawn the way a drafter draws one: a dimension line with a bar at each
 // end, labelled with its length. Where the straight line from one edge to the other is clear it is
 // drawn there; where it would cross the artwork it moves off to the side, with thin extension lines
-// back to the edges it measures. A distance to a badge's centre gets a centre mark. Each label is set
+// back to the edges it measures. A distance to a badge's centre gets a centre mark: an open crosshair
+// (a ring with four ticks outside it, empty inside), never a solid cross over the artwork. Each label is set
 // where it covers no artwork and no other label.
 //
 // Positions are in scene inches. Sizes are in preview pixels (`px` inches each), so the overlay reads
@@ -21,6 +22,9 @@
   const PX = {
     font: 11, padX: 4, padY: 2.5, labelGap: 3,
     bar: 8, centre: 5, extGap: 2, extOver: 4,
+    // The centre mark: an open crosshair, a thin ring with four short ticks outside it and nothing at all inside (the middle of the
+    // piece it marks stays visible): ring radius, then the ticks' inner and outer distance from the centre.
+    mark: { ring: 4, tickFrom: 6, tickTo: 10 },
     minOffset: 10, step: 4, maxOffset: 170
   };
 
@@ -191,6 +195,14 @@
       fill: [at(0, 0), at(ax, 0), at(ax, b), at(b, b), at(b, ay), at(0, ay)],
       lines: [[at(ax, 0), at(0, 0), at(0, ay)], [at(ax, b), at(b, b), at(b, ay)]]
     };
+  }
+
+  // A centre mark at `p`: the ring (centre, radius) and its four ticks, each a segment that starts outside the ring (so the ring's inside is
+  // empty and the piece's own centre shows through), all in scene inches.
+  function centreMark(p, P){
+    const M = PX.mark, ticks = [];
+    for(const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) ticks.push([{ x: p.x + dx * M.tickFrom * P, y: p.y + dy * M.tickFrom * P }, { x: p.x + dx * M.tickTo * P, y: p.y + dy * M.tickTo * P }]);
+    return { x: p.x, y: p.y, r: M.ring * P, ticks };
   }
 
   // Lay out every measure layer of a scene. `view` = { px, area }: inches per preview pixel and the
@@ -457,11 +469,23 @@
 
       const { a, b, box, exts } = best;
       const half = mul(n, PX.bar * P / 2);
+      // A dimension drawn on the line itself that ends at a centre stops at the centre mark's ring and carries no bar there: the ring is its
+      // end, and nothing is drawn inside it (the piece's own centre stays visible).
+      const atA = o.center === 'both' || o.center === 'from', atB = o.center === 'both' || o.center === 'to';
+      const ringIn = PX.mark.ring * P;
+      const bars = [];
+      let da = a, db = b;
+      if(best.c.inline){
+        if(atA && L > 2 * ringIn) da = add(a, mul(u, ringIn));
+        if(atB && L > 2 * ringIn) db = sub(b, mul(u, ringIn));
+      }
+      if(!(best.c.inline && atA)) bars.push([sub(a, half), add(a, half)]);
+      if(!(best.c.inline && atB)) bars.push([sub(b, half), add(b, half)]);
       const drawing = {
         key: m.key,
         label: Object.assign({ text }, box),
-        dim: [a, b],
-        bars: [[sub(a, half), add(a, half)], [sub(b, half), add(b, half)]],
+        dim: [da, db],
+        bars,
         ext: exts,
         ticks: [],
         centres: [],
@@ -474,10 +498,7 @@
         const tk = mul(n, PX.bar * P * 0.4);
         drawing.ticks.push([sub(p, tk), add(p, tk)]);
       }
-      const c = PX.centre * P;
-      for(const p of o.center === 'both' ? [A, B] : o.center === 'from' ? [A] : o.center === 'to' ? [B] : []){
-        drawing.centres.push([{ x: p.x - c, y: p.y }, { x: p.x + c, y: p.y }], [{ x: p.x, y: p.y - c }, { x: p.x, y: p.y + c }]);
-      }
+      for(const p of o.center === 'both' ? [A, B] : o.center === 'from' ? [A] : o.center === 'to' ? [B] : []) drawing.centres.push(centreMark(p, P));
       placedLabels.push(box);
       placedLines.push([a, b], ...exts);
       slots[mi] = drawing;
@@ -492,5 +513,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, previewPx, obstaclesOf, textWidth, PX, CALLOUT: CO };
+  return { layout, previewPx, obstaclesOf, textWidth, centreMark, PX, CALLOUT: CO };
 });

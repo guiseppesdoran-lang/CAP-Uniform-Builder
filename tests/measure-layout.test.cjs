@@ -155,3 +155,80 @@ for(const [name, b] of EIGHTH_CASES){
   });
 }
 function grow(r, e){ return { x: r.x - e, y: r.y - e, w: r.w + 2 * e, h: r.h + 2 * e }; }
+
+// ---- LIVE6-3: the centre mark is an open crosshair, never a solid cross over the artwork ----
+// Ethan, on the flight cap: "wtf is this fucking plus sign lmao". The '1½ in' cap-device measure ends at the device's centre; the mark
+// there was a bare gold cross, which read as a plus on the insignia. It is now a thin ring with four ticks outside it, empty inside, on the
+// labels' dark halo, and a dimension drawn on the line itself stops at the ring.
+const R = require('../scripts/render-builds.cjs');
+const CAP_BUILDS = [
+  ['Class A, captain (officer flight cap device)', build('blues_a', 'senior', 'Capt')],
+  ['Class B, senior master sergeant (senior NCO device)', build('blues_b', 'senior', 'SMSgt')],
+  ['Class A, cadet major (cadet officer device)', build('blues_a', 'cadet', 'C/Maj')]
+];
+const segs = d => [d.dim, ...d.bars, ...d.ticks, ...d.ext];
+function segDist(p, [a, b]){
+  const dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy || 1;
+  const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / l2));
+  return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy);
+}
+function checkMarks(d, px, tag){
+  for(const mk of d.centres){
+    assert.ok(mk.r > 0 && Math.abs(mk.r - ML.PX.mark.ring * px) < 1e-9, `${tag}: a ring`);
+    assert.equal(mk.ticks.length, 4, `${tag}: four ticks`);
+    for(const [p, q] of mk.ticks){
+      const dp = Math.hypot(p.x - mk.x, p.y - mk.y), dq = Math.hypot(q.x - mk.x, q.y - mk.y);
+      assert.ok(Math.min(dp, dq) > mk.r + 1e-9, `${tag}: a tick starts outside the ring (${(Math.min(dp, dq) / px).toFixed(1)} px, ring ${(mk.r / px).toFixed(1)})`);
+    }
+    // Nothing of this measure's drawing (its dimension line, bars, extension lines) enters the ring: the piece's own centre shows through.
+    for(const s of segs(d)) assert.ok(segDist(mk, s) >= mk.r - 1e-9, `${tag}: the ring's inside is empty (a line comes ${(segDist(mk, s) / px).toFixed(2)} px from the centre)`);
+  }
+}
+for(const [name, b] of CAP_BUILDS){
+  test(`the flight cap's 1½ in measure ends in an open centre mark that leaves the device's own ink alone: ${name}`, async () => {
+    const { scene, px, drawings } = await laidOut(b);
+    const m = scene.layers.find(l => l.type === 'measure' && l.label === '1½ in' && l.opts && l.opts.center === 'to');
+    assert.ok(m, 'the cap device measure is drawn');
+    const d = drawings.find(x => x.key === m.key);
+    assert.equal(d.label.text, '1½ in', 'the regulation value stays in the label');
+    assert.equal(d.centres.length, 1);
+    assert.ok(Math.hypot(d.centres[0].x - m.to.x, d.centres[0].y - m.to.y) < 1e-9, 'the mark is at the device centre');
+    checkMarks(d, px, name);
+    // The device's own ink under the mark: the mark draws only the ring (a stroke) and the four ticks; the ring's inside holds nothing,
+    // so the device's centre, where its eagle or shield is, is untouched.
+    const dev = scene.layers.find(l => l.role === 'hat-device');
+    assert.ok(Math.abs(d.centres[0].x - (dev.x + dev.w / 2)) < 0.05 && Math.abs(d.centres[0].y - (dev.y + dev.h / 2)) < 0.05, 'centred on the device');
+  });
+}
+test('every centre mark on the standard matrix is an open ring with its ticks outside it and nothing inside', async () => {
+  const { builds } = R.matrix();
+  let marks = 0;
+  for(const { name, build: spec } of builds){
+    const { drawings, px } = await laidOut(R.makeBuild(spec));
+    for(const d of drawings){ marks += d.centres.length; checkMarks(d, px, `${name} ${d.label.text}`); }
+  }
+  assert.ok(marks > 0, 'the matrix draws centre marks');
+});
+test('the renderer draws a centre mark as an unfilled ring on the dark halo, with no solid cross segment', () => {
+  global.document = { createElementNS: (ns, name) => { return { name, a: {}, kids: [], setAttribute(k, v){ this.a[k] = v; }, appendChild(c){ this.kids.push(c); return c; } }; } };
+  const hadSelf = 'self' in global;
+  if(!hadSelf) global.self = global;
+  delete require.cache[require.resolve('../js/engine/render-svg.js')];
+  require('../js/engine/render-svg.js');
+  const RS = global.self.CAPUBEngine.renderSvg;
+  const dr = { key: 'k', label: { text: '1½ in', x: 0, y: 0, w: 1, h: 0.3 }, dim: [{ x: 0, y: 0 }, { x: 1, y: 0 }], bars: [], ext: [], ticks: [],
+    centres: [ML.centreMark({ x: 2, y: 2 }, 0.05)], reference: null };
+  const [g] = RS.measureNodes([dr], 0.05, 11, null, null);
+  const circles = g.kids.filter(n => n.name === 'circle');
+  assert.ok(circles.length >= 2, 'a halo ring and a gold ring');
+  for(const c of circles) assert.equal(c.a.fill, 'none', 'a ring is never filled');
+  assert.ok(circles.some(c => c.a.stroke === '#0b1020'), 'the ring has the dark halo');
+  const lines = g.kids.filter(n => n.name === 'line');
+  // No line crosses the mark's centre: every segment the renderer draws stays outside the ring (the old cross ran through it).
+  for(const l of lines){
+    const a = { x: Number(l.a.x1), y: Number(l.a.y1) }, b = { x: Number(l.a.x2), y: Number(l.a.y2) };
+    assert.ok(segDist({ x: 2, y: 2 }, [a, b]) >= dr.centres[0].r - 1e-6, 'no line enters the ring');
+  }
+  delete global.document;
+  if(!hadSelf) delete global.self;
+});
