@@ -326,18 +326,50 @@
     return E.renderSvg.svgToCanvas(lastSvg, vb[2] * (ppi || 60));
   }
 
-  // ---- Badge chooser: which badge to show where more are selected than a position takes ----------------------------------------------
+  // ---- Badge chooser: which badge goes where --------------------------------------------------------------------------------------
 
-  // The engine reports each position that has more badges selected than it takes (scene.conflicts: { position, label, limit,
-  // candidates: [{ id, title }], shown: [ids], choice }). The Badges panel lists them, one fieldset per position with a radio per
-  // competing badge, instead of the engine silently dropping the rest; the pick is kept in State.badgeChoices[uniform][position], saved
-  // with the setup, and the engine shows that badge (first, where the position takes several).
+  // The engine reports each position that has more than one badge to place (scene.conflicts: { position, label, limit, candidates: [{ id,
+  // title }], shown, choice, slots: [{ key, label, choice, badge, shown }], note }). A position with one place asks for one badge (a radio per
+  // competing badge); a position with several places (the pocket and nametag pair, the two places over the nametag, the two over the left
+  // pocket) lists its places, each named as the regulation names it, and asks for the badge in each (a select per place). The picks are kept in
+  // State.badgeChoices[uniform][position], a single badge id for one place and { [slotKey]: badgeId } for several, saved with the setup; the
+  // engine puts exactly the picked badge in each place and fills a place nobody picked from the rest, in the rule's order.
   const CHOOSER_ID = 'badgeChooser';
   let chooserSignature = '';
 
-  function setBadgeChoice(position, id){
+  // What the panel draws: one group per position, a heading row (title, how many are worn) and one control per place.
+  function chooserModel(conflicts){
+    return (conflicts || []).map(c => {
+      const slots = c.slots && c.slots.length ? c.slots : [{ key: 'only', label: c.label, choice: c.choice, badge: (c.shown || [])[0] || null, shown: true }];
+      const many = slots.length > 1;
+      return {
+        position: c.position,
+        title: c.label,
+        count: many ? `${slots.length} are worn` : 'one is worn',
+        note: c.note || '',
+        control: many ? 'select' : 'radio',
+        options: c.candidates.map(x => ({ id: x.id, title: x.title })),
+        slots: slots.map(sl => ({ key: sl.key, label: sl.label, value: sl.badge || sl.choice || '', shown: sl.shown !== false }))
+      };
+    });
+  }
+
+  // The full set of picks for a position after `id` is chosen for `key`: a badge sits in one place only, so the place that held `id` takes the
+  // badge the picked place had (the two swap).
+  function nextBadgePicks(group, key, id){
+    const now = {};
+    for(const sl of group.slots) now[sl.key] = sl.value;
+    const prior = now[key];
+    for(const k of Object.keys(now)) if(k !== key && now[k] === id) now[k] = prior;
+    now[key] = id;
+    return now;
+  }
+
+  function setBadgeChoice(position, pick, id){
+    // setBadgeChoice(position, id): one place; setBadgeChoice(position, { key: id, ... }): several places.
     State.badgeChoices = State.badgeChoices || {};
-    State.badgeChoices[State.uniform] = Object.assign({}, State.badgeChoices[State.uniform], { [position]: id });
+    const value = pick && typeof pick === 'object' ? Object.assign({}, pick) : (id !== undefined ? id : pick);
+    State.badgeChoices[State.uniform] = Object.assign({}, State.badgeChoices[State.uniform], { [position]: value });
     scheduleRender();
   }
 
@@ -356,62 +388,111 @@
     return host;
   }
 
+  function el(tag, className, text){
+    const node = document.createElement(tag);
+    if(className) node.className = className;
+    if(text != null) node.textContent = text;
+    return node;
+  }
+
+  function buildChooserGroup(group){
+    const root = el('section', 'badgeChooserGroup');
+    root.dataset.position = group.position;
+    const headId = `badgeChooserHead-${group.position}`;
+    const head = el('div', 'badgeChooserHead');
+    const title = el('h4', 'badgeChooserTitle', group.title);
+    title.id = headId;
+    head.append(title, el('span', 'badgeChooserCount', group.count));
+    root.append(head);
+    if(group.note) root.append(el('p', 'fieldNote badgeChooserNote', group.note));
+    if(group.control === 'radio'){
+      const list = el('div', 'badgeChooserList');
+      list.setAttribute('role', 'radiogroup');
+      list.setAttribute('aria-labelledby', headId);
+      for(const cand of group.options){
+        const label = el('label', 'badgeChooserOption');
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = `badgeChoice:${group.position}`;
+        input.value = cand.id;
+        input.addEventListener('change', () => { if(input.checked) setBadgeChoice(group.position, cand.id); });
+        label.append(input, el('span', 'badgeChooserName', cand.title), el('span', 'badgeChooserTag'));
+        list.append(label);
+      }
+      root.append(list);
+      return root;
+    }
+    const list = el('div', 'badgeChooserList');
+    list.setAttribute('role', 'group');
+    list.setAttribute('aria-labelledby', headId);
+    for(const sl of group.slots){
+      const row = el('div', 'badgeChooserSlot');
+      row.dataset.slot = sl.key;
+      const id = `badgeChooserSlot-${group.position}-${sl.key}`;
+      const name = el('label', 'badgeChooserSlotName', sl.label);
+      name.htmlFor = id;
+      const select = document.createElement('select');
+      select.id = id;
+      select.className = 'badgeChooserSelect';
+      select.name = `badgeSlot:${group.position}:${sl.key}`;
+      for(const cand of group.options){
+        const opt = document.createElement('option');
+        opt.value = cand.id;
+        opt.textContent = cand.title;
+        select.append(opt);
+      }
+      select.addEventListener('change', () => {
+        const live = (lastScene && lastScene.conflicts || []).find(c => c.position === group.position);
+        const current = live ? chooserModel([live])[0] : group;
+        setBadgeChoice(group.position, nextBadgePicks(current, sl.key, select.value));
+      });
+      row.append(name, select, el('span', 'badgeChooserTag'));
+      list.append(row);
+    }
+    root.append(list);
+    return root;
+  }
+
   function updateBadgeChooser(scene){
     const host = chooserHost();
     if(!host) return;
     const conflicts = (scene && scene.conflicts) || [];
     if(!conflicts.length){ host.classList.add('hidden'); host.replaceChildren(); chooserSignature = ''; return; }
     host.classList.remove('hidden');
-    const signature = JSON.stringify(conflicts.map(c => [c.position, c.limit, c.candidates.map(x => x.id + '|' + x.title)]));
+    const model = chooserModel(conflicts);
+    const signature = JSON.stringify(model.map(g => [g.position, g.control, g.slots.map(sl => sl.key + '|' + sl.label), g.options.map(x => x.id + '|' + x.title)]));
     if(signature !== chooserSignature){
-      // Rebuilt only when the competing badges change, so a pick never loses keyboard focus.
+      // Rebuilt only when the competing badges or the places change, so a pick never loses keyboard focus.
       chooserSignature = signature;
       const focused = document.activeElement && host.contains(document.activeElement) ? document.activeElement : null;
-      const keep = focused ? { name: focused.name, value: focused.value } : null;
+      const keep = focused ? { id: focused.id, name: focused.name, value: focused.value } : null;
       host.replaceChildren();
-      const lead = document.createElement('p');
-      lead.className = 'hintText badgeChooserLead';
-      lead.textContent = 'More badges are selected than this uniform takes in some places. Pick the one you want shown.';
-      host.append(lead);
-      for(const c of conflicts){
-        const set = document.createElement('fieldset');
-        set.className = 'badgeChooserGroup';
-        set.dataset.position = c.position;
-        const legend = document.createElement('legend');
-        legend.textContent = c.limit > 1 ? `${c.label}: ${c.limit} are worn, this one first` : `${c.label}: one is worn`;
-        set.append(legend);
-        for(const cand of c.candidates){
-          const label = document.createElement('label');
-          label.className = 'badgeChooserOption';
-          const input = document.createElement('input');
-          input.type = 'radio';
-          input.name = `badgeChoice:${c.position}`;
-          input.value = cand.id;
-          input.addEventListener('change', () => { if(input.checked) setBadgeChoice(c.position, cand.id); });
-          const name = document.createElement('span');
-          name.className = 'badgeChooserName';
-          name.textContent = cand.title;
-          const tag = document.createElement('span');
-          tag.className = 'badgeChooserTag';
-          label.append(input, name, tag);
-          set.append(label);
-        }
-        host.append(set);
-      }
+      host.append(el('p', 'hintText badgeChooserLead', 'Where a uniform has more than one place for badges, pick the badge for each place.'));
+      for(const g of model) host.append(buildChooserGroup(g));
       if(keep){
-        const again = [...host.querySelectorAll('input[type=radio]')].find(i => i.name === keep.name && i.value === keep.value);
+        const again = [...host.querySelectorAll('input, select')].find(n => keep.id ? n.id === keep.id : (n.name === keep.name && n.value === keep.value));
         if(again) again.focus();
       }
     }
     // The picked and the shown badges, read off the latest scene.
-    for(const c of conflicts){
-      const set = host.querySelector(`fieldset[data-position="${CSS.escape(c.position)}"]`);
-      if(!set) continue;
-      const picked = c.choice || c.shown[0];
-      for(const label of set.querySelectorAll('label')){
-        const input = label.querySelector('input');
-        input.checked = input.value === picked;
-        label.querySelector('.badgeChooserTag').textContent = c.shown.includes(input.value) ? 'shown' : 'not shown';
+    for(const g of model){
+      const root = host.querySelector(`[data-position="${CSS.escape(g.position)}"]`);
+      if(!root) continue;
+      if(g.control === 'radio'){
+        const picked = g.slots[0].value;
+        const shown = new Set(conflicts.find(c => c.position === g.position).shown || []);
+        for(const label of root.querySelectorAll('label.badgeChooserOption')){
+          const input = label.querySelector('input');
+          input.checked = input.value === picked;
+          label.querySelector('.badgeChooserTag').textContent = shown.has(input.value) ? 'shown' : 'not shown';
+        }
+      }else{
+        for(const sl of g.slots){
+          const row = root.querySelector(`.badgeChooserSlot[data-slot="${CSS.escape(sl.key)}"]`);
+          if(!row) continue;
+          row.querySelector('select').value = sl.value;
+          row.querySelector('.badgeChooserTag').textContent = sl.shown ? 'shown' : 'not shown';
+        }
       }
     }
   }
@@ -465,7 +546,7 @@
   }
 
   window.CAPUBUniformView = {
-    render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
+    render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, chooserModel, nextBadgePicks, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
     get ribbonNotes(){ return ribbonNotes; },
     get scene(){ return lastScene; },
     get svg(){ return lastSvg; },

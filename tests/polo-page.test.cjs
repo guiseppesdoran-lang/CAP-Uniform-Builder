@@ -69,6 +69,6 @@ test('the page builds the polo options with defaults and asks for the first name
   const view = read('js/uniform-view.js');
   assert.match(view, /poloShirt: 'embroidered', poloCut: '', poloName: true, poloMark: 'badge', dutyTitle: ''/);
   assert.match(read('js/garment-options.js'), /first\.hidden = !FLIGHT\.includes\(u\) && u !== 'polo'/);
-  assert.match(read('js/wiring.js'), /BADGE_POSITIONS = \['aviation', 'over-pocket', 'service', 'pocket', 'polo'\]/);
+  assert.match(read('js/wiring.js'), /BADGE_POSITIONS = \['aviation', 'over-pocket', 'service', 'pocket', 'polo', 'tag'\]/);
   assert.match(read('js/badge-rules.js'), /allowsBadgeFamily\(State\.uniform, family\)/);
 });

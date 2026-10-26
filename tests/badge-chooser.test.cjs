@@ -2,7 +2,7 @@
 // LIVE-DRESS B2 (Ethan: "if multiple applicable badges are selected in one area a ui should pop up to make you choose which one you want
 // displayed"). The engine reports each position that has more badges selected than it takes (scene.conflicts: { position, label, limit,
 // candidates, shown, choice }); the member's pick (build.badgeChoices, kept per uniform and position in State.badgeChoices and saved with the
-// setup) decides which is shown, instead of the first listed. The Badges panel (js/uniform-view.js) renders a radio per candidate.
+// setup) decides which is shown, instead of the first listed. The Badges panel (js/uniform-view.js) renders a radio per candidate where a position takes one badge (LIVE7-1: a select per place where it takes several, tests/badge-slots.test.cjs).
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -127,14 +127,16 @@ test('State.badgeChoices exists, is saved with the setup and comes back through 
   assert.deepEqual(JSON.parse(ev('JSON.stringify(State.badgeChoices)')), { blues_a: { aviation: OBSERVER, 'over-pocket': EMT }, mess_dress: { aviation: PILOT } });
 });
 
-test('the page hands the engine the choices of the uniform being drawn, and the chooser is wired to the radios', () => {
+test('the page hands the engine the choices of the uniform being drawn, and the chooser is wired to the radios and the selects (LIVE7-1)', () => {
   const src = read('js/uniform-view.js');
   assert.match(src, /badgeChoices: Object\.assign\(\{\}, \(State\.badgeChoices \|\| \{\}\)\[State\.uniform\] \|\| \{\}\)/);
   assert.match(src, /type = 'radio'/);
-  assert.match(src, /createElement\('fieldset'\)/);
-  assert.match(src, /createElement\('legend'\)/);
+  assert.match(src, /document\.createElement\('select'\)/);
+  assert.match(src, /el\('h4', 'badgeChooserTitle'/, 'a plain heading row, not a fieldset legend');
+  assert.doesNotMatch(src, /createElement\('(fieldset|legend)'\)/);
   assert.match(src, /updateBadgeChooser\(scene\)/);
   const css = read('styles/app.css');
   assert.match(css, /\.badgeChooserGroup\{/);
+  assert.match(css, /\.badgeChooserHead\{/);
   assert.doesNotMatch(css.slice(css.indexOf('.badgeChooser{')), /#[0-9a-fA-F]{3,6}\b/, 'the chooser takes its colours from the tokens');
 });

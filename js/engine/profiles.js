@@ -387,9 +387,8 @@
       const para = oneAviationBadgeParagraph(b);
       if(para !== false) ctx.note('Only one CAP aviation badge is worn; the others are not shown' + (para ? ` (CAPR 39-1, ${para})` : ''));
       // The member's choice for this position (build.badgeChoices.aviation) shows that badge; else the first listed.
-      const ordered = C.preferred(out.aviation, (b.badgeChoices || {}).aviation);
-      if(para !== false) C.reportBadgeConflict(ctx, 'aviation', 'CAP aviation badge', out.aviation, ordered, 1);
-      out.aviation = ordered.slice(0, 1);
+      const one = [{ key: 'only', label: 'CAP aviation badge' }];
+      out.aviation = para !== false ? C.chooseBadges(ctx, 'aviation', 'CAP aviation badge', out.aviation, one) : out.aviation.slice(0, 1);
     }
     return out;
   }

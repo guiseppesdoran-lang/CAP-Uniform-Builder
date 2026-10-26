@@ -82,10 +82,8 @@
     const set = H.badgeSet(ctx, Object.assign({}, b, { badges: wearable }), 'field');
     const allowed = BADGE_ORDER.flatMap(key => set[key] || []);
     if(allowed.length > 1){
-      const ordered = C.preferred(allowed, (b.badgeChoices || {}).polo);
       ctx.note('Only one badge or duty title is worn on the polo; the others are not shown (CAPR 39-1, 5.3.2.1.1)');
-      C.reportBadgeConflict(ctx, 'polo', 'badge on the polo', allowed, ordered, 1);
-      return ordered[0];
+      return C.chooseBadges(ctx, 'polo', 'Badge on the polo', allowed, [{ key: 'only', label: 'Badge on the polo' }])[0];
     }
     return allowed[0] || null;
   }

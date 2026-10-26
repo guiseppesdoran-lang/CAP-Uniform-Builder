@@ -73,8 +73,10 @@ const State = {
   },
 
   badgeSelections:{},
-  // Which badge to show where more are selected than a position takes (the one aviation badge, the two over the left pocket...):
-  // { [uniformId]: { [position]: badgeId } }. The engine reports the positions (scene.conflicts); the Badges panel asks. Saved with the setup.
+  // Which badge goes where, for the positions that have more badges to place than one: { [uniformId]: { [position]: badgeId | { [slotKey]: badgeId } } }.
+  // A position with one place (the one aviation badge) keeps a badge id; one with several places (left pocket, right pocket, over the nametag...)
+  // keeps one badge id per place; an id alone, as saved before the places, is the first place. The engine reports the positions
+  // (scene.conflicts); the Badges panel asks. Saved with the setup.
   badgeChoices:{},
   badgeGalleryExpanded:false,
   // Null until a member report is imported. Once populated, the badge picker

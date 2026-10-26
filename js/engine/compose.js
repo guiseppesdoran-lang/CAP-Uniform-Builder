@@ -563,34 +563,67 @@
   // ---- The scene ---------------------------------------------------------------------------------
 
   function finish(ctx, title){
+    settleConflicts(ctx);
     const bounds = core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(core.layerBounds));
     return { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], garment: ctx.base && ctx.base.id };
   }
 
   // ---- Badge conflicts and the member's choice ------------------------------------------------------------------------------------
 
-  // The member's preferred badge for a position, from build.badgeChoices ({ position: badgeId }; the page keeps them per uniform): the list with
-  // that badge first when it is one of the candidates, else the list as it is.
-  function preferred(list, id){
-    const i = id ? list.findIndex(x => x.id === id) : -1;
-    return i > 0 ? [list[i], ...list.slice(0, i), ...list.slice(i + 1)] : list;
-  }
-  // The conflict the scene reports: { position, label, limit, candidates: [{ id, title, family }], shown: [ids], choice: id | null }. `list` is
-  // the candidates in the order the engine would show them by default, `ordered` the same list with the member's choice first; the first
-  // `limit` of `ordered` are shown.
-  function reportBadgeConflict(ctx, position, label, list, ordered, limit){
-    const wanted = ctx.build && ctx.build.badgeChoices && ctx.build.badgeChoices[position];
+  // A position with more than one place holds the member's badges slot by slot: build.badgeChoices[position] is { [slotKey]: badgeId }, one
+  // entry per place ("left-pocket", "right-pocket", "over-nametag", "left", "right"...). The older form, a single badge id, reads as the first slot.
+  // `list` is the candidates in the order the engine shows them by default, `slots` the places [{ key, label }] in the order the layout fills them
+  // (one slot for a position that takes one badge). The slot's own pick goes there, a badge in no slot twice (a later slot that names a badge
+  // already placed is ignored); the slots nobody picked take the unplaced candidates in the default order. Returns the badge for each slot, in
+  // slot order, and reports the position to the page: { position, label, limit, candidates: [{ id, title, family }], shown: [ids], choice: id | null
+  // (the first slot's pick), slots: [{ key, label, choice, badge, shown }], note }. finish() later sets `shown` from the badges actually drawn.
+  function chooseBadges(ctx, position, label, list, slots, opts){
+    const raw = ctx.build && ctx.build.badgeChoices && ctx.build.badgeChoices[position];
+    const picks = typeof raw === 'string' ? (slots[0] ? { [slots[0].key]: raw } : {}) : (raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
+    const used = new Set(), picked = {};
+    for(const sl of slots){
+      const item = typeof picks[sl.key] === 'string' ? list.find(x => x.id === picks[sl.key]) : null;
+      if(item && !used.has(item.id)){ picked[sl.key] = item; used.add(item.id); }
+    }
+    const spare = list.filter(x => !used.has(x.id));
+    const ordered = slots.map(sl => picked[sl.key] || spare.shift() || null);
+    const first = picked[slots[0] && slots[0].key];
     const c = {
-      position, label, limit,
+      position, label, limit: slots.length,
       candidates: list.map(x => ({ id: x.id, title: x.title || x.id, family: x.family || null })),
-      shown: ordered.slice(0, limit).map(x => x.id),
-      choice: wanted && list.some(x => x.id === wanted) ? wanted : null
+      shown: ordered.filter(Boolean).map(x => x.id),
+      choice: first ? first.id : null,
+      slots: slots.map((sl, i) => ({ key: sl.key, label: sl.label, choice: picked[sl.key] ? picked[sl.key].id : null, badge: ordered[i] ? ordered[i].id : null, shown: !!ordered[i] })),
+      note: (opts && opts.note) || ''
     };
     const key = JSON.stringify([c.position, c.candidates.map(x => x.id)]);
     ctx.conflicts = ctx.conflicts || [];
     if(!ctx.conflicts.some(x => JSON.stringify([x.position, x.candidates.map(y => y.id)]) === key)) ctx.conflicts.push(c);
-    return c;
+    return ordered.filter(Boolean);
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, preferred, reportBadgeConflict };
+  // The one-place form the profiles used before the slots (a position that takes one badge): `preferred` moves the member's pick to the front of
+  // the list, `reportBadgeConflict` reports the position with its one place. Both read build.badgeChoices[position] as a badge id or as { only: id }.
+  function preferred(list, id){
+    const i = id ? list.findIndex(x => x.id === id) : -1;
+    return i > 0 ? [list[i], ...list.slice(0, i), ...list.slice(i + 1)] : list;
+  }
+  function reportBadgeConflict(ctx, position, label, list, ordered, limit){
+    const slots = Array.from({ length: limit || 1 }, (_, i) => ({ key: limit > 1 ? 'slot' + (i + 1) : 'only', label }));
+    chooseBadges(ctx, position, label, list, slots);
+  }
+
+  // What the drawing shows of each reported position: a badge counts as shown when a badge layer for it was drawn (a badge the layout had no
+  // place for, or whose art is missing, is not shown). Left as planned when the scene drew no badge at all.
+  function settleConflicts(ctx){
+    const drawn = new Set();
+    for(const l of ctx.layers) if(l.role === 'badge' && /^badge:/.test(l.key || '')) drawn.add(l.key.split(':')[1]);
+    if(!drawn.size) return;
+    for(const c of ctx.conflicts || []){
+      for(const sl of c.slots || []) sl.shown = !!sl.badge && drawn.has(sl.badge);
+      c.shown = (c.slots || []).filter(sl => sl.shown).map(sl => sl.badge);
+    }
+  }
+
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict };
 });

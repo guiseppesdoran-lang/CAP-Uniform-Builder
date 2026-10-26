@@ -751,7 +751,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     drops everything else, so nothing outside those lists ever reaches State or the page.
   */
   // The positions where the engine may ask which badge to show (scene.conflicts, js/engine/profiles-dress.js, profiles.js).
-  const BADGE_POSITIONS = ['aviation', 'over-pocket', 'service', 'pocket', 'polo'];
+  const BADGE_POSITIONS = ['aviation', 'over-pocket', 'service', 'pocket', 'polo', 'tag'];
+  // A position with several places keeps { slotKey: badgeId }, the slot keys the engine names ("left-pocket", "over-nametag", "left"...); a position
+  // with one place, and a setup saved before the places, keep one badge id, which the engine reads as the first place.
+  const SLOT_KEY = /^[a-z][a-z0-9-]{0,29}$/;
   const SAFE_TOKEN = /^[A-Za-z0-9_.:#-]{0,80}$/;
   const has = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
   function safeToken(value){ return typeof value === 'string' && SAFE_TOKEN.test(value) ? value : ''; }
@@ -818,6 +821,11 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       for(const position of BADGE_POSITIONS){
         const id = choicesIn[u][position];
         if(typeof id === 'string' && badgeList.includes(id)) (out.badgeChoices[u] = out.badgeChoices[u] || {})[position] = id;
+        else if(id && typeof id === 'object' && !Array.isArray(id)){
+          const slots = {};
+          for(const key of Object.keys(id)) if(has(id, key) && SLOT_KEY.test(key) && typeof id[key] === 'string' && badgeList.includes(id[key])) slots[key] = id[key];
+          if(Object.keys(slots).length) (out.badgeChoices[u] = out.badgeChoices[u] || {})[position] = slots;
+        }
       }
     }
     // U.S. military badges: known ids only, with a token-safe variant.

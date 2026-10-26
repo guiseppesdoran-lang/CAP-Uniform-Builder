@@ -74,35 +74,71 @@
     }
     if(olp.length > 2){
       ctx.note('At most two aviation and occupational badges are worn over the left pocket; the rest are not shown');
-      // Keep the chaplain badge and the aviation badge first; the member's choice (build.badgeChoices['over-pocket']) goes before them.
+      // Keep the chaplain badge and the aviation badge first; the member's choice (build.badgeChoices['over-pocket'], one entry per place) goes there.
+      // The two worn are stacked in the regulation's order whichever places they were picked for.
       const byRule = [...set.chaplain, ...set.aviation, ...military, ...set.occupational];
-      const ordered = C.preferred(byRule, (b.badgeChoices || {})['over-pocket']);
-      C.reportBadgeConflict(ctx, 'over-pocket', 'Over the left pocket', byRule, ordered, 2);
-      const keep = ordered.slice(0, 2);
+      const keep = C.chooseBadges(ctx, 'over-pocket', 'Over the left pocket', byRule,
+        [{ key: 'first', label: 'First badge' }, { key: 'second', label: 'Second badge' }],
+        { note: 'The two are stacked in the order the regulation sets.' });
       olp = olp.filter(x => keep.includes(x));
     }
     // Everything else goes on the pockets or over the nametag. National Staff is always on the
     // wearer's right; the CSAG / Command Council / NB / NEC badges always on the wearer's left.
     const nationalStaff = set.nationalStaff.slice(0, 1);
-    const serviceOrdered = C.preferred(set.service, (b.badgeChoices || {}).service);
-    const service = serviceOrdered.slice(0, 1);
+    let service = set.service.slice(0, 1);
     if(set.service.length > 1){
       ctx.note('Only one service badge is worn; the others are not shown');
-      C.reportBadgeConflict(ctx, 'service', 'Service badge', set.service, serviceOrdered, 1);
+      service = C.chooseBadges(ctx, 'service', 'Service badge', set.service, [{ key: 'only', label: 'Service badge' }]);
     }
     const others = [...service, ...set.cadetSpecialty, ...set.specialty, ...set.rocketry, ...set.marksmanship];
     const total = olp.length + nationalStaff.length + others.length;
     const max = o.max || 4;
     let rest = others;
-    if(total > max){
-      ctx.note(`At most ${max} badges are worn on this uniform; the rest are not shown`);
-      const room = Math.max(0, max - olp.length - nationalStaff.length);
-      // The member's choice for the pocket badges (build.badgeChoices.pocket) is shown first; the service badge stays the first of the others.
-      const rule = others.slice(), ordered = C.preferred(rule, (b.badgeChoices || {}).pocket);
-      if(room >= 1 && rule.length > room) C.reportBadgeConflict(ctx, 'pocket', 'Pocket and nametag badges', rule, ordered, room);
-      rest = ordered.slice(0, room);
-    }
+    if(total > max) ctx.note(`At most ${max} badges are worn on this uniform; the rest are not shown`);
+    // The pocket and nametag places (one slot each, in the order the layout fills them): the member picks the badge for each place by hand
+    // (build.badgeChoices.pocket = { slotKey: badgeId }); the places nobody picked take the others in the order the rule lists them, the
+    // CAP service badge first. One place left: one pick among the competing badges.
+    const room = Math.max(0, max - olp.length - nationalStaff.length);
+    const count = Math.min(room, others.length);
+    if(count >= 1 && others.length >= 2){
+      // A place for each badge the layout can put somewhere: its named places, and the separate places model rocketry and marksmanship have
+      // (`specialPlaces`); a badge beyond them has no place on this uniform.
+      let places = o.places ? o.places(count, nationalStaff.length, others) : Array.from({ length: count }, (_, i) => ({ key: 'place' + (i + 1), label: 'Place ' + (i + 1) }));
+      const special = o.specialPlaces ? others.filter(x => x.family === 'rocketry' || x.family === 'marksmanship').length : 0;
+      const cap = Math.max(1, Math.min(count, places.length + special));
+      places = places.slice(0, cap);
+      while(places.length < cap) places.push({ key: 'separate' + places.length, label: 'Rocketry or marksmanship place' });
+      if(cap === 1) places = [{ key: 'only', label: 'Pocket and nametag badges' }];
+      rest = C.chooseBadges(ctx, 'pocket', 'Pocket and nametag badges', others, places);
+      if(cap < count) ctx.note('Some badges have no place left on this uniform and are not shown');
+      const collar = places.findIndex(x => x.service);
+      if(collar >= 0 && service[0] && rest.includes(service[0]) && rest[collar] !== service[0]) ctx.note('The CAP service badge is worn closest to the collar (CAPR 39-1, 4.1.9.4.4.2, 4.1.12.2.5.2)');
+    }else rest = others.slice(0, room);
     return { olp, nationalStaff, rest, pin: H.commandPin(ctx, b, 'dress') };
+  }
+
+  // The places the layout gives the pocket and nametag badges, in the order the layout fills them (the order of plan.rest), named as the
+  // regulation names them (4.1.5.2.2.4.2, 4.1.9.4.4.2, 4.1.11.1.1.2.3, 4.1.12.2.5.2, 4.2.5.1.3, 4.2.6.2.7.2). `ns` is 1 when the National Staff
+  // badge takes the wearer's right (it is not one of the slots). Men: the left pocket, the right pocket, one over the nametag; women: two
+  // side by side over the nametag, the CAP service badge nearest the collar (the wearer's left). Used by planBadges to give each place a slot.
+  const SPECIAL_FAMILY = x => x.family === 'rocketry' || x.family === 'marksmanship';
+  function dressPlaces(geo, count, ns, others){
+    let g = geo;
+    // The women's aviator shirt takes the men's layout from a third ordinary badge (4.2.6.2.7.2).
+    if(g.onStyle === 'women-a' && g.menLayout){
+      const ordinary = others.filter(x => !SPECIAL_FAMILY(x)).length;
+      if(ns + Math.min(count, ordinary) > 2) g = Object.assign({}, g, g.menLayout);
+    }
+    const places = [];
+    if(g.onStyle === 'men'){
+      if(g.lp) places.push({ key: 'left-pocket', label: "Left pocket (wearer's left)" });
+      if(g.rp && !ns) places.push({ key: 'right-pocket', label: "Right pocket (wearer's right)" });
+      if(g.nametag) places.push({ key: 'over-nametag', label: 'Over the nametag' });
+    }else{
+      places.push({ key: 'left', label: "Over the nametag, wearer's left (nearest the collar)", service: true });
+      if(!ns) places.push({ key: 'right', label: "Over the nametag, wearer's right" });
+    }
+    return places;
   }
 
   // ---- U.S. military badges at their real size ---------------------------------------------------
@@ -187,7 +223,7 @@
   //   onBottom: y                  override for the ON line (semi-formal: even with the ribbons)
   //   un: { x, y, anchor }         graduated commander position
   async function dressBadges(ctx, b, geo){
-    const plan = planBadges(ctx, b, { max: geo.max });
+    const plan = planBadges(ctx, b, { max: geo.max, specialPlaces: true, places: (count, ns, others) => dressPlaces(geo, count, ns, others) });
     // Women's aviator shirt: the two places over the nametag hold two badges (4.2.6.2.7.2). A third
     // ordinary badge takes the men's option the same paragraph allows ("as worn on the male aviator
     // shirt"): first badge on the left pocket, second on the right, third over the nametag.
@@ -1549,7 +1585,12 @@
     // sheet's miniature_medals_center is that point.
     const box = await C.drawMiniMedals(ctx, b.medals || [], { w: slot.w, centerX: center.x, centerY: center.y }, { style: b.opt.miniStyle });
     const wrX = ctx.base.w - center.x;
-    const plan = planBadges(ctx, b, {});
+    // The mess dress places: men, below the medals on the wearer's left and right; women, a pair on the wearer's right (the CAP service badge on the
+    // wearer's left of the pair, nearest the collar).
+    const messPlaces = (count, ns) => female
+      ? [{ key: 'left', label: "Pair on the wearer's right, wearer's left", service: true }, ...(ns ? [] : [{ key: 'right', label: "Pair on the wearer's right, wearer's right" }])]
+      : [{ key: 'left', label: "Below the medals, wearer's left" }, ...(ns ? [] : [{ key: 'right', label: "Below the medals, wearer's right" }])];
+    const plan = planBadges(ctx, b, { places: messPlaces });
     // The medals (or the first badge in their place) 'midway between the top shoulder seam and top button of the coat'
     // (4.1.1.1.2.2, 4.1.2.1.2.2): the sheet's top of the shoulder (shoulder_left_center) and its top button, the tick at the
     // medals' centre, drawn beside the rack toward the arm.

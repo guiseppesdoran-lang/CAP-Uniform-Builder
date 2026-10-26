@@ -1266,12 +1266,22 @@ html[data-access="ok"] #accessGate{display:none}
 .badgeChooser{display:grid;gap:var(--s3);margin-top:var(--s3)}
 .badgeChooser.hidden{display:none}
 .badgeChooserLead{margin:0}
-.badgeChooserGroup{margin:0;padding:var(--s3);display:grid;gap:var(--s1);min-width:0;
-  border:1px solid var(--line);border-left:4px solid var(--cap-yellow);border-radius:var(--r-lg);background:var(--panel-2)}
-.badgeChooserGroup legend{padding:0 var(--s1);font-family:var(--font-head);font-weight:700;font-size:var(--t-md);color:var(--ink)}
+/* A group is a plain block under a heading row: the title on the left, how many badges are worn on the right, muted. */
+.badgeChooserGroup{margin:0;padding:var(--s3) 0 0;display:grid;gap:var(--s1);min-width:0;border-top:1px solid var(--line)}
+.badgeChooserHead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2)}
+.badgeChooserTitle{margin:0;font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.badgeChooserCount{flex:none;font-size:var(--t-xs);color:var(--muted)}
+.badgeChooserNote{margin:0}
+.badgeChooserList{display:grid;gap:var(--s2);min-width:0}
+.badgeChooserHead{margin-bottom:var(--s1)}
 .badgeChooserOption{display:flex;align-items:center;gap:var(--s2);min-height:44px;padding:0 var(--s1);
   font-size:var(--t-sm);color:var(--ink);cursor:pointer;border-radius:var(--r)}
 .badgeChooserOption input{flex:none;width:20px;height:20px;margin:0;accent-color:var(--action)}
 .badgeChooserOption:focus-within{outline:2px solid var(--focus);outline-offset:2px}
 .badgeChooserName{min-width:0;overflow-wrap:anywhere}
-.badgeChooserTag{margin-left:auto;flex:none;font-size:var(--t-xs);color:var(--muted)}
+/* One place: its name above the select, the shown status right-aligned beside the name. */
+.badgeChooserSlot{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--s2);row-gap:var(--s1);align-items:baseline;min-width:0}
+.badgeChooserSlotName{grid-column:1;grid-row:1;margin:0;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+.badgeChooserSelect{grid-column:1 / -1;grid-row:2;width:100%;min-width:0;min-height:44px}
+.badgeChooserSlot .badgeChooserTag{grid-column:2;grid-row:1}
+.badgeChooserTag{margin-left:auto;flex:none;text-align:right;font-size:var(--t-xs);color:var(--muted)}
