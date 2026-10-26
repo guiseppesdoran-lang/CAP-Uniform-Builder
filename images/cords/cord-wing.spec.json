@@ -13,11 +13,11 @@
   422
  ],
  "size_source": "estimated",
- "size_basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp",
+ "size_basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp. Colour re-measured 2026-10-25: images/cords/wing.webp (alpha>200 non-white n=5558, sorted by luminance; Vanguard Scarlet Red photo https://www.vanguardmil.com/cdn/shop/products/3738950_930d3b69-321a-4125-969d-2928eafa1c4b.jpeg is darker, lit face #7b0f11, so the lighter app photo is kept): main #e01215 = mean of the p60-p90 lit face, groove #c00303 = shadow p5 (was #d70d10/#a80506, p50 and p5). Ethan: \"NCAC cord is a bit too dark\"",
  "provenance": "in-house vector: braid pattern and colours measured from the app's existing cord images",
  "colours": {
-  "main": "#d70d10",
-  "groove": "#a80506"
+  "main": "#e01215",
+  "groove": "#c00303"
  },
  "anchors": {
   "top_center": [
