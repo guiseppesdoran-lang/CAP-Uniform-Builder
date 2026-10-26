@@ -218,7 +218,7 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
     }
   }
   // The shirt sheets are drawn at true size since the art sync (the pocket is 5.25 in wide, Class B 1.2171, aviator 1.2036), so seven or twelve ribbons and the badges
-  // above them no longer reach a collar leaf on the aviator shirts; the long sheets draw the closed collar (tie worn, 4.2.5.1.4) with its leaves near the centre line. What
+  // above them no longer reach a collar leaf on the aviator shirts; the aviator sheets draw one pointed collar (art bb1b47a0) with its leaves near the centre line. What
   // still reaches a leaf is the chaplain badge over twelve ribbons on the Class B shirt and blouse: a badge, never cut, which is what the loop above asserts.
   assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
 });
@@ -227,7 +227,7 @@ test('aviator beside the blazer: the chaplain badge on the shirt figure is never
   const scene = await compose(hb('aviator_blazer', 'male', 'senior', 'Capt', { badgeIds: [PILOT, 'observer_badge', 'christian_chaplin'], ribbonSel: RIB }));
   const ch = scene.layers.find(l => l.key === 'badge:christian_chaplin' && l.figure === 2);
   assert.ok(ch, 'the shirt\'s chaplain badge is drawn');
-  // The shirt beside the blazer is the long sleeve, whose closed collar (4.2.5.1.4) hangs near the centre line: the badge is cut by a leaf exactly when its box reaches one, and the cut-out polygons are on this figure.
+  // The shirt beside the blazer is the long sleeve, whose pointed collar leaves hang near the centre line (the tie is worn, 4.2.5.1.4): the badge is cut by a leaf exactly when its box reaches one, and the cut-out polygons are on this figure.
   const sheet = scene.layers.find(l => l.role === 'garment' && l.figure === 2);
   const spec = await store.load(sheet.id);
   const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));

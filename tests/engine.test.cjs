@@ -202,7 +202,10 @@ test('the flight jacket is an optional add-on: drawn beside the flight suit once
   assert.equal(hidden.layers.filter(l => l.role === 'garment').length, 1);
   const blazer = await P.composeUniform(build('aviator_blazer', 'senior', 'Capt'), store());
   assert.ok(blazer.layers.some(l => l.id === 'garment-aviator-shirt-male-long'));
-  assert.ok(blazer.layers.some(l => l.id === 'garment-aviator-shirt-male-long-tie'));
+  // the shirt beside the blazer keeps its tie (4.2.3.4): the sheet's own `tie` group, shown, not a separate overlay (the sheet states the tie landmark since the sync that drew it in the group)
+  const shirt = blazer.layers.find(l => l.id === 'garment-aviator-shirt-male-long');
+  assert.ok(!(shirt.hideGroups || []).includes('tie'), 'tie group shown');
+  assert.ok(!blazer.layers.some(l => /-tie(-tab)?$/.test(l.id || '')), 'no tie overlay');
 });
 
 test('grade rules: mess dress needs a grade, men\'s Class B chevrons are 3 1/2 in, C/AB has no OCP square', async () => {

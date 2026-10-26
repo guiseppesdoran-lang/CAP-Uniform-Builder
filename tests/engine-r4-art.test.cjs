@@ -193,36 +193,48 @@ test('the short overblouse bodice is as traced: the widening moves the sleeve ru
   assert.ok(widest < 5.6, `widest bodice point ${widest.toFixed(2)} in`);
 });
 
-// ---- 4, 5. long-sleeve aviator shirts draw the closed collar (tie / tab worn, 4.2.5.1.4, 4.2.6.3) ---------------------------------
+// ---- 4, 5. the aviator shirts draw one collar state, the tie in its own group under the leaves (4.2.5.1, 4.2.5.1.4, 4.2.6.3) --------------------------
+// Art bb1b47a0 (LIVE8-2): the long sheets no longer draw a separate closed collar (the old group `closed-collar` and the `-tie` / `-tie-tab` overlays clipped by the leaves). All four
+// sheets draw the same standard pointed collar, the tie (or the tab) in group `tie` and the leaves in group `collar` after it, so the leaves lie over the tie; the tie group is the only
+// place the tie is drawn and the engine hides it when the tie option is off.
 
-test('the long aviator shirts draw the collar closed: the leaves meet at the knot / tab top close under their tips, the V between them is filled, and the short shirts keep the open collar', async () => {
-  for(const [id, tie] of [['garment-aviator-shirt-male-long', 'tie_knot_top_center'], ['garment-aviator-shirt-female-long', 'tie_tab_top_center']]){
+const AVIATOR_SHEETS = [['male', 'short', 'garment-aviator-shirt-male'], ['male', 'long', 'garment-aviator-shirt-male-long'], ['female', 'short', 'garment-aviator-shirt-female'], ['female', 'long', 'garment-aviator-shirt-female-long']];
+const tieOverlays = scene => scene.layers.filter(l => /-tie(-tab)?$/.test(l.id || ''));
+const shirtLayer = (scene, figure) => scene.layers.find(l => l.key === 'base:jacket' && (figure ? l.figure === figure : !l.figure || l.figure === 1));
+
+test('the aviator sheets draw one collar state: pointed leaves after the tie group (over it), no closed-collar group, the tie stated as a landmark', async () => {
+  for(const [gender, sleeve, id] of AVIATOR_SHEETS){
     const spec = await store.load(id), svg = readSvg(id);
-    assert.match(svg, new RegExp(`id="${id}__closed-collar"`), `${id}: closed-collar group`);
-    assert.match(svg, new RegExp(`id="${id}__collar-right"`));
-    const tieSpec = readSpec(id + (tie === 'tie_knot_top_center' ? '-tie' : '-tie-tab'));
+    assert.doesNotMatch(svg, /closed-collar/, `${id}: one collar state, no closed-collar group`);
+    for(const part of ['collar-back', 'collar-right', 'collar-left']) assert.match(svg, new RegExp(`id="${id}__${part}"`), `${id}: ${part}`);
+    const tieAt = svg.indexOf(`id="${id}__tie"`), collarAt = svg.indexOf(`id="${id}__collar"`);
+    assert.ok(tieAt > 0 && collarAt > tieAt, `${id}: the tie group comes before the collar group, so the leaves lie over the tie`);
+    const tie = core.landmark(spec, 'tie');
+    assert.ok(tie && tie.kind === (gender === 'female' ? 'tab' : 'tie'), `${id}: tie landmark ${JSON.stringify(tie)}`);
+    // the tie sits at the front of the neck, where the leaves meet it: the knot is level with the collar's front-of-neck vertex on both leaves
+    const knot = { x: tie.knot.x / 100, y: tie.knot.y / 100 };   // the landmark states hundredths of an inch
     for(const side of ['left', 'right']){
       const poly = core.landmark(spec, 'collar_' + side).points;
-      const topY = Math.min(...poly.map(p => p.y));
-      // the leaves' inner corner (the junction) is within 2.2 in of the tips, not the 5.4 in of the traced open V
-      const junction = side === 'right' ? poly.reduce((m, p) => p.x > m.x ? p : m, poly[0]) : poly.reduce((m, p) => p.x < m.x ? p : m, poly[0]);
-      assert.ok(junction.y - topY < 2.2, `${id} ${side}: leaves meet ${(junction.y - topY).toFixed(2)} in below the tips`);
+      const near = poly.reduce((m, p) => Math.abs(p.x - knot.x) < Math.abs(m.x - knot.x) ? p : m, poly[0]);
+      assert.ok(Math.hypot(near.x - knot.x, near.y - knot.y) < 0.35, `${id} ${side}: the leaf's front-of-neck vertex ${near.x.toFixed(2)},${near.y.toFixed(2)} is at the knot ${knot.x},${knot.y}`);
     }
-    // the tie / tab starts at the junction row and is clipped by both leaf polygons (the leaves lie over it)
-    assert.ok(tieSpec.anchors[tie], `${id}: tie anchor ${tie}`);
-    const tsvg = readSvg(id + (tie === 'tie_knot_top_center' ? '-tie' : '-tie-tab'));
-    assert.match(tsvg, /noLeaf0/);
-    assert.match(tsvg, /noLeaf1/);
+    // both states: the sheet's own group is the tie; no overlay is added, and the group is hidden exactly when the member turns it off
+    const on = await P.composeUniform(build('aviator', gender, 'senior', 'Capt', { sleeve, tie: true }), store);
+    const off = await P.composeUniform(build('aviator', gender, 'senior', 'Capt', { sleeve, tie: false }), store);
+    assert.ok(!(shirtLayer(on).hideGroups || []).includes('tie'), `${id}: tie on, the group is drawn`);
+    assert.ok((shirtLayer(off).hideGroups || []).includes('tie'), `${id}: tie off, the group is hidden`);
+    assert.equal(tieOverlays(on).length + tieOverlays(off).length, 0, `${id}: no separate tie overlay in either state`);
   }
-  for(const id of ['garment-aviator-shirt-male', 'garment-aviator-shirt-female']) assert.doesNotMatch(readSvg(id), /closed-collar/, `${id}: short shirt keeps the traced collar`);
 });
 
-test('the aviator beside the blazer and the plain aviator both draw the long shirt with the closed collar (tie knot at the neckband, leaves over the tie)', async () => {
-  for(const [uniform, gender] of [['aviator', 'male'], ['aviator', 'female']]){
+test('the aviator beside the blazer and the plain long aviator both draw the long shirt with its tie group shown, under the collar leaves (4.2.3.4, 4.2.4.3, 4.2.5.1.4, 4.2.6.3)', async () => {
+  for(const [uniform, gender] of [['aviator', 'male'], ['aviator', 'female'], ['aviator_blazer', 'male'], ['aviator_blazer', 'female']]){
     const scene = await P.composeUniform(build(uniform, gender, 'senior', 'Capt', { sleeve: 'long', femaleTop: 'shirt' }), store);
-    const garment = scene.layers.find(l => l.role === 'garment');
-    assert.match(garment.id, /-long$/);
-    const tie = scene.layers.find(l => /-tie(-tab)?$/.test(l.id || ''));
-    assert.ok(tie, `${gender}: tie / tab layer`);
+    const shirt = shirtLayer(scene, uniform === 'aviator_blazer' ? 2 : 0);
+    assert.ok(shirt, `${uniform} ${gender}: the shirt`);
+    assert.match(shirt.id, /^garment-aviator-shirt-(male|female)-long$/, `${uniform} ${gender}: the long shirt`);
+    assert.ok(!(shirt.hideGroups || []).includes('tie'), `${uniform} ${gender}: tie group shown`);
+    assert.ok(core.landmark(await store.load(shirt.id), 'tie'), `${uniform} ${gender}: the sheet states the tie it draws`);
+    assert.equal(tieOverlays(scene).length, 0, `${uniform} ${gender}: the tie is the sheet's group, not an overlay`);
   }
 });
