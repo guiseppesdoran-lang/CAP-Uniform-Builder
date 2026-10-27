@@ -411,6 +411,22 @@
         g.appendChild(node);
         node = g;
       }
+      if(layer.cordPath && layer.cordPath.fade){
+        // The braid fades out under the arm (engine: core.fitCord, `fade`): opacity 1 at `from` falling to 0 at `to`, along that segment (sheet inches, the sheet's box at the layer's
+        // origin). A luminance mask whose gradient is white before `from` and black after `to`; ids are the engine's own, and scopeIds gives them the drawing's suffix.
+        const f = layer.cordPath.fade, n = defs.querySelectorAll('mask').length;
+        const gid = 'cordfade-' + n, mid = 'cordfademask-' + n;
+        const lg = el('linearGradient', { id: gid, gradientUnits: 'userSpaceOnUse', x1: fmt(layer.x + f.from[0]), y1: fmt(layer.y + f.from[1]), x2: fmt(layer.x + f.to[0]), y2: fmt(layer.y + f.to[1]) });
+        lg.appendChild(el('stop', { offset: 0, 'stop-color': '#ffffff' }));
+        lg.appendChild(el('stop', { offset: 1, 'stop-color': '#000000' }));
+        defs.appendChild(lg);
+        const mk = el('mask', { id: mid, maskUnits: 'userSpaceOnUse', x: -1000, y: -1000, width: 3000, height: 3000 });
+        mk.appendChild(el('rect', { x: -1000, y: -1000, width: 3000, height: 3000, fill: `url(#${gid})` }));
+        defs.appendChild(mk);
+        const g = el('g', { mask: `url(#${mid})` });
+        g.appendChild(node);
+        node = g;
+      }
       const wrap = el('g', {
         class: 'layer ' + (layer.className || ''),
         'data-calib-key': layer.key || null,

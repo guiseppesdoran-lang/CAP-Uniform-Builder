@@ -1022,7 +1022,7 @@
   // now goes on at full width 0.35 in past the notch and then narrows to a point over a further 0.25 in, 0.6 in under in all (core.fitCord).
   // LIVE10-MASTER-4 (Ethan: "now the cord is cut off lmao. its supposed to be continuous"): the braid past the notch was clipped to the silhouette and ended on a straight cut at the
   // arm gap, then the pale tongue. It now passes under the arm and goes on INSIDE the garment along the body's side edge (BODY_SIDE: the silhouette's edge on the body's side of
-  // the gap, from the armpit down), bending with it, for CORD_UNDER (0.8 in) at full width and then a further 0.3 in while it narrows to nothing (core.fitCord, CORD_TAPER).
+  // the gap, from the armpit down), bending with it, for CORD_UNDER (0.8 in) at full width and then fades out over a further 0.8 in as if passing behind the arm (core.fitCord, CORD_FADE).
   const CORD_UNDER = 0.8;
   function fitCordLayer(ctx, spec){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
@@ -1030,7 +1030,7 @@
     const ring = GARMENT_TOP[id];
     const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
     const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null, CORD_UNDER, BODY_SIDE[id] || null);
-    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, tail: fit.tail, stretch: fit.stretch };
+    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, fade: fit.fade, tail: fit.tail, stretch: fit.stretch };
     layer.clipSil = id;
   }
 

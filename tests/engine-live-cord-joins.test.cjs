@@ -281,15 +281,13 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
       const tb = b.type === 'Q' ? [b.c[0] - b.a[0], b.c[1] - b.a[1]] : [b.b[0] - b.a[0], b.b[1] - b.a[1]];
       assert.ok(angDiff(ang(ta), ang(tb)) <= 5, `${tag}: the tangent turns ${angDiff(ang(ta), ang(tb)).toFixed(1)} degrees where piece ${i - 1} meets piece ${i}`);
     }
-    // The pieces run from the top end to the end of the braid's tail under the arm. LIVE10-4 (Ethan: "now the cord is cut off lmao. its supposed to be continuous"): the braid
-    // is not cut at the notch any more. From the notch it goes on INSIDE the silhouette along the body's side edge, bending with it, for 0.8 in of that edge at full width and then
-    // narrows to a point over a further 0.3 in; no straight clip edge, no separate tongue (the old LIVE9-2 checks of the 0.6 in run and the tongue's share are replaced by these).
-    const under = cl.cordPath.under, tail = cl.cordPath.tail, vis = cl.cordPath.visible;
-    assert.ok(vis && vis.length >= 6, `${tag}: the run carries the polygon its taper is clipped to`);
-    assert.ok(tail && tail.points.length >= 4, `${tag}: the braid has a tail under the arm`);
+    // LIVE10-4, second version (Ethan: "now the cord is cut off lmao. its supposed to be continuous"; the first curled onto the chest and narrowed to a point): the braid keeps the
+    // armhole seam's line down to the armpit, goes on past it at full width for 0.8 in along the body's side edge inside the cloth, and then fades out over a further 0.8 in as if
+    // passing behind the arm: opacity 1 to 0 along the braid, no geometric taper, no clip polygon, no separate shape.
+    const under = cl.cordPath.under, tail = cl.cordPath.tail, fade = cl.cordPath.fade;
+    assert.ok(tail && tail.points.length >= 10 && fade, `${tag}: the braid has a tail under the arm and a fade`);
+    assert.equal(cl.cordPath.visible, null, `${tag}: no clip polygon: the braid's end is not a shape`);
     assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - under[0], pieces[pieces.length - 1].b[1] - under[1]) < 1e-6, `${tag}: the pieces run from top to the end of the tail`);
-    // The run passes through the notch (the corner there is rounded: 0.05 in on the women's coat, so within 0.07 in).
-    assert.ok(Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))) < 0.07, `${tag}: the run passes ${Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))).toFixed(3)} in from the armpit`);
     // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
     const ring = outerRing(gid);
     assert.ok(ringDist(top, ring) <= 0.1, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);
@@ -297,49 +295,56 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= 0.1, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
     // The armpit is the notch of the silhouette, measured independently of the table: 0.05 in.
     assert.ok(Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]) <= 0.05, `${tag}: the run's armpit end is ${Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
-    // The tail, measured against the silhouette as the sheet draws it (not against the engine's table): the last visible point lies inside the silhouette; every point of the
-    // tail's centre line lies inside it; from the first 0.6 in on, where the braid has settled inside the edge, the whole braid (0.25 in either side of the centre line) is on
-    // cloth, so no row of the braid ends on the silhouette edge at full width; and the tail follows the edge's own direction, 0.27 in inside it.
     const sil = silhouette(read(gid)), BRAID = 0.25;
-    const pathPts = [bottom].concat(tail.points);
-    const cum = [0];
-    for(let i = 1; i < pathPts.length; i++) cum.push(cum[i - 1] + Math.hypot(pathPts[i][0] - pathPts[i - 1][0], pathPts[i][1] - pathPts[i - 1][1]));
-    assert.ok(Math.abs(cum[cum.length - 1] - tail.end) < 1e-6 && tail.end >= 1.1 && tail.end < 1.3, `${tag}: the tail is ${tail.end.toFixed(3)} in long (0.8 in at full width and 0.3 in of taper along the edge)`);
-    assert.ok(Math.abs(tail.end - tail.taperFrom - 0.3) < 1e-6, `${tag}: the taper is the last 0.3 in`);
-    assert.ok(inSil(under, sil), `${tag}: the last point of the braid (${under.map(v => v.toFixed(2))}) is inside the silhouette`);
-    const at = u => { let i = 1; while(i < cum.length - 1 && cum[i] < u) i++; const f = (u - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1), a = pathPts[i - 1], b = pathPts[i], d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return { p: [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f], n: [-(b[1] - a[1]) / d, (b[0] - a[0]) / d] }; };
+    const tp = tail.points, cum = [0];
+    for(let i = 1; i < tp.length; i++) cum.push(cum[i - 1] + Math.hypot(tp[i][0] - tp[i - 1][0], tp[i][1] - tp[i - 1][1]));
+    const at = a => { let i = 1; while(i < cum.length - 1 && cum[i] < a) i++; const f = (a - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1), p = tp[i - 1], q = tp[i], d = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1; return { p: [p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f], n: [-(q[1] - p[1]) / d, (q[0] - p[0]) / d], d: [(q[0] - p[0]) / d, (q[1] - p[1]) / d] }; };
+    // Arc distance from the notch: the tail starts at the point of the path nearest it. It is 0.8 in at full width and then 0.8 in of fade: 1.6 in.
+    assert.ok(Math.abs(cum[cum.length - 1] - 1.6) < 0.02 && tail.end === 1.6, `${tag}: the tail is ${cum[cum.length - 1].toFixed(3)} in long beyond the notch (0.8 full, 0.8 fading)`);
+    assert.ok(tail.notchDistance <= 0.45 && tail.notchDistance >= 0.0, `${tag}: the braid's centre line passes ${tail.notchDistance.toFixed(2)} in from the notch (inside the cloth, within the braid's width)`);
+    // The direction of the centre line at the notch is the seam's, within 10 degrees: the seam's direction is the sheet's own run over its last inch above the armpit.
+    const seam = tail.seam, d0 = at(0.25).d, dirDiff = angDiff(ang(seam), ang(d0));
+    assert.ok(dirDiff <= 10, `${tag}: at the notch the braid runs ${dirDiff.toFixed(1)} degrees off the seam's direction`);
+    // Full width through the notch and for 0.8 in past it: the fade begins 0.8 in beyond the notch and ends at the braid's end, opacity falling monotonically from 1 to 0.
+    const L = Math.hypot(fade.to[0] - fade.from[0], fade.to[1] - fade.from[1]);
+    const opacity = p => Math.max(0, Math.min(1, 1 - ((p[0] - fade.from[0]) * (fade.to[0] - fade.from[0]) + (p[1] - fade.from[1]) * (fade.to[1] - fade.from[1])) / (L * L)));
+    assert.ok(Math.abs(fade.length - 0.8) < 1e-9 && Math.abs(L - 0.8) < 0.03, `${tag}: the fade runs over ${L.toFixed(3)} in (0.8)`);
+    assert.ok(Math.hypot(fade.to[0] - under[0], fade.to[1] - under[1]) < 1e-6, `${tag}: the fade ends at the braid's end`);
+    let prev = 1;
+    for(let a = 0; a <= 1.6 + 1e-9; a += 0.05){
+      const o = opacity(at(a).p);
+      if(a <= 0.78) assert.equal(o, 1, `${tag}: the braid is at full opacity ${a.toFixed(2)} in past the notch`);
+      assert.ok(o <= prev + 1e-9, `${tag}: the opacity rises from ${prev.toFixed(2)} to ${o.toFixed(2)} ${a.toFixed(2)} in past the notch`);
+      prev = o;
+    }
+    assert.ok(opacity(at(1.6).p) < 0.02, `${tag}: the braid has faded to nothing at its end`);
+    assert.ok(opacity(at(1.2).p) > 0.3 && opacity(at(1.2).p) < 0.7, `${tag}: the braid is about half faded half way along the fade`);
+    // The last visible segment is inside the silhouette (as the sheet draws it): every point of the centre line that can still be seen (opacity over 5 percent) is, and from 0.4 in past
+    // the notch on, where the braid has settled inside the edge, the whole 0.5 in braid is on cloth (no row of it ends on the silhouette edge).
+    for(let a = 0; a <= 1.6 + 1e-9; a += 0.05){
+      const { p, n } = at(a), o = opacity(p);
+      if(o > 0.05) assert.ok(inSil(p, sil), `${tag}: the braid's centre line ${a.toFixed(2)} in past the notch (${p.map(v => v.toFixed(2))}, opacity ${o.toFixed(2)}) is outside the silhouette`);
+      if(a >= 0.4) for(const v of [-BRAID + 0.02, BRAID - 0.02]) assert.ok(inSil([p[0] + n[0] * v, p[1] + n[1] * v], sil), `${tag}: the braid's side ${v.toFixed(2)} ${a.toFixed(2)} in past the notch is on the silhouette's edge or off the cloth`);
+    }
+    assert.ok(inSil(under, sil), `${tag}: the last point of the braid is inside the silhouette`);
+    // It follows the body's edge past the notch (within 0.04 of the half-width inset) and runs along it.
     const edge = gid in SIDE_EDGE ? SIDE_EDGE[gid] : (SIDE_EDGE[gid] = MEASURE_ARMPIT.computeSide()[gid]);
-    for(const q of tail.points) assert.ok(inSil(q, sil), `${tag}: the tail's centre line (${q.map(v => v.toFixed(2))}) is inside the silhouette`);
-    const width = u => { const { p, n } = at(u); let w = 0; for(let v = -0.3; v <= 0.3 + 1e-9; v += 0.01){ const q = [p[0] + n[0] * v, p[1] + n[1] * v]; if(inRing(q, vis) && inSil(q, sil)) w += 0.01; } return w; };
-    const braidWidth = 2 * BRAID, rows = [];
-    for(let u = 0.6; u <= tail.taperFrom + 1e-9; u += 0.05){
-      const { p, n } = at(u);
-      for(let v = -BRAID + 0.01; v <= BRAID - 0.01; v += 0.05) assert.ok(inSil([p[0] + n[0] * v, p[1] + n[1] * v], sil), `${tag}: braid at ${u.toFixed(2)} in along the tail, ${v.toFixed(2)} aside is on the silhouette's edge or off the cloth`);
-      assert.ok(width(u) > braidWidth - 0.03, `${tag}: the braid is ${width(u).toFixed(2)} in wide ${u.toFixed(2)} in along its tail (full width ${braidWidth})`);
-      rows.push(u);
-      // The edge's direction: the tail's tangent is the edge's, within 12 degrees, and the centre line lies 0.27 in inside it.
-      const e0 = at(u - 0.05).p, e1 = at(u + 0.05).p, dirT = [e1[0] - e0[0], e1[1] - e0[1]];
-      const dEdge = Math.min(...edge.slice(1).map((q, i) => segDist(p, edge[i], q)));
-      assert.ok(Math.abs(dEdge - 0.27) < 0.04, `${tag}: the tail is ${dEdge.toFixed(3)} in from the body's edge ${u.toFixed(2)} in along it (0.27)`);
-      let bestAng = 180;
-      for(let i = 1; i < edge.length; i++) bestAng = Math.min(bestAng, angDiff(ang(dirT), ang([edge[i][0] - edge[i - 1][0], edge[i][1] - edge[i - 1][1]])));
-      assert.ok(bestAng <= 12, `${tag}: the tail runs ${bestAng.toFixed(1)} degrees off the body's edge ${u.toFixed(2)} in along it`);
+    for(let a = 1.2; a <= 1.6 + 1e-9; a += 0.1){
+      const p = at(a).p, dEdge = Math.min(...edge.slice(1).map((q, i) => segDist(p, edge[i], q)));
+      assert.ok(Math.abs(dEdge - 0.25) < 0.05, `${tag}: the braid is ${dEdge.toFixed(3)} in from the body's edge ${a.toFixed(2)} in past the notch (inset 0.25, half the braid's width)`);
     }
-    assert.ok(rows.length >= 4, `${tag}: ${rows.length} rows checked`);
-    // The braid narrows to a point: its visible width (what the clip and the silhouette leave of the 0.5 in braid) never grows over the last 0.3 in and ends under a quarter of it.
-    let last = Infinity;
-    for(let u = tail.taperFrom; u <= tail.end - 0.01 + 1e-9; u += 0.02){
-      const w = width(u);
-      assert.ok(w <= last + 0.011, `${tag}: the braid widens from ${last.toFixed(2)} to ${w.toFixed(2)} in ${(u - tail.taperFrom).toFixed(2)} in into the taper`);
-      last = w;
+    // The braid keeps the seam's line: where the run above the notch is concerned, the centre line is never more than 0.45 in from the sheet (the inset is half the braid, 0.25 in, from the body edge, which lies up to 0.2 in off the seam at the notch)'s own run, it has drifted back onto
+    // it (within 0.02) 8 in above the notch, and the drift is gradual: at most 0.16 in sideways per inch of braid (about 9 degrees), the inset reached over more than 1.5 in
+    // starting above the notch.
+    const runPts = cl.cordPath.points, drawnLine = (() => { const pcs = pieces, out = []; for(const pc of pcs){ if(!out.length) out.push(pc.a); out.push(pc.type === 'Q' ? pc.c : pc.b); } return out; })();
+    const runDist = p => Math.min(...runPts.slice(1).map((q, i) => segDist(p, runPts[i], q)));
+    let maxDev = 0, slopeMax = 0, last = null;
+    for(let k = 0; k < drawnLine.length; k++){
+      const q = drawnLine[k], dBottom = Math.hypot(q[0] - bottom[0], q[1] - bottom[1]);
+      if(q[1] < bottom[1] && dBottom > 0.3 && dBottom < 9){ const dev = runDist(q); maxDev = Math.max(maxDev, dev); if(last && Math.abs(dBottom - last.d) > 0.2) { slopeMax = Math.max(slopeMax, Math.abs(dev - last.dev) / Math.abs(dBottom - last.d)); last = { d: dBottom, dev }; } if(!last) last = { d: dBottom, dev }; }
     }
-    assert.ok(last < braidWidth / 4, `${tag}: the braid's visible width at the end of its taper is ${last.toFixed(2)} in, not under a quarter of ${braidWidth} in`);
-    assert.ok(width(tail.end - 0.01) < 0.1, `${tag}: the braid ends in a point`);
-    // The clip polygon is only the braid's own taper: it does not cut the braid anywhere before the taper begins (nothing of the braid's width is cut short above it).
-    for(let u = 0; u < tail.taperFrom - 0.02; u += 0.05){
-      const { p, n } = at(u);
-      for(const v of [-BRAID + 0.01, 0, BRAID - 0.01]) assert.ok(inRing([p[0] + n[0] * v, p[1] + n[1] * v], vis), `${tag}: the clip cuts the braid ${u.toFixed(2)} in along its tail, before the taper`);
-    }
+    assert.ok(maxDev <= 0.45, `${tag}: the braid strays ${maxDev.toFixed(2)} in from the sheet's run above the notch`);
+    assert.ok(slopeMax <= 0.16 + 1e-9, `${tag}: the braid drifts ${slopeMax.toFixed(3)} in sideways per inch above the notch`);
     // Only the straight run is stretched: the length changes by no more than 15 percent (the sheets draw no loop or tip to keep).
     assert.ok(stretch.to / stretch.from > 0.85 && stretch.to / stretch.from < 1.15, `${tag}: length ${stretch.from.toFixed(2)} to ${stretch.to.toFixed(2)} in`);
     assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);
