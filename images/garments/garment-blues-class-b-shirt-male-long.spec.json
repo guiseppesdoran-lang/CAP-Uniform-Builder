@@ -76,12 +76,12 @@
    910
   ],
   "epaulet_right_center": [
-   607.08,
-   320.25
+   601.88,
+   290.7
   ],
   "epaulet_left_center": [
-   1979.18,
-   320.25
+   1984.38,
+   290.7
   ],
   "belt_buckle_center": [
    1373.88,
@@ -159,24 +159,24 @@
   },
   "epaulet_right": [
    [
-    321.13,
-    359
+    320.53,
+    356
    ],
    [
-    829.43,
-    182.9
+    828.43,
+    180
    ],
    [
-    893.03,
-    213.7
+    883.23,
+    185.4
    ],
    [
-    862.13,
-    277.4
+    843.53,
+    223.5
    ],
    [
-    341.93,
-    457.6
+    330.13,
+    401.4
    ]
   ],
   "collar_right": [
@@ -211,24 +211,24 @@
   ],
   "epaulet_left": [
    [
-    2265.13,
-    359
+    2265.73,
+    356
    ],
    [
-    1756.83,
-    182.9
+    1757.83,
+    180
    ],
    [
-    1693.23,
-    213.7
+    1703.03,
+    185.4
    ],
    [
-    1724.13,
-    277.4
+    1742.73,
+    223.5
    ],
    [
-    2244.33,
-    457.6
+    2256.13,
+    401.4
    ]
   ],
   "collar_left": [
@@ -264,20 +264,21 @@
   "epaulet_axis": {
    "right": {
     "p1": [
-     331.54,
-     408.31
+     325.31,
+     378.72
     ],
     "p2": [
-     893.03,
-     213.74
+     883.21,
+     185.39
     ],
     "w_in": 1,
-    "length_in": 5.94,
+    "edge_thickness_in": 0.46,
+    "length_in": 5.9,
     "square_length_in": 5.38,
     "tip_in": 0.5,
     "button": [
-     845.79,
-     230.11
+     835.96,
+     201.76
     ],
     "button_from_tip_in": 0.5,
     "shoulder_point": [
@@ -291,20 +292,21 @@
    },
    "left": {
     "p1": [
-     2254.72,
-     408.31
+     2260.95,
+     378.72
     ],
     "p2": [
-     1693.23,
-     213.74
+     1703.05,
+     185.39
     ],
     "w_in": 1,
-    "length_in": 5.94,
+    "edge_thickness_in": 0.46,
+    "length_in": 5.9,
     "square_length_in": 5.38,
     "tip_in": 0.5,
     "button": [
-     1740.47,
-     230.11
+     1750.3,
+     201.76
     ],
     "button_from_tip_in": 0.5,
     "shoulder_point": [
@@ -361,11 +363,13 @@
  "dimensions": {
   "epaulet_strap": {
    "size_source": "estimated",
+   "edge_on": "LIVE10-ART 2: drawn edge-on like the Class A board strip: a band edge_thickness_in thick, its upper edge the shoulder line, its outer end the armhole seam, the point and the button foreshortened across it; width_in is the strap's TRUE width (the top view's)",
    "width_in": 1,
+   "edge_thickness_in": 0.46,
    "point_in": 0.5,
    "button_from_tip_in": 0.5,
-   "topstitch_in": 0.1,
-   "top_edge_inset_from_outline_in": 0.03,
+   "topstitch_in": 0.09,
+   "top_edge_inset_from_outline_in": 0,
    "length_to_tip_in": {
     "right": 5.88,
     "left": 5.88
@@ -390,7 +394,7 @@
     "inner_end_abs_x_in": 4.34,
     "photo": "images/base/lt_col_blues_class_b_male.webp edge-on strip 117 px = 5.1 in at the 5.25 in pocket scale, slope 21 deg"
    },
-   "note": "the strap lies along the shoulder line N-SP of the finished silhouette (dimensions.finishing), its outer end is the armhole seam, 1.0 in wide as commit 72a36ce9; the button 1/2 in from the tip is the brief's value, no figure shows it under the sleeve; the sheet's whole shoulder line is 5.93 in"
+   "note": "the strap lies along the shoulder line N-SP of the finished silhouette (dimensions.finishing), its upper edge IS that line, its outer end is the armhole seam, a band 0.46 in thick (LIVE10-ART 2; the true strap is 1.0 in wide as commit 72a36ce9); the button 1/2 in from the tip is the brief's value, no figure shows it under the sleeve; the sheet's whole shoulder line is 5.93 in"
   },
   "tie": {
    "size_source": "estimated",
@@ -486,7 +490,7 @@
  "assumed": [
   "px-to-inch scale (0.0474 in/px x K, K from the 5.25 in pocket width, an estimate)",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
-  "epaulet strap drawn on the sheet from the shoulder line: 1.0 in wide, 0.5 in point, button 1/2 in from the tip (the brief's value), topstitch 0.1 in (dimensions.epaulet_strap)",
+  "epaulet strap drawn on the sheet from the shoulder line, edge-on: a band 0.46 in thick (the true strap is 1.0 in wide), 0.5 in point, button 1/2 in from the tip (the brief's value) foreshortened across the band, one line of topstitch 0.09 in in (dimensions.epaulet_strap)",
   "pocket and seam geometry read off the base image",
   "collar leaves: the Class A coat's closed collar construction, leading edge about 3 in, an estimate (dimensions.collar)",
   "shirt, trouser/skirt and line colours sampled from the base image",

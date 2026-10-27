@@ -68,22 +68,30 @@
    813.7
   ],
   "epaulet_right_center": [
-   565.76,
-   325.2
+   562.36,
+   296.4
   ],
   "epaulet_left_center": [
-   1952.91,
-   324.1
+   1956.31,
+   295.25
   ],
   "belt_buckle_center": [
    1202.01,
    2234.7
   ],
   "collar_insignia_right": [
+   1508.83,
+   268.45
+  ],
+  "collar_insignia_left": [
+   1009.99,
+   268.45
+  ],
+  "collar_closed_insignia_right": [
    1441.3,
    283.07
   ],
-  "collar_insignia_left": [
+  "collar_closed_insignia_left": [
    1077.52,
    283.07
   ],
@@ -127,27 +135,101 @@
   },
   "epaulet_right": [
    [
-    325.71,
-    320.3
+    324.91,
+    317.4
    ],
    [
-    746.81,
-    234.2
+    746.21,
+    231.3
    ],
    [
-    805.81,
-    273.2
+    799.81,
+    243.8
    ],
    [
-    766.81,
-    332.2
+    755.41,
+    276.4
    ],
    [
-    355.51,
-    416.2
+    338.61,
+    361.5
    ]
   ],
   "collar_right": [
+   [
+    1536.21,
+    14.4
+   ],
+   [
+    1706.91,
+    217.9
+   ],
+   [
+    1662.21,
+    368.4
+   ],
+   [
+    1355.41,
+    368.4
+   ],
+   [
+    1445.11,
+    195.1
+   ],
+   [
+    1522.21,
+    22.4
+   ]
+  ],
+  "epaulet_left": [
+   [
+    2194.51,
+    315.5
+   ],
+   [
+    1771.71,
+    230.8
+   ],
+   [
+    1718.11,
+    243.6
+   ],
+   [
+    1762.61,
+    276
+   ],
+   [
+    2180.81,
+    359.7
+   ]
+  ],
+  "collar_left": [
+   [
+    982.61,
+    14.4
+   ],
+   [
+    811.91,
+    217.9
+   ],
+   [
+    856.61,
+    368.4
+   ],
+   [
+    1163.41,
+    368.4
+   ],
+   [
+    1073.71,
+    195.1
+   ],
+   [
+    996.61,
+    22.4
+   ]
+  ],
+  "collar_closed_right": [
    [
     1534.01,
     14
@@ -181,29 +263,7 @@
     20
    ]
   ],
-  "epaulet_left": [
-   [
-    2193.61,
-    318.4
-   ],
-   [
-    1771.11,
-    233.8
-   ],
-   [
-    1712.21,
-    273
-   ],
-   [
-    1751.41,
-    331.8
-   ],
-   [
-    2163.81,
-    414.4
-   ]
-  ],
-  "collar_left": [
+  "collar_closed_left": [
    [
     984.81,
     14
@@ -237,23 +297,30 @@
     20
    ]
   ],
+  "collar_states": {
+   "open": "collar",
+   "closed": "collar-closed",
+   "default": "open",
+   "note": "short sleeve: the open collar (top button undone) is the default, the closed one (with the tie) lies over it and covers it; hide group collar-closed for the open state, group collar for the closed state"
+  },
   "epaulet_axis": {
    "right": {
     "p1": [
-     340.65,
-     368.26
+     331.71,
+     339.46
     ],
     "p2": [
-     805.82,
-     273.22
+     799.82,
+     243.83
     ],
     "w_in": 1,
-    "length_in": 4.75,
+    "edge_thickness_in": 0.46,
+    "length_in": 4.78,
     "square_length_in": 4.3,
     "tip_in": 0.5,
     "button": [
-     756.84,
-     283.23
+     750.83,
+     253.84
     ],
     "button_from_tip_in": 0.5,
     "shoulder_point": [
@@ -267,20 +334,21 @@
    },
    "left": {
     "p1": [
-     2178.75,
-     366.39
+     2187.69,
+     337.58
     ],
     "p2": [
-     1712.24,
-     273
+     1718.12,
+     243.58
     ],
     "w_in": 1,
-    "length_in": 4.76,
+    "edge_thickness_in": 0.46,
+    "length_in": 4.79,
     "square_length_in": 4.31,
     "tip_in": 0.5,
     "button": [
-     1761.26,
-     282.81
+     1767.15,
+     253.4
     ],
     "button_from_tip_in": 0.5,
     "shoulder_point": [
@@ -323,6 +391,10 @@
    }
   },
   "collar_insignia_angle_deg": {
+   "right": 180,
+   "left": 0
+  },
+  "collar_closed_insignia_angle_deg": {
    "right": -140.3,
    "left": -39.7
   },
@@ -337,11 +409,13 @@
  "dimensions": {
   "epaulet_strap": {
    "size_source": "estimated",
+   "edge_on": "LIVE10-ART 2: drawn edge-on like the Class A board strip: a band edge_thickness_in thick, its upper edge the shoulder line, its outer end the armhole seam, the point and the button foreshortened across it; width_in is the strap's TRUE width (the top view's)",
    "width_in": 1,
+   "edge_thickness_in": 0.46,
    "point_in": 0.5,
    "button_from_tip_in": 0.5,
-   "topstitch_in": 0.1,
-   "top_edge_inset_from_outline_in": 0.03,
+   "topstitch_in": 0.09,
+   "top_edge_inset_from_outline_in": 0,
    "length_to_tip_in": {
     "right": 4.8,
     "left": 4.81
@@ -363,7 +437,7 @@
     ],
     "slope_deg": 16
    },
-   "note": "the strap lies along the shoulder line N-SP of the finished silhouette (dimensions.finishing), its outer end is the armhole seam, 1.0 in wide as commit 72a36ce9; the button 1/2 in from the tip is the brief's value, no figure shows it under the sleeve; the sheet's whole shoulder line is 4.97 in"
+   "note": "the strap lies along the shoulder line N-SP of the finished silhouette (dimensions.finishing), its upper edge IS that line, its outer end is the armhole seam, a band 0.46 in thick (LIVE10-ART 2; the true strap is 1.0 in wide as commit 72a36ce9); the button 1/2 in from the tip is the brief's value, no figure shows it under the sleeve; the sheet's whole shoulder line is 4.97 in"
   },
   "tie": {
    "size_source": "estimated",
@@ -452,7 +526,7 @@
  "assumed": [
   "px-to-inch scale (women's base image drawn larger on its canvas; rescaled to match the men's shirt width, then x K like the men's shirt)",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate (blue plastic, 3 3/8 x 3/4 in); no dimension in CAPR 39-1 or DAFI 36-2903; no dimension in CAPR 39-1 or DAFI 36-2903)",
-  "epaulet strap drawn on the sheet from the shoulder line: 1.0 in wide, 0.5 in point, button 1/2 in from the tip (the brief's value), topstitch 0.1 in (dimensions.epaulet_strap)",
+  "epaulet strap drawn on the sheet from the shoulder line, edge-on: a band 0.46 in thick (the true strap is 1.0 in wide), 0.5 in point, button 1/2 in from the tip (the brief's value) foreshortened across the band, one line of topstitch 0.09 in in (dimensions.epaulet_strap)",
   "pocket and seam geometry read off the base image",
   "collar leaves: the Class A coat's closed collar construction, leading edge about 3 in, an estimate (dimensions.collar)",
   "shirt, trouser/skirt and line colours sampled from the base image",

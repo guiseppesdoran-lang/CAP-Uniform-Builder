@@ -80,12 +80,12 @@
    971.5
   ],
   "epaulet_right_center": [
-   537.9,
-   333.83
+   527.82,
+   315.19
   ],
   "epaulet_left_center": [
-   1985.88,
-   346.59
+   1994.24,
+   327.54
   ],
   "tie_mount_center": [
    1244.65,
@@ -139,20 +139,20 @@
     353.37
    ],
    [
-    743.85,
-    231.43
+    729.41,
+    234.66
    ],
    [
-    784.53,
-    267.09
+    764.38,
+    249.01
    ],
    [
-    767.27,
-    318.34
+    741.43,
+    279.05
    ],
    [
-    329.68,
-    436.23
+    310.9,
+    395.7
    ]
   ],
   "epaulet_left": [
@@ -161,22 +161,62 @@
     368.87
    ],
    [
-    1777.66,
-    241.57
+    1788.5,
+    243.9
    ],
    [
-    1736.69,
-    276.88
+    1753.41,
+    257.97
    ],
    [
-    1753.53,
-    328.28
+    1776.1,
+    288.2
    ],
    [
-    2196.7,
-    451.61
+    2215.46,
+    411.16
    ]
   ],
+  "epaulet_axis": {
+   "right": {
+    "p1": [
+     301.08,
+     374.54
+    ],
+    "p2": [
+     764.38,
+     249.01
+    ],
+    "w_in": 0.9,
+    "edge_thickness_in": 0.46,
+    "length_in": 4.8,
+    "tip_in": 0.3,
+    "button": [
+     716.12,
+     262.08
+    ],
+    "button_from_tip_in": 0.5
+   },
+   "left": {
+    "p1": [
+     2225.27,
+     390.02
+    ],
+    "p2": [
+     1753.41,
+     257.97
+    ],
+    "w_in": 0.9,
+    "edge_thickness_in": 0.46,
+    "length_in": 4.9,
+    "tip_in": 0.3,
+    "button": [
+     1801.56,
+     271.44
+    ],
+    "button_from_tip_in": 0.5
+   }
+  },
   "collar_right": [
    [
     969.65,
@@ -527,7 +567,7 @@
   "px-to-inch scale",
   "sleeve widening (outward warp of the traced sleeve, see dimensions.sleeve_widening)",
   "nametag slot size (CAP plate size)",
-  "epaulet strap size (not drawn in the base image)",
+  "epaulet strap size (not drawn in the base image); drawn edge-on as a band 0.46 in thick (the strap is 0.90 in wide, epaulet_axis.w_in), LIVE10-ART 2",
   "gray shade and belt colours sampled from the base image"
  ],
  "fit": {

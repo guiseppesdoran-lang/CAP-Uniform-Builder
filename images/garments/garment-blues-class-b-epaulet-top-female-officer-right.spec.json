@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-epaulet-top-female-officer-right",
  "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) adult officer epaulet sleeve, right shoulder, top-down (blank grade)",
  "size_in": {
-  "w": 4.134,
+  "w": 4.137,
   "h": 1.2
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  413.4,
+  413.7,
   120
  ],
  "size_source": "estimated",
  "size_basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   206.70000000000002,
+   206.84999999999997,
    0
   ],
   "bottom_center": [
-   206.70000000000002,
+   206.84999999999997,
    120
   ],
   "center": [
-   206.70000000000002,
+   206.84999999999997,
    60
   ],
   "left_edge": [
@@ -32,7 +32,7 @@
    60
   ],
   "right_edge": [
-   413.40000000000003,
+   413.69999999999993,
    60
   ],
   "rank_slot_center": [
@@ -52,7 +52,7 @@
   "sleeve": {
    "x": 10,
    "y": 10,
-   "w": 393.40000000000003,
+   "w": 393.7,
    "h": 100
   },
   "rank_slot": {
@@ -65,7 +65,7 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form (Major General star pair 2.2 x 1.2 in); rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
-   3.934,
+   3.937,
    1
   ],
   "rank_slot_in": [

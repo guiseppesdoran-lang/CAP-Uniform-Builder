@@ -13,7 +13,7 @@
   3291.06
  ],
  "size_source": "estimated",
- "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male-long, width 1.0 in, Fig 4.8): the strap itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+ "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-shirt-male-long, the edge-on band 0.46 in thick of a 1.0 in strap, LIVE10-ART 2, Fig 4.8): the band itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
  "anchors": {
   "top_center": [
    1293.1299999999999,
@@ -36,26 +36,26 @@
    1645.5300000000002
   ],
   "epaulet_plain_right_center": [
-   607.08,
-   320.25
+   601.88,
+   290.7
   ],
   "epaulet_plain_left_center": [
-   1979.18,
-   320.25
+   1984.38,
+   290.7
   ]
  },
  "landmarks": {
   "epaulet_plain_right": {
-   "x": 321.13,
-   "y": 182.9,
-   "w": 571.9,
-   "h": 274.7
+   "x": 320.53,
+   "y": 180,
+   "w": 562.7,
+   "h": 221.4
   },
   "epaulet_plain_left": {
-   "x": 1693.23,
-   "y": 182.9,
-   "w": 571.9,
-   "h": 274.7
+   "x": 1703.03,
+   "y": 180,
+   "w": 562.7,
+   "h": 221.4
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",

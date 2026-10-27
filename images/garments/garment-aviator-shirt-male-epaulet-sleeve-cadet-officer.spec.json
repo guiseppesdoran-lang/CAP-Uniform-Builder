@@ -13,7 +13,7 @@
   2847.92
  ],
  "size_source": "estimated",
- "size_basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap polygon itself (0.9 in wide, one axis from the armhole seam to the collar end) cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
+ "size_basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap's edge-on band (0.46 in thick, LIVE10-ART 2; the strap itself is 0.9 in wide), one axis from the armhole seam to the collar end, cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
  "anchors": {
   "top_center": [
    1372.54,
@@ -36,34 +36,34 @@
    1423.96
   ],
   "rank_slot_right_center": [
-   647.85,
-   340.07
+   633.38,
+   321.94
   ],
   "rank_slot_left_center": [
-   2097.23,
-   340.07
+   2111.69,
+   321.94
   ],
   "rank_rule_point_right": [
-   458.85,
-   412.26
+   454.36,
+   390.4
   ],
   "rank_rule_point_left": [
-   2286.22,
-   412.26
+   2290.72,
+   390.4
   ]
  },
  "landmarks": {
   "epaulet_sleeve_right": {
    "x": 391.28,
-   "y": 205.6,
-   "w": 513.12,
-   "h": 273.63
+   "y": 210.43,
+   "w": 484.21,
+   "h": 225.13
   },
   "rank_slot_right": {
    "x": 391.28,
-   "y": 205.6,
-   "w": 513.12,
-   "h": 273.63
+   "y": 210.43,
+   "w": 484.21,
+   "h": 225.13
   },
   "epaulet_sleeve_poly_right": [
    [
@@ -75,29 +75,29 @@
     358.22
    ],
    [
-    872.07,
-    205.6
+    858.83,
+    210.43
    ],
    [
-    904.4,
-    290.24
+    875.49,
+    253.98
    ],
    [
-    409.64,
-    479.22
+    400.67,
+    435.55
    ]
   ],
   "epaulet_sleeve_left": {
-   "x": 1840.67,
-   "y": 205.6,
-   "w": 513.12,
-   "h": 273.63
+   "x": 1869.59,
+   "y": 210.43,
+   "w": 484.21,
+   "h": 225.13
   },
   "rank_slot_left": {
-   "x": 1840.67,
-   "y": 205.6,
-   "w": 513.12,
-   "h": 273.63
+   "x": 1869.59,
+   "y": 210.43,
+   "w": 484.21,
+   "h": 225.13
   },
   "epaulet_sleeve_poly_left": [
    [
@@ -109,16 +109,16 @@
     358.22
    ],
    [
-    1873,
-    205.6
+    1886.24,
+    210.43
    ],
    [
-    1840.67,
-    290.24
+    1869.59,
+    253.98
    ],
    [
-    2335.44,
-    479.22
+    2344.41,
+    435.55
    ]
   ]
  },

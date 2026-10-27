@@ -336,31 +336,31 @@
   "tie_tab": [
    [
     1260.5,
-    320
+    280
    ],
    [
     1360.5,
-    320
+    280
    ],
    [
     1445.5,
-    480
+    440
    ],
    [
     1375.5,
-    480
+    440
    ],
    [
     1310.5,
-    415
+    375
    ],
    [
     1245.5,
-    480
+    440
    ],
    [
     1175.5,
-    480
+    440
    ]
   ],
   "button_right_1": {
@@ -413,7 +413,7 @@
    "leg_width_in": 0.7,
    "top_width_in": 1,
    "apex_below_top_in": 0.95,
-   "top_y_in": 2.95,
+   "top_y_in": 2.55,
    "basis": "the house women's tie tab (accessories/tie-tab-inverted-v: 2.7 x 1.6 in, 0.7 in legs), centred, its top edge under the blouse collar leaves; the regulation (CAPR 39-1 4.1.2.2.1) gives the colour, the inverted V and the self-fastening tails but no dimension; the earlier traced tab was 4.27 x 4.5 in and off-centre",
    "draw_order": "tab first, the blouse collar leaves over it (as the blazer and the semi-formal, 4d6678dd)"
   },

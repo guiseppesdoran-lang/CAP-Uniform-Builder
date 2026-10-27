@@ -2,29 +2,29 @@
  "asset_id": "garment-aviator-epaulet-top-male-officer-left",
  "name": "Men's Aviator Shirt Uniform adult officer epaulet sleeve, left shoulder, top-down (blank grade)",
  "size_in": {
-  "w": 5.349,
+  "w": 5.208,
   "h": 1.1
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  534.9,
+  520.8,
   110
  ],
  "size_source": "estimated",
- "size_basis": "Length and width of the slide-on sleeve the garment overlay draws on the strap (the strap polygon cut short of its button); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
+ "size_basis": "Length of the slide-on sleeve the garment overlay draws on the strap (the strap's edge-on band cut short of its button) and the strap's TRUE width, 0.90 in (LIVE10-ART 2: the band on the shirt is 0.46 in thick, this is the view from above); colour and CAP lettering placement as the Class B top-down sleeves. Fig 4.16 gives about 0.9 x 5.7 in at the pocket scale; the regulation states no dimension.",
  "anchors": {
   "top_center": [
-   267.45,
+   260.40000000000003,
    0
   ],
   "bottom_center": [
-   267.45,
+   260.40000000000003,
    110.00000000000001
   ],
   "center": [
-   267.45,
+   260.40000000000003,
    55.00000000000001
   ],
   "left_edge": [
@@ -32,19 +32,19 @@
    55.00000000000001
   ],
   "right_edge": [
-   534.9,
+   520.8000000000001,
    55.00000000000001
   ],
   "rank_slot_center": [
-   399.9,
+   385.8,
    55
   ],
   "rank_rule_point": [
-   462.4,
+   448.3,
    55
   ],
   "outer_end_center": [
-   524.9,
+   510.8,
    55
   ]
  },
@@ -52,11 +52,11 @@
   "sleeve": {
    "x": 10,
    "y": 10,
-   "w": 514.9,
+   "w": 500.8,
    "h": 90
   },
   "rank_slot": {
-   "x": 284.9,
+   "x": 270.8,
    "y": 20,
    "w": 230,
    "h": 70
@@ -65,7 +65,7 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form; rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
-   5.149,
+   5.008,
    0.9
   ],
   "rank_slot_in": [

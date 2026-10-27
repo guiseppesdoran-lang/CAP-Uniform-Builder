@@ -10,11 +10,12 @@
  "name": "Technical Flight Officer bullion grade insignia, mess dress shoulder board",
  "size_source": "estimated",
  "size_basis": "Same shape and size as the embroidered form rank-senior-technical-flight-officer-thread (0.32 x 1 in): CAPR 39-1 Fig A5-3 says only that the grade on the boards is metal bullion and gives no size. Male boards 5 1/2 x 2 1/4 in, female 4 1/2 x 2 in.",
- "provenance": "recoloured from rank-senior-technical-flight-officer-thread: bullion silver (2d Lt and Major gold, others silver, matching the metal and thread forms); bullion texture drawn as a diagonal line pattern",
+ "provenance": "recoloured from rank-senior-technical-flight-officer-thread: bullion silver (2d Lt and Major gold, others silver, matching the metal and thread forms); solid fills and plain strokes only, no pattern, gradient, filter, mask or clip path (LIVE10-ART 4: the pattern fill failed on the live page and the board's blue showed through); the shading lines are the form's own veins and feather detail with a light line beside them, the polygon and bar forms a light inset rim",
  "colours": {
-  "bullion": "#c6cbd1",
+  "bullion": "#c9ced6",
   "bullion_line": "#8f969e",
-  "bullion_edge": "#7d848c"
+  "bullion_edge": "#6b727a",
+  "bullion_highlight": "#e6e9ee"
  },
  "anchors": {
   "top_center": [

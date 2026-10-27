@@ -2,29 +2,29 @@
  "asset_id": "garment-blues-class-b-epaulet-top-male-cadet-officer-right",
  "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only) cadet officer epaulet sleeve, right shoulder, top-down (blank grade)",
  "size_in": {
-  "w": 4.913,
+  "w": 4.909,
   "h": 1.2
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  491.3,
+  490.9,
   120
  ],
  "size_source": "estimated",
  "size_basis": "Length of the edge-on strip along the garment epaulet strap (flush with the seam, over the outer 82 % of the strap to its tip) and the strap width, 1.0 in; colour and the CAP lettering placement read from the reference photos (images/base/blues_class_b_male_c_2d_lt, lt_col_blues_class_b_male). The regulation gives no dimension.",
  "anchors": {
   "top_center": [
-   245.65,
+   245.45,
    0
   ],
   "bottom_center": [
-   245.65,
+   245.45,
    120
   ],
   "center": [
-   245.65,
+   245.45,
    60
   ],
   "left_edge": [
@@ -32,7 +32,7 @@
    60
   ],
   "right_edge": [
-   491.3,
+   490.9,
    60
   ],
   "rank_slot_center": [
@@ -52,7 +52,7 @@
   "sleeve": {
    "x": 10,
    "y": 10,
-   "w": 471.3,
+   "w": 470.9,
    "h": 100
   },
   "rank_slot": {
@@ -65,7 +65,7 @@
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in); rank_slot holds the largest regular-size grade form (Major General star pair 2.2 x 1.2 in); rank_rule_point is the 5/8 in from the outer end point for single forms",
  "dimensions": {
   "sleeve_in": [
-   4.713,
+   4.709,
    1
   ],
   "rank_slot_in": [

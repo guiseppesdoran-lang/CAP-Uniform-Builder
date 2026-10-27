@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-public-affairs-tech",
- "width_in": 1,
- "height_in": 1.08,
+ "width_in": 1.25,
+ "height_in": 1.35,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval)",
+ "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-public-affairs-officer-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
  "citation": null,
  "anchors": {
   "top_center": [
-   50,
+   62.5,
    0
   ],
   "bottom_center": [
-   50,
-   107.96
+   62.5,
+   134.95
   ],
   "center": [
-   50,
-   53.98
+   62.5,
+   67.475
   ],
   "left_edge": [
    0,
-   53.98
+   67.475
   ],
   "right_edge": [
-   100,
-   53.98
+   125,
+   67.475
   ]
  },
  "dimensions": {
@@ -45,5 +45,5 @@
   "silhouette_iou_approx": 0.963,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.349 in to 1 x 1.08 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.349 in to 1 x 1.08 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.25 (A4b) from 1 x 1.08 in to 1.25 x 1.35 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

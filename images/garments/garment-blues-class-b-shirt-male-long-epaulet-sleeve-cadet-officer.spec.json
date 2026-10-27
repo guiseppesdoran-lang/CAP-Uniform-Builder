@@ -13,7 +13,7 @@
   3291.06
  ],
  "size_source": "estimated",
- "size_basis": "Edge-on strip (0.4 in deep) along the top edge of the garment epaulet strap (the shoulder line), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
+ "size_basis": "Edge-on band (0.46 in thick, LIVE10-ART 2: the Class A coat's edge-on strip) = the garment epaulet strap's band, its upper edge the shoulder line (the silhouette, not stroked), flush with the armhole seam, over the outer 82 % of the strap's length to its tip (the pointed end and the button stay bare), the way the sleeve looks from the front; epaulet_sleeve_poly_<side> is that polygon; the full sleeve is the separate top-down asset garment-blues-class-b-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), so the edge-on strip and the view from above show one sleeve; the regulation gives no dimension.",
  "anchors": {
   "top_center": [
    1293.1299999999999,
@@ -36,46 +36,82 @@
    1645.5300000000002
   ],
   "rank_slot_right_center": [
-   555.43,
-   299
+   555.68,
+   299.85
   ],
   "rank_slot_left_center": [
-   2030.83,
-   299
+   2030.58,
+   299.85
   ],
   "rank_rule_point_right": [
-   396.56,
-   385.78
+   384.38,
+   358.24
   ],
   "rank_rule_point_left": [
-   2189.7,
-   385.78
+   2201.88,
+   358.24
   ]
  },
  "landmarks": {
+  "epaulet_sleeve_poly_right": [
+   [
+    320.53,
+    356
+   ],
+   [
+    775.75,
+    198.26
+   ],
+   [
+    790.81,
+    241.72
+   ],
+   [
+    330.13,
+    401.4
+   ]
+  ],
   "epaulet_sleeve_right": {
-   "x": 321.13,
-   "y": 201.2,
-   "w": 468.6,
-   "h": 195.6
+   "x": 320.53,
+   "y": 198.3,
+   "w": 470.3,
+   "h": 203.1
   },
   "rank_slot_right": {
-   "x": 321.13,
-   "y": 201.2,
-   "w": 468.6,
-   "h": 195.6
+   "x": 320.53,
+   "y": 198.3,
+   "w": 470.3,
+   "h": 203.1
   },
+  "epaulet_sleeve_poly_left": [
+   [
+    2265.73,
+    356
+   ],
+   [
+    1810.51,
+    198.26
+   ],
+   [
+    1795.45,
+    241.72
+   ],
+   [
+    2256.13,
+    401.4
+   ]
+  ],
   "epaulet_sleeve_left": {
-   "x": 1796.53,
-   "y": 201.2,
-   "w": 468.6,
-   "h": 195.6
+   "x": 1795.43,
+   "y": 198.3,
+   "w": 470.3,
+   "h": 203.1
   },
   "rank_slot_left": {
-   "x": 1796.53,
-   "y": 201.2,
-   "w": 468.6,
-   "h": 195.6
+   "x": 1795.43,
+   "y": 198.3,
+   "w": 470.3,
+   "h": 203.1
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
@@ -85,7 +121,7 @@
   "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
  ],
  "assumed": [
-  "sleeve length: 82 % of the strap (Fig 4.8 shows a gray sleeve about 5.9 x 1.0 in on the long-sleeve figure; this sheet's whole shoulder line is 5.9 in)",
+  "sleeve length: 82 % of the strap (Fig 4.8 shows a gray sleeve about 5.9 x 1.0 in on the long-sleeve figure; this sheet's whole shoulder line is 5.9 in); band thickness 0.46 in = the Class A coat's edge-on strip (estimate: no figure shows the strap's edge)",
   "grade insignia not drawn: placed by the rank insignia assets at rank_slot"
  ],
  "fit": {
