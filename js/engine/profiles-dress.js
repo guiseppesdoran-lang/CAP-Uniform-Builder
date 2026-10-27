@@ -1614,12 +1614,28 @@
     const u = (dx * c + dy * s) * sq.kx, v = (-dx * s + dy * c) * sq.ky;
     return { x: sq.at.x + u * c - v * s, y: sq.at.y + u * s + v * c };
   }
-  async function messBoards(ctx, g, M, female){
+  // The mess dress buttons (4.1.1.1, 4.1.2.1: three 'wing and star', CAP coat of arms or USAF coat of arms buttons on each side of the coat; 4.1.1.1: the men's chain closure 'Two buttons
+  // with the same design as the coat buttons'; 4.1.1.1.1.1: 'Buttons on shoulder boards must match design of the buttons on the jacket'). The sheets draw every button position as a group
+  // holding one group per design (art dde58c6e, LIVE12-ART 2) and state them in the landmark button_designs { <design>: [group ids] } with button_design_default. The member's choice
+  // (build.opt.buttons; Ducky: "I use cap crest buttons, why no option for cap crest buttons") keeps its design's groups and hides every other design's, on the coat and on the boards drawn
+  // with it, so the boards match the jacket. A choice the sheet does not draw falls back to its default. The USAF coat of arms button is not drawn (no reference yet), so it is not offered.
+  function buttonDesignHide(spec, choice){
+    const lm = spec && spec.landmarks;
+    const designs = lm && lm.button_designs;
+    if(!designs || typeof designs !== 'object') return [];
+    const keep = Object.prototype.hasOwnProperty.call(designs, choice) ? choice : lm.button_design_default;
+    return Object.keys(designs).filter(k => k !== keep).flatMap(k => Array.isArray(designs[k]) ? designs[k] : []);
+  }
+
+  async function messBoards(ctx, g, M, female, buttons){
     const id = g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`;
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
     const s = await ctx.spec(id);
     ctx.overlays = ctx.overlays || [];
     ctx.overlays.push(s);
+    // The board button in the jacket's design (both views draw the board sheet, so both hide the other design; the women's boards have no button).
+    const hide = buttonDesignHide(s, buttons);
+    const hideOpt = hide.length ? { hideGroups: hide } : {};
     const { L, W } = MESS_BOARD[female ? 'female' : 'male'];
     const gradeId = g.key ? G.seniorOfficerInsignia(g, 'bullion') : null;
     for(const side of ['right', 'left']){
@@ -1649,8 +1665,8 @@
       const clip = [{ x: box.x - pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y + box.h + pad }, { x: box.x - pad, y: box.y + box.h + pad }].map(onView);
       // The layer is the whole overlay sheet, turned, and only its clip shows: the measurement overlay keeps clear of the board
       // that shows (`obstacle`), not of the sheet's box, which covered the whole coat and sent every label off the figure.
-      ctx.layers.push({ type: 'asset', id, x: lift.x, y: lift.y, w: s.w, h: s.h, rotate: turnView, origin: cL, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`,
-        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above`, clip, obstacle: core.polygonBounds(clip) });
+      ctx.layers.push(Object.assign({ type: 'asset', id, x: lift.x, y: lift.y, w: s.w, h: s.h, rotate: turnView, origin: cL, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`,
+        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, seen from above`, clip, obstacle: core.polygonBounds(clip) }, hideOpt));
       if(gradeId && ctx.has(gradeId)){
         const slot = ctx.point(`rank_slot_${side}_center`);
         const turn = boardGradeTurn(gradeId, frame.deg) + turnView;
@@ -1666,9 +1682,9 @@
       const clipE = [{ x: box.x - pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y + box.h + pad }, { x: box.x - pad, y: box.y + box.h + pad }].map(q => squeezePoint(q, sq));
       // `strip`: the rectangle the squeezed board fills (its centre, length, thickness and the turn of its length from the sheet's x axis), for the measurement overlay and the tests.
       const Ls = L * EDGE_ON_COVER, cS = { x: A.x + a.x * Ls / 2 + d.x * T / 2, y: A.y + a.y * Ls / 2 + d.y * T / 2 };
-      ctx.layers.push({ type: 'asset', id, x: 0, y: 0, w: s.w, h: s.h, squeeze: sq, clip: clipE, z: Z.epauletLayer, role: 'epaulet-edge', key: `epaulet-edge:${side}`,
+      ctx.layers.push(Object.assign({ type: 'asset', id, x: 0, y: 0, w: s.w, h: s.h, squeeze: sq, clip: clipE, z: Z.epauletLayer, role: 'epaulet-edge', key: `epaulet-edge:${side}`,
         strip: { x: cS.x - Ls / 2, y: cS.y - T / 2, w: Ls, h: T, rotate: side === 'right' ? frame.deg : frame.deg + 180, origin: cS },
-        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
+        title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` }, hideOpt));
       if(gradeId && ctx.has(gradeId)){
         const end = { x: A.x + d.x * T / 2, y: A.y + d.y * T / 2 };
         // The grade's art is turned as on the board (its width along the strap), scaled to the strip.
@@ -1705,13 +1721,16 @@
       const s = await ctx.spec(skirt);
       ctx.layers.push(Object.assign(core.registerAtOrigin(s, Z.under, 'garment-layer'), { key: 'layer:' + skirt }));
     }
-    await ctx.garment(M.garment);
+    // The coat's buttons (and the men's chain closure) in the member's design; the boards below take the same choice.
+    const buttons = b.opt.buttons;
+    const coatHide = buttonDesignHide(await ctx.spec(M.garment), buttons);
+    await ctx.garment(M.garment, coatHide.length ? { hideGroups: coatHide } : null);
     const officer = g.officer && !g.cadet;
     if(!officer && g.category !== 'senior-nco') ctx.note('The mess dress is worn by officers and NCOs only (CAPR 39-1, 4.1.1 and 4.1.2)');
 
     if(officer){
       // Generals' boards are covered in silver lace, the others' in Air Force blue (Figure A5-3).
-      await messBoards(ctx, g, M, female);
+      await messBoards(ctx, g, M, female, buttons);
       await ctx.overlay(g.general ? `${M.garment}-general-officer-sleeve-braid` : `${M.garment}-officer-sleeve-braid`);
       sleeveBraidMeasure(ctx, female ? '2½ in' : '3 in', g.general ? 1.5 : 0.5);
     }else if(g.category === 'senior-nco'){

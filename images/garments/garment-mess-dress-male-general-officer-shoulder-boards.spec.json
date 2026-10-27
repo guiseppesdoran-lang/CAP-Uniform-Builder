@@ -42,6 +42,14 @@
   "rank_slot_left_center": [
    2171.92,
    403.05
+  ],
+  "shoulder_board_right_button_center": [
+   907.1,
+   315.89
+  ],
+  "shoulder_board_left_button_center": [
+   1927,
+   311.33
   ]
  },
  "landmarks": {
@@ -78,7 +86,18 @@
    "deg": -159.5,
    "along": 2,
    "across": 1.25
-  }
+  },
+  "button_designs": {
+   "wing-star": [
+    "shoulder-board-right-button-wing-star",
+    "shoulder-board-left-button-wing-star"
+   ],
+   "cap-crest": [
+    "shoulder-board-right-button-cap-crest",
+    "shoulder-board-left-button-cap-crest"
+   ]
+  },
+  "button_design_default": "wing-star"
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
  "overlay_of": "garment-mess-dress-male",

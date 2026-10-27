@@ -1,5 +1,5 @@
 // Choices about the garment itself: sleeve length, the women's aviator top, what is worn under the
-// blazer, the mess dress skirt, headgear, chevron size, the flight jacket and scarf, the ES patch, the polo's shirt.
+// blazer, the mess dress skirt and buttons, headgear, chevron size, the flight jacket and scarf, the ES patch, the polo's shirt.
 // Each option is offered only on the uniforms (and for the members) it applies to, and is kept in
 // State.garment. The uniform engine reads them through js/uniform-view.js.
 (function(){
@@ -68,6 +68,12 @@
     { key: 'skirt', label: 'Skirt', type: 'select',
       choices: [['a-line', 'A-line skirt'], ['straight-split', 'Straight skirt with split']],
       when: c => c.u === 'mess_dress' && c.female },
+    // The mess dress buttons (Ducky: "I use cap crest buttons, why no option for cap crest buttons"): 4.1.1.1 and 4.1.2.1 allow 'wing and star', CAP coat of arms or USAF coat of arms buttons;
+    // the men's chain closure and shoulder-board buttons match the coat's (4.1.1.1, 4.1.1.1.1.1). The USAF coat of arms button is not drawn yet, so two designs are offered.
+    { key: 'buttons', label: 'Buttons', type: 'select',
+      choices: [['wing-star', 'Wing and star'], ['cap-crest', 'CAP coat of arms']],
+      note: c => c.female ? 'Three on each side of the coat (CAPR 39-1, 4.1.2.1).' : 'The coat, the chain closure and the shoulder boards carry the same design (CAPR 39-1, 4.1.1.1, 4.1.1.1.1.1).',
+      when: c => c.u === 'mess_dress' },
     { key: 'headgear', label: 'Headgear', type: 'select',
       choices: c => {
         if(FLIGHT.includes(c.u)) return [['auto', 'Flight cap'], ['none', 'No headgear']];
@@ -121,7 +127,7 @@
   const KEYS = new Set(OPTIONS.map(o => o.key));
   const ALLOWED = {
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
-    underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'],
+    underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'], buttons: ['wing-star', 'cap-crest'],
     headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2'],
     poloShirt: ['embroidered', 'print', 'tactical'], poloCut: ['', 'male'], poloMark: ['badge', 'title']
   };

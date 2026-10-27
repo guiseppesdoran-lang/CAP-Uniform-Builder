@@ -147,7 +147,11 @@ test('mess dress boards: the edge-on strip is the view from above\'s board art s
         const top = byKey(scene, `epaulet-top:${side}`), edge = byKey(scene, `epaulet-edge:${side}`);
         assert.equal(edge.type, 'asset', `${gender} ${rank} ${side}: art, not a rectangle`);
         assert.equal(edge.id, top.id, `${gender} ${rank} ${side}: the same board art as the view from above`);
-        assert.ok(!edge.hideGroups && !edge.onlyGroups, 'the whole board is drawn');
+        // The whole board is drawn, less the button design the member did not choose (LIVE12 E50, 4.1.1.1.1.1: the board button matches the jacket's; the men's boards draw both designs,
+        // wing and star the default): the edge-on strip hides exactly what the view from above hides. The women's boards have no button (4.1.2.1.1.1) and hide nothing.
+        assert.ok(!edge.onlyGroups, 'the whole board is drawn');
+        assert.deepEqual(edge.hideGroups, top.hideGroups, `${gender} ${rank} ${side}: the same button as the view from above`);
+        assert.deepEqual(edge.hideGroups, gender === 'male' ? ['shoulder-board-right-button-cap-crest', 'shoulder-board-left-button-cap-crest'] : undefined, `${gender} ${rank} ${side}: only the other button design is hidden`);
         const L = gender === 'male' ? 5.5 : 4.5, W = gender === 'male' ? 2.25 : 2.0;
         assert.ok(Math.abs(edge.squeeze.kx - 0.82) < 1e-9 && Math.abs(edge.squeeze.ky - 0.4 / W) < 1e-9, `${gender} ${rank} ${side}: squeezed to 82% along and 0.4 in across`);
         assert.ok(Math.abs(edge.strip.w - L * 0.82) < 1e-9 && Math.abs(edge.strip.h - 0.4) < 1e-9);

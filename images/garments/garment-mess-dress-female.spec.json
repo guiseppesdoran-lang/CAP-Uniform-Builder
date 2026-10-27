@@ -398,7 +398,26 @@
    "y": 2426.1,
    "w": 80,
    "h": 80
-  }
+  },
+  "button_designs": {
+   "wing-star": [
+    "button-right-1-wing-star",
+    "button-right-2-wing-star",
+    "button-right-3-wing-star",
+    "button-left-1-wing-star",
+    "button-left-2-wing-star",
+    "button-left-3-wing-star"
+   ],
+   "cap-crest": [
+    "button-right-1-cap-crest",
+    "button-right-2-cap-crest",
+    "button-right-3-cap-crest",
+    "button-left-1-cap-crest",
+    "button-left-2-cap-crest",
+    "button-left-3-cap-crest"
+   ]
+  },
+  "button_design_default": "wing-star"
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
  "dimensions": {
@@ -406,6 +425,20 @@
   "max_width_in": 25.71,
   "buttons_per_side": 3,
   "button_dia_in": 0.8,
+  "button_designs": {
+   "rule": "CAPR 39-1 4.1.1.1 / 4.1.2.1: three \"wing and star\", CAP coat of arms or USAF coat of arms buttons each side; the men's two closure buttons have the coat buttons' design; 4.1.1.1.1.1: the shoulder board button matches the jacket's",
+   "drawn": {
+    "wing-star": "hapArnold: Vanguard SKU 2900705 \"Hap Arnold\" wing and star button (photo proportions), as the Class A coat's buttons",
+    "cap-crest": "CAP coat of arms in relief: the arms of the measured CAP Crest (base-art/crest-art.js, Fig A6-4) at 0.002 button radius per crest unit, shield 0.80 across with its point 0.79 below the centre, inside the CAP0807 ring of 13 stars (Vanguard photo proportions); patch border and lettered scroll left off"
+   },
+   "not_drawn": {
+    "usaf-crest": "USAF coat of arms: no measured in-house drawing in the art tree; blocked for a reference (LIVE12-ART 2)"
+   },
+   "default": "wing-star",
+   "order_note": "within each button group the default is drawn last, on top, so a viewer that hides nothing shows it",
+   "size_source": "estimated",
+   "dia_note": "the disc the sheet already drew; the design fits inside it"
+  },
   "tie_tab": {
    "size_source": "estimated",
    "w_in": 2.7,
