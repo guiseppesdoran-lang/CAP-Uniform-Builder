@@ -329,10 +329,19 @@
   const DEVICE_EDGE_IN = 0.01;
   const DEVICE_EDGE_COLOR = '#1a1a1a';
   const DEVICE_EDGE_OPACITY = 0.7;
-  // Multiplier on every RGB channel: silver is darker than the white and light-blue ribbons, bronze a darker bronze.
-  // Silver 0.88: Ethan, 2026-10-26, "the color of the silver star needs to be lighter" (it was 0.72, which read as pewter);
-  // the dark edge and the opaque base still keep it off a white ribbon.
-  const DEVICE_TONE = Object.freeze({ silver: 0.88, bronze: 0.74, gold: 0.8 });
+  // The metal of a device, and the colours it is drawn in (LIVE10-MASTER-5, Ethan: "make all of the bronze devices more bronze and silver devices more silver (both lighter)").
+  // Every device asset is drawn in a four-colour ramp of its metal (highlight, mid, shade, line: the silver ones #f4f6f8, #c3c8ce, #7d848c, #4b5057; the bronze #e0a374, #b4713f,
+  // #6f4122, #4a2a14; the gold #fff2a8, #e2b21c, #9a6a05, #5f4103), and the renderer's copy (deviceInner) draws each ramp colour in the metal's own palette below, so silver and
+  // bronze are set here and nowhere else. Before, every colour was multiplied (silver 0.88, bronze 0.74), which left silver a flat grey-blue and bronze a brown.
+  //   silver: a clear, bright, cool silver: highlights #d8dce3 over a #a9afb8 body, the shade #7e8694 and the line #4a515e, all a little blue;
+  //   bronze: a copper-bronze, lighter and warmer: highlights #c8894a over a #9a6630 body, the shade #7a4d24 and the line #54321a;
+  //   gold: untouched, the artwork's ramp multiplied by 0.8 as before.
+  // The dark edge (0.01 in, #1a1a1a at 70 percent) and the opaque base under the translucent facets (the body colour) still keep a device off a white ribbon.
+  const DEVICE_PALETTE = Object.freeze({
+    silver: Object.freeze({ '#f4f6f8': '#d8dce3', '#c3c8ce': '#a9afb8', '#7d848c': '#7e8694', '#4b5057': '#4a515e' }),
+    bronze: Object.freeze({ '#e0a374': '#c8894a', '#b4713f': '#9a6630', '#6f4122': '#7a4d24', '#4a2a14': '#54321a' })
+  });
+  const DEVICE_TONE = Object.freeze({ silver: 1, bronze: 1, gold: 0.8 });   // the multiplier of a metal with no palette; 1 for the two that have one (their colours come from DEVICE_PALETTE)
   function darkenHex(hex, f){
     const n = parseInt(hex.slice(1), 16);
     const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => Math.max(0, Math.min(255, Math.round(v * f))));
@@ -349,13 +358,13 @@
     const sfx = suffix == null ? '--dev' : suffix;
     const text = String(inner);
     const metal = deviceMetal(text);
-    const tone = DEVICE_TONE[metal];
+    const tone = DEVICE_TONE[metal], palette = DEVICE_PALETTE[metal] || null;
     const meta = (/<metadata[\s\S]*?<\/metadata>/.exec(text) || [''])[0];
     const defs = (/<defs[\s\S]*?<\/defs>/.exec(text) || [''])[0];
     let body = text.replace(/<title[\s\S]*?<\/title>/, '').replace(/<metadata[\s\S]*?<\/metadata>/, '').replace(/<defs[\s\S]*?<\/defs>/, '');
-    const dark = t => t.replace(/#[0-9a-fA-F]{6}\b/g, h => darkenHex(h, tone));
+    const dark = t => t.replace(/#[0-9a-fA-F]{6}\b/g, h => (palette && palette[h.toLowerCase()]) || darkenHex(h, tone));
     const mid = /offset="\.?0?\.5"[^>]*stop-color="(#[0-9a-fA-F]{6})"/.exec(dark(defs));
-    const base = mid ? mid[1] : darkenHex('#c3c8ce', tone);
+    const base = mid ? mid[1] : (palette ? Object.values(palette)[1] : darkenHex('#c3c8ce', tone));
     const edge = DEVICE_EDGE_IN * (unitsPerInch || 100);
     const outerScale = Number((/scale\(\s*([\d.]+)/.exec(body) || [0, 1])[1]) || 1;
     const attrs = tag => { const o = {}; tag.replace(/([\w:-]+)="([^"]*)"/g, (m, k, v) => { o[k] = v; return m; }); return o; };
@@ -414,7 +423,7 @@
   return {
     RIBBON_W, RIBBON_H, MAX_DEVICES, DEVICE,
     xAtY, miniRackCenterX,
-    deviceInner, deviceMetal, DEVICE_EDGE_IN, DEVICE_EDGE_COLOR, DEVICE_EDGE_OPACITY, DEVICE_TONE,
+    deviceInner, deviceMetal, DEVICE_EDGE_IN, DEVICE_EDGE_COLOR, DEVICE_EDGE_OPACITY, DEVICE_TONE, DEVICE_PALETTE,
     claspsFor, splitAwardCount, layoutDevices, DEVICE_END_MARGIN, sortRun,
     rackRows, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
     miniMedalRows, layoutMiniMedals

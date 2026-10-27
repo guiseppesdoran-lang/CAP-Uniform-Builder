@@ -48,7 +48,7 @@ test('every device gets the edge, an opaque base and darker metal, with ids that
   }
 });
 
-test('silver is darker than a white ribbon, bronze darker than before, gold darker than pale yellow', () => {
+test('silver is darker than a white ribbon, bronze darker than pale yellow, gold darker than pale yellow', () => {
   for(const [f, metal] of [['device-star-silver.svg', 'silver'], ['device-star-bronze.svg', 'bronze'], ['device-star-gold.svg', 'gold']]){
     const d = load(f);
     assert.equal(A.deviceMetal(d.inner), metal);
@@ -58,9 +58,43 @@ test('silver is darker than a white ribbon, bronze darker than before, gold dark
     const orig = [...d.inner.matchAll(/fill="(#[0-9a-f]{6})" opacity="0\.9"/g)].map(m => lum(m[1]));
     assert.ok(lights[0] < orig[0] * 0.95, `${f}: lightest facet darkened (${lights[0].toFixed(2)} from ${orig[0].toFixed(2)})`);
   }
-  const silver = A.deviceInner(load('device-star-silver.svg').inner, 100);
-  const lightest = Math.max(...[...silver.matchAll(/fill="(#[0-9a-f]{6})" opacity="0\.9"/g)].map(m => lum(m[1])));
-  assert.ok(lightest < 0.92 && lightest > 0.8, `the silver star's lightest facet (${lightest.toFixed(2)}) is a light silver (0.88 tone), still darker than a white ribbon`);
+});
+
+// LIVE10-MASTER-5 (Ethan: "make all of the bronze devices more bronze and silver devices more silver (both lighter)"): silver and bronze are drawn from a palette, not a multiplier.
+// Silver: highlights #d8dce3 over a #a9afb8 body, a cool tint (blue above red); the lightest facet was 0.88 x #f4f6f8 = #d6d9db (luminance 0.85) and the body 0.88 x #c3c8ce, #acb0b5.
+// Bronze: a copper-bronze, highlights #c8894a over a #9a6630 body, warmer and lighter than the old 0.74 x #e0a374 = #a67956 / 0.74 x #b4713f = #85532f. Gold keeps its 0.8 multiplier.
+test('silver devices are lighter and cooler, bronze lighter and warmer, gold untouched (LIVE10-MASTER-5)', () => {
+  const hex = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const facet = (f, tone) => { const out = A.deviceInner(load(f).inner, 100); return [...out.matchAll(/fill="(#[0-9a-f]{6})" opacity="0\.9"/g)].map(m => m[1])[0]; };
+  const bodyOf = f => /<polygon[^>]*fill="(#[0-9a-f]{6})"\/>/.exec(A.deviceInner(load(f).inner, 100).replace(/^[\s\S]*?<\/g>/, ''))[1];
+  assert.equal(A.DEVICE_PALETTE.silver['#f4f6f8'], '#d8dce3');
+  assert.equal(A.DEVICE_PALETTE.silver['#c3c8ce'], '#a9afb8');
+  assert.equal(A.DEVICE_PALETTE.bronze['#e0a374'], '#c8894a');
+  assert.equal(A.DEVICE_PALETTE.bronze['#b4713f'], '#9a6630');
+  const silver = facet('device-star-silver.svg'), s = hex(silver);
+  assert.equal(silver, '#d8dce3');
+  assert.ok(s[2] > s[0], 'the silver is cool: blue above red');
+  assert.ok(lum(silver) > 0.85 * 0.9 && lum(silver) > lum('#d6d9db') - 0.01 && lum(silver) < 0.92, `the silver star's lightest facet (${lum(silver).toFixed(3)}) is a clear bright silver, a little lighter than the 0.88 tone's 0.85 and still under a white ribbon`);
+  assert.equal(bodyOf('device-star-silver.svg'), '#a9afb8', 'the silver body under the facets');
+  assert.ok(lum(bodyOf('device-star-silver.svg')) > lum('#acb0b5') - 0.02, 'the silver body is not darker than the old one');
+  const bronze = facet('device-star-bronze.svg'), b = hex(bronze);
+  assert.equal(bronze, '#c8894a');
+  assert.ok(b[0] - b[2] >= 100 && b[0] > b[1] && b[1] > b[2], 'the bronze is a warm copper: red over green over blue, 126 apart');
+  assert.ok(lum(bronze) > lum('#a67956') + 0.03, `the bronze star's lightest facet (${lum(bronze).toFixed(3)}) is lighter than the old 0.74 tone's ${lum('#a67956').toFixed(3)}`);
+  assert.equal(bodyOf('device-star-bronze.svg'), '#9a6630', 'the bronze body under the facets');
+  assert.ok(lum(bodyOf('device-star-bronze.svg')) > lum('#85532f') + 0.03, 'the bronze body is lighter than the old one');
+  // Gold is untouched: its ramp times 0.8.
+  assert.equal(A.DEVICE_TONE.gold, 0.8);
+  assert.equal(facet('device-star-gold.svg'), '#cc c2 86'.replace(/ /g, ''), 'gold 0.8 x #fff2a8');
+  // Every silver and bronze device is drawn only from its palette: no colour of the old ramp is left in the copy the renderer draws.
+  for(const f of files){
+    const d = load(f), metal = A.deviceMetal(d.inner);
+    if(!A.DEVICE_PALETTE[metal]) continue;
+    // (the group tags of the flat edge and base copies keep the art's own stroke and fill, which every shape inside them overrides)
+    const out = A.deviceInner(d.inner, d.vbW / d.wIn, '--dev').replace(/<metadata[\s\S]*?<\/metadata>/, '').replace(/<g\b[^>]*>/g, '<g>');
+    const pal = new Set(Object.values(A.DEVICE_PALETTE[metal])), edge = A.DEVICE_EDGE_COLOR;
+    for(const m of out.matchAll(/#[0-9a-fA-F]{6}\b/g)) assert.ok(pal.has(m[0].toLowerCase()) || m[0].toLowerCase() === edge, `${f}: ${m[0]} is not in the ${metal} palette`);
+  }
 });
 
 test('the renderer draws every device layer from the edged copy', () => {
