@@ -140,18 +140,19 @@ test('semi-formal blazer: the lapel group is drawn under every miniature layer a
   }
 });
 
-// ---- 4. Corporate service dress (women): the nametag lies on the coat front, not on the lapel --------------------
+// ---- 4. Corporate service dress: the nametag lies on the coat front, not on the lapel --------------------------
+// LIVE12 E52: the tag is on the wearer's left over the crest (Figures 4.14, 4.15), so the lapel it must clear is the left one.
 
-function lapelRightFromSheet(sex){
+function lapelLeftFromSheet(sex){
   const svg = fs.readFileSync(path.join(root, 'images', 'garments', `garment-corporate-service-dress-blazer-${sex}.svg`), 'utf8');
   const tr = /<g id="[^"]*__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(100\)"/.exec(svg);
-  const d = /id="[^"]*lapel-right" d="([^"]*)"/.exec(svg)[1];
+  const d = /id="[^"]*lapel-left" d="([^"]*)"/.exec(svg)[1];
   return [...d.matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map(m => ({ x: +m[1] + tr[1] / 100, y: +m[2] + tr[2] / 100 }));
 }
 
-test('corporate service dress: the nametag clears the wearer\'s right lapel by 0.1 in, top edge at the slot, men and women (4.2.3.1.1.2, 4.2.4.1.1.2)', async () => {
+test('corporate service dress: the nametag clears the wearer\'s left lapel by 0.1 in, top edge at the slot, men and women (4.2.3.1.1.2, 4.2.4.1.1.2)', async () => {
   for(const sex of ['male', 'female']) for(const rank of ['SMSgt', 'Capt', 'Col']){
-    const lapel = lapelRightFromSheet(sex);
+    const lapel = lapelLeftFromSheet(sex);
     const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const slot = core.landmarkBounds(spec, 'nameplate_slot');
     const scene = await compose(build('aviator_blazer', sex, 'senior', rank, ['CAPPilot1_FA9D33EA587D8']));

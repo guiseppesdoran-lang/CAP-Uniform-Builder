@@ -2025,38 +2025,38 @@
       // Nameplate: name and state lines, with optional grade for adults (4.2.3.1.1.2).
       const plateId = g.cadet ? 'nameplate-blazer-cadet' : 'nameplate-blazer-adult';
       const ps = await ctx.spec(plateId);
-      // The nametag's top edge is even with the top of the left breast pocket, on the wearer's right,
-      // straight across from it (4.2.3.1.1.2 men, Figure 4.15; 4.2.4.1.1.2 women: on a slanted pocket
-      // the tag is aligned straight across from the pocket's inside edge, which is on the opposite side).
-      // The sheet's nameplate_slot is the line and height of that edge, on the pocket's own side, so the
-      // tag goes at the slot's top y with x mirrored about the blazer's centre line, as the men's. The
-      // chaplain badge follows the tag (4.2.4.1.1.3); the crest, or the badge in its place, stays at the
-      // sheet's crest_center with nothing over it. Only a sheet with no pocket and no slot falls back to
-      // the nametag 1/2 in above the crest or the service badge in its place (4.2.4.1.1.2).
-      const slotAt = ctx.point('nameplate_slot_center');
-      const slotRect = ctx.rect('nameplate_slot');
-      let plateAt = slotAt && { x: ctx.base.w - slotAt.x, y: slotAt.y };
+      // The nametag is on the wearer's left, over the left breast pocket, centred over the CAP Crest below it
+      // (Figures 4.14 and 4.15; the sheets' +x is the wearer's left). Its top edge is even with the top of the
+      // pocket (4.2.3.1.1.2 men, 4.2.4.1.1.2 women); on a slanted pocket the tag runs level, parallel with the
+      // ground, from the top of the pocket's inside edge. The sheet's nameplate_slot is that edge: on the men's
+      // sheet the welt's top (breast_pocket), on the women's sheet the top of the slanted welt's inside end. The
+      // tag's centre is the crest's x (crest_center, which is centred on the pocket, 4.2.3.1.1.1); the crest, or
+      // the badge in its place, stays at crest_center under the tag. Only a sheet with no pocket and no slot puts
+      // the nametag 1/2 in above the crest or the service badge in its place (4.2.4.1.1.2). The chaplain badge
+      // goes 1/2 in above the tag (4.2.3.1.1.3, 4.2.4.1.1.3). (LIVE12 E52: the tag was mirrored to the wearer's
+      // right on a misreading of Figure 4.15.)
+      const slotRect = ctx.rect('nameplate_slot') || ctx.rect('breast_pocket');
+      const crestAt = ctx.point('crest_center');
       const crestTopPt = ctx.point('crest_top_center');
+      let plateAt = null;
       let abovePlateFallback = false;
-      if(female){
-        if(slotRect){
-          plateAt = { x: ctx.base.w - (slotRect.x + slotRect.w / 2), y: slotRect.y + ps.h / 2 };
-        }else if(crestTopPt){
-          const top = crestLayer ? crestLayer.y : crestTopPt.y;
-          plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
-          abovePlateFallback = true;
-        }
+      if(slotRect){
+        plateAt = { x: crestAt ? crestAt.x : slotRect.x + slotRect.w / 2, y: slotRect.y + ps.h / 2 };
+      }else if(crestTopPt){
+        const top = crestLayer ? crestLayer.y : crestTopPt.y;
+        plateAt = { x: crestTopPt.x, y: top - 0.5 - ps.h / 2 };
+        abovePlateFallback = true;
       }
-      // The tag lies on the coat front, not on the lapel: its inner end (the top right corner, where the lapel
-      // edge runs under the slot) clears the wearer's right lapel by 0.1 in. The lapel polygon is the wearer's
-      // left lapel mirrored about the blazer's centre line; the tag keeps its top edge and moves outward (4.2.4.1.1.2).
-      if(female && plateAt){
-        const lapelR = blazerLapel(ctx).map(q => ({ x: ctx.base.w - q.x, y: q.y }));
+      // The tag lies on the coat front, not on the lapel: should its inner end reach the wearer's left lapel it
+      // moves outward (toward the arm) by the least that clears the lapel by 0.1 in, keeping its top edge (FIX-R-OTHER-r1
+      // D8). The men's tag clears the lapel as placed; the women's inner top corner reaches the lapel edge, so it moves 0.19 in.
+      const lapelL = blazerLapel(ctx);
+      if(plateAt && lapelL.length){
         const GAP = 0.1;
         let moved = 0;
-        const hits = d => C.rectHitsPolygon({ x: plateAt.x - ps.w / 2 - GAP - d, y: plateAt.y - ps.h / 2, w: ps.w + 2 * GAP, h: ps.h }, lapelR);
+        const hits = d => C.rectHitsPolygon({ x: plateAt.x - ps.w / 2 - GAP + d, y: plateAt.y - ps.h / 2, w: ps.w + 2 * GAP, h: ps.h }, lapelL);
         while(moved < 1 && hits(moved)) moved += 0.01;
-        plateAt = { x: plateAt.x - moved, y: plateAt.y };
+        plateAt = { x: plateAt.x + moved, y: plateAt.y };
       }
       const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
       if(abovePlateFallback) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 });

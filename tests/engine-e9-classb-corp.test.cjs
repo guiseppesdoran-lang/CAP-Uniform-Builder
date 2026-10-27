@@ -5,8 +5,9 @@
 //   - CAPR 39-1 4.2.3.1.1.1 / 4.2.4.1.1.1: the crest, or the CSAG, Command Council, National Board or NEC
 //     badge in its place, is centred on the left breast pocket body, the sheet's crest_center (below the
 //     welt opening; centring on the welt strip was rejected, tracker placement item 4). The women's
-//     blazer sheet draws a slanted welt pocket: 4.2.4.1.1.2 puts the nametag's top edge straight across
-//     from the pocket's inside edge (the sheet's nameplate_slot), not 1/2 in above the crest.
+//     blazer sheet draws a slanted welt pocket: 4.2.4.1.1.2 puts the nametag's top edge level with the top
+//     of the pocket's inside edge (the sheet's nameplate_slot), not 1/2 in above the crest. Men and women: the
+//     nametag is on the wearer's left, centred over the crest (Figures 4.14, 4.15; LIVE12 E52).
 //   - 4.2.1.4 / 4.2.2.4 with ICL 25-02: semi-formal miniature medals end 1/2 in above the crest or the
 //     service badge worn in its place.
 //   - 4.2.6.2.7.2-3: women's aviator shirt, two badges across the nametag, the command pin 1/2 in above
@@ -118,7 +119,7 @@ for(const marks of ['model_rocketry_badge', 'nra_marksman_badge']){
   });
 }
 
-// ---- the blazer: crest and badge on the pocket body, nametag above the women's crest --------------
+// ---- the blazer: crest and badge on the pocket body, nametag over the crest on the wearer's left ----
 
 test('men\'s blazer: the sheet draws the CAP Crest at the pocket body below the welt, and the engine leaves it (4.2.3.1.1.1)', async () => {
   const spec = await store.load('garment-corporate-service-dress-blazer-male');
@@ -154,43 +155,47 @@ for(const [uniform, sex] of [['aviator_blazer', 'male'], ['semi_formal', 'male']
   });
 }
 
-test('women\'s blazer: the nametag top edge is at the sheet\'s nameplate_slot height, straight across from the slanted pocket on the wearer\'s right, with the crest, a service badge or a chaplain badge (4.2.4.1.1.2)', async () => {
-  // The women's sheet draws a slanted welt pocket on the wearer's left; 4.2.4.1.1.2 aligns the nametag's top
-  // edge with the top of the pocket, straight across from the inside edge of a slanted one, which is on the
-  // wearer's right as on the men's blazer (4.2.3.1.1.2, Figure 4.15): the slot's top y, its x mirrored about the
-  // blazer's centre line. The old '1/2 in above the crest' is the clause for a blazer with no pocket (D8).
-  // FIX-R-OTHER-r1: the earlier version of this test put the tag at the slot's own x, over the pocket.
-  const spec = await store.load('garment-corporate-service-dress-blazer-female');
-  const slot = core.landmarkBounds(spec, 'nameplate_slot');
-  const crest = core.anchor(spec, 'crest_center'), crestTop = core.anchor(spec, 'crest_top_center');
-  assert.ok(slot, 'the sheet carries a nameplate_slot');
-  for(const badges of [[], ['command_council_badge'], ['cap_national_command_board_badge'], ['christian_chaplin'], ['command_council_badge', 'christian_chaplin']]){
-    const scene = await P.composeUniform(build('aviator_blazer', 'female', 'senior', 'Capt', badges), store);
-    const plate = scene.layers.find(l => l.role === 'nametag' && l.key === 'nametag');
-    const label = badges.join('+') || 'crest';
-    near(plate.y, slot.y, 0.005, `${label}: nametag top at the slot top`);
-    // FIX-R-OTHER-r1 review round 3 (D8): the tag's inner end lay 0.1 in over the wearer's right lapel, so it moves
-    // outward (toward the arm) by the least that clears the lapel by 0.1 in, 0.3 in at most.
-    const across = spec.w - (slot.x + slot.w / 2);
-    assert.ok(cx(plate) <= across + 0.005 && cx(plate) >= across - 0.3, `${label}: nametag straight across the slot on the wearer's right, moved at most 0.3 in outward off the lapel (${cx(plate).toFixed(3)} vs ${across.toFixed(3)})`);
-    assert.ok(cx(plate) < spec.w / 2, `${label}: the nametag is on the wearer's right (the viewer's left)`);
-    assert.ok(plate.x + plate.w < crest.x - 0.5, `${label}: nothing of the nametag lies over the left breast pocket or the crest`);
-    // The crest, or the badge in its place, stays centred on crest_center and clear of the plate.
-    const chap = badges.find(x => x.includes('chaplin'));
-    const worn = badges.find(x => !x.includes('chaplin'));
-    const wornLayer = worn ? byKey(scene, 'badge:' + worn) : null;
-    if(wornLayer){
-      near(cx(wornLayer), crest.x, 0.005, `${label}: badge across the crest point`);
-      near(wornLayer.y + wornLayer.h / 2, crest.y, 0.005, `${label}: badge down the crest point`);
+// LIVE12 E52 (Ducky, Discord: "Nametape is on the wrong side of the blazer"): Figures 4.14 and 4.15 draw the nametag
+// on the wearer's left, centred over the CAP Crest on the left breast pocket. 4.2.3.1.1.2 / 4.2.4.1.1.2: its top edge is
+// even with the top of the left breast pocket; on a slanted pocket it runs level from the top of the pocket's inside
+// edge. The sheets' nameplate_slot is that edge (men: the welt top, breast_pocket; women: the top of the slanted welt's
+// inside end). The sheets' +x is the wearer's left (landmarks_note), so the tag's centre has the larger x.
+for(const sex of ['male', 'female']){
+  test(`${sex}'s blazer: the nametag is on the wearer's left, top edge at the pocket top, centred over the crest and clear of it, with the crest, a service badge or a chaplain badge (4.2.3.1.1.2, 4.2.4.1.1.2, Figures 4.14, 4.15)`, async () => {
+    const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+    const slot = core.landmarkBounds(spec, 'nameplate_slot');
+    const pocket = core.landmarkBounds(spec, 'breast_pocket');
+    const crest = core.anchor(spec, 'crest_center'), crestTop = core.anchor(spec, 'crest_top_center');
+    assert.ok(slot, 'the sheet carries a nameplate_slot');
+    if(pocket) near(slot.y, pocket.y, 0.005, 'the slot top is the pocket top');
+    for(const badges of [[], ['command_council_badge'], ['cap_national_command_board_badge'], ['christian_chaplin'], ['command_council_badge', 'christian_chaplin']]){
+      const scene = await P.composeUniform(build('aviator_blazer', sex, 'senior', 'Capt', badges), store);
+      const plate = scene.layers.find(l => l.role === 'nametag' && l.key === 'nametag' && l.id && l.id.startsWith('nameplate-blazer'));
+      const label = `${sex} ${badges.join('+') || 'crest'}`;
+      assert.ok(cx(plate) > spec.w / 2, `${label}: the nametag is on the wearer's left (the picture's right): ${cx(plate).toFixed(3)} vs coat centre ${(spec.w / 2).toFixed(3)}`);
+      near(plate.y, slot.y, 0.005, `${label}: nametag top at the pocket top (the slot top)`);
+      // Centred over the crest; where the tag's inner end would lie on the wearer's left lapel it moves outward (toward the arm) by the
+      // least that clears the lapel by 0.1 in, keeping its top edge: 0 on the men's sheet, 0.19 in on the women's (FIX-R-OTHER-r1 D8).
+      assert.ok(cx(plate) >= crest.x - 0.005 && cx(plate) <= crest.x + (sex === 'male' ? 0.005 : 0.3), `${label}: nametag centred over the crest, moved at most 0.3 in outward off the lapel (${cx(plate).toFixed(3)} vs ${crest.x.toFixed(3)})`);
+      if(pocket) near(cx(plate), pocket.x + pocket.w / 2, 0.005, `${label}: nametag centred on the pocket's width`);
+      assert.ok(plate.y + plate.h <= crestTop.y, `${label}: the nametag's bottom ${(plate.y + plate.h).toFixed(3)} is above the crest's top ${crestTop.y.toFixed(3)}`);
+      // The crest, or the badge in its place, stays centred on crest_center under the tag.
+      const chap = badges.find(x => x.includes('chaplin'));
+      const worn = badges.find(x => !x.includes('chaplin'));
+      const wornLayer = worn ? byKey(scene, 'badge:' + worn) : null;
+      if(wornLayer){
+        near(cx(wornLayer), crest.x, 0.005, `${label}: badge across the crest point`);
+        near(wornLayer.y + wornLayer.h / 2, crest.y, 0.005, `${label}: badge down the crest point`);
+      }
+      if(chap){
+        // The chaplain badge stays 1/2 in above the plate, centred on it (4.2.3.1.1.3, 4.2.4.1.1.3).
+        const c = byKey(scene, 'badge:' + chap);
+        near(c.y + c.h, plate.y - 0.5, 0.005, `${label}: chaplain badge 1/2 in above the plate`);
+        near(cx(c), cx(plate), 0.005, `${label}: chaplain badge centred over the plate, on the wearer's left`);
+      }
     }
-    if(chap){
-      // The chaplain badge stays 1/2 in above the plate, centred on it (4.2.4.1.1.3).
-      const c = byKey(scene, 'badge:' + chap);
-      near(c.y + c.h, plate.y - 0.5, 0.005, `${label}: chaplain badge 1/2 in above the plate`);
-      near(cx(c), cx(plate), 0.005, `${label}: chaplain badge centred over the plate, on the wearer's right`);
-    }
-  }
-});
+  });
+}
 
 // ---- semi-formal: medals 1/2 in above the crest or service badge actually drawn --------------------
 
