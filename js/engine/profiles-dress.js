@@ -1684,7 +1684,10 @@
         const across = widthAcross ? gs.w : gs.h, along = widthAcross ? gs.h : gs.w;
         const squeeze = Math.min(1, (T - 0.08) / across);
         const scale = widthAcross ? 1 : squeeze, scaleX = widthAcross ? squeeze : 1 / squeeze;
-        const dist = GRADE_FROM_END + along / 2;
+        // Its centre is as far from the strip's outer end as the top view's rank slot is from the board's, shortened with the strip (the Class A boards' rule, cadetBoards): the
+        // two views place one piece at one distance. Without a slot, 5/8 in from the end (DAFI 36-2903 4.5.1.1.1).
+        const slotPt = ctx.point(`rank_slot_${side}_center`);
+        const dist = slotPt ? Math.max(GRADE_FROM_END + along / 2, ((slotPt.x - A.x) * a.x + (slotPt.y - A.y) * a.y) * sq.kx) : GRADE_FROM_END + along / 2;
         await ctx.place(gradeId, { pieceAnchor: 'center', at: { x: end.x + a.x * dist, y: end.y + a.y * dist }, rotate: side === 'left' && turn < -180 ? turn + 360 : turn, scale, scaleX,
           flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.insignia, role: 'grade', key: `grade:edge-${side}`,
           title: `${side === 'right' ? 'Right' : 'Left'} shoulder board grade, edge-on` });

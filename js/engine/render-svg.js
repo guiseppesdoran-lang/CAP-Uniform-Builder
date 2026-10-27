@@ -72,6 +72,11 @@
 
   function transformFor(layer){
     const parts = [];
+    // `squeeze` { at, deg, kx, ky }: scaled by kx along the direction deg and ky across it, about `at`, in scene inches, after everything else (the edge-on mess dress board).
+    if(layer.squeeze){
+      const q = layer.squeeze;
+      parts.push(`translate(${fmt(q.at.x)} ${fmt(q.at.y)}) rotate(${fmt(q.deg)}) scale(${fmt(q.kx)} ${fmt(q.ky)}) rotate(${fmt(-q.deg)}) translate(${fmt(-q.at.x)} ${fmt(-q.at.y)})`);
+    }
     if(layer.rotate) parts.push(`rotate(${fmt(layer.rotate)} ${fmt(layer.origin.x)} ${fmt(layer.origin.y)})`);
     if(layer.flipX){
       const cx = layer.x + layer.w / 2;

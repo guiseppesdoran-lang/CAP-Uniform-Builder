@@ -24,6 +24,8 @@ function build(uniform, gender, membership, rank, badges, extra){
 }
 const compose = b => P.composeUniform(b, store);
 const byKey = (scene, key) => scene.layers.find(l => l.key === key);
+// The edge-on mess board is the board art squeezed (layer.squeeze); `strip` is the rectangle it fills.
+const edgeStrip = l => l && l.strip ? Object.assign({}, l, l.strip) : l;
 const INK = require('./helpers/ink-rest.cjs');
 const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a.toFixed(3)} vs ${b.toFixed(3)}`);
 
@@ -177,7 +179,7 @@ test('mess dress officers: each shoulder has an edge-on strip and a lifted view 
   for(const [sex, rank] of [['male', 'Capt'], ['male', 'Col'], ['male', 'Maj Gen'], ['female', 'Lt Col'], ['female', 'Brig Gen']]){
     const scene = await compose(build('mess_dress', sex, 'senior', rank, []));
     for(const side of ['right', 'left']){
-      const top = byKey(scene, `epaulet-top:${side}`), edge = byKey(scene, `epaulet-edge:${side}`);
+      const top = byKey(scene, `epaulet-top:${side}`), edge = edgeStrip(byKey(scene, `epaulet-edge:${side}`));
       const gTop = byKey(scene, `grade:top-${side}`), gEdge = byKey(scene, `grade:edge-${side}`);
       assert.ok(top && edge && gTop && gEdge, `${sex} ${rank} ${side}: edge-on strip, view from above and both grades`);
       assert.ok(top.clip && top.y < -1.5, `${sex} ${rank} ${side}: the view from above is the board art lifted (${top.y.toFixed(2)} in) and clipped to the board`);

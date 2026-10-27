@@ -24,6 +24,8 @@ function build(uniform, gender, membership, rank, badges, extra){
 }
 const compose = b => P.composeUniform(b, store);
 const byKey = (scene, key) => scene.layers.find(l => l.key === key);
+// The edge-on mess board is the board art squeezed (layer.squeeze); `strip` is the rectangle it fills.
+const edgeStrip = l => l && l.strip ? Object.assign({}, l, l.strip) : l;
 const rad = d => d * Math.PI / 180;
 
 // ---- 1, 2. Mess dress boards: bars across the board; every edge-on grade fits the strip --------------------
@@ -73,7 +75,7 @@ test('mess dress: every edge-on grade is 0.25-0.32 in across the 0.4 in strip, e
   for(const sex of ['male', 'female']) for(const rank of MESS_GRADES){
     const scene = await compose(build('mess_dress', sex, 'senior', rank));
     for(const side of ['right', 'left']){
-      const strip = byKey(scene, `epaulet-edge:${side}`), l = byKey(scene, `grade:edge-${side}`);
+      const strip = edgeStrip(byKey(scene, `epaulet-edge:${side}`)), l = byKey(scene, `grade:edge-${side}`);
       assert.ok(strip && l, `${sex} ${rank} ${side}: strip and grade drawn`);
       // l.w x l.h is the piece as drawn (after scale); rel is its turn relative to the strip.
       const rel = rad(l.rotate - strip.rotate);

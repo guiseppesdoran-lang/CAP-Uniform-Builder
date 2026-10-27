@@ -19,6 +19,8 @@ const compose = b => P.composeUniform(b, store);
 const NAME = { first: 'Pat', last: 'Doran', show: true };
 const hb = (uniform, gender, membership, rank, o) => HARNESS.makeBuild(Object.assign({ uniform, gender, membership, rank, name: NAME, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } }, o || {}));
 const byKey = (scene, key) => scene.layers.find(l => l.key === key);
+// The edge-on mess board is the board art squeezed (layer.squeeze); `strip` is the rectangle it fills.
+const edgeStrip = l => l && l.strip ? Object.assign({}, l, l.strip) : l;
 const rad = d => d * Math.PI / 180;
 // The centre line of the figure a layer belongs to (the second figure of a scene, the aviator shirt beside the blazer, is shifted).
 const centreLine = (scene, l) => { const g = scene.layers.find(x => x.role === 'garment' && (x.figure || 1) === (l.figure || 1)); return g.x + g.w / 2; };
@@ -37,7 +39,7 @@ test('mess dress boards: the colonel\'s eagle lies with its wings across the boa
   for(const gender of ['male', 'female']){
     const scene = await compose(hb('mess_dress', gender, 'senior', 'Col'));
     for(const side of ['right', 'left']){
-      const top = byKey(scene, `grade:top-${side}`), edge = byKey(scene, `epaulet-edge:${side}`);
+      const top = byKey(scene, `grade:top-${side}`), edge = edgeStrip(byKey(scene, `epaulet-edge:${side}`));
       assert.ok(top && edge, `${gender} ${side}: eagle and edge-on strip`);
       // The art's head is up and its beak hooks toward the art's left (mirrored on the wearer's right).
       const r = rad(top.rotate);
