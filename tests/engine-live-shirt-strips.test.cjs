@@ -296,3 +296,15 @@ test('Major and Brigadier General on the shirts: the strip hides the art\'s own 
     }
   }
 });
+
+test('flight officers: the view from above carries the grade the strip carries (the sleeve art draws none) (LIVE11-3)', async () => {
+  for(const c of [CASES[0], CASES[1], OVERBLOUSE[0]]){
+    for(const rank of ['FO', 'TFO', 'SFO']){
+      const scene = await compose(c, 'senior', rank);
+      for(const side of ['right', 'left']){
+        const top = scene.layers.find(l => l.key === `grade:top-${side}`), edge = scene.layers.find(l => l.key === `grade:edge-${side}`);
+        assert.ok(top && edge && top.id === edge.id, `${c.name} ${rank} ${side}: the grade is on the view from above and on the strip`);
+      }
+    }
+  }
+});
