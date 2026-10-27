@@ -373,3 +373,9 @@ test('the LIVE12 fixture imports every case Ducky raised', () => {
   assert.ok(r.parsed.badges.includes('communications_technician_badge'));
   assert.ok(r.parsed.notes.some(n => /^CADET PROGRAMS TECHNICIAN is in the Specialty Tracks table/.test(n)));
 });
+
+test('the activities CAPR 39-1 Figure A8-2 names count without the word NCSA (E46)', () => {
+  const rows = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC) 10 Jul 2022\nNCSA Cyber Defense 12 Jul 2023',
+    'Air Force Space Command Familiarization Course 10 Jul 2022\nSpecialized Undergraduate Pilot Training Familiarization Course 12 Jul 2023\nEngineering Academy 14 Jul 2024');
+  assert.deepEqual(runImport(rows).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze', 'star-bronze'], centered: false }], 'COS and three activities');
+});

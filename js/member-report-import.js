@@ -517,7 +517,8 @@ function getCadetTrainingSection(text){
   ]);
 }
 
-// National Cadet Special Activities a record may list without the "NCSA" word. IACE is left out: it has its own
+// National Cadet Special Activities a record may list without the "NCSA" word (the NCSA catalogue and CAPR 39-1
+// Figure A8-2). IACE is left out: it has its own
 // ribbon. Each pattern names one parent activity, so a student row and a staff row of the same year are one credit.
 const IMPORTED_NCSA_ACTIVITY_PATTERNS = [
   ['PJOC', /Pararescue|\bPJOC\b/i],
@@ -527,7 +528,11 @@ const IMPORTED_NCSA_ACTIVITY_PATTERNS = [
   ['NATIONAL EMERGENCY SERVICES ACADEMY', /National\s+Emergency\s+Services\s+Academy|\bNESA\b/i],
   ['ADVANCED TECHNOLOGIES ACADEMY', /Advanced\s+Technolog(?:y|ies)\s+Academy/i],
   ['ENGINEERING TECHNOLOGIES ACADEMY', /Engineering\s+Technolog(?:y|ies)\s+Academy/i],
-  ['HONOR GUARD ACADEMY', /Honor\s+Guard\s+Academy|\bNHGA\b/i]
+  ['HONOR GUARD ACADEMY', /Honor\s+Guard\s+Academy|\bNHGA\b/i],
+  // CAPR 39-1 Figure A8-2 (NCSA attendance patches) also names these.
+  ['SPACE FAMILIARIZATION COURSE', /Space\s+(?:Command|Force)\s+Familiarization/i],
+  ['SUPT FAMILIARIZATION COURSE', /Undergraduate\s+Pilot\s+Training|\bSUPT\b/i],
+  ['ENGINEERING ACADEMY', /\bEngineering\s+Academy\b/i]
 ];
 
 function extractCadetSpecialActivityCountFromReport(text){
