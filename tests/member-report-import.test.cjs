@@ -335,3 +335,41 @@ test('a cadet with COS and the Eaker Award: the COS star is on the Mitchell, the
   assert.ok(r.selected.eaker_award, 'the Eaker imports');
   assert.deepEqual(r.devices('eaker_award'), [{ devices: [], centered: false }], 'no COS star on a cadet Eaker');
 });
+
+// The Specialty Tracks table: the first row used to be read with the headings run into it ("SPECIALTY TRACKS SPECIALTY
+// TRACK LEVEL COMPLETED CADET PROGRAMS"), which matched no specialty, so the first rated specialty was dropped.
+test('every rated specialty in the Specialty Tracks table is read, the first row included, and offered in the picker (E47)', () => {
+  const table = 'Specialty Tracks\nSpecialty Track Level Completed\nCADET PROGRAMS TECHNICIAN 12 Jan 2025\nCOMMUNICATIONS TECHNICIAN 05 May 2024\n';
+  const withTable = (t, rows=table) => t.replace('Professional Development\nCourse Date Completed\n', 'Professional Development\nCourse Date Completed\n' + rows);
+  const senior = withTable(FIXTURE.replace('MALE CADET C/Col', 'MALE SENIOR 2d Lt'));
+  const r = runImport(senior);
+  assert.ok(r.parsed.authorizedBadges.includes('cadet_programs_technician_badge'), 'the CP rating is report-authorized (offered in the picker)');
+  assert.ok(r.parsed.authorizedBadges.includes('communications_technician_badge'));
+  assert.ok(r.parsed.badges.includes('cadet_programs_technician_badge') && r.parsed.badges.includes('communications_technician_badge'), 'both worn by default');
+  // The same on one line, with "Rating Date" headings, "Officer" after the specialty and "Rating" after the level.
+  const oneLine = runImport(withTable(FIXTURE.replace('MALE CADET C/Col', 'MALE SENIOR 2d Lt'),
+    'Specialty Tracks Specialty Track Rating Date Cadet Programs Officer Senior Rating 12 Jan 2025 Aerospace Education Master 05 May 2024 Communications Technician 01 Feb 2023 ').replace(/\n/g, ' '));
+  for(const id of ['cadet_programs_senior_badge', 'aerospace_education_master_badge', 'communications_technician_badge'])
+    assert.ok(oneLine.parsed.authorizedBadges.includes(id), `${id} offered`);
+  assert.ok(oneLine.parsed.badges.includes('aerospace_education_master_badge') && oneLine.parsed.badges.includes('cadet_programs_senior_badge'), 'the two highest ratings worn by default');
+  // A cadet: the CP specialty badge is not authorized for cadets in this builder, and the import says so.
+  const cadet = runImport(withTable(FIXTURE));
+  assert.ok(!cadet.parsed.authorizedBadges.includes('cadet_programs_technician_badge'));
+  assert.ok(cadet.parsed.badges.includes('communications_technician_badge'));
+  assert.ok(cadet.parsed.notes.some(n => /CADET PROGRAMS TECHNICIAN is in the Specialty Tracks table, but the builder does not authorize that badge for cadet members/.test(n)));
+});
+
+// One report with the cases Ducky raised (LIVE12, Discord 2026-10-27): four wing Commander's Commendation Awards, a
+// Disaster Relief Ribbon with V, a current Wing CAC representative, two NCSAs and COS, the Eaker, a CP rating.
+test('the LIVE12 fixture imports every case Ducky raised', () => {
+  const r = runImport(fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-cadet-live12.txt'), 'utf8'));
+  assert.deepEqual([r.text.firstName, r.text.lastName, r.text.show], ['Guiseppe', 'Mitchell', true]);
+  assert.deepEqual(r.devices('commander_commendation_award'), [{ devices: ['clasp-bronze', 'clasp-bronze', 'clasp-bronze'], centered: false }]);
+  assert.deepEqual(r.devices('disaster_relief_ribbon'), [{ devices: ['v'], centered: false }]);
+  assert.deepEqual(r.devices('cadet_advisory_council_ribbon'), [{ devices: ['star-bronze'], centered: false }]);
+  assert.deepEqual(r.devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze'], centered: false }]);
+  assert.deepEqual(r.devices('mitchell_award'), [{ devices: ['star-silver'], centered: false }]);
+  assert.deepEqual(r.devices('eaker_award'), [{ devices: [], centered: false }]);
+  assert.ok(r.parsed.badges.includes('communications_technician_badge'));
+  assert.ok(r.parsed.notes.some(n => /^CADET PROGRAMS TECHNICIAN is in the Specialty Tracks table/.test(n)));
+});

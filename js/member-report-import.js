@@ -857,18 +857,31 @@ function getMemberReportSpecialtyTracksSection(text){
   ]);
 }
 
+// The specialty a track row names. The first row of the table is read with the section and column headings
+// run into it ("SPECIALTY TRACKS SPECIALTY TRACK RATING DATE CADET PROGRAMS"), which matched no specialty, so
+// the member's first rated specialty was dropped and never offered (LIVE12 E47). The row's name is the longest
+// known specialty it ends with; a trailing "Officer", "Specialty" or "Track" is ignored.
+const CAPUB_SPECIALTY_TRACK_NAMES_LONGEST_FIRST = Object.keys(CAPUB_SPECIALTY_TRACK_TO_BADGE).sort((a, b) => b.length - a.length);
+function resolveSpecialtyTrackName(name){
+  let n = normalizeSpecialtyTrackName(name);
+  while(/\s(?:OFFICER|SPECIALTY|TRACKS?|RATING)$/.test(n)) n = n.replace(/\s(?:OFFICER|SPECIALTY|TRACKS?|RATING)$/, '');
+  const known = CAPUB_SPECIALTY_TRACK_NAMES_LONGEST_FIRST.find(key => n === key || n.endsWith(' ' + key));
+  return known || n;
+}
+
 function parseMemberReportSpecialtyTracks(text){
   const tracksSection = getMemberReportSpecialtyTracksSection(text);
   if(!tracksSection) return [];
 
   const rows = [];
-  const rowRe = /([A-Z][A-Z\s\/,\.\-&]{1,90}?)\s+(TECHNICIAN|SENIOR|MASTER|NONE)\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/gi;
+  const rowRe = /([A-Z][A-Z\s\/,\.\-&]{1,90}?)\s+(TECHNICIAN|SENIOR|MASTER|NONE)(?:\s+RATING)?\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})/gi;
   let m;
   while((m = rowRe.exec(tracksSection))){
     let name = normalizeSpecialtyTrackName(m[1])
       .replace(/\bSPECIALTY TRACK\b|\bLEVEL\b|\bCOMPLETED\b/gi, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+    name = resolveSpecialtyTrackName(name);
     const level = normalizeSpecialtyTrackLevel(m[2]);
     const completed = m[3];
     if(!name) continue;
@@ -1284,7 +1297,10 @@ function parseCapMemberReport(textRaw){
   const importedSpecialtyTracks = getSpecialtyBadgesFromTracks(text);
   for(const item of importedSpecialtyTracks.badges){
     result.badges.push(item.id);
-    result.notes.push(`${item.specialty} ${item.level} specialty badge imported from Specialty Tracks table only.`);
+    // A rated specialty the builder does not authorize for this membership is named, not dropped silently.
+    result.notes.push(isBadgeEligibleForMembership(item.id, result.membership)
+      ? `${item.specialty} ${item.level} specialty badge imported from Specialty Tracks table only.`
+      : `${item.specialty} ${item.level} is in the Specialty Tracks table, but the builder does not authorize that badge for ${result.membership || 'this'} members, so it is not offered.`);
   }
   result.notes.push(...importedSpecialtyTracks.notes);
 
