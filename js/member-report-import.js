@@ -461,6 +461,42 @@ function extractEncampmentCountFromReport(text){
   return dates.length;
 }
 
+// "MITCHELL, GUISEPPE" -> "Mitchell", "Guiseppe": each word, and each part after a hyphen or apostrophe,
+// capitalised; "MCDONALD" -> "McDonald". The nameplates and tapes uppercase the name again.
+function titleCaseImportedName(raw){
+  return String(raw || '').toLowerCase().replace(/\s+/g, ' ').trim()
+    .replace(/(^|[\s\-'’])([a-z])/g, (m, sep, ch) => sep + ch.toUpperCase())
+    .replace(/\bMc([a-z])/g, (m, ch) => 'Mc' + ch.toUpperCase());
+}
+
+// The member's name. The General Information row is authoritative: "CAPID Name Gender ..." then
+// "123456 MITCHELL, GUISEPPE MALE CADET ...". The last name is everything before the comma (so "SMITH JR"
+// and "VAN DYKE" stay whole); the first name is the first given name (a middle name or initial is not worn on
+// the nameplate). Without that row, the report heading "C/Col Guiseppe Mitchell" is read: the grade removed,
+// the last word is the last name.
+function extractMemberNameFromReport(text){
+  const t = normalizeMemberReportText(text);
+  const row = t.match(/\b\d{5,7}\s+([A-Z][A-Z'’.\- ]*?)\s*,\s*([A-Z][A-Z'’.\-]*)(?:\s+[A-Z][A-Z'’.\-]*)*?\s+(?:MALE|FEMALE)\b/i);
+  if(row){
+    const lastName = titleCaseImportedName(row[1]);
+    const firstName = titleCaseImportedName(row[2]);
+    if(firstName && lastName) return { firstName, lastName };
+  }
+  const heading = t.match(/Member\s+Details\s+(.+?)\s+General\s+Information/i);
+  if(heading){
+    let rest = heading[1].trim();
+    const ranks = (typeof RANKS === 'object' ? [...(RANKS.cadet || []), ...(RANKS.senior || [])] : [])
+      .sort((a, b) => b.length - a.length);
+    for(const rank of ranks){
+      const re = new RegExp('^' + rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*') + '\\s+', 'i');
+      if(re.test(rest)){ rest = rest.replace(re, ''); break; }
+    }
+    const words = rest.split(' ').filter(w => /^[A-Za-z][A-Za-z'’.\-]*$/.test(w));
+    if(words.length >= 2) return { firstName:titleCaseImportedName(words[0]), lastName:titleCaseImportedName(words[words.length - 1]) };
+  }
+  return null;
+}
+
 function getCurrentProfileFromMemberReport(text){
   const t = normalizeMemberReportText(text);
   const m = t.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+(SM|[A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
@@ -999,6 +1035,12 @@ function parseCapMemberReport(textRaw){
     notes:[]
   };
 
+  const memberName = extractMemberNameFromReport(text);
+  if(memberName){
+    result.firstName = memberName.firstName;
+    result.lastName = memberName.lastName;
+  }
+
   const currentProfile = getCurrentProfileFromMemberReport(text);
   if(currentProfile){
     result.membership = currentProfile.membership;
@@ -1393,6 +1435,17 @@ function applyCapMemberReportImport(parsed){
     if(jacketSelect) jacketSelect.value = parsed.gender;
   }
 
+  // The name, as the setup's name fields hold it (js/wiring.js State.text, inputs capubV2FirstName and
+  // capubV2LastName, "Show my name on the uniform" capubV2ShowText): the nameplates, name tapes and the polo
+  // read it from State.text. An import with a name shows it.
+  if(parsed.firstName || parsed.lastName){
+    State.text = { ...(State.text || {}), firstName:String(parsed.firstName || '').slice(0, 40), lastName:String(parsed.lastName || '').slice(0, 40), show:true };
+    const firstNameEl = by('capubV2FirstName'), lastNameEl = by('capubV2LastName'), showNameEl = by('capubV2ShowText');
+    if(firstNameEl) firstNameEl.value = State.text.firstName;
+    if(lastNameEl) lastNameEl.value = State.text.lastName;
+    if(showNameEl) showNameEl.checked = true;
+  }
+
   State.cadetFirstSergeant = !!parsed.cadetFirstSergeant && isCadetFirstSergeantEligible(State.rank);
   syncCadetFirstSergeantControl();
 
@@ -1507,6 +1560,7 @@ function wireMemberReportImporter(){
       const lines = [
         `Imported ${file.name}.`,
         `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
+        `Name: ${parsed.firstName || parsed.lastName ? `${parsed.firstName || ''} ${parsed.lastName || ''}`.trim() : 'not found'}`,
         `Ribbons selected: ${parsed.ribbons.length}`,
         parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
         parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',

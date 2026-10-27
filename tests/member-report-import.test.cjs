@@ -23,11 +23,17 @@ function runImport(text){
     for(const n of ['buildRibbonGallery','rebuildRibbonsFromGallery','buildBadgeGallery','rebuildBadgesFromGallery','fullRender','refreshUI',
       'populateRankSetup','updateSetupGates','highlightActiveUniformButton','applyMemberTypeToUniformOptions','syncCadetFirstSergeantControl',
       'renderCACShoulderCord','syncShoulderCordControl','clearUnauthorizedPatchesForCurrentUniform']) globalThis[n] = function(){};
+    // The setup's name fields, recorded so the test can read what the import wrote into them.
+    const realDocument = globalThis.document, fields = globalThis.__nameFields = {};
+    globalThis.document = new Proxy({}, { get: (_t, key) => key === 'getElementById'
+      ? id => /^capubV2(FirstName|LastName|ShowText)$/.test(id) ? (fields[id] = fields[id] || {}) : realDocument.getElementById(id)
+      : realDocument[key] });
     const parsed = parseCapMemberReport(text);
     applyCapMemberReportImport(parsed);
     const selected = {};
     for(const [id, s] of Object.entries(State.ribbonSelections)) if(s.checked) selected[id] = { awardValue: s.awardValue, awardLabel: s.awardLabel };
-    return JSON.stringify({ parsed, selected, membership: State.membership, rank: State.rank });
+    globalThis.document = realDocument;
+    return JSON.stringify({ parsed, selected, membership: State.membership, rank: State.rank, text: State.text, fields });
   })`, context)(text);
   const data = JSON.parse(out);
   const devices = id => RA.resolve(id, { ...data.selected[id], membership: data.membership }).map(r => ({ devices: r.devices.map(short), centered: r.centered }));
@@ -294,4 +300,25 @@ test('every cadet special activity value resolves to a real option with that act
     const devices = assertResolvesToCount(row, row.n);
     if(row.n === 7) assert.deepEqual(devices, ['star-silver', 'star-bronze'], 'seven activities: silver star and one bronze');
   }
+});
+
+test('the import fills the first and last name from the General Information row, title case, and shows it (E43, E53)', () => {
+  const r = runImport(FIXTURE);
+  assert.equal(r.parsed.firstName, 'Guiseppe');
+  assert.equal(r.parsed.lastName, 'Mitchell');
+  assert.equal(r.text.firstName, 'Guiseppe');
+  assert.equal(r.text.lastName, 'Mitchell');
+  assert.equal(r.text.show, true);
+  assert.equal(r.fields.capubV2FirstName.value, 'Guiseppe', 'the First name field shows the imported name');
+  assert.equal(r.fields.capubV2LastName.value, 'Mitchell', 'the Last name field shows the imported name');
+  assert.equal(r.fields.capubV2ShowText.checked, true);
+  // A middle name stays off; compound and hyphenated last names stay whole.
+  const middle = runImport(FIXTURE.replace('MITCHELL, GUISEPPE', "O'NEIL-MCDONALD JR, MARY K"));
+  assert.deepEqual([middle.text.firstName, middle.text.lastName], ['Mary', "O'Neil-McDonald Jr"]);
+  // On one line, as the PDF path joins it.
+  const pdf = runImport(FIXTURE.replace(/\n/g, ' '));
+  assert.deepEqual([pdf.text.firstName, pdf.text.lastName], ['Guiseppe', 'Mitchell']);
+  // Without the General Information row, the report heading: grade removed, last word the last name.
+  const heading = runImport(FIXTURE.replace('123456 MITCHELL, GUISEPPE ', '').replace('C/Col Guiseppe Mitchell', 'C/Lt Col Guiseppe Mitchell'));
+  assert.deepEqual([heading.text.firstName, heading.text.lastName], ['Guiseppe', 'Mitchell']);
 });
