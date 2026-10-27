@@ -209,6 +209,7 @@ test('the cadet semi-formal wears no shoulder cord (9.3, 9.4.1 name the Service 
 // (core.fitCord): top end on the shoulder outline, bottom end on the armpit, only the straight run stretched, corners rounded. CAPR 39-1
 // 9.3 ("worn on the left shoulder ... under the epaulet"). What the sheet states is read from the sheet here, not from the engine.
 const MEASURE_ARMPIT = require('../scripts/measure-armpit.cjs');
+const SIDE_EDGE = {};   // the body's side edge of each sheet, from the script (the sheet's own silhouette), filled when first used
 const FIT_GARMENTS = [
   ['garment-blues-class-a-coat', 'blues_a', 'male', {}], ['garment-blues-class-a-coat-female', 'blues_a', 'female', {}],
   ['garment-blues-class-b-shirt-male', 'blues_b', 'male', { sleeve: 'short' }], ['garment-blues-class-b-shirt-male-long', 'blues_b', 'male', { sleeve: 'long' }],
@@ -251,6 +252,17 @@ test('the engine\'s ARMPIT table is the armpit of the current cord sheets (regen
   assert.deepEqual(new Function(body[1] + '; return ARMPIT;')(), MEASURE_ARMPIT.compute());
 });
 
+test('the engine\'s BODY_SIDE table is the body\'s side edge below the armpit of the current cord sheets (regenerate with scripts/measure-armpit.cjs)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const body = /\/\/ BODY_SIDE begin\n([\s\S]*?)\/\/ BODY_SIDE end/.exec(src);
+  assert.ok(body, 'the table is marked in the engine');
+  assert.deepEqual(new Function(body[1] + '; return BODY_SIDE;')(), MEASURE_ARMPIT.computeSide());
+  // Every edge starts at the armpit and runs down (the body's side is toward the centre line): it is the left edge of the gap, never the arm's.
+  for(const [id, e] of Object.entries(MEASURE_ARMPIT.computeSide())){
+    assert.ok(e.length >= 2 && e[1][1] > e[0][1] && e[1][0] < e[0][0] + 0.1, `${id}: the edge runs down from the armpit, toward the body`);
+  }
+});
+
 test('every cord kind on every garment and both sexes: one smooth run from the top of the shoulder to the armpit (9.3)', async () => {
   const armpits = MEASURE_ARMPIT.compute();
   let checked = 0;
@@ -269,11 +281,15 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
       const tb = b.type === 'Q' ? [b.c[0] - b.a[0], b.c[1] - b.a[1]] : [b.b[0] - b.a[0], b.b[1] - b.a[1]];
       assert.ok(angDiff(ang(ta), ang(tb)) <= 5, `${tag}: the tangent turns ${angDiff(ang(ta), ang(tb)).toFixed(1)} degrees where piece ${i - 1} meets piece ${i}`);
     }
-    // The pieces run from the top end to the end of the run under the arm (0.6 in past the armpit, straight on: LIVE9-2, was 0.3).
-    const under = cl.cordPath.under;
-    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - under[0], pieces[pieces.length - 1].b[1] - under[1]) < 1e-6, `${tag}: the pieces run from top to the end under the arm`);
-    assert.ok(Math.abs(Math.hypot(under[0] - bottom[0], under[1] - bottom[1]) - 0.6) < 1e-6, `${tag}: the run goes on 0.6 in past the armpit`);
-    assert.ok(Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))) < 0.01, `${tag}: the run passes through the armpit`);
+    // The pieces run from the top end to the end of the braid's tail under the arm. LIVE10-4 (Ethan: "now the cord is cut off lmao. its supposed to be continuous"): the braid
+    // is not cut at the notch any more. From the notch it goes on INSIDE the silhouette along the body's side edge, bending with it, for 0.8 in of that edge at full width and then
+    // narrows to a point over a further 0.3 in; no straight clip edge, no separate tongue (the old LIVE9-2 checks of the 0.6 in run and the tongue's share are replaced by these).
+    const under = cl.cordPath.under, tail = cl.cordPath.tail, vis = cl.cordPath.visible;
+    assert.ok(vis && vis.length >= 6, `${tag}: the run carries the polygon its taper is clipped to`);
+    assert.ok(tail && tail.points.length >= 4, `${tag}: the braid has a tail under the arm`);
+    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - under[0], pieces[pieces.length - 1].b[1] - under[1]) < 1e-6, `${tag}: the pieces run from top to the end of the tail`);
+    // The run passes through the notch (the corner there is rounded: 0.05 in on the women's coat, so within 0.07 in).
+    assert.ok(Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))) < 0.07, `${tag}: the run passes ${Math.min(...pieces.map(pc => segDist(bottom, pc.a, pc.b))).toFixed(3)} in from the armpit`);
     // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
     const ring = outerRing(gid);
     assert.ok(ringDist(top, ring) <= 0.1, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);
@@ -281,23 +297,49 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= 0.1, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
     // The armpit is the notch of the silhouette, measured independently of the table: 0.05 in.
     assert.ok(Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]) <= 0.05, `${tag}: the run's armpit end is ${Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
-    // The last 0.6 in is behind the sleeve (LIVE9-2, Ethan: "cords need to go slightly more down"; it was 0.3 in with a 0.15 in tongue): the braid's band past the
-    // armpit is hidden by the silhouette (the gap or the hem is not cloth) and by the tongue, which keeps the braid's full width 0.35 in past the notch and then
-    // narrows to a point over a further 0.25 in. What shows is at most that tongue (the old limit of a third of the band was the 0.15 in tongue's), and where
-    // there is cloth under the arm the braid does go on past the notch: the share of the tongue's own area that shows is printed in the failure message.
-    const vis = cl.cordPath.visible, tg = [(under[0] - bottom[0]) / 0.6, (under[1] - bottom[1]) / 0.6], nm = [-tg[1], tg[0]], sil = silhouette(read(gid));
-    assert.ok(vis && vis.length >= 5, `${tag}: the run carries the polygon of what stays visible`);
-    let shown = 0, total = 0, tongue = 0;
-    for(let i = 0; i < 24; i++) for(let j = -8; j <= 8; j++){
-      const sd = (i + 0.5) / 24 * 0.6, w = j / 8 * 0.3, q = [bottom[0] + tg[0] * sd + nm[0] * w, bottom[1] + tg[1] * sd + nm[1] * w];
-      if(Math.abs(w) <= 0.2){ total++; if(inRing(q, vis) && inSil(q, sil)) shown++; if(Math.abs(w) <= 0.25 * Math.min(1, Math.max(0, (0.6 - sd) / 0.25))) tongue++; }
-      // The tongue is the braid's full width (0.25 in each side of the run's line) for 0.35 in, then narrows to a point over 0.25 in: past that width nothing shows.
-      const half = 0.25 * Math.min(1, Math.max(0, (0.6 - sd) / 0.25));
-      if(Math.abs(w) > half + 1e-9) assert.ok(!inRing(q, vis), `${tag}: braid at ${sd.toFixed(2)} in under, ${w.toFixed(2)} in aside is not hidden`);
+    // The tail, measured against the silhouette as the sheet draws it (not against the engine's table): the last visible point lies inside the silhouette; every point of the
+    // tail's centre line lies inside it; from the first 0.6 in on, where the braid has settled inside the edge, the whole braid (0.25 in either side of the centre line) is on
+    // cloth, so no row of the braid ends on the silhouette edge at full width; and the tail follows the edge's own direction, 0.27 in inside it.
+    const sil = silhouette(read(gid)), BRAID = 0.25;
+    const pathPts = [bottom].concat(tail.points);
+    const cum = [0];
+    for(let i = 1; i < pathPts.length; i++) cum.push(cum[i - 1] + Math.hypot(pathPts[i][0] - pathPts[i - 1][0], pathPts[i][1] - pathPts[i - 1][1]));
+    assert.ok(Math.abs(cum[cum.length - 1] - tail.end) < 1e-6 && tail.end >= 1.1 && tail.end < 1.3, `${tag}: the tail is ${tail.end.toFixed(3)} in long (0.8 in at full width and 0.3 in of taper along the edge)`);
+    assert.ok(Math.abs(tail.end - tail.taperFrom - 0.3) < 1e-6, `${tag}: the taper is the last 0.3 in`);
+    assert.ok(inSil(under, sil), `${tag}: the last point of the braid (${under.map(v => v.toFixed(2))}) is inside the silhouette`);
+    const at = u => { let i = 1; while(i < cum.length - 1 && cum[i] < u) i++; const f = (u - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1), a = pathPts[i - 1], b = pathPts[i], d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return { p: [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f], n: [-(b[1] - a[1]) / d, (b[0] - a[0]) / d] }; };
+    const edge = gid in SIDE_EDGE ? SIDE_EDGE[gid] : (SIDE_EDGE[gid] = MEASURE_ARMPIT.computeSide()[gid]);
+    for(const q of tail.points) assert.ok(inSil(q, sil), `${tag}: the tail's centre line (${q.map(v => v.toFixed(2))}) is inside the silhouette`);
+    const width = u => { const { p, n } = at(u); let w = 0; for(let v = -0.3; v <= 0.3 + 1e-9; v += 0.01){ const q = [p[0] + n[0] * v, p[1] + n[1] * v]; if(inRing(q, vis) && inSil(q, sil)) w += 0.01; } return w; };
+    const braidWidth = 2 * BRAID, rows = [];
+    for(let u = 0.6; u <= tail.taperFrom + 1e-9; u += 0.05){
+      const { p, n } = at(u);
+      for(let v = -BRAID + 0.01; v <= BRAID - 0.01; v += 0.05) assert.ok(inSil([p[0] + n[0] * v, p[1] + n[1] * v], sil), `${tag}: braid at ${u.toFixed(2)} in along the tail, ${v.toFixed(2)} aside is on the silhouette's edge or off the cloth`);
+      assert.ok(width(u) > braidWidth - 0.03, `${tag}: the braid is ${width(u).toFixed(2)} in wide ${u.toFixed(2)} in along its tail (full width ${braidWidth})`);
+      rows.push(u);
+      // The edge's direction: the tail's tangent is the edge's, within 12 degrees, and the centre line lies 0.27 in inside it.
+      const e0 = at(u - 0.05).p, e1 = at(u + 0.05).p, dirT = [e1[0] - e0[0], e1[1] - e0[1]];
+      const dEdge = Math.min(...edge.slice(1).map((q, i) => segDist(p, edge[i], q)));
+      assert.ok(Math.abs(dEdge - 0.27) < 0.04, `${tag}: the tail is ${dEdge.toFixed(3)} in from the body's edge ${u.toFixed(2)} in along it (0.27)`);
+      let bestAng = 180;
+      for(let i = 1; i < edge.length; i++) bestAng = Math.min(bestAng, angDiff(ang(dirT), ang([edge[i][0] - edge[i - 1][0], edge[i][1] - edge[i - 1][1]])));
+      assert.ok(bestAng <= 12, `${tag}: the tail runs ${bestAng.toFixed(1)} degrees off the body's edge ${u.toFixed(2)} in along it`);
     }
-    assert.ok(shown <= tongue, `${tag}: ${(100 * shown / total).toFixed(0)} percent of the braid under the arm shows, more than the tongue's ${(100 * tongue / total).toFixed(0)}`);
-    assert.ok(tongue / total > 0.6 && tongue / total < 0.85, `${tag}: the tongue is ${(100 * tongue / total).toFixed(0)} percent of the band (0.35 in full width, 0.25 in taper of 0.6 in)`);
-    assert.ok(shown / tongue > 0.25, `${tag}: only ${(100 * shown / tongue).toFixed(0)} percent of the tongue shows: the braid does not go on past the notch`);
+    assert.ok(rows.length >= 4, `${tag}: ${rows.length} rows checked`);
+    // The braid narrows to a point: its visible width (what the clip and the silhouette leave of the 0.5 in braid) never grows over the last 0.3 in and ends under a quarter of it.
+    let last = Infinity;
+    for(let u = tail.taperFrom; u <= tail.end - 0.01 + 1e-9; u += 0.02){
+      const w = width(u);
+      assert.ok(w <= last + 0.011, `${tag}: the braid widens from ${last.toFixed(2)} to ${w.toFixed(2)} in ${(u - tail.taperFrom).toFixed(2)} in into the taper`);
+      last = w;
+    }
+    assert.ok(last < braidWidth / 4, `${tag}: the braid's visible width at the end of its taper is ${last.toFixed(2)} in, not under a quarter of ${braidWidth} in`);
+    assert.ok(width(tail.end - 0.01) < 0.1, `${tag}: the braid ends in a point`);
+    // The clip polygon is only the braid's own taper: it does not cut the braid anywhere before the taper begins (nothing of the braid's width is cut short above it).
+    for(let u = 0; u < tail.taperFrom - 0.02; u += 0.05){
+      const { p, n } = at(u);
+      for(const v of [-BRAID + 0.01, 0, BRAID - 0.01]) assert.ok(inRing([p[0] + n[0] * v, p[1] + n[1] * v], vis), `${tag}: the clip cuts the braid ${u.toFixed(2)} in along its tail, before the taper`);
+    }
     // Only the straight run is stretched: the length changes by no more than 15 percent (the sheets draw no loop or tip to keep).
     assert.ok(stretch.to / stretch.from > 0.85 && stretch.to / stretch.from < 1.15, `${tag}: length ${stretch.from.toFixed(2)} to ${stretch.to.toFixed(2)} in`);
     assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);

@@ -7,8 +7,10 @@
 // body (the Class B short shirt and blouse) it is the inner end of the sleeve's hem, the first reflex (concave) vertex of the outline below
 // the sleeve's outer corner.
 //   node scripts/measure-armpit.cjs            prints the ARMPIT table
-// tests/engine-live-cord-joins.test.cjs compares the table in the engine with this output, so an art sync that redraws a sheet fails
-// the test until the table is regenerated. Retire the table when the art states an armpit anchor of its own (FOLLOWUPS).
+// It also prints BODY_SIDE (LIVE10-MASTER-4): from the armpit, the silhouette's edge on the body's side of the gap (the left edge of the hole between arm and
+// body, or on a short sleeve the body's side edge below the sleeve's hem), about 1.6 in of its vertices, which the shoulder cord's braid follows under the arm.
+// tests/engine-live-cord-joins.test.cjs compares the tables in the engine with this output, so an art sync that redraws a sheet fails
+// the test until the tables are regenerated. Retire the tables when the art states an armpit anchor and a body edge of its own (FOLLOWUPS).
 const fs = require('node:fs');
 const path = require('node:path');
 const { silhouette } = require('./lib-svg-ink.cjs');
@@ -46,6 +48,29 @@ function armpitOf(subs){
   return null;
 }
 
+// The body's side edge from the armpit: of the two ways round the ring from the armpit vertex, the one whose vertex 1 in of arc away lies farther toward the
+// body's centre line (smaller x, the garment's right side being the wearer's left arm); its vertices until 1.6 in of arc are passed, armpit first.
+const SIDE_ARC = 1.6;
+function bodySideOf(subs, armpit){
+  const rings = subs.slice().sort((p, q) => area(q) - area(p)), outer = rings[0];
+  const cx = (Math.min(...outer.map(p => p[0])) + Math.max(...outer.map(p => p[0]))) / 2;
+  const hole = rings.slice(1).find(h => h.reduce((s, p) => s + p[0], 0) / h.length > cx);
+  const ring = hole || outer, n = ring.length;
+  const at = ring.findIndex(p => p[0] === armpit[0] && p[1] === armpit[1]);
+  if(at < 0) return null;
+  const walk = step => {
+    const pts = [ring[at]]; let arc = 0;
+    for(let k = 1; k < n && arc < SIDE_ARC; k++){
+      const a = pts[pts.length - 1], b = ring[(at + step * k + 2 * n) % n];
+      arc += Math.hypot(b[0] - a[0], b[1] - a[1]); pts.push(b);
+    }
+    return pts;
+  };
+  const xAt = (pts, d) => { let arc = 0; for(let i = 1; i < pts.length; i++){ const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if(arc + l >= d){ const t = (d - arc) / l; return pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t; } arc += l; } return pts[pts.length - 1][0]; };
+  const a = walk(1), b = walk(-1);
+  return (xAt(a, 1) <= xAt(b, 1) ? a : b).map(p => [r(p[0]), r(p[1])]);
+}
+
 function compute(){
   const out = {};
   for(const id of IDS){
@@ -60,8 +85,22 @@ function compute(){
   return out;
 }
 
-module.exports = { compute, IDS, armpitOf };
+function computeSide(){
+  const out = {};
+  for(const id of IDS){
+    const a = manifest.assets.find(x => x.id === id);
+    const subs = silhouette(fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8'));
+    const p = armpitOf(subs), side = p && bodySideOf(subs, p);
+    if(!side) throw new Error('no body side edge found on ' + id);
+    out[id] = side;
+  }
+  return out;
+}
+
+module.exports = { compute, computeSide, IDS, armpitOf, bodySideOf };
 if(require.main === module){
   const t = compute();
   console.log('  const ARMPIT = {\n' + Object.keys(t).map(k => `    '${k}': [${t[k][0]}, ${t[k][1]}]`).join(',\n') + '\n  };');
+  const b = computeSide();
+  console.log('\n  const BODY_SIDE = {\n' + Object.keys(b).map(k => `    '${k}': [${b[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
 }

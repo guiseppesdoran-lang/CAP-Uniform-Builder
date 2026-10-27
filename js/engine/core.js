@@ -209,7 +209,10 @@
   // with quadratic curves that leave each corner along one segment and arrive along the next, so the cord is one smooth line (the same
   // point and tangent where the straight run meets the curve) instead of a bend.
   const CORD_HALF = 0.25;      // half the width of the braid under the arm (the braid is 0.4 in with its outline)
-  const CORD_TAPER = 0.25;     // the braid narrows to a point over this last stretch of its run under the arm (LIVE9-2)
+  const CORD_TAPER = 0.3;      // the braid narrows to a point over this last stretch of its run under the arm (LIVE10-4; 0.25 in at LIVE9-2)
+  const CORD_INSET = CORD_HALF + 0.02; // how far inside the body's side edge the braid's centre line runs under the arm, so the whole braid is on cloth
+  const CORD_SETTLE = 0.6;     // the braid takes its full inset over this much of the edge below the armpit
+  const CORD_STEP = 0.2;       // spacing of the points the braid's tail is sampled at along the edge
   const CORD_ROUND = 1.0;      // longest stretch of a segment a corner's curve may take (in)
   const CORD_REACH = 3;        // how far along its own line the run is searched for the shoulder outline (in)
 
@@ -248,9 +251,9 @@
   }
 
   // `points`: the sheet's cord landmark in inches ([x, y] pairs, top first); `outline`: the garment's upper outline (an open polyline, inches) or
-  // null; `armpit`: [x, y] or null; `under`: inches the run goes on under the arm past the armpit (0 for none).
-  // Returns { points, pieces, d, top, bottom, under (the run's last point), visible (polygon or null), stretch }.
-  function fitCord(points, outline, armpit, under){
+  // null; `armpit`: [x, y] or null; `under`: inches of the body's side edge the braid follows at full width under the arm (0 for none; a taper of CORD_TAPER follows); `side`: the silhouette's edge on the body's side of the gap, [x, y] vertices from the armpit down, or null.
+  // Returns { points, pieces, d, top, bottom, under (the run's last point), visible (polygon or null), tail, stretch }.
+  function fitCord(points, outline, armpit, under, side){
     const orig = points.map(p => [p[0], p[1]]);
     const n = orig.length;
     const lens = [0];
@@ -270,23 +273,68 @@
     });
     fitted[0] = top; fitted[n - 1] = bottom;
     const len = pts => pts.reduce((s, p, i) => s + (i ? Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0), 0);
-    // Under the arm (`under` inches): the run goes on past the armpit along its own direction, where the garment's silhouette hides what lies over
-    // the gap and a tongue hides the rest, so the braid dives under the arm instead of stopping. LIVE9-2 (Ethan: "cords need to go slightly more down"): the
-    // braid goes on at its full width until CORD_TAPER short of the end of the run, then narrows to a point over that last CORD_TAPER (0.35 in full width and
-    // 0.25 in taper for the 0.6 in the engine asks for). `visible` is that tongue with everything above the armpit, a polygon in sheet inches that the
-    // renderer clips the layer to.
-    let drawn = fitted, visible = null;
+    // Under the arm. LIVE10-4 (Ethan: "now the cord is cut off lmao. its supposed to be continuous"): the braid is never cut. From the armpit it goes on INSIDE the
+    // garment along the body's side edge (`side`, the silhouette's edge on the body's side of the gap, its vertices from the armpit down), bending with it, its centre line
+    // CORD_INSET inside the edge (reached over the first CORD_SETTLE, so the braid curls under the arm and then lies wholly on cloth), for `under` inches of the edge at full
+    // width and then CORD_TAPER more while it narrows to a point. `visible` is the polygon the renderer clips the layer to: everything above the armpit and, below it, a band
+    // along the braid's own centre line that is wider than the braid until the taper and narrows with it, so the braid's own end is the point and no straight edge
+    // of the clip shows. Without `side` (a sheet with no body edge) the run goes straight on, tapering the same way.
+    let drawn = fitted, visible = null, tail = null;
     if(under > 0){
       const a = fitted[n - 2], l = Math.hypot(bottom[0] - a[0], bottom[1] - a[1]) || 1;
-      const t = [(bottom[0] - a[0]) / l, (bottom[1] - a[1]) / l], nn = [-t[1], t[0]];
-      const at = (u, v) => [bottom[0] + t[0] * u + nn[0] * v, bottom[1] + t[1] * u + nn[1] * v];
-      const tip = at(under, 0);
-      drawn = fitted.concat([tip]);
-      const full = Math.max(0, under - CORD_TAPER);
-      visible = [at(-60, -60), at(-60, 60), at(0, 60), at(0, CORD_HALF), at(full, CORD_HALF), tip, at(full, -CORD_HALF), at(0, -CORD_HALF), at(0, -60)];
+      const t0 = [(bottom[0] - a[0]) / l, (bottom[1] - a[1]) / l], n0 = [-t0[1], t0[0]];
+      const total = under + CORD_TAPER;
+      const tp = [];
+      if(side && side.length >= 2){
+        const S = side.map(p => [p[0], p[1]]);
+        S[0] = [bottom[0], bottom[1]];
+        const cum = [0];
+        for(let i = 1; i < S.length; i++) cum.push(cum[i - 1] + Math.hypot(S[i][0] - S[i - 1][0], S[i][1] - S[i - 1][1]));
+        const edgeAt = sd => {
+          let i = 1;
+          while(i < S.length - 1 && cum[i] < sd) i++;
+          const seg = [S[i][0] - S[i - 1][0], S[i][1] - S[i - 1][1]], len = Math.hypot(seg[0], seg[1]) || 1, d = [seg[0] / len, seg[1] / len];
+          const u = sd - cum[i - 1];
+          let nrm = [-d[1], d[0]];
+          if(nrm[0] > 0) nrm = [-nrm[0], -nrm[1]];          // toward the body's centre line: smaller x
+          return { p: [S[i - 1][0] + d[0] * u, S[i - 1][1] + d[1] * u], n: nrm };
+        };
+        const steps = Math.max(1, Math.ceil((total - 0.3) / CORD_STEP));
+        for(let k = 0; k <= steps; k++){
+          const sd = k === steps ? total : 0.3 + (total - 0.3) * k / steps;
+          const e = edgeAt(sd), u = Math.min(1, sd / CORD_SETTLE), inset = CORD_INSET * u * u * (3 - 2 * u);
+          tp.push([e.p[0] + e.n[0] * inset, e.p[1] + e.n[1] * inset]);
+        }
+      }else{
+        tp.push([bottom[0] + t0[0] * total, bottom[1] + t0[1] * total]);
+      }
+      drawn = fitted.concat(tp);
+      // The clip band along the braid's own tail: cumulative length from the armpit, a normal at each point, half widths wide of the braid until the taper begins.
+      const path = [bottom].concat(tp), U = [0];
+      for(let i = 1; i < path.length; i++) U.push(U[i - 1] + Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]));
+      const end = U[U.length - 1], taperFrom = end - CORD_TAPER;
+      const nrmAt = i => {
+        const p = path[Math.max(0, i - 1)], q = path[Math.min(path.length - 1, i + 1)], dl = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1;
+        return [-(q[1] - p[1]) / dl, (q[0] - p[0]) / dl];
+      };
+      const half = u => u < taperFrom - 1e-9 ? 0.6 : CORD_HALF * Math.max(0, (end - u) / CORD_TAPER);
+      // Where the taper begins lies between samples: insert it so the point's two sides start where the braid's full width ends.
+      const stops = [];
+      for(let i = 0; i < path.length; i++){
+        if(i > 0 && U[i - 1] < taperFrom && U[i] > taperFrom){
+          const f = (taperFrom - U[i - 1]) / (U[i] - U[i - 1]);
+          stops.push({ p: [path[i - 1][0] + (path[i][0] - path[i - 1][0]) * f, path[i - 1][1] + (path[i][1] - path[i - 1][1]) * f], n: nrmAt(i), u: taperFrom });
+        }
+        stops.push({ p: path[i], n: nrmAt(i), u: U[i] });
+      }
+      const side1 = stops.map(q => [q.p[0] + q.n[0] * half(q.u), q.p[1] + q.n[1] * half(q.u)]);
+      const side2 = stops.map(q => [q.p[0] - q.n[0] * half(q.u), q.p[1] - q.n[1] * half(q.u)]);
+      const at = (u, v) => [bottom[0] + t0[0] * u + n0[0] * v, bottom[1] + t0[1] * u + n0[1] * v];
+      visible = [at(-60, -60), at(-60, 60)].concat(side1, side2.slice().reverse());
+      tail = { points: tp, end, taperFrom, inset: CORD_INSET };
     }
     const r = roundPolyline(drawn, CORD_ROUND);
-    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, under: drawn[drawn.length - 1], visible, stretch: { from: len(orig), to: len(fitted), dTop, dBottom: dBot } };
+    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, under: drawn[drawn.length - 1], visible, tail, stretch: { from: len(orig), to: len(fitted), dTop, dBottom: dBot } };
   }
 
   return {

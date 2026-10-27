@@ -995,6 +995,19 @@
   };
   // ARMPIT end
 
+  // The silhouette's edge on the body's side of the gap, from each armpit down, about 1.6 in of its vertices: the edge the cord's braid follows under the arm (scripts/measure-armpit.cjs
+  // prints this table and tests/engine-live-cord-joins.test.cjs compares it with the sheets).
+  // BODY_SIDE begin
+  const BODY_SIDE = {
+    'garment-blues-class-a-coat': [[20.686, 15.409], [20.036, 18.049]],
+    'garment-blues-class-a-coat-female': [[19.08, 12.884], [18.667, 14.753]],
+    'garment-blues-class-b-shirt-male': [[21.093, 15.629], [20.584, 19.802]],
+    'garment-blues-class-b-shirt-male-long': [[21.046, 16.044], [20.936, 17.239], [20.863, 17.536], [20.827, 18.097]],
+    'garment-blues-class-b-blouse-female': [[19.6, 16.35], [19.444, 16.769], [19.302, 17.067], [19.16, 17.365], [19.021, 17.663], [18.892, 17.961]],
+    'garment-blues-class-b-blouse-female-long': [[19.434, 15.442], [18.558, 17.65]]
+  };
+  // BODY_SIDE end
+
   // The cord overlay is one braided run drawn along the armhole seam, and the sheet's polyline stops short of the armpit and of the top
   // of the shoulder. Ethan, live: 'cords are still fucked up. they arent going to the top of the shoulder nor the bottom of the thing', and
   // 'shoulder cords dont line up' (the run bent where its two straight pieces met). The run is fitted to the sheet: top end on the shoulder
@@ -1007,14 +1020,17 @@
   // under the arm. The sheets draw no back, so the part on the back is not drawn. Ethan again (LIVE9-2), on the bottom end: "cords need to go
   // slightly more down", the braid ending flat with a thin pale wedge below it: the 0.15 in tongue was too short to read as a dive, so the braid
   // now goes on at full width 0.35 in past the notch and then narrows to a point over a further 0.25 in, 0.6 in under in all (core.fitCord).
-  const CORD_UNDER = 0.6; // the run goes on this far under the arm past the armpit and is hidden there
+  // LIVE10-MASTER-4 (Ethan: "now the cord is cut off lmao. its supposed to be continuous"): the braid past the notch was clipped to the silhouette and ended on a straight cut at the
+  // arm gap, then the pale tongue. It now passes under the arm and goes on INSIDE the garment along the body's side edge (BODY_SIDE: the silhouette's edge on the body's side of
+  // the gap, from the armpit down), bending with it, for CORD_UNDER (0.8 in) at full width and then a further 0.3 in while it narrows to nothing (core.fitCord, CORD_TAPER).
+  const CORD_UNDER = 0.8;
   function fitCordLayer(ctx, spec){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
     if(!layer || !lm || !lm.points || lm.points.length < 2) return;
     const ring = GARMENT_TOP[id];
     const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
-    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null, CORD_UNDER);
-    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, stretch: fit.stretch };
+    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null, CORD_UNDER, BODY_SIDE[id] || null);
+    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, tail: fit.tail, stretch: fit.stretch };
     layer.clipSil = id;
   }
 
