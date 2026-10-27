@@ -104,7 +104,8 @@ test('Class B: the collar leaves are drawn again above the badges (the sheet\'s 
     for(const sleeve of ['short', 'long']){
       for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col']]){
         const scene = await compose(build('blues_b', sex, membership, rank, THREE, { ribbons: RACK, opt: { headgear: 'auto', sleeve } }));
-        const fg = scene.layers.find(l => l.role === 'garment-foreground' && l.onlyGroups && l.onlyGroups.includes('collar-foreground'));
+        // the short sheets (collar_states) draw no collar-foreground group: the foreground is the group of the state shown (`collar`, tie off: the default of the short sleeve)
+        const fg = scene.layers.find(l => l.role === 'garment-foreground' && l.onlyGroups && l.onlyGroups.some(g => g === 'collar-foreground' || (sleeve === 'short' && g === 'collar')));
         assert.ok(fg, `${sex} ${sleeve} ${rank}: the collar foreground is drawn`);
         for(const l of scene.layers.filter(x => x.role === 'badge')){
           assert.ok(!l.clipOut, `${sex} ${sleeve} ${rank}: ${l.key} is whole`);

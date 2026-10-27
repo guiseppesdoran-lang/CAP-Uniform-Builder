@@ -617,7 +617,7 @@
   function collarOverBadges(ctx, foregroundGroup){
     const polys = H.collarPolygons(ctx).map(l => growPolygon(l.points, COLLAR_EDGE_GROW));
     if(!polys.length) return;
-    if(foregroundGroup) ctx.foreground([foregroundGroup], Z.badge + 0.5);
+    if(foregroundGroup) ctx.foreground(Array.isArray(foregroundGroup) ? foregroundGroup : [foregroundGroup], Z.badge + 0.5);
     for(const l of ctx.layers){
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
@@ -1553,7 +1553,11 @@
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
     }
     await dressBadges(ctx, b, geo);
-    collarOverBadges(ctx, 'collar-foreground');
+    // The collar lies over a badge that reaches it (4.1.11.1.1.2.3.1, 4.1.12.2.5.1): the long sheets draw their leaves again as a `collar-foreground` group, which the engine draws over the badges and
+    // ribbons. A short sheet with both collar states draws none (art 76963a86): its leaves are the group of the state shown, `collar` (the open leaves) or `collar-closed` (the closed leaves
+    // and neck) with the `tie` group, which the sheet draws over the leaves, after it; those groups are the foreground there.
+    const states = ctx.collarGroups;
+    collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? [states.closed, 'tie'] : [states.open]) : 'collar-foreground');
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }
@@ -1877,7 +1881,10 @@
     const hide = [];
     if(!tie) hide.push('tie');
     ctx.collarState = st ? (tie ? 'closed' : 'open') : null;
-    if(st && !tie) hide.push(st.closed);
+    ctx.collarGroups = st;
+    // The sheet's own note: hide group `collar-closed` for the open state and group `collar` for the closed one (the closed group lies over the open one and covers it, but its leaves
+    // and neck are not the open ones' shape, so the open group is hidden when it shows).
+    if(st) hide.push(tie ? st.open : st.closed);
     return ctx.garment(id, hide.length ? { hideGroups: hide } : null);
   }
 

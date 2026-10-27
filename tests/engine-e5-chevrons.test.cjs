@@ -392,6 +392,7 @@ test('Class B cadet NCO collar chevrons are drawn above the collar-foreground gr
   for(const [uniform, gender, opt, garment] of COLLAR_CASES.filter(c => c[0] === 'blues_b')){
     const scene = await P.composeUniform(build(uniform, gender, 'cadet', 'C/SSgt', opt), store);
     const fg = scene.layers.filter(l => l.role === 'garment-foreground');
+    // (The short sheets draw no collar-foreground group: the engine redraws the groups of the collar state shown, `collar` or `collar-closed` and the tie, as the foreground.)
     assert.ok(fg.length >= 1, `${garment}: the collar foreground is drawn`);
     for(const side of ['right', 'left']) for(const f of fg) assert.ok(gradeLayer(scene, 'grade:' + side).z > f.z, `${garment} ${side}: the chevron (z ${gradeLayer(scene, 'grade:' + side).z}) is above the collar foreground (z ${f.z})`);
   }
