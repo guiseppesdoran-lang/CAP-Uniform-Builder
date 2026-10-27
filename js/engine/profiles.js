@@ -195,6 +195,11 @@
   // The two collar leaf polygons of the sheet: the landmarks collar_left/collar_right when it states
   // them, else the table above. Each is { points } in sheet inches.
   function collarPolygons(ctx){
+    // A shirt sheet that draws an open and a closed collar (landmark collar_states) states the closed leaves as collar_closed_<side>: with the tie on (ctx.collarState 'closed') the leaves are those.
+    if(ctx.collarState === 'closed'){
+      const closed = ['left', 'right'].map(n => ctx.landmark('collar_closed_' + n)).filter(l => l && l.points);
+      if(closed.length === 2) return closed;
+    }
     const own = ['left', 'right'].map(n => ctx.landmark('collar_' + n)).filter(l => l && l.points);
     if(own.length === 2) return own;
     const t = COLLAR_POLYGONS[ctx.base && ctx.base.id];

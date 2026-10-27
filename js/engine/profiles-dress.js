@@ -1454,7 +1454,7 @@
     const V = CLASS_B[(female ? 'female' : 'male') + (long ? '-long' : '-short')];
     const base = V.garment;
     const tie = tieOn(b, 'blues_b', long, false);
-    await ctx.garment(base, tie ? null : { hideGroups: ['tie'] });
+    await dressGarment(ctx, base, tie);
 
     // The officers' and cadet officers' slide-on sleeves lie on top of the shoulder: seen edge-on from the front (epauletStrips), with the top view above.
     const sleeveId = epauletSleeveId(g);
@@ -1747,7 +1747,7 @@
     const garment = top + (long ? '-long' : '');
     const V = AVIATOR[garment];
     const tie = tieOn(b, 'aviator', long, !!V.overblouse);
-    await ctx.garment(garment, tie ? null : { hideGroups: ['tie'] });
+    await dressGarment(ctx, garment, tie);
     if(g.cadet) ctx.note('Cadets wear corporate uniforms only when 18 or older and not eligible for the USAF-style uniform (CAPR 39-1, 1.2.5.2)');
 
     // Grade. The shirts draw the epaulet sleeve edge-on; its top view (with the grade) goes above.
@@ -1820,6 +1820,25 @@
     collarOverBadges(ctx, null);
     // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3), is the sheet's own group `tie` (hidden above when the member turns it off, tieOn): worn with long sleeves, optional with short ones.
     // The sheets' separate -tie / -tie-tab overlays are the same shape and are no longer placed, so the tie is never drawn twice (LIVE8-3).
+  }
+
+  // The collar states of a shirt sheet (LIVE10-MASTER-1, Ethan: "short sleeves were fine, now they are not. the top button shouldn't be buttoned on class b's short sleeve"; CAPR 39-1
+  // 4.1.11.1.1.3, 4.1.12.4: the tie is optional with the short sleeve, so the collar is open without it and closed on the knot with it). A sheet that draws both states
+  // says so in its landmark collar_states { open: <group>, closed: <group> }: the open collar is the default drawing, the closed leaves and neck are a group drawn after it, with
+  // the landmarks collar_right / collar_left for the open leaves and collar_closed_right / collar_closed_left for the closed ones. The engine hides the closed group unless the
+  // tie is on, and the collar polygons the cadet NCO chevrons and the collar-over-badges rule read (H.collarPolygons) are those of the state shown (ctx.collarState). A sheet that
+  // states no collar_states is drawn as it always was.
+  function collarStates(spec){
+    const st = spec && spec.landmarks && spec.landmarks.collar_states;
+    return st && typeof st.open === 'string' && typeof st.closed === 'string' ? st : null;
+  }
+  async function dressGarment(ctx, id, tie){
+    const st = collarStates(await ctx.spec(id));
+    const hide = [];
+    if(!tie) hide.push('tie');
+    ctx.collarState = st ? (tie ? 'closed' : 'open') : null;
+    if(st && !tie) hide.push(st.closed);
+    return ctx.garment(id, hide.length ? { hideGroups: hide } : null);
   }
 
   // The tie (men) or tie tab (women) on a shirt: the member's choice (build.opt.tie, a boolean) or, until they choose, what the regulation
