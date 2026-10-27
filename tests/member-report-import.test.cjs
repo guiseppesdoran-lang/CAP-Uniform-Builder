@@ -264,3 +264,34 @@ test('every CAC level value resolves to its own option, not Group (E45)', () => 
     .map(v => ({ id: 'cadet_advisory_council_ribbon', expr: `'${v}'` })));
   assert.deepEqual(rows.map(r => r.optionValue), ['cac_group', 'cac_wing', 'cac_region', 'cac_national']);
 });
+
+// CAPR 39-3 20d: a bronze star for each cadet special activity after the first, five bronze become one silver.
+test('the fixture NCSAs (PJOC 2022, Cyber Defense 2023) and COS put two bronze stars on the special activity ribbon, however the table prints (E46)', () => {
+  const stars2 = [{ devices: ['star-bronze', 'star-bronze'], centered: false }];
+  const r = runImport(FIXTURE);
+  assert.equal(r.ribbon('cadet_special_activity_ribbon').value, 'bronze_star_2');
+  assert.deepEqual(r.devices('cadet_special_activity_ribbon'), stars2);
+  // Without COS, the two NCSAs alone: one bronze star.
+  const noCos = runImport(FIXTURE.replace('Cadet Officers School (COS) 15 Jun 2024\n', ''));
+  assert.deepEqual(noCos.devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze'], centered: false }]);
+  // The PDF path joins each page's text with spaces: one line.
+  assert.deepEqual(runImport(FIXTURE.replace(/\n/g, ' ')).devices('cadet_special_activity_ribbon'), stars2, 'PDF text on one line');
+  // Rows that name the activity without the word NCSA.
+  const bare = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC)', 'Pararescue Orientation Course').replace('NCSA Cyber Defense', 'Cyber Defense Training Academy');
+  assert.deepEqual(runImport(bare).devices('cadet_special_activity_ribbon'), stars2, 'activity names without NCSA');
+  // A report with no Encampments table: the Cadet Training table still ends at the next heading.
+  const noEncampments = FIXTURE.replace(/Encampments\n(?:.*Encampment.*\n)+/, '');
+  assert.deepEqual(runImport(noEncampments).devices('cadet_special_activity_ribbon'), stars2, 'no Encampments section');
+  // A heading run into the first row, and a staff row for the same activity and year: still one credit each.
+  const staff = FIXTURE.replace('Activity Date Completed\n', 'Activity Date Completed ').replace('NCSA Cyber Defense 12 Jul 2023', 'NCSA Cyber Defense 12 Jul 2023\nNCSA Cyber Defense Staff 20 Jul 2023');
+  assert.deepEqual(runImport(staff).devices('cadet_special_activity_ribbon'), stars2, 'staff row collapses');
+});
+
+test('every cadet special activity value resolves to a real option with that activity count (E46)', () => {
+  const entries = [];
+  for(let n = 1; n <= 12; n++) entries.push({ id: 'cadet_special_activity_ribbon', expr: `chooseCadetSpecialActivityValue(${n})`, n });
+  for(const row of importValueResolutions(entries)){
+    const devices = assertResolvesToCount(row, row.n);
+    if(row.n === 7) assert.deepEqual(devices, ['star-silver', 'star-bronze'], 'seven activities: silver star and one bronze');
+  }
+});

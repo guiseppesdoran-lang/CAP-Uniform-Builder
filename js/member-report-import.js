@@ -285,15 +285,12 @@ function extractDisasterReliefFromReport(text){
   return count ? { count, hasV, value:chooseDisasterReliefValue(count, hasV) } : null;
 }
 
+// CAPR 39-3 20d (data/ribbon-awards.js: stars, one per activity): a bronze star for each activity after the
+// first, five bronze becoming one silver. The value names the stars, so it resolves for any count (it used to
+// stop at eight, and its seven- and eight-activity values matched no picker option and showed a bare ribbon).
 function chooseCadetSpecialActivityValue(count){
   if(count <= 1) return 'earned';
-  if(count === 2) return 'bronze_star_1';
-  if(count === 3) return 'bronze_star_2';
-  if(count === 4) return 'bronze_star_3';
-  if(count === 5) return 'bronze_star_4';
-  if(count === 6) return 'silver_star_1';
-  if(count === 7) return 'silver_star_bronze_star';
-  return 'silver_star_two_bronze_stars';
+  return importedAdditionalAwardValue(count, 'star');
 }
 
 // CAPR 39-3 9f (data/ribbon-awards.js levelStars): a bronze clasp for each award after the first, five
@@ -475,8 +472,30 @@ function getCurrentProfileFromMemberReport(text){
   };
 }
 
+// The Cadet Training table: from its heading to the next section. The end is any of the headings that can
+// follow it, so a report without an Encampments section (or one whose PDF text runs the headings together)
+// does not read on into the awards.
+function getCadetTrainingSection(text){
+  return getReportSectionUntilAny(text, 'Cadet\\s+Training', [
+    'Encampments', 'Orientation\\s+Flights', 'Cadet\\s+Achievements', 'Decorations', 'Activity\\s*\\/\\s*Service\\s+Ribbon', 'Local\\s+Activities'
+  ]);
+}
+
+// National Cadet Special Activities a record may list without the "NCSA" word. IACE is left out: it has its own
+// ribbon. Each pattern names one parent activity, so a student row and a staff row of the same year are one credit.
+const IMPORTED_NCSA_ACTIVITY_PATTERNS = [
+  ['PJOC', /Pararescue|\bPJOC\b/i],
+  ['CYBER DEFENSE', /Cyber\s*Defense|\bCDTA\b/i],
+  ['NATIONAL FLIGHT ACADEMY', /National\s+Flight\s+Academy|\bNFA\b/i],
+  ['NATIONAL BLUE BERET', /Blue\s+Beret|\bNBB\b/i],
+  ['NATIONAL EMERGENCY SERVICES ACADEMY', /National\s+Emergency\s+Services\s+Academy|\bNESA\b/i],
+  ['ADVANCED TECHNOLOGIES ACADEMY', /Advanced\s+Technolog(?:y|ies)\s+Academy/i],
+  ['ENGINEERING TECHNOLOGIES ACADEMY', /Engineering\s+Technolog(?:y|ies)\s+Academy/i],
+  ['HONOR GUARD ACADEMY', /Honor\s+Guard\s+Academy|\bNHGA\b/i]
+];
+
 function extractCadetSpecialActivityCountFromReport(text){
-  const cadetTraining = getReportSection(text, 'Cadet Training', 'Encampments');
+  const cadetTraining = getCadetTrainingSection(text);
   if(!cadetTraining) return 0;
   const activityRe = /(.{0,120}?)\s+(\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+(\d{4}))/gi;
   const credits = new Set();
@@ -488,11 +507,18 @@ function extractCadetSpecialActivityCountFromReport(text){
     if(/Hawk Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i.test(title)) parent = 'HMRS';
     else if(/Civic Leadership Academy|\bCLA\b/i.test(title)) parent = 'CLA';
     else if(/Air Force Civil Engineering Academy|\bAFCEA\b/i.test(title)) parent = 'AFCEA';
-    else if(/Cadet Officers School|\bCOS\b/i.test(title)) parent = 'COS';
+    else if(/Cadet Officers? School|\bCOS\b/i.test(title)) parent = 'COS';
     else if(/Military Operations Training School|\bMOTS\b/i.test(title)) parent = 'MOTS';
-    else if(/\bNCSA\b|National Cadet Special Activit/i.test(title)){
-      parent = title.replace(/\b(?:Cadet|Student|Staff|Cadre|Air Staff)\b/gi, ' ')
-        .replace(/\s+/g, ' ').trim().toUpperCase();
+    else{
+      const known = IMPORTED_NCSA_ACTIVITY_PATTERNS.find(([, re]) => re.test(title));
+      if(known) parent = known[0];
+      else if(/\bNCSA\b|National Cadet Special Activit/i.test(title)){
+        // Key on the text from the NCSA word on, so table headings run into the first row do not split one
+        // activity into two credits.
+        parent = title.slice(title.search(/\bNCSA\b|National Cadet Special Activit/i))
+          .replace(/\b(?:Cadet|Student|Staff|Cadre|Air Staff)\b/gi, ' ')
+          .replace(/\s+/g, ' ').trim().toUpperCase();
+      }
     }
     // RCLS and RST are not standalone NCSA credits. Staff/cadre records for
     // the same parent event and year collapse into one activity credit.
@@ -536,7 +562,7 @@ function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership){
 }
 
 function hasCosGraduateCreditFromReport(text){
-  const cadetTraining = getReportSection(text, 'Cadet Training', 'Encampments');
+  const cadetTraining = getCadetTrainingSection(text);
   const activityLines = cadetTraining || String(text || '');
   return /\bCOS\b|Cadet\s+Officers?\s+School/i.test(activityLines);
 }
