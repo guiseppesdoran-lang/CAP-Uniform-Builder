@@ -977,7 +977,8 @@
     const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
     const ins = core.anchor(s, 'insignia_center');
     for(const side of ['right', 'left']){
-      const strap = (frames && frames[side]) || H.epauletFrame(ctx, side);
+      // The band's own frame where the sheet states it (bandFrame), so the view's seat is measured from the band's outer end as the strip's grade is.
+      const strap = (frames && frames[side]) || bandFrame(ctx, side, H.epauletFrame(ctx, side));
       if(!strap) continue;
       const f = levelFrame(strap, side);
       // Centre when the lower edge lies a half strap width above the strap's centre, then lifted until it clears the
