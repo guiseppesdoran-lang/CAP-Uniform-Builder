@@ -242,6 +242,13 @@
 
       <!-- Asset base path control removed from the general UI. The builder now uses the default images folder internally. -->
 
+      <!-- QUICK STRIP: the shirts where ribbons are optional, down to grade, nametag and wings (js/wiring.js CAPUBQuickStrip) -->
+      <section id="quickStripPanel" class="panelBlock hidden">
+        <label class="fieldLabel" for="quickStripBtn">Quick strip</label>
+        <div id="quickStripHint" class="hintText" aria-live="polite"></div>
+        <button id="quickStripBtn" class="ghost mt-6" type="button" aria-pressed="false" aria-describedby="quickStripHint">Quick strip</button>
+      </section>
+
       <!-- RIBBONS: PICKER BUTTON (NO SIDEBAR THUMBS) -->
       <section id="groupRibbons" class="panelBlock">
         <label class="fieldLabel">Ribbons / Mini Medals</label>

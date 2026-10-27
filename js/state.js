@@ -90,6 +90,10 @@ const State = {
     graduatedCommander:false
   },
 
+  // Quick strip (js/wiring.js CAPUBQuickStrip): null, or { uniform, snapshot } while a shirt is stripped to grade, nametag and
+  // wings; snapshot is the ribbon, badge, patch and cord selections Restore puts back. Saved with the setup.
+  quickStrip:null,
+
   // UNIVERSAL calibration (per-layer key)
 };
 
