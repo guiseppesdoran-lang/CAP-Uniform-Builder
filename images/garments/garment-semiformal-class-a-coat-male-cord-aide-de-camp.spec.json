@@ -1,6 +1,6 @@
 {
  "asset_id": "garment-semiformal-class-a-coat-male-cord-aide-de-camp",
- "name": "Men's cadet semi-formal coat: USAF aide de camp aiguillette cord (silver, single loop, chrome tip) (overlay, registered to garment-semiformal-class-a-coat-male)",
+ "name": "Men's cadet semi-formal coat: USAF aide de camp aiguillette cord (silver, one piece: two braided loops, two chrome tips) (overlay, registered to garment-semiformal-class-a-coat-male)",
  "size_in": {
   "w": 25.7745,
   "h": 32.5595
@@ -13,7 +13,7 @@
   3255.95
  ],
  "size_source": "estimated",
- "size_basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE9-ART 2: the aiguillette is drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README): from under the epaulet the braid continues as two draped loops hanging down the chest, a short one (legs 2.24 B apart, bottom 10.0 B below the epaulet edge) beside the run and a long one (the run is its right leg; legs 4.14 B apart, bottom 15.0 B), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in at the 0.36 in braid, B = 0.36 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offset, drape depths and widths are read in B from the same picture. The pendant is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+ "size_basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
  "anchors": {
   "top_center": [
    1288.72666,
@@ -72,16 +72,16 @@
    ]
   ],
   "aiguillette_loop": {
-   "x": 1972.45,
+   "x": 1963.11,
    "y": 343.15,
-   "w_in": 1.888,
-   "h_in": 6.166
+   "w_in": 1.957,
+   "h_in": 5.964
   },
   "aiguillette_pendant": {
    "x": 1926.28,
    "y": 343.15,
-   "w_in": 2.35,
-   "h_in": 6.166
+   "w_in": 2.325,
+   "h_in": 5.964
   },
   "aiguillette_tip": {
    "x": 1957.47,
@@ -112,7 +112,7 @@
    ]
   }
  },
- "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in); aiguillette_loop (the two braided loops), aiguillette_pendant (the whole drape: loops, thin cords, whippings, tips, the keep-clear box): {x,y} top-left of the box in user units, w_in/h_in in inches; aiguillette_tip: {x,y} the lower tip's point, head_x/head_y its cup end, len_in, hang_deg (degrees the run leans toward the chest where the pendant hangs from it; the free ends and tips hang parallel to the run), box = both tips' bounding box, tips = both tip points {x,y,head_x,head_y}",
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in); aiguillette_loop (the two braided loops down to the tips' depth, 15.7 B), aiguillette_pendant (the drape on the chest: loops, thin cords, whippings, tips, the keep-clear box; the long leg below it down to the armpit is a thin braid and not part of the box); `cord` (the run, the aiguillette's outer braid) is the polyline the engine fits to the shoulder outline and the armpit: {x,y} top-left of the box in user units, w_in/h_in in inches; aiguillette_tip: {x,y} the lower tip's point, head_x/head_y its cup end, len_in, hang_deg (degrees the run leans toward the chest where the pendant hangs from it; the free ends and tips hang parallel to the run), box = both tips' bounding box, tips = both tip points {x,y,head_x,head_y}",
  "overlay_of": "garment-semiformal-class-a-coat-male",
  "documented": [
   "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)",
@@ -122,7 +122,9 @@
   "cord thickness 0.36 in",
   "path along the armhole seam",
   "loop depths, widths and tip length read in braid thicknesses from one photograph of a USAF silver aiguillette on a service dress coat (assets/cords/ref/)",
-  "the drape hangs from where the braids leave the epaulet (0.45 in down the run from its shoulder end); the long loop leaves the run 12.9 B (4.6 in) below that point"
+  "the drape hangs from where the braids leave the epaulet (0.45 in down the run from its shoulder end)",
+  "the long loop's chest-side leg runs down to the armpit and closes under the arm along the body edge (estimated: the photograph is cropped above it)",
+  "the run is the sheet's cord landmark polyline (unchanged); the loops are measured from the run as the engine draws it (corners rounded, 1 in reach)"
  ],
  "fit": {
   "method": "original",
@@ -132,10 +134,11 @@
  "dimensions": {
   "braid_thickness_in": 0.36,
   "short_loop_bottom_b": 10,
-  "long_loop_bottom_b": 15.2,
+  "long_loop": "chest-side leg 4.14 B from the run down to the armpit, closing under the arm",
+  "long_loop_photo_bottom_b": 15.2,
   "free_ends_b": 3.9,
   "tip_length_in": 1.15,
   "tip_length_b": 3.2,
-  "pendant_drop_in": 6.17
+  "pendant_drop_in": 5.96
  }
 }
