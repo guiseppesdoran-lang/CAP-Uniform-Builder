@@ -873,6 +873,45 @@
   // (no sleeve) is drawn by no code at all: the sheet's own band shows. Returns each side's grade distance from the strap's outer end, the seat the view from
   // above beside the figure keeps (epauletViews).
   const EDGE_STRIP_THICK = 0.5;
+  // The strap's frame from the sheet's own statement of the band: epaulet_axis.<side> p1 (the band's outer end, centre) and p2 (its collar end, the point), user units of 0.01 in, with
+  // edge_thickness_in. The band's centre line is that axis exactly (the polygon's smallest-rectangle fit steps a quarter of a degree and counts the point), so the strip, centred on it,
+  // lies on the band to the drawing's accuracy. A sheet that states no axis or no thickness keeps the polygon's frame. `band: true` marks the frame as the band's own.
+  function bandFrame(ctx, side, f){
+    const axes = ctx.base && ctx.base.landmarks && ctx.base.landmarks.epaulet_axis, ax = axes && axes[side];
+    if(!f || !ax || !Array.isArray(ax.p1) || !Array.isArray(ax.p2) || (ax.edge_thickness_in == null && !(axes.edge_thickness_in > 0))) return f;
+    const outer = { x: ax.p1[0] / 100, y: ax.p1[1] / 100 }, neck = { x: ax.p2[0] / 100, y: ax.p2[1] / 100 };
+    const len = Math.hypot(neck.x - outer.x, neck.y - outer.y);
+    if(!(len > 1)) return f;
+    const axis = { x: (neck.x - outer.x) / len, y: (neck.y - outer.y) / len };
+    let normal = { x: axis.y, y: -axis.x };
+    if(normal.y > 0) normal = { x: -normal.x, y: -normal.y };
+    const frame = { axis, normal, outer, neck, length: len };
+    // A band that follows a curved shoulder (the overblouse's, 72 points) is met by a straight strip along the band's own centre line over the strip's length, a least-squares line through
+    // the centre of the band's width at stations along it, not along the chord of its two ends.
+    if(f.poly.length > 8){
+      const inPoly = q => { let c = false; for(let i = 0, j = f.poly.length - 1; i < f.poly.length; j = i++){ const a = f.poly[i], b = f.poly[j]; if((a.y > q.y) !== (b.y > q.y) && q.x < (b.x - a.x) * (q.y - a.y) / (b.y - a.y) + a.x) c = !c; } return c; };
+      const span = Math.min(len * EDGE_ON_COVER, 3.9), pts = [];
+      for(let st = 0.1; st <= span; st += 0.1){
+        const base = { x: outer.x + axis.x * st, y: outer.y + axis.y * st };
+        let up = 0, down = 0;
+        while(up < 1 && inPoly({ x: base.x + normal.x * (up + 0.01), y: base.y + normal.y * (up + 0.01) })) up += 0.01;
+        while(down < 1 && inPoly({ x: base.x - normal.x * (down + 0.01), y: base.y - normal.y * (down + 0.01) })) down += 0.01;
+        if(up + down > 0.1) pts.push({ x: base.x + normal.x * (up - down) / 2, y: base.y + normal.y * (up - down) / 2 });
+      }
+      if(pts.length >= 5){
+        const n = pts.length, mx = pts.reduce((t, q) => t + q.x, 0) / n, my = pts.reduce((t, q) => t + q.y, 0) / n;
+        let sxx = 0, sxy = 0; for(const q of pts){ sxx += (q.x - mx) * (q.x - mx); sxy += (q.x - mx) * (q.y - my); }
+        const slope = sxy / (sxx || 1), ax2 = { x: 1 / Math.hypot(1, slope), y: slope / Math.hypot(1, slope) };
+        const dir = ax2.x * axis.x + ax2.y * axis.y < 0 ? { x: -ax2.x, y: -ax2.y } : ax2;
+        // the fitted line through the centres, its outer end where the band's outer end lies along it
+        const t0 = (outer.x - mx) * dir.x + (outer.y - my) * dir.y, o2 = { x: mx + dir.x * t0, y: my + dir.y * t0 };
+        frame.axis = dir; frame.outer = o2; frame.neck = { x: o2.x + dir.x * len, y: o2.y + dir.y * len };
+        frame.normal = { x: dir.y, y: -dir.x }; if(frame.normal.y > 0) frame.normal = { x: -frame.normal.x, y: -frame.normal.y };
+      }
+    }
+    return Object.assign({}, f, frame, { width: edgeStripThickness(ctx, side), center: { x: (frame.outer.x + frame.neck.x) / 2, y: (frame.outer.y + frame.neck.y) / 2 },
+      deg: Math.round((90 + Math.atan2(frame.axis.y, frame.axis.x) * 180 / Math.PI) * 100) / 100, band: true });
+  }
   function edgeStripThickness(ctx, side){
     const ax = ctx.base && ctx.base.landmarks && ctx.base.landmarks.epaulet_axis;
     const v = ax && ((ax[side] && ax[side].edge_thickness_in) != null ? ax[side].edge_thickness_in : ax.edge_thickness_in);
@@ -886,7 +925,7 @@
     const gs = gradeId && ctx.has(gradeId) ? await ctx.spec(gradeId) : null;
     const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
     for(const side of ['right', 'left']){
-      const f = H.epauletFrame(ctx, side);
+      const f = bandFrame(ctx, side, H.epauletFrame(ctx, side));
       if(!f) continue;
       const T = edgeStripThickness(ctx, side);
       // The strip is the sleeve's own length (the art's height) over at most EDGE_ON_COVER of the strap landmark's length, so a short strap never gets a strip past its neck end.
@@ -898,8 +937,9 @@
       const lift = f.width / 2 - T / 2;
       const c0 = { x: along.x + f.normal.x * lift, y: along.y + f.normal.y * lift };
       const upper = bandEdge(f, c0, T / 2, half);
+      // A sheet that states the band's own axis and thickness (bandFrame) draws the strap as that band on the shoulder line: the strip lies exactly on it, nothing to lower (a straight band; the overblouse's band follows the curved shoulder, which a straight strip meets on average).
       const clear = shoulderClearance(f, upper[0], upper[1]);
-      const dy = Number.isFinite(clear.mean) ? clear.mean : 0;
+      const dy = f.band ? 0 : (Number.isFinite(clear.mean) ? clear.mean : 0);
       // The strip moves across the strap, not straight down, by the amount that lowers it dy: its outer end stays flush with the strap's along the axis.
       const m = Math.abs(f.normal.y) > 0.2 ? dy / f.normal.y : 0;
       const c = { x: c0.x + f.normal.x * m, y: c0.y + f.normal.y * m };
