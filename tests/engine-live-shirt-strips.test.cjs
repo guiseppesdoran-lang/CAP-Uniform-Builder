@@ -147,7 +147,7 @@ async function checkStrip(scene, sheet, side, tag, rank, cloth, thickWanted, st)
   }
   // The CAP lettering is on the strip, at its collar end, and the grade stands 5/8 in from the outer end clear of it.
   assert.ok(!(strip.hideGroups || []).includes('cap'), `${tag}: the sleeve's CAP lettering is not hidden`);
-  assert.deepEqual(strip.hideGroups, ['grade'], `${tag}: only the art's own grade is left off (it is drawn foreshortened)`);
+  assert.deepEqual(strip.hideGroups, ['grade', 'star1', 'star2', 'star3'], `${tag}: only the art's own grade, in whichever group the sleeve draws it (LIVE11-1), is left off (it is drawn foreshortened)`);
   const capAnchor = sleeve.anchors.cap_center, kLen = strip.h / sleeve.h;
   const capAlong = len - capAnchor.y * kLen;       // the art's top is the collar end
   assert.ok(capAlong > len / 2 && capAlong < len, `${tag}: the CAP lettering is at the collar end (${capAlong.toFixed(2)} of ${len.toFixed(2)} in)`);
@@ -253,6 +253,42 @@ test('the Class A officers\' strip carries the sleeve\'s CAP lettering too, at i
     for(const side of ['right', 'left']){
       const strip = cadet.layers.find(l => l.key === `epaulet:${side}`);
       assert.ok(strip && /^garment-blues-shoulder-board-top-/.test(strip.id) && !strip.hideGroups && !strip.onlyGroups, `${gender} ${side}: the whole board, with its crest, is the strip`);
+    }
+  }
+});
+
+// LIVE11-1 (Ethan, on the aviator shirt with a Major General: "theres 4 stars here"): the Brigadier and Major General sleeves draw their stars as groups star1 / star2, with no
+// `grade` group, so hiding `grade` left them on the strip beside the grade the engine draws. For every sleeve asset the groups left visible once the grade groups are hidden are cloth,
+// the lace edge and the CAP lettering only.
+test('every epaulet sleeve asset: hiding the grade groups leaves only the cloth, the lace edge and the CAP lettering visible (LIVE11-1)', () => {
+  const HIDDEN = ['grade', 'star1', 'star2', 'star3'];
+  const sleeves = manifest.assets.filter(a => /^rank-epaulet-sleeve-/.test(a.id));
+  assert.ok(sleeves.length >= 19, 'the sleeve assets are in the manifest');
+  for(const a of sleeves){
+    const svg = fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8');
+    // The top-level groups of the art, by their suffix after `<asset>__`.
+    const tops = []; let depth = 0;
+    for(const m of svg.matchAll(/<(\/?)g\b([^>]*?)(\/?)>/g)){
+      if(m[1]){ depth--; continue; }
+      const id = /\bid="([^"]*)"/.exec(m[2]);
+      if(depth === 0 && id) tops.push(id[1].replace(a.id + '__', ''));
+      if(!m[3]) depth++;
+    }
+    const visible = tops.filter(n => !HIDDEN.includes(n));
+    for(const n of visible) assert.ok(['cloth', 'lace__edge', 'cap'].includes(n), `${a.id}: the group ${n} stays visible with the grade hidden`);
+    assert.ok(visible.includes('cloth') && visible.includes('cap'), `${a.id}: cloth and CAP remain`);
+  }
+});
+
+test('Major and Brigadier General on the shirts: the strip hides the art\'s own stars and carries one drawn grade (LIVE11-1)', async () => {
+  for(const c of [CASES[0], CASES[3], CASES[1]]){
+    for(const rank of ['Maj Gen', 'Brig Gen']){
+      const scene = await compose(c, 'senior', rank);
+      for(const side of ['right', 'left']){
+        const strip = scene.layers.find(l => l.key === `epaulet:${side}`);
+        assert.ok(strip.hideGroups.includes('star1') && strip.hideGroups.includes('star2'), `${c.name} ${rank} ${side}`);
+        assert.equal(scene.layers.filter(l => l.key === `grade:edge-${side}`).length, 1);
+      }
     }
   }
 });

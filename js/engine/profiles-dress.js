@@ -753,6 +753,12 @@
   // Grades the sleeve art draws turned a quarter turn (bars and stripes lie across the strap).
   const ACROSS_GRADES = new Set(['captain', 'first-lieutenant', 'second-lieutenant', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer']);
 
+  // Every top-level group an epaulet sleeve asset can carry its own grade in: the lieutenants' to colonels' and the cadet officers' sleeves have `grade`; the gray
+  // Brigadier and Major General sleeves draw their stars as `star1` (and `star2`) with no `grade` group. A sleeve placed with its grade hidden (the strips on the shoulder, the
+  // mirrored view from above, where the grade is drawn separately) hides all of them, so no star of the art's own shows beside the drawn one (LIVE11-1, Ethan on the
+  // aviator shirt with a Major General: "theres 4 stars here"). Everything else a sleeve draws is cloth, the lace edge and the CAP lettering.
+  const SLEEVE_GRADE_GROUPS = ['grade', 'star1', 'star2', 'star3'];
+
   // The grade a member wears on an epaulet sleeve as its own asset (miniature metal for cadet
   // officers, embroidered thread for officers), or null.
   function epauletGradeId(g){
@@ -943,7 +949,7 @@
       // The strip moves across the strap, not straight down, by the amount that lowers it dy: its outer end stays flush with the strap's along the axis.
       const m = Math.abs(f.normal.y) > 0.2 ? dy / f.normal.y : 0;
       const c = { x: c0.x + f.normal.x * m, y: c0.y + f.normal.y * m };
-      await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: ['grade'], z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
+      await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
         title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
       stripShading(ctx, side, c, f.axis, f.normal, len, T, 0, Z.epauletLayer + 0.6);
       const end = { x: c.x - f.axis.x * half, y: c.y - f.axis.y * half };
@@ -998,7 +1004,7 @@
         c = { x: c.x + f.axis.x * shift, y: c.y };
       }
       const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);
-      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: ['grade'] } : {}));
+      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: SLEEVE_GRADE_GROUPS } : {}));
       if(mirror){
         // The sleeve's insignia point, turned with the sleeve about its centre.
         const v = core.rotatePoint({ x: c.x + (ins.x - s.w / 2), y: c.y + (ins.y - s.h / 2) }, c, f.deg);
