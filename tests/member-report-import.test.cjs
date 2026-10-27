@@ -121,3 +121,90 @@ test('the full import result list', t => {
   t.diagnostic(list.join('\n'));
   assert.ok(list.length >= 20);
 });
+
+// Every value the importer can hand the ribbon picker must land on a real option of that ribbon, with the award
+// count and modifiers it stands for. A value that matched no option used to fall back to the basic ribbon and drop
+// its devices (LIVE12 E42: four Commander's Commendation Awards showed as a bare ribbon).
+function importValueResolutions(entries){
+  const { context, referenceErrors } = loadPageScripts();
+  assert.deepEqual(referenceErrors, []);
+  return JSON.parse(vm.runInContext(`(function(entries){
+    return JSON.stringify(entries.map(e => {
+      const value = (0, eval)(e.expr);
+      const option = findImportedRibbonOption(e.id, value);
+      const values = getRibbonAwardOptions(e.id).filter(o => o && o.value).map(o => o.value);
+      return { ...e, value, optionValue: option && option.value, optionLabel: option && option.label, real: !!option && values.includes(option.value) };
+    }));
+  })`, context)(entries));
+}
+
+function assertResolvesToCount(row, count, modifiers=[]){
+  const where = `${row.id} ${row.expr} -> ${row.value} -> ${row.optionValue} "${row.optionLabel}"`;
+  assert.ok(row.real, `${where}: not an option of the ribbon`);
+  assert.equal(RA.readCount(row.id, row.optionValue, row.optionLabel), count, `${where}: award count`);
+  const devices = RA.resolve(row.id, { awardValue: row.optionValue, awardLabel: row.optionLabel, membership: 'cadet' }).flatMap(p => p.devices.map(short));
+  for(const [device, present] of modifiers) assert.equal(devices.includes(device), present, `${where}: ${device} ${present ? 'missing' : 'unexpected'} (${devices.join('+')})`);
+  return devices;
+}
+
+test('every count-based value the importer returns resolves to a real option with that award count (E42)', () => {
+  const entries = [];
+  for(let n = 1; n <= 9; n++){
+    for(const level of ['wing', 'region', 'national', 'national_region']){
+      if(level === 'national_region' && n < 2) continue;
+      entries.push({ id: 'commander_commendation_award', expr: `chooseCommandersCommendationValue('${level}', ${n})`, n, level });
+    }
+    for(const id of ['cap_achievment_award', 'exceptional_service_award', 'meritorious_service_award'])
+      entries.push({ id, expr: `chooseSpecialRibbonValueByAwardCount('${id}', ${n})`, n });
+    entries.push({ id: 'lifesaving_award', expr: `chooseLifesavingValue(${n})`, n });
+    entries.push({ id: 'encampment_ribbon', expr: `chooseEncampmentValue(${n})`, n });
+    entries.push({ id: 'community_service_ribbon', expr: `chooseCommunityServiceValue(${n})`, n });
+    entries.push({ id: 'search_find_ribbon', expr: `'find_${n}'`, n });
+  }
+  for(const row of importValueResolutions(entries)){
+    const mods = row.id === 'commander_commendation_award'
+      ? [['star-bronze', /region/.test(row.level)], ['star-silver', /national/.test(row.level)]]
+      : [];
+    const devices = assertResolvesToCount(row, row.n, mods);
+    if(row.id === 'commander_commendation_award' && row.n === 4 && row.level === 'wing'){
+      assert.deepEqual(devices, ['clasp-bronze', 'clasp-bronze', 'clasp-bronze'], 'four wing awards: three bronze clasps');
+    }
+    if(row.id === 'commander_commendation_award' && row.n === 7 && row.level === 'wing'){
+      assert.deepEqual(devices, ['clasp-silver', 'clasp-bronze'], 'seven awards: a silver clasp for five, one bronze');
+    }
+  }
+});
+
+test('the level-named values the importer returns land on their own option, not the basic ribbon (E42)', () => {
+  const rows = importValueResolutions([
+    ...[2, 5, 10, 15, 20, 25].map(y => ({ id: 'red_service_ribbon', expr: `chooseRedServiceValueFromYears(${y})`, want: new RegExp(`^${y} Years$`) })),
+    ...[['UNIT', /^Squadron\/CC$/], ['GROUP', /^Group\/CC$/], ['WING', /^Wing\/CC$/], ['REGION', /^Region\/CC$/], ['NATIONAL', /^National\/CC$/]]
+      .map(([e, want]) => ({ id: 'cap_command_service_ribbon', expr: `getCommandServiceRibbonValueForCommanderEchelon('${e}')`, want: want.source })),
+    { id: 'mitchell_award', expr: `'earned_cos_star'`, want: '^Earned \\+ COS graduate$' }
+  ]);
+  for(const row of rows){
+    assert.ok(row.real, `${row.id} ${row.value}: not an option`);
+    assert.match(row.optionLabel, new RegExp(row.want.source || row.want), `${row.id} ${row.value} -> "${row.optionLabel}"`);
+  }
+});
+
+test("four Commander's Commendation Award rows are the 4th award, three bronze clasps, however the row is printed (E42)", () => {
+  const without = FIXTURE.replace("Commander's Commendation Award (Region) 04 Oct 2024\n", '');
+  const four = rows => without.replace('Achievement Award 01 Feb 2022', rows.join('\n') + '\nAchievement Award 01 Feb 2022');
+  const dates = ['04 Oct 2021', '04 Oct 2022', '04 Oct 2023', '04 Oct 2024'];
+  for(const label of ["Commander's Commendation Award (Wing)", "Commander's Commendation Award", 'Commander’s Commendation Award',
+    'Commanders Commendation Award', "Commanders' Commendation Award (Wing)", 'Commander`s Commendation Award - Wing', "COMMANDER'S COMMENDATION AWARD (WING)"]){
+    const r = runImport(four(dates.map(d => `${label} ${d}`)));
+    assert.equal(r.ribbon('commander_commendation_award')?.value, 'wing_bronze_clasp_3', label);
+    assert.match(r.selected.commander_commendation_award.awardLabel, /^4th Award$/, label);
+    assert.deepEqual(r.devices('commander_commendation_award'), [{ devices: ['clasp-bronze', 'clasp-bronze', 'clasp-bronze'], centered: false }], label);
+  }
+  // Mixed levels: all four rows are awards of the one ribbon; the region award adds its bronze star.
+  const mixed = runImport(four(["Commander's Commendation Award (Wing) 04 Oct 2021", "Commander's Commendation Award (Wing) 04 Oct 2022",
+    "Commander's Commendation Award (Region) 04 Oct 2023", "Commander's Commendation Award (Wing) 04 Oct 2024"]));
+  assert.equal(mixed.selected.commander_commendation_award.awardLabel, '4th Award (Region Cmdr)');
+  assert.deepEqual(mixed.devices('commander_commendation_award'), [{ devices: ['star-bronze', 'clasp-bronze', 'clasp-bronze', 'clasp-bronze'], centered: false }]);
+  const both = runImport(four(["Commander's Commendation Award (National) 04 Oct 2023", "Commander's Commendation Award (Region) 04 Oct 2024"]));
+  assert.equal(both.selected.commander_commendation_award.awardLabel, '2nd Award (Region+Natl)');
+  assert.deepEqual(both.devices('commander_commendation_award'), [{ devices: ['star-silver', 'star-bronze', 'clasp-bronze'], centered: false }]);
+});

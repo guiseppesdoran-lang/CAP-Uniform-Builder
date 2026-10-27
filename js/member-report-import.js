@@ -151,10 +151,88 @@ function countOccurrences(text, pattern){
   return m ? m.length : 0;
 }
 
+// The award count a semantic import value stands for: "find_3", "hours_120", or the clasps/stars it names
+// beyond the first award ("bronze_clasp_3" is the 4th award, "silver_star_1_bronze_star_2" the 8th).
+// Level stars (the Commander's Commendation region/National star) carry no digit and so add nothing.
+function importedAwardCountFromValue(value){
+  const v = String(value || '');
+  let m;
+  if((m = /^find_(\d+)$/i.exec(v))) return Number(m[1]);
+  if((m = /^hours_(\d+)$/i.exec(v))) return Math.max(1, Math.round(Number(m[1]) / 60));
+  if((m = /^capub_total_(\d+)$/i.exec(v))) return Number(m[1]);
+  let additional = 0;
+  const re = /(silver|bronze)_(?:clasp|star)_(\d+)/gi;
+  while((m = re.exec(v))) additional += (m[1].toLowerCase() === 'silver' ? 5 : 1) * Number(m[2]);
+  return 1 + additional;
+}
+
+// The clasps (or stars) that mark `count` awards, as a value suffix: '' for one award, "bronze_clasp_3"
+// for four, "silver_clasp_1_bronze_clasp_1" for seven (CAPR 39-3 6b: five bronze become one silver).
+function importedAdditionalAwardValue(count, kind='clasp'){
+  const additional = Math.max(0, Math.floor(Number(count) || 1) - 1);
+  const silver = Math.floor(additional / 5), bronze = additional % 5;
+  return [silver ? `silver_${kind}_${silver}` : '', bronze ? `bronze_${kind}_${bronze}` : ''].filter(Boolean).join('_');
+}
+
+// Import values whose ribbon option is named by level rather than by count.
+const IMPORTED_RIBBON_VALUE_ALIASES = {
+  // The CAC level values (js/patches.js CAC_RIBBON_VALUE_BY_LEVEL) predate the 39-3 21j options, which
+  // are cac_group / cac_wing / cac_region / cac_national; without this every level fell back to Group.
+  cadet_advisory_council_ribbon: {
+    group:'cac_group', earned:'cac_group', wing_bronze_star:'cac_wing', region_silver_star:'cac_region', national_gold_star:'cac_national'
+  },
+  cap_command_service_ribbon: {
+    earned:/^Squadron\/CC$/i, group_bronze_star:/^Group\/CC$/i, wing_silver_star:/^Wing\/CC$/i,
+    region_gold_star:/^Region\/CC$/i, national_two_gold_stars:/^National\/CC$/i
+  }
+};
+
+// The modifiers an option label shows besides the count: the Presidential "V", the aircrew propeller,
+// the lifesaving star and the Commander's Commendation level stars.
+function importedOptionModifiers(id, text){
+  const t = String(text || '');
+  const out = [];
+  if(id === 'disaster_relief_ribbon' && /silver[_ ]v\b|silver_v|v[-_ ]device|w\/v\b/i.test(t)) out.push('v');
+  if(['search_find_ribbon','air_search_and_rescue_ribbon'].includes(id) && /prop|aircrew/i.test(t)) out.push('prop');
+  if(id === 'lifesaving_award' && /star/i.test(t)) out.push('star');
+  if(id === 'commander_commendation_award'){
+    if(/national|natl/i.test(t)) out.push('national');
+    if(/region/i.test(t)) out.push('region');
+  }
+  return out.sort().join('+');
+}
+
+// The real picker option an import value lands on. The picker's options are the McChord catalog
+// (mcchord_* values labelled "4th Award", "2nd with V-Device", "3rd Award (Region Cmdr)", "120 Hours"),
+// so a semantic value is matched by the award count and modifiers it stands for. An import value that
+// matched no option used to fall back to the basic ribbon, silently dropping its devices.
+function findImportedRibbonOption(id, value){
+  const options = typeof getRibbonAwardOptions === 'function' ? (getRibbonAwardOptions(id) || []) : [];
+  const usable = options.filter(o => o && o.value);
+  const exact = usable.find(o => o.value === value);
+  if(exact) return exact;
+  const alias = IMPORTED_RIBBON_VALUE_ALIASES[id]?.[value];
+  if(alias){
+    const found = usable.find(o => alias instanceof RegExp ? alias.test(String(o.label || '')) : o.value === alias);
+    if(found) return found;
+  }
+  const RA = globalThis.CAPUBRibbonAwards;
+  const semantic = String(value || '');
+  if(RA?.readCount && RA.FAMILIES?.[id] && !/^years_/.test(semantic)){
+    const count = importedAwardCountFromValue(semantic);
+    const wanted = importedOptionModifiers(id, semantic);
+    const found = usable.find(o => RA.readCount(id, o.value, String(o.label || '')) === count &&
+      importedOptionModifiers(id, String(o.label || '')) === wanted &&
+      !/additional ribbon/i.test(String(o.label || '')));
+    if(found) return found;
+  }
+  return typeof getRibbonSelectionOption === 'function' ? getRibbonSelectionOption(id, value) : null;
+}
+
 function selectImportedRibbon(id, value='earned'){
   if(!id) return;
   if(!State.ribbonSelections[id]) State.ribbonSelections[id] = { checked:false, devices:{}, awardValue:'', awardLabel:'' };
-  const option = getRibbonSelectionOption(id, value);
+  const option = findImportedRibbonOption(id, value);
   State.ribbonSelections[id].checked = true;
   State.ribbonSelections[id].awardValue = option?.value || value || 'earned';
   State.ribbonSelections[id].awardLabel = option?.label || 'Earned';
@@ -163,13 +241,11 @@ function selectImportedRibbon(id, value='earned'){
   enforceRibbonExclusions(id);
 }
 
+// A plain clasp ribbon: one bronze clasp per award after the first, five bronze becoming one silver
+// (CAPR 39-3 6b). The value names the clasps, so it resolves to the picker's "Nth Award" option for any count.
 function chooseSpecialRibbonValueByAwardCount(id, count){
-  const options = (RIBBON_SPECIAL_IMAGE_OPTIONS[id] || []).filter(o => o.value && o.value !== 'earned');
   if(count <= 1) return 'earned';
-
-  // Most special arrays are ordered by additional award count after the base option.
-  const idx = Math.max(0, count - 2);
-  return options[idx]?.value || options[options.length - 1]?.value || 'earned';
+  return importedAdditionalAwardValue(count, 'clasp');
 }
 
 function chooseCommunityServiceValue(count){
@@ -212,21 +288,20 @@ function chooseCadetSpecialActivityValue(count){
   return 'silver_star_two_bronze_stars';
 }
 
+// CAPR 39-3 9f (data/ribbon-awards.js levelStars): a bronze clasp for each award after the first, five
+// bronze becoming one silver (6b); a bronze star when an award was authorized by a region commander and
+// a silver star when by the National Commander, to the wearer's right of the clasps. `level` is the
+// highest level among the awards, or 'national_region' when both stars are earned.
 function chooseCommandersCommendationValue(level, count=1){
   const normalizedLevel = String(level || 'wing').toLowerCase();
-  const awardCount = Math.max(1, Number(count) || 1);
-  if(normalizedLevel === 'national'){
-    if(awardCount >= 3) return 'national_silver_star_bronze_clasp_2';
-    if(awardCount === 2) return 'national_silver_star_bronze_clasp_1';
-    return 'national_silver_star';
-  }
-  if(normalizedLevel === 'region'){
-    if(awardCount >= 2) return 'region_bronze_star_bronze_clasp_1';
-    return 'region_bronze_star';
-  }
-  if(awardCount >= 3) return 'wing_bronze_clasp_2';
-  if(awardCount === 2) return 'wing_bronze_clasp_1';
-  return 'earned';
+  const awardCount = Math.max(1, Math.floor(Number(count) || 1));
+  const clasps = importedAdditionalAwardValue(awardCount, 'clasp');
+  const prefix = normalizedLevel === 'national_region' ? 'national_silver_star_region_bronze_star'
+    : normalizedLevel === 'national' ? 'national_silver_star'
+    : normalizedLevel === 'region' ? 'region_bronze_star'
+    : '';
+  if(!prefix) return clasps ? `wing_${clasps}` : 'earned';
+  return clasps ? `${prefix}_${clasps}` : prefix;
 }
 
 function extractCommandersCommendationFromReport(text){
@@ -234,19 +309,23 @@ function extractCommandersCommendationFromReport(text){
     'Ribbons', 'Local Activities', 'Professional Development', 'Cadet Training'
   ]);
   const scope = decorations || String(text || '');
-  // The apostrophe is straight in an HTML copy and curly in a PDF export; some rows read "Commanders'".
-  const rowRe = /Commanders?['\u2018\u2019]s?\s+Commendation\s+Award(?:\s*\(\s*(National|Region|Wing)\s*\))?/gi;
+  // One row per award. The apostrophe is straight in an HTML copy and curly in a PDF export, and may be
+  // missing or doubled ("Commanders Commendation", "Commanders' Commendation"); the level may be printed
+  // in parentheses, after a dash, with "Level" or "Commander", or not at all (a wing award).
+  const rowRe = /\bCommanders?(?:\s*['‘’ʼ`´]\s*s?)?\s+Commendation(?:\s+(?:Award|Ribbon))?(?:\s*[(\-–:,]?\s*(National|Region|Wing)\b(?:\s+(?:Level|Commander|Cmdr|CC))?\s*\)?)?/gi;
   const rows = [];
   let match;
   while((match = rowRe.exec(scope))){
     rows.push({ level:(match[1] || 'wing').toLowerCase() });
   }
   if(!rows.length) return null;
-  const priority = { wing:1, region:2, national:3 };
-  const highestLevel = rows.reduce((best, row) =>
-    priority[row.level] > priority[best] ? row.level : best, 'wing');
-  const count = rows.filter(row => row.level === highestLevel).length;
-  return { level:highestLevel, count, value:chooseCommandersCommendationValue(highestLevel, count) };
+  // Every row is one award of the same ribbon, so all of them count toward the clasps; the level of the
+  // highest approving commander sets the star (both stars when region and National awards are on record).
+  const hasNational = rows.some(row => row.level === 'national');
+  const hasRegion = rows.some(row => row.level === 'region');
+  const level = hasNational && hasRegion ? 'national_region' : hasNational ? 'national' : hasRegion ? 'region' : 'wing';
+  const count = rows.length;
+  return { level, count, value:chooseCommandersCommendationValue(level, count) };
 }
 
 // CAPR 39-3 9h: the Certificate of Recognition for Lifesaving carries the Lifesaving Award ribbon (Attachment 2:
@@ -255,24 +334,12 @@ function extractCommandersCommendationFromReport(text){
 // names neither kind, so the import selects the ribbon and the clasps and leaves the star to the member.
 function chooseLifesavingValue(count){
   if(count <= 1) return 'earned';
-  if(count === 2) return 'bronze_clasp_1';
-  if(count === 3) return 'bronze_clasp_2';
-  if(count === 4) return 'bronze_clasp_3';
-  if(count === 5) return 'bronze_clasp_4';
-  if(count === 6) return 'silver_clasp_1';
-  if(count === 7) return 'silver_clasp_1_bronze_clasp_1';
-  return 'silver_clasp_1_bronze_clasp_2';
+  return importedAdditionalAwardValue(count, 'clasp');
 }
 
 function chooseEncampmentValue(count){
   if(count <= 1) return 'earned';
-  if(count === 2) return 'bronze_clasp_1';
-  if(count === 3) return 'bronze_clasp_2';
-  if(count === 4) return 'bronze_clasp_3';
-  if(count === 5) return 'bronze_clasp_4';
-  if(count === 6) return 'silver_clasp_1';
-  if(count === 7) return 'silver_clasp_1_bronze_clasp_1';
-  return 'silver_clasp_1_bronze_clasp_2';
+  return importedAdditionalAwardValue(count, 'clasp');
 }
 
 function importedBadgePriority(id){
@@ -383,10 +450,10 @@ function extractEncampmentCountFromReport(text){
     ? rest.slice(0, 'Encampments'.length + endMatch.index)
     : rest;
 
-  // Count only CAP-style dates in that section. Cap the result at 8 because the
-  // current dropdown only has images/options through encamp08.png.
+  // Count only CAP-style dates in that section: one per encampment. The picker's options run well past
+  // nine (the McChord catalog), so the count is not capped.
   const dates = section.match(/\b\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+\d{4}\b/gi) || [];
-  return Math.min(dates.length, 8);
+  return dates.length;
 }
 
 function getCurrentProfileFromMemberReport(text){
@@ -961,7 +1028,7 @@ function parseCapMemberReport(textRaw){
     result.ribbons.push({
       id:'commander_commendation_award',
       value:commandersCommendation.value,
-      reason:`${commandersCommendation.level[0].toUpperCase() + commandersCommendation.level.slice(1)} Commander's Commendation Award (${commandersCommendation.count} at this level)`
+      reason:`${commandersCommendation.count} Commander's Commendation Award record(s), highest level ${commandersCommendation.level.replace('national_region', 'National and Region')}`
     });
   }
 
