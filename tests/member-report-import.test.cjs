@@ -322,3 +322,16 @@ test('the import fills the first and last name from the General Information row,
   const heading = runImport(FIXTURE.replace('123456 MITCHELL, GUISEPPE ', '').replace('C/Col Guiseppe Mitchell', 'C/Lt Col Guiseppe Mitchell'));
   assert.deepEqual([heading.text.firstName, heading.text.lastName], ['Guiseppe', 'Mitchell']);
 });
+
+// CAPR 39-3 14j as data/ribbon-awards.js carries it: the Cadet Officer School star is worn on the Mitchell ribbon; only a
+// senior member who no longer wears the Mitchell moves it to the highest cadet program ribbon.
+test('a cadet with COS and the Eaker Award: the COS star is on the Mitchell, the Eaker is plain (E44 fact check)', () => {
+  const eaker = FIXTURE.replace('Achievement 11 - Amelia Earhart 04 Jun 2025', 'Achievement 11 - Amelia Earhart 04 Jun 2025\nAchievement 15 - Ira C. Eaker 01 Sep 2025');
+  const r = runImport(eaker);
+  assert.equal(r.ribbon('mitchell_award').value, 'earned_cos_star');
+  assert.equal(r.selected.mitchell_award.awardValue, 'earned_cos_star');
+  assert.equal(r.selected.mitchell_award.awardLabel, 'Earned + COS graduate');
+  assert.deepEqual(r.devices('mitchell_award'), [{ devices: ['star-silver'], centered: false }]);
+  assert.ok(r.selected.eaker_award, 'the Eaker imports');
+  assert.deepEqual(r.devices('eaker_award'), [{ devices: [], centered: false }], 'no COS star on a cadet Eaker');
+});
