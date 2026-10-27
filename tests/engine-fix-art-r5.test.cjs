@@ -113,17 +113,22 @@ test('the women\'s mess skirts have no full-width hem shadow at the old coat hem
 test('the women\'s mess tie tab is drawn under the blouse collar leaves, centred, and is the house tab size (CAPR 39-1 4.1.2.2.1; D19, 4d6678dd)', () => {
   const id = 'garment-mess-dress-female', svg = readSvg(id), spec = readSpec(id);
   const at = s => svg.indexOf(`id="${id}__${s}"`);
-  assert.ok(at('tie-tab') > 0 && at('blouse-collar-right') > at('tie-tab') && at('blouse-collar-left') > at('tie-tab'), 'the leaves are drawn after the tab');
+  // The blouse's collar is one shape since art 8ff5a28b (LIVE10: "one collar shape, tab hung from the leaf junction, 0.40 in higher"): the group blouse-collar, its leaves meeting at the junction where
+  // the tab hangs, drawn after the tab; the sheet states the tab as the landmark tie_tab (seven vertices: the inverted V, 2.7 x 1.6 in, its top edge at 2.80 in, the junction's height).
+  assert.ok(at('tie-tab') > 0 && at('blouse-collar') > at('tie-tab'), 'the leaves are drawn after the tab');
   const tab = spec.landmarks.tie_tab, xs = tab.map(p => p[0]), ys = tab.map(p => p[1]);
   const w = (Math.max(...xs) - Math.min(...xs)) / 100, h = (Math.max(...ys) - Math.min(...ys)) / 100, cx = (Math.max(...xs) + Math.min(...xs)) / 2 / 100;
   assert.ok(Math.abs(w - 2.7) < 0.02 && Math.abs(h - 1.6) < 0.02, `tab ${w} x ${h} in (was 4.5 x 4.27)`);
   assert.ok(Math.abs(cx - spec.size_in.w / 2) < 0.02, `tab centred: ${cx} vs ${spec.size_in.w / 2}`);
   assert.equal(spec.dimensions.tie_tab.size_source, 'estimated');
   // the tab's top edge is not above the leaves' inner meeting point (nothing shows above the leaves)
-  const leaf = svg.match(new RegExp(`id="${id}__blouse-collar-left" d="M[^"]*"`))[0].match(/-?\d*\.?\d+/g).map(Number);
+  const leaf = svg.match(new RegExp(`id="${id}__blouse-collar-body" d="M[^"]*"`))[0].match(/-?\d*\.?\d+/g).map(Number);
   const inner = []; for(let i = 0; i + 1 < leaf.length; i += 2) inner.push([leaf[i], leaf[i + 1]]);
-  const innerY = inner.find(p => Math.abs(p[0]) < 0.01 && p[1] > 2.5)[1] + 0.25;
+  const art = /__art" transform="translate\(([-\d.]+) ([-\d.]+)\)/.exec(svg), innerY = inner.find(p => Math.abs(p[0]) < 0.01 && p[1] > 2.5)[1] + Number(art[2]) / 100;
   assert.ok(Math.min(...ys) / 100 >= innerY - 0.011, `tab top ${Math.min(...ys) / 100} in, leaves meet at ${innerY} in`);
+  // The tab hangs from the junction: its top edge is at the junction's height (2.80 in, 0.40 in higher than the earlier 2.40) and the tab's own 7 vertices are the landmark's.
+  assert.ok(Math.abs(Math.min(...ys) / 100 - innerY) < 0.011 && Math.abs(innerY - 2.8) < 0.011, `tab top ${Math.min(...ys) / 100} in, junction ${innerY} in, both 2.80`);
+  assert.equal(tab.length, 7, 'the tab states its inverted-V outline');
 });
 
 // ---- 4. aviator shirts: the 3 1/2 in NCO chevron lies between the outline and the armhole seam -------------------------
