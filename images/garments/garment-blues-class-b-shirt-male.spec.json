@@ -474,6 +474,22 @@
    "knot_w_in": 1.81,
    "source": "LIVE9-ART 1: the numbers of the Class A coat sheet's own tie (make-blues-a.js, tie.js): knot 1.81 in wide, its shoulder 0.784 in below the apex, neck 1.00 in wide at 1.643 in and 1.13 in at 2.004 in, blade 2.24 in wide at 4.577 in; below that the blade widens to 3.0 in across (Fig 4.8 at the belt) over the rest of its length; the tip at 80 % of the buckle height (4.1.8.3). The apex is the collar junction J."
   },
+  "undershirt": {
+   "size_source": "estimated",
+   "point_y_in": 4.864,
+   "point_above_apex_in": 1,
+   "v_apex_y_in": 5.864,
+   "v_top_y_in": 0.054,
+   "v_top_half_width_in": 2.909,
+   "neckline_top_half_width_in": 2.007,
+   "band_in": 0.3,
+   "colours": {
+    "front": "#f4f3ef",
+    "rib": "#e6e5df",
+    "inside_back": "#d9d8d2"
+   },
+   "source": "LIVE11-ART 2 (Ethan, LIVE11-MASTER-3): CAPR 39-1 4.1.11.1.1 / 4.1.12.2 \"A V-neck or athletic style white undershirt will be worn under the shirt\"; the V-neck is drawn (named first). Group undershirt, first child of group collar (the open state), clipped to the traced open V; the V neckline point is 1.0 in above the V apex (the top button), its sides run to 0.69 x the V's top half-width at the top of the V, the neckband is a 0.30 in stroke. No dimension in the regulation: point height, width, band and the colours are estimates. The builder draws no skin, so the neckline's interior is the tee's inside back."
+  },
   "collar": {
    "size_source": "estimated",
    "junction_in": [
