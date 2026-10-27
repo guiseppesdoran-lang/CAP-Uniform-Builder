@@ -1842,7 +1842,9 @@
       await epauletEdgeGrades(ctx, g);
       await epauletViews(ctx, g);
     }else if(g.category === 'cadet-nco'){
-      await H.collarChevrons(ctx, g);
+      // On the collar of the state shown (H.collarPolygons reads ctx.collarState: the open pieces without the tie, the closed leaves with it; 4.2.5.1.1.5, 4.2.6.2.5, Figure A5-5). A short sheet
+      // with both collar states has its collar drawn again over the badges and ribbons (collarOverBadges below, Z.badge + 0.5), so the chevron worn on it lies above that, as on the Class B.
+      await H.collarChevrons(ctx, g, ctx.collarGroups ? { z: Z.badge + 0.6 } : undefined);
     }else if(g.category === 'senior-nco'){
       // 3 1/2 in chevrons only (4.2.5.1.1.3, 4.2.6.2.3).
       const id = G.seniorChevron(g, { size: '3.5' });
@@ -1896,7 +1898,14 @@
       b = Object.assign({}, b, { command: null });
     }
     await dressBadges(ctx, b, geo);
-    collarOverBadges(ctx, null);
+    // The collar lies over what reaches it (4.2.5.1.3.1, 4.2.6.2.7.1). The short sheets draw both collar states (art 66518f14, LIVE12-ART 1): the leaves of the state shown are drawn again over the
+    // badges and ribbons, as on the short Class B. Open: the group `collar` (the open pieces and the V). Closed: the tie and the closed group's named pieces (the back of the collar, the two leaves,
+    // the women's neck edge), not the whole group, which also holds a shirt-coloured cover of the open collar that would paint over a ribbon lying where the open pieces would be. The long sheets
+    // state no collar_states and have no collar layer to draw over a badge: their ribbons and devices are cut by the leaf polygons, as before.
+    const states = ctx.collarGroups;
+    collarOverBadges(ctx, !states ? null : ctx.collarState === 'closed'
+      ? ['tie', `${states.closed}-back`, `${states.closed}-right`, `${states.closed}-left`].concat(female ? ['neck-edge'] : [])
+      : [states.open]);
     // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3), is the sheet's own group `tie` (hidden above when the member turns it off, tieOn): worn with long sleeves, optional with short ones.
     // The sheets' separate -tie / -tie-tab overlays are the same shape and are no longer placed, so the tie is never drawn twice (LIVE8-3).
   }

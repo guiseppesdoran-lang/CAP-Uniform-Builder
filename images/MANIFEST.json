@@ -13261,10 +13261,18 @@
      1096.49
     ],
     "collar_insignia_right_center": [
+     1023.18,
+     514.07
+    ],
+    "collar_insignia_left_center": [
+     1466.13,
+     514.07
+    ],
+    "collar_closed_insignia_right_center": [
      1107.4,
      174.82
     ],
-    "collar_insignia_left_center": [
+    "collar_closed_insignia_left_center": [
      1381.89,
      174.82
     ]
@@ -13277,6 +13285,10 @@
     "epaulet_axis",
     "collar_right",
     "collar_left",
+    "collar_closed_right",
+    "collar_closed_left",
+    "collar_states",
+    "collar_open_neck",
     "tie",
     "sleeve_flat_view",
     "armhole_seam_right",
@@ -13513,10 +13525,18 @@
      1007.9
     ],
     "collar_insignia_right_center": [
+     1146.04,
+     484.92
+    ],
+    "collar_insignia_left_center": [
+     1599.03,
+     484.92
+    ],
+    "collar_closed_insignia_right_center": [
      1225.29,
      182.76
     ],
-    "collar_insignia_left_center": [
+    "collar_closed_insignia_left_center": [
      1519.77,
      182.76
     ]
@@ -13529,6 +13549,10 @@
     "epaulet_axis",
     "collar_right",
     "collar_left",
+    "collar_closed_right",
+    "collar_closed_left",
+    "collar_states",
+    "collar_open_neck",
     "tie",
     "sleeve_flat_view",
     "armhole_seam_right",
@@ -16979,7 +17003,9 @@
     "button_right_3",
     "button_left_1",
     "button_left_2",
-    "button_left_3"
+    "button_left_3",
+    "button_designs",
+    "button_design_default"
    ],
    "has_spec": true,
    "issues": []
@@ -17057,6 +17083,14 @@
     "rank_slot_left_center": [
      2171.92,
      403.05
+    ],
+    "shoulder_board_right_button_center": [
+     907.1,
+     315.89
+    ],
+    "shoulder_board_left_button_center": [
+     1927,
+     311.33
     ]
    },
    "landmarks": [
@@ -17065,7 +17099,9 @@
     "rank_slot_right_frame",
     "shoulder_board_left",
     "rank_slot_left",
-    "rank_slot_left_frame"
+    "rank_slot_left_frame",
+    "button_designs",
+    "button_design_default"
    ],
    "has_spec": true,
    "issues": []
@@ -17204,7 +17240,9 @@
     "button_right_3",
     "button_left_1",
     "button_left_2",
-    "button_left_3"
+    "button_left_3",
+    "button_designs",
+    "button_design_default"
    ],
    "has_spec": true,
    "issues": []
@@ -36630,6 +36668,14 @@
     "rank_slot_left_center": [
      2171.92,
      403.05
+    ],
+    "shoulder_board_right_button_center": [
+     907.1,
+     315.89
+    ],
+    "shoulder_board_left_button_center": [
+     1927,
+     311.33
     ]
    },
    "landmarks": [
@@ -36638,7 +36684,9 @@
     "rank_slot_right_frame",
     "shoulder_board_left",
     "rank_slot_left",
-    "rank_slot_left_frame"
+    "rank_slot_left_frame",
+    "button_designs",
+    "button_design_default"
    ],
    "has_spec": true,
    "issues": []

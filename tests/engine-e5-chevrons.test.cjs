@@ -251,10 +251,16 @@ const COLLAR_CASES = [
   ['blues_b', 'female', { sleeve: 'short', tie: true }, 'garment-blues-class-b-blouse-female', 2, 3, false],
   ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 2, 3, false],
   // The aviator sheets' pointed collar (art bb1b47a0, LIVE8-1): the polygon is the leaf alone, vertices top end 0, collar point 1, the leading edge's other end 2 (the knot's shoulder on the men's, the front of
-  // the neck on the women's), then the neck edge as a curve back to the top end. No roll line lies inside it, so the whole polygon is the leaf, on the short sheets and the long.
-  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, false],
+  // the neck on the women's), then the neck edge as a curve back to the top end. No roll line lies inside it, so the whole polygon is the leaf: the long sheets, and the short sheets' closed leaves
+  // (collar_closed_<side>, with the tie on).
+  // The short sheets' open collar (art 66518f14, LIVE12-ART 1; the default, tie off): each front is one piece, top end 0, collar point P 1, the collar's inner end N1 2, the revers top N2 3, the break B 4,
+  // X on the roll line 5. The collar is the triangle top end / P / N1 (the fold line top end to N1 between it and the revers), its leading edge P to N1; the revers lies below that edge, so the leaf the
+  // chevron is centred on is the triangle (roll = true: the leaf is [vertex 0, collar point, roll end]).
+  ['aviator', 'male', { sleeve: 'short' }, 'garment-aviator-shirt-male', 1, 2, true],
+  ['aviator', 'male', { sleeve: 'short', tie: true }, 'garment-aviator-shirt-male', 1, 2, false],
   ['aviator', 'male', { sleeve: 'long' }, 'garment-aviator-shirt-male-long', 1, 2, false],
-  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, false],
+  ['aviator', 'female', { sleeve: 'short' }, 'garment-aviator-shirt-female', 1, 2, true],
+  ['aviator', 'female', { sleeve: 'short', tie: true }, 'garment-aviator-shirt-female', 1, 2, false],
   ['aviator', 'female', { sleeve: 'long' }, 'garment-aviator-shirt-female-long', 1, 2, false],
   ['aviator', 'female', { sleeve: 'short', femaleTop: 'overblouse' }, 'garment-overblouse-female', 4, 3, false],
   ['aviator', 'female', { sleeve: 'long', femaleTop: 'overblouse' }, 'garment-overblouse-female-long', 4, 3, false]
@@ -379,15 +385,18 @@ test('the collar chevron turn has one sign convention on every sheet: the wearer
 
 // The vertex layout the cases above name is what the engine finds on its own by geometry (no vertex indices in the engine): of the leaf's edges 1 in or longer, the one whose outward normal points most
 // nearly down; its end farther from the centre line is the collar point. On the Class B sheets that is collar point -> junction at the knot (LIVE9-ART 1), on every other sheet as before.
-test('the engine finds each collar leaf\'s leading edge between the vertices the cases name, and the leaf is the whole polygon (Figure A5-5)', async () => {
-  for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
+// The leaf is the whole polygon, except on the short aviator sheets' open collar (roll = true), where the polygon is the collar and the revers below it and the leaf is the collar's triangle: top end
+// (vertex 0), collar point, roll end (art 66518f14, LIVE12-ART 1).
+test('the engine finds each collar leaf\'s leading edge between the vertices the cases name, and the leaf is the whole polygon, or the collar\'s triangle above the revers (Figure A5-5)', async () => {
+  for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
     const spec = await store.load(garment);
     for(const poly of collarPolygonsOf(garment, spec, opt)){
       const edge = P.helpers.collarLeadingEdge(poly, spec.w / 2);
       assert.ok(edge, garment);
       assert.equal(edge.collarPoint, poly[iPoint], `${garment}: collar point is vertex ${iPoint}`);
       assert.equal(edge.rollEnd, poly[iRoll], `${garment}: roll end is vertex ${iRoll}`);
-      assert.equal(P.helpers.collarLeaf(poly, edge), poly, `${garment}: the polygon is the leaf`);
+      if(roll) assert.deepEqual(P.helpers.collarLeaf(poly, edge), [poly[0], poly[iPoint], poly[iRoll]], `${garment}: the leaf is the collar's triangle, top end, collar point, roll end`);
+      else assert.equal(P.helpers.collarLeaf(poly, edge), poly, `${garment}: the polygon is the leaf`);
     }
   }
 });

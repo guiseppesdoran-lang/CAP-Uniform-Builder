@@ -104,10 +104,18 @@
    1096.49
   ],
   "collar_insignia_right_center": [
+   1023.18,
+   514.07
+  ],
+  "collar_insignia_left_center": [
+   1466.13,
+   514.07
+  ],
+  "collar_closed_insignia_right_center": [
    1107.4,
    174.82
   ],
-  "collar_insignia_left_center": [
+  "collar_closed_insignia_left_center": [
    1381.89,
    174.82
   ]
@@ -215,6 +223,58 @@
     52.04
    ],
    [
+    674.65,
+    557.01
+   ],
+   [
+    967.66,
+    529.15
+   ],
+   [
+    972.65,
+    593.85
+   ],
+   [
+    1309.82,
+    742.29
+   ],
+   [
+    1244.65,
+    610.06
+   ]
+  ],
+  "collar_left": [
+   [
+    1519.65,
+    52.04
+   ],
+   [
+    1814.65,
+    557.01
+   ],
+   [
+    1521.65,
+    529.15
+   ],
+   [
+    1516.66,
+    593.85
+   ],
+   [
+    1179.49,
+    742.29
+   ],
+   [
+    1244.65,
+    610.06
+   ]
+  ],
+  "collar_closed_right": [
+   [
+    969.65,
+    52.04
+   ],
+   [
     924.65,
     390.04
    ],
@@ -263,7 +323,7 @@
     63.88
    ]
   ],
-  "collar_left": [
+  "collar_closed_left": [
    [
     1519.65,
     52.04
@@ -315,6 +375,118 @@
    [
     1485.7,
     63.88
+   ]
+  ],
+  "collar_states": {
+   "open": "collar",
+   "closed": "collar-closed",
+   "default": "open",
+   "note": "short sleeve: the open collar (top button undone, no tie; the V shows the neck, no undershirt, CAPR 39-1 4.2.5.1.9 / 4.2.6.9) is the default, the closed one (worn with the tie / tie tab) lies over it and covers it; hide group collar-closed (and tie) for the open state, group collar for the closed state"
+  },
+  "collar_open_neck": [
+   [
+    969.65,
+    52.04
+   ],
+   [
+    992.57,
+    38.45
+   ],
+   [
+    1015.49,
+    33.25
+   ],
+   [
+    1038.4,
+    29.55
+   ],
+   [
+    1061.31,
+    26.7
+   ],
+   [
+    1084.23,
+    24.42
+   ],
+   [
+    1107.15,
+    22.59
+   ],
+   [
+    1130.07,
+    21.12
+   ],
+   [
+    1152.99,
+    19.98
+   ],
+   [
+    1175.91,
+    19.11
+   ],
+   [
+    1198.82,
+    18.51
+   ],
+   [
+    1221.73,
+    18.15
+   ],
+   [
+    1244.65,
+    18.03
+   ],
+   [
+    1267.57,
+    18.15
+   ],
+   [
+    1290.48,
+    18.51
+   ],
+   [
+    1313.4,
+    19.11
+   ],
+   [
+    1336.32,
+    19.98
+   ],
+   [
+    1359.24,
+    21.12
+   ],
+   [
+    1382.16,
+    22.59
+   ],
+   [
+    1405.06,
+    24.42
+   ],
+   [
+    1427.98,
+    26.7
+   ],
+   [
+    1450.9,
+    29.55
+   ],
+   [
+    1473.82,
+    33.25
+   ],
+   [
+    1496.74,
+    38.45
+   ],
+   [
+    1519.65,
+    52.04
+   ],
+   [
+    1244.65,
+    610.06
    ]
   ],
   "tie": {
@@ -546,6 +718,73 @@
    "body_edge_abs_x_in": 7.22,
    "size_source": "estimated",
    "note": "outward warp of the traced sleeve (outline and every stroke in it) so the 3 1/2 in regulation chevron (4.2.5.1.1.3 / 4.2.6.2.3) lies inside the sleeve outline instead of 0.27 in (men) / 0.31 in (women) off the garment; the pre-widening flat sleeve was 2.95 in (men) / 3.5 in (women) at the chevron line"
+  },
+  "collar_open": {
+   "kind": "open camp collar: each front turned back from its roll line (top end to the break), the collar (top end, P, N1) and the revers (N1, N2, B) with the fold line between them; the V between the roll lines shows the neck (no undershirt, CAPR 39-1 4.2.5.1.9 / 4.2.6.9)",
+   "size_source": "measured",
+   "source": "CAPR 39-1 Fig 4.17 (PDF page 95) at 8x, pocket 5.25 in = 354 px (67.4 px/in), both sides averaged; LIVE12-ART 1",
+   "figure_in": {
+    "P": [
+     5.7,
+     5.62
+    ],
+    "N1": [
+     2.77,
+     5.31
+    ],
+    "N2": [
+     2.72,
+     6.03
+    ],
+    "slope": 0.49,
+    "btn": 7.83,
+    "X": 6.88
+   },
+   "vertical_scale": 0.899,
+   "vertical_scale_note": "y on the sheet = figure y x vertical_scale: the sheet's top end to its button-1 over the figure's top end to its first button, so the figure's break lands at the sheet's button; x as the figure reads",
+   "top_end": [
+    2.75,
+    0
+   ],
+   "collar_point": [
+    5.7,
+    5.05
+   ],
+   "collar_inner_end": [
+    2.77,
+    4.77
+   ],
+   "revers_top": [
+    2.72,
+    5.42
+   ],
+   "break": [
+    0.65,
+    6.9
+   ],
+   "roll_lines_cross": [
+    0,
+    5.58
+   ],
+   "over_front": "wearer's right (blouse)",
+   "break_note": "B lies on the sheet's own front edge (the placket line) where the revers' lower edge from N2 (the figure's slope x vertical_scale) meets it; X is where the over front's roll line crosses the centre front (derived)",
+   "neck": {
+    "size_source": "estimated",
+    "half_width_in": 2.23,
+    "from": "collar size 14 in / pi (a common women's size; the regulation gives none)",
+    "colours": {
+     "skin": "#d7ad8e",
+     "side_line": "#9c7558",
+     "roll_shadow": "#6b4630",
+     "band_inside": "#d3d7e0 to #eef0f4 (the closed collar's band)"
+    },
+    "note": "flat skin tone, an estimate: the regulation draws no wearer"
+   },
+   "estimated": [
+    "the top ends are the sheet's own (the closed collar's band, 2.95 in men's / 2.75 in women's; the figures read 3.0 / 3.04 in)",
+    "the neck width and skin tone",
+    "the fronts' overlap (the sheet's placket line)"
+   ]
   }
  },
  "documented": [

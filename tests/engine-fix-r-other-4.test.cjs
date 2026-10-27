@@ -200,13 +200,16 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
     }
   }
   let reached = 0;
-  const cutAviator = new Set();   // `${uniform} ${gender} ${sleeve}` of every build in which a ribbon or device reached a leaf and was cut
+  const cutAviator = new Set();   // `${uniform} ${gender}` of every build in which a ribbon or device reached a leaf and was cut
+  const coveredAviator = new Set();   // `${gender} ${sleeve}` of every aviator build whose collar foreground covers a ribbon or device that reaches a leaf
   for(const [uniform, gender, rank, badgeIds, rib] of builds){
     for(const sleeve of ['short', 'long']){
       const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: rib, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
       for(const sheet of scene.layers.filter(l => l.role === 'garment')){
         const spec = await store.load(sheet.id);
-        const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n]).filter(l => l && l.points).map(l => l.points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
+        // a sheet with two collar states (the short Class B and aviator sheets): the leaves of the state shown (the open group `collar` is hidden when the closed one shows)
+        const closed = spec.landmarks.collar_states && (sheet.hideGroups || []).includes(spec.landmarks.collar_states.open);
+        const polys = (closed ? ['collar_closed_left', 'collar_closed_right'] : ['collar_left', 'collar_right']).map(n => spec.landmarks[n]).filter(l => l && l.points).map(l => l.points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
         if(polys.length !== 2) continue;
         for(const l of scene.layers.filter(x => ['badge', 'ribbon', 'device'].includes(x.role) && (x.figure || 1) === (sheet.figure || 1) && !(x.rotate) && x.type === 'asset')){
           const touches = polys.filter(p => C.rectHitsPolygon(l, p));
@@ -215,6 +218,13 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
           const id = `${uniform} ${gender} ${rank} ${sleeve} ${l.key}`;
           if(l.role === 'badge'){ assert.ok(!l.clipOut, `${id}: a badge is never cut`); continue; }
           if(uniform === 'blues_b'){ assert.ok(!l.clipOut, `${id}: the Class B collar foreground covers it by order`); continue; }
+          // The short aviator sheets draw both collar states (art 66518f14, LIVE12-ART 1): the leaves of the state shown are drawn again over the ribbons, as on the Class B.
+          if(spec.landmarks.collar_states){
+            assert.ok(!l.clipOut, `${id}: the short aviator's collar foreground covers it by order`);
+            assert.ok(scene.layers.some(f => f.role === 'garment-foreground' && (f.figure || 1) === (sheet.figure || 1) && f.z > l.z), `${id}: below the collar foreground`);
+            coveredAviator.add(`${gender} ${sleeve}`);
+            continue;
+          }
           assert.ok(l.clipOut && l.clipOut.length, `${id}: reaches a collar leaf, so it is cut by it`);
           // The cut-out polygons are on this figure, not on the first one.
           assert.ok(l.clipOut.some(p => C.rectHitsPolygon(l, p)), `${id}: the cut-out polygon lies where the ribbon is (x ${l.x.toFixed(2)})`);
@@ -223,12 +233,14 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
       }
     }
   }
-  // The shirt sheets are drawn at true size (the pocket is 5.25 in wide), and the aviator sheets draw one pointed collar whose leaves hang near the centre line; the Class B collar is a closed one whose
-  // leaves end 4.5 in below the sheet's top (LIVE9-ART 1). Seven or twelve ribbons no longer reach a leaf anywhere; the rack of every CAP ribbon family (46) does on the men's aviator shirts (short, long and
-  // the shirt beside the blazer), where the ribbons it reaches are cut by the leaf polygons (asserted above), and on the Class B shirt and blouse (covered by order, no cut). The women's aviator
-  // shirts' leaves (3.90 in) end above the tallest rack of CAP ribbons (top row at 4.46 in): no lawful rack reaches them, so nothing there is cut, which the loop asserts for whatever does reach.
+  // The shirt sheets are drawn at true size (the pocket is 5.25 in wide); the long aviator sheets draw one pointed collar whose leaves hang near the centre line; the Class B collar is a closed one whose
+  // leaves end 4.5 in below the sheet's top (LIVE9-ART 1). Seven or twelve ribbons no longer reach a leaf anywhere; the rack of every CAP ribbon family does on the men's long aviator shirt (alone and
+  // beside the blazer), where the ribbons it reaches are cut by the leaf polygons (asserted above), and on the Class B shirt and blouse (covered by order, no cut). The women's long leaves (3.90 in)
+  // end above the tallest rack of CAP ribbons: nothing there is cut, which the loop asserts for whatever does reach. The short aviator sheets' open collar (the default without the tie; the pieces
+  // reach 7.0 / 7.4 in below the top) is reached on the men's and the women's shirt, and covered by order, never cut.
   assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
-  assert.deepEqual([...cutAviator].sort(), ['aviator male', 'aviator_blazer male'], 'a ribbon is cut by the leaf on the men\'s aviator shirt and on the shirt beside the blazer');
+  assert.deepEqual([...cutAviator].sort(), ['aviator male', 'aviator_blazer male'], 'a ribbon is cut by the leaf on the men\'s long aviator shirt and on the shirt beside the blazer');
+  assert.deepEqual([...coveredAviator].sort(), ['female short', 'male short'], 'the short aviator shirts cover the ribbons that reach the open collar');
 });
 
 test('aviator beside the blazer: the chaplain badge on the shirt figure is never cut by the collar (the polygon moves with the figure)', async () => {

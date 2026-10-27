@@ -193,7 +193,7 @@ test('the short overblouse bodice is as traced: the widening moves the sleeve ru
   assert.ok(widest < 5.6, `widest bodice point ${widest.toFixed(2)} in`);
 });
 
-// ---- 4, 5. the aviator shirts draw one collar state, the tie in its own group under the leaves (4.2.5.1, 4.2.5.1.4, 4.2.6.3) --------------------------
+// ---- 4, 5. the aviator shirts' collar states, the tie in its own group under the leaves (4.2.5.1, 4.2.5.1.4, 4.2.6.3) --------------------------
 // Art bb1b47a0 (LIVE8-2): the long sheets no longer draw a separate closed collar (the old group `closed-collar` and the `-tie` / `-tie-tab` overlays clipped by the leaves). All four
 // sheets draw the same standard pointed collar, the tie (or the tab) in group `tie` and the leaves in group `collar` after it, so the leaves lie over the tie; the tie group is the only
 // place the tie is drawn and the engine hides it when the tie option is off.
@@ -202,27 +202,39 @@ const AVIATOR_SHEETS = [['male', 'short', 'garment-aviator-shirt-male'], ['male'
 const tieOverlays = scene => scene.layers.filter(l => /-tie(-tab)?$/.test(l.id || ''));
 const shirtLayer = (scene, figure) => scene.layers.find(l => l.key === 'base:jacket' && (figure ? l.figure === figure : !l.figure || l.figure === 1));
 
-test('the aviator sheets draw one collar state: pointed leaves after the tie group (over it), no closed-collar group, the tie stated as a landmark', async () => {
+// Art 66518f14 (LIVE12-ART 1; Ducky: "why is the collar closed on the aviator shirt if theres no tie"; CAPR 39-1 4.2.5.1.4, 4.2.6.3, 4.2.5.1.9, 4.2.6.9): the SHORT sheets now draw two
+// states, as the short Class B sheets do: group `collar`, the open camp collar (the default), then the tie group, then group `collar-closed`, the pointed leaves they drew before (ids
+// collar-closed-back / -right / -left) over a cover of the open collar, so the closed leaves lie over the tie. The long sheets still draw the one pointed collar after the tie.
+test('the aviator sheets: the long ones draw one collar state, pointed leaves after the tie group; the short ones the open collar, the tie, then the closed leaves over it; the tie stated as a landmark', async () => {
   for(const [gender, sleeve, id] of AVIATOR_SHEETS){
-    const spec = await store.load(id), svg = readSvg(id);
-    assert.doesNotMatch(svg, /id="[^"]*closed-collar[^"]*"/, `${id}: one collar state, no closed-collar group`); // the sheet's basis text may name the form; only a group id counts
-    for(const part of ['collar-back', 'collar-right', 'collar-left']) assert.match(svg, new RegExp(`id="${id}__${part}"`), `${id}: ${part}`);
-    const tieAt = svg.indexOf(`id="${id}__tie"`), collarAt = svg.indexOf(`id="${id}__collar"`);
-    assert.ok(tieAt > 0 && collarAt > tieAt, `${id}: the tie group comes before the collar group, so the leaves lie over the tie`);
+    const spec = await store.load(id), svg = readSvg(id), short = sleeve === 'short';
+    assert.doesNotMatch(svg, /id="[^"]*closed-collar[^"]*"/, `${id}: no old closed-collar group`); // the sheet's basis text may name the form; only a group id counts
+    const leaf = short ? 'collar-closed' : 'collar';
+    for(const part of ['back', 'right', 'left']) assert.match(svg, new RegExp(`id="${id}__${leaf}-${part}"`), `${id}: ${leaf}-${part}`);
+    const tieAt = svg.indexOf(`id="${id}__tie"`), collarAt = svg.indexOf(`id="${id}__collar"`), closedAt = svg.indexOf(`id="${id}__collar-closed"`);
+    if(short){
+      assert.ok(collarAt > 0 && tieAt > collarAt && closedAt > tieAt, `${id}: the open collar, then the tie, then the closed collar, so the closed leaves lie over the tie`);
+      assert.deepEqual([spec.landmarks.collar_states.open, spec.landmarks.collar_states.closed], ['collar', 'collar-closed'], `${id}: collar_states`);
+    }else{
+      assert.ok(tieAt > 0 && collarAt > tieAt, `${id}: the tie group comes before the collar group, so the leaves lie over the tie`);
+      assert.equal(closedAt, -1, `${id}: one collar state`);
+      assert.equal(spec.landmarks.collar_states, undefined, `${id}: no collar_states`);
+    }
     const tie = core.landmark(spec, 'tie');
     assert.ok(tie && tie.kind === (gender === 'female' ? 'tab' : 'tie'), `${id}: tie landmark ${JSON.stringify(tie)}`);
-    // the tie sits at the front of the neck, where the leaves meet it: the knot is level with the collar's front-of-neck vertex on both leaves
+    // the tie sits at the front of the neck, where the (closed) leaves meet it: the knot is level with the collar's front-of-neck vertex on both leaves
     const knot = { x: tie.knot.x / 100, y: tie.knot.y / 100 };   // the landmark states hundredths of an inch
     for(const side of ['left', 'right']){
-      const poly = core.landmark(spec, 'collar_' + side).points;
+      const poly = core.landmark(spec, (short ? 'collar_closed_' : 'collar_') + side).points;
       const near = poly.reduce((m, p) => Math.abs(p.x - knot.x) < Math.abs(m.x - knot.x) ? p : m, poly[0]);
       assert.ok(Math.hypot(near.x - knot.x, near.y - knot.y) < 0.35, `${id} ${side}: the leaf's front-of-neck vertex ${near.x.toFixed(2)},${near.y.toFixed(2)} is at the knot ${knot.x},${knot.y}`);
     }
-    // both states: the sheet's own group is the tie; no overlay is added, and the group is hidden exactly when the member turns it off
+    // both states: the sheet's own group is the tie; no overlay is added, and the group is hidden exactly when the member turns it off. On the short sheets the closed collar shows with the
+    // tie and the open one without it.
     const on = await P.composeUniform(build('aviator', gender, 'senior', 'Capt', { sleeve, tie: true }), store);
     const off = await P.composeUniform(build('aviator', gender, 'senior', 'Capt', { sleeve, tie: false }), store);
-    assert.ok(!(shirtLayer(on).hideGroups || []).includes('tie'), `${id}: tie on, the group is drawn`);
-    assert.ok((shirtLayer(off).hideGroups || []).includes('tie'), `${id}: tie off, the group is hidden`);
+    assert.deepEqual(shirtLayer(on).hideGroups, short ? ['collar'] : undefined, `${id}: tie on, the tie group is drawn${short ? ', the open collar hidden' : ''}`);
+    assert.deepEqual(shirtLayer(off).hideGroups, short ? ['tie', 'collar-closed'] : ['tie'], `${id}: tie off, the group is hidden${short ? ' and the closed collar with it' : ''}`);
     assert.equal(tieOverlays(on).length + tieOverlays(off).length, 0, `${id}: no separate tie overlay in either state`);
   }
 });

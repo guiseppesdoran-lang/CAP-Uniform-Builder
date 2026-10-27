@@ -137,13 +137,20 @@
     return { collarPoint, rollEnd, inward: best.inward };
   }
 
-  // The collar leaf of a collar polygon, as a point list. Figure A5-5 centres the chevron on the leaf ('centered on the collar'). Every sheet states the leaf alone as its collar polygon:
-  // the ABU/CFU five-point leaf, the overblouse kite, the aviator shirts' pointed collar (LIVE8-1) and, since the Class B collar was rebuilt like the Class A coat's (LIVE9-ART 1: top end,
-  // shoulder vertex, collar point, the junction at the knot, the neck edge back up), the Class B shirt and blouse. The old Class B polygon also took in the band between a roll line and a
-  // neck opening, and the leaf was then a triangle cut from it; no sheet draws that any more, so the polygon is the leaf and the chevron is centred on its chord at its own line.
-  // `edge` is collarLeadingEdge(points, centerX) and is kept for the call's shape.
+  // The collar leaf of a collar polygon, as a point list. Figure A5-5 centres the chevron on the leaf ('centered on the collar'). Most sheets state the leaf alone as their collar polygon:
+  // the ABU/CFU five-point leaf, the overblouse kite, the aviator shirts' pointed collar (the long sheets, and the short sheets' closed leaves) and the Class B leaves (LIVE9-ART 1: top end,
+  // shoulder vertex, collar point, the junction at the knot, the neck edge back up), every vertex of which lies on the leaf's side of its leading edge: the polygon is the leaf.
+  // The short aviator sheets' open collar (art 66518f14, LIVE12-ART 1: an open camp collar, Fig 4.16 / 4.17) states each front as one piece, the collar (top end, collar point P, the
+  // collar's inner end N1) and below it the revers (N1, N2, the break B, X on the roll line), with the fold line top end to N1 between them; the revers lies below the collar's leading
+  // edge (P to N1). The chevron is worn on the collar, so where vertices lie more than 0.1 in beyond the leading edge (the revers) the leaf is the triangle of the vertex farthest from
+  // the edge on the leaf's side (the top end), the collar point and the roll end (N1), and the chevron is centred on its chord, not across the fold line on the revers.
+  // `edge` is collarLeadingEdge(points, centerX).
   function collarLeaf(points, edge){
-    return points;
+    if(!edge || !edge.inward) return points;
+    const a = edge.collarPoint, n = edge.inward, d = p => (p.x - a.x) * n.x + (p.y - a.y) * n.y;
+    if(!points.some(p => d(p) < -0.1)) return points;
+    const top = points.reduce((m, p) => d(p) > d(m) ? p : m, points[0]);
+    return [top, edge.collarPoint, edge.rollEnd];
   }
 
   // Where and how a collar chevron sits on a leading edge { collarPoint, rollEnd, inward }: its axis
