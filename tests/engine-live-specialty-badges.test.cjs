@@ -24,10 +24,9 @@ const WIDEST = SPECIALTY.slice(0, 4).map(s => s.id);
 const AVIATION = 'CAPPilot1_FA9D33EA587D8';
 const overlap = (a, b) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
 
-test('the specialty badges are at class size: the enamel ES badge is 1.25 x 1.31 in and none of the 61 is under 0.80 in wide (Aerospace Education 0.80 to 1.00, the rest 1.00 to 1.25)', () => {
+test('the specialty badges are at class size: the enamel ES badge is 1.25 x 1.31 in and none of the 59 is under 0.99 in wide, the widest 1.25', () => {
   assert.equal(width('enamel-emergency-services'), 1.25);
-  assert.ok(SPECIALTY.length >= 60 && SPECIALTY.every(s => s.w >= 0.79), SPECIALTY.filter(s => s.w < 0.79).map(s => s.id).join(', '));
-  assert.ok(SPECIALTY.filter(s => s.w >= 0.99).length >= 50, 'most specialty badges are 1.00 to 1.25 in wide');
+  assert.ok(SPECIALTY.length >= 59 && SPECIALTY.every(s => s.w >= 0.99), SPECIALTY.filter(s => s.w < 0.99).map(s => s.id).join(', '));
   assert.ok(SPECIALTY[0].w === 1.25);
 });
 
