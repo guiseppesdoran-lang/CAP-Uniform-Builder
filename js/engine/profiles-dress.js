@@ -1302,10 +1302,12 @@
   // The officers' epaulet strips on the Class A coat (the senior and general officer overlays draw them, gray, over the outer part
   // of the strap): the same two shading bands, on the strip's own rectangle, which the overlay's epaulet_sleeve_<side> landmark
   // boxes (the box of the strip turned along the strap: its length and thickness follow from the box and the strap's angle).
-  // The strip also carries the sleeve's "CAP" lettering at its collar end, as the cadet officers' board strip carries the board's crest and the shirts' strips carry theirs (the
-  // overlay's strip is a plain gray band; Ethan, LIVE10-MASTER-2, "make sure to include the CAP", and B3 in LIVE-QUEUE before it): the sleeve art's own cap group, nothing else of it,
-  // squeezed onto the strip's rectangle the way the whole art is on the shirts (epauletStrips), under the shading bands.
-  // Returns the strip's thickness (inches, the larger of the two sides), which the grade on it is squeezed to (epauletEdgeGrades), or null when the sheet states none.
+  // The strip is the sleeve art itself, the whole of it (gray cloth, the light stripes at both ends, the CAP lettering at the collar end), squeezed onto the strip's rectangle the way
+  // the whole art is on the shirts (epauletStrips) and under the same shading bands, so it matches the view from above beside the figure (Ethan, LIVE11-MASTER-1: "top here does not
+  // match bottom. all tops must match everything on the bottom"; before it LIVE10-MASTER-2 "make sure to include the CAP"). The overlay's own plain gray band lies under the art.
+  // The art's own grade (SLEEVE_GRADE_GROUPS) is left off: the grade is drawn separately, foreshortened along the strip, by epauletEdgeGrades. The length is the box's, not the art's
+  // 3.843 in, when the sheet's box is shorter (the art is squeezed along the strap as the shirts' strips are limited to EDGE_ON_COVER of the strap).
+  // Returns { thick, along }: the strip's thickness (inches, the larger of the two sides), which the grade on it is squeezed to, and the factor the art is squeezed to along the strap (epauletEdgeGrades), or null when the sheet states none.
   async function officerStripShading(ctx, g, overlayId, frames){
     if(!ctx.has(overlayId)) return null;
     const s = await ctx.spec(overlayId);
@@ -1322,10 +1324,11 @@
       stripShading(ctx, side, mid, f.axis, f.normal, length, thick, 0, Z.epauletLayer + 0.6);
       if(sleeve){
         const k = length / sleeve.h;
-        await ctx.place(sleeveId, { pieceAnchor: 'center', at: mid, rotate: f.deg, scale: k, scaleX: thick / (sleeve.w * k), onlyGroups: ['cap'], z: Z.epauletLayer + 0.3, role: 'epaulet-cap', key: 'epaulet-cap:' + side,
-          title: `${side === 'right' ? 'Right' : 'Left'} epaulet, CAP lettering` });
+        await ctx.place(sleeveId, { pieceAnchor: 'center', at: mid, rotate: f.deg, scale: k, scaleX: thick / (sleeve.w * k), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer + 0.3, role: 'epaulet', key: 'epaulet:' + side,
+          title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
       }
-      found = Math.max(found || 0, thick);
+      const along = sleeve ? Math.min(1, length / sleeve.h) : 1;
+      found = { thick: Math.max(found ? found.thick : 0, thick), along: Math.min(found ? found.along : 1, along) };
     }
     return found;
   }
