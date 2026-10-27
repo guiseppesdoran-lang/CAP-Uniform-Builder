@@ -260,21 +260,29 @@ function chooseCommunityServiceValue(count){
 }
 
 
-function chooseDisasterReliefValue(count, text=''){
-  const hasSilverV =
-    /Disaster Relief Ribbon[\s\S]{0,160}(Silver\s+V|Presidential)/i.test(text) ||
-    /(Silver\s+V|Presidential)[\s\S]{0,160}Disaster Relief Ribbon/i.test(text) ||
-    /\bDRR\b[\s\S]{0,160}(Silver\s+V|Presidential)/i.test(text);
+// CAPR 39-3 21g (data/ribbon-awards.js: the V marks a Presidentially declared disaster): one silver V on
+// the ribbon, the bronze clasps for the later awards beside it. `hasV` is true when any report row says V.
+function chooseDisasterReliefValue(count, hasV=false){
+  const clasps = importedAdditionalAwardValue(count, 'clasp');
+  if(hasV === true) return clasps ? `silver_v_${clasps}` : 'silver_v';
+  return clasps || 'earned';
+}
 
-  if(hasSilverV && count >= 4) return 'silver_v_bronze_clasp_3';
-  if(hasSilverV && count >= 3) return 'silver_v_bronze_clasp_2';
-  if(hasSilverV && count >= 2) return 'silver_v_bronze_clasp_1';
-  if(hasSilverV) return 'silver_v';
-
-  if(count >= 4) return 'bronze_clasp_3';
-  if(count >= 3) return 'bronze_clasp_2';
-  if(count >= 2) return 'bronze_clasp_1';
-  return 'earned';
+// One Disaster Relief Ribbon row per award. A row says V in whatever words the record uses: "with V",
+// "w/V", "V Device", "V-Device", "(V)", "Silver V", or names the Presidential declaration the V stands for.
+// The row is read up to its date, so a V or "Presidential" elsewhere in the report does not count.
+function extractDisasterReliefFromReport(text){
+  const source = String(text || '');
+  const rowRe = /Disaster\s+Relief\s+Ribbon([\s\S]{0,60}?)(?=\b\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b|Disaster\s+Relief\s+Ribbon|$)/gi;
+  const vRe = /(?:^|[\s(\/\-,])V(?:[\s\-]*Device)?(?=$|[\s),\-])|Silver\s+V\b|Presidential/i;
+  let count = 0, hasV = false, m;
+  while((m = rowRe.exec(source))){
+    count++;
+    const before = source.slice(Math.max(0, m.index - 14), m.index);
+    if(vRe.test(m[1]) || /(?:Silver\s+V|Presidential)\s*$/i.test(before)) hasV = true;
+    if(m[0].length === 0) rowRe.lastIndex++;
+  }
+  return count ? { count, hasV, value:chooseDisasterReliefValue(count, hasV) } : null;
 }
 
 function chooseCadetSpecialActivityValue(count){
@@ -493,6 +501,27 @@ function extractCadetSpecialActivityCountFromReport(text){
     }
   }
   return credits.size;
+}
+
+// The highest CAC echelon in the duty position tables (current and past): the council named in the title
+// ("Cadet WCAC Representative", "Region CAC Chair", "National Cadet Advisory Council ...") or the row's
+// Echelon column after a CAC title. CAPR 39-3 21j: wing bronze star, region silver, national gold.
+function importedCacLevelFromDutyPositions(text){
+  const duty = getReportSectionUntilAny(text, 'Duty\\s+Positions', [
+    'Professional Development', 'Specialty Tracks', 'Cadet Training', 'Encampments', 'Cadet Achievements', 'Decorations'
+  ]);
+  if(!duty) return null;
+  const levels = [];
+  const named = /\b(?:(N|R|W|G)CAC\b|(National|Region|Wing|Group)\s+(?:CAC\b|Cadet\s+Advisory\s+Council))/gi;
+  let m;
+  while((m = named.exec(duty))){
+    const key = (m[1] || m[2]).charAt(0).toUpperCase();
+    levels.push({ N:'national', R:'region', W:'wing', G:'group' }[key]);
+  }
+  const echelon = /(?:\bCAC\b|Cadet\s+Advisory\s+Council)[^\d]{0,80}?\b(NATIONAL|REGION|WING|GROUP)\b/g;
+  while((m = echelon.exec(duty))) levels.push(m[1].toLowerCase());
+  const order = ['national', 'region', 'wing', 'group'];
+  return order.find(level => levels.includes(level)) || null;
 }
 
 function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership){
@@ -1127,18 +1156,22 @@ function parseCapMemberReport(textRaw){
   }
 
 
-  const disasterReliefCount = Math.max(1, countOccurrences(text, /Disaster Relief Ribbon/gi));
-  if(/Disaster Relief Ribbon/i.test(text)){
+  const disasterRelief = extractDisasterReliefFromReport(text);
+  if(disasterRelief){
     result.ribbons.push({
       id:'disaster_relief_ribbon',
-      value:chooseDisasterReliefValue(disasterReliefCount, text),
-      reason:`${disasterReliefCount} Disaster Relief Ribbon record(s)`
+      value:disasterRelief.value,
+      reason:`${disasterRelief.count} Disaster Relief Ribbon record(s)${disasterRelief.hasV ? ' with the V (Presidentially declared disaster)' : ''}`
     });
   }
 
-  if(/Cadet Advisory Council Ribbon/i.test(text) || /Cadet WCAC|CAC Representative|CAC Vice Chair/i.test(text)){
-    const cacValue = /Cadet WCAC|WING/i.test(text) ? 'wing_bronze_star' : 'group';
-    result.ribbons.push({ id:'cadet_advisory_council_ribbon', value:cacValue, reason:'Cadet Advisory Council' });
+  // The CAC level comes from the CAC duty rows, never from "Wing" anywhere in the report (an "Illinois Wing
+  // Encampment" row is not Wing CAC service). js/patches.js re-derives this ribbon from the duty rows with its
+  // term rules and replaces this entry; the level here only has to be right on its own.
+  const cacLevel = importedCacLevelFromDutyPositions(text);
+  if(/Cadet Advisory Council Ribbon/i.test(text) || cacLevel){
+    const cacValue = { national:'national_gold_star', region:'region_silver_star', wing:'wing_bronze_star' }[cacLevel] || 'group';
+    result.ribbons.push({ id:'cadet_advisory_council_ribbon', value:cacValue, reason:`Cadet Advisory Council${cacLevel ? ` (${cacLevel} duty)` : ''}` });
   }
 
   const encampmentCount = extractEncampmentCountFromReport(text) || countOccurrences(text, /Encampment Ribbon/gi);

@@ -208,3 +208,59 @@ test("four Commander's Commendation Award rows are the 4th award, three bronze c
   assert.equal(both.selected.commander_commendation_award.awardLabel, '2nd Award (Region+Natl)');
   assert.deepEqual(both.devices('commander_commendation_award'), [{ devices: ['star-silver', 'star-bronze', 'clasp-bronze'], centered: false }]);
 });
+
+// CAPR 39-3 21g: the silver V marks a Presidentially declared disaster; one V, the clasps for later awards beside it.
+test('a Disaster Relief Ribbon row that says V carries the V, in any wording, with the clasps for the other rows (E45)', () => {
+  const withRows = rows => FIXTURE.replace('Community Service Ribbon 10 Jan 2022', rows.join('\n') + '\nCommunity Service Ribbon 10 Jan 2022');
+  const plain = runImport(withRows(['Disaster Relief Ribbon 10 Jan 2023', 'Disaster Relief Ribbon 10 Jan 2024']));
+  assert.equal(plain.selected.disaster_relief_ribbon.awardLabel, '2nd Award');
+  assert.deepEqual(plain.devices('disaster_relief_ribbon'), [{ devices: ['clasp-bronze'], centered: false }]);
+  for(const v of ['Disaster Relief Ribbon with V', 'Disaster Relief Ribbon w/V', 'Disaster Relief Ribbon V Device', 'Disaster Relief Ribbon V-Device',
+    'Disaster Relief Ribbon (V)', 'Disaster Relief Ribbon with Silver V', 'Disaster Relief Ribbon - Presidential Declaration']){
+    const one = runImport(withRows([`${v} 10 Jan 2023`]));
+    assert.equal(one.selected.disaster_relief_ribbon.awardLabel, 'Basic w/V-Device', v);
+    assert.deepEqual(one.devices('disaster_relief_ribbon'), [{ devices: ['v'], centered: false }], v);
+    const three = runImport(withRows(['Disaster Relief Ribbon 10 Jan 2022', `${v} 10 Jan 2023`, 'Disaster Relief Ribbon 10 Jan 2024']));
+    assert.equal(three.selected.disaster_relief_ribbon.awardLabel, '3rd with V-Device', v);
+    assert.deepEqual(three.devices('disaster_relief_ribbon'), [{ devices: ['v', 'clasp-bronze', 'clasp-bronze'], centered: false }], v);
+  }
+  // "Presidential" in another row is not this ribbon's V.
+  const elsewhere = runImport(withRows(['Disaster Relief Ribbon 10 Jan 2023']).replace('NCSA Cyber Defense 12 Jul 2023', 'NCSA Cyber Defense 12 Jul 2023\nPresidential Classroom 14 Jul 2023'));
+  assert.deepEqual(elsewhere.devices('disaster_relief_ribbon'), [{ devices: [], centered: false }]);
+});
+
+test('every Disaster Relief value the importer returns resolves to a real option, with the V when the row says V (E45)', () => {
+  const entries = [];
+  for(let n = 1; n <= 9; n++) for(const v of [false, true]) entries.push({ id: 'disaster_relief_ribbon', expr: `chooseDisasterReliefValue(${n}, ${v})`, n, v });
+  for(const row of importValueResolutions(entries)) assertResolvesToCount(row, row.n, [['v', row.v]]);
+});
+
+// CAPR 39-3 21j: the CAC ribbon shows the highest level served, wing bronze star, region silver, national gold.
+test('a Wing, Region or National CAC duty position imports the CAC ribbon with its star; "Wing" elsewhere does not (E45)', () => {
+  const duty = row => FIXTURE.replace('Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026',
+    'Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026\n' + row);
+  const cases = [
+    ['Cadet Advisory Council Primary Representative GLR-IL-001 WING No 01 Jun 2025', 'cac_wing', ['star-bronze']],
+    ['Cadet WCAC Representative GLR-IL-001 WING No 01 Jun 2025', 'cac_wing', ['star-bronze']],
+    ['Wing CAC Chair GLR-IL-001 WING No 01 Jun 2025', 'cac_wing', ['star-bronze']],
+    ['Region CAC Primary Representative GLR-001 REGION No 01 Jun 2025', 'cac_region', ['star-silver']],
+    ['Cadet NCAC Representative NHQ-000 NATIONAL No 01 Jun 2025', 'cac_national', ['star-gold']]
+  ];
+  for(const [row, value, devices] of cases){
+    const r = runImport(duty(row));
+    assert.equal(r.selected.cadet_advisory_council_ribbon?.awardValue, value, row);
+    assert.deepEqual(r.devices('cadet_advisory_council_ribbon'), [{ devices, centered: false }], row);
+  }
+  // The fixture's "Illinois Wing Encampment" rows and a CAC ribbon row with no level: the basic ribbon.
+  assert.equal(runImport(FIXTURE).selected.cadet_advisory_council_ribbon.awardValue, 'cac_group');
+  // The importer's own reading (before the duty-row rules in js/patches.js) also ignores "Wing" outside a CAC row.
+  const { context } = loadPageScripts();
+  assert.equal(vm.runInContext('importedCacLevelFromDutyPositions', context)(FIXTURE.replace(/\n/g, ' ')), null);
+  assert.equal(vm.runInContext('importedCacLevelFromDutyPositions', context)(duty(cases[1][0]).replace(/\n/g, ' ')), 'wing');
+});
+
+test('every CAC level value resolves to its own option, not Group (E45)', () => {
+  const rows = importValueResolutions(['group', 'wing_bronze_star', 'region_silver_star', 'national_gold_star']
+    .map(v => ({ id: 'cadet_advisory_council_ribbon', expr: `'${v}'` })));
+  assert.deepEqual(rows.map(r => r.optionValue), ['cac_group', 'cac_wing', 'cac_region', 'cac_national']);
+});
