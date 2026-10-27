@@ -175,11 +175,11 @@ for(const sex of ['male', 'female']){
     const rows = new Map();
     drapes.forEach(l => { const k = l.y.toFixed(3); rows.set(k, [...(rows.get(k) || []), l]); });
     const ys = [...rows.keys()].map(Number).sort((a, b) => b - a);
-    // The men's coat has room for rows of four; the women's, whose arm seam is nearer the pocket, wears three to a row (the rack has
-    // one column fewer where it would cross the arm seam, 11.2.8). The rack is centred above the pocket (4.2.2.4 as rewritten by
-    // ICL 25-02) and is no longer narrowed to clear the lapel, which lies over its inner corner instead (11.1.8), so the women's
-    // nine medals are three rows of three, not the rows of two the lapel clearance forced (D8; Doran: "the medals need to move left").
-    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), sex === 'male' ? [4, 4, 1] : [3, 3, 3], sex === 'male' ? 'rows of four, then the remainder' : 'rows of three');
+    // Both coats have room for rows of four between the lapel and the arm seam (11.2.8). The rack is centred above the pocket
+    // (4.2.2.4 as rewritten by ICL 25-02) and is not narrowed to clear the lapel, which lies over its inner corner instead (11.1.8).
+    // The women's blazer traced from the product photo was narrow enough to force rows of three (D8; Doran: "the medals need to
+    // move left"); rebuilt from Figure 4.15 (art 2e084dbc, LIVE12-ART 4) its lapel ends above the medal slot and four fit, as the men's.
+    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), [4, 4, 1], 'rows of four, then the remainder');
     const sheet = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const lowest = rows.get(ys[0].toFixed(3));
     near((Math.min(...lowest.map(l => l.x)) + Math.max(...lowest.map(l => l.x + l.w))) / 2, core.anchor(sheet, 'crest_center').x, 0.02, 'the rack is centred above the pocket, not slid toward the arm (4.2.2.4, ICL 25-02)');

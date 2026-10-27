@@ -76,11 +76,11 @@
    2921.16
   ],
   "welt_top_center": [
-   1619.29,
+   1627.92,
    1034.88
   ],
   "ribbon_row_bottom_center": [
-   1619.29,
+   1627.92,
    1034.88
   ],
   "gorge_seam_right_p1": [
@@ -148,10 +148,10 @@
    "h": 74.98
   },
   "welt_pocket": {
-   "x": 1434.49,
+   "x": 1447.42,
    "y": 1034.88,
-   "w": 369.6,
-   "h": 52.8
+   "w": 361,
+   "h": 80
   },
   "button_1": {
    "x": 1126.03,
@@ -185,16 +185,16 @@
     617.14
    ],
    [
-    936.06,
+    921.8,
     813.65
    ],
    [
-    1070.52,
+    1062.34,
     1030.74
    ],
    [
-    1215.28,
-    1144.53
+    1244.23,
+    1311.64
    ]
   ],
   "lapel_left": [
@@ -211,16 +211,16 @@
     617.14
    ],
    [
-    1502.78,
+    1517.03,
     813.65
    ],
    [
-    1368.31,
+    1376.5,
     1030.74
    ],
    [
-    1223.55,
-    1144.53
+    1243.44,
+    1236.14
    ]
   ],
   "shirt": [
@@ -294,7 +294,7 @@
    }
   },
   "ribbon_slot": {
-   "x": 1413.03,
+   "x": 1421.68,
    "y": 884.88,
    "w": 412.5,
    "h": 150
@@ -305,8 +305,8 @@
   "coat_length_in": 29,
   "max_width_in": 23.95,
   "welt_in": [
-   3.7,
-   0.53
+   3.61,
+   0.8
   ],
   "buttons": 3,
   "button_dia_in": 0.875,
@@ -319,13 +319,14 @@
   "single breasted, three buttons (Wing and Star or CAP Crest), one welt pocket upper left, two lower pocket flaps (CAPR 39-1 4.1.9.2)",
   "right panel laps over the left on the women's coat (as in the base image)",
   "blouse collar shows above the coat collar; inverted-V tie tab mandatory (4.1.9.5, 4.1.4.4)",
+  "measured on CAPR 39-1 Fig 4.7a (PDF page 73 at 8x, 57.78 px/in from its 3 3/8 in nameplate; LIVE12-ART 3): welt pocket 3.61 x 0.80 in, 2.28 to 5.89 in from the centre line, top 10.13 in below y 0; lapel outer edge from l2 down a straight line |x| = 8.105 - 0.6475 y (both lapels traced, rms 0.03 in) to the front edge, the under (wearer's left) lapel ending there at y 12.15 in, the over (right) one at y 12.90 in beside the top button; front edge from the V's point curving to x 0.25 in by y 12.30 in",
+  "ribbon_slot: three across (4.125 x 1.5 in, 1 3/8 x 3/8 in ribbons, four rows), centred on the welt, its bottom on the welt top (4.1.9.4.3). Fig 4.7a itself draws a four-across rack 5.12 in wide over its 3.61 in welt, and its lapel edge crosses the rack's inner upper corner",
   "nameplate centred on wearer's right between sleeve seam and lapel, bottom even with the bottom of the ribbons (4.1.9.4.2)"
  ],
  "assumed": [
   "px-to-inch scale",
-  "welt size",
   "button diameter 7/8 in",
-  "lapel, blouse and tie-tab geometry read off the base image",
+  "notch, lapel peak, blouse and tie-tab geometry read off the base image",
   "lower pocket flaps are not drawn (barely visible in the base image)",
   "colours sampled from the base image",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate)"

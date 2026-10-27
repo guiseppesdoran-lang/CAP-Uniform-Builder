@@ -2,474 +2,472 @@
  "asset_id": "garment-corporate-service-dress-blazer-female",
  "name": "Women's Corporate Service Dress: navy blazer, white shirt with tie tab, gray skirt (blank nametag)",
  "size_in": {
-  "w": 19.1183,
-  "h": 35.4347
+  "w": 21.5391,
+  "h": 32.722
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  1911.83,
-  3543.47
+  2153.91,
+  3272.2
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette traced from Vanguard's product photo of the CAP women's blue blazer (CAP4200E; the photo hangs a little lopsided, so one half is smoothed and mirrored) and scaled so that the blazer is 27.5 in from collar to hem (an estimate: 18.72 in sleeve-to-sleeve, the sleeves hanging close to the body as in the photo). Lines, skirt flare and crest position are read off CAPR 39-1 Fig 4.15 (page 89) and Fig 4.13 (page 85). No real garment was measured. Chest geometry: the crest centre is 4.47 in from the centre line (the miniature rack 3 across, 2.06 in, centred on it has its inner edge 3.44 in out); the lapel's outer edge is 4.85 / 4.55 / 3.73 / 2.89 in from the centre line at y 5.4 (peak) / 6.7 / 8.3 / 9.9 in, so it crosses the top 3.5 in of the rack and clears it from y 8.9 down. Fig 4.13 draws the rack the same way, its left edge on the lapel edge. The arm seam is 5.4 in out at the crest's height, 0.9 in from the crest centre, so the crest and rack cannot move out; see DECISIONS.md DORAN5-ART-2.",
+ "size_basis": "Outline, collar, lapels, armhole seams, front edge, hem, buttons, nametag, crest and lapel pin read off CAPR 39-1 Fig 4.15 (PDF page 89 at 8x; base-art/blazer-fig415-measure.js) at 66.37 px/in across, from the figure's 3 3/8 in nametag, and 67.76 px/in down (the figure is stretched 2.1 percent: its nametag is 3.67:1 against the 3.75:1 of Fig A6-3; the same figure measured against Fig 4.7a's coat, 2.4 percent). Blazer 24.79 in from collar to hem, 21.14 in across the sleeves, 15.97 in across the shoulders. No real garment was measured: the scale rests on the figure's nametag (the plate is not dimensioned in the regulation). The hip flap pockets, breast welt pocket, sleeve buttons and the line above the cuff are not in the figure and are kept from Vanguard's product photo of the CAP women's blue blazer (CAP4200E), which the outline was traced from before LIVE12-ART 4. Chest geometry: the crest centre is 3.55 in from the centre line (a miniature rack 3 across, 2.06 in, centred on it has its inner edge 2.52 in out); the lapel edge ends at the break 7.20 in down, above the medal slot's top (7.43 in), so the lapel no longer crosses the rack.",
  "anchors": {
   "top_center": [
-   955.91,
+   1076.95,
    0
   ],
   "bottom_center": [
-   955.91,
-   3543.47
+   1076.95,
+   3272.2
   ],
   "center": [
-   955.91,
-   1771.74
+   1076.95,
+   1636.1
   ],
   "left_edge": [
    0,
-   1771.74
+   1636.1
   ],
   "right_edge": [
-   1911.83,
-   1771.74
+   2153.91,
+   1636.1
   ],
   "hem_center": [
-   955.91,
-   2760
+   1076.95,
+   2489.2
   ],
   "nameplate_slot_center": [
-   1402.66,
-   1042
+   1431.8,
+   744.2
   ],
   "nameplate_slot_top_left": [
-   1233.91,
-   997
+   1263.05,
+   699.2
   ],
   "crest_center": [
-   1402.65,
-   1235.01
+   1431.78,
+   1043
   ],
   "crest_top_center": [
-   1402.65,
-   1095.01
+   1431.78,
+   903
   ],
   "button_1_center": [
-   950.95,
-   1716.75
+   1058.87,
+   837.14
   ],
   "button_2_center": [
-   950.95,
-   2059.25
+   1058.87,
+   1183.19
+  ],
+  "button_3_center": [
+   1058.87,
+   1528.51
   ],
   "chaplain_badge_above_nametag": [
-   1402.66,
-   947
+   1431.8,
+   649.2
   ],
   "tie_tab_center": [
-   955.91,
-   128.36
+   1076.95,
+   218.08
   ],
   "lapel_pin_right_center": [
-   628.31,
-   768.7
+   801.25,
+   395.2
   ],
   "lapel_pin_left_center": [
-   1283.51,
-   768.7
+   1352.65,
+   395.2
   ],
   "medal_slot_center": [
-   1402.61,
-   995
+   1431.75,
+   803
   ],
   "chaplain_badge_semiformal": [
-   1402.61,
-   895
+   1431.75,
+   703
   ]
  },
  "landmarks": {
   "nameplate_slot": {
-   "x": 1233.91,
-   "y": 997,
+   "x": 1263.05,
+   "y": 699.2,
    "w": 337.5,
    "h": 90
   },
   "lapel_pin_slot_right": {
-   "x": 603.31,
-   "y": 743.7,
+   "x": 776.25,
+   "y": 370.2,
    "w": 50,
    "h": 50
   },
   "lapel_pin_slot_left": {
-   "x": 1258.51,
-   "y": 743.7,
+   "x": 1327.65,
+   "y": 370.2,
    "w": 50,
    "h": 50
   },
   "medal_slot": {
-   "x": 1232.61,
-   "y": 945,
+   "x": 1261.75,
+   "y": 753,
    "w": 340,
    "h": 100
   },
   "lapel_left": [
    [
-    955.91,
-    1378.7
+    1076.95,
+    644.6
    ],
    [
-    977.31,
-    1371.5
+    1107.15,
+    601.2
    ],
    [
-    1038.91,
-    1149.1
+    1168.55,
+    481.3
    ],
    [
-    1095.31,
-    917.7
+    1202.65,
+    426
    ],
    [
-    1128.91,
-    727.1
+    1276.05,
+    250.7
    ],
    [
-    1158.61,
-    483.2
+    1301.15,
+    176.9
    ],
    [
-    1171.01,
-    312.5
+    1312.45,
+    130.8
    ],
    [
-    1169.81,
-    208.4
+    1320.25,
+    65.3
    ],
    [
-    1153.41,
-    68.2
+    1319.55,
+    10
    ],
    [
-    1154.41,
-    48.9
+    1422.15,
+    64.2
    ],
    [
-    1377.81,
-    364.1
+    1464.25,
+    93.9
    ],
    [
-    1418.81,
-    451
+    1514.65,
+    135.4
    ],
    [
-    1441.11,
-    540.3
+    1577.15,
+    267.5
    ],
    [
-    1411.31,
-    668.2
+    1482.25,
+    322.1
    ],
    [
-    1329.41,
-    834.4
+    1563.65,
+    376
    ],
    [
-    1245.01,
-    993.3
-   ],
-   [
-    1158.21,
-    1144.7
-   ],
-   [
-    1071.31,
-    1282.4
-   ],
-   [
-    941.01,
-    1468.6
+    1111.65,
+    730.1
    ]
   ],
   "arm_seam_left": [
    [
-    1715.36,
-    406.33
+    1875.51,
+    215.12
    ],
    [
-    1641.84,
-    575.09
+    1827.25,
+    237.08
    ],
    [
-    1601.2,
-    688.02
+    1807.8,
+    255.34
    ],
    [
-    1562.73,
-    815.21
+    1773.47,
+    321.74
    ],
    [
-    1514.33,
-    1029.27
+    1740.99,
+    421.36
    ],
    [
-    1491.99,
-    1187.49
+    1722.01,
+    509.9
    ],
    [
-    1479.59,
-    1358.12
+    1690.37,
+    731.26
    ],
    [
-    1475.24,
-    1531.85
+    1679.73,
+    830.87
    ],
    [
-    1482.07,
-    1835.88
+    1672.29,
+    941.54
+   ],
+   [
+    1654.02,
+    1094.65
    ]
   ],
   "shoulder_left": [
    [
-    1209.31,
-    87.85
+    1328.57,
+    14.15
    ],
    [
-    1249.05,
-    130.89
+    1422.13,
+    64.19
    ],
    [
-    1298.53,
-    162.99
+    1464.27,
+    93.93
    ],
    [
-    1379.6,
-    200.17
+    1514.65,
+    135.44
    ],
    [
-    1547.02,
-    261.75
+    1648.75,
+    160.89
    ],
    [
-    1606.85,
-    291.69
+    1875.51,
+    215.12
    ],
    [
-    1683.38,
-    337.6
+    1903.19,
+    259.95
    ],
    [
-    1718.94,
-    363.79
+    1920.52,
+    296.84
    ],
    [
-    1742.9,
-    390.48
+    1945.8,
+    368.32
    ],
    [
-    1756.37,
-    415.91
-   ],
-   [
-    1769.23,
-    458.1
+    1971.75,
+    458.25
    ]
   ],
   "lapel_right": [
    [
-    955.91,
-    1378.7
+    1076.95,
+    644.6
    ],
    [
-    934.51,
-    1371.5
+    1046.75,
+    601.2
    ],
    [
-    872.91,
-    1149.1
+    985.35,
+    481.3
    ],
    [
-    816.51,
-    917.7
+    951.25,
+    426
    ],
    [
-    782.91,
-    727.1
+    877.85,
+    250.7
    ],
    [
-    753.21,
-    483.2
+    852.75,
+    176.9
    ],
    [
-    740.81,
-    312.5
+    841.45,
+    130.8
    ],
    [
-    742.01,
-    208.4
+    833.65,
+    65.3
    ],
    [
-    758.41,
-    68.2
+    834.35,
+    10
    ],
    [
-    757.41,
-    48.9
+    731.75,
+    64.2
    ],
    [
-    534.01,
-    364.1
+    689.65,
+    93.9
    ],
    [
-    493.01,
-    451
+    639.25,
+    135.4
    ],
    [
-    470.71,
-    540.3
+    576.75,
+    267.5
    ],
    [
-    500.51,
-    668.2
+    671.65,
+    322.1
    ],
    [
-    582.41,
-    834.4
+    590.25,
+    376
    ],
    [
-    666.81,
-    993.3
-   ],
-   [
-    753.61,
-    1144.7
-   ],
-   [
-    840.51,
-    1282.4
-   ],
-   [
-    970.81,
-    1468.6
+    1111.65,
+    730.1
    ]
   ],
   "arm_seam_right": [
    [
-    196.46,
-    406.33
+    278.4,
+    215.12
    ],
    [
-    269.99,
-    575.09
+    326.66,
+    237.08
    ],
    [
-    310.63,
-    688.02
+    346.11,
+    255.34
    ],
    [
-    349.1,
-    815.21
+    380.43,
+    321.74
    ],
    [
-    397.49,
-    1029.27
+    412.92,
+    421.36
    ],
    [
-    419.83,
-    1187.49
+    431.9,
+    509.9
    ],
    [
-    432.24,
-    1358.12
+    463.54,
+    731.26
    ],
    [
-    436.58,
-    1531.85
+    474.18,
+    830.87
    ],
    [
-    429.76,
-    1835.88
+    481.62,
+    941.54
+   ],
+   [
+    499.89,
+    1094.65
    ]
   ],
   "shoulder_right": [
    [
-    702.51,
-    87.85
+    825.33,
+    14.15
    ],
    [
-    662.77,
-    130.89
+    731.78,
+    64.19
    ],
    [
-    613.29,
-    162.99
+    689.64,
+    93.93
    ],
    [
-    532.22,
-    200.17
+    639.26,
+    135.44
    ],
    [
-    364.81,
-    261.75
+    505.16,
+    160.89
    ],
    [
-    304.98,
-    291.69
+    278.4,
+    215.12
    ],
    [
-    228.44,
-    337.6
+    250.71,
+    259.95
    ],
    [
-    192.89,
-    363.79
+    233.39,
+    296.84
    ],
    [
-    168.92,
-    390.48
+    208.1,
+    368.32
    ],
    [
-    155.46,
-    415.91
-   ],
-   [
-    142.59,
-    458.1
+    182.16,
+    458.25
    ]
   ]
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons and polylines are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. lapel_left / lapel_right: the lapel-foreground faces (wearer's left is +x); arm_seam_left / arm_seam_right: the armhole seam from the shoulder point down to the chest; shoulder_left / shoulder_right: the top edge of the shoulder from the neck to the sleeve head",
+ "landmarks_note": "rects are {x,y,w,h}; polygons and polylines are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. lapel_left / lapel_right: the lapel-foreground faces (wearer's left is +x); arm_seam_left / arm_seam_right: the armhole seam from the shoulder point down to the armpit (also drawn in group `seams`); shoulder_left / shoulder_right: the top edge of the shoulder from the neck to the sleeve head",
  "dimensions": {
-  "length_in": 35.23,
-  "max_width_in": 18.72,
+  "length_in": 24.79,
+  "box_height_in": 32.52,
+  "max_width_in": 21.14,
+  "shoulder_width_in": 15.97,
+  "shoulder_slope_deg": 12.5,
+  "v_depth_in": 6.35,
+  "break_in": [
+   0.35,
+   7.2
+  ],
+  "lapel_width_at_peak_in": 3.42,
+  "button_spacing_in": 3.46,
   "nametag_slot_in": [
    3.375,
    0.9
   ],
-  "buttons": 2
+  "buttons": 3,
+  "figure_scale": {
+   "px_per_in_x": 66.37,
+   "px_per_in_y": 67.76,
+   "stretch_y": 1.021,
+   "source": "CAPR 39-1 Fig 4.15, PDF page 89 at 8x; nametag 224 x 61 px against Fig A6-3's 3.75:1 plate"
+  }
  },
  "documented": [
-  "navy single-breasted blazer, two or three buttons, notched lapels; pockets optional, no patch pockets (CAPR 39-1 4.2.4.1)",
+  "navy single-breasted blazer, two or three buttons, notched lapels; pockets optional, no patch pockets (CAPR 39-1 4.2.4.1); Fig 4.15 draws three buttons",
   "CAP Crest on the left breast pocket or in the same relative position (4.2.4.1.1.1)",
   "nametag top edge aligned with the top of the left breast pocket, or 1/2 inch above the CAP Crest if the blazer has no pocket (4.2.4.1.1.2)",
   "white aviator shirt or blouse with straight collar and blue inverted-V tie tab, the tab under the collar leaves (4.2.4.2-4.2.4.3)",
   "medium gray slacks or straight/A-line skirt (4.2.4.4-4.2.4.5)"
  ],
  "assumed": [
-  "px-to-inch scale (23.0 in across)",
+  "px-to-inch scale (the figure's nametag taken as 3 3/8 in wide; Fig A6-3's 3.75:1 for its height)",
+  "one outline for both halves: the two sides averaged, the body side below the armpit from the wearer's right (the left is under the sleeve; its hem corner is 0.32 in wider)",
   "nametag slot size",
-  "button diameter",
-  "line positions read off the figure",
-  "skirt drawn as in the figure; slacks are a bottoms variant",
+  "button diameter (0.72 in; the figure draws 0.77 in)",
+  "crest drawn 2.8 in tall (true size) centred under the nametag at the figure's crest height",
+  "skirt drawn as in the figure; slacks are a bottoms variant; 7.73 in of skirt below the hem (kept from the photo-built sheet)",
+  "pockets, sleeve buttons and the line above the cuff: not in Fig 4.15, kept from the Vanguard photo (flap height above the hem scaled by the blazer length)",
   "skirt flare: 12 px of half-width per 100 px of height measured on Fig 4.15, applied from the coat side hem to the box bottom",
   "skirt waist and waistband sizes (waist 3.5 in above the coat hem, 1.1 in narrower each side than the hem, 1.5 in waistband): the regulation gives no skirt dimension and the figure hides them under the coat",
   "shirt placket button size (0.14 in radius) and spacing (2.3 in)",
-  "collar leaf and neckband shape and size: Fig 4.15 draws only the scooped neckline and the tab (no collar), so the straight collar of 4.2.4.2.1 is built on it: leaves from the lapel tips to the neck over the tab corners, neckband between them",
+  "collar leaf and neckband shape and size: Fig 4.15 draws only the neckline and the tab (no collar), so the straight collar of 4.2.4.2.1 is built on it: leaves from the V's top corners to the neck over the tab corners, neckband between them",
   "skirt gray #736f6c: the same medium gray as the aviator-shirt slacks and the men's blazer trousers (4.2.4.5, 4.2.5.1.5); the figure sample was #807d7b",
   "skirt side shade (about 16 percent at the edges): the figure draws the skirt flat; no seam, pleat or vent because 4.2.4.5 forbids pleats and slits"
  ],
  "fit": {
-  "method": "traced from the regulation figure",
+  "method": "measured on the regulation figure",
   "score": null
  },
  "grade": "garment"
