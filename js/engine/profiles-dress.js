@@ -783,9 +783,12 @@
     if(!id || !ctx.has(id)) return null;
     const gs = await ctx.spec(id);
     const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
-    const acr = quarter ? gs.h : gs.w, alo = quarter ? gs.w : gs.h;
-    const squeeze = Math.min(1, across / acr);
     const o = opts || {};
+    // `along` (default 1): the factor the strip itself is squeezed to along the strap (the officers' Class A strip, shorter than the sleeve art), which the grade shares so it keeps its
+    // place among the art's lettering and stripes (LIVE11-2: unsqueezed it ran over the CAP).
+    const along = o.along > 0 && o.along < 1 ? o.along : 1;
+    const acr = quarter ? gs.h : gs.w, alo = (quarter ? gs.w : gs.h) * along;
+    const squeeze = Math.min(1, across / acr);
     // `centerFromEnd`: the piece's centre this far from the strap's outer end (the Class A boards, where it is the
     // top view's rank slot distance from the board's outer end); else the piece's outer edge is 5/8 in from the end.
     const d = o.centerFromEnd != null ? o.centerFromEnd : GRADE_FROM_END + alo / 2;
@@ -793,7 +796,7 @@
     // The art's width is the across axis unless the quarter turn lays it along the strap; `place` has a
     // uniform scale and an extra x factor, so the quarter-turned piece squeezes its height and widens
     // its width back to true.
-    const scale = quarter ? squeeze : 1, scaleX = quarter ? 1 / squeeze : squeeze;
+    const scale = quarter ? squeeze : along, scaleX = quarter ? along / squeeze : squeeze / along;
     return ctx.place(id, { pieceAnchor: 'center', at, rotate: deg + (quarter ? 90 : 0), scale, scaleX, flipX: mirrorsEagle(g, side), z: o.z || Z.insignia, role: 'grade', key: o.key || `grade:edge-${side}`, title: o.title });
   }
 
@@ -805,7 +808,7 @@
   // `strip` ({ thick, drop }): the strip's thickness and how far its centre line lies below the strap axis (the boards, drawn
   // thicker than the strap with their upper edge kept on the strap's); the grade is squeezed to that thickness and kept on its centre.
   async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd, strip){
-    const thick = (strip && strip.thick) || EDGE_ON_THICK, drop = (strip && strip.drop) || 0, z = strip && strip.z;
+    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, drop = (strip && strip.drop) || 0, z = strip && strip.z;
     for(const side of ['right', 'left']){
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
@@ -813,7 +816,7 @@
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
       const end = { x: mid.x + f.axis.x * back - f.normal.x * drop, y: mid.y + f.axis.y * back - f.normal.y * drop };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, along, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
     }
   }
 
@@ -982,6 +985,7 @@
     const s = await ctx.spec(sleeveId);
     const eagle = g.key === 'colonel' && !g.cadet ? G.seniorOfficerInsignia(g, 'thread') : null;
     const ins = core.anchor(s, 'insignia_center');
+    const gradeId0 = epauletGradeId(g);
     for(const side of ['right', 'left']){
       // The band's own frame where the sheet states it (bandFrame), so the view's seat is measured from the band's outer end as the strip's grade is.
       const strap = (frames && frames[side]) || bandFrame(ctx, side, H.epauletFrame(ctx, side));
@@ -1005,6 +1009,12 @@
       }
       const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);
       await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror ? { hideGroups: SLEEVE_GRADE_GROUPS } : {}));
+      // A sleeve whose art draws no grade of its own (the flight officers': cloth, lace edge and CAP only) gets the grade drawn on its top view too, at the seat the strip's grade has
+      // (5/8 in from the outer end, centred across the strap), so the view above the shoulder carries what the strip on it does (LIVE11-3).
+      if(!ins && gradeId0 && ctx.has(gradeId0)){
+        const end = { x: c.x - f.axis.x * s.h / 2, y: c.y - f.axis.y * s.h / 2 };
+        await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, s.w, { z: Z.epauletTopGrade, key: 'grade:top-' + side, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, seen from above` });
+      }
       if(mirror){
         // The sleeve's insignia point, turned with the sleeve about its centre.
         const v = core.rotatePoint({ x: c.x + (ins.x - s.w / 2), y: c.y + (ins.y - s.h / 2) }, c, f.deg);
@@ -1423,7 +1433,7 @@
     }else if(!semi && isOfficerLike(g)){
       // The coat's epaulets are edge-on in the front view and carry the grade there too, 5/8 in from the
       // outer end like the Class B (D6, D42; R7), as well as on the views from above.
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), null, null, stripThick ? { thick: stripThick } : null);
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), null, null, stripThick ? { thick: stripThick.thick, along: stripThick.along } : null);
       await epauletViews(ctx, g, null, strapFrames(ctx, A));
     }else if(!semi && g.category === 'senior-none' && g.track === 'nco'){
       // Adults without grade on the NCO track wear CAP collar insignia (1.4.2.1).
@@ -1595,6 +1605,12 @@
   function boardGradeTurn(gradeId, frameDeg){
     return /rank-senior-(second-lieutenant|first-lieutenant|captain|flight-officer|technical-flight-officer|senior-flight-officer)-/.test(gradeId) ? frameDeg : frameDeg + 90;
   }
+  // A point squeezed along `sq.deg` by sq.kx and across it by sq.ky, about sq.at (the transform render-svg applies to a layer with `squeeze`).
+  function squeezePoint(p, sq){
+    const r = sq.deg * Math.PI / 180, c = Math.cos(r), s = Math.sin(r), dx = p.x - sq.at.x, dy = p.y - sq.at.y;
+    const u = (dx * c + dy * s) * sq.kx, v = (-dx * s + dy * c) * sq.ky;
+    return { x: sq.at.x + u * c - v * s, y: sq.at.y + u * s + v * c };
+  }
   async function messBoards(ctx, g, M, female){
     const id = g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`;
     if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
@@ -1638,11 +1654,17 @@
         if(slot) await ctx.place(gradeId, { pieceAnchor: 'center', at: onView(slot), rotate: turn,
           flipX: side === 'right' && /colonel-(bullion|thread)$/.test(gradeId) && !/lieutenant/.test(gradeId), z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
       }
-      // The edge-on view.
-      const Ls = L * EDGE_ON_COVER, T = EDGE_ON_THICK;
-      const c = { x: A.x + a.x * Ls / 2 + d.x * T / 2, y: A.y + a.y * Ls / 2 + d.y * T / 2 };
-      ctx.layers.push({ type: 'rect', x: c.x - Ls / 2, y: c.y - T / 2, w: Ls, h: T, rotate: side === 'right' ? frame.deg : frame.deg + 180, origin: { x: c.x, y: c.y },
-        fill: g.general ? MESS_BOARD_COLOR.general : MESS_BOARD_COLOR.officer, stroke: MESS_BOARD_COLOR.stroke, strokeWidth: 0.03, z: Z.epauletLayer, role: 'epaulet-edge', key: `epaulet-edge:${side}`,
+      // The edge-on view: the board art itself, the whole of it as drawn on the sheet (its bands, crest-less field, button and pointed neck end), squeezed onto the strip
+      // (LIVE11-MASTER-1, Ethan: "top here does not match bottom. all tops must match everything on the bottom"): along the strap to EDGE_ON_COVER of its length and across it to
+      // EDGE_ON_THICK, about the board's upper outer corner, so the strip keeps its upper edge on the shoulder line. The layer is squeezed in the scene frame (`squeeze`) and cut to
+      // the squeezed board box.
+      const T = EDGE_ON_THICK;
+      const sq = { at: A, deg: Math.atan2(a.y, a.x) * 180 / Math.PI, kx: EDGE_ON_COVER, ky: T / W };
+      const clipE = [{ x: box.x - pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y - pad }, { x: box.x + box.w + pad, y: box.y + box.h + pad }, { x: box.x - pad, y: box.y + box.h + pad }].map(q => squeezePoint(q, sq));
+      // `strip`: the rectangle the squeezed board fills (its centre, length, thickness and the turn of its length from the sheet's x axis), for the measurement overlay and the tests.
+      const Ls = L * EDGE_ON_COVER, cS = { x: A.x + a.x * Ls / 2 + d.x * T / 2, y: A.y + a.y * Ls / 2 + d.y * T / 2 };
+      ctx.layers.push({ type: 'asset', id, x: 0, y: 0, w: s.w, h: s.h, squeeze: sq, clip: clipE, z: Z.epauletLayer, role: 'epaulet-edge', key: `epaulet-edge:${side}`,
+        strip: { x: cS.x - Ls / 2, y: cS.y - T / 2, w: Ls, h: T, rotate: side === 'right' ? frame.deg : frame.deg + 180, origin: cS },
         title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
       if(gradeId && ctx.has(gradeId)){
         const end = { x: A.x + d.x * T / 2, y: A.y + d.y * T / 2 };

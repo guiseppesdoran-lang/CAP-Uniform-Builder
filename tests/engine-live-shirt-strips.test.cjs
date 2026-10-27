@@ -230,23 +230,27 @@ test('NCOs and members with no grade: the engine draws no sleeve and no strip (t
   }
 });
 
-test('the Class A officers\' strip carries the sleeve\'s CAP lettering too, at its collar end under the shading, and the cadet officers\' board strip carries the board\'s crest (LIVE10-2, B3)', async () => {
+test('the Class A officers\' strip is the whole sleeve art, the same asset as the view from above, squeezed onto the overlay\'s strip box, its own grade left off; the cadet officers\' board strip the whole board (LIVE11-2; LIVE10-2, B3)', async () => {
   for(const gender of ['male', 'female']){
-    for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col'], ['senior', 'Brig Gen']]){
+    for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Col'], ['senior', 'Brig Gen'], ['senior', 'Maj Gen'], ['senior', '2d Lt']]){
       const scene = await P.composeUniform(HARNESS.makeBuild({ uniform: 'blues_a', gender, membership, rank, opt: { headgear: 'none' } }), store);
       for(const side of ['right', 'left']){
-        const cap = scene.layers.find(l => l.key === `epaulet-cap:${side}`);
-        assert.ok(cap && cap.type === 'asset', `${gender} ${rank} ${side}: the CAP lettering is on the strip`);
-        assert.deepEqual(cap.onlyGroups, ['cap'], 'only the lettering of the sleeve art is drawn');
+        const strip = scene.layers.find(l => l.key === `epaulet:${side}`), top = scene.layers.find(l => l.key === `epaulet-top:${side}`);
+        assert.ok(strip && strip.type === 'asset' && top, `${gender} ${rank} ${side}: the strip and the view from above`);
+        assert.equal(strip.id, top.id, `${gender} ${rank} ${side}: the strip is the view from above's art`);
+        assert.ok(!strip.onlyGroups, 'the whole art is drawn, not the lettering alone');
+        assert.deepEqual(strip.hideGroups, ['grade', 'star1', 'star2', 'star3'], `${gender} ${rank} ${side}: only the art's own grade is left off`);
         const shade = scene.layers.find(l => l.key === `epaulet-shade:light:${side}`), grade = scene.layers.find(l => l.key === `grade:edge-${side}`);
-        assert.ok(cap.z < shade.z, `${gender} ${rank} ${side}: under the shading bands`);
-        // The lettering is at the strip's collar end: the art's cap_center, counted from the art's top (the collar end), turned with the strip; the grade is far from it.
-        const sleeve = await store.load(cap.id), k = cap.h / sleeve.h, r = (cap.rotate || 0) * Math.PI / 180;
+        assert.ok(strip.z < shade.z && strip.z < grade.z, `${gender} ${rank} ${side}: under the shading bands and the grade`);
+        // The lettering is at the strip's collar end: the art's cap_center, counted from the art's top (the collar end), turned with the strip; the grade is clear of it.
+        const sleeve = await store.load(strip.id), k = strip.h / sleeve.h, r = (strip.rotate || 0) * Math.PI / 180;
         const up = { x: Math.sin(r), y: -Math.cos(r) };
-        const lettering = { x: cap.origin.x + up.x * (cap.h / 2 - sleeve.anchors.cap_center.y * k), y: cap.origin.y + up.y * (cap.h / 2 - sleeve.anchors.cap_center.y * k) };
-        assert.ok(inside(corners(cap), lettering), `${gender} ${rank} ${side}: the lettering lies on the strip`);
-        const gc = core.rotatePoint({ x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, grade.origin, grade.rotate || 0);
-        assert.ok(Math.hypot(gc.x - lettering.x, gc.y - lettering.y) > 0.4, `${gender} ${rank} ${side}: the grade and the lettering are apart`);
+        const lettering = { x: strip.origin.x + up.x * (strip.h / 2 - sleeve.anchors.cap_center.y * k), y: strip.origin.y + up.y * (strip.h / 2 - sleeve.anchors.cap_center.y * k) };
+        assert.ok(inside(corners(strip), lettering), `${gender} ${rank} ${side}: the lettering lies on the strip`);
+        // Squeezed along the strap to the box's length, the grade shares the squeeze, so its collar-end edge stops short of the lettering's outer edge.
+        const proj = q => (q.x - lettering.x) * up.x + (q.y - lettering.y) * up.y;
+        const gEnd = Math.max(...corners(grade).map(proj));
+        assert.ok(gEnd < -(sleeve.raw.dimensions.cap_word_h_in * k) / 2 + 0.02, `${gender} ${rank} ${side}: the grade ends ${gEnd.toFixed(3)} in from the lettering's centre, short of its edge`);
       }
     }
     const cadet = await P.composeUniform(HARNESS.makeBuild({ uniform: 'blues_a', gender, membership: 'cadet', rank: 'C/Lt Col', opt: { headgear: 'none' } }), store);
