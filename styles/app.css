@@ -1255,6 +1255,7 @@ label.fieldNote:has(>input[type=checkbox]){display:flex;align-items:center;gap:v
 /* Access code box: covers the page until the code is entered (js/access-gate.js). */
 #accessGate{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--bg)}
 html[data-access="ok"] #accessGate{display:none}
+html[data-access="guest"] #accessGate{display:none}
 #accessGateForm{width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
 #accessGateForm h1{margin:0;font-size:1.4rem}
 #accessGateForm input{min-height:44px;font-size:16px}
