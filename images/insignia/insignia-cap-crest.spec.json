@@ -13,7 +13,7 @@
   280
  ],
  "size_source": "estimated",
- "size_basis": "Proportions measured from the CAP Crest and CAP Command Patch illustrations in CAPR 39-1 Fig A6-4 (the figure is undimensioned); height 2.8 in = the crest measured in CAPR 39-1 Figs 4.14/4.15 against the 3 3/8 in nametag plate (about 2.6 in in Fig 4.14, 3.0 in in Fig 4.15); the figures carry no scale of their own.",
+ "size_basis": "Clean geometry (crest-art.js, LIVE11-ART) with every part measured on CAPR 39-1 Fig A6-4 (the CAP Crest tile, base-art/board/crest-src/cap-crest-fig-a6-4.png; the figure is undimensioned) in crest units (705 units = 2.8 in, x from the axis, patch y 20..722): patch half-width 280 at the wing tips, 163 under the wings, 241 at the shield shoulder, 216 at the waist, 293 at the scroll ends; eagle wing tips +-248 at y 50, leading edge y 75 at x 120 and 50 at x 230, trailing edge y 119/137/151 at x 190/150/110, eye (-5, 81), lower body +-82 at y 220; bar +-149 x y 243..280 with three blue blocks; shield outer flat top y 287 (half 162, chamfer to 197 at y 317), half 197 at y 330, waist 177 at y 400, widest 200 at y 518, point y 650, gold ring 13 (field point 637); triangle outer apex y 304, base y 567, half-base 168, gold edge 7; prop hub (0, 478), blade 134 (blade profile from the command-patch prop); scroll bottom = arc R 392 about (0, 310), top flat at y 512 to x 228 falling to 528 at the shield, ends at +-262, fold at +-238, lettering cap 32 on the R 365 arc. Base-art/crest/compare-crest.js reads the same landmarks off the figure and the render: all within 1.3% of the patch height. Height 2.8 in = the crest measured in CAPR 39-1 Figs 4.14/4.15 against the 3 3/8 in nametag plate (about 2.6 in in Fig 4.14, 3.0 in in Fig 4.15).",
  "anchors": {
   "top_center": [
    116.37,
@@ -43,7 +43,11 @@
  ],
  "assumed": [
   "2.8 in height",
-  "hand-redrawn eagle, traced triangle and prop from the Command Patch"
+  "patch bottom below the figure crop (the tile is cut at y 705): scroll bottom arc + 20-unit border",
+  "bar blocks drawn centred (the figure embroidery has them 25 units right of centre)",
+  "eagle feather lines, talons and head outline drawn to the measured outline, not measured individually",
+  "triangle as drawn in the figure (apex angle 64 deg, not equilateral)",
+  "lettering face Arial Bold"
  ],
  "fit": {
   "method": "original",
