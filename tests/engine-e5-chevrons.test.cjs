@@ -187,8 +187,10 @@ for(const [uniform, gender, opt] of CLIPPED){
 // read from the leaf paths of its SVG with the group transforms applied (the aviator and overblouse sheets
 // name them id="<sheet>__collar-right|left", the ABU and CFU coats draw the leaf as an unnamed five-point
 // path in collar-front, starting M+-2.560,-0.430).
-function collarPolygonsOf(garment, spec){
-  const own = ['left', 'right'].map(n => core.landmark(spec, 'collar_' + n)).filter(l => l && l.points);
+function collarPolygonsOf(garment, spec, opt){
+  // With the tie on, a short Class B sheet's leaves are the closed ones (collar_states, LIVE10-MASTER-1): collar_closed_<side>.
+  const prefix = opt && opt.tie === true && spec.landmarks.collar_states ? 'collar_closed_' : 'collar_';
+  const own = ['left', 'right'].map(n => core.landmark(spec, prefix + n)).filter(l => l && l.points);
   if(own.length === 2) return own.map(l => l.points);
   const svg = fs.readFileSync(path.join(root, 'images', 'garments', garment + '.svg'), 'utf8');
   const art = new RegExp(`id="${garment}__art" transform="translate\\(([\\d.]+) ([\\d.]+)\\) scale\\(100\\)"`).exec(svg);
@@ -240,9 +242,13 @@ function distToPolygon(pt, poly){
 const COLLAR_CASES = [
   // The Class B shirt and blouse (art 34f2770b, LIVE9-ART 1): top end 0, shoulder vertex 1, collar point 2, the junction at the knot 3 (the roll end: the leading edge is collar point -> junction, 3.08 in), then
   // the neck edge back up to the top end. Men's 7 vertices, women's 8.
+  // The short sheets' open leaves (art 76963a86, LIVE10-MASTER-1; the default, tie off) keep that order: the level bottom edge runs from the collar point (vertex 2) to the junction (3), then the neck
+  // edge back up. With the tie on the closed leaves (collar_closed_<side>) have the long sheets' order: top end, shoulder vertex, collar point 2, the junction at the knot 3, the neck edge back up.
   ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 2, 3, false],
+  ['blues_b', 'male', { sleeve: 'short', tie: true }, 'garment-blues-class-b-shirt-male', 2, 3, false],
   ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 2, 3, false],
   ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 2, 3, false],
+  ['blues_b', 'female', { sleeve: 'short', tie: true }, 'garment-blues-class-b-blouse-female', 2, 3, false],
   ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 2, 3, false],
   // The aviator sheets' pointed collar (art bb1b47a0, LIVE8-1): the polygon is the leaf alone, vertices top end 0, collar point 1, the leading edge's other end 2 (the knot's shoulder on the men's, the front of
   // the neck on the women's), then the neck edge as a curve back to the top end. No roll line lies inside it, so the whole polygon is the leaf, on the short sheets and the long.
@@ -267,7 +273,7 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
     test(`${uniform} ${gender} ${opt.sleeve || ''} ${opt.femaleTop || ''} ${rank} (${garment}): each collar chevron lies along the leaf's bottom edge, top of the insignia (peak, canton) toward the roll end, 1 in from it, centred on the leaf (Figure A5-5)`, async () => {
       const spec = await store.load(garment);
       const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank, opt), store);
-      const polys = collarPolygonsOf(garment, spec).sort((a, b) => meanX(a) - meanX(b));   // picture left first
+      const polys = collarPolygonsOf(garment, spec, opt).sort((a, b) => meanX(a) - meanX(b));   // picture left first
       assert.equal(polys.length, 2);
       const w = (await store.load(G.cadetNcoChevron(G.gradeInfo('cadet', rank, {}), 'metal'))).w;
       for(const [side, poly] of [['right', polys[0]], ['left', polys[1]]]){   // the wearer's right is the collar on the left of the picture
@@ -376,7 +382,7 @@ test('the collar chevron turn has one sign convention on every sheet: the wearer
 test('the engine finds each collar leaf\'s leading edge between the vertices the cases name, and the leaf is the whole polygon (Figure A5-5)', async () => {
   for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
     const spec = await store.load(garment);
-    for(const poly of collarPolygonsOf(garment, spec)){
+    for(const poly of collarPolygonsOf(garment, spec, opt)){
       const edge = P.helpers.collarLeadingEdge(poly, spec.w / 2);
       assert.ok(edge, garment);
       assert.equal(edge.collarPoint, poly[iPoint], `${garment}: collar point is vertex ${iPoint}`);
@@ -405,7 +411,7 @@ test('the art\'s top_center lands closer to the roll-line end than to the collar
   for(const [uniform, gender, opt, garment, iPoint, iRoll] of COLLAR_CASES){
     const spec = await store.load(garment);
     const scene = await P.composeUniform(build(uniform, gender, 'cadet', 'C/SSgt', opt), store);
-    const polys = collarPolygonsOf(garment, spec).sort((a, b) => meanX(a) - meanX(b));
+    const polys = collarPolygonsOf(garment, spec, opt).sort((a, b) => meanX(a) - meanX(b));
     const art = await store.load(G.cadetNcoChevron(G.gradeInfo('cadet', 'C/SSgt', {}), 'metal'));
     for(const [side, poly] of [['right', polys[0]], ['left', polys[1]]]){
       const l = gradeLayer(scene, 'grade:' + side), r = l.rotate * Math.PI / 180;
@@ -416,7 +422,13 @@ test('the art\'s top_center lands closer to the roll-line end than to the collar
       // piece's top is within 0.02 in (0.07 in on the overblouse at its true size, 1.2036) of equally far from both ends, so the turn is pinned by the direction as well as by the distances
       const e = { x: poly[iRoll].x - poly[iPoint].x, y: poly[iRoll].y - poly[iPoint].y }, along = (up.x * e.x + up.y * e.y) / Math.hypot(e.x, e.y);
       assert.ok(along > 0.99, `${garment} ${side}: art top points ${along.toFixed(3)} along the edge toward the roll end`);
-      assert.ok(dRoll < dPoint + (garment.includes('overblouse') ? 0.1 : 0), `${garment} ${side}: art top ${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} in from the collar point`);
+      // Along the leading edge (collar point 0 to roll end 1), the art's top lies farther toward the roll end than its bottom, by most of the chevron's length: the turn is pinned by the direction
+      // (asserted above) and by the two ends' places on the edge. The piece is centred on the leaf's centroid, so on the short sheets' open leaves, whose centroid lies nearer the collar point,
+      // the top is 45 percent along the edge, not past the middle (the straight distances to the two vertices also count its 1 in perpendicular offset, and favoured the collar point by 0.19 in).
+      const eLen = Math.hypot(e.x, e.y), bottom = { x: cx - up.x * l.h / 2, y: cy - up.y * l.h / 2 };
+      const tOf = q => ((q.x - poly[iPoint].x) * e.x + (q.y - poly[iPoint].y) * e.y) / (eLen * eLen);
+      assert.ok(tOf(top) - tOf(bottom) > 0.4 * l.h / eLen, `${garment} ${side}: art top at ${(tOf(top) * 100).toFixed(0)} percent along the leading edge, its bottom at ${(tOf(bottom) * 100).toFixed(0)} percent (${dRoll.toFixed(2)} in from the roll end, ${dPoint.toFixed(2)} from the collar point)`);
+      assert.ok(tOf(top) > 0.35 && tOf(top) < 1.05, `${garment} ${side}: art top ${(tOf(top) * 100).toFixed(0)} percent along the edge`);
       assert.ok(art && art.w > 0);
     }
   }
