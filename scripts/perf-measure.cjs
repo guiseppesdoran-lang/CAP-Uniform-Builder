@@ -105,7 +105,15 @@ class Cdp {
       for(const h of this.handlers) h(d);
     });
   }
-  send(method, params, sessionId){ const id = ++this.id; return new Promise((res, rej) => { this.pending.set(id, { res, rej }); this.ws.send(JSON.stringify({ id, method, params: params || {}, ...(sessionId ? { sessionId } : {}) })); }); }
+  send(method, params, sessionId){
+    const id = ++this.id;
+    return new Promise((res, rej) => {
+      // A command Chrome never answers (seen with Tracing.end on a long throttled load) fails the run instead of hanging it.
+      const timer = setTimeout(() => { this.pending.delete(id); rej(new Error(`${method} timed out`)); }, 120000);
+      this.pending.set(id, { res: v => { clearTimeout(timer); res(v); }, rej: e => { clearTimeout(timer); rej(e); } });
+      this.ws.send(JSON.stringify({ id, method, params: params || {}, ...(sessionId ? { sessionId } : {}) }));
+    });
+  }
   on(fn){ this.handlers.push(fn); return () => { this.handlers = this.handlers.filter(h => h !== fn); }; }
 }
 
@@ -248,8 +256,8 @@ async function run(cdp, mode, url){
   }
   const page = await ev(COLLECT);
   if(traceEvents){
-    await S('Tracing.end');
-    await Promise.race([mode.traceDone, sleep(30000)]);
+    try { await S('Tracing.end'); await Promise.race([mode.traceDone, sleep(30000)]); }
+    catch (e) { process.stderr.write(`trace lost: ${e.message}\n`); traceEvents = null; }
     mode.offTrace();
   }
   off();
