@@ -367,8 +367,8 @@
     "x": 1259.41,
     "y": 262
    },
-   "w_in": 5.01,
-   "length_in": 3.73
+   "w_in": 3.92,
+   "length_in": 3.62
   },
   "armpit_apex": {
    "right": [
@@ -442,9 +442,9 @@
   "tie": {
    "size_source": "estimated",
    "kind": "tab",
-   "w_in": 5.01,
-   "length_in": 3.73,
-   "source": "LIVE9-ART 1: the Class A women's coat sheet's own tab (make-blues-a-female.js, tie.js): dx 2.503, dy 2.808, ex 0.240, ey 0.927, t 1.000 in, apex at the collar junction J, the arms cut under the leaf points on a slanted line as the Class A's are cut by the coat's V edge (CAPR 39-1 4.1.12.4, Figs 4.7a, 4.11)"
+   "w_in": 3.92,
+   "length_in": 3.62,
+   "source": "LIVE12-ART 7: the tab measured on CAPR 39-1 Fig 4.11 at 8x (tie.js tabFig411, the same drawing as the aviator blouse): notch 1.00 in below the apex, inner edge 34.8 deg from vertical, 0.57 in arms, pointed tails (outer edge 9.75 deg from vertical), their points 3.62 in below the apex and 3.64 in apart; apex at the collar junction J; the arms whole (was the Class A coat's tab, dx 2.503, dy 2.808, ex 0.240, ey 0.927, t 1.000 in, cut on a slanted line under the leaf points) (CAPR 39-1 4.1.12.4, Fig 4.11)"
   },
   "undershirt": {
    "size_source": "estimated",

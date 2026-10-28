@@ -13,7 +13,7 @@
   3272.2
  ],
  "size_source": "estimated",
- "size_basis": "Outline, collar, lapels, armhole seams, front edge, hem, buttons, nametag, crest and lapel pin read off CAPR 39-1 Fig 4.15 (PDF page 89 at 8x; base-art/blazer-fig415-measure.js) at 66.37 px/in across, from the figure's 3 3/8 in nametag, and 67.76 px/in down (the figure is stretched 2.1 percent: its nametag is 3.67:1 against the 3.75:1 of Fig A6-3; the same figure measured against Fig 4.7a's coat, 2.4 percent). Blazer 24.79 in from collar to hem, 21.14 in across the sleeves, 15.97 in across the shoulders. No real garment was measured: the scale rests on the figure's nametag (the plate is not dimensioned in the regulation). The hip flap pockets, breast welt pocket, sleeve buttons and the line above the cuff are not in the figure and are kept from Vanguard's product photo of the CAP women's blue blazer (CAP4200E), which the outline was traced from before LIVE12-ART 4. Chest geometry: the crest centre is 3.55 in from the centre line (a miniature rack 3 across, 2.06 in, centred on it has its inner edge 2.52 in out); the lapel edge ends at the break 7.20 in down, above the medal slot's top (7.43 in), so the lapel no longer crosses the rack.",
+ "size_basis": "Outline, collar, lapels, armhole seams, front edge, hem, buttons, crest and lapel pin read off CAPR 39-1 Fig 4.15 (PDF page 89 at 8x; base-art/blazer-fig415-measure.js) at 66.37 px/in across, from the figure's 3 3/8 in nametag, and 67.76 px/in down (the figure is stretched 2.1 percent: its nametag is 3.67:1 against the 3.75:1 of Fig A6-3; the same figure measured against Fig 4.7a's coat, 2.4 percent). Blazer 24.79 in from collar to hem, 21.14 in across the sleeves, 15.97 in across the shoulders. No real garment was measured: the scale rests on the figure's nametag (the plate is not dimensioned in the regulation). The nametag is where 4.2.4.1.1.2 puts it on a blazer with no breast pocket, 1/2 in above the crest (Fig 4.15 draws no breast pocket; the Vanguard photo's welt was removed in LIVE12-ART 9). The hip flap pockets, sleeve buttons and the line above the cuff are not in the figure and are kept from Vanguard's product photo of the CAP women's blue blazer (CAP4200E), which the outline was traced from before LIVE12-ART 4. Chest geometry: the crest centre is 3.55 in from the centre line (a miniature rack 3 across, 2.06 in, centred on it has its inner edge 2.52 in out); the lapel edge ends at the break 7.20 in down, above the medal slot's top (7.43 in), so the lapel no longer crosses the rack.",
  "anchors": {
   "top_center": [
    1076.95,
@@ -41,11 +41,11 @@
   ],
   "nameplate_slot_center": [
    1431.8,
-   744.2
+   808
   ],
   "nameplate_slot_top_left": [
    1263.05,
-   699.2
+   763
   ],
   "crest_center": [
    1431.78,
@@ -69,7 +69,7 @@
   ],
   "chaplain_badge_above_nametag": [
    1431.8,
-   649.2
+   713
   ],
   "tie_tab_center": [
    1076.95,
@@ -95,7 +95,7 @@
  "landmarks": {
   "nameplate_slot": {
    "x": 1263.05,
-   "y": 699.2,
+   "y": 763,
    "w": 337.5,
    "h": 90
   },
@@ -223,24 +223,6 @@
    [
     1654.02,
     1094.65
-   ]
-  ],
-  "welt_pocket": [
-   [
-    1335.03,
-    699.2
-   ],
-   [
-    1523.63,
-    654.5
-   ],
-   [
-    1528.53,
-    689.3
-   ],
-   [
-    1339.93,
-    734
    ]
   ],
   "shoulder_left": [
@@ -436,7 +418,7 @@
    ]
   ]
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons and polylines are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. welt_pocket: the slanted breast welt (inner top, outer top, outer bottom, inner bottom; Vanguard photo, not in Fig 4.15), nameplate_slot's top edge is level with its inner top corner (4.2.4.1.1.2); lapel_left / lapel_right: the lapel-foreground faces (wearer's left is +x); arm_seam_left / arm_seam_right: the armhole seam from the shoulder point down to the armpit (also drawn in group `seams`); shoulder_left / shoulder_right: the top edge of the shoulder from the neck to the sleeve head",
+ "landmarks_note": "rects are {x,y,w,h}; polygons and polylines are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. nameplate_slot: its bottom edge 1/2 in above the crest's top, centred on the crest (4.2.4.1.1.2, no breast pocket); lapel_left / lapel_right: the lapel-foreground faces (wearer's left is +x); arm_seam_left / arm_seam_right: the armhole seam from the shoulder point down to the armpit (also drawn in group `seams`); shoulder_left / shoulder_right: the top edge of the shoulder from the neck to the sleeve head",
  "dimensions": {
   "length_in": 24.79,
   "box_height_in": 32.52,
@@ -476,7 +458,7 @@
   "button diameter (0.72 in; the figure draws 0.77 in)",
   "crest drawn 2.8 in tall (true size) centred under the nametag at the figure's crest height",
   "skirt drawn as in the figure; slacks are a bottoms variant; 7.73 in of skirt below the hem (kept from the photo-built sheet)",
-  "pockets, sleeve buttons and the line above the cuff: not in Fig 4.15, kept from the Vanguard photo (flap height above the hem scaled by the blazer length)",
+  "hip flap pockets, sleeve buttons and the line above the cuff: not in Fig 4.15, kept from the Vanguard photo (flap height above the hem scaled by the blazer length)",
   "skirt flare: 12 px of half-width per 100 px of height measured on Fig 4.15, applied from the coat side hem to the box bottom",
   "skirt waist and waistband sizes (waist 3.5 in above the coat hem, 1.1 in narrower each side than the hem, 1.5 in waistband): the regulation gives no skirt dimension and the figure hides them under the coat",
   "shirt placket button size (0.14 in radius) and spacing (2.3 in)",

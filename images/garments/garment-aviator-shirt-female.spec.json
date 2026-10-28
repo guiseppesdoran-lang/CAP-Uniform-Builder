@@ -495,8 +495,8 @@
     "x": 1244.65,
     "y": 257.04
    },
-   "w_in": 2.9,
-   "length_in": 2.07
+   "w_in": 3.92,
+   "length_in": 3.62
   },
   "sleeve_flat_view": {
    "left": {
@@ -687,8 +687,8 @@
   "tie": {
    "group": "tie",
    "kind": "tab",
-   "w_in": 2.9,
-   "length_in": 2.07,
+   "w_in": 3.92,
+   "length_in": 3.62,
    "knot_w_in": null,
    "construction": "base-art/tie.js, the Class A coats' tie (knot apex, shoulder, neck, blade, tip) / tab (inverted V); apex at the front of the collar, under the leaves",
    "size_source": "estimated",

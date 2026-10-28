@@ -13,7 +13,7 @@
   3140.42
  ],
  "size_source": "estimated",
- "size_basis": "The tab of the sheet's group \"tie\" as an overlay: tie.js's inverted V (Class A tab proportions, slope 1.2, scaled to 2.9 x 2.07 in), apex at the front of the collar under the leaves; no dimension in the regulation.",
+ "size_basis": "The tab of the sheet's group \"tie\" as an overlay: tie.js's inverted V (tabFig411: the tab of CAPR 39-1 Fig 4.11 measured at 8x, LIVE12-ART 7; pointed tails, 0.57 in arms; 3.92 x 3.62 in), apex at the front of the collar under the leaves; no dimension in the regulation.",
  "anchors": {
   "top_center": [
    1266.76,
@@ -37,7 +37,7 @@
   ],
   "tie_tab_center": [
    1244.65,
-   360.54
+   438.03
   ],
   "tie_tab_top_center": [
    1244.65,
@@ -46,10 +46,10 @@
  },
  "landmarks": {
   "tie_tab": {
-   "x": 1099.65,
+   "x": 1048.87,
    "y": 257.04,
-   "w": 290,
-   "h": 207
+   "w": 391.56,
+   "h": 362
   }
  },
  "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
