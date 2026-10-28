@@ -251,12 +251,14 @@
   function ensureCommandBar(){
     if(safeBy('capubCommandBar')) return;
     const bar=document.createElement('div'); bar.id='capubCommandBar'; bar.className='capubCommandBar';
-    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Check</button><button type="button" id="cmdDownload">Download PNG</button>`;
+    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Check</button><button type="button" id="cmdDownload">Download PNG</button><button type="button" id="cmdTemplates">Templates</button>`;
     document.body.appendChild(bar);
     safeBy('cmdRibbons').onclick=()=>safeBy('expandRibbons')?.click();
     safeBy('cmdBadges').onclick=()=>safeBy('expandBadges')?.click();
     safeBy('cmdPatches').onclick=()=>safeBy('expandPatches')?.click();
     safeBy('cmdDownload').onclick=()=>safeBy('downloadImage')?.click();
+    // Paper templates and 3D-print jigs for the pinned and sewn items (js/placement-templates.js, LIVE13 E64).
+    safeBy('cmdTemplates').hidden=!window.CAPUBPlacementTemplates; safeBy('cmdTemplates').onclick=()=>window.CAPUBPlacementTemplates?.open();
     safeBy('cmdValidate').onclick=()=>{ if(typeof fullRender==='function') fullRender(); const w=(safeBy('capubV2WarningCount')||{}).textContent||'0'; toast(w==='0'?'Validation complete: no automatic issues found.':`Validation complete: ${w} warning(s) found.`); safeBy('capubV2StatusPanel')?.scrollIntoView({behavior:'smooth',block:'center'}); };
   }
   function polishPanels(){
