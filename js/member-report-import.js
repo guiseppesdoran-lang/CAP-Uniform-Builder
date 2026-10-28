@@ -107,43 +107,38 @@ function removeLocalActivitiesFromMemberReport(text){
   return source.slice(0, start).trim();
 }
 
+// A grade as the report prints it ("C/1st Lt", "C/1stLt", "Lt Col", "2nd Lt", "MAJ GEN") as the setup's rank list
+// (js/state.js RANKS) spells it, or the text unchanged when it is no CAP grade.
 function normalizeImportedRank(raw){
-  const r = String(raw || '').trim();
-  const fixes = {
-    'C/1stLt':'C/1st Lt',
-    'C/2dLt':'C/2d Lt',
-    'C/LtCol':'C/Lt Col',
-    'C/Maj':'C/Maj',
-    'C/Capt':'C/Capt',
-    'C/Col':'C/Col',
-    'C/CMSgt':'C/CMSgt',
-    'C/SMSgt':'C/SMSgt',
-    'C/MSgt':'C/MSgt',
-    'C/TSgt':'C/TSgt',
-    'C/SSgt':'C/SSgt',
-    'C/SrA':'C/SrA',
-    'C/A1C':'C/A1C',
-    'C/Amn':'C/Amn',
-    'C/AB':'C/AB'
-  };
-  return fixes[r] || r.replace('1stLt','1st Lt').replace('2dLt','2d Lt').replace('LtCol','Lt Col');
+  const key = s => String(s || '').toLowerCase().replace(/\s+/g, '').replace(/2ndlt$/, '2dlt');
+  const k = key(raw);
+  return [...RANKS.cadet, ...RANKS.senior].find(rank => key(rank) === k) || String(raw || '').trim();
 }
 
+// Every CAP grade as a pattern, longest first, so "Maj Gen" is not read as "Maj", "C/1st Lt" as "C/1st",
+// "C/Lt Col" as "C/Lt" or "TFO" as "FO". Spaces inside a grade may be missing ("C/LtCol") and "2nd Lt" is
+// read as "2d Lt".
+function importedRankPattern(){
+  return [...RANKS.cadet, ...RANKS.senior, '2nd Lt', 'C/2nd Lt']
+    .sort((a, b) => b.length - a.length)
+    .map(rank => rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*'))
+    .join('|');
+}
+
+// Without the General Information row: the grade in the report heading ("Member Details C/Col Guiseppe
+// Mitchell"), else the highest grade the text names (the Promotions table lists every grade held).
 function getHighestImportedRank(text){
-  const ranks = [...RANKS.cadet, ...RANKS.senior];
-  const rankHits = [];
-  for(const rank of ranks){
-    const escaped = rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace('\\ ', '\\s*');
-    const re = new RegExp(`\\b${escaped}\\b`, 'i');
-    if(re.test(text)) rankHits.push(rank);
-  }
-
-  // Prefer explicit general information line first.
-  const gen = text.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+(SM|[A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
-  if(gen) return normalizeImportedRank(gen[3]);
-
-  if(rankHits.includes('C/Maj')) return 'C/Maj';
-  return rankHits[0] || null;
+  const t = normalizeMemberReportText(text);
+  const pattern = importedRankPattern();
+  const heading = t.match(new RegExp(`Member\\s+Details\\s+(${pattern})(?=\\s)`, 'i'));
+  if(heading) return normalizeImportedRank(heading[1]);
+  const order = [...RANKS.cadet, ...RANKS.senior];
+  const hits = [...t.matchAll(new RegExp(`(?:^|[\\s(])(${pattern})(?=$|[\\s),])`, 'gi'))]
+    .map(m => normalizeImportedRank(m[1])).filter(rank => order.includes(rank));
+  if(!hits.length) return null;
+  // A cadet grade and a senior grade both present: the senior grade is the later one (cadets become seniors).
+  const pool = hits.some(rank => RANKS.senior.includes(rank)) ? hits.filter(rank => RANKS.senior.includes(rank)) : hits;
+  return pool.sort((a, b) => order.indexOf(b) - order.indexOf(a))[0];
 }
 
 function countOccurrences(text, pattern){
@@ -379,11 +374,12 @@ function parseCapReportDate(dateText){
 function extractJoinDateFromMemberReport(text){
   const t = normalizeMemberReportText(text);
 
-  // Normal report header shape:
+  // Normal report header shape, read with the grade (getCurrentProfileFromMemberReport):
   // Gender Type Rank Date of Rank Joined Expires ...
   // MALE CADET C/Maj 18 Dec 2025 24 Sep 2020 30 Sep 2026 ...
-  const headerMatch = t.match(/\b(?:MALE|FEMALE)\s+(?:CADET|SENIOR(?:\s+MEMBER)?)\s+[A-Z]\/?[A-Za-z0-9]*(?:\s+[A-Za-z]+)?\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\s+(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/i);
-  if(headerMatch) return parseCapReportDate(headerMatch[1]);
+  // It used to require a letter first in the grade, so a 1st Lt or 2d Lt had no join date and no Red Service Ribbon.
+  const profile = getCurrentProfileFromMemberReport(t);
+  if(profile?.joined) return profile.joined;
 
   // Fallbacks for copied or alternate report text.
   const explicitMatch = t.match(/\b(?:Joined|Join Date|Date Joined)\s*:?\s*(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})\b/i);
@@ -497,14 +493,33 @@ function extractMemberNameFromReport(text){
   return null;
 }
 
+// The General Information row: "... MALE CADET C/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE ...", columns
+// Gender, Type, Rank, Date of Rank, Joined, Expires. The grade is any CAP grade, longest first (it used to stop
+// at "C/1st", "C/2d", "C/Lt" and read "Maj Gen" as "Maj", and knew no flight officer grade). The membership is
+// the grade's (a "C/" grade is a cadet's); the Type column is read only if it says CADET or SENIOR and the grade
+// agrees, so a "SENIOR MEMBER" or "LIFE" type reads the same. Joined is the second date after the grade, or the
+// first when the Date of Rank is blank (two dates, the first not after the second).
 function getCurrentProfileFromMemberReport(text){
   const t = normalizeMemberReportText(text);
-  const m = t.match(/\b(MALE|FEMALE)\s+(CADET|SENIOR(?:\s+MEMBER)?)\s+(SM|[A-Z]\/[A-Za-z0-9]+|C\/1st\s*Lt|C\/2d\s*Lt|C\/Lt\s*Col|SSgt|TSgt|MSgt|SMSgt|CMSgt|2d\s*Lt|1st\s*Lt|Capt|Maj|Lt\s*Col|Col|Brig\s*Gen|Maj\s*Gen)\b/i);
+  const date = '\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}';
+  const re = new RegExp(`\\b(MALE|FEMALE)\\s+((?:[A-Z][A-Z\\-]*\\s+){1,3}?)(${importedRankPattern()})(?=$|\\s)((?:\\s+${date}){0,3})`, 'i');
+  const m = t.match(re);
   if(!m) return null;
+  const rank = normalizeImportedRank(m[3]);
+  const type = m[2].trim().toUpperCase();
+  const membership = RANKS.cadet.includes(rank) ? 'cadet'
+    : RANKS.senior.includes(rank) ? 'senior'
+    : /^CADET\b/.test(type) ? 'cadet' : 'senior';
+  const dates = (m[4].match(new RegExp(date, 'g')) || []).map(parseCapReportDate);
+  let joined = null;
+  if(dates.length >= 3) joined = dates[1];
+  else if(dates.length === 2) joined = dates[0] && dates[1] && dates[0] > dates[1] ? dates[1] : dates[0];
   return {
     gender: m[1].toLowerCase() === 'female' ? 'female' : 'male',
-    membership: /^senior/i.test(m[2]) ? 'senior' : 'cadet',
-    rank: normalizeImportedRank(m[3])
+    membership,
+    type,
+    rank,
+    joined: joined || null
   };
 }
 
@@ -1440,15 +1455,26 @@ function dedupeImportedRibbons(ribbons){
 }
 
 function applyCapMemberReportImport(parsed){
+  // As the setup's Member type and Rank selects do (js/setup.js): the adult-cadet option is cleared for a senior
+  // member, a uniform the membership may not wear falls back to the first it may, and a rank the new membership
+  // does not offer is cleared rather than kept from the previous member.
   if(parsed.membership){
     State.membership = parsed.membership;
     if(membershipTypeEl) membershipTypeEl.value = parsed.membership;
+    if(State.membership !== 'cadet') State.adultCadet = false;
+    if(typeof syncAdultCadetControl === 'function') syncAdultCadetControl();
     populateRankSetup();
+    if(typeof isUniformAllowedFor === 'function' && !isUniformAllowedFor(State.uniform, State.membership)){
+      State.uniform = (typeof findFirstAllowedUniform === 'function' && findFirstAllowedUniform(State.membership)) || 'blues_a';
+    }
   }
 
   if(parsed.rank && RANKS[State.membership || 'cadet']?.includes(parsed.rank)){
     State.rank = parsed.rank;
     if(rankSetupSelect) rankSetupSelect.value = parsed.rank;
+  }else if(State.rank && !RANKS[State.membership || 'cadet']?.includes(State.rank)){
+    State.rank = null;
+    if(rankSetupSelect) rankSetupSelect.value = '';
   }
 
   if(parsed.gender){

@@ -16,9 +16,11 @@ const short = d => d.replace(/^device-/, '');
 
 // Parse a report and apply it. The gallery and render calls need a real page, so they are stubbed out; what is
 // asserted is the parsed list and the selections the import leaves in State.
-function runImport(text){
+// `before` runs in the page first, to stand for the setup a previous member left (a rank, a uniform).
+function runImport(text, before=''){
   const { context, referenceErrors } = loadPageScripts();
   assert.deepEqual(referenceErrors, []);
+  if(before) vm.runInContext(before, context);
   const out = vm.runInContext(`(function(text){
     for(const n of ['buildRibbonGallery','rebuildRibbonsFromGallery','buildBadgeGallery','rebuildBadgesFromGallery','fullRender','refreshUI',
       'populateRankSetup','updateSetupGates','highlightActiveUniformButton','applyMemberTypeToUniformOptions','syncCadetFirstSergeantControl',
@@ -33,7 +35,7 @@ function runImport(text){
     const selected = {};
     for(const [id, s] of Object.entries(State.ribbonSelections)) if(s.checked) selected[id] = { awardValue: s.awardValue, awardLabel: s.awardLabel };
     globalThis.document = realDocument;
-    return JSON.stringify({ parsed, selected, membership: State.membership, rank: State.rank, text: State.text, fields });
+    return JSON.stringify({ parsed, selected, membership: State.membership, rank: State.rank, uniform: State.uniform, adultCadet: State.adultCadet, text: State.text, fields });
   })`, context)(text);
   const data = JSON.parse(out);
   const devices = id => RA.resolve(id, { ...data.selected[id], membership: data.membership }).map(r => ({ devices: r.devices.map(short), centered: r.centered }));
@@ -378,4 +380,57 @@ test('the activities CAPR 39-1 Figure A8-2 names count without the word NCSA (E4
   const rows = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC) 10 Jul 2022\nNCSA Cyber Defense 12 Jul 2023',
     'Air Force Space Command Familiarization Course 10 Jul 2022\nSpecialized Undergraduate Pilot Training Familiarization Course 12 Jul 2023\nEngineering Academy 14 Jul 2024');
   assert.deepEqual(runImport(rows).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze', 'star-bronze'], centered: false }], 'COS and three activities');
+});
+
+// LIVE13 E62: the grade in the General Information row is any CAP grade (js/state.js RANKS), read whole: "C/1st Lt"
+// used to come back as "C/1st", "C/Lt Col" as "C/Lt", "Maj Gen" as "Maj", and a flight officer's grade was not read
+// at all, so the import left the Rank select empty or wrong. Spacing may be missing, as a PDF can print it.
+test('every cadet and senior grade in the General Information row is the setup rank, however it is spaced (E62)', () => {
+  const asGrade = (type, grade) => FIXTURE.replace('MALE CADET C/Col', `MALE ${type} ${grade}`);
+  const { context } = loadPageScripts();
+  const RANKS = JSON.parse(vm.runInContext('JSON.stringify(RANKS)', context));
+  const cases = [
+    ...RANKS.cadet.map(g => ['CADET', g, g, 'cadet']),
+    ...RANKS.senior.map(g => ['SENIOR', g, g, 'senior']),
+    ['CADET', 'C/1stLt', 'C/1st Lt', 'cadet'], ['CADET', 'C/LtCol', 'C/Lt Col', 'cadet'], ['CADET', 'C/2nd Lt', 'C/2d Lt', 'cadet'],
+    ['SENIOR', 'MajGen', 'Maj Gen', 'senior'], ['SENIOR', '2nd Lt', '2d Lt', 'senior'], ['SENIOR MEMBER', 'Lt Col', 'Lt Col', 'senior'],
+    ['LIFE', 'Col', 'Col', 'senior']
+  ];
+  const parse = vm.runInContext('(t => JSON.stringify(getCurrentProfileFromMemberReport(t)))', context);
+  for(const [type, grade, rank, membership] of cases){
+    const p = JSON.parse(parse(asGrade(type, grade)));
+    assert.equal(p.rank, rank, `${type} ${grade}`);
+    assert.equal(p.membership, membership, `${type} ${grade}`);
+  }
+  for(const [type, grade, rank, membership] of [['CADET', 'C/1st Lt', 'C/1st Lt', 'cadet'], ['SENIOR', 'Maj Gen', 'Maj Gen', 'senior'], ['SENIOR', 'TFO', 'TFO', 'senior']]){
+    const r = runImport(asGrade(type, grade).replace(/\n/g, ' '));
+    assert.deepEqual([r.membership, r.rank], [membership, rank], `${grade} on one line, applied to the setup`);
+  }
+});
+
+test('the join date is read for a 1st Lt or 2d Lt and when the Date of Rank is blank: the Red Service Ribbon follows (E62)', () => {
+  const cadet = runImport(FIXTURE).ribbon('red_service_ribbon');
+  assert.ok(cadet);
+  for(const grade of ['MALE SENIOR 1st Lt', 'MALE SENIOR 2d Lt', 'FEMALE SENIOR SM']){
+    assert.equal(runImport(FIXTURE.replace('MALE CADET C/Col', grade)).ribbon('red_service_ribbon')?.value, cadet.value, grade);
+  }
+  // SM with no Date of Rank: Joined and Expires only.
+  assert.equal(runImport(FIXTURE.replace('MALE CADET C/Col 18 Dec 2025', 'MALE SENIOR SM')).ribbon('red_service_ribbon')?.value, cadet.value, 'SM, no date of rank');
+});
+
+test('the import leaves the setup as the Member type and Rank selects would: no stale rank, adult cadet or uniform (E62)', () => {
+  // A cadet report with no readable grade, imported over a senior captain: the captain's rank is not kept.
+  const noGrade = FIXTURE.replace('MALE CADET C/Col', 'MALE CADET').replace('C/Col Guiseppe Mitchell', 'Guiseppe Mitchell');
+  const r = runImport(noGrade, "State.membership = 'senior'; State.rank = 'Capt';");
+  assert.equal(r.membership, 'cadet');
+  assert.equal(r.rank, null);
+  // A senior report over an adult cadet: the adult-cadet option goes (CAPR 39-1 1.2.5.2 is for cadets).
+  const senior = runImport(FIXTURE.replace('MALE CADET C/Col', 'MALE SENIOR Capt'), "State.membership = 'cadet'; State.adultCadet = true;");
+  assert.equal(senior.adultCadet, false);
+  // A cadet report over a senior's mess dress: the uniform falls back to one a cadet may wear.
+  const { context } = loadPageScripts();
+  assert.equal(vm.runInContext("isUniformAllowedFor('mess_dress', 'cadet')", context), false);
+  const cadet = runImport(FIXTURE, "State.membership = 'senior'; State.uniform = 'mess_dress';");
+  assert.notEqual(cadet.uniform, 'mess_dress');
+  assert.equal(vm.runInContext(`isUniformAllowedFor(${JSON.stringify(cadet.uniform)}, 'cadet')`, context), true);
 });
