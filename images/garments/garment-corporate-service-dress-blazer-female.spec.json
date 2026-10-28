@@ -225,6 +225,24 @@
     1094.65
    ]
   ],
+  "welt_pocket": [
+   [
+    1335.03,
+    699.2
+   ],
+   [
+    1523.63,
+    654.5
+   ],
+   [
+    1528.53,
+    689.3
+   ],
+   [
+    1339.93,
+    734
+   ]
+  ],
   "shoulder_left": [
    [
     1328.57,
@@ -418,7 +436,7 @@
    ]
   ]
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons and polylines are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. lapel_left / lapel_right: the lapel-foreground faces (wearer's left is +x); arm_seam_left / arm_seam_right: the armhole seam from the shoulder point down to the armpit (also drawn in group `seams`); shoulder_left / shoulder_right: the top edge of the shoulder from the neck to the sleeve head",
+ "landmarks_note": "rects are {x,y,w,h}; polygons and polylines are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box. welt_pocket: the slanted breast welt (inner top, outer top, outer bottom, inner bottom; Vanguard photo, not in Fig 4.15), nameplate_slot's top edge is level with its inner top corner (4.2.4.1.1.2); lapel_left / lapel_right: the lapel-foreground faces (wearer's left is +x); arm_seam_left / arm_seam_right: the armhole seam from the shoulder point down to the armpit (also drawn in group `seams`); shoulder_left / shoulder_right: the top edge of the shoulder from the neck to the sleeve head",
  "dimensions": {
   "length_in": 24.79,
   "box_height_in": 32.52,
