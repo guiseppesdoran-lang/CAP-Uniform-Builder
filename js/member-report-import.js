@@ -1054,6 +1054,129 @@ function hasCurrentFirstSergeantDutyPosition(text){
   return firstSergeantTitleRe.test(current);
 }
 
+// The report less its heading and General Information row, for the awards named by a person ("Wilson", "Davis",
+// "Yeager", "Garber", "Loening", "Crossfield"): a member whose own name is one of them was given that award.
+function memberReportTextWithoutMemberRow(text){
+  const source = String(text || '');
+  const info = source.search(/General\s+Information/i);
+  if(info < 0) return source;
+  const rest = source.slice(info);
+  const next = rest.search(/\b(?:Cadet\s+Duty\s+Positions|Current\s+Duty\s+Positions|Duty\s+Positions|Professional\s+Development|Specialty\s+Tracks|Cadet\s+Training|Encampments|Cadet\s+Achievements|Awards|Decorations)\b/i);
+  return next > 0 ? rest.slice(next) : '';
+}
+
+// The rows of one award: each printed line names the award once, so the count is the number of times its name
+// appears. `skipAfter` names the words that, just before the name, make it another award ("Aerospace Education
+// Achievement Award" is the Yeager award, not a CAP Achievement Award; "National Commander's Unit Citation" is
+// not the Unit Citation).
+function countMemberReportAwardRows(text, pattern, skipAfter=null){
+  const source = String(text || '');
+  const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+  let count = 0, m;
+  while((m = re.exec(source))){
+    if(m[0].length === 0){ re.lastIndex++; continue; }
+    if(skipAfter && skipAfter.test(source.slice(Math.max(0, m.index - 40), m.index))) continue;
+    count++;
+  }
+  return count;
+}
+
+// Whether any row of an award says it was earned as aircrew (the propeller, CAPR 39-3 21c and 21d): the row is read
+// from the award's name up to its date.
+function memberReportAwardRowSays(text, pattern, says){
+  const source = String(text || '');
+  const re = new RegExp(`(?:${pattern.source})([\\s\\S]{0,60}?)(?=\\b\\d{1,2}\\s+[A-Za-z]{3,9}\\s+\\d{4}\\b|$)`, 'gi');
+  let m;
+  while((m = re.exec(source))){
+    if(says.test(m[m.length - 1] || '') || says.test(m[0])) return true;
+    if(m[0].length === 0) re.lastIndex++;
+  }
+  return false;
+}
+
+// Count ribbons the report lists one row per award, the award with its CAPR 39-3 devices: clasps for the
+// later awards, or for the Silver Medal of Valor a separate ribbon each. Ribbons earned once (`once`) carry no clasp.
+// `aircrew` adds the propeller when a row says aircrew or propeller.
+const MEMBER_REPORT_COUNTED_AWARDS = [
+  { id:'silver_medal_of_valor', name:'Silver Medal of Valor', re:/\bSilver\s+Medal\s+of\s+Valor\b/i },
+  { id:'bronze_medal_of_valor', name:'Bronze Medal of Valor', re:/\bBronze\s+Medal\s+of\s+Valor\b/i },
+  { id:'distinguished_service_award', name:'Distinguished Service Award', re:/\bDistinguished\s+Service\s+Award\b/i },
+  { id:'national_commander_unit_citation_award', name:"National Commander's Unit Citation Award", re:/\bNational\s+Commander[’'‘`´]?s?[’']?\s+Unit\s+Citation\b/i },
+  { id:'unit_citation_award', name:'Unit Citation Award', re:/\bUnit\s+Citation\b/i, skipAfter:/Commander[’'‘`´]?s?[’']?\s+$/i },
+  { id:'national_commanders_citation', name:"National Commander's Citation", re:/\bNational\s+Commander[’'‘`´]?s?[’']?\s+Citation\b/i, once:true },
+  { id:'air_force_aerial_achievement_medal', name:'Air Force Aerial Achievement Medal', re:/\bAerial\s+Achievement\s+Medal\b/i },
+  { id:'air_search_and_rescue_ribbon', name:'Air Search and Rescue Ribbon', re:/\b(?:Air\s+)?Search\s+and\s+Rescue\s+Ribbon\b/i, aircrew:true },
+  { id:'cap_counterdrug_ribbon', name:'Counterdrug Ribbon', re:/\bCounter[\s-]?drug\s+Ribbon\b/i },
+  { id:'homeland_security_ribbon', name:'Homeland Security Ribbon', re:/\bHomeland\s+Security\s+Ribbon\b/i },
+  { id:'cap_cadet_orientation_pilot_ribbon', name:'Cadet Orientation Pilot Ribbon', re:/\b(?:Cadet\s+)?Orientation\s+Pilot\s+Ribbon\b/i },
+  { id:'national_cadet_competition_ribbon', name:'National Cadet Competition Ribbon', re:/\bNational\s+Cadet\s+Competition\s+Ribbon\b/i, once:true,
+    note:'National Cadet Competition Ribbon imported as the basic ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star); add the star in the ribbon picker if it applies.' },
+  { id:'national_color_guard_competition_ribbon', name:'National Color Guard Competition Ribbon', re:/\bNational\s+Color\s+Guard\s+Competition\s+Ribbon\b/i, once:true,
+    note:'National Color Guard Competition Ribbon imported as the basic ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star); add the star in the ribbon picker if it applies.' },
+  { id:'afa_award', name:'AFA Award to Unit Cadet of the Year', re:/\bAFA\s+Award\b|\bAir\s+Force\s+Association\s+Award\b/i, once:true },
+  { id:'afsa_award', name:'AFSA Award to Unit Cadet NCO of the Year', re:/\bAFSA\s+Award\b|\bAir\s+Force\s+Sergeants\s+Association\s+Award\b/i, once:true },
+  { id:'vfw_officer_award', name:'VFW Outstanding Cadet Officer of the Year Award', re:/\bVFW\b[^\d]{0,40}?\bCadet\s+Officer\b/i, once:true },
+  { id:'vfw_nco_award', name:'VFW Outstanding Cadet NCO of the Year Award', re:/\bVFW\b[^\d]{0,40}?\bCadet\s+NCO\b/i, once:true },
+  { id:'cap_a_scott_crossfield_ribbon', name:'A. Scott Crossfield Award', re:/\bScott\s+Crossfield\b|\bCrossfield\s+(?:Aerospace\s+Education\s+)?(?:Award|Ribbon)\b/i, once:true },
+  { id:'frank_borman_falcon_award', name:'Frank Borman Falcon Award', re:/\bFrank\s+Borman\b|\bFalcon\s+Award\b/i, once:true }
+];
+
+// The most awards the ribbon picker offers for a ribbon (three Medals of Valor), so a longer record lands on the
+// last option instead of on no option and a bare ribbon.
+function importedMaxAwardCount(id){
+  const RA = globalThis.CAPUBRibbonAwards;
+  const options = typeof getRibbonAwardOptions === 'function' ? (getRibbonAwardOptions(id) || []) : [];
+  if(!RA?.readCount) return Infinity;
+  const counts = options.filter(o => o && o.value).map(o => RA.readCount(id, o.value, String(o.label || ''))).filter(Number.isFinite);
+  return counts.length ? Math.max(...counts) : Infinity;
+}
+
+function importedCountedAwardValue(count, aircrew=false){
+  const clasps = importedAdditionalAwardValue(count, 'clasp');
+  if(aircrew) return clasps ? `prop_${clasps}` : 'prop';
+  return clasps || 'earned';
+}
+
+// IACE: the ribbon's own rows, or one exchange per year in the Cadet Training table (IACE is not counted as a
+// cadet special activity there; it has its own ribbon, CAPR 39-3).
+function extractIaceCountFromReport(text){
+  const rows = countMemberReportAwardRows(text, /\bIACE\s+Ribbon\b|\bInternational\s+Air\s+Cadet\s+Exchange\s+Ribbon\b/i);
+  const years = new Set();
+  const training = getCadetTrainingSection(text);
+  const re = /(?:\bIACE\b|International\s+Air\s+Cadet\s+Exchange)(?!\s+Ribbon)[^\d]{0,80}?\d{1,2}\s+[A-Za-z]{3,9}\s+(\d{4})/gi;
+  let m;
+  while((m = re.exec(training))) years.add(m[1]);
+  return Math.max(rows, years.size);
+}
+
+// The senior professional development awards (CAPR 39-3: Membership Award for Level I, Leadership Award for
+// Level II, Grover Loening Aerospace Award for Level III, Paul E. Garber Award for Level IV, Gill Robb Wilson
+// Award for Level V). The award is read by its name, or from a "Level N" completion row: a level is completed in
+// order, so the highest level completed awards the lower ones too. A level row is "Level II 01 Jan 2017" or
+// "Level II - Name 01 Jan 2017" right after the table's headings or the previous row's date; "Ground Team Member
+// Level 2" and "Level I Orientation Course" are not level rows. The bare names (a member called Wilson or Davis,
+// "Level 2" anywhere) used to award these.
+const MEMBER_REPORT_PD_AWARDS = [
+  { id:'cap_membership_ribbon', level:1, name:'Membership Award / Level I', re:/\bMBRRBN\b|\bMembership\s+(?:Award|Ribbon)\b/i },
+  { id:'cap_leadership_ribbon', level:2, name:'Leadership Award / Level II', re:/\bLeadership\s+(?:Award|Ribbon)\b|\bDavis\s+Award\b|\bBenjamin\s+O\.?\s+Davis\b|\bLV2\b/i },
+  { id:'cap_grover_loening_aerospace_ribbon', level:3, name:'Grover Loening Aerospace Award / Level III', re:/\bGrover\s+Loening\b|\bLoening\s+(?:Aerospace\s+)?(?:Award|Ribbon)\b/i },
+  { id:'cap_paul_e_garber_ribbon', level:4, name:'Paul E. Garber Award / Level IV', re:/\bPaul\s+E\.?\s+Garber\b|\bGarber\s+(?:Award|Ribbon)\b/i },
+  { id:'cap_gill_robb_wilson_ribbon', level:5, name:'Gill Robb Wilson Award / Level V', re:/\bGill\s+Robb\s+Wilson\b|\bWilson\s+(?:Award|Ribbon)\b/i }
+];
+
+function highestProfessionalDevelopmentLevelFromReport(text){
+  const source = String(text || '');
+  const re = /\bLevel\s+(V|IV|III|II|I|[1-5])\b(?:\s*[-–:]\s*[A-Za-z][A-Za-z.'’ ]{0,40}?)?\s+(?:Complete(?:d)?\s+)?\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/gi;
+  const value = { I:1, II:2, III:3, IV:4, V:5 };
+  let highest = 0, m;
+  while((m = re.exec(source))){
+    const before = source.slice(Math.max(0, m.index - 30), m.index);
+    if(!/(?:^|\d{4}|Completed?|Development|Date|Level|Rating)\s*$/i.test(before)) continue;
+    highest = Math.max(highest, value[m[1].toUpperCase()] || Number(m[1]) || 0);
+  }
+  return highest;
+}
+
 function parseCapMemberReport(textRaw){
   const text = normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw));
   const result = {
@@ -1142,9 +1265,10 @@ function parseCapMemberReport(textRaw){
   if(/\bSpaatz\b/i.test(cadetAchievements)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
 
   // Decorations / service ribbons.
-  // Every listed line is one award: a row without a date still counts, so the dated and the bare counts are compared.
-  const achievementAwardCount = Math.max(countOccurrences(text, /Achievement Award\s+\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}/gi),
-                                         countOccurrences(text, /Achievement Award/gi));
+  // Every listed line is one award, dated or not. The Yeager award's full name ("Brig Gen Charles E. Yeager
+  // Aerospace Education Achievement Award") is not a CAP Achievement Award row.
+  const awardText = memberReportTextWithoutMemberRow(text);
+  const achievementAwardCount = countMemberReportAwardRows(awardText, /\bAchievement\s+Award\b/i, /(?:Education|Aerospace|Yeager|AE)\s+$/i);
   if(achievementAwardCount > 0){
     result.ribbons.push({
       id:'cap_achievment_award',
@@ -1185,23 +1309,35 @@ function parseCapMemberReport(textRaw){
     result.ribbons.push({ id:'meritorious_service_award', value:chooseSpecialRibbonValueByAwardCount('meritorious_service_award', meritoriousServiceCount), reason:`${meritoriousServiceCount} Meritorious Service Award record(s)` });
   }
 
-  if(/\bMBRRBN\b|Membership Ribbon/i.test(text)){
-    result.ribbons.push({ id:'cap_membership_ribbon', value:'earned', reason:'Membership Ribbon / MBRRBN' });
+  const pdLevel = highestProfessionalDevelopmentLevelFromReport(awardText);
+  for(const award of MEMBER_REPORT_PD_AWARDS){
+    const named = award.re.test(awardText);
+    if(named || pdLevel >= award.level){
+      result.ribbons.push({ id:award.id, value:'earned', reason:named ? award.name : `${award.name} (Level ${pdLevel} completed)` });
+    }
   }
-  if(/\bYEAGER\b|Yeager/i.test(text)){
+  if(/\bYeager\s+(?:Aerospace|Award|AE|Ribbon)\b|\bCharles\s+E\.?\s+(?:["“”]?Chuck["“”]?\s+)?Yeager\b|\bChuck\s+Yeager\b/i.test(awardText)){
     result.ribbons.push({ id:'cap_bridgadier_general_charles_yaeger_ribbon', value:'earned', reason:'Yeager Award' });
   }
-  if(/\bDAVIS\b|Level\s*2|LV2/i.test(text)){
-    result.ribbons.push({ id:'cap_leadership_ribbon', value:'earned', reason:'Davis Award / Level II' });
+  if(result.ribbons.some(r => r.id === 'cap_leadership_ribbon') && parseMemberReportSpecialtyTracks(text).some(row => /^(?:SENIOR|MASTER)$/.test(row.level))){
+    result.notes.push('Leadership Award imported without stars: a senior or master specialty rating is on record, and the star it earns (bronze for senior, silver for master) is left to the ribbon picker.');
   }
-  if(/\bLOENING\b|Grover\s+Loening/i.test(text)){
-    result.ribbons.push({ id:'cap_grover_loening_aerospace_ribbon', value:'earned', reason:'Loening Award / Level III' });
+  if(result.ribbons.some(r => r.id === 'cap_gill_robb_wilson_ribbon' || r.id === 'cap_paul_e_garber_ribbon')){
+    result.notes.push('Garber and Gill Robb Wilson Awards imported without stars: the report does not show Squadron Officer School, Air Command and Staff College or Air War College completion; add the star in the ribbon picker if it applies.');
   }
-  if(/\bGARBER\b|Paul\s+E\.?\s+Garber/i.test(text)){
-    result.ribbons.push({ id:'cap_paul_e_garber_ribbon', value:'earned', reason:'Garber Award / Level IV' });
-  }
-  if(/\bWILSON\b|Gill\s+Robb\s+Wilson/i.test(text)){
-    result.ribbons.push({ id:'cap_gill_robb_wilson_ribbon', value:'earned', reason:'Gill Robb Wilson Award / Level V' });
+
+  for(const award of MEMBER_REPORT_COUNTED_AWARDS){
+    const rows = countMemberReportAwardRows(awardText, award.re, award.skipAfter || null);
+    if(!rows) continue;
+    const count = Math.min(rows, importedMaxAwardCount(award.id));
+    if(count < rows) result.notes.push(`${rows} ${award.name} records found; the ribbon picker offers at most ${count}, so ${count} are imported.`);
+    const aircrew = !!award.aircrew && memberReportAwardRowSays(awardText, award.re, /Aircrew|Air\s+crew|Prop(?:eller)?\b/i);
+    result.ribbons.push({
+      id:award.id,
+      value:award.once ? 'earned' : importedCountedAwardValue(count, aircrew),
+      reason:`${count} ${award.name} record(s)${aircrew ? ' (aircrew)' : ''}`
+    });
+    if(award.note) result.notes.push(award.note);
   }
 
   // Recruiter ribbons are membership-specific. Senior reports often retain a
@@ -1247,13 +1383,21 @@ function parseCapMemberReport(textRaw){
     });
   }
 
-  const searchFindCount = Math.max(1, countOccurrences(text, /Search\s*[\u201c\u201d\"']?Find[\u201c\u201d\"']?\s+Ribbon/gi));
-  if(/Search\s*[\u201c\u201d\"']?Find[\u201c\u201d\"']?\s+Ribbon/i.test(text)){
+  // The quotes around Find are straight, curly double or curly single in a PDF ("Search ‘Find’ Ribbon").
+  const searchFindRe = /Search\s*[‘’“”\"'`]?\s*Find\s*[‘’“”\"'`]?\s+Ribbon/i;
+  const searchFindCount = countMemberReportAwardRows(text, searchFindRe);
+  if(searchFindCount){
+    const aircrew = memberReportAwardRowSays(text, searchFindRe, /Aircrew|Air\s+crew|Prop(?:eller)?\b/i);
     result.ribbons.push({
       id:'search_find_ribbon',
-      value:`find_${searchFindCount}`,
-      reason:`${searchFindCount} Search Find Ribbon record(s)`
+      value:aircrew ? importedCountedAwardValue(searchFindCount, true) : `find_${searchFindCount}`,
+      reason:`${searchFindCount} Search Find Ribbon record(s)${aircrew ? ' (aircrew)' : ''}`
     });
+  }
+
+  const iaceCount = extractIaceCountFromReport(text);
+  if(iaceCount){
+    result.ribbons.push({ id:'iace_ribbon', value:importedCountedAwardValue(iaceCount), reason:`${iaceCount} IACE record(s)` });
   }
 
 
@@ -1284,7 +1428,9 @@ function parseCapMemberReport(textRaw){
     });
   }
 
-  const cadetSpecialActivityCount = extractCadetSpecialActivityCountFromReport(text);
+  // The activities in the Cadet Training table, or the ribbon's own rows when the table does not list them.
+  const cadetSpecialActivityCount = Math.max(extractCadetSpecialActivityCountFromReport(text),
+    countMemberReportAwardRows(text, /\bCadet\s+Special\s+Activit(?:y|ies)\s+Ribbon\b/i));
   if(cadetSpecialActivityCount > 0){
     result.ribbons.push({
       id:'cadet_special_activity_ribbon',

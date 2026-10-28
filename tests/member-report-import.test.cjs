@@ -434,3 +434,90 @@ test('the import leaves the setup as the Member type and Rank selects would: no 
   assert.notEqual(cadet.uniform, 'mess_dress');
   assert.equal(vm.runInContext(`isUniformAllowedFor(${JSON.stringify(cadet.uniform)}, 'cadet')`, context), true);
 });
+
+const SENIOR = fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-senior-live13.txt'), 'utf8');
+const cadetWith = (after, rows) => FIXTURE.replace(after, after + '\n' + rows.join('\n'));
+
+// LIVE13 E62: the ribbons of CAPR 39-3 the catalog offers that a report names, which the importer did not read.
+test('a senior report: the decorations and activity ribbons it lists, each row one award, the aircrew propeller read (E62)', () => {
+  const r = runImport(SENIOR);
+  assert.deepEqual([r.membership, r.rank], ['senior', '1st Lt']);
+  assert.ok(r.ribbon('red_service_ribbon'), 'joined 15 Jan 2016');
+  for(const id of ['meritorious_service_award', 'unit_citation_award', 'national_commander_unit_citation_award', 'cap_achievment_award',
+    'cap_counterdrug_ribbon', 'homeland_security_ribbon', 'search_find_ribbon', 'cap_cadet_orientation_pilot_ribbon', 'cap_senior_recruiter_ribbon']){
+    assert.deepEqual(r.devices(id), [{ devices: [], centered: false }], `${id}: one award`);
+  }
+  // The Yeager award's full name ends "Achievement Award": it is not a second CAP Achievement Award.
+  assert.equal(r.ribbon('cap_achievment_award').reason, '1 Achievement Award record(s)');
+  assert.ok(r.selected.cap_bridgadier_general_charles_yaeger_ribbon);
+  // Two aircrew Air SAR rows: the 20-sortie ribbon with the propeller.
+  assert.equal(r.selected.air_search_and_rescue_ribbon.awardLabel, '20 Sorties (Aircrew)');
+  assert.deepEqual(r.devices('air_search_and_rescue_ribbon'), [{ devices: ['propeller-bronze', 'clasp-bronze'], centered: true }]);
+});
+
+test('the professional development awards come from their names or the Level rows, never from a member named Wilson or Davis (E62)', () => {
+  const r = runImport(SENIOR);
+  assert.ok(r.selected.cap_membership_ribbon, 'Level I');
+  assert.ok(r.selected.cap_leadership_ribbon, 'Level II');
+  for(const id of ['cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon'])
+    assert.equal(r.ribbon(id), undefined, `${id}: Level III and above not completed (the member is named Wilson; the ceremony is a Local Activity)`);
+  assert.ok(r.parsed.notes.some(n => /^Leadership Award imported without stars/.test(n)), 'the senior AE rating star is left to the member');
+  // Level V completed: every level's award; a "Level 2" in a ground team title is not a level row.
+  const five = runImport(SENIOR.replace('Level II 01 Jun 2018', 'Level II 01 Jun 2018\nLevel III 01 Jun 2019\nLevel IV 01 Jun 2020\nLevel V 01 Jun 2021'));
+  for(const id of ['cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon']) assert.ok(five.selected[id], id);
+  const gtm = runImport(SENIOR.replace('Level I 01 Jun 2016\n', '').replace('Level II 01 Jun 2018\n', '').replace('Squadron Leadership School 01 Mar 2018', 'Ground Team Member Level 2 01 Mar 2018'));
+  assert.equal(gtm.ribbon('cap_leadership_ribbon'), undefined);
+  assert.equal(gtm.ribbon('cap_membership_ribbon'), undefined);
+  // The award names themselves, as a Decorations row prints them.
+  const named = runImport(SENIOR.replace('Level I 01 Jun 2016\n', '').replace('Level II 01 Jun 2018\n', '')
+    .replace('Achievement Award 01 Feb 2020', 'Membership Award 01 Jun 2016\nLeadership Award 01 Jun 2018\nGrover Loening Aerospace Award 01 Jun 2019\nPaul E. Garber Award 01 Jun 2020\nGill Robb Wilson Award 01 Jun 2021'));
+  for(const id of ['cap_membership_ribbon', 'cap_leadership_ribbon', 'cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon']) assert.ok(named.selected[id], id);
+  for(const last of ['DAVIS', 'YEAGER', 'GARBER']){
+    const other = runImport(SENIOR.replace('WILSON, DAVID', `${last}, DAVID`).replace('David Wilson', `David ${last}`).replace(/Brig Gen Charles E\. Yeager.*\n/, '').replace('Level II 01 Jun 2018\n', ''));
+    assert.equal(other.ribbon('cap_leadership_ribbon'), undefined, last);
+    assert.equal(other.ribbon('cap_bridgadier_general_charles_yaeger_ribbon'), undefined, last);
+    assert.equal(other.ribbon('cap_paul_e_garber_ribbon'), undefined, last);
+  }
+});
+
+test('a cadet report: Medals of Valor, DSA, the cadet-of-the-year awards, IACE, competitions, the special activity ribbon row (E62)', () => {
+  const r = runImport(cadetWith('Decorations', ['Silver Medal of Valor 01 Jan 2023', 'Silver Medal of Valor 01 Jan 2024', 'Bronze Medal of Valor 01 Jan 2022',
+    'Bronze Medal of Valor 01 Jan 2023', 'Distinguished Service Award 01 Jan 2024', 'AFA Award to Unit Cadet of the Year 01 Jan 2023',
+    'AFSA Award to Unit Cadet NCO of the Year 01 Jan 2022', 'VFW Outstanding Cadet Officer of the Year Award 01 Jan 2024', 'VFW Outstanding Cadet NCO of the Year Award 01 Jan 2022'])
+    .replace('Activity/Service Ribbon', 'Activity/Service Ribbon\nNational Cadet Competition Ribbon 01 May 2024\nNational Color Guard Competition Ribbon 01 May 2023\nSearch "Find" Ribbon 01 Jan 2023\nSearch "Find" Ribbon 01 Jan 2024')
+    .replace('NCSA Cyber Defense 12 Jul 2023', 'NCSA Cyber Defense 12 Jul 2023\nInternational Air Cadet Exchange (IACE) 20 Jul 2024'));
+  assert.deepEqual(r.devices('silver_medal_of_valor'), [{ devices: [], centered: false }, { devices: [], centered: false }], 'two awards, two ribbons');
+  assert.deepEqual(r.devices('bronze_medal_of_valor'), [{ devices: ['clasp-bronze'], centered: false }]);
+  for(const id of ['distinguished_service_award', 'afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award', 'iace_ribbon',
+    'national_cadet_competition_ribbon', 'national_color_guard_competition_ribbon']){
+    assert.ok(r.selected[id], `${id} selected`);
+    assert.deepEqual(r.devices(id), [{ devices: [], centered: false }], id);
+  }
+  assert.ok(r.parsed.notes.some(n => /^National Cadet Competition Ribbon imported as the basic ribbon/.test(n)));
+  assert.deepEqual(r.devices('search_find_ribbon'), [{ devices: ['clasp-bronze'], centered: false }], 'two finds');
+  assert.deepEqual(r.devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze'], centered: false }], 'IACE is not an NCSA credit');
+  // The ribbon's own row when the Cadet Training table lists no activity.
+  const rowOnly = runImport(FIXTURE.replace(/Cadet Officers School \(COS\).*\nNCSA.*\nNCSA.*\n/, '').replace('Activity/Service Ribbon', 'Activity/Service Ribbon\nCadet Special Activities Ribbon 01 Jul 2022'));
+  assert.ok(rowOnly.selected.cadet_special_activity_ribbon);
+});
+
+test('every value the importer returns for the newly read ribbons resolves to a real option with that award count (E62)', () => {
+  const entries = [];
+  const counted = ['distinguished_service_award', 'unit_citation_award', 'national_commander_unit_citation_award',
+    'air_force_aerial_achievement_medal', 'air_search_and_rescue_ribbon', 'cap_counterdrug_ribbon', 'homeland_security_ribbon', 'cap_cadet_orientation_pilot_ribbon', 'iace_ribbon'];
+  for(let n = 1; n <= 7; n++){
+    for(const id of counted) entries.push({ id, expr: `importedCountedAwardValue(${n})`, n, prop: false });
+    if(n <= 3) entries.push({ id: 'bronze_medal_of_valor', expr: `importedCountedAwardValue(${n})`, n, prop: false });
+    for(const id of ['air_search_and_rescue_ribbon', 'search_find_ribbon']) entries.push({ id, expr: `importedCountedAwardValue(${n}, true)`, n, prop: true });
+  }
+  for(const row of importValueResolutions(entries)) assertResolvesToCount(row, row.n, [['propeller-bronze', row.prop]]);
+  for(let n = 1; n <= 3; n++){
+    const [row] = importValueResolutions([{ id: 'silver_medal_of_valor', expr: `importedCountedAwardValue(${n})` }]);
+    assert.ok(row.real);
+    assert.equal(RA.resolve('silver_medal_of_valor', { awardValue: row.optionValue, awardLabel: row.optionLabel }).length, n, `${n} Silver Medals of Valor`);
+  }
+  // A fourth Medal of Valor row: the picker offers three awards, so the third is imported and the import says so.
+  const four = runImport(cadetWith('Decorations', [1, 2, 3, 4].map(y => `Bronze Medal of Valor 01 Jan 202${y}`)));
+  assert.equal(four.selected.bronze_medal_of_valor.awardLabel, '3rd Award');
+  assert.ok(four.parsed.notes.some(n => /^4 Bronze Medal of Valor records found; the ribbon picker offers at most 3/.test(n)));
+});
