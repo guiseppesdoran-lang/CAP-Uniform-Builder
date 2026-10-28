@@ -96,7 +96,9 @@ async function finish() {
   }
   const restamp = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), `--root=${DIST}`], { encoding: 'utf8' });
   if (restamp.status !== 0) fail(restamp.stderr || restamp.stdout);
+  // Last, once every file in dist/ is final: brotli and gzip copies for Caddy's precompressed (scripts/precompress.cjs).
+  const packed = require('./precompress.cjs').precompress(DIST);
 
-  console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB, ${Object.keys(packs.uniforms).length} artwork packs${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
+  console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB, ${Object.keys(packs.uniforms).length} artwork packs, ${packed.files} precompressed (${(packed.br / 1024).toFixed(0)} KB brotli)${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
 }
 finish().catch(err => fail(err && err.stack || String(err)));

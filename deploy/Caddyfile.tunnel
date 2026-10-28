@@ -14,6 +14,9 @@
 	encode zstd gzip
 	file_server {
 		# Directory listings stay off (the default); no browse directive.
+		# The site build writes name.br and name.gz beside the scripts, stylesheet, page and artwork packs
+		# (scripts/precompress.cjs, brotli at its highest level); encode above covers every other file.
+		precompressed br gzip
 	}
 
 	header {

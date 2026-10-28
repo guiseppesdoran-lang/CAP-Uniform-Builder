@@ -82,12 +82,12 @@ function serve(){
       const accepts = String(req.headers['accept-encoding'] || '');
       let body = fs.readFileSync(file);
       if(COMPRESSIBLE.test(type) && body.length >= 512 && /\bgzip\b/.test(accepts)){
-        // A precompressed sibling is served as it is (Caddy file_server precompressed); otherwise gzip on the fly.
-        const pre = file + '.gz';
+        // A precompressed sibling is served as it is, brotli first (Caddy file_server precompressed br gzip); otherwise
+        // gzip on the fly (Caddy encode).
         const key = file + ':' + st.mtimeMs;
-        if(fs.existsSync(pre)) body = fs.readFileSync(pre);
-        else { if(!gzCache.has(key)) gzCache.set(key, zlib.gzipSync(body, { level: 5 })); body = gzCache.get(key); }
-        headers['content-encoding'] = 'gzip';
+        if(/\bbr\b/.test(accepts) && fs.existsSync(file + '.br')){ body = fs.readFileSync(file + '.br'); headers['content-encoding'] = 'br'; }
+        else if(fs.existsSync(file + '.gz')){ body = fs.readFileSync(file + '.gz'); headers['content-encoding'] = 'gzip'; }
+        else { if(!gzCache.has(key)) gzCache.set(key, zlib.gzipSync(body, { level: 5 })); body = gzCache.get(key); headers['content-encoding'] = 'gzip'; }
       }
       headers['content-length'] = body.length;
       rsp.writeHead(200, headers);
