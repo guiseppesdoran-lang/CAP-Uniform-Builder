@@ -16,7 +16,9 @@
   if(remembered()){ root.setAttribute('data-access', 'ok'); return; }
   if(guestThisSession()){ root.setAttribute('data-access', 'guest'); return; }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // The buttons answer as soon as the page is parsed: readyState turns "interactive" before the app's deferred
+  // scripts run, and DOMContentLoaded only fires after all of them (LIVE13 E65).
+  function wire(){
     const form = document.getElementById('accessGateForm');
     const input = document.getElementById('accessGateInput');
     const error = document.getElementById('accessGateError');
@@ -37,5 +39,11 @@
       rememberGuest();
       root.setAttribute('data-access', 'guest');
     });
-  });
+  }
+  const onReady = () => {
+    if(document.readyState === 'loading') return;
+    document.removeEventListener('readystatechange', onReady);
+    wire();
+  };
+  document.addEventListener('readystatechange', onReady);
 })();

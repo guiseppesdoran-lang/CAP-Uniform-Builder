@@ -205,4 +205,7 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
   buildPatchGallery();
 
   fullRender();
+  // The scripts are deferred, so the page shows (and the access gate answers) before they run; this marks the
+  // moment the controls work, for styling a loading state (LIVE13 E65).
+  document.documentElement.setAttribute('data-app', 'ready');
 })();
