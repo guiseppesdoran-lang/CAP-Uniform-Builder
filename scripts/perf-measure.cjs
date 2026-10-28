@@ -54,15 +54,20 @@ const policy = HEADERS === 'policy' ? require('./cache-policy.cjs') : null;
 function cert(){
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'perf-cert-'));
   const key = path.join(dir, 'key.pem'), crt = path.join(dir, 'crt.pem');
-  const r = spawnSync('openssl', ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', key, '-out', crt, '-days', '1', '-subj', '/CN=127.0.0.1'], { encoding: 'utf8' });
+  const r = spawnSync('openssl', ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', key, '-out', crt, '-days', '1', '-subj', '/CN=127.0.0.1', '-addext', 'subjectAltName=IP:127.0.0.1'], { encoding: 'utf8' });
   if(r.status !== 0) throw new Error('openssl failed: ' + r.stderr);
-  return { key: fs.readFileSync(key), cert: fs.readFileSync(crt) };
+  // Chrome is told to trust this key (--ignore-certificate-errors-spki-list) rather than to ignore certificate errors:
+  // it does not keep responses that came with a certificate error in its HTTP cache, which would spoil a warm visit.
+  const der = spawnSync('openssl', ['x509', '-in', crt, '-pubkey', '-noout'], { encoding: 'utf8' }).stdout;
+  const spki = crypto.createHash('sha256').update(crypto.createPublicKey(der).export({ type: 'spki', format: 'der' })).digest('base64');
+  return { key: fs.readFileSync(key), cert: fs.readFileSync(crt), spki };
 }
+const CERT = cert();
 
 const gzCache = new Map();
 function serve(){
   return new Promise(res => {
-    const srv = http2.createSecureServer(Object.assign({ allowHTTP1: true }, cert()), (req, rsp) => {
+    const srv = http2.createSecureServer({ allowHTTP1: true, key: CERT.key, cert: CERT.cert }, (req, rsp) => {
       const urlPath = decodeURIComponent(req.url.split('?')[0]);
       const rel = urlPath.replace(/\/$/, '/index.html').replace(/^\//, '');
       const file = path.join(ROOT, rel);
@@ -106,7 +111,7 @@ class Cdp {
 
 async function launch(){
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'perf-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', '--ignore-certificate-errors', '--disable-background-networking', '--disable-extensions', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
+  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', `--ignore-certificate-errors-spki-list=${CERT.spki}`, '--disable-background-networking', '--disable-extensions', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
   const portFile = path.join(dir, 'DevToolsActivePort');
   for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await sleep(25); }
   await sleep(50);
