@@ -208,4 +208,9 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
   // The scripts are deferred, so the page shows (and the access gate answers) before they run; this marks the
   // moment the controls work, for styling a loading state (LIVE13 E65).
   document.documentElement.setAttribute('data-app', 'ready');
+  // The artwork manifest is needed for the first drawing, which waits for a setup; fetch it while the member reads the
+  // page, so choosing a setup does not wait for it too (LIVE13 E65).
+  const warmArtwork = () => { try{ CAPUBUniformView.warm(); }catch(err){} };
+  if(typeof requestIdleCallback === 'function') requestIdleCallback(warmArtwork, { timeout: 2000 });
+  else setTimeout(warmArtwork, 500);
 })();

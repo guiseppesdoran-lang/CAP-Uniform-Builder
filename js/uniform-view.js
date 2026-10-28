@@ -12,14 +12,15 @@
   let lastScene = null;
   let lastSvg = null;
 
+  // The manifest and specs come from js/asset-packs.js: in the source tree MANIFEST.json and one file per spec, revalidated
+  // because artwork is updated in place (a 304 when unchanged); in the built site, a slim manifest and a pack per uniform and cut.
+  const assets = window.CAPUBAssetPacks.createLoader((path, cache) => fetch(ASSET(path), cache ? { cache } : undefined).then(r => r.ok ? r.json() : null));
   function getStore(){
     if(store) return Promise.resolve(store);
     if(!manifestPromise){
-      // Artwork is updated in place, so the manifest and specs are revalidated (a 304 when unchanged).
-      manifestPromise = fetch(ASSET('MANIFEST.json'), { cache: 'no-cache' })
-        .then(r => { if(!r.ok) throw new Error('MANIFEST.json ' + r.status); return r.json(); })
+      manifestPromise = assets.manifest()
         .then(manifest => {
-          store = E.core.createSpecStore(manifest, path => fetch(ASSET(path), { cache: 'no-cache' }).then(r => r.ok ? r.json() : null));
+          store = E.core.createSpecStore(manifest, path => assets.spec(path));
           return store;
         });
     }
@@ -266,7 +267,7 @@
       return null;
     }
     try{
-      const s = await getStore();
+      const [s] = await Promise.all([getStore(), assets.prepare(State.uniform, State.gender)]);
       const build = buildFromState();
       const scene = await E.profiles.composeUniform(build, s);
       patchNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
@@ -546,6 +547,8 @@
   }
 
   window.CAPUBUniformView = {
+    // Fetches the manifest ahead of the first drawing (js/bootstrap.js calls it once the page is idle).
+    warm: () => getStore().then(() => true, () => false),
     render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, chooserModel, nextBadgePicks, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
     get ribbonNotes(){ return ribbonNotes; },
     get scene(){ return lastScene; },

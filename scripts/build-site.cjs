@@ -82,13 +82,21 @@ const distHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
 if (!distHtml.includes('Content-Security-Policy')) fail('Could not insert the Content-Security-Policy meta tag.');
 fs.writeFileSync(path.join(DIST, 'index.html'), distHtml);
 
-if (endpoint) {
-  const configPath = path.join(DIST, 'config.js');
-  const config = fs.readFileSync(configPath, 'utf8');
-  if (!/submissionEndpoint:\s*''/.test(config)) fail("config.js no longer has an empty submissionEndpoint to replace.");
-  fs.writeFileSync(configPath, config.replace(/submissionEndpoint:\s*''/, `submissionEndpoint: ${JSON.stringify(endpoint)}`));
-}
-const restamp = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), `--root=${DIST}`], { encoding: 'utf8' });
-if (restamp.status !== 0) fail(restamp.stderr || restamp.stdout);
+// The artwork packs (scripts/build-asset-packs.cjs): a slim manifest and one spec pack per uniform and cut, named in
+// dist/js/asset-packs.js, so the page draws a uniform from one request instead of a round trip per spec.
+const writePacks = () => require('./build-asset-packs.cjs').applyToSite(DIST).catch(err => fail(err.message));
 
-console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
+async function finish() {
+  const packs = await writePacks();
+  if (endpoint) {
+    const configPath = path.join(DIST, 'config.js');
+    const config = fs.readFileSync(configPath, 'utf8');
+    if (!/submissionEndpoint:\s*''/.test(config)) fail("config.js no longer has an empty submissionEndpoint to replace.");
+    fs.writeFileSync(configPath, config.replace(/submissionEndpoint:\s*''/, `submissionEndpoint: ${JSON.stringify(endpoint)}`));
+  }
+  const restamp = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), `--root=${DIST}`], { encoding: 'utf8' });
+  if (restamp.status !== 0) fail(restamp.stderr || restamp.stdout);
+
+  console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB, ${Object.keys(packs.uniforms).length} artwork packs${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
+}
+finish().catch(err => fail(err && err.stack || String(err)));
