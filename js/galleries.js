@@ -1329,6 +1329,7 @@ function rebuildBadgesFromGallery(){
   // Badge changes can automatically add the Command Service Ribbon, so rebuild
   // the ribbon state/rack too. That pass also re-renders badges afterward.
   rebuildRibbonsFromGallery();
+  if(typeof capubSyncBadgesNotWornNote === 'function') capubSyncBadgesNotWornNote();
 }
 
 // A level picker on the tile of a badge earned in levels (STEM, Cyber, NRA).
@@ -1363,7 +1364,8 @@ function buildBadgeGallery(){
   normalizeBadgeSelections();
   wrap.innerHTML = '';
 
-  const eligible = getEligibleBadgeIdsForMembership(State.membership);
+  // Only the badges the selected uniform wears (js/badge-rules.js isBadgeWornOnCurrentUniform, LIVE13 E67).
+  const eligible = getEligibleBadgeIdsForMembership(State.membership).filter(id => isBadgeWornOnCurrentUniform(id));
 
   const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
 

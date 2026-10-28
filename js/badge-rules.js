@@ -95,6 +95,35 @@ function isBadgeAuthorizedOnCurrentDressUniform(id){
   return CHAPLAIN_BADGE_IDS.has(id) || CORPORATE_SEMI_FORMAL_SERVICE_BADGE_IDS.has(id);
 }
 
+// Whether the selected uniform wears this badge at all (LIVE13 E67, Ethan: "when someone is selecting on a uniform, it should only show
+// the badges applicable. like for ABU's, the ES specialty track badges shouldn't apply"): by its Attachment 4 family and, on the field
+// uniforms and the polo, by its having genuine field artwork (data/uniform-rules.js BADGE_WEAR, isBadgeWornOn; Ethan's LIVE-FIELD B6).
+// The Badges picker lists only these. A badge the uniform does not wear stays selected (the member may switch uniforms back); it is
+// not offered or drawn there, and the panel counts it (capubBadgesNotWornLine). The aviator blazer with the shirt beside it offers
+// the shirt's badges too, as the engine draws them on that shirt.
+function capubBadgeWearOptions(){
+  return { underlayer: (State.garment && State.garment.underlayer) || 'shirt' };
+}
+function isBadgeWornOnCurrentUniform(id, uniformId = State.uniform){
+  const badge = window.CAPUBBadgeCatalog?.get(id);
+  if(!badge || !window.CAPUBUniformRules?.isBadgeWornOn) return true;
+  return CAPUBUniformRules.isBadgeWornOn(uniformId, { id, family: badge.family, field: badge.field }, capubBadgeWearOptions());
+}
+// The member's selected badges (eligible for the membership) that the selected uniform does not wear, in selection order.
+function getSelectedBadgesNotWornOnCurrentUniform(ids = State.badges){
+  return [...new Set(ids || [])]
+    .filter(id => typeof isBadgeEligibleForMembership !== 'function' || isBadgeEligibleForMembership(id, State.membership))
+    .filter(id => !isBadgeWornOnCurrentUniform(id));
+}
+// The one line the Badges panel shows: "2 selected badges are not worn on this uniform (CAPR 39-1, ...)", or '' when none.
+function capubBadgesNotWornLine(ids = State.badges){
+  const n = getSelectedBadgesNotWornOnCurrentUniform(ids).length;
+  if(!n) return '';
+  const wear = window.CAPUBUniformRules?.badgeWear(State.uniform, capubBadgeWearOptions());
+  const where = wear ? ` (CAPR 39-1, ${wear.ref}${wear.fieldArt ? '; genuine field artwork only' : ''})` : '';
+  return `${n} selected badge${n === 1 ? ' is' : 's are'} not worn on this uniform${where}.`;
+}
+
 // Specialty/occupational badge visual families. These let one calibrated badge zone
 // carry over to similar badges without forcing every badge to use the same dimensions.
 const ES_POCKET_BADGE_IDS = new Set([

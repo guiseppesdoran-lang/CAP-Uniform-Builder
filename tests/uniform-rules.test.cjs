@@ -109,9 +109,18 @@ test('Corporate Service Dress and Corporate Semi-Formal authorize only the chapl
   assert.deepEqual(only,['aviator_blazer','semi_formal']);
   assert.equal(rules.allowsOnlyChaplainBadge('aviator'),false,'the Aviator Shirt allows more');
   assert.equal(rules.allowsOnlyChaplainBadge('blues_a'),false);
+  // The blazers' badges: the chaplain badge and the four crest substitutes, nothing else (LIVE13 E67 moved the notice to the one
+  // generic not-worn line, which reads data/uniform-rules.js BADGE_WEAR).
+  for(const u of ['semi_formal','aviator_blazer']){
+    const wear=rules.badgeWear(u,{underlayer:'turtleneck'});
+    assert.deepEqual(wear.families,['chaplain','service'],u);
+    assert.equal(rules.isBadgeWornOn(u,{id:'national_staff_badge',family:'national-staff'},{underlayer:'turtleneck'}),false,u);
+    assert.equal(rules.isBadgeWornOn(u,{id:'command_council_badge',family:'service'},{underlayer:'turtleneck'}),true,u);
+    assert.equal(rules.isBadgeWornOn(u,{id:'volunteer_university_instructor_badge',family:'service'},{underlayer:'turtleneck'}),false,u);
+  }
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  assert.match(wiring,/allowsOnlyChaplainBadge\(State\.uniform\)/);
-  assert.match(wiring,/Not authorized here:/);
+  assert.match(wiring,/capubBadgesNotWornLine\(\)/);
+  assert.match(wiring,/Not shown here:/);
 });
 
 /* ---- Every value in the table, stated against its paragraph of CAPR 39-1 ----

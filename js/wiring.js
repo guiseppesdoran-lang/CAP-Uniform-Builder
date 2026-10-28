@@ -56,6 +56,26 @@ by('clearBadges').addEventListener('click', ()=>{
   renderAllBadges();
 });
 
+// The Badges panel's one line for the selected badges the uniform does not wear (LIVE13 E67): they stay selected, are not offered or
+// drawn here, and the line says how many and by which paragraph (js/badge-rules.js capubBadgesNotWornLine).
+function capubSyncBadgesNotWornNote(){
+  const group = by('groupBadges');
+  if(!group) return;
+  let el = by('badgesNotWornNote');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'badgesNotWornNote';
+    el.className = 'hintText';
+    el.setAttribute('role', 'note');
+    const anchor = by('badgesPlannedNote');
+    if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(el, anchor.nextSibling);
+    else group.appendChild(el);
+  }
+  const line = capubBadgesNotWornLine();
+  el.textContent = line;
+  el.classList.toggle('hidden', !line);
+}
+
 /* Patch gallery buttons */
 by('clearPatches').addEventListener('click', ()=>{
   State.patches=[];
@@ -337,13 +357,23 @@ function openGalleryModal(kind){
     rootGrid.innerHTML = '';
     normalizeBadgeSelections();
 
+    // Only the badges the selected uniform wears (js/badge-rules.js isBadgeWornOnCurrentUniform, LIVE13 E67).
     const eligibleSet = new Set(
-      getEligibleBadgeIdsForMembership(State.membership)
+      getEligibleBadgeIdsForMembership(State.membership).filter(id => isBadgeWornOnCurrentUniform(id))
     );
 
     // Clear host and rebuild with headings + subgrids (nice grouping)
     modalHost.innerHTML = '';
     modalHost.appendChild(host);
+    const notWornLine = capubBadgesNotWornLine();
+    if(notWornLine){
+      const note = document.createElement('div');
+      note.className = 'sub badgesNotWornNote';
+      note.setAttribute('role', 'note');
+      note.style.margin = '4px 0 8px';
+      note.textContent = notWornLine + ' They stay selected for the uniforms that wear them.';
+      modalHost.appendChild(note);
+    }
 
     const buildTile = id => {
         const sel = State.badgeSelections[id] || {checked:false};
@@ -958,28 +988,24 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     // Some uniforms count patches against the same limit as badges (ABU, Corporate Field).
     const patchTotal = (State.patches || []).length
       + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
-    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges:countBadgesForLimit(), patches:patchTotal});
+    // A badge the uniform does not wear is not drawn there, so it does not count (LIVE13 E67).
+    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges:countBadgesForLimit((State.badges || []).filter(id => isBadgeWornOnCurrentUniform(id))), patches:patchTotal});
     if(limit.over){
       const what = limit.shared ? 'badges and patches together' : 'counted badges';
       addNotice('err',`This uniform allows ${limit.cap} ${what} and ${limit.counted} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
     }
-    // Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1
-    // 4.2.3.1.1.3). Nothing is hidden or moved; the member is told which badges do not belong.
-    if(CAPUBUniformRules.allowsOnlyChaplainBadge(State.uniform)){
-      // Besides the chaplain badge, the CSAG, Command Council, National Board or NEC badge may take the
-      // crest's place (4.2.3.1.1.1); the National Staff badge is not authorized on it (Attachment 4).
-      const notAuthorized = (State.badges || []).filter(id => !isCommandInsigniaBadge(id) && !isBadgeAuthorizedOnCurrentDressUniform(id));
-      if(notAuthorized.length){
-        addNotice('warn',`This uniform authorizes only the chaplain badge, and in place of the CAP Crest the CSAG, Command Council, National Board or NEC badge (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3). Not authorized here: ${notAuthorized.map(getBadgeDisplayName).join(', ')}.`,{id:'expandBadges',label:'Review badges'});
-      }
-      if((State.badges || []).some(isCommandInsigniaBadge)) addNotice('warn','The command insignia pin is not worn on this uniform (CAPR 39-1, Attachment 4).',{id:'expandBadges',label:'Review badges'});
+    // The badges the selected uniform does not wear (data/uniform-rules.js BADGE_WEAR: the blazers take only the chaplain badge and
+    // the CSAG, Command Council, National Board or NEC badge, 4.2.3.1.1.1, 4.2.3.1.1.3; the polo one aviation, occupational or
+    // specialty track badge, 5.3.2.1.1; the field uniforms the genuine field set, 5.1.1.1.2.4, 5.2.1.1.2.6, 7.1.1.3.1, B6). They are
+    // not offered or drawn on it and stay selected for the others (LIVE13 E67).
+    const notWornLine = capubBadgesNotWornLine();
+    if(notWornLine){
+      const names = getSelectedBadgesNotWornOnCurrentUniform().map(getBadgeDisplayName).join(', ');
+      addNotice('warn',`${notWornLine} Not shown here: ${names}. They come back on a uniform that wears them.`,{id:'expandBadges',label:'Review badges'});
     }
-    // The polo takes one badge of the families 5.3.1.1 and 5.3.2.1.1 name, or a duty title, and no command insignia pin.
-    if(CAPUBUniformRules.getUniformRule(State.uniform)?.badgeFamilies){
-      const notAuthorized = (State.badges || []).filter(id => !isBadgeAuthorizedOnCurrentDressUniform(id));
-      if(notAuthorized.length){
-        addNotice('warn',`This uniform authorizes one service, aviation, occupational or specialty track badge, or a duty title (CAPR 39-1, 5.3.1.1, 5.3.2.1.1). Not authorized here: ${notAuthorized.map(pretty).join(', ')}.`,{id:'expandBadges',label:'Review badges'});
-      }
+    if(State.uniform === 'aviator_blazer' && capubBadgeWearOptions().underlayer === 'shirt'
+      && (State.badges || []).some(id => !isBadgeAuthorizedOnCurrentDressUniform(id))){
+      addNotice('ok','On the blazer itself only the chaplain badge and, in place of the CAP Crest, the CSAG, Command Council, National Board or NEC badge are worn (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3); the other badges are shown on the aviator shirt drawn beside it.');
     }
     const unwornAwards = Object.entries(State.ribbonSelections || {})
       .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;
@@ -1010,6 +1036,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   function updateStatusPanel(){
     const notices = validateBuild();
+    capubSyncBadgesNotWornNote();
     const rc = by('capubV2RibbonCount'), bc = by('capubV2BadgeCount'), pc = by('capubV2PatchCount'), wc = by('capubV2WarningCount');
     if(rc) rc.textContent = State.ribbons.length;
     if(bc) bc.textContent = State.badges.length;

@@ -101,6 +101,78 @@
       refs:{who:'5.3',ribbons:'11.1.3',awards:'11.1.6',badges:'5.3.2.1.1',grade:'5.3.2',adultCadet:'1.2.5.2',screenPrint:'5.3.2.1.2'}}
   });
 
+  // Which CAP badges each uniform wears (LIVE13 E67, Ethan: "when someone is selecting on a uniform, it should only show the
+  // badges applicable. like for ABU's, the ES specialty track badges shouldn't apply"). By Attachment 4 family (data/badge-catalog.js):
+  //   families   the families the uniform's badge paragraphs name, read with the regulation open;
+  //   fieldArt   only a badge with GENUINE field artwork is worn (Ethan's ruling LIVE-FIELD B6: the original silver-on-dark-blue set;
+  //              dress enamel art never appears on a field uniform, so the specialty track, Emergency Services and service badges,
+  //              which have none, are not offered on the OCP, ABU and CFU, and the polo's embroidered badge is the same art, POLO-ENG-4);
+  //   serviceIds the service badges worn, where only some are (the blazers: the CSAG, Command Council, National Board or NEC badge in
+  //              place of the CAP Crest, 4.2.3.1.1.1; Attachment 4 keeps the National Staff badge off);
+  //   ref        the paragraphs, men's then women's where they differ.
+  // The cadet-only families (rocketry, marksmanship, cadet-specialty) are named only where the paragraph names them; the membership
+  // filter (badge-catalog eligibleFor) applies on top. A badge a uniform does not wear stays selected for the member's other uniforms.
+  const ALL_BADGE_FAMILIES=Object.freeze(['chaplain','aviation','occupational','specialty','service','national-staff','command','rocketry','marksmanship','cadet-specialty']);
+  const LEFT_BREAST_FAMILIES=Object.freeze(['chaplain','aviation','occupational','command']);
+  const BLAZER_SERVICE_IDS=Object.freeze(['senior_advisory_group_badge','command_council_badge','national_executive_committee_badge','cap_national_command_board_badge']);
+  const BADGE_WEAR=Object.freeze({
+    // 4.1.5.2.2.4.1-4 / 4.1.9.4.4: aviation and occupational over the left pocket; service, specialty track, Model Rocketry, STEM,
+    // Cyber and NRA badges on the pockets and over the nametag; the command insignia pin.
+    blues_a:{families:ALL_BADGE_FAMILIES,ref:'4.1.5.2.2.4, 4.1.9.4.4'},
+    // 4.1.11.1.1.2.3.1-4 / 4.1.12.2.5: the same families on the shirt and blouse.
+    blues_b:{families:ALL_BADGE_FAMILIES,ref:'4.1.11.1.1.2.3, 4.1.12.2.5'},
+    // 4.1.3.2.2 / 4.1.4.2: worn as on the Service Dress; only a badge over the nametag moves.
+    semi_formal_usaf:{families:ALL_BADGE_FAMILIES,ref:'4.1.3.2.2, 4.1.4.2'},
+    // 4.1.1.1.3.1-3 / 4.1.2.1.2.4-7: aviation and occupational, CAP service and specialty track badges, the command pin. (No cadet
+    // badges: the mess dress is not a cadet uniform, 4.1.1.)
+    mess_dress:{families:['chaplain','aviation','occupational','specialty','service','national-staff','command'],ref:'4.1.1.1.3, 4.1.2.1.2.4'},
+    // 4.2.5.1.3.1-3 / 4.2.6.2.7: CAP aviation and occupational, service, specialty track and the cadet badges, the command pin.
+    aviator:{families:ALL_BADGE_FAMILIES,ref:'4.2.5.1.3, 4.2.6.2.7'},
+    // 4.2.3.1.1.1, 4.2.3.1.1.3 / 4.2.4.1.1.1, 4.2.4.1.1.3: the chaplain badge ("No other occupational badges are authorized") and,
+    // in place of the CAP Crest, the CSAG, Command Council, National Board or NEC badge. The aviator shirt the builder draws beside
+    // the blazer (the shirt under it, js/engine/profiles-dress.js companion) wears its own badges: see withShirt.
+    aviator_blazer:{families:['chaplain','service'],serviceIds:BLAZER_SERVICE_IDS,ref:'4.2.3.1.1.1, 4.2.3.1.1.3, 4.2.4.1.1.1, 4.2.4.1.1.3',withShirt:'aviator'},
+    // 4.2.1, 4.2.2: worn as the Corporate Service Dress, so the same badges.
+    semi_formal:{families:['chaplain','service'],serviceIds:BLAZER_SERVICE_IDS,ref:'4.2.1, 4.2.2, 4.2.3.1.1.1, 4.2.3.1.1.3'},
+    // 5.1.1.1.2.4: two aviation or occupational badges, silver on dark blue, the chaplain badge highest; 5.1.1.1.2.5: the command insignia.
+    abu:{families:LEFT_BREAST_FAMILIES,fieldArt:true,ref:'5.1.1.1.2.4, 5.1.1.1.2.5'},
+    // 5.2.1.1.2.6: two aviation or occupational badges (CAP only); 5.2.1.1.2.9: the command insignia pin.
+    corporate_field:{families:LEFT_BREAST_FAMILIES,fieldArt:true,ref:'5.2.1.1.2.6, 5.2.1.1.2.9'},
+    // 7.1.1.3.1: up to four occupational, qualification and/or skill badges, light silver on dark blue; precedence 7.1.1.3.1.5-6 (chaplain,
+    // aviation first, CAP badges before the military group 2); 7.1.1.3.1.7: the commander's insignia. Ethan's B6: only the genuine field set.
+    ocp:{families:LEFT_BREAST_FAMILIES,fieldArt:true,ref:'7.1.1.3.1, 7.1.1.3.1.5, 7.1.1.3.1.7'},
+    // 8.2.4.1: the name tag takes one CAP aeronautical rating, CAP occupational badges (the chaplain badge is one) or the current
+    // commander's Command Insignia Pin; no specialty track or service badge.
+    flight_suit:{families:LEFT_BREAST_FAMILIES,ref:'8.2.4.1'},
+    // 8.3.4.1: one CAP aeronautical rating and one CAP occupational badge, or the Command Insignia Pin.
+    corporate_flight_suit:{families:LEFT_BREAST_FAMILIES,ref:'8.3.4.1'},
+    // 5.3.1.1, 5.3.1.3, 5.3.2.1.1: one service, aviation, occupational or specialty track badge (RULES.polo.badgeFamilies), embroidered,
+    // so the field set only (POLO-ENG-4): no specialty track, Emergency Services or service badge has that art.
+    polo:{families:['service','aviation','occupational','chaplain','specialty'],fieldArt:true,ref:'5.3.1.1, 5.3.1.3, 5.3.2.1.1'}
+  });
+  // What the uniform wears, for this view: the aviator blazer drawn with the shirt under it beside it (underlayer 'shirt', the
+  // default) wears the blazer's badges on the blazer and the aviator shirt's on the shirt (4.2.5.1.3), so it offers both; with the
+  // turtleneck or the white shell there is no shirt and only the blazer's are worn.
+  function badgeWear(uniformId,{underlayer='shirt'}={}){
+    const wear=BADGE_WEAR[String(uniformId||'')];
+    if(!wear) return null;
+    if(wear.withShirt && (underlayer||'shirt')==='shirt'){
+      const shirt=BADGE_WEAR[wear.withShirt];
+      return {families:[...new Set([...wear.families,...shirt.families])],fieldArt:false,serviceIds:null,ref:`${wear.ref}; on the aviator shirt beside it, ${shirt.ref}`};
+    }
+    return {families:[...wear.families],fieldArt:!!wear.fieldArt,serviceIds:wear.serviceIds ? [...wear.serviceIds] : null,ref:wear.ref};
+  }
+  // Whether the uniform wears this badge. `badge` is { id, family, field } as data/badge-catalog.js holds it (field: the field art id
+  // or null). A uniform without a row, or a badge without a family, is not decided here (true).
+  function isBadgeWornOn(uniformId,badge,opts={}){
+    const wear=badgeWear(uniformId,opts);
+    if(!wear || !badge || !badge.family) return true;
+    if(!wear.families.includes(badge.family)) return false;
+    if(wear.fieldArt && !badge.field) return false;
+    if(badge.family==='service' && wear.serviceIds && !wear.serviceIds.includes(badge.id)) return false;
+    return true;
+  }
+
   // Uniforms the regulation authorizes that the builder does not draw yet. They are listed so
   // the table states the whole regulation; none is offered to a member. The polo was the last one
   // (it is a RULES row now), so the list is empty.
@@ -253,6 +325,7 @@
     GROUPS,RULES,NOT_MODELLED,BADGES_NOT_PLACED,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
     allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,
+    BADGE_WEAR,ALL_BADGE_FAMILIES,badgeWear,isBadgeWornOn,
     lockedReason,allowsOnlyChaplainBadge,allowsBadgeFamily,allowsGrade,allowsShoulderCord,allowsAideCord,allowsCord,tieRule,badgeLimit,plannedUniformsFor,plannedBadge
   };
 });
