@@ -613,10 +613,16 @@
   // sheet without such a group (the aviator shirts, the overblouse) cannot draw the leaf over a badge: the scene says the badge
   // reaches the leaf (FOLLOWUPS: art to give those sheets a collar foreground group). Ribbons and devices that reach a leaf
   // there are still drawn without it (clipOut), as before; badges never are.
+  //
+  // `underCollar`: groups redrawn over the badges but under the leaves (Z.badge + 0.45), whatever the sheet's own order. The women's tie tab
+  // (LIVE12 E59, Ethan: the tab's "apex rises into the collar junction instead of sitting under the collar"; CAPR 39-1 4.1.12.4, 4.2.6.3: the tab
+  // is worn under the closed collar, its tails showing below the collar points) is drawn there on the short aviator sheet, so the closed leaves lie over it whatever the sheet's order (the short Class B blouse cannot yet, see there).
   const COLLAR_EDGE_GROW = 0.025;
-  function collarOverBadges(ctx, foregroundGroup){
+  const UNDER_COLLAR_Z = Z.badge + 0.45;
+  function collarOverBadges(ctx, foregroundGroup, underCollar){
     const polys = H.collarPolygons(ctx).map(l => growPolygon(l.points, COLLAR_EDGE_GROW));
     if(!polys.length) return;
+    if(underCollar && underCollar.length) ctx.foreground(underCollar, UNDER_COLLAR_Z);
     if(foregroundGroup) ctx.foreground(Array.isArray(foregroundGroup) ? foregroundGroup : [foregroundGroup], Z.badge + 0.5);
     for(const l of ctx.layers){
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
@@ -1577,6 +1583,10 @@
     // ribbons. A short sheet with both collar states draws none (art 76963a86): its leaves are the group of the state shown, `collar` (the open leaves) or `collar-closed` (the closed leaves
     // and neck) with the `tie` group, which the sheet draws over the leaves, after it; those groups are the foreground there.
     const states = ctx.collarGroups;
+    // The women's tie tab lies under the closed leaves (4.1.12.4; LIVE12 E59). The long blouse draws the tab in the base sheet and its collar-foreground over it. The short
+    // blouse's `collar-closed` group holds, before its leaves, a blouse-coloured cover of the open V (down to 5.07 in) and its leaves' edge lines are unnamed paths, so neither
+    // the whole group nor the named leaves can be drawn over the tab without painting out its upper part or halving the leaves' outline: its `tie` stays after the closed group,
+    // in the sheet's order, until the art names the cover or draws the tab inside the group under the leaves (FOLLOWUPS).
     collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? [states.closed, 'tie'] : [states.open]) : 'collar-foreground');
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
@@ -1921,10 +1931,13 @@
     // badges and ribbons, as on the short Class B. Open: the group `collar` (the open pieces and the V). Closed: the tie and the closed group's named pieces (the back of the collar, the two leaves,
     // the women's neck edge), not the whole group, which also holds a shirt-coloured cover of the open collar that would paint over a ribbon lying where the open pieces would be. The long sheets
     // state no collar_states and have no collar layer to draw over a badge: their ribbons and devices are cut by the leaf polygons, as before.
+    // The women's tie tab lies under the closed leaves (4.2.6.3), redrawn on its own below them rather than relying on the sheet's order (LIVE12 E59); the men's tie keeps
+    // the one foreground layer. The long sheets draw the tab in the base sheet before the `collar` group, which covers it.
     const states = ctx.collarGroups;
+    const tabUnder = female && states && ctx.collarState === 'closed';
     collarOverBadges(ctx, !states ? null : ctx.collarState === 'closed'
-      ? ['tie', `${states.closed}-back`, `${states.closed}-right`, `${states.closed}-left`].concat(female ? ['neck-edge'] : [])
-      : [states.open]);
+      ? (tabUnder ? [] : ['tie']).concat([`${states.closed}-back`, `${states.closed}-right`, `${states.closed}-left`]).concat(female ? ['neck-edge'] : [])
+      : [states.open], tabUnder ? ['tie'] : null);
     // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3), is the sheet's own group `tie` (hidden above when the member turns it off, tieOn): worn with long sleeves, optional with short ones.
     // The sheets' separate -tie / -tie-tab overlays are the same shape and are no longer placed, so the tie is never drawn twice (LIVE8-3).
   }

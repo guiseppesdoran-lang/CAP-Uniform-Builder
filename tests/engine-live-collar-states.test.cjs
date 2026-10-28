@@ -104,20 +104,21 @@ test('on a short sheet the collar still lies over the badges: the foreground is 
 
 // The aviator's closed group draws, under masks and clips, a shirt-coloured cover of the open V and the two open pieces before its named pieces (the back of the collar, the two leaves, the
 // women's neck edge). Redrawn whole over the badges it would paint the shirt over a ribbon lying where the open pieces would be; the foreground is the tie and the named pieces.
-const AVIATOR_CLOSED_FG = { male: ['tie', 'collar-closed-back', 'collar-closed-right', 'collar-closed-left'], female: ['tie', 'collar-closed-back', 'collar-closed-right', 'collar-closed-left', 'neck-edge'] };
+// The women's tie tab is redrawn on its own layer below the closed pieces (LIVE12 E59, 4.2.6.3: the tab is worn under the closed collar); the men's tie with them.
+const AVIATOR_CLOSED_FG = { male: [['tie', 'collar-closed-back', 'collar-closed-right', 'collar-closed-left']], female: [['tie'], ['collar-closed-back', 'collar-closed-right', 'collar-closed-left', 'neck-edge']] };
 const RACK = require('../data/ribbon-awards.js'), ALL_RIBBONS = Object.keys(RACK.FAMILIES).map(id => [id]);
 test('short aviator sheets: the collar of the state shown lies over the badges and ribbons; the foreground is the open group, or the tie and the closed pieces without the cover; nothing is cut (4.2.5.1.3.1, 4.2.6.2.7.1)', async () => {
   for(const gender of ['male', 'female']){
     const sheet = 'garment-aviator-shirt-' + gender, svg = svgOf(sheet);
-    for(const id of AVIATOR_CLOSED_FG[gender]) assert.ok(svg.includes(`id="${sheet}__${id}"`), `${sheet}: ${id} is drawn`);
+    for(const id of AVIATOR_CLOSED_FG[gender].flat()) assert.ok(svg.includes(`id="${sheet}__${id}"`), `${sheet}: ${id} is drawn`);
     // the cover the foreground leaves out: the closed group holds it before its named pieces
     const closedAt = svg.indexOf(`id="${sheet}__collar-closed"`);
     assert.ok(svg.indexOf(`${sheet}__coverArea`, closedAt) > closedAt && svg.indexOf(`${sheet}__coverArea`, closedAt) < svg.indexOf(`id="${sheet}__collar-closed-back"`), `${sheet}: the closed group's cover comes before its pieces`);
     for(const tie of [false, true]){
       const scene = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender, membership: 'senior', rank: 'Capt', opt: { sleeve: 'short', headgear: 'none', tie }, badgeIds: ['observer_badge', 'christian_chaplin'], ribbonSel: ALL_RIBBONS }), store);
       const fg = scene.layers.filter(l => l.role === 'garment-foreground');
-      assert.equal(fg.length, 1, `${gender} tie ${tie}: one foreground layer`);
-      assert.deepEqual(fg[0].onlyGroups, tie ? AVIATOR_CLOSED_FG[gender] : ['collar'], `${gender} tie ${tie}: the groups of the state shown`);
+      assert.deepEqual(fg.map(l => l.onlyGroups), tie ? AVIATOR_CLOSED_FG[gender] : [['collar']], `${gender} tie ${tie}: the groups of the state shown`);
+      if(fg.length > 1) assert.ok(fg[0].z < fg[1].z, `${gender}: the tab below the closed pieces`);
       const placed = scene.layers.filter(x => ['badge', 'ribbon', 'device'].includes(x.role));
       assert.ok(placed.some(l => l.role === 'ribbon') && placed.some(l => l.role === 'badge'), 'ribbons and badges are drawn');
       // the rack of every CAP ribbon family reaches the collar of the state shown, and the foreground covers it there; the women's closed leaves end above the tallest rack (3.90 in), so not there
@@ -125,7 +126,7 @@ test('short aviator sheets: the collar of the state shown lies over the badges a
       const polys = (tie ? ['collar_closed_right', 'collar_closed_left'] : ['collar_right', 'collar_left']).map(n => sp.landmarks[n].points);
       const reaches = placed.some(l => l.role === 'ribbon' && polys.some(poly => C.rectHitsPolygon(l, poly)));
       assert.equal(reaches, !(gender === 'female' && tie), `${gender} tie ${tie}: a ribbon reaches a collar leaf of the state shown`);
-      for(const l of placed){ assert.ok(!l.clipOut, `${l.key}: covered by the collar, not cut`); assert.ok(l.z < fg[0].z, `${l.key}: below the foreground`); }
+      for(const l of placed){ assert.ok(!l.clipOut, `${l.key}: covered by the collar, not cut`); assert.ok(fg.every(f => l.z < f.z), `${l.key}: below the foreground`); }
     }
   }
 });
@@ -137,7 +138,7 @@ test('short aviator sheets: the cadet NCO chevrons lie above the collar foregrou
       const fg = scene.layers.filter(l => l.role === 'garment-foreground');
       assert.equal(chevrons(scene).length, 2);
       if(sleeve === 'long'){ assert.equal(fg.length, 0, `${gender} long: no foreground`); continue; }
-      for(const c of chevrons(scene)) assert.ok(c.z > fg[0].z, `${gender} ${sleeve} tie ${tie}: the chevron (z ${c.z}) above the collar foreground (z ${fg[0].z})`);
+      for(const c of chevrons(scene)) assert.ok(fg.every(f => c.z > f.z), `${gender} ${sleeve} tie ${tie}: the chevron (z ${c.z}) above the collar foreground (z ${fg.map(f => f.z)})`);
     }
   }
 });
