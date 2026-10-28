@@ -680,13 +680,27 @@ function applyCosStarToHighestCadetMilestone(ribbons, text){
   );
 }
 
+// Whether a qualification the pattern names is on record other than in training. Each row is read on its own:
+// from the previous row's date to the qualification's own date. The window used to be 80 characters before and
+// 220 after the first mention, so on the one-line text every report becomes, a "Cadet Training" or "Required
+// Staff Training" heading or a neighbouring row's TRAINING status nearby hid a qualified GTM3 or GTL; and only
+// the first mention was read.
 function hasNonTrainingQualification(text, labelPattern){
   const source = String(text || '');
-  const re = new RegExp(labelPattern, 'i');
-  const m = re.exec(source);
-  if(!m) return false;
-  const windowText = source.slice(Math.max(0, m.index - 80), Math.min(source.length, m.index + 220));
-  return !/\(\s*TRAINING\s*\)|\bTRAINING\b/i.test(windowText);
+  const re = new RegExp(labelPattern, 'gi');
+  const dateRe = /\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/g;
+  let m;
+  while((m = re.exec(source))){
+    if(m[0].length === 0){ re.lastIndex++; continue; }
+    const from = Math.max(0, m.index - 60);
+    const lastDate = [...source.slice(from, m.index).matchAll(dateRe)].pop();
+    const start = lastDate ? from + lastDate.index + lastDate[0].length : from;
+    const afterLabel = m.index + m[0].length;
+    const ownDate = /\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/.exec(source.slice(afterLabel, afterLabel + 120));
+    const end = ownDate ? afterLabel + ownDate.index + ownDate[0].length : Math.min(source.length, afterLabel + 60);
+    if(!/\bTRAIN(?:ING|EE)\b/i.test(source.slice(start, end))) return true;
+  }
+  return false;
 }
 
 function extractAwardCountFromAwardsTable(text, awardPattern){
@@ -894,6 +908,8 @@ function getHighestImportedSpecialtyBadgeIds(ids, limit = 2){
 function normalizeSpecialtyTrackName(name){
   return String(name || '')
     .toUpperCase()
+    // "STANDARDIZATION/EVALUATION", "STAN/EVAL" (the catalog's own spelling) read as the spaced name.
+    .replace(/\s*\/\s*/g, ' ')
     .replace(/&/g, ' AND ')
     .replace(/\bR\s*&\s*R\b/g, 'RECRUITING AND RETENTION')
     .replace(/RECRUITING\s+&\s+RETENTION/g, 'RECRUITING AND RETENTION')
@@ -1069,11 +1085,14 @@ function getCommandInsigniaStatusForMember(text, result){
 
 
 
+// The current duty table only. The cadet table used to be read up to Professional Development, which takes in
+// the Cadet Past Duty Positions table after it, so a past First Sergeant tour set the diamond.
+const MEMBER_REPORT_AFTER_CURRENT_DUTY = ['Cadet\\s+Past\\s+Duty\\s+Positions', 'Past\\s+Duty\\s+Positions', 'Current\\s+Committees',
+  'Professional\\s+Development', 'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Cadet\\s+Achievements', 'Awards'];
 function hasCurrentFirstSergeantDutyPosition(text){
   const sections = [
-    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
-    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
-    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+    getReportSectionUntilAny(text, 'Cadet\\s+Duty\\s+Positions', MEMBER_REPORT_AFTER_CURRENT_DUTY),
+    getReportSectionUntilAny(text, 'Current\\s+Duty\\s+Positions', MEMBER_REPORT_AFTER_CURRENT_DUTY)
   ];
 
   const current = sections
@@ -1213,8 +1232,18 @@ function highestProfessionalDevelopmentLevelFromReport(text){
   return highest;
 }
 
+// A current duty table headed "Duty Positions" alone (as the cadet one is "Cadet Duty Positions") is read as
+// "Current Duty Positions", the heading the commander rules (js/patches.js) look for; "Cadet", "Current" and
+// "Past" headings are left as they are.
+function labelCurrentDutyPositionsHeading(text){
+  return String(text || '').replace(/(^|[^A-Za-z])(Duty\s+Positions)\b/g, (match, pre, heading, offset, source) => {
+    const before = source.slice(Math.max(0, offset - 12), offset + pre.length);
+    return /(?:Cadet|Current|Past)\s*$/i.test(before) ? match : `${pre}Current ${heading}`;
+  });
+}
+
 function parseCapMemberReport(textRaw){
-  const text = normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw));
+  const text = labelCurrentDutyPositionsHeading(normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw)));
   const result = {
     membership:null,
     gender:null,
@@ -1567,11 +1596,19 @@ function parseCapMemberReport(textRaw){
   // CAPR 39-1 Attachment 7 calls the top pilot rating Command Pilot; older text says Master.
   if(/CAP\s+(?:Master|Command)\s+Pilot\s+Rating|(?:Master|Command)\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
   else if(/CAP\s+Senior\s+Pilot\s+Rating|Senior\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPSeniorPilot1_D9725AE959752');
-  else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge|Pilot\s+Badge/i.test(text)) result.badges.push('CAPPilot1_FA9D33EA587D8');
+  // A bare "Pilot Badge" is the CAP pilot's only when no other kind of pilot is named before it: "sUAS Pilot Badge",
+  // "Glider Pilot Badge" and "Balloon Pilot Badge" used to import the CAP Pilot Badge as well.
+  else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge/i.test(text) ||
+    countMemberReportAwardRows(text, /\bPilot\s+(?:Badge|Wings)\b/i, /(?:s?UAS|Glider|Balloon|Mission|Instructor|Check|Orientation|Senior|Master|Command)\s+$/i)) result.badges.push('CAPPilot1_FA9D33EA587D8');
+  if(/\bGlider\s+Pilot\s+(?:Rating|Badge)\b/i.test(text)) result.badges.push('GliderPilot1_7BFB287379918');
+  if(/\bBalloon\s+Pilot\s+(?:Rating|Badge)\b/i.test(text)) result.badges.push('BalloonPilot1_442D89C94185B');
+  if(countMemberReportAwardRows(text, /\bSolo\s+(?:Badge|Wings)\b/i, /Pre[\s-]*$/i)) result.badges.push('solo_badge');
+  if(/\bPre[\s-]*Solo\s+(?:Badge|Wings)\b/i.test(text)) result.badges.push('pre_solo_badge');
 
-  if(/CAP\s+Master\s+Aircrew\s+Rating|Master\s+Aircrew\s+Badge/i.test(text)) result.badges.push('MasterAirCrew1_72AC4CAE7A310');
-  else if(/CAP\s+Senior\s+Aircrew\s+Rating|Senior\s+Aircrew\s+Badge/i.test(text)) result.badges.push('SeniorAirCrew1_B289BAE6E515C');
-  else if(/CAP Aircrew Rating|Aircrew Badge/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
+  // The catalog's own name is "Air Crew Badge", two words.
+  if(/CAP\s+Master\s+Air\s*crew\s+Rating|Master\s+Air\s*crew\s+Badge/i.test(text)) result.badges.push('MasterAirCrew1_72AC4CAE7A310');
+  else if(/CAP\s+Senior\s+Air\s*crew\s+Rating|Senior\s+Air\s*crew\s+Badge/i.test(text)) result.badges.push('SeniorAirCrew1_B289BAE6E515C');
+  else if(/CAP\s+Air\s*crew\s+Rating|Air\s*crew\s+Badge/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
 
   if(/CAP\s+(?:Command|Master)\s+sUAS\s+Pilot\s+(?:Rating|Badge)|(?:Command|Master)\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_master_badge');
   else if(/CAP\s+Senior\s+sUAS\s+Pilot\s+(?:Rating|Badge)|Senior\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_senior_badge');
@@ -1588,12 +1625,15 @@ function parseCapMemberReport(textRaw){
   }else if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
     result.badges.push('observer_badge');
   }
-  if(/(?:Master Incident Commander Badge|Incident Commander 1 Badge|\bIC1\b)/i.test(text)) result.badges.push('incident_commander_1_badge');
-  else if(/(?:Senior Incident Commander Badge|Incident Commander 2 Badge|\bIC2\b)/i.test(text)) result.badges.push('incident_commander_2_badge');
-  else if(/(?:Basic Incident Commander Badge|Incident Commander 3 Badge|\bIC3\b)/i.test(text)) result.badges.push('basic_incident_commander_badge');
-  if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTL|GTM1)\\b')) result.badges.push('master_ground_team_badge');
-  else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM2\\b')) result.badges.push('senior_ground_team_badge');
-  else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\bGTM3\\b')) result.badges.push('ground_team_basic_badge');
+  // The badge by name, or the qualification by its code or its name when the row does not say TRAINING (an IC3
+  // trainee used to import the Incident Commander badge).
+  if(/Master Incident Commander Badge|Incident Commander 1 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC1|Incident\\s+Commander\\s+(?:Level\\s+)?1)\\b(?!\\s+Badge)')) result.badges.push('incident_commander_1_badge');
+  else if(/Senior Incident Commander Badge|Incident Commander 2 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC2|Incident\\s+Commander\\s+(?:Level\\s+)?2)\\b(?!\\s+Badge)')) result.badges.push('incident_commander_2_badge');
+  else if(/Basic Incident Commander Badge|Incident Commander 3 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC3|Incident\\s+Commander\\s+(?:Level\\s+)?3)\\b(?!\\s+Badge)')) result.badges.push('basic_incident_commander_badge');
+  else if(/\bIC[123]\b|Incident\s+Commander\s+(?:Level\s+)?[123]\b/i.test(text)) result.notes.push('Incident Commander qualification found in training only; no Incident Commander badge imported.');
+  if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTL|GTM1|Ground\\s+Team\\s+Leader|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?1)\\b')) result.badges.push('master_ground_team_badge');
+  else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTM2|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?2)\\b')) result.badges.push('senior_ground_team_badge');
+  else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTM3|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?3)\\b')) result.badges.push('ground_team_basic_badge');
   else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('GTM3 found, but it appears to be training status or not an awarded badge; no Ground Team badge imported.');
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
@@ -1604,6 +1644,17 @@ function parseCapMemberReport(textRaw){
   }
 
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
+
+  // CAPR 39-1 10.4.7: the EMT badges for a certified EMT-Basic, EMT-Intermediate (star) or EMT-Paramedic (star
+  // and wreath), the highest certification named.
+  if(/\bEMT[\s-]*P(?:aramedic)?\b|\bParamedic\b/i.test(text)) result.badges.push('emt_paramedic');
+  else if(/\bEMT[\s-]*I(?:ntermediate)?\b/i.test(text)) result.badges.push('emt_intermediate');
+  else if(/\bEMT[\s-]*B(?:asic)?\b/i.test(text)) result.badges.push('emt_basic_badge');
+  // CAPR 39-1 10.6-10.8 and 10.2.4: the badges awarded by name.
+  if(/\b(?:Cadet\s+)?STEM\s+Badge\b/i.test(text)) result.badges.push('stem_badges');
+  if(/\b(?:Cadet\s+)?Cyber\s+Badge\b/i.test(text)) result.badges.push('cyber_badges');
+  if(/\bNRA\s+Marksman(?:ship)?\b/i.test(text)) result.badges.push('nra_marksman_badge');
+  if(/\bVolunteer\s+University\s+Instructor\b/i.test(text)) result.badges.push('volunteer_university_instructor_badge');
 
   // Preserve every report-authorized badge for the grouped badge picker before
   // reducing the automatically worn set to the highest four selections.

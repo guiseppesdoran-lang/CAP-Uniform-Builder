@@ -554,3 +554,48 @@ test('the achievement rows are read by the name they print, so a numbering that 
   assert.equal(b.selected.doolittle_achievement.awardValue, 'honor_credit');
   assert.equal(b.selected.lindbergh_achievement.awardValue, 'earned');
 });
+
+// LIVE13 E62: the badges the report names. A qualification is read on its own row: the 300-character window used to
+// take in the "Cadet Training" heading or a neighbouring TRAINING status and drop a qualified GTL or GTM3.
+test('a senior report: the qualification rows are read row by row, a slash spelling of a specialty, the current commander (E62)', () => {
+  const r = runImport(SENIOR);
+  assert.ok(r.parsed.authorizedBadges.includes('master_ground_team_badge'), 'GTL QUALIFIED, the row before the Cadet Training heading');
+  assert.ok(!r.parsed.authorizedBadges.includes('basic_incident_commander_badge'), 'IC3 in training is no badge');
+  assert.ok(r.parsed.notes.some(n => /^Incident Commander qualification found in training only/.test(n)));
+  assert.ok(r.parsed.authorizedBadges.includes('stan_eval_tech_badge'), 'STANDARDIZATION/EVALUATION TECHNICIAN');
+  // A current duty table headed "Duty Positions": the Commander row is the current commander's.
+  assert.ok(r.parsed.badges.includes('squadron_commander_badge'));
+  assert.ok(r.parsed.notes.some(n => /^Current commander duty found/.test(n)));
+  assert.ok(r.ribbon('cap_command_service_ribbon'));
+  // The same on one line, as the PDF path joins it.
+  const pdf = runImport(SENIOR.replace(/\n/g, ' '));
+  assert.ok(pdf.parsed.authorizedBadges.includes('master_ground_team_badge'));
+  assert.ok(!pdf.parsed.authorizedBadges.includes('basic_incident_commander_badge'));
+  // A GTM3 qualified row and a GTM3 trainee row, the qualified one after the trainee.
+  const both = runImport(FIXTURE.replace('Cadet Training\n', 'Ground Team Member Level 3 (GTM3) TRAINING 01 Jan 2024\nUrban DF Team (UDF) TRAINING 01 Jan 2024\nGTM3 QUALIFIED 01 Jan 2027\nCadet Training\n'));
+  assert.ok(both.parsed.authorizedBadges.includes('ground_team_basic_badge'));
+  const trainee = runImport(FIXTURE.replace('Cadet Training\n', 'GTM3 TRAINING 01 Jan 2027\nCadet Training\n'));
+  assert.ok(!trainee.parsed.authorizedBadges.includes('ground_team_basic_badge'));
+});
+
+test('the aviation, EMT, STEM, Cyber, NRA and Volunteer University badges named in a report; a sUAS or glider pilot is not a CAP pilot (E62)', () => {
+  const cadet = runImport(cadetWith('Decorations', ['sUAS Pilot Badge 01 Jan 2024', 'Pre-Solo Badge 01 Jan 2023', 'Solo Badge 01 Jun 2023', 'Air Crew Badge 01 Jan 2025',
+    'EMT-Basic 01 Jan 2025', 'Cadet STEM Badge 01 Jan 2024', 'Cadet Cyber Badge 01 Jan 2024', 'NRA Marksmanship Qualification 01 Jan 2024']));
+  for(const id of ['uas_pilot_basic_badge', 'pre_solo_badge', 'solo_badge', 'AirCrew1_DB3F0FCC3650F', 'emt_basic_badge', 'stem_badges', 'cyber_badges', 'nra_marksman_badge'])
+    assert.ok(cadet.parsed.authorizedBadges.includes(id), id);
+  assert.ok(!cadet.parsed.authorizedBadges.includes('CAPPilot1_FA9D33EA587D8'), 'sUAS Pilot Badge is not the CAP Pilot Badge');
+  const senior = runImport(SENIOR.replace('Achievement Award 01 Feb 2020', 'Achievement Award 01 Feb 2020\nGlider Pilot Rating 01 Mar 2021\nBalloon Pilot Badge 01 Mar 2022\nEMT-Paramedic 01 Jan 2020\nVolunteer University Instructor 01 Jan 2024'));
+  for(const id of ['GliderPilot1_7BFB287379918', 'BalloonPilot1_442D89C94185B', 'emt_paramedic', 'volunteer_university_instructor_badge'])
+    assert.ok(senior.parsed.authorizedBadges.includes(id), id);
+  assert.ok(!senior.parsed.authorizedBadges.includes('CAPPilot1_FA9D33EA587D8'));
+  assert.ok(!senior.parsed.authorizedBadges.includes('emt_basic_badge'), 'the highest EMT certification only');
+  assert.ok(runImport(SENIOR.replace('Achievement Award 01 Feb 2020', 'Achievement Award 01 Feb 2020\nCAP Pilot Badge 01 Mar 2021')).parsed.authorizedBadges.includes('CAPPilot1_FA9D33EA587D8'));
+});
+
+test('a past First Sergeant tour is not the current one: the diamond follows the current duty table only (E62)', () => {
+  const msgt = FIXTURE.replace('MALE CADET C/Col', 'MALE CADET C/MSgt').replace('C/Col Guiseppe Mitchell', 'C/MSgt Guiseppe Mitchell');
+  const past = runImport(msgt.replace('Cadet Flight Sergeant GLR-IL-049 UNIT No 01 Jan 2021 31 Dec 2021', 'Cadet First Sergeant GLR-IL-049 UNIT No 01 Jan 2023 31 Dec 2023'));
+  assert.equal(past.parsed.cadetFirstSergeant, false);
+  const current = runImport(msgt.replace('Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026', 'Cadet First Sergeant GLR-IL-049 UNIT No 01 Jan 2026'));
+  assert.equal(current.parsed.cadetFirstSergeant, true);
+});

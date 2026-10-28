@@ -5,6 +5,7 @@ CAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit
 654321 WILSON, DAVID MALE SENIOR 1st Lt 01 Mar 2024 15 Jan 2016 31 Jan 2027 ACTIVE GLR-IL-049
 Duty Positions
 Duty Position Unit Echelon Asst Start Date End Date
+Commander GLR-IL-049 UNIT No 01 Jan 2025
 Aerospace Education Officer GLR-IL-049 UNIT No 01 Jan 2023
 Past Duty Positions
 Duty Position Unit Echelon Asst Start Date End Date
@@ -20,6 +21,12 @@ Specialty Tracks
 Specialty Track Level Completed
 AEROSPACE EDUCATION SENIOR 10 Jan 2019
 CADET PROGRAMS TECHNICIAN 01 Jun 2017
+STANDARDIZATION/EVALUATION TECHNICIAN 01 Jun 2022
+Emergency Services Qualifications
+Qualification Status Expiration
+Ground Team Leader (GTL) QUALIFIED 01 Jan 2027
+Incident Commander 3 (IC3) TRAINING 01 Jan 2027
+Mission Scanner (MS) QUALIFIED 01 Jan 2027
 Cadet Training
 Activity Date Completed
 Cadet Officers School (COS) 20 Jun 2014
