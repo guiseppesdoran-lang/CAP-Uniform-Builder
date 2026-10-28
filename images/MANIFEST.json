@@ -16320,86 +16320,82 @@
    "id": "garment-corporate-service-dress-blazer-female",
    "path": "garments/garment-corporate-service-dress-blazer-female.svg",
    "category": "garments",
-   "w_in": 21.5391,
-   "h_in": 32.722,
+   "w_in": 19.3579,
+   "h_in": 36.2124,
    "size_source": "estimated",
-   "basis": "Outline, collar, lapels, armhole seams, front edge, hem, buttons, crest and lapel pin read off CAPR 39-1 Fig 4.15 (PDF page 89 at 8x; base-art/blazer-fig415-measure.js) at 66.37 px/in across, from the figure's 3 3/8 in nametag, and 67.76 px/in down (the figure is stretched 2.1 percent: its nametag is 3.67:1 against the 3.75:1 of Fig A6-3; the same figure measured against Fig 4.7a's coat, 2.4 percent). Blazer 24.79 in from collar to hem, 21.14 in across the sleeves, 15.97 in across the shoulders. No real garment was measured: the scale rests on the figure's nametag (the plate is not dimensioned in the regulation). The nametag is where 4.2.4.1.1.2 puts it on a blazer with no breast pocket, 1/2 in above the crest (Fig 4.15 draws no breast pocket; the Vanguard photo's welt was removed in LIVE12-ART 9). The hip flap pockets, sleeve buttons and the line above the cuff are not in the figure and are kept from Vanguard's product photo of the CAP women's blue blazer (CAP4200E), which the outline was traced from before LIVE12-ART 4. Chest geometry: the crest centre is 3.55 in from the centre line (a miniature rack 3 across, 2.06 in, centred on it has its inner edge 2.52 in out); the lapel edge ends at the break 7.20 in down, above the medal slot's top (7.43 in), so the lapel no longer crosses the rack.",
+   "basis": "Outline, lapels, collar, V, front edge, armhole lines, front seams, hip flaps, buttons and hem measured on Vanguard's photo of the CAP women's blue blazer CAP4200E on a form (base-art/bz_photo.png, mask bz_alpha.png), both halves averaged and drawn as clean geometry (LIVE12-ART 10). Scale: the shoulders, 310 px outline corner to outline corner, are 15.97 in (the women's 12R of the Class A fit): 0.05152 in/px; the photo's buttons then measure 0.75 in, the 30-ligne blazer button. Blazer 28.28 in from collar top to hem, 18.96 in across the sleeves. The tie tab is the Fig 4.11 tab (tie.js). The nametag's top is 9.50 in down, its inner end 1/4 in clear of the lapel edge, running across the drawn armhole line; the crest is centred 1/2 in under it (4.2.4.1.1.2, no breast pocket, LIVE12-ART 9; ruling LIVE12-ART 10b).",
    "anchors": {
     "top_center": [
-     1076.95,
+     967.9,
      0
     ],
     "bottom_center": [
-     1076.95,
-     3272.2
+     967.9,
+     3621.24
     ],
     "center": [
-     1076.95,
-     1636.1
+     967.9,
+     1810.62
     ],
     "left_edge": [
      0,
-     1636.1
+     1810.62
     ],
     "right_edge": [
-     2153.91,
-     1636.1
+     1935.79,
+     1810.62
     ],
     "hem_center": [
-     1076.95,
-     2489.2
+     967.9,
+     2838.24
     ],
     "nameplate_slot_center": [
-     1431.8,
-     808
+     1551.05,
+     1005
     ],
     "nameplate_slot_top_left": [
-     1263.05,
-     763
+     1382.3,
+     960
     ],
     "crest_center": [
-     1431.78,
-     1043
+     1551.05,
+     1240
     ],
     "crest_top_center": [
-     1431.78,
-     903
+     1551.05,
+     1100
     ],
     "button_1_center": [
-     1058.87,
-     837.14
+     967.9,
+     1769.28
     ],
     "button_2_center": [
-     1058.87,
-     1183.19
-    ],
-    "button_3_center": [
-     1058.87,
-     1528.51
+     967.9,
+     2119.59
     ],
     "chaplain_badge_above_nametag": [
-     1431.8,
-     713
+     1551.05,
+     910
     ],
     "tie_tab_center": [
-     1076.95,
-     218.08
+     967.9,
+     130
     ],
     "lapel_pin_right_center": [
-     801.25,
-     395.2
+     609,
+     589.4
     ],
     "lapel_pin_left_center": [
-     1352.65,
-     395.2
+     1326.8,
+     589.4
     ],
     "medal_slot_center": [
-     1431.75,
-     803
+     1551,
+     1000
     ],
     "chaplain_badge_semiformal": [
-     1431.75,
-     703
+     1551,
+     900
     ]
    },
    "landmarks": [
@@ -18044,41 +18040,41 @@
    "id": "garment-underlayer-shell-female",
    "path": "garments/garment-underlayer-shell-female.svg",
    "category": "garments",
-   "w_in": 21.5391,
-   "h_in": 32.722,
+   "w_in": 19.3579,
+   "h_in": 36.2124,
    "size_source": "estimated",
    "basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names a white shell top but gives no figure or dimension: scoop 3.4 in wide, 3.0 in below the neck line, are estimates.",
    "anchors": {
     "top_center": [
-     1076.9534428205513,
+     967.8967741935484,
      0
     ],
     "bottom_center": [
-     1076.9534428205513,
-     3272.2009063250175
+     967.8967741935484,
+     3621.2354838709684
     ],
     "center": [
-     1076.9534428205513,
-     1636.1004531625088
+     967.8967741935484,
+     1810.6177419354842
     ],
     "left_edge": [
      0,
-     1636.1004531625088
+     1810.6177419354842
     ],
     "right_edge": [
-     2153.9068856411027,
-     1636.1004531625088
+     1935.7935483870967,
+     1810.6177419354842
     ],
     "neck_top_center": [
-     1076.95,
+     967.9,
      15
     ],
     "neck_base_center": [
-     1076.95,
+     967.9,
      15
     ],
     "neckline_center": [
-     1076.95,
+     967.9,
      395
     ]
    },
@@ -18090,37 +18086,37 @@
    "id": "garment-underlayer-turtleneck-female",
    "path": "garments/garment-underlayer-turtleneck-female.svg",
    "category": "garments",
-   "w_in": 21.5391,
-   "h_in": 32.722,
+   "w_in": 19.3579,
+   "h_in": 36.2124,
    "size_source": "estimated",
    "basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names the garment but gives no figure or dimension: 3.6 in neck width and 3.2 in neck height are estimates.",
    "anchors": {
     "top_center": [
-     1076.9534428205513,
+     967.8967741935484,
      0
     ],
     "bottom_center": [
-     1076.9534428205513,
-     3272.2009063250175
+     967.8967741935484,
+     3621.2354838709684
     ],
     "center": [
-     1076.9534428205513,
-     1636.1004531625088
+     967.8967741935484,
+     1810.6177419354842
     ],
     "left_edge": [
      0,
-     1636.1004531625088
+     1810.6177419354842
     ],
     "right_edge": [
-     2153.9068856411027,
-     1636.1004531625088
+     1935.7935483870967,
+     1810.6177419354842
     ],
     "neck_top_center": [
-     1076.95,
+     967.9,
      15
     ],
     "neck_base_center": [
-     1076.95,
+     967.9,
      335
     ]
    },

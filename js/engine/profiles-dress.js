@@ -1993,9 +1993,9 @@
   };
 
   // The lines the miniature rack must stay inside, read from the blazer sheets' own landmarks (art ab7ab7d6; the engine kept literal copies of the
-  // men's and the women's before, traced from the same paths): the wearer's left lapel (the lapel-foreground face, a polygon), the left arm seam
-  // (the sleeve seam: the `seams` group's left armhole path, sampled), and the top edge of the left shoulder (the coat outline from the neck to the
-  // sleeve head). The miniature medals lie between the lapel and the arm seam and under the shoulder line (11.2.8, 4.2.1.4, 4.2.2.4). A sheet
+  // men's and the women's before, traced from the same paths): the wearer's left lapel (the lapel-foreground face, a polygon) and the top edge of
+  // the left shoulder (the coat outline from the neck to the sleeve head). The miniature medals lie beside the lapel, 1 in inside the left sleeve's
+  // outer edge (below; the sheets' arm_seam_left is no longer a limit, LIVE13 E68) and under the shoulder line (11.2.8, 4.2.1.4, 4.2.2.4). A sheet
   // that does not state one has no such line and the rack is not held to it.
   function blazerLine(ctx, name){
     const l = ctx.landmark(name);
@@ -2013,15 +2013,40 @@
     }
     return poly[poly.length - 1][o];
   }
-  // How far a box (x0/x1/y0/y1) lies past the arm seam or above the shoulder, in inches (0 when it is between the
-  // lapel and the seam and under the shoulder line): the larger of the horizontal overshoot past the seam at the
-  // box's top and bottom, and the vertical overshoot above the shoulder at its inner and outer edge.
+  // The rack's outboard limit is the wearer's left sleeve's OUTER edge at that height less 1 in, not the drawn arm seam (LIVE13 E68; Ethan's
+  // ruling, DECISIONS LIVE13-MASTER-4/5: on the rebuilt women's blazer, measured on Vanguard's CAP4200E photo, the armhole seam lies where the
+  // photo has it, about 5.4 to 5.5 in out at chest height, because a padded blazer's sleeve head covers the front; "on this cut the drawn seam
+  // line is the shoulder's curve in a flat drawing, not a pin barrier", and the nametag already crosses it). Both blazers read it alike. The
+  // sleeve's edge is read from the sheet's own cloth footprint (measure-layout's GARMENT_FOOTPRINT, generated from the sheet and checked against
+  // it by tests/measure-layout.test.cjs): bands 0.5 in high of [start, end) spans in 0.1 in cells, each span grown by one cell, so the edge in a
+  // band is the end of its last span less one cell; over the bands a box spans, the one nearest the centre.
+  const SLEEVE_INSET = 1.0, FOOT_CELL = 0.1, FOOT_BAND = 0.5;
+  function measureLayoutModule(){
+    if(typeof module === 'object' && module.exports) return require('./measure-layout.js');
+    const gl = typeof self !== 'undefined' ? self : globalThis;
+    return gl.CAPUBEngine && gl.CAPUBEngine.measureLayout;
+  }
+  function sleeveEdgeLeft(ctx, y0, y1){
+    const ML = measureLayoutModule(), base = ctx.base;
+    const F = ML && ML.GARMENT_FOOTPRINT && base && ML.GARMENT_FOOTPRINT[base.id];
+    if(!F) return null;
+    const layer = ctx.layers.find(l => l.type === 'asset' && l.role === 'garment' && l.id === base.id);
+    const ox = layer ? layer.x || 0 : 0, oy = layer ? layer.y || 0 : 0;
+    let edge = Infinity;
+    for(let b = Math.max(0, Math.floor((y0 - oy) / FOOT_BAND)); b <= Math.min(F.length - 1, Math.floor((y1 - oy) / FOOT_BAND)); b++){
+      const sp = F[b];
+      if(sp && sp.length) edge = Math.min(edge, (sp[sp.length - 1] - 1) * FOOT_CELL);
+    }
+    return Number.isFinite(edge) ? ox + edge : null;
+  }
+  // How far a box (x0/x1/y0/y1) lies past the sleeve limit (the left sleeve's outer edge less 1 in) or above the shoulder, in inches (0 when
+  // it is inside the limit and under the shoulder line): the horizontal overshoot past the limit over the box's height, and the vertical
+  // overshoot above the shoulder at its inner and outer edge. The key stays `seam` (the side limit).
   function blazerOvershoot(ctx, bx){
-    const seam = blazerLine(ctx, 'arm_seam_left'), sh = blazerLine(ctx, 'shoulder_left');
-    const sx = y => lerpAt((seam || []).map(q => [q.x, q.y]), y, 1);
+    const edge = sleeveEdgeLeft(ctx, bx.y0, bx.y1), sh = blazerLine(ctx, 'shoulder_left');
     const top = x => lerpAt((sh || []).map(q => [q.x, q.y]), x, 0);
     return {
-      seam: seam ? Math.max(0, bx.x1 - Math.min(sx(bx.y0), sx(bx.y1))) : 0,
+      seam: edge != null ? Math.max(0, bx.x1 - (edge - SLEEVE_INSET)) : 0,
       shoulder: sh ? Math.max(0, Math.max(top(bx.x0), top(bx.x1)) - bx.y0) : 0
     };
   }
@@ -2156,9 +2181,9 @@
     // need to move left (toward the pocket centre). Where the lapel edge crosses the rack's inner corner the lapel lies
     // over the medals, as a real jacket's lapel lies over the top row's corner (11.1.8; the lapel foreground drawn above
     // the medal layers at the end of this function); the chaplain badge keeps its place 1/2 in above the top row (4.2.1.5,
-    // 4.2.2.5), under the lapel too if it reaches it. Only where the rack would cross the arm seam (or the shoulder
-    // line) is it narrowed, one column fewer (4 to 1; 7 to 1 for a held rack) and one row more: each column count is
-    // drawn, the first whose rack and badge stay within TOLERANCE of the seam and the shoulder line wins, else the one
+    // 4.2.2.5), under the lapel too if it reaches it. Only where the rack would pass 1 in inside the left sleeve's edge (or the shoulder
+    // line; LIVE13 E68, it was the drawn arm seam) is it narrowed, one column fewer (4 to 1; 7 to 1 for a held rack) and one row more: each column count is
+    // drawn, the first whose rack and badge stay within TOLERANCE of that limit and the shoulder line wins, else the one
     // that overshoots least. D8: the lapel clearance (a slide toward the arm and fewer columns for the lapel) is gone.
     const lapelPoly = blazerLapel(ctx);
     const widest = b.opt.miniStyle !== 'holding' ? 4 : 7;
@@ -2192,8 +2217,8 @@
       if(win){
         cols = win.cols;
         box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols });
-        if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit inside the arm seam and the shoulder line on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the seam or the shoulder line (CAPR 39-1 11.2.8)');
-        if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: inside the arm seam there is no room for more (CAPR 39-1 11.2.8)`);
+        if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit 1 in inside the sleeve\'s edge and under the shoulder line on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the sleeve limit or the shoulder line (CAPR 39-1 11.2.8)');
+        if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: 1 in inside the sleeve's edge there is no room for more (CAPR 39-1 11.2.8)`);
       }
     }
     if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });

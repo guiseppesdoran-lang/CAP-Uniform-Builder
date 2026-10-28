@@ -14,6 +14,7 @@ const P = require('../js/engine/profiles.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 const HARNESS = require('../scripts/render-builds.cjs');
+const { polys } = require('../scripts/lib-svg-ink.cjs');
 
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
 const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
@@ -36,6 +37,17 @@ function lapelFromSheet(sex){
   return pts;
 }
 
+// The wearer's left sleeve's outer edge read from the sheet's own outline (every filled shape, in garment inches): the rightmost crossing at height y.
+// LIVE13 E68 (Ethan's ruling, DECISIONS LIVE13-MASTER-4/5): the rack's outboard limit is this edge less 1 in, not the drawn arm seam.
+const SHAPES = {};
+function sleeveEdgeFromSheet(sex, y){
+  if(!SHAPES[sex]) SHAPES[sex] = polys(fs.readFileSync(path.join(root, 'images', 'garments', `garment-corporate-service-dress-blazer-${sex}.svg`), 'utf8').replace(/<defs>[\s\S]*?<\/defs>/g, '')).filter(p => p.length > 2);
+  const Y = y * 100;
+  let mx = -Infinity;
+  for(const p of SHAPES[sex]) for(let i = 0; i < p.length; i++){ const a = p[i], b = p[(i + 1) % p.length]; if((a[1] <= Y && b[1] > Y) || (b[1] <= Y && a[1] > Y)) mx = Math.max(mx, a[0] + (Y - a[1]) * (b[0] - a[0]) / (b[1] - a[1])); }
+  return mx / 100;
+}
+
 // Every layer that is part of the rack or the badge: drape, medal body, device, mini raster, badge.
 const worn = l => ['mini-drape', 'mini-medal', 'mini', 'device', 'badge'].includes(l.role);
 
@@ -46,7 +58,7 @@ const worn = l => ['mini-drape', 'mini-medal', 'mini', 'device', 'badge'].includ
 // badge layer; the chaplain badge keeps its place 1/2 in above the top row (4.2.1.5, 4.2.2.5). D8: this replaces the test that
 // required every box to be clear of the lapel.
 for(const sex of ['male', 'female']){
-  test(`semi_formal ${sex}: with 1 to 12 miniatures and the chaplain badge the rack is centred on the pocket, the lapel lies over any medal or badge it meets, the rack stays inside the arm seam, for every grade (4.2.2.4 as rewritten by ICL 25-02, 4.2.1.5, 11.1.8, 11.2.8)`, async () => {
+  test(`semi_formal ${sex}: with 1 to 12 miniatures and the chaplain badge the rack is centred on the pocket, the lapel lies over any medal or badge it meets, the rack stays 1 in inside the left sleeve's edge, for every grade (4.2.2.4 as rewritten by ICL 25-02, 4.2.1.5, 11.1.8, 11.2.8)`, async () => {
     const lapel = lapelFromSheet(sex);
     const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const pocketX = core.anchor(spec, 'crest_center').x;
@@ -81,8 +93,13 @@ for(const sex of ['male', 'female']){
         const rows = new Map();
         drapes.forEach(l => rows.set(l.y.toFixed(3), [...(rows.get(l.y.toFixed(3)) || []), l.x]));
         for(const xs of rows.values()){ xs.sort((p, q) => p - q); for(let i = 1; i < xs.length; i++) assert.ok(Math.abs(xs[i] - xs[i - 1] - 11 / 16) < 1e-6, `${sex} ${rank} ${n}: 11/16 in apart`); }
-        // The arm seam: the rack is narrowed (fewer columns), never slid, and says so only if it still strays past the seam.
-        assert.ok(!scene.notes.some(t => /past the seam or the shoulder line/.test(t)), `${sex} ${rank} ${n}: the rack lies inside the arm seam and the shoulder line`);
+        // The side limit is the left sleeve's outer edge less 1 in (LIVE13 E68; the drawn arm seam is not a barrier): the rack is narrowed (fewer columns), never
+        // slid, and says so only if it still strays past that limit. The engine reads the edge from the sheet's 0.1 in footprint, so it may be up to 0.1 in generous.
+        assert.ok(!scene.notes.some(t => /past the sleeve limit or the shoulder line/.test(t)), `${sex} ${rank} ${n}: the rack lies 1 in inside the sleeve's edge and under the shoulder line`);
+        for(const d of drapes.concat(layers.filter(l => l.role === 'mini-medal'))){
+          const edge = Math.min(sleeveEdgeFromSheet(sex, d.y), sleeveEdgeFromSheet(sex, d.y + d.h));
+          assert.ok(d.x + d.w <= edge - 1 + 0.2, `${sex} ${rank} ${n}: ${d.key} ends at ${(d.x + d.w).toFixed(2)} in, the sleeve's edge is at ${edge.toFixed(2)} in`);
+        }
         checked += layers.length;
       }
     }
@@ -108,13 +125,16 @@ test('semi_formal men: the rack keeps rows of four and the lowest row its line, 
   assert.ok(scene.notes.some(n => /lapel lies over the inner corner of the miniature medals/.test(n)), 'the lapel over the medals is noted');
 });
 
-test('semi_formal women: where the lapel and the arm seam leave no room for four to a row the rack has fewer columns, and says so (11.2.8)', async () => {
+// LIVE13 E68: on the rebuilt women's blazer (art edfbe78c, 4489f057) the drawn arm seam is about 5.4 to 5.5 in out at chest height and held the rack to two
+// to a row; with the side limit at the sleeve's outer edge less 1 in (Ethan's ruling) four fit, as on the men's, and 11.2.8's fewer columns are not needed.
+test('semi_formal women: four to a row fit 1 in inside the left sleeve\'s edge, and fewer columns are neither drawn nor noted; two medals never need fewer columns (11.2.8)', async () => {
   const scene = await compose(build('female', 'Capt', 12));
   const drapes = scene.layers.filter(l => l.role === 'mini-drape');
   const perRow = new Map();
   drapes.forEach(l => perRow.set(l.y.toFixed(3), (perRow.get(l.y.toFixed(3)) || 0) + 1));
-  assert.ok(Math.max(...perRow.values()) <= 4, 'at most four to a row');
+  assert.deepEqual([...perRow.values()].sort((a, b) => b - a), [4, 4, 4], 'three rows of four');
   assert.equal(drapes.length, 12);
+  assert.ok(!scene.notes.some(n => /to a row/.test(n)), 'no fewer columns noted');
   const few = await compose(build('female', 'Capt', 2));
   assert.equal(few.layers.filter(l => l.role === 'mini-drape').length, 2);
   assert.ok(!few.notes.some(n => /to a row/.test(n)), 'two medals never need fewer columns');

@@ -175,7 +175,8 @@ for(const sex of ['male', 'female']){
     const rows = new Map();
     drapes.forEach(l => { const k = l.y.toFixed(3); rows.set(k, [...(rows.get(k) || []), l]); });
     const ys = [...rows.keys()].map(Number).sort((a, b) => b - a);
-    // Both coats have room for rows of four between the lapel and the arm seam (11.2.8). The rack is centred above the pocket
+    // Both coats have room for rows of four beside the lapel, 1 in inside the left sleeve's edge (11.2.8; LIVE13 E68: on the rebuilt women's blazer the drawn
+    // arm seam, about 5.4 in out at chest height, is not a limit, Ethan's ruling DECISIONS LIVE13-MASTER-4/5). The rack is centred above the pocket
     // (4.2.2.4 as rewritten by ICL 25-02) and is not narrowed to clear the lapel, which lies over its inner corner instead (11.1.8).
     // The women's blazer traced from the product photo was narrow enough to force rows of three (D8; Doran: "the medals need to
     // move left"); rebuilt from Figure 4.15 (art 2e084dbc, LIVE12-ART 4) its lapel ends above the medal slot and four fit, as the men's.

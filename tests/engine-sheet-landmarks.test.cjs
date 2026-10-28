@@ -44,27 +44,40 @@ test('Class A coat without a stated strap axis: no board is invented from a lite
   assert.ok(scene.notes.some(n => /^No artwork for the shoulder strap position/.test(n)), 'the note says the strap position is missing');
 });
 
-// The corporate semi-formal's twelve miniatures (as tests/engine-final-semi-lapel.test.cjs): the rack takes as many columns as fit between the
-// lapel and the arm seam under the shoulder line (11.2.8).
+// The corporate semi-formal's twelve miniatures (as tests/engine-final-semi-lapel.test.cjs): the rack takes as many columns as fit beside the lapel,
+// 1 in inside the left sleeve's edge (LIVE13 E68) and under the shoulder line (11.2.8).
 const TWELVE = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
 const semi = gender => HARNESS.makeBuild({ uniform: 'semi_formal', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, ribbonSel: TWELVE, medalSel: true, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } });
 const perRowMax = scene => { const rows = new Map(); scene.layers.filter(l => l.role === 'mini-drape').forEach(l => rows.set(l.y.toFixed(3), (rows.get(l.y.toFixed(3)) || 0) + 1)); return Math.max(...rows.values()); };
 
-test('corporate blazers: the miniature rack is held to the arm seam and the shoulder line the sheet states (landmarks), men\'s and women\'s', async () => {
+// LIVE13 E68 (Ethan's ruling, DECISIONS LIVE13-MASTER-4/5): the side limit is the left sleeve's outer edge less 1 in, read from the sheet's cloth footprint
+// (measure-layout's GARMENT_FOOTPRINT, generated from the sheet), and no longer the drawn arm seam: moving arm_seam_left changes nothing, moving the sleeve's edge in
+// narrows the rack. The shoulder line is still the sheet's shoulder_left landmark.
+const ML = require('../js/engine/measure-layout.js');
+test('corporate blazers: the miniature rack is held 1 in inside the sleeve edge the sheet draws and under the shoulder line it states, not to the drawn arm seam, men\'s and women\'s', async () => {
   for(const [sex, id] of [['male', 'garment-corporate-service-dress-blazer-male'], ['female', 'garment-corporate-service-dress-blazer-female']]){
-    const edit = (dx, dy) => storeWith((p, j) => {
+    const edit = (seamDx, dy) => storeWith((p, j) => {
       if(p.endsWith(id + '.spec.json')){
-        j.landmarks.arm_seam_left = j.landmarks.arm_seam_left.map(([x, y]) => [x + dx, y]);
+        j.landmarks.arm_seam_left = j.landmarks.arm_seam_left.map(([x, y]) => [x + seamDx, y]);
         j.landmarks.shoulder_left = j.landmarks.shoulder_left.map(([x, y]) => [x, y + dy]);
       }
       return j;
     });
     const asShipped = await P.composeUniform(semi(sex), edit(0, 0));
-    const seamIn = await P.composeUniform(semi(sex), edit(-300, 0));
     assert.equal(asShipped.layers.filter(l => l.role === 'mini-drape').length, 12, `${sex}: twelve miniatures`);
-    const strays = scene => scene.notes.some(n => /past the seam or the shoulder line/.test(n));
-    assert.ok(!strays(asShipped), `${sex}: the sheet as shipped holds the rack inside its arm seam and shoulder line`);
-    assert.ok(perRowMax(seamIn) < perRowMax(asShipped) || strays(seamIn), `${sex}: with the arm seam 3 in nearer the centre the rack is narrowed (${perRowMax(asShipped)} to ${perRowMax(seamIn)} to a row) or noted as straying`);
+    const strays = scene => scene.notes.some(n => /past the sleeve limit or the shoulder line/.test(n));
+    assert.ok(!strays(asShipped), `${sex}: the sheet as shipped holds the rack 1 in inside the sleeve's edge and under its shoulder line`);
+    assert.equal(perRowMax(asShipped), 4, `${sex}: four to a row`);
+    const drapes = scene => scene.layers.filter(l => l.role === 'mini-drape').map(l => [l.x, l.y]);
+    const seamIn = await P.composeUniform(semi(sex), edit(-300, 0));
+    assert.deepEqual(drapes(seamIn), drapes(asShipped), `${sex}: the drawn arm seam 3 in nearer the centre changes nothing (it is not a limit)`);
+    // The sleeve's edge 4 in nearer the centre (every band's last span pulled in by 40 cells; the men's rack ends about 4.9 in inside the shipped edge): the rack is narrowed or noted as straying.
+    const F = ML.GARMENT_FOOTPRINT[id], saved = F.map(sp => sp.slice());
+    try{
+      F.forEach(sp => { if(sp.length) sp[sp.length - 1] -= 40; });
+      const edgeIn = await P.composeUniform(semi(sex), edit(0, 0));
+      assert.ok(perRowMax(edgeIn) < perRowMax(asShipped) || strays(edgeIn), `${sex}: with the sleeve's edge 4 in nearer the centre the rack is narrowed (${perRowMax(asShipped)} to ${perRowMax(edgeIn)} to a row) or noted as straying`);
+    }finally{ saved.forEach((sp, b) => { F[b] = sp; }); }
     const lowShoulder = await P.composeUniform(semi(sex), edit(0, 600));
     assert.ok(perRowMax(lowShoulder) < perRowMax(asShipped) || strays(lowShoulder), `${sex}: with the shoulder line 6 in lower the rack is narrowed or noted as straying`);
   }
