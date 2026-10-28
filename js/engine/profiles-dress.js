@@ -616,14 +616,16 @@
   //
   // `underCollar`: groups redrawn over the badges but under the leaves (Z.badge + 0.45), whatever the sheet's own order. The women's tie tab
   // (LIVE12 E59, Ethan: the tab's "apex rises into the collar junction instead of sitting under the collar"; CAPR 39-1 4.1.12.4, 4.2.6.3: the tab
-  // is worn under the closed collar, its tails showing below the collar points) is drawn there on the short aviator sheet, so the closed leaves lie over it whatever the sheet's order (the short Class B blouse cannot yet, see there).
+  // is worn under the closed collar, its tails showing below the collar points) is drawn there on the short aviator shirt and the short Class B blouse, so the closed leaves lie over it whatever the sheet's order. `opts.except`:
+  // groups inside the foreground left out of it (the blouse's cover and placket, which the base sheet draws under the tab; LIVE12 E60b).
   const COLLAR_EDGE_GROW = 0.025;
   const UNDER_COLLAR_Z = Z.badge + 0.45;
-  function collarOverBadges(ctx, foregroundGroup, underCollar){
+  function collarOverBadges(ctx, foregroundGroup, underCollar, opts){
     const polys = H.collarPolygons(ctx).map(l => growPolygon(l.points, COLLAR_EDGE_GROW));
     if(!polys.length) return;
+    const o = opts || {};
     if(underCollar && underCollar.length) ctx.foreground(underCollar, UNDER_COLLAR_Z);
-    if(foregroundGroup) ctx.foreground(Array.isArray(foregroundGroup) ? foregroundGroup : [foregroundGroup], Z.badge + 0.5);
+    if(foregroundGroup) ctx.foreground(Array.isArray(foregroundGroup) ? foregroundGroup : [foregroundGroup], Z.badge + 0.5, o.except);
     for(const l of ctx.layers){
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
@@ -1583,11 +1585,15 @@
     // ribbons. A short sheet with both collar states draws none (art 76963a86): its leaves are the group of the state shown, `collar` (the open leaves) or `collar-closed` (the closed leaves
     // and neck) with the `tie` group, which the sheet draws over the leaves, after it; those groups are the foreground there.
     const states = ctx.collarGroups;
-    // The women's tie tab lies under the closed leaves (4.1.12.4; LIVE12 E59). The long blouse draws the tab in the base sheet and its collar-foreground over it. The short
-    // blouse's `collar-closed` group holds, before its leaves, a blouse-coloured cover of the open V (down to 5.07 in) and its leaves' edge lines are unnamed paths, so neither
-    // the whole group nor the named leaves can be drawn over the tab without painting out its upper part or halving the leaves' outline: its `tie` stays after the closed group,
-    // in the sheet's order, until the art names the cover or draws the tab inside the group under the leaves (FOLLOWUPS).
-    collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? [states.closed, 'tie'] : [states.open]) : 'collar-foreground');
+    // The women's tie tab lies under the closed leaves (4.1.12.4; LIVE12 E59, E60b). The long blouse draws the tab in the base sheet and its collar-foreground over it. The short
+    // blouse's `collar-closed` group draws a blouse-coloured cover of the open V (down to 5.07 in) and the placket line before its leaves (art 626369e1 names them
+    // `collar-closed-cover`, `collar-closed-placket`): the base sheet draws them first, and over the badges the engine draws the tab, then the rest of the closed group (the
+    // leaves' fills, shadows and edges and the collar's top line) in the sheet's order, so the tab lies on the cover and under the leaves. The cover is not redrawn over the
+    // badges, as on the short aviator shirt: it would paint the blouse over a ribbon lying where the open collar would be. The men's tie keeps the one layer, in the sheet's order.
+    const tabUnder = female && states && ctx.collarState === 'closed';
+    const cover = tabUnder ? [`${states.closed}-cover`, `${states.closed}-placket`] : null;
+    collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? (tabUnder ? [states.closed] : [states.closed, 'tie']) : [states.open]) : 'collar-foreground',
+      tabUnder ? ['tie'] : null, tabUnder ? { except: cover } : null);
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }

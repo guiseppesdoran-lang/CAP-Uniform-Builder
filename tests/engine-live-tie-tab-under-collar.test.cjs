@@ -2,9 +2,9 @@
 // LIVE12 E59 (Ethan, the women's aviator shirt collar with the tie tab: "the tie tab's apex rises into the collar junction instead of sitting under the collar"; CAPR 39-1 4.1.12.4 and
 // 4.2.6.3: the women's tie tab is worn under the closed collar, its tails showing below the collar points). On the sheets that wear the tab the closed collar's leaves are painted after
 // it: the tab is the sheet's own `tie` group; the long aviator shirt (alone and beside the women's blazer) and the long Class B blouse draw it before their leaves, and the short aviator
-// shirt redraws it over the badges on its own foreground layer below the closed pieces. The short Class B blouse cannot yet: its `collar-closed` group holds a blouse-coloured cover
-// of the open V before its leaves, and the leaves' edge lines are unnamed paths, so the engine keeps the sheet's order there (the tab after the closed group) until the art names
-// the cover or draws the tab inside the group under the leaves; that case is a todo test, and a passing one guards that nothing of the closed group paints over the tab meanwhile.
+// shirt redraws it over the badges on its own foreground layer below the closed pieces. LIVE12 E60b: the short Class B blouse's closed group now names its cover of the open V and its
+// placket (art 626369e1: `collar-closed-cover`, `collar-closed-placket`, then each leaf's fill, `-shadow` and `-edge`): under the badges
+// the base sheet draws them, the tab is drawn over the badges and then the rest of the closed group without them; the tab is never painted out by the cover.
 // The overblouse has no tie tab (tieRule: not offered, 4.2.6.3) and no `tie` group. The separate -tie-tab overlay sheets are not placed (LIVE8-3).
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -59,17 +59,17 @@ const SHEETS = [
   ['aviator short, tie tab on', build('aviator', { sleeve: 'short', tie: true }), 'garment-aviator-shirt-female', ['collar-closed-right', 'collar-closed-left']],
   ['aviator long', build('aviator', { sleeve: 'long' }), 'garment-aviator-shirt-female-long', ['collar-right', 'collar-left']],
   ['aviator long beside the blazer', build('aviator_blazer', {}), 'garment-aviator-shirt-female-long', ['collar-right', 'collar-left']],
-  ['Class B short, tie tab on', build('blues_b', { sleeve: 'short', tie: true }), 'garment-blues-class-b-blouse-female', ['collar-closed-right', 'collar-closed-left'],
-    'art: the short blouse\'s collar-closed group draws a cover of the open V before its leaves and its leaf edge lines are unnamed; the tab must go inside the group under the leaves, or the cover be named'],
+  ['Class B short, tie tab on', build('blues_b', { sleeve: 'short', tie: true }), 'garment-blues-class-b-blouse-female',
+    ['collar-closed-right', 'collar-closed-right-shadow', 'collar-closed-right-edge', 'collar-closed-left', 'collar-closed-left-shadow', 'collar-closed-left-edge']],
   ['Class B long', build('blues_b', { sleeve: 'long' }), 'garment-blues-class-b-blouse-female-long', ['collar-right', 'collar-left']]
 ];
 // Badges and the full CAP rack, so the short sheets' collar is redrawn over them (collarOverBadges) as it is in use.
 const RACK = require('../data/ribbon-awards.js'), ALL_RIBBONS = Object.keys(RACK.FAMILIES).map(id => [id]);
 const WITH_BADGES = { badgeIds: ['observer_badge', 'emergency_services_badge', 'christian_chaplin'], ribbonSel: ALL_RIBBONS };
 
-for(const [label, b, sheet, leaves, todo] of SHEETS){
+for(const [label, b, sheet, leaves] of SHEETS){
   for(const [what, extra] of [['plain', null], ['with badges and ribbons', WITH_BADGES]]){
-    test(`${sheet} (${label}, ${what}): the tie tab is drawn, and the closed collar's leaves are painted over it (4.1.12.4, 4.2.6.3)`, todo ? { todo } : {}, async () => {
+    test(`${sheet} (${label}, ${what}): the tie tab is drawn, and the closed collar's leaves are painted over it (4.1.12.4, 4.2.6.3)`, async () => {
       const scene = await P.composeUniform(Object.assign({}, b, extra || {}), store);
       assert.ok(scene.layers.some(l => l.type === 'asset' && l.id === sheet && l.role === 'garment'), `${sheet} is the shirt drawn`);
       assert.ok(!scene.layers.some(l => /-tie-tab$/.test(l.id || '')), 'no separate tie-tab overlay is placed');
@@ -107,15 +107,23 @@ test('the overblouse wears no tie tab: it is not offered and the sheets draw non
   }
 });
 
-test('garment-blues-class-b-blouse-female: meanwhile the tab is drawn whole, nothing of the closed group (its cover of the open V) is painted after it', async () => {
-  const sheet = 'garment-blues-class-b-blouse-female';
+test('garment-blues-class-b-blouse-female: the cover of the open V and the placket are painted before the tab, the leaves after it, and the tab is never painted over by the cover (LIVE12 E60b)', async () => {
+  const sheet = 'garment-blues-class-b-blouse-female', svg = svgOf(sheet);
+  const order = ['collar-closed-cover', 'collar-closed-placket', 'collar-closed-right', 'collar-closed-right-shadow', 'collar-closed-right-edge', 'collar-closed-left', 'collar-closed-left-shadow', 'collar-closed-left-edge'];
+  const at = order.map(id => svg.indexOf(`id="${sheet}__${id}"`));
+  assert.ok(at.every(i => i > 0), 'the sheet names the cover, the placket and each leaf\'s fill, shadow and edge');
+  assert.deepEqual([...at].sort((a, b) => a - b), at, 'in that order inside the closed group');
   for(const extra of [null, WITH_BADGES]){
     const scene = await P.composeUniform(build('blues_b', { sleeve: 'short', tie: true }, extra), store);
-    const closed = elements(sheet).filter(e => e.ancestors.includes('collar-closed') || e.id === 'collar-closed').map(e => e.id);
-    const seq = paintOrder(scene, sheet, ['tie-tab-body', 'collar-closed']);
+    const seq = paintOrder(scene, sheet, ['tie-tab-body', ...order]);
     const tab = lastIndex(seq, 'tie-tab-body');
     assert.ok(tab >= 0, 'the tab is drawn');
-    assert.ok(lastIndex(seq, 'collar-closed') < tab, 'the closed group (with its cover) is painted before the tab\'s last drawing');
-    assert.ok(closed.includes('collar-closed-right'));
+    for(const id of ['collar-closed-cover', 'collar-closed-placket']) assert.ok(lastIndex(seq, id) < tab, `${id} is painted before the tab's last drawing`);
+    for(const id of order.slice(2)) assert.ok(lastIndex(seq, id) > tab, `${id} is painted after the tab`);
+    // over the badges: the tab, then the closed group without its cover and placket (the base sheet draws those under the tab; redrawn over the badges the cover would
+    // paint the blouse over a ribbon lying where the open collar would be, as on the short aviator shirt)
+    const fg = scene.layers.filter(l => l.role === 'garment-foreground');
+    assert.deepEqual(fg.map(l => [l.onlyGroups, l.hideGroups || null]), [[['tie'], null], [['collar-closed'], ['collar-closed-cover', 'collar-closed-placket']]]);
+    assert.ok(fg[0].z < fg[1].z);
   }
 });

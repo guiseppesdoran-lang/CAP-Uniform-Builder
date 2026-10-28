@@ -99,9 +99,10 @@
       },
       // Redraw named groups of the base garment above everything placed so far (a lapel that may
       // cover part of the ribbons, 11.1.8; collar leaves over badges).
-      foreground(groups, z){
+      // `except`: groups inside those that stay hidden (a closed collar redrawn without its cover).
+      foreground(groups, z, except){
         if(!ctx.base) return;
-        ctx.layers.push(Object.assign(core.registerAtOrigin(ctx.base, z == null ? Z.badge + 1 : z, 'garment-foreground'), { key: 'layer:foreground', onlyGroups: groups }));
+        ctx.layers.push(Object.assign(core.registerAtOrigin(ctx.base, z == null ? Z.badge + 1 : z, 'garment-foreground'), { key: 'layer:foreground', onlyGroups: groups }, except && except.length ? { hideGroups: except } : {}));
       },
       // A layer drawn to share the base garment's box (nametag, epaulet sleeves, braid).
       async overlay(id, z){

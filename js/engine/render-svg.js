@@ -226,6 +226,8 @@
     // Variants of a symbol with named groups hidden, or with only named groups shown.
     function variantKey(layer){
       if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d);
+      // Both: the named groups only, less the hidden ones inside them (a collar group redrawn without its cover).
+      if(layer.onlyGroups && layer.onlyGroups.length && layer.hideGroups && layer.hideGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '') + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       if(layer.onlyGroups && layer.onlyGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       return layer.id;
@@ -274,7 +276,7 @@
           const d = cordPathToArt(layer.cordPath.d, Number(t[1]), Number(t[2]), Number(t[3]));
           cord.querySelectorAll('path').forEach(pn => { if(/^M/.test(pn.getAttribute('d') || '')) pn.setAttribute('d', d); });
         }
-      }else if(layer.hideGroups){
+      }else if(layer.hideGroups && !(layer.onlyGroups && layer.onlyGroups.length)){
         layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }else{
         // Draw nothing but the named groups: hide everything, then show those groups.
@@ -286,6 +288,7 @@
         // clipped to the silhouette and drew nothing): they stay visible.
         wrap.querySelectorAll('clipPath, mask, pattern, marker').forEach(n => n.setAttribute('visibility', 'visible'));
         layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); } });
+        (layer.hideGroups || []).forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }
       defs.appendChild(sym);
       loaded.set(key, true);
