@@ -521,3 +521,36 @@ test('every value the importer returns for the newly read ribbons resolves to a 
   assert.equal(four.selected.bronze_medal_of_valor.awardLabel, '3rd Award');
   assert.ok(four.parsed.notes.some(n => /^4 Bronze Medal of Valor records found; the ribbon picker offers at most 3/.test(n)));
 });
+
+// CAPR 39-1 and js/catalog.js SENIOR_HIGHEST_CADET_AWARD_RIBBONS: a senior member wears only the highest cadet award;
+// the COS star moves from the Mitchell to it (CAPR 39-3 14j as data/ribbon-awards.js carries it).
+test('a senior who was a cadet: only the highest cadet award, the Earhart, with the COS star moved from the Mitchell (E62)', () => {
+  const r = runImport(SENIOR);
+  const cadetAwards = ['curry_achievement', 'hap_arnold_achievement', 'mary_feik_achievement', 'wright_brothers_award', 'rickenbacker_achievement', 'lindbergh_achievement',
+    'doolittle_achievement', 'goddard_achievement', 'armstrong_achievement', 'mitchell_award', 'earhart_award'];
+  assert.deepEqual(r.parsed.ribbons.filter(x => cadetAwards.includes(x.id)).map(x => `${x.id}=${x.value}`), ['earhart_award=earned_cos_star']);
+  assert.deepEqual(Object.keys(r.selected).filter(id => cadetAwards.includes(id)), ['earhart_award']);
+  assert.equal(r.selected.earhart_award.awardLabel, 'Earned + COS star moved from the Mitchell');
+  assert.deepEqual(r.devices('earhart_award'), [{ devices: ['star-silver'], centered: false }]);
+  // Up to the Mitchell only: the Mitchell keeps its own COS star.
+  const mitchell = runImport(SENIOR.replace(/Achievement 11 - Amelia Earhart.*\n/, ''));
+  assert.deepEqual(mitchell.parsed.ribbons.filter(x => cadetAwards.includes(x.id)).map(x => `${x.id}=${x.value}`), ['mitchell_award=earned_cos_star']);
+  // No milestone: the highest achievement alone.
+  const ach = runImport(SENIOR.replace(/Achievement (?:[4-9]|1[01]) - .*\n/g, '').replace('Cadet Officers School (COS) 20 Jun 2014\n', ''));
+  assert.deepEqual(ach.parsed.ribbons.filter(x => cadetAwards.includes(x.id)).map(x => x.id), ['mary_feik_achievement']);
+});
+
+test('the achievement rows are read by the name they print, so a numbering that counts the milestones does not shift them (E62)', () => {
+  const cadet = SENIOR.replace('MALE SENIOR 1st Lt 01 Mar 2024', 'MALE CADET C/MSgt 01 Mar 2024').replace('1st Lt David Wilson', 'C/MSgt David Wilson');
+  // Up to "Achievement 5 - Rickenbacker" (the fifth row, Achievement 4): Curry to Rickenbacker and the Wright Brothers, not Lindbergh.
+  const r = runImport(cadet.replace(/Achievement (?:[6-9]|1[01]) - .*\n/g, ''));
+  for(const id of ['curry_achievement', 'hap_arnold_achievement', 'mary_feik_achievement', 'wright_brothers_award', 'rickenbacker_achievement']) assert.ok(r.selected[id], id);
+  assert.equal(r.ribbon('lindbergh_achievement'), undefined);
+  // Names without numbers, honor credit on the row that names it.
+  const bare = FIXTURE.replace(/Achievement \d+ - (\w[\w ]*?) (\d\d \w\w\w \d{4})/g, '$1 Achievement $2')
+    .replace('Doolittle Achievement 20 Jun 2022', 'Doolittle Achievement 20 Jun 2022 Honor Credit');
+  const b = runImport(bare);
+  for(const id of ['curry_achievement', 'armstrong_achievement', 'wright_brothers_award', 'mitchell_award', 'earhart_award']) assert.ok(b.selected[id], id);
+  assert.equal(b.selected.doolittle_achievement.awardValue, 'honor_credit');
+  assert.equal(b.selected.lindbergh_achievement.awardValue, 'earned');
+});

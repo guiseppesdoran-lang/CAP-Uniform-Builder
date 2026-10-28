@@ -606,15 +606,61 @@ function importedCacLevelFromDutyPositions(text){
   return order.find(level => levels.includes(level)) || null;
 }
 
-function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership){
+// A senior member wears one cadet program award ribbon, the highest earned (js/catalog.js
+// SENIOR_HIGHEST_CADET_AWARD_RIBBONS, js/galleries.js enforceSeniorSingleCadetAwardRibbon). Only the highest
+// milestone used to be kept, so the eight achievement ribbons stayed in the import beside it and the picker kept
+// whichever it selected last. The Cadet Officer School star is worn on the Mitchell; a senior who wears a higher
+// award instead moves it there (CAPR 39-3 14j, data/ribbon-awards.js), so it is not lost with the Mitchell.
+function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership, text=''){
   if(membership !== 'senior') return ribbons;
-  const milestoneOrder = ['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award'];
-  let highest = null;
-  for(const id of milestoneOrder){
-    if(ribbons.some(r => r?.id === id)) highest = id;
+  const cadetAwards = typeof SENIOR_HIGHEST_CADET_AWARD_RIBBONS !== 'undefined' ? SENIOR_HIGHEST_CADET_AWARD_RIBBONS
+    : new Set(['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award']);
+  const held = ribbons.filter(r => cadetAwards.has(r?.id));
+  if(held.length === 0) return ribbons;
+  const highest = held.slice().sort((a, b) => precedence(a.id) - precedence(b.id))[0];
+  const cos = ribbons.some(r => r?.id === 'mitchell_award' && r.value === 'earned_cos_star') || (text && hasCosGraduateCreditFromReport(text) && held.some(r => r.id === 'mitchell_award'));
+  const canCarryCos = id => typeof getRibbonAwardOptions === 'function' && (getRibbonAwardOptions(id) || []).some(o => o?.value === 'earned_cos_star');
+  const kept = cos && highest.id !== 'mitchell_award' && canCarryCos(highest.id)
+    ? { ...highest, value:'earned_cos_star', reason:`${highest.reason || highest.id} + COS graduate star moved from the Mitchell` }
+    : highest;
+  return ribbons.filter(r => !cadetAwards.has(r?.id) || r === highest).map(r => r === highest ? kept : r);
+}
+
+// The highest of Achievements 1-8 the Cadet Achievements table shows, and the honor credits. A row is read by
+// the achievement or milestone it names when it names one ("Achievement 4 - Wright Brothers" is the Wright
+// Brothers milestone, after Achievement 3, not Achievement 4), else by its number; a row that names an
+// achievement without a number ("Gen J.F. Curry Achievement 12 Jan 2020") counts too. Achievements are earned
+// in order, so the highest one awards the ribbons below it; the Wright Brothers Award follows Achievement 3 and
+// the Mitchell Award (and every milestone after it) Achievement 8.
+const IMPORTED_ACHIEVEMENT_NAMES = [null, /\bCurry\b/i, /\bArnold\b/i, /\bFeik\b/i, /\bRickenbacker\b/i, /\bLindbergh\b/i, /\bDoolittle\b/i, /\bGoddard\b/i, /\bArmstrong\b/i];
+const IMPORTED_MILESTONE_AFTER_ACHIEVEMENT = [[/Wright\s+Brothers/i, 3], [/\bMitchell\b/i, 8], [/\bEarhart\b/i, 8], [/\bEaker\b/i, 8], [/\bSpaatz\b/i, 8]];
+function readCadetAchievementRows(section){
+  const source = String(section || '');
+  const named = row => {
+    const index = IMPORTED_ACHIEVEMENT_NAMES.findIndex(re => re && re.test(row));
+    if(index > 0) return { index, milestone:false };
+    const milestone = IMPORTED_MILESTONE_AFTER_ACHIEVEMENT.find(([re]) => re.test(row));
+    return milestone ? { index:milestone[1], milestone:true } : null;
+  };
+  const rows = [];
+  const numbered = '(?!\\s+[A-Za-z]{3,9}\\s+\\d{4})'; // "Achievement 12 Jan 2020" is a date, not Achievement 12
+  const rowRe = new RegExp(`Achievement\\s+(\\d+)\\b${numbered}([\\s\\S]*?)(?=Achievement\\s+\\d+\\b${numbered}|$)`, 'gi');
+  let m;
+  while((m = rowRe.exec(source))){
+    const known = named(m[2]);
+    const honor = /Honor\s+Credit|With\s+Honou?rs?|Honou?rs?\s+Credit/i.test(m[2]);
+    rows.push(known ? { ...known, honor } : { index:Math.min(Number(m[1]), 8), milestone:Number(m[1]) > 8, honor });
   }
-  if(!highest) return ribbons;
-  return ribbons.filter(r => !milestoneOrder.includes(r?.id) || r.id === highest);
+  // Names without an "Achievement N" row.
+  const bare = source.replace(new RegExp(`Achievement\\s+\\d+\\b${numbered}[^\\d]*`, 'gi'), ' ');
+  // A bare row's honor credit is printed on the row, before or just after its date.
+  const honorOnRow = at => /^[^\d]{0,80}?\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}(?:\s+\d{1,3}%?)?\s+(?:Honor\s+Credit|With\s+Honou?rs?|Honou?rs?\s+Credit)|^[^\d]{0,60}?(?:Honor\s+Credit|With\s+Honou?rs?)/i.test(bare.slice(at));
+  IMPORTED_ACHIEVEMENT_NAMES.forEach((re, index) => {
+    const m = re && re.exec(bare);
+    if(m) rows.push({ index, milestone:false, honor:honorOnRow(m.index + m[0].length) });
+  });
+  IMPORTED_MILESTONE_AFTER_ACHIEVEMENT.forEach(([re, index]) => { if(re.test(bare)) rows.push({ index, milestone:true, honor:false }); });
+  return rows;
 }
 
 function hasCosGraduateCreditFromReport(text){
@@ -632,16 +678,6 @@ function applyCosStarToHighestCadetMilestone(ribbons, text){
     ? { ...r, value:'earned_cos_star', reason:`${r.reason || 'Mitchell Award'} + COS graduate star` }
     : r
   );
-}
-
-function hasAchievementHonorCreditFromReport(text, achievementNumber){
-  const source = normalizeMemberReportText(text);
-  const rowRe = new RegExp(
-    `Achievement\\s+${achievementNumber}\\b([\\s\\S]{0,240}?)(?=Achievement\\s+\\d+\\b|$)`,
-    'i'
-  );
-  const row = rowRe.exec(source)?.[1] || '';
-  return /Honor\s+Credit|With\s+Honou?rs?|Honou?rs?\s+Credit/i.test(row);
 }
 
 function hasNonTrainingQualification(text, labelPattern){
@@ -1223,8 +1259,8 @@ function parseCapMemberReport(textRaw){
   // A milestone name elsewhere in the report (for example, attendance at a
   // "Spaatz Award Presentation") is not evidence that the member earned it.
   const cadetAchievements = getReportSection(text, 'Cadet\\s+Achievements', 'Awards');
-  const achievementNumMatches = [...cadetAchievements.matchAll(/Achievement\s+(\d+)/gi)].map(m => parseInt(m[1],10)).filter(Number.isFinite);
-  const maxAchievement = achievementNumMatches.length ? Math.max(...achievementNumMatches) : 0;
+  const achievementRows = readCadetAchievementRows(cadetAchievements);
+  const maxAchievement = achievementRows.length ? Math.max(...achievementRows.map(row => row.index)) : 0;
   const achievementMap = [
     null,
     'curry_achievement',
@@ -1238,14 +1274,14 @@ function parseCapMemberReport(textRaw){
   ];
   for(let i=1; i<=Math.min(maxAchievement, 8); i++){
     if(!achievementMap[i]) continue;
-    const honorCredit = hasAchievementHonorCreditFromReport(cadetAchievements, i);
+    const honorCredit = achievementRows.some(row => row.index === i && !row.milestone && row.honor);
     let value = honorCredit ? 'honor_credit' : 'earned';
 
     // Goddard uses the same one-star ribbon for either Honor Credit or Model
     // Rocketry, and the supplied two-star ribbon when both were earned.
     if(i === 7){
       const modelRocketry = /Model\s+Rocketry/i.test(text);
-      const hasMitchell = /Billy\s+Mitchell|Mitchell\s+Award/i.test(text);
+      const hasMitchell = /\bMitchell\b/i.test(cadetAchievements);
       const rocketryCredit = modelRocketry && hasMitchell;
       if(honorCredit && rocketryCredit) value = 'honor_credit_and_rocketry';
       else if(honorCredit) value = 'honor_credit';
@@ -1259,8 +1295,8 @@ function parseCapMemberReport(textRaw){
     });
   }
   if(/Wright\s+Brothers/i.test(cadetAchievements)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
-  if(/Billy\s+Mitchell/i.test(cadetAchievements)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
-  if(/Amelia\s+Earhart/i.test(cadetAchievements)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
+  if(/\bMitchell\b/i.test(cadetAchievements)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
+  if(/\bEarhart\b/i.test(cadetAchievements)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
   if(/\bEaker\b/i.test(cadetAchievements)) result.ribbons.push({ id:'eaker_award', value:'earned', reason:'Eaker' });
   if(/\bSpaatz\b/i.test(cadetAchievements)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
 
@@ -1575,7 +1611,7 @@ function parseCapMemberReport(textRaw){
     .filter(id => isBadgeEligibleForMembership(id, result.membership));
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
   result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
-  result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership);
+  result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership, text);
   result.ribbons = normalizeRecruiterRibbonsForMembership(result.ribbons, result.membership);
   result.ribbons = dedupeImportedRibbons(result.ribbons);
 

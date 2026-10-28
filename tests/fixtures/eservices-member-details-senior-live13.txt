@@ -20,6 +20,22 @@ Specialty Tracks
 Specialty Track Level Completed
 AEROSPACE EDUCATION SENIOR 10 Jan 2019
 CADET PROGRAMS TECHNICIAN 01 Jun 2017
+Cadet Training
+Activity Date Completed
+Cadet Officers School (COS) 20 Jun 2014
+Cadet Achievements
+Achievement Date Completed Test Score
+Achievement 1 - Curry 12 Jan 2010
+Achievement 2 - Hap Arnold 12 Jun 2010
+Achievement 3 - Mary Feik 14 Jan 2011
+Achievement 4 - Wright Brothers 01 Mar 2011
+Achievement 5 - Rickenbacker 12 Jun 2011
+Achievement 6 - Lindbergh 18 Dec 2011
+Achievement 7 - Doolittle 20 Jun 2012
+Achievement 8 - Goddard 20 Dec 2012
+Achievement 9 - Armstrong 14 Jun 2013
+Achievement 10 - Billy Mitchell 03 Sep 2013
+Achievement 11 - Amelia Earhart 04 Jun 2015
 Awards
 Promotions
 Date Rank
