@@ -1,0 +1,54 @@
+# Caddy inside the homelab container: plain HTTP on :80, reached only by cloudflared.
+# Cloudflare terminates HTTPS for uniform.ebhq.dev, so Caddy does not request certificates.
+#
+# The Content-Security-Policy below is the one in scripts/csp.cjs
+# (buildCsp({ forHeader: true })); tests/security.test.cjs fails if they differ.
+
+{
+	auto_https off
+	admin off
+}
+
+:80 {
+	root * /srv
+	encode zstd gzip
+	file_server {
+		# Directory listings stay off (the default); no browse directive.
+	}
+
+	header {
+		X-Robots-Tag "noindex, nofollow, noarchive"
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		-Server
+	}
+
+	# Only GET and HEAD make sense for a static site.
+	@badmethod not method GET HEAD
+	respond @badmethod 405
+
+	# Never serve dotfiles (.git, .env ...).
+	@dotfiles path */.*
+	respond @dotfiles 404
+
+	# Cache-Control from scripts/cache-policy.cjs (tests/cache-policy.test.cjs checks this block matches).
+	# A ?v= URL (content hash or artwork version) never changes: a year, immutable.
+	@versioned query v=*
+	header @versioned Cache-Control "public, max-age=31536000, immutable"
+	# vendor/ (fonts, PDF.js) has no stamp: a day.
+	@vendor {
+		not query v=*
+		path /vendor/*
+	}
+	header @vendor Cache-Control "public, max-age=86400"
+	# Everything else, the page first, is revalidated on every load (an ETag 304 when unchanged).
+	@revalidate {
+		not query v=*
+		not path /vendor/*
+	}
+	header @revalidate Cache-Control "no-cache"
+}
