@@ -171,6 +171,8 @@ membershipTypeEl.addEventListener('change', ()=>{
   // Rebuild the ribbon list and current rendered rack whenever membership changes.
   buildRibbonGallery();
   rebuildRibbonsFromGallery();
+  // A cadet grade the new membership does not keep takes its ribbons with it (a ribbon checked by hand stays).
+  capubApplyGradeRibbons();
 
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
     const fallback=findFirstAllowedUniform(State.membership) || 'blues_a';
@@ -189,8 +191,76 @@ rankSetupSelect.addEventListener('change', ()=>{
   State.rank = rankSetupSelect.value || null;
   if(!isCadetFirstSergeantEligible()) State.cadetFirstSergeant = false;
   syncCadetFirstSergeantControl();
+  capubApplyGradeRibbons();
   updateSetupGates();
   fullRender();
+});
+
+/* ===========================
+   GRADE IMPLIES RIBBONS (LIVE13 E66)
+   =========================== */
+// Ethan: "if someone selects a grade, it goes along with the ribbons required to get it. like for C/Lt Col, if selected,
+// it selects all ach ribbons except spaatz and the encampment ribbon." Choosing a cadet grade adds the ribbons that grade
+// requires (js/state.js capubGradeImpliedRibbons, CAPR 60-1), each as earned once, and takes off the ones an earlier grade
+// added that the new grade does not imply. State.gradeRibbons records which the grade added; a ribbon the member checked
+// or changed by hand is not in it and is never taken off. A senior grade implies none. Returns { added, removed }.
+function capubGradeRibbonNames(ids){
+  const names = ids.map(id => getRibbonDisplayName(id));
+  if(names.length < 2) return names.join('');
+  return names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+}
+function capubApplyGradeRibbons({announce=true}={}){
+  normalizeRibbonSelections();
+  const rank = State.rank || null;
+  const implied = State.membership === 'cadet'
+    ? capubGradeImpliedRibbons(rank).filter(id => isRibbonEligibleForMembership(id, 'cadet'))
+    : [];
+  const wanted = new Set(implied);
+  const record = State.gradeRibbons && Array.isArray(State.gradeRibbons.ids) ? State.gradeRibbons.ids : [];
+  const kept = [], removed = [], added = [];
+  for(const id of record){
+    const sel = State.ribbonSelections[id];
+    if(!sel?.checked) continue;
+    if(wanted.has(id)){ kept.push(id); continue; }
+    clearRibbonSelection(id);
+    removed.push(id);
+  }
+  for(const id of implied){
+    if(State.ribbonSelections[id]?.checked) continue; // on already: by hand, by the import, or by the grade before
+    setRibbonSelectionFromDropdown(id, 'earned', {deferRender:true, byGrade:true});
+    if(State.ribbonSelections[id]?.checked) added.push(id);
+  }
+  const ours = [...kept, ...added];
+  State.gradeRibbons = ours.length ? {rank, ids:ours} : null;
+  if(added.length || removed.length){
+    buildRibbonGallery();
+    rebuildRibbonsFromGallery();
+  }
+  if(announce){
+    const lines = [];
+    if(added.length) lines.push(`${rank}: added the ${capubGradeRibbonNames(added)}, earned on the way to this grade (CAPR 60-1).`);
+    if(removed.length) lines.push(`Taken off, as the earlier grade had added ${removed.length === 1 ? 'it' : 'them'}: ${capubGradeRibbonNames(removed)}.`);
+    // A senior member who expected the grade to fill the rack: it does not.
+    if(State.membership === 'senior' && rank && (removed.length || !(State.ribbons || []).length)){
+      lines.push('A senior member\'s grade adds no ribbons: promotion is not tied to one.');
+    }
+    // After the page's item-count toast (js/workspace-ui.js capubItemToasts speaks 200 ms after a change), so this one, which names
+    // the ribbons, is the one left showing.
+    if(lines.length) setTimeout(()=>capubNotify(lines.join(' '), added.length + removed.length > 4 ? 9000 : 6000), 450);
+  }
+  return {added, removed};
+}
+// A member report import sets the grade and the ribbons itself, and its selections win: the grade's record is
+// dropped when an import starts, so a later grade change never takes off a ribbon the report gave.
+document.addEventListener('DOMContentLoaded', ()=>{
+  if(typeof applyCapMemberReportImport !== 'function' || applyCapMemberReportImport.capubGradeAware) return;
+  const original = applyCapMemberReportImport;
+  const wrapped = function(){
+    State.gradeRibbons = null;
+    return original.apply(this, arguments);
+  };
+  wrapped.capubGradeAware = true;
+  window.applyCapMemberReportImport = wrapped;
 });
 
 if(cadetFirstSergeantCheckbox){

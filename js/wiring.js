@@ -42,6 +42,7 @@ if(miniMountStyleSelect){
 by('clearRibbons').addEventListener('click', ()=>{
   State.ribbons=[];
   State.ribbonSelections={};
+  State.gradeRibbons=null;
   buildRibbonGallery();
   renderRack();
   renderAllBadges();
@@ -741,6 +742,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       text: State.text,
       garment: State.garment || {},
       commandInsignia: State.commandInsignia,
+      // The ribbons the cadet grade added (js/setup.js capubApplyGradeRibbons), so a later grade change takes off only those.
+      gradeRibbons: State.gradeRibbons || null,
       // The quick strip (LIVE12 E48): the uniform it was pressed on and the selections it holds for Restore.
       quickStrip: State.quickStrip || null
     };
@@ -861,6 +864,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       show: text.show !== false
     };
     out.commandInsignia = { graduatedCommander: !!(p.commandInsignia && p.commandInsignia.graduatedCommander) };
+    // The grade's record: a cadet grade and the ribbons some cadet grade implies (js/state.js CADET_GRADE_RIBBON_IDS), nothing else.
+    out.gradeRibbons = null;
+    const gr = p.gradeRibbons;
+    if(gr && typeof gr === 'object' && !Array.isArray(gr) && out.membership === 'cadet' && RANKS.cadet.includes(gr.rank) && Array.isArray(gr.ids)){
+      const ids = [...new Set(gr.ids.filter(id => typeof id === 'string' && CADET_GRADE_RIBBON_IDS.includes(id)))];
+      if(ids.length) out.gradeRibbons = { rank: gr.rank, ids };
+    }
     // The selections a quick strip holds go through the same checks as the setup's own (a snapshot inside a file is untrusted too).
     out.quickStrip = null;
     const qs = p.quickStrip;
@@ -902,6 +912,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.text = p.text;
     State.garment = p.garment;
     State.commandInsignia = p.commandInsignia;
+    State.gradeRibbons = p.gradeRibbons;
     State.quickStrip = p.quickStrip;
 
     populateRankSetup();

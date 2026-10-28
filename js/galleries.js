@@ -710,8 +710,13 @@ function syncGoddardRocketryStar(){
   return true;
 }
 
-function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
+function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=false}={}){
   normalizeRibbonSelections();
+  // A ribbon the member sets by hand is his own from now on: a later grade change leaves it (js/setup.js capubApplyGradeRibbons).
+  if(!byGrade && State.gradeRibbons && Array.isArray(State.gradeRibbons.ids) && State.gradeRibbons.ids.includes(id)){
+    const ids = State.gradeRibbons.ids.filter(x => x !== id);
+    State.gradeRibbons = ids.length ? {rank:State.gradeRibbons.rank, ids} : null;
+  }
   const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
   const option = getRibbonSelectionOption(id, value);
 
