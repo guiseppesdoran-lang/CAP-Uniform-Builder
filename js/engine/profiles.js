@@ -837,7 +837,28 @@
 
   // A uniform, plus the second figure its profile names (the flight jacket beside the suit, the
   // shirt worn under the blazer), drawn to its right with the garment tops level.
+  // The badges a drawing wears, in drawing order: the id of every badge layer (key 'badge:<id>' or 'badge:<id>:<position>:<n>'), each once.
+  // The page counts these against the uniform's badge limit instead of the badges selected (LIVE13 E77: a badge selected but not chosen
+  // for a position, or not worn on the uniform, is not on it). Command insignia pins are listed too (key 'badge:<id>:ON:0'); the page
+  // leaves them out of the count (4.1.5.2.2.4).
+  function badgesWorn(scene){
+    const ids = [];
+    for(const l of scene.layers){
+      if(l.role !== 'badge') continue;
+      const m = /^badge:(.+?)(?::(?:ON|UN):\d+)?$/.exec(l.key || '');
+      if(m && !ids.includes(m[1])) ids.push(m[1]);
+    }
+    return ids;
+  }
+
   async function composeUniform(build, store){
+    const scene = await composeFigures(build, store);
+    scene.uniform = build.uniform;
+    scene.badgesWorn = badgesWorn(scene);
+    return scene;
+  }
+
+  async function composeFigures(build, store){
     const ctx = C.createContext(build, store);
     const p = PROFILES[build.uniform];
     if(!p) throw new Error('No profile for uniform ' + build.uniform);
@@ -870,5 +891,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, badgesWorn, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });
