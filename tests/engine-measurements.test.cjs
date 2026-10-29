@@ -58,16 +58,19 @@ const CITE = {
   fduGrade: '½ in: officer grade from the shoulder seam (8.2.3.2, 8.3.3.2)',
   esCentered: 'centered: ES patch centred on the right breast pocket (8.2.4.3, 8.3.4.3; LIVE9-4)',
   fduFlag: '½ in: U.S. flag below the shoulder seam (8.2.4.4, 8.3.4.4)',
+  nametagCentred: 'centered: the Class A nametag centred on the wearer\'s right between the sleeve seam and the lapel, along its bottom edge (4.1.5.2.2.2.1-2, 4.1.9.4.2.1-2; LIVE13 E76)',
+  nametagEven: 'even with: the men\'s Class A nametag bottom even with the bottom of the ribbons (4.1.5.2.2.2.1-2; LIVE13 E76)',
+  nametagParallel: 'parallel with: the women\'s Class A nametag bottom parallel with the bottom of the ribbons (4.1.9.4.2.1-2; LIVE13 E76)',
   poloOverName: '½ in: the one badge or duty title over the name, from the top of the name to the bottom of the badge or title (5.3.2.1.1)'
 };
 const L = key => CITE[key].split(':')[0];
 
 // [build name, [cite keys, one per measure drawn]]
 const TABLE = [
-  ['blues_a-male-senior-Capt', ['braid', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap']],
-  ['blues_a-male-cadet-C-Maj', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap']],
-  ['blues_a-female-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap']],
-  ['blues_a-female-senior-MajGen', ['braid', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap']],
+  ['blues_a-male-senior-Capt', ['braid', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagEven']],
+  ['blues_a-male-cadet-C-Maj', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagEven']],
+  ['blues_a-female-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagParallel']],
+  ['blues_a-female-senior-MajGen', ['braid', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagParallel']],
   ['blues_b-male-cadet-C-SSgt', ['collarChevron', 'collarChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
   ['blues_b-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
   ['blues_b-female-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag', 'flightCap']],
@@ -106,7 +109,7 @@ const TABLE = [
   ['x-cfu-male-Capt-patches-es', ['blue', 'fieldBadge', 'fieldBadge', 'blue', 'command', 'sleevePatch', 'sleevePatch', 'pocketPatch', 'pocketPatch', 'esPatch']],
   ['x-semi-female-Col-chaplain', ['crest', 'chaplainSemi']],
   // The long sleeves and the coats have an elbow; the flat sleeves beside the figure carry the distance (SLEEVE-ENG), one per build.
-  ['blues_a-male-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap']],
+  ['blues_a-male-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagEven']],
   ['x-blues_b-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
   ['x-blues_b-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'flightCap']],
   ['x-aviator-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons']],
@@ -173,7 +176,7 @@ test('every table entry names a cited paragraph', () => {
 });
 
 test('an inch label is the drawn distance (the sleeve braid, measured to the drawn braid, within 0.15 in), a word label marks a position', async () => {
-  const WORDS = new Set(['centered', 'halfway', 'halfway to elbow', 'midway']);
+  const WORDS = new Set(['centered', 'halfway', 'halfway to elbow', 'midway', 'even with', 'parallel with']);
   for(const [name] of TABLE){
     for(const m of await measuresOf(name)){
       if(WORDS.has(m.label)) continue;
@@ -202,4 +205,68 @@ test('the 1/8 in border lies on the piece, from its blue edge in to the embroide
   const b = core.layerBounds(collar);
   assert.ok(borders.some(m => m.from.x >= b.x - 1e-6 && m.from.x <= b.x + b.w + 1e-6 && m.from.y >= b.y - 1e-6 && m.from.y <= b.y + b.h + 1e-6), 'on the collar grade');
   assert.equal(C.inchesLabel(0.125), '⅛ in');
+});
+
+// LIVE13 E76 (Ethan: "for class a's specifically it needs to measure the nametag as well"). CAPR 39-1 4.1.5.2.2.2.1-2 (men) and 4.1.9.4.2.1-2
+// (women): "The nametag will be centered on the wearer's right between the sleeve seam and lapel and the bottom of nametag will be parallel
+// with the ground and even with bottom of ribbons" (the women's: "parallel with bottom of ribbons"). The 'centered' line runs from the sleeve
+// seam to the lapel's edge along the tag's bottom, its tick at the tag's centre; the level line joins the tag's inner bottom corner and the
+// rack's outer bottom corner.
+const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a.toFixed(4)} vs ${b.toFixed(4)}`);
+const crossingsAt = (pts, y, closed) => {
+  const xs = [];
+  for(let i = 0; i < (closed ? pts.length : pts.length - 1); i++){
+    const p = pts[i], q = pts[(i + 1) % pts.length];
+    if(p.y !== q.y && (p.y - y) * (q.y - y) <= 0) xs.push(p.x + (q.x - p.x) * (y - p.y) / (q.y - p.y));
+  }
+  return xs;
+};
+for(const [name, sex, word] of [['blues_a-male-senior-Capt', 'male', 'even with'], ['blues_a-male-cadet-C-Maj', 'male', 'even with'], ['blues_a-female-senior-SMSgt', 'female', 'parallel with'], ['blues_a-female-senior-MajGen', 'female', 'parallel with']]){
+  test(`${name}: the nametag measures: centred between the sleeve seam and the lapel at its bottom edge, bottom ${word} the ribbons' bottom (4.1.5.2.2.2, 4.1.9.4.2)`, async () => {
+    const scene = await P.composeUniform(R.makeBuild(spec(name)), store);
+    const coatId = sex === 'male' ? 'garment-blues-class-a-coat' : 'garment-blues-class-a-coat-female';
+    const coat = await store.load(coatId);
+    const tagLayer = scene.layers.find(l => l.type === 'asset' && /-nametag-(cadet|officer-nco)$/.test(l.id || ''));
+    const sheetTag = core.landmarkBounds(await store.load(tagLayer.id), 'nametag');
+    const tag = Object.assign({}, sheetTag, { x: sheetTag.x + tagLayer.x });
+    const bottom = tag.y + tag.h, centre = tag.x + tag.w / 2;
+    const ms = scene.layers.filter(l => l.type === 'measure');
+    const c = ms.find(m => m.label === 'centered');
+    assert.ok(c, 'the centred measure');
+    // Along the tag's bottom edge.
+    near(c.from.y, bottom, 1e-6, 'seam end at the tag bottom'); near(c.to.y, bottom, 1e-6, 'lapel end at the tag bottom');
+    // The lapel end is the wearer's right lapel's outer edge at that height (the sheet's lapel_right, the crossing nearest the arm).
+    near(c.to.x, Math.min(...crossingsAt(core.landmark(coat, 'lapel_right').points, bottom, true)), 1e-6, 'lapel edge');
+    // The seam end is the armhole seam the cord overlays state (wearer's left), mirrored to the wearer's right and fitted to the armpit: within
+    // 0.4 in of the stated line, outboard of the tag.
+    const cord = core.landmark(await store.load(coatId + '-cord-group'), 'cord').points;
+    const cx = core.anchor(coat, 'top_center').x;
+    const stated = crossingsAt(cord.map(p => ({ x: 2 * cx - p.x, y: p.y })), bottom, false)[0];
+    assert.ok(Math.abs(c.from.x - stated) < 0.4, `seam ${c.from.x.toFixed(3)} near the stated seam ${stated.toFixed(3)}`);
+    assert.ok(c.from.x < tag.x && c.to.x > tag.x + tag.w, 'the tag lies between seam and lapel');
+    // Centred: the tag centre is the midpoint, and the tick marks it.
+    near(centre, (c.from.x + c.to.x) / 2, 0.02, 'tag centre = midpoint of seam and lapel');
+    near(c.opts.mid.x, centre, 1e-6, 'tick at the tag centre');
+    // The bottoms level.
+    const e = ms.find(m => m.label === word);
+    assert.ok(e, word);
+    const rack = scene.layers.filter(l => l.role === 'ribbon');
+    const rackBottom = Math.max(...rack.map(l => l.y + l.h)), rackLeft = Math.min(...rack.map(l => l.x));
+    near(rackBottom, bottom, 0.02, 'tag bottom = rack bottom');
+    near(e.from.x, tag.x + tag.w, 1e-6, 'from the tag\'s inner end'); near(e.from.y, bottom, 1e-6, 'at the tag\'s bottom');
+    near(e.to.x, rackLeft, 0.02, 'to the rack\'s outer end'); near(e.to.y, rackBottom, 0.02, 'at the rack\'s bottom');
+  });
+}
+
+test('the Class A nametag with no ribbons: the centred measure stays, the level line is omitted and a note says why; the semi-formal (no nametag) has neither', async () => {
+  const noRibbons = Object.assign(spec('blues_a-male-senior-Capt'), { ribbonSel: [] });
+  const scene = await P.composeUniform(R.makeBuild(noRibbons), store);
+  const labels = scene.layers.filter(l => l.type === 'measure').map(m => m.label);
+  assert.ok(labels.includes('centered'));
+  assert.ok(!labels.includes('even with'));
+  assert.ok(scene.notes.some(n => /no ribbon bottom to show the nametag's bottom even with/.test(n)), scene.notes.join(' | '));
+  for(const name of ['semi_formal_usaf-male-cadet-C-SSgt', 'semi_formal_usaf-female-cadet-C-Maj']){
+    const ls = (await measuresOf(name)).map(m => m.label);
+    assert.ok(!ls.includes('even with') && !ls.includes('parallel with') && !ls.includes('centered'), name);
+  }
 });

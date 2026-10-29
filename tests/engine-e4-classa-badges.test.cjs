@@ -39,6 +39,13 @@ const badgeLayers = scene => scene.layers.filter(l => l.role === 'badge');
 const byKey = (scene, id) => scene.layers.find(l => l.key === 'badge:' + id);
 const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a.toFixed(3)} vs ${b.toFixed(3)}`);
 
+// The nametag as drawn: the sheet's nameplate, moved sideways where the engine centres the tag between the sleeve seam and the lapel
+// (4.1.5.2.2.2, 4.1.9.4.2; LIVE13 E76): the nametag overlay layer carries the move as its x.
+function drawnPlate(scene, plate){
+  const tag = scene.layers.find(l => l.type === 'asset' && /-nametag-(cadet|officer-nco)$/.test(l.id || ''));
+  return tag ? Object.assign({}, plate, { x: plate.x + tag.x }) : plate;
+}
+
 async function landmarks(sex){
   const spec = await store.load(COAT[sex]);
   return { spec, plate: core.landmarkBounds(spec, 'nameplate'), weltTop: core.anchor(spec, 'welt_top_center') };
@@ -49,8 +56,9 @@ for(const [membership, rank, badges] of [
   ['cadet', 'C/Maj', ['model_rocketry_badge', 'stem_badges', 'cyber_badges']]
 ]){
   test(`men's Class A ${membership}: pocket badges 1 1/2 in below the welt top and the nameplate, level with each other, the third 1/2 in above the plate (4.1.5.2.2.4.2)`, async () => {
-    const { plate, weltTop } = await landmarks('male');
+    const { plate: sheetPlate, weltTop } = await landmarks('male');
     const scene = await P.composeUniform(build('blues_a', 'male', membership, rank, badges), store);
+    const plate = drawnPlate(scene, sheetPlate);
     const [left, right, third] = membership === 'cadet'
       ? [byKey(scene, 'model_rocketry_badge'), byKey(scene, 'stem_badges'), byKey(scene, 'cyber_badges')]
       : [byKey(scene, 'emergency_services_badge'), byKey(scene, 'communications_technician_badge'), null];
@@ -73,8 +81,9 @@ for(const [membership, rank, badges] of [
 }
 
 test('men\'s Class A: with three ordinary badges the third sits 1/2 in above the nameplate, centred on it', async () => {
-  const { plate } = await landmarks('male');
+  const { plate: sheetPlate } = await landmarks('male');
   const scene = await P.composeUniform(build('blues_a', 'male', 'senior', 'Capt', ['emergency_services_badge', 'communications_technician_badge', 'historian_senior_badge']), store);
+  const plate = drawnPlate(scene, sheetPlate);
   const above = badgeLayers(scene).filter(l => l.y + l.h <= plate.y + 0.01);
   assert.equal(above.length, 1);
   near(above[0].y + above[0].h, plate.y - 0.5, 0.005, 'bottom 1/2 in above the nameplate top');
@@ -83,8 +92,9 @@ test('men\'s Class A: with three ordinary badges the third sits 1/2 in above the
 
 for(const [membership, rank] of [['senior', 'Capt'], ['cadet', 'C/Maj']]){
   test(`women's Class A ${membership}: the pair over the nameplate 1/2 in above it and 1/2 in apart, centred (4.1.9.4.4.2)`, async () => {
-    const { plate } = await landmarks('female');
+    const { plate: sheetPlate } = await landmarks('female');
     const scene = await P.composeUniform(build('blues_a', 'female', membership, rank, membership === 'cadet' ? ['stem_badges', 'cyber_badges'] : ['emergency_services_badge', 'communications_technician_badge']), store);
+    const plate = drawnPlate(scene, sheetPlate);
     const pair = badgeLayers(scene).sort((a, b) => a.x - b.x);
     assert.equal(pair.length, 2);
     for(const l of pair) near(l.y + l.h, plate.y - 0.5, 0.005, 'badge bottom above the nameplate');

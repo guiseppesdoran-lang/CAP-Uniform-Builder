@@ -1365,6 +1365,46 @@
     ctx.measure(end, { x: end.x + (c.x - end.x) * t, y: end.y + (c.y - end.y) * t }, label);
   }
 
+  // The Class A nametag "will be centered on the wearer's right between the sleeve seam and lapel and the bottom of nametag will be
+  // parallel with the ground and even with bottom of ribbons" (CAPR 39-1 4.1.5.2.2.2.1-2; the women's 4.1.9.4.2.1-2: "parallel with
+  // bottom of ribbons"). Ethan (LIVE13 E76): "for class a's specifically it needs to measure the nametag as well."
+  // The span is read along the tag's bottom edge, the line the paragraph sets level. The sleeve seam is the coat's armhole seam as the
+  // engine already knows it: the `cord` landmark the cord overlays state along the wearer's left armhole seam, fitted to the shoulder
+  // outline and the armpit (core.fitCord, the same run the shoulder cord is drawn on), mirrored about the coat's centre line (the coat is
+  // drawn symmetric: its shoulder seams, gorge seams and lapel insignia anchors mirror to the hundredth). The lapel is the wearer's right
+  // lapel's outer edge (the sheet's lapel_right polygon, the crossing nearest the arm). Null when the sheet states either one not.
+  const CORD_SEAM_SOURCE = ['group', 'wing', 'region', 'national', 'color-guard', 'honor-guard', 'aide-de-camp'];
+  async function nametagSpan(ctx, coatId, tag){
+    if(!tag || !ctx.base) return null;
+    let lm = null;
+    for(const c of CORD_SEAM_SOURCE){
+      const id = `${coatId}-cord-${c}`;
+      if(!ctx.has(id)) continue;
+      lm = core.landmark(await ctx.spec(id), 'cord');
+      if(lm && lm.points && lm.points.length >= 2) break;
+    }
+    const lapel = core.landmark(ctx.base, 'lapel_right');
+    const top = core.anchor(ctx.base, 'top_center');
+    if(!lm || !lm.points || !lapel || !lapel.points || !top) return null;
+    const ring = GARMENT_TOP[coatId];
+    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), ring ? ring.slice(1).concat([ring[0]]) : null, ARMPIT[coatId] || null, CORD_UNDER, BODY_SIDE[coatId] || null);
+    const seam = fit.points.map(p => ({ x: 2 * top.x - p[0], y: p[1] }));
+    const y = tag.y + tag.h;
+    const crossings = (pts, closed) => {
+      const xs = [];
+      for(let i = 0; i < (closed ? pts.length : pts.length - 1); i++){
+        const p = pts[i], q = pts[(i + 1) % pts.length];
+        if(p.y !== q.y && (p.y - y) * (q.y - y) <= 0) xs.push(p.x + (q.x - p.x) * (y - p.y) / (q.y - p.y));
+      }
+      return xs;
+    };
+    const s = crossings(seam, false), l = crossings(lapel.points, true);
+    if(!s.length || !l.length) return null;
+    const seamX = Math.min(...s), lapelX = Math.min(...l);
+    if(!(lapelX > seamX)) return null;
+    return { y, seamX, lapelX, centre: (seamX + lapelX) / 2 };
+  }
+
   async function composeClassA(ctx, b){
     const semi = b.uniform === 'semi_formal_usaf';
     const g = b.grade;
@@ -1413,11 +1453,21 @@
     // The plate's place is the full coat's nameplate landmark; the semi-formal coat is the same figure
     // without the plate, so the badges keep the places they would have (4.1.3.2.2).
     const plate = ctx.rect('nameplate') || core.landmarkBounds(await ctx.spec(A.coat), 'nameplate');
-    let tagRect = plate;
+    let tagRect = plate, span = null;
     if(!semi){
       const tagLayer = g.cadet ? `${A.layer}-nametag-cadet` : `${A.layer}-nametag-officer-nco`;
-      await ctx.overlay(tagLayer, Z.tape);
+      const tagSpec = await ctx.overlay(tagLayer, Z.tape);
+      const tagArt = tagSpec ? ctx.layers[ctx.layers.length - 1] : null;
       tagRect = ctx.rect('nametag') || plate;
+      // Centred between the sleeve seam and the lapel along its bottom edge (4.1.5.2.2.2, 4.1.9.4.2): the engine sets the tag there
+      // rather than trusting the sheet's place for it (the men's sheet drew it 0.07 in toward the lapel).
+      span = await nametagSpan(ctx, A.coat, tagRect);
+      const dx = span ? span.centre - (tagRect.x + tagRect.w / 2) : 0;
+      if(Math.abs(dx) > 1e-4){
+        if(tagArt){ tagArt.x += dx; tagArt.origin = { x: tagArt.origin.x + dx, y: tagArt.origin.y }; }
+        tagRect = Object.assign({}, tagRect, { x: tagRect.x + dx });
+        ctx.landmarkShift = Object.assign({}, ctx.landmarkShift, { nametag: { dx, dy: 0 } });
+      }
       ctx.keepClear(tagRect, 'nametag');
       if(b.name.show && b.name.last){
         if(g.cadet) await threeLineName(ctx, b, tagRect, true);
@@ -1461,6 +1511,16 @@
     const welt = ctx.rect('welt_pocket');
     const rack = await ribbonRack(ctx, b, rest, { perRow, align: b.opt.rackAlign, outboardX: welt ? welt.x + welt.w : null, lapel: 'lapel_left', lapelGroup: 'lapel-left', customRows: !semi && !!b.opt.rackCounts });
     if(!rack) ctx.note('Ribbons are required with this uniform (CAPR 39-1, 11.1.2)');
+    // The nametag's two measures (LIVE13 E76): centred between the sleeve seam and the lapel, one line from seam to lapel along the tag's
+    // bottom with the centre ticked (the vocabulary of the other 'centered' measures), set off below the tag; and its bottom level with
+    // the bottom of the ribbons, a line from the tag's inner bottom corner to the rack's outer bottom corner, labelled with the
+    // paragraph's word (men "even with", women "parallel with"). With no ribbons there is no ribbon bottom to level it with.
+    if(span){
+      const tagBottom = tagRect.y + tagRect.h;
+      ctx.measure({ x: span.seamX, y: tagBottom }, { x: span.lapelX, y: tagBottom }, 'centered', { mid: { x: tagRect.x + tagRect.w / 2, y: tagBottom }, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 14 });
+      if(rack) ctx.measure({ x: tagRect.x + tagRect.w, y: tagBottom }, { x: rack.x, y: rack.y + rack.h }, sex === 'male' ? 'even with' : 'parallel with', { side: { x: 0, y: 1 } });
+      else ctx.note(`With no ribbons worn, the overlay has no ribbon bottom to show the nametag's bottom ${sex === 'male' ? 'even with' : 'parallel with'} (CAPR 39-1, ${sex === 'male' ? '4.1.5.2.2.2' : '4.1.9.4.2'})`);
+    }
 
     const geo = {
       olp: { x: rest.x, baseY: rack ? rack.y : rest.y },
