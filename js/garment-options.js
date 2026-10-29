@@ -83,6 +83,8 @@
         if(FIELD.includes(c.u)){
           const list = [['auto', 'Patrol cap'], ['tactical', 'Tactical cap']];
           if(c.u === 'corporate_field') list.push(['boonie', 'Boonie hat']);
+          // The National Blue Beret (ICL 25-02 9.2.3: NBB graduates, with the ABU/OCP and the corporate field uniform at the unit level; LIVE13 E83).
+          list.push(['beret', 'National Blue Beret (graduates, 9.2.3)']);
           list.push(['none', 'No headgear']);
           return list;
         }
@@ -97,7 +99,7 @@
     // 1/8 in of blue past the insignia, is the default; the hook-and-loop form is drawn as the 2 x 2 in square of the chest (LIVE13 E82).
     { key: 'capGrade', label: 'Cap grade', type: 'select',
       choices: [['sewn', 'Sewn, 1/8 in of blue showing (7.1.1.8)'], ['square', '2 x 2 in hook-and-loop square (7.1.1.8)']],
-      when: c => c.u === 'ocp' && !!c.g.officer && (c.o.headgear || 'auto') !== 'none' },
+      when: c => c.u === 'ocp' && !!c.g.officer && !['none', 'beret'].includes(c.o.headgear || 'auto') },
     // The tie (men) or tie tab (women): worn with long sleeves, optional with short ones (data/uniform-rules.js tieRule, CAPR 39-1 4.1.11.1.1.3,
     // 4.1.12.4, 4.2.5.1.4, 4.2.6.3). The box starts at what the regulation requires for the sleeve length the member picked.
     { key: 'tie', label: c => c.female ? 'Tie tab' : 'Tie', type: 'check', defaultValue: c => tieOf(c).defaultOn,
@@ -133,7 +135,7 @@
   const ALLOWED = {
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
     underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'], buttons: ['wing-star', 'cap-crest'],
-    headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2'],
+    headgear: ['auto', 'service', 'tactical', 'boonie', 'beret', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2'],
     poloShirt: ['embroidered', 'print', 'tactical'], poloCut: ['', 'male'], poloMark: ['badge', 'title'], capGrade: ['sewn', 'square']
   };
 

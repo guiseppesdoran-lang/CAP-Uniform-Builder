@@ -28,20 +28,21 @@
   // outlines, the CFDU crest) and the landmark is a zone, not the drawn group, so these are the bounding boxes of the sheet's own groups
   // `<sheet id>__<name>`, MEASURED FROM THE SHEET'S SVG (headless Chrome getBoundingClientRect, 1 viewBox unit = 1 px, so sheet
   // units: 100 = 1 in): [group, x, y, w, h]. Re-measure after an art sync that moves a sheet (the tapes and name-tape equal the
-  // sheet's own landmarks to 0.01 in). The cap views' tapes are not listed: they travel with the cap view, whose box is already kept clear.
+  // sheet's own landmarks to 0.01 in). LIVE13 E83: the OCP sheet grew 5.218 in at the top for the beret row and every one of its 32 landmarks moved
+  // down 521.8 units, so its rows moved by the same 521.8. The cap views' tapes are not listed: they travel with the cap view, whose box is already kept clear.
   const DRAWN_PIECES = {};
   const DRAWN_0 = [
-    ['sleeve-pocket-edge-right', 738.78, 1179.36, 444.8, 1073.82],
-    ['patch-flag-edge-right', 872.49, 1564.57, 197.57, 211.86],
-    ['sleeve-pocket-edge-left', 3046.13, 1179.36, 444.8, 1073.82],
-    ['patch-aux-edge-left', 3159.65, 1564.57, 197.57, 211.86],
-    ['sleeve-pocket-right', 124.96, 1027.5, 450, 1050],
-    ['patch-flag-right', 187.46, 1415, 325, 181.25],
-    ['sleeve-pocket-left', 3654.75, 1027.5, 450, 1050],
-    ['patch-aux-left', 3717.25, 1415, 325, 181.25],
-    ['name-tape', 1352.35, 1537.8, 525, 100],
-    ['cap-tape', 2352.35, 1537.8, 525, 100],
-    ['cap-tape-lettering', 2388.65, 1557.83, 453.38, 59.96]
+    ['sleeve-pocket-edge-right', 738.78, 1701.16, 444.8, 1073.82],
+    ['patch-flag-edge-right', 872.49, 2086.37, 197.57, 211.86],
+    ['sleeve-pocket-edge-left', 3046.13, 1701.16, 444.8, 1073.82],
+    ['patch-aux-edge-left', 3159.65, 2086.37, 197.57, 211.86],
+    ['sleeve-pocket-right', 124.96, 1549.3, 450, 1050],
+    ['patch-flag-right', 187.46, 1936.8, 325, 181.25],
+    ['sleeve-pocket-left', 3654.75, 1549.3, 450, 1050],
+    ['patch-aux-left', 3717.25, 1936.8, 325, 181.25],
+    ['name-tape', 1352.35, 2059.6, 525, 100],
+    ['cap-tape', 2352.35, 2059.6, 525, 100],
+    ['cap-tape-lettering', 2388.65, 2079.63, 453.38, 59.96]
   ];
   DRAWN_PIECES['garment-ocp-coat-abu-cut'] = DRAWN_0;
   const DRAWN_1 = [

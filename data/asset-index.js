@@ -832,6 +832,16 @@
     "patch-cap-command-patch": "patches/patch-cap-command-patch/patch-cap-command-patch.svg",
     "patch-es-style-1": "patches/patch-es-style-1/patch-es-style-1.svg",
     "patch-es-style-2": "patches/patch-es-style-2/patch-es-style-2.svg",
+    "patch-ranger-tab-advanced-ranger": "patches/patch-ranger-tab-advanced-ranger/patch-ranger-tab-advanced-ranger.svg",
+    "patch-ranger-tab-expert-ranger-black": "patches/patch-ranger-tab-expert-ranger-black/patch-ranger-tab-expert-ranger-black.svg",
+    "patch-ranger-tab-expert-ranger-red": "patches/patch-ranger-tab-expert-ranger-red/patch-ranger-tab-expert-ranger-red.svg",
+    "patch-ranger-tab-instructor": "patches/patch-ranger-tab-instructor/patch-ranger-tab-instructor.svg",
+    "patch-ranger-tab-medic-gray": "patches/patch-ranger-tab-medic-gray/patch-ranger-tab-medic-gray.svg",
+    "patch-ranger-tab-medic-red": "patches/patch-ranger-tab-medic-red/patch-ranger-tab-medic-red.svg",
+    "patch-ranger-tab-ranger": "patches/patch-ranger-tab-ranger/patch-ranger-tab-ranger.svg",
+    "patch-ranger-tab-ranger-2nd-class": "patches/patch-ranger-tab-ranger-2nd-class/patch-ranger-tab-ranger-2nd-class.svg",
+    "patch-ranger-tab-ranger-3rd-class": "patches/patch-ranger-tab-ranger-3rd-class/patch-ranger-tab-ranger-3rd-class.svg",
+    "patch-ranger-tab-senior-medic": "patches/patch-ranger-tab-senior-medic/patch-ranger-tab-senior-medic.svg",
     "pilot": "silver/pilot/pilot.svg",
     "pilot-field": "field/pilot-field/pilot-field.svg",
     "pilot-mini": "mini/pilot-mini/pilot-mini.svg",
@@ -1128,7 +1138,7 @@
     "uas-technician-senior-field": "field/uas-technician-senior-field/uas-technician-senior-field.svg",
     "uas-technician-senior-mini": "mini/uas-technician-senior-mini/uas-technician-senior-mini.svg"
   };
-  Object.defineProperty(index, 'version', { value: "97b8137afb", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "c34aa67e2b", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "97b8137afb"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "c34aa67e2b"; }
 })(typeof self !== 'undefined' ? self : this);

@@ -727,13 +727,21 @@
     { group: 'hat-ball-front', rect: 'baseball_cap_front', follow: ['baseball_cap_front_insignia_zone'], pad: 0.75 },
     { group: 'hat-ball-back', rect: 'baseball_cap_back', with: ['hat-ball-back-name-tape'], follow: ['baseball_cap_back_name_tape'] },
     { group: 'hat-boonie-front', rect: 'boonie_hat_front', follow: ['boonie_hat_front_insignia_zone'] },
-    { group: 'hat-boonie-back', rect: 'boonie_hat_back' }
+    { group: 'hat-boonie-back', rect: 'boonie_hat_back' },
+    { group: 'hat-beret-nbb-front', rect: 'beret_nbb_front', follow: ['beret_nbb_front_device', 'beret_nbb_front_headband'] }
   ];
   // The caps a member can wear: the views that make one, the grade zone on its front and its back name tape landmark.
   const HEADGEAR = {
     patrol: { front: 'hat-patrol-front', back: 'hat-patrol-back', zone: 'patrol_cap_front_insignia_zone', tape: 'patrol_cap_back_name_tape' },
     tactical: { front: 'hat-ball-front', back: 'hat-ball-back', zone: 'baseball_cap_front_insignia_zone', tape: 'baseball_cap_back_name_tape' },
-    boonie: { front: 'hat-boonie-front', back: 'hat-boonie-back', zone: 'boonie_hat_front_insignia_zone', tape: null }
+    boonie: { front: 'hat-boonie-front', back: 'hat-boonie-back', zone: 'boonie_hat_front_insignia_zone', tape: null },
+    // LIVE13 E83 (Ethan: "for the OCPs add the national blue beret as headgear"). CAPR 39-1 ICL 25-02 9.2.3: "Graduates of this program may wear the
+    // blue beret granted per the activity's procedures with the USAF style ABU/OCP and the CAP corporate field uniform at the unit level. Berets will
+    // not be worn at wing, region, or national activities other than NBB." 6.2.3: the headband "straight across the forehead, one inch above the
+    // eyebrows", the top draped over the right ear, the Blue Beret device in place of the cap device (no grade). One view, the front, drawn on the
+    // OCP sheet (hat-beret-nbb-front, measured on the 2024 NBB group photo); the ABU and CFU sheets draw no beret, so they take the OCP sheet's
+    // (`source`): the beret is the same navy beret on every one of the three.
+    beret: { front: 'hat-beret-nbb-front', back: null, zone: null, tape: null, source: 'garment-ocp-coat-abu-cut', headband: 'beret_nbb_front_headband' }
   };
   const HAT_SEAT = 0.25, COLLAR_BACK_TOP_ABOVE_APEX = 5.635, BACK_VIEW_SCALE = 1, BACK_VIEW_GAP = 0.5;
   // The cap a build wears: 'tactical' and (CFU only, 5.2.1.2) 'boonie' by choice, else the patrol cap; null with 'none'.
@@ -742,6 +750,7 @@
     if(v === 'none') return null;
     if(v === 'tactical') return 'tactical';
     if(v === 'boonie' && b.uniform === 'corporate_field') return 'boonie';
+    if(v === 'beret') return 'beret';
     return 'patrol';
   }
   async function hatViews(ctx, b, garmentId){
@@ -751,6 +760,9 @@
     const hide = views.flatMap(v => [v.group, ...(v.with || [])]);
     const worn = headgearChoice(b);
     const caps = worn && HEADGEAR[worn];
+    // A cap another sheet draws (the beret on the ABU and CFU): its view comes from that sheet.
+    const source = caps && caps.source && caps.source !== garmentId && !views.some(v => v.group === caps.front) && ctx.has(caps.source) ? await ctx.spec(caps.source) : null;
+    if(source) views.push(...HAT_VIEWS.filter(v => v.group === caps.front).map(v => Object.assign({ box: core.landmarkBounds(source, v.rect), spec: source }, v)).filter(v => v.box));
     const front = caps && views.find(v => v.group === caps.front);
     // The back view is drawn only when the cap carries something there: its name tape, where the regulation puts one (OCP patrol and tactical
     // caps 7.1.1.8; the navy blue tactical cap with the ABU and CFU, ICL 25-02 6.2.11.1) and the sheet draws it, and the member shows a name
@@ -762,7 +774,8 @@
       if(!front) return;
       ctx.landmarkShift = ctx.landmarkShift || {};
       const put = (v, dx, dy, z, role, k) => {
-        const layer = Object.assign(core.registerAtOrigin(spec, z, role), { key: `${role}:${v.group}`, x: dx, y: dy, w: spec.w * k, h: spec.h * k, origin: { x: dx, y: dy }, onlyGroups: [v.group, ...(v.with || [])], noBounds: true, className: role });
+        const sp = v.spec || spec;
+        const layer = Object.assign(core.registerAtOrigin(sp, z, role), { key: `${role}:${v.group}`, x: dx, y: dy, w: sp.w * k, h: sp.h * k, origin: { x: dx, y: dy }, onlyGroups: [v.group, ...(v.with || [])], noBounds: true, className: role });
         // The view's own extent, not the whole sheet's, is what the overlay keeps clear of and what the scene box takes.
         const pad = v.pad || 0.1, box = { x: v.box.x * k + dx, y: v.box.y * k + dy, w: v.box.w * k, h: v.box.h * k };
         layer.obstacle = { x: box.x - pad, y: box.y - pad, w: box.w + 2 * pad, h: box.h + 2 * pad };
@@ -774,6 +787,15 @@
       const attach = ctx.point('hat_attach'), apex = ctx.point('collar_apex'), top = ctx.point('top_center');
       if(!top || !(attach || apex)) return;
       const seatY = (attach ? attach.y : apex.y - COLLAR_BACK_TOP_ABOVE_APEX) + HAT_SEAT;
+      if(caps.headband){
+        // The beret's headband on the head line the patrol cap's band sits on: the patrol cap front's box is seated at seatY with its bill,
+        // so its band (the crown's bottom, the line around the head, 7.1.1.8) is the bill's height above that, the front box less the back's
+        // (the back is the crown alone, see below). The headband is centred on the figure; the drape hangs below it over the right ear.
+        const pf = core.landmarkBounds(spec, 'patrol_cap_front'), pb = core.landmarkBounds(spec, 'patrol_cap_back');
+        const headLine = seatY - (pf && pb ? pf.h - pb.h : 0);
+        const band = core.landmarkBounds(front.spec || spec, caps.headband);
+        if(band){ put(front, top.x - (band.x + band.w / 2), headLine - (band.y + band.h), Z.hat, 'hat', 1); return; }
+      }
       put(front, top.x - (front.box.x + front.box.w / 2), seatY - (front.box.y + front.box.h), Z.hat, 'hat', 1);
       // The back view: beside the front, on the picture's right of it, at the front's size. The sheets draw each back as the front's crown
       // without its bill (the same outline path, at the top of each view's box: patrol cap crown 3.9 in, tactical 4.7 in, the bill below that
@@ -795,6 +817,7 @@
     await ctx.garment(GARMENT[b.uniform], hide.length ? { hideGroups: hide } : null);
     ctx.headgear = hats.choice;
     hats.place();
+    if(headgearChoice(b) === 'beret') ctx.note('The National Blue Beret is worn by its graduates at the unit level, not at wing, region or national activities other than NBB (CAPR 39-1, 9.2.3 as changed by ICL 25-02); it carries the Blue Beret device and no grade (6.2.3)');
     nameTapes(ctx, b);
     if(b.uniform === 'ocp') await ocpGrade(ctx, b);
     else await collarGrade(ctx, b);

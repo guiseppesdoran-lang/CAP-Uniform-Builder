@@ -1,0 +1,97 @@
+{
+ "asset_id": "patch-ranger-tab-senior-medic",
+ "name": "Hawk Mountain Ranger qualification tab: Senior Medic",
+ "size_in": {
+  "w": 5,
+  "h": 0.815
+ },
+ "width_in": 5,
+ "height_in": 0.815,
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  500,
+  81.5
+ ],
+ "size_source": "measured",
+ "size_basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+ "citation": "CAPR 39-1 Figure A8-2 (Hawk Mountain Ranger Qualification Tabs); 5.1.2.3.7 and 5.2.1.1.2.7 (\"One CAP Ranger tab ... sewn centered immediately above and touching the Civil Air Patrol tape\"); 9.2.4",
+ "anchors": {
+  "top_center": [
+   250,
+   0
+  ],
+  "bottom_center": [
+   250,
+   81.5
+  ],
+  "center": [
+   250,
+   40.75
+  ],
+  "left_edge": [
+   0,
+   40.75
+  ],
+  "right_edge": [
+   500,
+   40.75
+  ],
+  "seat_on_cap_tape": [
+   250,
+   81.5
+  ]
+ },
+ "anchors_note": "seat_on_cap_tape = bottom_center: put it on the top centre of the CAP tape (5.1.2.3.7, 5.2.1.1.2.7); badges then sit 1/2 in above the tab's top_center",
+ "dimensions": {
+  "family": "patch",
+  "kind": "ranger-tab",
+  "group": "Hawk Mountain Ranger tabs",
+  "grade": "senior-medic",
+  "colour": "full",
+  "placement": "above_cap_tape",
+  "one_only": true,
+  "frame_in": {
+   "top_bottom": 0.094,
+   "ends": 0.12,
+   "outline": 0.02
+  },
+  "corner_radius_in": 0.06,
+  "cap_height_in": 0.432,
+  "lettering_width_in": 3.117,
+  "lettering_condense": 0.905,
+  "lettering": "SENIOR MEDIC",
+  "colours": {
+   "field": "#db241e",
+   "frame": "#fbfcfb",
+   "letters": "#faf9f9",
+   "outline": "#8f8f8e"
+  }
+ },
+ "source": {
+  "figure": "assets/refs/capranger/fig-a8-2-ranger-tabs-crop.png (CAPR 39-1 Fig A8-2, PDF p.184 at 2x)",
+  "graphics": "assets/refs/capranger/tab-1..4.png (capranger.org)",
+  "measure": "artwork-samples/assets/ranger-tabs-measure.js",
+  "measured": [
+   "width / height (figure)",
+   "frame widths",
+   "cap height",
+   "lettering width per tab",
+   "field, frame, lettering and outline colours (figure)"
+  ],
+  "estimated": [
+   "width 5.0 in (the coat sheets' CAP tape, itself estimated)",
+   "corner radius 0.06 in",
+   "word space 0.3 cap",
+   "superscript size 0.55 cap, its gap, its rule and the double space after it",
+   "typeface: Helvetica Neue Condensed Bold, the condensed sans the figure draws, scaled across to its width"
+  ]
+ },
+ "generator": "artwork-samples/assets/build-ranger-tabs.js",
+ "grade_note": "LIVE13-ART 2",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

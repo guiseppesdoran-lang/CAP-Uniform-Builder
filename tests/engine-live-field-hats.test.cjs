@@ -26,10 +26,10 @@ function options(uniform, rank){
   return { O, shown: opt.when(c), choices: JSON.parse(JSON.stringify(opt.choices(c).map(x => x[0]))) };
 }
 
-test('the garment panel offers the cap on each field uniform: patrol and tactical, the boonie hat on the CFU only, or none', () => {
-  assert.deepEqual(options('ocp', 'Capt').choices, ['auto', 'tactical', 'none']);
-  assert.deepEqual(options('abu', 'Capt').choices, ['auto', 'tactical', 'none']);
-  assert.deepEqual(options('corporate_field', 'Capt').choices, ['auto', 'tactical', 'boonie', 'none']);
+test('the garment panel offers the cap on each field uniform: patrol and tactical, the boonie hat on the CFU only, the National Blue Beret (9.2.3, ICL 25-02; LIVE13 E83), or none', () => {
+  assert.deepEqual(options('ocp', 'Capt').choices, ['auto', 'tactical', 'beret', 'none']);
+  assert.deepEqual(options('abu', 'Capt').choices, ['auto', 'tactical', 'beret', 'none']);
+  assert.deepEqual(options('corporate_field', 'Capt').choices, ['auto', 'tactical', 'boonie', 'beret', 'none']);
   for(const u of ['ocp', 'abu', 'corporate_field']) assert.equal(options(u, 'Capt').shown, true, u);
   // The other uniforms keep their own lists.
   assert.deepEqual(options('blues_a', 'Capt').choices, ['auto', 'service', 'none']);
@@ -41,5 +41,6 @@ test('a saved setup may carry the new cap values; anything else is dropped', () 
   const clean = raw => JSON.parse(JSON.stringify(O.sanitize(raw)));
   assert.deepEqual(clean({ headgear: 'tactical' }), { headgear: 'tactical' });
   assert.deepEqual(clean({ headgear: 'boonie' }), { headgear: 'boonie' });
-  assert.deepEqual(clean({ headgear: 'beret' }), {});
+  assert.deepEqual(clean({ headgear: 'beret' }), { headgear: 'beret' });
+  assert.deepEqual(clean({ headgear: 'beanie' }), {});
 });
