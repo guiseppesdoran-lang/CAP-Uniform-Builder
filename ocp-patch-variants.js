@@ -72,8 +72,8 @@
     normalizePatchSelections();
     wrap.innerHTML = '';
     const onOcp = uniformKey() === 'ocp';
-    // A patch group of its own (the Hawk Mountain Ranger tabs, js/patches.js; LIVE13 E84): listed last on the uniforms that wear it, OCP included,
-    // under a heading, and nowhere else.
+    // A patch group of its own (the Hawk Mountain Ranger tabs, js/patches.js; LIVE13 E84, on the OCP only by Ethan's ruling of 2026-10-29): listed
+    // last on the uniform that wears it, under a heading, and nowhere else.
     const grouped = id => !!PATCH_META[id]?.group;
     const ids = patchList.filter(id => {
       if(!PATCH_META[id] || FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) return false;

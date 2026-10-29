@@ -1,9 +1,10 @@
 'use strict';
-// LIVE13 E84 (Ethan: "add the ranger tabs as patches similar to the NCSAs"). CAPR 39-1 5.1.2.3.7, 5.2.1.1.2.7: "One CAP Ranger tab earned at the Hawk
-// Mountain activity may be sewn centered immediately above and touching the "Civil Air Patrol" tape ... Aviation or Occupational badges worn above this
-// will be placed so that the insignia is ½ inch above the Ranger Tape, rather than measuring from the "Civil Air Patrol" tape." 9.2.4: with the ABU
-// during the activity only. The ten tabs (Figure A8-2) are a patch group of the ABU, CFU and OCP patch picker, one at a time; the engine sets the tab's
-// seat_on_cap_tape anchor on the tape's top centre and measures the chest badges from the tab's top.
+// LIVE13 E84 (Ethan: "add the ranger tabs as patches similar to the NCSAs"), as corrected by his ruling of 2026-10-29, which beats the regulation's
+// text: "the ranger tabs arent authorized on ABUs!!! only on OCPs unfortunately in lieu of an hhq patch"; "they are only authorized unfortunately on
+// the OCPs". (CAPR 39-1 5.1.2.3.7 and 5.2.1.1.2.7 put the tab on the BDU and CFU above the CAP tape.) So the ten tabs of Figure A8-2 are an OCP patch
+// group, one at a time, worn in lieu of the HHQ patch in its place on the left sleeve under AUX (7.1.1.4.2, 7.1.1.4.2.1); the HHQ patch is then not
+// drawn, the chest badges keep measuring from the CAP tape, and nothing is measured for the place (it has no stated position). Not offered on the
+// ABU or the CFU, and a tab handed to them is not drawn.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -30,29 +31,40 @@ const GRADES = ['ranger-3rd-class', 'ranger-2nd-class', 'ranger', 'advanced-rang
 const base = name => JSON.parse(JSON.stringify(R.matrix().builds.find(x => x.name === name).build));
 const compose = b => P.composeUniform(R.makeBuild(b), store);
 
-for(const [uniform, name] of [['abu', 'abu-male-cadet-C-Maj'], ['corporate_field', 'corporate_field-male-senior-Capt'], ['ocp', 'ocp-male-cadet-C-Maj']]){
-  test(`${uniform}: the Ranger tab sits on the CAP tape's top centre, touching it; the aviation badge 1/2 in above the tab; measured; the activity-only note`, async () => {
+const WING = { id: 'nywg_patch', title: 'New York Wing Patch', href: 'images/patches/nywg_patch.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general', echelon: 'wing' };
+
+test('OCP: the Ranger tab takes the HHQ patch\'s place under AUX, centred; the HHQ patch is not drawn; the badges measure from the CAP tape; the note', async () => {
+  const b = base('ocp-male-cadet-C-Maj');
+  b.rank = 'C/Col';
+  b.badgeIds = ['AirCrew1_DB3F0FCC3650F'];
+  b.patches = [WING, TAB(EXPERT)];
+  const scene = await compose(b);
+  const sheet = await store.load(SHEET.ocp);
+  const velcro = core.landmarkBounds(sheet, 'sleeve_flap_velcro_left'), aux = core.landmarkBounds(sheet, 'patch_aux_left');
+  const slot = { x: velcro.x, y: aux.y + aux.h, w: velcro.w, h: velcro.y + velcro.h - aux.y - aux.h };
+  const tab = scene.layers.find(l => l.key === `patch:${EXPERT}:L_SHOULDER:0`);
+  assert.ok(tab, 'tab drawn flat on the sleeve');
+  near(tab.w, 5, 1e-6, 'drawn at its sheet size'); near(tab.h, 0.815, 1e-6, 'height');
+  near(tab.x + tab.w / 2, slot.x + slot.w / 2, 1e-3, 'centred across the HHQ place'); near(tab.y + tab.h / 2, slot.y + slot.h / 2, 1e-3, 'centred down it');
+  assert.ok(!tab.clip, 'not clipped');
+  assert.ok(scene.layers.some(l => l.key === `patch:${EXPERT}:L_SHOULDER:edge`), 'seen edge-on on the coat too');
+  assert.ok(!scene.layers.some(l => /nywg_patch/.test(l.key || '')), 'the HHQ patch is not drawn');
+  // Not on the CAP tape; the badge 1/2 in from the tape as before E84.
+  const T = core.anchor(sheet, 'cap_tape_top_center');
+  assert.ok(!scene.layers.some(l => l.role === 'patch' && Math.abs(l.y + l.h - T.y) < 1e-6 && Math.abs(l.x + l.w / 2 - T.x) < 1e-6), 'nothing on the tape');
+  const ms = scene.layers.filter(l => l.type === 'measure');
+  assert.ok(ms.some(m => m.label === '½ in' && Math.abs(m.from.y - T.y) < 1e-6 && /from the tape/.test(m.opts.callout.caption)), 'the 1/2 in from the tape');
+  assert.ok(!ms.some(m => /touching/.test(m.label) || /from the tab/.test((m.opts && m.opts.callout && m.opts.callout.caption) || '')));
+  assert.ok(scene.notes.some(n => /in lieu of the HHQ patch.*Ethan's ruling, 2026-10-29.*7\.1\.1\.4\.2/.test(n) && /New York Wing Patch is not shown/.test(n)), scene.notes.join(' | '));
+});
+
+for(const [uniform, name] of [['abu', 'abu-male-cadet-C-Maj'], ['corporate_field', 'corporate_field-male-senior-Capt']]){
+  test(`${uniform}: a Ranger tab is not drawn (OCP only, Ethan's ruling) and a note says so`, async () => {
     const b = base(name);
-    b.badgeIds = ['AirCrew1_DB3F0FCC3650F'];
     b.patches = [TAB(EXPERT)];
     const scene = await compose(b);
-    const sheet = await store.load(SHEET[uniform]);
-    const T = core.anchor(sheet, 'cap_tape_top_center');
-    const tab = scene.layers.find(l => l.key === 'patch:' + EXPERT);
-    assert.ok(tab, 'tab drawn');
-    near(tab.w, 5, 1e-6, 'tab width'); near(tab.h, 0.815, 1e-6, 'tab height');
-    near(tab.x + tab.w / 2, T.x, 1e-6, 'centred on the tape'); near(tab.y + tab.h, T.y, 1e-6, 'its bottom on the tape\'s top (touching)');
-    const badge = scene.layers.find(l => l.key === 'badge:AirCrew1_DB3F0FCC3650F');
-    const spec = await store.load(badge.id);
-    const art = core.anchor(spec, 'art_bottom_center');
-    const silverBottom = badge.y + (art ? art.y * badge.h / spec.h : badge.h);
-    near(tab.y - silverBottom, 0.5, 1e-3, 'the badge\'s insignia 1/2 in above the tab');
-    const ms = scene.layers.filter(l => l.type === 'measure');
-    assert.ok(ms.some(m => m.label === '½ in' && Math.abs(m.from.y - tab.y) < 1e-6 && m.opts.callout && /from the tab/.test(m.opts.callout.caption)), 'the 1/2 in from the tab');
-    assert.ok(ms.some(m => m.label === 'centered, touching' && Math.abs(m.from.y - T.y) < 1e-6 && Math.abs(m.opts.mid.x - T.x) < 1e-6), 'centred and touching');
-    assert.ok(scene.notes.some(n => /CAP Ranger tab is worn at the Hawk Mountain activity only/.test(n)), scene.notes.join(' | '));
-    // Not also drawn as a sleeve or pocket patch.
-    assert.equal(scene.layers.filter(l => (l.key || '').includes(EXPERT) && l.role === 'patch').length, 1);
+    assert.ok(!scene.layers.some(l => (l.key || '').includes('patch-ranger-tab')));
+    assert.ok(scene.notes.some(n => /worn on the OCP only/.test(n)), scene.notes.join(' | '));
   });
 }
 
@@ -60,12 +72,12 @@ test('one tab only: with two selected the first is drawn and a note says so', as
   const b = base('ocp-male-cadet-C-Maj');
   b.patches = [TAB(EXPERT), TAB(MEDIC)];
   const scene = await compose(b);
-  assert.ok(scene.layers.some(l => l.key === 'patch:' + EXPERT));
+  assert.ok(scene.layers.some(l => (l.key || '').startsWith('patch:' + EXPERT)));
   assert.ok(!scene.layers.some(l => (l.key || '').includes(MEDIC)));
   assert.ok(scene.notes.some(n => /Only one CAP Ranger tab is worn/.test(n)));
 });
 
-test('the patch picker: the ten tabs are a group "Hawk Mountain Ranger tabs", offered on the ABU, CFU and OCP only, one at a time; the shopping list prices them by order form', () => {
+test('the patch picker: the ten tabs are a group "Hawk Mountain Ranger tabs", offered on the OCP only, one at a time, dropped from an ABU or CFU selection; the shopping list prices them by order form', () => {
   const { context } = loadPageScripts();
   const ev = src => { const v = vm.runInContext(src, context); return v && typeof v === 'object' ? JSON.parse(JSON.stringify(v)) : v; };
   for(const g of GRADES){
@@ -75,13 +87,20 @@ test('the patch picker: the ten tabs are a group "Hawk Mountain Ranger tabs", of
     assert.equal(meta.group, 'Hawk Mountain Ranger tabs'); assert.equal(meta.kind, 'ranger-tab'); assert.equal(meta.oneOnly, true);
     assert.ok(fs.existsSync(path.join(root, 'images', meta.img)), meta.img);
     assert.ok(ev(`patchList.includes(${JSON.stringify(id)})`));
-    for(const u of ['abu', 'ocp', 'corporate_field']) assert.equal(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)}, ${JSON.stringify(u)}, 'cadet')`), true, `${id} on ${u}`);
-    for(const u of ['blues_a', 'blues_b', 'flight_suit', 'cfdu']) assert.equal(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)}, ${JSON.stringify(u)}, 'cadet')`), false, `${id} not on ${u}`);
+    assert.equal(meta.slotHint, 'L_SHOULDER');
+    assert.equal(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)}, 'ocp', 'cadet')`), true, `${id} on the OCP`);
+    for(const u of ['abu', 'corporate_field', 'blues_a', 'blues_b', 'flight_suit', 'cfdu']) assert.equal(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)}, ${JSON.stringify(u)}, 'cadet')`), false, `${id} not on ${u}`);
   }
   ev(`State.patchSelections = { ${JSON.stringify(EXPERT)}: { checked: true }, ${JSON.stringify(MEDIC)}: { checked: true }, nesa_patch: { checked: true } }; State.patches = [${JSON.stringify(EXPERT)}, 'nesa_patch', ${JSON.stringify(MEDIC)}]; capubKeepOneRangerTab(${JSON.stringify(MEDIC)})`);
   assert.deepEqual(ev('State.patches'), ['nesa_patch', MEDIC]);
   assert.equal(ev(`State.patchSelections[${JSON.stringify(EXPERT)}].checked`), false);
   assert.equal(ev('State.patchSelections.nesa_patch.checked'), true, 'other patches untouched');
+  // A tab selected on the OCP is dropped when the member is on the ABU or the CFU.
+  for(const u of ['abu', 'corporate_field']){
+    ev(`State.uniform = ${JSON.stringify(u)}; State.patchSelections = { ${JSON.stringify(EXPERT)}: { checked: true } }; State.patches = [${JSON.stringify(EXPERT)}]; clearUnauthorizedPatchesForCurrentUniform()`);
+    assert.deepEqual(ev('State.patches'), [], u);
+    assert.equal(ev(`State.patchSelections[${JSON.stringify(EXPERT)}].checked`), false, u);
+  }
   const PC = require('../purchase-catalog.js');
   const item = (PC.patchItem || (PC.default && PC.default.patchItem));
   if(item) assert.equal(item(EXPERT).item, 'ranger_tab');

@@ -306,37 +306,13 @@
   // The inset for the distance from the top of the CAP tape to the bottom of the lowest badge's embroidery (FIELD7-1): the tape's edge, the badge's
   // blue backing and the embroidery's edge, the dimension across them.
   // `marks` is the badge's blue backing edge, `backing` inches nearer the tape than the embroidery's (0 when the backing lies on the tape).
-  const tapeToEmbroidery = (spec, dist, from) => {
+  const tapeToEmbroidery = (spec, dist) => {
     const a = core.anchor(spec, 'art_bottom_center'), backing = a ? Math.max(0, spec.h - a.y) : 0;
-    return { gap: true, span: true, caption: `from the ${from || 'tape'} to the embroidery`, marks: [dist - backing] };
+    return { gap: true, span: true, caption: 'from the tape to the embroidery', marks: [dist - backing] };
   };
   function artTopOffset(spec){ const a = core.anchor(spec, 'art_top_center'); return a ? a.y : 0; }
 
-  // ---- the CAP Ranger tab ----
-  // LIVE13 E84 (Ethan: "add the ranger tabs as patches similar to the NCSAs"). CAPR 39-1 5.1.2.3.7 and 5.2.1.1.2.7: "One CAP Ranger tab earned at the Hawk
-  // Mountain activity may be sewn centered immediately above and touching the "Civil Air Patrol" tape ... Aviation or Occupational badges worn above
-  // this will be placed so that the insignia is ½ inch above the Ranger Tape, rather than measuring from the "Civil Air Patrol" tape." 9.2.4: worn with
-  // the ABU during the activity only; 5.2.1.1.2.7: not outside the activity on the CFU after 15 Jun 2021; the OCP paragraphs (7.1.1) name no Ranger tab.
-  // The page hands a tab as a patch whose id is its sheet (patch-ranger-tab-<grade>, one of the ten tabs of Figure A8-2); it is set by its
-  // seat_on_cap_tape anchor (its bottom centre) on the CAP tape's top centre, and the chest badges then measure from its top instead of the tape's.
-  const isRangerTab = p => !!p && /^patch-ranger-tab-[a-z0-9-]+$/.test(String(p.id || ''));
-  async function rangerTab(ctx, b, tabs){
-    if(!tabs.length) return null;
-    if(tabs.length > 1) ctx.note('Only one CAP Ranger tab is worn (CAPR 39-1, 5.1.2.3.7, 5.2.1.1.2.7); the first selected is shown');
-    const t = tabs[0], T = ctx.point('cap_tape_top_center'), tape = ctx.rect('cap_tape');
-    if(!T || !ctx.has(t.id)){ ctx.note(`No artwork for ${t.id}`); return null; }
-    const spec = await ctx.spec(t.id);
-    const tab = await ctx.place(t.id, { pieceAnchor: core.anchor(spec, 'seat_on_cap_tape') ? 'seat_on_cap_tape' : 'bottom_center', at: T, z: Z.patch, role: 'patch', key: 'patch:' + t.id, title: t.title || t.id });
-    if(!tab) return null;
-    // Centred on the tape and touching it: one line over the tape's width at the seam, its centre ticked at the tab's.
-    if(tape) ctx.measure({ x: tape.x, y: T.y }, { x: tape.x + tape.w, y: T.y }, 'centered, touching', { mid: { x: tab.x + tab.w / 2, y: T.y }, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 8 });
-    ctx.note(b.uniform === 'ocp'
-      ? 'The CAP Ranger tab is worn at the Hawk Mountain activity only (CAPR 39-1, 9.2.4); the OCP paragraphs (7.1.1) do not name it, so it is placed as on the ABU and CFU, above and touching the CAP tape (5.1.2.3.7, 5.2.1.1.2.7)'
-      : `The CAP Ranger tab is worn at the Hawk Mountain activity only (CAPR 39-1, ${b.uniform === 'abu' ? '9.2.4' : '5.2.1.1.2.7, 9.2.4'})`);
-    return tab;
-  }
-
-  async function fieldBadges(ctx, b, tab){
+  async function fieldBadges(ctx, b){
     const form = 'field';
     const set = H.badgeSet(ctx, b, form);
     // ABU and CFU: aviation and occupational badges only (5.1.1.1.2.4, 5.2.1.1.2.6).
@@ -349,9 +325,7 @@
     const list = ordered.slice(0, max);
     if(ordered.length > max) ctx.note(`At most ${max} badges are worn above the CAP tape on this uniform; the rest are not shown`);
     if(!list.length) return;
-    // With a Ranger tab the badges measure from the tab's top, "rather than measuring from the "Civil Air Patrol" tape" (5.1.2.3.7, 5.2.1.1.2.7).
-    const T = tab ? { x: tab.x + tab.w / 2, y: tab.y } : ctx.point('cap_tape_top_center');
-    const from = tab ? 'tab' : 'tape';
+    const T = ctx.point('cap_tape_top_center');
     const specs = [];
     for(const it of list) specs.push(await ctx.spec(it.art));
     const opts = i => ({ z: Z.badge, role: 'badge', key: 'badge:' + list[i].id, title: list[i].title, className: 'badge' });
@@ -367,7 +341,7 @@
       // EMBROIDERY (the silver thread), not to its blue backing, which lies 1/8 in lower; the inset shows the tape's edge, the backing and the
       // embroidery's edge with the dimension across them (7.1.1.3.1.1 'measure from the top of the CAP tape to the silver of the badge'; the
       // ABU and CFU badges are silver on dark blue the same way, 5.1.1.1.2.4, 5.2.1.1.2.6).
-      ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: T.y - 0.5 }, '½ in', { callout: tapeToEmbroidery(specs[lower], 0.5, from) });
+      ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: T.y - 0.5 }, '½ in', { callout: tapeToEmbroidery(specs[lower], 0.5) });
       if(list.length === 2 && b.uniform === 'ocp'){
         // The OCP rule says badge placement is measured from the blue fabric edges (7.1.1.3.1), and the
         // second badge goes 1/2 in above the first (7.1.1.3.1.2); the three and four badge columns of
@@ -394,7 +368,7 @@
     //          horizontally; highest badges on top, viewer's left first               apart, the other two stacked on the centre line 1/4 in above, 1/4 in apart
     const gapX = 0.5, rowGap = 0.25, base = T.y - 0.125;
     const pair = !!(b.opt && b.opt.badgeLayout === 'pair');
-    ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: base }, '⅛ in', { callout: tapeToEmbroidery(specs[2], 0.125, from) });
+    ctx.measure({ x: T.x, y: T.y }, { x: T.x, y: base }, '⅛ in', { callout: tapeToEmbroidery(specs[2], 0.125) });
     // Two badges side by side on the base line, 1/2 in apart, centred on the tape; returns their boxes.
     const sideBySide = async (i, j) => {
       const wi = specs[i].w, wj = specs[j].w, W = wi + gapX + wj;
@@ -625,6 +599,36 @@
     }
   }
 
+  // ---- the CAP Ranger tab ----
+  // LIVE13 E84, as corrected by Ethan's ruling (2026-10-29, over the regulation's text): "the ranger tabs arent authorized on ABUs!!! only on OCPs
+  // unfortunately in lieu of an hhq patch"; "they are only authorized unfortunately on the OCPs". (CAPR 39-1 5.1.2.3.7 and 5.2.1.1.2.7 put the tab on
+  // the BDU and CFU above the CAP tape; 9.2.4 lets HMRS graduates wear one tab.) So on the OCP the tab is worn in the left sleeve's HHQ place under the
+  // AUX identifier (7.1.1.4.2.1), counting as one of its two patches as the HHQ patch does, the way the 7.1.1.4.2.2 patches are worn in lieu of the
+  // HHQ patch; the HHQ patch is then not drawn; the chest badges keep measuring from the CAP tape. The page hands the tab as a patch whose id is its
+  // sheet (patch-ranger-tab-<grade>, Figure A8-2), drawn at the sheet's size (5.0 x 0.815 in, sized to the CAP tape: wider than the 4 in Velcro;
+  // reported for resizing) centred in the place, flat on the sleeve view and seen edge-on on the coat like the other sleeve patches. One tab only.
+  // The HHQ place has no stated position, so nothing is measured for it (measureSleevePatch).
+  const isRangerTab = p => !!p && /^patch-ranger-tab-[a-z0-9-]+$/.test(String(p.id || ''));
+  async function rangerTabInHhqSlot(ctx, tabs, replaced){
+    if(tabs.length > 1) ctx.note('Only one CAP Ranger tab is worn; the first selected is shown');
+    const t = tabs[0];
+    if(!ctx.has(t.id)){ ctx.note(`No artwork for ${t.id}`); return null; }
+    const zone = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
+    if(!zone) return null;
+    const flat = await ctx.place(t.id, { pieceAnchor: 'center', at: core.rectCenter(zone), z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:0`, title: t.title || t.id, className: 'patch' });
+    if(!flat) return null;
+    // Seen edge-on where the sleeve meets the coat, cut only to what of the sleeve shows there.
+    const f = edgeFrame(ctx, 'left'), clip = f && f.shows(flat);
+    if(f && clip){
+      const e = f.map(flat);
+      ctx.layers.push({ type: 'asset', id: t.id, x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, clip,
+        z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:edge`, title: t.title || t.id, className: 'patch' });
+    }
+    measureSleevePatch(ctx, flat, 'sleeve_flap_velcro_left', 'patch_aux_left', false);
+    ctx.note(`The CAP Ranger tab is worn by Hawk Mountain Ranger School graduates on the OCP only, in lieu of the HHQ patch, in its place under the AUX identifier (Ethan's ruling, 2026-10-29; CAPR 39-1, 7.1.1.4.2, 7.1.1.4.2.1)${replaced ? `; ${replaced.title || 'the HHQ patch'} is not shown while the tab is worn` : ''}`);
+    return flat;
+  }
+
   function belowOnVelcro(ctx, velcroName, drawnName){
     const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
     if(!v || !d) return null;
@@ -650,12 +654,25 @@
         const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_right', 'patch_flag_right');
         if(z) measureSleevePatch(ctx, sleevePatch(ctx, unit, z, 'R_SHOULDER', 'right'), 'sleeve_flap_velcro_right', 'patch_flag_right', true);
       }
-      const hhq = take(p => p.slot === 'L_SHOULDER') || take(() => true);
-      if(hhq){
-        const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
-        if(z) measureSleevePatch(ctx, sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left'), 'sleeve_flap_velcro_left', 'patch_aux_left', false);
+      // A CAP Ranger tab takes the HHQ patch's place under AUX and the HHQ patch is not worn (rangerTabInHhqSlot).
+      const tabs = [];
+      for(let t = take(isRangerTab); t; t = take(isRangerTab)) tabs.push(t);
+      if(tabs.length){
+        const replaced = take(p => p.slot === 'L_SHOULDER' && !!p.echelon) || take(p => p.slot === 'L_SHOULDER');
+        await rangerTabInHhqSlot(ctx, tabs, replaced);
+      }else{
+        const hhq = take(p => p.slot === 'L_SHOULDER') || take(() => true);
+        if(hhq){
+          const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
+          if(z) measureSleevePatch(ctx, sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left'), 'sleeve_flap_velcro_left', 'patch_aux_left', false);
+        }
       }
     }else{
+      // The Ranger tab is not worn on the ABU or the CFU (Ethan's ruling, 2026-10-29; see rangerTabInHhqSlot).
+      if(patches.some(isRangerTab)){
+        while(take(isRangerTab));
+        ctx.note('The CAP Ranger tab is worn on the OCP only, in lieu of the HHQ patch (Ethan\'s ruling, 2026-10-29), so it is not shown on this uniform');
+      }
       // The unit (organizational) patch is worn on the right breast pocket of the ABU and the CFU, not on
       // a sleeve (Attachment 4: Organizational Patch RP; 5.1.1.1.2.3, 5.2.1.1.2.5); the CFU's right
       // sleeve is for a special activity patch (5.2.1.1.2.3).
@@ -847,15 +864,13 @@
     nameTapes(ctx, b);
     if(b.uniform === 'ocp') await ocpGrade(ctx, b);
     else await collarGrade(ctx, b);
-    const tabs = (b.patches || []).filter(isRangerTab);
-    const tab = await rangerTab(ctx, b, tabs);
     const beforeBadges = ctx.layers.length;
-    await fieldBadges(ctx, b, tab);
+    await fieldBadges(ctx, b);
     // The 1/8 in of blue left past the embroidery, shown once, on the highest chest badge (7.1.1.3.1, 5.1.1.1.2.4, 5.2.1.1.2.6).
     const chest = ctx.layers.slice(beforeBadges).filter(l => l.role === 'badge' && l.type === 'asset');
     if(chest.length) await H.blueBorder(ctx, chest.reduce((a, l) => (l.y < a.y ? l : a)));
     await fieldCommand(ctx, b);
-    await fieldPatches(ctx, tabs.length ? Object.assign({}, b, { patches: b.patches.filter(p => !isRangerTab(p)) }) : b);
+    await fieldPatches(ctx, b);
     // The collar leaves and lapels over the badges, command pin and patches that reach them (the OCP coat has the same group).
     ctx.foreground(['collar-front'], Z_COLLAR_FRONT);
   }

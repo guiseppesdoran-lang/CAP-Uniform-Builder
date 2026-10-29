@@ -734,11 +734,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return /^unitPatch:/i.test(id);
     }
 
-    // LIVE13 E84 (Ethan: "add the ranger tabs as patches similar to the NCSAs"): the ten Hawk Mountain Ranger qualification tabs of CAPR 39-1
-    // Figure A8-2, a patch group of their own on the ABU, the CFU and the OCP. "One CAP Ranger tab ... may be sewn centered immediately above and
-    // touching the "Civil Air Patrol" tape" (5.1.2.3.7, 5.2.1.1.2.7): one at a time, picking one replaces another. Worn at the activity only
-    // (9.2.4; the CFU after 15 Jun 2021, 5.2.1.1.2.7); the OCP paragraphs do not name it: the engine notes both, it does not block. The id is
-    // the tab's sheet (images/patches/patch-ranger-tab-<grade>), which the engine places on the tape and the shopping list prices by order form.
+    // LIVE13 E84 (Ethan: "add the ranger tabs as patches similar to the NCSAs"), as corrected by his ruling of 2026-10-29 over the regulation's text
+    // ("the ranger tabs arent authorized on ABUs!!! only on OCPs unfortunately in lieu of an hhq patch"; CAPR 39-1 5.1.2.3.7 and 5.2.1.1.2.7 put
+    // the tab on the BDU and CFU above the CAP tape): the ten Hawk Mountain Ranger qualification tabs of Figure A8-2 are a patch group of the OCP
+    // only, worn in lieu of the HHQ patch in its place on the left sleeve under AUX (7.1.1.4.2, 7.1.1.4.2.1), one at a time (picking one replaces
+    // another), for Hawk Mountain graduates. Off the OCP they are not offered and a saved selection is dropped (isPatchAuthorizedForUniform,
+    // clearUnauthorizedPatchesForCurrentUniform). The id is the tab's sheet (images/patches/patch-ranger-tab-<grade>), which the engine places
+    // (js/engine/profiles-field.js rangerTabInHhqSlot) and the shopping list prices by order form.
     const CAPUB_RANGER_TAB_GROUP = 'Hawk Mountain Ranger tabs';
     const CAPUB_RANGER_TAB_LABELS = {
       'ranger-3rd-class': 'Ranger 3rd Class', 'ranger-2nd-class': 'Ranger 2nd Class', 'ranger': 'Ranger', 'advanced-ranger': 'Advanced Ranger',
@@ -751,9 +753,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       for(const id of CAPUB_RANGER_TABS){
         const grade = id.replace('patch-ranger-tab-', '');
         // w x h: the tab's 5.0 x 0.815 in at the gallery's 14 px to the inch (the patches' own 70 px for a 5 in patch).
-        PATCH_META[id] = PATCH_META[id] || { label: `CAP Ranger tab: ${CAPUB_RANGER_TAB_LABELS[grade]}`, slotHint: 'CAP_TAPE', w: 70, h: 11,
-          img: `patches/${id}/${id}.svg`, authorizedUniforms: ['abu', 'ocp', 'corporate_field'], kind: 'ranger-tab', group: CAPUB_RANGER_TAB_GROUP, oneOnly: true,
-          note: 'Sewn centred above and touching the Civil Air Patrol tape; one tab only; worn at the Hawk Mountain activity (CAPR 39-1, 5.1.2.3.7, 5.2.1.1.2.7, 9.2.4)' };
+        PATCH_META[id] = PATCH_META[id] || { label: `CAP Ranger tab: ${CAPUB_RANGER_TAB_LABELS[grade]}`, slotHint: 'L_SHOULDER', w: 70, h: 11,
+          img: `patches/${id}/${id}.svg`, authorizedUniforms: ['ocp'], kind: 'ranger-tab', group: CAPUB_RANGER_TAB_GROUP, oneOnly: true,
+          note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the HHQ patch, in its place on the left sleeve under AUX (Ethan\'s ruling, 2026-10-29; CAPR 39-1, 7.1.1.4.2)' };
         if(!patchList.includes(id)) patchList.push(id);
       }
     }
@@ -768,7 +770,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     window.capubKeepOneRangerTab = capubKeepOneRangerTab;
 
     function capubPatchHasOcpAsset(patchId){
-      // A Ranger tab's sheet is drawn for every utility uniform, the OCP's included.
+      // A Ranger tab's sheet is drawn on the OCP (its one uniform), so the OCP's "OCP files only" filter lets it through.
       if(capubIsRangerTabId(patchId)) return true;
       const id = String(patchId || '').toLowerCase();
       const meta = PATCH_META?.[patchId] || {};
