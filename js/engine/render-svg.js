@@ -33,6 +33,58 @@
     return p;
   }
 
+  // A symbol's markup without its paint servers (pattern, linearGradient, radialGradient), and their ids: what a variant symbol copies (buildSvg). Worked
+  // out once per symbol and kept with it.
+  const PAINT = /^(pattern|linearGradient|radialGradient)$/;
+  function leanInner(s){
+    if(s.lean) return s.lean;
+    const doc = new DOMParser().parseFromString(`<svg xmlns="${SVG_NS}" xmlns:xlink="${XLINK_NS}">${s.inner}</svg>`, 'image/svg+xml');
+    const shared = new Set();
+    const root = doc.documentElement;
+    if(!root || root.nodeName.toLowerCase() !== 'svg' || root.getElementsByTagName('parsererror').length){
+      s.lean = { inner: s.inner, shared };
+      return s.lean;
+    }
+    const servers = [...root.querySelectorAll('*')].filter(n => PAINT.test(n.localName) && n.getAttribute('id'));
+    for(const n of servers){ shared.add(n.getAttribute('id')); n.remove(); }
+    s.lean = { inner: shared.size ? root.innerHTML : s.inner, shared };
+    return s.lean;
+  }
+
+  // A variant that draws only some groups of a sheet (the cap views, the collar over the badges) drops the rest of the sheet instead of carrying
+  // it hidden: the groups, the groups that hold them (for their transforms), every definition (clip paths, masks, markers, filters, styles) and
+  // whatever a kept element refers to by url(#id) or href="#id" stay; every other element goes. The OCP drawing's three such copies of its sheet were
+  // laid out and renamed on every drawing (LIVE13 E85).
+  const RESOURCE = /^(defs|clipPath|mask|marker|symbol|style|filter|pattern|linearGradient|radialGradient)$/;
+  function pruneToGroups(sym, targets){
+    if(!targets.length) return;
+    const keep = new Set(), path = new Set();
+    const markPath = n => { for(let q = n.parentNode; q && q !== sym; q = q.parentNode) path.add(q); };
+    const kept = n => { for(let q = n; q && q !== sym; q = q.parentNode) if(keep.has(q)) return true; return false; };
+    const add = n => { if(kept(n)) return false; keep.add(n); markPath(n); return true; };
+    targets.forEach(add);
+    sym.querySelectorAll('*').forEach(n => { if(RESOURCE.test(n.localName)) add(n); });
+    const index = new Map();
+    sym.querySelectorAll('[id]').forEach(n => index.set(n.getAttribute('id'), n));
+    const ref = /url\(\s*['"]?#([^)'"\s]+)/g;
+    const queue = [...keep], seen = new Set();
+    while(queue.length){
+      const n = queue.pop();
+      for(const e of [n, ...n.querySelectorAll('*')]){
+        if(seen.has(e)) continue;
+        seen.add(e);
+        for(const a of Array.from(e.attributes)){
+          const ids = [];
+          if(a.localName === 'href' && a.value.charAt(0) === '#') ids.push(a.value.slice(1));
+          if(a.value.indexOf('url(') >= 0){ let m; ref.lastIndex = 0; while((m = ref.exec(a.value))) ids.push(m[1]); }
+          for(const id of ids){ const r = index.get(id); if(r && add(r)) queue.push(r); }
+        }
+      }
+    }
+    const sweep = parent => { for(const c of Array.from(parent.children)){ if(keep.has(c)) continue; if(path.has(c)) sweep(c); else c.remove(); } };
+    sweep(sym);
+  }
+
   // Raster images are inlined as data URLs so the exported SVG has no external references.
   function loadRaster(url){
     if(rasterCache.has(url)) return rasterCache.get(url);
@@ -185,7 +237,10 @@
     svg.querySelectorAll('[id]').forEach(n => ids.add(n.getAttribute('id')));
     if(!ids.size) return suffix;
     const refUrl = /url\(\s*(['"]?)#([^)'"\s]+)\1\s*\)/g;
-    for(const n of [svg, ...svg.querySelectorAll('*')]){
+    // Only the elements that can carry an id or a reference are visited (the OCP camouflage pattern's thousands of plain shapes carry neither;
+    // LIVE13 E85): an id, an href, or one of the attributes that take url(#id).
+    const REFS = '[id],[href],[*|href],[fill*="url("],[stroke*="url("],[clip-path],[mask],[filter],[style*="url("],[marker-start],[marker-mid],[marker-end]';
+    for(const n of [svg, ...svg.querySelectorAll(REFS)]){
       for(const a of Array.from(n.attributes)){
         const v = a.value;
         if(a.name === 'id'){ if(ids.has(v)) a.value = v + suffix; continue; }
@@ -242,9 +297,12 @@
     symbols.forEach(([id, s]) => {
       if(!s) return;
       symbolData.set(id, s);
-      const sym = el('symbol', { id: 'sym-' + id, viewBox: s.viewBox, preserveAspectRatio: 'none' });
-      sym.innerHTML = s.inner;
-      defs.appendChild(sym);
+      // Parsed once per symbol and cloned for each drawing (LIVE13 E85: the OCP sheet is 377 KB of markup, parsed again on every drawing).
+      if(!s.node){
+        s.node = el('symbol', { id: 'sym-' + id, viewBox: s.viewBox, preserveAspectRatio: 'none' });
+        s.node.innerHTML = s.inner;
+      }
+      defs.appendChild(s.node.cloneNode(true));
       loaded.set(id, true);
     });
     if(AW && AW.deviceInner){
@@ -264,9 +322,22 @@
       const key = variantKey(layer);
       if(key === layer.id || loaded.get(key) || !symbolData.get(layer.id)) continue;
       const s = symbolData.get(layer.id);
-      const suffix = '--v' + loaded.size;
+      // A variant is made once per symbol and key and cloned for each drawing; its suffix comes from its key, so the copy is the same in
+      // every drawing (LIVE13 E85).
+      s.variants = s.variants || new Map();
+      if(s.variants.has(key)){
+        defs.appendChild(s.variants.get(key).cloneNode(true));
+        loaded.set(key, true);
+        continue;
+      }
+      const suffix = '--v' + hashText(key);
       const sym = el('symbol', { id: 'sym-' + key, viewBox: s.viewBox, preserveAspectRatio: 'none' });
-      sym.innerHTML = s.inner.replace(/\bid="([^"]+)"/g, (m, v) => `id="${v}${suffix}"`).replace(/url\(#([^)]+)\)/g, (m, v) => `url(#${v}${suffix})`).replace(/href="#([^"]+)"/g, (m, v) => `href="#${v}${suffix}"`);
+      // The paint servers (patterns, gradients) are not copied into a variant: it paints with the plain symbol's, which every drawing holds
+      // (above), so their references keep the plain ids. The OCP sheet's camouflage pattern alone is 288 KB of its 377 KB, and an OCP drawing
+      // makes four variants of the sheet (the figure without its cap views, the cap front, the cap back, the collar over the badges): each copy
+      // was parsed, its ids renamed and laid out on every drawing, the lag Ethan saw switching badges on the OCP (LIVE13 E85).
+      const lean = leanInner(s);
+      sym.innerHTML = lean.inner.replace(/\bid="([^"]+)"/g, (m, v) => `id="${v}${suffix}"`).replace(/url\(#([^)]+)\)/g, (m, v) => lean.shared.has(v) ? m : `url(#${v}${suffix})`).replace(/href="#([^"]+)"/g, (m, v) => lean.shared.has(v) ? m : `href="#${v}${suffix}"`);
       const byId = name => sym.querySelector(`[id="${layer.id}__${name}${suffix}"]`);
       if(layer.cordPath && layer.cordPath.d){
         // The fitted cord path (engine: core.fitCord) replaces the sheet's polyline in every stroke of the braid; the art group's own
@@ -279,7 +350,9 @@
       }else if(layer.hideGroups && !(layer.onlyGroups && layer.onlyGroups.length)){
         layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }else{
-        // Draw nothing but the named groups: hide everything, then show those groups.
+        // Draw nothing but the named groups: the rest of the sheet is dropped (pruneToGroups keeps what they need), then what is left
+        // is hidden and those groups shown.
+        pruneToGroups(sym, layer.onlyGroups.map(byId).filter(Boolean));
         const wrap = el('g', { visibility: 'hidden' });
         [...sym.childNodes].forEach(n => { if(n.nodeName !== 'defs') wrap.appendChild(n); });
         sym.appendChild(wrap);
@@ -290,6 +363,7 @@
         layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); } });
         (layer.hideGroups || []).forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }
+      s.variants.set(key, sym.cloneNode(true));
       defs.appendChild(sym);
       loaded.set(key, true);
     }
