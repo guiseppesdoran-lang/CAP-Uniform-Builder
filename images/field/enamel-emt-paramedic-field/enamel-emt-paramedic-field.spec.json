@@ -44,10 +44,10 @@
  "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + emt_paramedic",
  "reference": "../batch/ref/emt_paramedic.png",
  "source_bbox_user_units": [
-  0,
-  0,
-  567,
-  600
+  0.945,
+  1,
+  566.055,
+  599
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from enamel-emt-paramedic.",
  "field_uniform": {

@@ -36,10 +36,10 @@
  "generator": "artwork-samples/enamel + emt_paramedic (miniature = same art at miniature size)",
  "reference": "../batch/ref/emt_paramedic.png",
  "source_bbox_user_units": [
-  0,
-  0,
-  567,
-  600
+  0.945,
+  1,
+  566.055,
+  599
  ],
  "fit_score": null,
  "notes": ""

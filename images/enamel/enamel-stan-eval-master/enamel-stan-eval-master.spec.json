@@ -17,15 +17,15 @@
   ],
   "center": [
    62.5,
-   86.538
+   86.539
   ],
   "left_edge": [
    0,
-   86.538
+   86.539
   ],
   "right_edge": [
    125,
-   86.538
+   86.539
   ]
  },
  "dimensions": {
@@ -42,8 +42,8 @@
   229.333
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.95,
+  "silhouette_iou_approx": 0.943,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.731 in to 1 x 1.385 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.25 (A4b) from 1 x 1.385 in to 1.25 x 1.731 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x1.25 (A4b) from 1 x 1.385 in to 1.25 x 1.731 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

@@ -44,7 +44,7 @@
    34.903
   ],
   "wing_tip_left": [
-   0.421,
+   0.42,
    38.784
   ],
   "wing_tip_right": [
@@ -79,7 +79,7 @@
   69
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.895,
+  "silhouette_iou_approx": 0.888,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
  "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."

@@ -122,7 +122,7 @@
   196.641
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.756,
+  "silhouette_iou_approx": 0.774,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
  "notes": "Disc, triangle and GT letters measured on the GT product photo (family/ground-team/body-params.json, make-badge.js M.tri). Wreath, crossed ribbons and level device are the EMT badge construction (enamel/g5/make-emt.js tables, ported to family/ground-team/emt-wreath.js) placed about the GT disc at k = GT disc R / EMT disc R = 0.35624, so they stand to the disc as on the EMT badges; basic = wreath only, senior = faceted star, master = laurel ring and star. The silhouette IoU is measured against the GT product photo, whose wreath is a different (open, two-branch) one, so it is lower by design."

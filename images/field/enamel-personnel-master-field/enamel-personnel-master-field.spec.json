@@ -1,39 +1,39 @@
 {
  "asset_id": "enamel-personnel-master-field",
- "width_in": 1.25,
- "height_in": 1.635,
+ "width_in": 1.5,
+ "height_in": 1.974,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-personnel-officer-badge prints no dimensions; no regulation size. Previous class estimate x 0.8 so the specialty badge sits in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval) | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
+ "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-personnel-officer-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\" | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
  "citation": "OCP: CAPR 39-1 ICL 25-06 para 7.1.1.3.1 (max 4 badges, light silver embroidery on dark blue, 1/8 in of blue exposed at widest/tallest part). ABU: CAPR 39-1 (3 Mar 2020) para 5.1.1.1.2.4 (two aviation/occupational badges, embroidered silver on dark blue, 1/8 in of blue showing) and 5.1.1.1.2.5 (command insignia). Eligible list: Attachment 7 aviation + occupational badges",
  "anchors": {
   "top_center": [
-   62.5,
+   75,
    0
   ],
   "bottom_center": [
-   62.5,
-   163.5
+   75,
+   197.4
   ],
   "center": [
-   62.5,
-   81.75
+   75,
+   98.7
   ],
   "left_edge": [
    0,
-   81.75
+   98.7
   ],
   "right_edge": [
-   125,
-   81.75
+   150,
+   98.7
   ],
   "art_top_center": [
-   62.5,
+   75,
    12.5
   ],
   "art_bottom_center": [
-   62.5,
-   151
+   75,
+   184.9
   ]
  },
  "dimensions": {
@@ -45,9 +45,9 @@
  "reference": "../batch/ref/Personnel_master.png",
  "source_bbox_user_units": [
   35.167,
-  0,
+  0.5,
   208.5,
-  240
+  239.5
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from enamel-personnel-master.",
  "field_uniform": {
@@ -66,8 +66,8 @@
   "corner_radius_in": 0,
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
-  "art_width_in": 1,
-  "art_height_in": 1.385,
+  "art_width_in": 1.25,
+  "art_height_in": 1.724,
   "source_asset": "enamel-personnel-master",
   "kind": "chest-badge"
  },
