@@ -196,12 +196,14 @@
       const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
       if(d.callout && copies) calloutNodes(d, px, defs, copies, fontPx).forEach(n => g.appendChild(n));
       const marks = d.centres || [], arrows = d.arrows || [], ext = d.ext || [];
-      const main = [d.dim, ...(d.bars || []), ...(d.ticks || []), ...(d.tails || []), ...marks.flatMap(m => m.ticks)];
+      const main = [d.dim, ...(d.bars || []), ...(d.ticks || []), ...(d.tails || [])];
+      // A centre mark is a small thin crosshair at the witness lines' weight, its middle open (LIVE13 E101): quiet over the piece, never a ring.
+      const cross = marks.flatMap(m => m.ticks);
       const pts = a => a.map(p => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
-      for(const s of [...main, ...ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const s of main) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const s of [...ext, ...cross]) seg(g, s, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
       if(d.leader) seg(g, d.leader, MEASURE.halo, (MEASURE.leader + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
       for(const a of arrows) g.appendChild(el('polygon', { points: pts(a), fill: MEASURE.halo, stroke: MEASURE.halo, 'stroke-width': fmt(MEASURE.haloExtra * px), 'stroke-linejoin': 'round', 'stroke-opacity': 0.5 }));
-      for(const m of marks) g.appendChild(el('circle', { cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra) * px), 'stroke-opacity': 0.5 }));
       if(d.reference){
         // Only the parts of the edge that cross no piece are drawn (measure-layout referenceSegs).
         for(const r of d.referenceSegs || [d.reference]){
@@ -213,10 +215,7 @@
       for(const s of ext) seg(g, s, MEASURE.color, MEASURE.ext * px);
       for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
       for(const a of arrows) g.appendChild(el('polygon', { class: 'arrow', points: pts(a), fill: MEASURE.color, stroke: MEASURE.color, 'stroke-width': fmt(0.6 * px), 'stroke-linejoin': 'round' }));
-      // A centre mark is an open ring (nothing inside it) on the same dark halo as the lines, so it reads as overlay and never as a cross on the piece.
-      for(const m of marks){
-        g.appendChild(el('circle', { class: 'centre-mark', cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.line * px) }));
-      }
+      for(const s of cross) seg(g, s, MEASURE.color, MEASURE.ext * px, { class: 'centre-mark' });
       // The leader from the pill's rim to the middle of the dimension line, with a dot on the line.
       if(d.leader){
         seg(g, d.leader, MEASURE.color, MEASURE.leader * px);

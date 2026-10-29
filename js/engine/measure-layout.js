@@ -8,6 +8,9 @@
 // across each end; where it would cross the artwork it moves off to the side. A distance to a badge's centre gets
 // a centre mark: an open crosshair (a ring with four ticks outside it, empty inside), never a solid cross over the
 // artwork. Each pill is set where it covers no cloth, no artwork and no other pill.
+// A distance to a piece's centre ends on a centre mark: since LIVE13 E101 a small, thin crosshair (0.12 in across on the garment, its middle
+// open) at the witness lines' weight, the dimension line ending on its centre; the pill's caption says the distance ends at the centre
+// ("cap front to the grade's centre").
 //
 // Positions are in scene inches. Sizes are in preview pixels (`px` inches each), so the overlay reads
 // the same on a coat and on a wide field sheet. Pure geometry: the renderer draws the result.
@@ -27,9 +30,10 @@
     // The dimension line's ends: the bar across an end drawn on the measured edge itself, the halfway tick's half length, the arrowhead (length, half width) and the tail an
     // outside arrowhead rides on; the witness lines start extGap past the piece's edge and overshoot the dimension line by extOver.
     bar: 10, tick: 3.2, arrow: 7, arrowHalf: 2.6, tail: 10, centre: 5, extGap: 1.5, extOver: 5,
-    // The centre mark: an open crosshair, a thin ring with four short ticks outside it and nothing at all inside (the middle of the
-    // piece it marks stays visible): ring radius, then the ticks' inner and outer distance from the centre.
-    mark: { ring: 4, tickFrom: 6, tickTo: 10 },
+    // The centre mark (LIVE13 E101; Ethan on the flight cap's 1 1/2 in, drawn to a ring over the insignia: "so its to front yet you have
+    // something in the center?"): a small thin crosshair in garment inches, not preview pixels, so it stays quiet at any zoom: four arms from
+    // `gap` to `arm` inches out of the centre (the middle open, so the piece's own centre shows), 0.12 in across, no ring.
+    mark: { arm: 0.06, gap: 0.015 },
     minOffset: 10, step: 4, maxOffset: 170
   };
 
@@ -384,12 +388,12 @@
     };
   }
 
-  // A centre mark at `p`: the ring (centre, radius) and its four ticks, each a segment that starts outside the ring (so the ring's inside is
-  // empty and the piece's own centre shows through), all in scene inches.
-  function centreMark(p, P){
+  // A centre mark at `p`: a thin crosshair of four arms (scene inches), each from PX.mark.gap to PX.mark.arm out of the centre, so the middle
+  // is open and the piece's own centre shows through; no ring (r is 0, kept for readers of the drawing).
+  function centreMark(p){
     const M = PX.mark, ticks = [];
-    for(const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) ticks.push([{ x: p.x + dx * M.tickFrom * P, y: p.y + dy * M.tickFrom * P }, { x: p.x + dx * M.tickTo * P, y: p.y + dy * M.tickTo * P }]);
-    return { x: p.x, y: p.y, r: M.ring * P, ticks };
+    for(const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) ticks.push([{ x: p.x + dx * M.gap, y: p.y + dy * M.gap }, { x: p.x + dx * M.arm, y: p.y + dy * M.arm }]);
+    return { x: p.x, y: p.y, r: 0, ticks };
   }
 
   // The room made for the callouts around a drawing (`vb` = [x, y, w, h] in inches): the box they may be set in, and then the frame that holds the drawing and
@@ -662,21 +666,27 @@
       const others = owner ? views.filter(v => v !== owner) : [];
       const crossesOther = (p, q) => others.some(r => insideLength(p, q, r) > 0.005);
       const atA = o.center === 'both' || o.center === 'from', atB = o.center === 'both' || o.center === 'to';
-      const ringIn = PX.mark.ring * P;
+      // The piece a centre end lies in (the smallest solid holding the point), for the room an arrowhead would need inside it.
+      const centreBox = p => solids.filter(b => contains(b, p)).sort((p1, p2) => p1.w * p1.h - p2.w * p2.h)[0] || null;
+      const boxA = atA ? centreBox(A) : null, boxB = atB ? centreBox(B) : null;
 
       // The ends of a dimension line from a to b (LIVE13 E97): arrowheads inside the line where it is long enough to show them, else outside it,
       // on tails past each end; a bar (tick) across each end of a line drawn on the measured edges themselves (a line set off the edges has
-      // its witness lines there instead). A line that ends at a centre mark stops at the ring and carries neither bar nor tail there.
+      // its witness lines there instead). A line that ends at a centre mark ends on the crosshair's centre (LIVE13 E101) and carries neither bar
+      // nor tail there; its arrowhead is drawn only where the line has room for it inside the piece measured to its centre.
       const ends = (a, b, inline) => {
         const arrow = PX.arrow * P, half = mul(n, PX.arrowHalf * P), tail = PX.tail * P;
         const Ld = len(sub(b, a)), v = unit(sub(b, a));
         const inside = Ld >= (2 * PX.arrow + 6) * P || (inline && (atA || atB));
         const arrows = [], tails = [], bars = [];
+        const room = box => !box || insideLength(a, b, box) >= arrow + 2 * P;
+        const okA = !atA || (inside && room(boxA)), okB = !atB || (inside && room(boxB));
         if(inside && Ld >= 2 * arrow + 2 * P){
-          arrows.push([a, add(add(a, mul(v, arrow)), half), sub(add(a, mul(v, arrow)), half)], [b, add(sub(b, mul(v, arrow)), half), sub(sub(b, mul(v, arrow)), half)]);
+          if(okA) arrows.push([a, add(add(a, mul(v, arrow)), half), sub(add(a, mul(v, arrow)), half)]);
+          if(okB) arrows.push([b, add(sub(b, mul(v, arrow)), half), sub(sub(b, mul(v, arrow)), half)]);
         }else if(!inside){
-          arrows.push([a, add(sub(a, mul(v, arrow)), half), sub(sub(a, mul(v, arrow)), half)], [b, add(add(b, mul(v, arrow)), half), sub(add(b, mul(v, arrow)), half)]);
-          tails.push([sub(a, mul(v, arrow)), sub(a, mul(v, arrow + tail))], [add(b, mul(v, arrow)), add(b, mul(v, arrow + tail))]);
+          if(!atA){ arrows.push([a, add(sub(a, mul(v, arrow)), half), sub(sub(a, mul(v, arrow)), half)]); tails.push([sub(a, mul(v, arrow)), sub(a, mul(v, arrow + tail))]); }
+          if(!atB){ arrows.push([b, add(add(b, mul(v, arrow)), half), sub(add(b, mul(v, arrow)), half)]); tails.push([add(b, mul(v, arrow)), add(b, mul(v, arrow + tail))]); }
         }
         if(inline){
           const bh = mul(n, PX.bar * P / 2);
@@ -715,8 +725,8 @@
           const a = add(A, mul(c.side, c.d)), b = add(B, mul(c.side, c.d));
           const exts = [];
           if(!c.inline){
-            // A witness line from a centre starts past the centre mark's ticks, so the ring stays empty.
-            const past = PX.mark.tickTo * P + PX.extGap * P;
+            // A witness line from a centre starts past the crosshair's arm.
+            const past = PX.mark.arm + PX.extGap * P;
             const sA = add(A, mul(c.side, Math.max(c.startA + PX.extGap * P, atA ? past : 0))), sB = add(B, mul(c.side, Math.max(c.startB + PX.extGap * P, atB ? past : 0)));
             const e = mul(c.side, PX.extOver * P);
             exts.push([sA, add(a, e)], [sB, add(b, e)]);
@@ -724,12 +734,8 @@
           // The whole run from the measured points to the dimension, not only the drawn part of the witness line:
           // the witness lines start past any piece they leave, which would hide a view they cross.
           if(strict && (crossesOther(a, b) || (!c.inline && (crossesOther(A, add(a, mul(c.side, PX.extOver * P))) || crossesOther(B, add(b, mul(c.side, PX.extOver * P))))))) continue;
-          // The line as drawn: on the edges themselves it stops at a centre mark's ring.
-          let da = a, db = b;
-          if(c.inline){
-            if(atA && L > 2 * ringIn) da = add(a, mul(u, ringIn));
-            if(atB && L > 2 * ringIn) db = sub(b, mul(u, ringIn));
-          }
+          // The line as drawn: it ends on a centre mark's centre (LIVE13 E101).
+          const da = a, db = b;
           const E = ends(da, db, !!c.inline);
 
           let lineCost = 0;
@@ -803,7 +809,7 @@
         const tk = mul(n, PX.tick * P);
         drawing.ticks.push([sub(p, tk), add(p, tk)]);
       }
-      for(const p of o.center === 'both' ? [A, B] : o.center === 'from' ? [A] : o.center === 'to' ? [B] : []) drawing.centres.push(centreMark(p, P));
+      for(const p of o.center === 'both' ? [A, B] : o.center === 'from' ? [A] : o.center === 'to' ? [B] : []) drawing.centres.push(centreMark(p));
       // The pill and its leader, off the cloth (the leader is dropped when the pill touches its line).
       drawing.label = Object.assign({ text, caption: capLines, size: fontSize, captionSize: capSize }, pill.box);
       drawing.leader = len(sub(pill.leader[0], pill.leader[1])) > 2 * P ? pill.leader : null;

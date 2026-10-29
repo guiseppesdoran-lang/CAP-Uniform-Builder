@@ -288,7 +288,7 @@
           const seam = ctx.point('seam_top_center_' + side);
           if(l && seam && side === 'right'){
             const c = core.rectCenter(z);
-            ctx.measure({ x: c.x, y: seam.y }, c, 'halfway to elbow', { center: 'to', side: { x: 1, y: 0 }, offsetOnly: true, caption: 'chevron on the sleeve' });
+            ctx.measure({ x: c.x, y: seam.y }, c, 'halfway to elbow', { center: 'to', side: { x: 1, y: 0 }, offsetOnly: true, caption: "sleeve seam to the chevron's centre" });
           }
           // The same chevron edge-on on the figure's arm.
           const e = l && armEdgeOf(ctx, side, l);

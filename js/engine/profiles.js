@@ -504,7 +504,7 @@
       // The flight cap's device is 'centered halfway from between the top and bottom of the flap, and 1 1/2 inches from the front
       // of the cap' (6.2.2.2.1-3): the cap sheet's front_edge_center to the device's centre, which the sheet's device_slot_center is.
       const front = /^hat-flight-cap-/.test(hatId) && piecePoint(layer, hs, 'front_edge_center');
-      if(dl && front) ctx.measure({ x: front.x, y: slot.y }, slot, '1½ in', { center: 'to', caption: 'cap front to device' });
+      if(dl && front) ctx.measure({ x: front.x, y: slot.y }, slot, '1½ in', { center: 'to', caption: "cap front to the grade's centre" });
     }
     clearViewsOfHat(ctx, layer, hs, devLayer);
     return layer;

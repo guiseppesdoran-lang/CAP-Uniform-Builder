@@ -260,7 +260,7 @@
     const pocketMeasure = spot => {
       if(!spot) return;
       if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'centered', { mid: { x: spot.x, y: spot.y }, caption: 'badge on the lower pocket' });
-      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, { center: spot.anchor === 'top_center' ? undefined : 'to', caption: spot.caption || 'to the badge' });
+      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, { center: spot.anchor === 'top_center' ? undefined : 'to', caption: spot.caption || (spot.anchor === 'top_center' ? 'to the badge' : "to the badge's centre") });
     };
     // The over-nametag line, 1/2 in above the nametag.
     const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }, null, { caption: 'nameplate to badge' }); };
@@ -1223,7 +1223,7 @@
     ctx.measure({ x: a.x + a.w, y: a.y + a.h }, { x: b.x, y: b.y + b.h }, label, { side: { x: 0, y: 1 }, caption });
   }
   // The nameplate's centre against the first exposed button: level with it, or the distance up or down, drawn beside the placket toward the plate
-  // from the button's centre (a centre mark) to the level of the plate's centre.
+  // from the button's centre (a centre mark) to the level of the plate's centre; the caption says the distance is to the centre (LIVE13 E101).
   function plateToButton(ctx, plate, button, caption){
     if(!plate || !button) return;
     const cy = plate.y + plate.h / 2, toward = plate.x + plate.w / 2 < button.x ? -1 : 1;
@@ -1710,7 +1710,7 @@
     }else{
       if(!rack) geo.olpCenter = { x: rest.x, y: tag.y + tag.h / 2 };
       // The nametag against the first exposed button (4.1.12.2.4.1) and the ribbons' bottom aligned with its bottom (4.1.12.2.4.2; LIVE13 E99).
-      plateToButton(ctx, tag, ctx.point('button_1_center'), 'first button to nameplate centre');
+      plateToButton(ctx, tag, ctx.point('button_1_center'), "button to the nameplate's centre");
       if(rack) levelBottoms(ctx, tag, rack, 'even with', 'nameplate bottom to ribbons bottom');
       geo.onStyle = 'women';
       geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
@@ -2043,7 +2043,7 @@
     // bottom (4.2.6.2.6.2.2). Aviator shirt: nametag and ribbons each 'centered, resting on, but not over the edge of' their pocket (4.2.5.1.2.1-2,
     // 4.2.6.2.6.1.1, 4.2.6.2.6.2.1); the sheets state the nameplate slot and the ribbon slot but not the pockets' edges, so the overlay shows what
     // the engine holds them to, the rack's bottom on the nameplate's bottom line (both on their pockets' top edges).
-    if(V.overblouse) plateToButton(ctx, tag, ctx.point('button_1_center'), 'first button to nameplate centre');
+    if(V.overblouse) plateToButton(ctx, tag, ctx.point('button_1_center'), "button to the nameplate's centre");
     if(rack) levelBottoms(ctx, tag, rack, 'even with', 'nameplate bottom to ribbons bottom');
     if(!V.overblouse){
       const lp = ctx.point('badge_left_pocket_center'), rp = ctx.point('badge_right_pocket_center');

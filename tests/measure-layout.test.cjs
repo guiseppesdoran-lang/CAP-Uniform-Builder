@@ -161,10 +161,13 @@ for(const [name, b] of EIGHTH_CASES){
 }
 function grow(r, e){ return { x: r.x - e, y: r.y - e, w: r.w + 2 * e, h: r.h + 2 * e }; }
 
-// ---- LIVE6-3: the centre mark is an open crosshair, never a solid cross over the artwork ----
-// Ethan, on the flight cap: "wtf is this fucking plus sign lmao". The '1½ in' cap-device measure ends at the device's centre; the mark
-// there was a bare gold cross, which read as a plus on the insignia. It is now a thin ring with four ticks outside it, empty inside, on the
-// labels' dark halo, and a dimension drawn on the line itself stops at the ring.
+// ---- LIVE6-3 / LIVE13 E101: the centre mark is small and quiet, never a ring or a solid cross over the artwork ----
+// Ethan, on the flight cap (LIVE6-3): "wtf is this fucking plus sign lmao". The '1½ in' cap-device measure ends at the device's centre; the
+// mark there was a bare gold cross, which read as a plus on the insignia; it became a ring with four ticks outside it. Ethan again, on the
+// E97 overlay (LIVE13 E101): "so its to front yet you have something in the center?": the ring sat large over the insignia. The mark is now
+// a thin crosshair 0.12 in across on the garment (PX.mark, in inches, so it stays small at any zoom), its middle open, at the witness
+// lines' weight; the dimension line ends on its centre, with an arrowhead there only where the line has room for one inside the piece; and
+// the pill's caption says the distance ends at the centre ("cap front to the grade's centre").
 const R = require('../scripts/render-builds.cjs');
 const CAP_BUILDS = [
   ['Class A, captain (officer flight cap device)', build('blues_a', 'senior', 'Capt')],
@@ -178,19 +181,24 @@ function segDist(p, [a, b]){
   return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy);
 }
 function checkMarks(d, px, tag){
+  const M = ML.PX.mark;
+  assert.ok(M.arm <= 0.06 + 1e-9 && M.gap > 0, 'the crosshair is at most 0.12 in across, its middle open');
   for(const mk of d.centres){
-    assert.ok(mk.r > 0 && Math.abs(mk.r - ML.PX.mark.ring * px) < 1e-9, `${tag}: a ring`);
-    assert.equal(mk.ticks.length, 4, `${tag}: four ticks`);
+    assert.equal(mk.r, 0, `${tag}: no ring`);
+    assert.equal(mk.ticks.length, 4, `${tag}: four arms`);
     for(const [p, q] of mk.ticks){
       const dp = Math.hypot(p.x - mk.x, p.y - mk.y), dq = Math.hypot(q.x - mk.x, q.y - mk.y);
-      assert.ok(Math.min(dp, dq) > mk.r + 1e-9, `${tag}: a tick starts outside the ring (${(Math.min(dp, dq) / px).toFixed(1)} px, ring ${(mk.r / px).toFixed(1)})`);
+      assert.ok(Math.abs(Math.min(dp, dq) - M.gap) < 1e-9 && Math.abs(Math.max(dp, dq) - M.arm) < 1e-9, `${tag}: an arm runs from ${M.gap} to ${M.arm} in out of the centre (${Math.min(dp, dq).toFixed(3)} to ${Math.max(dp, dq).toFixed(3)})`);
     }
-    // Nothing of this measure's drawing (its dimension line, bars, extension lines) enters the ring: the piece's own centre shows through.
-    for(const s of segs(d)) assert.ok(segDist(mk, s) >= mk.r - 1e-9, `${tag}: the ring's inside is empty (a line comes ${(segDist(mk, s) / px).toFixed(2)} px from the centre)`);
+    // The dimension line ends on the crosshair's centre when drawn on the measured edges; set off them, its witness line starts past the arm.
+    const onEnd = [d.dim[0], d.dim[1]].some(p => Math.hypot(p.x - mk.x, p.y - mk.y) < 1e-9);
+    if(!onEnd) for(const s of d.ext) assert.ok(segDist(mk, s) >= M.arm - 1e-9, `${tag}: a witness line starts past the crosshair (${segDist(mk, s).toFixed(3)} in)`);
+    // No bar and no tail at a centre end.
+    for(const s of [...d.bars, ...d.tails]) assert.ok(segDist(mk, s) > M.arm, `${tag}: no bar or tail on the centre`);
   }
 }
 for(const [name, b] of CAP_BUILDS){
-  test(`the flight cap's 1½ in measure ends in an open centre mark that leaves the device's own ink alone: ${name}`, async () => {
+  test(`the flight cap's 1½ in measure ends on a small crosshair at the device's centre and says so: ${name}`, async () => {
     const { scene, px, drawings } = await laidOut(b);
     const m = scene.layers.find(l => l.type === 'measure' && l.label === '1½ in' && l.opts && l.opts.center === 'to');
     assert.ok(m, 'the cap device measure is drawn');
@@ -199,22 +207,29 @@ for(const [name, b] of CAP_BUILDS){
     assert.equal(d.centres.length, 1);
     assert.ok(Math.hypot(d.centres[0].x - m.to.x, d.centres[0].y - m.to.y) < 1e-9, 'the mark is at the device centre');
     checkMarks(d, px, name);
-    // The device's own ink under the mark: the mark draws only the ring (a stroke) and the four ticks; the ring's inside holds nothing,
-    // so the device's centre, where its eagle or shield is, is untouched.
+    // The device's own ink under the mark: four thin arms with the middle open, so the device's centre, where its eagle or shield is, is untouched.
     const dev = scene.layers.find(l => l.role === 'hat-device');
     assert.ok(Math.abs(d.centres[0].x - (dev.x + dev.w / 2)) < 0.05 && Math.abs(d.centres[0].y - (dev.y + dev.h / 2)) < 0.05, 'centred on the device');
+    assert.equal(d.label.caption.join(' '), "cap front to the grade's centre", 'the caption says the distance ends at the centre (E101)');
+    // The line reaches the crosshair's centre; its arrowhead there sits inside the device only because the device has room for it.
+    const end = d.dim.find(p => Math.hypot(p.x - m.to.x, p.y - m.to.y) < 1e-9);
+    assert.ok(end, 'the dimension line ends on the centre');
   });
 }
-test('every centre mark on the standard matrix is an open ring with its ticks outside it and nothing inside', async () => {
+test('every centre mark on the standard matrix is a small open crosshair, and its pill says the distance is to a centre', async () => {
   const { builds } = R.matrix();
   let marks = 0;
   for(const { name, build: spec } of builds){
     const { drawings, px } = await laidOut(R.makeBuild(spec));
-    for(const d of drawings){ marks += d.centres.length; checkMarks(d, px, `${name} ${d.label.text}`); }
+    for(const d of drawings){
+      marks += d.centres.length;
+      checkMarks(d, px, `${name} ${d.label.text}`);
+      if(d.centres.length) assert.ok(/centre/.test(d.label.caption.join(' ')), `${name} '${d.label.text}': caption names the centre (${d.label.caption.join(' ')})`);
+    }
   }
   assert.ok(marks > 0, 'the matrix draws centre marks');
 });
-test('the renderer draws a centre mark as an unfilled ring on the dark halo, with no solid cross segment', () => {
+test('the renderer draws a centre mark as four thin arms on the dark halo, no ring and nothing through the centre', () => {
   global.document = { createElementNS: (ns, name) => { return { name, a: {}, kids: [], setAttribute(k, v){ this.a[k] = v; }, appendChild(c){ this.kids.push(c); return c; } }; } };
   const hadSelf = 'self' in global;
   if(!hadSelf) global.self = global;
@@ -222,18 +237,19 @@ test('the renderer draws a centre mark as an unfilled ring on the dark halo, wit
   require('../js/engine/render-svg.js');
   const RS = global.self.CAPUBEngine.renderSvg;
   const dr = { key: 'k', label: { text: '1½ in', x: 0, y: 0, w: 1, h: 0.3 }, dim: [{ x: 0, y: 0 }, { x: 1, y: 0 }], bars: [], ext: [], ticks: [],
-    centres: [ML.centreMark({ x: 2, y: 2 }, 0.05)], reference: null };
+    centres: [ML.centreMark({ x: 2, y: 2 })], reference: null };
   const [g] = RS.measureNodes([dr], 0.05, 11, null, null);
-  const circles = g.kids.filter(n => n.name === 'circle');
-  assert.ok(circles.length >= 2, 'a halo ring and a gold ring');
-  for(const c of circles) assert.equal(c.a.fill, 'none', 'a ring is never filled');
-  assert.ok(circles.some(c => c.a.stroke === '#0b1020'), 'the ring has the dark halo');
-  const lines = g.kids.filter(n => n.name === 'line');
-  // No line crosses the mark's centre: every segment the renderer draws stays outside the ring (the old cross ran through it).
-  for(const l of lines){
+  assert.equal(g.kids.filter(n => n.name === 'circle').length, 0, 'no ring');
+  const arms = g.kids.filter(n => n.name === 'line' && n.a.class === 'centre-mark');
+  assert.equal(arms.length, 4, 'four gold arms');
+  const px = 0.05;
+  for(const l of arms){
+    assert.ok(Math.abs(Number(l.a['stroke-width']) - 1.1 * px) < 1e-6, 'at the witness lines\' weight');
     const a = { x: Number(l.a.x1), y: Number(l.a.y1) }, b = { x: Number(l.a.x2), y: Number(l.a.y2) };
-    assert.ok(segDist({ x: 2, y: 2 }, [a, b]) >= dr.centres[0].r - 1e-6, 'no line enters the ring');
+    assert.ok(segDist({ x: 2, y: 2 }, [a, b]) >= ML.PX.mark.gap - 1e-6, 'the middle is open');
   }
+  // The halo copies under the arms are as many, on the dark colour.
+  assert.ok(g.kids.filter(n => n.name === 'line' && n.a.stroke === '#0b1020').length >= 4, 'arms on the dark halo');
   delete global.document;
   if(!hadSelf) delete global.self;
 });
