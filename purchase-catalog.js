@@ -171,7 +171,8 @@
     us_insignia_officer: item('US lapel insignia, officer (pair)', 'Insignia', 'MILSPEC_OK', [V(null), U(null), I(null)], { q: 'US lapel insignia officer', ref: '4.1.5.2.2' }),
     us_insignia_nco: item('US insignia in a ring, NCO (pair)', 'Insignia', 'MILSPEC_OK', [V(null), U(null), I(null)], { q: 'US insignia with circle enlisted', ref: '4.1.5.2.2' }),
     cap_lapel_insignia: item('CAP cutout lapel insignia (pair)', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol CAP cutout lapel insignia', ref: '4.1.5.2.2' }),
-    cap_collar_metal: item('CAP collar insignia, metal (pair)', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol collar insignia', ref: '1.4.2.1' }),
+    // Vanguard CAP0820, a pair to the package, so the one line covers both collars (LIVE13 E79, the product Ethan sent).
+    cap_collar_metal: item('Civil Air Patrol Collar Device: CAP - mirror finish', 'Insignia', 'CAP_ONLY', [V(6.10, 'verified', '2026-10-29', vg('/collections/cadet-insignia/products/civil-air-patrol-mirror-finish-cap-collar-device'), 'CAP0820'), U(null), I(null)], { q: 'Civil Air Patrol collar insignia', ref: '1.4.2.1', note: 'Sold as a pair (2 per package): one package covers both collars.' }),
     cap_collar_cloth: item('CAP collar insignia, cloth (pair)', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol cloth collar insignia' }),
     cap_crest: item('CAP crest', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol crest' }),
     cap_seal: item('CAP seal', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol seal emblem' }),

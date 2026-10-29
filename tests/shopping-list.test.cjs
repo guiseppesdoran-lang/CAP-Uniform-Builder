@@ -161,6 +161,24 @@ test('the Class B cadet officer list: the right garments, grade forms, devices a
   assert.match(res.lines.find(l=>l.itemId==='nametag_blue_cadet').detail,/"DOE"/);
 });
 
+test('the metal CAP collar device is Vanguard CAP0820, one pair for both collars; the cloth insignia is unchanged',async()=>{
+  // LIVE13 E79: the product Ethan sent, a pair to the package.
+  const it=CAT.items.cap_collar_metal;
+  assert.equal(it.name,'Civil Air Patrol Collar Device: CAP - mirror finish');
+  assert.deepEqual(it.offers[0],{vendor:'vanguard',price:6.10,status:'verified',checked:'2026-10-29',url:'https://www.vanguardmil.com/collections/cadet-insignia/products/civil-air-patrol-mirror-finish-cap-collar-device',sku:'CAP0820'});
+  assert.match(it.note,/2 per package/);
+  assert.equal(CAT.items.cap_collar_cloth.name,'CAP collar insignia, cloth (pair)');
+  assert.ok(CAT.items.cap_collar_cloth.offers.every(o=>o.price==null),'the cloth insignia stays unpriced');
+  // A senior member without grade on the NCO track wears the metal device on both collars (1.4.2.1): one line, one package.
+  const b=build('blues_a','male','senior','SM',{grade:G.gradeInfo('senior','SM',{track:'nco'})});
+  const res=SHOP.deriveList(await P.composeUniform(b,store),b,{badges:BADGES});
+  const lines=res.lines.filter(l=>l.itemId==='cap_collar_metal');
+  assert.equal(lines.length,1);
+  assert.equal(lines[0].layers.length,2,'both collars on the one line');
+  assert.equal(lines[0].qty,1);
+  assert.equal(lines[0].lowest.price,6.10);
+});
+
 test('the field and flight uniforms list the badge in the form drawn, the name tapes and the sheet\'s own patches',async()=>{
   const ocp=build('ocp','male','cadet','C/SSgt',{badges:[{id:PILOT}]});
   const r1=SHOP.deriveList(await P.composeUniform(ocp,store),ocp,{badges:BADGES});
