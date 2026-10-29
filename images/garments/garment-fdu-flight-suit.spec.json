@@ -208,7 +208,7 @@
     3867.52
    ],
    [
-    1446.54,
+    1422.33,
     3867.52
    ]
   ],
@@ -262,7 +262,7 @@
     3867.52
    ],
    [
-    3322.8,
+    3347.01,
     3867.52
    ]
   ],
@@ -344,6 +344,7 @@
   "ES patch zone size",
   "scarf is optional: its own asset (garment-cap-command-scarf), anchored bottom_center to this suit's collar_apex",
   "legs and thigh pockets omitted (nothing is sewn on them); hem cut just below the cuffs",
+  "sleeve inner edge from y 15 (figure in) down, the torso waist seen through the gap beside it, the hip below the cuffs and the cuff tab chevron (point to the outer edge) measured on Figure 8.1 at 51.1 px/in, left and right sides averaged (the figure is 0.2-0.6 in asymmetric); the hip emerges 0.85 in outboard of the cuff's inner corner as in the figure; the figure's cuff band is 1.85 in high (drawn 2.15, kept); the sleeve seam above y 11 keeps its earlier estimate (the figure's runs 1-2 in further out, see make-fdu.js)",
   "OD green shade"
  ],
  "fit": {
