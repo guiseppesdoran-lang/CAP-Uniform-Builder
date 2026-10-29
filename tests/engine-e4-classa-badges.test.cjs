@@ -103,11 +103,13 @@ for(const [membership, rank] of [['senior', 'Capt'], ['cadet', 'C/Maj']]){
   });
 }
 
-test('the nameplate comes from the coat\'s landmark: the cadet semi-formal coat keeps the same right-pocket badge column', async () => {
-  const { plate, weltTop } = await landmarks('male');
+test('the cadet semi-formal coat keeps the service coat\'s right-pocket badge column: the drawn nametag\'s centre, between the sleeve seam and the lapel (4.1.3.2.2; LIVE13 E80)', async () => {
+  const { plate: sheetPlate, weltTop } = await landmarks('male');
+  const classA = await P.composeUniform(build('blues_a', 'male', 'cadet', 'C/Capt', []), store);
+  const plate = drawnPlate(classA, sheetPlate);
   const scene = await P.composeUniform(build('semi_formal_usaf', 'male', 'cadet', 'C/Capt', ['emergency_services_badge', 'stem_badges']), store);
   const right = badgeLayers(scene).find(l => l.x + l.w / 2 < weltTop.x - 1.5);
-  near(right.x + right.w / 2, plate.x + plate.w / 2, 0.005, 'badge column of the full coat\'s nameplate');
+  near(right.x + right.w / 2, plate.x + plate.w / 2, 0.005, 'badge column of the service coat\'s nametag');
   near(right.y, weltTop.y + 1.5, 0.005, 'level with the left pocket badge, 1 1/2 in below the welt top');
 });
 

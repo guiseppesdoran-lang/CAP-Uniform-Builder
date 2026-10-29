@@ -61,6 +61,8 @@ const CITE = {
   nametagCentred: 'centered: the Class A nametag centred on the wearer\'s right between the sleeve seam and the lapel, along its bottom edge (4.1.5.2.2.2.1-2, 4.1.9.4.2.1-2; LIVE13 E76)',
   nametagEven: 'even with: the men\'s Class A nametag bottom even with the bottom of the ribbons (4.1.5.2.2.2.1-2; LIVE13 E76)',
   nametagParallel: 'parallel with: the women\'s Class A nametag bottom parallel with the bottom of the ribbons (4.1.9.4.2.1-2; LIVE13 E76)',
+  semiEven: 'even with: on the cadet semi-formal (no nametag) the badge or badges in the nametag\'s place, bottom even with the bottom of the ribbons (4.1.3.2.2, 4.1.4.2; LIVE13 E80)',
+  semiLevel: 'level with: on the men\'s cadet semi-formal the wearer\'s right pocket badge keeps its service dress place, level with the left pocket badge (4.1.3.2.2, 4.1.5.2.2.4.2; LIVE13 E80)',
   poloOverName: '½ in: the one badge or duty title over the name, from the top of the name to the bottom of the badge or title (5.3.2.1.1)'
 };
 const L = key => CITE[key].split(':')[0];
@@ -80,7 +82,7 @@ const TABLE = [
   ['semi_formal-male-senior-Capt', ['chaplainSemi']],
   ['semi_formal-female-senior-Col', ['crest', 'chaplainSemi']],
   ['semi_formal_usaf-male-cadet-C-SSgt', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel']],
-  ['semi_formal_usaf-female-cadet-C-Maj', ['badgeAboveRibbons', 'lapel', 'lapel']],
+  ['semi_formal_usaf-female-cadet-C-Maj', ['badgeAboveRibbons', 'lapel', 'lapel', 'semiEven']],
   ['aviator-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons']],
   ['aviator-female-senior-Capt', ['badgeAboveRibbons', 'aboveNametag']],
   ['aviator_blazer-male-senior-Capt', ['chaplainBlazer', 'badgeAboveRibbons']],
@@ -267,6 +269,49 @@ test('the Class A nametag with no ribbons: the centred measure stays, the level 
   assert.ok(scene.notes.some(n => /no ribbon bottom to show the nametag's bottom even with/.test(n)), scene.notes.join(' | '));
   for(const name of ['semi_formal_usaf-male-cadet-C-SSgt', 'semi_formal_usaf-female-cadet-C-Maj']){
     const ls = (await measuresOf(name)).map(m => m.label);
-    assert.ok(!ls.includes('even with') && !ls.includes('parallel with') && !ls.includes('centered'), name);
+    assert.ok(!ls.includes('parallel with') && !ls.includes('centered'), name);
   }
 });
+
+// LIVE13 E80 (Ethan: "measurement from the semiformals bases a badge off of a nameplate that isnt there lmao"). CAPR 39-1 4.1.3.2.1, 4.1.4.1:
+// "Nametag. Not worn." 4.1.3.2.2: "If a specialty track badge would be worn ½ inch above the nametag on the service dress uniform, the bottom of
+// that badge will be even with the bottom of ribbons. All other badges are worn in the same places as on the service dress uniform." 4.1.4.2
+// (women): "a badge or badges ... the bottom of that badge(s) will be even with the bottom of ribbons." Men's service dress (4.1.5.2.2.4.2): the
+// first badge 1 1/2 in below the welt top, the second 1 1/2 in below the nametag (whose bottom is the ribbons' bottom), a third 1/2 in above it.
+const semiSpec = (sex, rank, badgeIds) => Object.assign(spec(sex === 'male' ? 'semi_formal_usaf-male-cadet-C-SSgt' : 'semi_formal_usaf-female-cadet-C-Maj'), { rank, badgeIds });
+const AIRCREW = 'AirCrew1_DB3F0FCC3650F';
+for(const [label, sex, rank, ids, inPlace, rightPocket] of [
+  ['men, three badges: the third in the nametag\'s place, the second on the right pocket', 'male', 'C/Col', [AIRCREW, 'stem_badges', 'emergency_services_badge', 'cyber_badges'], 'emergency_services_badge', 'cyber_badges'],
+  ['men, two badges: the second on the right pocket, nothing in the nametag\'s place', 'male', 'C/Col', [AIRCREW, 'stem_badges', 'emergency_services_badge'], null, 'emergency_services_badge'],
+  ['women, one badge in the nametag\'s place', 'female', 'C/Capt', [AIRCREW, 'stem_badges'], 'stem_badges', null],
+  ['women, a pair in the nametag\'s place', 'female', 'C/Capt', [AIRCREW, 'stem_badges', 'cyber_badges'], 'pair', null]
+]){
+  test(`semi-formal ${label} (4.1.3.2.2, 4.1.4.2): placement, and no measure from the nametag that is not drawn`, async () => {
+    const scene = await P.composeUniform(R.makeBuild(semiSpec(sex, rank, ids)), store);
+    const rack = scene.layers.filter(l => l.role === 'ribbon');
+    const rackBottom = Math.max(...rack.map(l => l.y + l.h)), rackLeft = Math.min(...rack.map(l => l.x));
+    const badge = id => scene.layers.find(l => l.key === 'badge:' + id);
+    const ms = scene.layers.filter(l => l.type === 'measure');
+    // No measure starts or ends where nothing is drawn: every end lies on a badge, the rack, the welt or the lapel seam the overlay already used.
+    const pieces = scene.layers.filter(l => l.role === 'badge' || l.role === 'ribbon');
+    const onPiece = p => pieces.some(l => p.x >= l.x - 1e-3 && p.x <= l.x + l.w + 1e-3 && p.y >= l.y - 1e-3 && p.y <= l.y + l.h + 1e-3);
+    const coat = await store.load(sex === 'male' ? 'garment-semiformal-class-a-coat-male' : 'garment-semiformal-class-a-coat-female');
+    const weltY = core.anchor(coat, 'welt_top_center').y;
+    for(const m of ms.filter(m => m.label !== 'halfway')) for(const p of [m.from, m.to]) assert.ok(onPiece(p) || Math.abs(p.y - weltY) < 1e-6, `${m.label} end ${p.x.toFixed(2)},${p.y.toFixed(2)} on a drawn piece`);
+    const even = ms.filter(m => m.label === 'even with');
+    if(inPlace){
+      const box = inPlace === 'pair' ? (() => { const two = ['stem_badges', 'cyber_badges'].map(badge); const x0 = Math.min(...two.map(l => l.x)), x1 = Math.max(...two.map(l => l.x + l.w)); return { x: x0, w: x1 - x0, y: Math.min(...two.map(l => l.y)), h: rackBottom - Math.min(...two.map(l => l.y)) }; })() : badge(inPlace);
+      near(box.y + box.h, rackBottom, 0.02, 'bottom even with the bottom of the ribbons');
+      assert.equal(even.length, 1, 'one level line');
+      near(even[0].from.x, box.x + box.w, 1e-3, 'from the inner corner'); near(even[0].from.y, rackBottom, 0.02, 'at its bottom');
+      near(even[0].to.x, rackLeft, 0.02, 'to the rack\'s outer corner'); near(even[0].to.y, rackBottom, 0.02, 'at the rack\'s bottom');
+    }else assert.equal(even.length, 0);
+    if(rightPocket){
+      const rp = badge(rightPocket);
+      near(rp.y, rackBottom + 1.5, 0.02, 'right pocket badge 1 1/2 in below where the nametag\'s bottom would be');
+      assert.ok(scene.notes.some(n => /keeps its service dress place on the semi-formal/.test(n)), scene.notes.join(' | '));
+      if(inPlace) assert.ok(ms.some(m => m.label === '1½ in' && Math.abs(m.from.y - (badge(inPlace).y + badge(inPlace).h)) < 1e-6 && Math.abs(m.to.y - rp.y) < 1e-6), 'measured 1 1/2 in from the badge in the nametag\'s place');
+      else assert.ok(ms.some(m => m.label === 'level with' && Math.abs(m.from.y - rp.y) < 1e-6 && Math.abs(m.to.y - rp.y) < 1e-6), 'levelled with the left pocket badge');
+    }
+  });
+}

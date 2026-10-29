@@ -199,7 +199,8 @@
 
   // Badges side by side, `gap` apart, the pair centred on x, bottoms on `bottomY`. `order` is
   // viewer's left first.
-  async function rowOfBadges(ctx, items, cx, bottomY, gap, anchor){
+  // `out`, when given, receives the row's box (out.box).
+  async function rowOfBadges(ctx, items, cx, bottomY, gap, anchor, out){
     const widths = [];
     for(const it of items) widths.push(it.raster ? militaryBox(it).w : (await ctx.spec(it.art)).w);
     const total = widths.reduce((a, w) => a + w, 0) + gap * (items.length - 1);
@@ -211,6 +212,7 @@
       if(i && gap) ctx.measure({ x: x - gap, y: bottomY }, { x, y: bottomY });
       x += widths[i] + gap;
     }
+    if(out) out.box = { x: cx - total / 2, y: top, w: total, h: bottomY - top };
     return top;
   }
 
@@ -261,6 +263,12 @@
     };
     // The over-nametag line, 1/2 in above the nametag.
     const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }); };
+    // The semi-formal's piece in the nametag's place (`box`, or the row of them): a level line from its bottom inner corner to the rack's outer
+    // bottom corner, "the bottom of that badge will be even with the bottom of ribbons" (4.1.3.2.2, 4.1.4.2; LIVE13 E80).
+    const semiLevel = box => {
+      const r = geo.semi && geo.semi.rack;
+      if(box && r) ctx.measure({ x: box.x + box.w, y: box.y + box.h }, { x: r.x, y: r.y + r.h }, 'even with', { side: { x: 0, y: 1 } });
+    };
     const pinItem = pinCurrent ? { id: pinCurrent.id, art: pinCurrent.art, title: pinCurrent.title } : null;
     const pinKey = pinCurrent ? `badge:${pinCurrent.id}:ON:0` : null;
 
@@ -284,18 +292,29 @@
       if(rocketry && !geo.lp) ctx.note('The model rocketry badge is worn only on the left pocket, which this uniform does not have');
       let rpItem = plan.nationalStaff[0] || null;
       if(!rpItem && geo.rp) rpItem = queue.shift() || null;
-      if(lpItem){ await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center'); pocketMeasure(geo.lp); }
-      if(rpItem && geo.rp){ await putBadge(ctx, rpItem, geo.rp, geo.rp.anchor || 'center'); pocketMeasure(geo.rp); }
+      let lpBox = null, rpBox = null, levelBox = null;
+      if(lpItem){ lpBox = await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center'); pocketMeasure(geo.lp); }
+      if(rpItem && geo.rp){ rpBox = await putBadge(ctx, rpItem, geo.rp, geo.rp.anchor || 'center'); if(!geo.semi) pocketMeasure(geo.rp); }
       else if(rpItem) queue.unshift(rpItem);
       let y = onBottom;
       if(pinItem && onX != null){
         const p = await putBadge(ctx, pinItem, { x: onX, y }, 'bottom_center', pinKey);
-        if(p){ onMeasure(); y = p.y; } // the next badge stacks 1/2 in above the pin
+        if(p){ onMeasure(); y = p.y; levelBox = p; } // the next badge stacks 1/2 in above the pin
       }
       if(queue.length && onX != null){
-        await putBadge(ctx, queue.shift(), { x: onX, y: pinItem ? y - 0.5 : y }, 'bottom_center');
+        const p = await putBadge(ctx, queue.shift(), { x: onX, y: pinItem ? y - 0.5 : y }, 'bottom_center');
         if(pinItem) ctx.measure({ x: onX, y }, { x: onX, y: y - 0.5 });
-        else onMeasure();
+        else{ onMeasure(); if(p) levelBox = p; }
+      }
+      if(geo.semi){
+        // The semi-formal (LIVE13 E80): the piece in the nametag's place, bottom even with the ribbons' bottom; the right pocket badge 1 1/2 in
+        // below that piece, or, with nothing there, level with the left pocket badge (both 1 1/2 in below the ribbons' bottom line).
+        semiLevel(levelBox);
+        if(rpBox){
+          if(levelBox) ctx.measure({ x: geo.rp.x, y: levelBox.y + levelBox.h }, { x: geo.rp.x, y: rpBox.y });
+          else if(lpBox) ctx.measure({ x: rpBox.x + rpBox.w, y: rpBox.y }, { x: lpBox.x, y: lpBox.y }, 'level with', { side: { x: 0, y: -1 } });
+          ctx.note(`The badge on the wearer's right keeps its service dress place on the semi-formal, 1½ in below where the nametag's bottom would be (the bottom of the ribbons)${levelBox ? '' : ', level with the badge on the wearer\'s left pocket'} (CAPR 39-1, ${geo.semi.cite}, 4.1.5.2.2.4.2)`);
+        }
       }
       if(queue.length) ctx.note('Some badges have no place left on this uniform and are not shown');
       return;
@@ -321,23 +340,27 @@
       return;
     }
     if(pinItem || pair.length) onMeasure();
+    const row = {};
     if(geo.onStyle === 'women-a' && pinItem && pair.length){
       // Women's Class A: the pin sits 1/2 in above the badge(s) (4.1.9.4.4.3).
-      const top = await rowOfBadges(ctx, pair, onX, onBottom, 0.5);
+      const top = await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row);
       await putBadge(ctx, pinItem, { x: onX, y: top - 0.5 }, 'bottom_center', pinKey);
       ctx.measure({ x: onX, y: top }, { x: onX, y: top - 0.5 });
     }else if(pinItem && pair.length === 1){
       // One badge: the badge 1/2 in above the pin.
       const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
+      row.box = p;
       await rowOfBadges(ctx, pair, onX, (p ? p.y : onBottom) - 0.5, 0.5);
     }else if(pinItem && pair.length === 2){
       const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
+      row.box = p;
       await rowOfBadges(ctx, pair, onX, (p ? p.y : onBottom) - 0.5, 0.5);
     }else if(pinItem){
-      await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
+      row.box = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
     }else if(pair.length){
-      await rowOfBadges(ctx, pair, onX, onBottom, 0.5);
+      await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row);
     }
+    if(geo.semi) semiLevel(row.box);
     // Rocketry and marksmanship moved off the nametag: women's aviator shirt to the left pocket and
     // flap; the Class A and B to the wearer's left, 1 1/2 in below the ribbons (one badge there).
     let belowUsed = false;
@@ -1533,13 +1556,21 @@
       un: { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 0.5, anchor: 'top_center' }
     };
     if(semi){
-      // Only the badge that would go over the nametag moves: it sits even with the bottom of the
-      // ribbons. The others keep their service dress places (4.1.3.2.2), so the wearer's right
-      // pocket badge stays level with the left one, where the nametag's bottom would be.
+      // "Nametag. Not worn." (4.1.3.2.1, 4.1.4.1). Only the badge that would go 1/2 in over the nametag moves: "the bottom of that
+      // badge will be even with the bottom of ribbons" (men 4.1.3.2.2; women 4.1.4.2, "a badge or badges", the pair). The others keep
+      // their service dress places, so the men's wearer's right pocket badge stays 1 1/2 in below where the nametag's bottom would be
+      // (4.1.5.2.2.4.2), which on the service dress is the ribbons' bottom (4.1.5.2.2.2): level with the wearer's left pocket badge.
+      // The column is the nametag's, centred between the sleeve seam and the lapel at that line (nametagSpan; LIVE13 E80). Nothing
+      // on the overlay is measured from the nametag, which is not drawn (Ethan: "measurement from the semiformals bases a badge off
+      // of a nameplate that isnt there"): the piece set even with the ribbons gets a level line to the rack's bottom, and the right
+      // pocket badge is measured from that piece or, with nothing over it, levelled with the left pocket badge (dressBadges).
+      const semiSpan = await nametagSpan(ctx, A.coat, { x: plate.x, y: rest.y, w: plate.w, h: 0 });
+      const col = semiSpan ? semiSpan.centre : plate.x + plate.w / 2;
       geo.onBottom = rest.y;
-      geo.nametag = { x: plate.x, y: rest.y, w: plate.w, h: 0 };
-      geo.rp = sex === 'male' ? { x: plate.x + plate.w / 2, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null;
+      geo.nametag = { x: col - plate.w / 2, y: rest.y, w: plate.w, h: 0 };
+      geo.rp = sex === 'male' ? { x: col, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null;
       geo.un = null;
+      geo.semi = { rack, cite: sex === 'male' ? '4.1.3.2.2' : '4.1.4.2' };
       if(sex === 'male') geo.onStyle = 'men';
     }
     // Men's marksmanship badge: centred on the welt pocket (4.1.5.2.2.4.2). Women's moved rocketry
