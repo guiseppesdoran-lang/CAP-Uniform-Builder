@@ -81,10 +81,10 @@ const rule=sel=>{
   return css.slice(i,css.indexOf('}',i));
 };
 
-test('the picked line and the counting rule are not in the tile flow: fixed device area, fixed preview slot, rule as an overlay',()=>{
+test('the picked line and the counting rule share one fixed device area and a fixed preview slot',()=>{
   // The area is always rendered, picked or not, so it always takes the same room.
   const builder=galleries.slice(galleries.indexOf('function buildRibbonGallery'));
-  assert.match(builder,/class="ribbonDeviceArea\$\{ruleHint \? ' hasRule' : ''\}"/);
+  assert.match(builder,/<div class="ribbonDeviceArea">/);
   assert.doesNotMatch(builder,/<div class="sub ribbonRuleHint">/,'no detached rule paragraph');
   assert.match(rule('.ribbonDeviceArea'),/height:calc\(3 \* 1\.3 \* var\(--t-xs\)\)/);
   const summary=rule('.ribbonDeviceArea .ribbonDeviceSummary');
@@ -94,15 +94,15 @@ test('the picked line and the counting rule are not in the tile flow: fixed devi
   const slot=css.match(/\.ribbonSelectorTile:not\(\.militaryRibbonSelectorTile\) > img,\s*\.ribbonSelectorTile:not\(\.militaryRibbonSelectorTile\) > svg\.ribbonPreviewSvg\{([^}]*)\}/);
   assert.ok(slot,'preview slot rule');
   assert.match(slot[1],/width:96px;height:56px/);
-  // The rule pops over the tile; it takes no room.
-  const pop=rule('.ribbonRulePop');
-  assert.match(pop,/position:absolute/);
-  assert.match(pop,/visibility:hidden/);
 });
 
-test('each counting rule sits inside its own tile behind a labelled "?" button that Escape closes',()=>{
-  assert.match(galleries,/<button type="button" class="ribbonRuleBtn" aria-expanded="false" aria-label="Counting rule for \$\{escapeHtml\(title\)\}">\?<\/button><div class="ribbonRulePop" role="note">/);
-  assert.match(galleries,/event\.key !== 'Escape'/);
+// LIVE14 E71 (Ethan: "you can remove those question mark things by some of the service ribbons").
+test('no "?" counting-rule button: the rule is the line under the select until the ribbon is picked, and stays in that line\'s title and the select\'s',()=>{
+  assert.doesNotMatch(galleries,/ribbonRuleBtn|ribbonRulePop|hasRule/);
+  const builder=galleries.slice(galleries.indexOf('function buildRibbonGallery'),galleries.indexOf('function wireRibbonTileControls'));
+  assert.match(builder,/const areaTitle = \[pickedText, ruleHint \? escapeHtml\(ruleHint\) : ''\]\.filter\(Boolean\)\.join\(' \\u2022 '\);/);
+  assert.match(builder,/ribbonDeviceSummary"\$\{areaTitle \? ` title="\$\{areaTitle\}"` : ''\}>\$\{pickedLine \|\| \(ruleHint \? escapeHtml\(ruleHint\) : ''\)\}<\/div>/);
+  assert.match(builder,/<select class="rbAwardSelect" data-ribbon-id="\$\{escapeHtml\(id\)\}"\$\{ruleHint \? ` title="\$\{escapeHtml\(ruleHint\)\}"` : ''\}>/);
   const ra=require('../data/ribbon-awards.js');
   for(const id of ['cadet_recruiter_ribbon','cap_senior_recruiter_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','iace_ribbon','crisis_ribbon'])
     assert.ok(ra.hint(id),`${id} has a rule note`);

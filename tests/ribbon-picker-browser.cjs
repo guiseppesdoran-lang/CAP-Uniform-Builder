@@ -74,7 +74,13 @@ async function launch(){
     await sleep(2500);
     const where = await ev(`(() => { const g = document.querySelector('#galleryModalHost .galleryGrid') ; return g ? 'modal:' + g.querySelectorAll('.ribbonSelectorTile').length : 'nomodal:' + document.querySelectorAll('#ribbonGallery .ribbonSelectorTile').length; })()`);
     console.log('picker', opened, where);
-    console.log('rule buttons:', await ev(`[...document.querySelectorAll('#galleryModalHost .ribbonRuleBtn')].map(b => b.closest('.ribbonSelectorTile').dataset.ribbonId).join(', ')`));
+    // LIVE14 E71: no "?" counting-rule button; before a pick the rule is the line under the select.
+    const ruleButtons = await ev(`document.querySelectorAll('#galleryModalHost .ribbonRuleBtn, #galleryModalHost .ribbonRulePop').length`);
+    const ruleLine = await ev(`document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"] .ribbonDeviceSummary')?.textContent || ''`);
+    console.log('rule buttons:', ruleButtons, '| recruiter line before the pick:', ruleLine);
+    const ruleFails = [];
+    if(ruleButtons) ruleFails.push(`${ruleButtons} rule buttons or popovers in the picker`);
+    if(!/^Two recruits earn the ribbon/.test(ruleLine)) ruleFails.push(`the recruiter tile does not print its counting rule under the select: "${ruleLine}"`);
 
     // Ribbons that carry devices.
     // Three ribbons in a row that carry devices and a counting rule (cadet recruiter bronze/silver clasps, search finds, air search and rescue).
@@ -95,15 +101,14 @@ async function launch(){
     await ev(`document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"]').scrollIntoView({ block: 'center' })`);
     await sleep(300);
     await shot('3b-recruiter-tile');
-    // Opening a counting rule must not move anything either, and the popover has to be visible.
-    const popen = await ev(`(() => { const root = document.querySelector('#galleryModalHost .galleryGrid'); const b = root.querySelector('.ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"] .ribbonRuleBtn'); if(!b) return null; b.click(); const pop = b.nextElementSibling; return { open: b.getAttribute('aria-expanded'), visible: getComputedStyle(pop).visibility, text: pop.textContent }; })()`);
-    await sleep(300);
-    if(popen === null){ console.log('no rule button (old layout)'); } else if(popen.visible !== 'visible') throw new Error('the rule popover did not open');
-    console.log('rule popover:', JSON.stringify(popen));
-    await shot('4-rule-open');
+    // Picked, the line says what was selected; the rule stays in its title and the select's.
+    const picked = await ev(`(() => { const t = document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"]'); const line = t.querySelector('.ribbonDeviceSummary'); return { text: line.textContent, title: line.title, select: t.querySelector('select.rbAwardSelect').title }; })()`);
+    console.log('recruiter after the pick:', JSON.stringify(picked));
+    if(!/^Selected: /.test(picked.text)) ruleFails.push(`the picked line: "${picked.text}"`);
+    if(!/Two recruits earn the ribbon/.test(picked.title) || !/Two recruits earn the ribbon/.test(picked.select)) ruleFails.push('the rule is not in the picked line\'s title or the select\'s');
     log.push(await ev(measure));
     // Compare by tile index (same tiles, same order).
-    let bad = [];
+    let bad = [...ruleFails];
     log.forEach((m, k) => {
       if(m.n !== base.n) bad.push(`pick ${k + 1}: tile count ${base.n} -> ${m.n}`);
       for(let i = 0; i < base.n && i < m.n; i++){
