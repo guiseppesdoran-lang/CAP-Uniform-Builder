@@ -24,7 +24,8 @@ function headersFor(pathname, url = pathname){
   return { 'cache-control': cacheControlFor(pathname, q) };
 }
 
-// The Caddyfile lines for the policy, tab-indented for the site block. The three matchers do not overlap, so the order
+// The Caddyfile lines for the policy, as they stand (two tabs in) in the static site's handle block of deploy/Caddyfile.tunnel;
+// /api/* and /admin* are another handle (LIVE13 E69) and get no Cache-Control from here. The three matchers do not overlap, so the order
 // Caddy applies header directives in does not matter.
 const CADDY_LINES = [
   '# Cache-Control from scripts/cache-policy.cjs (tests/cache-policy.test.cjs checks this block matches).',

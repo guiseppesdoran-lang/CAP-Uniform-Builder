@@ -13,8 +13,11 @@ const ROOT = path.join(__dirname, '..');
 const caddy = fs.readFileSync(path.join(ROOT, 'deploy', 'Caddyfile.tunnel'), 'utf8');
 
 test('deploy/Caddyfile.tunnel carries the policy block as scripts/cache-policy.cjs writes it', () => {
-  const block = policy.CADDY_LINES.map(l => '\t' + l).join('\n');
-  assert.ok(caddy.includes(block), 'run the block from scripts/cache-policy.cjs CADDY_LINES into the :80 site block');
+  // Inside the static site's handle (two tabs), so the API's own no-store answers are left alone (LIVE13 E69).
+  const block = policy.CADDY_LINES.map(l => '\t\t' + l).join('\n');
+  assert.ok(caddy.includes(block), 'run the block from scripts/cache-policy.cjs CADDY_LINES into the static handle of the :80 site block');
+  const staticHandle = caddy.indexOf('\n\thandle {\n');
+  assert.ok(staticHandle > 0 && caddy.indexOf(block) > staticHandle, 'the policy is inside the static handle');
   // No other Cache-Control header is set, so nothing overrides the policy.
   assert.equal((caddy.match(/Cache-Control/g) || []).length, 3 + 1, 'three header lines and the comment naming it');
 });

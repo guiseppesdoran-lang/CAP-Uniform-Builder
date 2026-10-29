@@ -42,6 +42,6 @@ test('the site build precompresses last, and the live Caddyfile serves the copie
   assert.ok(at > build.indexOf("'stamp-assets.cjs'), `--root=${DIST}`"), 'after the restamp, when every file is final');
   assert.ok(at > build.indexOf('await writePacks()'), 'after the packs are written');
   const caddy = fs.readFileSync(path.join(ROOT, 'deploy', 'Caddyfile.tunnel'), 'utf8');
-  assert.match(caddy, /file_server \{[^}]*\n\t\tprecompressed br gzip\n\t\}/);
+  assert.match(caddy, /file_server \{[^}]*\n\t\t\tprecompressed br gzip\n\t\t\}/);
   assert.match(caddy, /\n\tencode zstd gzip\n/, 'everything else is still compressed on the fly');
 });

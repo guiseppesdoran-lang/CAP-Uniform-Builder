@@ -72,7 +72,9 @@ function capubRepairCriticalButtons(){
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.CAPUB_TELEMETRY?.track('png_download', { uniform: State.uniform, ok: true });
     }catch(err){
+      window.CAPUB_TELEMETRY?.track('png_download', { uniform: State.uniform, ok: false });
       console.error('PNG EXPORT ERROR:', err);
       capubNotify(`PNG export failed: ${err?.message || err}`, 8000);
     }finally{

@@ -3,6 +3,10 @@
 #
 # The Content-Security-Policy below is the one in scripts/csp.cjs
 # (buildCsp({ forHeader: true })); tests/security.test.cjs fails if they differ.
+#
+# /api/* and /admin* go to the uniform-api container (handle @app); everything else is the static site in /srv.
+# Caddy runs the two handle blocks as alternatives, so the GET/HEAD-only rule and the cache policy apply to the
+# static site only; the security headers and encode apply to both.
 
 {
 	auto_https off
@@ -10,14 +14,7 @@
 }
 
 :80 {
-	root * /srv
 	encode zstd gzip
-	file_server {
-		# Directory listings stay off (the default); no browse directive.
-		# The site build writes name.br and name.gz beside the scripts, stylesheet, page and artwork packs
-		# (scripts/precompress.cjs, brotli at its highest level); encode above covers every other file.
-		precompressed br gzip
-	}
 
 	header {
 		X-Robots-Tag "noindex, nofollow, noarchive"
@@ -30,28 +27,51 @@
 		-Server
 	}
 
-	# Only GET and HEAD make sense for a static site.
-	@badmethod not method GET HEAD
-	respond @badmethod 405
-
-	# Never serve dotfiles (.git, .env ...).
-	@dotfiles path */.*
-	respond @dotfiles 404
-
-	# Cache-Control from scripts/cache-policy.cjs (tests/cache-policy.test.cjs checks this block matches).
-	# A ?v= URL (content hash or artwork version) never changes: a year, immutable.
-	@versioned query v=*
-	header @versioned Cache-Control "public, max-age=31536000, immutable"
-	# vendor/ (fonts, PDF.js) has no stamp: a day.
-	@vendor {
-		not query v=*
-		path /vendor/*
+	# The API and the admin dashboard (LIVE13 E69, E70): the uniform-api container on the proxy network
+	# (deploy/api, deploy/docker-compose.yml). It marks its own answers no-store; the static
+	# rules below (GET/HEAD only, the cache policy) are inside the other handle and do not apply here.
+	@app path /api/* /admin /admin/*
+	handle @app {
+		request_body {
+			max_size 64KB
+		}
+		reverse_proxy uniform-api:8080
 	}
-	header @vendor Cache-Control "public, max-age=86400"
-	# Everything else, the page first, is revalidated on every load (an ETag 304 when unchanged).
-	@revalidate {
-		not query v=*
-		not path /vendor/*
+
+	# The static site.
+	handle {
+		root * /srv
+		file_server {
+			# Directory listings stay off (the default); no browse directive.
+			# The site build writes name.br and name.gz beside the scripts, stylesheet, page and artwork packs
+			# (scripts/precompress.cjs, brotli at its highest level); encode above covers every other file.
+			precompressed br gzip
+		}
+
+		# Only GET and HEAD make sense for a static site.
+		@badmethod not method GET HEAD
+		respond @badmethod 405
+
+		# Never serve dotfiles (.git, .env ...). Inside this handle: Caddy orders respond after handle, so at the
+		# top level it would never run once a handle has answered.
+		@dotfiles path */.*
+		respond @dotfiles 404
+
+		# Cache-Control from scripts/cache-policy.cjs (tests/cache-policy.test.cjs checks this block matches).
+		# A ?v= URL (content hash or artwork version) never changes: a year, immutable.
+		@versioned query v=*
+		header @versioned Cache-Control "public, max-age=31536000, immutable"
+		# vendor/ (fonts, PDF.js) has no stamp: a day.
+		@vendor {
+			not query v=*
+			path /vendor/*
+		}
+		header @vendor Cache-Control "public, max-age=86400"
+		# Everything else, the page first, is revalidated on every load (an ETag 304 when unchanged).
+		@revalidate {
+			not query v=*
+			not path /vendor/*
+		}
+		header @revalidate Cache-Control "no-cache"
 	}
-	header @revalidate Cache-Control "no-cache"
 }

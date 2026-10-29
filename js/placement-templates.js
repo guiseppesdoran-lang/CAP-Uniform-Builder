@@ -808,7 +808,7 @@
       if(!b || !ui.plan) return;
       const side = ui.plan.sides.find(s => s.key === b.dataset.side);
       if(!side) return;
-      try{ download(side, b.dataset.what); }catch(e){ console.error('[placement templates]', e); if(typeof root().capubNotify === 'function') root().capubNotify('The template could not be made: ' + (e && e.message || e)); }
+      try{ download(side, b.dataset.what); const T = root().CAPUB_TELEMETRY; if(T) T.track('templates', { side: side.key, what: b.dataset.what, paper: ui.paper }); }catch(e){ console.error('[placement templates]', e); if(typeof root().capubNotify === 'function') root().capubNotify('The template could not be made: ' + (e && e.message || e)); }
     });
     return d;
   }

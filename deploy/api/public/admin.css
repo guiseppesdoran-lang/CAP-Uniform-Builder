@@ -1,0 +1,154 @@
+/* The Uniform Builder admin dashboard (LIVE13 E69). CAP palette and the site's own type (Rajdhani for headings, Ubuntu for
+   text, from /vendor/fonts beside this service; system fonts when they are not there). */
+@font-face{font-family:"Rajdhani";src:url("/vendor/fonts/Rajdhani-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Ubuntu";src:url("/vendor/fonts/Ubuntu-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Ubuntu";src:url("/vendor/fonts/Ubuntu-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --cap-blue:#001871;--cap-red:#BA0C2F;--cap-yellow:#FFCD00;--cap-silver:#9EA2A2;
+  --bg:#ECECEC;--panel:#FFFFFF;--panel-2:#F6F7FA;--ink:#10131A;--muted:#464B53;--line:#C9CCD3;--line-strong:#6B7078;
+  --bar:#001871;--on-bar:#FFFFFF;--action:#001871;--on-action:#FFFFFF;--focus:#FFCD00;
+  --unread:#BA0C2F;--chip:#CCD1E3;
+  /* Chart series (validated: tools/dataviz validator, light on #FFFFFF, dark on #0F1739). */
+  --s-builds:#1E4FD8;--s-visits:#9A7200;--grid:#E3E5EA;
+  --share:#1E4FD8;
+  --font-head:"Rajdhani","Arial Narrow",system-ui,sans-serif;
+  --font-body:"Ubuntu",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#070B22;--panel:#0F1739;--panel-2:#141E48;--ink:#F2F4FA;--muted:#B9BED0;--line:#2C3769;--line-strong:#7C86B4;
+    --bar:#0F1739;--action:#FFCD00;--on-action:#10131A;--unread:#FF6B85;--chip:#1B2860;
+    --s-builds:#6F8BF5;--s-visits:#B08600;--grid:#1E2852;--share:#6F8BF5;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--font-body)}
+h1,h2,h3{font-family:var(--font-head);font-weight:700;letter-spacing:.02em;margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+button,select,.button{font:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+/* ---- top bar ---- */
+.bar{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bar);color:var(--on-bar);border-bottom:4px solid var(--cap-yellow)}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brandName{font:700 24px/1 var(--font-head);letter-spacing:.03em}
+.brandSub{font:700 14px/1 var(--font-head);letter-spacing:.12em;text-transform:uppercase;color:var(--cap-yellow)}
+.barActions{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.barActions form{margin:0}
+.rangePick{display:flex;gap:8px;align-items:center;font-size:14px}
+.rangePick select{min-height:36px;padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.5);background:transparent;color:inherit}
+.rangePick select option{color:#10131A}
+.updated{font-size:13px;opacity:.85}
+.bar .ghost{min-height:36px;padding:0 14px;border-radius:6px;border:1px solid rgba(255,255,255,.6);background:transparent;color:inherit;cursor:pointer;font-weight:700}
+.bar .ghost:hover{background:rgba(255,255,255,.12)}
+
+main{max-width:1240px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+
+/* ---- tiles ---- */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.tileLabel{font:700 15px/1.1 var(--font-head);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tileMain{display:flex;align-items:baseline;gap:8px;margin:6px 0 8px}
+.tileValue{font:700 40px/1 var(--font-head);font-variant-numeric:tabular-nums}
+.tileUnit{color:var(--muted);font-size:13px}
+.tileRows{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;color:var(--muted);margin:0}
+.tileRows dt{margin:0}
+.tileRows dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+.tile.alert .tileValue{color:var(--unread)}
+
+/* ---- cards ---- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.cardHead{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.cardHead h2{font-size:22px;line-height:1.1}
+.hint{color:var(--muted);font-size:13px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.empty{color:var(--muted);font-size:14px;padding:6px 0}
+
+/* ---- tables with share bars ---- */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;border-bottom:1px solid var(--line)}
+td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.shareCell{width:38%}
+.shareBar{height:10px;border-radius:0 4px 4px 0;background:var(--share);min-width:2px}
+.gap{height:14px}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+
+/* ---- chart ---- */
+.chart{position:relative;overflow:hidden}
+.chart .tip{max-width:calc(100% - 8px)}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .gridline{stroke:var(--grid);stroke-width:1}
+.chart .axis{fill:var(--muted);font:400 11px var(--font-body)}
+.chart .barMark{fill:var(--s-builds)}
+.chart .barMark.hover{opacity:.75}
+.chart .visitLine{fill:none;stroke:var(--s-visits);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .hit{fill:transparent;cursor:crosshair}
+.chart .crosshair{stroke:var(--line-strong);stroke-width:1}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin:2px 0 6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .key{display:inline-block;width:12px;height:10px;border-radius:0 3px 3px 0}
+.legend .key.line{height:2px;width:16px;border-radius:2px}
+.tip{position:absolute;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--line-strong);border-radius:6px;padding:6px 10px;font-size:13px;box-shadow:0 4px 14px rgba(0,16,60,.18);white-space:nowrap;transform:translate(-50%,-100%);z-index:5}
+.tip b{font-variant-numeric:tabular-nums}
+.tip .tipRow{display:flex;align-items:center;gap:8px}
+.tip .tipKey{display:inline-block;width:12px;height:2px;border-radius:2px}
+.tip .tipDay{color:var(--muted)}
+details.tableView{margin-top:8px;font-size:14px}
+details.tableView summary{cursor:pointer;color:var(--muted)}
+details.tableView .scroll{max-height:240px;overflow:auto;margin-top:6px}
+
+/* ---- feedback inbox ---- */
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden}
+.seg button{min-height:36px;padding:0 12px;border:0;background:transparent;color:var(--ink);cursor:pointer;font-weight:700}
+.seg button+button{border-left:1px solid var(--line-strong)}
+.seg button[aria-checked="true"]{background:var(--action);color:var(--on-action)}
+.inbox{display:flex;flex-direction:column;gap:10px}
+.fb{border:1px solid var(--line);border-left:4px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--panel-2)}
+.fb.unread{border-left-color:var(--unread)}
+.fbHead{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;justify-content:space-between}
+.fbMeta{font-size:13px;color:var(--muted)}
+.fbMeta b{color:var(--ink)}
+.fbNew{display:inline-block;margin-right:6px;padding:0 6px;border-radius:4px;background:var(--unread);color:#fff;font:700 12px/18px var(--font-body);letter-spacing:.04em}
+.fbMsg{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.fbSetup{font-size:13px;color:var(--muted)}
+.fbSetup summary{cursor:pointer}
+.fbSetup dl{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;margin:6px 0 0}
+.fbSetup dt{color:var(--muted)}
+.fbSetup dd{margin:0;color:var(--ink)}
+.fbActions{display:flex;gap:8px;flex-wrap:wrap}
+.fbActions button{min-height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer;font-weight:700}
+.fbActions button:hover{background:var(--panel)}
+
+/* ---- live log ---- */
+.log{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:6px}
+.log table td{font-size:13px}
+.log td.when{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums}
+.log td.ev{white-space:nowrap;font-weight:700}
+.log td.who{white-space:nowrap}
+.log td.data{color:var(--muted);overflow-wrap:anywhere}
+.log thead th{position:sticky;top:0;background:var(--panel)}
+
+/* ---- data card ---- */
+.exports{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.button{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:6px;background:var(--action);color:var(--on-action);text-decoration:none;font-weight:700}
+.button:hover{filter:brightness(1.1)}
+.notes p{margin:0 0 8px;font-size:14px;color:var(--muted);max-width:90ch}
+.notes b{color:var(--ink)}
+
+.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:8px 14px;border-radius:6px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:480px){
+  .tiles{grid-template-columns:minmax(0,1fr)}
+  .tileValue{font-size:34px}
+}

@@ -747,7 +747,7 @@
   }
 
   const isOpen = () => !!document.getElementById('capubPurchaseOverlay')?.classList.contains('open');
-  function openModal(){ ensureModal(); renderBody(); document.getElementById('capubPurchaseOverlay')?.classList.add('open'); document.getElementById('capubShopSearch')?.focus(); }
+  function openModal(){ root.CAPUB_TELEMETRY?.track('shopping_open', { uniform: (root.State || {}).uniform }); ensureModal(); renderBody(); document.getElementById('capubPurchaseOverlay')?.classList.add('open'); document.getElementById('capubShopSearch')?.focus(); }
   function closeModal(){ document.getElementById('capubPurchaseOverlay')?.classList.remove('open'); }
   // The list follows the drawing: a new render while the dialog is open rebuilds it (search and sort kept).
   document.addEventListener('capub:rendered', () => { if(isOpen()) renderBody(); });

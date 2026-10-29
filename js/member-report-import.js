@@ -1850,8 +1850,11 @@ function wireMemberReportImporter(){
       ].filter(Boolean);
 
       setMemberReportImportStatus(lines, 'ok');
+      // Counts only: never the name, the file name or anything read from the report.
+      window.CAPUB_TELEMETRY?.track('import', { ok: true, kind: /pdf/i.test(file.type) || /\.pdf$/i.test(file.name) ? 'pdf' : 'text', membership: !!parsed.membership, rank: !!parsed.rank, gender: !!parsed.gender, ribbons: parsed.ribbons.length, badges: parsed.badges.length, patches: (parsed.patches || []).length, notes: (parsed.notes || []).length });
     }catch(err){
       console.error(err);
+      window.CAPUB_TELEMETRY?.track('import', { ok: false, kind: /pdf/i.test(file.type) || /\.pdf$/i.test(file.name) ? 'pdf' : 'text' });
       setMemberReportImportStatus(`Import failed: ${err.message || err}`, 'error');
     }finally{
       input.value = '';

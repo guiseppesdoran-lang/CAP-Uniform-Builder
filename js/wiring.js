@@ -13,6 +13,7 @@ uniformListEl.addEventListener('click', e=>{
   const newUniform=btn.dataset.uniformId;
   const prevU=State.uniform;
   State.uniform=newUniform;
+  if(prevU!==newUniform) window.CAPUB_TELEMETRY?.track('uniform_switch', { from: prevU, to: newUniform });
 
   fullRender(prevU);
   refreshUI();
@@ -1193,9 +1194,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const fn = by('capubV2FirstName'), ln = by('capubV2LastName'), pl = by('capubV2PlateLine'), sh = by('capubV2ShowText');
     if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
     if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
-    if(exp) exp.onclick = ()=>downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2));
+    if(exp) exp.onclick = ()=>(window.CAPUB_TELEMETRY?.track('setup_file', { action: 'save' }), downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2)));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
-    if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; };
+    if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; window.CAPUB_TELEMETRY?.track('setup_file', { action: 'open' }); };
     if(reset) reset.onclick = ()=>{ if(!confirm('Reset the entire builder setup?')) return; try{ localStorage.removeItem(CAPUB_V2.storageKey); localStorage.removeItem('cap_uniform_builder_autosave_v1'); }catch(_){} location.reload(); };
     const readText = ()=>{
       State.text.firstName = fn?.value || '';
@@ -1383,8 +1384,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   const btn = by('quickStripBtn');
   if(btn) btn.addEventListener('click', () => {
-    if(State.quickStrip && State.quickStrip.uniform === State.uniform){ restore('button'); fullRender(); }
-    else strip();
+    if(State.quickStrip && State.quickStrip.uniform === State.uniform){ restore('button'); fullRender(); window.CAPUB_TELEMETRY?.track('quick_strip', { action: 'restore', uniform: State.uniform }); }
+    else { strip(); if(State.quickStrip) window.CAPUB_TELEMETRY?.track('quick_strip', { action: 'strip', uniform: State.uniform }); }
   });
 
   // Leaving the stripped uniform puts the selections back before the next drawing (every uniform change calls fullRender).

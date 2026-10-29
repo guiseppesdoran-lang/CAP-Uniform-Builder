@@ -1,0 +1,59 @@
+# uniform.ebhq.dev on the Services VM: Caddy serves the built site on the shared `proxy`
+# network, like the other stacks in ~/stacks/apps. The existing cloudflared container
+# publishes it; there is no host port. Caddy sends /api/* and /admin* to uniform-api
+# (usage counts, feedback, the /admin dashboard), also on `proxy` and also without a host port.
+#
+#   docker compose -f deploy/docker-compose.yml up -d --build
+#
+# Update after changes: rsync the repository again and rerun the same command.
+# Relative paths here are from this file's directory: ./var is deploy/var and .env is deploy/.env
+# on the server. Neither is in the repository (.gitignore); see deploy/README.md.
+services:
+  uniform-builder:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: uniform-builder:latest
+    container_name: uniform-builder
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]   # the caddy binary carries this file capability
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /data
+      - /config
+    networks:
+      - proxy
+
+  uniform-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: uniform-api:latest
+    container_name: uniform-api
+    restart: unless-stopped
+    init: true
+    # ADMIN_PASSWORD (required for /admin), optionally SESSION_SECRET and TIMEZONE. A missing file does not stop
+    # the deploy: the site and the counts still run, and /admin answers 503 until the password is set.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATA_DIR: /data
+      PORT: "8080"
+    user: "1000:1000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp
+    volumes:
+      # The events and feedback live here, on the server only: back this directory up.
+      - ./var:/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

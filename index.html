@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Uniform Builder for CAP members</title>
 <meta name="robots" content="noindex, nofollow, noarchive">
-<meta name="description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items: rank, ribbons, badges and patches on each uniform. Everything stays in your browser.">
+<meta name="description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items: rank, ribbons, badges and patches on each uniform. Your setup stays in your browser; the site gets only anonymous usage counts and any feedback you send.">
 <meta name="theme-color" content="#002855">
 <meta name="darkreader-lock">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Uniform Builder for CAP members">
-<meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Everything stays in your browser.">
+<meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Your setup stays in your browser; the site gets only anonymous usage counts and any feedback you send.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
 <link rel="stylesheet" href="styles/app.css?v=fb0f406f4d">
@@ -447,7 +447,7 @@
 <dialog id="aboutDialog" aria-labelledby="aboutTitle">
   <h2 id="aboutTitle">About this tool</h2>
   <p>An unofficial planning tool for arranging Civil Air Patrol uniform items. It is not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force, and it does not replace CAPR 39-1 or your unit's guidance. Check the regulation before you buy or wear anything.</p>
-  <p><b>Privacy.</b> Nothing you build is uploaded. Your setup is saved in this browser as you work, so you can pick it up later, and it never leaves this device. A member report you import is read on your device only.</p>
+  <p><b>Privacy.</b> Your setup is saved in this browser as you work, so you can pick it up later. A member report you import is read on your device only. The site counts anonymous usage (which uniforms are built, how many items are on them, which buttons are used) and gets the feedback you choose to send. No name, CAPID, nameplate text or report contents ever leave your browser, and with Do Not Track on only plain visit and build counts are sent.</p>
   <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners. The colors and typefaces follow the public CAP Brand Guide. That does not make this an official CAP product.</p>
   <p>Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.</p>
   <div class="aboutActions"><button type="button" id="aboutClose" class="ghost">Close</button></div>
@@ -477,7 +477,7 @@
 <!-- App scripts. Every one is defer: the browser fetches them while it parses and paints the page (the access gate
      answers as soon as parsing ends, js/access-gate.js), then runs them in this order before DOMContentLoaded.
      A new script tag must keep src first and carry defer (tests/script-tags.test.cjs); npm run stamp:assets adds its ?v=. -->
-<script src="config.js?v=b27f27027a" defer></script>
+<script src="config.js?v=750a021e35" defer></script>
 <script src="purchase-catalog.js?v=71e8777981" defer></script>
 <script src="mcchord-ribbon-variants.js?v=5a0f6964fb" defer></script>
 <script src="member-report-rules.js?v=3588e70034" defer></script>
@@ -515,20 +515,21 @@
 <script src="js/asset-packs.js?v=c3b2ae52b2" defer></script>
 <script src="js/uniform-view.js?v=37a54c1a9f" defer></script>
 <script src="js/garment-options.js?v=25c41c9a67" defer></script>
-<script src="js/wiring.js?v=1023b98ced" defer></script>
+<script src="js/wiring.js?v=379fff9857" defer></script>
 <script src="js/placement-stl.js?v=ae4f6aee13" defer></script>
-<script src="js/placement-templates.js?v=be333f0914" defer></script>
+<script src="js/placement-templates.js?v=266e4eb29b" defer></script>
 <script src="js/workspace-ui.js?v=85d67cfcf5" defer></script>
 <script src="js/planned-uniforms.js?v=645b98dd2f" defer></script>
 <script src="js/guided-flow.js?v=7def638381" defer></script>
-<script src="js/member-report-import.js?v=b239eedd54" defer></script>
+<script src="js/member-report-import.js?v=7cb60989ee" defer></script>
 <!-- Feature scripts: add their script tags here, src first, then defer. They run after every helper above and
      before js/bootstrap.js performs the first render. -->
+<script src="js/telemetry.js?v=fe8adaa43e" defer></script>
 
 <!-- End of feature scripts. -->
-<script src="js/bootstrap.js?v=b0c1b62303" defer></script>
+<script src="js/bootstrap.js?v=6b4f355bc8" defer></script>
 <script src="js/patches.js?v=4f01efe754" defer></script>
-<script src="purchase-feature-core.js?v=13cea80829" defer></script>
+<script src="purchase-feature-core.js?v=5ccffc4d62" defer></script>
 <script src="purchase-feature.js?v=ef7c40a072" defer></script>
 <!-- Loaded directly so patch submission cannot be blocked by stale chained feature loaders. -->
 <script src="patch-submission.js?v=ee6e784e95" defer></script>
