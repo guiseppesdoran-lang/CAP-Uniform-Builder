@@ -1,7 +1,7 @@
 {
  "asset_id": "senior-ground-team-mini",
  "width_in": 0.875,
- "height_in": 0.849,
+ "height_in": 0.807,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: miniature width 0.875 in",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    43.75,
-   84.903
+   80.679
   ],
   "center": [
    43.75,
-   42.452
+   40.34
   ],
   "left_edge": [
    0,
-   42.452
+   40.34
   ],
   "right_edge": [
    87.5,
-   42.452
+   40.34
   ]
  },
  "dimensions": {
@@ -36,10 +36,10 @@
  "generator": "artwork-samples/silver + senior_ground_team_badge (miniature = same art at miniature size)",
  "reference": "ALL/ref/senior_ground_team_badge.png",
  "source_bbox_user_units": [
-  10.167,
-  -4.067,
+  10.333,
+  -4.058,
   228,
-  207.301
+  196.641
  ],
  "fit_score": null,
  "notes": ""

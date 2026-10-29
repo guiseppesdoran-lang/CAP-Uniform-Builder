@@ -11380,7 +11380,7 @@
    "path": "field/ground-team-basic-field/ground-team-basic-field.svg",
    "category": "field",
    "w_in": 1.375,
-   "h_in": 1.06282,
+   "h_in": 1.03089,
    "size_source": "regulation",
    "basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
    "anchors": {
@@ -11390,51 +11390,55 @@
     ],
     "bottom_center": [
      68.75,
-     106.282
+     103.089
     ],
     "center": [
      68.75,
-     53.141
+     51.5445
     ],
     "left_edge": [
      0,
-     53.141
+     51.5445
     ],
     "right_edge": [
      137.5,
-     53.141
+     51.5445
     ],
     "disc_center": [
-     68.708,
-     42.5
+     68.751,
+     45.185
     ],
     "disc_top": [
-     68.708,
-     13.593
+     68.751,
+     16.299
     ],
     "triangle_apex": [
-     68.147,
-     18.087
+     68.191,
+     20.79
     ],
     "triangle_base_center": [
-     68.147,
-     57.884
+     68.191,
+     60.557
     ],
     "ribbon_tail_left": [
-     59.87,
-     91.661
+     59.92,
+     88.549
     ],
     "ribbon_tail_right": [
-     77.546,
-     91.661
+     77.582,
+     88.549
     ],
     "wreath_bottom": [
-     68.708,
-     93.87
+     68.751,
+     90.757
     ],
     "wreath_center": [
-     68.708,
-     52.627
+     68.751,
+     49.545
+    ],
+    "wreath_inner_bottom": [
+     68.751,
+     74.07
     ],
     "art_top_center": [
      68.75,
@@ -11442,7 +11446,7 @@
     ],
     "art_bottom_center": [
      68.75,
-     93.782
+     90.589
     ]
    },
    "landmarks": [],
@@ -11692,7 +11696,7 @@
    "path": "field/master-ground-team-field/master-ground-team-field.svg",
    "category": "field",
    "w_in": 1.375,
-   "h_in": 1.41054,
+   "h_in": 1.35457,
    "size_source": "regulation",
    "basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
    "anchors": {
@@ -11702,67 +11706,71 @@
     ],
     "bottom_center": [
      68.75,
-     141.054
+     135.457
     ],
     "center": [
      68.75,
-     70.527
+     67.7285
     ],
     "left_edge": [
      0,
-     70.527
+     67.7285
     ],
     "right_edge": [
      137.5,
-     70.527
+     67.7285
     ],
     "disc_center": [
-     68.708,
-     77.352
+     68.751,
+     77.3
     ],
     "disc_top": [
-     68.708,
-     48.445
+     68.751,
+     48.414
     ],
     "triangle_apex": [
-     68.147,
-     52.939
+     68.191,
+     52.905
     ],
     "triangle_base_center": [
-     68.147,
-     92.736
+     68.191,
+     92.672
     ],
     "ribbon_tail_left": [
-     59.87,
-     126.513
+     59.92,
+     120.664
     ],
     "ribbon_tail_right": [
-     77.546,
-     126.513
+     77.582,
+     120.664
     ],
     "wreath_bottom": [
-     68.708,
-     128.723
+     68.751,
+     122.872
     ],
     "wreath_center": [
-     68.708,
-     87.479
+     68.751,
+     81.66
+    ],
+    "wreath_inner_bottom": [
+     68.751,
+     106.185
     ],
     "device_center": [
-     68.708,
-     31.579
+     68.751,
+     31.562
     ],
     "device_base": [
-     68.708,
-     49.624
+     68.751,
+     49.592
     ],
     "device_top": [
-     68.708,
-     13.535
+     68.751,
+     13.531
     ],
     "device_post_bottom": [
-     68.708,
-     53.674
+     68.751,
+     53.639
     ],
     "art_top_center": [
      68.75,
@@ -11770,7 +11778,7 @@
     ],
     "art_bottom_center": [
      68.75,
-     128.554
+     122.957
     ]
    },
    "landmarks": [],
@@ -12250,7 +12258,7 @@
    "path": "field/senior-ground-team-field/senior-ground-team-field.svg",
    "category": "field",
    "w_in": 1.375,
-   "h_in": 1.34161,
+   "h_in": 1.2873,
    "size_source": "regulation",
    "basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
    "anchors": {
@@ -12260,63 +12268,67 @@
     ],
     "bottom_center": [
      68.75,
-     134.161
+     128.73000000000002
     ],
     "center": [
      68.75,
-     67.0805
+     64.36500000000001
     ],
     "left_edge": [
      0,
-     67.0805
+     64.36500000000001
     ],
     "right_edge": [
      137.5,
-     67.0805
+     64.36500000000001
     ],
     "disc_center": [
-     68.751,
-     70.498
+     68.708,
+     70.538
     ],
     "disc_top": [
-     68.751,
-     41.613
+     68.708,
+     41.631
     ],
     "triangle_apex": [
-     68.191,
-     46.104
+     68.147,
+     46.125
     ],
     "triangle_base_center": [
-     68.191,
-     85.87
+     68.147,
+     85.922
     ],
     "ribbon_tail_left": [
-     59.92,
-     119.621
+     59.87,
+     113.936
     ],
     "ribbon_tail_right": [
-     77.582,
-     119.621
+     77.546,
+     113.936
     ],
     "wreath_bottom": [
-     68.751,
-     121.829
+     68.708,
+     116.145
     ],
     "wreath_center": [
-     68.751,
-     80.618
+     68.708,
+     74.902
+    ],
+    "wreath_inner_bottom": [
+     68.708,
+     99.446
     ],
     "star_center": [
-     68.751,
-     29.415
+     68.708,
+     29.423
     ],
     "star_top": [
-     68.751,
-     12.673
+     68.708,
+     12.668
     ],
     "star_base": [
-     68.751,
-     42.96
+     68.708,
+     42.979
     ],
     "art_top_center": [
      68.75,
@@ -12324,7 +12336,7 @@
     ],
     "art_bottom_center": [
      68.75,
-     121.661
+     116.23
     ]
    },
    "landmarks": [],
@@ -28692,7 +28704,7 @@
    "path": "mini/ground-team-basic-mini/ground-team-basic-mini.svg",
    "category": "mini",
    "w_in": 0.875,
-   "h_in": 0.632,
+   "h_in": 0.607,
    "size_source": "regulation",
    "basis": "regulation: miniature width 0.875 in",
    "anchors": {
@@ -28702,19 +28714,19 @@
     ],
     "bottom_center": [
      43.75,
-     63.219
+     60.736
     ],
     "center": [
      43.75,
-     31.61
+     30.368
     ],
     "left_edge": [
      0,
-     31.61
+     30.368
     ],
     "right_edge": [
      87.5,
-     31.61
+     30.368
     ]
    },
    "landmarks": [],
@@ -28828,7 +28840,7 @@
    "path": "mini/master-ground-team-mini/master-ground-team-mini.svg",
    "category": "mini",
    "w_in": 0.875,
-   "h_in": 0.903,
+   "h_in": 0.859,
    "size_source": "regulation",
    "basis": "regulation: miniature width 0.875 in",
    "anchors": {
@@ -28838,19 +28850,19 @@
     ],
     "bottom_center": [
      43.75,
-     90.264
+     85.911
     ],
     "center": [
      43.75,
-     45.132
+     42.956
     ],
     "left_edge": [
      0,
-     45.132
+     42.956
     ],
     "right_edge": [
      87.5,
-     45.132
+     42.956
     ]
    },
    "landmarks": [],
@@ -29032,7 +29044,7 @@
    "path": "mini/senior-ground-team-mini/senior-ground-team-mini.svg",
    "category": "mini",
    "w_in": 0.875,
-   "h_in": 0.849,
+   "h_in": 0.807,
    "size_source": "regulation",
    "basis": "regulation: miniature width 0.875 in",
    "anchors": {
@@ -29042,19 +29054,19 @@
     ],
     "bottom_center": [
      43.75,
-     84.903
+     80.679
     ],
     "center": [
      43.75,
-     42.452
+     40.34
     ],
     "left_edge": [
      0,
-     42.452
+     40.34
     ],
     "right_edge": [
      87.5,
-     42.452
+     40.34
     ]
    },
    "landmarks": [],
@@ -32549,7 +32561,7 @@
    "path": "silver/ground-team-basic/ground-team-basic.svg",
    "category": "silver",
    "w_in": 1.125,
-   "h_in": 0.813,
+   "h_in": 0.781,
    "size_source": "regulation",
    "basis": "regulation: width 1.125 in",
    "anchors": {
@@ -32559,51 +32571,55 @@
     ],
     "bottom_center": [
      56.25,
-     81.282
+     78.089
     ],
     "center": [
      56.25,
-     40.641
+     39.044
     ],
     "left_edge": [
      0,
-     40.641
+     39.044
     ],
     "right_edge": [
      112.5,
-     40.641
+     39.044
     ],
     "disc_center": [
-     56.208,
-     30
+     56.251,
+     32.685
     ],
     "disc_top": [
-     56.208,
-     1.093
+     56.251,
+     3.799
     ],
     "triangle_apex": [
-     55.647,
-     5.587
+     55.691,
+     8.29
     ],
     "triangle_base_center": [
-     55.647,
-     45.384
+     55.691,
+     48.057
     ],
     "ribbon_tail_left": [
-     47.37,
-     79.161
+     47.42,
+     76.049
     ],
     "ribbon_tail_right": [
-     65.046,
-     79.161
+     65.082,
+     76.049
     ],
     "wreath_bottom": [
-     56.208,
-     81.37
+     56.251,
+     78.257
     ],
     "wreath_center": [
-     56.208,
-     40.127
+     56.251,
+     37.045
+    ],
+    "wreath_inner_bottom": [
+     56.251,
+     61.57
     ]
    },
    "landmarks": [],
@@ -32813,7 +32829,7 @@
    "path": "silver/master-ground-team/master-ground-team.svg",
    "category": "silver",
    "w_in": 1.125,
-   "h_in": 1.161,
+   "h_in": 1.105,
    "size_source": "regulation",
    "basis": "regulation: width 1.125 in",
    "anchors": {
@@ -32823,67 +32839,71 @@
     ],
     "bottom_center": [
      56.25,
-     116.054
+     110.457
     ],
     "center": [
      56.25,
-     58.027
+     55.228
     ],
     "left_edge": [
      0,
-     58.027
+     55.228
     ],
     "right_edge": [
      112.5,
-     58.027
+     55.228
     ],
     "disc_center": [
-     56.208,
-     64.852
+     56.251,
+     64.8
     ],
     "disc_top": [
-     56.208,
-     35.945
+     56.251,
+     35.914
     ],
     "triangle_apex": [
-     55.647,
-     40.439
+     55.691,
+     40.405
     ],
     "triangle_base_center": [
-     55.647,
-     80.236
+     55.691,
+     80.172
     ],
     "ribbon_tail_left": [
-     47.37,
-     114.013
+     47.42,
+     108.164
     ],
     "ribbon_tail_right": [
-     65.046,
-     114.013
+     65.082,
+     108.164
     ],
     "wreath_bottom": [
-     56.208,
-     116.223
+     56.251,
+     110.372
     ],
     "wreath_center": [
-     56.208,
-     74.979
+     56.251,
+     69.16
+    ],
+    "wreath_inner_bottom": [
+     56.251,
+     93.685
     ],
     "device_center": [
-     56.208,
-     19.079
+     56.251,
+     19.062
     ],
     "device_base": [
-     56.208,
-     37.124
+     56.251,
+     37.092
     ],
     "device_top": [
-     56.208,
-     1.035
+     56.251,
+     1.031
     ],
     "device_post_bottom": [
-     56.208,
-     41.174
+     56.251,
+     41.139
     ]
    },
    "landmarks": [],
@@ -33367,7 +33387,7 @@
    "path": "silver/senior-ground-team/senior-ground-team.svg",
    "category": "silver",
    "w_in": 1.125,
-   "h_in": 1.092,
+   "h_in": 1.037,
    "size_source": "regulation",
    "basis": "regulation: width 1.125 in",
    "anchors": {
@@ -33377,63 +33397,67 @@
     ],
     "bottom_center": [
      56.25,
-     109.161
+     103.73
     ],
     "center": [
      56.25,
-     54.581
+     51.865
     ],
     "left_edge": [
      0,
-     54.581
+     51.865
     ],
     "right_edge": [
      112.5,
-     54.581
+     51.865
     ],
     "disc_center": [
-     56.251,
-     57.998
+     56.208,
+     58.038
     ],
     "disc_top": [
-     56.251,
-     29.113
+     56.208,
+     29.131
     ],
     "triangle_apex": [
-     55.691,
-     33.604
+     55.647,
+     33.625
     ],
     "triangle_base_center": [
-     55.691,
-     73.37
+     55.647,
+     73.422
     ],
     "ribbon_tail_left": [
-     47.42,
-     107.121
+     47.37,
+     101.436
     ],
     "ribbon_tail_right": [
-     65.082,
-     107.121
+     65.046,
+     101.436
     ],
     "wreath_bottom": [
-     56.251,
-     109.329
+     56.208,
+     103.645
     ],
     "wreath_center": [
-     56.251,
-     68.118
+     56.208,
+     62.402
+    ],
+    "wreath_inner_bottom": [
+     56.208,
+     86.946
     ],
     "star_center": [
-     56.251,
-     16.915
+     56.208,
+     16.923
     ],
     "star_top": [
-     56.251,
-     0.173
+     56.208,
+     0.168
     ],
     "star_base": [
-     56.251,
-     30.46
+     56.208,
+     30.479
     ]
    },
    "landmarks": [],

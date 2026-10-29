@@ -1,7 +1,7 @@
 {
  "asset_id": "ground-team-basic-mini",
  "width_in": 0.875,
- "height_in": 0.632,
+ "height_in": 0.607,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: miniature width 0.875 in",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    43.75,
-   63.219
+   60.736
   ],
   "center": [
    43.75,
-   31.61
+   30.368
   ],
   "left_edge": [
    0,
-   31.61
+   30.368
   ],
   "right_edge": [
    87.5,
-   31.61
+   30.368
   ]
  },
  "dimensions": {
@@ -36,10 +36,10 @@
  "generator": "artwork-samples/silver + ground_team_basic_badge (miniature = same art at miniature size)",
  "reference": "ALL/ref/ground_team_basic_badge.png",
  "source_bbox_user_units": [
-  10.333,
-  50.191,
+  10.167,
+  44.948,
   228,
-  207.456
+  196.152
  ],
  "fit_score": null,
  "notes": ""

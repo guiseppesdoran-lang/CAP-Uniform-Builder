@@ -1,7 +1,7 @@
 {
  "asset_id": "ground-team-basic-field",
  "width_in": 1.375,
- "height_in": 1.06282,
+ "height_in": 1.03089,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,51 +13,55 @@
   ],
   "bottom_center": [
    68.75,
-   106.282
+   103.089
   ],
   "center": [
    68.75,
-   53.141
+   51.5445
   ],
   "left_edge": [
    0,
-   53.141
+   51.5445
   ],
   "right_edge": [
    137.5,
-   53.141
+   51.5445
   ],
   "disc_center": [
-   68.708,
-   42.5
+   68.751,
+   45.185
   ],
   "disc_top": [
-   68.708,
-   13.593
+   68.751,
+   16.299
   ],
   "triangle_apex": [
-   68.147,
-   18.087
+   68.191,
+   20.79
   ],
   "triangle_base_center": [
-   68.147,
-   57.884
+   68.191,
+   60.557
   ],
   "ribbon_tail_left": [
-   59.87,
-   91.661
+   59.92,
+   88.549
   ],
   "ribbon_tail_right": [
-   77.546,
-   91.661
+   77.582,
+   88.549
   ],
   "wreath_bottom": [
-   68.708,
-   93.87
+   68.751,
+   90.757
   ],
   "wreath_center": [
-   68.708,
-   52.627
+   68.751,
+   49.545
+  ],
+  "wreath_inner_bottom": [
+   68.751,
+   74.07
   ],
   "art_top_center": [
    68.75,
@@ -65,7 +69,7 @@
   ],
   "art_bottom_center": [
    68.75,
-   93.782
+   90.589
   ]
  },
  "dimensions": {
@@ -79,29 +83,30 @@
   "wreath_nodes_per_branch": 28,
   "wreath_hug_leaves_per_branch": 3,
   "wreath_closure_deg_from_bottom": 150,
+  "wreath_lift_emt_px": 31.3,
   "wreath_construction": "EMT badge wreath (enamel/g5/make-emt.js GEO.wreath), lens leaves on three scaled superellipses + disc-hugging row",
   "emt_scale_k": 0.35624,
-  "disc_radius_in": 0.2891,
-  "disc_rim_radius_in": 0.2584,
-  "triangle_height_in": 0.398,
-  "triangle_base_width_in": 0.3876,
-  "wreath_semi_axis_x_in": 0.4976,
-  "wreath_semi_axis_up_in": 0.3301,
-  "wreath_semi_axis_low_in": 0.3602,
-  "wreath_band_width_in": 0.1887,
-  "wreath_leaf_length_in": 0.1547,
+  "disc_radius_in": 0.2889,
+  "disc_rim_radius_in": 0.2582,
+  "triangle_height_in": 0.3977,
+  "triangle_base_width_in": 0.3873,
+  "wreath_semi_axis_x_in": 0.4972,
+  "wreath_semi_axis_up_in": 0.3298,
+  "wreath_semi_axis_low_in": 0.36,
+  "wreath_band_width_in": 0.1885,
+  "wreath_leaf_length_in": 0.1545,
   "wreath_leaf_width_in": 0.0632,
   "ribbon_width_in": 0.0442,
-  "ribbon_length_in": 0.2428
+  "ribbon_length_in": 0.2427
  },
  "data_source": "reference-art-measured",
  "generator": "artwork-samples/silver (make-*.js, kit.js) + ground_team_basic_badge",
  "reference": "ALL/ref/ground_team_basic_badge.png",
  "source_bbox_user_units": [
-  10.333,
-  50.191,
+  10.167,
+  44.948,
   228,
-  207.456
+  196.152
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from ground-team-basic.",
  "field_uniform": {
@@ -121,7 +126,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 1.125,
-  "art_height_in": 0.81282,
+  "art_height_in": 0.78089,
   "source_asset": "ground-team-basic",
   "kind": "chest-badge"
  },
