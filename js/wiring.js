@@ -989,8 +989,11 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     // Some uniforms count patches against the same limit as badges (ABU, Corporate Field).
     const patchTotal = (State.patches || []).length
       + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
-    // A badge the uniform does not wear is not drawn there, so it does not count (LIVE13 E67).
-    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges:countBadgesForLimit((State.badges || []).filter(id => isBadgeWornOnCurrentUniform(id))), patches:patchTotal});
+    // The limit is on badges worn: the ones the drawing puts on this uniform, command insignia excluded (js/badge-rules.js
+    // countBadgesWornForLimit). A badge the uniform does not wear (LIVE13 E67), or one selected beyond its positions, is not drawn
+    // and does not count (LIVE13 E77; Ethan: "the check thing says the uniform is wrong despite it being right when you select all
+    // of your badges but you only have 4 on").
+    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges: countBadgesWornForLimit(), patches: patchTotal});
     if(limit.over){
       const what = limit.shared ? 'badges and patches together' : 'counted badges';
       addNotice('err',`This uniform allows ${limit.cap} ${what} and ${limit.counted} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
@@ -1002,7 +1005,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const notWornLine = capubBadgesNotWornLine();
     if(notWornLine){
       const names = getSelectedBadgesNotWornOnCurrentUniform().map(getBadgeDisplayName).join(', ');
-      addNotice('warn',`${notWornLine} Not shown here: ${names}. They come back on a uniform that wears them.`,{id:'expandBadges',label:'Review badges'});
+      // Information, not a warning: the badges stay selected for the uniforms that wear them (LIVE13 E77).
+      addNotice('ok',`${notWornLine} Not shown here: ${names}. They come back on a uniform that wears them.`,{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'aviator_blazer' && capubBadgeWearOptions().underlayer === 'shirt'
       && (State.badges || []).some(id => !isBadgeAuthorizedOnCurrentDressUniform(id))){
@@ -1215,6 +1219,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   // Make functions available for console debugging.
   CAPUB_V2.collectProfile = collectProfile;
   CAPUB_V2.applyProfile = applyProfile;
+  CAPUB_V2.validateBuild = validateBuild;
+
+  // The Check panel follows the drawing just made: which badges are worn is known once the engine has drawn them (LIVE13 E77).
+  document.addEventListener('capub:rendered', () => updateStatusPanel());
 
   // Wire once after this script block has loaded.
   setTimeout(()=>{ wireV2Controls(); updateStatusPanel(); },0);

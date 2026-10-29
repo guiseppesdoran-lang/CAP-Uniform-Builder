@@ -129,7 +129,9 @@ test('the picker and the sidebar gallery list only the badges the uniform wears;
   const wiring = read('js/wiring.js');
   assert.match(wiring, /getEligibleBadgeIdsForMembership\(State\.membership\)\.filter\(id => isBadgeWornOnCurrentUniform\(id\)\)/);
   assert.match(wiring, /note\.textContent = notWornLine \+ ' They stay selected for the uniforms that wear them\.'/);
-  assert.match(wiring, /badges:countBadgesForLimit\(\(State\.badges \|\| \[\]\)\.filter\(id => isBadgeWornOnCurrentUniform\(id\)\)\)/);
+  // The limit counts the badges worn as drawn, which are only ever ones the uniform wears (LIVE13 E77b, js/badge-rules.js countBadgesWornForLimit).
+  assert.match(wiring, /badges: countBadgesWornForLimit\(\)/);
+  assert.match(read('js/badge-rules.js'), /const selected = \[\.\.\.new Set\(ids \|\| \[\]\)\]\.filter\(id => !isCommandInsigniaBadge\(id\) && isBadgeWornOnCurrentUniform\(id\)\);/);
   assert.match(wiring, /function capubSyncBadgesNotWornNote\(\)\{/);
   assert.match(read('js/galleries.js'), /getEligibleBadgeIdsForMembership\(State\.membership\)\.filter\(id => isBadgeWornOnCurrentUniform\(id\)\)/);
 });
