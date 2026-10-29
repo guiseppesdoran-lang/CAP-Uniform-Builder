@@ -17371,7 +17371,7 @@
    "path": "garments/garment-ocp-coat-abu-cut.svg",
    "category": "garments",
    "w_in": 42.2971,
-   "h_in": 44.078,
+   "h_in": 43.403,
    "size_source": "estimated",
    "basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Sleeve cap and width were then modified by script for patch room, and the torso was widened x1.2 (estimate) so the purchase-description chest pocket fits. Length 29.96 in is about a Large Regular back length (30 in, GL/PD 14-04B Table VIIA; Medium Regular is 29-1/2); the Air Force wears this same Army OCP coat (DAFI 36-2903, which CAPR 39-1 7.1 points to) - that identity is an inference.",
    "anchors": {
@@ -17381,75 +17381,75 @@
     ],
     "bottom_center": [
      2114.86,
-     4407.8
+     4340.3
     ],
     "center": [
      2114.86,
-     2203.9
+     2170.15
     ],
     "left_edge": [
      0,
-     2203.9
+     2170.15
     ],
     "right_edge": [
      4229.71,
-     2203.9
+     2170.15
     ],
     "centerline_top": [
      2114.86,
-     1371.8
+     1304.3
     ],
     "collar_apex": [
      2114.86,
-     1861.8
+     1794.3
     ],
     "hem_center": [
      2114.86,
-     4367.8
+     4300.3
     ],
     "name_tape_top_center": [
      1614.86,
-     2059.6
+     1992.1
     ],
     "cap_tape_top_center": [
      2614.86,
-     2059.6
+     1992.1
     ],
     "rank_square_center": [
      2114.86,
-     2451.8
+     2384.3
     ],
     "unit_patch_right_center": [
      349.96,
-     2236.8
+     2169.3
     ],
     "hhq_patch_left_center": [
      3879.76,
-     2339.93
+     2272.43
     ],
     "chest_pocket_right_center": [
      1614.86,
-     2521.8
+     2454.3
     ],
     "chest_pocket_right_top": [
      1860.86,
-     2172.1
+     2104.6
     ],
     "sleeve_velcro_right_top_center": [
      349.96,
-     1911.8
+     1844.3
     ],
     "chest_pocket_left_center": [
      2614.86,
-     2521.8
+     2454.3
     ],
     "chest_pocket_left_top": [
      2368.86,
-     2172.1
+     2104.6
     ],
     "sleeve_velcro_left_top_center": [
      3879.76,
-     1911.8
+     1844.3
     ]
    },
    "landmarks": [

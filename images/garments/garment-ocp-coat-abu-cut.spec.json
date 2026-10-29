@@ -3,14 +3,14 @@
  "name": "OCP coat (ABU cut) with blank name tape",
  "size_in": {
   "w": 42.2971,
-  "h": 44.078
+  "h": 43.403
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   4229.71,
-  4407.8
+  4340.3
  ],
  "size_source": "estimated",
  "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Sleeve cap and width were then modified by script for patch room, and the torso was widened x1.2 (estimate) so the purchase-description chest pocket fits. Length 29.96 in is about a Large Regular back length (30 in, GL/PD 14-04B Table VIIA; Medium Regular is 29-1/2); the Air Force wears this same Army OCP coat (DAFI 36-2903, which CAPR 39-1 7.1 points to) - that identity is an inference.",
@@ -62,75 +62,75 @@
   ],
   "bottom_center": [
    2114.86,
-   4407.8
+   4340.3
   ],
   "center": [
    2114.86,
-   2203.9
+   2170.15
   ],
   "left_edge": [
    0,
-   2203.9
+   2170.15
   ],
   "right_edge": [
    4229.71,
-   2203.9
+   2170.15
   ],
   "centerline_top": [
    2114.86,
-   1371.8
+   1304.3
   ],
   "collar_apex": [
    2114.86,
-   1861.8
+   1794.3
   ],
   "hem_center": [
    2114.86,
-   4367.8
+   4300.3
   ],
   "name_tape_top_center": [
    1614.86,
-   2059.6
+   1992.1
   ],
   "cap_tape_top_center": [
    2614.86,
-   2059.6
+   1992.1
   ],
   "rank_square_center": [
    2114.86,
-   2451.8
+   2384.3
   ],
   "unit_patch_right_center": [
    349.96,
-   2236.8
+   2169.3
   ],
   "hhq_patch_left_center": [
    3879.76,
-   2339.93
+   2272.43
   ],
   "chest_pocket_right_center": [
    1614.86,
-   2521.8
+   2454.3
   ],
   "chest_pocket_right_top": [
    1860.86,
-   2172.1
+   2104.6
   ],
   "sleeve_velcro_right_top_center": [
    349.96,
-   1911.8
+   1844.3
   ],
   "chest_pocket_left_center": [
    2614.86,
-   2521.8
+   2454.3
   ],
   "chest_pocket_left_top": [
    2368.86,
-   2172.1
+   2104.6
   ],
   "sleeve_velcro_left_top_center": [
    3879.76,
-   1911.8
+   1844.3
   ]
  },
  "collar_slots": {
@@ -138,7 +138,7 @@
    "cadet_officer": {
     "center": [
      2369.5,
-     1609.5
+     1542
     ],
     "angle_deg": 27.5,
     "size_in": {
@@ -147,7 +147,7 @@
     },
     "bbox": {
      "x": 2224,
-     "y": 1485.2,
+     "y": 1417.7,
      "w": 291,
      "h": 248.5
     }
@@ -155,7 +155,7 @@
    "cadet_nco": {
     "center": [
      2369.5,
-     1609.5
+     1542
     ],
     "angle_deg": 27.5,
     "size_in": {
@@ -164,7 +164,7 @@
     },
     "bbox": {
      "x": 2280.3,
-     "y": 1506.5,
+     "y": 1439,
      "w": 178.4,
      "h": 206
     }
@@ -172,7 +172,7 @@
    "officer": {
     "center": [
      2354,
-     1674.9
+     1607.4
     ],
     "angle_deg": -30.3,
     "size_in": {
@@ -181,7 +181,7 @@
     },
     "bbox": {
      "x": 2252.2,
-     "y": 1578.4,
+     "y": 1510.9,
      "w": 203.7,
      "h": 192.9
     }
@@ -189,11 +189,11 @@
    "front_edge": {
     "p1": [
      2373.9,
-     1384.8
+     1317.3
     ],
     "p2": [
      2187.9,
-     1741.8
+     1674.3
     ],
     "dir_down": [
      -0.4621,
@@ -204,25 +204,25 @@
    "bottom_edge": {
     "p1": [
      2564.9,
-     1641.8
+     1574.3
     ],
     "p2": [
      2224.9,
-     1849.8
+     1782.3
     ],
     "mid": [
      2404.4,
-     1761.2
+     1693.7
     ]
    },
    "cadet_axis": [
     [
      2392.7,
-     1565.2
+     1497.7
     ],
     [
      2346.5,
-     1653.8
+     1586.3
     ]
    ]
   },
@@ -230,7 +230,7 @@
    "cadet_officer": {
     "center": [
      1860.2,
-     1609.5
+     1542
     ],
     "angle_deg": -27.5,
     "size_in": {
@@ -239,7 +239,7 @@
     },
     "bbox": {
      "x": 1714.7,
-     "y": 1485.2,
+     "y": 1417.7,
      "w": 291,
      "h": 248.5
     }
@@ -247,7 +247,7 @@
    "cadet_nco": {
     "center": [
      1860.2,
-     1609.5
+     1542
     ],
     "angle_deg": -27.5,
     "size_in": {
@@ -256,7 +256,7 @@
     },
     "bbox": {
      "x": 1771,
-     "y": 1506.5,
+     "y": 1439,
      "w": 178.4,
      "h": 206
     }
@@ -264,7 +264,7 @@
    "officer": {
     "center": [
      1875.7,
-     1674.9
+     1607.4
     ],
     "angle_deg": 30.3,
     "size_in": {
@@ -273,7 +273,7 @@
     },
     "bbox": {
      "x": 1773.8,
-     "y": 1578.4,
+     "y": 1510.9,
      "w": 203.7,
      "h": 192.9
     }
@@ -281,11 +281,11 @@
    "front_edge": {
     "p1": [
      1855.9,
-     1384.8
+     1317.3
     ],
     "p2": [
      2041.9,
-     1741.8
+     1674.3
     ],
     "dir_down": [
      0.4621,
@@ -296,25 +296,25 @@
    "bottom_edge": {
     "p1": [
      1664.9,
-     1641.8
+     1574.3
     ],
     "p2": [
      2004.9,
-     1849.8
+     1782.3
     ],
     "mid": [
      1825.4,
-     1761.2
+     1693.7
     ]
    },
    "cadet_axis": [
     [
      1837.1,
-     1565.2
+     1497.7
     ],
     [
      1883.3,
-     1653.8
+     1586.3
     ]
    ]
   },
@@ -323,297 +323,297 @@
  "landmarks": {
   "name_tape": {
    "x": 1352.36,
-   "y": 2059.6,
+   "y": 1992.1,
    "w": 525,
    "h": 100
   },
   "cap_tape": {
    "x": 2352.36,
-   "y": 2059.6,
+   "y": 1992.1,
    "w": 525,
    "h": 100
   },
   "rank_square": {
    "x": 2014.86,
-   "y": 2351.8,
+   "y": 2284.3,
    "w": 200,
    "h": 200
   },
   "collar_officer_zone_right": {
    "x": 1773.86,
-   "y": 1578.4,
+   "y": 1510.9,
    "w": 203.7,
    "h": 192.9
   },
   "collar_cadet_officer_zone_right": {
    "x": 1714.66,
-   "y": 1485.2,
+   "y": 1417.7,
    "w": 291,
    "h": 248.5
   },
   "collar_cadet_nco_zone_right": {
    "x": 1770.96,
-   "y": 1506.5,
+   "y": 1439,
    "w": 178.4,
    "h": 206
   },
   "collar_officer_zone_left": {
    "x": 2252.16,
-   "y": 1578.4,
+   "y": 1510.9,
    "w": 203.7,
    "h": 192.9
   },
   "collar_cadet_officer_zone_left": {
    "x": 2224.06,
-   "y": 1485.2,
+   "y": 1417.7,
    "w": 291,
    "h": 248.5
   },
   "collar_cadet_nco_zone_left": {
    "x": 2280.36,
-   "y": 1506.5,
+   "y": 1439,
    "w": 178.4,
    "h": 206
   },
   "chest_pocket_right": [
    [
     1215.36,
-    2369.4
+    2301.9
    ],
    [
     1860.86,
-    2172.1
+    2104.6
    ],
    [
     2014.36,
-    2674.2
+    2606.7
    ],
    [
     1368.86,
-    2871.5
+    2804
    ]
   ],
   "chest_flap_right": [
    [
     1717.46,
-    2216
+    2148.5
    ],
    [
     1860.86,
-    2172.1
+    2104.6
    ],
    [
     2014.36,
-    2674.2
+    2606.7
    ],
    [
     1870.96,
-    2718
+    2650.5
    ]
   ],
   "sleeve_flap_velcro_right": {
    "x": 149.96,
-   "y": 1911.8,
+   "y": 1844.3,
    "w": 400,
    "h": 650
   },
   "sleeve_pocket_right": {
    "x": 124.96,
-   "y": 1874.3,
+   "y": 1806.8,
    "w": 450,
    "h": 725
   },
   "glint_tab_right": {
    "x": 299.96,
-   "y": 1549.3,
+   "y": 1481.8,
    "w": 100,
    "h": 325
   },
   "cuff_right": [
    [
     786.36,
-    4132.8
+    4065.3
    ],
    [
     1216.26,
-    4132.8
+    4065.3
    ],
    [
     1216.26,
-    4397.8
+    4330.3
    ],
    [
     786.36,
-    4397.8
+    4330.3
    ]
   ],
   "chest_pocket_left": [
    [
     2368.86,
-    2172.1
+    2104.6
    ],
    [
     3014.36,
-    2369.4
+    2301.9
    ],
    [
     2860.86,
-    2871.5
+    2804
    ],
    [
     2215.36,
-    2674.2
+    2606.7
    ]
   ],
   "chest_flap_left": [
    [
     2512.26,
-    2216
+    2148.5
    ],
    [
     2368.86,
-    2172.1
+    2104.6
    ],
    [
     2215.36,
-    2674.2
+    2606.7
    ],
    [
     2358.76,
-    2718
+    2650.5
    ]
   ],
   "sleeve_flap_velcro_left": {
    "x": 3679.76,
-   "y": 1911.8,
+   "y": 1844.3,
    "w": 400,
    "h": 650
   },
   "sleeve_pocket_left": {
    "x": 3654.76,
-   "y": 1874.3,
+   "y": 1806.8,
    "w": 450,
    "h": 725
   },
   "glint_tab_left": {
    "x": 3829.76,
-   "y": 1549.3,
+   "y": 1481.8,
    "w": 100,
    "h": 325
   },
   "cuff_left": [
    [
     3013.46,
-    4132.8
+    4065.3
    ],
    [
     3443.36,
-    4132.8
+    4065.3
    ],
    [
     3443.36,
-    4397.8
+    4330.3
    ],
    [
     3013.46,
-    4397.8
+    4330.3
    ]
   ],
   "patch_flag_right": {
    "x": 187.46,
-   "y": 1936.8,
+   "y": 1869.3,
    "w": 325,
    "h": 181.25
   },
   "patch_aux_left": {
    "x": 3717.26,
-   "y": 1936.8,
+   "y": 1869.3,
    "w": 325,
    "h": 181.25
   },
   "placket": [
    [
     2014.86,
-    1861.8
+    1794.3
    ],
    [
     2214.86,
-    1861.8
+    1794.3
    ],
    [
     2214.86,
-    4367.8
+    4300.3
    ],
    [
     2014.86,
-    4367.8
+    4300.3
    ]
   ],
   "patrol_cap_front": {
    "x": 424.86,
-   "y": 721.8,
+   "y": 654.3,
    "w": 780,
    "h": 500
   },
   "patrol_cap_front_insignia_zone": {
    "x": 734.86,
-   "y": 901.8,
+   "y": 834.3,
    "w": 160,
    "h": 160
   },
   "patrol_cap_back": {
    "x": 1304.86,
-   "y": 831.8,
+   "y": 764.3,
    "w": 780,
    "h": 390
   },
   "patrol_cap_back_name_tape": {
    "x": 1432.36,
-   "y": 1121.8,
+   "y": 1054.3,
    "w": 525,
    "h": 100
   },
   "baseball_cap_front": {
    "x": 2184.86,
-   "y": 561.8,
+   "y": 494.3,
    "w": 760,
    "h": 660
   },
   "baseball_cap_front_insignia_zone": {
    "x": 2484.86,
-   "y": 821.8,
+   "y": 754.3,
    "w": 160,
    "h": 160
   },
   "baseball_cap_back": {
    "x": 3044.86,
-   "y": 751.8,
+   "y": 684.3,
    "w": 760,
    "h": 470
   },
   "baseball_cap_back_name_tape": {
    "x": 3162.36,
-   "y": 1001.8,
+   "y": 934.3,
    "w": 525,
    "h": 100
   },
   "beret_nbb_front": {
-   "x": 1796.61,
+   "x": 1747.26,
    "y": 40,
-   "w": 636.5,
-   "h": 471.8
+   "w": 735.2,
+   "h": 404.3
   },
   "beret_nbb_front_device": {
-   "x": 2204.68,
-   "y": 144,
-   "w": 105.5,
-   "h": 123.4
+   "x": 2200.34,
+   "y": 136.1,
+   "w": 115.3,
+   "h": 139.2
   },
   "beret_nbb_front_headband": {
-   "x": 2083.03,
-   "y": 348.2,
-   "w": 343.71,
-   "h": 20
+   "x": 1999.31,
+   "y": 336.7,
+   "w": 427.97,
+   "h": 31.5
   }
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
@@ -663,28 +663,40 @@
   },
   "beret_nbb_front": {
    "size_in": [
-    6.365,
-    4.718
+    7.352,
+    4.043
    ],
    "crown_above_band_in": 3.282,
-   "drape_below_band_in": 1.436,
-   "device_in": [
-    1.055,
-    1.234
+   "top_below_band_at_the_point_in": 0.735,
+   "point_from_band_left_corner_in": 6.8,
+   "crown_overhang_beyond_band_right_in": 0.525,
+   "visible_band_in": 4.28,
+   "headband_strip_in": 0.315,
+   "crest_in": [
+    1.153,
+    1.392
    ],
-   "device_centre": {
-    "u": 0.724,
-    "above_band_in": 1.625
+   "crest_centre": {
+    "above_band_in": 1.625,
+    "inboard_of_band_left_corner_in": 1.693
    },
-   "headband_strip_in": 0.2,
+   "crest_shape": {
+    "height_over_width": 1.207,
+    "top_edge_over_width": 0.868,
+    "rim_over_width": 0.03,
+    "saltire_arm_over_width": 0.19,
+    "crossing_below_top_over_width": 0.498
+   },
    "colours": {
-    "navy": "#151932",
-    "lit_top": "#5d687a",
-    "drape_shade": "#0b1225",
+    "navy": "#161e39",
+    "lit": "#5d687a",
+    "fold_shade": "#0b1225",
+    "band_crease": "#050606",
     "band": "#07080c",
-    "device_gold": "#f2d40a"
+    "crest_field": "#3c4c92",
+    "crest_silver": "#c7c0c0"
    },
-   "source": "MEASURED on assets/refs/nbb/nbb-site-1.jpg (2024 NBB group photo, the front six heads, 57-62 px across), by base-art/beret-nbb-measure.js: beret width 0.884 head widths (heads 1-3 against grass), crown 3.282 in above the headband corner and the silhouette (heads 1-3), drape 1.436 in below the band (mean of heads 1-4; 5 and 6 unreadable in dark hair), device 0.146 x 0.171 head widths and its centre at u 0.724, 0.226 head widths above the band (all six). ESTIMATED: the inch scale (head 7.2 in across, as the other caps), the headband strip height 0.2 in, the device gold (the tree gold #f2d40a: the photo device is 8-13 px and blends with the navy); the device shape from national-blue-beret-insignia-commons.jpg. Navy #151932 = median of the crown on heads 1-3 (#151932, #1b1b34, #0a1124); the Vanguard CAP96029 product photo reads #040607 (under-exposed, near black). No cloth flash shows on the worn berets: none drawn. u: 0 at the drape edge (picture left = wearer's right) .. 1 at the wearer's left side. CAPR 39-1 6.2.3, ICL 25-02 9.2.3; LIVE13-ART 1"
+   "source": "SHAPE TRACED on assets/refs/nbb/ethan-beret-shape-2026-10-29.png (Ethan's product photo of a navy beret, 301 x 300, from the wearer's left-front, the long point to the picture's left) by base-art/beret-nbb-measure-2.js, LIVE13-ART 4 (Ethan E88: \"the beret should be 'longer' ... i like this shape better; less droopy\"): the silhouette point by point (top edge y per x every 10 px, the right flank x per y, the band's straight bottom edge y 205 from x 107 to 269, the drape's lower edge, the point at x 11); the fold line (darkest column per row) and the crease above the band. Inch scale: the crown stands 125 px above the band in the photo = 3.282 in, the height the 2024 NBB group photo gave on real heads (beret-nbb-measure.js, 7.2 in head), so the band keeps its place on the head; the photo is oblique, its band's left end hidden under the drape, so the band width is not the scale and the point side is foreshortened (the drawn point is, if anything, short). Colour: the photo's dome #0d1321, lit flank #111c33; the dome brought to the former fill's luminance (x1.417) puts the lit flank at #182848; the fill moved a third of the way from #151932 toward it, #161e39 (\"more blue (ever so slightly)\"). CREST MEASURED on assets/refs/nbb/ethan-crest-photo-2026-10-29.png (Ethan's photo of the real pin, 467 x 473; E87 \"st albans crest is wrong ... use this for the crest\"): shield 355 px tall over 294 px greatest width (1.207), top edge 256 px (0.871 W) with rounded corners, sides bowing to the full width at 0.3 of the height and curving to one point (left side read, mirrored; degree-4 fit, rms 0.004 W), rim 4-7 px at the sides and 10-18 px at the lit top (drawn 0.03 W), saltire arms 0.19 W wide (perpendicular, mean of four runs) whose centre lines run from the top corners through the crossing 0.498 W below the top on the axis, field blue #3c4c92 (median), silver #c7c0c0 (95th percentile of the rim and saltire; median #a6a2a2 in the dim photo). Crest SIZE and HEIGHT on the beret from assets/refs/nbb/ethan-beret-crest-2026-10-29.png (Ethan's drawn beret, 250 x 167): crest 0.424 of the crown height tall (1.392 in), centre 0.496 of it above the band (1.628 in; the 2024 photo gave 1.625 in, kept), 1.693 in inboard of the band's wearer's-left corner (the 2024 photo's reading: the crest sits over the left eye, a place on the head). ESTIMATED: the headband strip height 0.315 in (12 px of the band's outer face at x 200 on the product photo). CAPR 39-1 6.2.3, ICL 25-02 9.2.3; LIVE13-ART 1 and 4"
   },
   "edge_view": {
    "note": "The shoulder pocket seen from the front (edge-on): the flat sleeve view narrowed to scale about the pocket centre line, turned by tilt_deg about the pivot (right: clockwise, left: counter-clockwise), its outer face on the sleeve edge. pivot_*_in are in sheet inches; visible_*: the silhouette near the pocket in the pocket frame as [v down from the pivot, u toward the centre line], 0.04 in inside it. Read by the engine instead of its own constants.",
@@ -692,11 +704,11 @@
    "tilt_deg": 12.375,
    "pivot_right_in": [
     9.264,
-    23.968
+    23.293
    ],
    "pivot_left_in": [
     33.033,
-    23.968
+    23.293
    ],
    "visible_right": [
     [
@@ -827,7 +839,7 @@
   "U.S. flag patch 3-1/4 in W x 1-13/16 in H (DAFI 36-2903 5.1.6.2.3)",
   "OCP patrol cap with name tape centred on the back, rank 1/2 in above the visor (7.1.1.8)",
   "OCP-pattern baseball cap, no grade insignia (6.2.8)",
-  "National Blue Beret, front view as worn (group hat-beret-nbb-front; landmarks beret_nbb_front, beret_nbb_front_device, beret_nbb_front_headband): headband straight across the forehead, top draped over the right ear, Blue Beret device (CAPR 39-1 6.2.3; NBB graduates with the ABU/OCP at the unit level, ICL 25-02 9.2.3); shape, device size and position measured on the 2024 NBB group photo (base-art/beret-nbb-measure.js); no back view"
+  "National Blue Beret, front view as worn (group hat-beret-nbb-front; landmarks beret_nbb_front, beret_nbb_front_device, beret_nbb_front_headband): headband straight across the forehead, top drawn out over the right ear, the beret crest (shield, blue field, silver saltire) over the left eye (CAPR 39-1 6.2.3; NBB graduates with the ABU/OCP at the unit level, ICL 25-02 9.2.3); shape traced on Ethan's product photo at the crown height the 2024 NBB group photo gave, crest measured on his photo of the pin (base-art/beret-nbb-measure.js, beret-nbb-measure-2.js); no back view"
  ],
  "assumed": [
   "px-to-inch scale",
@@ -837,7 +849,7 @@
   "sleeve-edge foreshortening 0.5 (width of the shoulder pocket seen from the front)",
   "OCP palette from photos; pattern is procedural",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)",
-  "beret inches: the photo ratios are scaled to the same 7.2 in head (an estimate); its headband strip height 0.2 in"
+  "beret inches: the crown height 3.282 in (the 2024 photo ratios on the same 7.2 in head, an estimate) scales the product photo; its headband strip height 0.315 in; the crest silver #c7c0c0 is the pin photo's lit percentile"
  ],
  "fit": {
   "method": "n/a: outline deliberately differs from the ABU raster (sleeve cap and width widened)",
