@@ -1074,7 +1074,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Selected items stay checked.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');
