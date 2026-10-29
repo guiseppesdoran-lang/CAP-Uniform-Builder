@@ -1,7 +1,7 @@
 {
  "asset_id": "senior-ground-team",
  "width_in": 1.125,
- "height_in": 0.966,
+ "height_in": 1.092,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 1.125 in",
@@ -13,59 +13,63 @@
   ],
   "bottom_center": [
    56.25,
-   96.593
+   109.161
   ],
   "center": [
    56.25,
-   48.297
+   54.581
   ],
   "left_edge": [
    0,
-   48.297
+   54.581
   ],
   "right_edge": [
    112.5,
-   48.297
+   54.581
   ],
   "disc_center": [
-   55.8,
-   52.02
+   56.251,
+   57.998
   ],
   "disc_top": [
-   55.8,
-   24.503
+   56.251,
+   29.113
   ],
   "triangle_apex": [
-   55.266,
-   28.781
+   55.691,
+   33.604
   ],
   "triangle_base_center": [
-   55.266,
-   66.664
+   55.691,
+   73.37
   ],
   "ribbon_tail_left": [
-   47.436,
-   95.127
+   47.42,
+   107.121
   ],
   "ribbon_tail_right": [
-   64.164,
-   95.127
+   65.082,
+   107.121
   ],
   "wreath_bottom": [
-   55.8,
-   87.519
+   56.251,
+   109.329
+  ],
+  "wreath_center": [
+   56.251,
+   68.118
   ],
   "star_center": [
-   55.882,
-   15.05
-  ],
-  "star_base": [
-   55.882,
-   27.051
+   56.251,
+   16.915
   ],
   "star_top": [
-   55.882,
-   0.215
+   56.251,
+   0.173
+  ],
+  "star_base": [
+   56.251,
+   30.46
   ]
  },
  "dimensions": {
@@ -75,36 +79,40 @@
   "size_class": "gt",
   "family": "ground-team",
   "variant": "senior",
-  "wreath_nodes_per_branch": 12,
-  "wreath_leaf_rows": 2,
-  "star_inner_ratio": 0.5,
+  "wreath_leaf_rows": 3,
+  "wreath_nodes_per_branch": 28,
+  "wreath_hug_leaves_per_branch": 3,
+  "wreath_closure_deg_from_bottom": 150,
+  "wreath_construction": "EMT badge wreath (enamel/g5/make-emt.js GEO.wreath), lens leaves on three scaled superellipses + disc-hugging row",
+  "star_inner_ratio": 0.46,
   "star_points": 5,
-  "disc_radius_in": 0.2752,
-  "disc_rim_radius_in": 0.246,
-  "triangle_height_in": 0.3788,
-  "triangle_base_width_in": 0.369,
-  "wreath_band_width_in": 0.0295,
-  "wreath_leaf_length_in": 0.1634,
-  "wreath_leaf_width_in": 0.1048,
-  "ribbon_width_in": 0.0443,
-  "ribbon_length_in": 0.2453,
-  "wreath_semi_axis_x_in": 0.4752,
-  "wreath_semi_axis_up_in": 0.1839,
-  "wreath_semi_axis_low_in": 0.2891,
-  "star_radius_in": 0.1483
+  "emt_scale_k": 0.35624,
+  "disc_radius_in": 0.2889,
+  "disc_rim_radius_in": 0.2582,
+  "triangle_height_in": 0.3977,
+  "triangle_base_width_in": 0.3873,
+  "wreath_semi_axis_x_in": 0.4972,
+  "wreath_semi_axis_up_in": 0.3298,
+  "wreath_semi_axis_low_in": 0.36,
+  "wreath_band_width_in": 0.1885,
+  "wreath_leaf_length_in": 0.1545,
+  "wreath_leaf_width_in": 0.0632,
+  "ribbon_width_in": 0.0442,
+  "ribbon_length_in": 0.2427,
+  "star_radius_in": 0.1674
  },
  "data_source": "reference-art-measured",
  "generator": "artwork-samples/silver (make-*.js, kit.js) + senior_ground_team_badge",
  "reference": "ALL/ref/senior_ground_team_badge.png",
  "source_bbox_user_units": [
-  5.667,
-  2.5,
-  234.333,
-  198.833
+  10.167,
+  -4.067,
+  228,
+  207.301
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.92,
+  "silhouette_iou_approx": 0.808,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+ "notes": "Disc, triangle and GT letters measured on the GT product photo (family/ground-team/body-params.json, make-badge.js M.tri). Wreath, crossed ribbons and level device are the EMT badge construction (enamel/g5/make-emt.js tables, ported to family/ground-team/emt-wreath.js) placed about the GT disc at k = GT disc R / EMT disc R = 0.35624, so they stand to the disc as on the EMT badges; basic = wreath only, senior = faceted star, master = laurel ring and star. The silhouette IoU is measured against the GT product photo, whose wreath is a different (open, two-branch) one, so it is lower by design."
 }

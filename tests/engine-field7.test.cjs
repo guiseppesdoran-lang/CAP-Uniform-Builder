@@ -213,9 +213,15 @@ test('FIELD7-1: the gaps between OCP badges stay as 7.1.1.3.1 states them, blue 
   const rows = (await tapeAndBadges(four, 'ocp')).badges;
   const byX = new Map();
   for(const x of rows){ const key = Math.round((x.l.x + x.l.w / 2) * 10); byX.set(key, (byX.get(key) || []).concat(x)); }
+  // The top row is one row: it keeps 1/4 in from the TALLER of the two lower badges, so the other column's gap is 1/4 in plus the height
+  // difference (the ground team badges grew with the EMT wreath, LIVE13 E91, so the two lower badges no longer share a height).
+  const gaps = [];
   for(const col of byX.values()){
     col.sort((a, b) => a.blueTop - b.blueTop);
-    for(let i = 1; i < col.length; i++) assert.ok(Math.abs(col[i].blueTop - col[i - 1].blueBottom - 0.25) < 0.005, `four badges: ${(col[i].blueTop - col[i - 1].blueBottom).toFixed(4)} in between the backings`);
+    for(let i = 1; i < col.length; i++) gaps.push(col[i].blueTop - col[i - 1].blueBottom);
   }
+  assert.equal(gaps.length, 2, 'two columns of two');
+  assert.ok(Math.abs(Math.min(...gaps) - 0.25) < 0.005, `four badges: ${Math.min(...gaps).toFixed(4)} in between the backings in the column with the taller lower badge`);
+  for(const g of gaps) assert.ok(g > 0.25 - 0.005, `four badges: ${g.toFixed(4)} in between the backings`);
 });
 

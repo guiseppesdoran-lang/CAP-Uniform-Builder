@@ -1,7 +1,7 @@
 {
  "asset_id": "senior-ground-team-field",
  "width_in": 1.375,
- "height_in": 1.21593,
+ "height_in": 1.34161,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,59 +13,63 @@
   ],
   "bottom_center": [
    68.75,
-   121.593
+   134.161
   ],
   "center": [
    68.75,
-   60.7965
+   67.0805
   ],
   "left_edge": [
    0,
-   60.7965
+   67.0805
   ],
   "right_edge": [
    137.5,
-   60.7965
+   67.0805
   ],
   "disc_center": [
-   68.3,
-   64.52
+   68.751,
+   70.498
   ],
   "disc_top": [
-   68.3,
-   37.003
+   68.751,
+   41.613
   ],
   "triangle_apex": [
-   67.766,
-   41.281
+   68.191,
+   46.104
   ],
   "triangle_base_center": [
-   67.766,
-   79.164
+   68.191,
+   85.87
   ],
   "ribbon_tail_left": [
-   59.936,
-   107.627
+   59.92,
+   119.621
   ],
   "ribbon_tail_right": [
-   76.664,
-   107.627
+   77.582,
+   119.621
   ],
   "wreath_bottom": [
-   68.3,
-   100.019
+   68.751,
+   121.829
+  ],
+  "wreath_center": [
+   68.751,
+   80.618
   ],
   "star_center": [
-   68.382,
-   27.55
-  ],
-  "star_base": [
-   68.382,
-   39.551
+   68.751,
+   29.415
   ],
   "star_top": [
-   68.382,
-   12.715
+   68.751,
+   12.673
+  ],
+  "star_base": [
+   68.751,
+   42.96
   ],
   "art_top_center": [
    68.75,
@@ -73,7 +77,7 @@
   ],
   "art_bottom_center": [
    68.75,
-   109.093
+   121.661
   ]
  },
  "dimensions": {
@@ -83,32 +87,36 @@
   "size_class": "gt",
   "family": "ground-team",
   "variant": "senior",
-  "wreath_nodes_per_branch": 12,
-  "wreath_leaf_rows": 2,
-  "star_inner_ratio": 0.5,
+  "wreath_leaf_rows": 3,
+  "wreath_nodes_per_branch": 28,
+  "wreath_hug_leaves_per_branch": 3,
+  "wreath_closure_deg_from_bottom": 150,
+  "wreath_construction": "EMT badge wreath (enamel/g5/make-emt.js GEO.wreath), lens leaves on three scaled superellipses + disc-hugging row",
+  "star_inner_ratio": 0.46,
   "star_points": 5,
-  "disc_radius_in": 0.2752,
-  "disc_rim_radius_in": 0.246,
-  "triangle_height_in": 0.3788,
-  "triangle_base_width_in": 0.369,
-  "wreath_band_width_in": 0.0295,
-  "wreath_leaf_length_in": 0.1634,
-  "wreath_leaf_width_in": 0.1048,
-  "ribbon_width_in": 0.0443,
-  "ribbon_length_in": 0.2453,
-  "wreath_semi_axis_x_in": 0.4752,
-  "wreath_semi_axis_up_in": 0.1839,
-  "wreath_semi_axis_low_in": 0.2891,
-  "star_radius_in": 0.1483
+  "emt_scale_k": 0.35624,
+  "disc_radius_in": 0.2889,
+  "disc_rim_radius_in": 0.2582,
+  "triangle_height_in": 0.3977,
+  "triangle_base_width_in": 0.3873,
+  "wreath_semi_axis_x_in": 0.4972,
+  "wreath_semi_axis_up_in": 0.3298,
+  "wreath_semi_axis_low_in": 0.36,
+  "wreath_band_width_in": 0.1885,
+  "wreath_leaf_length_in": 0.1545,
+  "wreath_leaf_width_in": 0.0632,
+  "ribbon_width_in": 0.0442,
+  "ribbon_length_in": 0.2427,
+  "star_radius_in": 0.1674
  },
  "data_source": "reference-art-measured",
  "generator": "artwork-samples/silver (make-*.js, kit.js) + senior_ground_team_badge",
  "reference": "ALL/ref/senior_ground_team_badge.png",
  "source_bbox_user_units": [
-  5.667,
-  2.5,
-  234.333,
-  198.833
+  10.167,
+  -4.067,
+  228,
+  207.301
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from senior-ground-team.",
  "field_uniform": {
@@ -128,7 +136,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 1.125,
-  "art_height_in": 0.96593,
+  "art_height_in": 1.09161,
   "source_asset": "senior-ground-team",
   "kind": "chest-badge"
  },

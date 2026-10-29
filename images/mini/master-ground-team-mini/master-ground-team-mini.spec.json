@@ -1,7 +1,7 @@
 {
  "asset_id": "master-ground-team-mini",
  "width_in": 0.875,
- "height_in": 0.752,
+ "height_in": 0.903,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: miniature width 0.875 in",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    43.75,
-   75.229
+   90.264
   ],
   "center": [
    43.75,
-   37.614
+   45.132
   ],
   "left_edge": [
    0,
-   37.614
+   45.132
   ],
   "right_edge": [
    87.5,
-   37.614
+   45.132
   ]
  },
  "dimensions": {
@@ -36,10 +36,10 @@
  "generator": "artwork-samples/silver + master_ground_team_badge (miniature = same art at miniature size)",
  "reference": "ALL/ref/master_ground_team_badge.png",
  "source_bbox_user_units": [
-  5.537,
-  0.98,
-  234.415,
-  197.76
+  10.333,
+  -17.242,
+  228,
+  207.3
  ],
  "fit_score": null,
  "notes": ""
