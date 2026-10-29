@@ -171,6 +171,8 @@
       //   offsetOnly: true                 always move it to that side (the edge is drawn art)
       //   offsetPx: n                      how far it moves at least, in preview pixels
       //   reference: true                  also draw the measured edge, dashed (an undrawn seam)
+      //   caption: text                    what is measured, under the length on the pill ("badge to ribbons"); without one the pill names the
+      //                                    pieces at the two ends (measure-layout captionFor), or carries the length alone
       // js/engine/measure-layout.js decides where the line and its label go.
       measure(from, to, label, opts){
         if(!from || !to) return null;

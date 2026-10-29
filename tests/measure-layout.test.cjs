@@ -1,6 +1,9 @@
 'use strict';
 // The measurement overlay (js/engine/measure-layout.js): on every uniform the labels stay inside
-// the drawing, clear of the artwork and of each other, and no dimension line runs across a piece.
+// the drawing (or the room made around it for the pills and callouts), clear of the artwork and of each other, and no dimension line runs
+// across a piece. Since LIVE13 E97 each measure is drawn as a tailor's dimension (witness lines, a dimension line with arrowheads, a pill with
+// the length and a caption joined to the line by a leader, set off the cloth when a clear side is near): the tests of where a label sits read
+// the leader instead of the old 'beside its line' rule.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -80,7 +83,8 @@ for(const [name, b] of CASES){
     drawings.forEach((d, i) => {
       const L = d.label;
       const own = ownerOf(d);
-      assert.ok(overlap(L, d.callout ? calloutArea : area) > L.w * L.h - tol, `${L.text} label inside the drawing (a callout's label, inside its inset, inside the room made for it)`);
+      // The pills, like the callouts, may lie past the drawing's edge in the room made for them (LIVE13 E97: set off the cloth; frameFor grows the frame to hold them).
+      assert.ok(overlap(L, calloutArea) > L.w * L.h - tol, `${L.text} label inside the room made for it`);
       for(const s of solids) if(s !== own) assert.ok(overlap(L, s) <= 4 * tol, `${L.text} label clear of a piece at ${s.x.toFixed(2)},${s.y.toFixed(2)}`);
       drawings.slice(i + 1).forEach(e => assert.equal(overlap(L, e.label), 0, `${L.text} and ${e.label.text} labels apart`));
     });
@@ -237,19 +241,25 @@ test('the renderer draws a centre mark as an unfilled ring on the dark halo, wit
 // ---- LIVE6-2: a label stays attached to its own dimension ----
 // Ethan, on the women's Class A cadet NCO: "the 1/2 inch placement here doesnt make any sense". The two badges stacked above the ribbons
 // are measured 1/2 in apart on the line between them; both sides of that line are badges, so the label was carried 2 label heights along
-// the line's axis, to where the lapel's dashed seam line runs, and read as a measure of the lapel. A label's box now lies within one
-// label height of the middle of its dimension line (the offset line, where the line was moved off the artwork); where no clear spot
-// exists that near, the dimension line itself moves out, with its extension lines perpendicular to the measured edges. A label has no
-// leader: it sits against its own line.
+// the line's axis, to where the lapel's dashed seam line runs, and read as a measure of the lapel. LIVE13 E97 (Ethan: "these measurements
+// need to be made clearer"): the pill is joined to its own dimension line by a leader, from the pill's rim to the middle of the line, or it
+// touches the line (then it has none); it is never left to be read against another line. The witness lines stay perpendicular to the
+// measured edges.
 const lineMid = d => ({ x: (d.dim[0].x + d.dim[1].x) / 2, y: (d.dim[0].y + d.dim[1].y) / 2 });
 function checkAttached(scene, drawings, tag){
   for(const d of drawings){
-    assert.ok(!d.leader, `${tag}: a label has no leader, it sits against its own line`);
     if(d.callout) continue;   // the 1/8 in callouts (b750eb14, 0e4d69e7) have their own circle, caption and leader
     const m = scene.layers.find(l => l.type === 'measure' && l.key === d.key);
-    const radius = ML.LABEL_RADIUS * d.label.h;
-    const dist = ML.labelDistance(d.dim[0], d.dim[1], d.label);
-    assert.ok(dist <= radius + 1e-9, `${tag}: '${d.label.text}' label is ${(dist / d.label.h).toFixed(2)} label heights from its dimension (${m.from.x.toFixed(2)},${m.from.y.toFixed(2)} to ${m.to.x.toFixed(2)},${m.to.y.toFixed(2)})`);
+    const mid = lineMid(d), px = d.label.size / ML.PX.font;
+    if(d.leader){
+      assert.ok(Math.hypot(d.leader[1].x - mid.x, d.leader[1].y - mid.y) < 1e-6, `${tag}: '${d.label.text}' leader ends on the middle of its own dimension line`);
+      const rim = ML.rimPoint(d.label, mid);
+      assert.ok(Math.hypot(d.leader[0].x - rim.x, d.leader[0].y - rim.y) < 1e-6, `${tag}: '${d.label.text}' leader leaves the pill's rim toward the line`);
+    }else{
+      const dist = ML.pointBoxDistance(mid, d.label);
+      assert.ok(dist <= 2.5 * px + 1e-9, `${tag}: '${d.label.text}' pill without a leader touches its line (${(dist / px).toFixed(1)} px off; ${m.from.x.toFixed(2)},${m.from.y.toFixed(2)} to ${m.to.x.toFixed(2)},${m.to.y.toFixed(2)})`);
+    }
+    assert.ok(Array.isArray(d.label.caption), `${tag}: '${d.label.text}' pill carries its caption lines`);
     // An offset line keeps perpendicular extension lines back to the measured edges (a tick on the dimension's own axis is not one).
     const u = { x: m.to.x - m.from.x, y: m.to.y - m.from.y }, ul = Math.hypot(u.x, u.y);
     for(const [p, q] of d.ext){
@@ -259,7 +269,7 @@ function checkAttached(scene, drawings, tag){
     }
   }
 }
-test('every label of the standard matrix lies within one label height of its dimension line', async () => {
+test('every pill of the standard matrix is joined to its own dimension line by a leader, or touches it', async () => {
   const { builds } = R.matrix();
   let n = 0;
   for(const { name, build: spec } of builds){
@@ -269,26 +279,17 @@ test('every label of the standard matrix lies within one label height of its dim
   }
   assert.ok(n > 100, `${n} labels checked`);
 });
-test('the stacked badges\' 1/2 in labels sit beside their own lines on the women\'s Class A cadet NCO, not out by the lapel seam', async () => {
+test('the stacked badges\' 1/2 in pills are each joined to their own line on the women\'s Class A cadet NCO, not left by the lapel seam', async () => {
   const b = R.makeBuild({ uniform: 'blues_a', gender: 'female', membership: 'cadet', rank: 'C/SSgt', badgeIds: ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge'],
     opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, ribbonSel: [['wright_brothers_award'], ['curry_achievement'], ['encampment_ribbon']] });
   const { scene, drawings } = await laidOut(b);
   const halves = scene.layers.filter(l => l.type === 'measure' && l.label === '½ in');
   assert.equal(halves.length, 2, 'wings to the badge below, that badge to the ribbons');
-  for(const m of halves){
-    const d = drawings.find(x => x.key === m.key);
-    assert.ok(ML.labelDistance(d.dim[0], d.dim[1], d.label) <= d.label.h, 'label within one label height of its line');
-    // Not carried along the line's axis past its end (the old place): the label's centre is level with the line, beside it.
-    const lc = { x: d.label.x + d.label.w / 2, y: d.label.y + d.label.h / 2 };
-    assert.ok(Math.abs(lc.y - lineMid(d).y) < d.label.h / 2, 'level with the line, not above or below it');
-    // Every seam the sheet states as a landmark is kept away from: the label does not lie across the lapel's gorge seam.
-  }
+  checkAttached(scene, halves.map(m => drawings.find(x => x.key === m.key)), 'stacked badges');
   const dr = halves.map(m => drawings.find(x => x.key === m.key));
-  assert.ok(dr[0].label.y !== dr[1].label.y && Math.abs(dr[0].label.y - dr[1].label.y) > dr[0].label.h * 0.9, 'the two labels are apart');
-  // The wings-to-badge line is the upper of the two, and its own label is the upper one.
-  const wings = halves.reduce((a, m) => (Math.min(m.from.y, m.to.y) < Math.min(a.from.y, a.to.y) ? m : a));
-  const other = halves.find(m => m !== wings);
-  assert.ok(drawings.find(x => x.key === wings.key).label.y < drawings.find(x => x.key === other.key).label.y, 'the wings label is above the other');
+  assert.equal(overlap(dr[0].label, dr[1].label), 0, 'the two pills are apart');
+  // Each pill says what its line measures (LIVE13 E97: a caption under the length).
+  for(const d of dr) assert.ok(d.label.caption.join(' ').includes('badge'), `'${d.label.text}' pill names the badge it measures to: ${d.label.caption.join(' ')}`);
 });
 
 // ---- MEAS3: no dimension line, bar, tick, extension line or dashed reference crosses a piece ----
@@ -314,13 +315,18 @@ function drawnSegments(d){
 const SAMPLES = 20, TOL = 0.01;
 function crossings(drawings, allSolids, tag, scene){
   const bad = [];
-  // A measure inside a cap view belongs to it (the grade 1/2 in from the visor): the view's own cloth is not a piece to that measure.
-  const views = scene ? scene.layers.filter(l => (l.role === 'hat' || l.role === 'hat-view') && l.obstacle).map(l => l.obstacle) : [];
+  // A measure inside a cap view belongs to it (the grade 1/2 in from the visor, the device 1 1/2 in from the front of the flight cap): the view's
+  // own cloth is not a piece to that measure. Nor is a piece measured to its centre: the line runs into its centre mark's ring, as Figure 6.2
+  // draws the flight cap's device (LIVE13 E97).
+  const views = scene ? scene.layers.filter(l => l.role === 'hat' || l.role === 'hat-view').map(l => l.obstacle || core.layerBounds(l)) : [];
+  const inside = (p, v) => p.x >= v.x && p.x <= v.x + v.w && p.y >= v.y && p.y <= v.y + v.h;
   for(const d of drawings){
     const m = scene && scene.layers.find(l => l.type === 'measure' && l.key === d.key);
     const mid = m && { x: (m.from.x + m.to.x) / 2, y: (m.from.y + m.to.y) / 2 };
-    const own = mid && views.find(v => mid.x >= v.x && mid.x <= v.x + v.w && mid.y >= v.y && mid.y <= v.y + v.h);
-    const solids = allSolids.filter(r => r !== own);
+    const own = mid && views.find(v => inside(mid, v));
+    const o = (m && m.opts) || {};
+    const centres = (o.center === 'both' || o.center === 'from' ? [m.from] : []).concat(o.center === 'both' || o.center === 'to' ? [m.to] : []);
+    const solids = allSolids.filter(r => !(own && r.x === own.x && r.y === own.y && r.w === own.w && r.h === own.h) && !centres.some(p => inside(p, r)));
     if(d.callout){
       // The magnified inset keeps its circle and caption off every piece (checked above); the plain lines of other measures keep off it.
       continue;

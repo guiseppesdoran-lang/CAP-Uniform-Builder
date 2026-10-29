@@ -157,14 +157,14 @@
       return;
     }
     const bottom = name.nameTop - OVER_NAME;
-    const measureOver = (from, to) => ctx.measure({ x, y: from }, { x, y: to });
+    const measureOver = (from, to, what) => ctx.measure({ x, y: from }, { x, y: to }, null, { caption: 'name to ' + what });
 
     if(b.opt.poloMark === 'title'){
       const text = String(b.opt.dutyTitle || '').trim();
       if((b.badges || []).length) ctx.note('A duty title is worn in place of the badge (CAPR 39-1, 5.3.2.1.1)');
       if(text){
         dutyTitle(ctx, text, nameSlot, bottom);
-        measureOver(name.nameTop, bottom);
+        measureOver(name.nameTop, bottom, 'duty title');
       }
       return;
     }
@@ -175,7 +175,7 @@
     const layer = await ctx.place(pick.art, { pieceAnchor: bottomAnchor, at: { x, y: bottom }, z: Z.badge, role: 'badge', key: 'badge:' + pick.id, title: pick.title, className: 'badge',
       // Embroidered on the shirt itself, not sewn on as a patch: the field badge's dark blue cloth backing is not drawn (its silver art is).
       hideGroups: ['backing'] });
-    if(layer) measureOver(name.nameTop, bottom);
+    if(layer) measureOver(name.nameTop, bottom, 'badge');
   }
 
   P.register('polo', { title: 'Corporate Working Uniform (Polo)', compose: composePolo });

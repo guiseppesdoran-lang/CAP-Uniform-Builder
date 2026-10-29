@@ -1,11 +1,13 @@
 // Uniform engine: lays out the measurement overlay.
 //
-// Each regulation distance is drawn the way a drafter draws one: a dimension line with a bar at each
-// end, labelled with its length. Where the straight line from one edge to the other is clear it is
-// drawn there; where it would cross the artwork it moves off to the side, with thin extension lines
-// back to the edges it measures. A distance to a badge's centre gets a centre mark: an open crosshair
-// (a ring with four ticks outside it, empty inside), never a solid cross over the artwork. Each label is set
-// where it covers no artwork and no other label.
+// Each regulation distance is drawn the way a tailor's dimension drawing draws one (LIVE13 E97): a dimension line
+// spanning exactly the measured distance, arrowheads at its ends (inside the line, or outside it on tails when the
+// line is too short to hold them), witness lines from each measured edge out to the line where it is set off the
+// edges, and a pill with the length over a caption of what is measured ("badge to ribbons"), set off the cloth with
+// a leader to the line. Where the straight line from one edge to the other is clear it is drawn there, with a bar
+// across each end; where it would cross the artwork it moves off to the side. A distance to a badge's centre gets
+// a centre mark: an open crosshair (a ring with four ticks outside it, empty inside), never a solid cross over the
+// artwork. Each pill is set where it covers no cloth, no artwork and no other pill.
 //
 // Positions are in scene inches. Sizes are in preview pixels (`px` inches each), so the overlay reads
 // the same on a coat and on a wide field sheet. Pure geometry: the renderer draws the result.
@@ -20,17 +22,29 @@
 
   // Preview pixels.
   const PX = {
-    font: 11, padX: 4, padY: 2.5, labelGap: 3,
-    bar: 8, centre: 5, extGap: 2, extOver: 4,
+    // The pill: the length in `font`, the caption under it in `capFont`.
+    font: 11, capFont: 8.5, padX: 5, padY: 3, labelGap: 3,
+    // The dimension line's ends: the bar across an end drawn on the measured edge itself, the halfway tick's half length, the arrowhead (length, half width) and the tail an
+    // outside arrowhead rides on; the witness lines start extGap past the piece's edge and overshoot the dimension line by extOver.
+    bar: 10, tick: 3.2, arrow: 7, arrowHalf: 2.6, tail: 10, centre: 5, extGap: 1.5, extOver: 5,
     // The centre mark: an open crosshair, a thin ring with four short ticks outside it and nothing at all inside (the middle of the
     // piece it marks stays visible): ring radius, then the ticks' inner and outer distance from the centre.
     mark: { ring: 4, tickFrom: 6, tickTo: 10 },
     minOffset: 10, step: 4, maxOffset: 170
   };
 
-  // How near a label stays to its own dimension line, in label heights (see labelDistance).
+  // How near a label stays to its own dimension line, in label heights (see labelDistance). Since LIVE13 E97 the pill is set off the cloth with a
+  // leader instead; the radius is kept for the tests that read a label's distance from its line.
   const LABEL_RADIUS = 1;
   const SLIDE_LINES = 3;
+  // The pill's search (placePill): distances from the dimension line's middle to the pill's near edge, in preview pixels, the directions tried
+  // at each, and the costs: a leader along the dimension's own axis (a leader runs square to its dimension when it can), a pill outside
+  // the drawing's own box (room is made for it, frameFor), a pill on the cloth (clothTouch flat, so a pill never sits a few pixels onto a
+  // sleeve's edge, plus clothCost per square pixel: a captioned pill on the cloth costs about as much as a 300 px leader, so the pill leaves
+  // the cloth whenever a clear side lies nearer than that and sits by its line on clear cloth otherwise), the leader's run over the cloth
+  // (per pixel), a dimension line past the drawing's edge (per pixel; the frame holds it). Captions wrap at `wrap`
+  // characters; capWidth scales the bold-face width table for the caption's lighter face.
+  const PILL = { search: [6, 10, 16, 24, 34, 46, 60, 76, 94, 114, 136, 160, 188, 220, 256, 296, 340, 390, 445, 505, 570, 640], angles: 24, alongCost: 240, outsideCost: 30, lineOutsideCost: 3, clothCost: 0.06, clothTouch: 60, leaderClothCost: 0.3, wrap: 22, capWidth: 0.92 };
 
   // Placed pieces the overlay keeps clear of. Garment sheets and their overlays are the cloth itself;
   // `clear` marks drawn-in pieces (a nametag on the sheet) that the profile asks to keep clear.
@@ -149,6 +163,50 @@
       t = Math.max(t, Math.min(tx, ty)) + eps * 0.01;
     }
     return t;
+  }
+
+  // Where a segment from a box's centre toward `p` leaves the box (`p` itself when it lies inside): the leader's end on the pill's rim.
+  function rimPoint(box, p){
+    const c = { x: box.x + box.w / 2, y: box.y + box.h / 2 }, v = sub(p, c);
+    if(len(v) < 1e-9) return c;
+    const t = Math.min(box.w / 2 / (Math.abs(v.x) || 1e-9), box.h / 2 / (Math.abs(v.y) || 1e-9));
+    return add(c, mul(v, Math.min(t, 1)));
+  }
+  // Whether the segments a-b and c-d cross (touching at an end does not count).
+  function segsCross(a, b, c, d){
+    const o = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
+    const o1 = o(a, b, c), o2 = o(a, b, d), o3 = o(c, d, a), o4 = o(c, d, b);
+    return ((o1 > 0) !== (o2 > 0)) && ((o3 > 0) !== (o4 > 0)) && o1 !== 0 && o2 !== 0 && o3 !== 0 && o4 !== 0;
+  }
+  // Words set in lines of at most `max` characters (a word longer than that stands alone).
+  function wrapWords(text, max){
+    const out = [];
+    for(const w of String(text || '').split(/\s+/).filter(Boolean)){
+      const last = out[out.length - 1];
+      if(last && (last + ' ' + w).length <= max) out[out.length - 1] = last + ' ' + w; else out.push(w);
+    }
+    return out;
+  }
+
+  // What a measure joins, for a pill with no caption of its own: the pieces at its two ends, named by their role ("badge to ribbons"). A
+  // sheet-drawn piece the profile keeps clear (a nametag) counts. Empty when either end lies on no piece.
+  const PIECE_NAMES = { badge: 'badge', ribbon: 'ribbons', nametag: 'nameplate', grade: 'grade', 'hat-device': 'cap device', patch: 'patch', mini: 'medals', 'mini-drape': 'medals', 'mini-medal': 'medals', seal: 'crest', device: 'device', text: 'name', hat: 'cap', 'hat-view': 'cap' };
+  function captionFor(scene, m){
+    const at = p => {
+      let hit = null;
+      for(const l of scene.layers){
+        if(l.type === 'measure') continue;
+        let name = PIECE_NAMES[l.role];
+        if(l.type === 'clear' && l.role === 'clear') name = /^clear:nametag/.test(l.key || '') ? 'nameplate' : null;
+        if(!name) continue;
+        const b = l.type === 'clear' ? { x: l.x, y: l.y, w: l.w, h: l.h } : (l.obstacle || core.layerBounds(l));
+        if(!b || !(b.w > 0) || !contains(grow(b, 0.03), p)) continue;
+        if(!hit || b.w * b.h < hit.area) hit = { name, area: b.w * b.h };
+      }
+      return hit && hit.name;
+    };
+    const a = at(m.from), b = at(m.to);
+    return a && b && a !== b ? a + ' to ' + b : '';
   }
 
   // Label width in ems for Arial Bold (close enough to size the pill around the text).
@@ -343,11 +401,13 @@
   function frameFor(vb, drawings, px){
     let x0 = vb[0], y0 = vb[1], x1 = vb[0] + vb[2], y1 = vb[1] + vb[3];
     const m = 3 * px;
+    const hold = b => { x0 = Math.min(x0, b.x - m); y0 = Math.min(y0, b.y - m); x1 = Math.max(x1, b.x + b.w + m); y1 = Math.max(y1, b.y + b.h + m); };
     for(const d of drawings){
-      const c = d && d.callout;
-      if(!c) continue;
-      x0 = Math.min(x0, c.box.x - m); y0 = Math.min(y0, c.box.y - m);
-      x1 = Math.max(x1, c.box.x + c.box.w + m); y1 = Math.max(y1, c.box.y + c.box.h + m);
+      if(!d) continue;
+      if(d.callout){ hold(d.callout.box); continue; }
+      // The pills are set off the cloth, past the drawing's edge when there is no room inside it, and a dimension line may lie past it too (LIVE13 E97).
+      if(d.label) hold(d.label);
+      for(const [p, q] of [d.dim, ...(d.ext || []), ...(d.tails || []), ...(d.leader ? [d.leader] : [])]) hold({ x: Math.min(p.x, q.x), y: Math.min(p.y, q.y), w: Math.abs(q.x - p.x), h: Math.abs(q.y - p.y) });
     }
     return [x0, y0, x1 - x0, y1 - y0];
   }
@@ -496,6 +556,73 @@
         return drawing;
       };
 
+    // ---- the value pill (LIVE13 E97): the length and a caption of what is measured, set off the cloth with a leader to the dimension line ----
+    //
+    // Ethan, on the Class B: "these measurements need to be made clearer". The pill is placed the way the magnified callouts are: off the cloth of
+    // the sheet (clothBoxes) when a clear side lies near enough, off every piece, label and line already set, inside the room made around the
+    // drawing, and a leader runs from the pill's rim to the middle of the dimension line. Passes: everything clear, the cloth under the pill a cost
+    // (PILL.clothCost); then the least bad place. A leader may cross the cloth but no piece placed on it (a tape or patch the sheet draws itself costs it).
+    const cloth = clothBoxes(scene);
+    const surfaces = scene.layers.filter(l => l.role === 'surface').map(l => ({ x: l.x, y: l.y, w: l.w, h: l.h }));
+    const drawnClear = scene.layers.filter(l => l.role === 'clear').map(l => ({ x: l.x, y: l.y, w: l.w, h: l.h }));
+    const placedSolids = obstaclesOf({ layers: scene.layers.filter(l => l.role !== 'clear') }).concat(pieces).map(s => grow(s, -1.5 * P)).filter(s => s.w > 0 && s.h > 0);
+    const capSize = PX.capFont * P;
+    // `labels` and `lines`: the pills, callouts and lines already set that the pill and its leader keep off (the ones placed so far, or, in the
+    // fix-up pass, everything).
+    function placePill(mid, u, lw, lh, own, strict, others, labels, lines){
+      // The leader starts on the dimension line: a piece the line lies on (the cap a device is measured on, the flat sleeve under a chevron's
+      // 'halfway') is not one it crosses.
+      const leaderSolids = placedSolids.filter(s => !contains(s, mid));
+      let best = null;
+      for(const pass of ['clear', 'soft']){
+        for(const d of PILL.search){
+          for(let k = 0; k < PILL.angles; k++){
+            const ang = (k / PILL.angles) * 2 * Math.PI;
+            const dir = { x: Math.cos(ang), y: Math.sin(ang) };
+            const along = Math.abs(dot(dir, u));
+            // Never along its own dimension line (the leader would lie on the line), unless far out.
+            if(along > 0.94 && d < 60) continue;
+            // The pill's near edge lies d px from the dimension line's middle along dir.
+            const reach = (Math.abs(dir.x) * lw + Math.abs(dir.y) * lh) / 2;
+            const c = add(mid, mul(dir, d * P + reach));
+            const box = { x: c.x - lw / 2, y: c.y - lh / 2, w: lw, h: lh };
+            if(calloutArea && overlap(box, calloutArea) < lw * lh - 1e-9) continue;
+            const att = rimPoint(box, mid);
+            // Beside its line rather than along it: a leader across the dimension reads as another measure.
+            let cost = d + PILL.alongCost * along;
+            if(area && overlap(box, area) < lw * lh - 1e-9) cost += PILL.outsideCost;
+            const onCloth = cloth.reduce((sum, g) => sum + overlap(box, g), 0);
+            if(pass !== 'soft'){
+              if(solids.some(s => overlap(box, grow(s, 0.25 * P)) > 0)) continue;
+              if(surfaces.some(s => overlap(box, s) > 0)) continue;
+              if(labels.some(lab => overlap(box, grow(lab, 2 * P)) > 0)) continue;
+              if(lines.some(([p, q]) => insideLength(p, q, box) > 0)) continue;
+              if(own.some(([p, q]) => insideLength(p, q, box) > 0)) continue;
+              if(leaderSolids.some(s => insideLength(att, mid, s) > 0)) continue;
+              if(labels.some(lab => insideLength(att, mid, lab) > 0)) continue;
+              if(lines.some(([p, q]) => segsCross(att, mid, p, q))) continue;
+              if(strict && others.some(r => overlap(box, r) > 0 || insideLength(att, mid, r) > 0)) continue;
+              if(onCloth > 0) cost += PILL.clothTouch + PILL.clothCost * onCloth / (P * P);
+            }else{
+              for(const s of solids) cost += 40 * overlap(box, s) / (P * P);
+              for(const lab of labels) cost += 30 * overlap(box, lab) / (P * P);
+              for(const [p, q] of lines) cost += 20 * insideLength(p, q, box) / P;
+              for(const s of leaderSolids) cost += 60 * insideLength(att, mid, s) / P;
+              for(const lab of labels) cost += 40 * insideLength(att, mid, lab) / P;
+              if(strict) for(const r of others) cost += 60 * overlap(box, r) / (P * P);
+              if(onCloth > 0) cost += PILL.clothTouch + PILL.clothCost * onCloth / (P * P);
+            }
+            for(const l of drawnClear) cost += 2 * insideLength(att, mid, l) / P;
+            // The shorter its run over the cloth the better: a pill beside the pocket it measures, not across the whole chest.
+            for(const g of cloth) cost += PILL.leaderClothCost * insideLength(att, mid, g) / P;
+            if(!best || cost < best.cost) best = { cost, box, leader: [att, mid], pass: pass === 'soft' ? 'soft' : onCloth > 0 ? 'cloth' : 'off' };
+          }
+        }
+        if(best) break;
+      }
+      return best;
+    }
+
     // The callouts go last: the plain dimensions keep the places they have always had, and each circle, which can sit a long way from its piece, finds room around them.
     const measures = scene.layers.filter(l => l.type === 'measure');
     const isCallout = m => !!(m.opts && m.opts.callout);
@@ -512,10 +639,11 @@
       const n = { x: -u.y, y: u.x };
       const o = m.opts || {};
       const text = m.label;
-      const lw = textWidth(text, fontSize) + 2 * PX.padX * P;
-      const lh = fontSize * 1.25 + 2 * PX.padY * P;
-      // How much of the label lies along a direction.
-      const extent = v => Math.abs(v.x) * lw + Math.abs(v.y) * lh;
+      // The pill: the length over the caption of what is measured (the profile's words, else the two pieces the measure joins), the caption
+      // in lines of at most PILL.wrap characters.
+      const capLines = wrapWords(o.caption != null ? o.caption : captionFor(scene, m), PILL.wrap);
+      const lw = Math.max(textWidth(text, fontSize), ...capLines.map(t => textWidth(t, capSize) * PILL.capWidth)) + 2 * PX.padX * P;
+      const lh = fontSize * 1.25 + capLines.length * capSize * 1.2 + 2 * PX.padY * P;
 
       let sides = [n, mul(n, -1)];
       if(o.side){
@@ -533,156 +661,134 @@
       const owner = views.find(v => contains(v, mid)) || null;
       const others = owner ? views.filter(v => v !== owner) : [];
       const crossesOther = (p, q) => others.some(r => insideLength(p, q, r) > 0.005);
+      const atA = o.center === 'both' || o.center === 'from', atB = o.center === 'both' || o.center === 'to';
+      const ringIn = PX.mark.ring * P;
 
-      // `hard`: the label may not lie over any piece, over another label or over a dimension already drawn, and no dimension
-      // may cross a label already placed (D26: every measurement readable). The first pass is hard; only where it finds
-      // nothing does the cost-only search run, which accepts the least bad place.
-      const search = (solidsX, shrunkX, strict, outside, hard, rad, lineClear, bothSides) => {
+      // The ends of a dimension line from a to b (LIVE13 E97): arrowheads inside the line where it is long enough to show them, else outside it,
+      // on tails past each end; a bar (tick) across each end of a line drawn on the measured edges themselves (a line set off the edges has
+      // its witness lines there instead). A line that ends at a centre mark stops at the ring and carries neither bar nor tail there.
+      const ends = (a, b, inline) => {
+        const arrow = PX.arrow * P, half = mul(n, PX.arrowHalf * P), tail = PX.tail * P;
+        const Ld = len(sub(b, a)), v = unit(sub(b, a));
+        const inside = Ld >= (2 * PX.arrow + 6) * P || (inline && (atA || atB));
+        const arrows = [], tails = [], bars = [];
+        if(inside && Ld >= 2 * arrow + 2 * P){
+          arrows.push([a, add(add(a, mul(v, arrow)), half), sub(add(a, mul(v, arrow)), half)], [b, add(sub(b, mul(v, arrow)), half), sub(sub(b, mul(v, arrow)), half)]);
+        }else if(!inside){
+          arrows.push([a, add(sub(a, mul(v, arrow)), half), sub(sub(a, mul(v, arrow)), half)], [b, add(add(b, mul(v, arrow)), half), sub(add(b, mul(v, arrow)), half)]);
+          tails.push([sub(a, mul(v, arrow)), sub(a, mul(v, arrow + tail))], [add(b, mul(v, arrow)), add(b, mul(v, arrow + tail))]);
+        }
+        if(inline){
+          const bh = mul(n, PX.bar * P / 2);
+          if(!atA) bars.push([sub(a, bh), add(a, bh)]);
+          if(!atB) bars.push([sub(b, bh), add(b, bh)]);
+        }
+        return { arrows, tails, bars };
+      };
+
+      // Where the dimension line goes. `hard`: no part of the drawing (the line, its witness lines, bars, tails, the halfway tick) crosses a piece or
+      // a label already set. Returns the best candidate of each kind (on the edges themselves, set off to either side): the pill then decides
+      // between them (placePill), since the side with room for the pill and a clear leader is the one to use.
+      const search = (solidsX, shrunkX, strict, hard, lineClear, bothSides) => {
         // The lines are kept off a piece's box itself (to a third of a preview pixel), not off the box shrunk by the label margin.
         const tight = solidsX.map(b => grow(b, -0.3 * P)).filter(b => b.w > 0 && b.h > 0);
+        // A line drawn on the measured edges themselves may lie on the cap view it belongs to and run into the ring of a piece measured to
+        // its centre (the flight cap's device, 'centered 1 1/2 inches from the front of the cap', drawn as Figure 6.2 draws it): those boxes
+        // do not block it; every other piece does.
+        const centres = (atA ? [A] : []).concat(atB ? [B] : []);
+        const same = (b, o) => Math.abs(b.x + b.w / 2 - o.x - o.w / 2) < 0.01 && Math.abs(b.y + b.h / 2 - o.y - o.h / 2) < 0.01 && Math.abs(b.w - o.w) < 4 * P && Math.abs(b.h - o.h) < 4 * P;
+        const ownBox = b => (owner && same(b, owner)) || centres.some(p => contains(b, p));
+        const tightInline = tight.filter(b => !ownBox(b)), shrunkInline = shrunkX.filter(b => !ownBox(b));
         const candidates = [];
         if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
-        // A side the profile asked for (`opts.side`) is kept while it has a clear place; the other side serves as the last resort before a line is drawn across a piece.
+        // A side the profile asked for (opts.side) is kept while it has a clear place; the other side serves as the last resort before a line is drawn across a piece.
         for(const s of bothSides ? [n, mul(n, -1)] : sides){
-          // Each extension line starts at the edge of its own piece.
+          // Each witness line starts at the edge of its own piece.
           const startA = clearance(A, s, solidsX, 1.5 * P), startB = clearance(B, s, solidsX, 1.5 * P);
-          // `minOffsetIn`: the line moves at least this many inches (a width measure that must lie past the Velcro it hangs on).
+          // minOffsetIn: the line moves at least this many inches (a width measure that must lie past the Velcro it hangs on).
           const first = Math.max(Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P, o.minOffsetIn || 0);
           for(let d = first; d <= first + PX.maxOffset * P; d += PX.step * P) candidates.push({ side: s, d, startA, startB });
         }
-        let found = null;
+        const found = new Map();
         for(const c of candidates){
+          const kind = c.inline ? 'inline' : (c.side === n ? 'n' : 's');
           const a = add(A, mul(c.side, c.d)), b = add(B, mul(c.side, c.d));
           const exts = [];
           if(!c.inline){
-            const sA = add(A, mul(c.side, c.startA + PX.extGap * P)), sB = add(B, mul(c.side, c.startB + PX.extGap * P));
+            // A witness line from a centre starts past the centre mark's ticks, so the ring stays empty.
+            const past = PX.mark.tickTo * P + PX.extGap * P;
+            const sA = add(A, mul(c.side, Math.max(c.startA + PX.extGap * P, atA ? past : 0))), sB = add(B, mul(c.side, Math.max(c.startB + PX.extGap * P, atB ? past : 0)));
             const e = mul(c.side, PX.extOver * P);
             exts.push([sA, add(a, e)], [sB, add(b, e)]);
           }
-          // The whole run from the measured points to the dimension, not only the drawn part of the extension line:
-          // the extension lines start past any piece they leave, which would hide a view they cross.
+          // The whole run from the measured points to the dimension, not only the drawn part of the witness line:
+          // the witness lines start past any piece they leave, which would hide a view they cross.
           if(strict && (crossesOther(a, b) || (!c.inline && (crossesOther(A, add(a, mul(c.side, PX.extOver * P))) || crossesOther(B, add(b, mul(c.side, PX.extOver * P))))))) continue;
-          const modes = [];
-          // The label goes at the middle of the line when it can, else slides along it (a long line
-          // past a chevron keeps its label on clear cloth).
-          // A line with a halfway / centre tick (`mid`) lets its label slide along it off the tick even when it is not three labels long (the ES patch's 'centered').
-          const along = L > 3 * extent(u) || (o.mid && L > 1.6 * extent(u)) ? [0.5, 0.35, 0.65, 0.2, 0.8] : [0.5];
-          for(const t of along){
-            const at = add(a, mul(sub(b, a), t));
-            const slide = Math.abs(t - 0.5) * 60;
-            // Centred on the line when it is long enough to show both bars beside the label.
-            // A width measure that hangs below the Velcro (`minOffsetIn`) keeps its label beside the line, on the open side: centred on the
-            // line, the label would cover the gap between the two patches, where the next measures' extension lines must run.
-            if(!o.minOffsetIn && L >= extent(u) + 2 * (PX.bar * 0.5 + 4) * P && (t === 0.5 || L * Math.min(t, 1 - t) > extent(u) / 2 + 6 * P)) modes.push({ name: 'centre', at, cost: slide });
-            const outward = c.inline ? [c.side, mul(c.side, -1)] : [c.side];
-            // Beside a line with a centre tick the label stands clear of the tick's ends (LIVE13 E76: the women's Class A nametag 'centered', a line under
-            // two labels long, could only set its label on the tick or touching it).
-            const gap = (PX.labelGap + (o.mid ? PX.bar * 0.4 + 3.5 : 0)) * P;
-            outward.forEach((v, i) => modes.push({ name: 'beside', at: add(at, mul(v, extent(v) / 2 + gap)), cost: slide + (i ? 6 : 0) }));
-            if(!c.inline) modes.push({ name: 'beside-in', at: add(at, mul(c.side, -(extent(c.side) / 2 + PX.labelGap * P))), cost: slide + 25 });
-            // A dimension whose sides are all artwork (the 1/2 in gap between two patches on a sleeve) carries its label past
-            // one end, on the line's own axis, where the cloth is free (hard pass only).
-            if(hard && t === 0.5){
-              const half = extent(u) / 2 + PX.labelGap * P;
-              for(let k = 0; k < 2; k++){
-                const more = k * 5 * PX.step * P;     // slid on along the axis until it clears the pieces around the end
-                modes.push({ name: 'end-b', at: add(b, mul(u, half + more)), cost: 14 + 4 * k }, { name: 'end-a', at: add(a, mul(u, -(half + more))), cost: 14 + 4 * k });
-              }
-            }
+          // The line as drawn: on the edges themselves it stops at a centre mark's ring.
+          let da = a, db = b;
+          if(c.inline){
+            if(atA && L > 2 * ringIn) da = add(a, mul(u, ringIn));
+            if(atB && L > 2 * ringIn) db = sub(b, mul(u, ringIn));
           }
+          const E = ends(da, db, !!c.inline);
 
-          // Line costs, shared by every label mode.
           let lineCost = 0;
-          for(const r of shrunkX) lineCost += 60 * insideLength(a, b, r) / P;
-          // An extension line over a patch hides it; one that runs out of the view is cut off.
+          const shrunkC = c.inline ? shrunkInline : shrunkX;
+          for(const r of shrunkC) lineCost += 60 * insideLength(da, db, r) / P;
+          // A witness line over a patch hides it; one that runs out of the view is cut off.
           for(const [p, q] of exts) for(const r of shrunkX) lineCost += 24 * insideLength(p, q, r) / P;
+          // A line past the drawing's edge is held by the frame (frameFor) but costs: inside the drawing when it can be.
           if(area){
-            lineCost += 60 * outsideLength(a, b, area) / P;
-            for(const [p, q] of exts) lineCost += 60 * outsideLength(p, q, area) / P;
+            lineCost += PILL.lineOutsideCost * outsideLength(a, b, area) / P;
+            for(const [p, q] of exts) lineCost += PILL.lineOutsideCost * outsideLength(p, q, area) / P;
+            for(const [p, q] of E.tails) lineCost += PILL.lineOutsideCost * outsideLength(p, q, area) / P;
           }
           for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
-          if(hard && placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0))) continue;
+          if(hard && placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0) || E.tails.some(([p, q]) => insideLength(p, q, lab) > 0))) continue;
+          if(hard && placedLines.some(([p, q]) => segsCross(a, b, p, q))) continue;
           lineCost += c.d / P;
-          // The bars at the ends of the line are part of the drawing: none crosses a piece either.
-          const bh = mul(c.side, PX.bar * P / 2);
-          const barSegs = [[sub(a, bh), add(a, bh)], [sub(b, bh), add(b, bh)]];
-          // The halfway tick is a short bar across the line.
-          if(o.mid){ const tp = add(a, mul(u, dot(sub(o.mid, A), u))), tk = mul(n, PX.bar * P * 0.4); barSegs.push([sub(tp, tk), add(tp, tk)]); }
-          const crossesPiece = tight.some(r => barSegs.some(([p, q]) => insideLength(p, q, r) > 0) || insideLength(a, b, r) > 0 || exts.some(([p, q]) => insideLength(p, q, r) > 0));
+          // The bars, the tails and the halfway tick are part of the drawing: none crosses a piece either.
+          const barSegs = E.bars.concat(E.tails);
+          if(o.mid){ const tp = add(a, mul(u, dot(sub(o.mid, A), u))), tk = mul(n, PX.tick * P); barSegs.push([sub(tp, tk), add(tp, tk)]); }
+          const crossesPiece = (c.inline ? tightInline : tight).some(r => barSegs.some(([p, q]) => insideLength(p, q, r) > 0) || insideLength(da, db, r) > 0 || exts.some(([p, q]) => insideLength(p, q, r) > 0));
           if((hard || lineClear) && crossesPiece) continue;
-          if(!c.inline) for(const [p, q] of barSegs) for(const r of shrunkX) lineCost += 60 * insideLength(p, q, r) / P;
-
-          // The halfway tick stays in view.
-          const tickAt = o.mid ? add(a, mul(u, dot(sub(o.mid, A), u))) : null;
-          // The label belongs to its own dimension: its box lies within one label height of the middle of the line as drawn (the offset
-          // line, when the line was moved off the artwork). Where no clear spot exists that near, the line is offset further, not the label.
-          for(const md of modes){
-            const box = { x: md.at.x - lw / 2, y: md.at.y - lh / 2, w: lw, h: lh };
-            if(rad < Infinity && labelDistance(a, b, box) > rad) continue;
-            if(strict && others.some(r => overlap(box, r) > 0)) continue;
-            if(outside && overlap(box, outside) > 0) continue;
-            if(hard){
-              const sink = 0.25 * P;
-              if(solidsX.some(r => overlap(box, grow(r, -sink)) > 0)) continue;
-              if(placedLabels.some(r => overlap(box, grow(r, 2 * P)) > 0)) continue;
-              if(placedLines.some(([p, q]) => insideLength(p, q, box) > 0)) continue;
-              if(area && overlap(box, area) < lw * lh - 1e-9) continue;
-            }
-            let cost = lineCost + md.cost;
-            if(tickAt && contains(grow(box, 3 * P), tickAt)) cost += 300;
-            for(const r of solidsX) cost += 6 * overlap(box, r) / (P * P);
-            for(const r of placedLabels) cost += 30 * overlap(box, grow(r, 2 * P)) / (P * P);
-            for(const [p, q] of placedLines) cost += 20 * insideLength(p, q, box) / P;
-            if(area){
-              const inside = overlap(box, area);
-              cost += 30 * (lw * lh - inside) / (P * P);
-            }
-            if(!found || cost < found.cost) found = { cost, c, a, b, box, exts, mode: md.name };
-          }
+          for(const [p, q] of barSegs) for(const r of shrunkC) lineCost += 60 * insideLength(p, q, r) / P;
+          if(!found.has(kind) || lineCost < found.get(kind).cost) found.set(kind, { cost: lineCost, c, a, b, da, db, exts, ends: E });
         }
-        return found;
+        return [...found.values()];
       };
 
-      // First beside the view, label outside it (the seated cap's own measure); then, where no side is free, on its cloth.
-      // The label stays within LABEL_RADIUS label heights of its dimension (the offset line keeps moving out until it finds a clear spot that
-      // near); only if even the farthest offset has none does the old, unconstrained search run, so that no measure is dropped.
-      const near = lh * LABEL_RADIUS;
+      // Passes, in order: everything clear; the line clear of every piece (and allowed on the other side of the measured edge); only then the old
+      // least-bad search, which can draw across a piece. A dimension line, its witness lines, bars and tails never cross a piece while any pass before
+      // the last finds a place. A measure in a cap view tries beside the view first, then on its cloth.
+      // The line and its pill are chosen together: of the lines a pass allows, the one whose line and pill cost least.
+      const withPill = cands => {
+        let best = null;
+        for(const cand of cands){
+          const ownLines = [[cand.a, cand.b], ...cand.exts, ...cand.ends.tails];
+          const pill = placePill(mul(add(cand.da, cand.db), 0.5), u, lw, lh, ownLines, !!owner, others, placedLabels, placedLines);
+          if(pill && (!best || cand.cost + pill.cost < best.cost + best.pill.cost)) best = Object.assign({ pill }, cand);
+        }
+        return best;
+      };
       let best = null;
-      // Passes, in order: the label near its line and everything clear; the line clear of every piece with the label allowed to sit least badly (and the
-      // line allowed on the other side of the measured edge); the same with the label let go as far as it must; only then the old least-bad search, which
-      // can draw across a piece. A dimension line, its bars and its extension lines never cross a piece while any pass before the last finds a place.
-      const passes = [];
-      for(const rad of [near, Infinity]) passes.push([true, false, false, rad], [false, true, false, rad], [false, true, true, rad]);
-      passes.push([false, false, false, near], [false, false, false, Infinity]);
-      for(const [hard, lineClear, bothSides, rad] of passes){
-        best = search(solids, shrunk, !!owner, owner, hard, rad, lineClear, bothSides);
+      for(const [hard, lineClear, bothSides] of [[true, false, false], [false, true, false], [false, true, true], [false, false, false]]){
+        best = withPill(search(solids, shrunk, !!owner, hard, lineClear, bothSides));
         if(best) break;
       }
       if(!best && owner){
         const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
-        best = search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, null, false, Infinity);
+        best = withPill(search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, false, false, false));
       }
       if(!best) continue;
 
-      const { a, b, box, exts } = best;
-      const half = mul(n, PX.bar * P / 2);
-      // A dimension drawn on the line itself that ends at a centre stops at the centre mark's ring and carries no bar there: the ring is its
-      // end, and nothing is drawn inside it (the piece's own centre stays visible).
-      const atA = o.center === 'both' || o.center === 'from', atB = o.center === 'both' || o.center === 'to';
-      const ringIn = PX.mark.ring * P;
-      const bars = [];
-      let da = a, db = b;
-      if(best.c.inline){
-        if(atA && L > 2 * ringIn) da = add(a, mul(u, ringIn));
-        if(atB && L > 2 * ringIn) db = sub(b, mul(u, ringIn));
-      }
-      if(!(best.c.inline && atA)) bars.push([sub(a, half), add(a, half)]);
-      if(!(best.c.inline && atB)) bars.push([sub(b, half), add(b, half)]);
+      const { a, b, da, db, exts, pill } = best;
       const drawing = {
         key: m.key,
-        label: Object.assign({ text }, box),
         dim: [da, db],
-        bars,
+        bars: best.ends.bars,
+        arrows: best.ends.arrows,
+        tails: best.ends.tails,
         ext: exts,
         ticks: [],
         centres: [],
@@ -694,15 +800,38 @@
       if(o.mid){
         const t = dot(sub(o.mid, A), u);
         const p = add(a, mul(u, t));
-        const tk = mul(n, PX.bar * P * 0.4);
+        const tk = mul(n, PX.tick * P);
         drawing.ticks.push([sub(p, tk), add(p, tk)]);
       }
       for(const p of o.center === 'both' ? [A, B] : o.center === 'from' ? [A] : o.center === 'to' ? [B] : []) drawing.centres.push(centreMark(p, P));
-      placedLabels.push(box);
-      placedLines.push([a, b], ...exts);
+      // The pill and its leader, off the cloth (the leader is dropped when the pill touches its line).
+      drawing.label = Object.assign({ text, caption: capLines, size: fontSize, captionSize: capSize }, pill.box);
+      drawing.leader = len(sub(pill.leader[0], pill.leader[1])) > 2 * P ? pill.leader : null;
+      drawing.labelMode = pill.pass;
+      placedLabels.push(pill.box);
+      placedLines.push([a, b], ...exts, ...drawing.tails);
+      if(drawing.leader) placedLines.push(drawing.leader);
       slots[mi] = drawing;
     }
-    return slots.filter(Boolean);
+    // Fix-up: a line laid out later may run through a pill set earlier (the lower pocket's 'centered' line through the pill of the ribbons resting on
+    // that pocket). Such a pill is set again against every line and every other pill and callout; the lines stay where they are.
+    const linesOf = d => d.callout ? [d.callout.leader] : [d.dim, ...(d.ext || []), ...(d.tails || []), ...(d.leader ? [d.leader] : [])];
+    const boxOf = d => d.callout ? d.callout.box : d.label;
+    const all = slots.filter(Boolean);
+    for(const d of all){
+      if(d.callout) continue;
+      const otherLines = all.filter(e => e !== d).flatMap(linesOf);
+      if(!otherLines.some(([p, q]) => insideLength(p, q, d.label) > 0)) continue;
+      const m = measures.find(x => x.key === d.key), u = unit(sub(m.to, m.from));
+      const mid = mul(add(d.dim[0], d.dim[1]), 0.5), ownLines = [[d.dim[0], d.dim[1]], ...d.ext, ...d.tails, ...d.ticks];
+      const owner = views.find(v => contains(v, mul(add(m.from, m.to), 0.5))) || null;
+      const pill = placePill(mid, u, d.label.w, d.label.h, ownLines, !!owner, owner ? views.filter(v => v !== owner) : [], all.filter(e => e !== d).map(boxOf), otherLines);
+      if(!pill) continue;
+      Object.assign(d.label, pill.box);
+      d.leader = len(sub(pill.leader[0], pill.leader[1])) > 2 * P ? pill.leader : null;
+      d.labelMode = pill.pass;
+    }
+    return all;
   }
 
   // Inches per preview pixel for a viewBox shown on the builder's stage (640 px high, at most
@@ -712,5 +841,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, PX, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
+  return { layout, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, rimPoint, segsCross, wrapWords, captionFor, PX, PILL, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
 });

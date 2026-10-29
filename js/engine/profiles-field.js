@@ -107,7 +107,7 @@
       }
       // On the cap seated on the figure the grade lies over the hat (R6).
       const cg = await ctx.place(piece, Object.assign({ pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name }, square ? { scale: k, title: 'Grade on a 2 x 2 in hook-and-loop square' } : {}));
-      if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at);
+      if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at, null, { caption: 'visor to grade' });
       // OCP caps: 'only 1/8th inch of blue fabric showing past the widest and tallest part of the insignia' (7.1.1.8).
       if(b.uniform === 'ocp' && !square) await H.blueBorder(ctx, cg);
     }
@@ -288,7 +288,7 @@
           const seam = ctx.point('seam_top_center_' + side);
           if(l && seam && side === 'right'){
             const c = core.rectCenter(z);
-            ctx.measure({ x: c.x, y: seam.y }, c, 'halfway to elbow', { center: 'to', side: { x: 1, y: 0 }, offsetOnly: true });
+            ctx.measure({ x: c.x, y: seam.y }, c, 'halfway to elbow', { center: 'to', side: { x: 1, y: 0 }, offsetOnly: true, caption: 'chevron on the sleeve' });
           }
           // The same chevron edge-on on the figure's arm.
           const e = l && armEdgeOf(ctx, side, l);
@@ -348,12 +348,12 @@
         // 7.1.1.3.1.3-4 measure the same way, at 1/4 in. Only the single badge is placed to the silver
         // (7.1.1.3.1.1). So the upper badge's blue bottom edge is 1/2 in above the lower one's blue top.
         await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: l1.y - 0.5 } }, opts(0)));
-        ctx.measure({ x: T.x, y: l1.y }, { x: T.x, y: l1.y - 0.5 });
+        ctx.measure({ x: T.x, y: l1.y }, { x: T.x, y: l1.y - 0.5 }, null, { caption: 'lower badge to upper badge' });
       }else if(list.length === 2){
         // ABU and CFU: silver to silver (5.1.1.1.2.4; 5.2.1.1.2.6 'insignia-to-insignia, not blue to blue').
         const silverTop = l1.y + artTopOffset(specs[1]);
         await ctx.place(list[0].art, Object.assign({ pieceAnchor: artBottom(specs[0]), at: { x: T.x, y: silverTop - 0.5 } }, opts(0)));
-        ctx.measure({ x: T.x, y: silverTop }, { x: T.x, y: silverTop - 0.5 });
+        ctx.measure({ x: T.x, y: silverTop }, { x: T.x, y: silverTop - 0.5 }, null, { caption: 'lower badge to upper badge, silver to silver' });
       }
       return;
     }
@@ -374,7 +374,7 @@
       const wi = specs[i].w, wj = specs[j].w, W = wi + gapX + wj;
       const l = await ctx.place(list[i].art, Object.assign({ pieceAnchor: artBottom(specs[i]), at: { x: T.x - W / 2 + wi / 2, y: base } }, opts(i)));
       const r = await ctx.place(list[j].art, Object.assign({ pieceAnchor: artBottom(specs[j]), at: { x: T.x + W / 2 - wj / 2, y: base } }, opts(j)));
-      ctx.measure({ x: l.x + l.w, y: base - 0.3 }, { x: r.x, y: base - 0.3 });
+      ctx.measure({ x: l.x + l.w, y: base - 0.3 }, { x: r.x, y: base - 0.3 }, null, { caption: 'between the badges' });
       return [l, r];
     };
     if(list.length === 3 && !pair){
@@ -387,7 +387,7 @@
         boxes[i] = box;
         if(box) bottom = box.y - rowGap;
       }
-      for(const i of [2, 1]) if(boxes[i] && boxes[i - 1]) ctx.measure({ x: T.x, y: boxes[i - 1].y + boxes[i - 1].h }, { x: T.x, y: boxes[i].y });
+      for(const i of [2, 1]) if(boxes[i] && boxes[i - 1]) ctx.measure({ x: T.x, y: boxes[i - 1].y + boxes[i - 1].h }, { x: T.x, y: boxes[i].y }, null, { caption: 'badge to badge' });
       return;
     }
     if(list.length === 3){
@@ -395,7 +395,7 @@
       const [a, c] = await sideBySide(1, 2);
       const rowTop = Math.min(a.y, c.y);
       const up = await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: rowTop - rowGap } }, opts(0)));
-      if(up) ctx.measure({ x: T.x, y: up.y + up.h }, { x: T.x, y: rowTop });
+      if(up) ctx.measure({ x: T.x, y: up.y + up.h }, { x: T.x, y: rowTop }, null, { caption: 'badge row to badge' });
       return;
     }
     if(!pair){
@@ -407,20 +407,20 @@
       const b3 = await ctx.place(list[2].art, Object.assign({ pieceAnchor: artBottom(specs[2]), at: { x: xL, y: base } }, opts(2)));
       const b4 = await ctx.place(list[3].art, Object.assign({ pieceAnchor: artBottom(specs[3]), at: { x: xR, y: base } }, opts(3)));
       const topY = Math.min(b3.y, b4.y) - rowGap;
-      ctx.measure({ x: xL + colL / 2, y: b3.y + b3.h }, { x: xL + colL / 2 + gapX, y: b3.y + b3.h });
-      ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY });
+      ctx.measure({ x: xL + colL / 2, y: b3.y + b3.h }, { x: xL + colL / 2 + gapX, y: b3.y + b3.h }, null, { caption: 'between the columns' });
+      ctx.measure({ x: xL, y: Math.min(b3.y, b4.y) }, { x: xL, y: topY }, null, { caption: 'badge row to badge row' });
       await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xL, y: topY } }, opts(0)));
       await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: xR, y: topY } }, opts(1)));
-      ctx.measure({ x: xR, y: Math.min(b3.y, b4.y) }, { x: xR, y: topY });
+      ctx.measure({ x: xR, y: Math.min(b3.y, b4.y) }, { x: xR, y: topY }, null, { caption: 'badge row to badge row' });
       return;
     }
     // 7.1.1.3.1.4, second form: two side by side on the tape, the other two stacked on the centre line 1/4 in above them, 1/4 in apart.
     const [l, r] = await sideBySide(2, 3);
     const rowTop = Math.min(l.y, r.y);
     const lower = await ctx.place(list[1].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: rowTop - rowGap } }, opts(1)));
-    ctx.measure({ x: T.x, y: lower.y + lower.h }, { x: T.x, y: rowTop });
+    ctx.measure({ x: T.x, y: lower.y + lower.h }, { x: T.x, y: rowTop }, null, { caption: 'badge row to badge' });
     const top = await ctx.place(list[0].art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: T.x, y: lower.y - rowGap } }, opts(0)));
-    if(top) ctx.measure({ x: T.x, y: top.y + top.h }, { x: T.x, y: lower.y });
+    if(top) ctx.measure({ x: T.x, y: top.y + top.h }, { x: T.x, y: lower.y }, null, { caption: 'badge to badge' });
   }
 
   // Command insignia: current commanders 1/2 in above the name tape; graduated commanders on the
@@ -433,12 +433,12 @@
     const o = { z: Z.badge, role: 'badge', key: `badge:${pin.id}:${pin.graduated ? 'UN' : 'ON'}:0`, title: pin.title, className: 'badge' };
     const tx = tape.x + tape.w / 2;
     if(!pin.graduated){
-      if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: tx, y: tape.y - 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y }, { x: tx, y: tape.y - 0.5 });
+      if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: tx, y: tape.y - 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y }, { x: tx, y: tape.y - 0.5 }, null, { caption: 'name tape to command pin' });
       return;
     }
     if(b.uniform === 'ocp') await ocpSleevePin(ctx, pin, o);
     else if(b.uniform === 'abu'){
-      if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'top_center', at: { x: tx, y: tape.y + tape.h + 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y + tape.h }, { x: tx, y: tape.y + tape.h + 0.5 });
+      if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'top_center', at: { x: tx, y: tape.y + tape.h + 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y + tape.h }, { x: tx, y: tape.y + tape.h + 0.5 }, null, { caption: 'name tape to command pin' });
     }else{
       const flap = ctx.rect('chest_flap_right');
       if(flap) await ctx.place(pin.art, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(flap) }, o));
@@ -468,7 +468,7 @@
     // loop, its tick at the patch's centre, beside the sleeve view.
     if(flat){
       const cx = flat.x + flat.w / 2;
-      ctx.measure({ x: cx, y: loop.y }, { x: cx, y: loop.y + loop.h }, 'centered', { mid: { x: cx, y: flat.y + flat.h / 2 }, side: { x: 1, y: 0 }, offsetOnly: true });
+      ctx.measure({ x: cx, y: loop.y }, { x: cx, y: loop.y + loop.h }, 'centered', { mid: { x: cx, y: flat.y + flat.h / 2 }, side: { x: 1, y: 0 }, offsetOnly: true, caption: 'command pin on the loop' });
     }
   }
 
@@ -595,7 +595,7 @@
     if(centred && v && d){
       // The flat sleeve views lie at the sides of the sheet: the line goes beside the patch on the side toward the coat.
       const inward = velcroName.endsWith('right') ? 1 : -1;
-      ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: v.y + v.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: inward, y: 0 }, offsetOnly: true });
+      ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: v.y + v.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: inward, y: 0 }, offsetOnly: true, caption: 'patch on the sleeve pocket' });
     }
   }
 
@@ -696,7 +696,7 @@
         const e = layer && armEdgeOf(ctx, side, layer);
         if(e) ctx.raster({ href: patch.href, x: e.at.x - e.w / 2, y: e.at.y - e.h / 2, w: e.w, h: e.h, rotate: e.rotate, origin: e.at, fit: 'stretch', clipSil: ctx.base.id, z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' });
         const seam = ctx.point('seam_top_center_' + side);
-        if(layer && seam) ctx.measure({ x: layer.x + layer.w / 2, y: seam.y }, { x: layer.x + layer.w / 2, y: layer.y });
+        if(layer && seam) ctx.measure({ x: layer.x + layer.w / 2, y: seam.y }, { x: layer.x + layer.w / 2, y: layer.y }, null, { caption: 'shoulder seam to patch' });
         return layer;
       };
       const zl = ctx.rect('wing_patch_zone_left');
@@ -728,7 +728,7 @@
           const pocket = ctx.rect('chest_pocket_' + side), flap = ctx.rect('chest_flap_' + side);
           if(layer && pocket && flap){
             const cx = layer.x + layer.w / 2;
-            ctx.measure({ x: cx, y: flap.y + flap.h }, { x: cx, y: pocket.y + pocket.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: side === 'right' ? -1 : 1, y: 0 }, offsetOnly: true });
+            ctx.measure({ x: cx, y: flap.y + flap.h }, { x: cx, y: pocket.y + pocket.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: side === 'right' ? -1 : 1, y: 0 }, offsetOnly: true, caption: 'patch on the lower pocket' });
           }
         }
       }
@@ -743,7 +743,7 @@
         const s = await ctx.spec(id);
         const scale = Math.min(1, 3 / s.w, 3 / s.h);
         await ctx.place(id, { pieceAnchor: 'bottom_center', at: { x: tape.x + tape.w / 2, y }, scale, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
-        ctx.measure({ x: tape.x + tape.w / 2, y: above }, { x: tape.x + tape.w / 2, y });
+        ctx.measure({ x: tape.x + tape.w / 2, y: above }, { x: tape.x + tape.w / 2, y }, null, { caption: (pin ? 'command pin' : 'name tape') + ' to ES patch' });
       }
     }
     if(patches.length) ctx.note('Some selected patches have no place left on this uniform and are not shown');

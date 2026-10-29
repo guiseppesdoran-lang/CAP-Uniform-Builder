@@ -290,7 +290,7 @@
       const side = edge.collarPoint.x < centerX ? 'right' : 'left';
       const pl = chevronOnLeadingEdge(edge, s.w, 1, collarLeaf(poly.points, edge));
       await ctx.place(id, { pieceAnchor: 'center', at: pl.at, rotate: pl.rotate, z, role: 'grade', key: 'grade:' + side });
-      ctx.measure(pl.foot, pl.near);
+      ctx.measure(pl.foot, pl.near, null, { caption: 'collar edge to grade' });
     }
   }
 
@@ -504,7 +504,7 @@
       // The flight cap's device is 'centered halfway from between the top and bottom of the flap, and 1 1/2 inches from the front
       // of the cap' (6.2.2.2.1-3): the cap sheet's front_edge_center to the device's centre, which the sheet's device_slot_center is.
       const front = /^hat-flight-cap-/.test(hatId) && piecePoint(layer, hs, 'front_edge_center');
-      if(dl && front) ctx.measure({ x: front.x, y: slot.y }, slot, '1½ in', { center: 'to' });
+      if(dl && front) ctx.measure({ x: front.x, y: slot.y }, slot, '1½ in', { center: 'to', caption: 'cap front to device' });
     }
     clearViewsOfHat(ctx, layer, hs, devLayer);
     return layer;
@@ -672,7 +672,7 @@
         z: Z.insignia, role: 'grade', key: 'grade:' + side });
       // 'bottom edge of insignia placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2): the sheet draws the zone's seam-side edge
       // 1/2 in from the seam (make-fdu.js), shown once, on the wearer's right shoulder of the suit.
-      if(side === 'right' && b && !b.opt.asJacket) ctx.measure({ x: zone.x - 0.5, y: cy }, { x: zone.x, y: cy });
+      if(side === 'right' && b && !b.opt.asJacket) ctx.measure({ x: zone.x - 0.5, y: cy }, { x: zone.x, y: cy }, null, { caption: 'shoulder seam to grade' });
     }
     await border();
   }
@@ -758,7 +758,7 @@
         let k = 1;
         while(k > 0.3 && !boxInPolygon(poly, at, spec.w * k, spec.h * k, 0)) k = Math.round((k - 0.01) * 100) / 100;
         const es = await ctx.place(id, { pieceAnchor: 'center', at, scale: k, z: Z.patch, role: 'patch', key: 'patch:' + id, title: 'Emergency Services patch' });
-        if(es) ctx.measure({ x: left, y: at.y }, { x: right, y: at.y }, 'centered', { mid: at, side: { x: 0, y: -1 }, offsetOnly: true, offsetPx: 16 });
+        if(es) ctx.measure({ x: left, y: at.y }, { x: right, y: at.y }, 'centered', { mid: at, side: { x: 0, y: -1 }, offsetOnly: true, offsetPx: 16, caption: 'ES patch on the pocket' });
       }else if(zone){
         const spec = await ctx.spec(id);
         const scale = Math.min(1, zone.w / spec.w, zone.h / spec.h);
@@ -792,7 +792,7 @@
     // centre line (the sheet's sheet_alignment.panel_arch_top_y_in) to the top of the flag the sheet draws. On the suit only; the
     // jacket beside it is configured the same (8.2.7.1).
     const flag = ctx.rect('patch_flag_left'), align = ctx.base.raw && ctx.base.raw.dimensions && ctx.base.raw.dimensions.sheet_alignment;
-    if(!jacket && flag && align && align.panel_arch_top_y_in != null) ctx.measure({ x: flag.x + flag.w / 2, y: align.panel_arch_top_y_in }, { x: flag.x + flag.w / 2, y: flag.y });
+    if(!jacket && flag && align && align.panel_arch_top_y_in != null) ctx.measure({ x: flag.x + flag.w / 2, y: align.panel_arch_top_y_in }, { x: flag.x + flag.w / 2, y: flag.y }, null, { caption: 'shoulder seam to flag' });
     await flightNametag(ctx, b);
     await flightPatches(ctx, b);
     if(b.opt.scarf && !jacket){

@@ -138,9 +138,10 @@
   }
 
   // The measurement overlay, laid out by js/engine/measure-layout.js: gold lines on a soft dark
-  // halo (they read on light shirts and dark coats alike) and each length on a dark label. Widths
-  // are in preview pixels (`px` inches each).
-  const MEASURE = { color: '#ffd24a', halo: '#0b1020', line: 1.3, ext: 1, haloExtra: 2.2, labelStroke: 0.9 };
+  // halo (they read on light shirts and dark coats alike), each length with its caption on a dark pill
+  // joined to its dimension line by a leader (LIVE13 E97). Widths are in preview pixels (`px` inches
+  // each): the dimension line heavier than its witness lines and leader, as on a tailor's drawing.
+  const MEASURE = { color: '#ffd24a', caption: '#f6e6b0', halo: '#0b1020', line: 1.7, ext: 1.1, leader: 1.1, haloExtra: 2.2, labelStroke: 0.9, leaderDot: 1.8 };
   // A magnified callout (measure-layout.js, opts.callout): the band outlined on the piece, a leader to the circle, and the circle
   // itself, a copy of every placed layer that reaches the window, drawn `mag` times larger and clipped to the circle, with the band
   // outlined again over it. `copies(window)` returns copies of the scene's layers (in drawing order) that reach the window.
@@ -194,9 +195,12 @@
     for(const d of drawings){
       const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
       if(d.callout && copies) calloutNodes(d, px, defs, copies, fontPx).forEach(n => g.appendChild(n));
-      const marks = d.centres || [];
-      const main = [d.dim, ...d.bars, ...d.ticks, ...marks.flatMap(m => m.ticks)];
-      for(const s of [...main, ...d.ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      const marks = d.centres || [], arrows = d.arrows || [], ext = d.ext || [];
+      const main = [d.dim, ...(d.bars || []), ...(d.ticks || []), ...(d.tails || []), ...marks.flatMap(m => m.ticks)];
+      const pts = a => a.map(p => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
+      for(const s of [...main, ...ext]) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      if(d.leader) seg(g, d.leader, MEASURE.halo, (MEASURE.leader + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const a of arrows) g.appendChild(el('polygon', { points: pts(a), fill: MEASURE.halo, stroke: MEASURE.halo, 'stroke-width': fmt(MEASURE.haloExtra * px), 'stroke-linejoin': 'round', 'stroke-opacity': 0.5 }));
       for(const m of marks) g.appendChild(el('circle', { cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra) * px), 'stroke-opacity': 0.5 }));
       if(d.reference){
         // Only the parts of the edge that cross no piece are drawn (measure-layout referenceSegs).
@@ -205,20 +209,36 @@
           seg(g, r, MEASURE.color, MEASURE.ext * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2.5 * px)}`, 'stroke-linecap': 'butt' });
         }
       }
-      for(const s of d.ext) seg(g, s, MEASURE.color, MEASURE.ext * px, { 'stroke-opacity': 0.9 });
+      // Witness lines from the measured edges to the dimension line, then the dimension line itself with its bars, tails and arrowheads.
+      for(const s of ext) seg(g, s, MEASURE.color, MEASURE.ext * px);
       for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
+      for(const a of arrows) g.appendChild(el('polygon', { class: 'arrow', points: pts(a), fill: MEASURE.color, stroke: MEASURE.color, 'stroke-width': fmt(0.6 * px), 'stroke-linejoin': 'round' }));
       // A centre mark is an open ring (nothing inside it) on the same dark halo as the lines, so it reads as overlay and never as a cross on the piece.
       for(const m of marks){
         g.appendChild(el('circle', { class: 'centre-mark', cx: fmt(m.x), cy: fmt(m.y), r: fmt(m.r), fill: 'none', stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.line * px) }));
       }
-      const L = d.label;
-      g.appendChild(el('rect', { x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(L.h / 2), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) }));
+      // The leader from the pill's rim to the middle of the dimension line, with a dot on the line.
+      if(d.leader){
+        seg(g, d.leader, MEASURE.color, MEASURE.leader * px);
+        g.appendChild(el('circle', { cx: fmt(d.leader[1].x), cy: fmt(d.leader[1].y), r: fmt(MEASURE.leaderDot * px), fill: MEASURE.color, stroke: MEASURE.halo, 'stroke-width': fmt(0.8 * px) }));
+      }
+      // The pill: the length, and under it the caption of what is measured.
+      const L = d.label, size = L.size || fontPx * px, capSize = L.captionSize || size * 0.8, caption = L.caption || [], padY = (L.h - size * 1.25 - caption.length * capSize * 1.2) / 2;
+      g.appendChild(el('rect', { x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(Math.min(L.h / 2, 5 * px)), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) }));
       const text = el('text', {
-        x: fmt(L.x + L.w / 2), y: fmt(L.y + L.h / 2), 'text-anchor': 'middle', 'dominant-baseline': 'central',
-        'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(fontPx * px), fill: MEASURE.color
+        x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 / 2), 'text-anchor': 'middle', 'dominant-baseline': 'central',
+        'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(size), fill: MEASURE.color
       });
       text.textContent = L.text;
       g.appendChild(text);
+      caption.forEach((t, i) => {
+        const c = el('text', {
+          class: 'caption', x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 + (i + 0.5) * capSize * 1.2), 'text-anchor': 'middle', 'dominant-baseline': 'central',
+          'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 500, 'font-size': fmt(capSize), fill: MEASURE.caption
+        });
+        c.textContent = t;
+        g.appendChild(c);
+      });
       out.push(g);
     }
     return out;

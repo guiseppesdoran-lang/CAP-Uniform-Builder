@@ -186,13 +186,14 @@
     return l ? { x: l.x, y: l.y, w: l.w, h: l.h, spec: s } : null;
   }
 
-  // Stack badges upward, each `gap` above the one below. The first item is the lowest.
-  async function stackBadges(ctx, items, x, bottomY, gap){
+  // Stack badges upward, each `gap` above the one below. The first item is the lowest; `below` names what it stands over (the pill's caption).
+  async function stackBadges(ctx, items, x, bottomY, gap, below){
     let y = bottomY;
     let top = bottomY;
+    let under = below || 'ribbons';
     for(const it of items){
       const p = await putBadge(ctx, it, { x, y: y - gap }, 'bottom_center');
-      if(p){ ctx.measure({ x, y }, { x, y: y - gap }); y = p.y; top = p.y; }
+      if(p){ ctx.measure({ x, y }, { x, y: y - gap }, null, { caption: under + ' to badge' }); y = p.y; top = p.y; under = 'badge'; }
     }
     return top;
   }
@@ -209,7 +210,7 @@
     for(let i = 0; i < items.length; i++){
       const p = await putBadge(ctx, items[i], { x: x + widths[i] / 2, y: bottomY }, anchor || 'bottom_center');
       if(p) top = Math.min(top, p.y);
-      if(i && gap) ctx.measure({ x: x - gap, y: bottomY }, { x, y: bottomY });
+      if(i && gap) ctx.measure({ x: x - gap, y: bottomY }, { x, y: bottomY }, null, { caption: 'between the badges' });
       x += widths[i] + gap;
     }
     if(out) out.box = { x: cx - total / 2, y: top, w: total, h: bottomY - top };
@@ -237,9 +238,9 @@
     if(plan.olp.length){
       if(geo.olpCenter){
         const first = await putBadge(ctx, plan.olp[0], geo.olpCenter, 'center');
-        if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], geo.olp.x, first.y, 0.5);
+        if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], geo.olp.x, first.y, 0.5, 'badge');
       }else{
-        await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, geo.olp.gap == null ? 0.5 : geo.olp.gap);
+        await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, geo.olp.gap == null ? 0.5 : geo.olp.gap, geo.olp.below);
       }
     }
     const tag = geo.nametag;
@@ -250,7 +251,7 @@
     if(pinGrad){
       if(geo.un){
         await putBadge(ctx, { id: pinGrad.id, art: pinGrad.art, title: pinGrad.title }, geo.un, geo.un.anchor || 'center', `badge:${pinGrad.id}:UN:0`);
-        if(tag && geo.un.anchor === 'top_center') ctx.measure({ x: geo.un.x, y: tag.y + tag.h }, { x: geo.un.x, y: geo.un.y });
+        if(tag && geo.un.anchor === 'top_center') ctx.measure({ x: geo.un.x, y: tag.y + tag.h }, { x: geo.un.x, y: geo.un.y }, null, { caption: 'nameplate to insignia' });
       }else ctx.note('The graduated commander insignia has no place on this uniform');
     }
     // Pocket badges: from their reference line (welt or nametag) to the badge's top edge (or its
@@ -258,16 +259,16 @@
     // flap and pocket' (`span`, 4.1.11.1.1.2.3.2), labelled with the regulation's word.
     const pocketMeasure = spot => {
       if(!spot) return;
-      if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'centered', { mid: { x: spot.x, y: spot.y } });
-      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, spot.anchor === 'top_center' ? null : { center: 'to' });
+      if(spot.span) ctx.measure({ x: spot.x, y: spot.span[0] }, { x: spot.x, y: spot.span[1] }, 'centered', { mid: { x: spot.x, y: spot.y }, caption: 'badge on the lower pocket' });
+      else if(spot.from != null) ctx.measure({ x: spot.x, y: spot.from }, { x: spot.x, y: spot.y }, null, { center: spot.anchor === 'top_center' ? undefined : 'to', caption: spot.caption || 'to the badge' });
     };
     // The over-nametag line, 1/2 in above the nametag.
-    const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }); };
+    const onMeasure = () => { if(tag && geo.onBottom == null && tag.h) ctx.measure({ x: onX, y: tag.y }, { x: onX, y: onBottom }, null, { caption: 'nameplate to badge' }); };
     // The semi-formal's piece in the nametag's place (`box`, or the row of them): a level line from its bottom inner corner to the rack's outer
     // bottom corner, "the bottom of that badge will be even with the bottom of ribbons" (4.1.3.2.2, 4.1.4.2; LIVE13 E80).
     const semiLevel = box => {
       const r = geo.semi && geo.semi.rack;
-      if(box && r) ctx.measure({ x: box.x + box.w, y: box.y + box.h }, { x: r.x, y: r.y + r.h }, 'even with', { side: { x: 0, y: 1 } });
+      if(box && r) ctx.measure({ x: box.x + box.w, y: box.y + box.h }, { x: r.x, y: r.y + r.h }, 'even with', { side: { x: 0, y: 1 }, caption: 'badge bottom to ribbons bottom' });
     };
     const pinItem = pinCurrent ? { id: pinCurrent.id, art: pinCurrent.art, title: pinCurrent.title } : null;
     const pinKey = pinCurrent ? `badge:${pinCurrent.id}:ON:0` : null;
@@ -303,7 +304,7 @@
       }
       if(queue.length && onX != null){
         const p = await putBadge(ctx, queue.shift(), { x: onX, y: pinItem ? y - 0.5 : y }, 'bottom_center');
-        if(pinItem) ctx.measure({ x: onX, y }, { x: onX, y: y - 0.5 });
+        if(pinItem) ctx.measure({ x: onX, y }, { x: onX, y: y - 0.5 }, null, { caption: 'command pin to badge' });
         else{ onMeasure(); if(p) levelBox = p; }
       }
       if(geo.semi){
@@ -311,8 +312,8 @@
         // below that piece, or, with nothing there, level with the left pocket badge (both 1 1/2 in below the ribbons' bottom line).
         semiLevel(levelBox);
         if(rpBox){
-          if(levelBox) ctx.measure({ x: geo.rp.x, y: levelBox.y + levelBox.h }, { x: geo.rp.x, y: rpBox.y });
-          else if(lpBox) ctx.measure({ x: rpBox.x + rpBox.w, y: rpBox.y }, { x: lpBox.x, y: lpBox.y }, 'level with', { side: { x: 0, y: -1 } });
+          if(levelBox) ctx.measure({ x: geo.rp.x, y: levelBox.y + levelBox.h }, { x: geo.rp.x, y: rpBox.y }, null, { caption: 'upper badge to pocket badge' });
+          else if(lpBox) ctx.measure({ x: rpBox.x + rpBox.w, y: rpBox.y }, { x: lpBox.x, y: lpBox.y }, 'level with', { side: { x: 0, y: -1 }, caption: 'pocket badge to pocket badge' });
           ctx.note(`The badge on the wearer's right keeps its service dress place on the semi-formal, 1½ in below where the nametag's bottom would be (the bottom of the ribbons)${levelBox ? '' : ', level with the badge on the wearer\'s left pocket'} (CAPR 39-1, ${geo.semi.cite}, 4.1.5.2.2.4.2)`);
         }
       }
@@ -345,7 +346,7 @@
       // Women's Class A: the pin sits 1/2 in above the badge(s) (4.1.9.4.4.3).
       const top = await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row);
       await putBadge(ctx, pinItem, { x: onX, y: top - 0.5 }, 'bottom_center', pinKey);
-      ctx.measure({ x: onX, y: top }, { x: onX, y: top - 0.5 });
+      ctx.measure({ x: onX, y: top }, { x: onX, y: top - 0.5 }, null, { caption: 'badge to command pin' });
     }else if(pinItem && pair.length === 1){
       // One badge: the badge 1/2 in above the pin.
       const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
@@ -367,7 +368,7 @@
     for(const it of moved){
       const spot = it.family === 'rocketry' ? (geo.rocketAlt || geo.belowRibbons) : (geo.marksAlt || geo.belowRibbons);
       if(!spot || (spot === geo.belowRibbons && belowUsed)){ left.push(it); continue; }
-      if(spot === geo.belowRibbons){ belowUsed = true; ctx.measure({ x: spot.x, y: spot.y - 1.5 }, { x: spot.x, y: spot.y }); }
+      if(spot === geo.belowRibbons){ belowUsed = true; ctx.measure({ x: spot.x, y: spot.y - 1.5 }, { x: spot.x, y: spot.y }, null, { caption: 'ribbons to badge' }); }
       await putBadge(ctx, it, spot, spot.anchor || 'top_center');
     }
     if(left.length) ctx.note('Some badges have no place left on this uniform and are not shown');
@@ -477,7 +478,7 @@
     // Halfway between the shoulder seam and the elbow, shown once, on the outside of the sleeve; on a short sleeve, which has no
     // elbow, halfway between the seam and the bottom edge of the sleeve (4.1.11.1.1.1.3, 4.1.12.2.3.3, 4.2.5.1.1.3, 4.2.6.2.3).
     const s = ctx.point('shoulder_seam_right'), e = ctx.point('elbow_right') || ctx.point('sleeve_bottom_right'), c = ctx.point('chevron_halfway_right');
-    if(s && e && c) ctx.measure(s, e, 'halfway', { mid: c, side: { x: -1, y: 0 }, offsetOnly: true });
+    if(s && e && c) ctx.measure(s, e, 'halfway', { mid: c, side: { x: -1, y: 0 }, offsetOnly: true, caption: 'chevron on the sleeve' });
   }
 
   // The flat sleeve views (Ethan: "senior member NCOs for their blues need to have that sleeve pop out like everyone does on the utilities"). The figure's arm hangs at its side and shows the
@@ -514,7 +515,7 @@
     const chev = core.anchor(spec, 'chevron_center'), end = core.anchor(spec, 'elbow_center') || core.anchor(spec, 'cuff_center');
     if(!chev || !end) return;
     const x = layer.x + chev.x, seam = { x, y: layer.y + 2 * chev.y - end.y };
-    ctx.measure(seam, { x, y: layer.y + end.y }, core.anchor(spec, 'elbow_center') ? 'halfway to elbow' : 'halfway', { mid: { x, y: layer.y + chev.y }, side: { x: 1, y: 0 }, offsetOnly: true });
+    ctx.measure(seam, { x, y: layer.y + end.y }, core.anchor(spec, 'elbow_center') ? 'halfway to elbow' : 'halfway', { mid: { x, y: layer.y + chev.y }, side: { x: 1, y: 0 }, offsetOnly: true, caption: 'chevron on the sleeve' });
   }
 
   // Sleeve chevron points from the sheet: centred halfway between the shoulder seam and the elbow,
@@ -676,7 +677,7 @@
       if(!p1 || !mid || !p2) continue;
       // The coat does not draw the seam: the overlay draws it dashed, measured just below it so
       // the insignia resting on it stays in view.
-      ctx.measure(p1, p2, 'halfway', { mid, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 5, reference: true });
+      ctx.measure(p1, p2, 'halfway', { mid, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 5, reference: true, caption: 'insignia on the seam' });
     }
   }
 
@@ -1385,7 +1386,7 @@
     const c = core.rectCenter(r), d = Math.hypot(c.x - end.x, c.y - end.y);
     if(d <= braidWidth / 2) return;
     const t = (d - braidWidth / 2) / d;
-    ctx.measure(end, { x: end.x + (c.x - end.x) * t, y: end.y + (c.y - end.y) * t }, label);
+    ctx.measure(end, { x: end.x + (c.x - end.x) * t, y: end.y + (c.y - end.y) * t }, label, { caption: 'sleeve end to braid' });
   }
 
   // The Class A nametag "will be centered on the wearer's right between the sleeve seam and lapel and the bottom of nametag will be
@@ -1540,18 +1541,18 @@
     // paragraph's word (men "even with", women "parallel with"). With no ribbons there is no ribbon bottom to level it with.
     if(span){
       const tagBottom = tagRect.y + tagRect.h;
-      ctx.measure({ x: span.seamX, y: tagBottom }, { x: span.lapelX, y: tagBottom }, 'centered', { mid: { x: tagRect.x + tagRect.w / 2, y: tagBottom }, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 14 });
-      if(rack) ctx.measure({ x: tagRect.x + tagRect.w, y: tagBottom }, { x: rack.x, y: rack.y + rack.h }, sex === 'male' ? 'even with' : 'parallel with', { side: { x: 0, y: 1 } });
+      ctx.measure({ x: span.seamX, y: tagBottom }, { x: span.lapelX, y: tagBottom }, 'centered', { mid: { x: tagRect.x + tagRect.w / 2, y: tagBottom }, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 14, caption: 'nameplate between seam and lapel' });
+      if(rack) ctx.measure({ x: tagRect.x + tagRect.w, y: tagBottom }, { x: rack.x, y: rack.y + rack.h }, sex === 'male' ? 'even with' : 'parallel with', { side: { x: 0, y: 1 }, caption: 'nameplate bottom to ribbons bottom' });
       else ctx.note(`With no ribbons worn, the overlay has no ribbon bottom to show the nametag's bottom ${sex === 'male' ? 'even with' : 'parallel with'} (CAPR 39-1, ${sex === 'male' ? '4.1.5.2.2.2' : '4.1.9.4.2'})`);
     }
 
     const geo = {
-      olp: { x: rest.x, baseY: rack ? rack.y : rest.y },
+      olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' },
       nametag: tagRect,
       // Men: 1 1/2 in below the welt top and below the nametag, edge to edge: the top of the badge
       // (4.1.5.2.2.4.2, Figure 4.6), like every other distance between pieces.
-      lp: sex === 'male' ? { x: rest.x, y: rest.y + 1.5, from: rest.y, anchor: 'top_center' } : null,
-      rp: sex === 'male' ? { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 1.5, from: tagRect.y + tagRect.h, anchor: 'top_center' } : null,
+      lp: sex === 'male' ? { x: rest.x, y: rest.y + 1.5, from: rest.y, anchor: 'top_center', caption: (rack ? 'ribbons' : 'welt pocket') + ' to badge' } : null,
+      rp: sex === 'male' ? { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 1.5, from: tagRect.y + tagRect.h, anchor: 'top_center', caption: 'nameplate to badge' } : null,
       onStyle: sex === 'male' ? 'men' : 'women-a',
       un: { x: tagRect.x + tagRect.w / 2, y: tagRect.y + tagRect.h + 0.5, anchor: 'top_center' }
     };
@@ -1654,7 +1655,7 @@
     // Ribbons (optional): men on the left pocket top, women with the bottom even with the nametag.
     const rest = ctx.point('ribbon_row_bottom_center');
     const rack = await ribbonRack(ctx, b, rest, { perRow: 3 });
-    const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y } };
+    const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
     if(!female){
       const pocketL = ctx.rect('pocket_left'), pocketR = ctx.rect('pocket_right');
       const flapY = pocketL.y + 2.02;
@@ -1865,14 +1866,14 @@
     // medals' centre, drawn beside the rack toward the arm.
     const shoulderTop = ctx.point('shoulder_left_center'), topButton = ctx.rect('button_left_1');
     if((box || plan.olp.length) && shoulderTop && topButton){
-      ctx.measure({ x: center.x, y: shoulderTop.y }, { x: center.x, y: topButton.y + topButton.h / 2 }, 'midway', { mid: { x: center.x, y: center.y }, side: { x: -1, y: 0 }, offsetOnly: true });
+      ctx.measure({ x: center.x, y: shoulderTop.y }, { x: center.x, y: topButton.y + topButton.h / 2 }, 'midway', { mid: { x: center.x, y: center.y }, side: { x: -1, y: 0 }, offsetOnly: true, caption: 'medals between shoulder and top button' });
     }
     // Aviation / occupational: 1/2 in above the medals; none worn: centred on the medal spot.
     if(plan.olp.length){
-      if(box) await stackBadges(ctx, plan.olp, center.x, box.y, 0.5);
+      if(box) await stackBadges(ctx, plan.olp, center.x, box.y, 0.5, 'medals');
       else{
         const first = await putBadge(ctx, plan.olp[0], center, 'center');
-        if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], center.x, first.y, 0.5);
+        if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], center.x, first.y, 0.5, 'badge');
       }
     }
     const medTop = box ? box.y : center.y - 0.5;
@@ -1883,8 +1884,8 @@
       // in the same spot on the wearer's right; National Staff always on the right.
       const lpItem = others.find(x => x.family !== 'national-staff');
       const rpItem = others.find(x => x !== lpItem);
-      if(lpItem && await putBadge(ctx, lpItem, { x: center.x, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: center.x, y: medBottom }, { x: center.x, y: medBottom + 0.5 });
-      if(rpItem && await putBadge(ctx, rpItem, { x: wrX, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: wrX, y: medBottom }, { x: wrX, y: medBottom + 0.5 });
+      if(lpItem && await putBadge(ctx, lpItem, { x: center.x, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: center.x, y: medBottom }, { x: center.x, y: medBottom + 0.5 }, null, { caption: 'medals to badge' });
+      if(rpItem && await putBadge(ctx, rpItem, { x: wrX, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: wrX, y: medBottom }, { x: wrX, y: medBottom + 0.5 }, null, { caption: 'medals to badge' });
       if(plan.pin){
         const y = plan.pin.graduated ? medBottom : medTop;
         await putBadge(ctx, { id: plan.pin.id, art: plan.pin.art, title: plan.pin.title }, { x: wrX, y }, plan.pin.graduated ? 'bottom_center' : 'top_center', `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`);
@@ -1912,10 +1913,10 @@
         const key = `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`;
         if(plan.pin.graduated){
           await putBadge(ctx, pin, { x: wrX, y: (pair.length ? bottom : medBottom) + (pair.length ? 0.5 : 0) }, pair.length ? 'top_center' : 'bottom_center', key);
-          if(pair.length) ctx.measure({ x: wrX, y: bottom }, { x: wrX, y: bottom + 0.5 });
+          if(pair.length) ctx.measure({ x: wrX, y: bottom }, { x: wrX, y: bottom + 0.5 }, null, { caption: 'badges to command insignia' });
         }else{
           await putBadge(ctx, pin, { x: wrX, y: pair.length ? top - 0.5 : top }, pair.length ? 'bottom_center' : 'top_center', key);
-          if(pair.length) ctx.measure({ x: wrX, y: top }, { x: wrX, y: top - 0.5 });
+          if(pair.length) ctx.measure({ x: wrX, y: top }, { x: wrX, y: top - 0.5 }, null, { caption: 'badges to command pin' });
         }
       }
       if(others.length > 2) ctx.note('Some badges have no place left on this uniform and are not shown');
@@ -1992,7 +1993,7 @@
     const rest = { x: ctx.point('ribbon_slot_center').x, y: slot.y + slot.h };
     const rack = await ribbonRack(ctx, b, rest, { perRow: 3 });
 
-    const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y } };
+    const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
     if(V.overblouse && !rack) geo.olp.gap = 0; // parallel with the nameplate
     if(!V.overblouse){
       const lp = ctx.point('badge_left_pocket_center'), rp = ctx.point('badge_right_pocket_center');
@@ -2222,7 +2223,7 @@
         plateAt = { x: plateAt.x + moved, y: plateAt.y };
       }
       const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
-      if(abovePlateFallback) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 });
+      if(abovePlateFallback) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 }, null, { caption: 'nameplate to crest' });
       if(b.name.show){
         // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');
@@ -2240,7 +2241,7 @@
       }
       if(chaplain){
         await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
-        ctx.measure({ x: plate.x + plate.w / 2, y: plate.y }, { x: plate.x + plate.w / 2, y: plate.y - 0.5 });
+        ctx.measure({ x: plate.x + plate.w / 2, y: plate.y }, { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, null, { caption: 'nameplate to chaplain badge' });
       }
       ctx.foreground(['lapel-foreground'], Z.text + 1);
       return;
@@ -2312,7 +2313,7 @@
         if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: 1 in inside the sleeve's edge there is no room for more (CAPR 39-1 11.2.8)`);
       }
     }
-    if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 });
+    if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 }, null, { caption: 'crest to medals' });
     if(box && bottomY < ruleBottom) ctx.note('The miniature medals end at the top of the pocket: the crest is centred on the pocket (CAPR 39-1, 4.2.3.1.1.1), so the 1/2 in above the crest (4.2.1.4) would put them over the pocket');
     if(chaplain){
       // The chaplain insignia goes 1/2 in above the top row, on the crest line (4.2.1.5, 4.2.2.5): the sheet's
@@ -2320,7 +2321,7 @@
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       const at = win && win.badgeAt ? win.badgeAt : { x: cb ? cb.x : medalX, y };
       await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: at.x, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
-      if(box) ctx.measure({ x: at.x, y: y + 0.5 }, { x: at.x, y });
+      if(box) ctx.measure({ x: at.x, y: y + 0.5 }, { x: at.x, y }, null, { caption: 'medals to chaplain badge' });
     }
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.
     ctx.foreground(['lapel-foreground'], Z.garmentLayer + 0.5);
