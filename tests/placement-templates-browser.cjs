@@ -6,7 +6,7 @@
 //
 // Opens the real page, sets up a men's Class A for a Capt with seven ribbons, the Pilot and the Emergency Services badges, clicks the
 // Templates control beside Download PNG, and checks the window lists the sides that carry pins (left and right chest, both lapels), each
-// with Paper (SVG), Paper (PDF) and 3D jig (STL); then clicks the left chest's three buttons and reads the files Chrome saves:
+// with Paper (PDF) as the main button, 3D jig (STL), and the SVG as an "also as SVG" link; then clicks the left chest's three buttons and reads the files Chrome saves:
 //   - the SVG is one US Letter page at 1:1 (width 8.5in, height 11in) with the print note and the pin rule,
 //   - the PDF is a one-page PDF,
 //   - the STL is binary, closed (every edge used twice) and has one 1.5 mm hole per pin the page's plan lists;
@@ -106,7 +106,7 @@ async function launch(){
     expect(list && list.paper === 'letter', 'US Letter is not the default paper for an en-US browser');
     const keys = list ? list.sides.map(s => s.key).sort().join(',') : '';
     expect(keys === 'left-chest,left-lapel,right-chest,right-lapel', `sides offered: ${keys}`);
-    expect(list && list.sides.every(s => s.buttons.join('|') === 'Paper (SVG)|Paper (PDF)|3D jig (STL)'), 'each side offers Paper (SVG), Paper (PDF) and 3D jig (STL)');
+    expect(list && list.sides.every(s => s.buttons.join('|') === 'Paper (PDF)|3D jig (STL)|also as SVG'), 'each side offers Paper (PDF) first, then 3D jig (STL), then the SVG as a link');
     if(OUT){ fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'templates-window.png'), Buffer.from((await S('Page.captureScreenshot', { format: 'png' })).data, 'base64')); }
 
     const waitFile = async re => { for(let i = 0; i < 200; i++){ const f = fs.readdirSync(downloads).find(n => re.test(n) && !/\.crdownload$/.test(n)); if(f) return path.join(downloads, f); await sleep(50); } return null; };
@@ -139,7 +139,7 @@ async function launch(){
     let abu = null;
     for(let i = 0; i < 100; i++){ abu = await ev(`(() => { const li = [...document.querySelectorAll('#placementTemplates li[data-side-key]')]; return li.length && /Sewn on/.test(li[0].textContent) ? li.map(x => ({ key: x.dataset.sideKey, text: x.querySelector('small').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) : null; })()`); if(abu) break; await sleep(50); }
     console.log('abu:', JSON.stringify(abu));
-    expect(abu && abu.length >= 2 && abu.every(s => s.buttons.join('|') === 'Paper (SVG)|Paper (PDF)' && /paper sewing guide only, no 3D jig/.test(s.text)), 'the ABU sides are not paper-only sewing guides');
+    expect(abu && abu.length >= 2 && abu.every(s => s.buttons.join('|') === 'Paper (PDF)|also as SVG' && /paper sewing guide only, no 3D jig/.test(s.text)), 'the ABU sides are not paper-only sewing guides');
     if(OUT) fs.writeFileSync(path.join(OUT, 'templates-window-abu.png'), Buffer.from((await S('Page.captureScreenshot', { format: 'png' })).data, 'base64'));
   } catch(e){
     fails.push(e.stack || String(e));

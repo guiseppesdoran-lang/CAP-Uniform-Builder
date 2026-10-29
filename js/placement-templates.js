@@ -782,6 +782,8 @@
 #placementTemplates li .ptSide small{display:block;color:var(--muted,#555);font-size:var(--t-xs,12px);line-height:1.35}
 #placementTemplates li .ptActions{display:flex;flex-wrap:wrap;gap:6px}
 #placementTemplates li .ptActions button{width:auto;margin:0;padding:0 12px;min-height:36px}
+#placementTemplates li .ptActions button.ptAlt{min-height:36px;padding:0 4px;border:0;background:none;color:var(--ink,#111);font-weight:400;text-decoration:underline}
+#placementTemplates li .ptActions button.ptAlt:hover{background:none;color:var(--ink,#111)}
 #placementTemplates .ptFoot{display:flex;justify-content:flex-end}
 #placementTemplates .ptFoot button{width:auto;margin:0;padding:0 18px}
 #placementTemplates .ptEmpty{padding:12px 0;color:var(--muted,#555)}
@@ -822,7 +824,7 @@
     if(!sides.length){ list.innerHTML = '<li class="ptEmpty">Nothing on this uniform is pinned or sewn on the chest, collar or shoulders yet. Add ribbons, badges or a nameplate first.</li>'; return; }
     const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
     list.innerHTML = sides.map(s => `<li data-side-key="${esc(s.key)}"><div class="ptSide"><b>${esc(s.label.charAt(0).toUpperCase() + s.label.slice(1))}</b><small>${esc(describe(s))}</small></div><div class="ptActions">
-<button type="button" data-side="${esc(s.key)}" data-what="svg">Paper (SVG)</button><button type="button" class="ghost" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${s.attach === 'pin' ? `<button type="button" data-side="${esc(s.key)}" data-what="stl">3D jig (STL)</button>` : ''}</div></li>`).join('');
+<button type="button" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${s.attach === 'pin' ? `<button type="button" class="ghost" data-side="${esc(s.key)}" data-what="stl">3D jig (STL)</button>` : ''}<button type="button" class="ptAlt" data-side="${esc(s.key)}" data-what="svg">also as SVG</button></div></li>`).join('');
   }
   async function open(){
     const d = ensureDialog();

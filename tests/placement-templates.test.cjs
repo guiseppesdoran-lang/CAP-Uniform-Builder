@@ -317,7 +317,9 @@ test('file names and the page control: a Templates button beside Download PNG op
   assert.match(ws, /id="cmdDownload">Download PNG<\/button><button type="button" id="cmdTemplates">Templates<\/button>/);
   assert.match(ws, /safeBy\('cmdTemplates'\)\.onclick=\(\)=>window\.CAPUBPlacementTemplates\?\.open\(\)/);
   const src = fs.readFileSync(path.join(root, 'js', 'placement-templates.js'), 'utf8');
-  assert.match(src, /'Paper \(SVG\)'|>Paper \(SVG\)</);
+  // PDF is the main action for each side and the SVG a link after it (LIVE13 E78, Ethan: "nobody prints svg's lol make pdf the default").
+  assert.match(src, /data-what="pdf">Paper \(PDF\)<\/button>\$\{s\.attach === 'pin' \? `<button type="button" class="ghost" data-side="\$\{esc\(s\.key\)\}" data-what="stl">3D jig \(STL\)<\/button>` : ''\}<button type="button" class="ptAlt" data-side="\$\{esc\(s\.key\)\}" data-what="svg">also as SVG<\/button>/);
+  assert.doesNotMatch(src, /data-what="pdf"[^>]*class="ghost"|class="ghost"[^>]*data-what="pdf"/, 'the PDF button is not the secondary style');
   assert.match(src, />3D jig \(STL\)</);
   assert.match(src, /Sewn on: paper sewing guide only, no 3D jig/);
 });
