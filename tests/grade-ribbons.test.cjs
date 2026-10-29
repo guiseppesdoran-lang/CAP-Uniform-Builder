@@ -91,7 +91,8 @@ test('choosing C/Lt Col adds its ribbons as earned and records them; dropping to
   assert.deepEqual(r.removed, []);
   assert.deepEqual(r.added, EXPECTED['C/Lt Col'].filter(id => id !== 'mitchell_award'), 'the hand-checked Mitchell is not added again');
   assert.deepEqual(checked(), [...EXPECTED['C/Lt Col'], 'community_service_ribbon'].sort());
-  for(const id of r.added) assert.equal(ev(`State.ribbonSelections[${JSON.stringify(id)}].awardValue`), 'earned', id);
+  // Each is its select's first real choice: 'earned' for the achievements, the Basic Award (mcchord_19700) for the Encampment Ribbon.
+  for(const id of r.added) assert.equal(ev(`State.ribbonSelections[${JSON.stringify(id)}].awardValue`), id === 'encampment_ribbon' ? 'mcchord_19700' : 'earned', id);
   assert.deepEqual(ev('State.gradeRibbons.ids'), r.added);
   assert.equal(ev('State.gradeRibbons.rank'), 'C/Lt Col');
   // The rack is built from them.
@@ -110,6 +111,41 @@ test('choosing C/Lt Col adds its ribbons as earned and records them; dropping to
   assert.deepEqual(checked(), [...EXPECTED['C/SSgt'], 'mitchell_award', 'lindbergh_achievement', 'community_service_ribbon'].sort());
   assert.equal(ev("State.ribbonSelections.lindbergh_achievement.awardValue"), 'honor_credit');
   assert.deepEqual(ev('State.gradeRibbons.ids'), EXPECTED['C/SSgt']);
+});
+
+// LIVE14 E73 (Ethan: "when i selected c/lt col the achievement ribbons popped up as selected but not encampment").
+test('every cadet grade selects each of its ribbons on a choice its award select has: the first real one, the basic award', () => {
+  for(const rank of ev('RANKS.cadet')){
+    freshCadet();
+    ev(`State.rank = ${JSON.stringify(rank)}; capubApplyGradeRibbons({ announce: false })`);
+    for(const id of EXPECTED[rank]){
+      const sel = ev(`State.ribbonSelections[${JSON.stringify(id)}]`);
+      const opts = ev(`getRibbonAwardOptions(${JSON.stringify(id)}).filter(o => o.value).map(o => ({ value: o.value, label: o.label }))`);
+      assert.ok(sel.checked, `${rank} ${id} checked`);
+      assert.ok(opts.some(o => o.value === sel.awardValue), `${rank} ${id}: '${sel.awardValue}' is one of the select's choices`);
+      assert.equal(sel.awardValue, opts[0].value, `${rank} ${id}: the first real choice`);
+      assert.equal(sel.awardLabel, opts[0].label, `${rank} ${id}: its label`);
+      assert.match(sel.awardLabel, /^(Earned|Basic Award)$/, `${rank} ${id}: earned once`);
+      assert.equal(ev(`CAPUBRibbonAwards.describe(${JSON.stringify(id)}, Object.assign({ membership: 'cadet' }, State.ribbonSelections[${JSON.stringify(id)}]))`), 'Basic ribbon, no devices', `${rank} ${id}: no devices`);
+    }
+    const rack = ev('[...new Set(State.ribbons.map(x => x.id))]').sort();
+    assert.deepEqual(rack, EXPECTED[rank].slice().sort(), `${rank}: the rack`);
+  }
+  // The caller's value does not matter: the grade's pick is looked up.
+  freshCadet();
+  ev("setRibbonSelectionFromDropdown('encampment_ribbon', 'earned', { deferRender: true, byGrade: true })");
+  assert.equal(ev('State.ribbonSelections.encampment_ribbon.awardValue'), 'mcchord_19700');
+  assert.equal(ev('State.ribbonSelections.encampment_ribbon.awardLabel'), 'Basic Award');
+});
+
+test('an Encampment Ribbon saved as earned (before E73) loads on its Basic Award choice', () => {
+  freshCadet();
+  ev("State.ribbonSelections = { encampment_ribbon: { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Basic Award' } }; normalizeRibbonSelections();");
+  assert.equal(ev('State.ribbonSelections.encampment_ribbon.awardValue'), 'mcchord_19700');
+  assert.ok(ev('State.ribbonSelections.encampment_ribbon.checked'));
+  // A ribbon whose select has an 'earned' choice keeps it.
+  ev("State.ribbonSelections.curry_achievement = { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Earned' }; normalizeRibbonSelections();");
+  assert.equal(ev('State.ribbonSelections.curry_achievement.awardValue'), 'earned');
 });
 
 test('a senior grade takes off what a cadet grade added and adds nothing', () => {

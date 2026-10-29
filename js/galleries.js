@@ -714,8 +714,18 @@ function syncGoddardRocketryStar(){
   return true;
 }
 
+// The first real choice of a ribbon's award select (its basic award, a count of one), as the select lists it.
+function capubFirstRibbonOptionValue(id){
+  return (getRibbonAwardOptions(id).find(opt => opt?.value) || {}).value || '';
+}
+
 function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=false}={}){
   normalizeRibbonSelections();
+  // A ribbon the cadet grade adds is its select's first real choice, looked up, whatever the caller passed (LIVE14 E73,
+  // Ethan: "when i selected c/lt col the achievement ribbons popped up as selected but not encampment"): the Encampment
+  // Ribbon's choices are the McChord counts (mcchord_19700 'Basic Award' ...), so the 'earned' js/setup.js passes matched
+  // none of them and the select stayed on '- Select -'.
+  if(byGrade) value = capubFirstRibbonOptionValue(id);
   // A ribbon the member sets by hand is his own from now on: a later grade change leaves it (js/setup.js capubApplyGradeRibbons).
   if(!byGrade && State.gradeRibbons && Array.isArray(State.gradeRibbons.ids) && State.gradeRibbons.ids.includes(id)){
     const ids = State.gradeRibbons.ids.filter(x => x !== id);
@@ -832,6 +842,19 @@ function normalizeRibbonSelections(){
       if(State.ribbonSelections[id].awardValue === undefined){
         const hasDevices = Object.values(State.ribbonSelections[id].devices || {}).some(v => Number(v) > 0);
         State.ribbonSelections[id].awardValue = State.ribbonSelections[id].checked ? (hasDevices ? 'custom_devices' : 'earned') : '';
+      }
+      // A grade ribbon saved as 'earned' where its select has no such choice (the Encampment Ribbon, from before LIVE14 E73)
+      // takes the choice that value stands for, so the select shows it.
+      if(State.ribbonSelections[id].checked && State.ribbonSelections[id].awardValue === 'earned' && CADET_GRADE_RIBBON_IDS.includes(id)){
+        const opts = getRibbonAwardOptions(id);
+        if(!opts.some(o => o.value === 'earned')){
+          const opt = getRibbonSelectionOption(id, 'earned');
+          if(opt?.value){
+            State.ribbonSelections[id].awardValue = opt.value;
+            State.ribbonSelections[id].awardLabel = opt.label || '';
+            State.ribbonSelections[id].imageOverride = opt.image || getRibbonImageOverride(id, opt.value);
+          }
+        }
       }
       if(State.ribbonSelections[id].awardLabel === undefined){
         const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);

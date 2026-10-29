@@ -10,7 +10,9 @@
 // checks a ribbon no grade implies by hand (the Community Service Ribbon), then picks C/Lt Col in the Rank select: every achievement
 // ribbon through the Eaker and the Encampment Ribbon are selected as earned, the Spaatz is not, the toast names them, and the drawn
 // rack has a ribbon piece for each. Drops to C/SSgt: the ribbons above it are gone from State and from the drawing, the hand-checked
-// one stays. --out writes a screenshot of the figure at each step.
+// one stays. --out writes a screenshot of the figure at each step. LIVE14 E73 (Ethan: "when i selected c/lt col the achievement ribbons
+// popped up as selected but not encampment"): each implied ribbon is its select's first real choice (the Encampment Ribbon's is the
+// McChord Basic Award, mcchord_19700, not 'earned'), and in the ribbon picker every implied tile's select shows that choice.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -106,7 +108,22 @@ const sortJ = a => JSON.stringify([...a].sort());
     console.log('C/Lt Col:', JSON.stringify(a));
     expect(sortJ(a.checked) === sortJ([...IMPLIED_LT_COL, HAND]), `C/Lt Col selections: ${a.checked.join(', ')}`);
     expect(!a.checked.includes('spaatz_award'), 'the Spaatz is not selected for C/Lt Col');
-    expect(IMPLIED_LT_COL.every(id => a.values[id] === 'earned'), 'each implied ribbon is selected as earned');
+    const firstChoice = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => [id, getRibbonAwardOptions(id).find(o => o.value).value]))`);
+    expect(firstChoice.encampment_ribbon === 'mcchord_19700', `the Encampment Ribbon's first choice: ${firstChoice.encampment_ribbon}`);
+    expect(IMPLIED_LT_COL.every(id => a.values[id] === firstChoice[id]), 'each implied ribbon is its select\'s first real choice');
+    // The ribbon picker, opened the way the page opens it: every implied tile's select is on that choice, the Encampment Ribbon's included.
+    await ev(`(async () => { document.getElementById('expandRibbons').click(); await new Promise(r => setTimeout(r, 1500)); })()`);
+    const tiles = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => { const t = document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="' + id + '"]'); const s = t && t.querySelector('select.rbAwardSelect'); return [id, t ? { value: s.value, text: s.selectedOptions[0]?.textContent || '', line: t.querySelector('.ribbonDeviceSummary')?.textContent || '' } : null]; }))`);
+    console.log('picker tiles:', JSON.stringify(tiles.encampment_ribbon), Object.values(tiles).filter(Boolean).length, 'tiles');
+    for(const id of IMPLIED_LT_COL){
+      const t = tiles[id];
+      expect(t && t.value === firstChoice[id] && t.value !== '', `${id} tile select: ${JSON.stringify(t)}`);
+      expect(t && /^Selected: /.test(t.line), `${id} tile line: ${t && t.line}`);
+    }
+    expect(tiles.encampment_ribbon && tiles.encampment_ribbon.text === 'Basic Award' && tiles.encampment_ribbon.line === 'Selected: Basic Award \u2022 Basic ribbon, no devices', `the Encampment tile: ${JSON.stringify(tiles.encampment_ribbon)}`);
+    await shot('1b-picker');
+    await ev(`document.getElementById('galleryModalCloseBtn').click()`);
+    await sleep(300);
     expect(a.record && a.record.rank === 'C/Lt Col' && sortJ(a.record.ids) === sortJ(IMPLIED_LT_COL), 'the record holds the grade\'s ribbons, not the hand-checked one');
     expect(sortJ(a.drawn) === sortJ([...IMPLIED_LT_COL, HAND]), `the drawn rack: ${a.drawn.join(', ')}`);
     expect(/^C\/Lt Col: added the /.test(a.toast) && ['Curry', 'Mitchell', 'Encampment Ribbon', 'Eaker'].every(w => a.toast.includes(w)) && !a.toast.includes('Spaatz'), `the toast names what was added: ${a.toast}`);
