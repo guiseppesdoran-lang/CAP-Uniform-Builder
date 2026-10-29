@@ -117,15 +117,13 @@ test('one place left: one pick, as before; the aviation position keeps its singl
 const { context } = loadPageScripts();
 const run = code => JSON.parse(vm.runInContext(`JSON.stringify((function(){ ${code} })())`, context));
 
-test('the chooser model has one control per place, with a heading row of title and count', async () => {
+test('the chooser model has one radio group per place, with a heading row of title and count (LIVE13 E75: radios for every place, no select)', async () => {
   const pocket = (await P.composeUniform(build('blues_a', 'male', {}, [ES, COMM, IT, 'CAPPilot1_FA9D33EA587D8', 'observer_badge']), store)).conflicts;
   const model = run(`return CAPUBUniformView.chooserModel(${JSON.stringify(pocket)});`);
   const aviation = model.find(g => g.position === 'aviation'), slots = model.find(g => g.position === 'pocket');
-  assert.equal(aviation.control, 'radio');
   assert.equal(aviation.slots.length, 1);
   assert.equal(aviation.count, 'one is worn');
-  assert.equal(slots.control, 'select');
-  assert.equal(slots.slots.length, 3, 'one select per place');
+  assert.equal(slots.slots.length, 3, 'one radio group per place');
   assert.equal(slots.title, 'Pocket and nametag badges');
   assert.equal(slots.count, '3 are worn');
   assert.deepEqual(slots.options.map(o => o.id), [ES, COMM, IT]);
@@ -134,8 +132,13 @@ test('the chooser model has one control per place, with a heading row of title a
   assert.match(src, /el\('div', 'badgeChooserHead'\)/);
   assert.match(src, /el\('h4', 'badgeChooserTitle'/);
   assert.match(src, /el\('span', 'badgeChooserCount'/);
-  assert.match(src, /document\.createElement\('select'\)/);
   assert.match(src, /el\('div', 'badgeChooserSlot'\)/);
+  assert.match(src, /el\('div', 'badgeChooserSlotHead'\)/, 'a place has a heading row of its own');
+  assert.match(src, /el\('h5', 'badgeChooserSlotName'/);
+  assert.doesNotMatch(src.slice(src.indexOf("const CHOOSER_ID = 'badgeChooser'"), src.indexOf('function updateBadgeChooser')), /createElement\('select'\)/);
+  const css = read('styles/app.css');
+  assert.match(css, /\.badgeChooserSlotHead\{/);
+  assert.doesNotMatch(css, /\.badgeChooserSelect/);
 });
 
 test('picking a badge already in another place swaps the two; the other places stay', () => {

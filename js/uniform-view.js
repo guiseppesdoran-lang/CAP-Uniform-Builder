@@ -332,13 +332,14 @@
   // The engine reports each position that has more than one badge to place (scene.conflicts: { position, label, limit, candidates: [{ id,
   // title }], shown, choice, slots: [{ key, label, choice, badge, shown }], note }). A position with one place asks for one badge (a radio per
   // competing badge); a position with several places (the pocket and nametag pair, the two places over the nametag, the two over the left
-  // pocket) lists its places, each named as the regulation names it, and asks for the badge in each (a select per place). The picks are kept in
-  // State.badgeChoices[uniform][position], a single badge id for one place and { [slotKey]: badgeId } for several, saved with the setup; the
-  // engine puts exactly the picked badge in each place and fills a place nobody picked from the rest, in the rule's order.
+  // pocket) lists its places, each named as the regulation names it, and asks for the badge in each with the same radio rows, one radio group
+  // per place (LIVE13 E75, Ethan: "make the badge UIs match (id like them to be all the radio buttons)"; the places were selects before). The
+  // picks are kept in State.badgeChoices[uniform][position], a single badge id for one place and { [slotKey]: badgeId } for several, saved with
+  // the setup; the engine puts exactly the picked badge in each place and fills a place nobody picked from the rest, in the rule's order.
   const CHOOSER_ID = 'badgeChooser';
   let chooserSignature = '';
 
-  // What the panel draws: one group per position, a heading row (title, how many are worn) and one control per place.
+  // What the panel draws: one group per position, a heading row (title, how many are worn) and one radio group per place.
   function chooserModel(conflicts){
     return (conflicts || []).map(c => {
       const slots = c.slots && c.slots.length ? c.slots : [{ key: 'only', label: c.label, choice: c.choice, badge: (c.shown || [])[0] || null, shown: true }];
@@ -348,7 +349,6 @@
         title: c.label,
         count: many ? `${slots.length} are worn` : 'one is worn',
         note: c.note || '',
-        control: many ? 'select' : 'radio',
         options: c.candidates.map(x => ({ id: x.id, title: x.title })),
         slots: slots.map(sl => ({ key: sl.key, label: sl.label, value: sl.badge || sl.choice || '', shown: sl.shown !== false }))
       };
@@ -406,52 +406,55 @@
     head.append(title, el('span', 'badgeChooserCount', group.count));
     root.append(head);
     if(group.note) root.append(el('p', 'fieldNote badgeChooserNote', group.note));
-    if(group.control === 'radio'){
-      const list = el('div', 'badgeChooserList');
-      list.setAttribute('role', 'radiogroup');
-      list.setAttribute('aria-labelledby', headId);
-      for(const cand of group.options){
-        const label = el('label', 'badgeChooserOption');
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = `badgeChoice:${group.position}`;
-        input.value = cand.id;
-        input.addEventListener('change', () => { if(input.checked) setBadgeChoice(group.position, cand.id); });
-        label.append(input, el('span', 'badgeChooserName', cand.title), el('span', 'badgeChooserTag'));
-        list.append(label);
-      }
-      root.append(list);
+    if(group.slots.length === 1){
+      // One place: the radio rows sit under the heading row.
+      root.append(buildChooserOptions(group, group.slots[0], headId));
       return root;
     }
+    // Several places: each place has a heading row of its own (its name, whether a badge is shown there) and the same radio rows under it.
     const list = el('div', 'badgeChooserList');
     list.setAttribute('role', 'group');
     list.setAttribute('aria-labelledby', headId);
     for(const sl of group.slots){
       const row = el('div', 'badgeChooserSlot');
       row.dataset.slot = sl.key;
-      const id = `badgeChooserSlot-${group.position}-${sl.key}`;
-      const name = el('label', 'badgeChooserSlotName', sl.label);
-      name.htmlFor = id;
-      const select = document.createElement('select');
-      select.id = id;
-      select.className = 'badgeChooserSelect';
-      select.name = `badgeSlot:${group.position}:${sl.key}`;
-      for(const cand of group.options){
-        const opt = document.createElement('option');
-        opt.value = cand.id;
-        opt.textContent = cand.title;
-        select.append(opt);
-      }
-      select.addEventListener('change', () => {
-        const live = (lastScene && lastScene.conflicts || []).find(c => c.position === group.position);
-        const current = live ? chooserModel([live])[0] : group;
-        setBadgeChoice(group.position, nextBadgePicks(current, sl.key, select.value));
-      });
-      row.append(name, select, el('span', 'badgeChooserTag'));
+      const nameId = `badgeChooserSlot-${group.position}-${sl.key}`;
+      const slotHead = el('div', 'badgeChooserSlotHead');
+      const name = el('h5', 'badgeChooserSlotName', sl.label);
+      name.id = nameId;
+      slotHead.append(name, el('span', 'badgeChooserTag'));
+      row.append(slotHead, buildChooserOptions(group, sl, nameId));
       list.append(row);
     }
     root.append(list);
     return root;
+  }
+
+  // The radio rows of one place: a radio per competing badge, the badge's name, and a tag saying whether that badge is shown. One radio
+  // group (one input name) per place, so the arrow keys move within the place. A position with one place writes the badge id; a position with
+  // several writes the picks of all its places (the badge picked here swaps with the one the place held, nextBadgePicks).
+  function buildChooserOptions(group, slot, labelledBy){
+    const list = el('div', 'badgeChooserList');
+    list.setAttribute('role', 'radiogroup');
+    list.setAttribute('aria-labelledby', labelledBy);
+    const single = group.slots.length === 1;
+    for(const cand of group.options){
+      const label = el('label', 'badgeChooserOption');
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = single ? `badgeChoice:${group.position}` : `badgeSlot:${group.position}:${slot.key}`;
+      input.value = cand.id;
+      input.addEventListener('change', () => {
+        if(!input.checked) return;
+        if(single){ setBadgeChoice(group.position, cand.id); return; }
+        const live = (lastScene && lastScene.conflicts || []).find(c => c.position === group.position);
+        const current = live ? chooserModel([live])[0] : group;
+        setBadgeChoice(group.position, nextBadgePicks(current, slot.key, cand.id));
+      });
+      label.append(input, el('span', 'badgeChooserName', cand.title), el('span', 'badgeChooserTag'));
+      list.append(label);
+    }
+    return list;
   }
 
   function updateBadgeChooser(scene){
@@ -461,7 +464,7 @@
     if(!conflicts.length){ host.classList.add('hidden'); host.replaceChildren(); chooserSignature = ''; return; }
     host.classList.remove('hidden');
     const model = chooserModel(conflicts);
-    const signature = JSON.stringify(model.map(g => [g.position, g.control, g.slots.map(sl => sl.key + '|' + sl.label), g.options.map(x => x.id + '|' + x.title)]));
+    const signature = JSON.stringify(model.map(g => [g.position, g.slots.map(sl => sl.key + '|' + sl.label), g.options.map(x => x.id + '|' + x.title)]));
     if(signature !== chooserSignature){
       // Rebuilt only when the competing badges or the places change, so a pick never loses keyboard focus.
       chooserSignature = signature;
@@ -471,28 +474,27 @@
       host.append(el('p', 'hintText badgeChooserLead', 'Where a uniform has more than one place for badges, pick the badge for each place.'));
       for(const g of model) host.append(buildChooserGroup(g));
       if(keep){
-        const again = [...host.querySelectorAll('input, select')].find(n => keep.id ? n.id === keep.id : (n.name === keep.name && n.value === keep.value));
+        const again = [...host.querySelectorAll('input')].find(n => n.name === keep.name && n.value === keep.value);
         if(again) again.focus();
       }
     }
-    // The picked and the shown badges, read off the latest scene.
+    // The picked and the shown badges, read off the latest scene: in each place the radio of the badge the place holds is checked, and a
+    // row's tag reads "shown" when that badge is drawn in that place and "not shown" when it is drawn nowhere in the position; a badge drawn
+    // in another place of the same position carries no tag (that place's own heading row says it is shown there).
     for(const g of model){
       const root = host.querySelector(`[data-position="${CSS.escape(g.position)}"]`);
       if(!root) continue;
-      if(g.control === 'radio'){
-        const picked = g.slots[0].value;
-        const shown = new Set(conflicts.find(c => c.position === g.position).shown || []);
-        for(const label of root.querySelectorAll('label.badgeChooserOption')){
+      const shown = new Set(conflicts.find(c => c.position === g.position).shown || []);
+      for(const sl of g.slots){
+        const row = g.slots.length === 1 ? root : root.querySelector(`.badgeChooserSlot[data-slot="${CSS.escape(sl.key)}"]`);
+        if(!row) continue;
+        const slotTag = row.querySelector('.badgeChooserSlotHead .badgeChooserTag');
+        if(slotTag) slotTag.textContent = sl.shown ? 'shown' : 'not shown';
+        for(const label of row.querySelectorAll('label.badgeChooserOption')){
           const input = label.querySelector('input');
-          input.checked = input.value === picked;
-          label.querySelector('.badgeChooserTag').textContent = shown.has(input.value) ? 'shown' : 'not shown';
-        }
-      }else{
-        for(const sl of g.slots){
-          const row = root.querySelector(`.badgeChooserSlot[data-slot="${CSS.escape(sl.key)}"]`);
-          if(!row) continue;
-          row.querySelector('select').value = sl.value;
-          row.querySelector('.badgeChooserTag').textContent = sl.shown ? 'shown' : 'not shown';
+          input.checked = input.value === sl.value;
+          const here = input.checked && sl.shown;
+          label.querySelector('.badgeChooserTag').textContent = here ? 'shown' : (shown.has(input.value) ? '' : 'not shown');
         }
       }
     }

@@ -6,8 +6,10 @@
 //
 // Serves the repo, opens the page in headless Chrome, selects five badges on the Class A (two aviation badges compete for the one aviation
 // place, three specialty badges for the left pocket, the right pocket and the place over the nametag), and checks the chooser: a plain heading
-// row per position, one select per place, no fieldset. Picks a badge for a place and checks the engine moved it there. Writes a screenshot of
-// the chooser when --out is given (LIVE7-1, Ethan: "the headers for these look bad ... pick the badges on the left and right manually").
+// row per position, one radio group per place with a radio per competing badge, no select, no fieldset. Picks a badge for a place through its
+// radio and checks the engine moved it there; moves the pick with the arrow key and checks it stays within the place. Writes a screenshot of
+// the chooser when --out is given (LIVE7-1, Ethan: "the headers for these look bad ... pick the badges on the left and right manually";
+// LIVE13 E75: "make the badge UIs match (id like them to be all the radio buttons)").
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -62,6 +64,7 @@ async function launch(){
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     await S('Emulation.setDeviceMetricsOverride', { width: Number(opt('--width')) || 1280, height: 1000, deviceScaleFactor: 2, mobile: false });
     await S('Page.enable');
+    await S('Emulation.setFocusEmulationEnabled', { enabled: true }); // headless pages have no focus otherwise, and a focused radio is needed for the arrow-key check
     await S('Page.addScriptToEvaluateOnNewDocument', { source: "try{localStorage.setItem('cap_uniform_builder_access_v1','1')}catch(e){}" });
     await S('Page.navigate', { url: `http://127.0.0.1:${srv.address().port}/index.html` });
     for(let i = 0; i < 400; i++){ if(await ev('typeof CAPUBUniformView !== "undefined" && !!document.querySelector("#groupBadges")').catch(() => false)) break; await sleep(50); }
@@ -83,35 +86,65 @@ async function launch(){
     await sleep(600);
     const inspect = () => ev(`(() => {
       const host = document.getElementById('badgeChooser');
+      const radiogroup = list => ({ role: list.getAttribute('role'), labelledBy: !!document.getElementById(list.getAttribute('aria-labelledby') || ''),
+        names: new Set([...list.querySelectorAll('input[type=radio]')].map(i => i.name)).size,
+        options: [...list.querySelectorAll('label.badgeChooserOption')].map(l => ({ value: l.querySelector('input').value, checked: l.querySelector('input').checked, status: l.querySelector('.badgeChooserTag').textContent })) });
       const groups = [...host.querySelectorAll('.badgeChooserGroup')].map(g => ({
         position: g.dataset.position, tag: g.tagName, heading: g.querySelector('.badgeChooserTitle')?.textContent, count: g.querySelector('.badgeChooserCount')?.textContent,
-        selects: [...g.querySelectorAll('select')].map(s => ({ slot: s.closest('.badgeChooserSlot').dataset.slot, label: s.closest('.badgeChooserSlot').querySelector('.badgeChooserSlotName').textContent, value: s.value, status: s.closest('.badgeChooserSlot').querySelector('.badgeChooserTag').textContent })),
+        slots: [...g.querySelectorAll('.badgeChooserSlot')].map(row => Object.assign({ slot: row.dataset.slot, label: row.querySelector('.badgeChooserSlotName').textContent,
+          status: row.querySelector('.badgeChooserSlotHead .badgeChooserTag').textContent }, radiogroup(row.querySelector('[role=radiogroup]')))),
+        own: g.querySelector(':scope > [role=radiogroup]') ? radiogroup(g.querySelector(':scope > [role=radiogroup]')) : null,
         radios: g.querySelectorAll('input[type=radio]').length
       }));
-      return { hidden: host.classList.contains('hidden'), fieldsets: host.querySelectorAll('fieldset,legend').length, groups };
+      return { hidden: host.classList.contains('hidden'), fieldsets: host.querySelectorAll('fieldset,legend').length, selects: host.querySelectorAll('select').length, groups };
     })()`);
+    const picked = group => Object.fromEntries(group.slots.map(sl => [sl.slot, (sl.options.find(o => o.checked) || {}).value]));
     const a = await inspect();
     console.log(JSON.stringify(a, null, 1));
     const fails = [];
     if(a.hidden) fails.push('the chooser is hidden');
     if(a.fieldsets) fails.push('the chooser still uses a fieldset or legend');
+    if(a.selects) fails.push('the chooser still has a select');
     const pocket = a.groups.find(g => g.position === 'pocket'), aviation = a.groups.find(g => g.position === 'aviation');
-    if(!pocket || pocket.selects.length !== 3) fails.push('the pocket group should have one select per place (3)');
-    if(!aviation || aviation.radios !== 2) fails.push('the aviation group should have a radio per competing badge (2)');
+    if(!pocket || pocket.slots.length !== 3) fails.push('the pocket group should have one place row per place (3)');
+    if(pocket && !pocket.slots.every(sl => sl.role === 'radiogroup' && sl.labelledBy && sl.names === 1 && sl.options.length === 3)) fails.push('each pocket place should be a labelled radiogroup of the three competing badges, one input name per place');
+    if(pocket && pocket.slots.some(sl => sl.options.filter(o => o.checked).length !== 1)) fails.push('each place should have exactly one radio checked');
+    if(pocket && new Set(Object.values(picked(pocket))).size !== 3) fails.push('the places should start with three different badges');
+    if(pocket && !pocket.slots.every(sl => sl.options.every(o => o.status === (o.checked ? 'shown' : '')))) fails.push("in a place of several, 'shown' should mark the badge shown in that place and a badge in another place should carry no tag");
+    if(aviation && !(aviation.own.options.every(o => o.status === (o.checked ? 'shown' : 'not shown')))) fails.push("the aviation rows should read 'shown' for the pick and 'not shown' for the other");
+    if(!aviation || aviation.radios !== 2 || !aviation.own || aviation.own.role !== 'radiogroup') fails.push('the aviation group should be a radiogroup with a radio per competing badge (2)');
     await shot('0-default');
-    // Pick the IT badge for the left pocket; the engine puts it there and the ES badge takes its old place (swap).
-    await ev(`(() => { const s = document.querySelector('#badgeChooser .badgeChooserSlot[data-slot="left-pocket"] select'); s.value = 'information_technology_technician_badge'; s.dispatchEvent(new Event('change', { bubbles: true })); })()`);
+    // Pick the IT badge for the left pocket through its radio; the engine puts it there and the ES badge takes its old place (swap).
+    await ev(`(() => { const r = document.querySelector('#badgeChooser .badgeChooserSlot[data-slot="left-pocket"] input[value="information_technology_technician_badge"]'); r.click(); })()`);
     await sleep(1200);
     const b = await inspect();
     const after = b.groups.find(g => g.position === 'pocket');
-    const got = Object.fromEntries(after.selects.map(s => [s.slot, s.value]));
+    const got = picked(after);
     console.log('after the pick:', JSON.stringify(got), JSON.stringify(await ev('State.badgeChoices')));
     if(got['left-pocket'] !== 'information_technology_technician_badge') fails.push('the left pocket did not take the picked badge');
     if(new Set(Object.values(got)).size !== 3) fails.push('a badge sits in two places');
+    const state = await ev('State.badgeChoices');
+    if(!state.blues_a || !state.blues_a.pocket || typeof state.blues_a.pocket !== 'object' || state.blues_a.pocket['left-pocket'] !== 'information_technology_technician_badge') fails.push('State.badgeChoices.blues_a.pocket should hold { place: badgeId } with the left pocket picked');
     const drawn = await ev(`CAPUBUniformView.scene.layers.filter(l => l.role === 'badge').map(l => l.key.replace('badge:', '') + '@' + (l.x + l.w / 2).toFixed(1))`);
     console.log('drawn:', drawn.join(', '));
     if(!drawn.some(d => d.startsWith('information_technology_technician_badge@') && Number(d.split('@')[1]) > 15)) fails.push('the IT badge is not drawn on the left pocket');
     await shot('1-picked');
+    // Keyboard: focus the checked radio of the right pocket and press the down arrow; the pick moves to the next badge in that place only.
+    const focused = await ev(`(() => { const r = document.querySelector('#badgeChooser .badgeChooserSlot[data-slot="right-pocket"] input:checked'); r.focus(); return document.hasFocus() && document.activeElement === r; })()`);
+    if(!focused) fails.push('the right pocket radio did not take focus');
+    const before = picked(after);
+    await S('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowDown', code: 'ArrowDown', windowsVirtualKeyCode: 40 });
+    await S('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowDown', code: 'ArrowDown', windowsVirtualKeyCode: 40 });
+    await sleep(1200);
+    const c = await inspect();
+    const moved = picked(c.groups.find(g => g.position === 'pocket'));
+    const focusSlot = await ev(`document.activeElement && document.activeElement.closest('.badgeChooserSlot') ? document.activeElement.closest('.badgeChooserSlot').dataset.slot : null`);
+    console.log('after the arrow key:', JSON.stringify(moved), 'focus in', focusSlot, JSON.stringify(await ev('State.badgeChoices')));
+    if(moved['right-pocket'] === before['right-pocket']) fails.push('the arrow key did not move the right pocket pick');
+    if(focusSlot !== 'right-pocket') fails.push('the arrow key left the right pocket radio group');
+    if(new Set(Object.values(moved)).size !== 3) fails.push('after the arrow key a badge sits in two places');
+    if(c.groups.find(g => g.position === 'aviation').own.options.filter(o => o.checked).length !== 1) fails.push('the aviation pick was disturbed');
+    await shot('2-arrow');
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS');
     if(fails.length) code = 1;
   } catch (e) { console.error(e); code = 2; }
