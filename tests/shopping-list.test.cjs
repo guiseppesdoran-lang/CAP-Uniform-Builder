@@ -75,7 +75,8 @@ test('every catalog offer names a known vendor, a price or none, its status and 
         assert.ok(['verified','estimated'].includes(o.status),`${id}: status`);
         assert.match(o.checked,/^\d{4}-\d\d-\d\d$/,`${id}: the date the price was seen`);
       }
-      if(o.url) assert.match(o.url,/^https:\/\/www\.(vanguardmil|uniforms-4u|iragreen)\.com\//,`${id}: product link`);
+      // The Ranger tabs' one offer is Hawk Mountain Ranger School's order form (a Google Form linked from capranger.org).
+      if(o.url) assert.match(o.url,o.vendor==='capranger'?/^https:\/\/docs\.google\.com\/forms\/d\/e\/[A-Za-z0-9_-]+\/viewform$/:/^https:\/\/www\.(vanguardmil|uniforms-4u|iragreen)\.com\//,`${id}: product link`);
     }
   }
   assert.equal(CAT.items.blue_belt.offers[0].sku,'3924','the Uniforms-4U item number is the SKU');
@@ -205,6 +206,35 @@ test('the CAP Crest on the blazer pocket is listed as not sold at retail: no lin
   const res=SHOP.deriveList(await P.composeUniform(b,store),b,{badges:BADGES});
   assert.ok(!res.lines.some(l=>l.itemId==='cap_crest'),'no crest when the Command Council badge replaces it');
   assert.match(core,/not sold at retail<\/span><span class="capub-shop-low">Issued through CAP/);
+});
+
+test('a Ranger tab patch resolves to the capranger.org order form: no price, no vendor searches',()=>{
+  // LIVE13 E79, Ethan: "the ranger tabs arent on vanguard ... they are on capranger.org with a custom order form". The art draws
+  // them as patch-ranger-tab-<grade>; the list picks them up from the drawing like any patch.
+  assert.equal(CAT.vendors.capranger.name,'Hawk Mountain Ranger School (capranger.org)');
+  assert.equal(CAT.vendors.capranger.info,'https://www.capranger.org/cap-ranger-grades');
+  const it=CAT.items.ranger_tab;
+  assert.equal(it.byOrderForm,true);
+  assert.deepEqual(it.offers.map(o=>[o.vendor,o.price,o.url]),[['capranger',null,'https://docs.google.com/forms/d/e/1FAIpQLSeVDbEhuYSTmkqFqGozQNdMkUjMHjWs3xToeDFYOoFJEz4RCQ/viewform']]);
+  assert.deepEqual(CAT.patchItem('patch-ranger-tab-senior-ranger'),{item:'ranger_tab',detail:'Senior Ranger'});
+  assert.equal(CAT.patchItem('patch-cap-command-patch'),null);
+  const scene={title:'OCP Uniform',layers:[
+    {type:'asset',role:'patch',id:'patch-ranger-tab-first-class',key:'patch:ranger_tab_first_class',title:'Ranger First Class tab',x:0,y:0,w:1,h:1},
+    {type:'raster',role:'patch',id:'',key:'patch:some_unit_patch',title:'Unit patch',x:0,y:0,w:1,h:1}]};
+  const res=SHOP.deriveList(scene,{uniform:'ocp'},{badges:BADGES});
+  assert.deepEqual(res.uncovered,[]);
+  const tab=res.lines.find(l=>l.itemId==='ranger_tab');
+  assert.ok(tab,'the tab has its catalog line');
+  assert.equal(tab.detail,'First Class');
+  assert.deepEqual(tab.offers.map(o=>[o.vendorName,o.kind,o.price]),[['Hawk Mountain Ranger School (capranger.org)','form',null]]);
+  assert.equal(tab.total,null);
+  assert.ok(!tab.offers.some(o=>/vanguardmil|uniforms-4u|iragreen/.test(o.url)),'no vendor searches');
+  const unit=res.lines.find(l=>/Unit patch/.test(l.name));
+  assert.ok(unit&&unit.offers.some(o=>o.vendor==='vanguard'),'an ordinary patch keeps its vendor offers');
+  const text=SHOP.toText(res.lines,{});
+  assert.match(text,/CAP Ranger tab - First Class: by order form\n    Hawk Mountain Ranger School \(capranger\.org\) order form: https:\/\/docs\.google\.com\/forms\//);
+  assert.match(SHOP.toCSV(res.lines,{}),/,by order form,/);
+  assert.match(core,/'<span class="capub-shop-none">by order form<\/span>/);
 });
 
 test('the field and flight uniforms list the badge in the form drawn, the name tapes and the sheet\'s own patches',async()=>{

@@ -19,6 +19,8 @@
   const titleCase = s => String(s || '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim().replace(/\b\w/g, c => c.toUpperCase());
   const sentence = s => { s = String(s || ''); return s ? s[0].toUpperCase() + s.slice(1) : s; };
   const vendorName = v => (C.vendors[v] && C.vendors[v].name) || titleCase(v);
+  // What a link opens: a product page, a vendor search, or an order form (the Ranger tabs).
+  const linkWord = o => o.kind === 'form' ? 'order form' : o.kind === 'product' ? 'product' : 'search';
   const GROUP_ORDER = ['Garments', 'Headgear', 'Footwear', 'Accessories', 'Name', 'Grade', 'Insignia', 'Ribbons', 'Miniature medals', 'Badges', 'Cords', 'Patches', 'Other'];
   const SKIP_ROLES = new Set(['measure', 'clear', 'surface', 'hat-view-bounds', 'epaulet-shade']);
 
@@ -202,6 +204,7 @@
       if(!it) return makeLine(key || 'item:' + itemId, Object.assign({ group: 'Other', name: titleCase(itemId), offers: C.searchOnly() }, extra));
       const line = makeLine(key || 'item:' + itemId, { group: it.group, name: it.name, rule: it.rule, ref: it.ref || '', note: it.note || '', q: it.q, offers: it.offers.map(o => Object.assign({}, o)), itemId });
       if(it.notSold){ line.notSold = true; line.offers = []; }
+      if(it.byOrderForm) line.byOrderForm = true;
       if(extra){
         for(const k of ['detail', 'ref', 'note']) if(extra[k] && !line[k + 'Set']){ line[k] = extra[k]; line[k + 'Set'] = true; }
         if(extra.alt && C.items[extra.alt]) line.alt = extra.alt;
@@ -396,6 +399,9 @@
         if(/^patch-es-style/.test(id)){ cover(l, fromItem('es_patch', { detail: /2$/.test(id) ? 'Second style' : '' }, figPrefix(l) + 'item:es_patch')); continue; }
         if(id === 'patch-cap-command-patch'){ cover(l, fromItem('command_patch')); continue; }
         const pid = key.replace(/^patch:/, '').split(':')[0];
+        // A patch with its own catalog entry (the Ranger tabs: patch-ranger-tab-<grade>, by order form).
+        const own = C.patchItem && (C.patchItem(id) || C.patchItem(pid));
+        if(own){ cover(l, fromItem(own.item, { detail: own.detail }, figPrefix(l) + 'patch:' + (id || pid))); continue; }
         const name = l.title || titleCase(pid);
         cover(l, makeLine(figPrefix(l) + 'patch:' + pid, { group: 'Patches', name: `Patch: ${name}${figName(l)}`, rule: 'CAP_ONLY', offers: C.patchOffers(name) }));
         continue;
@@ -451,7 +457,7 @@
       line.offers = (line.offers || []).map(o => {
         const q = o.q || line.q || line.name;
         const url = o.url || C.search(o.vendor, q);
-        return { vendor: o.vendor, vendorName: vendorName(o.vendor), price: Number.isFinite(o.price) ? o.price : null, status: Number.isFinite(o.price) ? (o.status || 'estimated') : null, checked: o.checked || null, url, kind: o.url ? 'product' : 'search', sku: o.sku || '' };
+        return { vendor: o.vendor, vendorName: vendorName(o.vendor), price: Number.isFinite(o.price) ? o.price : null, status: Number.isFinite(o.price) ? (o.status || 'estimated') : null, checked: o.checked || null, url, kind: line.byOrderForm ? 'form' : o.url ? 'product' : 'search', sku: o.sku || '' };
       });
       // One offer per vendor, the priced one first.
       const byVendor = new Map();
@@ -495,10 +501,10 @@
     let group = null;
     for(const l of list){
       if(l.group !== group){ group = l.group; out.push(`== ${group} ==`); }
-      const price = l.notSold ? 'not sold at retail' : l.lowest ? `${money(l.total)}${l.qty > 1 ? ` (${l.qty} x ${money(l.unitPrice)})` : ''} at ${l.lowest.vendorName}, ${l.lowest.status}${l.lowest.checked ? ' ' + l.lowest.checked : ''}${l.lowest.status === 'estimated' ? ' *' : ''}` : 'no price';
+      const price = l.notSold ? 'not sold at retail' : l.byOrderForm && !l.lowest ? 'by order form' : l.lowest ? `${money(l.total)}${l.qty > 1 ? ` (${l.qty} x ${money(l.unitPrice)})` : ''} at ${l.lowest.vendorName}, ${l.lowest.status}${l.lowest.checked ? ' ' + l.lowest.checked : ''}${l.lowest.status === 'estimated' ? ' *' : ''}` : 'no price';
       out.push(`${owned && owned[l.key] ? '[OWN]' : '[BUY]'} ${l.name}${l.detail ? ' - ' + l.detail : ''}${l.qty > 1 ? ` x ${l.qty}` : ''}: ${price}`);
       const link = l.lowest || l.offers[0];
-      if(link) out.push(`    ${link.vendorName} ${link.kind === 'product' ? 'product' : 'search'}: ${link.url}`);
+      if(link) out.push(`    ${link.vendorName} ${linkWord(link)}: ${link.url}`);
     }
     out.push('', `Subtotal of the lowest prices: ${money(t.subtotal)} (${t.estimated} estimated *, ${t.unpriced} without a price${t.notSold ? `, ${t.notSold} not sold at retail` : ''})`, `Still to buy: ${money(t.remaining)}`, 'Shipping, tax and alterations are not included.');
     return out.join('\n');
@@ -508,7 +514,7 @@
     const rows = [['Section', 'Item', 'Detail', 'Quantity', 'Lowest unit price', 'Line total', 'Vendor', 'Price status', 'Price checked', 'SKU', 'Link', 'Other vendors', 'Own it', 'Sourcing', 'CAPR 39-1']];
     for(const l of list){
       const lo = l.lowest, link = lo || l.offers[0];
-      rows.push([l.group, l.name, l.detail, l.qty, lo ? lo.price.toFixed(2) : '', l.total != null ? l.total.toFixed(2) : '', lo ? lo.vendorName : '', lo ? lo.status : l.notSold ? 'not sold at retail' : 'no price', lo ? lo.checked || '' : '', lo ? lo.sku : '', link ? link.url : '',
+      rows.push([l.group, l.name, l.detail, l.qty, lo ? lo.price.toFixed(2) : '', l.total != null ? l.total.toFixed(2) : '', lo ? lo.vendorName : '', lo ? lo.status : l.notSold ? 'not sold at retail' : l.byOrderForm ? 'by order form' : 'no price', lo ? lo.checked || '' : '', lo ? lo.sku : '', link ? link.url : '',
         l.offers.filter(o => o !== lo).map(o => `${o.vendorName}: ${o.price != null ? money(o.price) : 'search'} ${o.url}`).join(' | '), owned && owned[l.key] ? 'yes' : '', l.rule, l.ref]);
     }
     return rows.map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
@@ -632,15 +638,17 @@
     const others = l.offers.filter(o => o !== main);
     const priceCell = l.notSold
       ? '<span class="capub-shop-none">not sold at retail</span><span class="capub-shop-low">Issued through CAP</span>'
+      : l.byOrderForm && !lo
+      ? '<span class="capub-shop-none">by order form</span><span class="capub-shop-low">Price on the order form</span>'
       : lo
       ? `${money(l.total)}${lo.status === 'estimated' ? '<span class="capub-shop-star" title="Estimated price"> *</span>' : ''}<span class="capub-shop-low">${l.qty > 1 ? `${l.qty} x ${money(lo.price)} · ` : ''}${esc(lo.vendorName)}${lo.sku ? ' SKU ' + esc(lo.sku) : ''} · ${lo.status === 'verified' ? 'verified' : 'estimated'}${lo.checked ? ' ' + esc(lo.checked) : ''}</span>`
       : '<span class="capub-shop-none">no price</span><span class="capub-shop-low">Search the vendors</span>';
     return `<tr data-key="${esc(l.key)}" class="${owned[l.key] ? 'capub-shop-owned' : ''}">
         <td data-label="Own it"><input type="checkbox" class="capub-owned" ${owned[l.key] ? 'checked' : ''} aria-label="Already own ${esc(l.name)}"></td>
-        <td data-label="Item"><div class="capub-purchase-item-name">${esc(l.name)}</div>${l.detail ? `<div class="capub-shop-detail">${esc(l.detail)}</div>` : ''}<span class="capub-purchase-chip ${ruleClass}">${esc(RULE_LABEL[l.rule] || 'Verify')}</span>${l.notSold ? '<span class="capub-purchase-chip">Not sold at retail</span>' : lo ? `<span class="capub-purchase-chip ${lo.status === 'estimated' ? 'est' : ''}">${lo.status === 'verified' ? 'Verified price' : 'Estimated price'}</span>` : '<span class="capub-purchase-chip est">No price</span>'}${l.ref ? `<span class="capub-purchase-chip">CAPR 39-1 ${esc(l.ref)}</span>` : ''}${l.note ? `<div class="capub-purchase-note">${esc(l.note)}</div>` : ''}</td>
+        <td data-label="Item"><div class="capub-purchase-item-name">${esc(l.name)}</div>${l.detail ? `<div class="capub-shop-detail">${esc(l.detail)}</div>` : ''}<span class="capub-purchase-chip ${ruleClass}">${esc(RULE_LABEL[l.rule] || 'Verify')}</span>${l.notSold ? '<span class="capub-purchase-chip">Not sold at retail</span>' : l.byOrderForm && !lo ? '<span class="capub-purchase-chip">By order form</span>' : lo ? `<span class="capub-purchase-chip ${lo.status === 'estimated' ? 'est' : ''}">${lo.status === 'verified' ? 'Verified price' : 'Estimated price'}</span>` : '<span class="capub-purchase-chip est">No price</span>'}${l.ref ? `<span class="capub-purchase-chip">CAPR 39-1 ${esc(l.ref)}</span>` : ''}${l.note ? `<div class="capub-purchase-note">${esc(l.note)}</div>` : ''}</td>
         <td class="capub-purchase-qty" data-label="Quantity">${Number(l.qty) || 1}</td>
         <td class="capub-purchase-price" data-label="Price">${priceCell}</td>
-        <td data-label="Where to buy"><div class="capub-purchase-links">${main ? `<a href="${esc(main.url)}" target="_blank" rel="noopener noreferrer">${esc(main.vendorName)} ${main.kind === 'product' ? 'product' : 'search'}</a>` : (l.notSold ? '<span class="capub-shop-none">Through CAP, not a vendor</span>' : '')}</div>${others.length ? `<details class="capub-shop-more"><summary>Other vendors (${others.length})</summary><ul>${others.map(o => `<li><a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">${esc(o.vendorName)} ${o.kind === 'product' ? 'product' : 'search'}</a><span>${esc(offerLabel(o))}</span></li>`).join('')}</ul></details>` : ''}</td>
+        <td data-label="Where to buy"><div class="capub-purchase-links">${main ? `<a href="${esc(main.url)}" target="_blank" rel="noopener noreferrer">${esc(main.vendorName)} ${linkWord(main)}</a>` : (l.notSold ? '<span class="capub-shop-none">Through CAP, not a vendor</span>' : '')}</div>${others.length ? `<details class="capub-shop-more"><summary>Other vendors (${others.length})</summary><ul>${others.map(o => `<li><a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">${esc(o.vendorName)} ${linkWord(o)}</a><span>${esc(offerLabel(o))}</span></li>`).join('')}</ul></details>` : ''}</td>
       </tr>`;
   }
 

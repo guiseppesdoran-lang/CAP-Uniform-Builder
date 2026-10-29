@@ -20,6 +20,11 @@
   const VANGUARD = 'https://www.vanguardmil.com';
   const U4U = 'https://www.uniforms-4u.com';
   const IRA = 'https://www.iragreen.com';
+  // The CAP Ranger tabs are not on Vanguard (Ethan: "the ranger tabs arent on vanguard ... they are on capranger.org with a custom
+  // order form"): Hawk Mountain Ranger School's order form, linked from capranger.org's CAP Ranger grades page.
+  const CAPRANGER = 'https://www.capranger.org';
+  const RANGER_GRADES_PAGE = 'https://www.capranger.org/cap-ranger-grades';
+  const RANGER_ORDER_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSeVDbEhuYSTmkqFqGozQNdMkUjMHjWs3xToeDFYOoFJEz4RCQ/viewform';
   const enc = q => encodeURIComponent(String(q || '').trim());
   const SEARCH = {
     vanguard: q => `${VANGUARD}/search?q=${enc(q)}`,
@@ -196,6 +201,10 @@
     aux_patch_ocp: item('AUX duty identifier patch', 'Patches', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol AUX patch OCP', ref: '7.1.1.1.2' }),
     us_flag_patch_flight: item('Cloth US flag emblem with gold border, 2 x 3 1/2 in (left sleeve)', 'Patches', 'MILSPEC_OK', [V(null), U(null), I(null)], { q: 'US flag patch gold border flight suit', ref: '8.2.4.4' }),
 
+    // A Ranger tab, by its grade (patch-ranger-tab-<grade>, resolved by patchItem below). The custom order form is the only
+    // offer: no price ("by order form") and no vendor searches (LIVE13 E79).
+    ranger_tab: item('CAP Ranger tab', 'Patches', 'CAP_ONLY', [offer('capranger', null, null, null, RANGER_ORDER_FORM)], { byOrderForm: true, note: 'Ordered from Hawk Mountain Ranger School on its custom order form (linked from capranger.org, CAP Ranger grades); not sold by the uniform vendors.' }),
+
     // ---- racks ------------------------------------------------------------------------------------------------------
     ribbon_mount: item('Ribbon mounting bar', 'Ribbons', 'GENERIC_SPEC', [V(null), U(null), I(null)], { q: 'ribbon mounting bar', note: 'Sized for the number of ribbons on the rack.' }),
     mini_mount: item('Miniature medal mounting bar', 'Miniature medals', 'GENERIC_SPEC', [V(null), U(null), I(null)], { q: 'miniature medal mounting bar', note: 'Sized for the number of miniature medals.' })
@@ -289,6 +298,12 @@
     const checked = form === 'dress' ? AUG : OCT;
     return [V(price, 'estimated', checked), U(null), I(null)].map(o => Object.assign(o, { q }));
   }
+  // A patch the drawing names that has its own catalog entry: { item, detail }, or null for an ordinary patch.
+  function patchItem(id){
+    const m = /^(?:patch-)?ranger[-_]tab[-_]([a-z0-9_-]+)$/i.exec(String(id || ''));
+    if(m) return { item: 'ranger_tab', detail: m[1].replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) };
+    return null;
+  }
   function patchOffers(name){
     return [V(4.65, 'estimated', AUG), U(null), I(null)].map(o => Object.assign(o, { q: `Civil Air Patrol ${name}` }));
   }
@@ -316,11 +331,12 @@
     vendors: {
       vanguard: { name: 'Vanguard', home: VANGUARD },
       uniforms4u: { name: 'Uniforms-4U', home: U4U },
-      iragreen: { name: 'Ira Green', home: IRA }
+      iragreen: { name: 'Ira Green', home: IRA },
+      capranger: { name: 'Hawk Mountain Ranger School (capranger.org)', home: CAPRANGER, info: RANGER_GRADES_PAGE }
     },
     search: (vendor, q) => (SEARCH[vendor] || SEARCH.vanguard)(q),
     items,
-    GRADE_NAMES, gradeOffers, deviceInfo, ribbonOffers, miniOffers, badgeOffers, BADGE_FORM_WORDS, patchOffers, cordInfo,
+    GRADE_NAMES, gradeOffers, deviceInfo, ribbonOffers, miniOffers, badgeOffers, BADGE_FORM_WORDS, patchOffers, patchItem, cordInfo,
     searchOnly,
     MILITARY_IN_CAP_LIST
   };
