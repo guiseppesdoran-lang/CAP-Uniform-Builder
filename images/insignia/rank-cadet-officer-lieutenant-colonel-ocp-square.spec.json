@@ -13,7 +13,7 @@
   200
  ],
  "size_source": "estimated",
- "size_basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+ "size_basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
  "anchors": {
   "top_center": [
    100,
@@ -44,22 +44,27 @@
   "form": "embroidered on 2x2 square",
   "square_in": 2,
   "scale_vs_regular": 0.7778,
-  "insignia_w_in": 0.9722,
-  "insignia_h_in": 1.1667,
+  "count": 2,
+  "shape": "diamond",
+  "element_w_in": 0.5833,
+  "element_h_in": 0.9722,
+  "centre_pitch_in": 0.5833,
+  "insignia_w_in": 1.1667,
+  "insignia_h_in": 0.9722,
   "clear_blue_each_side_in": {
-   "x": 0.5139,
-   "y": 0.4167
+   "x": 0.4167,
+   "y": 0.5139
   }
  },
- "layout": "centered vertically; field-grade diamonds with the long points horizontal; company-grade circles added vertically (7.1.1.2.2)",
+ "layout": "row centred on the square, the orientation of the sewn cap piece and the collar insignia (cloth-bordered-regular): field-grade diamonds with the long points vertical side by side, touching, with the connecting bar; company-grade circles in a horizontal row. LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row",
  "mounts": [
   {
    "uniform": "OCP coat",
-   "rule": "center of chest (7.1.1.2.1); garment landmark rank_square"
+   "rule": "center of chest (7.1.1.2.1); garment landmark rank_square; row orientation as drawn, rotation 0 (LIVE13-MASTER-13)"
   },
   {
    "uniform": "coyote brown fleece",
-   "rule": "2 in squared Velcro cloth rank, flush and centered above the nametape (7.1.1.11.2); same orientation as the OCP (long points horizontal, circles stacked vertically, 7.1.1.2.2)"
+   "rule": "2 in squared Velcro cloth rank, flush and centered above the nametape (7.1.1.11.2); same orientation as the OCP square (field-grade long points vertical in a row, circles in a row; LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row)"
   }
  ],
  "rank": {

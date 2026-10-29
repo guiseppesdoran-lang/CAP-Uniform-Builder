@@ -19890,7 +19890,7 @@
    "w_in": 2,
    "h_in": 2,
    "size_source": "estimated",
-   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
    "anchors": {
     "top_center": [
      100,
@@ -20204,7 +20204,7 @@
    "w_in": 2,
    "h_in": 2,
    "size_source": "estimated",
-   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
    "anchors": {
     "top_center": [
      100,
@@ -20510,7 +20510,7 @@
    "w_in": 2,
    "h_in": 2,
    "size_source": "estimated",
-   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
    "anchors": {
     "top_center": [
      100,
@@ -20808,7 +20808,7 @@
    "w_in": 2,
    "h_in": 2,
    "size_source": "estimated",
-   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
    "anchors": {
     "top_center": [
      100,
@@ -21098,7 +21098,7 @@
    "w_in": 2,
    "h_in": 2,
    "size_source": "estimated",
-   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
    "anchors": {
     "top_center": [
      100,
@@ -21380,7 +21380,7 @@
    "w_in": 2,
    "h_in": 2,
    "size_source": "estimated",
-   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size geometry scaled by 0.7778 so the largest cadet officer stack leaves 1/8 in of blue; the regulation gives no insignia size for the square.",
+   "basis": "Square is 2 in x 2 in (CAPR 39-1 7.1.1.2.1, regulation). Insignia is the Fig A5-6 regular-size row (the cloth-bordered-regular geometry) scaled by 0.7778 so the widest cadet officer row (Cadet Colonel / Captain, 2.25 in) leaves 1/8 in of blue at each side; the regulation gives no insignia size for the square. Orientation: LIVE13-MASTER-13, Ethan 2026-10-29: rotated to the collar orientation; 7.1.1.2.2 read as describing the row.",
    "anchors": {
     "top_center": [
      100,
