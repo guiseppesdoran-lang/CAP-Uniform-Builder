@@ -1195,6 +1195,42 @@
     return box;
   }
 
+  // ---- How the nameplate and the ribbon rack sit on their pockets (LIVE13 E99) ----
+  //
+  // Ethan, on the Class B with the overlay on: "also these need measurements" (the nameplate over the right pocket and the rack over the left
+  // carried none). The engine places both from the sheets' landmarks, which encode the regulation's words:
+  //   'centered, resting on, but not over the edge of the pleated pocket' (Class B men: nametag 4.1.11.1.1.2.1, ribbons 4.1.11.1.1.2.2; the
+  //   long-sleeve shirt 4.1.8.2.1-2; the aviator shirt 4.2.5.1.2.1-2 men, 4.2.6.2.6.1.1 and 4.2.6.2.6.2.1 women);
+  //   ribbons 'centered, resting on (but not over) the edge of the welt pocket' (service coat 4.1.5.2.2.3 men, 4.1.9.4.3 women; the cadet
+  //   semi-formal 'is worn as for the Service Dress', 4.1.3.2, 4.1.4);
+  //   the women's Class B nametag 'centered, even with to 1 1/2 inches higher or lower than the first exposed button' (4.1.12.2.4.1) with the
+  //   ribbons' bottom aligned with the nametag's bottom (4.1.12.2.4.2); the overblouse the same (4.2.6.2.6.1.2, 4.2.6.2.6.2.2 'Bottom row of
+  //   ribbons will be even with bottom of nameplate');
+  //   the blazer nametag 'with the top edge of nametag aligned with top edge of the left breast pocket' (4.2.3.1.1.2 men, 4.2.4.1.1.2 women).
+  // A zero gap reads badly as a dimension (Ethan on the overlay, E97), so a piece resting on its pocket gets one line along the pocket's top
+  // edge from edge to edge with the tick at the piece's centre, labelled 'centered' and captioned with the paragraph's words, like the other
+  // 'centered' measures; a piece the sheet sets off the pocket gets the gap instead. 'Even with' is the level line the Class A nametag has
+  // (LIVE13 E76): from one piece's inner bottom corner to the other's.
+  function restingOn(ctx, piece, pocket, caption, gapCaption){
+    if(!piece || !pocket) return;
+    const cx = piece.x + piece.w / 2, bottom = piece.y + piece.h;
+    if(Math.abs(bottom - pocket.y) < 0.03) ctx.measure({ x: pocket.x, y: pocket.y }, { x: pocket.x + pocket.w, y: pocket.y }, 'centered', { mid: { x: cx, y: pocket.y }, side: { x: 0, y: 1 }, offsetOnly: true, caption });
+    else ctx.measure({ x: cx, y: Math.min(bottom, pocket.y) }, { x: cx, y: Math.max(bottom, pocket.y) }, null, { caption: gapCaption });
+  }
+  // The bottoms of `a` (on the wearer's right) and `b` (on the wearer's left) level with each other.
+  function levelBottoms(ctx, a, b, label, caption){
+    if(!a || !b) return;
+    ctx.measure({ x: a.x + a.w, y: a.y + a.h }, { x: b.x, y: b.y + b.h }, label, { side: { x: 0, y: 1 }, caption });
+  }
+  // The nameplate's centre against the first exposed button: level with it, or the distance up or down, drawn beside the placket toward the plate
+  // from the button's centre (a centre mark) to the level of the plate's centre.
+  function plateToButton(ctx, plate, button, caption){
+    if(!plate || !button) return;
+    const cy = plate.y + plate.h / 2, toward = plate.x + plate.w / 2 < button.x ? -1 : 1;
+    if(Math.abs(cy - button.y) < 0.03) ctx.measure({ x: button.x, y: button.y }, { x: toward < 0 ? plate.x + plate.w : plate.x, y: button.y }, 'even with', { center: 'from', side: { x: 0, y: -1 }, caption });
+    else ctx.measure({ x: button.x, y: button.y }, { x: button.x, y: cy }, null, { center: 'from', side: { x: toward, y: 0 }, offsetOnly: true, caption });
+  }
+
   // Headgear is mandatory with the Class A and Class B (the paragraph says so for each cut); a member
   // who picks 'No headgear' is shown bare and told why that is not how the uniform is worn.
   const HEADGEAR_MANDATORY = {
@@ -1535,6 +1571,8 @@
     const welt = ctx.rect('welt_pocket');
     const rack = await ribbonRack(ctx, b, rest, { perRow, align: b.opt.rackAlign, outboardX: welt ? welt.x + welt.w : null, lapel: 'lapel_left', lapelGroup: 'lapel-left', customRows: !semi && !!b.opt.rackCounts });
     if(!rack) ctx.note('Ribbons are required with this uniform (CAPR 39-1, 11.1.2)');
+    // The rack rests on the welt, centred on it (4.1.5.2.2.3, 4.1.9.4.3; LIVE13 E99).
+    restingOn(ctx, rack, welt, 'ribbons resting on the welt pocket', 'welt pocket to ribbons');
     // The nametag's two measures (LIVE13 E76): centred between the sleeve seam and the lapel, one line from seam to lapel along the tag's
     // bottom with the centre ticked (the vocabulary of the other 'centered' measures), set off below the tag; and its bottom level with
     // the bottom of the ribbons, a line from the tag's inner bottom corner to the rack's outer bottom corner, labelled with the
@@ -1666,8 +1704,14 @@
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.63 };
       geo.marks = { x: pocketL.x + pocketL.w / 2, y: pocketL.y, anchor: 'top_center' }; // top edge of the flap
+      // The nametag and the ribbons each rest on their pleated pocket, centred on it (4.1.11.1.1.2.1-2, 4.1.8.2.1-2; LIVE13 E99).
+      restingOn(ctx, tag, pocketR, 'nameplate resting on the right pocket', 'right pocket to nameplate');
+      if(rack) restingOn(ctx, rack, pocketL, 'ribbons resting on the left pocket', 'left pocket to ribbons');
     }else{
       if(!rack) geo.olpCenter = { x: rest.x, y: tag.y + tag.h / 2 };
+      // The nametag against the first exposed button (4.1.12.2.4.1) and the ribbons' bottom aligned with its bottom (4.1.12.2.4.2; LIVE13 E99).
+      plateToButton(ctx, tag, ctx.point('button_1_center'), 'first button to nameplate centre');
+      if(rack) levelBottoms(ctx, tag, rack, 'even with', 'nameplate bottom to ribbons bottom');
       geo.onStyle = 'women';
       geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.5, anchor: 'top_center' };
@@ -1995,6 +2039,12 @@
 
     const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
     if(V.overblouse && !rack) geo.olp.gap = 0; // parallel with the nameplate
+    // LIVE13 E99. Overblouse: the nametag against the first exposed button (4.2.6.2.6.1.2), the bottom row of ribbons even with the nameplate's
+    // bottom (4.2.6.2.6.2.2). Aviator shirt: nametag and ribbons each 'centered, resting on, but not over the edge of' their pocket (4.2.5.1.2.1-2,
+    // 4.2.6.2.6.1.1, 4.2.6.2.6.2.1); the sheets state the nameplate slot and the ribbon slot but not the pockets' edges, so the overlay shows what
+    // the engine holds them to, the rack's bottom on the nameplate's bottom line (both on their pockets' top edges).
+    if(V.overblouse) plateToButton(ctx, tag, ctx.point('button_1_center'), 'first button to nameplate centre');
+    if(rack) levelBottoms(ctx, tag, rack, 'even with', 'nameplate bottom to ribbons bottom');
     if(!V.overblouse){
       const lp = ctx.point('badge_left_pocket_center'), rp = ctx.point('badge_right_pocket_center');
       geo.lp = lp ? { x: lp.x, y: lp.y } : null;
@@ -2224,6 +2274,14 @@
       }
       const plate = await ctx.place(plateId, { pieceAnchor: 'center', at: plateAt, z: Z.tape, role: 'nametag', key: 'nametag' });
       if(abovePlateFallback) ctx.measure({ x: plate.x + plate.w / 2, y: plate.y + plate.h }, { x: plate.x + plate.w / 2, y: plate.y + plate.h + 0.5 }, null, { caption: 'nameplate to crest' });
+      // 'the top edge of nametag aligned with top edge of the left breast pocket' (4.2.3.1.1.2, 4.2.4.1.1.2; LIVE13 E99): a level line from the
+      // tag's top corner to the pocket's, on whichever side the pocket runs past the tag. The men's sheet states the welt (breast_pocket); the
+      // women's states only the slanted welt's inside end, where the tag starts, so it has no line.
+      const pocket = ctx.rect('breast_pocket');
+      if(pocket && !abovePlateFallback && Math.abs(plate.y - pocket.y) < 0.03){
+        const right = pocket.x + pocket.w - (plate.x + plate.w), left = plate.x - pocket.x;
+        if(Math.max(right, left) > 0.1) ctx.measure(right >= left ? { x: plate.x + plate.w, y: plate.y } : { x: plate.x, y: plate.y }, right >= left ? { x: pocket.x + pocket.w, y: pocket.y } : { x: pocket.x, y: pocket.y }, 'even with', { side: { x: 0, y: -1 }, caption: 'nameplate top to pocket top' });
+      }
       if(b.name.show){
         // Last name and state (4.2.3.1.1.2).
         const nameZone = H.pieceRect(plate, ps, 'name');

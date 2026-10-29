@@ -63,29 +63,36 @@ const CITE = {
   nametagParallel: 'parallel with: the women\'s Class A nametag bottom parallel with the bottom of the ribbons (4.1.9.4.2.1-2; LIVE13 E76)',
   semiEven: 'even with: on the cadet semi-formal (no nametag) the badge or badges in the nametag\'s place, bottom even with the bottom of the ribbons (4.1.3.2.2, 4.1.4.2; LIVE13 E80)',
   semiLevel: 'level with: on the men\'s cadet semi-formal the wearer\'s right pocket badge keeps its service dress place, level with the left pocket badge (4.1.3.2.2, 4.1.5.2.2.4.2; LIVE13 E80)',
-  poloOverName: '½ in: the one badge or duty title over the name, from the top of the name to the bottom of the badge or title (5.3.2.1.1)'
+  poloOverName: '½ in: the one badge or duty title over the name, from the top of the name to the bottom of the badge or title (5.3.2.1.1)',
+  // LIVE13 E99 (Ethan, on the Class B with the overlay on: "also these need measurements"): how the nameplate and the ribbon rack sit on their pockets.
+  rackWelt: 'centered: ribbons centred, resting on (but not over) the edge of the welt pocket (4.1.5.2.2.3, 4.1.9.4.3; the cadet semi-formal worn as the service dress, 4.1.3.2, 4.1.4; LIVE13 E99)',
+  plateRests: 'centered: the Class B nametag centred, resting on, but not over the edge of the pleated pocket on the wearer\'s right (4.1.11.1.1.2.1, 4.1.8.2.1; LIVE13 E99)',
+  rackRests: 'centered: the Class B ribbons centred, resting on, but not over the edge of the pleated pocket on the wearer\'s left (4.1.11.1.1.2.2, 4.1.8.2.2; LIVE13 E99)',
+  plateButton: '1½ in: the women\'s Class B and overblouse nametag centred, even with to 1 1/2 in higher or lower than the first exposed button, as the sheets set it (4.1.12.2.4.1, 4.2.6.2.6.1.2; LIVE13 E99)',
+  rackPlateEven: 'even with: the bottom of the ribbons aligned with the bottom of the nametag (4.1.12.2.4.2 women\'s Class B, 4.2.6.2.6.2.2 overblouse; on the aviator shirt the nametag and the ribbons each rest on their pocket, 4.2.5.1.2.1-2, 4.2.6.2.6.1.1, 4.2.6.2.6.2.1, which the sheets hold as the rack\'s bottom on the nameplate\'s bottom line; LIVE13 E99)',
+  plateTopEven: 'even with: the blazer nametag\'s top edge aligned with the top edge of the left breast pocket (4.2.3.1.1.2, 4.2.4.1.1.2; LIVE13 E99)'
 };
 const L = key => CITE[key].split(':')[0];
 
 // [build name, [cite keys, one per measure drawn]]
 const TABLE = [
-  ['blues_a-male-senior-Capt', ['braid', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagEven']],
-  ['blues_a-male-cadet-C-Maj', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagEven']],
-  ['blues_a-female-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagParallel']],
-  ['blues_a-female-senior-MajGen', ['braid', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagParallel']],
-  ['blues_b-male-cadet-C-SSgt', ['collarChevron', 'collarChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
-  ['blues_b-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
-  ['blues_b-female-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag', 'flightCap']],
+  ['blues_a-male-senior-Capt', ['braid', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagEven']],
+  ['blues_a-male-cadet-C-Maj', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagEven']],
+  ['blues_a-female-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagParallel']],
+  ['blues_a-female-senior-MajGen', ['braid', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagParallel']],
+  ['blues_b-male-cadet-C-SSgt', ['collarChevron', 'collarChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap', 'plateRests', 'rackRests']],
+  ['blues_b-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap', 'plateRests', 'rackRests']],
+  ['blues_b-female-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag', 'flightCap', 'plateButton', 'rackPlateEven']],
   ['mess_dress-male-senior-Col', ['braid', 'messMidway', 'badgeAboveRibbons', 'messBelow']],
   ['mess_dress-female-senior-Capt', ['braidMessW', 'messMidway', 'badgeAboveRibbons']],
   ['mess_dress-female-senior-SMSgt', ['sleeveChevron', 'messMidway', 'badgeAboveRibbons']],
   ['semi_formal-male-senior-Capt', ['chaplainSemi']],
   ['semi_formal-female-senior-Col', ['crest', 'chaplainSemi']],
-  ['semi_formal_usaf-male-cadet-C-SSgt', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel']],
-  ['semi_formal_usaf-female-cadet-C-Maj', ['badgeAboveRibbons', 'lapel', 'lapel', 'semiEven']],
-  ['aviator-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons']],
-  ['aviator-female-senior-Capt', ['badgeAboveRibbons', 'aboveNametag']],
-  ['aviator_blazer-male-senior-Capt', ['chaplainBlazer', 'badgeAboveRibbons']],
+  ['semi_formal_usaf-male-cadet-C-SSgt', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'rackWelt']],
+  ['semi_formal_usaf-female-cadet-C-Maj', ['badgeAboveRibbons', 'lapel', 'lapel', 'rackWelt', 'semiEven']],
+  ['aviator-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'rackPlateEven']],
+  ['aviator-female-senior-Capt', ['badgeAboveRibbons', 'aboveNametag', 'rackPlateEven']],
+  ['aviator_blazer-male-senior-Capt', ['chaplainBlazer', 'plateTopEven', 'badgeAboveRibbons']],
   ['aviator_blazer-female-senior-Col', ['chaplainBlazer', 'badgeAboveRibbons']],
   ['ocp-male-senior-Capt', ['capVisor', 'blue', 'fieldBadge', 'fieldBadge', 'blue']],
   ['ocp-female-cadet-C-SSgt', ['fieldBadge', 'fieldBadge', 'blue']],
@@ -111,13 +118,13 @@ const TABLE = [
   ['x-cfu-male-Capt-patches-es', ['blue', 'fieldBadge', 'fieldBadge', 'blue', 'command', 'sleevePatch', 'sleevePatch', 'pocketPatch', 'pocketPatch', 'esPatch']],
   ['x-semi-female-Col-chaplain', ['crest', 'chaplainSemi']],
   // The long sleeves and the coats have an elbow; the flat sleeves beside the figure carry the distance (SLEEVE-ENG), one per build.
-  ['blues_a-male-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'nametagCentred', 'nametagEven']],
-  ['x-blues_b-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'pocketBadge', 'flightCap']],
-  ['x-blues_b-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'flightCap']],
-  ['x-aviator-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons']],
-  ['x-aviator-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']],
-  ['x-overblouse-short-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag']],
-  ['x-overblouse-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag']],
+  ['blues_a-male-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagEven']],
+  ['x-blues_b-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'pocketBadge', 'flightCap', 'plateRests', 'rackRests']],
+  ['x-blues_b-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'flightCap', 'plateButton', 'rackPlateEven']],
+  ['x-aviator-male-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'rackPlateEven']],
+  ['x-aviator-female-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'rackPlateEven']],
+  ['x-overblouse-short-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'aboveNametag', 'plateButton', 'rackPlateEven']],
+  ['x-overblouse-long-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'plateButton', 'rackPlateEven']],
   // The polo (5.3): the 1/2 in over the name is its only distance, on every cut and both the badge and the title; nothing on the printed shirt (5.3.2.1.2).
   ['polo-male-senior-Capt', ['poloOverName']],
   ['polo-female-senior-SMSgt', ['poloOverName']],
@@ -233,7 +240,8 @@ for(const [name, sex, word] of [['blues_a-male-senior-Capt', 'male', 'even with'
     const tag = Object.assign({}, sheetTag, { x: sheetTag.x + tagLayer.x });
     const bottom = tag.y + tag.h, centre = tag.x + tag.w / 2;
     const ms = scene.layers.filter(l => l.type === 'measure');
-    const c = ms.find(m => m.label === 'centered');
+    // The rack's own 'centered' line on the welt (LIVE13 E99) is another measure: the nametag's is the one captioned with it.
+    const c = ms.find(m => m.label === 'centered' && m.opts && /nameplate/.test(m.opts.caption));
     assert.ok(c, 'the centred measure');
     // Along the tag's bottom edge.
     near(c.from.y, bottom, 1e-6, 'seam end at the tag bottom'); near(c.to.y, bottom, 1e-6, 'lapel end at the tag bottom');
@@ -268,8 +276,8 @@ test('the Class A nametag with no ribbons: the centred measure stays, the level 
   assert.ok(!labels.includes('even with'));
   assert.ok(scene.notes.some(n => /no ribbon bottom to show the nametag's bottom even with/.test(n)), scene.notes.join(' | '));
   for(const name of ['semi_formal_usaf-male-cadet-C-SSgt', 'semi_formal_usaf-female-cadet-C-Maj']){
-    const ls = (await measuresOf(name)).map(m => m.label);
-    assert.ok(!ls.includes('parallel with') && !ls.includes('centered'), name);
+    const ms = await measuresOf(name);
+    assert.ok(!ms.some(m => m.label === 'parallel with') && !ms.some(m => m.label === 'centered' && /nameplate/.test(m.opts.caption)), name);
   }
 });
 
