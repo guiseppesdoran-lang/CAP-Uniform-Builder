@@ -805,7 +805,7 @@ function enforceRotcRibbonLimit(selectedId){
   const chosen = Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked);
   if(chosen.length <= ROTC_RIBBONS.limit) return;
   clearRibbonSelection(selectedId);
-  if(typeof window.capubToastShow === 'function') window.capubToastShow(`At most ${ROTC_RIBBONS.limit} JROTC/ROTC ribbons may be worn (CAPR 39-1, ${ROTC_RIBBONS.ref}); remove one to add another.`);
+  if(typeof window.capubToastShow === 'function') window.capubToastShow(capubRotcLimitMessage());
 }
 
 function enforceSeniorSingleCadetAwardRibbon(selectedId){
@@ -1047,7 +1047,10 @@ function buildRibbonGallery(options={}){
   if(options.capture!==false) captureMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
   normalizeRibbonSelections();
   wrap.innerHTML = '';
-  const eligible = getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id));
+  const wornIds = getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id));
+  // The JROTC/ROTC ribbons are picked in their own menu below (capubBuildRotcRibbonMenu), not as a tile each.
+  const eligible = wornIds.filter(id => !isRotcRibbonId(id));
+  const rotcIds = wornIds.filter(id => isRotcRibbonId(id));
   const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
   // Grouped the way CAPR 39-3 Attachment 2 lists them, in precedence order within each group.
   const sections = State.ribbonGalleryExpanded
@@ -1149,10 +1152,12 @@ function buildRibbonGallery(options={}){
     section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)));
   }
 
+  if(State.ribbonGalleryExpanded && rotcIds.length) wrap.appendChild(capubBuildRotcRibbonMenu(rotcIds, buildTile));
+
   if(State.ribbonGalleryExpanded && !isMilitaryAwardWornOnUniform()){ // Corporate-style only: USAF-style uniforms allow them
     const note=document.createElement('div');
     note.className='hintText';
-    note.textContent='U.S. military awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6).';
+    note.textContent='U.S. military, JROTC and ROTC awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6, 11.2.5).';
     wrap.appendChild(note);
   }
   if(State.ribbonGalleryExpanded && isMilitaryAwardWornOnUniform()){
@@ -1237,6 +1242,89 @@ function buildRibbonGallery(options={}){
   fillRibbonTilePreviews(wrap);
 }
 
+/* JROTC / ROTC ribbons (LIVE14 E74, Ethan: "make all of the jrotc stuff dropdowns like the mil stuff"). Picked the way the
+   U.S. military ribbons are: a program select (data/rotc-ribbons.js services), a search, and a dropdown of that program's ribbons;
+   the ribbons chosen are listed as tiles, each with its award select and a Remove button, in the data's order, which is the
+   order of wear among them (js/catalog.js ribbonList). Three at most (CAPR 39-1 11.2.5): a fourth is refused with the same
+   message enforceRotcRibbonLimit gives, and the menu says so once three are chosen. A selection is still
+   State.ribbonSelections[id] = { checked, awardValue:'earned', ... }, so setups saved with the old tiles load as they were.
+   The program and the search are UI only (State.militaryUIState.rotcProgram / rotcSearch) and redraw the dropdown in place,
+   so they need no rebuild in the picker window. Adding goes through a select with the rbAwardSelect class and removing through
+   the tile's own award select, which the picker window (js/wiring.js wireModalInteractions) re-syncs after a change. */
+function capubRotcLimitMessage(){
+  return `At most ${ROTC_RIBBONS.limit} JROTC/ROTC ribbons may be worn (CAPR 39-1, ${ROTC_RIBBONS.ref}); remove one to add another.`;
+}
+function capubChosenRotcIds(ids){
+  return ids.filter(id => State.ribbonSelections?.[id]?.checked);
+}
+function capubRotcAddOptionsHtml(ids, program, query){
+  const q = String(query || '').trim().toLowerCase();
+  const open = ids.map(id => ROTC_RIBBONS.get(id)).filter(r => r && !State.ribbonSelections?.[r.id]?.checked)
+    .filter(r => (!program || program === 'ALL' || r.service === program) && (!q || r.name.toLowerCase().includes(q)));
+  const groups = ROTC_RIBBONS.services.map(service => {
+    const rs = open.filter(r => r.service === service.key);
+    return rs.length ? `<optgroup label="${escapeHtml(service.label)}">${rs.map(r => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.name)}</option>`).join('')}</optgroup>` : '';
+  }).join('');
+  return `<option value="">${open.length ? '- Add a ribbon -' : '- No ribbon matches -'}</option>${groups}`;
+}
+function capubRefreshRotcAddSelect(menu){
+  const select = menu?.querySelector('.rotcRibbonAddSelect');
+  if(!select) return;
+  const ui = getMilitaryUIState();
+  select.innerHTML = capubRotcAddOptionsHtml(JSON.parse(menu.dataset.rotcIds || '[]'), ui.rotcProgram, ui.rotcSearch);
+}
+function capubBuildRotcRibbonMenu(ids, buildTile){
+  const ui = getMilitaryUIState();
+  if(!ui.rotcProgram) ui.rotcProgram = 'ALL';
+  if(typeof ui.rotcSearch !== 'string') ui.rotcSearch = '';
+  const chosen = capubChosenRotcIds(ids);
+  const menu = document.createElement('details');
+  menu.className = 'militaryRibbonMenu rotcRibbonMenu';
+  menu.dataset.militarySection = 'rotc-root';
+  menu.dataset.rotcIds = JSON.stringify(ids);
+  const summary = document.createElement('summary');
+  summary.textContent = `JROTC / ROTC Ribbons, ${chosen.length} of ${ROTC_RIBBONS.limit} chosen`;
+  menu.appendChild(summary);
+  const intro = document.createElement('div');
+  intro.className = 'sub';
+  intro.textContent = `Worn after the CAP ribbons, at most ${ROTC_RIBBONS.limit} in all, only while enrolled in the program (CAPR 39-1, ${ROTC_RIBBONS.ref}). Pick the program, then the ribbon.`;
+  menu.appendChild(intro);
+  const filters = document.createElement('div');
+  filters.className = 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters';
+  filters.innerHTML = `
+      <select class="rotcProgramSelect" aria-label="JROTC or ROTC program">
+        <option value="ALL">All programs</option>
+        ${ROTC_RIBBONS.services.map(service => `<option value="${escapeHtml(service.key)}" ${ui.rotcProgram === service.key ? 'selected' : ''}>${escapeHtml(service.label)}</option>`).join('')}
+      </select>
+      <input class="rotcRibbonSearch" type="search" placeholder="Search JROTC / ROTC ribbons\u2026" value="${escapeHtml(ui.rotcSearch)}" aria-label="Search JROTC and ROTC ribbons">
+      <select class="rbAwardSelect rotcRibbonAddSelect" aria-label="Add a JROTC or ROTC ribbon">${capubRotcAddOptionsHtml(ids, ui.rotcProgram, ui.rotcSearch)}</select>
+    `;
+  menu.appendChild(filters);
+  const status = document.createElement('div');
+  status.className = 'sub rotcRibbonStatus';
+  status.setAttribute('role', 'status');
+  status.textContent = chosen.length >= ROTC_RIBBONS.limit
+    ? `${chosen.length} of ${ROTC_RIBBONS.limit} chosen. ${capubRotcLimitMessage()}`
+    : chosen.length ? `${chosen.length} of ${ROTC_RIBBONS.limit} chosen.` : 'None chosen.';
+  menu.appendChild(status);
+  const grid = document.createElement('div');
+  grid.className = 'militaryBranchGrid rotcChosenGrid';
+  for(const id of chosen){
+    const tile = buildTile(id, false);
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'ghost rotcRibbonRemove';
+    remove.dataset.ribbonId = id;
+    remove.textContent = 'Remove';
+    remove.setAttribute('aria-label', `Remove the ${getRibbonDisplayName(id)}`);
+    (tile.querySelector('.ribbonDeviceArea')?.parentElement || tile).appendChild(remove);
+    grid.appendChild(tile);
+  }
+  menu.appendChild(grid);
+  wireRibbonTileControls(menu);
+  return menu;
+}
+
 function wireRibbonTileControls(root){
   root.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
     input.oninput=()=>{
@@ -1268,6 +1356,46 @@ function wireRibbonTileControls(root){
   root.querySelectorAll('.rbAwardSelect').forEach(select=>{
     const id=select.dataset.ribbonId;
     if(id) select.onchange=()=>setRibbonSelectionFromDropdown(id,select.value);
+  });
+  // JROTC / ROTC menu (capubBuildRotcRibbonMenu). Outside the picker window the sidebar list is rebuilt here; inside it the
+  // window's own wrapper re-syncs after the change.
+  const inPicker = el => !!el.closest?.('#galleryModalHost');
+  root.querySelectorAll('.rotcProgramSelect').forEach(select=>{
+    select.onchange=()=>{
+      getMilitaryUIState().rotcProgram=select.value || 'ALL';
+      capubRefreshRotcAddSelect(select.closest('.rotcRibbonMenu'));
+    };
+  });
+  root.querySelectorAll('.rotcRibbonSearch').forEach(input=>{
+    input.oninput=()=>{
+      getMilitaryUIState().rotcSearch=input.value;
+      capubRefreshRotcAddSelect(input.closest('.rotcRibbonMenu'));
+    };
+  });
+  root.querySelectorAll('.rotcRibbonAddSelect').forEach(select=>{
+    select.onchange=()=>{
+      const id=select.value;
+      if(!id || !isRotcRibbonId(id)) return;
+      getMilitaryUIState().focusedControl=null;
+      // A fourth is refused by enforceRotcRibbonLimit, which says why.
+      setRibbonSelectionFromDropdown(id,'earned');
+      if(!inPicker(select)) buildRibbonGallery();
+    };
+  });
+  root.querySelectorAll('.rotcChosenGrid select.rbAwardSelect[data-ribbon-id]').forEach(select=>{
+    const id=select.dataset.ribbonId;
+    select.onchange=()=>{
+      setRibbonSelectionFromDropdown(id,select.value);
+      if(!inPicker(select)) buildRibbonGallery();
+    };
+  });
+  root.querySelectorAll('.rotcRibbonRemove').forEach(button=>{
+    button.onclick=()=>{
+      const select=button.closest('.ribbonSelectorTile')?.querySelector('select.rbAwardSelect[data-ribbon-id]');
+      if(!select) return;
+      select.value='';
+      select.dispatchEvent(new Event('change'));
+    };
   });
   root.querySelectorAll('.militaryServiceSelect').forEach(select=>{
     const id=select.dataset.ribbonId;
