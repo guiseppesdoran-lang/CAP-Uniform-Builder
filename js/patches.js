@@ -697,9 +697,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(!badgeList.includes(id)) badgeList.push(id);
     });
     const CAPUB_UTILITY_BADGE_LABELS = {
-      basic_incident_commander_badge: 'Basic Incident Commander Badge (IC3)',
-      incident_commander_1_badge: 'Master Incident Commander Badge (IC1)',
-      incident_commander_2_badge: 'Senior Incident Commander Badge (IC2)'
+      basic_incident_commander_badge: 'Basic Incident Commander Badge',
+      incident_commander_1_badge: 'Master Incident Commander Badge',
+      incident_commander_2_badge: 'Senior Incident Commander Badge'
     };
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'

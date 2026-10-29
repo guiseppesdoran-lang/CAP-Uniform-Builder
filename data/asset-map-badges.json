@@ -201,7 +201,7 @@
    "notes": ""
   },
   "basic_incident_commander_badge": {
-   "name": "Basic Incident Commander Badge (IC3)",
+   "name": "Basic Incident Commander Badge",
    "dress": "basic-incident-commander",
    "field": "basic-incident-commander-field",
    "cloth": "cloth-incident-commander-basic",
@@ -209,7 +209,7 @@
    "notes": ""
   },
   "incident_commander_2_badge": {
-   "name": "Senior Incident Commander Badge (IC2)",
+   "name": "Senior Incident Commander Badge",
    "dress": "incident-commander-2",
    "field": "incident-commander-2-field",
    "cloth": "cloth-incident-commander-senior",
@@ -217,7 +217,7 @@
    "notes": "IC2 = Senior; cloth id uses the word \"senior\"."
   },
   "incident_commander_1_badge": {
-   "name": "Master Incident Commander Badge (IC1)",
+   "name": "Master Incident Commander Badge",
    "dress": "incident-commander-1",
    "field": "incident-commander-1-field",
    "cloth": "cloth-incident-commander-master",
