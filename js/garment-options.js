@@ -1,5 +1,5 @@
 // Choices about the garment itself: sleeve length, the women's aviator top, what is worn under the
-// blazer, the mess dress skirt and buttons, headgear, chevron size, the flight jacket and scarf, the ES patch, the polo's shirt.
+// blazer, the mess dress skirt and buttons, headgear and the OCP cap grade's form, chevron size, the flight jacket and scarf, the ES patch, the polo's shirt.
 // Each option is offered only on the uniforms (and for the members) it applies to, and is kept in
 // State.garment. The uniform engine reads them through js/uniform-view.js.
 (function(){
@@ -93,6 +93,11 @@
         return list;
       },
       when: c => ['blues_a', 'blues_b', 'flight_suit', ...FIELD].includes(c.u) },
+    // The OCP patrol and tactical caps: officers' and cadet officers' grade "sewn or Velcro" centred 1/2 in from the visor (CAPR 39-1, 7.1.1.8). Sewn, with
+    // 1/8 in of blue past the insignia, is the default; the hook-and-loop form is drawn as the 2 x 2 in square of the chest (LIVE13 E82).
+    { key: 'capGrade', label: 'Cap grade', type: 'select',
+      choices: [['sewn', 'Sewn, 1/8 in of blue showing (7.1.1.8)'], ['square', '2 x 2 in hook-and-loop square (7.1.1.8)']],
+      when: c => c.u === 'ocp' && !!c.g.officer && (c.o.headgear || 'auto') !== 'none' },
     // The tie (men) or tie tab (women): worn with long sleeves, optional with short ones (data/uniform-rules.js tieRule, CAPR 39-1 4.1.11.1.1.3,
     // 4.1.12.4, 4.2.5.1.4, 4.2.6.3). The box starts at what the regulation requires for the sleeve length the member picked.
     { key: 'tie', label: c => c.female ? 'Tie tab' : 'Tie', type: 'check', defaultValue: c => tieOf(c).defaultOn,
@@ -129,7 +134,7 @@
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
     underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'], buttons: ['wing-star', 'cap-crest'],
     headgear: ['auto', 'service', 'tactical', 'boonie', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2'],
-    poloShirt: ['embroidered', 'print', 'tactical'], poloCut: ['', 'male'], poloMark: ['badge', 'title']
+    poloShirt: ['embroidered', 'print', 'tactical'], poloCut: ['', 'male'], poloMark: ['badge', 'title'], capGrade: ['sewn', 'square']
   };
 
   // Keep only values this panel could have produced (a saved setup is untrusted input).

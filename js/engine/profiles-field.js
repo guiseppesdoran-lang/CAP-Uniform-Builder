@@ -81,11 +81,35 @@
       }
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);
+      // The OCP caps' grade may be "sewn or Velcro" (7.1.1.8). Ethan (LIVE13 E82): "for both of the OCP caps ... add the option for the 2x2 velcro
+      // insignia". opt.capGrade 'square': the grade on the 2 x 2 in hook-and-loop square, the chest's own square art (ocpSquareId, 7.1.1.2.1-2) at
+      // its own size and the cap's scale, its bottom 1/2 in from the visor and centred where the sewn grade is; the 1/8 in border is the sewn
+      // grade's rule ("Members' sewing rank on the cap will only have 1/8th inch of blue fabric showing"), so it is not measured on the square.
+      // The default stays the sewn grade with its 1/8 in border (Ethan's standing ruling).
+      let piece = id, square = false;
+      if(b.uniform === 'ocp' && b.opt.capGrade === 'square'){
+        const sq = ocpSquareId(g);
+        if(sq && ctx.has(sq)){ piece = sq; square = true; }
+        else ctx.note('No 2 x 2 in square artwork for this grade, so the cap shows the sewn grade');
+      }
+      const k = (ctx.landmarkShift && ctx.landmarkShift[name] && ctx.landmarkShift[name].k) || 1;
+      if(square){
+        // The square's dark blue field is the chest's own 2 x 2 in square as the OCP sheet draws it (its rank-square rect, landmark rank_square): the
+        // sheet drawn again showing only that rect, moved onto the cap (the ocp-square insignia art is the device alone, as on the chest).
+        const field = core.landmarkBounds(ctx.base, 'rank_square');
+        if(field){
+          const box = { x: at.x - field.w * k / 2, y: (mode === 'visor' ? at.y - field.h * k : at.y - field.h * k / 2), w: field.w * k, h: field.h * k };
+          const layer = Object.assign(core.registerAtOrigin(ctx.base, Z.hatDevice - 0.05, 'grade'), { key: 'grade-field:' + name, x: box.x - field.x * k, y: box.y - field.y * k, w: ctx.base.w * k, h: ctx.base.h * k, onlyGroups: ['rank-square'], noBounds: true, title: '2 x 2 in hook-and-loop square' });
+          layer.origin = { x: layer.x, y: layer.y };
+          layer.obstacle = box;
+          ctx.layers.push(layer);
+        }
+      }
       // On the cap seated on the figure the grade lies over the hat (R6).
-      const cg = await ctx.place(id, { pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name });
+      const cg = await ctx.place(piece, Object.assign({ pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name }, square ? { scale: k, title: 'Grade on a 2 x 2 in hook-and-loop square' } : {}));
       if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at);
       // OCP caps: 'only 1/8th inch of blue fabric showing past the widest and tallest part of the insignia' (7.1.1.8).
-      if(b.uniform === 'ocp') await H.blueBorder(ctx, cg);
+      if(b.uniform === 'ocp' && !square) await H.blueBorder(ctx, cg);
     }
   }
 
