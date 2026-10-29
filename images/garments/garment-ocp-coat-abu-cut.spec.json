@@ -694,9 +694,45 @@
     "band_crease": "#050606",
     "band": "#07080c",
     "crest_field": "#3c4c92",
-    "crest_silver": "#c7c0c0"
+    "crest_gold": "#f2d40a",
+    "crest_gold_edge": "#b8960a"
    },
-   "source": "SHAPE TRACED on assets/refs/nbb/ethan-beret-shape-2026-10-29.png (Ethan's product photo of a navy beret, 301 x 300, from the wearer's left-front, the long point to the picture's left) by base-art/beret-nbb-measure-2.js, LIVE13-ART 4 (Ethan E88: \"the beret should be 'longer' ... i like this shape better; less droopy\"): the silhouette point by point (top edge y per x every 10 px, the right flank x per y, the band's straight bottom edge y 205 from x 107 to 269, the drape's lower edge, the point at x 11); the fold line (darkest column per row) and the crease above the band. Inch scale: the crown stands 125 px above the band in the photo = 3.282 in, the height the 2024 NBB group photo gave on real heads (beret-nbb-measure.js, 7.2 in head), so the band keeps its place on the head; the photo is oblique, its band's left end hidden under the drape, so the band width is not the scale and the point side is foreshortened (the drawn point is, if anything, short). Colour: the photo's dome #0d1321, lit flank #111c33; the dome brought to the former fill's luminance (x1.417) puts the lit flank at #182848; the fill moved a third of the way from #151932 toward it, #161e39 (\"more blue (ever so slightly)\"). CREST MEASURED on assets/refs/nbb/ethan-crest-photo-2026-10-29.png (Ethan's photo of the real pin, 467 x 473; E87 \"st albans crest is wrong ... use this for the crest\"): shield 355 px tall over 294 px greatest width (1.207), top edge 256 px (0.871 W) with rounded corners, sides bowing to the full width at 0.3 of the height and curving to one point (left side read, mirrored; degree-4 fit, rms 0.004 W), rim 4-7 px at the sides and 10-18 px at the lit top (drawn 0.03 W), saltire arms 0.19 W wide (perpendicular, mean of four runs) whose centre lines run from the top corners through the crossing 0.498 W below the top on the axis, field blue #3c4c92 (median), silver #c7c0c0 (95th percentile of the rim and saltire; median #a6a2a2 in the dim photo). Crest SIZE and HEIGHT on the beret from assets/refs/nbb/ethan-beret-crest-2026-10-29.png (Ethan's drawn beret, 250 x 167): crest 0.424 of the crown height tall (1.392 in), centre 0.496 of it above the band (1.628 in; the 2024 photo gave 1.625 in, kept), 1.693 in inboard of the band's wearer's-left corner (the 2024 photo's reading: the crest sits over the left eye, a place on the head). ESTIMATED: the headband strip height 0.315 in (12 px of the band's outer face at x 200 on the product photo). CAPR 39-1 6.2.3, ICL 25-02 9.2.3; LIVE13-ART 1 and 4"
+   "fold_over_crest": {
+    "above_crest_top_left_in_crest_heights": 0.02,
+    "shift_in": -0.387,
+    "crease_y_at_crest_left_was_px": 130.3,
+    "crest_top_left_px": [
+     183.6,
+     116.6
+    ],
+    "points_px": [
+     [
+      227,
+      85.3
+     ],
+     [
+      204,
+      100.3
+     ],
+     [
+      184,
+      115.3
+     ],
+     [
+      161,
+      130.3
+     ],
+     [
+      144,
+      145.3
+     ],
+     [
+      133,
+      152.3
+     ]
+    ]
+   },
+   "source": "SHAPE TRACED on assets/refs/nbb/ethan-beret-shape-2026-10-29.png (Ethan's product photo of a navy beret, 301 x 300, from the wearer's left-front, the long point to the picture's left) by base-art/beret-nbb-measure-2.js, LIVE13-ART 4 (Ethan E88: \"the beret should be 'longer' ... i like this shape better; less droopy\"): the silhouette point by point (top edge y per x every 10 px, the right flank x per y, the band's straight bottom edge y 205 from x 107 to 269, the drape's lower edge, the point at x 11); the fold line (darkest column per row) and the crease above the band. Inch scale: the crown stands 125 px above the band in the photo = 3.282 in, the height the 2024 NBB group photo gave on real heads (beret-nbb-measure.js, 7.2 in head), so the band keeps its place on the head; the photo is oblique, its band's left end hidden under the drape, so the band width is not the scale and the point side is foreshortened (the drawn point is, if anything, short). Colour: the photo's dome #0d1321, lit flank #111c33; the dome brought to the former fill's luminance (x1.417) puts the lit flank at #182848; the fill moved a third of the way from #151932 toward it, #161e39 (\"more blue (ever so slightly)\"). CREST MEASURED on assets/refs/nbb/ethan-crest-photo-2026-10-29.png (Ethan's photo of the real pin, 467 x 473; E87 \"st albans crest is wrong ... use this for the crest\"): shield 355 px tall over 294 px greatest width (1.207), top edge 256 px (0.871 W) with rounded corners, sides bowing to the full width at 0.3 of the height and curving to one point (left side read, mirrored; degree-4 fit, rms 0.004 W), rim 4-7 px at the sides and 10-18 px at the lit top (drawn 0.03 W), saltire arms 0.19 W wide (perpendicular, mean of four runs) whose centre lines run from the top corners through the crossing 0.498 W below the top on the axis, field blue #3c4c92 (median); the rim and saltire read silver in the photo (#c7c0c0 lit, median #a6a2a2) but are drawn in the sheet's gold #f2d40a / #b8960a (the first NBB device's gold) at Ethan's word \"the gold needs to be in the crest\". Crest SIZE and HEIGHT on the beret from assets/refs/nbb/ethan-beret-crest-2026-10-29.png (Ethan's drawn beret, 250 x 167): crest 0.424 of the crown height tall (1.392 in), centre 0.496 of it above the band (1.628 in; the 2024 photo gave 1.625 in, kept), 1.693 in inboard of the band's wearer's-left corner (the 2024 photo's reading: the crest sits over the left eye, a place on the head). FOLD: the crease measured on the product photo is lifted (fold_over_crest.shift_in) so it passes 0.02 of the crest's height above the crest's top-left corner, Ethan: \"the beret should be folded ... just over the first pixel in the top left corner of the crest\"; his drawn beret's fold outline runs at the shield's top level (0.019 of its height below the top where it comes out at the shield's upper right). ESTIMATED: the headband strip height 0.315 in (12 px of the band's outer face at x 200 on the product photo). CAPR 39-1 6.2.3, ICL 25-02 9.2.3; LIVE13-ART 1, 4 and 5"
   },
   "edge_view": {
    "note": "The shoulder pocket seen from the front (edge-on): the flat sleeve view narrowed to scale about the pocket centre line, turned by tilt_deg about the pivot (right: clockwise, left: counter-clockwise), its outer face on the sleeve edge. pivot_*_in are in sheet inches; visible_*: the silhouette near the pocket in the pocket frame as [v down from the pivot, u toward the centre line], 0.04 in inside it. Read by the engine instead of its own constants.",
@@ -839,7 +875,7 @@
   "U.S. flag patch 3-1/4 in W x 1-13/16 in H (DAFI 36-2903 5.1.6.2.3)",
   "OCP patrol cap with name tape centred on the back, rank 1/2 in above the visor (7.1.1.8)",
   "OCP-pattern baseball cap, no grade insignia (6.2.8)",
-  "National Blue Beret, front view as worn (group hat-beret-nbb-front; landmarks beret_nbb_front, beret_nbb_front_device, beret_nbb_front_headband): headband straight across the forehead, top drawn out over the right ear, the beret crest (shield, blue field, silver saltire) over the left eye (CAPR 39-1 6.2.3; NBB graduates with the ABU/OCP at the unit level, ICL 25-02 9.2.3); shape traced on Ethan's product photo at the crown height the 2024 NBB group photo gave, crest measured on his photo of the pin (base-art/beret-nbb-measure.js, beret-nbb-measure-2.js); no back view"
+  "National Blue Beret, front view as worn (group hat-beret-nbb-front; landmarks beret_nbb_front, beret_nbb_front_device, beret_nbb_front_headband): headband straight across the forehead, top drawn out over the right ear, the beret crest (shield, blue field, gold saltire and rim) over the left eye (CAPR 39-1 6.2.3; NBB graduates with the ABU/OCP at the unit level, ICL 25-02 9.2.3); shape traced on Ethan's product photo at the crown height the 2024 NBB group photo gave, crest measured on his photo of the pin (base-art/beret-nbb-measure.js, beret-nbb-measure-2.js); no back view"
  ],
  "assumed": [
   "px-to-inch scale",
@@ -849,7 +885,7 @@
   "sleeve-edge foreshortening 0.5 (width of the shoulder pocket seen from the front)",
   "OCP palette from photos; pattern is procedural",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)",
-  "beret inches: the crown height 3.282 in (the 2024 photo ratios on the same 7.2 in head, an estimate) scales the product photo; its headband strip height 0.315 in; the crest silver #c7c0c0 is the pin photo's lit percentile"
+  "beret inches: the crown height 3.282 in (the 2024 photo ratios on the same 7.2 in head, an estimate) scales the product photo; its headband strip height 0.315 in; the crest's gold is the sheet's #f2d40a (Ethan), not the pin photo's silver"
  ],
  "fit": {
   "method": "n/a: outline deliberately differs from the ABU raster (sleeve cap and width widened)",
