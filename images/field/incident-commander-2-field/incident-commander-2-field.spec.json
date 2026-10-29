@@ -1,7 +1,7 @@
 {
  "asset_id": "incident-commander-2-field",
  "width_in": 1.875,
- "height_in": 1.23325,
+ "height_in": 1.22228,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 1.625 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    93.75,
-   123.325
+   122.228
   ],
   "center": [
    93.75,
-   61.6625
+   61.114
   ],
   "left_edge": [
    0,
-   61.6625
+   61.114
   ],
   "right_edge": [
    187.5,
-   61.6625
+   61.114
   ],
   "art_top_center": [
    93.75,
@@ -33,7 +33,7 @@
   ],
   "art_bottom_center": [
    93.75,
-   110.825
+   109.728
   ]
  },
  "dimensions": {
@@ -48,9 +48,9 @@
  "generator": "artwork-samples/silver (make-*.js, kit.js) + incident_commander_2_badge",
  "reference": "ALL/ref/incident_commander_2_badge.png",
  "source_bbox_user_units": [
-  1.833,
   0.5,
-  238.167,
+  0.5,
+  239.5,
   143.5
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from incident-commander-2.",
@@ -71,7 +71,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 1.625,
-  "art_height_in": 0.98325,
+  "art_height_in": 0.97228,
   "source_asset": "incident-commander-2",
   "kind": "chest-badge"
  },

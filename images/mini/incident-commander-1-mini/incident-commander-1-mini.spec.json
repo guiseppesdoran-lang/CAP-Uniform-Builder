@@ -1,7 +1,7 @@
 {
  "asset_id": "incident-commander-1-mini",
  "width_in": 1.125,
- "height_in": 0.695,
+ "height_in": 0.687,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: miniature width 1.125 in",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    56.25,
-   69.499
+   68.724
   ],
   "center": [
    56.25,
-   34.749
+   34.362
   ],
   "left_edge": [
    0,
-   34.749
+   34.362
   ],
   "right_edge": [
    112.5,
-   34.749
+   34.362
   ]
  },
  "dimensions": {
@@ -36,9 +36,9 @@
  "generator": "artwork-samples/silver + incident_commander_1_badge (miniature = same art at miniature size)",
  "reference": "ALL/ref/incident_commander_1_badge.png",
  "source_bbox_user_units": [
-  1.833,
   0.5,
-  238.167,
+  0.5,
+  239.5,
   146.5
  ],
  "fit_score": null,
