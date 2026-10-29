@@ -991,7 +991,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
     // The limit is on badges worn: the ones the drawing puts on this uniform, command insignia excluded (js/badge-rules.js
     // countBadgesWornForLimit). A badge the uniform does not wear (LIVE13 E67), or one selected beyond its positions, is not drawn
-    // and does not count (LIVE13 E77; Ethan: "the check thing says the uniform is wrong despite it being right when you select all
+    // and does not count (LIVE13 E77; Ethan: "the check thing says the uniform is wrong despite it being right when [you pick every one]
     // of your badges but you only have 4 on").
     const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges: countBadgesWornForLimit(), patches: patchTotal});
     if(limit.over){

@@ -307,7 +307,7 @@ function countBadgesForLimit(ids = State.badges){
   return ids.filter(id => !isCommandInsigniaBadge(id)).length;
 }
 // The badges that count against the selected uniform's limit: the ones it actually wears (LIVE13 E77; Ethan: "the check thing says the uniform is
-// wrong despite it being right when you select all of your badges but you only have 4 on"). A badge the uniform does not wear (d5faf601, E67) or
+// wrong despite it being right when [you pick every one] of your badges but you only have 4 on"). A badge the uniform does not wear (d5faf601, E67) or
 // one selected beyond the positions the uniform has, which the member's position picks leave off, is not drawn and is not on the uniform. The
 // drawing says which are on it (the engine's scene.badgesWorn, js/engine/profiles.js): the count is the selected badges it wears, command
 // insignia excluded (4.1.5.2.2.4, 4.1.9.4.4, 4.1.11.1.1.2.3, 4.2.5.1.3). Before the first drawing of this uniform, or for a uniform the engine
