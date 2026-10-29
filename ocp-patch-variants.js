@@ -50,21 +50,50 @@
       : patchId;
   };
 
+  // One of a one-only group at a time (a Ranger tab, 5.1.2.3.7): picking one drops the others (js/patches.js capubKeepOneRangerTab), and the
+  // tiles shown follow.
+  const tileId = tile => {
+    const text = [...(tile?.querySelectorAll('.sub') || [])].map(node => node.textContent || '').find(t => /^\([^)]+\)$/.test(t.trim()));
+    return text ? text.trim().slice(1, -1) : null;
+  };
+  function keepOne(id){
+    if(PATCH_META[id]?.oneOnly && State.patchSelections[id]?.checked && typeof window.capubKeepOneRangerTab === 'function') window.capubKeepOneRangerTab(id);
+  }
+  function syncOneOnly(host){
+    (host || document).querySelectorAll('.galleryTile').forEach(tile => {
+      const id = tileId(tile), box = tile.querySelector('.ptChk');
+      if(id && box && PATCH_META[id]?.oneOnly) box.checked = !!State.patchSelections[id]?.checked;
+    });
+  }
+
   buildPatchGallery = function(){
     const wrap = by('patchGallery');
     if(!wrap) return;
     normalizePatchSelections();
     wrap.innerHTML = '';
     const onOcp = uniformKey() === 'ocp';
+    // A patch group of its own (the Hawk Mountain Ranger tabs, js/patches.js; LIVE13 E84): listed last on the uniforms that wear it, OCP included,
+    // under a heading, and nowhere else.
+    const grouped = id => !!PATCH_META[id]?.group;
     const ids = patchList.filter(id => {
       if(!PATCH_META[id] || FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) return false;
       if(id === 'tn185_ocp_patch' || id === 'tn330_ocp_patch' || /^unitPatch:/i.test(id)) return false;
+      if(grouped(id)) return isPatchAuthorizedForUniform(id);
       return onOcp ? variantIds.has(id) : !variantIds.has(id);
-    });
+    }).sort((a, b) => grouped(a) - grouped(b));
     const shown = State.patchGalleryExpanded ? ids : ids.slice(0, 10);
+    let heading = null;
 
     for(const id of shown){
       const meta = PATCH_META[id];
+      if(meta.group && meta.group !== heading){
+        heading = meta.group;
+        const head = document.createElement('div');
+        head.className = 'galleryTile patchGroupHeading';
+        head.style.gridColumn = '1 / -1';
+        head.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">${escapeHtml(meta.group)}</div><div class="sub">${escapeHtml(meta.note || '')}</div></div>`;
+        wrap.appendChild(head);
+      }
       const sel = State.patchSelections[id] || (State.patchSelections[id] = {checked:false});
       const authorized = isPatchAuthorizedForUniform(id);
       const tile = document.createElement('div');
@@ -83,8 +112,10 @@
       checkbox.onchange = () => {
         sel.checked = authorized && checkbox.checked;
         State.patchSelections[id] = sel;
+        keepOne(id);
         rebuildPatchesFromGallery();
         checkbox.checked = !!State.patchSelections[id]?.checked;
+        syncOneOnly(wrap);
       };
       wrap.appendChild(tile);
     }
@@ -109,8 +140,10 @@
         ...(State.patchSelections[id] || {}),
         checked:!checkbox.disabled && checkbox.checked
       };
+      keepOne(id);
       rebuildPatchesFromGallery();
       checkbox.checked = !!State.patchSelections[id]?.checked;
+      syncOneOnly(modalHost);
     }, true);
   }
 
