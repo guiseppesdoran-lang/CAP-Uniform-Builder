@@ -1164,6 +1164,37 @@ html[data-ux="2"] .uniformOption{
 #aboutDialog .aboutActions{margin-top:var(--s4);text-align:right}
 #aboutDialog .aboutActions button{width:auto;margin:0;padding:0 var(--s5)}
 
+/* ---- Feedback dialog (js/feedback.js, LIVE13 E70) ---- */
+#feedbackDialog{
+  width:min(520px,calc(100vw - 32px));
+  max-height:calc(100vh - 32px);
+  padding:var(--s5);
+  border:1px solid var(--line);
+  border-top:6px solid var(--brand);
+  border-radius:var(--r-lg);
+  background:var(--panel);
+  color:var(--ink);
+}
+#feedbackDialog::backdrop{background:var(--scrim)}
+#feedbackDialog h2{margin:0 0 var(--s2);font-size:var(--t-xl);line-height:1.1}
+#feedbackDialog form,#feedbackDialog .feedbackThanks{margin:0}
+#feedbackDialog .feedbackIntro{margin:0 0 var(--s4);font-size:var(--t-md);line-height:1.45;color:var(--muted)}
+#feedbackDialog textarea{
+  display:block;width:100%;min-height:132px;margin-top:6px;padding:8px 10px;resize:vertical;
+  border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel);color:var(--ink);
+  font-family:inherit;font-size:var(--t-md);line-height:1.45;
+}
+#feedbackDialog .feedbackCount{margin:var(--s1) 0 var(--s3);text-align:right}
+#feedbackDialog .feedbackSetupRow{display:flex;gap:var(--s2);align-items:center;min-height:44px;margin-top:var(--s3);font-size:var(--t-sm);color:var(--ink)}
+#feedbackDialog .feedbackSetupRow + .hintText{margin-top:0;padding-left:calc(16px + var(--s2))}
+#feedbackDialog .feedbackWhat{margin:var(--s3) 0 0;padding:var(--s2) var(--s3);border-left:3px solid var(--line-strong);background:var(--panel-2)}
+#feedbackDialog .feedbackWhat b{color:var(--ink)}
+#feedbackDialog .feedbackError{margin:var(--s3) 0 0;padding:var(--s2) var(--s3);border-left:4px solid var(--danger);border-radius:var(--r);background:var(--danger-bg);color:var(--ink);font-size:var(--t-sm)}
+#feedbackDialog .feedbackActions{display:flex;justify-content:flex-end;gap:var(--s2);margin-top:var(--s4)}
+#feedbackDialog .feedbackActions button{width:auto;margin:0;padding:0 var(--s5)}
+#feedbackDialog .feedbackThanks p{margin:0;font-size:var(--t-md);color:var(--muted)}
+#feedbackDialog .feedbackThanks h2:focus{outline:none}
+
 /* ---- Small utilities (replace inline styles in index.html) ---- */
 .subHead{font-size:var(--t-sm);font-weight:700}
 .panelDivider{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}

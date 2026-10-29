@@ -157,10 +157,10 @@ test('script errors are reported without the member\'s name, long numbers or ema
   assert.deepEqual(JSON.parse(JSON.stringify(errors[0].data)), { message: 'Cannot read DOE of [name]: # 0 [email]', file: 'wiring.js', line: 9, col: 3 });
 });
 
-test('the page loads telemetry as a feature script, and says honestly what goes to the site', () => {
+test('the page loads telemetry and feedback as feature scripts, and says honestly what goes to the site', () => {
   const html = read('index.html');
   const feature = html.slice(html.indexOf('<!-- Feature scripts'), html.indexOf('<!-- End of feature scripts. -->'));
-  assert.match(feature, /<script src="js\/telemetry\.js\?v=[0-9a-f]{10}" defer><\/script>/);
+  assert.match(feature, /<script src="js\/telemetry\.js\?v=[0-9a-f]{10}" defer><\/script>\n<script src="js\/feedback\.js\?v=[0-9a-f]{10}" defer><\/script>/);
   assert.doesNotMatch(html, /Everything stays in your browser|Nothing you build is uploaded|never leaves this device/);
   assert.match(html, /<meta name="description" content="[^"]*Your setup stays in your browser; the site gets only anonymous usage counts and any feedback you send\.">/);
   const about = html.slice(html.indexOf('<dialog id="aboutDialog"'), html.indexOf('</dialog>'));
@@ -181,4 +181,13 @@ test('the page loads telemetry as a feature script, and says honestly what goes 
   assert.doesNotMatch(call, /firstName|lastName|parsed\.(text|name)/);
   assert.equal(call.replace(/\.test\(file\.(name|type)\)/g, '').match(/file\./g), null, 'the file is only tested for its type, never sent');
   for(const k of ['membership', 'rank', 'gender']) assert.match(call, new RegExp(`${k}: !!parsed\\.${k}`), `${k} only as yes or no`);
+});
+
+test('the feedback dialog says what is sent and posts to the site\'s own /api/feedback', () => {
+  const src = read('js/feedback.js');
+  assert.match(src, /const ENDPOINT = '\/api\/feedback';/);
+  assert.match(src, /Include my current uniform setup/);
+  assert.match(src, /What is sent:<\/b> your message, the contact you give, and, if you tick the box, that setup summary\. No name, CAPID, nameplate text or member report goes with it\./);
+  assert.match(src, /about\.after\(document\.createTextNode\(' · '\), btn\)/, 'the link sits beside About');
+  assert.match(read('styles/app.css'), /#feedbackDialog\{/);
 });
