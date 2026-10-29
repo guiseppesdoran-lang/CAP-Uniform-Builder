@@ -209,6 +209,22 @@ async function launch(){
     check(!o.lines.some(l => /blue (service trousers|web belt)|low quarter/i.test(l.name)), 'OCP: nothing from the blues');
     await shot('3-ocp');
 
+    // 8. The CAP Crest on the blazer pocket is listed but not sold at retail: no link, no price, out of the subtotal (LIVE13 E79).
+    await ev(`(async () => { State.membership = 'senior'; State.rank = 'Capt'; State.uniform = 'aviator_blazer'; await CAPUBUniformView.render(); })()`);
+    await sleep(900);
+    const z = await model();
+    const crest = z.lines.find(l => l.itemId === 'cap_crest');
+    check(crest && crest.offers === 0 && crest.total == null && crest.lowest == null, 'blazer: the CAP Crest line has no offers and no price');
+    const zr = await rows();
+    const crestRow = zr.find(x => x.key === (crest && crest.key));
+    check(crestRow && /not sold at retail/.test(crestRow.price) && !crestRow.link && /Issued\/obtained through CAP, not a vendor item/.test(crestRow.text), 'blazer: the crest row says not sold at retail, with no vendor link');
+    const zSum = +z.lines.reduce((s, l) => s + (l.total || 0), 0).toFixed(2);
+    check(Math.abs(dollars(await card('capubTotalComplete')) - zSum) < 0.005, 'blazer: the subtotal leaves the crest out');
+    const zNone = z.lines.filter(l => !l.lowest && l.itemId !== 'cap_crest').length;
+    check((await card('capubTotalMissing')).endsWith(` / ${zNone}`), 'blazer: the crest is not counted as unpriced');
+    await ev(`document.querySelector('#capubShopRows tr[data-key="${crest ? crest.key : ''}"]')?.scrollIntoView({ block: 'center' })`);
+    await shot('4-blazer-crest');
+
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS');
     if(fails.length) code = 1;
   } catch (e) { console.error(e); code = 2; }

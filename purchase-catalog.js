@@ -1,6 +1,8 @@
 /* CAP Uniform Builder purchase catalog.
    Every item is one piece a uniform can wear, with an offer per vendor that carries it:
      { vendor, price, status, checked, url, sku }
+   An item with notSold: true has no offers: it is not sold at retail (issued or obtained through CAP), so its line has no
+   price, no vendor links and no part in the totals.
    price   the last price seen on the vendor's page (status 'verified') or a budgeting estimate (status 'estimated');
            null when nothing is known, and the list then shows "no price".
    checked the date the price was seen or the estimate was made.
@@ -174,7 +176,9 @@
     // Vanguard CAP0820, a pair to the package, so the one line covers both collars (LIVE13 E79, the product Ethan sent).
     cap_collar_metal: item('Civil Air Patrol Collar Device: CAP - mirror finish', 'Insignia', 'CAP_ONLY', [V(6.10, 'verified', '2026-10-29', vg('/collections/cadet-insignia/products/civil-air-patrol-mirror-finish-cap-collar-device'), 'CAP0820'), U(null), I(null)], { q: 'Civil Air Patrol collar insignia', ref: '1.4.2.1', note: 'Sold as a pair (2 per package): one package covers both collars.' }),
     cap_collar_cloth: item('CAP collar insignia, cloth (pair)', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol cloth collar insignia' }),
-    cap_crest: item('CAP crest', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol crest' }),
+    // Not a vendor item (LIVE13 E79, Ethan: "the crest cannot be purchased normally"): no offers, no search links, no price; the
+    // line stays so the member knows the blazer needs it, and the totals leave it out (purchase-feature-core.js notSold).
+    cap_crest: item('CAP Crest (blazer pocket)', 'Insignia', 'CAP_ONLY', [], { notSold: true, ref: '4.2.3.1.1.1', note: 'Issued/obtained through CAP, not a vendor item.' }),
     cap_seal: item('CAP seal', 'Insignia', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol seal emblem' }),
     officer_sleeve_braid: item('Officer sleeve braid (service coat)', 'Insignia', 'MILSPEC_OK', [U(null), V(null), I(null)], { q: 'Air Force service coat sleeve braid', ref: '4.1.5.2' }),
     mess_sleeve_braid: item('Mess dress sleeve braid', 'Insignia', 'MILSPEC_OK', [U(null), V(null), I(null)], { q: 'mess dress sleeve braid', ref: '4.1.1.1' }),

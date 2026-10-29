@@ -105,6 +105,8 @@
       const under = build.opt && build.opt.underlayer;
       add(female ? 'corporate_blazer_female' : 'corporate_blazer_male', { ref: female ? '4.2.4.1' : '4.2.3.1' });
       const shirtBeside = scene.layers.some(l => l.role === 'garment' && /^garment-aviator-shirt-/.test(l.id || ''));
+      // The CAP Crest on the left breast pocket is part of the sheet (group cap-crest) unless a badge takes its place (4.2.3.1.1.1).
+      if(!hides(layer, 'cap-crest')) add('cap_crest', { detail: 'Left breast pocket', ref: female ? '4.2.4.1.1.1' : '4.2.3.1.1.1' });
       if(under !== 'turtleneck' && under !== 'shell' && !shirtBeside) add('white_dress_shirt', { ref: semi ? (female ? '4.2.2.2' : '4.2.1.2') : (female ? '4.2.4.2' : '4.2.3.2') });
       if(!semi && !female && tieShown) add('blue_tie', { ref: '4.2.3.4', note: 'The CAP regimental tie is also authorized with this uniform (4.2.3.4).', alt: 'cap_regimental_tie' });
       if(female && tieShown && under !== 'shell') add('blue_tie_tab', { ref: semi ? '4.2.2.3' : '4.2.4.3' });
@@ -199,6 +201,7 @@
       const it = C.items[itemId];
       if(!it) return makeLine(key || 'item:' + itemId, Object.assign({ group: 'Other', name: titleCase(itemId), offers: C.searchOnly() }, extra));
       const line = makeLine(key || 'item:' + itemId, { group: it.group, name: it.name, rule: it.rule, ref: it.ref || '', note: it.note || '', q: it.q, offers: it.offers.map(o => Object.assign({}, o)), itemId });
+      if(it.notSold){ line.notSold = true; line.offers = []; }
       if(extra){
         for(const k of ['detail', 'ref', 'note']) if(extra[k] && !line[k + 'Set']){ line[k] = extra[k]; line[k + 'Set'] = true; }
         if(extra.alt && C.items[extra.alt]) line.alt = extra.alt;
@@ -443,6 +446,8 @@
 
     // Offers: fill each search link, pick the lowest price.
     const out = [...lines.values()].map(line => {
+      // A piece not sold at retail has no search links either.
+      if(line.notSold) line.offers = [];
       line.offers = (line.offers || []).map(o => {
         const q = o.q || line.q || line.name;
         const url = o.url || C.search(o.vendor, q);
@@ -468,14 +473,15 @@
   }
 
   function totals(lines, owned){
-    let subtotal = 0, remaining = 0, estimated = 0, unpriced = 0, verified = 0;
+    let subtotal = 0, remaining = 0, estimated = 0, unpriced = 0, verified = 0, notSold = 0;
     for(const l of lines){
+      if(l.notSold){ notSold++; continue; }
       if(l.total == null){ unpriced++; continue; }
       subtotal += l.total;
       if(!(owned && owned[l.key])) remaining += l.total;
       if(l.lowest.status === 'verified') verified++; else estimated++;
     }
-    return { subtotal: +subtotal.toFixed(2), remaining: +remaining.toFixed(2), estimated, unpriced, verified, count: lines.length };
+    return { subtotal: +subtotal.toFixed(2), remaining: +remaining.toFixed(2), estimated, unpriced, verified, notSold, count: lines.length };
   }
 
   // ---- exports ----------------------------------------------------------------------------------------------------
@@ -489,12 +495,12 @@
     let group = null;
     for(const l of list){
       if(l.group !== group){ group = l.group; out.push(`== ${group} ==`); }
-      const price = l.lowest ? `${money(l.total)}${l.qty > 1 ? ` (${l.qty} x ${money(l.unitPrice)})` : ''} at ${l.lowest.vendorName}, ${l.lowest.status}${l.lowest.checked ? ' ' + l.lowest.checked : ''}${l.lowest.status === 'estimated' ? ' *' : ''}` : 'no price';
+      const price = l.notSold ? 'not sold at retail' : l.lowest ? `${money(l.total)}${l.qty > 1 ? ` (${l.qty} x ${money(l.unitPrice)})` : ''} at ${l.lowest.vendorName}, ${l.lowest.status}${l.lowest.checked ? ' ' + l.lowest.checked : ''}${l.lowest.status === 'estimated' ? ' *' : ''}` : 'no price';
       out.push(`${owned && owned[l.key] ? '[OWN]' : '[BUY]'} ${l.name}${l.detail ? ' - ' + l.detail : ''}${l.qty > 1 ? ` x ${l.qty}` : ''}: ${price}`);
       const link = l.lowest || l.offers[0];
       if(link) out.push(`    ${link.vendorName} ${link.kind === 'product' ? 'product' : 'search'}: ${link.url}`);
     }
-    out.push('', `Subtotal of the lowest prices: ${money(t.subtotal)} (${t.estimated} estimated *, ${t.unpriced} without a price)`, `Still to buy: ${money(t.remaining)}`, 'Shipping, tax and alterations are not included.');
+    out.push('', `Subtotal of the lowest prices: ${money(t.subtotal)} (${t.estimated} estimated *, ${t.unpriced} without a price${t.notSold ? `, ${t.notSold} not sold at retail` : ''})`, `Still to buy: ${money(t.remaining)}`, 'Shipping, tax and alterations are not included.');
     return out.join('\n');
   }
   const csvCell = v => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
@@ -502,7 +508,7 @@
     const rows = [['Section', 'Item', 'Detail', 'Quantity', 'Lowest unit price', 'Line total', 'Vendor', 'Price status', 'Price checked', 'SKU', 'Link', 'Other vendors', 'Own it', 'Sourcing', 'CAPR 39-1']];
     for(const l of list){
       const lo = l.lowest, link = lo || l.offers[0];
-      rows.push([l.group, l.name, l.detail, l.qty, lo ? lo.price.toFixed(2) : '', l.total != null ? l.total.toFixed(2) : '', lo ? lo.vendorName : '', lo ? lo.status : 'no price', lo ? lo.checked || '' : '', lo ? lo.sku : '', link ? link.url : '',
+      rows.push([l.group, l.name, l.detail, l.qty, lo ? lo.price.toFixed(2) : '', l.total != null ? l.total.toFixed(2) : '', lo ? lo.vendorName : '', lo ? lo.status : l.notSold ? 'not sold at retail' : 'no price', lo ? lo.checked || '' : '', lo ? lo.sku : '', link ? link.url : '',
         l.offers.filter(o => o !== lo).map(o => `${o.vendorName}: ${o.price != null ? money(o.price) : 'search'} ${o.url}`).join(' | '), owned && owned[l.key] ? 'yes' : '', l.rule, l.ref]);
     }
     return rows.map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
@@ -624,15 +630,17 @@
     const main = lo || l.offers[0];
     const ruleClass = l.rule === 'CAP_ONLY' ? 'cap' : (l.rule === 'MILSPEC_OK' ? 'ok' : '');
     const others = l.offers.filter(o => o !== main);
-    const priceCell = lo
+    const priceCell = l.notSold
+      ? '<span class="capub-shop-none">not sold at retail</span><span class="capub-shop-low">Issued through CAP</span>'
+      : lo
       ? `${money(l.total)}${lo.status === 'estimated' ? '<span class="capub-shop-star" title="Estimated price"> *</span>' : ''}<span class="capub-shop-low">${l.qty > 1 ? `${l.qty} x ${money(lo.price)} · ` : ''}${esc(lo.vendorName)}${lo.sku ? ' SKU ' + esc(lo.sku) : ''} · ${lo.status === 'verified' ? 'verified' : 'estimated'}${lo.checked ? ' ' + esc(lo.checked) : ''}</span>`
       : '<span class="capub-shop-none">no price</span><span class="capub-shop-low">Search the vendors</span>';
     return `<tr data-key="${esc(l.key)}" class="${owned[l.key] ? 'capub-shop-owned' : ''}">
         <td data-label="Own it"><input type="checkbox" class="capub-owned" ${owned[l.key] ? 'checked' : ''} aria-label="Already own ${esc(l.name)}"></td>
-        <td data-label="Item"><div class="capub-purchase-item-name">${esc(l.name)}</div>${l.detail ? `<div class="capub-shop-detail">${esc(l.detail)}</div>` : ''}<span class="capub-purchase-chip ${ruleClass}">${esc(RULE_LABEL[l.rule] || 'Verify')}</span>${lo ? `<span class="capub-purchase-chip ${lo.status === 'estimated' ? 'est' : ''}">${lo.status === 'verified' ? 'Verified price' : 'Estimated price'}</span>` : '<span class="capub-purchase-chip est">No price</span>'}${l.ref ? `<span class="capub-purchase-chip">CAPR 39-1 ${esc(l.ref)}</span>` : ''}${l.note ? `<div class="capub-purchase-note">${esc(l.note)}</div>` : ''}</td>
+        <td data-label="Item"><div class="capub-purchase-item-name">${esc(l.name)}</div>${l.detail ? `<div class="capub-shop-detail">${esc(l.detail)}</div>` : ''}<span class="capub-purchase-chip ${ruleClass}">${esc(RULE_LABEL[l.rule] || 'Verify')}</span>${l.notSold ? '<span class="capub-purchase-chip">Not sold at retail</span>' : lo ? `<span class="capub-purchase-chip ${lo.status === 'estimated' ? 'est' : ''}">${lo.status === 'verified' ? 'Verified price' : 'Estimated price'}</span>` : '<span class="capub-purchase-chip est">No price</span>'}${l.ref ? `<span class="capub-purchase-chip">CAPR 39-1 ${esc(l.ref)}</span>` : ''}${l.note ? `<div class="capub-purchase-note">${esc(l.note)}</div>` : ''}</td>
         <td class="capub-purchase-qty" data-label="Quantity">${Number(l.qty) || 1}</td>
         <td class="capub-purchase-price" data-label="Price">${priceCell}</td>
-        <td data-label="Where to buy"><div class="capub-purchase-links">${main ? `<a href="${esc(main.url)}" target="_blank" rel="noopener noreferrer">${esc(main.vendorName)} ${main.kind === 'product' ? 'product' : 'search'}</a>` : ''}</div>${others.length ? `<details class="capub-shop-more"><summary>Other vendors (${others.length})</summary><ul>${others.map(o => `<li><a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">${esc(o.vendorName)} ${o.kind === 'product' ? 'product' : 'search'}</a><span>${esc(offerLabel(o))}</span></li>`).join('')}</ul></details>` : ''}</td>
+        <td data-label="Where to buy"><div class="capub-purchase-links">${main ? `<a href="${esc(main.url)}" target="_blank" rel="noopener noreferrer">${esc(main.vendorName)} ${main.kind === 'product' ? 'product' : 'search'}</a>` : (l.notSold ? '<span class="capub-shop-none">Through CAP, not a vendor</span>' : '')}</div>${others.length ? `<details class="capub-shop-more"><summary>Other vendors (${others.length})</summary><ul>${others.map(o => `<li><a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">${esc(o.vendorName)} ${o.kind === 'product' ? 'product' : 'search'}</a><span>${esc(offerLabel(o))}</span></li>`).join('')}</ul></details>` : ''}</td>
       </tr>`;
   }
 
@@ -663,7 +671,7 @@
     set('capubTotalSelected', String(t.count));
     set('capubTotalMissing', `${t.estimated} / ${t.unpriced}`);
     const note = document.getElementById('capubShopShown');
-    if(note) note.textContent = query ? `Showing ${shown.length} of ${t.count} items · ${money(ts.subtotal)} at the lowest prices shown` : `${t.count} items for this uniform · ${t.verified} verified, ${t.estimated} estimated (*), ${t.unpriced} without a price`;
+    if(note) note.textContent = query ? `Showing ${shown.length} of ${t.count} items · ${money(ts.subtotal)} at the lowest prices shown` : `${t.count} items for this uniform · ${t.verified} verified, ${t.estimated} estimated (*), ${t.unpriced} without a price${t.notSold ? `, ${t.notSold} not sold at retail` : ''}`;
   }
 
   function renderBody(){

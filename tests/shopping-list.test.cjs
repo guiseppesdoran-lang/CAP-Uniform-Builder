@@ -64,6 +64,8 @@ test('the dialog has a live search, a price sort and text and CSV exports, and a
 test('every catalog offer names a known vendor, a price or none, its status and the date it was seen',()=>{
   for(const [id,item] of Object.entries(CAT.items)){
     assert.ok(item.name&&item.group&&item.rule,`${id} has a name, group and sourcing rule`);
+    // A piece not sold at retail (the CAP Crest) has no offer at all; every other item has one.
+    if(item.notSold){ assert.deepEqual(item.offers,[],`${id}: not sold, no offers`); assert.match(item.note,/through CAP/,`${id}: says where it comes from`); continue; }
     assert.ok(item.offers.length>=1,`${id} has an offer`);
     for(const o of item.offers){
       assert.ok(CAT.vendors[o.vendor],`${id}: ${o.vendor} is a vendor`);
@@ -130,7 +132,8 @@ for(const [uniform,gender,membership,rank,extra] of CASES){
     assert.deepEqual(res.uncovered,[],'every drawn layer has a line');
     assert.deepEqual(res.lines.filter(l=>l.unknown).map(l=>l.name),[],'every drawn layer is a known piece');
     for(const l of res.lines){
-      assert.ok(l.offers.length>=1&&l.offers.every(o=>/^https:\/\//.test(o.url)),`${l.name}: a vendor link`);
+      if(l.notSold) assert.deepEqual([l.offers.length,l.lowest,l.total],[0,null,null],`${l.name}: not sold, no links or price`);
+      else assert.ok(l.offers.length>=1&&l.offers.every(o=>/^https:\/\//.test(o.url)),`${l.name}: a vendor link`);
       if(l.lowest) assert.equal(l.lowest.price,Math.min(...l.offers.filter(o=>o.price!=null).map(o=>o.price)),`${l.name}: the lowest price`);
       for(const [u,re] of Object.entries(ONLY)) if(u!==uniform&&l.itemId) assert.doesNotMatch(l.itemId,re,`${l.name} belongs to ${u}`);
     }
@@ -179,6 +182,31 @@ test('the metal CAP collar device is Vanguard CAP0820, one pair for both collars
   assert.equal(lines[0].lowest.price,6.10);
 });
 
+test('the CAP Crest on the blazer pocket is listed as not sold at retail: no links, no price, out of the totals',async()=>{
+  // LIVE13 E79, Ethan: "the crest cannot be purchased normally".
+  for(const [uniform,gender,extra] of [['aviator_blazer','male',{}],['aviator_blazer','female',{}],['semi_formal','male',{medals:medalsOf(RIBBON_IDS)}]]){
+    const b=build(uniform,gender,'senior','Capt',extra);
+    const res=SHOP.deriveList(await P.composeUniform(b,store),b,{badges:BADGES});
+    const crest=res.lines.filter(l=>l.itemId==='cap_crest');
+    assert.equal(crest.length,1,`${uniform} ${gender}: the crest is on the list`);
+    assert.equal(crest[0].notSold,true);
+    assert.deepEqual(crest[0].offers,[]);
+    assert.equal(crest[0].total,null);
+    assert.match(crest[0].note,/Issued\/obtained through CAP, not a vendor item/);
+    const t=SHOP.totals(res.lines,{});
+    assert.equal(t.notSold,1);
+    assert.equal(t.unpriced,res.lines.filter(l=>!l.notSold&&l.total==null).length,'not counted as unpriced');
+    assert.equal(t.subtotal,+res.lines.filter(l=>l.total!=null).reduce((a,l)=>a+l.total,0).toFixed(2));
+    assert.match(SHOP.toText(res.lines,{}),/CAP Crest \(blazer pocket\) - Left breast pocket: not sold at retail\n(?!\s+\S+ (product|search):)/);
+    assert.match(SHOP.toCSV(res.lines,{}),/CAP Crest \(blazer pocket\),Left breast pocket,1,,,,not sold at retail,/);
+  }
+  // A badge worn in the crest's place (4.2.3.1.1.1) takes it off the list.
+  const b=build('aviator_blazer','male','senior','Col',{badges:[{id:'command_council_badge'}]});
+  const res=SHOP.deriveList(await P.composeUniform(b,store),b,{badges:BADGES});
+  assert.ok(!res.lines.some(l=>l.itemId==='cap_crest'),'no crest when the Command Council badge replaces it');
+  assert.match(core,/not sold at retail<\/span><span class="capub-shop-low">Issued through CAP/);
+});
+
 test('the field and flight uniforms list the badge in the form drawn, the name tapes and the sheet\'s own patches',async()=>{
   const ocp=build('ocp','male','cadet','C/SSgt',{badges:[{id:PILOT}]});
   const r1=SHOP.deriveList(await P.composeUniform(ocp,store),ocp,{badges:BADGES});
@@ -202,8 +230,8 @@ test('the mess dress takes the button design the member chose, the boards in bul
 });
 
 test('the totals are the sum of the lowest prices; estimated and unpriced lines are counted',()=>{
-  const lines=[{key:'a',total:10,lowest:{status:'verified'}},{key:'b',total:2.5,lowest:{status:'estimated'}},{key:'c',total:null,lowest:null}];
-  assert.deepEqual(SHOP.totals(lines,{a:true}),{subtotal:12.5,remaining:2.5,estimated:1,unpriced:1,verified:1,count:3});
+  const lines=[{key:'a',total:10,lowest:{status:'verified'}},{key:'b',total:2.5,lowest:{status:'estimated'}},{key:'c',total:null,lowest:null},{key:'d',total:null,lowest:null,notSold:true}];
+  assert.deepEqual(SHOP.totals(lines,{a:true}),{subtotal:12.5,remaining:2.5,estimated:1,unpriced:1,verified:1,notSold:1,count:4});
 });
 
 test('the text and CSV exports carry every line, quoted where a cell needs it',async()=>{
