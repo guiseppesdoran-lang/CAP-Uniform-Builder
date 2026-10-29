@@ -253,28 +253,31 @@ test('OCP, ABU and CFU: the patrol cap (ABU cap, OCP patrol cap, Blue Field Cap)
 const WORN = { auto: ['hat-patrol-front', 'hat-patrol-back'], tactical: ['hat-ball-front', 'hat-ball-back'], boonie: ['hat-boonie-front', 'hat-boonie-back'] };
 const ALL_CAP_GROUPS = ['hat-patrol-front', 'hat-patrol-back', 'hat-patrol-back-name-tape', 'hat-ball-front', 'hat-ball-back', 'hat-ball-back-name-tape', 'hat-boonie-front', 'hat-boonie-back'];
 
-test('OCP, ABU and CFU: one cap is drawn, its front on the collar and its back beside it at the same size, with the name on its tape; the sheet\'s own cap views are all hidden; headgear none draws none', async () => {
+test('OCP, ABU and CFU: one cap is drawn, its front on the collar and, where the cap carries a name tape, its back beside it at the same size with the name on the tape; the sheet\'s own cap views are all hidden; headgear none draws none', async () => {
   for(const uniform of Object.keys(UTILITY)){
     const spec = await store.load(UTILITY[uniform]);
     for(const headgear of uniform === 'corporate_field' ? ['auto', 'tactical', 'boonie'] : ['auto', 'tactical']){
       const scene = await compose(build(uniform, 'male', 'senior', 'Capt', [], { opt: { headgear } }));
       const fronts = scene.layers.filter(l => l.role === 'hat'), backs = scene.layers.filter(l => l.role === 'hat-view');
       assert.equal(fronts.length, 1, `${uniform} ${headgear}: one cap front`);
-      assert.equal(backs.length, 1, `${uniform} ${headgear}: one cap back`);
-      assert.deepEqual([fronts[0].onlyGroups[0], backs[0].onlyGroups[0]], WORN[headgear], `${uniform} ${headgear}: the cap worn`);
-      const base = scene.layers.find(l => l.key === 'base:jacket');
-      for(const g of ALL_CAP_GROUPS) if(core.landmarkBounds(spec, { 'hat-patrol-front': 'patrol_cap_front', 'hat-patrol-back': 'patrol_cap_back', 'hat-ball-front': 'baseball_cap_front', 'hat-ball-back': 'baseball_cap_back', 'hat-boonie-front': 'boonie_hat_front', 'hat-boonie-back': 'boonie_hat_back' }[g] || 'none')) assert.ok(base.hideGroups.includes(g), `${uniform} ${headgear}: ${g} is hidden on the sheet`);
-      // The back is the same size as the front (Ethan: 'why is the back of the hats so small', tests/engine-live-hat-back-size.test.cjs) and stands beside it, bottoms level, never over it.
-      const RECT = { auto: ['patrol_cap_front', 'patrol_cap_back'], tactical: ['baseball_cap_front', 'baseball_cap_back'], boonie: ['boonie_hat_front', 'boonie_hat_back'] }[headgear];
-      const at = (layer, name) => { const r = core.landmarkBounds(spec, name), k = layer.w / spec.w; return { x: r.x * k + layer.x, y: r.y * k + layer.y, w: r.w * k, h: r.h * k }; };
-      const f = at(fronts[0], RECT[0]), k = at(backs[0], RECT[1]);
-      assert.ok(Math.abs(fronts[0].w - spec.w) < 1e-9 && Math.abs(backs[0].w - spec.w) < 1e-6, `${uniform} ${headgear}: the back is drawn at the front's size`);
-      assert.ok(!boxOverlap(f, k) && k.x >= f.x + f.w, `${uniform} ${headgear}: the back is beside the front`);
-      assert.ok(Math.abs((k.y + k.h) - (f.y + f.h)) < 0.01, `${uniform} ${headgear}: the two bottoms are level`);
-      // The last name on a cap back tape lies on the tape where the (reduced) view now is.
+      // The back only when the cap's back carries the name tape (LIVE13 E81: OCP caps 7.1.1.8, the navy tactical cap 6.2.11.1; none on the ABU cap 5.1.1.6,
+      // the Blue Field Cap 6.2.9, the boonie hat).
       const lmName = { auto: 'patrol_cap_back_name_tape', tactical: 'baseball_cap_back_name_tape', boonie: null }[headgear];
       const tape = lmName && core.landmarkBounds(spec, lmName);
+      assert.equal(backs.length, tape ? 1 : 0, `${uniform} ${headgear}: ${tape ? 'one cap back' : 'no cap back'}`);
+      assert.equal(fronts[0].onlyGroups[0], WORN[headgear][0], `${uniform} ${headgear}: the cap worn`);
+      if(tape) assert.equal(backs[0].onlyGroups[0], WORN[headgear][1], `${uniform} ${headgear}: the cap worn, back`);
+      const base = scene.layers.find(l => l.key === 'base:jacket');
+      for(const g of ALL_CAP_GROUPS) if(core.landmarkBounds(spec, { 'hat-patrol-front': 'patrol_cap_front', 'hat-patrol-back': 'patrol_cap_back', 'hat-ball-front': 'baseball_cap_front', 'hat-ball-back': 'baseball_cap_back', 'hat-boonie-front': 'boonie_hat_front', 'hat-boonie-back': 'boonie_hat_back' }[g] || 'none')) assert.ok(base.hideGroups.includes(g), `${uniform} ${headgear}: ${g} is hidden on the sheet`);
+      // The back is the same size as the front (Ethan: 'why is the back of the hats so small', tests/engine-live-hat-back-size.test.cjs) and stands beside it, crowns level, never over it.
+      const RECT = { auto: ['patrol_cap_front', 'patrol_cap_back'], tactical: ['baseball_cap_front', 'baseball_cap_back'], boonie: ['boonie_hat_front', 'boonie_hat_back'] }[headgear];
+      const at = (layer, name) => { const r = core.landmarkBounds(spec, name), k = layer.w / spec.w; return { x: r.x * k + layer.x, y: r.y * k + layer.y, w: r.w * k, h: r.h * k }; };
       if(tape){
+        const f = at(fronts[0], RECT[0]), k = at(backs[0], RECT[1]);
+        assert.ok(Math.abs(fronts[0].w - spec.w) < 1e-9 && Math.abs(backs[0].w - spec.w) < 1e-6, `${uniform} ${headgear}: the back is drawn at the front's size`);
+        assert.ok(!boxOverlap(f, k) && k.x >= f.x + f.w, `${uniform} ${headgear}: the back is beside the front`);
+        // The back is the front's crown without the bill: the two crowns level, top and bottom (LIVE13 E81).
+        assert.ok(Math.abs(k.y - f.y) < 0.01 && Math.abs((k.y + k.h) - (f.y + core.landmarkBounds(spec, RECT[1]).h)) < 0.01, `${uniform} ${headgear}: the two crowns are level`);
         const t = scene.layers.find(l => l.key === 'text:' + lmName), r = backs[0].w / spec.w;
         assert.ok(t, `${uniform} ${lmName}: name text`);
         assert.ok(Math.abs(t.x - (tape.x * r + tape.w * r / 2 + backs[0].x)) < 0.05 && Math.abs(t.y - (tape.y * r + tape.h * r / 2 + backs[0].y)) < 0.1, `${uniform} ${lmName}: the name is on the tape where its view is`);

@@ -38,7 +38,8 @@ test('the frame is the cloth, not the sheet: it is shorter than the CFU sheet by
 test('a build with the boonie hat chosen still frames the boonie (LIVE9-3)', async () => {
   const scene = await compose('corporate_field', 'boonie');
   const views = scene.layers.filter(l => /^hat-view-bounds:hat-boonie/.test(l.key || ''));
-  assert.equal(views.length, 2, 'the boonie front and back views');
+  // The boonie hat carries nothing on its back, so only its front is drawn (LIVE13 E81).
+  assert.equal(views.length, 1, 'the boonie front view');
   for(const v of views){
     assert.ok(v.y >= scene.bounds.y - 1e-6 && v.x >= scene.bounds.x - 1e-6 && v.x + v.w <= scene.bounds.x + scene.bounds.w + 1e-6 && v.y + v.h <= scene.bounds.y + scene.bounds.h + 1e-6, `the boonie view (${v.x.toFixed(2)}, ${v.y.toFixed(2)}) lies in the frame`);
   }

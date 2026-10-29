@@ -690,7 +690,7 @@
   // hat_attach anchor when it has one, else the apex of its collar-back curve, 5.635 in above collar_apex, measured
   // on the three sheets) lowered by HAT_SEAT (the seat the dress caps use, an estimate: the regulation shows no
   // seating). Its back view, with the name tape, stands beside it at the same size as the front (BACK_VIEW_SCALE 1; Ethan:
-  // 'why is the back of the hats so small'), 1/2 in clear of it (BACK_VIEW_GAP), its bottom on the front's, so the name tape
+  // 'why is the back of the hats so small'), 1/2 in clear of it (BACK_VIEW_GAP), its crown level with the front's (see place), so the name tape
   // (7.1.1.8, 6.2.11.1) reads at the size the sheet draws it. Only the OCP patrol cap and the tactical cap carry a name tape
   // (7.1.1.8: 'only a nametape on the back of the cap is authorized'; 6.2.11.1); 5.1.1.6 (the ABU cap) and 6.2.10 (the
   // boonie hat) name none and the sheets draw none on those backs, so their backs show no tape. The ABU cap (5.1.1.6), the OCP patrol
@@ -727,8 +727,14 @@
     const hide = views.flatMap(v => [v.group, ...(v.with || [])]);
     const worn = headgearChoice(b);
     const caps = worn && HEADGEAR[worn];
-    const front = caps && views.find(v => v.group === caps.front), back = caps && views.find(v => v.group === caps.back);
-    return { hide, choice: front ? caps : null, place(){
+    const front = caps && views.find(v => v.group === caps.front);
+    // The back view is drawn only when the cap carries something there: its name tape, where the regulation puts one (OCP patrol and tactical
+    // caps 7.1.1.8; the navy blue tactical cap with the ABU and CFU, ICL 25-02 6.2.11.1) and the sheet draws it, and the member shows a name
+    // (LIVE13 E81, Ethan: "no need to show the back when no name is required"). The ABU cap (5.1.1.6), the Blue Field Cap (6.2.9) and the
+    // boonie hat (5.2.1.2.3) name nothing on the back, so they are drawn front only.
+    const tape = caps && caps.tape && core.landmarkBounds(spec, caps.tape) && b.name && b.name.show && b.name.last ? caps.tape : null;
+    const back = tape ? views.find(v => v.group === caps.back) : null;
+    return { hide, choice: front ? Object.assign({}, caps, { tape: back ? tape : null }) : null, place(){
       if(!front) return;
       ctx.landmarkShift = ctx.landmarkShift || {};
       const put = (v, dx, dy, z, role, k) => {
@@ -745,10 +751,14 @@
       if(!top || !(attach || apex)) return;
       const seatY = (attach ? attach.y : apex.y - COLLAR_BACK_TOP_ABOVE_APEX) + HAT_SEAT;
       put(front, top.x - (front.box.x + front.box.w / 2), seatY - (front.box.y + front.box.h), Z.hat, 'hat', 1);
-      // The back view: beside the front, on the picture's right of it, bottoms level.
+      // The back view: beside the front, on the picture's right of it, at the front's size. The sheets draw each back as the front's crown
+      // without its bill (the same outline path, at the top of each view's box: patrol cap crown 3.9 in, tactical 4.7 in, the bill below that
+      // on the front only), so the two boxes' tops are set level and the crowns then match top and bottom (LIVE13 E81, Ethan: "for all
+      // utilities its really irking me that the hats arent aligned"). Setting the boxes' bottoms level, as before, put the back's bottom on
+      // the front's bill, 1.1 in (patrol) to 1.9 in (tactical) below the front's crown.
       if(back){
         const f = front.shift.box, k = BACK_VIEW_SCALE;
-        put(back, f.x + f.w + BACK_VIEW_GAP - back.box.x * k, f.y + f.h - (back.box.y + back.box.h) * k, Z.garmentLayer, 'hat-view', k);
+        put(back, f.x + f.w + BACK_VIEW_GAP - back.box.x * k, f.y - back.box.y * k, Z.garmentLayer, 'hat-view', k);
       }
     } };
   }
