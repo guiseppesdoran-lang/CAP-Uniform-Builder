@@ -44,7 +44,11 @@ test('OCP: the Ranger tab takes the HHQ patch\'s place under AUX, centred; the H
   const slot = { x: velcro.x, y: aux.y + aux.h, w: velcro.w, h: velcro.y + velcro.h - aux.y - aux.h };
   const tab = scene.layers.find(l => l.key === `patch:${EXPERT}:L_SHOULDER:0`);
   assert.ok(tab, 'tab drawn flat on the sleeve');
-  near(tab.w, 5, 1e-6, 'drawn at its sheet size'); near(tab.h, 0.815, 1e-6, 'height');
+  // 2.7 x 0.44 in (art aa950a56, measured on the HMRS 2021 uniform poster): inside the 4 in Velcro below AUX.
+  near(tab.w, 2.7, 1e-6, 'drawn at its sheet size'); near(tab.h, 0.44, 1e-6, 'height');
+  assert.ok(tab.x >= slot.x && tab.x + tab.w <= slot.x + slot.w && tab.y >= slot.y && tab.y + tab.h <= slot.y + slot.h, 'inside the Velcro below AUX');
+  const hhqc = core.anchor(sheet, 'hhq_patch_left_center');
+  if(hhqc){ near(tab.x + tab.w / 2, hhqc.x, 1e-6, 'on the sheet\'s HHQ centre'); near(tab.y + tab.h / 2, hhqc.y, 1e-6, 'on the sheet\'s HHQ centre'); }
   near(tab.x + tab.w / 2, slot.x + slot.w / 2, 1e-3, 'centred across the HHQ place'); near(tab.y + tab.h / 2, slot.y + slot.h / 2, 1e-3, 'centred down it');
   assert.ok(!tab.clip, 'not clipped');
   assert.ok(scene.layers.some(l => l.key === `patch:${EXPERT}:L_SHOULDER:edge`), 'seen edge-on on the coat too');

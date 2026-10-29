@@ -48124,34 +48124,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48162,34 +48158,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48200,34 +48192,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48238,34 +48226,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48276,34 +48260,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48314,34 +48294,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48352,34 +48328,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48390,34 +48362,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48428,34 +48396,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []
@@ -48466,34 +48430,30 @@
    "category": "patches",
    "has_spec": true,
    "issues": [],
-   "w_in": 5,
-   "h_in": 0.815,
+   "w_in": 2.7,
+   "h_in": 0.44,
    "size_source": "measured",
-   "basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
+   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
    "anchors": {
     "top_center": [
-     250,
+     135,
      0
     ],
     "bottom_center": [
-     250,
-     81.5
+     135,
+     44
     ],
     "center": [
-     250,
-     40.75
+     135,
+     22
     ],
     "left_edge": [
      0,
-     40.75
+     22
     ],
     "right_edge": [
-     500,
-     40.75
-    ],
-    "seat_on_cap_tape": [
-     250,
-     81.5
+     270,
+     22
     ]
    },
    "landmarks": []

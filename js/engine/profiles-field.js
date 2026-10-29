@@ -605,8 +605,9 @@
   // the BDU and CFU above the CAP tape; 9.2.4 lets HMRS graduates wear one tab.) So on the OCP the tab is worn in the left sleeve's HHQ place under the
   // AUX identifier (7.1.1.4.2.1), counting as one of its two patches as the HHQ patch does, the way the 7.1.1.4.2.2 patches are worn in lieu of the
   // HHQ patch; the HHQ patch is then not drawn; the chest badges keep measuring from the CAP tape. The page hands the tab as a patch whose id is its
-  // sheet (patch-ranger-tab-<grade>, Figure A8-2), drawn at the sheet's size (5.0 x 0.815 in, sized to the CAP tape: wider than the 4 in Velcro;
-  // reported for resizing) centred in the place, flat on the sleeve view and seen edge-on on the coat like the other sleeve patches. One tab only.
+  // sheet (patch-ranger-tab-<grade>, Figure A8-2), drawn at the sheet's size (2.7 x 0.44 in since art aa950a56, measured on the HMRS 2021 uniform
+  // poster; it was 5.0 x 0.815, the CAP tape's width) by its centre on the place's centre (the sheet's hhq_patch_left_center, else the middle of the
+  // Velcro below AUX), flat on the sleeve view and seen edge-on on the coat like the other sleeve patches. One tab only.
   // The HHQ place has no stated position, so nothing is measured for it (measureSleevePatch).
   const isRangerTab = p => !!p && /^patch-ranger-tab-[a-z0-9-]+$/.test(String(p.id || ''));
   async function rangerTabInHhqSlot(ctx, tabs, replaced){
@@ -615,7 +616,7 @@
     if(!ctx.has(t.id)){ ctx.note(`No artwork for ${t.id}`); return null; }
     const zone = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
     if(!zone) return null;
-    const flat = await ctx.place(t.id, { pieceAnchor: 'center', at: core.rectCenter(zone), z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:0`, title: t.title || t.id, className: 'patch' });
+    const flat = await ctx.place(t.id, { pieceAnchor: 'center', at: ctx.point('hhq_patch_left_center') || core.rectCenter(zone), z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:0`, title: t.title || t.id, className: 'patch' });
     if(!flat) return null;
     // Seen edge-on where the sleeve meets the coat, cut only to what of the sleeve shows there.
     const f = edgeFrame(ctx, 'left'), clip = f && f.shows(flat);

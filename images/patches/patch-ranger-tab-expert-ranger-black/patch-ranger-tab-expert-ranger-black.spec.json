@@ -2,64 +2,59 @@
  "asset_id": "patch-ranger-tab-expert-ranger-black",
  "name": "Hawk Mountain Ranger qualification tab: Expert Ranger (black)",
  "size_in": {
-  "w": 5,
-  "h": 0.815
+  "w": 2.7,
+  "h": 0.44
  },
- "width_in": 5,
- "height_in": 0.815,
+ "width_in": 2.7,
+ "height_in": 0.44,
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  500,
-  81.5
+  270,
+  44
  ],
  "size_source": "measured",
- "size_basis": "width 5.0 in = the CAP tape it is sewn above on the BDU-style coats (garment-abu-coat / garment-cfu-coat tape_in [5, 0.9]: cut to the pocket width, CAPR 39-1 5.1.1.1.2.1, 5.2.1.1.2.1; that width is an estimate in those sheets); height 0.815 in = 5.0 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43)",
- "citation": "CAPR 39-1 Figure A8-2 (Hawk Mountain Ranger Qualification Tabs); 5.1.2.3.7 and 5.2.1.1.2.7 (\"One CAP Ranger tab ... sewn centered immediately above and touching the Civil Air Patrol tape\"); 9.2.4",
+ "size_basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+ "citation": "CAPR 39-1 Figure A8-2 (Hawk Mountain Ranger Qualification Tabs); 7.1.1.4.2.1 (OCP: in lieu of the higher-headquarters patch on the left sleeve pocket, whose loop field is 4 x 6.5 in); 9.2.4 (HMRS graduates, one tab). Ethan, LIVE13-ART 3: \"the ranger tabs arent authorized on ABUs!!! only on OCPs unfortunately in lieu of an hhq patch\"",
  "anchors": {
   "top_center": [
-   250,
+   135,
    0
   ],
   "bottom_center": [
-   250,
-   81.5
+   135,
+   44
   ],
   "center": [
-   250,
-   40.75
+   135,
+   22
   ],
   "left_edge": [
    0,
-   40.75
+   22
   ],
   "right_edge": [
-   500,
-   40.75
-  ],
-  "seat_on_cap_tape": [
-   250,
-   81.5
+   270,
+   22
   ]
  },
- "anchors_note": "seat_on_cap_tape = bottom_center: put it on the top centre of the CAP tape (5.1.2.3.7, 5.2.1.1.2.7); badges then sit 1/2 in above the tab's top_center",
+ "anchors_note": "the five anchors the NCSA patches carry: the engine centres the tab (center) on garment-ocp-coat-abu-cut's hhq_patch_left_center, the left sleeve pocket's loop field, as it does those patches; OCP only, one tab, in lieu of the HHQ patch (7.1.1.4.2.1). LIVE13-ART 2's placement above_cap_tape and anchor seat_on_cap_tape (ABU / CFU wear above the CAP tape) are withdrawn",
  "dimensions": {
   "family": "patch",
   "kind": "ranger-tab",
   "group": "Hawk Mountain Ranger tabs",
   "grade": "expert-ranger-black",
   "colour": "full",
-  "placement": "above_cap_tape",
   "one_only": true,
   "frame_in": {
-   "top_bottom": 0.094,
-   "ends": 0.12,
-   "outline": 0.02
+   "top_bottom": 0.051,
+   "ends": 0.065,
+   "outline": 0.011
   },
-  "corner_radius_in": 0.06,
-  "cap_height_in": 0.432,
-  "lettering_width_in": 4.198,
+  "corner_radius_in": 0.032,
+  "cap_height_in": 0.233,
+  "lettering_width_in": 2.267,
   "lettering_condense": 1.071,
   "lettering": "EXPERT RANGER",
   "colours": {
@@ -72,8 +67,10 @@
  "source": {
   "figure": "assets/refs/capranger/fig-a8-2-ranger-tabs-crop.png (CAPR 39-1 Fig A8-2, PDF p.184 at 2x)",
   "graphics": "assets/refs/capranger/tab-1..4.png (capranger.org)",
-  "measure": "artwork-samples/assets/ranger-tabs-measure.js",
+  "poster": "assets/refs/capranger/hmrs-uniform-poster-2021.png (capranger.org, 2021 HMRS uniform poster: the tab worn)",
+  "measure": "artwork-samples/assets/ranger-tabs-measure.js (proportions, figure); artwork-samples/base-art/ranger-tab-poster-measure.js (size, poster)",
   "measured": [
+   "width (poster, against the CAP tape)",
    "width / height (figure)",
    "frame widths",
    "cap height",
@@ -81,7 +78,7 @@
    "field, frame, lettering and outline colours (figure)"
   ],
   "estimated": [
-   "width 5.0 in (the coat sheets' CAP tape, itself estimated)",
+   "the poster's CAP tape as 5 x 1 in (the inch scale; the coat sheets' tape width is itself estimated)",
    "corner radius 0.06 in",
    "word space 0.3 cap",
    "superscript size 0.55 cap, its gap, its rule and the double space after it",
@@ -89,7 +86,7 @@
   ]
  },
  "generator": "artwork-samples/assets/build-ranger-tabs.js",
- "grade_note": "LIVE13-ART 2",
+ "grade_note": "LIVE13-ART 2; resized to the OCP sleeve pocket, LIVE13-ART 3",
  "fit": {
   "method": "n/a",
   "score": null
