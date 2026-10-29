@@ -429,6 +429,8 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
 const CAPUB_COS_STAR_RIBBONS = new Set(['eaker_award','earhart_award','spaatz_award','cadet_certificate_of_proficiency','frank_borman_falcon_award']);
 const CAPUB_HONOR_CREDIT_RIBBONS = new Set(['curry_achievement','hap_arnold_achievement','mary_feik_achievement','rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','armstrong_achievement']);
 const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['wright_brothers_award']);
+// The ribbons whose option labels lost a device parenthetical in LIVE14 E72 (normalizeRibbonSelections relabels saved setups).
+const CAPUB_RELABELED_RIBBONS = new Set(['cadet_advisory_council_ribbon','goddard_achievement']);
 function capubRibbonOptionOverride(id){
   const pick = { label:'- Select -', value:'', devices:{} };
   if(globalThis.CAPUBRibbonAwards?.FAMILIES?.[id]?.once){
@@ -442,12 +444,14 @@ function capubRibbonOptionOverride(id){
     return [pick, ...[2,4,6,8,10,12,22,32,42].map(n => ({ label:`${n} members recruited`, value:`recruits_${n}`, devices:{} }))];
   }
   if(id === 'cadet_advisory_council_ribbon'){
-    // 39-3 21j: the highest level served, shown by the star.
+    // 39-3 21j: the highest level served, shown by the star. The labels name the level only (LIVE14 E72, Ethan: "remove
+    // the star things, make them all like region level"); data/ribbon-awards.js reads the star from the level, and the
+    // line under the select says which star it is.
     return [pick,
-      { label:'Group level (no device)', value:'cac_group', devices:{} },
-      { label:'Wing level (bronze star)', value:'cac_wing', devices:{} },
+      { label:'Group level', value:'cac_group', devices:{} },
+      { label:'Wing level', value:'cac_wing', devices:{} },
       { label:'Region level', value:'cac_region', devices:{} },
-      { label:'National level (gold star)', value:'cac_national', devices:{} }];
+      { label:'National level', value:'cac_national', devices:{} }];
   }
   if(id === 'mitchell_award'){
     return [pick, { label:'Earned', value:'earned', devices:{} },
@@ -458,8 +462,8 @@ function capubRibbonOptionOverride(id){
   if(id === 'goddard_achievement'){
     return [pick, { label:'Earned', value:'earned', devices:{} },
       { label:'Earned with Honor Credit', value:'honor_credit', devices:{} },
-      { label:'Earned + Model Rocketry Badge (silver star, Mitchell required)', value:'rocketry_star', devices:{} },
-      { label:'Earned + Honor Credit and Model Rocketry Badge (two silver stars)', value:'honor_credit_and_rocketry', devices:{} }];
+      { label:'Earned + Model Rocketry Badge (Mitchell required)', value:'rocketry_star', devices:{} },
+      { label:'Earned + Honor Credit and Model Rocketry Badge', value:'honor_credit_and_rocketry', devices:{} }];
   }
   if(CAPUB_HONOR_CREDIT_RIBBONS.has(id)){
     return [pick, { label:'Earned', value:'earned', devices:{} },
@@ -832,6 +836,12 @@ function normalizeRibbonSelections(){
       if(State.ribbonSelections[id].awardLabel === undefined){
         const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
         State.ribbonSelections[id].awardLabel = opt?.label || '';
+      }
+      // A setup saved before LIVE14 E72 keeps the old label ("Wing level (bronze star)"); the option's own label replaces
+      // it. The devices come from the value, so they do not change.
+      if(CAPUB_RELABELED_RIBBONS.has(id) && State.ribbonSelections[id].checked){
+        const opt = getRibbonAwardOptions(id).find(o => o.value && o.value === State.ribbonSelections[id].awardValue);
+        if(opt) State.ribbonSelections[id].awardLabel = opt.label;
       }
       if(State.ribbonSelections[id].imageOverride === undefined){
         State.ribbonSelections[id].imageOverride = getRibbonImageOverride(id, State.ribbonSelections[id].awardValue || '');
