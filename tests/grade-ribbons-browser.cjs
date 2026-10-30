@@ -126,7 +126,8 @@ const sortJ = a => JSON.stringify([...a].sort());
     await sleep(300);
     expect(a.record && a.record.rank === 'C/Lt Col' && sortJ(a.record.ids) === sortJ(IMPLIED_LT_COL), 'the record holds the grade\'s ribbons, not the hand-checked one');
     expect(sortJ(a.drawn) === sortJ([...IMPLIED_LT_COL, HAND]), `the drawn rack: ${a.drawn.join(', ')}`);
-    expect(/^C\/Lt Col: added the /.test(a.toast) && ['Curry', 'Mitchell', 'Encampment Ribbon', 'Eaker'].every(w => a.toast.includes(w)) && !a.toast.includes('Spaatz'), `the toast names what was added: ${a.toast}`);
+    // LIVE13 E106 (Ethan on the thirteen-name toast: "this is dumb lol"): the toast counts the ribbons, it does not name them.
+    expect(/^C\/Lt Col: 13 achievement ribbons earned on the way to this grade added \(CAPR 60-1\)\.$/.test(a.toast), `the toast counts what was added: ${a.toast}`);
     await shot('1-lt-col');
 
     // ---- 2. Down to C/SSgt. ----
@@ -136,7 +137,7 @@ const sortJ = a => JSON.stringify([...a].sort());
     expect(sortJ(b.checked) === sortJ([...IMPLIED_SSGT, HAND]), `C/SSgt selections: ${b.checked.join(', ')}`);
     expect(sortJ(b.drawn) === sortJ([...IMPLIED_SSGT, HAND]), `the drawn rack after the drop: ${b.drawn.join(', ')}`);
     expect(b.checked.includes(HAND) && b.values[HAND] === 'hours_60', 'the hand-checked ribbon stays as it was');
-    expect(/Taken off/.test(b.toast) && /Eaker/.test(b.toast), `the toast names what was taken off: ${b.toast}`);
+    expect(/^9 ribbons the earlier grade had added taken off\.$/.test(b.toast), `the toast counts what was taken off: ${b.toast}`);
     await shot('2-ssgt');
 
     // ---- 3. Saved and loaded, the record comes back; a senior grade then takes the cadet grade's ribbons off. ----

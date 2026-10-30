@@ -183,7 +183,9 @@ test('the Rank select and the Member type select run the rule; the toast names w
   const setup = read('js/setup.js');
   assert.match(setup, /rankSetupSelect\.addEventListener\('change', \(\)=>\{[\s\S]{0,260}capubApplyGradeRibbons\(\);/);
   assert.match(setup, /membershipTypeEl\.addEventListener\('change'[\s\S]*?capubApplyGradeRibbons\(\);[\s\S]*?\n\}\);/);
-  assert.match(setup, /added the \$\{capubGradeRibbonNames\(added\)\}, earned on the way to this grade \(CAPR 60-1\)/);
+  // The toast counts the ribbons rather than naming thirteen of them (LIVE13 E106).
+  assert.match(setup, /achievement ribbons'\} earned on the way to this grade added \(CAPR 60-1\)/);
+  assert.doesNotMatch(setup, /added the \$\{capubGradeRibbonNames\(added\)\}/);
   assert.match(setup, /A senior member\\'s grade adds no ribbons: promotion is not tied to one\./);
 });
 

@@ -238,15 +238,16 @@ function capubApplyGradeRibbons({announce=true}={}){
   }
   if(announce){
     const lines = [];
-    if(added.length) lines.push(`${rank}: added the ${capubGradeRibbonNames(added)}, earned on the way to this grade (CAPR 60-1).`);
-    if(removed.length) lines.push(`Taken off, as the earlier grade had added ${removed.length === 1 ? 'it' : 'them'}: ${capubGradeRibbonNames(removed)}.`);
+    // Counts, not names (LIVE13 E106, Ethan on the thirteen-name toast: "this is dumb lol"): the rack shows which.
+    if(added.length) lines.push(`${rank}: ${added.length === 1 ? 'the achievement ribbon' : added.length + ' achievement ribbons'} earned on the way to this grade added (CAPR 60-1).`);
+    if(removed.length) lines.push(`${removed.length === 1 ? 'One ribbon' : removed.length + ' ribbons'} the earlier grade had added taken off.`);
     // A senior member who expected the grade to fill the rack: it does not.
     if(State.membership === 'senior' && rank && (removed.length || !(State.ribbons || []).length)){
       lines.push('A senior member\'s grade adds no ribbons: promotion is not tied to one.');
     }
     // After the page's item-count toast (js/workspace-ui.js capubItemToasts speaks 200 ms after a change), so this one, which names
     // the ribbons, is the one left showing.
-    if(lines.length) setTimeout(()=>capubNotify(lines.join(' '), added.length + removed.length > 4 ? 9000 : 6000), 450);
+    if(lines.length) setTimeout(()=>capubNotify(lines.join(' '), 5000), 450);
   }
   return {added, removed};
 }
