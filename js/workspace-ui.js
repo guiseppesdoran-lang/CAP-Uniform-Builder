@@ -483,24 +483,19 @@
     summary.textContent=picks.length ? `Uniform options: ${picks.join(' · ')}` : 'Uniform options';
     summary.title=picks.join(' · ');
   }
-  // The uniforms this member may not wear (js/setup.js marks them .locked with the reason) move out of their occasion
-  // groups into one fold at the end of the list, and back to their place when they are allowed again, so the list a
-  // member picks from is only what they may wear and still says why the rest is not there.
+  // The uniforms this member may not wear (js/setup.js marks them .locked with the reason) move out of the grid into
+  // one fold at the end of the list, and back to their place in the regulation's order when they are allowed again, so
+  // the list a member picks from is only what they may wear and still says why the rest is not there.
   function placeLockedUniforms(){
     const fold=safeBy('lockedUniforms'), grid=safeBy('lockedUniformGrid'), summary=safeBy('lockedUniformsSummary');
-    if(!fold || !grid) return;
+    const home=document.querySelector('#uniformList > .uniformGrid');
+    if(!fold || !grid || !home) return;
     const cards=[...document.querySelectorAll('#uniformList .uniformOption')];
     cards.forEach((card,i)=>{
-      if(!card.dataset.homeGroup){
-        const home=card.closest('.uniformGroup');
-        card.dataset.homeGroup=home ? home.dataset.group : '';
-        card.dataset.homeOrder=String(i);
-      }
+      if(!card.dataset.homeOrder) card.dataset.homeOrder=String(i);
       const locked=card.classList.contains('locked');
       if(locked && card.parentNode!==grid) grid.appendChild(card);
       if(!locked && card.parentNode===grid){
-        const home=document.querySelector(`#uniformList .uniformGroup[data-group="${card.dataset.homeGroup}"] .uniformGrid`);
-        if(!home) return;
         const after=[...home.children].find(c=>Number(c.dataset.homeOrder)>Number(card.dataset.homeOrder));
         home.insertBefore(card,after||null);
       }

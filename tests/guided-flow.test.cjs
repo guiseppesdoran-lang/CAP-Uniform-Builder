@@ -30,9 +30,10 @@ test('the module is empty but its script tag stays, so the asset list is unchang
   assert.ok(html.indexOf('js/guided-flow.js')>html.indexOf('js/workspace-ui.js'));
 });
 
-test('uniforms are grouped by the regulation occasion groups',()=>{
+test('the uniforms are one flat list in the regulation\'s order; the occasion groups stay in the data only',()=>{
   assert.deepEqual(Object.keys(rules.GROUPS),['formal','everyday','field']);
-  for(const key of Object.keys(rules.GROUPS)) assert.match(html,new RegExp(`<div class="uniformGroup" data-group="${key}">\\s*<div class="uniformGroupTitle">${rules.GROUPS[key].label}</div>`));
+  assert.doesNotMatch(html,/uniformGroup/);
+  assert.doesNotMatch(css,/uniformGroupTitle/);
 });
 
 test('locked reasons name the paragraph and are empty when the member may wear it',()=>{

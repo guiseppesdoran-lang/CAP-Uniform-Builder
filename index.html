@@ -146,79 +146,63 @@
         <h3 class="stepGroupTitle" tabindex="-1">Uniform</h3>
 
         <section id="uniformBlock" class="panelBlock disabledBlock">
-          <!-- Grouped by occasion as data/uniform-rules.js GROUPS has them (tests/stepper.test.cjs checks the two agree).
-               A uniform the member may not wear (js/setup.js sets .locked and data-locked-reason) is moved by js/workspace-ui.js
-               into the fold at the end of the list, muted, with its reason; it comes back to its group when it is allowed again. -->
+          <!-- A uniform the member may not wear (js/setup.js sets .locked and data-locked-reason) is moved by js/workspace-ui.js
+               into the fold at the end of the list, muted, with its reason; it comes back to its place when it is allowed again. -->
           <div id="uniformList" class="uniformList">
-
-            <div class="uniformGroup" data-group="formal">
-              <div class="uniformGroupTitle">Formal</div>
-              <div class="uniformGrid">
-                <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="senior">
-                  <div class="uName">Mess Dress</div>
-                  <div class="uDesc smallText">Miniature medals, formal</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="senior">
-                  <div class="uName">Corporate Semi-formal</div>
-                  <div class="uDesc smallText">Blazer, miniature medals</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="semi_formal_usaf" data-allowed-for="cadet">
-                  <div class="uName">Cadet Semi-formal</div>
-                  <div class="uDesc smallText">Class A coat, ribbons</div>
-                </button>
-              </div>
-            </div>
-
-            <div class="uniformGroup" data-group="everyday">
-              <div class="uniformGroupTitle">Everyday</div>
-              <div class="uniformGrid">
-                <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">
-                  <div class="uName">Blues: Class A</div>
-                  <div class="uDesc smallText">Service coat, ribbons</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">
-                  <div class="uName">Blues: Class B</div>
-                  <div class="uDesc smallText">Shirt, ribbons</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="senior">
-                  <div class="uName">Aviator Shirt</div>
-                  <div class="uDesc smallText">Corporate white shirt</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">
-                  <div class="uName">Aviator + Blazer</div>
-                  <div class="uDesc smallText">Corporate coat style</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="polo" data-allowed-for="senior">
-                  <div class="uName">Corporate Working (Polo)</div>
-                  <div class="uDesc smallText">Polo shirt, gray slacks</div>
-                </button>
-              </div>
-            </div>
-
-            <div class="uniformGroup" data-group="field">
-              <div class="uniformGroupTitle">Field and flight</div>
-              <div class="uniformGrid">
-                <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">
-                  <div class="uName">ABU</div>
-                  <div class="uDesc smallText">Legacy camouflage, tapes</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="ocp" data-allowed-for="cadet,senior">
-                  <div class="uName">OCP</div>
-                  <div class="uDesc smallText">Camouflage, name tapes</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">
-                  <div class="uName">Corporate Field Uniform</div>
-                  <div class="uDesc smallText">Field / utility variant</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">
-                  <div class="uName">Flight Suit</div>
-                  <div class="uDesc smallText">Flight / utility</div>
-                </button>
-                <button class="uniformOption" data-uniform-id="corporate_flight_suit" data-allowed-for="senior">
-                  <div class="uName">Corporate Flight Suit</div>
-                  <div class="uDesc smallText">Navy blue flight duty</div>
-                </button>
-              </div>
+            <!-- One flat grid in the regulation's order (CAPR 39-1 Chapter 4 and 5 as the page has always listed them); no occasion headings. -->
+            <div class="uniformGrid">
+              <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">
+                <div class="uName">Blues: Class A</div>
+                <div class="uDesc smallText">Service coat, ribbons</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">
+                <div class="uName">Blues: Class B</div>
+                <div class="uDesc smallText">Shirt, ribbons</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="senior">
+                <div class="uName">Mess Dress</div>
+                <div class="uDesc smallText">Miniature medals, formal</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="senior">
+                <div class="uName">Corporate Semi-formal</div>
+                <div class="uDesc smallText">Blazer, miniature medals</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="semi_formal_usaf" data-allowed-for="cadet">
+                <div class="uName">Cadet Semi-formal</div>
+                <div class="uDesc smallText">Class A coat, ribbons</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="senior">
+                <div class="uName">Aviator Shirt</div>
+                <div class="uDesc smallText">Corporate white shirt</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">
+                <div class="uName">Aviator + Blazer</div>
+                <div class="uDesc smallText">Corporate coat style</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="polo" data-allowed-for="senior">
+                <div class="uName">Corporate Working (Polo)</div>
+                <div class="uDesc smallText">Polo shirt, gray slacks</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">
+                <div class="uName">Corporate Field Uniform</div>
+                <div class="uDesc smallText">Field / utility variant</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">
+                <div class="uName">ABU</div>
+                <div class="uDesc smallText">Legacy camouflage, tapes</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="ocp" data-allowed-for="cadet,senior">
+                <div class="uName">OCP</div>
+                <div class="uDesc smallText">Camouflage, name tapes</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">
+                <div class="uName">Flight Suit</div>
+                <div class="uDesc smallText">Flight / utility</div>
+              </button>
+              <button class="uniformOption" data-uniform-id="corporate_flight_suit" data-allowed-for="senior">
+                <div class="uName">Corporate Flight Suit</div>
+                <div class="uDesc smallText">Navy blue flight duty</div>
+              </button>
             </div>
 
             <details class="lockedFold" id="lockedUniforms" hidden>
@@ -525,7 +509,7 @@
 <script src="js/badge-rules.js?v=a236341faf" defer></script>
 <script src="js/dom-assets.js?v=ab0df093fc" defer></script>
 <script src="js/catalog.js?v=5904edafda" defer></script>
-<script src="js/setup.js?v=b7af41a003" defer></script>
+<script src="js/setup.js?v=b65a05a64d" defer></script>
 <script src="js/render-core.js?v=2dedb6009d" defer></script>
 <script src="js/galleries.js?v=93bdf5b1dc" defer></script>
 <script src="js/placement.js?v=a2a552ea69" defer></script>

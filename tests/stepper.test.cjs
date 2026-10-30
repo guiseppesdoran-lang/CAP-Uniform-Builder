@@ -81,12 +81,13 @@ test('the Items step is three cards, each one row of name, count, Choose… and 
   assert.match(aside,/<summary>Advanced: rack layout<\/summary>/);
 });
 
-test('the uniform cards are a two-column grid by occasion, matching the rules; locked ones fold away with their reasons',()=>{
-  for(const key of Object.keys(rules.GROUPS)){
-    const group=aside.slice(aside.indexOf(`data-group="${key}"`),aside.indexOf('</div>\n            </div>',aside.indexOf(`data-group="${key}"`)));
-    const ids=[...group.matchAll(/data-uniform-id="([a-z_]+)"/g)].map(m=>m[1]).sort();
-    assert.deepEqual(ids,rules.uniformIdsInGroup(key).sort(),`group ${key}`);
-  }
+test('the uniform cards are one flat two-column grid in the regulation\'s order, no headings; locked ones fold away with their reasons',()=>{
+  const list=aside.slice(aside.indexOf('id="uniformList"'),aside.indexOf('id="lockedUniforms"'));
+  const ids=[...list.matchAll(/data-uniform-id="([a-z_]+)"/g)].map(m=>m[1]);
+  assert.deepEqual(ids,['blues_a','blues_b','mess_dress','semi_formal','semi_formal_usaf','aviator','aviator_blazer','polo','corporate_field','abu','ocp','flight_suit','corporate_flight_suit']);
+  assert.deepEqual([...ids].sort(),Object.keys(rules.RULES).sort(),'every uniform the rules know, once');
+  assert.doesNotMatch(aside,/uniformGroup|uniformGroupTitle|Field and flight|>Formal<|>Everyday</,'no occasion headings');
+  assert.equal([...list.matchAll(/<div class="uniformGrid">/g)].length,1,'one grid');
   assert.equal([...aside.matchAll(/class="uniformOption"/g)].length,Object.keys(rules.RULES).length);
   assert.match(css,/\.uniformGrid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
