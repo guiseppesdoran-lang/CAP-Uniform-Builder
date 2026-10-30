@@ -90,8 +90,8 @@
     ocp_coat: item('OCP coat', 'Garments', 'MILSPEC_OK', [V(69, 'verified', AUG), U(null), I(null)], { ref: '7.1.1.1' }),
     abu_coat: item('ABU coat', 'Garments', 'MILSPEC_OK', [V(49.99, 'estimated', AUG), U(null), I(null)], { ref: '5.1.1.1' }),
     cfu_shirt: item('Corporate Field Uniform shirt, dark blue', 'Garments', 'CAP_ONLY', [V(49.99, 'estimated', AUG), U(null), I(null)], { q: 'Civil Air Patrol corporate field uniform shirt', ref: '5.2.1.1' }),
-    fdu_flight_suit: item('Flight duty uniform (sage green flight suit)', 'Garments', 'MILSPEC_OK', [V(199.99, 'estimated', AUG), U(null), I(null)], { q: 'flight suit CWU-27/P sage green', ref: '8.2' }),
-    cfdu_flight_suit: item('Corporate flight duty uniform (blue flight suit)', 'Garments', 'CAP_ONLY', [V(199.99, 'estimated', OCT), U(null), I(null)], { q: 'Civil Air Patrol blue flight suit', ref: '8.3.2' }),
+    fdu_flight_suit: item('Flight Duty Uniform (sage green flight suit)', 'Garments', 'MILSPEC_OK', [V(199.99, 'estimated', AUG), U(null), I(null)], { q: 'flight suit CWU-27/P sage green', ref: '8.2' }),
+    cfdu_flight_suit: item('Corporate Flight Duty Uniform (blue flight suit)', 'Garments', 'CAP_ONLY', [V(199.99, 'estimated', OCT), U(null), I(null)], { q: 'Civil Air Patrol blue flight suit', ref: '8.3.2' }),
     flight_jacket_green: item('Green flight jacket (MA-1, CWU-36/P or CWU-45/P)', 'Garments', 'MILSPEC_OK', [V(null), U(null), I(null)], { q: 'CWU-36/P flight jacket sage green', ref: '8.2.7' }),
     flight_jacket_blue: item('Blue flight jacket', 'Garments', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol blue flight jacket', ref: '8.3.7' }),
     command_scarf: item('CAP command flight scarf (yellow and red)', 'Accessories', 'CAP_ONLY', [V(null), U(null), I(null)], { q: 'Civil Air Patrol flight scarf', ref: '8.2.6' }),
@@ -313,7 +313,7 @@
     national: ['National CAC shoulder cord', 35.00], 'aide-de-camp': ['USAF Aide de Camp cord', null]
   };
   function cordInfo(key){
-    const c = CORDS[key] || [`${key.replace(/-/g, ' ')} shoulder cord`, 35.00];
+    const c = CORDS[key] || [`${key.replace(/-/g, ' ').replace(/^[a-z]/, ch => ch.toUpperCase())} shoulder cord`, 35.00];
     return { name: c[0], offers: [V(c[1], 'estimated', c[1] == null ? null : AUG), U(null), I(null)].map(o => Object.assign(o, { q: key === 'aide-de-camp' ? 'Air Force aide de camp cord' : `Civil Air Patrol ${c[0]}` })) };
   }
 

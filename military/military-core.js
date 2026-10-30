@@ -145,7 +145,8 @@
           ...award,
           id:key,
           canonicalId:key,
-          sourceIds:unique([award.id]),
+          // legacyCanonicalIds: ids a saved setup may hold from before the award's name was corrected (LIVE13 E103).
+          sourceIds:unique([award.id, ...(award.legacyCanonicalIds || [])]),
           aliases:unique([...(award.aliases || []), award.name, award.officialName]),
           authorizedServices:unique((award.authorizedServices || []).map(normalizeService)),
           precedence:{...(award.precedence || {})},
@@ -155,7 +156,7 @@
         });
         continue;
       }
-      existing.sourceIds=unique([...(existing.sourceIds || []), award.id]);
+      existing.sourceIds=unique([...(existing.sourceIds || []), award.id, ...(award.legacyCanonicalIds || [])]);
       existing.aliases=unique([...(existing.aliases || []), ...(award.aliases || []), award.name, award.officialName]);
       existing.authorizedServices=unique([...(existing.authorizedServices || []), ...(award.authorizedServices || [])].map(normalizeService));
       existing.precedence=Object.assign({}, existing.precedence, award.precedence || {});
