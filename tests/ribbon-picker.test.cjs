@@ -63,6 +63,7 @@ test('cadets can wear only their highest achievement ribbon (39-1 11.1.2.2), and
   assert.match(wiring,/out\.cadetHighestOnly = !!p\.cadetHighestOnly/);
   assert.match(wiring,/State\.cadetHighestOnly = p\.cadetHighestOnly/);
   assert.match(html,/id="cadetHighestOnlyRow" class="hidden"/);
+  assert.match(html,/<input type="checkbox" id="cadetHighestOnly">\s*Short Stack\s*<span class="hintText optionHint">Only the highest cadet achievement ribbon is worn \(CAPR 39-1, 11\.1\.2\.2\); the others stay selected\.<\/span>/);
 });
 
 test('the option is cadet-only and does not delete selections',()=>{
