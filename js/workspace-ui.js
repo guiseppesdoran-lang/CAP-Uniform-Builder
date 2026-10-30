@@ -332,7 +332,7 @@
     // They used to be two separate floating cards that overlapped each other and,
     // beside the sidebar at ~1024px, pushed the zoom card off the right edge.
     const toolbar=document.createElement('div'); toolbar.id='previewToolbar'; toolbar.className='previewToolbar';
-    toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Status: <strong id="topStatusText">Ready</strong></span><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
+    toolbar.innerHTML=`<div id="capubTopBar" class="capubTopBar"><span class="capubPill">Uniform: <strong id="topUniformText">None</strong></span><span class="capubPill">Items: <strong id="topItemsText">0</strong></span></div><div id="previewTools" class="previewTools"><div class="previewToolCard" role="group" aria-label="Preview zoom"><button type="button" class="ghost" id="zoomOutBtn" aria-label="Zoom out">−</button><span class="zoomReadout" id="zoomReadout" aria-live="polite">100%</span><button type="button" class="ghost" id="zoomInBtn" aria-label="Zoom in">+</button><button type="button" class="ghost" id="zoomFitBtn">Fit</button></div></div>`;
     wrap.insertBefore(toolbar, wrap.firstChild);
     // Undo and redo sit in front of the zoom controls.
     const history=document.createElement('div');
@@ -450,12 +450,9 @@
   }
   function updateTopBar(){
     if(typeof State==='undefined') return;
-    const status=safeBy('topStatusText'), uniform=safeBy('topUniformText'), items=safeBy('topItemsText');
-    const warnings=parseInt((safeBy('capubV2WarningCount')||{}).textContent||'0',10)||0;
-    // Until membership, rank and cut are chosen the defaults would read as a real
-    // selection ("BLUES A", "3 warnings") over an empty preview.
+    const uniform=safeBy('topUniformText'), items=safeBy('topItemsText');
+    // Until membership, rank and cut are chosen the default would read as a real selection ("BLUES A") over an empty preview.
     const setupNeeded = !(State.membership && State.rank && State.gender);
-    if(status) status.textContent = setupNeeded ? 'Setup needed' : (warnings ? `${warnings} warning${warnings===1?'':'s'}` : 'Good');
     if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
     // The preview is a picture, so say what it shows for anyone who cannot see it.
