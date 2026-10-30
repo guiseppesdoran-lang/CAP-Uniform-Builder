@@ -299,8 +299,8 @@ function openGalleryModal(kind){
       
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
-      <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show Less</button>
-      <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show All</button>
+      <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show less</button>
+      <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show all</button>
     </div>
   `;
   host.appendChild(header);
@@ -328,7 +328,7 @@ function openGalleryModal(kind){
         ui.modalScrollTop=modalSnapshot.modalScrollTop;
         ui.focusedControl=modalSnapshot.focusedControl;
       }
-      modalTitle.textContent = "Ribbons / Mini Medals";
+      modalTitle.textContent = "Ribbons / miniature medals";
       const sidebar = by('ribbonGallery');
       grid.innerHTML = sidebar ? sidebar.innerHTML : '';
       wireModalInteractions('ribbons');
@@ -448,13 +448,13 @@ function openGalleryModal(kind){
       const authorizedSet = new Set(importedAuthorized);
       const sections = [
         {
-          label:`Authorized by Member Report (${importedAuthorized.length})`,
+          label:`Authorized by member report (${importedAuthorized.length})`,
           open:true,
           ids:importedAuthorized,
           empty:'No authorized badges were detected in the imported report.'
         },
         {
-          label:'Other Possible Badges',
+          label:'Other possible badges',
           open:false,
           ids:eligibleIds.filter(id => !authorizedSet.has(id)),
           empty:'No other eligible badges are available.'
@@ -492,7 +492,7 @@ function openGalleryModal(kind){
       militaryRoot.style.cssText='margin:14px 0 12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);';
       const militarySummary=document.createElement('summary');
       militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
-      militarySummary.textContent=`U.S. Military Badges (${militaryBadges.length})`;
+      militarySummary.textContent=`U.S. military badges (${militaryBadges.length})`;
       militaryRoot.appendChild(militarySummary);
       const note=document.createElement('div');
       note.className='sub'; note.style.margin='6px 0 8px';
@@ -727,9 +727,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function runNoticeFix(fix){
     const target = fix && by(fix.id);
     if(!target) return;
-    // Under the guided flow the control may sit in a step that is folded away.
-    const stepGroup = target.closest('.stepGroup');
-    if(stepGroup && !stepGroup.classList.contains('isActive')) stepGroup.querySelector('.guidedEdit')?.click();
+    // The control may sit in a step other than the one on screen (js/workspace-ui.js).
+    if(window.CAPUB_V3 && typeof CAPUB_V3.showStepFor === 'function') CAPUB_V3.showStepFor(target);
     if(target.tagName === 'BUTTON'){ target.click(); return; }
     setTimeout(()=>{
       target.scrollIntoView({behavior:'smooth', block:'center'});

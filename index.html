@@ -21,7 +21,7 @@
 <div id="accessGate" role="dialog" aria-modal="true" aria-labelledby="accessGateTitle">
   <form id="accessGateForm" autocomplete="off">
     <h1 id="accessGateTitle">Uniform Builder</h1>
-    <label for="accessGateInput">Access Code</label>
+    <label for="accessGateInput">Access code</label>
     <input id="accessGateInput" type="text" inputmode="numeric" autocomplete="off" required>
     <button type="submit">Enter</button>
     <p id="accessGateError" role="alert"></p>
@@ -45,381 +45,404 @@
 
   <aside id="controls" aria-label="Uniform controls">
     <div class="controlsHeader">
-      <button type="button" id="sheetClose" class="ghost sheetClose" aria-label="Close controls">Done</button>
-      <h2 class="controlsTitle">Uniform Builder Controls</h2>
+      <!-- On a phone or tablet the controls are a bottom sheet: a handle to drag it taller or away, and Done. -->
+      <div class="sheetGrip">
+        <button type="button" id="sheetHandle" class="sheetHandle" aria-label="Resize or close the controls"><span></span></button>
+        <button type="button" id="sheetClose" class="ghost sheetClose" aria-label="Close controls">Done</button>
+      </div>
+      <!-- The four steps. One is shown at a time (js/workspace-ui.js keeps the states and the Back and Next buttons). -->
+      <div class="stepTabs" role="tablist" aria-label="Steps">
+        <button type="button" role="tab" id="stepTab-profile" class="stepTab" data-step="profile" aria-controls="stepGroup-profile" aria-selected="true" aria-current="step"><span class="stepNum">1</span><span class="stepLabel">Profile</span></button>
+        <button type="button" role="tab" id="stepTab-uniform" class="stepTab" data-step="uniform" aria-controls="stepGroup-uniform" aria-selected="false" tabindex="-1"><span class="stepNum">2</span><span class="stepLabel">Uniform</span></button>
+        <button type="button" role="tab" id="stepTab-items" class="stepTab" data-step="items" aria-controls="stepGroup-items" aria-selected="false" tabindex="-1"><span class="stepNum">3</span><span class="stepLabel">Items</span></button>
+        <button type="button" role="tab" id="stepTab-export" class="stepTab" data-step="export" aria-controls="stepGroup-export" aria-selected="false" tabindex="-1"><span class="stepNum">4</span><span class="stepLabel">Finish</span></button>
+      </div>
     </div>
 
-    <div class="controlsScrollArea">
+    <div class="controlsScrollArea" id="stepBody">
 
-      <div class="stepGroup" id="stepGroup-profile">
-<h3 class="stepGroupTitle">1 · Profile</h3>
+      <div class="stepGroup" id="stepGroup-profile" role="tabpanel" aria-labelledby="stepTab-profile">
+        <h3 class="stepGroupTitle" tabindex="-1">Profile</h3>
 
-      
-
-      <section id="memberReportImportPanel" class="panelBlock">
-        <label class="fieldLabel">Import CAP Member Report</label>
-        <div class="hintText">
-          Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
-          The builder will read rank, gender, ribbons, achievements, qualifications, and badges it can match.
-        </div>
-        <div class="row two mt-6">
-          <div class="col"><button id="importMemberReportBtn" type="button">Import Member Report</button></div>
-          <div class="col"><button id="clearImportedReportBtn" class="ghost" type="button">Clear Import Notes</button></div>
-        </div>
-        <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
-        <div id="memberReportImportStatus" class="hintText mt-8">
-          No report imported yet.
-        </div>
-      </section>
-
-<section id="capMembershipPanel" class="panelBlock">
-        <label class="fieldLabel" id="membershipLabel" for="membershipType">Membership Type</label>
-        <div class="segmented" role="radiogroup" aria-labelledby="membershipLabel" data-segments-for="membershipType">
-          <button type="button" role="radio" aria-checked="false" data-value="cadet">Cadet</button>
-          <button type="button" role="radio" aria-checked="false" data-value="senior">Senior member</button>
-        </div>
-        <select id="membershipType" class="segmentedSource" tabindex="-1" aria-hidden="true">
-          <option value="">Select Membership</option>
-          <option value="senior">Senior Member</option>
-          <option value="cadet">Cadet Member</option>
-        </select>
-
-        <div id="adultCadetRow" class="hidden mt-10">
-          <label class="fieldNote">
-            <input type="checkbox" id="adultCadetCheckbox">
-            I am 18 or older and do not meet the USAF weight standard
-          </label>
-          <div class="hintText mt-4">Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).</div>
-        </div>
-
-        <label class="fieldLabel mt-10" for="rankSetupSelect">Rank</label>
-        <select id="rankSetupSelect" disabled>
-          <option value="">Select Rank</option>
-        </select>
-        <div class="hintText">Your current grade.</div>
-
-        <div id="cadetFirstSergeantBlock" class="hidden mt-10">
-          <label class="fieldNote">
-            <input type="checkbox" id="cadetFirstSergeantCheckbox">
-            Cadet First Sergeant diamond
-          </label>
-          <div class="hintText">For C/MSgt, C/SMSgt and C/CMSgt appointed first sergeant (CAPR 39-1, 10.10.4).</div>
-        </div>
-      </section>
-      <details class="optionalName" id="optionalName">
-        <summary>Add your name (optional)</summary>
-      <section id="capubV2TextPanel" class="panelBlock plainPanel">
-        <div id="firstNameRow">
-          <label class="fieldLabel" for="capubV2FirstName">First name</label>
-          <input id="capubV2FirstName" maxlength="18" placeholder="First name" autocomplete="given-name"/>
-        </div>
-        <label class="fieldLabel mt-8" for="capubV2LastName">Last name</label>
-        <input id="capubV2LastName" maxlength="18" placeholder="Last name" autocomplete="family-name"/>
-        <div id="plateLineRow">
-          <label class="fieldLabel mt-8" for="capubV2PlateLine">Nameplate state, region or national</label>
-          <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. New York, Tennessee, etc."/>
-        </div>
-        <label class="fieldNote mt-8">
-          <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
-        </label>
-        <div class="hintText">Name tapes and nametags show the last name; flight suit name tags show the full name.</div>
-      </section>
-      </details>
-
-</div>
-
-<div class="stepGroup" id="stepGroup-uniform">
-<h3 class="stepGroupTitle">2 · Uniform</h3>
-
-      <section id="genderBlock" class="panelBlock disabledBlock">
-        <label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut</label>
-        <div class="segmented" role="radiogroup" aria-labelledby="cutLabel" data-segments-for="jacketSelect">
-          <button type="button" role="radio" aria-checked="false" data-value="male">Male cut</button>
-          <button type="button" role="radio" aria-checked="false" data-value="female">Female cut</button>
-        </div>
-        <select id="jacketSelect" class="segmentedSource" tabindex="-1" aria-hidden="true">
-          <option value="">Select cut</option>
-          <option value="male">Male Cut</option>
-          <option value="female">Female Cut</option>
-        </select>
-      </section>
-
-      <section id="uniformBlock" class="panelBlock disabledBlock">
-        <label class="fieldLabel">Uniform</label>
-        <div id="uniformList" class="uniformList">
-
-          <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">
-            <div class="uName">Blues: Class A</div>
-            <div class="uDesc smallText">Service coat, ribbons</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">
-            <div class="uName">Blues: Class B</div>
-            <div class="uDesc smallText">Shirt, ribbons</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="senior">
-            <div class="uName">Mess Dress</div>
-            <div class="uDesc smallText">Mini medals / formal</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="senior">
-            <div class="uName">Corporate Semi-formal</div>
-            <div class="uDesc smallText">Blazer, mini medals</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="semi_formal_usaf" data-allowed-for="cadet">
-            <div class="uName">Cadet Semi-formal</div>
-            <div class="uDesc smallText">Class A coat, ribbons</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="senior">
-            <div class="uName">Aviator Shirt</div>
-            <div class="uDesc smallText">Corporate white shirt</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">
-            <div class="uName">Aviator + Blazer</div>
-            <div class="uDesc smallText">Corporate coat style</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="polo" data-allowed-for="senior">
-            <div class="uName">Corporate Working (Polo)</div>
-            <div class="uDesc smallText">Polo shirt, gray slacks</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">
-            <div class="uName">Corporate Field Uniform</div>
-            <div class="uDesc smallText">Field / utility variant</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">
-            <div class="uName">ABU</div>
-            <div class="uDesc smallText">Legacy camo / tapes</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="ocp" data-allowed-for="cadet,senior">
-            <div class="uName">OCP</div>
-            <div class="uDesc smallText">Operational Camouflage Pattern</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">
-            <div class="uName">Flight Suit</div>
-            <div class="uDesc smallText">Flight / utility</div>
-          </button>
-
-          <button class="uniformOption" data-uniform-id="corporate_flight_suit" data-allowed-for="senior">
-            <div class="uName">Corporate Flight Suit</div>
-            <div class="uDesc smallText">Navy blue flight duty</div>
-          </button>
-        </div>
-
-      </section>
-
-      <section id="garmentOptionsPanel" class="panelBlock" hidden>
-        <label class="fieldLabel">Uniform options</label>
-        <div id="garmentOptions" class="garmentOptions"></div>
-      </section>
-
-      <section id="shoulderCordPanel" class="panelBlock">
-        <label class="fieldLabel" for="shoulderCordSelect">Shoulder Cord</label>
-        <select id="shoulderCordSelect">
-          <option value="">No shoulder cord</option>
-          <option value="group">Group CAC shoulder cord - green</option>
-          <option value="wing">Wing CAC shoulder cord - red</option>
-          <option value="region">Region CAC shoulder cord - blue</option>
-          <option value="national">National CAC shoulder cord - gold</option>
-          <option value="color_guard">Color Guard shoulder cord - white</option>
-          <option value="honor_guard">Honor Guard shoulder cord - silver</option>
-          <option value="aide_de_camp">Aide de Camp shoulder cord</option>
-        </select>
-        <div id="shoulderCordNote" class="hintText"></div>
-      </section>
-</div>
-
-<div class="stepGroup" id="stepGroup-items">
-<h3 class="stepGroupTitle">3 · Items</h3>
-
-      <!-- Asset base path control removed from the general UI. The builder now uses the default images folder internally. -->
-
-      <!-- QUICK STRIP: the shirts where ribbons are optional, down to grade, nametag and wings (js/wiring.js CAPUBQuickStrip) -->
-      <section id="quickStripPanel" class="panelBlock hidden">
-        <label class="fieldLabel" for="quickStripBtn">Quick strip</label>
-        <div id="quickStripHint" class="hintText" aria-live="polite"></div>
-        <button id="quickStripBtn" class="ghost mt-6" type="button" aria-pressed="false" aria-describedby="quickStripHint">Quick strip</button>
-      </section>
-
-      <!-- RIBBONS: PICKER BUTTON (NO SIDEBAR THUMBS) -->
-      <section id="groupRibbons" class="panelBlock">
-        <label class="fieldLabel">Ribbons / Mini Medals</label>
-
-        <div class="hintText">Choose the ribbons you have earned.</div>
-
-        <div class="row two mt-6">
-          <div class="col"><button id="clearRibbons" class="ghost" type="button">Clear Ribbons</button></div>
-          <div class="col"><button id="expandRibbons" type="button">Choose Ribbons…</button></div>
-        </div>
-
-        <div id="cadetHighestOnlyRow" class="hidden">
-          <label class="fieldNote mt-8 optionWithHint">
-            <input type="checkbox" id="cadetHighestOnly">
-            Wear only my highest cadet achievement ribbon
-            <span class="hintText optionHint">Cadets may wear only the highest cadet achievement ribbon (CAPR 39-1, 11.1.2.2). The other ribbons stay selected.</span>
-          </label>
-        </div>
-
-        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
-        <div id="ribbonGallery" class="galleryGrid"></div>
-
-        <label class="fieldNote mt-8">
-          Mini-medal mounting method
-          <select id="miniMountStyle">
-            <option value="mounting">Mounting bars - four per row (maximum 24)</option>
-            <option value="holding">Holding bars - custom overlap (maximum 28)</option>
-          </select>
-        </label>
-
-      </section>
-
-      <!-- BADGES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
-      <section id="groupBadges" class="panelBlock">
-        <label class="fieldLabel">Badges</label>
-
-        <div class="hintText">Choose the badges you wear.</div>
-        <div id="badgesPlannedNote" class="hintText hidden" role="note"></div>
-
-        <div class="row two mt-6">
-          <div class="col"><button id="clearBadges" class="ghost" type="button">Clear Badges</button></div>
-          <div class="col"><button id="expandBadges" type="button">Choose Badges…</button></div>
-        </div>
-
-        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
-        <div id="badgeGallery" class="galleryGrid"></div>
-
-        <div class="hintText">Each badge is placed where CAPR 39-1 puts it.</div>
-      </section>
-
-      <!-- PATCHES: PICKER BUTTON (NO SIDEBAR THUMBS) -->
-      <section id="groupPatches" class="panelBlock">
-        <label class="fieldLabel">Patches</label>
-
-        <div class="hintText">Choose the patches you wear.</div>
-
-        <div class="row two mt-6">
-          <div class="col"><button id="clearPatches" class="ghost" type="button">Clear Patches</button></div>
-          <div class="col"><button id="expandPatches" type="button">Choose Patches…</button></div>
-        </div>
-
-        <div class="panelDivider">
-          <label class="fieldLabel" for="unitPatchSelect">Unit Patch</label>
-          <div class="hintText">Search by charter number or unit name.</div>
-          <input id="unitPatchSearch" type="search" aria-label="Search unit patches" placeholder="Search charter number or unit name..." autocomplete="off"/>
-          <select id="unitPatchSelect">
-            <option value="">No unit patch</option>
-          </select>
-          <div id="unitPatchStatus" class="hintText">No unit patch selected.</div>
-        </div>
-
-        <!-- kept for modal plumbing, but hidden in sidebar via CSS -->
-        <div id="patchGallery" class="galleryGrid"></div>
-      </section>
-</div>
-
-<div class="stepGroup" id="stepGroup-export">
-<h3 class="stepGroupTitle">4 · Check &amp; finish</h3>
-
-      <section id="capubV2StatusPanel" class="panelBlock">
-        <label class="fieldLabel">Check your uniform</label>
-        <div class="statusGrid">
-          <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
-          <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
-          <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
-          <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
-        </div>
-        <ul id="capubV2Notices" class="noticeList"></ul>
-      </section>
-
-      <section id="finishPanel" class="panelBlock">
-        <label class="fieldLabel">Finish</label>
-        <div class="finishAction">
-          <button id="downloadImage" type="button">Download picture (PNG)</button>
-          <div class="hintText">A high-resolution image of the uniform as shown.</div>
-        </div>
-        <div class="finishAction" id="purchaseListSlot">
-          <div class="hintText">Where to buy each item, with an estimated cost.</div>
-        </div>
-        <div class="finishAction">
-          <div class="row two">
-            <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Save to a file</button></div>
-            <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Open a saved file</button></div>
-          </div>
-          <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
-          <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
-        </div>
-      </section>
-</div>
-
-<details class="toolsGroup" id="stepGroup-tools">
-<summary>More tools: ribbon rack layout, save and reset</summary>
-
-      <section id="ribbonRackPanel" class="panelBlock">
-        <label class="fieldLabel">Ribbon rack layout</label>
-        <label class="fieldNote mt-8">
-          Ribbon rack layout
-          <select id="ribbonRackColumns">
-            <option value="3">3 across - centered</option>
-            <option value="4-left">4 across - left edge aligned with welt/pocket (Class A)</option>
-            <option value="4-center">4 across - centered above welt/pocket (Class A)</option>
-          </select>
-        </label>
-        <div id="ribbonRackColumnsHint" class="hintText mt-4">
-          CAPR 39-1 permits four-across racks only on the USAF-style Service Dress (Class A).
-        </div>
-
-        <label class="fieldNote mt-8">
-          Upper-row arrangement
-          <select id="ribbonRackArrangement">
-            <option value="standard">Standard - centered partial top row</option>
-            <option value="lapel">Automatic - 3 across, shorter rows where the lapel covers them</option>
-          </select>
-        </label>
-        <div id="ribbonRackArrangementHint" class="hintText mt-4">
-          Lapel avoidance follows the stepped Class A arrangements in CAPR 39-1 Figure 11-1.
-        </div>
-
-        <div id="ribbonRowOverridePanel">
-          <label class="fieldNote">
-            <input type="checkbox" id="ribbonRowOverrideEnabled">
-            Custom Class A row grid override
-          </label>
-          <div id="ribbonRowOverrideControls" class="hidden">
-            <div class="hintText mt-5">Top row is listed first. Select 1–4 ribbons for each row.</div>
-            <div id="ribbonRowOverrideGrid"></div>
-            <div class="row two mt-7">
-              <div class="col"><button id="addRibbonOverrideRow" class="ghost" type="button">Add Top Row</button></div>
-              <div class="col"><button id="removeRibbonOverrideRow" class="ghost" type="button">Remove Top Row</button></div>
+        <section id="memberReportImportPanel" class="panelBlock importCard">
+          <label class="fieldLabel" for="importMemberReportBtn">Import a CAP member report</label>
+          <button id="importMemberReportBtn" class="ghost" type="button">Import member report…</button>
+          <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
+          <div id="memberReportImportStatus" class="hintText" aria-live="polite">No report imported yet.</div>
+          <details class="moreDetails" id="memberReportImportMore">
+            <summary>What the import reads</summary>
+            <div class="hintText">
+              Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
+              The builder reads rank, gender, ribbons, achievements, qualifications and the badges it can match.
             </div>
-            <div id="ribbonRowOverrideStatus" class="hintText mt-5"></div>
+            <button id="clearImportedReportBtn" class="ghost mt-8" type="button">Clear import notes</button>
+          </details>
+        </section>
+
+        <section id="capMembershipPanel" class="panelBlock">
+          <label class="fieldLabel" id="membershipLabel" for="membershipType">Membership type</label>
+          <div class="segmented" role="radiogroup" aria-labelledby="membershipLabel" data-segments-for="membershipType">
+            <button type="button" role="radio" aria-checked="false" data-value="cadet">Cadet</button>
+            <button type="button" role="radio" aria-checked="false" data-value="senior">Senior member</button>
           </div>
-        </div>
-      </section>
+          <select id="membershipType" class="segmentedSource" tabindex="-1" aria-hidden="true">
+            <option value="">Select membership</option>
+            <option value="senior">Senior member</option>
+            <option value="cadet">Cadet member</option>
+          </select>
 
+          <div id="adultCadetRow" class="hidden mt-10">
+            <label class="fieldNote">
+              <input type="checkbox" id="adultCadetCheckbox">
+              I am 18 or older and do not meet the USAF weight standard
+            </label>
+            <div class="hintText mt-4">Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).</div>
+          </div>
 
+          <label class="fieldLabel mt-10" for="rankSetupSelect">Rank</label>
+          <select id="rankSetupSelect" disabled>
+            <option value="">Select rank</option>
+          </select>
 
-      <section id="capubV2QuickPanel" class="panelBlock">
-        <label class="fieldLabel">Saved setups</label>
-        <div class="row two mt-6">
-          <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to Browser</button></div>
-          <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load Saved</button></div>
-        </div>
-        <div class="row two mt-6">
-          <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset Builder</button></div>
-        </div>
-        <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
-      </section>
+          <div id="cadetFirstSergeantBlock" class="hidden mt-10">
+            <label class="fieldNote">
+              <input type="checkbox" id="cadetFirstSergeantCheckbox">
+              Cadet First Sergeant diamond
+            </label>
+            <div class="hintText">For C/MSgt, C/SMSgt and C/CMSgt appointed first sergeant (CAPR 39-1, 10.10.4).</div>
+          </div>
+        </section>
 
+        <section id="genderBlock" class="panelBlock disabledBlock">
+          <label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut</label>
+          <div class="segmented" role="radiogroup" aria-labelledby="cutLabel" data-segments-for="jacketSelect">
+            <button type="button" role="radio" aria-checked="false" data-value="male">Male cut</button>
+            <button type="button" role="radio" aria-checked="false" data-value="female">Female cut</button>
+          </div>
+          <select id="jacketSelect" class="segmentedSource" tabindex="-1" aria-hidden="true">
+            <option value="">Select cut</option>
+            <option value="male">Male cut</option>
+            <option value="female">Female cut</option>
+          </select>
+        </section>
 
-</details>
+        <details class="optionalName" id="optionalName">
+          <summary>Add your name (optional)</summary>
+          <section id="capubV2TextPanel" class="panelBlock plainPanel">
+            <div id="firstNameRow">
+              <label class="fieldLabel" for="capubV2FirstName">First name</label>
+              <input id="capubV2FirstName" maxlength="18" placeholder="First name" autocomplete="given-name"/>
+            </div>
+            <label class="fieldLabel mt-8" for="capubV2LastName">Last name</label>
+            <input id="capubV2LastName" maxlength="18" placeholder="Last name" autocomplete="family-name"/>
+            <div id="plateLineRow">
+              <label class="fieldLabel mt-8" for="capubV2PlateLine">Nameplate state, region or national</label>
+              <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. New York, Tennessee, etc."/>
+            </div>
+            <label class="fieldNote mt-8">
+              <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
+            </label>
+            <div class="hintText">Name tapes and nametags show the last name; flight suit name tags show the full name.</div>
+          </section>
+        </details>
+      </div>
+
+      <div class="stepGroup" id="stepGroup-uniform" role="tabpanel" aria-labelledby="stepTab-uniform" hidden>
+        <h3 class="stepGroupTitle" tabindex="-1">Uniform</h3>
+
+        <section id="uniformBlock" class="panelBlock disabledBlock">
+          <!-- Grouped by occasion as data/uniform-rules.js GROUPS has them (tests/stepper.test.cjs checks the two agree).
+               A uniform the member may not wear (js/setup.js sets .locked and data-locked-reason) is moved by js/workspace-ui.js
+               into the fold at the end of the list, muted, with its reason; it comes back to its group when it is allowed again. -->
+          <div id="uniformList" class="uniformList">
+
+            <div class="uniformGroup" data-group="formal">
+              <div class="uniformGroupTitle">Formal</div>
+              <div class="uniformGrid">
+                <button class="uniformOption" data-uniform-id="mess_dress" data-allowed-for="senior">
+                  <div class="uName">Mess Dress</div>
+                  <div class="uDesc smallText">Miniature medals, formal</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="semi_formal" data-allowed-for="senior">
+                  <div class="uName">Corporate Semi-formal</div>
+                  <div class="uDesc smallText">Blazer, miniature medals</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="semi_formal_usaf" data-allowed-for="cadet">
+                  <div class="uName">Cadet Semi-formal</div>
+                  <div class="uDesc smallText">Class A coat, ribbons</div>
+                </button>
+              </div>
+            </div>
+
+            <div class="uniformGroup" data-group="everyday">
+              <div class="uniformGroupTitle">Everyday</div>
+              <div class="uniformGrid">
+                <button class="uniformOption" data-uniform-id="blues_a" data-allowed-for="cadet,senior">
+                  <div class="uName">Blues: Class A</div>
+                  <div class="uDesc smallText">Service coat, ribbons</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="blues_b" data-allowed-for="cadet,senior">
+                  <div class="uName">Blues: Class B</div>
+                  <div class="uDesc smallText">Shirt, ribbons</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="aviator" data-allowed-for="senior">
+                  <div class="uName">Aviator Shirt</div>
+                  <div class="uDesc smallText">Corporate white shirt</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="aviator_blazer" data-allowed-for="senior">
+                  <div class="uName">Aviator + Blazer</div>
+                  <div class="uDesc smallText">Corporate coat style</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="polo" data-allowed-for="senior">
+                  <div class="uName">Corporate Working (Polo)</div>
+                  <div class="uDesc smallText">Polo shirt, gray slacks</div>
+                </button>
+              </div>
+            </div>
+
+            <div class="uniformGroup" data-group="field">
+              <div class="uniformGroupTitle">Field and flight</div>
+              <div class="uniformGrid">
+                <button class="uniformOption" data-uniform-id="abu" data-allowed-for="cadet,senior">
+                  <div class="uName">ABU</div>
+                  <div class="uDesc smallText">Legacy camouflage, tapes</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="ocp" data-allowed-for="cadet,senior">
+                  <div class="uName">OCP</div>
+                  <div class="uDesc smallText">Camouflage, name tapes</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="corporate_field" data-allowed-for="senior">
+                  <div class="uName">Corporate Field Uniform</div>
+                  <div class="uDesc smallText">Field / utility variant</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="flight_suit" data-allowed-for="cadet,senior">
+                  <div class="uName">Flight Suit</div>
+                  <div class="uDesc smallText">Flight / utility</div>
+                </button>
+                <button class="uniformOption" data-uniform-id="corporate_flight_suit" data-allowed-for="senior">
+                  <div class="uName">Corporate Flight Suit</div>
+                  <div class="uDesc smallText">Navy blue flight duty</div>
+                </button>
+              </div>
+            </div>
+
+            <details class="lockedFold" id="lockedUniforms" hidden>
+              <summary id="lockedUniformsSummary">Not for your membership</summary>
+              <div class="uniformGrid" id="lockedUniformGrid"></div>
+            </details>
+
+          </div>
+        </section>
+
+        <!-- Headgear, sleeves, skirt and the cord: folded, the summary line says what is chosen (js/workspace-ui.js). -->
+        <details class="moreDetails optionsFold" id="uniformOptionsMore">
+          <summary id="uniformOptionsSummary">Uniform options</summary>
+        <section id="garmentOptionsPanel" class="panelBlock plainPanel" hidden>
+          <div id="garmentOptions" class="garmentOptions"></div>
+        </section>
+
+        <section id="shoulderCordPanel" class="panelBlock plainPanel">
+          <label class="fieldLabel" for="shoulderCordSelect">Shoulder cord</label>
+          <select id="shoulderCordSelect">
+            <option value="">No shoulder cord</option>
+            <option value="group">Group CAC shoulder cord - green</option>
+            <option value="wing">Wing CAC shoulder cord - red</option>
+            <option value="region">Region CAC shoulder cord - blue</option>
+            <option value="national">National CAC shoulder cord - gold</option>
+            <option value="color_guard">Color Guard shoulder cord - white</option>
+            <option value="honor_guard">Honor Guard shoulder cord - silver</option>
+            <option value="aide_de_camp">Aide-de-camp shoulder cord</option>
+          </select>
+          <div id="shoulderCordNote" class="hintText"></div>
+        </section>
+        </details>
+      </div>
+
+      <div class="stepGroup" id="stepGroup-items" role="tabpanel" aria-labelledby="stepTab-items" hidden>
+        <h3 class="stepGroupTitle" tabindex="-1">Items</h3>
+
+        <!-- QUICK STRIP: the shirts where ribbons are optional, down to grade, nametag and wings (js/wiring.js CAPUBQuickStrip) -->
+        <section id="quickStripPanel" class="panelBlock hidden">
+          <label class="fieldLabel" for="quickStripBtn">Quick strip</label>
+          <div id="quickStripHint" class="hintText" aria-live="polite"></div>
+          <button id="quickStripBtn" class="ghost mt-6" type="button" aria-pressed="false" aria-describedby="quickStripHint">Quick strip</button>
+        </section>
+
+        <!-- RIBBONS: one card, the picker opens in a window (the sidebar gallery div is kept for the modal plumbing and hidden by CSS) -->
+        <section id="groupRibbons" class="panelBlock itemCard" data-card="ribbons">
+          <div class="cardHead">
+            <label class="fieldLabel">Ribbons</label>
+            <span class="countChip" data-count="ribbons" aria-live="polite">0 selected</span>
+          </div>
+          <div class="hintText cardRule" data-rule="ribbons">Choose the ribbons you have earned.</div>
+
+          <div class="row two mt-8">
+            <div class="col"><button id="expandRibbons" type="button">Choose ribbons…</button></div>
+            <div class="col"><button id="clearRibbons" class="ghost" type="button" aria-label="Clear ribbons">Clear</button></div>
+          </div>
+
+          <div id="cadetHighestOnlyRow" class="hidden">
+            <label class="fieldNote mt-8 optionWithHint">
+              <input type="checkbox" id="cadetHighestOnly">
+              Wear only my highest cadet achievement ribbon
+              <span class="hintText optionHint">Cadets may wear only the highest cadet achievement ribbon (CAPR 39-1, 11.1.2.2). The other ribbons stay selected.</span>
+            </label>
+          </div>
+
+          <div id="ribbonGallery" class="galleryGrid"></div>
+
+          <label class="fieldNote mt-8">
+            Miniature medal mounting method
+            <select id="miniMountStyle">
+              <option value="mounting">Mounting bars - four per row (maximum 24)</option>
+              <option value="holding">Holding bars - custom overlap (maximum 28)</option>
+            </select>
+          </label>
+
+          <details class="moreDetails" id="rackLayoutMore">
+            <summary>Advanced: rack layout</summary>
+            <div id="ribbonRackPanel">
+              <label class="fieldNote">
+                Ribbon rack layout
+                <select id="ribbonRackColumns">
+                  <option value="3">3 across - centered</option>
+                  <option value="4-left">4 across - left edge aligned with welt/pocket (Class A)</option>
+                  <option value="4-center">4 across - centered above welt/pocket (Class A)</option>
+                </select>
+              </label>
+              <div id="ribbonRackColumnsHint" class="hintText mt-4">
+                CAPR 39-1 permits four-across racks only on the USAF-style Service Dress (Class A).
+              </div>
+
+              <label class="fieldNote mt-8">
+                Upper-row arrangement
+                <select id="ribbonRackArrangement">
+                  <option value="standard">Standard - centered partial top row</option>
+                  <option value="lapel">Automatic - 3 across, shorter rows where the lapel covers them</option>
+                </select>
+              </label>
+              <div id="ribbonRackArrangementHint" class="hintText mt-4">
+                Lapel avoidance follows the stepped Class A arrangements in CAPR 39-1 Figure 11-1.
+              </div>
+
+              <div id="ribbonRowOverridePanel">
+                <label class="fieldNote">
+                  <input type="checkbox" id="ribbonRowOverrideEnabled">
+                  Custom Class A row grid override
+                </label>
+                <div id="ribbonRowOverrideControls" class="hidden">
+                  <div class="hintText mt-5">Top row is listed first. Select 1–4 ribbons for each row.</div>
+                  <div id="ribbonRowOverrideGrid"></div>
+                  <div class="row two mt-7">
+                    <div class="col"><button id="addRibbonOverrideRow" class="ghost" type="button">Add top row</button></div>
+                    <div class="col"><button id="removeRibbonOverrideRow" class="ghost" type="button">Remove top row</button></div>
+                  </div>
+                  <div id="ribbonRowOverrideStatus" class="hintText mt-5"></div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <!-- BADGES -->
+        <section id="groupBadges" class="panelBlock itemCard" data-card="badges">
+          <div class="cardHead">
+            <label class="fieldLabel">Badges</label>
+            <span class="countChip" data-count="badges" aria-live="polite">0 selected</span>
+          </div>
+          <div class="hintText cardRule" data-rule="badges">Each badge is placed where CAPR 39-1 puts it.</div>
+          <div id="badgesPlannedNote" class="hintText hidden" role="note"></div>
+
+          <div class="row two mt-8">
+            <div class="col"><button id="expandBadges" type="button">Choose badges…</button></div>
+            <div class="col"><button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button></div>
+          </div>
+
+          <div id="badgeGallery" class="galleryGrid"></div>
+        </section>
+
+        <!-- PATCHES -->
+        <section id="groupPatches" class="panelBlock itemCard" data-card="patches">
+          <div class="cardHead">
+            <label class="fieldLabel">Patches</label>
+            <span class="countChip" data-count="patches" aria-live="polite">0 selected</span>
+          </div>
+          <div class="hintText cardRule" data-rule="patches">Choose the patches you wear.</div>
+
+          <div class="row two mt-8">
+            <div class="col"><button id="expandPatches" type="button">Choose patches…</button></div>
+            <div class="col"><button id="clearPatches" class="ghost" type="button" aria-label="Clear patches">Clear</button></div>
+          </div>
+
+          <div class="panelDivider">
+            <label class="fieldLabel" for="unitPatchSelect">Unit patch</label>
+            <input id="unitPatchSearch" type="search" aria-label="Search unit patches" placeholder="Search charter number or unit name…" autocomplete="off"/>
+            <select id="unitPatchSelect">
+              <option value="">No unit patch</option>
+            </select>
+            <div id="unitPatchStatus" class="hintText">No unit patch selected.</div>
+          </div>
+
+          <div id="patchGallery" class="galleryGrid"></div>
+        </section>
+      </div>
+
+      <div class="stepGroup" id="stepGroup-export" role="tabpanel" aria-labelledby="stepTab-export" hidden>
+        <h3 class="stepGroupTitle" tabindex="-1">Check &amp; finish</h3>
+
+        <section id="capubV2StatusPanel" class="panelBlock">
+          <label class="fieldLabel">Check your uniform</label>
+          <div class="statusGrid">
+            <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
+            <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
+            <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
+            <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
+          </div>
+          <ul id="capubV2Notices" class="noticeList"></ul>
+        </section>
+
+        <section id="finishPanel" class="panelBlock">
+          <label class="fieldLabel">Finish</label>
+          <!-- The download is the step's primary action: js/workspace-ui.js moves this button into the panel's footer once the
+               page is up (js/placement-templates.js adds its Templates entry after this block first). -->
+          <div class="finishAction" id="downloadAction">
+            <button id="downloadImage" type="button">Download picture (PNG)</button>
+          </div>
+          <div class="finishAction" id="purchaseListSlot">
+            <div class="hintText">Where to buy each item, with an estimated cost.</div>
+          </div>
+          <div class="finishAction">
+            <div class="row two">
+              <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Save to a file</button></div>
+              <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Open a saved file</button></div>
+            </div>
+            <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
+            <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
+          </div>
+          <details class="moreDetails" id="savedSetupsMore">
+            <summary>Saved setups</summary>
+            <div id="capubV2QuickPanel">
+              <div class="row two">
+                <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to browser</button></div>
+                <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load saved</button></div>
+              </div>
+              <div class="row two mt-6">
+                <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset builder</button></div>
+              </div>
+              <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
+            </div>
+          </details>
+        </section>
+      </div>
+
+    </div>
+
+    <div class="controlsFooter" id="stepFooter">
+      <div id="stepFooterNote" class="stepFooterNote" aria-live="polite" hidden></div>
+      <div class="stepFooterRow">
+        <button type="button" id="stepBack" class="ghost stepBack" hidden>Back</button>
+        <button type="button" id="stepNext" class="stepNext">Next: Uniform</button>
+      </div>
     </div>
   </aside>
 

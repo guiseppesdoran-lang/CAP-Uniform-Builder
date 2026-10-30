@@ -59,7 +59,7 @@
 
   --capub-header-h:64px;
   --capub-footer-h:36px;
-  --sidebar-w:380px;
+  --sidebar-w:400px;
 }
 /* Dark theme: follows the system unless the member picked one (data-theme on <html>). */
 @media (prefers-color-scheme:dark){
@@ -294,70 +294,80 @@ header h1::after{
   border-right:0;
   overflow:hidden;
 }
-.controlsHeader{
-  padding:var(--s3) var(--s4) var(--s3) 72px; /* 72px clears the fixed CAL tab */
-  background:var(--panel);
-  border-bottom:1px solid var(--line);
-}
-.controlsHeader .controlsTitle{
-  margin:0;
-  font-size:var(--t-lg);
-  line-height:1.15;
-  color:var(--ink);
-}
-.controlsHeader .controlsTitle::after{
-  content:"Choose profile, select uniform, add items, validate and export";
-  display:block;
-  margin-top:var(--s1);
-  font-family:var(--font-body);
-  font-size:var(--t-xs);
-  font-weight:400;
-  color:var(--muted);
-}
-.controlsScrollArea{flex:1;overflow-y:auto;padding:var(--s4) var(--s4) 48px}
-
-/* Stepper */
-.capubProgress{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s2);margin:0 0 var(--s4)}
-.capubStep{
+/* The panel is a stepper: a fixed row of four step tabs, one step's controls, and a fixed footer with Back and
+   Next (js/workspace-ui.js). A member never has to find out that the panel scrolls: only the middle scrolls, and
+   when it holds more than fits a fade shows above the footer. */
+.controlsHeader{flex:0 0 auto;background:var(--panel);border-bottom:1px solid var(--line)}
+.stepTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.stepTab{
   display:flex;
   flex-direction:column;
-  align-items:flex-start;
-  gap:2px;
-  width:100%;
-  min-height:64px;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  min-height:56px;
   margin:0;
-  padding:var(--s2) var(--s3);
-  background:var(--panel-2);
-  border:1px solid var(--line);
+  padding:var(--s1) var(--s1) calc(var(--s1) - 3px);
+  background:transparent;
+  border:0;
+  border-bottom:3px solid transparent;
+  border-radius:0;
   color:var(--muted);
   font-family:var(--font-body);
   font-size:var(--t-xs);
-  font-weight:400;
+  font-weight:700;
   letter-spacing:0;
-  text-align:left;
+  line-height:1.1;
 }
-.capubStep:hover{background:var(--panel-2);border-color:var(--line-strong)}
-.capubStep strong{font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1;color:var(--ink)}
-.capubStep.blocked{border-style:dashed}
-.capubStep.blocked strong{color:var(--muted)}
-.capubStep.done{border-color:var(--ok);background:var(--ok-bg)}
-.capubStep.done strong{color:var(--ok)}
-.capubStep.current{border:2px solid var(--select-line);background:var(--select-bg);padding:calc(var(--s2) - 1px) calc(var(--s3) - 1px)}
-.capubSectionHint{
-  display:flex;
-  gap:var(--s2);
-  align-items:flex-start;
-  margin-bottom:var(--s3);
-  padding:var(--s2) var(--s3);
-  border:1px solid var(--line);
-  border-left:4px solid var(--cap-yellow);
-  border-radius:var(--r);
-  background:var(--panel-2);
-  font-size:var(--t-xs);
-  color:var(--muted);
+.stepTab:hover{background:var(--panel-2);border-color:transparent;border-bottom-color:var(--line)}
+.stepTab:focus-visible{outline-offset:-3px}
+.stepTab .stepNum{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border:2px solid var(--line-strong);
+  border-radius:50%;
+  background:var(--panel);
+  color:var(--ink);
+  font-family:var(--font-head);
+  font-size:var(--t-md);
+  line-height:1;
 }
-.capubSectionHint b{color:var(--ink)}
-.capubProgress[hidden],.capubSectionHint[hidden]{display:none}
+.stepTab.done .stepNum{background:var(--ok);border-color:var(--ok);color:#fff;font-size:0}
+.stepTab.done .stepNum::before{content:"\2713";font-size:var(--t-md)}
+.stepTab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--action)}
+.stepTab[aria-selected="true"]:hover{background:transparent;border-bottom-color:var(--action)}
+.stepTab[aria-selected="true"] .stepNum{background:var(--action);border-color:var(--action);color:var(--on-action)}
+.stepTab.blocked{cursor:not-allowed}
+.stepTab.blocked:hover{background:transparent;border-bottom-color:transparent}
+.stepTab.blocked .stepNum{border-style:dashed;border-color:var(--line);background:transparent;color:var(--muted)}
+.controlsScrollArea{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:var(--s2) var(--s4) var(--s3)}
+.controlsFooter{position:relative;flex:0 0 auto;padding:var(--s2) var(--s4) var(--s3);background:var(--panel);border-top:1px solid var(--line)}
+/* The fade above the footer while the step has more below the fold. */
+.controlsFooter::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:100%;
+  height:32px;
+  background:linear-gradient(to bottom,transparent,var(--panel));
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .15s ease;
+}
+#controls.hasMoreBelow .controlsFooter::before{opacity:1}
+#controls.hasMoreBelow .controlsFooter{box-shadow:0 -8px 14px -10px rgba(0,16,60,.35)}
+.stepFooterNote{margin:0 0 var(--s2);font-size:var(--t-xs);line-height:1.4;color:var(--muted)}
+.stepFooterNote[hidden]{display:none}
+.stepFooterRow{display:flex;gap:var(--s2);align-items:stretch}
+.stepFooterRow button{margin:0}
+.stepBack{flex:0 0 auto;width:auto;padding:0 var(--s4)}
+.stepNext,#stepFooter #downloadImage{flex:1 1 auto;width:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* The sheet grip is only drawn on a phone or tablet (see the responsive section). */
+.sheetGrip{display:none}
 /* Resume banner: shown once, above the preview, when a saved setup is waiting. */
 .resumeBanner{
   display:flex;
@@ -380,32 +390,53 @@ header h1::after{
 .resumeActions button{white-space:nowrap}
 
 /* ---- Panels ---- */
-.stepGroup{margin-bottom:var(--s2)}
-.stepGroupTitle{
-  margin:var(--s5) 0 var(--s3);
-  font-size:var(--t-xl);
-  line-height:1.1;
-  color:var(--ink);
-}
+.stepGroup{margin:0}
+/* The tab names the step; its heading is for screen readers and is where focus lands on a step change. */
+.stepGroupTitle{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.stepGroupTitle:focus{outline:none}
 .panelBlock{
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:var(--r-lg);
-  padding:var(--s4);
+  padding:var(--s3) var(--s4);
   margin-bottom:var(--s3);
 }
-.controlsScrollArea .panelBlock,.controlsScrollArea .stepGroup{scroll-margin-top:var(--s4)}
-.toolsGroup{margin:var(--s5) 0 var(--s2);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
-.toolsGroup>summary{cursor:pointer;padding:var(--s3) 2px;font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
-.toolsGroup[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+.stepGroup>:last-child{margin-bottom:0}
+.controlsScrollArea .panelBlock{scroll-margin-top:var(--s3)}
+/* A card's heading row: the name on the left, a count on the right. */
+.cardHead{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.cardHead .fieldLabel{margin:0;font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1}
+.countChip{flex:0 0 auto;padding:2px var(--s2);border:1px solid var(--line);border-radius:999px;background:var(--panel-2);font-size:var(--t-xs);font-weight:700;line-height:1.3;color:var(--muted);white-space:nowrap}
+.countChip.hasItems{background:var(--select-bg);border-color:var(--select-line);color:var(--ink)}
+.cardRule{margin-top:var(--s1)}
+.itemCard.unavailable .cardHead,.itemCard.unavailable .cardRule{opacity:.7}
+/* Secondary controls folded under a line: the import's explanation, the rack layout, the saved setups. */
+.moreDetails{margin-top:var(--s2);padding-top:2px;border-top:1px solid var(--line)}
+.moreDetails>summary{display:flex;align-items:center;min-height:44px;box-sizing:border-box;cursor:pointer;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+.moreDetails>summary::-webkit-details-marker{color:var(--muted)}
+.moreDetails[open]>summary{margin-bottom:var(--s1)}
+.moreDetails .hintText:first-of-type{margin-top:0}
+/* The fold as a block of its own (step 2: headgear, sleeves, skirt and cord), its summary carrying the choices. */
+.optionsFold{margin-top:0;padding:0 var(--s4);border:1px solid var(--line);border-radius:var(--r-lg)}
+.optionsFold>summary{min-height:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;line-height:44px}
+.optionsFold[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+.optionsFold .fieldLabel{margin-top:0}
+.importCard>button{margin-top:0}
+.importCard .hintText{margin-top:var(--s2)}
+/* The patch submission button (patch-submission.js adds it under Choose patches) reads as secondary. */
+#capubSubmitPatchButton{margin-top:var(--s2);background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-md)}
+#capubSubmitPatchButton:hover{background:var(--panel-2);border-color:var(--ink)}
 
+/* Uniforms: by occasion, two cards to a row. */
 .uniformList{display:flex;flex-direction:column;gap:var(--s2)}
+.uniformGroupTitle{margin:0 0 var(--s1);font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.2;color:var(--muted)}
+.uniformGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .uniformOption{
   position:relative;
   width:100%;
   margin:0;
-  min-height:56px;
-  padding:var(--s3);
+  min-height:44px;
+  padding:6px var(--s3);
   text-align:left;
   background:var(--panel);
   color:var(--ink);
@@ -416,22 +447,29 @@ header h1::after{
   letter-spacing:0;
 }
 .uniformOption:hover{border-color:var(--ink);background:var(--panel-2)}
-.uniformOption .uName{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;line-height:1.15;color:var(--ink)}
-.uniformOption .uDesc{margin-top:2px;font-size:var(--t-xs);line-height:1.35;color:var(--muted)}
-.uniformOption.activeUniform{border:2px solid var(--select-line);background:var(--select-bg);padding:calc(var(--s3) - 1px)}
+.uniformOption .uName{font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.2;color:var(--ink)}
+.uniformOption .uDesc{margin-top:1px;font-size:.75rem;line-height:1.25;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uniformOption.activeUniform{border:2px solid var(--select-line);background:var(--select-bg);padding:5px calc(var(--s3) - 1px)}
+/* A uniform this member may not wear (js/setup.js sets .locked and data-locked-reason from data/uniform-rules.js
+   lockedReason) is folded under one line at the end of the list, muted, its reason under its name. */
+.lockedFold{margin-top:var(--s1);border-top:1px solid var(--line);padding-top:2px}
+.lockedFold>summary{display:flex;align-items:center;min-height:36px;cursor:pointer;font-size:var(--t-xs);font-weight:700;color:var(--muted)}
+.lockedFold[open]>summary{margin-bottom:var(--s1)}
 .uniformOption.locked{
   cursor:not-allowed;
+  opacity:.7;
   background:var(--panel-2);
   border-style:dashed;
 }
-.uniformOption.locked:hover{border-color:var(--line);background:var(--panel-2)}
+.uniformOption.locked:hover,.uniformOption.locked:focus{opacity:1;border-color:var(--line);background:var(--panel-2)}
 .uniformOption.locked .uName{color:var(--muted)}
+.uniformOption.locked .uDesc{display:none}
 .uniformOption.locked::after{
   content:attr(data-locked-reason);
   display:block;
-  margin-top:var(--s1);
-  font-size:var(--t-xs);
-  line-height:1.35;
+  margin-top:2px;
+  font-size:.75rem;
+  line-height:1.25;
   color:var(--muted);
 }
 
@@ -462,10 +500,10 @@ header h1::after{
 #ribbonRowOverrideStatus[data-valid="false"]{color:var(--danger)}
 #ribbonRowOverrideStatus[data-valid="true"]{color:var(--ok)}
 
-.statusGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2);margin-top:var(--s2)}
-.statusCard{border:1px solid var(--line);border-radius:var(--r);background:var(--panel-2);padding:var(--s2) var(--s3);font-size:var(--t-sm)}
+.statusGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:var(--s2)}
+.statusCard{border:1px solid var(--line);border-radius:var(--r);background:var(--panel-2);padding:var(--s1) var(--s2);font-size:var(--t-sm);text-align:center}
 .statusCard strong{display:block;font-size:var(--t-xs);color:var(--muted);font-weight:700}
-.statusCard span{font-family:var(--font-head);font-size:var(--t-xl);font-weight:700;color:var(--ink)}
+.statusCard span{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;line-height:1.1;color:var(--ink)}
 .noticeList{margin:var(--s2) 0 0;padding-left:var(--s5);max-height:160px;overflow:auto;font-size:var(--t-sm);line-height:1.4;color:var(--muted)}
 .noticeList li.warn{color:var(--warn)}
 .noticeList li.err{color:var(--danger)}
@@ -481,7 +519,7 @@ header h1::after{
 #previewWrapper{
   flex:1;
   position:relative;
-  padding:var(--s5) var(--s5) 96px;
+  padding:var(--s5);
   display:flex;
   gap:var(--s4);
   flex-wrap:wrap;
@@ -539,30 +577,10 @@ header h1::after{
 .previewToolCard button[aria-pressed="true"]{background:var(--select-bg);border-color:var(--select-line)}
 .previewToolCard .zoomReadout{min-width:48px;text-align:center;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
 
-.capubCommandBar{
-  position:fixed;
-  left:50%;
-  bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--s3));
-  transform:translateX(-50%);
-  z-index:12000;
-  width:max-content;
-  display:flex;
-  gap:var(--s2);
-  align-items:center;
-  padding:var(--s2);
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:var(--r-lg);
-  box-shadow:var(--shadow);
-}
-.capubCommandBar button{width:auto;margin:0;padding:0 var(--s4);font-size:var(--t-lg);white-space:nowrap}
-/* One primary action per bar: the download. The rest read as secondary. */
-.capubCommandBar button:not(#cmdDownload){background:transparent;color:var(--ink);border-color:var(--line-strong)}
-.capubCommandBar button:not(#cmdDownload):hover{background:var(--panel-2);border-color:var(--ink)}
 .capubToast{
   position:fixed;
   right:var(--s5);
-  bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + 84px);
+  bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--s5));
   z-index:25000;
   max-width:min(360px,calc(100vw - 32px));
   background:var(--brand);
@@ -897,21 +915,20 @@ header h1::after{
 }
 
 /* ---- Responsive ---- */
-@media (min-width:769px){
-  /* Centre the command bar over the preview it acts on, not the whole viewport. */
-  body:has(#layoutShell.sidebar-open) .capubCommandBar{left:calc(50% + var(--sidebar-w) / 2)}
-  #layoutShell.sidebar-collapsed #previewWrapper{justify-content:center}
+@media (min-width:901px){
+  /* The panel is always open beside the preview: no menu button, nothing to close. */
+  .hamburgerBtn{display:none}
+  header{padding-left:var(--s5)}
+  #layoutShell.sidebar-collapsed #controls{width:var(--sidebar-w);min-width:260px;max-width:var(--sidebar-w);border-right:1px solid var(--line)}
+  .sheetClose,.sheetGrip{display:none}
 }
 @media (max-width:900px){
   .modal .galleryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:768px){
-  header{padding-left:72px}
-  header h1{font-size:var(--t-lg)}
-  header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
-  .controlsHeader .controlsTitle::after{display:none}
+  :root{--sheet-h:min(52vh,480px);--sheet-tall-h:min(84vh,760px)}
+  @supports (height:100dvh){:root{--sheet-h:min(52dvh,480px);--sheet-tall-h:min(84dvh,760px)}}
   #layoutShell{bottom:0;flex-direction:column}
-  /* Controls are a bottom sheet on a phone: the uniform stays visible above them. */
+  /* Controls are a bottom sheet on a phone or tablet: the uniform stays visible above them. The same step tabs run
+     across its top and the same footer sits at its bottom; the grip drags it taller or away (js/workspace-ui.js). */
   #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{
     position:fixed;
     left:0;
@@ -927,33 +944,38 @@ header h1::after{
     box-shadow:var(--shadow);
     border-top:1px solid var(--line-strong);
     border-right:0;
-    transition:transform .2s ease,visibility .2s ease;
+    transition:transform .2s ease,visibility .2s ease,height .2s ease;
     will-change:transform;
   }
+  #controls.sheetTall,#layoutShell.sidebar-open #controls.sheetTall{height:var(--sheet-tall-h)}
+  #controls.sheetDragging,#layoutShell.sidebar-open #controls.sheetDragging{transition:none}
   #layoutShell.sidebar-open #controls{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto}
   #layoutShell.sidebar-collapsed #controls{transform:translate3d(0,110%,0);visibility:hidden;pointer-events:none}
+  .sheetGrip{position:relative;display:flex;align-items:center;justify-content:center;min-height:28px}
+  .sheetHandle{width:72px;min-height:28px;height:28px;margin:0;padding:0;background:transparent;border:0;border-radius:0;display:flex;align-items:center;justify-content:center;touch-action:none;cursor:grab}
+  .sheetHandle:hover{background:transparent;border-color:transparent}
+  .sheetHandle span{display:block;width:44px;height:5px;border-radius:3px;background:var(--line-strong)}
+  .sheetClose{position:absolute;top:0;right:var(--s2);display:inline-flex;align-items:center;width:auto;min-height:28px;margin:0;padding:0 var(--s3);font-size:var(--t-md)}
+  .stepTab{min-height:56px}
   #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
   /* With the sheet up, leave room under the uniform so it can scroll clear of it. */
   body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
-  .sheetClose{display:inline-flex}
+  body:has(#layoutShell.sidebar-open #controls.sheetTall) #previewWrapper{padding-bottom:calc(var(--sheet-tall-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
+}
+@media (max-width:768px){
+  header{padding-left:72px}
+  header h1{font-size:var(--t-lg)}
+  header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
   /* While the sheet is up the toolbar keeps only undo and redo, so the uniform has room. */
   body:has(#layoutShell.sidebar-open) .capubTopBar,
   body:has(#layoutShell.sidebar-open) .previewToolCard[aria-label="Preview zoom"]{display:none}
   .previewToolbar{flex-basis:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
-  .controlsScrollArea{padding-bottom:96px}
-  .statusGrid{grid-template-columns:1fr}
+  .statusGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .modal{height:90vh}
   .modal .galleryGrid{grid-template-columns:repeat(1,minmax(0,1fr))}
-  body:has(#layoutShell.sidebar-open) .capubCommandBar{display:none}
-  :root{--capub-footer-h:64px;--sheet-h:min(46vh,420px)}
-  @supports (height:100dvh){:root{--sheet-h:min(46dvh,420px)}}
+  :root{--capub-footer-h:64px}
   #pageFooter{font-size:var(--t-xs);line-height:1.35;padding-top:var(--s1);padding-bottom:var(--s1)}
-  .capubCommandBar{left:var(--s3);right:var(--s3);transform:none;width:auto;flex-wrap:wrap;justify-content:center}
-  .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}
 }
-
-.sheetClose{position:absolute;top:var(--s2);right:var(--s3);width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
-@media (min-width:769px){.sheetClose{display:none}}
 /* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
    At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
    the fixed footer (and its About link) off the right edge. */
@@ -979,8 +1001,6 @@ header h1::after{
   /* Two short lines, so the footer (and the sheet that sits on it) can be shorter. */
   :root{--capub-footer-h:52px}
 }
-
-html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 
 /* Very narrow phones (320px): the Unofficial notice moves into the subtitle instead of a tag. */
 @media (max-width:360px){
@@ -1029,14 +1049,12 @@ html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 /* The select behind the buttons stays in the page as the source of truth. */
 .segmentedSource{position:absolute;width:1px;height:1px;margin:-1px;opacity:0;pointer-events:none;overflow:hidden}
 
-/* ---- A uniform the member may not wear is not listed ---- */
-.uniformOption.locked{display:none}
-
 /* ---- Name on the uniform: optional, near the start ---- */
 .optionalName{margin-top:var(--s3);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
 .optionalName>summary{cursor:pointer;min-height:44px;box-sizing:border-box;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
 .optionalName[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
-.optionalName .plainPanel{border:0;padding:0;background:transparent;box-shadow:none}
+.optionalName .plainPanel,.moreDetails .plainPanel{border:0;padding:0;margin:0 0 var(--s3);background:transparent;box-shadow:none}
+.moreDetails .plainPanel:last-child{margin-bottom:var(--s3)}
 
 /* ---- Authorized, not drawn yet ---- */
 .plannedUniforms{margin-top:var(--s4)}
@@ -1059,95 +1077,6 @@ html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 .plannedTag{padding:1px var(--s2);border-radius:var(--r);border:1px solid var(--line-strong);font-size:var(--t-xs);color:var(--muted)}
 .plannedFacts{margin:0;padding:0 var(--s3) var(--s3) calc(var(--s3) + var(--s4));font-size:var(--t-sm);color:var(--muted)}
 .plannedFacts li+li{margin-top:var(--s1)}
-
-/* ---- Guided flow (?ux=2): one step at a time ---- */
-.guidedSummary,.guidedNav{display:none}
-html[data-ux="2"] .capubSectionHint{display:none}
-html[data-ux="2"] .stepGroup{
-  margin-bottom:var(--s3);
-  border:1px solid var(--line);
-  border-radius:var(--r-lg);
-  background:var(--panel);
-}
-html[data-ux="2"] .stepGroup.isActive{border:2px solid var(--select-line)}
-html[data-ux="2"] .stepGroup>.stepGroupTitle{margin:0;padding:var(--s3) var(--s4)}
-html[data-ux="2"] .stepGroup:not(.isActive)>*:not(.stepGroupTitle):not(.guidedSummary){display:none}
-html[data-ux="2"] .stepGroup:not(.isActive)>.guidedSummary{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:var(--s3);
-  padding:0 var(--s4) var(--s3);
-  color:var(--muted);
-  font-size:var(--t-sm);
-}
-html[data-ux="2"] .stepGroup.isDone{border-color:var(--ok)}
-html[data-ux="2"] .stepGroup.isDone>.stepGroupTitle{color:var(--ok)}
-html[data-ux="2"] .guidedEdit{width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
-html[data-ux="2"] .stepGroup.isActive>*:not(.stepGroupTitle):not(.guidedSummary){margin-left:var(--s4);margin-right:var(--s4)}
-html[data-ux="2"] .stepGroup.isActive>.guidedNav{
-  display:flex;
-  gap:var(--s2);
-  justify-content:space-between;
-  margin-top:var(--s4);
-  margin-bottom:var(--s4);
-}
-html[data-ux="2"] .guidedNav button{width:auto;flex:1 1 auto;margin:0}
-html[data-ux="2"] .guidedNav .guidedBack{flex:0 0 auto}
-.guidedHint{margin:0 0 var(--s3);font-size:var(--t-sm);color:var(--muted)}
-.guidedAdvanced{margin-top:var(--s4);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
-.guidedAdvanced>summary{cursor:pointer;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
-.guidedAdvanced[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
-
-/* Uniforms by occasion */
-html[data-ux="2"] .uniformList{display:block}
-.guidedUniformGroup+.guidedUniformGroup{margin-top:var(--s4)}
-.guidedGroupTitle{margin-bottom:var(--s2);font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
-.guidedUniformGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2)}
-html[data-ux="2"] .uniformOption.locked{display:none}
-html[data-ux="2"] .uniformOption{
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  gap:var(--s3);
-  width:100%;
-  min-height:0;
-  margin:0;
-  padding:var(--s2) var(--s3);
-  text-align:left;
-}
-.guidedThumb{
-  flex:0 0 52px;
-  width:52px;
-  height:64px;
-  object-fit:cover;
-  object-position:top center;
-  border-radius:var(--r);
-  background:var(--panel-2);
-}
-.guidedText{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
-.guidedTag{
-  padding:1px var(--s2);
-  border-radius:var(--r);
-  background:var(--cap-yellow);
-  color:#10131A;
-  font-size:var(--t-xs);
-  font-weight:700;
-}
-
-/* Item cards */
-.guidedItemCards{display:grid;gap:var(--s2)}
-.guidedCard{
-  padding:var(--s3);
-  border:1px solid var(--line);
-  border-radius:var(--r);
-  background:var(--panel-2);
-}
-.guidedCard.unavailable{opacity:.75}
-.guidedCardTitle{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
-.guidedCardCount{font-size:var(--t-md);font-weight:700;color:var(--ink)}
-.guidedCardRule{margin:var(--s1) 0 var(--s2);font-size:var(--t-sm);color:var(--muted)}
-.guidedCard button{width:100%;margin:0}
 
 /* ---- About dialog (unofficial-site and privacy notice) ---- */
 #aboutDialog{
@@ -1206,7 +1135,10 @@ small.hintText{display:block}
 
 /* ---- Purchase list and cost dialog ---- */
 #purchaseListButton{width:100%}
-.finishAction+.finishAction{margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--line)}
+.finishAction+.finishAction{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}
+.finishAction[hidden]+.finishAction{margin-top:0;padding-top:0;border-top:0}
+#finishPanel .finishAction button{margin-top:0}
+#finishPanel .moreDetails{margin-top:var(--s3)}
 .finishAction .hintText{margin-top:var(--s2)}
 .capub-purchase-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:var(--s5);background:var(--scrim)}
 .capub-purchase-overlay.open{display:flex}

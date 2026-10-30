@@ -1,4 +1,6 @@
 'use strict';
+// The guided flow that lived behind ?ux=2 is the default panel now (tests/stepper.test.cjs). This file checks the
+// flag is gone and that what it carried over, the lock reasons, still reads as the regulation does.
 
 const test=require('node:test');
 const assert=require('node:assert/strict');
@@ -11,40 +13,26 @@ const flow=read('js/guided-flow.js');
 const state=read('js/state.js');
 const html=read('index.html');
 const css=read('styles/app.css');
+const ui=read('js/workspace-ui.js');
+const wiring=read('js/wiring.js');
 
-test('the guided flow only runs behind ?ux=2',()=>{
-  assert.match(state,/get\('ux'\) === '2'/);
-  assert.match(state,/dataset\.ux = '2'/);
-  assert.match(flow,/if\(typeof CAPUB_GUIDED==='undefined' \|\| !CAPUB_GUIDED\) return;/);
+test('the ?ux=2 flag is gone from the state, the page, the styles and the wiring',()=>{
+  assert.doesNotMatch(state,/CAPUB_GUIDED|dataset\.ux/);
+  assert.doesNotMatch(html,/data-ux|class="[^"]*guided/);
+  assert.doesNotMatch(css,/data-ux|\.guided/);
+  assert.doesNotMatch(ui,/CAPUB_GUIDED|guided/);
+  assert.doesNotMatch(wiring,/guidedEdit|isActive/);
 });
 
-test('every guided rule is scoped to the flag so the normal page is untouched',()=>{
-  const start=css.indexOf('/* ---- Guided flow (?ux=2)');
-  const end=css.indexOf('/* ---- About dialog');
-  const block=css.slice(start,end);
-  const selectors=block.split('}').map(r=>r.split('{')[0].trim()).filter(s=>s && !s.startsWith('/*'));
-  for(const sel of selectors){
-    for(const part of sel.split(',').map(p=>p.trim())){
-      assert.ok(/^html\[data-ux="2"\]/.test(part) || /\.guided/.test(part),`unscoped rule: ${part}`);
-    }
-  }
-  // Classes the flow adds do not exist on the normal page, so bare .guided* rules cannot match there.
-  assert.doesNotMatch(html,/class="[^"]*guided/);
-});
-
-test('it is loaded after the polish module it reads step status from',()=>{
-  assert.ok(html.indexOf('js/workspace-ui.js')>0);
+test('the module is empty but its script tag stays, so the asset list is unchanged',()=>{
+  assert.doesNotMatch(flow,/^\s*[^\/\s]/m,'only comment lines');
+  assert.match(html,/<script src="js\/guided-flow\.js\?v=[0-9a-f]{10}" defer><\/script>/);
   assert.ok(html.indexOf('js/guided-flow.js')>html.indexOf('js/workspace-ui.js'));
 });
 
-test('uniforms are grouped by the regulation occasion groups, and ones the member may not wear are not listed',()=>{
-  assert.match(flow,/rules\(\)\.GROUPS/);
-  assert.match(flow,/Your minimum uniform/);
-  assert.doesNotMatch(flow,/guidedLocked|Not available to you/,'no list of unavailable uniforms');
-  assert.match(flow,/g\.hidden=!\[\.\.\.g\.querySelectorAll\('\.uniformOption'\)\]\.some\(b=>!b\.classList\.contains\('locked'\)\)/);
-  assert.match(css,/\.uniformOption\.locked\{display:none\}/);
-  assert.match(css,/html\[data-ux="2"\] \.uniformOption\.locked\{display:none\}/,'also where the guided card style applies');
+test('uniforms are grouped by the regulation occasion groups',()=>{
   assert.deepEqual(Object.keys(rules.GROUPS),['formal','everyday','field']);
+  for(const key of Object.keys(rules.GROUPS)) assert.match(html,new RegExp(`<div class="uniformGroup" data-group="${key}">\\s*<div class="uniformGroupTitle">${rules.GROUPS[key].label}</div>`));
 });
 
 test('locked reasons name the paragraph and are empty when the member may wear it',()=>{
@@ -56,27 +44,11 @@ test('locked reasons name the paragraph and are empty when the member may wear i
   assert.equal(rules.lockedReason('mess_dress',''),'');
 });
 
-test('Items never blocks Next, Profile and Uniform do',()=>{
-  assert.match(flow,/\(step==='profile' \|\| step==='uniform'\) && !done\[step\]/);
-});
-
-test('rendering has a timer fallback for hidden tabs',()=>{
-  assert.match(flow,/requestAnimationFrame\(run\);\s*setTimeout\(run,100\);/);
-});
-
-test('after Resume the flow goes to the first unfinished step',()=>{
-  assert.match(flow,/capubResumeYes[\s\S]{0,120}active=null; render\(\)/);
-});
-
-test('controls added by the flow meet the 44px touch target',()=>{
-  for(const sel of ['\\.sheetClose','\\.noticeFix','\\.itemPopoverActions button','html\\[data-ux="2"\\] \\.guidedEdit']){
+test('controls meet the 44px touch target',()=>{
+  for(const sel of ['\\.noticeFix','\\.itemPopoverActions button','\\.moreDetails>summary','\\.optionalName>summary']){
     const m=new RegExp(`${sel}\\{[^}]*min-height:44px`).exec(css);
     assert.ok(m,`${sel} is 44px`);
   }
   assert.match(css,/\.footerLink\{[^}]*min-height:44px/);
-});
-
-test('a step change moves focus to the new heading and Edit buttons say which step',()=>{
-  assert.match(flow,/heading\.tabIndex=-1;\s*heading\.focus\(\{preventScroll:true\}\)/);
-  assert.match(flow,/edit\.setAttribute\('aria-label',`Edit \$\{SHORT\[step\]\.toLowerCase\(\)\}`\)/);
+  assert.match(css,/\.stepTab\{[^}]*min-height:56px/);
 });

@@ -11,9 +11,9 @@ const html=read('index.html');
 const css=read('styles/app.css');
 const setup=read('js/setup.js');
 const patches=read('js/patches.js');
-const tools=html.slice(html.indexOf('id="stepGroup-tools"'),html.indexOf('</details>',html.indexOf('id="stepGroup-tools"')));
 const profile=html.slice(html.indexOf('id="stepGroup-profile"'),html.indexOf('id="stepGroup-uniform"'));
 const ribbons=html.slice(html.indexOf('id="groupRibbons"'),html.indexOf('id="groupBadges"'));
+const rack=html.slice(html.indexOf('id="rackLayoutMore"'),html.indexOf('</details>',html.indexOf('id="rackLayoutMore"')));
 
 test('membership and cut are two buttons side by side, with the select kept as the source of truth',()=>{
   assert.match(html,/data-segments-for="membershipType"/);
@@ -25,9 +25,15 @@ test('membership and cut are two buttons side by side, with the select kept as t
   assert.match(setup,/source\.dispatchEvent\(new Event\('change', \{bubbles:true\}\)\)/);
 });
 
-test('a uniform the member may not wear is not listed, in either view',()=>{
-  assert.match(css,/\.uniformOption\.locked\{display:none\}/);
-  assert.match(css,/html\[data-ux="2"\] \.uniformOption\.locked\{display:none\}/);
+test('a uniform the member may not wear is folded under one line at the end of the list, muted, with its reason',()=>{
+  assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
+  assert.match(html,/<details class="lockedFold" id="lockedUniforms" hidden>\s*<summary id="lockedUniformsSummary">/);
+  assert.match(css,/\.uniformOption\.locked\{\s*cursor:not-allowed;\s*opacity:\.7;/);
+  assert.match(css,/\.uniformOption\.locked::after\{\s*content:attr\(data-locked-reason\);\s*display:block;/);
+  assert.match(setup,/opt\.setAttribute\('data-locked-reason', CAPUBUniformRules\.lockedReason\(/);
+  const ui=read('js/workspace-ui.js');
+  assert.match(ui,/if\(locked && card\.parentNode!==grid\) grid\.appendChild\(card\);/);
+  assert.match(ui,/summary\.textContent=`Not for \$\{who\}: \$\{n\} uniform\$\{n===1\?'':'s'\}`;/);
   assert.doesNotMatch(html,/Grayed-out uniforms/);
 });
 
@@ -38,7 +44,7 @@ test('shoulder cords are for cadets on Class A and Class B only (CAPR 39-1 9.3, 
     assert.equal(rules.allowsShoulderCord(id,'senior'),false,`${id} for a senior member`);
   }
   assert.match(patches,/panel\.classList\.toggle\('hidden', !usable\)/);
-  // The Aide de Camp cord is also worn by senior members (9.3.4), so the control asks per cord.
+  // The Aide-de-camp cord is also worn by senior members (9.3.4), so the control asks per cord.
   assert.match(patches,/CAPUBUniformRules\.allowsCord\(State\.uniform, State\.membership, o\.value\)/);
 });
 
@@ -47,19 +53,21 @@ test('the collar and lapel mask editor is gone: the engine redraws the lapel fro
   assert.ok(!html.includes('id="editGarmentMaskBtn"'));
 });
 
-test('the name is an optional, folded block in the Profile step',()=>{
+test('the name is an optional, folded block at the end of the Profile step',()=>{
   assert.match(profile,/<details class="optionalName" id="optionalName">\s*<summary>Add your name \(optional\)<\/summary>/);
   assert.ok(profile.includes('id="capubV2LastName"'));
-  assert.ok(!tools.includes('capubV2LastName'));
+  assert.ok(profile.indexOf('id="genderBlock"')<profile.indexOf('id="optionalName"'),'the cut comes before the name');
   assert.doesNotMatch(profile.slice(profile.indexOf('id="optionalName"'),profile.indexOf('id="optionalName"')+60),/\bopen\b/);
 });
 
-test('the ribbon rack layout controls are one panel under More tools, off the Ribbons panel',()=>{
+test('the ribbon rack layout controls are folded under the Ribbons card as Advanced: rack layout',()=>{
+  assert.match(rack,/<summary>Advanced: rack layout<\/summary>\s*<div id="ribbonRackPanel">/);
   for(const id of ['ribbonRackColumns','ribbonRackArrangement','ribbonRowOverridePanel','ribbonRackColumnsHint']){
-    assert.ok(tools.includes(`id="${id}"`),`${id} is under More tools`);
-    assert.ok(!ribbons.includes(`id="${id}"`),`${id} is not on the Ribbons panel`);
+    assert.ok(rack.includes(`id="${id}"`),`${id} is under Advanced: rack layout`);
   }
-  assert.match(tools,/<section id="ribbonRackPanel"/);
+  assert.ok(ribbons.includes('id="rackLayoutMore"'),'the fold is on the Ribbons card');
+  // The fold's summary names it; the label inside is not repeated.
+  assert.equal((rack.match(/Ribbon rack layout/g)||[]).length,1);
 });
 
 test('ribbon devices are set in the ribbon picker, so the add-several tool is gone',()=>{

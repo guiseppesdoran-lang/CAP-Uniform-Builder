@@ -9,7 +9,6 @@ const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
 const html=read('index.html');
 const css=read('styles/app.css');
 const ui=read('js/workspace-ui.js');
-const flow=read('js/guided-flow.js');
 
 test('the footer is two short lines on a phone and the credit moves to About',()=>{
   assert.match(html,/class="footerShort"/);
@@ -30,7 +29,11 @@ test('on a phone the scaled uniform is centred beside the sheet',()=>{
   assert.match(ui,/area\.style\.marginLeft=free>0 \? Math\.round\(free\/2\)\+'px' : ''/);
 });
 
-test('the member-report importer is a folded shortcut in the guided flow, and opens on a result',()=>{
-  assert.match(flow,/Have a CAP member report\? Import it to fill this in/);
-  assert.match(flow,/new MutationObserver\(\(\)=>\{ if\(status\.textContent!==first\) more\.open=true; \}\)/);
+test('the member-report importer is one button with its explanation folded, and the clear button appears with a result',()=>{
+  const card=html.slice(html.indexOf('id="memberReportImportPanel"'),html.indexOf('id="capMembershipPanel"'));
+  assert.match(card,/<button id="importMemberReportBtn" class="ghost" type="button">Import member report…<\/button>/);
+  assert.match(card,/<details class="moreDetails" id="memberReportImportMore">\s*<summary>What the import reads<\/summary>/);
+  assert.ok(card.indexOf('id="memberReportImportStatus"')<card.indexOf('id="clearImportedReportBtn"'),'the clear button follows the status line');
+  assert.match(ui,/const sync=\(\)=>\{ clear\.hidden=status\.textContent===first; \};/);
+  assert.match(ui,/new MutationObserver\(sync\)\.observe\(status,\{childList:true,characterData:true,subtree:true\}\)/);
 });

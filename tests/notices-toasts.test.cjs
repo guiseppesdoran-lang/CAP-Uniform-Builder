@@ -15,9 +15,9 @@ test('the setup notices point at the control that fixes them',()=>{
   assert.match(wiring,/are selected\. Command insignia does not count against this limit\.`,\{id:'expandBadges'/);
 });
 
-test('a Fix link presses buttons, focuses fields, and opens a folded step first',()=>{
+test('a Fix link presses buttons, focuses fields, and shows the step that holds the control first',()=>{
   const fn=wiring.slice(wiring.indexOf('function runNoticeFix'),wiring.indexOf('function runNoticeFix')+900);
-  assert.match(fn,/guidedEdit/);
+  assert.match(fn,/CAPUB_V3\.showStepFor\(target\)/);
   assert.match(fn,/target\.tagName === 'BUTTON'/);
   assert.match(fn,/scrollIntoView/);
 });

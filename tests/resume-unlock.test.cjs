@@ -94,7 +94,7 @@ test('the profile loader finishes through refreshUI, which does the unlocking', 
 });
 
 test('step statuses read done for profile and uniform once a setup is restored', () => {
-  const fn = slice(workspace, 'function getStepStatuses', '// A step is reachable');
+  const fn = slice(workspace, 'function getStepStatuses', 'const reachable=');
   const context = {
     State: { membership: 'cadet', rank: 'C/Maj', gender: 'male', uniform: 'blues_a', ribbons: [], badges: [], patches: [] },
     STEP_ORDER: ['profile', 'uniform', 'items', 'export'],

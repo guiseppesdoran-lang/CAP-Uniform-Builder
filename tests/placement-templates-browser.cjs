@@ -91,12 +91,15 @@ async function launch(){
       await __settle();
     })()`);
     await setup('blues_a', RIBBONS, ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge']);
-    const control = await ev(`(() => { const b = document.getElementById('cmdTemplates'), d = document.getElementById('cmdDownload'); return { exists: !!b, hidden: b ? b.hidden : null, nextToPng: !!(b && d && d.nextElementSibling === b), label: b && b.textContent, finish: !!document.getElementById('placementTemplatesOpen') }; })()`);
+    // The entry sits in the Check & finish step's Finish panel, first after the (footer-bound) download block; the step
+    // tab opens that step, and the download itself is the footer's primary action there.
+    await ev(`CAPUB_V3.showStep('export')`);
+    const control = await ev(`(() => { const b = document.getElementById('placementTemplatesOpen'), d = document.getElementById('downloadImage'); const act = b && b.closest('.finishAction'); return { exists: !!b, inFinish: !!(b && b.closest('#finishPanel')), visible: !!(b && b.offsetParent), label: b && b.textContent, afterDownload: !!(act && act.previousElementSibling && act.previousElementSibling.id === 'downloadAction'), downloadInFooter: !!(d && d.closest('#stepFooter') && !d.hidden), noBar: !document.getElementById('capubCommandBar') }; })()`);
     console.log('control:', JSON.stringify(control));
-    expect(control.exists && !control.hidden && control.nextToPng && control.label === 'Templates', 'the Templates control is not offered beside Download PNG');
-    expect(control.finish, 'no Placement templates entry in the Finish panel');
+    expect(control.exists && control.inFinish && control.visible && control.afterDownload && /^Placement templates/.test(control.label), 'the Templates entry is not offered in the Finish panel after the download block');
+    expect(control.downloadInFooter && control.noBar, 'the download is not the footer primary on the last step, or the command bar is back');
 
-    await ev(`document.getElementById('cmdTemplates').click()`);
+    await ev(`document.getElementById('placementTemplatesOpen').click()`);
     let list = null;
     for(let i = 0; i < 100; i++){
       list = await ev(`(() => { const d = document.getElementById('placementTemplates'); if(!d || !d.open) return null; const li = [...d.querySelectorAll('li[data-side-key]')]; return li.length ? { paper: (d.querySelector('input[name=ptPaper]:checked') || {}).value, sides: li.map(x => ({ key: x.dataset.sideKey, title: x.querySelector('b').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) } : null; })()`);
@@ -135,7 +138,7 @@ async function launch(){
     // The ABU: sewn items, a sewing guide on paper and no jig.
     await ev(`document.getElementById('placementTemplates').close()`);
     await setup('abu', [], ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge']);
-    await ev(`document.getElementById('cmdTemplates').click()`);
+    await ev(`document.getElementById('placementTemplatesOpen').click()`);
     let abu = null;
     for(let i = 0; i < 100; i++){ abu = await ev(`(() => { const li = [...document.querySelectorAll('#placementTemplates li[data-side-key]')]; return li.length && /Sewn on/.test(li[0].textContent) ? li.map(x => ({ key: x.dataset.sideKey, text: x.querySelector('small').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) : null; })()`); if(abu) break; await sleep(50); }
     console.log('abu:', JSON.stringify(abu));

@@ -1,6 +1,6 @@
-// Extracted verbatim from index.html: the workspace UI behavior module (step guide,
-// preview toolbar and zoom, empty state, command bar, header chips, toast).
-// It runs as an IIFE at the same point in the load order as before.
+// The workspace UI behavior module: the stepper panel (step tabs, one step at a time, Back and Next, the
+// bottom sheet on a phone), the preview toolbar and zoom, the preview's empty state, the header chips
+// and the toast. It runs as an IIFE at the same point in the load order as before.
 
 /* ===========================
    CAPUB V3 POLISHED UI BEHAVIOR
@@ -8,6 +8,10 @@
 (function capubV3PolishedUI(){
   const V3 = window.CAPUB_V3 = { zoom: 1, compact:false };
   const safeBy = id => document.getElementById(id);
+  // Up to this width the controls are a bottom sheet under the preview (styles/app.css); above it they are the
+  // panel beside it, always open.
+  const SHEET_QUERY='(max-width:900px)';
+  const isSheet=()=>window.matchMedia(SHEET_QUERY).matches;
   function toast(msg, ms){
     let t=safeBy('capubToast');
     if(!t){
@@ -19,84 +23,280 @@
     clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),ms||2200);
   }
   window.capubToastShow = toast;
-  function ensureProgress(){
-    const scroll=document.querySelector('.controlsScrollArea');
-    if(!scroll || safeBy('capubProgress')) return;
-    const box=document.createElement('div'); box.id='capubProgress'; box.className='capubProgress';
-    box.innerHTML=`
-      <button type="button" class="capubStep" data-step="profile"><strong>1. Profile</strong><span>Member + rank</span></button>
-      <button type="button" class="capubStep" data-step="uniform"><strong>2. Uniform</strong><span>Style + cut</span></button>
-      <button type="button" class="capubStep" data-step="items"><strong>3. Items</strong><span>Ribbons &amp; badges</span></button>
-      <button type="button" class="capubStep" data-step="export"><strong>4. Finish</strong><span>Check + save</span></button>`;
-    scroll.prepend(box);
-    box.addEventListener('click',e=>{
-      const step=e.target.closest('.capubStep'); if(step) goToStep(step.dataset.step);
-    });
-    const help=document.createElement('div'); help.className='capubSectionHint';
-    help.innerHTML='<span>★</span><div><b>Work down the steps.</b> The bar at the bottom of the preview opens the ribbon and badge galleries and downloads your PNG.</div>';
-    scroll.insertBefore(help, box.nextSibling);
-  }
-  // Where each step lives in the sidebar, in the order a member works through them.
+
+  /* ---------- the stepper: four tabs, one step on screen, Back and Next in the footer ---------- */
   const STEP_ORDER=['profile','uniform','items','export'];
-  const STEP_TARGETS={profile:'capMembershipPanel',uniform:'uniformBlock',items:'groupRibbons',export:'capubV2StatusPanel'};
-  // Awards are optional, so Export only waits on profile and uniform.
+  const STEP_NAMES={profile:'Profile',uniform:'Uniform',items:'Items',export:'Check & finish'};
+  // Awards are optional, so Check & finish only waits on profile and uniform.
   const STEP_PREREQS={profile:[],uniform:['profile'],items:['profile','uniform'],export:['profile','uniform']};
+  // The step on screen. Null until the first render, which opens the first unfinished step.
+  let activeStep=null;
+
   function getStepStatuses(){
-    const hasProfile=!!(State.membership && State.rank);
-    const hasUniform=!!(State.gender && State.uniform);
+    // The cut is part of the profile: the preview cannot draw without it.
+    const hasProfile=!!(State.membership && State.rank && State.gender);
+    const hasUniform=hasProfile && !!State.uniform;
     const hasItems=!!((State.ribbons&&State.ribbons.length)||(State.badges&&State.badges.length)||(State.patches&&State.patches.length));
     const warnings=parseInt((safeBy('capubV2WarningCount')||{}).textContent||'0',10)||0;
-    const done={profile:hasProfile,uniform:hasProfile&&hasUniform,items:hasProfile&&hasUniform&&hasItems,export:hasProfile&&hasUniform&&hasItems&&warnings===0};
+    const done={profile:hasProfile,uniform:hasUniform,items:hasUniform&&hasItems,export:hasUniform&&hasItems&&warnings===0};
     const current=STEP_ORDER.find(k=>!done[k]) || 'export';
     return {done,current};
   }
-  // A step is reachable once its prerequisites are done; clicking a blocked step
-  // takes the member to the first unfinished one instead of an inert panel.
-  function goToStep(step){
-    const {done,current}=getStepStatuses();
-    const reachable=STEP_PREREQS[step].every(k=>done[k]);
-    const target=safeBy(STEP_TARGETS[reachable?step:current]);
-    if(!target) return;
-    if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
-    target.scrollIntoView({behavior:'smooth',block:'start'});
-    const focusable=target.querySelector('select:not(:disabled),input:not(:disabled):not([type=hidden])');
-    if(focusable) setTimeout(()=>focusable.focus({preventScroll:true}),250);
-  }
-  V3.getStepStatuses=getStepStatuses;
-  V3.stepOrder=STEP_ORDER;
-  function updateProgress(){
-    const steps=[...document.querySelectorAll('.capubStep')]; if(!steps.length || typeof State==='undefined') return;
-    const {done,current}=getStepStatuses();
-    steps.forEach(st=>{
-      const k=st.dataset.step;
-      const reachable=STEP_PREREQS[k].every(p=>done[p]);
-      st.classList.toggle('done',!!done[k]);
-      st.classList.toggle('current',k===current && !done[k]);
-      st.classList.toggle('blocked',!reachable);
-      if(k===current && !done[k]) st.setAttribute('aria-current','step'); else st.removeAttribute('aria-current');
-      st.title = reachable ? '' : 'Finish the earlier steps first';
-    });
-  }
-  // The preview stays blank until membership, rank and cut are all chosen, which
-  // read as a broken page. Say what is missing and offer the next action instead.
+  const reachable=(step,done)=>STEP_PREREQS[step].every(k=>done[k]);
+  const stepOf=el=>{ const g=el && el.closest ? el.closest('.stepGroup') : null; return g ? g.id.replace(/^stepGroup-/,'') : null; };
+
+  // The preview stays blank until membership, rank and cut are all chosen, which reads as a broken page.
+  // The empty state and the footer say what is missing instead.
   function getProfileGaps(){
     return [
-      {label:'Membership type',target:'membershipType',ok:!!State.membership},
-      {label:'Rank',target:'rankSetupSelect',ok:!!State.rank},
-      {label:'Cut (male or female)',target:'jacketSelect',ok:!!State.gender}
+      {label:'Membership type',short:'a membership type',target:'membershipType',ok:!!State.membership},
+      {label:'Rank',short:'a rank',target:'rankSetupSelect',ok:!!State.rank},
+      {label:'Cut (male or female)',short:'the cut',target:'jacketSelect',ok:!!State.gender}
     ];
   }
+  function listWords(words){
+    if(words.length<2) return words.join('');
+    return words.slice(0,-1).join(', ')+' and '+words[words.length-1];
+  }
+  // Why Next is closed on the step shown, in the member's words; empty when it is open.
+  function nextNeeds(step,done){
+    const nextStep=STEP_ORDER[STEP_ORDER.indexOf(step)+1];
+    if(!nextStep || reachable(nextStep,done)) return '';
+    if(step==='profile') return `Choose ${listWords(getProfileGaps().filter(g=>!g.ok).map(g=>g.short))} to go on.`;
+    if(step==='uniform') return 'Choose a uniform to go on.';
+    return 'Finish the earlier steps first.';
+  }
+
+  // Show a step. One whose prerequisites are not done opens the first unfinished step instead.
+  function showStep(step,{focus=true}={}){
+    if(!STEP_ORDER.includes(step)) return;
+    const {done,current}=getStepStatuses();
+    activeStep=reachable(step,done) ? step : current;
+    const shell=safeBy('layoutShell');
+    if(shell && !shell.classList.contains('sidebar-open') && typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
+    renderStepper();
+    const body=safeBy('stepBody'); if(body) body.scrollTop=0;
+    if(focus){
+      // Focus lands on the step's heading, so a keyboard or screen-reader user arrives on the new step.
+      const heading=safeBy('stepGroup-'+activeStep)?.querySelector('.stepGroupTitle');
+      if(heading) heading.focus({preventScroll:true});
+    }
+  }
+  // Show the step that holds a control; the preview's empty state and the notices' Fix buttons use it before focusing one.
+  function showStepFor(el){
+    const step=stepOf(el);
+    if(step && step!==activeStep) showStep(step,{focus:false});
+  }
+  // Open the step a control is in, scroll to it and focus it. The membership and cut selects stand behind two
+  // buttons (js/setup.js), so the first button takes the focus for them.
+  function focusControl(id){
+    const el=safeBy(id); if(!el) return;
+    showStepFor(el);
+    const target=(el.classList.contains('segmentedSource') && document.querySelector(`.segmented[data-segments-for="${id}"] button`)) || el;
+    setTimeout(()=>{ target.scrollIntoView({behavior:'smooth',block:'center'}); target.focus({preventScroll:true}); },60);
+  }
+
+  function renderStepper(){
+    if(typeof State==='undefined' || !safeBy('stepTab-profile')) return;
+    const {done,current}=getStepStatuses();
+    if(activeStep===null || !reachable(activeStep,done)) activeStep=current;
+    STEP_ORDER.forEach(k=>{
+      const tab=safeBy('stepTab-'+k), group=safeBy('stepGroup-'+k);
+      const open=reachable(k,done), shown=k===activeStep;
+      if(tab){
+        tab.classList.toggle('done',!!done[k]);
+        tab.classList.toggle('blocked',!open);
+        tab.setAttribute('aria-selected',String(shown));
+        tab.setAttribute('aria-disabled',String(!open));
+        tab.tabIndex=shown ? 0 : -1;
+        if(shown) tab.setAttribute('aria-current','step'); else tab.removeAttribute('aria-current');
+        tab.title=open ? '' : 'Finish the earlier steps first';
+      }
+      if(group) group.hidden=!shown;
+    });
+    const i=STEP_ORDER.indexOf(activeStep), nextStep=STEP_ORDER[i+1];
+    const back=safeBy('stepBack'), next=safeBy('stepNext'), note=safeBy('stepFooterNote'), download=safeBy('downloadImage');
+    if(back) back.hidden=i<=0;
+    if(next){
+      next.hidden=!nextStep;
+      if(nextStep){
+        next.textContent=`Next: ${STEP_NAMES[nextStep]}`;
+        next.disabled=!reachable(nextStep,done);
+      }
+    }
+    // On the last step the download is the primary action in the footer (placeDownload moved it there).
+    if(download && download.closest('#stepFooter')) download.hidden=!!nextStep;
+    if(note){
+      const need=nextNeeds(activeStep,done);
+      note.textContent=need; note.hidden=!need;
+    }
+    syncScrollHint();
+  }
+  // A fade above the footer while the step on screen has more below the fold.
+  function syncScrollHint(){
+    const body=safeBy('stepBody'), aside=safeBy('controls');
+    if(!body || !aside) return;
+    aside.classList.toggle('hasMoreBelow', body.scrollHeight-body.clientHeight-body.scrollTop>2);
+  }
+  function wireStepper(){
+    const tabs=document.querySelector('.stepTabs');
+    if(!tabs || tabs.dataset.wired) return;
+    tabs.dataset.wired='1';
+    tabs.addEventListener('click',e=>{
+      const tab=e.target.closest('.stepTab');
+      if(tab) showStep(tab.dataset.step);
+    });
+    // Arrow keys move between the steps that are open; Home and End go to the first and last of them.
+    tabs.addEventListener('keydown',e=>{
+      const move={ArrowRight:1,ArrowLeft:-1,Home:'first',End:'last'}[e.key];
+      if(move===undefined) return;
+      const {done}=getStepStatuses();
+      const open=STEP_ORDER.filter(k=>reachable(k,done));
+      const at=Math.max(0,open.indexOf(activeStep));
+      const to=move==='first' ? open[0] : move==='last' ? open[open.length-1] : open[(at+move+open.length)%open.length];
+      e.preventDefault();
+      showStep(to,{focus:false});
+      safeBy('stepTab-'+to)?.focus();
+    });
+    safeBy('stepBack')?.addEventListener('click',()=>{ const i=STEP_ORDER.indexOf(activeStep); if(i>0) showStep(STEP_ORDER[i-1]); });
+    safeBy('stepNext')?.addEventListener('click',()=>{ const i=STEP_ORDER.indexOf(activeStep); if(i<STEP_ORDER.length-1) showStep(STEP_ORDER[i+1]); });
+    placeDownload();
+    // After Resume, go to the first unfinished step instead of staying where the page opened.
+    document.addEventListener('click',e=>{
+      if(e.target && e.target.id==='capubResumeYes') setTimeout(()=>{ activeStep=null; renderStepper(); },500);
+    },true);
+    const body=safeBy('stepBody');
+    if(body){
+      body.addEventListener('scroll',syncScrollHint,{passive:true});
+      if(typeof ResizeObserver==='function'){
+        const ro=new ResizeObserver(syncScrollHint);
+        ro.observe(body);
+        body.querySelectorAll('.stepGroup').forEach(g=>ro.observe(g));
+      }
+    }
+    window.addEventListener('resize',syncScrollHint);
+  }
+  // The download is the last step's primary action, so the button moves from the Finish panel into the footer. The
+  // page's markup keeps it in the panel because js/placement-templates.js adds its Templates entry after that block.
+  function placeDownload(){
+    const download=safeBy('downloadImage'), row=document.querySelector('#stepFooter .stepFooterRow');
+    if(!download || !row || download.parentNode===row) return;
+    const action=download.closest('.finishAction');
+    row.appendChild(download);
+    if(action) action.hidden=true;
+  }
+
+  /* ---------- the Items cards: a count and the rule for this uniform on each ---------- */
+  const rules=()=>window.CAPUBUniformRules;
+  const BADGE_RULE='Each badge is placed where CAPR 39-1 puts it.';
+  function ribbonRule(uniformId){
+    const r=rules(); if(!r) return 'Choose the ribbons you have earned.';
+    const policy=r.ribbonPolicy(uniformId);
+    if(policy==='required') return 'Required on this uniform.';
+    if(policy==='optional') return 'Optional on this uniform.';
+    if(r.allowsMiniMedals(uniformId)) return 'Worn as miniature medals on this uniform.';
+    return 'Not worn on this uniform; kept for the ones that wear them.';
+  }
+  function updateItemCards(){
+    if(typeof State==='undefined') return;
+    const r=rules(), u=State.uniform;
+    const auth=(typeof UI_AUTHZ!=='undefined' && UI_AUTHZ[u]) || {showBadges:true,showPatches:true};
+    const ribbons=new Set((State.ribbons||[]).map(x=>x.id)).size;
+    const badges=typeof countBadgesForLimit==='function' ? countBadgesForLimit() : (State.badges||[]).length;
+    const cap=r ? (r.getUniformRule(u)||{}).badgeCap : null;
+    const patches=(State.patches||[]).length;
+    const set=(key,count,n,rule,usable)=>{
+      const card=document.querySelector(`.itemCard[data-card="${key}"]`); if(!card) return;
+      const chip=card.querySelector('[data-count]');
+      if(chip){ chip.textContent=count; chip.classList.toggle('hasItems',n>0); }
+      const line=card.querySelector('[data-rule]');
+      if(line) line.textContent=rule;
+      card.classList.toggle('unavailable',!usable);
+    };
+    set('ribbons',`${ribbons} selected`,ribbons,ribbonRule(u),!r || r.allowsRibbons(u) || r.allowsMiniMedals(u));
+    const planned=(!auth.showBadges && r) ? r.plannedBadge(u) : null;
+    set('badges',
+      planned ? `Up to ${planned.count}` : (cap ? `${badges} of ${cap}` : `${badges} selected`),
+      badges,
+      (!planned && cap) ? `At most ${cap} on this uniform, each where CAPR 39-1 puts it.` : BADGE_RULE,
+      !!auth.showBadges || !!planned);
+    set('patches',`${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
+  }
+  // The member-report importer: one button at rest; once a report has been read, its result and the clear button.
+  function watchImporter(){
+    const status=safeBy('memberReportImportStatus'), clear=safeBy('clearImportedReportBtn');
+    if(!status || !clear || status.dataset.watched) return;
+    status.dataset.watched='1';
+    const first=status.textContent;
+    const sync=()=>{ clear.hidden=status.textContent===first; };
+    sync();
+    if(typeof MutationObserver==='function') new MutationObserver(sync).observe(status,{childList:true,characterData:true,subtree:true});
+  }
+
+  /* ---------- the bottom sheet (phone and tablet) ---------- */
+  // The grip drags the sheet: down to close it (or back from tall), up to make it tall; a tap toggles tall.
+  function wireSheet(){
+    const handle=safeBy('sheetHandle'), sheet=safeBy('controls');
+    if(!handle || !sheet || handle.dataset.wired) return;
+    handle.dataset.wired='1';
+    let startY=null, dy=0, moved=false;
+    const announce=()=>{
+      const shell=safeBy('layoutShell');
+      document.dispatchEvent(new CustomEvent('capub:sidebar',{detail:{open:!!(shell && shell.classList.contains('sidebar-open'))}}));
+    };
+    handle.addEventListener('pointerdown',e=>{
+      if(!isSheet()) return;
+      startY=e.clientY; dy=0; moved=false;
+      try{ handle.setPointerCapture(e.pointerId); }catch(_){}
+      sheet.classList.add('sheetDragging');
+    });
+    handle.addEventListener('pointermove',e=>{
+      if(startY===null) return;
+      dy=e.clientY-startY;
+      if(Math.abs(dy)>4) moved=true;
+      sheet.style.transform=dy>0 ? `translate3d(0,${dy}px,0)` : '';
+    });
+    const end=()=>{
+      if(startY===null) return;
+      startY=null;
+      const tall=sheet.classList.contains('sheetTall');
+      if(dy>90){
+        if(tall) sheet.classList.remove('sheetTall');
+        else if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(false);
+      }else if(dy<-50 && !tall) sheet.classList.add('sheetTall');
+      else if(!moved) sheet.classList.toggle('sheetTall');
+      sheet.classList.remove('sheetDragging');
+      sheet.style.transform='';
+      announce();
+    };
+    handle.addEventListener('pointerup',end);
+    handle.addEventListener('pointercancel',end);
+    // Back on a wide screen the panel is always open beside the preview.
+    const mq=window.matchMedia(SHEET_QUERY);
+    const onChange=()=>{
+      if(mq.matches) return;
+      sheet.classList.remove('sheetTall');
+      if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
+    };
+    if(mq.addEventListener) mq.addEventListener('change',onChange); else if(mq.addListener) mq.addListener(onChange);
+  }
+
+  V3.getStepStatuses=getStepStatuses;
+  V3.stepOrder=STEP_ORDER;
+  V3.showStep=showStep;
+  V3.showStepFor=showStepFor;
+  V3.focusControl=focusControl;
+  Object.defineProperty(V3,'activeStep',{get:()=>activeStep});
+
+  /* ---------- the preview: empty state, toolbar, zoom ---------- */
   function ensureEmptyState(){
     const area=safeBy('previewArea'); if(!area || safeBy('previewEmptyState')) return;
     const box=document.createElement('div'); box.id='previewEmptyState'; box.className='previewEmptyState';
     box.innerHTML='<div class="emptyTitle">Start your uniform</div><ul class="emptyChecklist" id="previewEmptyChecklist"></ul><button type="button" id="previewEmptyAction"></button>';
     area.appendChild(box);
     safeBy('previewEmptyAction').onclick=()=>{
-      const next=getProfileGaps().find(g=>!g.ok); if(!next) return;
-      if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
-      const el=safeBy(next.target); if(!el) return;
-      el.scrollIntoView({behavior:'smooth',block:'center'});
-      setTimeout(()=>el.focus({preventScroll:true}),250);
+      const next=getProfileGaps().find(g=>!g.ok);
+      if(next) focusControl(next.target);
     };
   }
   function updateEmptyState(){
@@ -161,10 +361,9 @@
       // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
       area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
       area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
-      // On a phone, centre the scaled uniform in the room beside it instead of hugging the left.
+      // Under the sheet, centre the scaled uniform in the room beside it instead of hugging the left.
       const wrap=safeBy('previewWrapper');
-      const mobile=window.matchMedia('(max-width:768px)').matches;
-      if(wrap && mobile){
+      if(wrap && isSheet()){
         const style=getComputedStyle(wrap);
         const inner=wrap.clientWidth - parseFloat(style.paddingLeft||0) - parseFloat(style.paddingRight||0);
         const free=inner - area.offsetWidth*V3.zoom;
@@ -189,7 +388,7 @@
     window.addEventListener('orientationchange', syncChromeHeights);
     if(window.visualViewport) window.visualViewport.addEventListener('resize', syncChromeHeights);
     // The footer changes size at these widths; do not wait for the observer.
-    for(const q of ['(max-width:768px)','(max-width:480px)','(max-width:360px)']){
+    for(const q of [SHEET_QUERY,'(max-width:768px)','(max-width:480px)','(max-width:360px)']){
       const mq=window.matchMedia(q);
       if(mq.addEventListener) mq.addEventListener('change', syncChromeHeights);
     }
@@ -203,22 +402,23 @@
   function fitZoom(){
     const wrap=safeBy('previewWrapper'), area=safeBy('previewArea');
     if(!wrap || !area) return setZoom(1);
-    const mobile=window.matchMedia('(max-width:768px)').matches;
+    const sheet=isSheet();
+    const phone=window.matchMedia('(max-width:768px)').matches;
     // Only the wrapper's side padding: the zoom controls now live in a toolbar row
     // above the uniform instead of beside it.
-    const reserve=mobile ? 24 : 44;
+    const reserve=phone ? 24 : 44;
     const available=Math.max(240,wrap.clientWidth-reserve);
     const previewWidth=area.offsetWidth || 450;
     // The wide field-uniform stage needs a lower floor to fit a phone without sideways scrolling.
     let z=Math.min(1, Math.max(.3, available/previewWidth));
-    // On a phone with the controls sheet up, also fit the height to what is left above it.
-    const shell=safeBy('layoutShell'), sheet=safeBy('controls');
-    if(mobile && shell && sheet && shell.classList.contains('sidebar-open')){
+    // With the controls sheet up, also fit the height to what is left above it.
+    const shell=safeBy('layoutShell'), controls=safeBy('controls');
+    if(sheet && shell && controls && shell.classList.contains('sidebar-open')){
       const toolbar=safeBy('previewToolbar');
       const top=(toolbar ? toolbar.getBoundingClientRect().bottom : 0) + 12;
       // The sheet's resting position, not where its slide animation happens to be.
       const footer=safeBy('pageFooter');
-      const sheetTop=window.innerHeight - (footer ? footer.offsetHeight : 0) - sheet.offsetHeight;
+      const sheetTop=window.innerHeight - (footer ? footer.offsetHeight : 0) - controls.offsetHeight;
       const room=sheetTop - top;
       const previewHeight=area.offsetHeight || 600;
       if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
@@ -244,29 +444,54 @@
         ? 'Uniform preview. Choose a membership type, rank and cut to begin.'
         : `Uniform preview: ${State.rank || ''} ${State.uniform ? State.uniform.replace(/_/g,' ') : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
     }
-    const auth = (typeof UI_AUTHZ !== 'undefined' && UI_AUTHZ[State.uniform]) || {showBadges:true,showPatches:true};
-    safeBy('cmdBadges')?.classList.toggle('hidden', !auth.showBadges);
-    safeBy('cmdPatches')?.classList.toggle('hidden', !auth.showPatches);
-  }
-  function ensureCommandBar(){
-    if(safeBy('capubCommandBar')) return;
-    const bar=document.createElement('div'); bar.id='capubCommandBar'; bar.className='capubCommandBar';
-    bar.innerHTML=`<button type="button" id="cmdRibbons">Ribbons</button><button type="button" id="cmdBadges">Badges</button><button type="button" id="cmdPatches">Patches</button><button type="button" class="ghost" id="cmdValidate">Check</button><button type="button" id="cmdDownload">Download PNG</button><button type="button" id="cmdTemplates">Templates</button>`;
-    document.body.appendChild(bar);
-    safeBy('cmdRibbons').onclick=()=>safeBy('expandRibbons')?.click();
-    safeBy('cmdBadges').onclick=()=>safeBy('expandBadges')?.click();
-    safeBy('cmdPatches').onclick=()=>safeBy('expandPatches')?.click();
-    safeBy('cmdDownload').onclick=()=>safeBy('downloadImage')?.click();
-    // Paper templates and 3D-print jigs for the pinned and sewn items (js/placement-templates.js, LIVE13 E64).
-    safeBy('cmdTemplates').hidden=!window.CAPUBPlacementTemplates; safeBy('cmdTemplates').onclick=()=>window.CAPUBPlacementTemplates?.open();
-    safeBy('cmdValidate').onclick=()=>{ if(typeof fullRender==='function') fullRender(); const w=(safeBy('capubV2WarningCount')||{}).textContent||'0'; toast(w==='0'?'Validation complete: no automatic issues found.':`Validation complete: ${w} warning(s) found.`); safeBy('capubV2StatusPanel')?.scrollIntoView({behavior:'smooth',block:'center'}); };
-  }
-  function polishPanels(){
-    document.querySelectorAll('.panelBlock').forEach((p,i)=>{ if(!p.dataset.uiPolished){ p.dataset.uiPolished='1'; p.style.animationDelay=(i*12)+'ms'; } });
   }
   function markActiveUniform(){
     if(typeof State==='undefined') return;
     document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===State.uniform));
+  }
+  // Step 2's fold of options (headgear, sleeves, skirt, the cord): hidden when neither panel in it has anything to
+  // show, its summary naming what is chosen so the fold can stay closed.
+  function syncUniformOptionsFold(){
+    const fold=safeBy('uniformOptionsMore'), summary=safeBy('uniformOptionsSummary');
+    if(!fold || !summary) return;
+    const shown=['garmentOptionsPanel','shoulderCordPanel'].map(safeBy).filter(p=>p && !p.hidden && !p.classList.contains('hidden'));
+    fold.hidden=!shown.length;
+    const picks=[];
+    shown.forEach(p=>{
+      p.querySelectorAll('select').forEach(sel=>{ const o=sel.options[sel.selectedIndex]; if(o && !sel.closest('.hidden') && !sel.hidden) picks.push(o.textContent.trim()); });
+      p.querySelectorAll('input[type="checkbox"]:checked').forEach(box=>{ const l=box.closest('label'); if(l) picks.push(l.textContent.trim().replace(/\s+/g,' ')); });
+    });
+    summary.textContent=picks.length ? `Uniform options: ${picks.join(' · ')}` : 'Uniform options';
+    summary.title=picks.join(' · ');
+  }
+  // The uniforms this member may not wear (js/setup.js marks them .locked with the reason) move out of their occasion
+  // groups into one fold at the end of the list, and back to their place when they are allowed again, so the list a
+  // member picks from is only what they may wear and still says why the rest is not there.
+  function placeLockedUniforms(){
+    const fold=safeBy('lockedUniforms'), grid=safeBy('lockedUniformGrid'), summary=safeBy('lockedUniformsSummary');
+    if(!fold || !grid) return;
+    const cards=[...document.querySelectorAll('#uniformList .uniformOption')];
+    cards.forEach((card,i)=>{
+      if(!card.dataset.homeGroup){
+        const home=card.closest('.uniformGroup');
+        card.dataset.homeGroup=home ? home.dataset.group : '';
+        card.dataset.homeOrder=String(i);
+      }
+      const locked=card.classList.contains('locked');
+      if(locked && card.parentNode!==grid) grid.appendChild(card);
+      if(!locked && card.parentNode===grid){
+        const home=document.querySelector(`#uniformList .uniformGroup[data-group="${card.dataset.homeGroup}"] .uniformGrid`);
+        if(!home) return;
+        const after=[...home.children].find(c=>Number(c.dataset.homeOrder)>Number(card.dataset.homeOrder));
+        home.insertBefore(card,after||null);
+      }
+    });
+    const n=grid.children.length;
+    fold.hidden=n===0;
+    if(summary && typeof State!=='undefined'){
+      const who=State.membership==='cadet' ? 'cadets' : State.membership==='senior' ? 'senior members' : 'you';
+      summary.textContent=`Not for ${who}: ${n} uniform${n===1?'':'s'}`;
+    }
   }
   // Field uniforms use a wider stage; refit when the stage size changes unless the member set their own zoom.
   function refitIfStageChanged(){
@@ -298,7 +523,7 @@
     label();
     header.appendChild(btn);
   }
-  function refreshAll(){ ensureThemeToggle(); ensureProgress(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); ensureCommandBar(); polishPanels(); updateProgress(); updateTopBar(); markActiveUniform(); refitIfStageChanged(); }
+  function refreshAll(){ ensureThemeToggle(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); wireStepper(); wireSheet(); watchImporter(); renderStepper(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsFold(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
@@ -317,12 +542,15 @@
     setTimeout(run,100);
   }
   ['change','click','input'].forEach(evt=>document.addEventListener(evt,scheduleRefresh,true));
+  document.addEventListener('capub:history',scheduleRefresh);
   window.addEventListener('resize',()=>{ if(V3.zoom<=1) fitZoom(); });
-  // Opening or closing the controls sheet changes the room the uniform has.
+  // Opening, closing or resizing the controls sheet changes the room the uniform has.
   document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
   // A new drawing can change the stage's width (a wide field uniform sheet, a tall coat).
   document.addEventListener('capub:rendered',()=>{ if(!V3.userZoomed) fitZoom(); });
   watchChromeHeights();
+  // The tabs and footer work from the first paint: wire them now, and again (idempotently) with the first refresh.
+  wireStepper(); wireSheet(); watchImporter(); renderStepper();
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 
@@ -448,7 +676,7 @@
 
 // Autosave and resume. The setup is written to this browser a moment after every change, so
 // a refresh or a closed tab no longer loses it. On the next visit the member is asked whether
-// to resume; nothing is loaded silently. It is separate from "Save to Browser", which stays a
+// to resume; nothing is loaded silently. It is separate from "Save to browser", which stays a
 // deliberate named save. Everything stays in localStorage on this device.
 (function capubAutosave(){
   const KEY='cap_uniform_builder_autosave_v1';

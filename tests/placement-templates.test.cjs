@@ -312,11 +312,16 @@ test('the triangulation: a square plate with holes and a stepped pocket gives a 
   near(tris.reduce((a, t) => a + STL.signedArea(t), 0), STL.signedArea(ring), 1e-12, 'concave ring area');
 });
 
-test('file names and the page control: a Templates button beside Download PNG opens the window', () => {
+test('file names and the page control: the Templates entry in the Finish panel opens the window', () => {
+  // The floating command bar that used to carry a Templates button is gone; the entry this module adds to the
+  // Check & finish step, after the download block, is the one place the window opens from.
   const ws = fs.readFileSync(path.join(root, 'js', 'workspace-ui.js'), 'utf8');
-  assert.match(ws, /id="cmdDownload">Download PNG<\/button><button type="button" id="cmdTemplates">Templates<\/button>/);
-  assert.match(ws, /safeBy\('cmdTemplates'\)\.onclick=\(\)=>window\.CAPUBPlacementTemplates\?\.open\(\)/);
+  assert.doesNotMatch(ws, /cmdTemplates|capubCommandBar/);
   const src = fs.readFileSync(path.join(root, 'js', 'placement-templates.js'), 'utf8');
+  assert.match(src, /id="placementTemplatesOpen" type="button" class="ghost">Placement templates \(print or 3D-print\)<\/button>/);
+  assert.match(src, /const png = document\.getElementById\('downloadImage'\);\s*const action = png && png\.closest\('\.finishAction'\);/);
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.match(html, /<div class="finishAction" id="downloadAction">\s*<button id="downloadImage" type="button">Download picture \(PNG\)<\/button>\s*<\/div>/);
   // PDF is the main action for each side and the SVG a link after it (LIVE13 E78, Ethan: "nobody prints svg's lol make pdf the default").
   assert.match(src, /data-what="pdf">Paper \(PDF\)<\/button>\$\{s\.attach === 'pin' \? `<button type="button" class="ghost" data-side="\$\{esc\(s\.key\)\}" data-what="stl">3D jig \(STL\)<\/button>` : ''\}<button type="button" class="ptAlt" data-side="\$\{esc\(s\.key\)\}" data-what="svg">also as SVG<\/button>/);
   assert.doesNotMatch(src, /data-what="pdf"[^>]*class="ghost"|class="ghost"[^>]*data-what="pdf"/, 'the PDF button is not the secondary style');
