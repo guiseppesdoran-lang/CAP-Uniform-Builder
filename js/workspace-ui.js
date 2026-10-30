@@ -27,8 +27,8 @@
 
   /* ---------- the stepper: four tabs, one step on screen, Back and Next in the footer ---------- */
   const STEP_ORDER=['profile','uniform','items','export'];
-  const STEP_NAMES={profile:'Profile',uniform:'Uniform',items:'Items',export:'Check & finish'};
-  // Awards are optional, so Check & finish only waits on profile and uniform.
+  const STEP_NAMES={profile:'Profile',uniform:'Uniform',items:'Items',export:'Extra'};
+  // Awards are optional, so Extra only waits on profile and uniform.
   const STEP_PREREQS={profile:[],uniform:['profile'],items:['profile','uniform'],export:['profile','uniform']};
   // The step on screen. Null until the first render, which opens the first unfinished step.
   let activeStep=null;

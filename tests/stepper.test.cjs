@@ -44,7 +44,7 @@ test('every control id of the old sidebar is still on the page exactly once',()=
 test('the panel reads top to bottom: tabs, one step, footer; no instructions about the panel',()=>{
   assert.match(aside,/<div class="stepTabs" role="tablist" aria-label="Steps">/);
   const tabs=[...aside.matchAll(/<button type="button" role="tab" id="stepTab-([a-z]+)" class="stepTab" data-step="\1" aria-controls="stepGroup-\1"[^>]*><span class="stepNum">(\d)<\/span><span class="stepLabel">([^<]+)<\/span><\/button>/g)].map(m=>[m[1],m[2],m[3]]);
-  assert.deepEqual(tabs,[['profile','1','Profile'],['uniform','2','Uniform'],['items','3','Items'],['export','4','Finish']]);
+  assert.deepEqual(tabs,[['profile','1','Profile'],['uniform','2','Uniform'],['items','3','Items'],['export','4','Extra']]);
   assert.ok(aside.indexOf('class="stepTabs"')<aside.indexOf('id="stepBody"') && aside.indexOf('id="stepBody"')<aside.indexOf('id="stepFooter"'));
   assert.match(aside,/<div class="controlsFooter" id="stepFooter">[\s\S]*<button type="button" id="stepBack" class="ghost stepBack" hidden>Back<\/button>\s*<button type="button" id="stepNext" class="stepNext">Next: Uniform<\/button>/);
   for(const words of ['Work down the steps','capubSectionHint','Uniform Builder Controls','Choose profile, select uniform']) assert.ok(!html.includes(words) && !ui.includes(words) && !css.includes(words),`"${words}" is gone`);
@@ -221,7 +221,7 @@ function makeDom(){
   const shell=el('main',{id:'layoutShell',class:'sidebar-open'});
   body.appendChild(shell);
   const tabs=el('div',{class:'stepTabs',role:'tablist'});
-  for(const [k,n,label] of [['profile','1','Profile'],['uniform','2','Uniform'],['items','3','Items'],['export','4','Finish']]){
+  for(const [k,n,label] of [['profile','1','Profile'],['uniform','2','Uniform'],['items','3','Items'],['export','4','Extra']]){
     const t=el('button',{id:'stepTab-'+k,class:'stepTab','data-step':k,'aria-selected':k==='profile'?'true':'false'});
     t.dataset.step=k; t.textContent=n+' '+label; tabs.appendChild(t);
   }
@@ -341,7 +341,7 @@ test('Next and Back walk the steps in order with the right labels; the last step
   assert.equal(t.by('stepGroup-uniform').querySelector('.stepGroupTitle').focused,1,'focus lands on the new step');
   t.by('stepNext').fire('click');
   assert.deepEqual(t.shown(),['items']);
-  assert.equal(t.by('stepNext').textContent,'Next: Check & finish');
+  assert.equal(t.by('stepNext').textContent,'Next: Extra');
   t.by('stepNext').fire('click');
   assert.deepEqual(t.shown(),['export']);
   assert.equal(t.by('stepNext').hidden,true);

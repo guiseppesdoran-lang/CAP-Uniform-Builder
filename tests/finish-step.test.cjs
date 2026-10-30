@@ -36,11 +36,13 @@ test('the shopping list button goes into the Finish slot and reads as secondary'
   assert.match(core,/btn\.className='ghost'/);
 });
 
-test('step four is named for what the member does there, and its download is the footer primary',()=>{
-  assert.match(exportStep,/<h3 class="stepGroupTitle" tabindex="-1">Check &amp; finish<\/h3>/);
-  assert.match(html,/id="stepTab-export"[^>]*><span class="stepNum">4<\/span><span class="stepLabel">Finish<\/span>/);
+test('step four is named Extra everywhere the member sees it, and its download is the footer primary',()=>{
+  assert.match(exportStep,/<h3 class="stepGroupTitle" tabindex="-1">Extra<\/h3>/);
+  assert.match(html,/id="stepTab-export"[^>]*><span class="stepNum">4<\/span><span class="stepLabel">Extra<\/span>/);
+  assert.match(finish,/<label class="fieldLabel">Extra<\/label>/);
   const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
-  assert.match(ui,/export:'Check & finish'/);
+  assert.match(ui,/export:'Extra'/);
+  assert.doesNotMatch(ui,/Check & finish|'Finish'/);
   // The download button is moved from the Finish panel into the footer once the page is up, and hidden there until the last step.
   assert.match(ui,/const download=safeBy\('downloadImage'\), row=document\.querySelector\('#stepFooter \.stepFooterRow'\);/);
   assert.match(ui,/if\(download && download\.closest\('#stepFooter'\)\) download\.hidden=!!nextStep;/);
