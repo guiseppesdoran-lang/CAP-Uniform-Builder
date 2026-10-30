@@ -241,13 +241,6 @@
       <div class="stepGroup" id="stepGroup-items" role="tabpanel" aria-labelledby="stepTab-items" hidden>
         <h3 class="stepGroupTitle" tabindex="-1">Items</h3>
 
-        <!-- QUICK STRIP: the shirts where ribbons are optional, down to grade, nametag and wings (js/wiring.js CAPUBQuickStrip) -->
-        <section id="quickStripPanel" class="panelBlock hidden">
-          <label class="fieldLabel" for="quickStripBtn">Quick strip</label>
-          <div id="quickStripHint" class="hintText" aria-live="polite"></div>
-          <button id="quickStripBtn" class="ghost mt-6" type="button" aria-pressed="false" aria-describedby="quickStripHint">Quick strip</button>
-        </section>
-
         <!-- RIBBONS: one card, the picker opens in a window (the sidebar gallery div is kept for the modal plumbing and hidden by CSS) -->
         <section id="groupRibbons" class="panelBlock itemCard" data-card="ribbons">
           <div class="cardRow">
@@ -265,6 +258,15 @@
               <input type="checkbox" id="cadetHighestOnly">
               Short Stack
               <span class="hintText optionHint">Only the highest cadet achievement ribbon is worn (CAPR 39-1, 11.1.2.2); the others stay selected.</span>
+            </label>
+          </div>
+
+          <!-- Shown only on the shirts where ribbons are optional (js/workspace-ui.js); the drawing leaves the rack off, the selections stay. -->
+          <div id="removeRibbonsRow" class="hidden">
+            <label class="fieldNote mt-8 optionWithHint">
+              <input type="checkbox" id="removeRibbons">
+              Remove ribbons
+              <span class="hintText optionHint">Ribbons are optional on this shirt; it is drawn without them and your selections stay.</span>
             </label>
           </div>
 

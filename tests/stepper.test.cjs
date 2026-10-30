@@ -26,8 +26,9 @@ const stepOf=id=>{
 /* ---------- markup ---------- */
 
 // Every control id the old one-column sidebar had, each still present exactly once (the wiring looks controls up by id).
-// stepGroup-tools, the "More tools" fold, is the one container that went: its contents live in steps 3 and 4.
-const OLD_IDS=['controls','stepGroup-profile','memberReportImportPanel','importMemberReportBtn','clearImportedReportBtn','memberReportUpload','memberReportImportStatus','capMembershipPanel','membershipLabel','membershipType','adultCadetRow','adultCadetCheckbox','rankSetupSelect','cadetFirstSergeantBlock','cadetFirstSergeantCheckbox','optionalName','capubV2TextPanel','firstNameRow','capubV2FirstName','capubV2LastName','plateLineRow','capubV2PlateLine','capubV2ShowText','stepGroup-uniform','genderBlock','cutLabel','jacketSelect','uniformBlock','uniformList','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordSelect','shoulderCordNote','stepGroup-items','quickStripPanel','quickStripHint','quickStripBtn','groupRibbons','clearRibbons','expandRibbons','cadetHighestOnlyRow','cadetHighestOnly','ribbonGallery','miniMountStyle','groupBadges','badgesPlannedNote','clearBadges','expandBadges','badgeGallery','groupPatches','clearPatches','expandPatches','unitPatchSearch','unitPatchSelect','unitPatchStatus','patchGallery','stepGroup-export','capubV2StatusPanel','capubV2RibbonCount','capubV2BadgeCount','capubV2PatchCount','capubV2WarningCount','capubV2Notices','finishPanel','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile','ribbonRackPanel','ribbonRackColumns','ribbonRackColumnsHint','ribbonRackArrangement','ribbonRackArrangementHint','ribbonRowOverridePanel','ribbonRowOverrideEnabled','ribbonRowOverrideControls','ribbonRowOverrideGrid','addRibbonOverrideRow','removeRibbonOverrideRow','ribbonRowOverrideStatus','capubV2QuickPanel','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset'];
+// stepGroup-tools, the "More tools" fold, went (its contents live in steps 3 and 4), and the Quick strip panel went with its
+// feature (LIVE13: a Remove ribbons box on the ribbons card instead).
+const OLD_IDS=['controls','stepGroup-profile','memberReportImportPanel','importMemberReportBtn','clearImportedReportBtn','memberReportUpload','memberReportImportStatus','capMembershipPanel','membershipLabel','membershipType','adultCadetRow','adultCadetCheckbox','rankSetupSelect','cadetFirstSergeantBlock','cadetFirstSergeantCheckbox','optionalName','capubV2TextPanel','firstNameRow','capubV2FirstName','capubV2LastName','plateLineRow','capubV2PlateLine','capubV2ShowText','stepGroup-uniform','genderBlock','cutLabel','jacketSelect','uniformBlock','uniformList','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordSelect','shoulderCordNote','stepGroup-items','groupRibbons','clearRibbons','expandRibbons','cadetHighestOnlyRow','cadetHighestOnly','ribbonGallery','miniMountStyle','groupBadges','badgesPlannedNote','clearBadges','expandBadges','badgeGallery','groupPatches','clearPatches','expandPatches','unitPatchSearch','unitPatchSelect','unitPatchStatus','patchGallery','stepGroup-export','capubV2StatusPanel','capubV2RibbonCount','capubV2BadgeCount','capubV2PatchCount','capubV2WarningCount','capubV2Notices','finishPanel','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile','ribbonRackPanel','ribbonRackColumns','ribbonRackColumnsHint','ribbonRackArrangement','ribbonRackArrangementHint','ribbonRowOverridePanel','ribbonRowOverrideEnabled','ribbonRowOverrideControls','ribbonRowOverrideGrid','addRibbonOverrideRow','removeRibbonOverrideRow','ribbonRowOverrideStatus','capubV2QuickPanel','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset'];
 
 test('every control id of the old sidebar is still on the page exactly once',()=>{
   const ids=[...html.matchAll(/(?<![-\w])id="([^"]+)"/g)].map(m=>m[1]);
@@ -35,6 +36,8 @@ test('every control id of the old sidebar is still on the page exactly once',()=
   for(const id of OLD_IDS) assert.equal(count(id),1,`id="${id}"`);
   assert.equal(count('stepGroup-tools'),0,'the More tools fold is gone');
   assert.equal(count('sheetClose')+count('sheetHandle'),0,'the bottom sheet is gone');
+  assert.equal(count('quickStripPanel')+count('quickStripBtn')+count('quickStripHint'),0,'the quick strip is gone');
+  assert.equal(count('removeRibbons'),1);
   const dupes=ids.filter((id,i)=>ids.indexOf(id)!==i);
   assert.deepEqual(dupes,[],'no id twice');
   // The gallery divs stay for the modal plumbing.
@@ -64,7 +67,7 @@ test('the controls sit in the step they belong to; the cut is part of the profil
   const where={
     profile:['memberReportImportPanel','membershipType','rankSetupSelect','jacketSelect','adultCadetCheckbox','cadetFirstSergeantCheckbox','optionalName'],
     uniform:['uniformList','garmentOptionsPanel','shoulderCordSelect'],
-    items:['quickStripPanel','expandRibbons','clearRibbons','cadetHighestOnly','miniMountStyle','ribbonRackColumns','ribbonRowOverridePanel','expandBadges','badgesPlannedNote','expandPatches','unitPatchSearch','unitPatchSelect'],
+    items:['expandRibbons','clearRibbons','cadetHighestOnly','removeRibbons','miniMountStyle','ribbonRackColumns','ribbonRowOverridePanel','expandBadges','badgesPlannedNote','expandPatches','unitPatchSearch','unitPatchSelect'],
     export:['capubV2StatusPanel','capubV2Notices','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset']
   };
   for(const [step,ids] of Object.entries(where)) for(const id of ids) assert.equal(stepOf(id),step,`${id} is in step ${step}`);

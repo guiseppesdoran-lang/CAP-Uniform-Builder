@@ -135,7 +135,7 @@ The dashboard's CSV exports are another way to take a copy.
 random id per page load, and events: `visit` (guest or code, phone/tablet/desktop, theme, new or
 returning), `build` (uniform, cut, membership, grade, counts of ribbons, devices, badges, military
 badges, patches and cords, uniform options changed from their defaults, whether a member report
-import fed it), `png_download`, `import` (ok or failed, item counts), `quick_strip`, `templates`,
+import fed it), `png_download`, `import` (ok or failed, item counts), `remove_ribbons`, `templates`,
 `shopping_open`, `feedback_sent`, `uniform_switch`, `setup_file` and `error` (message and file). It
 never sends a name, CAPID, nameplate or duty-title text, a unit charter, member report contents or
 file names. With Do Not Track or Global Privacy Control on, only `visit` and `build` go, without any

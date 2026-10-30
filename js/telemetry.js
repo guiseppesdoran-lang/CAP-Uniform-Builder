@@ -6,7 +6,7 @@
 //                   30 s while the member keeps changing it, and the last unsent setup when the page is closed. Carries
 //                   the uniform, cut, membership, grade, counts of ribbons, devices, badges, military badges, patches and
 //                   cords, the uniform options changed from their defaults, and whether a member report import fed it
-//   png_download, import (ok or failed, item counts), quick_strip, templates (side, svg/pdf/stl), shopping_open,
+//   png_download, import (ok or failed, item counts), remove_ribbons, templates (side, svg/pdf/stl), shopping_open,
 //   feedback_sent, uniform_switch, setup_file (save/open), error (a script error's message and file, no stack)
 //
 // Never sent: a name, CAPID, nameplate or duty-title text, a unit charter, member report contents or file names, the
@@ -106,7 +106,7 @@
     }
     if(S.uniform === 'mess_dress' || S.uniform === 'semi_formal') options.miniMount = S.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     if(S.cadetHighestOnly) options.cadetHighestOnly = true;
-    if(S.quickStrip) options.quickStrip = true;
+    if(S.hideRibbons) options.hideRibbons = true;
     const ribbons = new Set((S.ribbons || []).map(r => r && r.id).filter(Boolean));
     const military = typeof window.isMilitaryRibbonId === 'function' ? [...ribbons].filter(id => window.isMilitaryRibbonId(id)).length : 0;
     const text = S.text || {};
@@ -150,7 +150,7 @@
     const access = document.documentElement.getAttribute('data-access');
     if(!access) return;
     visitSent = true;
-    const d = { access: access === 'guest' ? 'guest' : 'code', viewport: viewport(), theme: theme(), ux: document.documentElement.dataset.ux === '2' ? 'guided' : 'standard' };
+    const d = { access: access === 'guest' ? 'guest' : 'code', viewport: viewport(), theme: theme() };
     if(returning !== null) d.returning = returning;
     track('visit', d);
   }

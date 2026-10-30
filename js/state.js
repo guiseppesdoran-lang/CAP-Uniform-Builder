@@ -91,9 +91,9 @@ const State = {
     graduatedCommander:false
   },
 
-  // Quick strip (js/wiring.js CAPUBQuickStrip): null, or { uniform, snapshot } while a shirt is stripped to grade, nametag and
-  // wings; snapshot is the ribbon, badge, patch and cord selections Restore puts back. Saved with the setup.
-  quickStrip:null,
+  // Remove ribbons (LIVE13): the shirts where ribbons are optional are drawn without the rack while the selections stay
+  // (js/uniform-view.js buildRibbons reads it only where data/uniform-rules.js makes ribbons optional). Saved with the setup.
+  hideRibbons:false,
 
   // UNIVERSAL calibration (per-layer key)
 };

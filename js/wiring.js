@@ -30,6 +30,18 @@ if(cadetHighestOnlyToggle){
   });
 }
 
+// Remove ribbons (LIVE13, in place of the quick strip): on the shirts where ribbons are optional (CAPR 39-1 4.1.11.1.1.2.2,
+// 4.1.12.2.4.2; the aviator shirt 4.2.5.1.2.2, 4.2.6.2.6.2) the drawing leaves the rack off while the selections stay
+// (js/uniform-view.js buildRibbons). Saved with the setup; js/workspace-ui.js shows the box only where it applies.
+const removeRibbonsToggle = by('removeRibbons');
+if(removeRibbonsToggle){
+  removeRibbonsToggle.addEventListener('change', e=>{
+    State.hideRibbons = !!e.target.checked;
+    fullRender();
+    window.CAPUB_TELEMETRY?.track('remove_ribbons', { on: State.hideRibbons, uniform: State.uniform });
+  });
+}
+
 const miniMountStyleSelect = by('miniMountStyle');
 if(miniMountStyleSelect){
   miniMountStyleSelect.value = State.miniMountStyle;
@@ -774,8 +786,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       commandInsignia: State.commandInsignia,
       // The ribbons the cadet grade added (js/setup.js capubApplyGradeRibbons), so a later grade change takes off only those.
       gradeRibbons: State.gradeRibbons || null,
-      // The quick strip (LIVE12 E48): the uniform it was pressed on and the selections it holds for Restore.
-      quickStrip: State.quickStrip || null
+      // Remove ribbons (LIVE13): the shirt is drawn without its rack while the selections stay.
+      hideRibbons: !!State.hideRibbons
     };
   }
 
@@ -901,14 +913,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       const ids = [...new Set(gr.ids.filter(id => typeof id === 'string' && CADET_GRADE_RIBBON_IDS.includes(id)))];
       if(ids.length) out.gradeRibbons = { rank: gr.rank, ids };
     }
-    // The selections a quick strip holds go through the same checks as the setup's own (a snapshot inside a file is untrusted too).
-    out.quickStrip = null;
-    const qs = p.quickStrip;
-    if(qs && typeof qs === 'object' && !Array.isArray(qs) && window.CAPUBQuickStrip && CAPUBQuickStrip.UNIFORMS.includes(qs.uniform)
-      && qs.snapshot && typeof qs.snapshot === 'object' && !Array.isArray(qs.snapshot)){
-      const held = sanitizeProfile(Object.assign({}, p, CAPUBQuickStrip.pick(qs.snapshot), { quickStrip: null }));
-      out.quickStrip = { uniform: qs.uniform, snapshot: CAPUBQuickStrip.pick(held) };
-    }
+    out.hideRibbons = !!p.hideRibbons;
     return out;
   }
 
@@ -943,7 +948,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.garment = p.garment;
     State.commandInsignia = p.commandInsignia;
     State.gradeRibbons = p.gradeRibbons;
-    State.quickStrip = p.quickStrip;
+    State.hideRibbons = !!p.hideRibbons;
 
     populateRankSetup();
     syncCadetFirstSergeantControl();
@@ -953,7 +958,6 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     syncTextControls();
     buildRibbonGallery(); buildBadgeGallery(); buildPatchGallery();
     if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
-    if(window.CAPUBQuickStrip) CAPUBQuickStrip.adopt();
     fullRender();
   }
 
@@ -1227,185 +1231,3 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   setTimeout(()=>{ wireV2Controls(); updateStatusPanel(); },0);
 })();
 
-/* ===========================
-   QUICK STRIP (LIVE12 E48)
-   ===========================
-   Ducky: "there should be an option to quick strip the shirt down to just mini wings, rank, and name". One button on the
-   shirts where ribbons are optional (the blue shirt and blouse, CAPR 39-1 4.1.11.1.1.2.2, 4.1.12.2.4.2; the aviator shirt,
-   4.2.5.1.2.2, 4.2.6.2.6.2 with ICL 25-02) takes every ribbon, badge, patch and cord off and leaves the grade insignia, the
-   nametag and the member's aviation badge. On the blue shirt and blouse the chaplain badge stays as well: "Chaplain and CAP
-   aviation badges are mandatory" there (4.1.11.1.1.2.3.1, 4.1.12.2.5.1). The shirt draws the badges' dress art only (there is
-   no miniature size for it in the builder), so the wings stay the size they are drawn.
-
-   Selections are one set for every uniform, so the strip holds the member's selections (State.quickStrip.snapshot) and puts
-   them back: when the button (now "Restore") is pressed again, and when the member moves to another uniform, which then shows
-   everything as before (the strip is a view of that shirt only). A change the member makes by hand to a ribbon, badge, patch
-   or cord while stripped keeps the change and lets the held selections go (Undo still steps back to them). */
-(function capubQuickStrip(){
-  'use strict';
-  const UNIFORMS = ['blues_b', 'aviator'];
-  // The selection fields the strip changes and Restore puts back.
-  const FIELDS = ['ribbons', 'ribbonSelections', 'badges', 'badgeSelections', 'badgeChoices', 'militaryBadges', 'patches', 'patchSelections', 'unitPatchCharter', 'shoulderCord', 'commandInsignia'];
-  const clone = v => v === undefined ? undefined : JSON.parse(JSON.stringify(v));
-  function pick(src){
-    const out = {};
-    for(const k of FIELDS) if(src && src[k] !== undefined) out[k] = clone(src[k]);
-    return out;
-  }
-  // The paragraph that makes ribbons optional on the shirt in front of the member.
-  function ribbonPara(){
-    const female = State.gender === 'female';
-    if(State.uniform === 'aviator') return female ? '4.2.6.2.6.2' : '4.2.5.1.2.2';
-    return female ? '4.1.12.2.4.2' : '4.1.11.1.1.2.2';
-  }
-  const applies = () => UNIFORMS.includes(State.uniform);
-  const family = id => (window.CAPUBBadgeCatalog && CAPUBBadgeCatalog.family(id)) || null;
-  const isCommand = id => typeof isCommandInsigniaBadge === 'function' ? isCommandInsigniaBadge(id) : /commander_badge$/.test(id);
-
-  // What a hand change is measured against: the worn selections, not the bookkeeping the galleries keep beside them.
-  function signature(){
-    const checked = o => Object.keys(o || {}).filter(id => o[id] && (o[id].checked || o[id].selected)).sort();
-    return JSON.stringify([
-      checked(State.ribbonSelections),
-      (State.badges || []).map(id => [id, (State.badgeSelections?.[id] || {}).level || '']),
-      checked(State.militaryBadges),
-      [...(State.patches || [])].sort(), checked(State.patchSelections),
-      State.unitPatchCharter || '', State.shoulderCord || '', !!State.commandInsignia?.graduatedCommander
-    ]);
-  }
-  let strippedSig = null;
-
-  // The aviation badge the member sees on this shirt now: the one drawn, else the one picked for the aviation place, else the first.
-  function wingsNow(){
-    const aviation = (State.badges || []).filter(id => family(id) === 'aviation');
-    if(aviation.length < 2) return aviation[0] || null;
-    const drawn = (window.CAPUBUniformView?.scene?.layers || []).filter(l => l.role === 'badge').map(l => String(l.key || '').replace(/^badge:/, ''));
-    const seen = aviation.find(id => drawn.includes(id));
-    if(seen) return seen;
-    const picked = (State.badgeChoices || {})[State.uniform]?.aviation;
-    const pickedId = typeof picked === 'string' ? picked : picked && Object.values(picked)[0];
-    return aviation.includes(pickedId) ? pickedId : aviation[0];
-  }
-  // A U.S. military aviation badge (wings) on the blue shirt, kept only when the member has no CAP aviation badge: the CAP
-  // badge is the mandatory one (4.1.11.1.1.2.3.1) and a military aviation badge is worn below it, optionally.
-  function militaryWingsNow(){
-    if(State.uniform !== 'blues_b') return null;
-    const records = window.CAPUBMilitaryData?.badges || [];
-    return Object.keys(State.militaryBadges || {}).find(id => State.militaryBadges[id]?.selected
-      && ['AVIATION', 'AIRCREW'].includes(String(records.find(b => b.id === id)?.family || '').toUpperCase())) || null;
-  }
-
-  function refreshPanels(){
-    if(typeof buildRibbonGallery === 'function') buildRibbonGallery();
-    if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
-    if(typeof buildPatchGallery === 'function') buildPatchGallery();
-    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
-    if(typeof syncShoulderCordControl === 'function') syncShoulderCordControl();
-  }
-
-  function strip(){
-    if(!applies() || State.quickStrip) return;
-    const snapshot = pick(State);
-    const wings = wingsNow();
-    const keep = [...(State.uniform === 'blues_b' ? (State.badges || []).filter(id => family(id) === 'chaplain') : []), ...(wings ? [wings] : [])];
-    const keepMilitary = wings ? null : militaryWingsNow();
-    const hadCommand = (State.badges || []).some(isCommand);
-
-    for(const sel of Object.values(State.ribbonSelections || {})) if(sel) sel.checked = false;
-    State.ribbons = [];
-    for(const [id, sel] of Object.entries(State.badgeSelections || {})) if(sel) sel.checked = keep.includes(id);
-    State.badges = (State.badges || []).filter(id => keep.includes(id));
-    const military = {};
-    if(keepMilitary) military[keepMilitary] = clone(State.militaryBadges[keepMilitary]);
-    State.militaryBadges = military;
-    for(const sel of Object.values(State.patchSelections || {})) if(sel) sel.checked = false;
-    State.patches = [];
-    State.unitPatchCharter = '';
-    State.shoulderCord = null;
-    State.quickStrip = { uniform: State.uniform, snapshot };
-
-    rebuildBadgesFromGallery(); // also rebuilds the (now empty) ribbon rack and redraws
-    refreshPanels();
-    strippedSig = signature();
-    fullRender();
-    sync();
-    const left = [];
-    if(!wings && !keepMilitary) left.push('no aviation badge is selected, so none is shown');
-    if(hadCommand) left.push(`the command insignia pin is off too, though CAPR 39-1 makes it mandatory for commanders (${State.uniform === 'aviator' ? '4.2.5.1.3.3' : (State.gender === 'female' ? '4.1.12.2.5.3' : '4.1.11.1.1.2.3.3')})`);
-    capubNotify('Stripped to grade, nametag and wings' + (left.length ? ': ' + left.join('; ') : '') + '. Press Restore to put everything back.', left.length ? 9000 : 4000);
-  }
-
-  // Put the held selections back. `why` is 'button' or 'uniform' (the member moved to another uniform).
-  function restore(why){
-    const qs = State.quickStrip;
-    if(!qs) return;
-    const held = qs.snapshot || {};
-    State.quickStrip = null;
-    strippedSig = null;
-    for(const k of FIELDS) if(held[k] !== undefined) State[k] = clone(held[k]);
-    if(!Array.isArray(State.ribbons)) State.ribbons = [];
-    rebuildRibbonsFromGallery();
-    refreshPanels();
-    sync();
-    if(why === 'uniform') capubNotify('Your ribbons and badges are back: the quick strip was for the shirt only.', 4000);
-  }
-
-  // A setup loaded with a strip in it (Resume, Load, Import, Undo): what was loaded is the stripped state.
-  function adopt(){ strippedSig = State.quickStrip ? signature() : null; }
-
-  // The member left the stripped uniform, or changed a selection by hand.
-  function check(){
-    const qs = State.quickStrip;
-    if(!qs) return false;
-    if(State.uniform !== qs.uniform){ restore('uniform'); return true; }
-    if(strippedSig === null){ strippedSig = signature(); return false; }
-    if(signature() !== strippedSig){
-      State.quickStrip = null;
-      strippedSig = null;
-      sync();
-      capubNotify('Quick strip ended: your change is kept. Undo steps back to the stripped shirt and its Restore.', 6000);
-      return true;
-    }
-    return false;
-  }
-
-  function sync(){
-    const panel = by('quickStripPanel'), btn = by('quickStripBtn'), hint = by('quickStripHint');
-    if(!panel || !btn) return;
-    const show = applies() && !!State.membership;
-    panel.classList.toggle('hidden', !show);
-    if(!show) return;
-    const on = !!State.quickStrip && State.quickStrip.uniform === State.uniform;
-    btn.textContent = on ? 'Restore' : 'Quick strip';
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    if(!hint) return;
-    if(on){
-      const held = State.quickStrip.snapshot || {};
-      const ribbons = new Set((held.ribbons || []).map(r => r.id)).size;
-      const badges = (held.badges || []).length + Object.keys(held.militaryBadges || {}).length;
-      hint.textContent = `Stripped to grade, nametag and wings. Restore puts back the ${ribbons} ribbon${ribbons === 1 ? '' : 's'} and ${badges} badge${badges === 1 ? '' : 's'} you had; moving to another uniform puts them back too.`;
-    }else{
-      hint.textContent = `Takes every ribbon, badge, patch and cord off this shirt and leaves the grade insignia, the nametag and your aviation badge${State.uniform === 'blues_b' ? ' (a chaplain badge stays too: it is mandatory on this shirt)' : ''}. Ribbons are optional on this shirt (CAPR 39-1, ${ribbonPara()}).`;
-    }
-  }
-
-  const btn = by('quickStripBtn');
-  if(btn) btn.addEventListener('click', () => {
-    if(State.quickStrip && State.quickStrip.uniform === State.uniform){ restore('button'); fullRender(); window.CAPUB_TELEMETRY?.track('quick_strip', { action: 'restore', uniform: State.uniform }); }
-    else { strip(); if(State.quickStrip) window.CAPUB_TELEMETRY?.track('quick_strip', { action: 'strip', uniform: State.uniform }); }
-  });
-
-  // Leaving the stripped uniform puts the selections back before the next drawing (every uniform change calls fullRender).
-  const previous = fullRender;
-  fullRender = function capubQuickStripFullRender(){
-    if(State.quickStrip && State.quickStrip.uniform !== State.uniform) restore('uniform');
-    const out = previous.apply(this, arguments);
-    sync();
-    return out;
-  };
-  // A selection changed by hand redraws without fullRender; the drawing says so.
-  document.addEventListener('capub:rendered', () => { if(check()) fullRender(); else sync(); });
-
-  window.CAPUBQuickStrip = { UNIFORMS, FIELDS, pick, strip, restore, adopt, signature, sync, get active(){ return !!State.quickStrip; } };
-  sync();
-})();

@@ -72,10 +72,6 @@ function updateAvailabilityUI(prevUniform){
   // Miniature medals are worn only on Mess Dress and Corporate Semi-Formal (CAPR 39-1 11.1.4).
   const miniWorn = CAPUBUniformRules.allowsMiniMedals(State.uniform);
   by('miniMountStyle')?.closest('label')?.classList.toggle('hidden', !miniWorn);
-  const badgeCommand = by('cmdBadges');
-  const patchCommand = by('cmdPatches');
-  if(badgeCommand) badgeCommand.classList.toggle('hidden', !auth.showBadges);
-  if(patchCommand) patchCommand.classList.toggle('hidden', !auth.showPatches);
 
   if(prevUniform && prevUniform!==State.uniform){
     // Convert metal/cloth counterparts while the previous selections still

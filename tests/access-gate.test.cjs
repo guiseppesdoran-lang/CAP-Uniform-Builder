@@ -7,13 +7,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const read = f => fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
 
-test('the gate offers "Continue as guest" under the code entry, as a secondary button, and keeps the hint and both notes', () => {
+test('the gate offers "Continue as guest" under the code entry, as a secondary button, and keeps the hint and the three notes (credits, unofficial, what is collected)', () => {
   const form = read('index.html').split('<form id="accessGateForm"')[1].split('</form>')[0];
   const enter = form.indexOf('<button type="submit">Enter</button>');
   const guest = form.indexOf('<button id="accessGateGuest" class="ghost" type="button">Continue as guest</button>');
   assert.ok(enter > 0 && guest > enter, 'the guest button sits below the Enter button');
   assert.ok(form.indexOf('accessGateHint') > guest, 'the hint stays below');
-  assert.equal((form.match(/class="accessGateNote"/g) || []).length, 2);
+  assert.equal((form.match(/class="accessGateNote"/g) || []).length, 3);
 });
 
 test('a guest is kept for the session only and marked data-access="guest"; the code path is unchanged', () => {

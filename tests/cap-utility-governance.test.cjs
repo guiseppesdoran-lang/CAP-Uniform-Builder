@@ -16,8 +16,6 @@ test('National Staff uses a dedicated OCP sleeve patch selection', () => {
 test('utility uniforms expose both fabric badge and patch selection', () => {
   assert.match(source, /<section id="groupBadges" class="panelBlock itemCard" data-card="badges">/);
   assert.match(source, /by\('groupBadges'\)\.classList\.toggle\('hidden', !auth\.showBadges && !planned\)/);
-  assert.match(source, /badgeCommand\.classList\.toggle\('hidden', !auth\.showBadges\)/);
-  assert.match(source, /patchCommand\.classList\.toggle\('hidden', !auth\.showPatches\)/);
   for(const id of ['corporate_field','abu','ocp','flight_suit']){
     assert.match(source, new RegExp(`${id}:\\{ showBadges:true, showPatches:true \\}`));
   }

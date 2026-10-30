@@ -65,7 +65,9 @@
   function buildRibbons(){
     const out = [];
     const seen = new Set();
-    const ordered = typeof sortRibbons === 'function' ? sortRibbons(State.ribbons || []) : (State.ribbons || []);
+    // Remove ribbons (LIVE13): on a shirt where ribbons are optional the member may leave the rack off; the selections stay.
+    const removed = !!State.hideRibbons && CAPUBUniformRules.ribbonPolicy(State.uniform) === 'optional';
+    const ordered = removed ? [] : (typeof sortRibbons === 'function' ? sortRibbons(State.ribbons || []) : (State.ribbons || []));
     for(const inst of ordered){
       const id = inst.id;
       if(isMilitaryRibbonId(id)){

@@ -221,6 +221,10 @@
       card.classList.toggle('unavailable',!usable);
     };
     set('ribbons',`${ribbons} selected`,ribbons,ribbonRule(u),!r || r.allowsRibbons(u) || r.allowsMiniMedals(u));
+    // Remove ribbons: only where the regulation makes them optional, and the box follows the saved setup.
+    const removeRow=safeBy('removeRibbonsRow'), removeBox=safeBy('removeRibbons');
+    if(removeRow) removeRow.classList.toggle('hidden', !(r && r.ribbonPolicy(u)==='optional' && State.membership));
+    if(removeBox) removeBox.checked=!!State.hideRibbons;
     const planned=(!auth.showBadges && r) ? r.plannedBadge(u) : null;
     set('badges',
       planned ? `Up to ${planned.count}` : (cap ? `${badges} of ${cap}` : `${badges} selected`),

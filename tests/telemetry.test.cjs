@@ -84,7 +84,7 @@ test('events are queued, sent with the random visitor and visit ids, and flushed
   assert.equal(req.body.vid, visitor);
   assert.match(req.body.sid, /^[a-z0-9]{16}$/);
   assert.deepEqual(req.body.events.map(e => e.name), ['visit', 'png_download'], 'the visit is first once the gate is passed');
-  assert.deepEqual(JSON.parse(JSON.stringify(req.body.events[0].data)), { access: 'code', viewport: 'phone', theme: 'light', ux: 'standard', returning: false });
+  assert.deepEqual(JSON.parse(JSON.stringify(req.body.events[0].data)), { access: 'code', viewport: 'phone', theme: 'light', returning: false });
   T.track('shopping_open', { uniform: 'blues_b' });
   for(const f of t.listeners.pagehide) f();
   const beacon = t.sent.find(r => r.beacon);
@@ -169,7 +169,7 @@ test('the page loads telemetry and feedback as feature scripts, and says honestl
   assert.match(about, /Do Not Track/);
   assert.match(read('config.js'), /metrics: true,[\s\S]*feedback: true/);
   // Each hook is one guarded call, so the page works without js/telemetry.js.
-  const hooks = { 'js/bootstrap.js': ['png_download'], 'js/wiring.js': ['uniform_switch', 'quick_strip', 'setup_file'], 'js/member-report-import.js': ['import'], 'purchase-feature-core.js': ['shopping_open'] };
+  const hooks = { 'js/bootstrap.js': ['png_download'], 'js/wiring.js': ['uniform_switch', 'remove_ribbons', 'setup_file'], 'js/member-report-import.js': ['import'], 'purchase-feature-core.js': ['shopping_open'] };
   for(const [file, names] of Object.entries(hooks)){
     const src = read(file);
     for(const n of names) assert.match(src, new RegExp(`CAPUB_TELEMETRY\\?\\.track\\('${n}'`), `${file} ${n}`);
