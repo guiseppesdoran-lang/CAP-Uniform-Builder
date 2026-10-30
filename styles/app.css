@@ -315,8 +315,8 @@ header h1::after{
   font-size:var(--t-md);
   line-height:1;
 }
-.stepTab.done .stepNum{background:var(--ok);border-color:var(--ok);color:#fff;font-size:0}
-.stepTab.done .stepNum::before{content:"\2713";font-size:var(--t-md)}
+.stepTab.done{color:var(--ink)}
+.stepTab.done .stepNum{border-color:var(--ink)}
 .stepTab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--action)}
 .stepTab[aria-selected="true"]:hover{background:transparent;border-bottom-color:var(--action)}
 .stepTab[aria-selected="true"] .stepNum{background:var(--action);border-color:var(--action);color:var(--on-action)}
@@ -617,7 +617,7 @@ header h1::after{
 .previewEmptyState .emptyChecklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2);text-align:left;font-size:var(--t-md);color:var(--muted)}
 .previewEmptyState .emptyChecklist li::before{content:"\25CB";display:inline-block;width:24px;color:var(--muted)}
 .previewEmptyState .emptyChecklist li.ok{color:var(--ok)}
-.previewEmptyState .emptyChecklist li.ok::before{content:"\2713";color:var(--ok);font-weight:700}
+.previewEmptyState .emptyChecklist li.ok::before{content:"\25CF";color:var(--ok)}
 .previewEmptyState button{width:auto;margin:0;padding:0 var(--s5)}
 
 .tooltipBubble{
