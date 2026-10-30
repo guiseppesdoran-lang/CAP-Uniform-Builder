@@ -130,6 +130,7 @@ async function launch(){
     if(!drawn.some(d => d.startsWith('information_technology_technician_badge@') && Number(d.split('@')[1]) > 15)) fails.push('the IT badge is not drawn on the left pocket');
     await shot('1-picked');
     // Keyboard: focus the checked radio of the right pocket and press the down arrow; the pick moves to the next badge in that place only.
+    await ev(`CAPUB_V3.showStep('items')`); // the chooser sits on the Items step, and a hidden radio takes no focus
     const focused = await ev(`(() => { const r = document.querySelector('#badgeChooser .badgeChooserSlot[data-slot="right-pocket"] input:checked'); r.focus(); return document.hasFocus() && document.activeElement === r; })()`);
     if(!focused) fails.push('the right pocket radio did not take focus');
     const before = picked(after);

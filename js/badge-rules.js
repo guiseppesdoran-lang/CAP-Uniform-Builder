@@ -293,15 +293,14 @@ function getBadgeSlotLabel(id){
   return badgeLocations[id] || 'UN';
 }
 // The line under a badge's name in the pickers. Members read where it is worn in words; the
-// regulation abbreviation, drawn size and id sit in the tooltip, and show in full with ?dev=1.
+// regulation abbreviation, drawn size and id show only with ?dev=1.
 function getBadgeTileMetaHtml(id, slotText){
   const slot = slotText || getBadgeSlotLabel(id);
   if(CAPUB_DEV){
     return `<div class="sub">${escapeHtml(id)}</div><div class="sub">Slot: <b>${escapeHtml(slot)}</b></div>`;
   }
   const caption = CAPUBBadgeCaptions.placementCaption(slot);
-  const detail = `${slot} · ${id}`;
-  return `<div class="sub" title="${escapeHtml(detail)}">Worn: <b>${escapeHtml(caption)}</b></div>`;
+  return `<div class="sub">Worn: <b>${escapeHtml(caption)}</b></div>`;
 }
 function countBadgesForLimit(ids = State.badges){
   return ids.filter(id => !isCommandInsigniaBadge(id)).length;
