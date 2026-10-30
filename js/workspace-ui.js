@@ -235,7 +235,9 @@
     if(!status || !clear || status.dataset.watched) return;
     status.dataset.watched='1';
     const first=status.textContent;
-    const sync=()=>{ clear.hidden=status.textContent===first; };
+    // The clear button (js/member-report-import.js) writes its own idle line; both mean nothing is imported.
+    const idle=()=>{ const t=status.textContent.trim(); return t===first.trim() || /^No report imported yet\.?$/.test(t); };
+    const sync=()=>{ clear.hidden=idle(); };
     sync();
     if(typeof MutationObserver==='function') new MutationObserver(sync).observe(status,{childList:true,characterData:true,subtree:true});
   }

@@ -27,6 +27,17 @@ test('hint text is a line, not a paragraph',()=>{
   assert.ok(long.length<=4,`these hints are long: ${long.map(t=>t.slice(0,60)).join(' | ')}`);
 });
 
+test('what is and is not collected is said at the gate, under the import button and in About (LIVE13, Ethan)',()=>{
+  assert.match(visible,/<p class="accessGateNote">Anonymous usage counts only, to improve this tool\. Names are kept out and member searches are never stored\.<\/p>/);
+  assert.match(visible,/<div id="memberReportImportStatus" class="hintText" aria-live="polite">Nothing is imported yet\. A report is read on your device and is not kept or sent\.<\/div>/);
+  const about=visible.slice(visible.indexOf('<dialog id="aboutDialog"'),visible.indexOf('</dialog>'));
+  assert.match(about,/<b>Privacy\.<\/b> Usage counts are collected only to improve this tool\./);
+  assert.match(about,/ever leave your browser, member report searches are never stored, and with Do Not Track on/);
+  // The clear button shows once a report has been read, whichever idle line the status carries.
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/\/\^No report imported yet\\\.\?\$\/\.test\(t\)/);
+});
+
 test('controls name the thing, not the implementation',()=>{
   assert.match(visible,/<label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut<\/label>/);
   assert.match(visible,/Miniature medal mounting method/);

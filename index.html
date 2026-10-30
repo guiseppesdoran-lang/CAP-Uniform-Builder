@@ -29,6 +29,7 @@
     <details class="accessGateHint"><summary>Need a hint?</summary><p>It is the second creator's CAPID.</p></details>
     <p class="accessGateNote">Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.</p>
     <p class="accessGateNote">Unofficial member resource. Not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</p>
+    <p class="accessGateNote">Anonymous usage counts only, to improve this tool. Names are kept out and member searches are never stored.</p>
   </form>
 </div>
 
@@ -63,7 +64,7 @@
           <label class="fieldLabel" for="importMemberReportBtn">Import a CAP member report</label>
           <button id="importMemberReportBtn" class="ghost" type="button">Import member report…</button>
           <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
-          <div id="memberReportImportStatus" class="hintText" aria-live="polite">No report imported yet.</div>
+          <div id="memberReportImportStatus" class="hintText" aria-live="polite">Nothing is imported yet. A report is read on your device and is not kept or sent.</div>
           <details class="moreDetails" id="memberReportImportMore">
             <summary>What the import reads</summary>
             <div class="hintText">
@@ -448,7 +449,7 @@
 <dialog id="aboutDialog" aria-labelledby="aboutTitle">
   <h2 id="aboutTitle">About this tool</h2>
   <p>An unofficial planning tool for arranging Civil Air Patrol uniform items. It is not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force, and it does not replace CAPR 39-1 or your unit's guidance. Check the regulation before you buy or wear anything.</p>
-  <p><b>Privacy.</b> Your setup is saved in this browser as you work, so you can pick it up later. A member report you import is read on your device only. The site counts anonymous usage (which uniforms are built, how many items are on them, which buttons are used) and gets the feedback you choose to send. No name, CAPID, nameplate text or report contents ever leave your browser, and with Do Not Track on only plain visit and build counts are sent.</p>
+  <p><b>Privacy.</b> Usage counts are collected only to improve this tool. Your setup is saved in this browser as you work, so you can pick it up later. A member report you import is read on your device only. The site counts anonymous usage (which uniforms are built, how many items are on them, which buttons are used) and gets the feedback you choose to send. No name, CAPID, nameplate text or report contents ever leave your browser, member report searches are never stored, and with Do Not Track on only plain visit and build counts are sent.</p>
   <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners. The colors and typefaces follow the public CAP Brand Guide. That does not make this an official CAP product.</p>
   <p>Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.</p>
   <div class="aboutActions"><button type="button" id="aboutFeedback" class="ghost" hidden>Send feedback</button><button type="button" id="aboutClose" class="ghost">Close</button></div>

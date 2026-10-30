@@ -38,6 +38,6 @@ test('the member-report importer is one button with its explanation folded, and 
   assert.match(card,/<button id="importMemberReportBtn" class="ghost" type="button">Import member report…<\/button>/);
   assert.match(card,/<details class="moreDetails" id="memberReportImportMore">\s*<summary>What the import reads<\/summary>/);
   assert.ok(card.indexOf('id="memberReportImportStatus"')<card.indexOf('id="clearImportedReportBtn"'),'the clear button follows the status line');
-  assert.match(ui,/const sync=\(\)=>\{ clear\.hidden=status\.textContent===first; \};/);
+  assert.match(ui,/const sync=\(\)=>\{ clear\.hidden=idle\(\); \};/);
   assert.match(ui,/new MutationObserver\(sync\)\.observe\(status,\{childList:true,characterData:true,subtree:true\}\)/);
 });
