@@ -148,6 +148,9 @@
   // afe8b075; neither CAPR 39-1 nor DAFI 36-2903 prints a badge size), and the badge's box inside the PNG. The PNG is drawn
   // cropped to that box, contained in the real width x height, centred on the place the badge takes (CAPR 39-1 4.1.5.2.2).
   // A badge with no entry keeps the old fixed 2.75 x 0.75 in box, the whole image contained in it (MIL_FALLBACK).
+  // A badge whose entry has `svg` (its traced SVG, synced beside the PNG by scripts/sync-military-badges.cjs and listed in the
+  // manifest under artId; LIVE13 E104) is drawn as that asset at the entry's w x h, its centre on the centre the PNG's ink box
+  // would have had, so nothing moves when a badge's SVG arrives; the PNG is drawn only when the asset is not in the manifest.
   const MIL_FALLBACK = (MIL_SIZES && MIL_SIZES.FALLBACK) || { w: 2.75, h: 0.75 };
   let milByAsset = null;
   function milEntry(item){
@@ -155,18 +158,24 @@
     if(item.variant && MIL_SIZES[`${item.id}/${item.variant}`]) return MIL_SIZES[`${item.id}/${item.variant}`];
     if(!milByAsset){
       milByAsset = new Map();
-      for(const e of Object.values(MIL_SIZES)) if(e.asset) milByAsset.set(e.asset.replace(/^images\//, ''), e);
+      for(const e of Object.values(MIL_SIZES)){
+        if(e.asset) milByAsset.set(e.asset.replace(/^images\//, ''), e);
+        if(e.svg) milByAsset.set(e.svg.replace(/^images\//, ''), e);
+      }
     }
-    const m = /(military-badges\/[^?#]+\.png)/.exec(String(item.raster || ''));
+    const m = /(military-badges\/[^?#]+\.(?:png|svg))/.exec(String(item.raster || ''));
     return m && milByAsset.get(m[1]) || null;
   }
-  // { w, h, crop, source, artId } for a military raster: the badge's size in inches and the part of the image it is.
+  // { w, h, crop, source, artId, svg } for a military raster: the badge's size in inches and the part of the image it is; `svg`
+  // names the traced asset (the manifest id) when the badge has one.
   function militaryBox(item){
     const e = milEntry(item);
     if(!e) return { w: MIL_FALLBACK.w, h: MIL_FALLBACK.h, crop: null, fallback: true };
     const inkW = e.ink[2] - e.ink[0], inkH = e.ink[3] - e.ink[1];
     const s = Math.min(e.w / inkW, e.h / inkH); // inches per image pixel: contain the badge's box in w x h
-    return { w: inkW * s, h: inkH * s, crop: [e.ink[0] / e.img[0], e.ink[1] / e.img[1], e.ink[2] / e.img[0], e.ink[3] / e.img[1]], source: e.source, artId: e.artId };
+    // A traced badge is laid out at its own size, so a stack's 1/2 in is measured from the art that is drawn; the PNG's box is for the PNG.
+    const svg = e.svg ? e.artId : null;
+    return { w: svg ? e.w : inkW * s, h: svg ? e.h : inkH * s, crop: [e.ink[0] / e.img[0], e.ink[1] / e.img[1], e.ink[2] / e.img[0], e.ink[3] / e.img[1]], source: e.source, artId: e.artId, svg, svgW: e.w, svgH: e.h };
   }
 
   // Place a dress badge (or a military raster) with a given anchor at a point.
@@ -176,7 +185,15 @@
       const w = box.w, h = box.h;
       const x = at.x - w / 2;
       const y = anchor === 'bottom_center' ? at.y - h : anchor === 'top_center' ? at.y : at.y - h / 2;
-      const opts = { href: item.raster, x, y, w, h, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' };
+      if(box.svg && ctx.has(box.svg)){
+        // The traced SVG, at its own size, centred where the PNG's ink box is (above): the same point whichever art draws the badge.
+        const l = await ctx.place(box.svg, { pieceAnchor: 'center', at: { x: x + w / 2, y: y + h / 2 }, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' });
+        if(l){ l.sizeSource = box.source; l.artId = box.artId; l.raster = item.raster; return { x: l.x, y: l.y, w: l.w, h: l.h, layer: l }; }
+      }
+      // The PNG. The page may have handed the SVG's path (the catalog record points at it once synced): the ink box is the PNG's, so
+      // the PNG beside it is drawn.
+      const href = box.svg && /\.svg(?=[?#]|$)/.test(String(item.raster)) ? String(item.raster).replace(/\.svg(?=[?#]|$)/, '.png') : item.raster;
+      const opts = { href, x, y, w, h, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' };
       if(box.crop){ opts.crop = box.crop; opts.fit = 'stretch'; opts.sizeSource = box.source; opts.artId = box.artId; }
       const l = ctx.raster(opts);
       return { x, y, w, h, layer: l };

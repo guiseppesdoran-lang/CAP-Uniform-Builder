@@ -73,7 +73,8 @@ test('every entry is a box inside its PNG, the PNG is the size the table says, a
     assert.equal(png.readUInt32BE(20), e.img[1], `${key} height`);
     const [x0, y0, x1, y1] = e.ink;
     assert.ok(x0 >= 0 && y0 >= 0 && x1 <= e.img[0] + 1 && y1 <= e.img[1] + 1 && x1 > x0 && y1 > y0, `${key} box inside the image`);
-    near((x1 - x0) / (y1 - y0), e.w / e.h, 0.03 * e.w / e.h, `${key} box aspect vs size aspect`);
+    // A traced badge takes its height from the art (the size table's svg entries); the box is only the PNG fallback's.
+    if(!e.svg) near((x1 - x0) / (y1 - y0), e.w / e.h, 0.03 * e.w / e.h, `${key} box aspect vs size aspect`);
   }
 });
 
@@ -87,12 +88,18 @@ test('Class A: the Navy Surface Warfare Officer badge is 2.75 in wide (Vanguard 
     const swo = badgeLayers(scene).find(l => l.key === 'badge:navy_surface_warfare_insignia');
     const emt = badgeLayers(scene).find(l => l.key === 'badge:emt_basic_badge');
     assert.ok(swo && emt, gender + ' both badges drawn');
-    assert.equal(swo.type, 'raster');
+    // Since LIVE13 E104 a badge whose traced SVG is synced (data/military-badge-sizes.js `svg`) is that asset; the PNG otherwise.
+    if(SIZES['navy_surface_warfare_insignia/officer'].svg){
+      assert.equal(swo.type, 'asset');
+      assert.equal(swo.id, 'navy-surface-warfare-officer');
+    }else{
+      assert.equal(swo.type, 'raster');
+      assert.ok(Array.isArray(swo.crop) && swo.crop.every(v => v >= 0 && v <= 1), 'drawn cropped to the badge');
+    }
     near(swo.w, 2.75, 0.001, gender + ' SWO width');
     near(swo.h, 0.9675, 0.002, gender + ' SWO height (2.75 x 0.9675 in)');
     assert.equal(swo.sizeSource, 'measured');
     assert.equal(swo.artId, 'navy-surface-warfare-officer');
-    assert.ok(Array.isArray(swo.crop) && swo.crop.every(v => v >= 0 && v <= 1), 'drawn cropped to the badge');
     // The stacking gap is measured from the badge's own height, not a fixed box.
     near(swo.y + swo.h, emt.y - 0.5, 0.002, gender + ' SWO sits 1/2 in above the EMT badge');
     near(swo.x + swo.w / 2, emt.x + emt.w / 2, 0.002, gender + ' centred over the EMT badge');
