@@ -362,7 +362,7 @@ test('Next and Back walk the steps in order with the right labels; the last step
   assert.deepEqual(t.shown(),['profile'],'a step whose prerequisites went away gives way to the first unfinished one');
 });
 
-test('the preview empty state and a notice Fix open the step that holds the control before focusing it',()=>{
+test('a notice Fix (and anything else that focuses a control) opens the step that holds it first',()=>{
   const t=boot();
   Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'female'}); t.refresh();
   t.V3.showStep('export');
@@ -373,10 +373,7 @@ test('the preview empty state and a notice Fix open the step that holds the cont
   t.V3.showStep('profile');
   t.V3.showStepFor(t.by('expandBadges'));
   assert.deepEqual(t.shown(),['items']);
-  // The empty state's button goes to the first gap.
-  t.State.gender=''; t.V3.showStep('uniform'); t.refresh();
-  t.by('previewEmptyAction').onclick();
-  assert.deepEqual(t.shown(),['profile']);
+  assert.equal(t.by('previewEmptyState'),null,'no card over the preview');
 });
 
 test('the Items cards carry a count and the uniform\'s rule',()=>{

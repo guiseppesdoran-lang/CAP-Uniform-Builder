@@ -84,6 +84,9 @@ test('no badge tile carries a Rare Cadet Eligibility tag',()=>{
   }
 });
 
-test('the Start your uniform card stands alone: the canvas hides while it shows',()=>{
-  assert.match(css,/#previewArea:has\(> #previewEmptyState:not\(\[hidden\]\)\) #uniformCanvas\{visibility:hidden\}/);
+test('no Start your uniform card over the preview: before the setup is complete the stage is simply empty',()=>{
+  for(const f of ['index.html','styles/app.css','js/workspace-ui.js']) assert.doesNotMatch(read(f),/previewEmptyState|emptyChecklist|Start your uniform/,f);
+  // The renderer draws nothing until membership, cut and rank are chosen; the footer's reason line is the guidance.
+  assert.match(read('js/uniform-view.js'),/if\(!State\.membership \|\| !State\.gender \|\| !State\.rank \|\| !CAPUBEngine\.profiles\.PROFILES\[State\.uniform\]\)\{/);
+  assert.match(read('js/workspace-ui.js'),/return `Choose \$\{listWords\(getProfileGaps\(\)\.filter\(g=>!g\.ok\)\.map\(g=>g\.short\)\)\} to go on\.`;/);
 });

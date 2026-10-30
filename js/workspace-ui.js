@@ -46,8 +46,8 @@
   const reachable=(step,done)=>STEP_PREREQS[step].every(k=>done[k]);
   const stepOf=el=>{ const g=el && el.closest ? el.closest('.stepGroup') : null; return g ? g.id.replace(/^stepGroup-/,'') : null; };
 
-  // The preview stays blank until membership, rank and cut are all chosen, which reads as a broken page.
-  // The empty state and the footer say what is missing instead.
+  // The preview stays blank until membership, rank and cut are all chosen; the footer's reason line says what is
+  // missing (the card that used to list it over the preview is gone: LIVE13, Ethan found it confusing).
   function getProfileGaps(){
     return [
       {label:'Membership type',short:'a membership type',target:'membershipType',ok:!!State.membership},
@@ -85,7 +85,7 @@
       if(heading) heading.focus({preventScroll:true});
     }
   }
-  // Show the step that holds a control; the preview's empty state and the notices' Fix buttons use it before focusing one.
+  // Show the step that holds a control; the notices' Fix buttons use it before focusing one.
   function showStepFor(el){
     const step=stepOf(el);
     if(step && step!==activeStep) showStep(step,{focus:false});
@@ -305,27 +305,7 @@
   V3.isPhone=isPhone;
   Object.defineProperty(V3,'activeStep',{get:()=>activeStep});
 
-  /* ---------- the preview: empty state, toolbar, zoom ---------- */
-  function ensureEmptyState(){
-    const area=safeBy('previewArea'); if(!area || safeBy('previewEmptyState')) return;
-    const box=document.createElement('div'); box.id='previewEmptyState'; box.className='previewEmptyState';
-    box.innerHTML='<div class="emptyTitle">Start your uniform</div><ul class="emptyChecklist" id="previewEmptyChecklist"></ul><button type="button" id="previewEmptyAction"></button>';
-    area.appendChild(box);
-    safeBy('previewEmptyAction').onclick=()=>{
-      const next=getProfileGaps().find(g=>!g.ok);
-      if(next) focusControl(next.target);
-    };
-  }
-  function updateEmptyState(){
-    const box=safeBy('previewEmptyState'); if(!box || typeof State==='undefined') return;
-    const gaps=getProfileGaps();
-    const next=gaps.find(g=>!g.ok);
-    const show=!!next;
-    box.hidden=!show;
-    if(!show) return;
-    safeBy('previewEmptyChecklist').innerHTML=gaps.map(g=>`<li class="${g.ok?'ok':''}">${g.label}</li>`).join('');
-    safeBy('previewEmptyAction').textContent='Choose '+next.label.replace(/ \(.*\)$/,'').toLowerCase();
-  }
+  /* ---------- the preview: toolbar, zoom ---------- */
   function ensurePreviewToolbar(){
     const wrap=safeBy('previewWrapper'); if(!wrap || safeBy('previewToolbar')) return;
     // One row above the uniform: status chips on the left, zoom on the right.
@@ -537,7 +517,7 @@
     label();
     header.appendChild(btn);
   }
-  function refreshAll(){ ensureThemeToggle(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); wireStepper(); wirePhone(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsFold(); refitIfStageChanged(); }
+  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsFold(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };

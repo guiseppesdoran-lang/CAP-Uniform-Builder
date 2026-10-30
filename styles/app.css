@@ -593,31 +593,6 @@ header h1::after{
 }
 .capubToast.show{opacity:1;transform:translateY(0)}
 
-.previewEmptyState{
-  position:absolute;
-  inset:0;
-  z-index:40;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:var(--s4);
-  padding:var(--s5);
-  text-align:center;
-  border-radius:inherit;
-  background:var(--panel);
-  color:var(--ink);
-}
-.previewEmptyState[hidden]{display:none}
-/* While the Start your uniform card is up there is nothing to show: the drawing stays hidden until
-   membership, cut and rank are chosen. */
-#previewArea:has(> #previewEmptyState:not([hidden])) #uniformCanvas{visibility:hidden}
-.previewEmptyState .emptyTitle{font-family:var(--font-head);font-size:var(--t-xl);font-weight:700;line-height:1.1}
-.previewEmptyState .emptyChecklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2);text-align:left;font-size:var(--t-md);color:var(--muted)}
-.previewEmptyState .emptyChecklist li::before{content:"\25CB";display:inline-block;width:24px;color:var(--muted)}
-.previewEmptyState .emptyChecklist li.ok{color:var(--ok)}
-.previewEmptyState .emptyChecklist li.ok::before{content:"\25CF";color:var(--ok)}
-.previewEmptyState button{width:auto;margin:0;padding:0 var(--s5)}
 
 .tooltipBubble{
   position:fixed;
