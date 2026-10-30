@@ -421,7 +421,7 @@ test('on a phone the preview is a peek on steps 2 and 3 that opens full-screen a
   assert.equal(t.by('previewCloseBtn').focused,1,'focus goes to Close');
   t.dom.document.dispatchEvent({type:'keydown',key:'Escape'});
   assert.equal(t.dom.document.body.classList.contains('previewFull'),false,'Escape closes it');
-  assert.equal(t.by('previewPeekBtn').focused,1,'focus returns to the Open preview button');
+  assert.equal(t.by('previewPeekBtn').focused,1,'focus returns to the Expand button');
   // A tap on the peek opens it; a tap on a button in it does not.
   t.by('previewWrapper').fire('click',{target:t.by('previewArea')});
   assert.equal(t.dom.document.body.classList.contains('previewFull'),true);

@@ -20,14 +20,14 @@ function block(query){
   return css.slice(begin,i+1);
 }
 
-test('the app bar fits a phone: the title truncates, the tag shrinks, the theme button is a 44px icon, nothing scrolls sideways',()=>{
+test('the app bar fits a phone: the title and the tag stack so neither is cut off, the theme button is a 44px icon, nothing scrolls sideways',()=>{
   const phone=block('max-width:700px');
   assert.match(phone,/html,body\{overflow-x:hidden\}/);
-  assert.match(phone,/header\{min-height:56px;padding:0 var\(--s3\);gap:var\(--s2\)\}/);
-  assert.match(phone,/header h1\{flex:1 1 auto;min-width:0;font-size:var\(--t-lg\);white-space:nowrap;overflow:hidden;text-overflow:ellipsis\}/);
+  assert.match(phone,/header\{display:grid;grid-template-columns:minmax\(0,1fr\) auto auto;/);
+  assert.match(phone,/header h1\{grid-column:1;grid-row:1;min-width:0;font-size:var\(--t-lg\);line-height:1\.1;white-space:nowrap\}/);
   assert.match(phone,/header h1::after\{display:none\}/);
-  assert.match(phone,/\.unofficialTag\{margin-left:0;padding:1px var\(--s2\);font-size:var\(--t-xs\)\}/);
-  assert.match(phone,/\.themeToggle\{flex:0 0 auto;width:44px;min-width:44px;margin:0;padding:0;font-size:0;/);
+  assert.match(phone,/\.unofficialTag\{grid-column:1;grid-row:2;justify-self:start;/);
+  assert.match(phone,/\.themeToggle\{grid-column:3;grid-row:1 \/ 3;flex:0 0 auto;width:44px;min-width:44px;margin:0;padding:0;font-size:0;/);
 });
 
 test('on a 320px phone the tag goes and the item counts shorten to their number',()=>{

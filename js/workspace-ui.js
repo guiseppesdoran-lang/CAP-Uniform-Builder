@@ -426,28 +426,40 @@
         const room=window.innerHeight-(toolbar ? toolbar.offsetHeight : 0)-40;
         if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
       }else if(step==='uniform' || step==='items'){
-        // The peek: the whole uniform in a short strip beside the Open preview button.
+        // The peek: the whole uniform in a short strip beside the Expand button.
         const room=wrap.clientHeight-16;
         if(room>40) z=Math.min(z, Math.max(.12, room/previewHeight));
+      }else if(step==='export'){
+        // Extra: the uniform above the check and the actions, not a full screen of it.
+        const room=window.innerHeight*.46;
+        if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
       }
     }
     V3.fitWidth=previewWidth;
     setZoom(z);
+  }
+  // A uniform as the member reads it, from its card ("Blues: Class A", "OCP"), not its id ("Blues A", "Ocp").
+  function uniformName(id){
+    const card=[...document.querySelectorAll('.uniformOption')].find(b=>b.dataset.uniformId===id);
+    const name=card && card.querySelector('.uName');
+    return name ? name.textContent.trim() : String(id||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
   }
   function updateTopBar(){
     if(typeof State==='undefined') return;
     const uniform=safeBy('topUniformText'), items=safeBy('topItemsText');
     // Until membership, rank and cut are chosen the default would read as a real selection ("BLUES A") over an empty preview.
     const setupNeeded = !(State.membership && State.rank && State.gender);
-    if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? State.uniform.replace(/_/g,' ').toUpperCase() : '—';
+    if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? uniformName(State.uniform) : '—';
     if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
     // The preview is a picture, so say what it shows for anyone who cannot see it.
     const area=safeBy('previewArea');
     if(area){
+      // Nothing to show yet: no blank white sheet in the middle of the page (styles/app.css #previewArea.isEmpty).
+      area.classList.toggle('isEmpty',setupNeeded);
       area.setAttribute('role','group');
       area.setAttribute('aria-label', setupNeeded
         ? 'Uniform preview. Choose a membership type, rank and cut to begin.'
-        : `Uniform preview: ${State.rank || ''} ${State.uniform ? State.uniform.replace(/_/g,' ') : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
+        : `Uniform preview: ${State.rank || ''} ${State.uniform ? uniformName(State.uniform) : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
     }
   }
   function markActiveUniform(){
@@ -726,7 +738,7 @@
   function describe(profile){
     const bits=[];
     if(profile.rank) bits.push(profile.rank);
-    if(profile.uniform) bits.push(String(profile.uniform).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+    if(profile.uniform) bits.push(uniformName(profile.uniform));
     const items=(Array.isArray(profile.ribbons)?profile.ribbons.length:0)
       +(Array.isArray(profile.badges)?profile.badges.length:0)
       +(Array.isArray(profile.patches)?profile.patches.length:0);

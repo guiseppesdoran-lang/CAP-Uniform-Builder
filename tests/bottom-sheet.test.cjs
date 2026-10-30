@@ -63,7 +63,7 @@ test('the preview: hidden on step 1, a peek on 2 and 3, in the page on 4, full-s
   assert.match(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;flex-wrap:wrap;overflow:visible;/);
   assert.match(phone,/body\.previewFull #previewWrapper,body\.previewFull #layoutShell\[data-step\] #previewWrapper\{\s*display:flex;\s*flex-wrap:wrap;\s*position:fixed;\s*inset:0;\s*z-index:11000;/);
   assert.match(phone,/body\.previewFull #previewWrapper \.previewToolbar\{display:flex;[^}]*position:sticky;top:0;/);
-  assert.match(html,/<button type="button" id="previewPeekBtn" class="ghost previewPeekBtn" hidden>Open preview<\/button>/);
+  assert.match(html,/<button type="button" id="previewPeekBtn" class="ghost previewPeekBtn" aria-label="Open the preview full screen" hidden>Expand<\/button>/);
   assert.match(ui,/id="previewCloseBtn" hidden>Close<\/button>/);
   assert.match(ui,/const shell=safeBy\('layoutShell'\); if\(shell\) shell\.setAttribute\('data-step',activeStep\);/);
   assert.match(ui,/if\(e\.key==='Escape' && isPreviewFull\(\)\) closePreview\(\);/);
