@@ -77,7 +77,12 @@ function artSpecs(){
         const m = /military-badges\/([^/]+)\/([^/]+)__(.+)$/.exec(s.reference || '');
         if(!(w > 0 && h > 0) || !m) continue;
         if(!Array.isArray(s.source_bbox_user_units) || s.source_bbox_user_units.length !== 4) continue;
-        specs.push({ id, w, h, source: s.size_source || 'estimated', basis: s.size_basis || '', service: m[1], design: m[2], variant: m[3], bbox: s.source_bbox_user_units });
+        // The same asset id can have a spec in a work-in-progress lane (assets/military/v3/out, a redraw being gated) and in
+        // its final/ directory; the final one is the asset the builder draws, so it wins and the other is ignored.
+        const spec = { id, w, h, source: s.size_source || 'estimated', basis: s.size_basis || '', service: m[1], design: m[2], variant: m[3], bbox: s.source_bbox_user_units, final: /\/final\//.test(f) };
+        const dup = specs.findIndex(x => x.id === id);
+        if(dup < 0) specs.push(spec);
+        else if(spec.final && !specs[dup].final) specs[dup] = spec;
       }
     }
   })(dir);
