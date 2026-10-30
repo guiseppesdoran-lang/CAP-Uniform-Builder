@@ -1,0 +1,164 @@
+{
+ "asset_id": "mil-ribbon-coast-guard-unit-commendation",
+ "name": "Coast Guard Unit Commendation",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "001489",
+    "fraction": 0.0915,
+    "x0_in": 0,
+    "x1_in": 0.1258
+   },
+   {
+    "index": 1,
+    "hex": "ffcd00",
+    "fraction": 0.0915,
+    "x0_in": 0.1258,
+    "x1_in": 0.2516
+   },
+   {
+    "index": 2,
+    "hex": "ba0c2f",
+    "fraction": 0.0915,
+    "x0_in": 0.2516,
+    "x1_in": 0.3774
+   },
+   {
+    "index": 3,
+    "hex": "007a33",
+    "fraction": 0.191,
+    "x0_in": 0.3774,
+    "x1_in": 0.6401
+   },
+   {
+    "index": 4,
+    "hex": "ffffff",
+    "fraction": 0.069,
+    "x0_in": 0.6401,
+    "x1_in": 0.7349
+   },
+   {
+    "index": 5,
+    "hex": "007a33",
+    "fraction": 0.191,
+    "x0_in": 0.7349,
+    "x1_in": 0.9976
+   },
+   {
+    "index": 6,
+    "hex": "ba0c2f",
+    "fraction": 0.0915,
+    "x0_in": 0.9976,
+    "x1_in": 1.1234
+   },
+   {
+    "index": 7,
+    "hex": "ffcd00",
+    "fraction": 0.086,
+    "x0_in": 1.1234,
+    "x1_in": 1.2416
+   },
+   {
+    "index": 8,
+    "hex": "001489",
+    "fraction": 0.097,
+    "x0_in": 1.2416,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes_framed_or_photo",
+ "quality": {
+  "color_source": "public reference: Wikimedia Commons File:Coast Guard Unit Commendation ribbon.svg (Public domain), boundary match 1",
+  "geometry_source": "public reference, cross-validated against the raster",
+  "snap": null,
+  "reference": {
+   "title": "File:Coast Guard Unit Commendation ribbon.svg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/Coast_Guard_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "license": "Public domain",
+   "boundary_match": 1
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/coast_guard_unit_commendation.jpg"
+  ],
+  "residual": {
+   "vertical": 37.2,
+   "horizontal": 85.1,
+   "central_vertical": 19.1
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": true,
+  "border_frame_detected": true,
+  "fidelity": "reference",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+ },
+ "authorized_services": [
+  "COAST_GUARD"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/coast_guard_unit_commendation.jpg",
+   "award_ids": [
+    "coast_guard_unit_commendation"
+   ]
+  }
+ ],
+ "award_names": [
+  "Coast Guard Unit Commendation"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 37.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

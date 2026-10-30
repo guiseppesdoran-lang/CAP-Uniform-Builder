@@ -1,0 +1,258 @@
+{
+ "asset_id": "mil-ribbon-joint-world-war-2",
+ "name": "world war II victory",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "800080",
+    "fraction": 0.0273,
+    "x0_in": 0,
+    "x1_in": 0.0375
+   },
+   {
+    "index": 1,
+    "hex": "283c92",
+    "fraction": 0.0227,
+    "x0_in": 0.0375,
+    "x1_in": 0.0688
+   },
+   {
+    "index": 2,
+    "hex": "64a70b",
+    "fraction": 0.0227,
+    "x0_in": 0.0688,
+    "x1_in": 0.1
+   },
+   {
+    "index": 3,
+    "hex": "f7ee2a",
+    "fraction": 0.0228,
+    "x0_in": 0.1,
+    "x1_in": 0.1313
+   },
+   {
+    "index": 4,
+    "hex": "ff8040",
+    "fraction": 0.0181,
+    "x0_in": 0.1313,
+    "x1_in": 0.1562
+   },
+   {
+    "index": 5,
+    "hex": "ee0028",
+    "fraction": 0.0137,
+    "x0_in": 0.1562,
+    "x1_in": 0.175
+   },
+   {
+    "index": 6,
+    "hex": "ff9e1b",
+    "fraction": 0.0182,
+    "x0_in": 0.175,
+    "x1_in": 0.2001
+   },
+   {
+    "index": 7,
+    "hex": "f7ee2a",
+    "fraction": 0.0272,
+    "x0_in": 0.2001,
+    "x1_in": 0.2375
+   },
+   {
+    "index": 8,
+    "hex": "64a70b",
+    "fraction": 0.0228,
+    "x0_in": 0.2375,
+    "x1_in": 0.2688
+   },
+   {
+    "index": 9,
+    "hex": "2f3b77",
+    "fraction": 0.0318,
+    "x0_in": 0.2688,
+    "x1_in": 0.3125
+   },
+   {
+    "index": 10,
+    "hex": "800080",
+    "fraction": 0.0227,
+    "x0_in": 0.3125,
+    "x1_in": 0.3438
+   },
+   {
+    "index": 11,
+    "hex": "ffffff",
+    "fraction": 0.0318,
+    "x0_in": 0.3438,
+    "x1_in": 0.3875
+   },
+   {
+    "index": 12,
+    "hex": "ee0028",
+    "fraction": 0.4364,
+    "x0_in": 0.3875,
+    "x1_in": 0.9875
+   },
+   {
+    "index": 13,
+    "hex": "ffffff",
+    "fraction": 0.0227,
+    "x0_in": 0.9875,
+    "x1_in": 1.0187
+   },
+   {
+    "index": 14,
+    "hex": "2f3b77",
+    "fraction": 0.0591,
+    "x0_in": 1.0187,
+    "x1_in": 1.1
+   },
+   {
+    "index": 15,
+    "hex": "64a70b",
+    "fraction": 0.0227,
+    "x0_in": 1.1,
+    "x1_in": 1.1312
+   },
+   {
+    "index": 16,
+    "hex": "f7ee2a",
+    "fraction": 0.0273,
+    "x0_in": 1.1312,
+    "x1_in": 1.1687
+   },
+   {
+    "index": 17,
+    "hex": "ff9e1b",
+    "fraction": 0.0227,
+    "x0_in": 1.1687,
+    "x1_in": 1.2
+   },
+   {
+    "index": 18,
+    "hex": "ff8040",
+    "fraction": 0.0273,
+    "x0_in": 1.2,
+    "x1_in": 1.2375
+   },
+   {
+    "index": 19,
+    "hex": "f7ee2a",
+    "fraction": 0.0273,
+    "x0_in": 1.2375,
+    "x1_in": 1.275
+   },
+   {
+    "index": 20,
+    "hex": "64a70b",
+    "fraction": 0.0272,
+    "x0_in": 1.275,
+    "x1_in": 1.3124
+   },
+   {
+    "index": 21,
+    "hex": "283c92",
+    "fraction": 0.0455,
+    "x0_in": 1.3124,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 24,
+   "stripes_after": 22,
+   "max_snap_delta": 23.4
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/world_war_2.jpg"
+  ],
+  "residual": {
+   "vertical": 10.2,
+   "horizontal": 105.9,
+   "central_vertical": 9
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "ARMY",
+  "COAST_GUARD",
+  "MARINE_CORPS",
+  "NAVY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/world_war_2.jpg",
+   "award_ids": [
+    "world_war_2"
+   ]
+  }
+ ],
+ "award_names": [
+  "world war II victory"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 10.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

@@ -113,16 +113,9 @@ function ribbonsFrom(sel, membership, order){
   return out;
 }
 // Patches as the page hands them to the engine (js/uniform-view.js buildPatches): a spec's `patchRefs` are
-// [{id, kind: 'unit'|'general', img?, label?, slot?}], where `img` is the catalog image under images/ the
-// page would find (for OCP, a patches/ocp/ crop of the old sleeve drawing). The same wholePatchImage rule
-// applies: a patches/ocp/ crop is replaced by the patch's full-colour artwork (OCP_CROP_BASE, or the
-// patches/<name>_patch.webp the catalog lists for the base id), or the patch is left off with the page's
-// note. Passing crops straight to the engine drew a small round patch and a cut fragment (D22).
-function pageConstant(file, re){
-  const m = re.exec(fs.readFileSync(path.join(ROOT, file), 'utf8'));
-  if(!m) throw new Error(`${file}: ${re} not found`);
-  return Function(`return ${m[1]}`)();
-}
+// [{id, kind: 'unit'|'general', label?, slot?}]. A patch's picture is its row in data/patch-art.js, an OCP variant's the base patch's (OCP_BASE
+// for the ids that do not follow the name): its SVG (`asset`), or the picture of a patch waiting for its vector (`href`); a patch with neither is
+// left off with the page's note.
 function patchMeta(){
   const src = fs.readFileSync(path.join(ROOT, 'js/catalog.js'), 'utf8');
   const start = src.indexOf('const PATCH_META = ') + 'const PATCH_META = '.length;
@@ -130,22 +123,15 @@ function patchMeta(){
   for(; i < src.length; i++){ if(src[i] === '{') depth++; else if(src[i] === '}' && !--depth) break; }
   return Function(`return ${src.slice(start, i + 1)}`)();
 }
+const OCP_BASE = { 'TN-330_ocp_patch': 'tn330_ocp_patch' };
 function patchesFrom(refs){
-  const cropBase = pageConstant('js/uniform-view.js', /const OCP_CROP_BASE = (\{[^}]*\});/);
-  const meta = patchMeta();
+  const art = req('data/patch-art.js'), meta = patchMeta();
   const patches = [], notes = [];
   for(const ref of refs || []){
-    const img = String(ref.img || (meta[ref.id] && meta[ref.id].img) || '');
-    let whole = img;
-    if(/(^|\/)ocp\//.test(img)){
-      const file = img.split('/').pop().replace(/\.webp$/, '');
-      const baseId = String(ref.id).replace(/_ocp_patch$/, '_patch');
-      const base = meta[baseId] && meta[baseId].img;
-      whole = cropBase[file] || (baseId !== ref.id && base && !/\/ocp\//.test(base) ? base : null);
-    }
+    const row = art[ref.id] || art[OCP_BASE[ref.id]] || art[String(ref.id).replace(/_ocp_patch$/, '_patch')];
     const label = ref.label || (meta[ref.id] && meta[ref.id].label) || ref.id;
-    if(!whole){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
-    patches.push({ id: ref.id, title: label, href: '/images/' + whole, aspect: whole === img ? ((meta[ref.id] && meta[ref.id].w) || 1) / ((meta[ref.id] && meta[ref.id].h) || 1) : 1,
+    if(!row){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
+    patches.push({ id: ref.id, title: label, asset: row.asset || null, href: row.asset ? null : '/images/' + row.img, aspect: 1,
       slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general',
       echelon: ref.echelon || (meta[ref.id] && meta[ref.id].echelon) || null });
   }

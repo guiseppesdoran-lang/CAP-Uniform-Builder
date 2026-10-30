@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-af-space-command-fc",
+ "width_in": 3,
+ "height_in": 2.953,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   295.329
+  ],
+  "center": [
+   150,
+   147.665
+  ],
+  "left_edge": [
+   0,
+   147.665
+  ],
+  "right_edge": [
+   300,
+   147.665
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + af-space-command-fc",
+ "reference": "refs-png/af-space-command-fc.png",
+ "source_bbox_user_units": [
+  10,
+  21,
+  588,
+  590
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

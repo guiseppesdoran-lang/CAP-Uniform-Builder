@@ -1,5 +1,5 @@
-/* OCP patch sprites and selection fix.
- * Each OCP asset contains a left-side sleeve crop plus a complete patch.
+/* OCP patch variants and selection fix.
+ * The OCP lists a patch under its own id, with the base patch's picture.
  */
 (function capubOcpPatchVariants(){
   const variants = {
@@ -27,14 +27,14 @@
         ...base,
         label:`${base.label} — OCP sleeve`,
         w:200, h:100,
-        img:`patches/ocp/${variantId}.webp`,
+        img:base.img, asset:base.asset || null,
         authorizedUniforms:['ocp'],
         ocpVariant:true,
         basePatchId:baseId
       };
     }else{
       Object.assign(PATCH_META[variantId], {
-        label:'PJOC Patch — OCP sleeve', w:200, h:100,
+        label:'PJOC Patch — OCP sleeve', w:200, h:100, img:base.img, asset:base.asset || null,
         authorizedUniforms:['ocp'], ocpVariant:true, basePatchId:baseId
       });
     }
@@ -99,7 +99,7 @@
       const tile = document.createElement('div');
       tile.className = `galleryTile${authorized ? '' : ' disabledBlock'}`;
       tile.innerHTML = `
-        <img src="${ASSET(meta.img)}" alt="${escapeHtml(meta.label)}">
+        ${meta.img ? `<img src="${ASSET(meta.img)}" alt="${escapeHtml(meta.label)}">` : ''}
         <div style="flex:1;min-width:0;">
           <div class="title">${escapeHtml(meta.label)}</div>
           <div class="sub">(${escapeHtml(id)})</div>

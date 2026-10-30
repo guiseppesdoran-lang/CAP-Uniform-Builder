@@ -26,8 +26,13 @@
 'use strict';
 
 const path = require('path');
+const vm = require('vm');
+const { execFileSync } = require('child_process');
+const BAKED_NAMES_AT = '1f5d5b97';
 
-require(path.join(__dirname, '..', 'mcchord-ribbon-variants.js'));
+// The baked file names went out of mcchord-ribbon-variants.js with the rasters (LIVE13 E118): the comparison reads them from the last commit
+// that had them.
+vm.runInThisContext(execFileSync('git', ['show', `${BAKED_NAMES_AT}:mcchord-ribbon-variants.js`], { cwd: path.join(__dirname, '..'), encoding: 'utf8', maxBuffer: 1 << 26 }));
 const VARIANTS = globalThis.MCCHORD_RIBBON_VARIANTS;
 
 const MAX_DEVICES_PER_RIBBON = 4; // CAPR 39-1 11.4.2

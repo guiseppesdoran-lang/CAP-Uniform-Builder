@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-national-staff",
+ "width_in": 3,
+ "height_in": 3,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: drawn at the 3 in of the round sleeve patches because PATCH_META gives national_staff_ocp_patch the same 70 x 70 slot; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   300
+  ],
+  "center": [
+   150,
+   150
+  ],
+  "left_edge": [
+   0,
+   150
+  ],
+  "right_edge": [
+   300,
+   150
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + national-staff",
+ "reference": "UniformBuilder-svg/images/badges/utility/national_staff_badge.webp",
+ "source_bbox_user_units": [
+  14.667,
+  5.667,
+  222.333,
+  213.333
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated. The sleeve (cloth) form of the National Staff Badge; CAPR 39-1 7.1.1.4.2.2 lets it be worn in lieu of the HHQ patch. The metal badge is silver/national-staff."
+}

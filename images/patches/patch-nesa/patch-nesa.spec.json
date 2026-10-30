@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-nesa",
+ "width_in": 3.5,
+ "height_in": 3.856,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   385.631
+  ],
+  "center": [
+   175,
+   192.815
+  ],
+  "left_edge": [
+   0,
+   192.815
+  ],
+  "right_edge": [
+   350,
+   192.815
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + nesa",
+ "reference": "refs-png/nesa.png",
+ "source_bbox_user_units": [
+  41.333,
+  16,
+  558.667,
+  586
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

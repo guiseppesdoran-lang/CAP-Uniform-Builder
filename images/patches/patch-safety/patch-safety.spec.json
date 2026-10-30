@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-safety",
+ "width_in": 3,
+ "height_in": 3.092,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   309.214
+  ],
+  "center": [
+   150,
+   154.607
+  ],
+  "left_edge": [
+   0,
+   154.607
+  ],
+  "right_edge": [
+   300,
+   154.607
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + safety",
+ "reference": "refs-png/safety.png",
+ "source_bbox_user_units": [
+  28.667,
+  12,
+  571.333,
+  571.333
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

@@ -475,10 +475,12 @@
   // ---- patches ----
   // Patches have no regulation size; each is fitted inside its Velcro or zone (7.1.1.4) and capped at
   // 3 1/2 in, the size of the common CAP shoulder patches.
-  function fitPatch(ctx, patch, rect, slot){
+  // A patch with `asset` is its SVG at its spec's size, shrunk only where it would pass the zone; the others are a picture (`href`).
+  async function fitPatch(ctx, patch, rect, slot){
     const cap = { x: rect.x, y: rect.y, w: Math.min(rect.w, 3.5), h: Math.min(rect.h, 3.5) };
     cap.x = rect.x + (rect.w - cap.w) / 2;
     cap.y = rect.y + (rect.h - cap.h) / 2;
+    if(patch.asset) return C.fitIn(ctx, patch.asset, cap, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
     return C.fitRaster(ctx, patch.href, cap, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
   }
 
@@ -560,16 +562,17 @@
 
   // A patch on a sleeve's Velcro: in the flat view and again, narrowed, in the edge view, where it is
   // clipped to the Velcro and the coat (7.1.1.4).
-  function sleevePatch(ctx, patch, zone, slot, side){
-    const flat = fitPatch(ctx, patch, zone, slot);
+  async function sleevePatch(ctx, patch, zone, slot, side){
+    const flat = await fitPatch(ctx, patch, zone, slot);
     if(!flat) return null; // a crop of the old sleeve drawing is not drawn (ctx.raster)
     const f = edgeFrame(ctx, side);
     const velcro = ctx.rect('sleeve_flap_velcro_' + side);
     const clip = f && velcro && f.shows(velcro);
     if(f && clip){
       const e = f.map(flat);
-      ctx.raster({ href: patch.href, x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, fit: 'stretch', clip,
-        z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' });
+      const edge = { x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, clip, z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' };
+      if(patch.asset) ctx.layers.push(Object.assign({ type: 'asset', id: patch.asset }, edge));
+      else ctx.raster(Object.assign({ href: patch.href, fit: 'stretch' }, edge));
     }
     return flat;
   }
@@ -653,7 +656,7 @@
       const unit = take(p => p.kind === 'unit' || p.slot === 'R_SHOULDER');
       if(unit){
         const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_right', 'patch_flag_right');
-        if(z) measureSleevePatch(ctx, sleevePatch(ctx, unit, z, 'R_SHOULDER', 'right'), 'sleeve_flap_velcro_right', 'patch_flag_right', true);
+        if(z) measureSleevePatch(ctx, await sleevePatch(ctx, unit, z, 'R_SHOULDER', 'right'), 'sleeve_flap_velcro_right', 'patch_flag_right', true);
       }
       // A CAP Ranger tab takes the HHQ patch's place under AUX and the HHQ patch is not worn (rangerTabInHhqSlot).
       const tabs = [];
@@ -665,7 +668,7 @@
         const hhq = take(p => p.slot === 'L_SHOULDER') || take(() => true);
         if(hhq){
           const z = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
-          if(z) measureSleevePatch(ctx, sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left'), 'sleeve_flap_velcro_left', 'patch_aux_left', false);
+          if(z) measureSleevePatch(ctx, await sleevePatch(ctx, hhq, z, 'L_SHOULDER', 'left'), 'sleeve_flap_velcro_left', 'patch_aux_left', false);
         }
       }
     }else{
@@ -687,25 +690,37 @@
       // anchor), so the patch hangs from the zone's top and the overlay draws the 1/2 in from the seam to its top edge.
       // A patch is drawn at its own size, the 3.5 in the OCP Velcro and the pockets allow, whatever the sleeve zone (the zone fixes the
       // position, not the size: the same patch is one size on every uniform, R1, D2); the edge-on copy is cut to the coat's silhouette.
-      const hang = (patch, zone, slot, side) => {
+      const hang = async (patch, zone, slot, side) => {
         const box = { x: zone.x + (zone.w - 3.5) / 2, w: 3.5 };
-        let w = box.w, h = w / (patch.aspect || 1);
-        if(h > 3.5){ h = 3.5; w = h * (patch.aspect || 1); }
-        const layer = C.fitRaster(ctx, patch.href, { x: box.x, y: zone.y, w: box.w, h }, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
+        const opts = { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' };
+        let layer;
+        if(patch.asset){
+          // The SVG at its spec's size, capped at the same 3.5 in, its top on the zone's top.
+          const s = await ctx.spec(patch.asset), scale = Math.min(1, 3.5 / s.w, 3.5 / s.h);
+          layer = await ctx.place(patch.asset, Object.assign({ pieceAnchor: 'top_center', at: { x: box.x + box.w / 2, y: zone.y }, scale }, opts));
+        }else{
+          let w = box.w, h = w / (patch.aspect || 1);
+          if(h > 3.5){ h = 3.5; w = h * (patch.aspect || 1); }
+          layer = C.fitRaster(ctx, patch.href, { x: box.x, y: zone.y, w: box.w, h }, patch.aspect || 1, opts);
+        }
         // And edge-on on the figure's arm.
         const e = layer && armEdgeOf(ctx, side, layer);
-        if(e) ctx.raster({ href: patch.href, x: e.at.x - e.w / 2, y: e.at.y - e.h / 2, w: e.w, h: e.h, rotate: e.rotate, origin: e.at, fit: 'stretch', clipSil: ctx.base.id, z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' });
+        if(e){
+          const edge = { x: e.at.x - e.w / 2, y: e.at.y - e.h / 2, w: e.w, h: e.h, rotate: e.rotate, origin: e.at, clipSil: ctx.base.id, z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:edge`, title: patch.title, className: 'patch' };
+          if(patch.asset) ctx.layers.push(Object.assign({ type: 'asset', id: patch.asset }, edge));
+          else ctx.raster(Object.assign({ href: patch.href, fit: 'stretch' }, edge));
+        }
         const seam = ctx.point('seam_top_center_' + side);
         if(layer && seam) ctx.measure({ x: layer.x + layer.w / 2, y: seam.y }, { x: layer.x + layer.w / 2, y: layer.y }, null, { caption: 'shoulder seam to patch' });
         return layer;
       };
       const zl = ctx.rect('wing_patch_zone_left');
-      if(left && zl) hang(left, zl, 'L_SHOULDER', 'left');
+      if(left && zl) await hang(left, zl, 'L_SHOULDER', 'left');
       if(b.uniform === 'corporate_field'){
         // The right sleeve: the special activity patch (5.2.1.1.2.3); a general patch the page filed under the left shoulder is one.
         const right = take(p => p.slot === 'R_SHOULDER' || p.kind === 'unit') || take(p => p.slot === 'L_SHOULDER' && !isHq(p));
         const zr = ctx.rect('activity_patch_zone_right');
-        if(right && zr) hang(right, zr, 'R_SHOULDER', 'right');
+        if(right && zr) await hang(right, zr, 'R_SHOULDER', 'right');
       }else{
         for(let stray = take(p => p.slot === 'L_SHOULDER' && !isHq(p)); stray; stray = take(p => p.slot === 'L_SHOULDER' && !isHq(p))){
           ctx.note(`${stray.title} is not worn on the ABU sleeve: the left sleeve takes one wing, region or national patch only (CAPR 39-1, 5.1.1.1.2.2)`);
@@ -720,7 +735,7 @@
         const p = (side === 'right' && unit) || take(x => x.slot === want) || take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
         const z = pocketZone(ctx, side);
         if(p && z){
-          const layer = fitPatch(ctx, p, z, want);
+          const layer = await fitPatch(ctx, p, z, want);
           used++;
           // 'centered on the lower portion of the breast pocket ... between left and right edges and bottom of flap and pocket'
           // (5.1.1.1.2.3, 5.2.1.1.2.4, 5.2.1.1.2.5): from the flap's bottom to the pocket's, the tick at the patch's centre, drawn

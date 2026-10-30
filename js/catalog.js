@@ -78,47 +78,6 @@ Object.keys(UI_AUTHZ).forEach(id=>{
 /* ===========================
    CADET COMBINED CLASS A BASE IMAGES
    =========================== */
-// Male cadet officer Class A images already include the jacket, shoulder boards,
-// and officer grade. Enlisted/airman male Class A still falls back to the normal
-// generic male jacket unless rank-specific male Class A files are added later.
-
-// Female cadet Class A images are full base images with the cadet grade already
-// built into the coat. File convention:
-//   images/base/blues_class_a_female_c_<rank>.png
-
-
-// Senior Member officer combined Class A base images.
-// This intentionally operates the SAME WAY as the cadet officer jacket selection:
-// one direct rank-to-file map is used as the base jacket image. No separate
-// officer-rank overlay is rendered for these Class A senior officer selections.
-//
-// IMPORTANT: These paths must match the filenames in images/base EXACTLY,
-// including capitalization. The uploaded ZIP currently includes:
-//   images/base/CAP_female_Capt.webp
-//   images/base/CAP_male_Maj.webp
-// Add the remaining senior officer jacket images using the filenames below
-// or update only this map if your actual filenames differ.
-
-
-// Senior Member officer combined Class B base images.
-// These are full base images with officer grade already built into the shirt.
-// Naming convention:
-//   images/base/{rank}_blues_class_b_{gender}.png
-
-
-// Senior Member officer OCP blouse base images.
-// Male and female senior officer OCP variants use the same rank-specific image.
-// File convention:
-//   images/base/{rank}_OCP_Blouse.png
-
-
-// Cadet combined Class B base images.
-// These are full base images with cadet grade already built into the shirt.
-// Naming convention:
-//   images/base/blues_class_b_{gender}_{cadet_rank}.png
-// Senior member Class B pathing is intentionally unchanged and remains in
-// SENIOR_NCO_BASE.blues_b and SENIOR_OFFICER_COMBINED_CLASSB.
-
 const CADET_FIRST_SERGEANT_CLASSB_RANKS = new Set([
   "C/MSgt", "C/SMSgt", "C/CMSgt"
 ]);
@@ -149,7 +108,6 @@ function syncCadetFirstSergeantControl(){
 const ribbonList = [
   'air_force_aerial_achievement_medal',
   // Highest-precedence ribbon added by user.
-  // Asset path resolves to: images/ribbons/Air_Force_Organizational_Excellence_Award.png
   'Air_Force_Organizational_Excellence_Award',
 
   'silver_medal_of_valor','bronze_medal_of_valor','distinguished_service_award','exceptional_service_award','meritorious_service_award','commander_commendation_award','cap_achievment_award','lifesaving_award','national_commander_unit_citation_award','unit_citation_award',
@@ -463,327 +421,325 @@ const RIBBON_DEVICE_CAP = {
 
 
 /* ===========================
-   USER-SUPPLIED RIBBON IMAGE VARIANTS
+   RIBBON LEVELS
    ===========================
-   These files are expected in images/ribbons/. They are pre-rendered ribbon
-   images that already include the device/level named in the dropdown, so the
-   program does not overlay a separate device on top of them.
+   The levels a ribbon's dropdown offers, by award. The devices each level carries come from
+   data/ribbon-awards.js; the ribbon itself is the measured sheet in images/ribbons.
 */
 const RIBBON_SPECIAL_IMAGE_OPTIONS = {
   // Honor-credit variants for Cadet Achievements 1-8.
   'curry_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'curryH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'hap_arnold_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'arnoldH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'mary_feik_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'feikH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'rickenbacker_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'rickenH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'lindbergh_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'lindbeH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'doolittle_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'doolitH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'goddard_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'goddar-star.png', devices:{} },
-    { label:'Earned + Model Rocketry (Mitchell required)', value:'rocketry_star', image:'goddar-star.png', devices:{} },
-    { label:'Earned + Honor Credit and Model Rocketry', value:'honor_credit_and_rocketry', image:'goddarH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} },
+    { label:'Earned + Model Rocketry (Mitchell required)', value:'rocketry_star', devices:{} },
+    { label:'Earned + Honor Credit and Model Rocketry', value:'honor_credit_and_rocketry', devices:{} }
   ],
   'armstrong_achievement': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned with Honor Credit', value:'honor_credit', image:'armstrH.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }
   ],
   'mitchell_award': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned + COS Graduate Star', value:'earned_cos_star', image:'mitchel-star.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned + COS Graduate Star', value:'earned_cos_star', devices:{} }
   ],
   // COS graduate star on the highest cadet milestone ribbon.
-  // User asset expected at images/ribbons/eaker-star.png.
   'eaker_award': [
-    { label:'Earned', value:'earned', image:null, devices:{} },
-    { label:'Earned + COS Star', value:'earned_cos_star', image:'eaker-star.png', devices:{} }
+    { label:'Earned', value:'earned', devices:{} },
+    { label:'Earned + COS Star', value:'earned_cos_star', devices:{} }
   ],
   'bronze_medal_of_valor': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'bronze02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'bronze03.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} }
   ],
   'distinguished_service_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'distin02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'distin03.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'distin04.png', devices:{} },
-    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'distin05.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'distin06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'distin07.png', devices:{} },
-    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'distin08.png', devices:{} },
-    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'distin09.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'exceptional_service_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'except02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'except03.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'except04.png', devices:{} },
-    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'except05.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'except06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'except07.png', devices:{} },
-    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'except08.png', devices:{} },
-    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'except09.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'meritorious_service_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'meriti02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'meriti03.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'meriti04.png', devices:{} },
-    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'meriti05.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'meriti06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'meriti07.png', devices:{} },
-    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'meriti08.png', devices:{} },
-    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'meriti09.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'commander_commendation_award': [
-    { label:'Wing Commander / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'Wing Level Multiple Award / 1 Bronze Clasp', value:'wing_bronze_clasp_1', image:'cmdrco02.png', devices:{} },
-    { label:'Wing Level Multiple Award / 2 Bronze Clasps', value:'wing_bronze_clasp_2', image:'cmdrco03.png', devices:{} },
-    { label:'Region Commander / Bronze Star', value:'region_bronze_star', image:'cmdrco01R.png', devices:{} },
-    { label:'National Commander / Silver Star', value:'national_silver_star', image:'cmdrco01N.png', devices:{} },
-    { label:'National Commander / Silver Star + 1 Bronze Clasp', value:'national_silver_star_bronze_clasp_1', image:'cmdrco02N.png', devices:{} },
-    { label:'National Commander / Silver Star + 2 Bronze Clasps', value:'national_silver_star_bronze_clasp_2', image:'cmdrco03N.png', devices:{} },
-    { label:'Region Commander / Bronze Star + 1 Bronze Clasp', value:'region_bronze_star_bronze_clasp_1', image:'cmdrco02R.png', devices:{} },
-    { label:'National + Region + Wing / Silver Star + Bronze Star + Bronze Clasp', value:'national_region_wing', image:'cmdrco02NR.png', devices:{} }
+    { label:'Wing Commander / Basic Ribbon', value:'earned', devices:{} },
+    { label:'Wing Level Multiple Award / 1 Bronze Clasp', value:'wing_bronze_clasp_1', devices:{} },
+    { label:'Wing Level Multiple Award / 2 Bronze Clasps', value:'wing_bronze_clasp_2', devices:{} },
+    { label:'Region Commander / Bronze Star', value:'region_bronze_star', devices:{} },
+    { label:'National Commander / Silver Star', value:'national_silver_star', devices:{} },
+    { label:'National Commander / Silver Star + 1 Bronze Clasp', value:'national_silver_star_bronze_clasp_1', devices:{} },
+    { label:'National Commander / Silver Star + 2 Bronze Clasps', value:'national_silver_star_bronze_clasp_2', devices:{} },
+    { label:'Region Commander / Bronze Star + 1 Bronze Clasp', value:'region_bronze_star_bronze_clasp_1', devices:{} },
+    { label:'National + Region + Wing / Silver Star + Bronze Star + Bronze Clasp', value:'national_region_wing', devices:{} }
   ],
   'cap_achievment_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'AA02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'AA03.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'AA04.png', devices:{} },
-    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'AA05.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'AA06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'AA07.png', devices:{} },
-    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'AA08.png', devices:{} },
-    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'AA09.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'lifesaving_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'Lifesaving Action / Silver Star', value:'silver_star', image:'lifesa-star01.png', devices:{} },
-    { label:'Subsequent Award / Bronze Clasp', value:'bronze_clasp_1', image:'lifesa02.png', devices:{} },
-    { label:'Silver Star + 1 Bronze Clasp', value:'silver_star_bronze_clasp_1', image:'lifesa-star02.png', devices:{} },
-    { label:'2 Bronze Clasps', value:'bronze_clasp_2', image:'lifesa03.png', devices:{} },
-    { label:'Silver Star + 2 Bronze Clasps', value:'silver_star_bronze_clasp_2', image:'lifesa-star03.png', devices:{} },
-    { label:'3 Bronze Clasps', value:'bronze_clasp_3', image:'lifesa04.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'lifesa06.png', devices:{} },
-    { label:'Silver Star + 2 Bronze Clasps + Additional Lifesaving Ribbon', value:'silver_star_bronze_clasp_2_plus_base', image:'lifesa-star03.png', devices:{}, duplicates:[{ image:'lifesa01.png', awardLabel:'Additional Lifesaving Award' }] }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'Lifesaving Action / Silver Star', value:'silver_star', devices:{} },
+    { label:'Subsequent Award / Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'Silver Star + 1 Bronze Clasp', value:'silver_star_bronze_clasp_1', devices:{} },
+    { label:'2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'Silver Star + 2 Bronze Clasps', value:'silver_star_bronze_clasp_2', devices:{} },
+    { label:'3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'Silver Star + 2 Bronze Clasps + Additional Lifesaving Ribbon', value:'silver_star_bronze_clasp_2_plus_base', devices:{}, duplicates:[{ awardLabel:'Additional Lifesaving Award' }] }
   ],
   'national_commander_unit_citation_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'unitci-nat02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'unitci-nat03.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'unitci-nat04.png', devices:{} },
-    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'unitci-nat05.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'unitci-nat06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'unitci-nat07.png', devices:{} },
-    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'unitci-nat08.png', devices:{} },
-    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'unitci-nat09.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'unit_citation_award': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', image:'unitci02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'unitci03.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'unitci04.png', devices:{} },
-    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', image:'unitci05.png', devices:{} },
-    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', image:'unitci06.png', devices:{} },
-    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'unitci07.png', devices:{} },
-    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'unitci08.png', devices:{} },
-    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'unitci09.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'2nd Award / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5th Award / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6th Award / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7th Award / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8th Award / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9th Award / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'cap_gill_robb_wilson_ribbon': [
-    { label:'Level V / No PME Star', value:'earned', image:null, devices:{} },
-    { label:'SOS / Bronze Star', value:'sos_bronze_star', image:'wilson-b.png', devices:{} },
-    { label:'ACSC / Silver Star', value:'acsc_silver_star', image:'wilson-s.png', devices:{} },
-    { label:'AWC / Gold Star', value:'awc_gold_star', image:'wilson-g.png', devices:{} }
+    { label:'Level V / No PME Star', value:'earned', devices:{} },
+    { label:'SOS / Bronze Star', value:'sos_bronze_star', devices:{} },
+    { label:'ACSC / Silver Star', value:'acsc_silver_star', devices:{} },
+    { label:'AWC / Gold Star', value:'awc_gold_star', devices:{} }
   ],
   'cap_paul_e_garber_ribbon': [
-    { label:'Level IV / No PME Star', value:'earned', image:null, devices:{} },
-    { label:'SOS / Bronze Star', value:'sos_bronze_star', image:'garber-star.png', devices:{} },
-    { label:'ACSC / Silver Star', value:'acsc_silver_star', image:'garber-sstar.png', devices:{} },
-    { label:'AWC / Gold Star', value:'awc_gold_star', image:'garber-gstar.png', devices:{} }
+    { label:'Level IV / No PME Star', value:'earned', devices:{} },
+    { label:'SOS / Bronze Star', value:'sos_bronze_star', devices:{} },
+    { label:'ACSC / Silver Star', value:'acsc_silver_star', devices:{} },
+    { label:'AWC / Gold Star', value:'awc_gold_star', devices:{} }
   ],
   'cap_leadership_ribbon': [
-    { label:'Technician Rating / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'Senior Rating / Bronze Star', value:'senior_bronze_star', image:'leader-b.png', devices:{} },
-    { label:'Master Rating / Silver Star', value:'master_silver_star', image:'leader-s.png', devices:{} },
-    { label:'2 Bronze Stars', value:'two_bronze_stars', image:'leader-bb.png', devices:{} },
-    { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'leader-sb.png', devices:{} },
-    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'leader-sbb.png', devices:{} },
-    { label:'2 Silver Stars', value:'two_silver_stars', image:'leader-ss.png', devices:{} },
-    { label:'3 Bronze Stars', value:'three_bronze_stars', image:'leader-bbb.png', devices:{} }
+    { label:'Technician Rating / Basic Ribbon', value:'earned', devices:{} },
+    { label:'Senior Rating / Bronze Star', value:'senior_bronze_star', devices:{} },
+    { label:'Master Rating / Silver Star', value:'master_silver_star', devices:{} },
+    { label:'2 Bronze Stars', value:'two_bronze_stars', devices:{} },
+    { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', devices:{} },
+    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', devices:{} },
+    { label:'2 Silver Stars', value:'two_silver_stars', devices:{} },
+    { label:'3 Bronze Stars', value:'three_bronze_stars', devices:{} }
   ],
   'cap_command_service_ribbon': [
-    { label:'Squadron Commander / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'Group Commander / Bronze Star', value:'group_bronze_star', image:'cmdser-bronze.png', devices:{} },
-    { label:'Wing Commander / Silver Star', value:'wing_silver_star', image:'cmdser-silver.png', devices:{} },
-    { label:'Region Commander / Gold Star', value:'region_gold_star', image:'cmdser-gold.png', devices:{} },
-    { label:'National Commander / 2 Gold Stars', value:'national_two_gold_stars', image:'cmdser-gold2.png', devices:{} }
+    { label:'Squadron Commander / Basic Ribbon', value:'earned', devices:{} },
+    { label:'Group Commander / Bronze Star', value:'group_bronze_star', devices:{} },
+    { label:'Wing Commander / Silver Star', value:'wing_silver_star', devices:{} },
+    { label:'Region Commander / Gold Star', value:'region_gold_star', devices:{} },
+    { label:'National Commander / 2 Gold Stars', value:'national_two_gold_stars', devices:{} }
   ],
   'red_service_ribbon': [
-    { label:'2 Years / Basic Ribbon', value:'years_2', image:null, devices:{} },
-    { label:'5 Years / 1 Bronze Clasp', value:'years_5', image:'redser-05yr.png', devices:{} },
-    { label:'10 Years / 2 Bronze Clasps', value:'years_10', image:'redser-10yr.png', devices:{} },
-    { label:'15 Years / 3 Bronze Clasps', value:'years_15', image:'redser-15yr.png', devices:{} },
-    { label:'20 Years / Longevity Device', value:'years_20', image:'redser-20yr.png', devices:{} },
-    { label:'25 Years / Silver Clasp', value:'years_25', image:'redser-25yr.png', devices:{} },
-    { label:'30 Years / Silver Clasp + Bronze Clasp', value:'years_30', image:'redser-30yr.png', devices:{} },
-    { label:'35 Years / Silver Clasp + 2 Bronze Clasps', value:'years_35', image:'redser-35yr.png', devices:{} },
-    { label:'40 Years / Silver Clasp + 3 Bronze Clasps', value:'years_40', image:'redser-40yr.png', devices:{} }
+    { label:'2 Years / Basic Ribbon', value:'years_2', devices:{} },
+    { label:'5 Years / 1 Bronze Clasp', value:'years_5', devices:{} },
+    { label:'10 Years / 2 Bronze Clasps', value:'years_10', devices:{} },
+    { label:'15 Years / 3 Bronze Clasps', value:'years_15', devices:{} },
+    { label:'20 Years / Longevity Device', value:'years_20', devices:{} },
+    { label:'25 Years / Silver Clasp', value:'years_25', devices:{} },
+    { label:'30 Years / Silver Clasp + Bronze Clasp', value:'years_30', devices:{} },
+    { label:'35 Years / Silver Clasp + 2 Bronze Clasps', value:'years_35', devices:{} },
+    { label:'40 Years / Silver Clasp + 3 Bronze Clasps', value:'years_40', devices:{} }
   ],
   'search_find_ribbon': [
-    { label:'Basic Find', value:'find_1', image:null, devices:{} },
-    { label:'Aircrew Find / Bronze Propeller', value:'bronze_propeller', image:'find-prop01.png', devices:{} },
-    { label:'Additional Distress Find / Bronze Clasp', value:'bronze_clasp_1', image:'find02.png', devices:{} },
-    { label:'Bronze Propeller + 1 Bronze Clasp', value:'bronze_propeller_bronze_clasp_1', image:'find-prop02.png', devices:{} },
-    { label:'3rd Distress Find / 2 Bronze Clasps', value:'bronze_clasp_2', image:'find03.png', devices:{} },
-    { label:'Bronze Propeller + 2 Bronze Clasps', value:'bronze_propeller_bronze_clasp_2', image:'find-prop03.png', devices:{} },
-    { label:'4th Distress Find / 3 Bronze Clasps', value:'bronze_clasp_3', image:'find04.png', devices:{} },
-    { label:'4th Find (Aircrew) / Bronze Propeller + 2 Bronze Clasps + Additional Ribbon', value:'bronze_propeller_bronze_clasp_2_plus_base', image:'find-prop03.png', devices:{}, duplicates:[{ image:'find01.png', awardLabel:'Additional Find Ribbon' }] },
-    { label:'5th Distress Find / 4 Bronze Clasps', value:'bronze_clasp_4', image:'find05.png', devices:{} }
+    { label:'Basic Find', value:'find_1', devices:{} },
+    { label:'Aircrew Find / Bronze Propeller', value:'bronze_propeller', devices:{} },
+    { label:'Additional Distress Find / Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'Bronze Propeller + 1 Bronze Clasp', value:'bronze_propeller_bronze_clasp_1', devices:{} },
+    { label:'3rd Distress Find / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'Bronze Propeller + 2 Bronze Clasps', value:'bronze_propeller_bronze_clasp_2', devices:{} },
+    { label:'4th Distress Find / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'4th Find (Aircrew) / Bronze Propeller + 2 Bronze Clasps + Additional Ribbon', value:'bronze_propeller_bronze_clasp_2_plus_base', devices:{}, duplicates:[{ awardLabel:'Additional Find Ribbon' }] },
+    { label:'5th Distress Find / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} }
   ],
   'air_search_and_rescue_ribbon': [
-    { label:'10 Sorties / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'20 Sorties / 1 Bronze Clasp', value:'bronze_clasp_1', image:'sar02.png', devices:{} },
-    { label:'Aircrew Sorties / Bronze Propeller', value:'bronze_propeller', image:'sar-prop01.png', devices:{} },
-    { label:'Bronze Propeller + 1 Bronze Clasp', value:'bronze_propeller_bronze_clasp_1', image:'sar-prop02.png', devices:{} },
-    { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', image:'sar03.png', devices:{} },
-    { label:'Bronze Propeller + 2 Bronze Clasps', value:'bronze_propeller_bronze_clasp_2', image:'sar-prop03.png', devices:{} },
-    { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', image:'sar04.png', devices:{} },
-    { label:'40 Sorties (Aircrew) / Bronze Propeller + 2 Bronze Clasps + Additional Ribbon', value:'bronze_propeller_bronze_clasp_2_plus_base', image:'sar-prop03.png', devices:{}, duplicates:[{ image:'sar01.png', awardLabel:'Additional Air Search and Rescue Ribbon' }] },
-    { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', image:'sar05.png', devices:{} }
+    { label:'10 Sorties / Basic Ribbon', value:'earned', devices:{} },
+    { label:'20 Sorties / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'Aircrew Sorties / Bronze Propeller', value:'bronze_propeller', devices:{} },
+    { label:'Bronze Propeller + 1 Bronze Clasp', value:'bronze_propeller_bronze_clasp_1', devices:{} },
+    { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'Bronze Propeller + 2 Bronze Clasps', value:'bronze_propeller_bronze_clasp_2', devices:{} },
+    { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'40 Sorties (Aircrew) / Bronze Propeller + 2 Bronze Clasps + Additional Ribbon', value:'bronze_propeller_bronze_clasp_2_plus_base', devices:{}, duplicates:[{ awardLabel:'Additional Air Search and Rescue Ribbon' }] },
+    { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} }
   ],
   'cap_counterdrug_ribbon': [
-    { label:'10 Sorties / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'20 Sorties / 1 Bronze Clasp', value:'bronze_clasp_1', image:'coudru02.png', devices:{} },
-    { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', image:'coudru03.png', devices:{} },
-    { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', image:'coudru04.png', devices:{} },
-    { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', image:'coudru05.png', devices:{} },
-    { label:'60 Sorties / 1 Silver Clasp', value:'silver_clasp_1', image:'coudru06.png', devices:{} },
-    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'coudru07.png', devices:{} },
-    { label:'80 Sorties / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'coudru08.png', devices:{} },
-    { label:'90 Sorties / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'coudru09.png', devices:{} }
+    { label:'10 Sorties / Basic Ribbon', value:'earned', devices:{} },
+    { label:'20 Sorties / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'60 Sorties / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'80 Sorties / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'90 Sorties / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'disaster_relief_ribbon': [
-    { label:'Basic Award', value:'earned', image:null, devices:{} },
-    { label:'Presidential Disaster / Silver V', value:'silver_v', image:'disast-V01.png', devices:{} },
-    { label:'Additional Award / Bronze Clasp', value:'bronze_clasp_1', image:'disast02.png', devices:{} },
-    { label:'Silver V + 1 Bronze Clasp', value:'silver_v_bronze_clasp_1', image:'disast-V02.png', devices:{} },
-    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', image:'disast03.png', devices:{} },
-    { label:'Silver V + 2 Bronze Clasps', value:'silver_v_bronze_clasp_2', image:'disast-V03.png', devices:{} },
-    { label:'Silver V + 3 Bronze Clasps', value:'silver_v_bronze_clasp_3', image:'disast-V04.png', devices:{} },
-    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', image:'disast04.png', devices:{} }
+    { label:'Basic Award', value:'earned', devices:{} },
+    { label:'Presidential Disaster / Silver V', value:'silver_v', devices:{} },
+    { label:'Additional Award / Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'Silver V + 1 Bronze Clasp', value:'silver_v_bronze_clasp_1', devices:{} },
+    { label:'3rd Award / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'Silver V + 2 Bronze Clasps', value:'silver_v_bronze_clasp_2', devices:{} },
+    { label:'Silver V + 3 Bronze Clasps', value:'silver_v_bronze_clasp_3', devices:{} },
+    { label:'4th Award / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} }
   ],
   'homeland_security_ribbon': [
-    { label:'10 Sorties / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'20 Sorties / 1 Bronze Clasp', value:'bronze_clasp_1', image:'homeland02.png', devices:{} },
-    { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', image:'homeland03.png', devices:{} },
-    { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', image:'homeland04.png', devices:{} },
-    { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', image:'homeland05.png', devices:{} },
-    { label:'60 Sorties / 1 Silver Clasp', value:'silver_clasp_1', image:'homeland06.png', devices:{} },
-    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'homeland07.png', devices:{} },
-    { label:'80 Sorties / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'homeland08.png', devices:{} },
-    { label:'90 Sorties / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'homeland09.png', devices:{} }
+    { label:'10 Sorties / Basic Ribbon', value:'earned', devices:{} },
+    { label:'20 Sorties / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'30 Sorties / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'40 Sorties / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'50 Sorties / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'60 Sorties / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'70 Sorties / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'80 Sorties / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'90 Sorties / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'cap_cadet_orientation_pilot_ribbon': [
-    { label:'50 Orientation Flights / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'100 Orientation Flights / 1 Bronze Clasp', value:'bronze_clasp_1', image:'cadpil02.png', devices:{} },
-    { label:'150 Orientation Flights / 2 Bronze Clasps', value:'bronze_clasp_2', image:'cadpil03.png', devices:{} },
-    { label:'200 Orientation Flights / 3 Bronze Clasps', value:'bronze_clasp_3', image:'cadpil04.png', devices:{} },
-    { label:'250 Orientation Flights / 4 Bronze Clasps', value:'bronze_clasp_4', image:'cadpil05.png', devices:{} },
-    { label:'300 Orientation Flights / 1 Silver Clasp', value:'silver_clasp_1', image:'cadpil06.png', devices:{} },
-    { label:'350 Orientation Flights / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'cadpil07.png', devices:{} },
-    { label:'400 Orientation Flights / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'cadpil08.png', devices:{} },
-    { label:'450 Orientation Flights / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'cadpil09.png', devices:{} }
+    { label:'50 Orientation Flights / Basic Ribbon', value:'earned', devices:{} },
+    { label:'100 Orientation Flights / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'150 Orientation Flights / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'200 Orientation Flights / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'250 Orientation Flights / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'300 Orientation Flights / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'350 Orientation Flights / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'400 Orientation Flights / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'450 Orientation Flights / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'community_service_ribbon': [
-    { label:'60 Hours / Basic Ribbon', value:'hours_60', image:null, devices:{} },
-    { label:'120 Hours / 1 Bronze Clasp', value:'bronze_clasp_1', image:'commun02.png', devices:{} },
-    { label:'180 Hours / 2 Bronze Clasps', value:'bronze_clasp_2', image:'commun03.png', devices:{} },
-    { label:'240 Hours / 3 Bronze Clasps', value:'bronze_clasp_3', image:'commun04.png', devices:{} },
-    { label:'300 Hours / 4 Bronze Clasps', value:'bronze_clasp_4', image:'commun05.png', devices:{} },
-    { label:'360 Hours / 1 Silver Clasp', value:'silver_clasp_1', image:'commun06.png', devices:{} },
-    { label:'420 Hours / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'commun07.png', devices:{} },
-    { label:'480 Hours / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'commun08.png', devices:{} },
-    { label:'540 Hours / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'commun09.png', devices:{} }
+    { label:'60 Hours / Basic Ribbon', value:'hours_60', devices:{} },
+    { label:'120 Hours / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'180 Hours / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'240 Hours / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'300 Hours / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'360 Hours / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'420 Hours / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'480 Hours / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'540 Hours / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'national_cadet_competition_ribbon': [
-    { label:'Wing/Region Representative / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'Region Winner / Bronze Star', value:'region_bronze_star', image:'ncc-b.png', devices:{} },
-    { label:'National Sweepstakes / Silver Star', value:'national_silver_star', image:'ncc-s.png', devices:{} },
-    { label:'2 Bronze Stars', value:'two_bronze_stars', image:'ncc-bb.png', devices:{} },
-    { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncc-sb.png', devices:{} },
-    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'ncc-sbb.png', devices:{} },
-    { label:'2 Silver Stars', value:'two_silver_stars', image:'ncc-ss.png', devices:{} },
-    { label:'2 Silver Stars + Bronze Star', value:'two_silver_stars_bronze_star', image:'ncc-ssb.png', devices:{} },
-    { label:'3 Bronze Stars', value:'three_bronze_stars', image:'ncc-bbb.png', devices:{} }
+    { label:'Wing/Region Representative / Basic Ribbon', value:'earned', devices:{} },
+    { label:'Region Winner / Bronze Star', value:'region_bronze_star', devices:{} },
+    { label:'National Sweepstakes / Silver Star', value:'national_silver_star', devices:{} },
+    { label:'2 Bronze Stars', value:'two_bronze_stars', devices:{} },
+    { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', devices:{} },
+    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', devices:{} },
+    { label:'2 Silver Stars', value:'two_silver_stars', devices:{} },
+    { label:'2 Silver Stars + Bronze Star', value:'two_silver_stars_bronze_star', devices:{} },
+    { label:'3 Bronze Stars', value:'three_bronze_stars', devices:{} }
   ],
   'national_color_guard_competition_ribbon': [
-    { label:'Wing/Region Representative / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'Region Winner / Bronze Star', value:'region_bronze_star', image:'ncgc-b.png', devices:{} },
-    { label:'National Sweepstakes / Silver Star', value:'national_silver_star', image:'ncgc-s.png', devices:{} },
-    { label:'2 Bronze Stars', value:'two_bronze_stars', image:'ncgc-bb.png', devices:{} },
-    { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncgc-sb.png', devices:{} },
-    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'ncgc-sbb.png', devices:{} },
-    { label:'2 Silver Stars', value:'two_silver_stars', image:'ncgc-ss.png', devices:{} },
-    { label:'2 Silver Stars + Bronze Star', value:'two_silver_stars_bronze_star', image:'ncgc-ssb.png', devices:{} },
-    { label:'3 Bronze Stars', value:'three_bronze_stars', image:'ncgc-bbb.png', devices:{} }
+    { label:'Wing/Region Representative / Basic Ribbon', value:'earned', devices:{} },
+    { label:'Region Winner / Bronze Star', value:'region_bronze_star', devices:{} },
+    { label:'National Sweepstakes / Silver Star', value:'national_silver_star', devices:{} },
+    { label:'2 Bronze Stars', value:'two_bronze_stars', devices:{} },
+    { label:'Silver Star + Bronze Star', value:'silver_star_bronze_star', devices:{} },
+    { label:'Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', devices:{} },
+    { label:'2 Silver Stars', value:'two_silver_stars', devices:{} },
+    { label:'2 Silver Stars + Bronze Star', value:'two_silver_stars_bronze_star', devices:{} },
+    { label:'3 Bronze Stars', value:'three_bronze_stars', devices:{} }
   ],
   'cadet_advisory_council_ribbon': [
-    { label:'Group CAC / Basic Ribbon', value:'group', image:null, devices:{} },
-    { label:'Wing CAC / Bronze Star', value:'wing_bronze_star', image:'cac-b.png', devices:{} },
-    { label:'Region CAC / Silver Star', value:'region_silver_star', image:'cac-s.png', devices:{} },
-    { label:'National CAC / Gold Star', value:'national_gold_star', image:'cac-g.png', devices:{} }
+    { label:'Group CAC / Basic Ribbon', value:'group', devices:{} },
+    { label:'Wing CAC / Bronze Star', value:'wing_bronze_star', devices:{} },
+    { label:'Region CAC / Silver Star', value:'region_silver_star', devices:{} },
+    { label:'National CAC / Gold Star', value:'national_gold_star', devices:{} }
   ],
   'cadet_special_activity_ribbon': [
-    { label:'1 Activity / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'2 Activities / 1 Bronze Star', value:'bronze_star_1', image:'ncsa02.png', devices:{} },
-    { label:'3 Activities / 2 Bronze Stars', value:'bronze_star_2', image:'ncsa03.png', devices:{} },
-    { label:'4 Activities / 3 Bronze Stars', value:'bronze_star_3', image:'ncsa04.png', devices:{} },
-    { label:'5 Activities / 4 Bronze Stars', value:'bronze_star_4', image:'ncsa05.png', devices:{} },
-    { label:'6 Activities / 1 Silver Star', value:'silver_star_1', image:'ncsa06.png', devices:{} },
-    { label:'7 Activities / Silver Star + Bronze Star', value:'silver_star_bronze_star', image:'ncsa07.png', devices:{} },
-    { label:'8 Activities / Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', image:'ncsa08.png', devices:{} },
-    { label:'9 Activities / Silver Star + 3 Bronze Stars', value:'silver_star_three_bronze_stars', image:'ncsa09.png', devices:{} }
+    { label:'1 Activity / Basic Ribbon', value:'earned', devices:{} },
+    { label:'2 Activities / 1 Bronze Star', value:'bronze_star_1', devices:{} },
+    { label:'3 Activities / 2 Bronze Stars', value:'bronze_star_2', devices:{} },
+    { label:'4 Activities / 3 Bronze Stars', value:'bronze_star_3', devices:{} },
+    { label:'5 Activities / 4 Bronze Stars', value:'bronze_star_4', devices:{} },
+    { label:'6 Activities / 1 Silver Star', value:'silver_star_1', devices:{} },
+    { label:'7 Activities / Silver Star + Bronze Star', value:'silver_star_bronze_star', devices:{} },
+    { label:'8 Activities / Silver Star + 2 Bronze Stars', value:'silver_star_two_bronze_stars', devices:{} },
+    { label:'9 Activities / Silver Star + 3 Bronze Stars', value:'silver_star_three_bronze_stars', devices:{} }
   ],
   'encampment_ribbon': [
-    { label:'1 Encampment / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'2 Encampments / 1 Bronze Clasp', value:'bronze_clasp_1', image:'encamp02.png', devices:{} },
-    { label:'3 Encampments / 2 Bronze Clasps', value:'bronze_clasp_2', image:'encamp03.png', devices:{} },
-    { label:'4 Encampments / 3 Bronze Clasps', value:'bronze_clasp_3', image:'encamp04.png', devices:{} },
-    { label:'5 Encampments / 4 Bronze Clasps', value:'bronze_clasp_4', image:'encamp05.png', devices:{} },
-    { label:'6 Encampments / 1 Silver Clasp', value:'silver_clasp_1', image:'encamp06.png', devices:{} },
-    { label:'7 Encampments / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', image:'encamp07.png', devices:{} },
-    { label:'8 Encampments / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', image:'encamp08.png', devices:{} },
-    { label:'9 Encampments / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', image:'encamp09.png', devices:{} }
+    { label:'1 Encampment / Basic Ribbon', value:'earned', devices:{} },
+    { label:'2 Encampments / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'3 Encampments / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'4 Encampments / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'5 Encampments / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'6 Encampments / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'7 Encampments / 1 Silver Clasp + 1 Bronze Clasp', value:'silver_clasp_1_bronze_clasp_1', devices:{} },
+    { label:'8 Encampments / 1 Silver Clasp + 2 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_2', devices:{} },
+    { label:'9 Encampments / 1 Silver Clasp + 3 Bronze Clasps', value:'silver_clasp_1_bronze_clasp_3', devices:{} }
   ],
   'cap_senior_recruiter_ribbon': [
-    { label:'7 Recruits / Basic Ribbon', value:'earned', image:null, devices:{} },
-    { label:'17 Recruits / 1 Bronze Clasp', value:'bronze_clasp_1', image:'senrec02.png', devices:{} },
-    { label:'27 Recruits / 2 Bronze Clasps', value:'bronze_clasp_2', image:'senrec03.png', devices:{} },
-    { label:'37 Recruits / 3 Bronze Clasps', value:'bronze_clasp_3', image:'senrec04.png', devices:{} },
-    { label:'47 Recruits / 4 Bronze Clasps', value:'bronze_clasp_4', image:'senrec05.png', devices:{} },
-    { label:'57 Recruits / 1 Silver Clasp', value:'silver_clasp_1', image:'senrec06.png', devices:{} },
-    { label:'67 Recruits / 2 Silver Clasps', value:'silver_clasp_2', image:'senrec11.png', devices:{} },
-    { label:'77 Recruits / 3 Silver Clasps', value:'silver_clasp_3', image:'senrec16.png', devices:{} },
-    { label:'87 Recruits / 4 Silver Clasps', value:'silver_clasp_4', image:'senrec21.png', devices:{} }
+    { label:'7 Recruits / Basic Ribbon', value:'earned', devices:{} },
+    { label:'17 Recruits / 1 Bronze Clasp', value:'bronze_clasp_1', devices:{} },
+    { label:'27 Recruits / 2 Bronze Clasps', value:'bronze_clasp_2', devices:{} },
+    { label:'37 Recruits / 3 Bronze Clasps', value:'bronze_clasp_3', devices:{} },
+    { label:'47 Recruits / 4 Bronze Clasps', value:'bronze_clasp_4', devices:{} },
+    { label:'57 Recruits / 1 Silver Clasp', value:'silver_clasp_1', devices:{} },
+    { label:'67 Recruits / 2 Silver Clasps', value:'silver_clasp_2', devices:{} },
+    { label:'77 Recruits / 3 Silver Clasps', value:'silver_clasp_3', devices:{} },
+    { label:'87 Recruits / 4 Silver Clasps', value:'silver_clasp_4', devices:{} }
   ]
 };
 
@@ -793,33 +749,9 @@ function ribbonImageOptionList(id){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[id] || null;
   if(!special) return null;
   return [
-    { label:'- Select -', value:'', image:null, devices:{} },
+    { label:'- Select -', value:'', devices:{} },
     ...special
   ];
-}
-
-function getRibbonImageOverride(id, awardValue){
-  // Composited award-count families render one base image at every level, with
-  // the award count expressed as devices. Answer for them directly so every
-  // consumer agrees - the rack, the gallery thumbnail and the PNG export - and
-  // so the per-level artwork can be deleted.
-  if(CAPUB_COMPOSITED_AWARD_FAMILIES[id]) return CAPUB_COMPOSITED_AWARD_FAMILIES[id];
-  if(CAPUB_STAR_COMBO_FAMILIES[id]) return CAPUB_STAR_COMBO_FAMILIES[id];
-
-  const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
-  const options = Array.isArray(mcchordOptions) && mcchordOptions.length
-    ? capubExtendMcchordOptionsTo84(id, mcchordOptions)
-    : (RIBBON_SPECIAL_IMAGE_OPTIONS[id] || []);
-  const match = options.find(opt => opt.value === awardValue);
-  return match?.image || null;
-}
-
-function normalizeRibbonImageFileName(name){
-  if(!name) return null;
-  const n = String(name).trim();
-  // User-supplied overrides may be written as either "eaker-star" or "eaker-star.png".
-  // Browser image paths still need the real extension when the file is stored as a PNG.
-  return /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(n) ? n : `${n}.png`;
 }
 
 function getRibbonImagePath(ribbonOrId){
@@ -827,14 +759,7 @@ function getRibbonImagePath(ribbonOrId){
   if(isMilitaryRibbonId(id)) return getMilitaryRibbonAward(id)?.images?.ribbon || '';
   if(isRotcRibbonId(id)) return (window.CAPUBAssetIndex && CAPUBAssetIndex[ROTC_RIBBONS.get(id).asset]) || '';
   // The measured ribbon artwork (images/ribbons); devices are drawn on it by the engine.
-  const art = window.CAPUBAssetIndex && CAPUBAssetIndex['ribbon-' + String(normalizeRibbonId(id)).replace(/_/g, '-')];
-  if(art) return art;
-  if(typeof ribbonOrId !== 'string' && ribbonOrId?.imageOverride){
-    return `ribbons/${normalizeRibbonImageFileName(ribbonOrId.imageOverride)}`;
-  }
-  const awardValue = typeof ribbonOrId === 'string' ? (State.ribbonSelections?.[id]?.awardValue || '') : (ribbonOrId?.awardValue || '');
-  const override = getRibbonImageOverride(id, awardValue);
-  return override ? `ribbons/${normalizeRibbonImageFileName(override)}` : `ribbons/${normalizeRibbonId(id)}.png`;
+  return (window.CAPUBAssetIndex && CAPUBAssetIndex['ribbon-' + String(normalizeRibbonId(id)).replace(/_/g, '-')]) || '';
 }
 
 function getRibbonDuplicateCountForSelection(id, awardValue){
@@ -845,112 +770,14 @@ function getRibbonDuplicateCountForSelection(id, awardValue){
   return 1;
 }
 
-const miniMedalImages = {};
-Object.assign(miniMedalImages, {
-  'air_force_aerial_achievement_medal':'mini_medals/mcchord/m_usaf_aam01.webp',
-  'silver_medal_of_valor':          'mini_medals/mcchord/m_silver.webp',
-  'bronze_medal_of_valor':          'mini_medals/mcchord/m_bronze01.webp',
-  'distinguished_service_award':    'mini_medals/mcchord/m_distin01.webp',
-  'exceptional_service_award':      'mini_medals/mcchord/m_except01.webp',
-  'meritorious_service_award':      'mini_medals/mcchord/m_meriti01.webp',
-  'commander_commendation_award':   'mini_medals/mcchord/m_cmdrco01.webp',
-  'cap_achievment_award':           'mini_medals/mcchord/m_AA01.webp',
-  'lifesaving_award':               'mini_medals/mcchord/m_lifesa01.webp',
-  'national_commander_unit_citation_award':'mini_medals/mcchord/m_unitci-nat01.webp',
-  'unit_citation_award':            'mini_medals/mcchord/m_unitci01.webp',
-  'national_commanders_citation':   'mini_medals/mcchord/m_natcmdrcom.webp',
-  'cadet_certificate_of_proficiency':'mini_medals/mcchord/m_cadet_cop.webp',
-  'frank_borman_falcon_award':      'mini_medals/mcchord/m_falcon.webp',
-  'cap_gill_robb_wilson_ribbon':    'mini_medals/mcchord/m_wilson.webp',
-  'cap_paul_e_garber_ribbon':       'mini_medals/mcchord/m_garber.webp',
-  'cap_grover_loening_aerospace_ribbon':'mini_medals/mcchord/m_loening.webp',
-  'cap_leadership_ribbon':          'mini_medals/mcchord/m_leader.webp',
-  'cap_membership_ribbon':          'mini_medals/mcchord/m_member.webp',
-  'cap_command_service_ribbon':     'mini_medals/mcchord/m_cmdser.webp',
-  'cap_world_war_2_service_ribbon': 'mini_medals/mcchord/m_wartime.webp',
-  'cap_senior_recruiter_ribbon':    'mini_medals/mcchord/m_senrec01.webp',
-  'cap_bridgadier_general_charles_yaeger_ribbon':'mini_medals/mcchord/m_yeager.webp',
-  'cap_a_scott_crossfield_ribbon':  'mini_medals/mcchord/m_crossf.webp',
-  'crisis_ribbon':                  'mini_medals/mcchord/m_crisis.webp',
-  'red_service_ribbon':             'mini_medals/mcchord/m_redser-02yr.webp',
-  'search_find_ribbon':             'mini_medals/mcchord/m_find01.webp',
-  'air_search_and_rescue_ribbon':   'mini_medals/mcchord/m_sar01.webp',
-  'disaster_relief_ribbon':         'mini_medals/mcchord/m_disast01.webp',
-  'iace_ribbon':                    'mini_medals/mcchord/m_iace01.webp',
-  'spaatz_award':                   'mini_medals/mcchord/m_spaatz.webp',
-  'eaker_award':                    'mini_medals/mcchord/m_eaker.webp',
-  'earhart_award':                  'mini_medals/mcchord/m_earhar.webp',
-  'mitchell_award':                 'mini_medals/mcchord/m_mitchel.webp',
-  'national_cadet_competition_ribbon':'mini_medals/mcchord/m_ncc.webp',
-  'national_color_guard_competition_ribbon':'mini_medals/mcchord/m_ncgc.webp',
-  'encampment_ribbon':              'mini_medals/mcchord/m_encamp01.webp',
-  'air_medal':                      'mini_medals/mcchord/m_airmedal.webp'
-});
-
-function getMiniMedalImagePath(ribbonOrId){
-  const id = typeof ribbonOrId === 'string' ? ribbonOrId : ribbonOrId?.id;
+// Whether a ribbon has a miniature medal to show (the medal body's sheet, CAP medals; a medal of any kind that is not a ribbon-only award, U.S.
+// military medals, whose drape is drawn while the body's art is pending). The picture is drawn by js/uniform-view.js miniMedalPreview.
+function hasMiniMedal(id){
   if(isMilitaryRibbonId(id)){
     const award = getMilitaryRibbonAward(id);
-    const representation = window.CAPUBMilitary?.getAwardRepresentation?.(award,'MINIATURE_MEDAL');
-    return representation?.available && representation.asset ? representation.asset : '';
+    return !!award && window.CAPUBMilitary?.getAwardRepresentation?.(award,'MINIATURE_MEDAL')?.status !== 'NOT_APPLICABLE';
   }
-  const medalArt = window.CAPUBAssetIndex && CAPUBAssetIndex['medal-' + String(normalizeRibbonId(id)).replace(/_/g, '-') + '-miniature'];
-  if(medalArt) return medalArt;
-  const normalized = normalizeRibbonId(id);
-  const base = miniMedalImages[normalized] || miniMedalImages[id] || '';
-  if(!base) return '';
-
-  const awardValue = typeof ribbonOrId === 'string'
-    ? (State.ribbonSelections?.[id]?.awardValue || '')
-    : (ribbonOrId?.awardValue || State.ribbonSelections?.[id]?.awardValue || '');
-  const option = getRibbonSelectionOption(id, awardValue);
-  // medalImage is set by composited award-count families, whose ribbon image is
-  // one shared base; the medal still has its own per-level artwork.
-  const medalSource = option?.medalImage || option?.image;
-  if(!medalSource) return base;
-
-  let medalFile = `m_${medalSource}`;
-  if(id === 'commander_commendation_award'){
-    medalFile = medalFile
-      .replace(/NR(?=\.png$)/, 'sb')
-      .replace(/N(?=\.png$)/, 's')
-      .replace(/R(?=\.png$)/, 'b');
-  }else if(id === 'lifesaving_award'){
-    medalFile = medalFile.replace(/lifesa-star(\d+)\.png$/, 'lifesa$1s.png');
-  }else if(id === 'search_find_ribbon'){
-    medalFile = medalFile.replace(/find-prop(\d+)\.png$/, 'findP$1.png');
-  }else if(id === 'air_search_and_rescue_ribbon'){
-    medalFile = medalFile.replace(/sar-prop(\d+)\.png$/, 'sarP$1.png');
-  }else if(id === 'disaster_relief_ribbon'){
-    medalFile = medalFile.replace(/disast-V(\d+)\.png$/, 'disastV$1.png');
-  }
-
-  const variantAliases = {
-    'm_silver01.png':'m_silver.png',
-    'm_ncgc01.png':'m_ncgc.png',
-    'm_mitchel-star.png':'m_mitchel_s.png',
-    'm_eaker-star.png':'m_eaker_s.png',
-    'm_wilson-b.png':'m_wilson_b.png',
-    'm_wilson-s.png':'m_wilson_s.png',
-    'm_wilson-g.png':'m_wilson_g.png',
-    'm_garber-star.png':'m_garber_b.png',
-    'm_garber-sstar.png':'m_garber_s.png',
-    'm_garber-gstar.png':'m_garber_g.png',
-    'm_cmdser-bronze.png':'m_cmdser_b.png',
-    'm_cmdser-silver.png':'m_cmdser_s.png',
-    'm_cmdser-gold.png':'m_cmdser_g.png',
-    'm_cmdser-gold2.png':'m_cmdser_gg.png'
-  };
-  medalFile = variantAliases[medalFile] || medalFile;
-  if(['cap_leadership_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon'].includes(id)){
-    medalFile = medalFile.replace(/-([bs]+)\.png$/, '_$1.png');
-  }
-  // The name above is derived from the ribbon variant filename, which is still
-  // .png, but images/mini_medals is WebP since the optimizer ran. Without this
-  // the first request for every device-variant medal would 404 and only find
-  // the file on the fallback retry.
-  medalFile = medalFile.replace(/\.(png|jpg|jpeg)$/i, '.webp');
-  return `mini_medals/mcchord/${medalFile}`;
+  return !!(window.CAPUBAssetIndex && CAPUBAssetIndex['medal-' + String(normalizeRibbonId(id)).replace(/_/g, '-') + '-miniature']);
 }
 
 /* ===========================
@@ -962,235 +789,16 @@ const badgeList = [
 ];
 
 
-// Robust badge asset resolver. This lets the program render badges even when the
-// physical image files use human-friendly names instead of the internal badge ID.
-const BADGE_IMAGE_OVERRIDES = {
-  'master_emergency_services_badge': 'badges/Master_ES_Badge.webp',
-  'senior_emergency_services_badge': 'badges/Senior_ES_Badge.webp',
-  'volunteer_university_instructor_badge': 'badges/Vol_U_Badge.webp',
-  'basic_incident_commander_badge': 'badges/Basic_Incident_Commander_Badge.webp',
-  'incident_commander_2_badge': 'badges/incident_commander_2_badge.webp',
-  'incident_commander_1_badge': 'badges/incident_commander_1_badge.webp',
-  'cadet_programs_badge': 'badges/cadet programs badge.webp',
-  'administration_technician_badge': 'badges/administration_technician_badge.png',
-  'aerospace_education_technician_badge': 'badges/aerospace_education_technician_badge.webp',
-  'aerospace_education_senior_badge': 'badges/aerospace_senior_badge.webp',
-  'finance_technician_badge': 'badges/finance_technician_badge.webp',
-  'administration_senior_badge': 'badges/administration_senior_badge.png',
-  'administration_master_badge': 'badges/administration_master_badge.png',
-  'aerospace_education_master_badge': 'badges/aerospace_education_master_badge.webp',
-  'finance_senior_badge': 'badges/finance_senior_badge.png',
-  'finance_master_badge': 'badges/finance_master_badge.png',
-  'squadron_commander_badge': 'badges/Squadron Commander badge.webp',
-  'communications_senior_badge': 'badges/communications_senior_badge.png',
-  'communications_master_badge': 'badges/communications_master_badge.png',
-  'uas_pilot_basic_badge': 'badges/cap_suas_pilot_badge.webp',
-  'uas_pilot_senior_badge': 'badges/uas_pilot_senior_badge.webp',
-  'uas_pilot_master_badge': 'badges/uas_pilot_master_badge.webp',
-  'uas_technician_basic_badge': 'badges/uas_technician_basic_badge.webp',
-  'uas_technician_senior_badge': 'badges/uas_technician_senior_badge.webp',
-  'uas_technician_master_badge': 'badges/uas_technician_master_badge.webp',
-  'cadet_programs_technician_badge': 'badges/cadet_programs_technician_badge_v2.webp',
-  'cadet_programs_senior_badge': 'badges/cadet_programs_senior_badge_v2.webp',
-  'cadet_programs_master_badge': 'badges/cadet_programs_master_badge_v2.webp'
-};
-
-
-// === CAPUB PATCH 2026-05-13: New badge image filenames in images/badges/ ===
-// These overrides preserve the existing internal badge IDs where possible, while
-// pointing them at the newly uploaded PNG filenames. New badges below are added
-// into the normal badge gallery and use the same LP/RP specialty-track placement
-// unless otherwise specified.
-Object.assign(BADGE_IMAGE_OVERRIDES, {
-  // Replacements for older/existing badge IDs
-  'communications_technician_badge': 'badges/Comms_tech.webp',
-  'communications_senior_badge': 'badges/Comms_senior.webp',
-  'communications_master_badge': 'badges/Comms_master.webp',
-  'stem_badges': 'badges/STEM_basic_badge.webp',
-  'cyber_badges': 'badges/Cyber_basic_badge.webp',
-  'legal_officer': 'badges/Legal_officer.webp',
-  'nurse_officer': 'badges/Nurse.webp',
-  'medical_officer': 'badges/Medical_officer.webp',
-  'squadron_commander_badge': 'badges/Squadron Commander badge.webp',
-
-  // New command/governance badges
-  'group_commander_badge': 'badges/Group_commander_badge.webp',
-  'senior_advisory_group_badge': 'badges/Senior_advisory_group_badge.webp',
-  'national_executive_committee_badge': 'badges/National_Executive_Committee_Badge.webp',
-  'command_council_badge': 'badges/Command_Council.webp',
-  'cap_national_command_board_badge': 'badges/CAP_National_Command_Board.webp',
-  'national_staff_badge': 'badges/national_staff_badge.webp',
-
-  // Standardization / Evaluation
-  'stan_eval_tech_badge': 'badges/Stan_eval_tech.webp',
-  'stan_eval_senior_badge': 'badges/Stan_eval_senior.webp',
-  'stan_eval_master_badge': 'badges/Stan_eval_master.webp',
-
-  // Safety
-  'safety_technician_badge': 'badges/Safety_tech.webp',
-  'safety_senior_badge': 'badges/Safety_senior.webp',
-  'safety_master_badge': 'badges/Safety_master.webp',
-
-  // Recruiting and Retention
-  'recruiting_retention_technician_badge': 'badges/Recruiter_tech.webp',
-  'recruiting_retention_senior_badge': 'badges/Recruiter_senior.webp',
-  'recruiting_retention_master_badge': 'badges/Recruiter_master.webp',
-
-  // Public Affairs
-  'public_affairs_technician_badge': 'badges/Public_affairs_tech.webp',
-  'public_affairs_senior_badge': 'badges/Public_affairs_senior.webp',
-  'public_affairs_master_badge': 'badges/Public_affairs_master.webp',
-
-  // Professional Development
-  'professional_development_technician_badge': 'badges/Professional_development_tech.webp',
-  'professional_development_senior_badge': 'badges/Professional_development_senior.webp',
-  'professional_development_master_badge': 'badges/Professional_development_master.webp',
-
-  // Personnel
-  'personnel_technician_badge': 'badges/Personnel_tech.webp',
-  'personnel_senior_badge': 'badges/Personnel_senior.webp',
-  'personnel_master_badge': 'badges/Personnel_master.webp',
-
-  // Operations
-  'operations_technician_badge': 'badges/Ops_tech.webp',
-  'operations_senior_badge': 'badges/Ops_senior.webp',
-  'operations_master_badge': 'badges/Ops_master.webp',
-
-  // Logistics
-  'logistics_technician_badge': 'badges/Logistics_tech.webp',
-  'logistics_senior_badge': 'badges/Logistics_senior.webp',
-  'logistics_master_badge': 'badges/Logistics_master.webp',
-
-  // Inspector General
-  'inspector_general_technician_badge': 'badges/IG_tech.webp',
-  'inspector_general_senior_badge': 'badges/IG_senior.webp',
-  'inspector_general_master_badge': 'badges/IG_master.webp',
-
-  // Information Technology
-  'information_technology_technician_badge': 'badges/IT_tech.webp',
-  'information_technology_senior_badge': 'badges/IT_senior.webp',
-  'information_technology_master_badge': 'badges/IT_master.webp',
-
-  // Historian
-  'historian_technicianIbadge': 'badges/Historian_tech.webp',
-  'historian_senior_badge': 'badges/Historian_senior.webp',
-  'historian_master_badge': 'badges/Historian_master.webp',
-
-  // CDI
-  'cdi_technician_badge': 'badges/CDI_tech.webp',
-  'cdi_senior_badge': 'badges/CDI_senior.webp',
-  'cdi_master_badge': 'badges/CDI_master.webp',
-
-  // Administration
-  'administration_technician_badge': 'badges/Admin_tech.webp',
-  'administration_senior_badge': 'badges/Admin_senior.webp',
-  'administration_master_badge': 'badges/Admin_master.webp',
-
-  // Finance
-  'finance_senior_badge': 'badges/Finance_senior.webp',
-  'finance_master_badge': 'badges/Finance_master.webp',
-
-  // Drug Demand Reduction
-  'drug_demand_reduction_basic_badge': 'badges/Drug_Demand_Reduction_Basic_Badge.webp'
-});
-
 function getBadgeAssetPath(id){
   // The badge's dress artwork (or its field or cloth form when there is no dress form), at the
   // level the member chose for badges earned in levels.
   const cat = window.CAPUBBadgeCatalog;
   const level = State.badgeSelections?.[id]?.level;
   const art = cat && (cat.art(id, 'dress', level) || cat.art(id, 'field') || cat.art(id, 'cloth'));
-  if(art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) return CAPUBAssetIndex[art];
-  return BADGE_IMAGE_OVERRIDES[id] || `badges/${id}.webp`;
-}
-function titleCaseWords(str){
-  return String(str || '')
-    .split(/[_\s-]+/)
-    .filter(Boolean)
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    .join(' ');
-}
-function addAssetCandidate(list, path){
-  const clean = normalizeAssetSubpath(path);
-  if(clean && !list.includes(clean)) list.push(clean);
-}
-function addAssetCandidateWithExtensions(list, basePath){
-  const clean = normalizeAssetSubpath(basePath).replace(/\.(png|jpg|jpeg|webp)$/i, '');
-  // webp first: badges, patches and base art are WebP since the optimizer ran,
-  // so probing png first would cost a 404 on every fallback lookup. svg is gone
-  // because the repo contains no svg assets at all.
-  ['webp','png','jpg','jpeg'].forEach(ext => addAssetCandidate(list, `${clean}.${ext}`));
+  return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || '';
 }
 function getBadgeAssetCandidates(id){
-  const candidates = [];
-  const primary = getBadgeAssetPath(id);
-  addAssetCandidate(candidates, primary);
-  addAssetCandidateWithExtensions(candidates, `badges/${id}`);
-
-  // Generic fallback variants for asset folders that use readable filenames
-  // instead of the internal JS badge ID. These do not change the primary path;
-  // they only prevent a blank render when the primary PNG is absent.
-  const noBadge = String(id).replace(/_badge$/,'');
-  const spaced = String(id).replace(/_/g,' ');
-  const spacedNoBadge = noBadge.replace(/_/g,' ');
-  const title = titleCaseWords(id);
-  const titleNoBadge = titleCaseWords(noBadge);
-  [
-    noBadge,
-    spaced,
-    spacedNoBadge,
-    title,
-    titleNoBadge,
-    `${titleNoBadge} Badge`,
-    `${spacedNoBadge} badge`
-  ].forEach(name => addAssetCandidateWithExtensions(candidates, `badges/${name}`));
-
-  const extra = {
-    communications_senior_badge: [
-      'badges/communications_senior.png','badges/communications_senior_badge.png','badges/communications senior badge.png'
-    ],
-    communications_master_badge: [
-      'badges/communications_master.png','badges/communications_master_badge.png','badges/communications master badge.png'
-    ],
-    uas_pilot_basic_badge: [
-      'badges/uas_pilot_basic.png','badges/cap_suas_pilot_basic_badge.png','badges/UAS Pilot Basic Badge.png'
-    ],
-    uas_pilot_senior_badge: [
-      'badges/uas_pilot_senior.png','badges/uas_pilot_senior_badge.webp','badges/UAS Pilot Senior Badge.png'
-    ],
-    uas_pilot_master_badge: [
-      'badges/uas_pilot_master.png','badges/uas_pilot_master_badge.webp','badges/UAS Pilot Master Badge.png'
-    ],
-    administration_technician_badge: [
-      'badges/administration_technician.png','badges/administration_technician_badge.png','badges/Administration Technician Badge.png'
-    ],
-    aerospace_education_technician_badge: [
-      'badges/aerospace_education_technician.png','badges/aerospace_education_technician_badge.webp','badges/Aerospace Education Technician Badge.png'
-    ],
-    aerospace_education_senior_badge: [
-      'badges/aerospace_senior_badge.webp','badges/aerospace_education_senior_badge.png','badges/aerospace_education_senior.png','badges/Aerospace Education Senior Badge.png'
-    ],
-    finance_technician_badge: [
-      'badges/finance_technician.png','badges/finance_technician_badge.webp','badges/Finance Technician Badge.png'
-    ],
-    squadron_commander_badge: [
-      'badges/Squadron Commander badge.webp','badges/Squadron_Commander_badge.png','badges/squadron_commander_badge.png','badges/squadron commander badge.webp'
-    ],
-    volunteer_university_instructor_badge: [
-      'badges/Vol_U_Badge.webp','badges/volunteer_university_instructor_badge.png','badges/volunteer_university_badge.png'
-    ],
-    basic_incident_commander_badge: [
-      'badges/Basic_Incident_Commander_Badge.webp','badges/basic_incident_commander_badge.webp'
-    ],
-    master_emergency_services_badge: [
-      'badges/Master_ES_Badge.webp','badges/master_emergency_services_badge.png'
-    ],
-    senior_emergency_services_badge: [
-      'badges/Senior_ES_Badge.webp','badges/senior_emergency_services_badge.png'
-    ]
-  };
-  (extra[id] || []).forEach(path => addAssetCandidate(candidates, path));
-  return candidates;
+  return [getBadgeAssetPath(id)].filter(Boolean);
 }
 
 // The cadet-authorized list is shared with the engine (data/badge-catalog.js), so the page's picker and the
@@ -1255,15 +863,6 @@ const badgeLocations = {
 
 
 
-const militaryRibbonVariantCache=new Map();
-function capubLoadCompositeImage(src){
-  return new Promise((resolve,reject)=>{
-    const image=new Image();
-    image.onload=()=>resolve(image);
-    image.onerror=()=>reject(new Error(`Unable to load ${src}`));
-    image.src=src;
-  });
-}
 function militaryDeviceSequence(ribbonObj){
   if(Array.isArray(ribbonObj?.militaryDevices)) return [...ribbonObj.militaryDevices];
   const sequence=[];
@@ -1272,95 +871,6 @@ function militaryDeviceSequence(ribbonObj){
   }
   return sequence.sort((a,b)=>(deviceMeta[b]?.weight || 0)-(deviceMeta[a]?.weight || 0));
 }
-async function buildMilitaryRibbonVariant(ribbonObj){
-  const basePath=getRibbonImagePath(ribbonObj);
-  const devices=militaryDeviceSequence(ribbonObj);
-  const key=`${basePath}|${devices.join(',')}`;
-  if(militaryRibbonVariantCache.has(key)) return militaryRibbonVariantCache.get(key);
-  const promise=(async()=>{
-    const canvas=document.createElement('canvas');
-    canvas.width=100; canvas.height=30;
-    const context=canvas.getContext('2d');
-    const base=await capubLoadCompositeImage(ASSET(basePath));
-    context.drawImage(base,0,0,100,30);
-
-    // Match the woven, shaded finish of the existing McChord 100x30 variants.
-    context.save();
-    context.globalCompositeOperation='soft-light';
-    for(let x=0;x<100;x+=2){
-      context.fillStyle=x%4===0?'rgba(255,255,255,.12)':'rgba(0,0,0,.08)';
-      context.fillRect(x,0,1,30);
-    }
-    context.fillStyle='rgba(255,255,255,.09)'; context.fillRect(0,0,100,1);
-    context.fillStyle='rgba(0,0,0,.16)'; context.fillRect(0,29,100,1);
-    context.restore();
-
-    const rendered=[];
-    for(const deviceId of devices){
-      const numeral=String(deviceId).match(/^NUMERAL_(\d{1,2})$/);
-      const meta=deviceMeta[deviceId] || (numeral ? {
-        label:`Numeral ${numeral[1]}`,
-        src:`devices/mil-device-numeral-${Number(numeral[1])}.svg`,w:9,h:9,weight:6
-      } : null);
-      if(!meta) continue;
-      try{
-        const image=await capubLoadCompositeImage(ASSET(meta.src));
-        const isCluster=deviceId.endsWith('_OLC');
-        // Device source canvases are square. Preserve that aspect ratio here;
-        // the oak-leaf glyph's own transparent padding provides its wide shape.
-        rendered.push({deviceId,meta,image,width:isCluster?21:18,height:isCluster?21:18});
-      }catch(error){ console.warn('[MILITARY RIBBON DEVICE]',error); }
-    }
-    const sizes=Object.fromEntries(rendered.map(item=>[item.deviceId,{width:item.width,height:item.height}]));
-    const placements=window.CAPUBMilitaryDeviceLayout?.layoutDevices(
-      rendered.map(item=>item.deviceId),{context:'ribbon',deviceSizes:sizes}
-    ) || [];
-    for(let index=0;index<rendered.length;index++){
-      const item=rendered[index];
-      const placement=placements[index] || {x:42,y:7,width:item.width,height:item.height};
-      context.drawImage(item.image,placement.x,placement.y,placement.width,placement.height);
-    }
-    return canvas.toDataURL('image/png');
-  })();
-  militaryRibbonVariantCache.set(key,promise);
-  return promise;
-}
-function getMilitaryPrecomposedRibbonAsset(ribbonObj){
-  const awardId=militaryRibbonCatalogId(ribbonObj?.id);
-  const service=String(ribbonObj?.militaryService || '').toUpperCase();
-  const devices=militaryDeviceSequence(ribbonObj);
-  if(!awardId || !service) return null;
-  const signature=devices.length ? devices.join('+') : 'NONE';
-  const key=`${awardId}::${service}::${signature}`;
-  return (window.CAPUBMilitaryData?.deviceVariants?.ribbonAssets || [])
-    .find(record=>record.key===key && record.asset) || null;
-}
-function applyMilitaryRibbonVariant(image,ribbonObj){
-  if(!image || !isMilitaryRibbonId(ribbonObj?.id)) return;
-  const token=`${ribbonObj.id}|${militaryDeviceSequence(ribbonObj).join(',')}`;
-  image.dataset.militaryVariantToken=token;
-  const precomposed=getMilitaryPrecomposedRibbonAsset(ribbonObj);
-  if(precomposed?.asset){
-    image.dataset.militaryVariantStrategy=precomposed.strategy || 'PRECOMPOSED_PNG';
-    image.onerror=()=>{
-      image.onerror=null;
-      buildMilitaryRibbonVariant(ribbonObj).then(src=>{
-        if(image.isConnected && image.dataset.militaryVariantToken===token) image.src=src;
-      }).catch(error=>console.warn('[MILITARY RIBBON VARIANT]',error));
-    };
-    image.src=ASSET(precomposed.asset);
-    return;
-  }
-  image.dataset.militaryVariantStrategy='DETERMINISTIC_RUNTIME_FALLBACK';
-  buildMilitaryRibbonVariant(ribbonObj).then(src=>{
-    if(image.isConnected && image.dataset.militaryVariantToken===token){
-      image.onerror=null;
-      image.src=src;
-    }
-  }).catch(error=>console.warn('[MILITARY RIBBON VARIANT]',error));
-}
-
-const militaryMedalVariantCache=new Map();
 
 
 const CAPUB_ADDITIONAL_SPECIALTY_BADGE_IDS = [
@@ -1677,47 +1187,49 @@ const PATCH_META = {
     slotHint:'L_SHOULDER',
     echelon:'national',
     w:70,h:70,
-    img:'badges/utility/national_staff_badge.webp',
     authorizedUniforms:['ocp'],
     allowedMemberships:['senior'],
     sourceBadgeId:'national_staff_badge'
   },
    // Previously added field-uniform patches.
-  'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', echelon:'region', w:70,h:70, img:'patches/ner_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', echelon:'wing', w:70,h:70, img:'patches/nywg_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'comms_patch':{label:'Communications Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/comms_patch.webp', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
-  'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/check_pilot_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', echelon:'region', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', echelon:'wing', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'comms_patch':{label:'Communications Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
+  'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
 
-  // OCP-specific patch assets added May 2026. Files are under images/patches/ocp/.
-  'pjoc_ocp_patch':{label:'PJOC OCP Patch', slotHint:'L_SHOULDER', w:200,h:100, img:'patches/ocp/pjoc_ocp_patch.webp', authorizedUniforms:['ocp']},
-  'tn185_ocp_patch':{label:'SER-TN-185 Music City Composite Squadron Unit Patch', slotHint:'R_SHOULDER', w:200,h:100, img:'patches/ocp/TN-185_ocp_patch.webp', authorizedUniforms:['abu','ocp','corporate_field']},
+  // OCP-specific patches added May 2026.
+  'pjoc_ocp_patch':{label:'PJOC OCP Patch', slotHint:'L_SHOULDER', w:200,h:100, authorizedUniforms:['ocp']},
+  'tn185_ocp_patch':{label:'SER-TN-185 Music City Composite Squadron Unit Patch', slotHint:'R_SHOULDER', w:200,h:100, authorizedUniforms:['abu','ocp','corporate_field']},
 
-  // New field-uniform patches added May 2026. Files are under images/patches/.
-  'pjoc_patch':{label:'PJOC Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/pjoc_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'nesa_patch':{label:'NESA Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nesa_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'civil_engineering_academy_patch':{label:'Civil Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/civil_engineering_academy_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'cos_patch':{label:'Cadet Officer School Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/cos_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'honor_guard_patch':{label:'Honor Guard Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/honor_guard_patch.webp', authorizedUniforms:['abu','flight_suit','corporate_field']},
-  'engineering_academy_patch':{label:'Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/engineering_academy_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'nfa_patch':{label:'National Flight Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nfa_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'cla_patch':{label:'Civic Leadership Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/cla_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'proficient_pilot_patch':{label:'Proficient Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/proficient_pilot_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'model_rocketry_patch':{label:'Model Rocketry Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/model_rocketry_patch.webp', authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['cadet']},
-  'safety_patch':{label:'Safety Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/safety_patch.webp', authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['senior']},
-  'undergrad_pilot_training_patch':{label:'Undergraduate Pilot Training Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/undergrad_pilot_training_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'nbb_patch':{label:'National Blue Beret Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/nbb_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'honor_guard_academy_patch':{label:'Honor Guard Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/honor_guard_academy_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'af_space_command_patch':{label:'Air Force Space Command Patch', slotHint:'L_SHOULDER', w:70,h:70, img:'patches/af_space_command_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'dog_patch':{label:'DOG Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/dog_patch.webp', authorizedUniforms:['ocp','flight_suit','corporate_field']},
-  'archer_patch':{label:'ARCHER Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/archer_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'orientation_pilot_patch':{label:'Orientation Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/orientation_pilot_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'cism_patch':{label:'CISM Patch', slotHint:'CHEST_RIGHT', w:70,h:70, img:'patches/cism_patch.webp', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'plane_patch':{label:'Plane Patch', slotHint:'CHEST_LEFT', w:70,h:70, img:'patches/plane_patch.webp', authorizedUniforms:['ocp','flight_suit','corporate_field']},
+  // New field-uniform patches added May 2026.
+  'pjoc_patch':{label:'PJOC Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'nesa_patch':{label:'NESA Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'civil_engineering_academy_patch':{label:'Civil Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'cos_patch':{label:'Cadet Officer School Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'honor_guard_patch':{label:'Honor Guard Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field']},
+  'engineering_academy_patch':{label:'Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'nfa_patch':{label:'National Flight Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'cla_patch':{label:'Civic Leadership Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'proficient_pilot_patch':{label:'Proficient Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'model_rocketry_patch':{label:'Model Rocketry Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['cadet']},
+  'safety_patch':{label:'Safety Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['senior']},
+  'undergrad_pilot_training_patch':{label:'Undergraduate Pilot Training Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'nbb_patch':{label:'National Blue Beret Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'honor_guard_academy_patch':{label:'Honor Guard Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'af_space_command_patch':{label:'Air Force Space Command Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'dog_patch':{label:'DOG Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
+  'archer_patch':{label:'ARCHER Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'orientation_pilot_patch':{label:'Orientation Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'cism_patch':{label:'CISM Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'plane_patch':{label:'Plane Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
 
   // Legacy patch IDs kept for backward compatibility with older saved setups.
-  'aerospace_education_patch':{label:'Aerospace Education Patch', slotHint:'CHEST_LEFT', w:60,h:60, img:'patches/aerospace_education_patch.png', authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'communications_patch':{label:'Legacy Communications Patch', slotHint:'CHEST_RIGHT', w:60,h:60, img:'patches/communications_patch.png', authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'}
+  'aerospace_education_patch':{label:'Aerospace Education Patch', slotHint:'CHEST_LEFT', w:60,h:60, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'communications_patch':{label:'Legacy Communications Patch', slotHint:'CHEST_RIGHT', w:60,h:60, authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'}
 };
+
+// Each patch's picture: its SVG, from data/patch-art.js (scripts/sync-patches.cjs). A patch not listed has no picture yet.
+for(const [id, art] of Object.entries(window.CAPUBPatchArt || {})) if(PATCH_META[id]) Object.assign(PATCH_META[id], { img: art.img, asset: art.asset || null });
 
 // CAP_UNIT_OPTIONS lives in data/unit-options.js (loaded above), keeping a 102 KB single-line literal out of this file.
 const CAP_UNIT_OPTIONS = window.CAP_UNIT_OPTIONS || [];

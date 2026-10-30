@@ -67,12 +67,8 @@ function ASSET(p){
    ribbons, ranks, patches, devices, medals, and gallery thumbnails failed
    after one exact path returned 404.
 */
-// Extensions the asset resolver will probe, in order. Every miss costs a real
-// 404, so this list only contains formats actually present under images/:
-// png dominates, then webp, with a handful of jpg/jpeg. There are no svg
-// assets in the repo, and probing for them generated a 404 for every rank and
-// utility badge that fell through the chain.
-const CAPUB_IMAGE_EXTENSIONS = ['png','webp','jpg','jpeg'];
+// Extensions the asset resolver will probe. Every miss costs a real 404, and the art is SVG.
+const CAPUB_IMAGE_EXTENSIONS = ['svg'];
 const CAPUB_ASSET_SPELLING_ALIASES = Object.freeze({
   'achievment':'achievement',
   'comendation':'commendation',

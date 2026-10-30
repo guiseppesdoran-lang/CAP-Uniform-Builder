@@ -1,0 +1,177 @@
+{
+ "asset_id": "mil-ribbon-army-service",
+ "name": "Army Service",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "ba0c2f",
+    "fraction": 0.1727,
+    "x0_in": 0,
+    "x1_in": 0.2375
+   },
+   {
+    "index": 1,
+    "hex": "ff8040",
+    "fraction": 0.0909,
+    "x0_in": 0.2375,
+    "x1_in": 0.3624
+   },
+   {
+    "index": 2,
+    "hex": "e2b41e",
+    "fraction": 0.0773,
+    "x0_in": 0.3624,
+    "x1_in": 0.4687
+   },
+   {
+    "index": 3,
+    "hex": "4a7729",
+    "fraction": 0.0136,
+    "x0_in": 0.4687,
+    "x1_in": 0.4874
+   },
+   {
+    "index": 4,
+    "hex": "215732",
+    "fraction": 0.0819,
+    "x0_in": 0.4874,
+    "x1_in": 0.6
+   },
+   {
+    "index": 5,
+    "hex": "2f3b77",
+    "fraction": 0.1272,
+    "x0_in": 0.6,
+    "x1_in": 0.775
+   },
+   {
+    "index": 6,
+    "hex": "215732",
+    "fraction": 0.0909,
+    "x0_in": 0.775,
+    "x1_in": 0.8999
+   },
+   {
+    "index": 7,
+    "hex": "4a7729",
+    "fraction": 0.0137,
+    "x0_in": 0.8999,
+    "x1_in": 0.9188
+   },
+   {
+    "index": 8,
+    "hex": "e2b41e",
+    "fraction": 0.0636,
+    "x0_in": 0.9188,
+    "x1_in": 1.0062
+   },
+   {
+    "index": 9,
+    "hex": "ff8040",
+    "fraction": 0.1227,
+    "x0_in": 1.0062,
+    "x1_in": 1.1749
+   },
+   {
+    "index": 10,
+    "hex": "ba0c2f",
+    "fraction": 0.1455,
+    "x0_in": 1.1749,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 11,
+   "stripes_after": 11,
+   "max_snap_delta": 22.1
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/army_service.jpg"
+  ],
+  "residual": {
+   "vertical": 24.9,
+   "horizontal": 90.1,
+   "central_vertical": 18.3
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "ARMY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/army_service.jpg",
+   "award_ids": [
+    "army_service"
+   ]
+  }
+ ],
+ "award_names": [
+  "Army Service"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 24.9,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-cism",
+ "width_in": 3,
+ "height_in": 3.216,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   321.583
+  ],
+  "center": [
+   150,
+   160.792
+  ],
+  "left_edge": [
+   0,
+   160.792
+  ],
+  "right_edge": [
+   300,
+   160.792
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + cism",
+ "reference": "refs-png/cism.png",
+ "source_bbox_user_units": [
+  22,
+  2,
+  578,
+  598
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

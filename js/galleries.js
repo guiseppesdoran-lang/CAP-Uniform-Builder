@@ -132,47 +132,25 @@ function capubSplitAwardsAcrossRibbons(total){
   return ribbons;
 }
 
-// Families whose levels are a plain "Nth Award" progression. Each keeps ONE
-// piece of artwork - its own basic-award image - and every higher level is that
-// image plus composited devices. The base image is deliberately the McChord
-// basic-award file rather than the generic ribbons/<id>.png, because the two
-// are different renderings of the same ribbon and swapping them would restyle
-// every level.
-const CAPUB_COMPOSITED_AWARD_FAMILIES = {
-  'air_force_aerial_achievement_medal': 'usaf_aam01.png',
-  'cadet_special_activity_ribbon':      'ncsa01.png',
-  'cap_achievment_award':               'AA01.png',
-  'distinguished_service_award':        'distin01.png',
-  'encampment_ribbon':                  'encamp01.png',
-  'exceptional_service_award':          'except01.png',
-  'meritorious_service_award':          'meriti01.png',
-  'national_commander_unit_citation_award': 'unitci-nat01.png',
-  'unit_citation_award':                'unitci01.png'
-};
+// Families whose levels are a plain "Nth Award" progression: one ribbon, and every higher level is that ribbon plus devices.
+const CAPUB_COMPOSITED_AWARD_FAMILIES = new Set([
+  'air_force_aerial_achievement_medal','cadet_special_activity_ribbon','cap_achievment_award','distinguished_service_award','encampment_ribbon',
+  'exceptional_service_award','meritorious_service_award','national_commander_unit_citation_award','unit_citation_award'
+]);
 
 /*
-  Rebuild an award-count family's options so the artwork is one base image plus
-  computed devices. Labels and option values are taken from the existing option
-  list unchanged, so saved profiles and the dropdown text are unaffected.
+  Rebuild an award-count family's options as one ribbon plus computed devices. Labels and option values are taken from the existing
+  option list unchanged, so saved profiles and the dropdown text are unaffected.
 */
 function capubCompositeAwardOptions(id, options){
-  const base = CAPUB_COMPOSITED_AWARD_FAMILIES[id];
-  if(!base) return options;
+  if(!CAPUB_COMPOSITED_AWARD_FAMILIES.has(id)) return options;
   return options.map((opt, index) => {
     const total = index + 1;
     const [first, ...overflow] = capubSplitAwardsAcrossRibbons(total);
     return {
       ...opt,
-      image: base,
-      // Miniature medals still use McChord's per-level artwork: devices on a
-      // mini medal are rotated vertically (CAPR 39-1 11.4.2) and are not the
-      // horizontal run composited onto the ribbon. getMiniMedalImagePath()
-      // derives its filename from this rather than from the ribbon image, so
-      // mess dress keeps the exact medal it rendered before.
-      medalImage: opt.image,
       devices: capubDevicesForAwardTotal(first),
       duplicates: overflow.map(count => ({
-        image: base,
         awardLabel: `${opt.label} - additional ribbon`,
         devices: capubDevicesForAwardTotal(count)
       }))
@@ -181,21 +159,12 @@ function capubCompositeAwardOptions(id, options){
 }
 
 /*
-  Star-combo families. Their level labels spell the device set out directly -
-  "Basic Award", "Bronze Star", "S-S-B Stars" - so the devices are parsed from
-  the label rather than derived from an award count. Each keeps one image.
+  Star-combo families. Their level labels spell the device set out directly - "Basic Award", "Bronze Star", "S-S-B Stars" - so the
+  devices are parsed from the label rather than derived from an award count.
 
-  Order within a run comes from deviceMeta weight (gold > silver > bronze),
-  which reproduces the label order the artwork uses.
+  Order within a run comes from deviceMeta weight (gold > silver > bronze), which reproduces the label order.
 */
-const CAPUB_STAR_COMBO_FAMILIES = {
-  'cadet_advisory_council_ribbon':           'cac.png',
-  'cap_gill_robb_wilson_ribbon':             'wilson.png',
-  'cap_paul_e_garber_ribbon':                'garber.png',
-  'cap_leadership_ribbon':                   'leader.png',
-  'national_cadet_competition_ribbon':       'ncc.png',
-  'national_color_guard_competition_ribbon': 'ncgc01.png'
-};
+const CAPUB_STAR_COMBO_FAMILIES = new Set(['cadet_advisory_council_ribbon','cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_leadership_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon']);
 
 function capubDevicesFromStarLabel(label){
   const text = String(label || '').trim();
@@ -218,7 +187,7 @@ function capubDevicesFromStarLabel(label){
     });
     return devices;
   }
-  return null; // unrecognised - caller keeps the baked artwork
+  return null; // unrecognised - the caller keeps the option as it is
 }
 
 /*
@@ -247,29 +216,27 @@ function capubDevicesFromStarValue(value){
 }
 
 function capubCompositeStarComboOptions(id, options){
-  const base = CAPUB_STAR_COMBO_FAMILIES[id];
-  if(!base) return options;
+  if(!CAPUB_STAR_COMBO_FAMILIES.has(id)) return options;
   return options.map(opt => {
     const devices = capubDevicesFromStarLabel(opt.label) ?? capubDevicesFromStarValue(opt.value);
     if(devices === null || devices === undefined) return opt;
-    return { ...opt, image: base, medalImage: opt.image, devices };
+    return { ...opt, devices };
   });
 }
 
 /*
   RIBBON_SPECIAL_IMAGE_OPTIONS carries a second, semantically-keyed option list
   for these same families (bronze_clasp_1, silver_clasp_2, ...). The member
-  report importer resolves to those values, so it has to composite too -
-  otherwise an imported award count would still ask for the deleted per-level
-  artwork. Labels and values are untouched; only image/devices change.
+  report importer resolves to those values, so it has to composite too.
+  Labels and values are untouched; only the devices change.
 */
-for(const familyId of Object.keys(CAPUB_COMPOSITED_AWARD_FAMILIES)){
+for(const familyId of CAPUB_COMPOSITED_AWARD_FAMILIES){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[familyId];
   if(Array.isArray(special) && special.length){
     RIBBON_SPECIAL_IMAGE_OPTIONS[familyId] = capubCompositeAwardOptions(familyId, special);
   }
 }
-for(const familyId of Object.keys(CAPUB_STAR_COMBO_FAMILIES)){
+for(const familyId of CAPUB_STAR_COMBO_FAMILIES){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[familyId];
   if(Array.isArray(special) && special.length){
     RIBBON_SPECIAL_IMAGE_OPTIONS[familyId] = capubCompositeStarComboOptions(familyId, special);
@@ -293,19 +260,19 @@ function ordinalLabel(n){
 }
 
 const MCCHORD_21_LEVEL_RIBBONS = {
-  distinguished_service_award:{ prefix:'distin', unit:'award', multiplier:1 },
-  exceptional_service_award:{ prefix:'except', unit:'award', multiplier:1 },
-  meritorious_service_award:{ prefix:'meriti', unit:'award', multiplier:1 },
-  cap_achievment_award:{ prefix:'AA', unit:'award', multiplier:1 },
-  national_commander_unit_citation_award:{ prefix:'unitci-nat', unit:'award', multiplier:1 },
-  unit_citation_award:{ prefix:'unitci', unit:'award', multiplier:1 },
-  cap_counterdrug_ribbon:{ prefix:'coudru', unit:'sorties', multiplier:10 },
-  disaster_relief_ribbon:{ prefix:'disast', unit:'award', multiplier:1 },
-  homeland_security_ribbon:{ prefix:'homeland', unit:'sorties', multiplier:10 },
-  cap_cadet_orientation_pilot_ribbon:{ prefix:'cadpil', unit:'flights', multiplier:50 },
-  community_service_ribbon:{ prefix:'commun', unit:'hours', multiplier:60 },
-  cadet_special_activity_ribbon:{ prefix:'ncsa', unit:'activities', multiplier:1 },
-  encampment_ribbon:{ prefix:'encamp', unit:'encampments', multiplier:1 }
+  distinguished_service_award:{ unit:'award', multiplier:1 },
+  exceptional_service_award:{ unit:'award', multiplier:1 },
+  meritorious_service_award:{ unit:'award', multiplier:1 },
+  cap_achievment_award:{ unit:'award', multiplier:1 },
+  national_commander_unit_citation_award:{ unit:'award', multiplier:1 },
+  unit_citation_award:{ unit:'award', multiplier:1 },
+  cap_counterdrug_ribbon:{ unit:'sorties', multiplier:10 },
+  disaster_relief_ribbon:{ unit:'award', multiplier:1 },
+  homeland_security_ribbon:{ unit:'sorties', multiplier:10 },
+  cap_cadet_orientation_pilot_ribbon:{ unit:'flights', multiplier:50 },
+  community_service_ribbon:{ unit:'hours', multiplier:60 },
+  cadet_special_activity_ribbon:{ unit:'activities', multiplier:1 },
+  encampment_ribbon:{ unit:'encampments', multiplier:1 }
 };
 
 function mcchordContinuationLabel(config, level){
@@ -317,32 +284,9 @@ function mcchordContinuationLabel(config, level){
 function mcchordContinuationOptions(id){
   const config = MCCHORD_21_LEVEL_RIBBONS[id];
   if(!config) return [];
-  const p = config.prefix;
-  const baseDuplicate = { image:null, awardLabel:'Additional Ribbon' };
-  const imageDuplicate = suffix => ({ image:`${p}${suffix}.png`, awardLabel:'Additional Ribbon' });
-  const layout = {
-    10:{ image:`${p}09.png`, duplicates:[baseDuplicate] },
-    11:{ image:`${p}11.png` },
-    12:{ image:`${p}12.png` },
-    13:{ image:`${p}13.png` },
-    14:{ image:`${p}13.png`, duplicates:[baseDuplicate] },
-    15:{ image:`${p}13.png`, duplicates:[imageDuplicate('02')] },
-    16:{ image:`${p}16.png` },
-    17:{ image:`${p}17.png` },
-    18:{ image:`${p}17.png`, duplicates:[baseDuplicate] },
-    19:{ image:`${p}17.png`, duplicates:[imageDuplicate('02')] },
-    20:{ image:`${p}17.png`, duplicates:[imageDuplicate('03')] },
-    21:{ image:`${p}21.png` }
-  };
-  if(id === 'disaster_relief_ribbon'){
-    Object.assign(layout, {
-      5:{ image:'disast05.png' },
-      6:{ image:'disast06.png' },
-      7:{ image:'disast07.png' },
-      8:{ image:'disast08.png' },
-      9:{ image:'disast09.png' }
-    });
-  }
+  const second = [{ awardLabel:'Additional Ribbon' }];
+  const layout = { 10:{ duplicates:second }, 11:{}, 12:{}, 13:{}, 14:{ duplicates:second }, 15:{ duplicates:second }, 16:{}, 17:{}, 18:{ duplicates:second }, 19:{ duplicates:second }, 20:{ duplicates:second }, 21:{} };
+  if(id === 'disaster_relief_ribbon') Object.assign(layout, { 5:{}, 6:{}, 7:{}, 8:{}, 9:{} });
   return Object.entries(layout).map(([level, option]) => ({
     label:mcchordContinuationLabel(config, Number(level)),
     value:`mcchord_level_${level}`,
@@ -384,15 +328,14 @@ function capubExtendedRibbonLabel(config, count){
 }
 
 function capubFlattenRibbonChunks(chunks, label){
-  const first = chunks[0];
   const duplicates = [];
   chunks.forEach((chunk, chunkIndex) => {
     if(chunkIndex > 0){
-      duplicates.push({ image:chunk.image || null, awardLabel:`${label} - ribbon ${chunkIndex + 1}` });
+      duplicates.push({ awardLabel:`${label} - ribbon ${chunkIndex + 1}` });
     }
     (chunk.duplicates || []).forEach(duplicate => duplicates.push({ ...duplicate }));
   });
-  return { image:first.image || null, duplicates };
+  return { duplicates };
 }
 
 function capubExtendMcchordOptionsTo84(id, sourceOptions){
@@ -415,7 +358,6 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
     extended.push({
       label,
       value:`capub_total_${count}`,
-      image:rendered.image,
       devices:{},
       duplicates:rendered.duplicates
     });
@@ -499,7 +441,7 @@ function getRibbonAwardOptions(id){
   if(Array.isArray(mcchordOptions) && mcchordOptions.length){
     const expanded = capubExtendMcchordOptionsTo84(id, mcchordOptions);
     return [
-      { label:'- Select -', value:'', image:null, devices:{} },
+      { label:'- Select -', value:'', devices:{} },
       ...capubCompositeStarComboOptions(id, capubCompositeAwardOptions(id, expanded))
     ];
   }
@@ -633,7 +575,6 @@ function applyRibbonSelectionValue(id, value){
   State.ribbonSelections[id].awardValue = option?.value || value || '';
   State.ribbonSelections[id].awardLabel = option?.label || '';
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
-  State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || '');
 }
 
 function syncCommandBadgeAndRibbonSelections(){
@@ -709,7 +650,6 @@ function syncGoddardRocketryStar(){
   goddard.awardValue = desiredValue;
   goddard.awardLabel = option.label || '';
   goddard.devices = { ...(option.devices || {}) };
-  goddard.imageOverride = option.image || getRibbonImageOverride('goddard_achievement', desiredValue);
   State.ribbonSelections.goddard_achievement = goddard;
   return true;
 }
@@ -738,7 +678,6 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=fal
   sel.awardLabel = option.label || '';
   sel.checked = !!value;
   sel.devices = value ? { ...(option.devices || {}) } : {};
-  sel.imageOverride = value ? (option.image || getRibbonImageOverride(id, value)) : null;
 
   if(isMilitaryRibbonId(id)){
     sel.awardCount=Math.max(1,Number(String(value || '').match(/military_award_(\d+)/)?.[1]) || 1);
@@ -781,7 +720,6 @@ function clearRibbonSelection(id){
   sel.awardValue = '';
   sel.awardLabel = '';
   sel.devices = {};
-  sel.imageOverride = null;
 }
 
 function enforceSharedRibbonSlot(selectedId){
@@ -817,7 +755,6 @@ function enforceSeniorSingleCadetAwardRibbon(selectedId){
     State.ribbonSelections[otherId].awardValue = '';
     State.ribbonSelections[otherId].awardLabel = '';
     State.ribbonSelections[otherId].devices = {};
-    State.ribbonSelections[otherId].imageOverride = null;
   }
 }
 
@@ -837,7 +774,6 @@ function normalizeRibbonSelections(){
         State.ribbonSelections[id].awardValue = 'earned';
         State.ribbonSelections[id].awardLabel = 'Earned';
         State.ribbonSelections[id].devices = {};
-        State.ribbonSelections[id].imageOverride = null;
       }
       if(State.ribbonSelections[id].awardValue === undefined){
         const hasDevices = Object.values(State.ribbonSelections[id].devices || {}).some(v => Number(v) > 0);
@@ -852,7 +788,6 @@ function normalizeRibbonSelections(){
           if(opt?.value){
             State.ribbonSelections[id].awardValue = opt.value;
             State.ribbonSelections[id].awardLabel = opt.label || '';
-            State.ribbonSelections[id].imageOverride = opt.image || getRibbonImageOverride(id, opt.value);
           }
         }
       }
@@ -865,9 +800,6 @@ function normalizeRibbonSelections(){
       if(CAPUB_RELABELED_RIBBONS.has(id) && State.ribbonSelections[id].checked){
         const opt = getRibbonAwardOptions(id).find(o => o.value && o.value === State.ribbonSelections[id].awardValue);
         if(opt) State.ribbonSelections[id].awardLabel = opt.label;
-      }
-      if(State.ribbonSelections[id].imageOverride === undefined){
-        State.ribbonSelections[id].imageOverride = getRibbonImageOverride(id, State.ribbonSelections[id].awardValue || '');
       }
       if(isMilitaryRibbonId(id)){
         const sel=State.ribbonSelections[id];
@@ -927,12 +859,7 @@ function rebuildRibbonsFromGallery(){
         id,
         devices:{},
         awardValue: sel.awardValue || '',
-        awardLabel: sel.awardLabel || '',
-        // Prefer the resolved option's image: composited families deliberately
-        // return one base image for every level, while getRibbonImageOverride()
-        // reads the raw McChord table and would restore the per-level artwork.
-        imageOverride: (getRibbonSelectionOption(id, sel.awardValue || '') || {}).image
-                       || getRibbonImageOverride(id, sel.awardValue || '')
+        awardLabel: sel.awardLabel || ''
       };
 
       if(isMilitaryRibbonId(id)){
@@ -961,8 +888,7 @@ function rebuildRibbonsFromGallery(){
             // scheme; it is not always a bare ribbon.
             devices: { ...(dup.devices || {}) },
             awardValue: `${sel.awardValue || 'earned'}_duplicate_${dupIndex+1}`,
-            awardLabel: dup.awardLabel || 'Additional Ribbon',
-            imageOverride: dup.image || null
+            awardLabel: dup.awardLabel || 'Additional Ribbon'
           });
         });
       }
@@ -1029,15 +955,31 @@ function restoreMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
   }
 }
 
-// Draw each selected CAP ribbon in a picker with the devices it will wear (the sidebar and the
-// picker window both hold tiles).
+// Draw each selected ribbon in a picker with the devices it will wear, and the miniature medal of every tile that shows one as the tile
+// scrolls into view (the sidebar and the picker window both hold tiles).
+const capubMiniPreviewWatcher = typeof IntersectionObserver === 'function'
+  ? new IntersectionObserver(entries => entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    capubMiniPreviewWatcher.unobserve(entry.target);
+    capubFillMiniPreview(entry.target);
+  }), { rootMargin:'200px' })
+  : null;
+function capubFillMiniPreview(host){
+  const id = host.closest('.ribbonSelectorTile')?.dataset.ribbonId;
+  if(id) CAPUBUniformView.fillMiniMedalPreview(host, id, State.ribbonSelections?.[id] || {});
+}
 function fillRibbonTilePreviews(root){
   if(!root || !window.CAPUBUniformView) return;
-  root.querySelectorAll('.ribbonSelectorTile:not(.militaryRibbonSelectorTile)').forEach(tile=>{
+  root.querySelectorAll('.ribbonSelectorTile').forEach(tile=>{
     const id = tile.dataset.ribbonId;
     const sel = State.ribbonSelections?.[id];
-    if(!id || !sel?.checked) return;
-    CAPUBUniformView.fillRibbonPreview(tile.querySelector(':scope > img'), id, sel);
+    if(!id || !sel) return;
+    if(sel.checked) CAPUBUniformView.fillRibbonPreview(tile.querySelector('.militaryRibbonArt img, :scope > img'), id, sel);
+    const mini = tile.querySelector('.miniMedalArt');
+    if(mini && !mini.firstElementChild){
+      if(capubMiniPreviewWatcher) capubMiniPreviewWatcher.observe(mini);
+      else capubFillMiniPreview(mini);
+    }
   });
 }
 
@@ -1064,13 +1006,11 @@ function buildRibbonGallery(options={}){
     if(military) tile.classList.add('militaryRibbonSelectorTile');
     tile.dataset.ribbonId = id;
     const title = getRibbonDisplayName(id);
-    const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
-    const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
     // A miniature medal only matters on the uniforms that wear them (CAPR 39-1 11.1.4).
     // The JROTC/ROTC ribbons have no miniature medal in the builder, so the tile does not offer one.
     const showMini = CAPUBUniformRules.allowsMiniMedals(State.uniform) && !isRotcRibbonId(id);
-    const miniPreview = !showMini ? '' : miniPath
-      ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${escapeHtml(title)} mini medal"></div>`
+    const miniPreview = !showMini ? '' : hasMiniMedal(id)
+      ? `<div class="miniMedalPreview"><span>Mini medal</span><span class="miniMedalArt" role="img" aria-label="${escapeHtml(title)} mini medal"></span></div>`
       : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
     const options = getRibbonAwardOptions(id).map(opt => {
       const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
@@ -1128,15 +1068,7 @@ function buildRibbonGallery(options={}){
       </div>
     `;
     const ribbonPreview = tile.querySelector('.militaryRibbonArt img, :scope > img');
-    capubInstallImageFallback(ribbonPreview, [
-      getRibbonImagePath({id, awardValue: sel.awardValue || ''}),
-      `ribbons/${normalizeRibbonId(id)}.png`
-    ]);
-    if(military) applyMilitaryRibbonVariant(ribbonPreview,{id,devices:sel.devices || {}});
-    const miniMedalPreview = tile.querySelector('.miniMedalPreview img');
-    if(miniMedalPreview){
-      capubInstallImageFallback(miniMedalPreview, [miniPath, miniFallbackPath]);
-    }
+    capubInstallImageFallback(ribbonPreview, [getRibbonImagePath({id, awardValue: sel.awardValue || ''})]);
     wireRibbonTileControls(tile);
     return tile;
   };
@@ -1646,7 +1578,7 @@ function buildPatchGallery(){
 
     const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
     tile.innerHTML=`
-      <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">
+      ${meta.img ? `<img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">` : ''}
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}</div>
         <div class="sub">(${escapeHtml(id)})</div>

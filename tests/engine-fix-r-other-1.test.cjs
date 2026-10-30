@@ -245,7 +245,7 @@ test('the engine does not draw a patches/ocp crop; the harness resolves patches 
   assert.ok(scene.notes.some(n => /only a crop of the old sleeve drawing/.test(n)), scene.notes.join(' | '));
   // The harness maps a crop to the whole patch (TN-330 has full art, archer_ocp_patch resolves through its base id) or leaves it off.
   const r = HARNESS.patchesFrom([{ id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp' }, { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER' }, { id: 'TN-185_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-185_ocp_patch.webp' }]);
-  assert.deepEqual(r.patches.map(p => p.href), ['/images/patches/sequoyah_cadet_squadron_patch.webp', '/images/patches/archer_patch.webp']);
+  assert.deepEqual(r.patches.map(p => p.asset), ['patch-sequoyah-cadet-squadron', 'patch-archer']);
   assert.ok(r.notes.some(n => /TN-185.*has no full patch artwork yet/.test(n)));
   const ok = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Lt Col', patchRefs: [{ id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp' }] }));
   const unit = ok.layers.find(l => l.role === 'patch' && /TN-330/.test(l.key));

@@ -353,8 +353,9 @@
   }
 
   // Draw a rack. `ribbons` are resolved ribbons in precedence order, each
-  // { key, title, asset | raster, devices:[ids], centered }. `slot` gives centerX, bottomY and the
-  // wearer's-left (outboard) edge. Returns the rack's bounding box.
+  // { key, title, asset, devices:[ids], centered }. `slot` gives centerX, bottomY and the wearer's-left (outboard) edge.
+  // A ribbon with `devicePlan` ([{ id, x, y, scale }], centres in inches from the ribbon's top-left) has its devices where the plan
+  // puts them instead (a military ribbon's chooser tile, military/military-device-layout.js ribbonDevicePlan). Returns the rack's bounding box.
   async function drawRack(ctx, ribbons, slot, opts){
     if(!ribbons.length) return null;
     const o = opts || {};
@@ -375,10 +376,17 @@
       if(r.asset && ctx.has(r.asset)){
         const s = await ctx.spec(r.asset);
         ctx.layers.push({ type: 'asset', id: r.asset, x: p.x, y: p.y, w: p.w, h: p.h, rotate: 0, origin: { x: p.x, y: p.y }, z: Z.ribbon, role: 'ribbon', key: r.key, title: r.title, className: 'ribbonTile', sw: s.w });
-      }else if(r.raster){
-        ctx.raster({ href: r.raster, x: p.x, y: p.y, w: p.w, h: p.h, z: Z.ribbon, role: 'ribbon', key: r.key, title: r.title, className: 'ribbonTile', fit: 'stretch' });
       }else{
         ctx.note(`No ribbon artwork for ${r.title || r.key}`);
+        continue;
+      }
+      if(r.devicePlan){
+        for(const [i, d] of r.devicePlan.entries()){
+          if(!ctx.has(d.id)) continue;
+          const s = await ctx.spec(d.id), k = d.scale || 1;
+          const sz = { w: s.w * k, h: s.h * k };
+          ctx.layers.push({ type: 'asset', id: d.id, x: p.x + d.x - sz.w / 2, y: p.y + d.y - sz.h / 2, w: sz.w, h: sz.h, rotate: 0, origin: { x: p.x + d.x, y: p.y + d.y }, z: Z.device, role: 'device', key: `${r.key}:device:${i}`, className: 'ribbonDevice' });
+        }
         continue;
       }
       const devs = (r.devices || []).filter(d => sizes[d]);
@@ -428,14 +436,18 @@
     return false;
   }
   async function drawMiniMedals(ctx, medals, slot, opts){
-    // Only medals are worn as miniatures (11.2.8, Table 11-1): an award with no CAP medal is a ribbon-only
-    // award, so it gets no suspension drape; say so rather than hang a ribbon with nothing on it.
+    // Only medals are worn as miniatures (11.2.8, Table 11-1): an award with no medal is a ribbon-only
+    // award, so it gets no suspension drape; say so rather than hang a ribbon with nothing on it. A U.S. military
+    // medal whose body has no art yet (`pendingMedal`) is a medal: its drape hangs in its place, the room for the body kept,
+    // with no body and a note, so nothing moves when the art lands.
     medals = (medals || []).filter(m => {
-      if(m.raster || !m.ribbonAsset || (m.medal && ctx.has(m.medal))) return true;
+      if(m.pendingMedal || !m.ribbonAsset || (m.medal && ctx.has(m.medal))) return true;
       ctx.note(`${m.title}: ribbon-only award, not worn as a miniature medal (CAPR 39-1 11.2.8)`);
       return false;
     });
     if(!medals.length) return null;
+    const pending = medals.filter(m => m.pendingMedal).map(m => m.title);
+    if(pending.length) ctx.note(`Medal art pending for ${pending.join(', ')}: only the ribbon is shown`);
     const o = opts || {};
     let maxBodyH = 0;
     for(const m of medals){ if(m.medal && ctx.has(m.medal)){ const s = await ctx.spec(m.medal); maxBodyH = Math.max(maxBodyH, s.h); } }
@@ -446,7 +458,7 @@
     const hang = new Map(), reach = new Map();
     for(const m of medals){
       let below = 0, left = 0, right = MINI_DRAPE.w;
-      if(!(m.ribbonAsset && ctx.has(m.ribbonAsset)) && m.raster) below = totalH - MINI_DRAPE.h;
+      if(m.pendingMedal) below = totalH - MINI_DRAPE.h;
       else if(m.medal && ctx.has(m.medal)){
         const s = await ctx.spec(m.medal);
         const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
@@ -503,7 +515,6 @@
     const covers = new Map();
     for(const p of out.placements){
       const m = p.item;
-      if(m.raster && !(m.ribbonAsset && ctx.has(m.ribbonAsset))){ covers.set(p, { x0: p.x, x1: p.x + MINI_DRAPE.w, bottom: p.y + totalH }); continue; }
       let x0 = p.x, x1 = p.x + MINI_DRAPE.w;
       if(m.medal && ctx.has(m.medal)){
         const s = await ctx.spec(m.medal);
@@ -522,9 +533,6 @@
         const D = MINI_DRAPE;
         const clip = [{ x: p.x, y: p.y }, { x: p.x + D.w, y: p.y }, { x: p.x + D.w, y: p.y + D.h - D.point }, { x: p.x + D.w / 2, y: p.y + D.h }, { x: p.x, y: p.y + D.h - D.point }];
         ctx.layers.push({ type: 'asset', id: m.ribbonAsset, x: p.x, y: p.y, w: D.w, h: D.h, rotate: 0, origin: { x: p.x, y: p.y }, z: zBase, role: 'mini-drape', key: m.key, title: m.title, className: 'ribbonMini', clip });
-      }else if(m.raster){
-        ctx.raster({ href: m.raster, x: p.x, y: p.y, w: MINI_DRAPE.w, h: totalH, z: zBase, role: 'mini', key: m.key, title: m.title, className: 'ribbonMini' });
-        continue;
       }
       if(m.medal && ctx.has(m.medal)){
         const s = await ctx.spec(m.medal);

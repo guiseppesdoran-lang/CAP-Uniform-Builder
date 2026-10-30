@@ -8,8 +8,7 @@ const indexSource = readAppSource();
 const styleSource = fs.readFileSync(path.join(__dirname, '..', 'styles', 'app.css'), 'utf8');
 
 test('CAP miniature medal resolver uses canonical military representations', () => {
-  assert.match(indexSource, /getAwardRepresentation\?\.\(award,'MINIATURE_MEDAL'\)/);
-  assert.match(indexSource, /representation\?\.available && representation\.asset/);
+  assert.match(indexSource, /getAwardRepresentation\?\.\(award,'MINIATURE_MEDAL'\)\?\.status !== 'NOT_APPLICABLE'/);
 });
 
 test('calibrator stays within the visible viewport', () => {

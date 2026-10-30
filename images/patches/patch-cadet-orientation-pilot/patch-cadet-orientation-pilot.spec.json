@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-cadet-orientation-pilot",
+ "width_in": 3.5,
+ "height_in": 2.631,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   263.112
+  ],
+  "center": [
+   175,
+   131.556
+  ],
+  "left_edge": [
+   0,
+   131.556
+  ],
+  "right_edge": [
+   350,
+   131.556
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches (out) + cadet-orientation-pilot",
+ "reference": "refs-png/cadet-orientation-pilot.png",
+ "source_bbox_user_units": [
+  14,
+  85,
+  586,
+  515
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+}

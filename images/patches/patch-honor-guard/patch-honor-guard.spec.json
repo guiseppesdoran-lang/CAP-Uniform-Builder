@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-honor-guard",
+ "width_in": 3,
+ "height_in": 2.958,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   295.833
+  ],
+  "center": [
+   150,
+   147.917
+  ],
+  "left_edge": [
+   0,
+   147.917
+  ],
+  "right_edge": [
+   300,
+   147.917
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + honor-guard",
+ "reference": "refs-png/honor-guard.png",
+ "source_bbox_user_units": [
+  9,
+  20,
+  585,
+  588
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

@@ -1,0 +1,162 @@
+{
+ "asset_id": "mil-ribbon-air-force-outstanding-airman-of-the-year",
+ "name": "air_force_outstanding_airman_of_the_year",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "3e5b8a",
+    "fraction": 0.29,
+    "x0_in": 0,
+    "x1_in": 0.3987
+   },
+   {
+    "index": 1,
+    "hex": "b14f58",
+    "fraction": 0.07,
+    "x0_in": 0.3987,
+    "x1_in": 0.495
+   },
+   {
+    "index": 2,
+    "hex": "3c4079",
+    "fraction": 0.07,
+    "x0_in": 0.495,
+    "x1_in": 0.5913
+   },
+   {
+    "index": 3,
+    "hex": "bec0b9",
+    "fraction": 0.14,
+    "x0_in": 0.5913,
+    "x1_in": 0.7837
+   },
+   {
+    "index": 4,
+    "hex": "34346d",
+    "fraction": 0.07,
+    "x0_in": 0.7837,
+    "x1_in": 0.88
+   },
+   {
+    "index": 5,
+    "hex": "af4251",
+    "fraction": 0.06,
+    "x0_in": 0.88,
+    "x1_in": 0.9625
+   },
+   {
+    "index": 6,
+    "hex": "7d5172",
+    "fraction": 0.02,
+    "x0_in": 0.9625,
+    "x1_in": 0.99
+   },
+   {
+    "index": 7,
+    "hex": "45638f",
+    "fraction": 0.14,
+    "x0_in": 0.99,
+    "x1_in": 1.1825
+   },
+   {
+    "index": 8,
+    "hex": "2a477a",
+    "fraction": 0.11,
+    "x0_in": 1.1825,
+    "x1_in": 1.3337
+   },
+   {
+    "index": 9,
+    "hex": "4f6c9b",
+    "fraction": 0.03,
+    "x0_in": 1.3337,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "McChord-style precomposed variant (flat art)",
+  "geometry_source": "variant base, top/bottom bands",
+  "snap": null,
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbon-variants/air-force/air_force_outstanding_airman_of_the_year/fc1862c7b9c654ca.png"
+  ],
+  "residual": {
+   "variant_bases_measured": 24,
+   "variants_agreeing": 24,
+   "exact_svg": false
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "variant",
+  "note": ""
+ },
+ "authorized_services": [],
+ "aliases": [
+  {
+   "image": "images/military-ribbon-variants/air-force/air_force_outstanding_airman_of_the_year/fc1862c7b9c654ca.png",
+   "award_ids": [
+    "air_force_outstanding_airman_of_the_year"
+   ]
+  }
+ ],
+ "award_names": [],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 99,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

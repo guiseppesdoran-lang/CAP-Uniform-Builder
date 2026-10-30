@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-communications",
+ "width_in": 3,
+ "height_in": 3.427,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   342.692
+  ],
+  "center": [
+   150,
+   171.346
+  ],
+  "left_edge": [
+   0,
+   171.346
+  ],
+  "right_edge": [
+   300,
+   171.346
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches (out) + communications",
+ "reference": "refs-png/communications.png",
+ "source_bbox_user_units": [
+  9.84,
+  4.925,
+  522.04,
+  590.015
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+}

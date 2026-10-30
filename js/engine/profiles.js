@@ -769,7 +769,9 @@
     const slot = ctx.rect('patch_loop_square_right');
     const patch = (b.patches || []).find(p => p.slot !== 'CHEST_LEFT' && p.slot !== 'CHEST_RIGHT') || (b.patches || [])[0];
     if(slot && patch){
-      C.fitRaster(ctx, patch.href, slot, patch.aspect || 1, { z: Z.patch, role: 'patch', key: 'patch:' + patch.id + ':RS:0', title: patch.title });
+      const opts = { z: Z.patch, role: 'patch', key: 'patch:' + patch.id + ':RS:0', title: patch.title };
+      if(patch.asset) await C.fitIn(ctx, patch.asset, slot, opts);
+      else C.fitRaster(ctx, patch.href, slot, patch.aspect || 1, opts);
       if((b.patches || []).length > 1) ctx.note('Only one patch is worn on the flight suit sleeve (CAPR 39-1, 8.2.4.5)');
     }
   }

@@ -33,8 +33,8 @@
   "colour": "full"
  },
  "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches (out) + es-style-1",
- "reference": "refs-png/es-style-1.png",
+ "generator": "artwork-samples/patches/g8 + es-style-1",
+ "reference": "UniformBuilder-svg/images/patches/plane_patch.webp",
  "source_bbox_user_units": [
   24,
   225.778,
@@ -42,5 +42,5 @@
   612
  ],
  "fit_score": null,
- "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated. The builder plane_patch: the same oval as Emergency Services style 1."
 }

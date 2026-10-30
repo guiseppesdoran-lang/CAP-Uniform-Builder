@@ -133,6 +133,9 @@ test('the site build publishes only runtime files and carries the policy', () =>
   assert.match(fs.readFileSync(path.join(dist, 'config.js'), 'utf8'), /submissionEndpoint:\s*''/);
   const stamps = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'stamp-assets.cjs'), `--root=${dist}`, '--check'], { encoding: 'utf8' });
   assert.equal(stamps.status, 0, stamps.stderr || stamps.stdout);
+  // No photo is published (tests/no-raster.test.cjs).
+  const noRaster = require('./helpers/no-raster.cjs');
+  assert.deepEqual(noRaster.strayRasters(noRaster.walk(path.join(dist, 'images')).map(f => path.relative(dist, f).split(path.sep).join('/'))), []);
 });
 
 test('a build with an endpoint enables submissions and widens the policy to that origin only', () => {

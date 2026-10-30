@@ -1,0 +1,121 @@
+{
+ "asset_id": "mil-ribbon-marine-corps-drill-instructor",
+ "name": "Marine Corps Drill Instructor",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "215732",
+    "fraction": 0.3909,
+    "x0_in": 0,
+    "x1_in": 0.5375
+   },
+   {
+    "index": 1,
+    "hex": "b0aa7e",
+    "fraction": 0.2318,
+    "x0_in": 0.5375,
+    "x1_in": 0.8562
+   },
+   {
+    "index": 2,
+    "hex": "215732",
+    "fraction": 0.3773,
+    "x0_in": 0.8562,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 3,
+   "stripes_after": 3,
+   "max_snap_delta": 18.4
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/marine_corps_drill_instructor.jpg"
+  ],
+  "residual": {
+   "vertical": 2.4,
+   "horizontal": 69.6,
+   "central_vertical": 1.4
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "MARINE_CORPS"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/marine_corps_drill_instructor.jpg",
+   "award_ids": [
+    "marine_corps_drill_instructor"
+   ]
+  }
+ ],
+ "award_names": [
+  "Marine Corps Drill Instructor"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 2.4,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

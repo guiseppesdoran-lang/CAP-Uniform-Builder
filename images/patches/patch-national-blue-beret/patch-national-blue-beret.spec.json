@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-national-blue-beret",
+ "width_in": 3,
+ "height_in": 3.242,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   324.231
+  ],
+  "center": [
+   150,
+   162.115
+  ],
+  "left_edge": [
+   0,
+   162.115
+  ],
+  "right_edge": [
+   300,
+   162.115
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches (out) + national-blue-beret",
+ "reference": "refs-png/national-blue-beret.png",
+ "source_bbox_user_units": [
+  41,
+  18,
+  561,
+  580
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+}

@@ -150,7 +150,6 @@ function extractCommandServiceCommanderAssignments(text){
        images/cords/wing
        images/cords/region
        images/cords/national
-     The renderer tries .png, .webp, .jpg, then the extensionless path.
    - Assistant/alternate CAC reps, recorders, members, chairs, and vice chairs do not auto-render the cord.
    ========================================================== */
 State.shoulderCord = State.shoulderCord || null;
@@ -709,7 +708,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // The badge's field (silver on blue) artwork from images/field, via the badge catalog.
     function capubFieldBadgePath(id){
       const art = window.CAPUBBadgeCatalog && CAPUBBadgeCatalog.art(id, 'field');
-      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || `badges/utility/${id}.webp`;
+      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || '';
     }
     // The picker's thumbnail on a field uniform: the field form, or for a badge with no field form (STEM,
     // Cyber, Model Rocketry, NRA, the service badges) its dress, then cloth, artwork rather than a broken
@@ -718,7 +717,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const cat = window.CAPUBBadgeCatalog;
       const level = State.badgeSelections?.[id]?.level;
       const art = cat && (cat.art(id, 'field') || cat.art(id, 'dress', level) || cat.art(id, 'cloth'));
-      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || `badges/utility/${id}.webp`;
+      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || '';
     }
     function capubUtilityBadgePreviewUrl(id){
       return ASSET(capubFieldBadgePath(id));
@@ -795,13 +794,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // Treat these two OCP patch assets as calibrated tall sleeve patches until final
     // natural dimensions are supplied. Each rendered layer remains editable in CAL.
     if(PATCH_META?.pjoc_ocp_patch){
-      PATCH_META.pjoc_ocp_patch.img = 'patches/ocp/pjoc_ocp_patch.webp';
       PATCH_META.pjoc_ocp_patch.w = Number(PATCH_META.pjoc_ocp_patch.w) || 100;
       PATCH_META.pjoc_ocp_patch.h = Number(PATCH_META.pjoc_ocp_patch.h) || 200;
       PATCH_META.pjoc_ocp_patch.authorizedUniforms = ['ocp'];
     }
     if(PATCH_META?.tn185_ocp_patch){
-      PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.webp';
       PATCH_META.tn185_ocp_patch.w = Number(PATCH_META.tn185_ocp_patch.w) || 100;
       PATCH_META.tn185_ocp_patch.h = Number(PATCH_META.tn185_ocp_patch.h) || 200;
       PATCH_META.tn185_ocp_patch.authorizedUniforms = ['abu','ocp','corporate_field','cfdu','flight_suit'];
@@ -827,9 +824,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         if(!CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)) return [];
         return [capubFieldBadgePath(id)];
       }
-      const current = [];
-      (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => addAssetCandidate(current, path));
-      return current;
+      return capubPreviousGetBadgeAssetCandidates(id);
     };
 
     const capubPreviousIsPatchAuthorizedForUniform = isPatchAuthorizedForUniform;
@@ -889,12 +884,12 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
         tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">
+          ${meta.img ? `<img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">` : ''}
           <div style="flex:1;min-width:0;">
             <div class="title">${escapeHtml(title)}</div>
             <div class="sub">(${escapeHtml(id)})</div>
             <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-            <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px • Path: images/${meta.img}</div>
+            <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px</div>
           </div>`;
 
         const chk = tile.querySelector('.ptChk');
@@ -962,8 +957,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
         const title = CAPUB_UTILITY_BADGE_LABELS[id] || getBadgeDisplayName(id);
         const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
-        const previewPath = utilityMode ? (utilityCandidates[0] || `badges/utility/${id}.png`) : getBadgeAssetPath(id);
-        const fallbackPath = utilityMode ? '' : `badges/${id}.webp`;
+        const previewPath = utilityMode ? (utilityCandidates[0] || '') : getBadgeAssetPath(id);
 
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
@@ -981,22 +975,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
         const chk = tile.querySelector('.bdChk');
         const gradChk = tile.querySelector('.cmdGradChk');
-        const previewImg = tile.querySelector('img');
-        if(previewImg){
-          const previewCandidates = utilityMode
-            ? utilityCandidates.slice(1).map(path => `${ASSET(path)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`)
-            : [fallbackPath];
-          let previewCandidateIndex = 0;
-          previewImg.onerror = () => {
-            if(previewCandidateIndex >= previewCandidates.length){
-              previewImg.onerror = null;
-              return;
-            }
-            previewImg.src = utilityMode
-              ? previewCandidates[previewCandidateIndex++]
-              : ASSET(previewCandidates[previewCandidateIndex++]);
-          };
-        }
         chk.checked = !!sel.checked;
         if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
 
@@ -1250,21 +1228,19 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(Array.isArray(patchList) && !patchList.includes(id)) patchList.push(id);
     }
 
-    // Unit patch asset for Sequoyah Cadet Squadron.
-    // File convention matches TN-185:
-    //   images/patches/ocp/TN-330_ocp_patch.webp
+    // Unit patch for Sequoyah Cadet Squadron.
     PATCH_META.tn330_ocp_patch = {
       label:'SER-TN-330 Sequoyah Cadet Squadron Unit Patch',
       slotHint:'R_SHOULDER',
       w:200,
       h:100,
-      img:'patches/ocp/TN-330_ocp_patch.webp',
+      img:window.CAPUBPatchArt?.tn330_ocp_patch?.img,
+      asset:window.CAPUBPatchArt?.tn330_ocp_patch?.asset || null,
       authorizedUniforms:['abu','ocp','corporate_field','cfdu','flight_suit']
     };
 
     // Keep the TN-185 metadata normalized and available for the same resolver.
     if(PATCH_META.tn185_ocp_patch){
-      PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.webp';
       PATCH_META.tn185_ocp_patch.slotHint = 'R_SHOULDER';
       PATCH_META.tn185_ocp_patch.authorizedUniforms = ['abu','ocp','corporate_field','cfdu','flight_suit'];
       PATCH_META.tn185_ocp_patch.w = Number(PATCH_META.tn185_ocp_patch.w) || 100;
@@ -1273,7 +1249,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     // Keep OCP PJOC normalized.
     if(PATCH_META.pjoc_ocp_patch){
-      PATCH_META.pjoc_ocp_patch.img = 'patches/ocp/pjoc_ocp_patch.webp';
       PATCH_META.pjoc_ocp_patch.slotHint = 'L_SHOULDER';
       PATCH_META.pjoc_ocp_patch.authorizedUniforms = ['ocp'];
       PATCH_META.pjoc_ocp_patch.w = Number(PATCH_META.pjoc_ocp_patch.w) || 100;
@@ -1399,11 +1374,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
 /* ==========================================================
    CAPUB PATCH — Community Service Ribbon through 4,800 hours
-   Requires these files in images/ribbons/:
-   commun01.png, commun02.png, commun03.png, commun04.png,
-   commun05.png, commun06.png, commun07.png, commun08.png,
-   commun09.png, commun11.png, commun12.png, commun13.png,
-   commun16.png, commun17.png, commun21.png
    ========================================================== */
 (function capubCommunityService4800Patch(){
   try{
@@ -1411,34 +1381,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const HOURS_PER_AWARD = 60;
     const MAX_COMMUNITY_HOURS = 4800;
 
-    // Each number is the TOTAL number of 60-hour awards represented by one
-    // physical ribbon. The image already contains the correct clasps.
-    const COMMUNITY_IMAGE_BY_AWARDS = Object.freeze({
-      1:  'commun01.png', // Basic ribbon
-      2:  'commun02.png', // 1 bronze
-      3:  'commun03.png', // 2 bronze
-      4:  'commun04.png', // 3 bronze
-      5:  'commun05.png', // 4 bronze
-      6:  'commun06.png', // 1 silver
-      7:  'commun07.png', // 1 silver + 1 bronze
-      8:  'commun08.png', // 1 silver + 2 bronze
-      9:  'commun09.png', // 1 silver + 3 bronze
-      11: 'commun11.png', // 2 silver
-      12: 'commun12.png', // 2 silver + 1 bronze
-      13: 'commun13.png', // 2 silver + 2 bronze
-      16: 'commun16.png', // 3 silver
-      17: 'commun17.png', // 3 silver + 1 bronze
-      21: 'commun21.png'  // 4 silver — full ribbon
-    });
-
-    // Highest-device ribbon first. A ribbon with fewer devices follows it at
-    // lower precedence. Greedy decomposition also produces the fewest ribbons
-    // for every supported total under these device rules.
-    const COMMUNITY_VALID_AWARD_COUNTS = Object.freeze(
-      Object.keys(COMMUNITY_IMAGE_BY_AWARDS)
-        .map(Number)
-        .sort((a,b) => b-a)
-    );
+    // Each number is the TOTAL number of 60-hour awards one physical ribbon can show (up to four clasps, a silver clasp for five bronze),
+    // highest first. A ribbon with fewer devices follows it at lower precedence. Greedy decomposition also produces the fewest ribbons for
+    // every supported total under these device rules.
+    const COMMUNITY_VALID_AWARD_COUNTS = Object.freeze([21, 17, 16, 13, 12, 11, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
     function splitCommunityAwards(totalAwards){
       let remaining = Math.max(1, Math.floor(Number(totalAwards) || 1));
@@ -1459,7 +1405,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     function makeCommunityOption(hours){
       const totalAwards = Math.floor(hours / HOURS_PER_AWARD);
       const ribbonAwardCounts = splitCommunityAwards(totalAwards);
-      const [primaryAwards, ...lowerPrecedenceAwards] = ribbonAwardCounts;
+      const [, ...lowerPrecedenceAwards] = ribbonAwardCounts;
       const ribbonCountText = ribbonAwardCounts.length > 1
         ? ` / ${ribbonAwardCounts.length} Ribbons`
         : '';
@@ -1467,10 +1413,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return {
         label: `${hours.toLocaleString()} Hours${ribbonCountText}`,
         value: `hours_${hours}`,
-        image: COMMUNITY_IMAGE_BY_AWARDS[primaryAwards],
         devices: {},
         duplicates: lowerPrecedenceAwards.map((awardCount, index) => ({
-          image: COMMUNITY_IMAGE_BY_AWARDS[awardCount],
           awardLabel: `Additional Community Service Ribbon ${index + 2}`
         }))
       };

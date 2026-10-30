@@ -346,7 +346,7 @@
 
       // Ribbons, their devices and the rack.
       if(role === 'ribbon'){
-        const military = l.type === 'raster' || /^ribbon:military/.test(key);
+        const military = /^ribbon:military/.test(key);
         const rid = key.replace(/^ribbon:/, '').replace(/#\d+$/, '');
         const extra = /#\d+$/.test(key) && !military;
         const name = String(l.title || titleCase(rid)).replace(/ \(additional ribbon\)$/, '');
@@ -361,7 +361,7 @@
         const rid = mkey.replace(/^mini:/, '').replace(/#\d+$/, '');
         const name = String(l.title || titleCase(rid));
         const fresh = !lines.has(figPrefix(l) + mkey);
-        cover(l, makeLine(figPrefix(l) + mkey, { group: 'Miniature medals', name: `Miniature medal: ${name}`, rule: C.MILITARY_IN_CAP_LIST.includes(rid) || l.type === 'raster' ? 'MILSPEC_OK' : 'CAP_ONLY', ref: '11.4', offers: C.miniOffers(rid, name), rid }));
+        cover(l, makeLine(figPrefix(l) + mkey, { group: 'Miniature medals', name: `Miniature medal: ${name}`, rule: C.MILITARY_IN_CAP_LIST.includes(rid) || /^mini:military/.test(mkey) ? 'MILSPEC_OK' : 'CAP_ONLY', ref: '11.4', offers: C.miniOffers(rid, name), rid }));
         if(fresh) miniCount++;
         continue;
       }
@@ -380,7 +380,7 @@
         const bid = key.replace(/^badge:/, '').split(':')[0];
         const meta = B && B.get ? B.get(bid) : null;
         let form = 'dress';
-        if(l.type === 'raster') form = 'military';
+        if(l.type === 'raster' || l.raster) form = 'military';
         else if(build.uniform === 'polo') form = 'polo';
         else if(meta && meta.mini === id) form = 'mini';
         else if(meta && meta.cloth === id) form = 'cloth';

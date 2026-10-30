@@ -1,0 +1,209 @@
+{
+ "asset_id": "mil-ribbon-joint-american-campaign",
+ "name": "american campaign",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "0072ce",
+    "fraction": 0.15,
+    "x0_in": 0,
+    "x1_in": 0.2062
+   },
+   {
+    "index": 1,
+    "hex": "ffffff",
+    "fraction": 0.0636,
+    "x0_in": 0.2062,
+    "x1_in": 0.2937
+   },
+   {
+    "index": 2,
+    "hex": "00205b",
+    "fraction": 0.0409,
+    "x0_in": 0.2937,
+    "x1_in": 0.3499
+   },
+   {
+    "index": 3,
+    "hex": "cf0e34",
+    "fraction": 0.0455,
+    "x0_in": 0.3499,
+    "x1_in": 0.4125
+   },
+   {
+    "index": 4,
+    "hex": "ffffff",
+    "fraction": 0.0455,
+    "x0_in": 0.4125,
+    "x1_in": 0.4751
+   },
+   {
+    "index": 5,
+    "hex": "0072ce",
+    "fraction": 0.1227,
+    "x0_in": 0.4751,
+    "x1_in": 0.6438
+   },
+   {
+    "index": 6,
+    "hex": "041e42",
+    "fraction": 0.0273,
+    "x0_in": 0.6438,
+    "x1_in": 0.6813
+   },
+   {
+    "index": 7,
+    "hex": "ffffff",
+    "fraction": 0.0409,
+    "x0_in": 0.6813,
+    "x1_in": 0.7375
+   },
+   {
+    "index": 8,
+    "hex": "cf0e34",
+    "fraction": 0.0227,
+    "x0_in": 0.7375,
+    "x1_in": 0.7688
+   },
+   {
+    "index": 9,
+    "hex": "0072ce",
+    "fraction": 0.1227,
+    "x0_in": 0.7688,
+    "x1_in": 0.9375
+   },
+   {
+    "index": 10,
+    "hex": "ffffff",
+    "fraction": 0.0591,
+    "x0_in": 0.9375,
+    "x1_in": 1.0187
+   },
+   {
+    "index": 11,
+    "hex": "cf0e34",
+    "fraction": 0.0364,
+    "x0_in": 1.0187,
+    "x1_in": 1.0688
+   },
+   {
+    "index": 12,
+    "hex": "00205b",
+    "fraction": 0.0318,
+    "x0_in": 1.0688,
+    "x1_in": 1.1125
+   },
+   {
+    "index": 13,
+    "hex": "ffffff",
+    "fraction": 0.0591,
+    "x0_in": 1.1125,
+    "x1_in": 1.1938
+   },
+   {
+    "index": 14,
+    "hex": "0072ce",
+    "fraction": 0.1318,
+    "x0_in": 1.1938,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "measured raster, snapped to the repo palette",
+  "geometry_source": "vendor raster (mid-height columns)",
+  "snap": {
+   "stripes_before": 15,
+   "stripes_after": 15,
+   "max_snap_delta": 12.8
+  },
+  "reference": null,
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "source_images": [
+   "images/military-ribbons/american_campaign.jpg"
+  ],
+  "residual": {
+   "vertical": 13.2,
+   "horizontal": 107.1,
+   "central_vertical": 12.3
+  },
+  "edge_frame_trimmed": 0,
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "fallback_central_stripes_only": false,
+  "source_kind": "raster",
+  "note": ""
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "ARMY",
+  "COAST_GUARD",
+  "MARINE_CORPS",
+  "NAVY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/american_campaign.jpg",
+   "award_ids": [
+    "american_campaign"
+   ]
+  }
+ ],
+ "award_names": [
+  "american campaign"
+ ],
+ "fit": {
+  "method": "column/row block-mean residual vs run colour",
+  "score": 13.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

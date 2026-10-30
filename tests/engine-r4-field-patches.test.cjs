@@ -55,19 +55,21 @@ test('ABU and CFU: a special activity patch such as ARCHER never lands on the le
   }
 });
 
-test('one patch is one size on every uniform: ARCHER is 3.5 in on the OCP Velcro, the CFU sleeve and the pockets, as the squadron patch is (R1, D2)', async () => {
+test('one patch is one size on every uniform: the size its spec states, on the OCP Velcro, the CFU sleeve and the pockets (R1, D2)', async () => {
   const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [UNIT, ARCHER] }));
   const ocpArcher = flat(ocp, 'archer_ocp_patch');
-  assert.ok(ocpArcher && Math.abs(ocpArcher.w - 3.5) < 0.005, `OCP ARCHER ${ocpArcher && ocpArcher.w}`);
+  assert.ok(ocpArcher && Math.abs(ocpArcher.h - 3.5) < 0.005, `OCP ARCHER ${ocpArcher && ocpArcher.h}`);
   for(const gender of ['male', 'female']){
     const cfu = await compose(hb('corporate_field', gender, 'senior', 'Capt', { patchRefs: [UNIT, WING, ARCHER] }));
-    for(const id of ['archer_ocp_patch', 'nywg_patch', 'TN-330_ocp_patch']){
-      const l = flat(cfu, id);
-      assert.ok(l, `${gender} CFU: ${id} drawn`);
-      assert.ok(Math.abs(l.w - ocpArcher.w) < 0.005 && Math.abs(l.h - ocpArcher.h) < 0.005, `${gender} CFU: ${id} is ${l.w} x ${l.h}, the same as the OCP's ${ocpArcher.w} x ${ocpArcher.h}`);
-    }
+    const archer = flat(cfu, 'archer_ocp_patch');
+    assert.ok(archer, `${gender} CFU: ARCHER drawn`);
+    assert.ok(Math.abs(archer.w - ocpArcher.w) < 0.005 && Math.abs(archer.h - ocpArcher.h) < 0.005, `${gender} CFU: ARCHER is ${archer.w} x ${archer.h}, the same as the OCP's ${ocpArcher.w} x ${ocpArcher.h}`);
+    const unit = flat(cfu, 'TN-330_ocp_patch');
+    assert.ok(unit && Math.abs(unit.h - 3.5) < 0.005, `${gender} CFU: the unit patch is held to 3 1/2 in`);
+    const wing = flat(cfu, 'nywg_patch');
+    assert.ok(wing && Math.abs(wing.w - 3.25) < 0.005 && Math.abs(wing.h - 3.095) < 0.005, `${gender} CFU: the wing patch at its spec's size`);
     const abu = await compose(hb('abu', gender, 'senior', 'Capt', { patchRefs: [UNIT, WING] }));
-    assert.ok(Math.abs(flat(abu, 'nywg_patch').w - 3.5) < 0.005, `${gender} ABU: the wing patch is 3.5 in`);
+    assert.ok(Math.abs(flat(abu, 'nywg_patch').w - wing.w) < 0.005, `${gender} ABU: the wing patch is the same size`);
     // Hung from the 1/2 in line, as before: the top edge is 1/2 in below the shoulder seam (the unchanged rule).
     const spec = await store.load('garment-abu-coat');
     const seam = core.anchor(spec, 'seam_top_center_left');

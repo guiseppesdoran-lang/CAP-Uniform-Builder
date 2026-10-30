@@ -176,7 +176,6 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
 /* ===========================
    V3.2 USER PATCHES
    - Female Class A current/graduated commander pin default moved 5px left.
-   - Senior Aerospace Education badge asset mapped to images/badges/aerospace_senior_badge.webp.
    - v3.3: Command Service Ribbon now requires 365 days at the command level and maps Wing command to silver star; commander pin is blocked for Col and above with manual-selection warning.
    - Specialty-track import continues to use only the Specialty Tracks table.
    =========================== */

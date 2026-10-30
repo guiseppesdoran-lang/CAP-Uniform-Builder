@@ -36,7 +36,7 @@ test('a fourth is refused with the 11.2.5 message, and the selections keep their
     ev(`setRibbonSelectionFromDropdown(${JSON.stringify(id)}, 'earned', { deferRender: true })`);
   const chosen = ev("Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked)");
   assert.deepEqual(chosen.sort(), ['rotc_air_force_jrotc_color_guard', 'rotc_army_jrotc_proficiency', 'rotc_navy_jrotc_unit_service_ribbon']);
-  assert.deepEqual(ev('State.ribbonSelections.rotc_army_jrotc_proficiency'), { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Earned', imageOverride: null });
+  assert.deepEqual(ev('State.ribbonSelections.rotc_army_jrotc_proficiency'), { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Earned' });
   assert.equal(ev('capubRotcLimitMessage()'), 'At most 3 JROTC/ROTC ribbons may be worn (CAPR 39-1, 11.2.5); remove one to add another.');
   assert.match(galleries, /window\.capubToastShow\(capubRotcLimitMessage\(\)\)/);
 });

@@ -8,7 +8,7 @@ const source = readAppSource();
 
 test('National Staff uses a dedicated OCP sleeve patch selection', () => {
   assert.match(source, /'national_staff_ocp_patch'/);
-  assert.match(source, /img:'badges\/utility\/national_staff_badge\.(?:png|webp)'/);
+  assert.ok(require('../data/patch-art.js').national_staff_ocp_patch.img);
   assert.match(source, /authorizedUniforms:\['ocp'\]/);
   assert.match(source, /'national_staff_badge':'national_staff_ocp_patch'/);
 });

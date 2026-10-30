@@ -232,7 +232,6 @@ function selectImportedRibbon(id, value='earned'){
   State.ribbonSelections[id].awardValue = option?.value || value || 'earned';
   State.ribbonSelections[id].awardLabel = option?.label || 'Earned';
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
-  State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || 'earned');
   enforceRibbonExclusions(id);
 }
 
@@ -1738,7 +1737,6 @@ function applyCapMemberReportImport(parsed){
     State.ribbonSelections[id].awardValue = '';
     State.ribbonSelections[id].awardLabel = '';
     State.ribbonSelections[id].devices = {};
-    State.ribbonSelections[id].imageOverride = null;
   }
   for(const id of Object.keys(State.badgeSelections)){
     State.badgeSelections[id].checked = false;

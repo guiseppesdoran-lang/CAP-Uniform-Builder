@@ -31,10 +31,6 @@ if (endpoint) {
   if (url.protocol !== 'https:') fail('The submission endpoint must be https.');
 }
 
-// Fail rather than ship a page whose asset hashes are stale.
-const check = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), '--check'], { encoding: 'utf8' });
-if (check.status !== 0) fail(check.stderr || check.stdout);
-
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const referenced = new Set();
 for (const match of html.matchAll(/(?:src|href)="([^"#?]+)/g)) {
@@ -57,14 +53,34 @@ for (const rel of referenced) {
 // Directories the code reads from at runtime without naming each file in the HTML.
 const runtimeDirs = ['images', 'vendor'];
 const skipFile = name => name.startsWith('.') || name.endsWith('.md') || name.endsWith('.keep');
+// No picture is a photo (LIVE13 E118): what the page no longer reads stays in the source tree until it is deleted and is not published, and a
+// raster under images/ is published only while tests/no-raster-allowlist.json keeps it, for art still to come.
+const NOT_SHIPPED = ['images/military-ribbons', 'images/military-ribbon-variants', 'images/military-mini-medals', 'images/military-full-size-medals', 'images/mini_medals', 'images/military-badges/embroidered', 'images/patches/ocp'];
+const RASTER = /\.(png|jpe?g|webp|gif)$/i;
+const allowed = Object.keys(JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'no-raster-allowlist.json'), 'utf8')));
+const onAllowlist = rel => allowed.some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry);
 function walk(dir, out) {
   for (const entry of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
     const rel = path.posix.join(dir.split(path.sep).join('/'), entry.name);
-    if (entry.isDirectory()) walk(rel, out);
-    else if (!skipFile(entry.name)) out.add(rel);
+    if (entry.isDirectory()) { if (!NOT_SHIPPED.includes(rel)) walk(rel, out); }
+    else if (!skipFile(entry.name) && !(rel.startsWith('images/') && RASTER.test(rel) && !onAllowlist(rel))) out.add(rel);
   }
 }
 for (const dir of runtimeDirs) walk(dir, runtimeFiles);
+
+// --list: the files a build would publish, and nothing else (tests/no-raster.test.cjs).
+if (process.argv.includes('--list')) {
+  // Written synchronously: process.exit would cut off what console.log still has queued for a pipe.
+  let list = Buffer.from([...runtimeFiles].sort().join('\n') + '\n');
+  while (list.length) {
+    try { list = list.subarray(fs.writeSync(1, list)); } catch (err) { if (err.code !== 'EAGAIN') throw err; }
+  }
+  process.exit(0);
+}
+
+// Fail rather than ship a page whose asset hashes are stale.
+const check = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), '--check'], { encoding: 'utf8' });
+if (check.status !== 0) fail(check.stderr || check.stdout);
 
 fs.rmSync(DIST, { recursive: true, force: true });
 let bytes = 0;

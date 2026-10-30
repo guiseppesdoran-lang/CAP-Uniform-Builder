@@ -827,8 +827,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
           if(has(deviceMeta, deviceId) && Number.isFinite(n) && n > 0 && n <= 99) devices[deviceId] = n;
         }
       }
-      // awardLabel and imageOverride are left out on purpose: normalizeRibbonSelections()
-      // recomputes both from the catalog instead of trusting the file.
+      // awardLabel is left out on purpose: normalizeRibbonSelections() recomputes it from the catalog instead of trusting the file.
       out.ribbonSelections[id] = {
         checked: !!sel.checked,
         devices,

@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-new-york-wing",
+ "width_in": 3.25,
+ "height_in": 3.095,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   309.465
+  ],
+  "center": [
+   162.5,
+   154.732
+  ],
+  "left_edge": [
+   0,
+   154.732
+  ],
+  "right_edge": [
+   325,
+   154.732
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + nywg",
+ "reference": "UniformBuilder-svg/images/patches/nywg_patch.webp",
+ "source_bbox_user_units": [
+  3.833,
+  7.333,
+  178.167,
+  173.333
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

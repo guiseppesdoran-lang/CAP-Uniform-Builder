@@ -156,17 +156,16 @@ function getAllSelectableMilitaryBadges(){
     .sort((a,b)=>String(a.officialName || a.id).localeCompare(String(b.officialName || b.id)));
 }
 
-function getMilitaryBadgeRepresentation(badge,preferred='metal',uniformFamily='SERVICE_DRESS'){
-  const representationName=preferred==='auto'
-    ? (/OCP|ABU|ODU|NWU|MCCUU|UTILITY/i.test(uniformFamily) ? 'embroidered' : 'metal')
-    : preferred;
+// The metal badge: the one form of a U.S. military badge the builder draws (no military badges on utility uniforms).
+function getMilitaryBadgeRepresentation(badge){
+  const representationName='metal';
   const configured=badge?.representations?.[representationName] || {status:'MISSING_ASSET',available:false,asset:null};
   const base=configured.byService?.[State.organization] || configured;
   const available=getAvailableMilitaryBadgeVariants(badge,representationName,State.organization);
   const requested=State.militaryBadges?.[badge?.id]?.variant;
   const selectedVariant=requested || base.defaultVariant || available[0]?.id || badge?.variants?.[0] || 'default';
   const resolved=window.CAPUBMilitary?.resolveBadgeRepresentation?.(badge,{
-    service:State.organization,uniformFamily,preferred:representationName,
+    service:State.organization,preferred:representationName,
     assetProfiles:window.CAPUBMilitaryData?.assetProfiles,variant:selectedVariant
   });
   if(resolved?.status==='AVAILABLE' && resolved.asset) return resolved;

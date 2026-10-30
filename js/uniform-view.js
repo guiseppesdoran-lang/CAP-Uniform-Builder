@@ -40,20 +40,7 @@
     return g;
   }
 
-  const RIBBON_DEVICE_IDS = {
-    BRONZE_OLC: 'mil-device-olc-bronze', SILVER_OLC: 'mil-device-olc-silver',
-    BRONZE_SERVICE_STAR: 'device-star-bronze', SILVER_SERVICE_STAR: 'device-star-silver',
-    GOLD_AWARD_STAR: 'device-star-gold', SILVER_AWARD_STAR: 'device-star-silver',
-    V_DEVICE: 'device-v', C_DEVICE: 'mil-device-letter-c', R_DEVICE: 'mil-device-letter-r',
-    M_DEVICE: 'mil-device-letter-m', N_DEVICE: 'mil-device-letter-n',
-    BRONZE_HOURGLASS: 'mil-device-hourglass-bronze', SILVER_HOURGLASS: 'mil-device-hourglass-silver',
-    GOLD_HOURGLASS: 'mil-device-hourglass-gold', ARROWHEAD_DEVICE: 'mil-device-arrowhead'
-  };
-  function militaryDeviceAsset(id){
-    if(RIBBON_DEVICE_IDS[id]) return RIBBON_DEVICE_IDS[id];
-    const m = /^NUMERAL_(\d+)$/.exec(id);
-    return m ? 'mil-device-numeral-' + Number(m[1]) : null;
-  }
+  const militaryDeviceAsset = id => window.CAPUBMilitaryDeviceLayout?.ribbonDeviceArt(id)?.asset || null;
 
   function ribbonAssetId(id){
     // A JROTC/ROTC ribbon is the sheet of the same name, not a 'ribbon-' sheet (data/rotc-ribbons.js).
@@ -71,10 +58,8 @@
     for(const inst of ordered){
       const id = inst.id;
       if(isMilitaryRibbonId(id)){
-        const award = getMilitaryRibbonAward(id);
-        const href = award?.images?.ribbon ? ASSET(award.images.ribbon) : null;
         const devices = (inst.militaryDevices || []).map(militaryDeviceAsset).filter(Boolean);
-        out.push({ key: `ribbon:${id}#${out.length}`, title: getRibbonDisplayName(id), raster: href, devices, centered: false, military: true });
+        out.push({ key: `ribbon:${id}#${out.length}`, title: getRibbonDisplayName(id), asset: getMilitaryRibbonAward(id)?.images?.ribbonAsset || null, devices, centered: false, military: true });
         continue;
       }
       if(seen.has(id)) continue; // the engine makes the extra ribbons itself
@@ -95,24 +80,35 @@
     return out;
   }
 
-  // One miniature medal per award: the devices a second ribbon would carry stay on the one medal,
-  // since more than four devices is allowed when it avoids a second medal (11.4.2).
+  // The body of a U.S. military miniature medal, from data/military-medals.js (scripts/sync-military-medals.cjs): its manifest id, or null.
+  function militaryMedalArt(award){
+    const table = window.CAPUBMilitaryMedals || {};
+    for(const id of [award?.id, ...(award?.sourceIds || [])]) if(table[id]) return table[id].artId;
+    return null;
+  }
+
+  // One miniature medal per award, ribbon SVG plus medal body SVG: the devices a second ribbon would carry stay on the one medal, since more
+  // than four devices is allowed when it avoids a second medal (11.4.2). A military award that is a medal but has no body art yet hangs its
+  // drape alone (`pendingMedal`, the engine says so); a ribbon-only award has no medal, and the engine says so.
   function buildMedals(allRibbons){
     const ribbons = [];
+    const awardOf = r => r.key.replace(/^ribbon:|#\d+$/g, '');
     // JROTC/ROTC ribbons have no miniature medal, so none is drawn for them (ribbonNotes says so).
     for(const r of allRibbons.filter(r => !r.rotc)){
-      const prev = !r.military && r.id && ribbons.find(x => x.id === r.id && !x.military);
+      const prev = ribbons.find(x => awardOf(x) === awardOf(r));
       if(prev){ prev.devices = [...prev.devices, ...(r.devices || [])]; continue; }
       ribbons.push(Object.assign({}, r, { devices: [...(r.devices || [])] }));
     }
     return ribbons.map(r => {
+      const medal = { key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, ribbonAsset: r.asset, devices: r.devices, centered: r.centered };
       if(r.military){
-        const award = getMilitaryRibbonAward(r.key.replace(/^ribbon:|#\d+$/g, ''));
-        const rep = window.CAPUBMilitary?.getAwardRepresentation?.(award, 'MINIATURE_MEDAL');
-        return { key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, raster: rep?.available && rep.asset ? ASSET(rep.asset) : null, devices: [] };
+        const award = getMilitaryRibbonAward(awardOf(r));
+        medal.medal = militaryMedalArt(award);
+        medal.pendingMedal = !medal.medal && window.CAPUBMilitary?.getAwardRepresentation?.(award, 'MINIATURE_MEDAL')?.status !== 'NOT_APPLICABLE';
+        return medal;
       }
-      const base = r.asset.replace(/^ribbon-/, '');
-      return { key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, ribbonAsset: r.asset, medal: `medal-${base}-miniature`, devices: r.devices, centered: r.centered };
+      medal.medal = `medal-${r.asset.replace(/^ribbon-/, '')}-miniature`;
+      return medal;
     });
   }
 
@@ -150,19 +146,6 @@
     return w / h;
   }
 
-  // The patches/ocp images are crops of the old sleeve drawing, not whole patches. The engine draws
-  // the patch's full-colour artwork instead (the full patches are square images); a patch that
-  // only exists as a crop is left off.
-  const OCP_CROP_BASE = { 'TN-330_ocp_patch': 'patches/sequoyah_cadet_squadron_patch.webp' };
-  function wholePatchImage(id, meta){
-    const img = String(meta.img || '');
-    if(!/(^|\/)ocp\//.test(img)) return img;
-    const file = img.split('/').pop().replace(/\.webp$/, '');
-    if(OCP_CROP_BASE[file]) return OCP_CROP_BASE[file];
-    const baseId = String(id).replace(/_ocp_patch$/, '_patch');
-    return baseId !== id && PATCH_META[baseId] && PATCH_META[baseId].img && !/\/ocp\//.test(PATCH_META[baseId].img) ? PATCH_META[baseId].img : null;
-  }
-
   let patchNotes = [];
   function buildPatches(){
     const out = [];
@@ -170,12 +153,12 @@
     const add = (id, kind) => {
       const resolved = typeof window.capubResolvePatchIdForUniform === 'function' ? window.capubResolvePatchIdForUniform(id, State.uniform) : id;
       const meta = PATCH_META[resolved] || PATCH_META[id];
-      if(!meta || !meta.img) return;
+      if(!meta) return;
       if(typeof isPatchAuthorizedForUniform === 'function' && !isPatchAuthorizedForUniform(resolved)) return;
       if(out.some(p => p.id === resolved)) return;
-      const img = wholePatchImage(resolved, meta);
-      if(!img){ patchNotes.push(`${meta.label || resolved} has no full patch artwork yet, so it is not shown`); return; }
-      out.push({ id: resolved, title: meta.label || resolved, href: ASSET(img), aspect: img === meta.img ? patchAspect(meta) : 1, slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind, echelon: meta.echelon || null });
+      if(!meta.img){ patchNotes.push(`${meta.label || resolved} has no full patch artwork yet, so it is not shown`); return; }
+      // `asset`: the patch's SVG, drawn at its spec's size. A patch still waiting for its vector hands its picture (`href`, the whole patch: square).
+      out.push({ id: resolved, title: meta.label || resolved, asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind, echelon: meta.echelon || null });
     };
     const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
     if(unit) add(unit, 'unit');
@@ -525,16 +508,25 @@
     if(parts.length === 1) return parts[0].devices.length ? `Devices: ${say(parts[0])}` : 'Basic ribbon, no devices';
     return parts.map((p, i) => `Ribbon ${i + 1}: ${say(p)}`).join('; ');
   }
-  // The ribbon (and any extra ribbons the devices need) drawn by the engine with its devices.
+  // The ribbon (and any extra ribbons the devices need) drawn by the engine with its devices. A military ribbon is its one SVG with the
+  // devices the award count gives, at the catalog's own slots (military/military-device-layout.js), as its precomposed picture had them.
+  function previewItems(id, sel){
+    if(isMilitaryRibbonId(id)){
+      const sequence = militaryDeviceSequence({ id, devices: sel.devices || {} });
+      const devicePlan = window.CAPUBMilitaryDeviceLayout?.ribbonDevicePlan(sequence) || [];
+      return [{ key: `ribbon:${id}#0`, title: id, asset: getMilitaryRibbonAward(id)?.images?.ribbonAsset || null, devicePlan, devices: sequence.map(militaryDeviceAsset).filter(Boolean), centered: false, military: true }];
+    }
+    const parts = CAPUBRibbonAwards.resolve(id, Object.assign({ membership: State.membership }, sel));
+    return parts.map((p, i) => ({ key: `ribbon:${id}#${i}`, title: id, asset: ribbonAssetId(id), devices: p.devices, centered: p.centered }));
+  }
   async function ribbonPreview(id, sel){
     const s = await getStore();
-    const parts = CAPUBRibbonAwards.resolve(id, Object.assign({ membership: State.membership }, sel));
-    const items = parts.map((p, i) => ({ key: `ribbon:${id}#${i}`, title: id, asset: ribbonAssetId(id), devices: p.devices, centered: p.centered }));
+    const items = previewItems(id, sel);
     const ctx = E.compose.createContext({}, s);
     await E.compose.drawRack(ctx, items, { centerX: 0, bottomY: 0 }, { perRow: Math.min(3, items.length) });
     const scene = E.compose.finish(ctx, id);
     if(!scene.layers.length) return null;
-    const svg = await E.renderSvg.buildSvg(scene, aid => s.entry(aid).path, { pad: 0.02 });
+    const svg = await E.renderSvg.buildSvg(scene, aid => s.entry(aid).path, { pad: isMilitaryRibbonId(id) ? 0 : 0.02 });
     svg.removeAttribute('width'); svg.removeAttribute('height');
     svg.classList.add('ribbonPreviewSvg');
     return svg;
@@ -550,10 +542,27 @@
     }).catch(() => {});
   }
 
+  // A ribbon's miniature medal as the uniform draws it: the drape, the medal body and the devices. Null when the award has none.
+  async function miniMedalPreview(id, sel){
+    const s = await getStore();
+    const ctx = E.compose.createContext({}, s);
+    await E.compose.drawMiniMedals(ctx, buildMedals(previewItems(id, sel)), { w: 1, centerX: 0, bottomY: 0 }, { perRow: 1 });
+    const scene = E.compose.finish(ctx, id);
+    if(!scene.layers.length) return null;
+    const svg = await E.renderSvg.buildSvg(scene, aid => s.entry(aid).path, { pad: 0.02 });
+    svg.removeAttribute('width'); svg.removeAttribute('height');
+    return svg;
+  }
+  // Put the drawn miniature in a picker tile's place for it.
+  function fillMiniMedalPreview(host, id, sel){
+    if(!host) return;
+    miniMedalPreview(id, sel).then(svg => { if(svg && host.isConnected) host.replaceChildren(svg); }).catch(() => {});
+  }
+
   window.CAPUBUniformView = {
     // Fetches the manifest ahead of the first drawing (js/bootstrap.js calls it once the page is idle).
     warm: () => getStore().then(() => true, () => false),
-    render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, chooserModel, nextBadgePicks, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview,
+    render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, chooserModel, nextBadgePicks, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview, miniMedalPreview, fillMiniMedalPreview,
     get ribbonNotes(){ return ribbonNotes; },
     get scene(){ return lastScene; },
     get svg(){ return lastSvg; },
