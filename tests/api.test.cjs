@@ -204,7 +204,8 @@ test('admin sign-in: the form, a wrong password, five wrong then a 60 s lockout,
     assert.equal(form.status, 200);
     assert.match(form.text, /<form method="post" action="\/admin"/);
     assert.match(form.text, /type="password"/);
-    assert.doesNotMatch(form.text, /<script/, 'no script on the sign-in page');
+    // The one script on the sign-in page is the light/dark switch (LIVE13 E114; tests/admin-theme.test.cjs), no inline one.
+    assert.deepEqual(form.text.match(/<script[^>]*>/g), ['<script src="/admin/theme.js">'], 'no other script on the sign-in page');
     assert.equal((await t.req('GET', '/admin/')).headers.location, '/admin');
 
     const wrong = await t.login('nope');

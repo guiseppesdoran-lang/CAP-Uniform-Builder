@@ -13,6 +13,7 @@
 //   POST /admin                            sign in: a signed HttpOnly SameSite=Strict cookie for 12 h
 //   POST /admin/logout                     sign out
 //   GET  /admin/app.js, /admin/app.css     the dashboard's own script and style (CSP script-src 'self')
+//   GET  /admin/theme.js                   the light/dark switch (no cookie needed: the sign-in form uses it too)
 //   GET  /api/admin/summary?range=         the dashboard's numbers (metrics.js); range today, 7d, 30d or all
 //   GET  /api/admin/events?from&to&limit   the event log, newest first
 //   GET  /api/admin/feedback?status=       the inbox, newest first; status unread, all (default, not archived) or archived
@@ -34,7 +35,7 @@ const LIMITS = {
   feedbackBody: 24 * 1024, message: 4000, contact: 200, page: 200,
   loginBody: 4 * 1024, flagBody: 1024
 };
-const EVENT_NAMES = new Set(['visit', 'build', 'png_download', 'import', 'quick_strip', 'templates', 'shopping_open', 'feedback_sent', 'uniform_switch', 'setup_file', 'error']);
+const EVENT_NAMES = new Set(['visit', 'build', 'png_download', 'import', 'remove_ribbons', 'templates', 'shopping_open', 'feedback_sent', 'uniform_switch', 'setup_file', 'error']);
 const SESSION_MS = 12 * 3600 * 1000;
 const COOKIE = 'capub_admin';
 const LOCKOUT = { failures: 5, ms: 60 * 1000 };
@@ -374,6 +375,8 @@ function createService(opts = {}){
     if(p === '/api/feedback' && req.method === 'POST') return postFeedback(req, res);
 
     if(p === '/admin/') return send(res, 308, '', 'text/plain; charset=utf-8', { Location: '/admin' });
+    // The light/dark switch is on the sign-in form too, so its script is the one admin file served without the cookie.
+    if(p === '/admin/theme.js' && get) return adminFile(res, 'admin-theme.js', 'text/javascript; charset=utf-8');
     if(p === '/admin' || p.startsWith('/admin/') || p.startsWith('/api/admin/')){
       if(!adminOn){
         return p.startsWith('/api/') ? json(res, 503, { error: 'ADMIN_PASSWORD is not set' }) : html(res, 503, pages.notConfigured());

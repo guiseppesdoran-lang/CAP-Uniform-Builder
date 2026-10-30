@@ -1,6 +1,8 @@
 'use strict';
 // The admin pages the service writes itself: the password form, the dashboard's shell and the "not set up" page. No inline
 // script anywhere (the CSP is script-src 'self'); the shell loads /admin/app.js and /admin/app.css, which need the cookie.
+// Every page loads /admin/theme.js (no cookie needed) in <head> without defer, so a saved light/dark choice is on <html>
+// before the first paint, and carries its "Light mode" / "Dark mode" button (LIVE13 E114), hidden until that script runs.
 // The fonts are the site's own (vendor/fonts, served by Caddy beside this service); without them the system fonts stand in.
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -11,26 +13,39 @@ const HEAD = title => `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
 <title>${esc(title)}</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">`;
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/admin/theme.js"></script>`;
 
-// The small page style for the form (inline styles are allowed: style-src 'unsafe-inline').
+// The light/dark switch; admin-theme.js labels it with the theme it switches to and shows it.
+const THEME_BUTTON = cls => `<button type="button" class="${cls}" data-theme-toggle hidden>Dark mode</button>`;
+
+// The small page style for the form (inline styles are allowed: style-src 'unsafe-inline'). Light by default; dark when the
+// system is dark and nothing is kept, or when data-theme="dark" is set (the same three rules as admin.css and the builder).
+const FORM_DARK = '--ink:#F2F4FA;--muted:#B9BED0;--line:#2C3769;--line-strong:#7C86B4;--bg:#070B22;--panel:#0F1739;--accent:#FFCD00;--focus:#FFCD00;--on-action:#10131A;--action-edge:#FFCD00;--red:#FF6B85;--red-bg:#4a0f1d;color-scheme:dark';
 const FORM_STYLE = `<style>
 @font-face{font-family:"Rajdhani";src:url("/vendor/fonts/Rajdhani-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"Ubuntu";src:url("/vendor/fonts/Ubuntu-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Ubuntu";src:url("/vendor/fonts/Ubuntu-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
-:root{--blue:#001871;--ink:#10131A;--muted:#464B53;--line:#C9CCD3;--bg:#ECECEC;--panel:#fff;--red:#BA0C2F;--red-bg:#F1CED5;--yellow:#FFCD00}
-@media (prefers-color-scheme:dark){:root{--ink:#F2F4FA;--muted:#B9BED0;--line:#2C3769;--bg:#070B22;--panel:#0F1739;--red-bg:#4a0f1d}}
+:root{--ink:#001871;--muted:#4A5375;--line:#9EA2A2;--line-strong:#4A5375;--bg:#F2F3F5;--panel:#FFFFFF;--accent:#001871;--focus:#001871;--action:#FFCD00;--action-hover:#FFDD55;--on-action:#001871;--action-edge:#001871;--red:#BA0C2F;--red-bg:#F1CED5;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){${FORM_DARK}}}
+:root[data-theme="dark"]{${FORM_DARK}}
+[hidden]{display:none!important}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:grid;place-items:center;padding:16px;background:var(--bg);color:var(--ink);font:400 15px/1.5 "Ubuntu",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{width:min(400px,100%);background:var(--panel);border:1px solid var(--line);border-top:6px solid var(--blue);border-radius:8px;padding:24px}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:16px;padding:16px;background:var(--bg);color:var(--ink);font:400 15px/1.5 "Ubuntu",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{margin:auto 0;width:min(400px,100%);background:var(--panel);border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:8px;padding:24px}
+.top{align-self:stretch;display:flex;justify-content:flex-end}
 h1{margin:0 0 4px;font:700 28px/1.1 "Rajdhani","Arial Narrow",system-ui,sans-serif;letter-spacing:.02em}
 p{margin:0 0 16px;color:var(--muted)}
 label{display:block;font-weight:700;margin:0 0 6px}
-input{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);font:inherit}
-input:focus{outline:3px solid var(--yellow);outline-offset:1px;border-color:var(--blue)}
-button{margin-top:16px;width:100%;min-height:44px;border:0;border-radius:6px;background:var(--blue);color:#fff;font:700 18px/1 "Rajdhani","Arial Narrow",system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
-@media (prefers-color-scheme:dark){button{background:var(--yellow);color:#10131A}}
+input{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line-strong);border-radius:6px;background:var(--panel);color:var(--ink);font:inherit}
+input:focus{outline:3px solid var(--focus);outline-offset:1px;border-color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.submit{margin-top:16px;width:100%;min-height:44px;border:1px solid var(--action-edge);border-radius:6px;background:var(--action);color:var(--on-action);font:700 18px/1 "Rajdhani","Arial Narrow",system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.submit:hover{background:var(--action-hover)}
+.themeToggle{min-height:36px;padding:0 12px;border:1px solid var(--line-strong);border-radius:6px;background:transparent;color:var(--ink);font:700 14px/1 "Ubuntu",system-ui,sans-serif;cursor:pointer}
+.themeToggle:hover{background:var(--bg)}
 .error{margin:12px 0 0;padding:8px 12px;border-radius:6px;background:var(--red-bg);color:var(--ink);border-left:4px solid var(--red)}
 </style>`;
 
@@ -39,6 +54,7 @@ function login({ error }){
 ${FORM_STYLE}
 </head>
 <body>
+<div class="top">${THEME_BUTTON('themeToggle')}</div>
 <main>
   <h1>Uniform Builder admin</h1>
   <p>Usage counts and member feedback. Enter the admin password.</p>
@@ -46,7 +62,7 @@ ${FORM_STYLE}
     <label for="password">Password</label>
     <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
     ${error ? `<p class="error" role="alert">${esc(error)}</p>` : ''}
-    <button type="submit">Sign in</button>
+    <button type="submit" class="submit">Sign in</button>
   </form>
 </main>
 </body>
@@ -59,6 +75,7 @@ function notConfigured(){
 ${FORM_STYLE}
 </head>
 <body>
+<div class="top">${THEME_BUTTON('themeToggle')}</div>
 <main>
   <h1>Not set up</h1>
   <p>The admin dashboard is off because ADMIN_PASSWORD is not set. Put it in deploy/.env on the server and restart the uniform-api container (see deploy/README.md).</p>
@@ -87,6 +104,7 @@ function dashboard(){
       </select>
     </label>
     <span id="updated" class="updated" aria-live="polite"></span>
+    ${THEME_BUTTON('ghost themeToggle')}
     <form method="post" action="/admin/logout"><button type="submit" class="ghost">Sign out</button></form>
   </div>
 </header>

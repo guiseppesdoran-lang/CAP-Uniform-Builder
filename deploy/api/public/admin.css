@@ -5,25 +5,54 @@
 @font-face{font-family:"Ubuntu";src:url("/vendor/fonts/Ubuntu-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
 
 :root{
-  --cap-blue:#001871;--cap-red:#BA0C2F;--cap-yellow:#FFCD00;--cap-silver:#9EA2A2;
-  --bg:#ECECEC;--panel:#FFFFFF;--panel-2:#F6F7FA;--ink:#10131A;--muted:#464B53;--line:#C9CCD3;--line-strong:#6B7078;
-  --bar:#001871;--on-bar:#FFFFFF;--action:#001871;--on-action:#FFFFFF;--focus:#FFCD00;
-  --unread:#BA0C2F;--chip:#CCD1E3;
-  /* Chart series (validated: tools/dataviz validator, light on #FFFFFF, dark on #0F1739). */
-  --s-builds:#1E4FD8;--s-visits:#9A7200;--grid:#E3E5EA;
-  --share:#1E4FD8;
+  /* CAP Brand Guide: Symbol Blue #001871, Red #BA0C2F, Air Force Yellow #FFCD00, Silver Gray #9EA2A2. */
   --font-head:"Rajdhani","Arial Narrow",system-ui,sans-serif;
   --font-body:"Ubuntu",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+/* Light/dark (LIVE13 E114): light by default; dark when the system is dark and nothing is kept, or when the switch set
+   data-theme="dark" on <html> (admin-theme.js, kept under capubAdminTheme). data-theme="light" keeps light on a dark system.
+   Every colour below is a token with a value in both themes. Light is the CAP Brand Guide on white: Symbol Blue text and
+   accents, Silver Gray borders, Air Force Yellow primary with Symbol Blue text. */
+:root{
+  --bg:#F2F3F5;--panel:#FFFFFF;--panel-2:#F6F7FA;--ink:#001871;--muted:#4A5375;
+  --line:#9EA2A2;--rule:#D5D7D7;--line-strong:#4A5375;
+  --bar:#001871;--on-bar:#FFFFFF;--bar-accent:#FFCD00;--on-bar-line:rgba(255,255,255,.6);--on-bar-hover:rgba(255,255,255,.12);
+  --option-bg:#FFFFFF;--option-ink:#001871;
+  --action:#FFCD00;--action-hover:#FFDD55;--on-action:#001871;--action-edge:#001871;
+  --focus:#001871;--focus-on-bar:#FFCD00;
+  --unread:#BA0C2F;--on-unread:#FFFFFF;
+  --toast-bg:#001871;--toast-ink:#FFFFFF;--shadow:rgba(0,16,60,.18);
+  /* Chart series (validated: tools/dataviz validator, light on #FFFFFF, dark on #0F1739). */
+  --s-builds:#1E4FD8;--s-visits:#9A7200;--grid:#E3E5EA;--share:#1E4FD8;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
-  :root{
-    --bg:#070B22;--panel:#0F1739;--panel-2:#141E48;--ink:#F2F4FA;--muted:#B9BED0;--line:#2C3769;--line-strong:#7C86B4;
-    --bar:#0F1739;--action:#FFCD00;--on-action:#10131A;--unread:#FF6B85;--chip:#1B2860;
+  :root:not([data-theme="light"]){
+    --bg:#070B22;--panel:#0F1739;--panel-2:#141E48;--ink:#F2F4FA;--muted:#B9BED0;
+    --line:#2C3769;--rule:#222C5C;--line-strong:#7C86B4;
+    --bar:#0F1739;--on-bar:#FFFFFF;--bar-accent:#FFCD00;--on-bar-line:rgba(255,255,255,.6);--on-bar-hover:rgba(255,255,255,.12);
+    --option-bg:#0F1739;--option-ink:#F2F4FA;
+    --action:#FFCD00;--action-hover:#FFDD55;--on-action:#10131A;--action-edge:#FFCD00;
+    --focus:#FFCD00;--focus-on-bar:#FFCD00;
+    --unread:#FF6B85;--on-unread:#10131A;
+    --toast-bg:#F2F4FA;--toast-ink:#0F1739;--shadow:rgba(0,0,0,.5);
     --s-builds:#6F8BF5;--s-visits:#B08600;--grid:#1E2852;--share:#6F8BF5;
     color-scheme:dark;
   }
 }
+:root[data-theme="dark"]{
+  --bg:#070B22;--panel:#0F1739;--panel-2:#141E48;--ink:#F2F4FA;--muted:#B9BED0;
+  --line:#2C3769;--rule:#222C5C;--line-strong:#7C86B4;
+  --bar:#0F1739;--on-bar:#FFFFFF;--bar-accent:#FFCD00;--on-bar-line:rgba(255,255,255,.6);--on-bar-hover:rgba(255,255,255,.12);
+  --option-bg:#0F1739;--option-ink:#F2F4FA;
+  --action:#FFCD00;--action-hover:#FFDD55;--on-action:#10131A;--action-edge:#FFCD00;
+  --focus:#FFCD00;--focus-on-bar:#FFCD00;
+  --unread:#FF6B85;--on-unread:#10131A;
+  --toast-bg:#F2F4FA;--toast-ink:#0F1739;--shadow:rgba(0,0,0,.5);
+  --s-builds:#6F8BF5;--s-visits:#B08600;--grid:#1E2852;--share:#6F8BF5;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--font-body)}
@@ -31,20 +60,21 @@ h1,h2,h3{font-family:var(--font-head);font-weight:700;letter-spacing:.02em;margi
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 button,select,.button{font:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.bar :focus-visible{outline-color:var(--focus-on-bar)}
 
 /* ---- top bar ---- */
-.bar{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bar);color:var(--on-bar);border-bottom:4px solid var(--cap-yellow)}
+.bar{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bar);color:var(--on-bar);border-bottom:4px solid var(--bar-accent)}
 .brand{display:flex;align-items:baseline;gap:10px}
 .brandName{font:700 24px/1 var(--font-head);letter-spacing:.03em}
-.brandSub{font:700 14px/1 var(--font-head);letter-spacing:.12em;text-transform:uppercase;color:var(--cap-yellow)}
+.brandSub{font:700 14px/1 var(--font-head);letter-spacing:.12em;text-transform:uppercase;color:var(--bar-accent)}
 .barActions{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
 .barActions form{margin:0}
 .rangePick{display:flex;gap:8px;align-items:center;font-size:14px}
-.rangePick select{min-height:36px;padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.5);background:transparent;color:inherit}
-.rangePick select option{color:#10131A}
+.rangePick select{min-height:36px;padding:4px 8px;border-radius:6px;border:1px solid var(--on-bar-line);background:transparent;color:inherit}
+.rangePick select option{background:var(--option-bg);color:var(--option-ink)}
 .updated{font-size:13px;opacity:.85}
-.bar .ghost{min-height:36px;padding:0 14px;border-radius:6px;border:1px solid rgba(255,255,255,.6);background:transparent;color:inherit;cursor:pointer;font-weight:700}
-.bar .ghost:hover{background:rgba(255,255,255,.12)}
+.bar .ghost{min-height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--on-bar-line);background:transparent;color:inherit;cursor:pointer;font-weight:700}
+.bar .ghost:hover{background:var(--on-bar-hover)}
 
 main{max-width:1240px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
 
@@ -71,7 +101,7 @@ main{max-width:1240px;margin:0 auto;padding:16px;display:flex;flex-direction:col
 /* ---- tables with share bars ---- */
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{text-align:left;font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;border-bottom:1px solid var(--line)}
-td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+td{padding:5px 6px;border-bottom:1px solid var(--rule);vertical-align:middle}
 tr:last-child td{border-bottom:0}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .shareCell{width:38%}
@@ -94,7 +124,7 @@ code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend .key{display:inline-block;width:12px;height:10px;border-radius:0 3px 3px 0}
 .legend .key.line{height:2px;width:16px;border-radius:2px}
-.tip{position:absolute;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--line-strong);border-radius:6px;padding:6px 10px;font-size:13px;box-shadow:0 4px 14px rgba(0,16,60,.18);white-space:nowrap;transform:translate(-50%,-100%);z-index:5}
+.tip{position:absolute;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--line-strong);border-radius:6px;padding:6px 10px;font-size:13px;box-shadow:0 4px 14px var(--shadow);white-space:nowrap;transform:translate(-50%,-100%);z-index:5}
 .tip b{font-variant-numeric:tabular-nums}
 .tip .tipRow{display:flex;align-items:center;gap:8px}
 .tip .tipKey{display:inline-block;width:12px;height:2px;border-radius:2px}
@@ -107,14 +137,14 @@ details.tableView .scroll{max-height:240px;overflow:auto;margin-top:6px}
 .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden}
 .seg button{min-height:36px;padding:0 12px;border:0;background:transparent;color:var(--ink);cursor:pointer;font-weight:700}
 .seg button+button{border-left:1px solid var(--line-strong)}
-.seg button[aria-checked="true"]{background:var(--action);color:var(--on-action)}
+.seg button[aria-checked="true"]{background:var(--action);color:var(--on-action);box-shadow:inset 0 0 0 1px var(--action-edge)}
 .inbox{display:flex;flex-direction:column;gap:10px}
 .fb{border:1px solid var(--line);border-left:4px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--panel-2)}
 .fb.unread{border-left-color:var(--unread)}
 .fbHead{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;justify-content:space-between}
 .fbMeta{font-size:13px;color:var(--muted)}
 .fbMeta b{color:var(--ink)}
-.fbNew{display:inline-block;margin-right:6px;padding:0 6px;border-radius:4px;background:var(--unread);color:#fff;font:700 12px/18px var(--font-body);letter-spacing:.04em}
+.fbNew{display:inline-block;margin-right:6px;padding:0 6px;border-radius:4px;background:var(--unread);color:var(--on-unread);font:700 12px/18px var(--font-body);letter-spacing:.04em}
 .fbMsg{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere}
 .fbSetup{font-size:13px;color:var(--muted)}
 .fbSetup summary{cursor:pointer}
@@ -136,12 +166,12 @@ details.tableView .scroll{max-height:240px;overflow:auto;margin-top:6px}
 
 /* ---- data card ---- */
 .exports{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
-.button{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:6px;background:var(--action);color:var(--on-action);text-decoration:none;font-weight:700}
-.button:hover{filter:brightness(1.1)}
+.button{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:6px;border:1px solid var(--action-edge);background:var(--action);color:var(--on-action);text-decoration:none;font-weight:700}
+.button:hover{background:var(--action-hover)}
 .notes p{margin:0 0 8px;font-size:14px;color:var(--muted);max-width:90ch}
 .notes b{color:var(--ink)}
 
-.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:8px 14px;border-radius:6px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--toast-bg);color:var(--toast-ink);padding:8px 14px;border-radius:6px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
 
 @media (max-width:900px){

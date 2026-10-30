@@ -32,7 +32,7 @@
   };
   const uniformName = k => UNIFORMS[k] || k;
   const EVENT_NAMES = {
-    visit: 'Visit', build: 'Build', png_download: 'PNG download', import: 'Member report import', quick_strip: 'Quick strip', templates: 'Placement template',
+    visit: 'Visit', build: 'Build', png_download: 'PNG download', import: 'Member report import', remove_ribbons: 'Remove ribbons', templates: 'Placement template',
     shopping_open: 'Shopping list', feedback_sent: 'Feedback sent', uniform_switch: 'Uniform switch', setup_file: 'Setup file', error: 'Error'
   };
 
@@ -186,7 +186,7 @@
     $('features').replaceChildren(countTable([
       ['PNG downloads', fmt(f.png_download)], ['PNG downloads that failed', fmt(f.png_failed)],
       ['Member report imports', fmt(f.import_ok)], ['Member report imports that failed', fmt(f.import_failed)],
-      ['Quick strip', fmt(f.quick_strip)], ['Quick strip restored', fmt(f.quick_restore)],
+      ['Remove ribbons', fmt(f.remove_ribbons)],
       ['Placement templates: paper (PDF)', fmt(tp.pdf)], ['Placement templates: paper (SVG)', fmt(tp.svg)], ['Placement templates: 3D jig (STL)', fmt(tp.stl)],
       ['Shopping list opened', fmt(f.shopping_open)], ['Uniform switches', fmt(f.uniform_switch)],
       ['Setup saved to a file', fmt(f.setup_saved)], ['Setup opened from a file', fmt(f.setup_opened)], ['Feedback sent', fmt(f.feedback_sent)]
