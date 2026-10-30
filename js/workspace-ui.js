@@ -8,10 +8,11 @@
 (function capubV3PolishedUI(){
   const V3 = window.CAPUB_V3 = { zoom: 1, compact:false };
   const safeBy = id => document.getElementById(id);
-  // Up to this width the controls are a bottom sheet under the preview (styles/app.css); above it they are the
-  // panel beside it, always open.
-  const SHEET_QUERY='(max-width:900px)';
-  const isSheet=()=>window.matchMedia(SHEET_QUERY).matches;
+  // To this width the page is a phone stack (styles/app.css): app bar, step strip, the preview as a peek or full
+  // screen, the step, a fixed action bar. Above it the panel sits beside the preview.
+  const PHONE_QUERY='(max-width:700px)';
+  const isPhone=()=>window.matchMedia(PHONE_QUERY).matches;
+  const isPreviewFull=()=>document.body.classList.contains('previewFull');
   function toast(msg, ms){
     let t=safeBy('capubToast');
     if(!t){
@@ -76,6 +77,8 @@
     if(shell && !shell.classList.contains('sidebar-open') && typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
     renderStepper();
     const body=safeBy('stepBody'); if(body) body.scrollTop=0;
+    // On a phone the step decides how the preview shows (hidden, a peek, the page's width), so it is refitted.
+    if(isPhone()){ window.scrollTo(0,0); if(!V3.userZoomed) fitZoom(); }
     if(focus){
       // Focus lands on the step's heading, so a keyboard or screen-reader user arrives on the new step.
       const heading=safeBy('stepGroup-'+activeStep)?.querySelector('.stepGroupTitle');
@@ -114,6 +117,7 @@
       }
       if(group) group.hidden=!shown;
     });
+    const shell=safeBy('layoutShell'); if(shell) shell.setAttribute('data-step',activeStep);
     const i=STEP_ORDER.indexOf(activeStep), nextStep=STEP_ORDER[i+1];
     const back=safeBy('stepBack'), next=safeBy('stepNext'), note=safeBy('stepFooterNote'), download=safeBy('downloadImage');
     if(back) back.hidden=i<=0;
@@ -134,9 +138,11 @@
   }
   // A fade above the footer while the step on screen has more below the fold.
   function syncScrollHint(){
-    const body=safeBy('stepBody'), aside=safeBy('controls');
+    const body=safeBy('stepBody'), aside=safeBy('controls'), more=safeBy('stepMoreBtn');
     if(!body || !aside) return;
-    aside.classList.toggle('hasMoreBelow', body.scrollHeight-body.clientHeight-body.scrollTop>2);
+    const hasMore=!isPhone() && body.scrollHeight-body.clientHeight-body.scrollTop>2;
+    aside.classList.toggle('hasMoreBelow', hasMore);
+    if(more) more.hidden=!hasMore;
   }
   function wireStepper(){
     const tabs=document.querySelector('.stepTabs');
@@ -160,6 +166,7 @@
     });
     safeBy('stepBack')?.addEventListener('click',()=>{ const i=STEP_ORDER.indexOf(activeStep); if(i>0) showStep(STEP_ORDER[i-1]); });
     safeBy('stepNext')?.addEventListener('click',()=>{ const i=STEP_ORDER.indexOf(activeStep); if(i<STEP_ORDER.length-1) showStep(STEP_ORDER[i+1]); });
+    safeBy('stepMoreBtn')?.addEventListener('click',()=>{ const body=safeBy('stepBody'); if(body) body.scrollBy({top:Math.round(body.clientHeight*0.8),behavior:'smooth'}); });
     placeDownload();
     // After Resume, go to the first unfinished step instead of staying where the page opened.
     document.addEventListener('click',e=>{
@@ -208,7 +215,7 @@
     const set=(key,count,n,rule,usable)=>{
       const card=document.querySelector(`.itemCard[data-card="${key}"]`); if(!card) return;
       const chip=card.querySelector('[data-count]');
-      if(chip){ chip.textContent=count; chip.classList.toggle('hasItems',n>0); }
+      if(chip){ chip.textContent=count; chip.dataset.short=count.replace(/ selected$/,'').replace(/ of /,'/'); chip.classList.toggle('hasItems',n>0); }
       const line=card.querySelector('[data-rule]');
       if(line) line.textContent=rule;
       card.classList.toggle('unavailable',!usable);
@@ -233,51 +240,58 @@
     if(typeof MutationObserver==='function') new MutationObserver(sync).observe(status,{childList:true,characterData:true,subtree:true});
   }
 
-  /* ---------- the bottom sheet (phone and tablet) ---------- */
-  // The grip drags the sheet: down to close it (or back from tall), up to make it tall; a tap toggles tall.
-  function wireSheet(){
-    const handle=safeBy('sheetHandle'), sheet=safeBy('controls');
-    if(!handle || !sheet || handle.dataset.wired) return;
-    handle.dataset.wired='1';
-    let startY=null, dy=0, moved=false;
-    const announce=()=>{
-      const shell=safeBy('layoutShell');
-      document.dispatchEvent(new CustomEvent('capub:sidebar',{detail:{open:!!(shell && shell.classList.contains('sidebar-open'))}}));
-    };
-    handle.addEventListener('pointerdown',e=>{
-      if(!isSheet()) return;
-      startY=e.clientY; dy=0; moved=false;
-      try{ handle.setPointerCapture(e.pointerId); }catch(_){}
-      sheet.classList.add('sheetDragging');
+  /* ---------- the phone: app-bar icons, the preview as a peek or full screen ---------- */
+  // Undo and Redo sit in the app bar on a phone and in the preview toolbar elsewhere; the theme button is an icon
+  // there (its data-mode picks the glyph). Idempotent: called on load, on every refresh and when the width crosses 700px.
+  function syncPhoneChrome(){
+    const phone=isPhone();
+    const history=document.querySelector('.previewToolCard[aria-label="Undo and redo"]');
+    const header=document.querySelector('body > header'), tools=safeBy('previewTools');
+    if(history && header && tools){
+      if(phone && history.parentNode!==header) header.insertBefore(history, safeBy('themeToggle'));
+      else if(!phone && history.parentNode!==tools) tools.insertBefore(history, tools.firstChild);
+    }
+    const theme=safeBy('themeToggle');
+    if(theme) theme.dataset.mode=currentTheme();
+    const full=isPreviewFull();
+    if(!phone && full) closePreview();
+    const peek=safeBy('previewPeekBtn'); if(peek) peek.hidden=!phone || full;
+    const close=safeBy('previewCloseBtn'); if(close) close.hidden=!(phone && full);
+  }
+  // On a phone the preview is a peek on steps 2 and 3 and at full width on step 4; a tap opens it over the page with
+  // its own Close, Fit, zoom and Measurements.
+  function openPreview(){
+    if(!isPhone() || isPreviewFull()) return;
+    document.body.classList.add('previewFull');
+    V3.userZoomed=false;
+    syncPhoneChrome();
+    fitZoom();
+    safeBy('previewCloseBtn')?.focus();
+  }
+  function closePreview(){
+    if(!isPreviewFull()) return;
+    document.body.classList.remove('previewFull');
+    V3.userZoomed=false;
+    syncPhoneChrome();
+    fitZoom();
+    safeBy('previewPeekBtn')?.focus();
+  }
+  function wirePhone(){
+    const wrap=safeBy('previewWrapper');
+    if(!wrap || wrap.dataset.phoneWired) return;
+    wrap.dataset.phoneWired='1';
+    safeBy('previewPeekBtn')?.addEventListener('click',e=>{ e.stopPropagation(); openPreview(); });
+    // A tap anywhere on the peek opens it (the drawing takes no pointer events there, styles/app.css).
+    wrap.addEventListener('click',e=>{
+      if(!isPhone() || isPreviewFull()) return;
+      const step=safeBy('layoutShell')?.getAttribute('data-step');
+      if(step!=='uniform' && step!=='items') return;
+      if(e.target.closest('button,.resumeBanner,.previewToolbar,.itemPopover')) return;
+      openPreview();
     });
-    handle.addEventListener('pointermove',e=>{
-      if(startY===null) return;
-      dy=e.clientY-startY;
-      if(Math.abs(dy)>4) moved=true;
-      sheet.style.transform=dy>0 ? `translate3d(0,${dy}px,0)` : '';
-    });
-    const end=()=>{
-      if(startY===null) return;
-      startY=null;
-      const tall=sheet.classList.contains('sheetTall');
-      if(dy>90){
-        if(tall) sheet.classList.remove('sheetTall');
-        else if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(false);
-      }else if(dy<-50 && !tall) sheet.classList.add('sheetTall');
-      else if(!moved) sheet.classList.toggle('sheetTall');
-      sheet.classList.remove('sheetDragging');
-      sheet.style.transform='';
-      announce();
-    };
-    handle.addEventListener('pointerup',end);
-    handle.addEventListener('pointercancel',end);
-    // Back on a wide screen the panel is always open beside the preview.
-    const mq=window.matchMedia(SHEET_QUERY);
-    const onChange=()=>{
-      if(mq.matches) return;
-      sheet.classList.remove('sheetTall');
-      if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
-    };
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape' && isPreviewFull()) closePreview(); });
+    const mq=window.matchMedia(PHONE_QUERY);
+    const onChange=()=>{ syncPhoneChrome(); if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true); if(!V3.userZoomed) fitZoom(); };
     if(mq.addEventListener) mq.addEventListener('change',onChange); else if(mq.addListener) mq.addListener(onChange);
   }
 
@@ -286,6 +300,9 @@
   V3.showStep=showStep;
   V3.showStepFor=showStepFor;
   V3.focusControl=focusControl;
+  V3.openPreview=openPreview;
+  V3.closePreview=closePreview;
+  V3.isPhone=isPhone;
   Object.defineProperty(V3,'activeStep',{get:()=>activeStep});
 
   /* ---------- the preview: empty state, toolbar, zoom ---------- */
@@ -320,7 +337,7 @@
     // Undo and redo sit in front of the zoom controls.
     const history=document.createElement('div');
     history.className='previewToolCard'; history.setAttribute('role','group'); history.setAttribute('aria-label','Undo and redo');
-    history.innerHTML='<button type="button" class="ghost" id="undoBtn">Undo</button><button type="button" class="ghost" id="redoBtn">Redo</button>';
+    history.innerHTML='<button type="button" class="ghost" id="undoBtn" aria-label="Undo">Undo</button><button type="button" class="ghost" id="redoBtn" aria-label="Redo">Redo</button>';
     safeBy('previewTools').insertBefore(history, safeBy('previewTools').firstChild);
     const syncHistory=()=>{
       const h=window.CAPUB_HISTORY;
@@ -345,6 +362,12 @@
     measure.className='previewToolCard'; measure.setAttribute('role','group'); measure.setAttribute('aria-label','Measurements');
     measure.innerHTML='<button type="button" class="ghost" id="measureBtn" aria-pressed="false" title="Show the regulation distances on the uniform">Measurements</button>';
     safeBy('previewTools').appendChild(measure);
+    // On a phone the preview opens over the page; this closes it (hidden everywhere else, styles/app.css).
+    const closeCard=document.createElement('div');
+    closeCard.className='previewToolCard'; closeCard.setAttribute('role','group'); closeCard.setAttribute('aria-label','Close the preview');
+    closeCard.innerHTML='<button type="button" class="ghost" id="previewCloseBtn" hidden>Close</button>';
+    safeBy('previewTools').appendChild(closeCard);
+    safeBy('previewCloseBtn').onclick=()=>closePreview();
     safeBy('measureBtn').onclick=()=>{
       State.showMeasurements=!State.showMeasurements;
       safeBy('measureBtn').setAttribute('aria-pressed', String(!!State.showMeasurements));
@@ -361,9 +384,9 @@
       // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
       area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
       area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
-      // Under the sheet, centre the scaled uniform in the room beside it instead of hugging the left.
+      // On a phone, centre the scaled uniform in the room beside it instead of hugging the left.
       const wrap=safeBy('previewWrapper');
-      if(wrap && isSheet()){
+      if(wrap && isPhone()){
         const style=getComputedStyle(wrap);
         const inner=wrap.clientWidth - parseFloat(style.paddingLeft||0) - parseFloat(style.paddingRight||0);
         const free=inner - area.offsetWidth*V3.zoom;
@@ -388,7 +411,7 @@
     window.addEventListener('orientationchange', syncChromeHeights);
     if(window.visualViewport) window.visualViewport.addEventListener('resize', syncChromeHeights);
     // The footer changes size at these widths; do not wait for the observer.
-    for(const q of [SHEET_QUERY,'(max-width:768px)','(max-width:480px)','(max-width:360px)']){
+    for(const q of [PHONE_QUERY,'(max-width:480px)','(max-width:360px)']){
       const mq=window.matchMedia(q);
       if(mq.addEventListener) mq.addEventListener('change', syncChromeHeights);
     }
@@ -402,26 +425,25 @@
   function fitZoom(){
     const wrap=safeBy('previewWrapper'), area=safeBy('previewArea');
     if(!wrap || !area) return setZoom(1);
-    const sheet=isSheet();
-    const phone=window.matchMedia('(max-width:768px)').matches;
-    // Only the wrapper's side padding: the zoom controls now live in a toolbar row
-    // above the uniform instead of beside it.
+    const phone=isPhone();
+    // Only the wrapper's side padding: the zoom controls live in a toolbar row above the uniform.
     const reserve=phone ? 24 : 44;
-    const available=Math.max(240,wrap.clientWidth-reserve);
-    const previewWidth=area.offsetWidth || 450;
+    const available=Math.max(phone ? 120 : 240,wrap.clientWidth-reserve);
+    const previewWidth=area.offsetWidth || 450, previewHeight=area.offsetHeight || 600;
     // The wide field-uniform stage needs a lower floor to fit a phone without sideways scrolling.
     let z=Math.min(1, Math.max(.3, available/previewWidth));
-    // With the controls sheet up, also fit the height to what is left above it.
-    const shell=safeBy('layoutShell'), controls=safeBy('controls');
-    if(sheet && shell && controls && shell.classList.contains('sidebar-open')){
-      const toolbar=safeBy('previewToolbar');
-      const top=(toolbar ? toolbar.getBoundingClientRect().bottom : 0) + 12;
-      // The sheet's resting position, not where its slide animation happens to be.
-      const footer=safeBy('pageFooter');
-      const sheetTop=window.innerHeight - (footer ? footer.offsetHeight : 0) - controls.offsetHeight;
-      const room=sheetTop - top;
-      const previewHeight=area.offsetHeight || 600;
-      if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
+    if(phone){
+      const step=safeBy('layoutShell')?.getAttribute('data-step');
+      if(isPreviewFull()){
+        // The whole uniform on the screen under the toolbar, if it can be.
+        const toolbar=safeBy('previewToolbar');
+        const room=window.innerHeight-(toolbar ? toolbar.offsetHeight : 0)-40;
+        if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
+      }else if(step==='uniform' || step==='items'){
+        // The peek: the whole uniform in a short strip beside the Open preview button.
+        const room=wrap.clientHeight-16;
+        if(room>40) z=Math.min(z, Math.max(.12, room/previewHeight));
+      }
     }
     V3.fitWidth=previewWidth;
     setZoom(z);
@@ -513,7 +535,7 @@
     }catch(_){}
     const btn=document.createElement('button');
     btn.type='button'; btn.id='themeToggle'; btn.className='themeToggle';
-    const label=()=>{ const dark=currentTheme()==='dark'; btn.textContent=dark?'Light mode':'Dark mode'; btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode'); };
+    const label=()=>{ const dark=currentTheme()==='dark'; btn.textContent=dark?'Light mode':'Dark mode'; btn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode'); btn.dataset.mode=dark?'dark':'light'; };
     btn.addEventListener('click',()=>{
       const next=currentTheme()==='dark'?'light':'dark';
       document.documentElement.setAttribute('data-theme',next);
@@ -523,7 +545,7 @@
     label();
     header.appendChild(btn);
   }
-  function refreshAll(){ ensureThemeToggle(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); wireStepper(); wireSheet(); watchImporter(); renderStepper(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsFold(); refitIfStageChanged(); }
+  function refreshAll(){ ensureThemeToggle(); ensureEmptyState(); updateEmptyState(); ensurePreviewToolbar(); wireStepper(); wirePhone(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsFold(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
@@ -549,8 +571,10 @@
   // A new drawing can change the stage's width (a wide field uniform sheet, a tall coat).
   document.addEventListener('capub:rendered',()=>{ if(!V3.userZoomed) fitZoom(); });
   watchChromeHeights();
+  // The side panel is always open; js/setup.js closed it below 768px for the sheet that is gone.
+  if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
   // The tabs and footer work from the first paint: wire them now, and again (idempotently) with the first refresh.
-  wireStepper(); wireSheet(); watchImporter(); renderStepper();
+  wireStepper(); wirePhone(); watchImporter(); renderStepper();
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 
@@ -761,8 +785,10 @@
     const fresh=document.createElement('button'); fresh.type='button'; fresh.id='capubResumeNo'; fresh.className='ghost'; fresh.textContent='Start over';
     actions.append(resume,fresh);
     box.append(text,actions);
+    const phone=window.matchMedia('(max-width:700px)').matches, body=safeBy('stepBody');
     const toolbar=safeBy('previewToolbar');
-    if(toolbar && toolbar.parentNode===wrap) wrap.insertBefore(box,toolbar.nextSibling);
+    if(phone && body) body.insertBefore(box,body.firstChild);
+    else if(toolbar && toolbar.parentNode===wrap) wrap.insertBefore(box,toolbar.nextSibling);
     else wrap.insertBefore(box,wrap.firstChild);
 
     resume.addEventListener('click',()=>{
@@ -809,6 +835,12 @@
     if(typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open','');
   });
   document.getElementById('aboutClose')?.addEventListener('click', () => dialog.close());
+  const feedback = document.getElementById('aboutFeedback');
+  if(feedback){
+    const sync = () => { feedback.hidden = !(window.CAPUBFeedback && typeof window.CAPUBFeedback.open === 'function'); };
+    sync(); document.addEventListener('DOMContentLoaded', sync); setTimeout(sync, 400);
+    feedback.addEventListener('click', () => { dialog.close(); window.CAPUBFeedback?.open(); });
+  }
   // A click on the dimmed area outside the box closes it.
   dialog.addEventListener('click', event => { if(event.target === dialog) dialog.close(); });
 })();

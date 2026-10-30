@@ -27,13 +27,14 @@ const stepOf=id=>{
 
 // Every control id the old one-column sidebar had, each still present exactly once (the wiring looks controls up by id).
 // stepGroup-tools, the "More tools" fold, is the one container that went: its contents live in steps 3 and 4.
-const OLD_IDS=['controls','sheetClose','stepGroup-profile','memberReportImportPanel','importMemberReportBtn','clearImportedReportBtn','memberReportUpload','memberReportImportStatus','capMembershipPanel','membershipLabel','membershipType','adultCadetRow','adultCadetCheckbox','rankSetupSelect','cadetFirstSergeantBlock','cadetFirstSergeantCheckbox','optionalName','capubV2TextPanel','firstNameRow','capubV2FirstName','capubV2LastName','plateLineRow','capubV2PlateLine','capubV2ShowText','stepGroup-uniform','genderBlock','cutLabel','jacketSelect','uniformBlock','uniformList','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordSelect','shoulderCordNote','stepGroup-items','quickStripPanel','quickStripHint','quickStripBtn','groupRibbons','clearRibbons','expandRibbons','cadetHighestOnlyRow','cadetHighestOnly','ribbonGallery','miniMountStyle','groupBadges','badgesPlannedNote','clearBadges','expandBadges','badgeGallery','groupPatches','clearPatches','expandPatches','unitPatchSearch','unitPatchSelect','unitPatchStatus','patchGallery','stepGroup-export','capubV2StatusPanel','capubV2RibbonCount','capubV2BadgeCount','capubV2PatchCount','capubV2WarningCount','capubV2Notices','finishPanel','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile','ribbonRackPanel','ribbonRackColumns','ribbonRackColumnsHint','ribbonRackArrangement','ribbonRackArrangementHint','ribbonRowOverridePanel','ribbonRowOverrideEnabled','ribbonRowOverrideControls','ribbonRowOverrideGrid','addRibbonOverrideRow','removeRibbonOverrideRow','ribbonRowOverrideStatus','capubV2QuickPanel','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset'];
+const OLD_IDS=['controls','stepGroup-profile','memberReportImportPanel','importMemberReportBtn','clearImportedReportBtn','memberReportUpload','memberReportImportStatus','capMembershipPanel','membershipLabel','membershipType','adultCadetRow','adultCadetCheckbox','rankSetupSelect','cadetFirstSergeantBlock','cadetFirstSergeantCheckbox','optionalName','capubV2TextPanel','firstNameRow','capubV2FirstName','capubV2LastName','plateLineRow','capubV2PlateLine','capubV2ShowText','stepGroup-uniform','genderBlock','cutLabel','jacketSelect','uniformBlock','uniformList','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordSelect','shoulderCordNote','stepGroup-items','quickStripPanel','quickStripHint','quickStripBtn','groupRibbons','clearRibbons','expandRibbons','cadetHighestOnlyRow','cadetHighestOnly','ribbonGallery','miniMountStyle','groupBadges','badgesPlannedNote','clearBadges','expandBadges','badgeGallery','groupPatches','clearPatches','expandPatches','unitPatchSearch','unitPatchSelect','unitPatchStatus','patchGallery','stepGroup-export','capubV2StatusPanel','capubV2RibbonCount','capubV2BadgeCount','capubV2PatchCount','capubV2WarningCount','capubV2Notices','finishPanel','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile','ribbonRackPanel','ribbonRackColumns','ribbonRackColumnsHint','ribbonRackArrangement','ribbonRackArrangementHint','ribbonRowOverridePanel','ribbonRowOverrideEnabled','ribbonRowOverrideControls','ribbonRowOverrideGrid','addRibbonOverrideRow','removeRibbonOverrideRow','ribbonRowOverrideStatus','capubV2QuickPanel','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset'];
 
 test('every control id of the old sidebar is still on the page exactly once',()=>{
   const ids=[...html.matchAll(/(?<![-\w])id="([^"]+)"/g)].map(m=>m[1]);
   const count=id=>ids.filter(x=>x===id).length;
   for(const id of OLD_IDS) assert.equal(count(id),1,`id="${id}"`);
   assert.equal(count('stepGroup-tools'),0,'the More tools fold is gone');
+  assert.equal(count('sheetClose')+count('sheetHandle'),0,'the bottom sheet is gone');
   const dupes=ids.filter((id,i)=>ids.indexOf(id)!==i);
   assert.deepEqual(dupes,[],'no id twice');
   // The gallery divs stay for the modal plumbing.
@@ -70,15 +71,13 @@ test('the controls sit in the step they belong to; the cut is part of the profil
   assert.ok(aside.indexOf('id="rankSetupSelect"')<aside.indexOf('id="genderBlock"') && aside.indexOf('id="genderBlock"')<aside.indexOf('id="optionalName"'),'rank, then cut, then the name');
 });
 
-test('the Items step is three cards, each with a count, a rule line, Choose… and Clear',()=>{
-  for(const [key,choose,clear] of [['ribbons','expandRibbons','clearRibbons'],['badges','expandBadges','clearBadges'],['patches','expandPatches','clearPatches']]){
+test('the Items step is three cards, each one row of name, count, Choose… and Clear, the rule under it',()=>{
+  for(const [key,Key] of [['ribbons','Ribbons'],['badges','Badges'],['patches','Patches']]){
     const card=aside.slice(aside.indexOf(`data-card="${key}"`),aside.indexOf('</section>',aside.indexOf(`data-card="${key}"`)));
-    assert.match(card,new RegExp(`<span class="countChip" data-count="${key}" aria-live="polite">0 selected</span>`));
-    assert.match(card,new RegExp(`<div class="hintText cardRule" data-rule="${key}">`));
-    assert.match(card,new RegExp(`<button id="${choose}" type="button">Choose ${key}…</button>`));
-    assert.match(card,new RegExp(`<button id="${clear}" class="ghost" type="button" aria-label="Clear ${key}">Clear</button>`));
-    assert.ok(card.indexOf(`id="${choose}"`)<card.indexOf(`id="${clear}"`),'Choose before Clear');
+    assert.match(card,new RegExp(`<div class="cardRow">\\s*<div class="cardHead">\\s*<label class="fieldLabel">${Key}</label>\\s*<span class="countChip" data-count="${key}" data-short="0" aria-live="polite">0 selected</span>\\s*</div>\\s*<button id="expand${Key}" type="button" aria-label="Choose ${key}">Choose…</button>\\s*<button id="clear${Key}" class="ghost" type="button" aria-label="Clear ${key}">Clear</button>\\s*</div>\\s*<div class="hintText cardRule" data-rule="${key}">`));
   }
+  assert.match(css,/\.cardRow\{display:grid;grid-template-columns:minmax\(0,1fr\) auto auto;/);
+  assert.match(css,/#capubSubmitPatchButton\{grid-column:1 \/ -1;/,'the patch submission button wraps under the row');
   assert.match(aside,/<summary>Advanced: rack layout<\/summary>/);
 });
 
@@ -104,9 +103,44 @@ test('the floating command bar and the ?ux=2 flag are gone from every file',()=>
     assert.doesNotMatch(src,/capubCommandBar|cmdRibbons|cmdDownload|cmdTemplates|cmdValidate/,f);
     assert.doesNotMatch(src,/data-ux|CAPUB_GUIDED/,f);
   }
-  // The scroll affordance: a fade above the footer while the body has more below.
+  // The scroll cue: a fade above the footer and a More below button while the body has more below the fold.
   assert.match(css,/#controls\.hasMoreBelow \.controlsFooter::before\{opacity:1\}/);
-  assert.match(ui,/aside\.classList\.toggle\('hasMoreBelow', body\.scrollHeight-body\.clientHeight-body\.scrollTop>2\)/);
+  assert.match(aside,/<button type="button" id="stepMoreBtn" class="ghost stepMoreBtn" hidden>More below ↓<\/button>/);
+  assert.match(ui,/const hasMore=!isPhone\(\) && body\.scrollHeight-body\.clientHeight-body\.scrollTop>2;/);
+  assert.match(ui,/if\(more\) more\.hidden=!hasMore;/);
+});
+
+test('phone CSS: a stack with a sticky step strip, a fixed 48px action bar over the one-line footer, 16px fields, full-screen pickers',()=>{
+  const start=css.indexOf('@media (max-width:700px)');
+  const phone=css.slice(start,css.indexOf('@media (max-width:360px)',start));
+  assert.match(phone,/#controls,#layoutShell\.sidebar-open #controls,#layoutShell\.sidebar-collapsed #controls\{display:contents\}/);
+  assert.match(phone,/\.controlsHeader\{order:0;position:sticky;top:0;/);
+  assert.match(phone,/#previewWrapper\{order:1\}/);
+  assert.match(phone,/#stepBody\{order:2;/);
+  assert.match(phone,/\.controlsFooter\{\s*position:fixed;\s*left:0;\s*right:0;\s*bottom:var\(--chrome-footer-h,var\(--capub-footer-h\)\);/);
+  assert.match(phone,/padding:var\(--s2\) var\(--s3\) calc\(var\(--s2\) \+ env\(safe-area-inset-bottom,0px\)\);/);
+  assert.match(phone,/\.stepFooterRow button\{min-height:48px\}/);
+  assert.match(phone,/\.controlsFooter::before,\.stepMoreBtn\{display:none\}/,'no scroll cue on a phone: the page scrolls');
+  assert.match(phone,/select,input:not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\)\{font-size:16px\}/);
+  assert.match(phone,/\.modal\{width:100vw;height:100vh;height:100dvh;border-radius:0;border:0\}/);
+  assert.match(phone,/\.uniformGrid\{grid-template-columns:minmax\(0,1fr\)\}/);
+  assert.match(phone,/\.uniformOption\{min-height:56px\}/);
+  // The peek and the overlay.
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);/);
+  assert.match(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;/);
+  assert.match(phone,/body\.previewFull #previewWrapper,body\.previewFull #layoutShell\[data-step\] #previewWrapper\{\s*display:flex;\s*flex-wrap:wrap;\s*position:fixed;\s*inset:0;/);
+  assert.match(phone,/#previewWrapper\{display:none;/,'hidden on step 1');
+  // The footer collapses to one word and its links, each drawing its own separator.
+  assert.match(phone,/\.footerFull,\.footerShort,\.footerCredit\{display:none\}/);
+  assert.match(phone,/\.footerTiny\{display:inline\}/);
+  assert.match(phone,/#pageFooter\{gap:0;padding:0 var\(--s2\);font-size:0;line-height:1\}/);
+  assert.match(phone,/\.footerLink\{[^}]*border-left:1px solid var\(--line\);/);
+  assert.match(html,/<span class="footerTiny">Unofficial<\/span>/);
+  assert.match(html,/<button type="button" id="aboutFeedback" class="ghost" hidden>Send feedback<\/button>/);
+  assert.match(ui,/feedback\.addEventListener\('click', \(\) => \{ dialog\.close\(\); window\.CAPUBFeedback\?\.open\(\); \}\);/);
+  // No sheet, no menu button, anywhere.
+  for(const f of ['index.html','styles/app.css','js/workspace-ui.js']) assert.doesNotMatch(read(f),/sheetGrip|sheetHandle|sheetTall|wireSheet/,f);
+  assert.match(css,/\.hamburgerBtn\{display:none\}/);
 });
 
 /* ---------- behaviour: the module against a DOM stand-in built from the page's ids ---------- */
@@ -152,6 +186,7 @@ function makeDom(){
     fire(type,ev={}){ ev.target=ev.target||this; ev.preventDefault=ev.preventDefault||(()=>{}); (this.listeners[type]||[]).forEach(fn=>fn(ev)); }
     focus(){ this.focused++; }
     scrollIntoView(){ this.scrolledInto++; }
+    scrollBy(o){ this.scrollTop+=o.top||0; }
     getBoundingClientRect(){ return {top:0,bottom:40,left:0,right:0,width:0,height:0,x:0,y:0}; }
     setPointerCapture(){}
     matches(sel){ return sel.split(',').some(s=>matchSimple(this,s.trim())); }
@@ -171,7 +206,7 @@ function makeDom(){
     return true;
   }
   function matchPath(n,sel,root){
-    const parts=sel.replace(/\s*>\s*/g,' ').split(/\s+/);
+    const parts=sel.replace(/\s*>\s*/g,' ').split(/\s+(?![^\[]*\])/);
     if(!matchSimple(n,parts[parts.length-1])) return false;
     let i=parts.length-2, p=n.parentNode;
     while(i>=0 && p){ if(matchSimple(p,parts[i])) i--; p=p.parentNode; }
@@ -189,7 +224,6 @@ function makeDom(){
     const t=el('button',{id:'stepTab-'+k,class:'stepTab','data-step':k,'aria-selected':k==='profile'?'true':'false'});
     t.dataset.step=k; t.textContent=n+' '+label; tabs.appendChild(t);
   }
-  const grip=el('div',{class:'sheetGrip'},el('button',{id:'sheetHandle',class:'sheetHandle'}),el('button',{id:'sheetClose',class:'ghost sheetClose'}));
   const stepBody=el('div',{class:'controlsScrollArea',id:'stepBody'});
   const groups={};
   for(const k of ['profile','uniform','items','export']){
@@ -210,11 +244,11 @@ function makeDom(){
   const downloadAction=el('div',{class:'finishAction',id:'downloadAction'},el('button',{id:'downloadImage'}));
   const templates=el('div',{class:'finishAction'},el('button',{id:'placementTemplatesOpen'}));
   groups.export.append(el('section',{id:'capubV2StatusPanel',class:'panelBlock'},Object.assign(el('span',{id:'capubV2WarningCount'}),{textContent:'0'})),el('section',{id:'finishPanel',class:'panelBlock'},downloadAction,templates));
-  const footer=el('div',{class:'controlsFooter',id:'stepFooter'},el('div',{id:'stepFooterNote',class:'stepFooterNote'}),el('div',{class:'stepFooterRow'},Object.assign(el('button',{id:'stepBack',class:'ghost stepBack'}),{hidden:true}),el('button',{id:'stepNext',class:'stepNext'})));
-  const aside=el('aside',{id:'controls'},el('div',{class:'controlsHeader'},grip,tabs),stepBody,footer);
+  const footer=el('div',{class:'controlsFooter',id:'stepFooter'},Object.assign(el('button',{id:'stepMoreBtn',class:'ghost stepMoreBtn'}),{hidden:true}),el('div',{id:'stepFooterNote',class:'stepFooterNote'}),el('div',{class:'stepFooterRow'},Object.assign(el('button',{id:'stepBack',class:'ghost stepBack'}),{hidden:true}),el('button',{id:'stepNext',class:'stepNext'})));
+  const aside=el('aside',{id:'controls'},el('div',{class:'controlsHeader'},tabs),stepBody,footer);
   shell.appendChild(aside);
   const previewArea=el('div',{id:'previewArea'},el('div',{id:'uniformCanvas'}));
-  shell.appendChild(el('section',{id:'previewWrapper'},previewArea));
+  shell.appendChild(el('section',{id:'previewWrapper'},previewArea,Object.assign(el('button',{id:'previewPeekBtn',class:'ghost previewPeekBtn'}),{hidden:true})));
   body.appendChild(el('footer',{id:'pageFooter'}));
   const document={
     body,documentElement:el('html',{}),
@@ -230,19 +264,19 @@ function makeDom(){
   return {document,byId,groups,Node};
 }
 
-function boot({sheet=false}={}){
+function boot({phone=false}={}){
   const dom=makeDom();
   const src=ui.slice(ui.indexOf('(function capubV3PolishedUI(){'),ui.indexOf('// A short confirmation when ribbons'));
   const calls={sidebar:[]};
   const context={
     document:dom.document, State:{membership:'',rank:null,gender:'',uniform:'blues_a',ribbons:[],badges:[],patches:[]},
     setTimeout:(fn)=>{ fn(); return 0; }, clearTimeout(){}, requestAnimationFrame:fn=>{ fn(); return 0; },
-    matchMedia:q=>({matches:q==='(max-width:900px)'?sheet:false,addEventListener(){},addListener(){}}),
+    matchMedia:q=>({matches:q==='(max-width:700px)'?phone:false,addEventListener(){},addListener(){}}),
     ResizeObserver:function(){ this.observe=()=>{}; }, MutationObserver:function(fn){ this.observe=()=>{ context.__statusWatcher=fn; }; },
     CustomEvent:function(type,init){ this.type=type; this.detail=init&&init.detail; }, Event:function(type){ this.type=type; },
     localStorage:{getItem:()=>null,setItem(){},removeItem(){}}, getComputedStyle:()=>({paddingLeft:'0',paddingRight:'0'}),
     console, Object, parseInt, parseFloat, Math, String, Set, Number, Array, Promise, JSON, RegExp,
-    innerWidth:1440, innerHeight:900,
+    innerWidth:1440, innerHeight:900, scrollTo(){},
     capubSetSidebarOpen:open=>{ calls.sidebar.push(open); dom.document.getElementById('layoutShell').classList.toggle('sidebar-open',open); dom.document.getElementById('layoutShell').classList.toggle('sidebar-collapsed',!open); },
     CAPUBUniformRules:rules
   };
@@ -368,19 +402,52 @@ test('the clear-import button shows once a report has been read',()=>{
   assert.equal(t.by('clearImportedReportBtn').hidden,false);
 });
 
-test('on a phone the grip drags the sheet away, up makes it tall, a tap toggles tall',()=>{
-  const t=boot({sheet:true});
-  const handle=t.by('sheetHandle'), sheet=t.by('controls');
-  const drag=(from,to)=>{ handle.fire('pointerdown',{clientY:from,pointerId:1}); handle.fire('pointermove',{clientY:to}); handle.fire('pointerup',{}); };
-  drag(100,40);
-  assert.equal(sheet.classList.contains('sheetTall'),true,'up makes it tall');
-  drag(100,250);
-  assert.equal(sheet.classList.contains('sheetTall'),false,'down from tall brings it back');
-  assert.deepEqual(t.calls.sidebar,[],'not closed yet');
-  drag(100,250);
-  assert.deepEqual(t.calls.sidebar,[false],'down from the resting height closes it');
-  handle.fire('pointerdown',{clientY:100,pointerId:1}); handle.fire('pointerup',{});
-  assert.equal(sheet.classList.contains('sheetTall'),true,'a tap toggles tall');
-  assert.equal(sheet.classList.contains('sheetDragging'),false);
-  assert.equal(sheet.style.transform,'');
+test('on a phone the preview is a peek on steps 2 and 3 that opens full-screen and closes again; Undo and Redo sit in the app bar',()=>{
+  const t=boot({phone:true});
+  const shell=t.by('layoutShell');
+  assert.equal(shell.getAttribute('data-step'),'profile','the shell says which step is up, for the phone layout');
+  assert.ok(t.dom.document.querySelector('header .previewToolCard[aria-label="Undo and redo"]'),'Undo and Redo moved into the app bar');
+  assert.equal(t.by('themeToggle').dataset.mode,'light');
+  Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'female'}); t.refresh();
+  t.V3.showStep('uniform');
+  assert.equal(shell.getAttribute('data-step'),'uniform');
+  assert.equal(t.by('previewPeekBtn').hidden,false);
+  assert.equal(t.by('previewCloseBtn').hidden,true);
+  t.V3.openPreview();
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),true);
+  assert.equal(t.by('previewCloseBtn').hidden,false);
+  assert.equal(t.by('previewPeekBtn').hidden,true);
+  assert.equal(t.by('previewCloseBtn').focused,1,'focus goes to Close');
+  t.dom.document.dispatchEvent({type:'keydown',key:'Escape'});
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),false,'Escape closes it');
+  assert.equal(t.by('previewPeekBtn').focused,1,'focus returns to the Open preview button');
+  // A tap on the peek opens it; a tap on a button in it does not.
+  t.by('previewWrapper').fire('click',{target:t.by('previewArea')});
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),true);
+  t.by('previewCloseBtn').onclick();
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),false);
+  t.V3.showStep('export');
+  assert.equal(shell.getAttribute('data-step'),'export');
+  t.by('previewWrapper').fire('click',{target:t.by('previewArea')});
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),false,'on step 4 the preview is in the page; only the button opens the overlay');
+  t.by('previewPeekBtn').fire('click',{stopPropagation(){}});
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),true);
+});
+
+test('the scroll cue: a More below button and fade on the desktop panel, nothing on a phone where the page scrolls',()=>{
+  const d=boot();
+  const body=d.by('stepBody'); body.scrollHeight=1400; body.clientHeight=600; body.scrollTop=0;
+  body.fire('scroll');
+  assert.equal(d.by('controls').classList.contains('hasMoreBelow'),true);
+  assert.equal(d.by('stepMoreBtn').hidden,false);
+  d.by('stepMoreBtn').fire('click');
+  assert.equal(body.scrollTop,480,'the button scrolls the body by most of a screen');
+  body.scrollTop=800; body.fire('scroll');
+  assert.equal(d.by('stepMoreBtn').hidden,true);
+  const p=boot({phone:true});
+  const pb=p.by('stepBody'); pb.scrollHeight=1400; pb.clientHeight=600; pb.fire('scroll');
+  assert.equal(p.by('controls').classList.contains('hasMoreBelow'),false);
+  assert.equal(p.by('stepMoreBtn').hidden,true);
+  assert.ok(!p.dom.document.querySelector('header .previewToolCard') || p.dom.document.querySelector('header .previewToolCard[aria-label="Undo and redo"]'));
+  assert.ok(d.by('previewTools').querySelector('.previewToolCard[aria-label="Undo and redo"]'),'on the desktop the history card is in the preview toolbar');
 });

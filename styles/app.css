@@ -195,7 +195,7 @@ header{
   min-height:var(--capub-header-h);
   display:flex;
   align-items:center;
-  padding:0 var(--s5) 0 72px; /* leaves room for the fixed menu button */
+  padding:0 var(--s5);
   background:var(--brand);
   color:var(--on-brand);
 }
@@ -240,27 +240,7 @@ header h1::after{
   font-weight:700;
   opacity:.8;
 }
-.hamburgerBtn{
-  position:fixed;
-  left:var(--s4);
-  top:10px;
-  z-index:10000;
-  width:44px;
-  min-height:44px;
-  height:44px;
-  margin:0;
-  padding:0;
-  border-radius:var(--r);
-  border:1px solid rgba(255,255,255,.55);
-  background:rgba(255,255,255,.14);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-}
-.hamburgerBtn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.8)}
-.hamburgerBtn span{display:block;width:20px;height:2px;background:#fff;border-radius:1px}
+.hamburgerBtn{display:none}
 
 #layoutShell{
   display:flex;
@@ -352,22 +332,37 @@ header h1::after{
   left:0;
   right:0;
   bottom:100%;
-  height:32px;
-  background:linear-gradient(to bottom,transparent,var(--panel));
+  height:56px;
+  background:linear-gradient(to bottom,transparent,var(--panel) 85%);
   opacity:0;
   pointer-events:none;
   transition:opacity .15s ease;
 }
 #controls.hasMoreBelow .controlsFooter::before{opacity:1}
 #controls.hasMoreBelow .controlsFooter{box-shadow:0 -8px 14px -10px rgba(0,16,60,.35)}
+.stepMoreBtn{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + var(--s2));
+  transform:translateX(-50%);
+  z-index:3;
+  width:auto;
+  min-height:36px;
+  margin:0;
+  padding:0 var(--s4);
+  background:var(--panel);
+  border-color:var(--line-strong);
+  box-shadow:var(--shadow);
+  font-size:var(--t-sm);
+  white-space:nowrap;
+}
+.stepMoreBtn[hidden]{display:none}
 .stepFooterNote{margin:0 0 var(--s2);font-size:var(--t-xs);line-height:1.4;color:var(--muted)}
 .stepFooterNote[hidden]{display:none}
 .stepFooterRow{display:flex;gap:var(--s2);align-items:stretch}
 .stepFooterRow button{margin:0}
 .stepBack{flex:0 0 auto;width:auto;padding:0 var(--s4)}
 .stepNext,#stepFooter #downloadImage{flex:1 1 auto;width:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* The sheet grip is only drawn on a phone or tablet (see the responsive section). */
-.sheetGrip{display:none}
 /* Resume banner: shown once, above the preview, when a saved setup is waiting. */
 .resumeBanner{
   display:flex;
@@ -404,8 +399,10 @@ header h1::after{
 .stepGroup>:last-child{margin-bottom:0}
 .controlsScrollArea .panelBlock{scroll-margin-top:var(--s3)}
 /* A card's heading row: the name on the left, a count on the right. */
-.cardHead{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
-.cardHead .fieldLabel{margin:0;font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1}
+.cardRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--s2);align-items:center}
+.cardRow button{margin:0;width:auto;padding:0 var(--s3);font-size:var(--t-md)}
+.cardHead{display:flex;align-items:center;gap:var(--s2);min-width:0}
+.cardHead .fieldLabel{margin:0;font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1;white-space:nowrap}
 .countChip{flex:0 0 auto;padding:2px var(--s2);border:1px solid var(--line);border-radius:999px;background:var(--panel-2);font-size:var(--t-xs);font-weight:700;line-height:1.3;color:var(--muted);white-space:nowrap}
 .countChip.hasItems{background:var(--select-bg);border-color:var(--select-line);color:var(--ink)}
 .cardRule{margin-top:var(--s1)}
@@ -424,7 +421,7 @@ header h1::after{
 .importCard>button{margin-top:0}
 .importCard .hintText{margin-top:var(--s2)}
 /* The patch submission button (patch-submission.js adds it under Choose patches) reads as secondary. */
-#capubSubmitPatchButton{margin-top:var(--s2);background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-md)}
+#capubSubmitPatchButton{grid-column:1 / -1;margin-top:0;background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-md)}
 #capubSubmitPatchButton:hover{background:var(--panel-2);border-color:var(--ink)}
 
 /* Uniforms: by occasion, two cards to a row. */
@@ -915,97 +912,130 @@ header h1::after{
 }
 
 /* ---- Responsive ---- */
-@media (min-width:901px){
-  /* The panel is always open beside the preview: no menu button, nothing to close. */
-  .hamburgerBtn{display:none}
-  header{padding-left:var(--s5)}
+/* Above 700px the panel sits beside the preview at every width (a tablet gets a narrower one). The menu button and the
+   bottom sheet are gone. */
+.previewPeekBtn,#previewCloseBtn,.footerTiny{display:none}
+.footerShort{display:none}
+.footerCredit{margin-left:var(--s1)}
+@media (min-width:701px){
   #layoutShell.sidebar-collapsed #controls{width:var(--sidebar-w);min-width:260px;max-width:var(--sidebar-w);border-right:1px solid var(--line)}
-  .sheetClose,.sheetGrip{display:none}
 }
-@media (max-width:900px){
+@media (min-width:701px) and (max-width:1024px){
+  :root{--sidebar-w:340px}
   .modal .galleryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  :root{--sheet-h:min(52vh,480px);--sheet-tall-h:min(84vh,760px)}
-  @supports (height:100dvh){:root{--sheet-h:min(52dvh,480px);--sheet-tall-h:min(84dvh,760px)}}
-  #layoutShell{bottom:0;flex-direction:column}
-  /* Controls are a bottom sheet on a phone or tablet: the uniform stays visible above them. The same step tabs run
-     across its top and the same footer sits at its bottom; the grip drags it taller or away (js/workspace-ui.js). */
-  #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{
+}
+
+/* ---- Phones (to 700px): a stack, not a shrunk desktop ----
+   App bar (title, tag, Undo and Redo as icons, the theme as an icon), the step strip stuck under it, the preview as a
+   peek on steps 2 and 3 and at full width on step 4 (a tap opens it full-screen), the step as the page, and a fixed
+   action bar with Back and Next over the one-line footer (js/workspace-ui.js sets data-step on the shell and
+   .previewFull on the body). */
+@media (max-width:700px){
+  :root{--capub-footer-h:40px;--phone-bar-h:72px;--peek-h:148px}
+  html,body{overflow-x:hidden}
+  /* 16px so iOS does not zoom into a field. */
+  select,input:not([type="checkbox"]):not([type="radio"]):not([type="range"]){font-size:16px}
+  header{min-height:56px;padding:0 var(--s3);gap:var(--s2)}
+  header h1{flex:1 1 auto;min-width:0;font-size:var(--t-lg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header h1::after{display:none}
+  .unofficialTag{margin-left:0;padding:1px var(--s2);font-size:var(--t-xs)}
+  .themeToggle{flex:0 0 auto;width:44px;min-width:44px;margin:0;padding:0;font-size:0;border-color:rgba(255,255,255,.5)}
+  .themeToggle::before{content:"\263E";font-size:20px;line-height:1}
+  .themeToggle[data-mode="dark"]::before{content:"\2600";font-size:20px}
+  header .previewToolCard{gap:var(--s1);flex:0 0 auto}
+  header .previewToolCard button{width:44px;min-width:44px;padding:0;font-size:0;background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+  header .previewToolCard button::before{font-size:22px;line-height:1}
+  header #undoBtn::before{content:"\21B6"}
+  header #redoBtn::before{content:"\21B7"}
+  header .previewToolCard button:disabled{opacity:.4;background:transparent;color:#fff}
+
+  #layoutShell{position:static;display:flex;flex-direction:column;overflow:visible}
+  #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{display:contents}
+  .controlsHeader{order:0;position:sticky;top:0;z-index:60;width:100%;box-shadow:0 1px 0 var(--line)}
+  .stepTab{min-height:52px;font-size:.75rem;gap:2px}
+  .stepTab .stepNum{width:24px;height:24px;font-size:var(--t-sm)}
+  #previewWrapper{order:1}
+  #stepBody{order:2;width:100%;overflow:visible;padding:var(--s3) var(--s3) calc(var(--phone-bar-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
+  .controlsFooter{
     position:fixed;
     left:0;
     right:0;
-    top:auto;
     bottom:var(--chrome-footer-h,var(--capub-footer-h));
-    width:100%;
-    min-width:0;
-    max-width:none;
-    height:var(--sheet-h);
-    z-index:9000;
-    border-radius:var(--r-lg) var(--r-lg) 0 0;
-    box-shadow:var(--shadow);
-    border-top:1px solid var(--line-strong);
-    border-right:0;
-    transition:transform .2s ease,visibility .2s ease,height .2s ease;
-    will-change:transform;
+    z-index:70;
+    padding:var(--s2) var(--s3) calc(var(--s2) + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -6px 16px -10px rgba(0,0,0,.35);
   }
-  #controls.sheetTall,#layoutShell.sidebar-open #controls.sheetTall{height:var(--sheet-tall-h)}
-  #controls.sheetDragging,#layoutShell.sidebar-open #controls.sheetDragging{transition:none}
-  #layoutShell.sidebar-open #controls{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto}
-  #layoutShell.sidebar-collapsed #controls{transform:translate3d(0,110%,0);visibility:hidden;pointer-events:none}
-  .sheetGrip{position:relative;display:flex;align-items:center;justify-content:center;min-height:28px}
-  .sheetHandle{width:72px;min-height:28px;height:28px;margin:0;padding:0;background:transparent;border:0;border-radius:0;display:flex;align-items:center;justify-content:center;touch-action:none;cursor:grab}
-  .sheetHandle:hover{background:transparent;border-color:transparent}
-  .sheetHandle span{display:block;width:44px;height:5px;border-radius:3px;background:var(--line-strong)}
-  .sheetClose{position:absolute;top:0;right:var(--s2);display:inline-flex;align-items:center;width:auto;min-height:28px;margin:0;padding:0 var(--s3);font-size:var(--t-md)}
-  .stepTab{min-height:56px}
-  #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
-  /* With the sheet up, leave room under the uniform so it can scroll clear of it. */
-  body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
-  body:has(#layoutShell.sidebar-open #controls.sheetTall) #previewWrapper{padding-bottom:calc(var(--sheet-tall-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
-}
-@media (max-width:768px){
-  header{padding-left:72px}
-  header h1{font-size:var(--t-lg)}
-  header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
-  /* While the sheet is up the toolbar keeps only undo and redo, so the uniform has room. */
-  body:has(#layoutShell.sidebar-open) .capubTopBar,
-  body:has(#layoutShell.sidebar-open) .previewToolCard[aria-label="Preview zoom"]{display:none}
-  .previewToolbar{flex-basis:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
-  .statusGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .modal{height:90vh}
-  .modal .galleryGrid{grid-template-columns:repeat(1,minmax(0,1fr))}
-  :root{--capub-footer-h:64px}
-  #pageFooter{font-size:var(--t-xs);line-height:1.35;padding-top:var(--s1);padding-bottom:var(--s1)}
-}
-/* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
-   At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
-   the fixed footer (and its About link) off the right edge. */
-@media (max-width:480px){
-  header{padding-right:var(--s3)}
-  header h1{font-size:var(--t-md)}
-  header h1::after{font-size:var(--t-sm)}
-  .unofficialTag{margin-left:var(--s2);padding:2px var(--s2);font-size:var(--t-xs)}
-  .themeToggle{flex:0 0 auto;max-width:64px;padding:0 var(--s2);font-size:var(--t-sm);line-height:1.1}
-  /* Status and item count stay; the chosen uniform is already highlighted in the sidebar. */
-  #capubTopBar .capubPill:nth-child(2){display:none}
-  .previewTools{width:100%;margin-left:0;gap:var(--s2);justify-content:space-between}
-  .previewToolCard{gap:var(--s1)}
+  .controlsFooter::before,.stepMoreBtn{display:none}
+  .stepFooterRow button{min-height:48px}
+  .capubToast{right:var(--s3);bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--phone-bar-h) + var(--s3))}
+
+  /* The preview. */
+  #previewWrapper{display:none;flex:0 0 auto;width:100%;padding:var(--s2) var(--s3);overflow:hidden;gap:0;justify-content:flex-start;align-content:flex-start}
+  #previewWrapper .previewToolbar{display:none}
+  #layoutShell[data-step="uniform"] #previewWrapper,#layoutShell[data-step="items"] #previewWrapper{
+    display:flex;
+    position:relative;
+    height:var(--peek-h);
+    cursor:pointer;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+  }
+  #layoutShell[data-step="uniform"] #uniformCanvas,#layoutShell[data-step="items"] #uniformCanvas{pointer-events:none}
+  #layoutShell[data-step="export"] #previewWrapper{display:flex;flex-wrap:wrap;overflow:visible;padding:var(--s3) var(--s3) var(--s2)}
+  #layoutShell[data-step="export"] #previewWrapper .previewToolbar{display:flex;flex-basis:calc(100% + 2 * var(--s3));position:static;margin:calc(-1 * var(--s3)) calc(-1 * var(--s3)) var(--s3);padding:var(--s2) var(--s3)}
+  #layoutShell[data-step="export"] .previewToolCard[aria-label="Preview zoom"]{display:none}
+  .previewPeekBtn{display:inline-flex;align-items:center;position:absolute;right:var(--s3);bottom:var(--s2);width:auto;min-height:40px;margin:0;padding:0 var(--s3);font-size:var(--t-sm);background:var(--panel)}
+  #layoutShell[data-step="export"] .previewPeekBtn{position:static;flex:0 0 100%;justify-content:center;margin-top:var(--s2)}
+  body.previewFull{overflow:hidden}
+  body.previewFull #previewWrapper,body.previewFull #layoutShell[data-step] #previewWrapper{
+    display:flex;
+    flex-wrap:wrap;
+    position:fixed;
+    inset:0;
+    z-index:11000;
+    height:auto;
+    padding:0 var(--s3) var(--s5);
+    overflow:auto;
+    cursor:default;
+    background:var(--bg);
+    border:0;
+  }
+  body.previewFull #previewWrapper .previewToolbar{display:flex;flex-basis:calc(100% + 2 * var(--s3));position:sticky;top:0;margin:0 calc(-1 * var(--s3)) var(--s3);padding:var(--s2) var(--s3)}
+  body.previewFull #layoutShell[data-step] #uniformCanvas{pointer-events:auto}
+  body.previewFull .previewPeekBtn{display:none}
+  .previewToolbar .capubTopBar{display:none}
+  .previewTools{width:100%;margin-left:0;justify-content:space-between;gap:var(--s2)}
   .previewToolCard button{padding:0 var(--s2);font-size:var(--t-md)}
   .previewToolCard .zoomReadout{min-width:40px}
-}
+  #previewCloseBtn{display:inline-flex;align-items:center}
+  .previewToolCard[aria-label="Close the preview"]{order:-1}
 
-.footerShort{display:none}
-.footerCredit{margin-left:var(--s1)}
-@media (max-width:480px){
-  .footerFull,.footerCredit{display:none}
-  .footerShort{display:inline}
-  /* Two short lines, so the footer (and the sheet that sits on it) can be shorter. */
-  :root{--capub-footer-h:52px}
-}
+  /* The steps. */
+  .uniformGrid{grid-template-columns:minmax(0,1fr)}
+  .uniformOption{min-height:56px}
+  .uniformOption .uName{font-size:var(--t-md)}
+  .statusGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cardRow button{padding:0 var(--s2)}
 
-/* Very narrow phones (320px): the Unofficial notice moves into the subtitle instead of a tag. */
+  /* The pickers fill the screen: the title bar and the search stay put, Done stays at the bottom. */
+  .modalOverlay{padding:0;align-items:stretch}
+  .modal{width:100vw;height:100vh;height:100dvh;border-radius:0;border:0}
+  .modal .galleryGrid{grid-template-columns:minmax(0,1fr)}
+  .modalFooter{padding-bottom:calc(var(--s2) + env(safe-area-inset-bottom,0px))}
+  .modalFooter button{min-height:48px}
+
+  /* The footer is one line: Unofficial | About | Feedback. The literal separators in the markup (and the one
+     js/feedback.js adds) are zero-sized here; each link draws a rule on its left instead. */
+  #pageFooter{gap:0;padding:0 var(--s2);font-size:0;line-height:1}
+  #pageFooter>*{font-size:var(--t-xs)}
+  .footerFull,.footerShort,.footerCredit{display:none}
+  .footerTiny{display:inline}
+  .footerLink{display:inline-flex;align-items:center;margin:0 0 0 var(--s2);min-height:40px;padding:0 var(--s2);border-left:1px solid var(--line);border-radius:0;font-size:var(--t-xs)}
+}
 @media (max-width:360px){
   .unofficialTag{display:none}
-  header h1::after{content:"Unofficial tool"}
+  .countChip{font-size:0}
+  .countChip::before{content:attr(data-short);font-size:var(--t-xs)}
 }
 
 .noticeList li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2)}
@@ -1212,6 +1242,9 @@ small.hintText{display:block}
 }
 /* A checkbox with its words is one control: the whole row is the target. */
 label.fieldNote:has(>input[type=checkbox]){display:flex;align-items:center;gap:var(--s2);min-height:44px}
+/* With its explanation: the box in the first column, the words and the hint stacked in the second. */
+label.fieldNote.optionWithHint:has(>input[type=checkbox]){display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:var(--s2);align-items:center}
+label.fieldNote.optionWithHint:has(>input[type=checkbox]) .optionHint{grid-column:2;padding-left:0}
 /* A folded section is a control, so its heading is a 44px target. */
 .modal details>summary{min-height:44px;box-sizing:border-box;padding-top:var(--s3);padding-bottom:var(--s3)}
 

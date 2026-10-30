@@ -45,11 +45,6 @@
 
   <aside id="controls" aria-label="Uniform controls">
     <div class="controlsHeader">
-      <!-- On a phone or tablet the controls are a bottom sheet: a handle to drag it taller or away, and Done. -->
-      <div class="sheetGrip">
-        <button type="button" id="sheetHandle" class="sheetHandle" aria-label="Resize or close the controls"><span></span></button>
-        <button type="button" id="sheetClose" class="ghost sheetClose" aria-label="Close controls">Done</button>
-      </div>
       <!-- The four steps. One is shown at a time (js/workspace-ui.js keeps the states and the Back and Next buttons). -->
       <div class="stepTabs" role="tablist" aria-label="Steps">
         <button type="button" role="tab" id="stepTab-profile" class="stepTab" data-step="profile" aria-controls="stepGroup-profile" aria-selected="true" aria-current="step"><span class="stepNum">1</span><span class="stepLabel">Profile</span></button>
@@ -270,16 +265,15 @@
 
         <!-- RIBBONS: one card, the picker opens in a window (the sidebar gallery div is kept for the modal plumbing and hidden by CSS) -->
         <section id="groupRibbons" class="panelBlock itemCard" data-card="ribbons">
-          <div class="cardHead">
-            <label class="fieldLabel">Ribbons</label>
-            <span class="countChip" data-count="ribbons" aria-live="polite">0 selected</span>
+          <div class="cardRow">
+            <div class="cardHead">
+              <label class="fieldLabel">Ribbons</label>
+              <span class="countChip" data-count="ribbons" data-short="0" aria-live="polite">0 selected</span>
+            </div>
+            <button id="expandRibbons" type="button" aria-label="Choose ribbons">Choose…</button>
+            <button id="clearRibbons" class="ghost" type="button" aria-label="Clear ribbons">Clear</button>
           </div>
           <div class="hintText cardRule" data-rule="ribbons">Choose the ribbons you have earned.</div>
-
-          <div class="row two mt-8">
-            <div class="col"><button id="expandRibbons" type="button">Choose ribbons…</button></div>
-            <div class="col"><button id="clearRibbons" class="ghost" type="button" aria-label="Clear ribbons">Clear</button></div>
-          </div>
 
           <div id="cadetHighestOnlyRow" class="hidden">
             <label class="fieldNote mt-8 optionWithHint">
@@ -346,33 +340,31 @@
 
         <!-- BADGES -->
         <section id="groupBadges" class="panelBlock itemCard" data-card="badges">
-          <div class="cardHead">
-            <label class="fieldLabel">Badges</label>
-            <span class="countChip" data-count="badges" aria-live="polite">0 selected</span>
+          <div class="cardRow">
+            <div class="cardHead">
+              <label class="fieldLabel">Badges</label>
+              <span class="countChip" data-count="badges" data-short="0" aria-live="polite">0 selected</span>
+            </div>
+            <button id="expandBadges" type="button" aria-label="Choose badges">Choose…</button>
+            <button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button>
           </div>
           <div class="hintText cardRule" data-rule="badges">Each badge is placed where CAPR 39-1 puts it.</div>
           <div id="badgesPlannedNote" class="hintText hidden" role="note"></div>
-
-          <div class="row two mt-8">
-            <div class="col"><button id="expandBadges" type="button">Choose badges…</button></div>
-            <div class="col"><button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button></div>
-          </div>
 
           <div id="badgeGallery" class="galleryGrid"></div>
         </section>
 
         <!-- PATCHES -->
         <section id="groupPatches" class="panelBlock itemCard" data-card="patches">
-          <div class="cardHead">
-            <label class="fieldLabel">Patches</label>
-            <span class="countChip" data-count="patches" aria-live="polite">0 selected</span>
+          <div class="cardRow">
+            <div class="cardHead">
+              <label class="fieldLabel">Patches</label>
+              <span class="countChip" data-count="patches" data-short="0" aria-live="polite">0 selected</span>
+            </div>
+            <button id="expandPatches" type="button" aria-label="Choose patches">Choose…</button>
+            <button id="clearPatches" class="ghost" type="button" aria-label="Clear patches">Clear</button>
           </div>
           <div class="hintText cardRule" data-rule="patches">Choose the patches you wear.</div>
-
-          <div class="row two mt-8">
-            <div class="col"><button id="expandPatches" type="button">Choose patches…</button></div>
-            <div class="col"><button id="clearPatches" class="ghost" type="button" aria-label="Clear patches">Clear</button></div>
-          </div>
 
           <div class="panelDivider">
             <label class="fieldLabel" for="unitPatchSelect">Unit patch</label>
@@ -438,6 +430,7 @@
     </div>
 
     <div class="controlsFooter" id="stepFooter">
+      <button type="button" id="stepMoreBtn" class="ghost stepMoreBtn" hidden>More below ↓</button>
       <div id="stepFooterNote" class="stepFooterNote" aria-live="polite" hidden></div>
       <div class="stepFooterRow">
         <button type="button" id="stepBack" class="ghost stepBack" hidden>Back</button>
@@ -450,6 +443,7 @@
     <div id="previewArea">
       <div id="uniformCanvas"></div>
     </div>
+    <button type="button" id="previewPeekBtn" class="ghost previewPeekBtn" hidden>Open preview</button>
 
     <div id="sideDisplay">
       </div>
@@ -462,7 +456,7 @@
 <div class="layer" id="assets" style="display:none"></div>
 
 <footer id="pageFooter">
-  <span class="footerFull">Unofficial tool, not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</span><span class="footerShort">Unofficial tool, not affiliated with CAP or the U.S. Air Force.</span>
+  <span class="footerFull">Unofficial tool, not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</span><span class="footerShort">Unofficial tool, not affiliated with CAP or the U.S. Air Force.</span><span class="footerTiny">Unofficial</span>
   <span class="footerCredit">Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard</span>
   · <button type="button" id="aboutOpen" class="footerLink">About</button>
 </footer>
@@ -473,7 +467,7 @@
   <p><b>Privacy.</b> Your setup is saved in this browser as you work, so you can pick it up later. A member report you import is read on your device only. The site counts anonymous usage (which uniforms are built, how many items are on them, which buttons are used) and gets the feedback you choose to send. No name, CAPID, nameplate text or report contents ever leave your browser, and with Do Not Track on only plain visit and build counts are sent.</p>
   <p>Civil Air Patrol, the U.S. Air Force and other names, insignia and uniform designs shown here belong to their owners. The colors and typefaces follow the public CAP Brand Guide. That does not make this an official CAP product.</p>
   <p>Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.</p>
-  <div class="aboutActions"><button type="button" id="aboutClose" class="ghost">Close</button></div>
+  <div class="aboutActions"><button type="button" id="aboutFeedback" class="ghost" hidden>Send feedback</button><button type="button" id="aboutClose" class="ghost">Close</button></div>
 </dialog>
 
 <!-- ===========================

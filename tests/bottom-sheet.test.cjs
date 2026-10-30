@@ -1,4 +1,7 @@
 'use strict';
+// The phone is a stack, not a bottom sheet (LIVE13 E105, Ethan: "the mobile UI/UX. should be different and functional"):
+// app bar, the step strip stuck under it, the preview as a peek or at full width, the step as the page, a fixed action
+// bar over the one-line footer. Above 700px the panel sits beside the preview at every width; nothing slides or drags.
 
 const test=require('node:test');
 const assert=require('node:assert/strict');
@@ -8,7 +11,6 @@ const path=require('node:path');
 const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
 const css=read('styles/app.css');
 const ui=read('js/workspace-ui.js');
-const setup=read('js/setup.js');
 const html=read('index.html');
 
 function block(query){
@@ -20,38 +22,61 @@ function block(query){
   return css.slice(begin,i+1);
 }
 
-test('up to 900px the controls are a bottom sheet over the footer, not a side drawer',()=>{
-  const sheet=block('max-width:900px');
-  assert.match(sheet,/#controls[^{]*\{[^}]*bottom:var\(--chrome-footer-h,var\(--capub-footer-h\)\)/);
-  assert.match(sheet,/height:var\(--sheet-h\)/);
-  assert.match(sheet,/sidebar-collapsed #controls\{transform:translate3d\(0,110%,0\)/);
-  assert.doesNotMatch(sheet,/translate3d\(-105%/);
-  assert.match(ui,/const SHEET_QUERY='\(max-width:900px\)';/);
+test('there is no bottom sheet and no menu button at any width',()=>{
+  for(const f of ['index.html','styles/app.css','js/workspace-ui.js']) assert.doesNotMatch(read(f),/sheetGrip|sheetHandle|sheetTall|sheetDragging|wireSheet|--sheet-h/,f);
+  assert.doesNotMatch(html,/id="sheetClose"/);
+  assert.match(css,/\.hamburgerBtn\{display:none\}/);
+  // The button stays in the markup because js/setup.js reads it by id; the panel is opened for good at load.
+  assert.match(html,/<button id="hamburgerBtn"/);
+  assert.match(ui,/if\(typeof capubSetSidebarOpen==='function'\) capubSetSidebarOpen\(true\);\s*\/\/ The tabs and footer work from the first paint/);
+  assert.match(ui,/const PHONE_QUERY='\(max-width:700px\)';/);
 });
 
-test('the sheet has a grip to drag it taller or away, and a Done button; the page leaves room under the uniform',()=>{
-  assert.match(html,/<button type="button" id="sheetHandle" class="sheetHandle"/);
-  assert.match(html,/id="sheetClose"/);
-  assert.match(setup,/getElementById|by\('sheetClose'\)/);
-  const sheet=block('max-width:900px');
-  assert.match(sheet,/body:has\(#layoutShell\.sidebar-open\) #previewWrapper\{padding-bottom:calc\(var\(--sheet-h\)/);
-  assert.match(sheet,/#controls\.sheetTall,#layoutShell\.sidebar-open #controls\.sheetTall\{height:var\(--sheet-tall-h\)\}/);
-  // Drag down far enough closes it (or brings a tall sheet back); up makes it tall; a tap toggles tall.
-  assert.match(ui,/if\(dy>90\)\{\s*if\(tall\) sheet\.classList\.remove\('sheetTall'\);\s*else if\(typeof capubSetSidebarOpen==='function'\) capubSetSidebarOpen\(false\);/);
-  assert.match(ui,/else if\(dy<-50 && !tall\) sheet\.classList\.add\('sheetTall'\);\s*else if\(!moved\) sheet\.classList\.toggle\('sheetTall'\);/);
+test('to 700px the page is a stack: the panel\'s parts become siblings of the preview in order, under a sticky step strip',()=>{
+  const phone=block('max-width:700px');
+  assert.match(phone,/#layoutShell\{position:static;display:flex;flex-direction:column;overflow:visible\}/);
+  assert.match(phone,/#controls,#layoutShell\.sidebar-open #controls,#layoutShell\.sidebar-collapsed #controls\{display:contents\}/);
+  assert.match(phone,/\.controlsHeader\{order:0;position:sticky;top:0;z-index:60;width:100%;/);
+  assert.match(phone,/#previewWrapper\{order:1\}/);
+  assert.match(phone,/#stepBody\{order:2;width:100%;overflow:visible;padding:var\(--s3\) var\(--s3\) calc\(var\(--phone-bar-h\) \+ var\(--chrome-footer-h,var\(--capub-footer-h\)\) \+ var\(--s4\)\)\}/);
+  assert.match(phone,/:root\{--capub-footer-h:40px;--phone-bar-h:72px;--peek-h:148px\}/);
 });
 
-test('the uniform is refitted into the space above the sheet, from its resting position',()=>{
-  assert.match(setup,/capub:sidebar/);
-  assert.match(ui,/document\.addEventListener\('capub:sidebar'/);
-  assert.match(ui,/window\.innerHeight - \(footer \? footer\.offsetHeight : 0\) - controls\.offsetHeight/);
+test('the action bar is fixed over the footer, 48px tall, inset for the home bar; the app bar carries Undo, Redo and the theme as icons',()=>{
+  const phone=block('max-width:700px');
+  assert.match(phone,/\.controlsFooter\{\s*position:fixed;\s*left:0;\s*right:0;\s*bottom:var\(--chrome-footer-h,var\(--capub-footer-h\)\);\s*z-index:70;\s*padding:var\(--s2\) var\(--s3\) calc\(var\(--s2\) \+ env\(safe-area-inset-bottom,0px\)\);/);
+  assert.match(phone,/\.stepFooterRow button\{min-height:48px\}/);
+  assert.match(phone,/\.themeToggle\{[^}]*width:44px;min-width:44px;[^}]*font-size:0;/);
+  assert.match(phone,/header #undoBtn::before\{content:"\\21B6"\}/);
+  assert.match(phone,/header #redoBtn::before\{content:"\\21B7"\}/);
+  assert.match(ui,/if\(phone && history\.parentNode!==header\) header\.insertBefore\(history, safeBy\('themeToggle'\)\);/);
+  assert.match(ui,/else if\(!phone && history\.parentNode!==tools\) tools\.insertBefore\(history, tools\.firstChild\);/);
+  assert.match(ui,/id="undoBtn" aria-label="Undo"/);
+  assert.match(ui,/id="redoBtn" aria-label="Redo"/);
 });
 
-test('above 900px the panel is always open beside the preview: no menu button, no grip, no close',()=>{
-  const desktop=block('min-width:901px');
-  assert.match(desktop,/\.hamburgerBtn\{display:none\}/);
-  assert.match(desktop,/\.sheetClose,\.sheetGrip\{display:none\}/);
+test('the preview: hidden on step 1, a peek on 2 and 3, in the page on 4, full-screen on demand with its own Close',()=>{
+  const phone=block('max-width:700px');
+  assert.match(phone,/#previewWrapper\{display:none;flex:0 0 auto;width:100%;/);
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);\s*cursor:pointer;/);
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #uniformCanvas,#layoutShell\[data-step="items"\] #uniformCanvas\{pointer-events:none\}/,'a tap on the peek opens it, not an item');
+  assert.match(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;flex-wrap:wrap;overflow:visible;/);
+  assert.match(phone,/body\.previewFull #previewWrapper,body\.previewFull #layoutShell\[data-step\] #previewWrapper\{\s*display:flex;\s*flex-wrap:wrap;\s*position:fixed;\s*inset:0;\s*z-index:11000;/);
+  assert.match(phone,/body\.previewFull #previewWrapper \.previewToolbar\{display:flex;[^}]*position:sticky;top:0;/);
+  assert.match(html,/<button type="button" id="previewPeekBtn" class="ghost previewPeekBtn" hidden>Open preview<\/button>/);
+  assert.match(ui,/id="previewCloseBtn" hidden>Close<\/button>/);
+  assert.match(ui,/const shell=safeBy\('layoutShell'\); if\(shell\) shell\.setAttribute\('data-step',activeStep\);/);
+  assert.match(ui,/if\(e\.key==='Escape' && isPreviewFull\(\)\) closePreview\(\);/);
+  // The zoom fits the peek strip and the full screen.
+  assert.match(ui,/const room=wrap\.clientHeight-16;\s*if\(room>40\) z=Math\.min\(z, Math\.max\(\.12, room\/previewHeight\)\);/);
+  assert.match(ui,/const room=window\.innerHeight-\(toolbar \? toolbar\.offsetHeight : 0\)-40;/);
+});
+
+test('above 700px the panel sits beside the preview, narrower on a tablet; pickers two across there',()=>{
+  const desktop=block('min-width:701px');
   assert.match(desktop,/#layoutShell\.sidebar-collapsed #controls\{width:var\(--sidebar-w\)/);
-  // Resizing back from a phone layout reopens it.
-  assert.match(ui,/if\(mq\.matches\) return;\s*sheet\.classList\.remove\('sheetTall'\);\s*if\(typeof capubSetSidebarOpen==='function'\) capubSetSidebarOpen\(true\);/);
+  const tablet=block('min-width:701px) and (max-width:1024px');
+  assert.match(tablet,/:root\{--sidebar-w:340px\}/);
+  assert.match(tablet,/\.modal \.galleryGrid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
+  assert.match(ui,/const onChange=\(\)=>\{ syncPhoneChrome\(\); if\(typeof capubSetSidebarOpen==='function'\) capubSetSidebarOpen\(true\);/);
 });
