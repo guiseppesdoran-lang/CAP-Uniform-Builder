@@ -452,3 +452,11 @@ test('the scroll cue: a More below button and fade on the desktop panel, nothing
   assert.ok(!p.dom.document.querySelector('header .previewToolCard') || p.dom.document.querySelector('header .previewToolCard[aria-label="Undo and redo"]'));
   assert.ok(d.by('previewTools').querySelector('.previewToolCard[aria-label="Undo and redo"]'),'on the desktop the history card is in the preview toolbar');
 });
+
+test('the Resume banner reaches the uniform name across the module boundary (a bare uniformName() there threw and lost the banner)',()=>{
+  const src=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(src,/V3\.uniformName=uniformName;/);
+  const describe=src.slice(src.indexOf('function describe(profile){'));
+  assert.match(describe.slice(0,400),/window\.CAPUB_V3\.uniformName\(profile\.uniform\)/);
+  assert.doesNotMatch(describe.slice(0,400),/[^.]uniformName\(profile/);
+});

@@ -309,6 +309,7 @@
   V3.openPreview=openPreview;
   V3.closePreview=closePreview;
   V3.isPhone=isPhone;
+  V3.uniformName=uniformName;
   Object.defineProperty(V3,'activeStep',{get:()=>activeStep});
 
   /* ---------- the preview: toolbar, zoom ---------- */
@@ -738,7 +739,7 @@
   function describe(profile){
     const bits=[];
     if(profile.rank) bits.push(profile.rank);
-    if(profile.uniform) bits.push(uniformName(profile.uniform));
+    if(profile.uniform) bits.push(window.CAPUB_V3.uniformName(profile.uniform)); // the Resume banner is a separate module from the name's
     const items=(Array.isArray(profile.ribbons)?profile.ribbons.length:0)
       +(Array.isArray(profile.badges)?profile.badges.length:0)
       +(Array.isArray(profile.patches)?profile.patches.length:0);
