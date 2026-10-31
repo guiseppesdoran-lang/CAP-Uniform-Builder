@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ff8040",
-    "fraction": 0.2864,
+    "hex": "fd8b3c",
+    "fraction": 0.2801,
     "x0_in": 0,
-    "x1_in": 0.3938
+    "x1_in": 0.3852
    },
    {
     "index": 1,
-    "hex": "215732",
-    "fraction": 0.0954,
-    "x0_in": 0.3938,
-    "x1_in": 0.525
+    "hex": "8f866a",
+    "fraction": 0.0882,
+    "x0_in": 0.3852,
+    "x1_in": 0.5065
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.2364,
-    "x0_in": 0.525,
-    "x1_in": 0.85
+    "fraction": 0.2633,
+    "x0_in": 0.5065,
+    "x1_in": 0.8685
    },
    {
     "index": 3,
-    "hex": "215732",
-    "fraction": 0.1,
-    "x0_in": 0.85,
-    "x1_in": 0.9875
+    "hex": "8f866a",
+    "fraction": 0.0882,
+    "x0_in": 0.8685,
+    "x1_in": 0.9898
    },
    {
     "index": 4,
-    "hex": "ff8040",
-    "fraction": 0.2818,
-    "x0_in": 0.9875,
+    "hex": "fd8b3c",
+    "fraction": 0.2801,
+    "x0_in": 0.9898,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 17.5
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Multinational Force and Observer",
+   "url": "https://www.vanguardmil.com/products/multinational-force-and-observer-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/multinational_force_observers.jpg"
+   "img/ribbons/24875a34ab15.jpg"
   ],
-  "residual": {
-   "vertical": 5.4,
-   "horizontal": 126,
-   "central_vertical": 5.3
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Multinational Force and Observer",
+  "vendor_product_url": "https://www.vanguardmil.com/products/multinational-force-and-observer-ribbon-unit",
+  "corners_px": [
+   [
+    58.4,
+    456.1
+   ],
+   [
+    1141.9,
+    449.4
+   ],
+   [
+    1133.4,
+    745.7
+   ],
+   [
+    53.9,
+    754.4
+   ]
+  ],
+  "rectified_px": [
+   1082,
+   297
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0.8,
+   3.2,
+   0.8,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -130,8 +159,8 @@
   "multinational force and observers"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 5.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.2,
   "threshold": null
  },
  "grade": "ribbon"

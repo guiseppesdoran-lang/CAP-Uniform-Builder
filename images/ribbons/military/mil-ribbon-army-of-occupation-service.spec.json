@@ -44,66 +44,94 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "bbb9b5",
-    "fraction": 0.1182,
+    "hex": "e0dad0",
+    "fraction": 0.1155,
     "x0_in": 0,
-    "x1_in": 0.1625
+    "x1_in": 0.1589
    },
    {
     "index": 1,
-    "hex": "000000",
-    "fraction": 0.3773,
-    "x0_in": 0.1625,
-    "x1_in": 0.6813
+    "hex": "1d1e1d",
+    "fraction": 0.3906,
+    "x0_in": 0.1589,
+    "x1_in": 0.696
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.3818,
-    "x0_in": 0.6813,
-    "x1_in": 1.2063
+    "hex": "d82128",
+    "fraction": 0.3997,
+    "x0_in": 0.696,
+    "x1_in": 1.2455
    },
    {
     "index": 3,
-    "hex": "bbb9b5",
-    "fraction": 0.1227,
-    "x0_in": 1.2063,
+    "hex": "e0dad0",
+    "fraction": 0.0942,
+    "x0_in": 1.2455,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 4,
-   "stripes_after": 4,
-   "max_snap_delta": 13.7
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Yardage WWII Occupation Army",
+   "url": "https://www.vanguardmil.com/products/wwii-occupation-army-ribbon-yardage",
+   "image_px": [
+    600,
+    600
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_of_occupation_service.jpg"
+   "img/ribbons/76899e45c3b5.jpg"
   ],
-  "residual": {
-   "vertical": 31.9,
-   "horizontal": 121.1,
-   "central_vertical": 15.6
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Yardage WWII Occupation Army",
+  "vendor_product_url": "https://www.vanguardmil.com/products/wwii-occupation-army-ribbon-yardage",
+  "corners_px": [
+   [
+    0,
+    0
+   ],
+   [
+    600,
+    0
+   ],
+   [
+    600,
+    600
+   ],
+   [
+    0,
+    600
+   ]
+  ],
+  "rectified_px": [
+   600,
+   600
+  ],
+  "symmetry": "none",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.8,
+   0,
+   0,
+   0.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":4,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -121,8 +149,8 @@
   "army of occupation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 31.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.8,
   "threshold": null
  },
  "grade": "ribbon"

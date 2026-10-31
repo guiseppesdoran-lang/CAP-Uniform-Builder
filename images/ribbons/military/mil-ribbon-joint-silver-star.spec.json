@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "001489",
-    "fraction": 0.0655,
+    "hex": "2344b4",
+    "fraction": 0.0722,
     "x0_in": 0,
-    "x1_in": 0.0901
+    "x1_in": 0.0993
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0345,
-    "x0_in": 0.0901,
-    "x1_in": 0.1375
+    "fraction": 0.0313,
+    "x0_in": 0.0993,
+    "x1_in": 0.1424
    },
    {
     "index": 2,
-    "hex": "001489",
-    "fraction": 0.16,
-    "x0_in": 0.1375,
-    "x1_in": 0.3575
+    "hex": "2344b4",
+    "fraction": 0.1591,
+    "x0_in": 0.1424,
+    "x1_in": 0.3611
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.16,
-    "x0_in": 0.3575,
-    "x1_in": 0.5775
+    "fraction": 0.156,
+    "x0_in": 0.3611,
+    "x1_in": 0.5757
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.16,
-    "x0_in": 0.5775,
-    "x1_in": 0.7975
+    "hex": "b21e2d",
+    "fraction": 0.1626,
+    "x0_in": 0.5757,
+    "x1_in": 0.7993
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.16,
-    "x0_in": 0.7975,
-    "x1_in": 1.0175
+    "fraction": 0.156,
+    "x0_in": 0.7993,
+    "x1_in": 1.0139
    },
    {
     "index": 6,
-    "hex": "001489",
-    "fraction": 0.16,
-    "x0_in": 1.0175,
-    "x1_in": 1.2375
+    "hex": "2344b4",
+    "fraction": 0.1591,
+    "x0_in": 1.0139,
+    "x1_in": 1.2326
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0345,
-    "x0_in": 1.2375,
-    "x1_in": 1.2849
+    "fraction": 0.0313,
+    "x0_in": 1.2326,
+    "x1_in": 1.2757
    },
    {
     "index": 8,
-    "hex": "001489",
-    "fraction": 0.0655,
-    "x0_in": 1.2849,
+    "hex": "2344b4",
+    "fraction": 0.0722,
+    "x0_in": 1.2757,
     "x1_in": 1.375
    }
   ],
@@ -111,35 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Silver Star Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Silver Star Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Silver_Star_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Star - silver",
+   "url": "https://www.vanguardmil.com/products/silver-star-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/silver_star.jpg"
+   "img/ribbons/78e38c5aca85.jpg"
   ],
-  "residual": {
-   "vertical": 7.6,
-   "horizontal": 140.3,
-   "central_vertical": 7.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Star - silver",
+  "vendor_product_url": "https://www.vanguardmil.com/products/silver-star-ribbon-unit",
+  "corners_px": [
+   [
+    69.9,
+    452.1
+   ],
+   [
+    1124.4,
+    456.8
+   ],
+   [
+    1130.7,
+    744.9
+   ],
+   [
+    77.5,
+    743.1
+   ]
+  ],
+  "rectified_px": [
+   1054,
+   290
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.1,
+   3.1,
+   0.4,
+   4,
+   0,
+   4.3,
+   0.7,
+   2.9,
+   0.6
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Silver Star Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -160,8 +192,8 @@
   "silver star"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 7.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.3,
   "threshold": null
  },
  "grade": "ribbon"

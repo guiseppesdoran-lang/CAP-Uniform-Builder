@@ -44,59 +44,102 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "e67272",
-    "fraction": 0.0985,
+    "hex": "fcce2f",
+    "fraction": 0.065,
     "x0_in": 0,
-    "x1_in": 0.1354
+    "x1_in": 0.0893
    },
    {
     "index": 1,
-    "hex": "e2b41e",
-    "fraction": 0.7979,
-    "x0_in": 0.1354,
-    "x1_in": 1.2325
+    "hex": "ca3641",
+    "fraction": 0.087,
+    "x0_in": 0.0893,
+    "x1_in": 0.2089
    },
    {
     "index": 2,
-    "hex": "e67272",
-    "fraction": 0.1036,
-    "x0_in": 1.2325,
+    "hex": "fcce2f",
+    "fraction": 0.6961,
+    "x0_in": 0.2089,
+    "x1_in": 1.1661
+   },
+   {
+    "index": 3,
+    "hex": "ca3641",
+    "fraction": 0.087,
+    "x0_in": 1.1661,
+    "x1_in": 1.2857
+   },
+   {
+    "index": 4,
+    "hex": "fcce2f",
+    "fraction": 0.065,
+    "x0_in": 1.2857,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 17
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: China Service",
+   "url": "https://www.vanguardmil.com/products/china-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/china_service.jpg"
+   "img/ribbons/8e9fda7c6dd6.jpg"
   ],
-  "residual": {
-   "vertical": 30.9,
-   "horizontal": 67,
-   "central_vertical": 17.6
-  },
-  "edge_frame_trimmed": 2,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: China Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/china-service-ribbon-unit",
+  "corners_px": [
+   [
+    58.9,
+    450
+   ],
+   [
+    1140,
+    450
+   ],
+   [
+    1140,
+    747
+   ],
+   [
+    56.1,
+    747
+   ]
+  ],
+  "rectified_px": [
+   1082,
+   297
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.1,
+   0.5,
+   0,
+   0.2,
+   1.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD",
@@ -115,8 +158,8 @@
   "China Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 30.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.4,
   "threshold": null
  },
  "grade": "ribbon"

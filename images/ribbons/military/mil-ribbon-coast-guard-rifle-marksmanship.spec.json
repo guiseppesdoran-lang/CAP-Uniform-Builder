@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "003e51",
-    "fraction": 0.1273,
+    "hex": "211f34",
+    "fraction": 0.1292,
     "x0_in": 0,
-    "x1_in": 0.175
+    "x1_in": 0.1776
    },
    {
     "index": 1,
-    "hex": "9ea2a2",
-    "fraction": 0.0227,
-    "x0_in": 0.175,
-    "x1_in": 0.2062
+    "hex": "e4dde0",
+    "fraction": 0.0236,
+    "x0_in": 0.1776,
+    "x1_in": 0.21
    },
    {
     "index": 2,
-    "hex": "041e42",
-    "fraction": 0.2818,
-    "x0_in": 0.2062,
-    "x1_in": 0.5937
+    "hex": "211f34",
+    "fraction": 0.2826,
+    "x0_in": 0.21,
+    "x1_in": 0.5985
    },
    {
     "index": 3,
-    "hex": "9ea2a2",
-    "fraction": 0.0227,
-    "x0_in": 0.5937,
-    "x1_in": 0.6249
+    "hex": "e4dde0",
+    "fraction": 0.0229,
+    "x0_in": 0.5985,
+    "x1_in": 0.6301
    },
    {
     "index": 4,
-    "hex": "003e51",
-    "fraction": 0.091,
-    "x0_in": 0.6249,
-    "x1_in": 0.7501
+    "hex": "211f34",
+    "fraction": 0.0835,
+    "x0_in": 0.6301,
+    "x1_in": 0.7449
    },
    {
     "index": 5,
-    "hex": "9ea2a2",
-    "fraction": 0.0227,
-    "x0_in": 0.7501,
-    "x1_in": 0.7813
+    "hex": "e4dde0",
+    "fraction": 0.0229,
+    "x0_in": 0.7449,
+    "x1_in": 0.7765
    },
    {
     "index": 6,
-    "hex": "041e42",
-    "fraction": 0.2863,
-    "x0_in": 0.7813,
-    "x1_in": 1.1749
+    "hex": "211f34",
+    "fraction": 0.2826,
+    "x0_in": 0.7765,
+    "x1_in": 1.165
    },
    {
     "index": 7,
-    "hex": "9ea2a2",
-    "fraction": 0.0182,
-    "x0_in": 1.1749,
-    "x1_in": 1.2
+    "hex": "e4dde0",
+    "fraction": 0.0236,
+    "x0_in": 1.165,
+    "x1_in": 1.1974
    },
    {
     "index": 8,
-    "hex": "003e51",
-    "fraction": 0.1273,
-    "x0_in": 1.2,
+    "hex": "211f34",
+    "fraction": 0.1292,
+    "x0_in": 1.1974,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 16.9
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Expert Rifle",
+   "url": "https://www.vanguardmil.com/products/uscg-expert-rifle-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_rifle_marksmanship.jpg"
+   "img/ribbons/d9b3f8dabce4.jpg"
   ],
-  "residual": {
-   "vertical": 19.1,
-   "horizontal": 36.8,
-   "central_vertical": 13.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Expert Rifle",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-expert-rifle-ribbon-unit",
+  "corners_px": [
+   [
+    21.9,
+    452.2
+   ],
+   [
+    1184,
+    438.7
+   ],
+   [
+    1184,
+    756
+   ],
+   [
+    15,
+    762.3
+   ]
+  ],
+  "rectified_px": [
+   1166,
+   314
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.6,
+   4.5,
+   0.5,
+   1.6,
+   0.5,
+   1.2,
+   0.5,
+   1.8,
+   1.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -155,8 +188,8 @@
   "coast guard rifle marksmanship military ribbons"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 19.1,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.5,
   "threshold": null
  },
  "grade": "ribbon"

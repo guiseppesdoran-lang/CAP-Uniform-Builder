@@ -44,73 +44,102 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.0909,
+    "hex": "bc222e",
+    "fraction": 0.1014,
     "x0_in": 0,
-    "x1_in": 0.125
+    "x1_in": 0.1394
    },
    {
     "index": 1,
-    "hex": "bbb9b5",
-    "fraction": 0.0546,
-    "x0_in": 0.125,
-    "x1_in": 0.2001
+    "hex": "ffffff",
+    "fraction": 0.0474,
+    "x0_in": 0.1394,
+    "x1_in": 0.2047
    },
    {
     "index": 2,
-    "hex": "9ea2a2",
-    "fraction": 0.7272,
-    "x0_in": 0.2001,
-    "x1_in": 1.2
+    "hex": "b8d7e7",
+    "fraction": 0.7023,
+    "x0_in": 0.2047,
+    "x1_in": 1.1703
    },
    {
     "index": 3,
-    "hex": "bbb9b5",
-    "fraction": 0.0455,
-    "x0_in": 1.2,
-    "x1_in": 1.2625
+    "hex": "ffffff",
+    "fraction": 0.0474,
+    "x0_in": 1.1703,
+    "x1_in": 1.2356
    },
    {
     "index": 4,
-    "hex": "6f263d",
-    "fraction": 0.0818,
-    "x0_in": 1.2625,
+    "hex": "bc222e",
+    "fraction": 0.1014,
+    "x0_in": 1.2356,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 19.4
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force Cross",
+   "url": "https://www.vanguardmil.com/products/usaf-cross-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_force_cross.jpg"
+   "img/ribbons/3471ccc8473d.jpg"
   ],
-  "residual": {
-   "vertical": 31.4,
-   "horizontal": 63.3,
-   "central_vertical": 15.9
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Cross",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-cross-ribbon-unit",
+  "corners_px": [
+   [
+    64,
+    448.5
+   ],
+   [
+    1136.3,
+    450.3
+   ],
+   [
+    1133.5,
+    754.9
+   ],
+   [
+    64,
+    751.4
+   ]
+  ],
+  "rectified_px": [
+   1071,
+   304
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   3.5,
+   0,
+   3.7,
+   0.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -127,8 +156,8 @@
   "air force cross"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 31.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.7,
   "threshold": null
  },
  "grade": "ribbon"

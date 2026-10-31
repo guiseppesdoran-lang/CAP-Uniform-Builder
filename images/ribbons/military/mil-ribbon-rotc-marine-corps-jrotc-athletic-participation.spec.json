@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "dbbc25",
-    "fraction": 0.1295,
+    "hex": "f9d61f",
+    "fraction": 0.1291,
     "x0_in": 0,
-    "x1_in": 0.1781
+    "x1_in": 0.1775
    },
    {
     "index": 1,
-    "hex": "306425",
-    "fraction": 0.0432,
-    "x0_in": 0.1781,
-    "x1_in": 0.2375
+    "hex": "2e6c21",
+    "fraction": 0.0434,
+    "x0_in": 0.1775,
+    "x1_in": 0.2373
    },
    {
     "index": 2,
-    "hex": "9ea2a2",
-    "fraction": 0.6546,
-    "x0_in": 0.2375,
-    "x1_in": 1.1375
+    "hex": "bdbdbd",
+    "fraction": 0.6549,
+    "x0_in": 0.2373,
+    "x1_in": 1.1377
    },
    {
     "index": 3,
-    "hex": "306424",
-    "fraction": 0.0432,
-    "x0_in": 1.1375,
-    "x1_in": 1.1969
+    "hex": "2e6c21",
+    "fraction": 0.0434,
+    "x0_in": 1.1377,
+    "x1_in": 1.1975
    },
    {
     "index": 4,
-    "hex": "dbbc24",
-    "fraction": 0.1295,
-    "x0_in": 1.1969,
+    "hex": "f9d61f",
+    "fraction": 0.1291,
+    "x0_in": 1.1975,
     "x1_in": 1.375
    }
   ],
@@ -86,10 +86,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/06f27a7e4b38.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "ROTC Ribbon Unit #N-1-5",
   "vendor_product_url": "https://www.vanguardmil.com/products/rotc-n15-ribbon-unit",
@@ -102,24 +104,56 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor description N-1-5: MCJROTC Athletic Participation",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    218
+   ],
+   [
+    600,
+    218
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   164
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0.2,
+   0,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 8.2,
-   "unsnapped": 4,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "ROTC Ribbon Unit #N-1-5",
+   "url": "https://www.vanguardmil.com/products/rotc-n15-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.2,
   "threshold": null
  },
  "grade": "ribbon"

@@ -45,87 +45,117 @@
    {
     "index": 0,
     "hex": "ffffff",
-    "fraction": 0.066,
+    "fraction": 0.0828,
     "x0_in": 0,
-    "x1_in": 0.0908
+    "x1_in": 0.1138
    },
    {
     "index": 1,
-    "hex": "33cccc",
-    "fraction": 0.1604,
-    "x0_in": 0.0908,
-    "x1_in": 0.3113
+    "hex": "a4bdc5",
+    "fraction": 0.1286,
+    "x0_in": 0.1138,
+    "x1_in": 0.2907
    },
    {
     "index": 2,
-    "hex": "f6f034",
-    "fraction": 0.1604,
-    "x0_in": 0.3113,
-    "x1_in": 0.5318
+    "hex": "efc52d",
+    "fraction": 0.1437,
+    "x0_in": 0.2907,
+    "x1_in": 0.4882
    },
    {
     "index": 3,
-    "hex": "000063",
-    "fraction": 0.2264,
-    "x0_in": 0.5318,
-    "x1_in": 0.8431
+    "hex": "2b3c9e",
+    "fraction": 0.2898,
+    "x0_in": 0.4882,
+    "x1_in": 0.8868
    },
    {
     "index": 4,
-    "hex": "f6f034",
-    "fraction": 0.1604,
-    "x0_in": 0.8431,
-    "x1_in": 1.0637
+    "hex": "efc52d",
+    "fraction": 0.1437,
+    "x0_in": 0.8868,
+    "x1_in": 1.0843
    },
    {
     "index": 5,
-    "hex": "33cccc",
-    "fraction": 0.1604,
-    "x0_in": 1.0637,
-    "x1_in": 1.2843
+    "hex": "a4bdc5",
+    "fraction": 0.1286,
+    "x0_in": 1.0843,
+    "x1_in": 1.2611
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.066,
-    "x0_in": 1.2843,
+    "fraction": 0.0828,
+    "x0_in": 1.2611,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:USAF Basic Military Training Honor Graduate Ribbon.svg (Public domain), boundary match 0.83",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:USAF Basic Military Training Honor Graduate Ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/USAF_Basic_Military_Training_Honor_Graduate_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 0.83
+   "title": "Ribbon Yardage Air Force Basic Military Training Honor Graduate",
+   "url": "https://www.vanguardmil.com/products/air-force-basic-military-training-honor-graduate-ribbon-yardage",
+   "image_px": [
+    600,
+    600
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/basic_military_training_honor_graduate.jpg"
+   "img/ribbons/7ac5564581fb.jpg"
   ],
-  "residual": {
-   "vertical": 40.7,
-   "horizontal": 103.2,
-   "central_vertical": 21.7
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Yardage Air Force Basic Military Training Honor Graduate",
+  "vendor_product_url": "https://www.vanguardmil.com/products/air-force-basic-military-training-honor-graduate-ribbon-yardage",
+  "corners_px": [
+   [
+    33,
+    28
+   ],
+   [
+    567,
+    28
+   ],
+   [
+    567,
+    563
+   ],
+   [
+    33,
+    563
+   ]
+  ],
+  "rectified_px": [
+   534,
+   535
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   4.5,
+   0.5,
+   0.7,
+   0,
+   0.3,
+   0.7,
+   5.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:USAF Basic Military Training Honor Graduate Ribbon.svg (Public domain), boundary match 0.83\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -142,8 +172,8 @@
   "air force basic training honor graduate"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 40.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.4,
   "threshold": null
  },
  "grade": "ribbon"

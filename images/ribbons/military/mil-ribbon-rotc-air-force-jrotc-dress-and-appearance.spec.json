@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2c3381",
-    "fraction": 0.0977,
+    "hex": "262fac",
+    "fraction": 0.0958,
     "x0_in": 0,
-    "x1_in": 0.1343
+    "x1_in": 0.1318
    },
    {
     "index": 1,
-    "hex": "e2b41e",
-    "fraction": 0.0478,
-    "x0_in": 0.1343,
-    "x1_in": 0.2001
+    "hex": "f3cc18",
+    "fraction": 0.0536,
+    "x0_in": 0.1318,
+    "x1_in": 0.2055
    },
    {
     "index": 2,
-    "hex": "2c3381",
-    "fraction": 0.2568,
-    "x0_in": 0.2001,
-    "x1_in": 0.5532
+    "hex": "262fac",
+    "fraction": 0.251,
+    "x0_in": 0.2055,
+    "x1_in": 0.5506
    },
    {
     "index": 3,
-    "hex": "e2b41e",
-    "fraction": 0.075,
-    "x0_in": 0.5532,
-    "x1_in": 0.6563
+    "hex": "f3cc18",
+    "fraction": 0.0719,
+    "x0_in": 0.5506,
+    "x1_in": 0.6494
    },
    {
     "index": 4,
-    "hex": "2d3892",
-    "fraction": 0.0477,
-    "x0_in": 0.6563,
-    "x1_in": 0.7219
+    "hex": "262fac",
+    "fraction": 0.0554,
+    "x0_in": 0.6494,
+    "x1_in": 0.7256
    },
    {
     "index": 5,
-    "hex": "e2b41e",
-    "fraction": 0.075,
-    "x0_in": 0.7219,
-    "x1_in": 0.825
+    "hex": "f3cc18",
+    "fraction": 0.0719,
+    "x0_in": 0.7256,
+    "x1_in": 0.8244
    },
    {
     "index": 6,
-    "hex": "2d3892",
-    "fraction": 0.2568,
-    "x0_in": 0.825,
-    "x1_in": 1.1781
+    "hex": "262fac",
+    "fraction": 0.251,
+    "x0_in": 0.8244,
+    "x1_in": 1.1695
    },
    {
     "index": 7,
-    "hex": "e2b41e",
-    "fraction": 0.0477,
-    "x0_in": 1.1781,
-    "x1_in": 1.2437
+    "hex": "f3cc18",
+    "fraction": 0.0536,
+    "x0_in": 1.1695,
+    "x1_in": 1.2432
    },
    {
     "index": 8,
-    "hex": "2c3381",
-    "fraction": 0.0955,
-    "x0_in": 1.2437,
+    "hex": "262fac",
+    "fraction": 0.0958,
+    "x0_in": 1.2432,
     "x1_in": 1.375
    }
   ],
@@ -114,10 +114,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/0ed899b49256.jpg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit #4020: NS AFROTC Academic Award",
   "vendor_product_url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-number-4020-ns-afrotc-academic-award-ribbon-unit",
@@ -130,24 +132,60 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor description: unit 4020 AFJROTC dress and appearance / AFROTC deans list",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    175
+   ],
+   [
+    480,
+    175
+   ],
+   [
+    480,
+    305
+   ],
+   [
+    0,
+    305
+   ]
+  ],
+  "rectified_px": [
+   480,
+   130
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.5,
+   0.5,
+   0.3,
+   0,
+   0.3,
+   0,
+   0.1,
+   0.2,
+   0.5
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 4.8,
-   "unsnapped": 0,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit #4020: NS AFROTC Academic Award",
+   "url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-number-4020-ns-afrotc-academic-award-ribbon-unit",
+   "image_px": [
+    480,
+    480
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.5,
   "threshold": null
  },
  "grade": "ribbon"

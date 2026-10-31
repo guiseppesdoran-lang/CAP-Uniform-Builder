@@ -44,51 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "7bafd4",
-    "fraction": 0.3,
+    "hex": "d8dde5",
+    "fraction": 0.0263,
     "x0_in": 0,
-    "x1_in": 0.4125
+    "x1_in": 0.0361
    },
    {
     "index": 1,
-    "hex": "ffffff",
-    "fraction": 0.05,
-    "x0_in": 0.4125,
-    "x1_in": 0.4813
+    "hex": "b0c5d7",
+    "fraction": 0.2869,
+    "x0_in": 0.0361,
+    "x1_in": 0.4306
    },
    {
     "index": 2,
-    "hex": "ee0028",
-    "fraction": 0.0409,
-    "x0_in": 0.4813,
-    "x1_in": 0.5375
+    "hex": "d8dde5",
+    "fraction": 0.0334,
+    "x0_in": 0.4306,
+    "x1_in": 0.4765
    },
    {
     "index": 3,
-    "hex": "ffffff",
-    "fraction": 0.2636,
-    "x0_in": 0.5375,
-    "x1_in": 0.8999
+    "hex": "b93d4f",
+    "fraction": 0.0245,
+    "x0_in": 0.4765,
+    "x1_in": 0.5102
    },
    {
     "index": 4,
-    "hex": "ee0028",
-    "fraction": 0.041,
-    "x0_in": 0.8999,
-    "x1_in": 0.9563
+    "hex": "d8dde5",
+    "fraction": 0.2579,
+    "x0_in": 0.5102,
+    "x1_in": 0.8648
    },
    {
     "index": 5,
-    "hex": "ffffff",
-    "fraction": 0.0318,
-    "x0_in": 0.9563,
-    "x1_in": 1
+    "hex": "b93d4f",
+    "fraction": 0.0245,
+    "x0_in": 0.8648,
+    "x1_in": 0.8985
    },
    {
     "index": 6,
-    "hex": "7bafd4",
-    "fraction": 0.2727,
-    "x0_in": 1,
+    "hex": "d8dde5",
+    "fraction": 0.0334,
+    "x0_in": 0.8985,
+    "x1_in": 0.9444
+   },
+   {
+    "index": 7,
+    "hex": "b0c5d7",
+    "fraction": 0.2869,
+    "x0_in": 0.9444,
+    "x1_in": 1.3389
+   },
+   {
+    "index": 8,
+    "hex": "d8dde5",
+    "fraction": 0.0263,
+    "x0_in": 1.3389,
     "x1_in": 1.375
    }
   ],
@@ -97,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 9.7
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Antarctic Expedition",
+   "url": "https://www.vanguardmil.com/products/coast-guard-ribbon-unit-antarctic-service",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/us_antarctic_expedition.jpg"
+   "img/ribbons/0c05cdad22a1.jpg"
   ],
-  "residual": {
-   "vertical": 3.1,
-   "horizontal": 92.2,
-   "central_vertical": 3.1
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Antarctic Expedition",
+  "vendor_product_url": "https://www.vanguardmil.com/products/coast-guard-ribbon-unit-antarctic-service",
+  "corners_px": [
+   [
+    21,
+    435.4
+   ],
+   [
+    1179.9,
+    445.4
+   ],
+   [
+    1175.4,
+    763
+   ],
+   [
+    21,
+    755.9
+   ]
+  ],
+  "rectified_px": [
+   1157,
+   319
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   2.8,
+   0.7,
+   2.6,
+   4.4,
+   0.9,
+   5.6,
+   3.3,
+   0.5,
+   1.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD",
@@ -142,8 +189,8 @@
   "us antarctic expedition ribbon"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 3.1,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.6,
   "threshold": null
  },
  "grade": "ribbon"

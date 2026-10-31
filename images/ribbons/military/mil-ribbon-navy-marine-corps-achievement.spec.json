@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "215732",
-    "fraction": 0.1318,
+    "hex": "22866a",
+    "fraction": 0.1172,
     "x0_in": 0,
-    "x1_in": 0.1812
+    "x1_in": 0.1611
    },
    {
     "index": 1,
-    "hex": "ee0028",
-    "fraction": 0.1318,
-    "x0_in": 0.1812,
-    "x1_in": 0.3624
+    "hex": "fb5232",
+    "fraction": 0.1449,
+    "x0_in": 0.1611,
+    "x1_in": 0.3604
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.4773,
-    "x0_in": 0.3624,
-    "x1_in": 1.0187
+    "hex": "22866a",
+    "fraction": 0.4758,
+    "x0_in": 0.3604,
+    "x1_in": 1.0146
    },
    {
     "index": 3,
-    "hex": "ee0028",
-    "fraction": 0.1318,
-    "x0_in": 1.0187,
-    "x1_in": 1.2
+    "hex": "fb5232",
+    "fraction": 0.1449,
+    "x0_in": 1.0146,
+    "x1_in": 1.2139
    },
    {
     "index": 4,
-    "hex": "215732",
-    "fraction": 0.1273,
-    "x0_in": 1.2,
+    "hex": "22866a",
+    "fraction": 0.1172,
+    "x0_in": 1.2139,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 18.5
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Yardage Navy and Marine Corps Achievement",
+   "url": "https://www.vanguardmil.com/products/achievement-ribbon-yardage-for-the-us-navy-and-marine-corps",
+   "image_px": [
+    600,
+    600
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_marine_corps_achievement.jpg"
+   "img/ribbons/c9ea7cfeb6d1.jpg"
   ],
-  "residual": {
-   "vertical": 6.7,
-   "horizontal": 68.6,
-   "central_vertical": 4.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Yardage Navy and Marine Corps Achievement",
+  "vendor_product_url": "https://www.vanguardmil.com/products/achievement-ribbon-yardage-for-the-us-navy-and-marine-corps",
+  "corners_px": [
+   [
+    0,
+    0
+   ],
+   [
+    600,
+    0
+   ],
+   [
+    600,
+    600
+   ],
+   [
+    0,
+    600
+   ]
+  ],
+  "rectified_px": [
+   600,
+   600
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.2,
+   0,
+   0.4,
+   0,
+   1.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -128,8 +157,8 @@
   "Navy & Marine Corps Achievement"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 6.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.5,
   "threshold": null
  },
  "grade": "ribbon"

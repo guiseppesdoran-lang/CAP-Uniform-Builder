@@ -44,79 +44,79 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.317,
+    "hex": "eb2d33",
+    "fraction": 0.3121,
     "x0_in": 0,
-    "x1_in": 0.4359
+    "x1_in": 0.4292
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.023,
-    "x0_in": 0.4359,
-    "x1_in": 0.4675
+    "fraction": 0.0269,
+    "x0_in": 0.4292,
+    "x1_in": 0.4661
    },
    {
     "index": 2,
-    "hex": "012169",
-    "fraction": 0.023,
-    "x0_in": 0.4675,
-    "x1_in": 0.4991
+    "hex": "4040a0",
+    "fraction": 0.016,
+    "x0_in": 0.4661,
+    "x1_in": 0.4881
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0225,
-    "x0_in": 0.4991,
-    "x1_in": 0.5301
+    "fraction": 0.0235,
+    "x0_in": 0.4881,
+    "x1_in": 0.5204
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.023,
-    "x0_in": 0.5301,
-    "x1_in": 0.5617
+    "hex": "eb2d33",
+    "fraction": 0.0241,
+    "x0_in": 0.5204,
+    "x1_in": 0.5536
    },
    {
     "index": 5,
-    "hex": "ffcd00",
-    "fraction": 0.183,
-    "x0_in": 0.5617,
-    "x1_in": 0.8133
+    "hex": "eeb240",
+    "fraction": 0.1947,
+    "x0_in": 0.5536,
+    "x1_in": 0.8214
    },
    {
     "index": 6,
-    "hex": "ba0c2f",
-    "fraction": 0.023,
-    "x0_in": 0.8133,
-    "x1_in": 0.8449
+    "hex": "eb2d33",
+    "fraction": 0.0242,
+    "x0_in": 0.8214,
+    "x1_in": 0.8546
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0225,
-    "x0_in": 0.8449,
-    "x1_in": 0.8759
+    "fraction": 0.0235,
+    "x0_in": 0.8546,
+    "x1_in": 0.8869
    },
    {
     "index": 8,
-    "hex": "012169",
-    "fraction": 0.023,
-    "x0_in": 0.8759,
-    "x1_in": 0.9075
+    "hex": "4040a0",
+    "fraction": 0.016,
+    "x0_in": 0.8869,
+    "x1_in": 0.9089
    },
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.023,
-    "x0_in": 0.9075,
-    "x1_in": 0.9391
+    "fraction": 0.0269,
+    "x0_in": 0.9089,
+    "x1_in": 0.9458
    },
    {
     "index": 10,
-    "hex": "ba0c2f",
-    "fraction": 0.317,
-    "x0_in": 0.9391,
+    "hex": "eb2d33",
+    "fraction": 0.3121,
+    "x0_in": 0.9458,
     "x1_in": 1.375
    }
   ],
@@ -125,35 +125,69 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:National Defense Service Medal ribbon, 2nd award.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:National Defense Service Medal ribbon, 2nd award.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/7/77/National_Defense_Service_Medal_ribbon%2C_2nd_award.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: National Defense",
+   "url": "https://www.vanguardmil.com/products/national-defense-ribbon-unit",
+   "image_px": [
+    500,
+    500
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/national_defense_service.jpg"
+   "img/ribbons/703ea7af67b4.jpeg"
   ],
-  "residual": {
-   "vertical": 8.9,
-   "horizontal": 96.8,
-   "central_vertical": 8.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: National Defense",
+  "vendor_product_url": "https://www.vanguardmil.com/products/national-defense-ribbon-unit",
+  "corners_px": [
+   [
+    0,
+    179
+   ],
+   [
+    500,
+    179
+   ],
+   [
+    500,
+    319
+   ],
+   [
+    0,
+    319
+   ]
+  ],
+  "rectified_px": [
+   500,
+   140
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   2.8,
+   0.6,
+   3.9,
+   1,
+   0,
+   0.4,
+   3.5,
+   0.5,
+   3.5,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:National Defense Service Medal ribbon, 2nd award.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -174,8 +208,8 @@
   "national defense military service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.9,
   "threshold": null
  },
  "grade": "ribbon"

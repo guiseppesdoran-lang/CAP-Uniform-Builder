@@ -44,102 +44,134 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "001489",
-    "fraction": 0.0915,
+    "hex": "1839a5",
+    "fraction": 0.0873,
     "x0_in": 0,
-    "x1_in": 0.1258
+    "x1_in": 0.1201
    },
    {
     "index": 1,
-    "hex": "ffcd00",
-    "fraction": 0.0915,
-    "x0_in": 0.1258,
-    "x1_in": 0.2516
+    "hex": "f6cf34",
+    "fraction": 0.0922,
+    "x0_in": 0.1201,
+    "x1_in": 0.2469
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
-    "x0_in": 0.2516,
-    "x1_in": 0.3774
+    "hex": "af2131",
+    "fraction": 0.0919,
+    "x0_in": 0.2469,
+    "x1_in": 0.3732
    },
    {
     "index": 3,
-    "hex": "007a33",
-    "fraction": 0.191,
-    "x0_in": 0.3774,
-    "x1_in": 0.6401
+    "hex": "077b4d",
+    "fraction": 0.1945,
+    "x0_in": 0.3732,
+    "x1_in": 0.6407
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.069,
-    "x0_in": 0.6401,
-    "x1_in": 0.7349
+    "fraction": 0.0681,
+    "x0_in": 0.6407,
+    "x1_in": 0.7343
    },
    {
     "index": 5,
-    "hex": "007a33",
-    "fraction": 0.191,
-    "x0_in": 0.7349,
-    "x1_in": 0.9976
+    "hex": "077b4d",
+    "fraction": 0.1945,
+    "x0_in": 0.7343,
+    "x1_in": 1.0018
    },
    {
     "index": 6,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
-    "x0_in": 0.9976,
-    "x1_in": 1.1234
+    "hex": "af2131",
+    "fraction": 0.0919,
+    "x0_in": 1.0018,
+    "x1_in": 1.1281
    },
    {
     "index": 7,
-    "hex": "ffcd00",
-    "fraction": 0.086,
-    "x0_in": 1.1234,
-    "x1_in": 1.2416
+    "hex": "f6cf34",
+    "fraction": 0.0922,
+    "x0_in": 1.1281,
+    "x1_in": 1.2549
    },
    {
     "index": 8,
-    "hex": "001489",
-    "fraction": 0.097,
-    "x0_in": 1.2416,
+    "hex": "1839a5",
+    "fraction": 0.0874,
+    "x0_in": 1.2549,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Coast Guard Unit Commendation ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Coast Guard Unit Commendation ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/Coast_Guard_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Coast Guard Unit Commendation",
+   "url": "https://www.vanguardmil.com/products/uscg-unit-commendation-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_unit_commendation.jpg"
+   "img/ribbons/2cd61020dd0d.jpg"
   ],
-  "residual": {
-   "vertical": 37.2,
-   "horizontal": 85.1,
-   "central_vertical": 19.1
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Unit Commendation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-unit-commendation-ribbon-unit",
+  "corners_px": [
+   [
+    74,
+    454
+   ],
+   [
+    1130,
+    454
+   ],
+   [
+    1130,
+    742.3
+   ],
+   [
+    74,
+    746.8
+   ]
+  ],
+  "rectified_px": [
+   1056,
+   291
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.5,
+   0.7,
+   0.9,
+   0.7,
+   4.5,
+   1.1,
+   1,
+   0.5,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Coast Guard Unit Commendation ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -156,8 +188,8 @@
   "Coast Guard Unit Commendation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 37.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.5,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,107 +44,107 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "000000",
-    "fraction": 0.047,
+    "hex": "16151e",
+    "fraction": 0.0468,
     "x0_in": 0,
-    "x1_in": 0.0646
+    "x1_in": 0.0644
    },
    {
     "index": 1,
-    "hex": "f2c75c",
-    "fraction": 0.0935,
-    "x0_in": 0.0646,
-    "x1_in": 0.1932
+    "hex": "e7cfa2",
+    "fraction": 0.0842,
+    "x0_in": 0.0644,
+    "x1_in": 0.1802
    },
    {
     "index": 2,
-    "hex": "012169",
-    "fraction": 0.0465,
-    "x0_in": 0.1932,
-    "x1_in": 0.2571
+    "hex": "3a3789",
+    "fraction": 0.048,
+    "x0_in": 0.1802,
+    "x1_in": 0.2461
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.047,
-    "x0_in": 0.2571,
-    "x1_in": 0.3218
+    "fraction": 0.0468,
+    "x0_in": 0.2461,
+    "x1_in": 0.3105
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.0465,
-    "x0_in": 0.3218,
-    "x1_in": 0.3857
+    "hex": "b3202d",
+    "fraction": 0.046,
+    "x0_in": 0.3105,
+    "x1_in": 0.3738
    },
    {
     "index": 5,
-    "hex": "f2c75c",
-    "fraction": 0.047,
-    "x0_in": 0.3857,
-    "x1_in": 0.4503
+    "hex": "e7cfa2",
+    "fraction": 0.1367,
+    "x0_in": 0.3738,
+    "x1_in": 0.5617
    },
    {
     "index": 6,
-    "hex": "007a33",
-    "fraction": 0.1375,
-    "x0_in": 0.4503,
-    "x1_in": 0.6394
+    "hex": "096e41",
+    "fraction": 0.0686,
+    "x0_in": 0.5617,
+    "x1_in": 0.6561
    },
    {
     "index": 7,
-    "hex": "000000",
-    "fraction": 0.07,
-    "x0_in": 0.6394,
-    "x1_in": 0.7356
+    "hex": "16151e",
+    "fraction": 0.0456,
+    "x0_in": 0.6561,
+    "x1_in": 0.7189
    },
    {
     "index": 8,
-    "hex": "007a33",
-    "fraction": 0.1375,
-    "x0_in": 0.7356,
-    "x1_in": 0.9247
+    "hex": "096e41",
+    "fraction": 0.0686,
+    "x0_in": 0.7189,
+    "x1_in": 0.8133
    },
    {
     "index": 9,
-    "hex": "f2c75c",
-    "fraction": 0.047,
-    "x0_in": 0.9247,
-    "x1_in": 0.9893
+    "hex": "e7cfa2",
+    "fraction": 0.1367,
+    "x0_in": 0.8133,
+    "x1_in": 1.0012
    },
    {
     "index": 10,
-    "hex": "ba0c2f",
-    "fraction": 0.0465,
-    "x0_in": 0.9893,
-    "x1_in": 1.0533
+    "hex": "b3202d",
+    "fraction": 0.046,
+    "x0_in": 1.0012,
+    "x1_in": 1.0645
    },
    {
     "index": 11,
     "hex": "ffffff",
-    "fraction": 0.047,
-    "x0_in": 1.0533,
-    "x1_in": 1.1179
+    "fraction": 0.0468,
+    "x0_in": 1.0645,
+    "x1_in": 1.1289
    },
    {
     "index": 12,
-    "hex": "012169",
-    "fraction": 0.0465,
-    "x0_in": 1.1179,
-    "x1_in": 1.1818
+    "hex": "3a3789",
+    "fraction": 0.048,
+    "x0_in": 1.1289,
+    "x1_in": 1.1948
    },
    {
     "index": 13,
-    "hex": "f2c75c",
-    "fraction": 0.0935,
-    "x0_in": 1.1818,
-    "x1_in": 1.3104
+    "hex": "e7cfa2",
+    "fraction": 0.0842,
+    "x0_in": 1.1948,
+    "x1_in": 1.3106
    },
    {
     "index": 14,
-    "hex": "000000",
-    "fraction": 0.047,
-    "x0_in": 1.3104,
+    "hex": "16151e",
+    "fraction": 0.0468,
+    "x0_in": 1.3106,
     "x1_in": 1.375
    }
   ],
@@ -153,35 +153,73 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Southwest Asia Service Medal ribbon.svg (Public domain), boundary match 0.86",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Southwest Asia Service Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Southwest_Asia_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 0.86
+   "title": "Ribbon Unit: Southwest Asia Service",
+   "url": "https://www.vanguardmil.com/products/southwest-asia-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/southwest_asia_service_military_ribbons.jpg"
+   "img/ribbons/adcb8ca47eae.jpg"
   ],
-  "residual": {
-   "vertical": 13.6,
-   "horizontal": 136.9,
-   "central_vertical": 13.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Southwest Asia Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/southwest-asia-service-ribbon-unit",
+  "corners_px": [
+   [
+    71,
+    453.8
+   ],
+   [
+    1125.3,
+    455.4
+   ],
+   [
+    1123.8,
+    745.3
+   ],
+   [
+    71,
+    743.8
+   ]
+  ],
+  "rectified_px": [
+   1054,
+   290
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.6,
+   0.4,
+   0.6,
+   4.6,
+   0.5,
+   0.8,
+   0.3,
+   1.9,
+   0.3,
+   0.4,
+   0.3,
+   5.5,
+   0.8,
+   0.6,
+   0.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":15,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Southwest Asia Service Medal ribbon.svg (Public domain), boundary match 0.86\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -202,8 +240,8 @@
   "southwest asia service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 13.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.5,
   "threshold": null
  },
  "grade": "ribbon"

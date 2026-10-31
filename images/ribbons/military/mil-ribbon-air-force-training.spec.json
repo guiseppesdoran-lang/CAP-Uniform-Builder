@@ -44,94 +44,118 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2f3b77",
-    "fraction": 0.0773,
+    "hex": "1e36a4",
+    "fraction": 0.0769,
     "x0_in": 0,
-    "x1_in": 0.1063
+    "x1_in": 0.1057
    },
    {
     "index": 1,
-    "hex": "a08346",
-    "fraction": 0.0182,
-    "x0_in": 0.1063,
-    "x1_in": 0.1313
+    "hex": "f5cf35",
+    "fraction": 0.1027,
+    "x0_in": 0.1057,
+    "x1_in": 0.2469
    },
    {
     "index": 2,
-    "hex": "e2b41e",
-    "fraction": 0.0772,
-    "x0_in": 0.1313,
-    "x1_in": 0.2375
+    "hex": "1e36a4",
+    "fraction": 0.2483,
+    "x0_in": 0.2469,
+    "x1_in": 0.5884
    },
    {
     "index": 3,
-    "hex": "2f3b77",
-    "fraction": 0.2546,
-    "x0_in": 0.2375,
-    "x1_in": 0.5875
+    "hex": "df2b39",
+    "fraction": 0.1442,
+    "x0_in": 0.5884,
+    "x1_in": 0.7866
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.1363,
-    "x0_in": 0.5875,
-    "x1_in": 0.775
+    "hex": "1e36a4",
+    "fraction": 0.2483,
+    "x0_in": 0.7866,
+    "x1_in": 1.1281
    },
    {
     "index": 5,
-    "hex": "2f3b77",
-    "fraction": 0.25,
-    "x0_in": 0.775,
-    "x1_in": 1.1187
+    "hex": "f5cf35",
+    "fraction": 0.1027,
+    "x0_in": 1.1281,
+    "x1_in": 1.2693
    },
    {
     "index": 6,
-    "hex": "f2c75c",
-    "fraction": 0.0955,
-    "x0_in": 1.1187,
-    "x1_in": 1.25
-   },
-   {
-    "index": 7,
-    "hex": "2f3b77",
-    "fraction": 0.0909,
-    "x0_in": 1.25,
+    "hex": "1e36a4",
+    "fraction": 0.0769,
+    "x0_in": 1.2693,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 8,
-   "stripes_after": 8,
-   "max_snap_delta": 13.9
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force Training",
+   "url": "https://www.vanguardmil.com/products/usaf-training-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_force_training.jpg"
+   "img/ribbons/2d3b4d7bacca.jpg"
   ],
-  "residual": {
-   "vertical": 41.7,
-   "horizontal": 88.4,
-   "central_vertical": 18.3
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Training",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-training-ribbon-unit",
+  "corners_px": [
+   [
+    74,
+    454.8
+   ],
+   [
+    1124.6,
+    453.2
+   ],
+   [
+    1127.6,
+    744
+   ],
+   [
+    74,
+    744
+   ]
+  ],
+  "rectified_px": [
+   1052,
+   290
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   2.1,
+   0.3,
+   0.7,
+   0,
+   0.4,
+   0.2,
+   1.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":8,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -148,8 +172,8 @@
   "air force training"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 41.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.1,
   "threshold": null
  },
  "grade": "ribbon"

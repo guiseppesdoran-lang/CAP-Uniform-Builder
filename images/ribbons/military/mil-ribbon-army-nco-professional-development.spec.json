@@ -44,86 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "bbb9b5",
-    "fraction": 0.0136,
+    "hex": "4d8049",
+    "fraction": 0.1202,
     "x0_in": 0,
-    "x1_in": 0.0187
+    "x1_in": 0.1653
    },
    {
     "index": 1,
-    "hex": "808080",
-    "fraction": 0.1182,
-    "x0_in": 0.0187,
-    "x1_in": 0.1812
+    "hex": "eead23",
+    "fraction": 0.0968,
+    "x0_in": 0.1653,
+    "x1_in": 0.2983
    },
    {
     "index": 2,
-    "hex": "f2c75c",
-    "fraction": 0.0955,
-    "x0_in": 0.1812,
-    "x1_in": 0.3125
+    "hex": "4d8049",
+    "fraction": 0.1399,
+    "x0_in": 0.2983,
+    "x1_in": 0.4906
    },
    {
     "index": 3,
-    "hex": "215732",
-    "fraction": 0.1318,
-    "x0_in": 0.3125,
-    "x1_in": 0.4938
+    "hex": "eead23",
+    "fraction": 0.0492,
+    "x0_in": 0.4906,
+    "x1_in": 0.5583
    },
    {
     "index": 4,
-    "hex": "a08346",
-    "fraction": 0.05,
-    "x0_in": 0.4938,
-    "x1_in": 0.5625
+    "hex": "20203c",
+    "fraction": 0.1879,
+    "x0_in": 0.5583,
+    "x1_in": 0.8167
    },
    {
     "index": 5,
-    "hex": "041e42",
-    "fraction": 0.1909,
-    "x0_in": 0.5625,
-    "x1_in": 0.825
+    "hex": "eead23",
+    "fraction": 0.0492,
+    "x0_in": 0.8167,
+    "x1_in": 0.8844
    },
    {
     "index": 6,
-    "hex": "f2c75c",
-    "fraction": 0.0409,
-    "x0_in": 0.825,
-    "x1_in": 0.8812
+    "hex": "4d8049",
+    "fraction": 0.1399,
+    "x0_in": 0.8844,
+    "x1_in": 1.0767
    },
    {
     "index": 7,
-    "hex": "a08346",
-    "fraction": 0.0136,
-    "x0_in": 0.8812,
-    "x1_in": 0.8999
+    "hex": "eead23",
+    "fraction": 0.0968,
+    "x0_in": 1.0767,
+    "x1_in": 1.2097
    },
    {
     "index": 8,
-    "hex": "215732",
-    "fraction": 0.1228,
-    "x0_in": 0.8999,
-    "x1_in": 1.0688
-   },
-   {
-    "index": 9,
-    "hex": "a08346",
-    "fraction": 0.0136,
-    "x0_in": 1.0688,
-    "x1_in": 1.0875
-   },
-   {
-    "index": 10,
-    "hex": "f2c75c",
-    "fraction": 0.0909,
-    "x0_in": 1.0875,
-    "x1_in": 1.2125
-   },
-   {
-    "index": 11,
-    "hex": "808080",
-    "fraction": 0.1182,
-    "x0_in": 1.2125,
+    "hex": "4d8049",
+    "fraction": 0.1202,
+    "x0_in": 1.2097,
     "x1_in": 1.375
    }
   ],
@@ -132,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 12,
-   "stripes_after": 12,
-   "max_snap_delta": 20.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Army NCO Professional Development",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-army-nco-professional-development",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_nco_professional_development.jpg"
+   "img/ribbons/c026c92dbfc0.jpg"
   ],
-  "residual": {
-   "vertical": 24,
-   "horizontal": 75.9,
-   "central_vertical": 19.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army NCO Professional Development",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-army-nco-professional-development",
+  "corners_px": [
+   [
+    71.4,
+    461.1
+   ],
+   [
+    1134.1,
+    455.9
+   ],
+   [
+    1127.5,
+    745.4
+   ],
+   [
+    65.9,
+    747.9
+   ]
+  ],
+  "rectified_px": [
+   1062,
+   288
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1,
+   0.4,
+   3,
+   0.3,
+   0,
+   0.8,
+   1.2,
+   0.3,
+   3.8
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":12,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -176,8 +188,8 @@
   "NCO Professional Development"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 24,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.8,
   "threshold": null
  },
  "grade": "ribbon"

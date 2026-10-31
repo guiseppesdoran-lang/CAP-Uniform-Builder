@@ -1,0 +1,201 @@
+{
+ "asset_id": "mil-ribbon-joint-inherent-resolve-campaign-medal",
+ "name": "Inherent Resolve Campaign Medal",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "296bc1",
+    "fraction": 0.1705,
+    "x0_in": 0,
+    "x1_in": 0.2344
+   },
+   {
+    "index": 1,
+    "hex": "e0e8e6",
+    "fraction": 0.0466,
+    "x0_in": 0.2344,
+    "x1_in": 0.2985
+   },
+   {
+    "index": 2,
+    "hex": "f1d6ab",
+    "fraction": 0.1406,
+    "x0_in": 0.2985,
+    "x1_in": 0.4919
+   },
+   {
+    "index": 3,
+    "hex": "e0e8e6",
+    "fraction": 0.0253,
+    "x0_in": 0.4919,
+    "x1_in": 0.5267
+   },
+   {
+    "index": 4,
+    "hex": "fab839",
+    "fraction": 0.2339,
+    "x0_in": 0.5267,
+    "x1_in": 0.8483
+   },
+   {
+    "index": 5,
+    "hex": "e0e8e6",
+    "fraction": 0.0253,
+    "x0_in": 0.8483,
+    "x1_in": 0.8831
+   },
+   {
+    "index": 6,
+    "hex": "f1d6ab",
+    "fraction": 0.1406,
+    "x0_in": 0.8831,
+    "x1_in": 1.0765
+   },
+   {
+    "index": 7,
+    "hex": "e0e8e6",
+    "fraction": 0.0466,
+    "x0_in": 1.0765,
+    "x1_in": 1.1406
+   },
+   {
+    "index": 8,
+    "hex": "296bc1",
+    "fraction": 0.1705,
+    "x0_in": 1.1406,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Inherent Resolve Campaign",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-inherent-resolve-campaign",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
+  "source_images": [
+   "img/ribbons/0ebfa74d1a09.jpg"
+  ],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Inherent Resolve Campaign",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-inherent-resolve-campaign",
+  "corners_px": [
+   [
+    72,
+    456
+   ],
+   [
+    1131.1,
+    456
+   ],
+   [
+    1127.8,
+    745.3
+   ],
+   [
+    72,
+    743.8
+   ]
+  ],
+  "rectified_px": [
+   1057,
+   289
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.9,
+   1,
+   1.4,
+   0,
+   2.2,
+   1.1,
+   0.6,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+ },
+ "authorized_services": [
+  "ARMY",
+  "AIR_FORCE",
+  "SPACE_FORCE",
+  "NAVY",
+  "MARINE_CORPS",
+  "COAST_GUARD"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbon-variants/air-force/inherent_resolve_campaign_medal/930cff307d560596.png",
+   "award_ids": [
+    "inherent_resolve_campaign_medal"
+   ]
+  }
+ ],
+ "award_names": [
+  "Inherent Resolve Campaign Medal"
+ ],
+ "fit": {
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

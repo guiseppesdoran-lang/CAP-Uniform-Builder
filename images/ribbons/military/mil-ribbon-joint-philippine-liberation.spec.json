@@ -44,30 +44,30 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.4,
+    "hex": "e12f42",
+    "fraction": 0.383,
     "x0_in": 0,
-    "x1_in": 0.55
+    "x1_in": 0.5266
    },
    {
     "index": 1,
-    "hex": "2f3b77",
-    "fraction": 0.1091,
-    "x0_in": 0.55,
-    "x1_in": 0.7
+    "hex": "3c3b9b",
+    "fraction": 0.117,
+    "x0_in": 0.5266,
+    "x1_in": 0.6875
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.1091,
-    "x0_in": 0.7,
-    "x1_in": 0.85
+    "fraction": 0.117,
+    "x0_in": 0.6875,
+    "x1_in": 0.8484
    },
    {
     "index": 3,
-    "hex": "ba0c2f",
-    "fraction": 0.3818,
-    "x0_in": 0.85,
+    "hex": "e12f42",
+    "fraction": 0.383,
+    "x0_in": 0.8484,
     "x1_in": 1.375
    }
   ],
@@ -76,34 +76,62 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 4,
-   "stripes_after": 4,
-   "max_snap_delta": 12.5
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Philippine Liberation",
+   "url": "https://www.vanguardmil.com/products/philippine-liberation-ribbon-unit",
+   "image_px": [
+    1024,
+    1024
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/philippine_liberation.jpg"
+   "img/ribbons/b2c7754fa0bc.jpg"
   ],
-  "residual": {
-   "vertical": 4.6,
-   "horizontal": 76.9,
-   "central_vertical": 3.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Philippine Liberation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/philippine-liberation-ribbon-unit",
+  "corners_px": [
+   [
+    55.9,
+    379.2
+   ],
+   [
+    969.9,
+    375.5
+   ],
+   [
+    973.8,
+    637
+   ],
+   [
+    61.5,
+    637
+   ]
+  ],
+  "rectified_px": [
+   913,
+   260
+  ],
+  "symmetry": "layout",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.7,
+   0,
+   3.7,
+   0.6
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":4,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -123,8 +151,8 @@
   "philippine liberation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 4.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.7,
   "threshold": null
  },
  "grade": "ribbon"

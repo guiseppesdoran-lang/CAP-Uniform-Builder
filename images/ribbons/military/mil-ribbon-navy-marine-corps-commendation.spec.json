@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "215732",
-    "fraction": 0.0955,
+    "hex": "05744b",
+    "fraction": 0.0878,
     "x0_in": 0,
-    "x1_in": 0.1313
+    "x1_in": 0.1207
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.1318,
-    "x0_in": 0.1313,
-    "x1_in": 0.3125
+    "fraction": 0.1372,
+    "x0_in": 0.1207,
+    "x1_in": 0.3093
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.5636,
-    "x0_in": 0.3125,
-    "x1_in": 1.0875
+    "hex": "05744b",
+    "fraction": 0.5502,
+    "x0_in": 0.3093,
+    "x1_in": 1.0657
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.1273,
-    "x0_in": 1.0875,
-    "x1_in": 1.2625
+    "fraction": 0.1372,
+    "x0_in": 1.0657,
+    "x1_in": 1.2543
    },
    {
     "index": 4,
-    "hex": "215732",
-    "fraction": 0.0818,
-    "x0_in": 1.2625,
+    "hex": "05744b",
+    "fraction": 0.0878,
+    "x0_in": 1.2543,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 8.4
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy and Marine Corps Commendation",
+   "url": "https://www.vanguardmil.com/products/usn-and-usmc-commendation-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_marine_corps_commendation.jpg"
+   "img/ribbons/b01085dc4e76.jpg"
   ],
-  "residual": {
-   "vertical": 6,
-   "horizontal": 131.5,
-   "central_vertical": 4.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy and Marine Corps Commendation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-and-usmc-commendation-ribbon-unit",
+  "corners_px": [
+   [
+    65.7,
+    457.1
+   ],
+   [
+    1127.6,
+    449.5
+   ],
+   [
+    1136.2,
+    740.2
+   ],
+   [
+    71.1,
+    747.5
+   ]
+  ],
+  "rectified_px": [
+   1063,
+   291
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.3,
+   3.9,
+   0.7,
+   4.9,
+   3.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -128,8 +157,8 @@
   "Navy & Marine Corps Commendation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.9,
   "threshold": null
  },
  "grade": "ribbon"

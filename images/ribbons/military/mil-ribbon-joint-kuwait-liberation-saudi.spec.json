@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.1145,
+    "hex": "9e1823",
+    "fraction": 0.1224,
     "x0_in": 0,
-    "x1_in": 0.1574
+    "x1_in": 0.1683
    },
    {
     "index": 1,
-    "hex": "000000",
-    "fraction": 0.057,
-    "x0_in": 0.1574,
-    "x1_in": 0.2358
+    "hex": "121017",
+    "fraction": 0.0555,
+    "x0_in": 0.1683,
+    "x1_in": 0.2446
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.103,
-    "x0_in": 0.2358,
-    "x1_in": 0.3774
+    "fraction": 0.0988,
+    "x0_in": 0.2446,
+    "x1_in": 0.3804
    },
    {
     "index": 3,
-    "hex": "00843d",
-    "fraction": 0.451,
-    "x0_in": 0.3774,
-    "x1_in": 0.9976
+    "hex": "039f6c",
+    "fraction": 0.4467,
+    "x0_in": 0.3804,
+    "x1_in": 0.9946
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.103,
-    "x0_in": 0.9976,
-    "x1_in": 1.1392
+    "fraction": 0.0988,
+    "x0_in": 0.9946,
+    "x1_in": 1.1304
    },
    {
     "index": 5,
-    "hex": "000000",
-    "fraction": 0.057,
-    "x0_in": 1.1392,
-    "x1_in": 1.2176
+    "hex": "121017",
+    "fraction": 0.0555,
+    "x0_in": 1.1304,
+    "x1_in": 1.2067
    },
    {
     "index": 6,
-    "hex": "ba0c2f",
-    "fraction": 0.1145,
-    "x0_in": 1.2176,
+    "hex": "9e1823",
+    "fraction": 0.1224,
+    "x0_in": 1.2067,
     "x1_in": 1.375
    }
   ],
@@ -97,35 +97,65 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Kuwait Liberation Medal (Saudi Arabia) ribbon.svg (Public domain), boundary match 0.94",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Kuwait Liberation Medal (Saudi Arabia) ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Kuwait_Liberation_Medal_%28Saudi_Arabia%29_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 0.94
+   "title": "Ribbon Unit: Kuwait Liberation with Attachment",
+   "url": "https://www.vanguardmil.com/products/kuwait-liberation-ribbon-unit-with-attachment",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/kuwait_liberation_saudi.jpg"
+   "img/ribbons/bd96696aad14.jpg"
   ],
-  "residual": {
-   "vertical": 12,
-   "horizontal": 130.6,
-   "central_vertical": 11.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Kuwait Liberation with Attachment",
+  "vendor_product_url": "https://www.vanguardmil.com/products/kuwait-liberation-ribbon-unit-with-attachment",
+  "corners_px": [
+   [
+    74,
+    445.7
+   ],
+   [
+    1125,
+    454.9
+   ],
+   [
+    1128.6,
+    753.1
+   ],
+   [
+    74,
+    742.1
+   ]
+  ],
+  "rectified_px": [
+   1053,
+   297
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.3,
+   1.2,
+   4.1,
+   0,
+   4.1,
+   1.1,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Kuwait Liberation Medal (Saudi Arabia) ribbon.svg (Public domain), boundary match 0.94\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -146,8 +176,8 @@
   "kuwait liberation saudi arabia"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 12,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.1,
   "threshold": null
  },
  "grade": "ribbon"

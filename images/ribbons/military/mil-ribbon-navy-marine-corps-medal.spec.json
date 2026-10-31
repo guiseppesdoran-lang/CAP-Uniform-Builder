@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "00205b",
-    "fraction": 0.3318,
+    "hex": "344272",
+    "fraction": 0.3502,
     "x0_in": 0,
-    "x1_in": 0.4562
+    "x1_in": 0.4815
    },
    {
     "index": 1,
-    "hex": "e2b41e",
-    "fraction": 0.3409,
-    "x0_in": 0.4562,
-    "x1_in": 0.925
+    "hex": "ddbb4a",
+    "fraction": 0.319,
+    "x0_in": 0.4815,
+    "x1_in": 0.9201
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.3273,
-    "x0_in": 0.925,
+    "hex": "d7233d",
+    "fraction": 0.3309,
+    "x0_in": 0.9201,
     "x1_in": 1.375
    }
   ],
@@ -69,34 +69,61 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 10.8
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy and Marine Corps",
+   "url": "https://www.vanguardmil.com/products/usn-and-usmc-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_marine_corps_medal.jpg"
+   "img/ribbons/0c88004ccf50.jpg"
   ],
-  "residual": {
-   "vertical": 3.5,
-   "horizontal": 105.9,
-   "central_vertical": 2.3
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy and Marine Corps",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-and-usmc-ribbon-unit",
+  "corners_px": [
+   [
+    66,
+    446.6
+   ],
+   [
+    1138.4,
+    459.3
+   ],
+   [
+    1135.4,
+    755.7
+   ],
+   [
+    66,
+    738.5
+   ]
+  ],
+  "rectified_px": [
+   1071,
+   294
+  ],
+  "symmetry": "none",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -114,8 +141,8 @@
   "Navy & Marine Corps Medal"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 3.5,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

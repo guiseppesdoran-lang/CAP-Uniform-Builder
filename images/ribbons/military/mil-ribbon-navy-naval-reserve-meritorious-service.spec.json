@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "283c92",
-    "fraction": 0.0636,
+    "hex": "1938a8",
+    "fraction": 0.0335,
     "x0_in": 0,
-    "x1_in": 0.0875
+    "x1_in": 0.046
    },
    {
     "index": 1,
-    "hex": "f6c80e",
-    "fraction": 0.0273,
-    "x0_in": 0.0875,
-    "x1_in": 0.125
+    "hex": "e8b018",
+    "fraction": 0.0346,
+    "x0_in": 0.046,
+    "x1_in": 0.0936
    },
    {
     "index": 2,
-    "hex": "ee0028",
-    "fraction": 0.3182,
-    "x0_in": 0.125,
-    "x1_in": 0.5625
+    "hex": "e12c39",
+    "fraction": 0.3344,
+    "x0_in": 0.0936,
+    "x1_in": 0.5534
    },
    {
     "index": 3,
-    "hex": "283c92",
-    "fraction": 0.1773,
-    "x0_in": 0.5625,
-    "x1_in": 0.8063
+    "hex": "1938a8",
+    "fraction": 0.1951,
+    "x0_in": 0.5534,
+    "x1_in": 0.8216
    },
    {
     "index": 4,
-    "hex": "ee0028",
-    "fraction": 0.3227,
-    "x0_in": 0.8063,
-    "x1_in": 1.25
+    "hex": "e12c39",
+    "fraction": 0.3344,
+    "x0_in": 0.8216,
+    "x1_in": 1.2814
    },
    {
     "index": 5,
-    "hex": "ffcd00",
-    "fraction": 0.0273,
-    "x0_in": 1.25,
-    "x1_in": 1.2875
+    "hex": "e8b018",
+    "fraction": 0.0346,
+    "x0_in": 1.2814,
+    "x1_in": 1.329
    },
    {
     "index": 6,
-    "hex": "283c92",
-    "fraction": 0.0636,
-    "x0_in": 1.2875,
+    "hex": "1938a8",
+    "fraction": 0.0335,
+    "x0_in": 1.329,
     "x1_in": 1.375
    }
   ],
@@ -97,34 +97,65 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 10.6
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy Reserve Meritorious Service",
+   "url": "https://www.vanguardmil.com/products/usn-reserve-meritorious-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/naval_reserve_meritorious_service.jpg"
+   "img/ribbons/2d9fd07b3b9d.jpg"
   ],
-  "residual": {
-   "vertical": 10.2,
-   "horizontal": 94.7,
-   "central_vertical": 4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Reserve Meritorious Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-reserve-meritorious-service-ribbon-unit",
+  "corners_px": [
+   [
+    74.3,
+    456.1
+   ],
+   [
+    1124,
+    451.3
+   ],
+   [
+    1129.1,
+    746.6
+   ],
+   [
+    78.7,
+    751
+   ]
+  ],
+  "rectified_px": [
+   1050,
+   295
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.2,
+   0.6,
+   0.6,
+   0.3,
+   0.5,
+   0.3,
+   1
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "NAVY"
@@ -141,8 +172,8 @@
   "Naval Reserve Meritorious Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 10.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.2,
   "threshold": null
  },
  "grade": "ribbon"

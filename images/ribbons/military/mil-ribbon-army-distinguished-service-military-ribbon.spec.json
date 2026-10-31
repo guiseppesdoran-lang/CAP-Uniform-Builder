@@ -44,74 +44,102 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.2248,
+    "hex": "f23a3f",
+    "fraction": 0.2203,
     "x0_in": 0,
-    "x1_in": 0.3091
+    "x1_in": 0.303
    },
    {
     "index": 1,
-    "hex": "001489",
-    "fraction": 0.0458,
-    "x0_in": 0.3091,
-    "x1_in": 0.3721
+    "hex": "2f46be",
+    "fraction": 0.0533,
+    "x0_in": 0.303,
+    "x1_in": 0.3762
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.4588,
-    "x0_in": 0.3721,
-    "x1_in": 1.0029
+    "fraction": 0.4528,
+    "x0_in": 0.3762,
+    "x1_in": 0.9988
    },
    {
     "index": 3,
-    "hex": "001489",
-    "fraction": 0.0458,
-    "x0_in": 1.0029,
-    "x1_in": 1.0659
+    "hex": "2f46be",
+    "fraction": 0.0533,
+    "x0_in": 0.9988,
+    "x1_in": 1.072
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.2248,
-    "x0_in": 1.0659,
+    "hex": "f23a3f",
+    "fraction": 0.2203,
+    "x0_in": 1.072,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:U.S. Army Distinguished Service Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:U.S. Army Distinguished Service Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/U.S._Army_Distinguished_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Army Distinguished Service Medal",
+   "url": "https://www.vanguardmil.com/products/army-distinguished-service-medal-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_distinguished_service_military_ribb0n.jpg"
+   "img/ribbons/8a2c10678e73.jpg"
   ],
-  "residual": {
-   "vertical": 29.3,
-   "horizontal": 102.9,
-   "central_vertical": 12.7
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Distinguished Service Medal",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-distinguished-service-medal-ribbon-unit",
+  "corners_px": [
+   [
+    61.6,
+    446.8
+   ],
+   [
+    1134.7,
+    440.6
+   ],
+   [
+    1139.7,
+    737.6
+   ],
+   [
+    66.2,
+    745.2
+   ]
+  ],
+  "rectified_px": [
+   1073,
+   298
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.1,
+   3.1,
+   0.3,
+   0.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Army Distinguished Service Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -128,8 +156,8 @@
   "army distinguished service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 29.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.1,
   "threshold": null
  },
  "grade": "ribbon"

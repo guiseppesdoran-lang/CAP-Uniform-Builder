@@ -44,177 +44,233 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "9d0c0d",
-    "fraction": 0.0432,
+    "hex": "b60304",
+    "fraction": 0.0443,
     "x0_in": 0,
-    "x1_in": 0.0594
+    "x1_in": 0.0609
    },
    {
     "index": 1,
-    "hex": "d05810",
+    "hex": "f56405",
     "fraction": 0.05,
-    "x0_in": 0.0594,
-    "x1_in": 0.1282
+    "x0_in": 0.0609,
+    "x1_in": 0.1296
    },
    {
     "index": 2,
-    "hex": "cb9e1e",
-    "fraction": 0.0341,
-    "x0_in": 0.1282,
-    "x1_in": 0.175
+    "hex": "ebe51c",
+    "fraction": 0.0115,
+    "x0_in": 0.1296,
+    "x1_in": 0.1455
    },
    {
     "index": 3,
-    "hex": "ca5d10",
-    "fraction": 0.0136,
-    "x0_in": 0.175,
-    "x1_in": 0.1937
+    "hex": "f56405",
+    "fraction": 0.01,
+    "x0_in": 0.1455,
+    "x1_in": 0.1593
    },
    {
     "index": 4,
-    "hex": "ce8a23",
-    "fraction": 0.0136,
-    "x0_in": 0.1937,
-    "x1_in": 0.2124
+    "hex": "ebe51c",
+    "fraction": 0.0116,
+    "x0_in": 0.1593,
+    "x1_in": 0.1753
    },
    {
     "index": 5,
-    "hex": "ce884d",
-    "fraction": 0.016,
-    "x0_in": 0.2124,
-    "x1_in": 0.2344
+    "hex": "f56405",
+    "fraction": 0.0139,
+    "x0_in": 0.1753,
+    "x1_in": 0.1945
    },
    {
     "index": 6,
-    "hex": "c9c223",
-    "fraction": 0.0318,
-    "x0_in": 0.2344,
-    "x1_in": 0.2782
+    "hex": "e5a212",
+    "fraction": 0.0121,
+    "x0_in": 0.1945,
+    "x1_in": 0.2111
    },
    {
     "index": 7,
-    "hex": "b0aa7e",
-    "fraction": 0.0341,
-    "x0_in": 0.2782,
-    "x1_in": 0.3251
+    "hex": "f39853",
+    "fraction": 0.0155,
+    "x0_in": 0.2111,
+    "x1_in": 0.2324
    },
    {
     "index": 8,
-    "hex": "25876a",
-    "fraction": 0.0704,
-    "x0_in": 0.3251,
-    "x1_in": 0.4219
+    "hex": "ebe51c",
+    "fraction": 0.0338,
+    "x0_in": 0.2324,
+    "x1_in": 0.2789
    },
    {
     "index": 9,
-    "hex": "79a3bd",
-    "fraction": 0.0387,
-    "x0_in": 0.4219,
-    "x1_in": 0.4751
+    "hex": "c8bb89",
+    "fraction": 0.0326,
+    "x0_in": 0.2789,
+    "x1_in": 0.3237
    },
    {
     "index": 10,
-    "hex": "232c4f",
-    "fraction": 0.0386,
-    "x0_in": 0.4751,
-    "x1_in": 0.5281
+    "hex": "219d79",
+    "fraction": 0.0354,
+    "x0_in": 0.3237,
+    "x1_in": 0.3724
    },
    {
     "index": 11,
-    "hex": "2678b2",
-    "fraction": 0.0386,
-    "x0_in": 0.5281,
-    "x1_in": 0.5812
+    "hex": "2e6854",
+    "fraction": 0.0366,
+    "x0_in": 0.3724,
+    "x1_in": 0.4227
    },
    {
     "index": 12,
-    "hex": "352559",
-    "fraction": 0.0546,
-    "x0_in": 0.5812,
-    "x1_in": 0.6563
+    "hex": "8ec2e4",
+    "fraction": 0.0368,
+    "x0_in": 0.4227,
+    "x1_in": 0.4733
    },
    {
     "index": 13,
-    "hex": "572932",
-    "fraction": 0.0454,
-    "x0_in": 0.6563,
-    "x1_in": 0.7187
+    "hex": "1f2b54",
+    "fraction": 0.04,
+    "x0_in": 0.4733,
+    "x1_in": 0.5282
    },
    {
     "index": 14,
-    "hex": "342659",
-    "fraction": 0.0546,
-    "x0_in": 0.7187,
-    "x1_in": 0.7938
+    "hex": "228cd7",
+    "fraction": 0.0384,
+    "x0_in": 0.5282,
+    "x1_in": 0.5811
    },
    {
     "index": 15,
-    "hex": "2778b1",
-    "fraction": 0.0386,
-    "x0_in": 0.7938,
-    "x1_in": 0.8469
+    "hex": "372465",
+    "fraction": 0.0551,
+    "x0_in": 0.5811,
+    "x1_in": 0.6568
    },
    {
     "index": 16,
-    "hex": "222c4f",
-    "fraction": 0.0386,
-    "x0_in": 0.8469,
-    "x1_in": 0.8999
+    "hex": "6d343a",
+    "fraction": 0.0446,
+    "x0_in": 0.6568,
+    "x1_in": 0.7182
    },
    {
     "index": 17,
-    "hex": "79a3bd",
-    "fraction": 0.0387,
-    "x0_in": 0.8999,
-    "x1_in": 0.9532
+    "hex": "372465",
+    "fraction": 0.0551,
+    "x0_in": 0.7182,
+    "x1_in": 0.7939
    },
    {
     "index": 18,
-    "hex": "25866a",
-    "fraction": 0.0704,
-    "x0_in": 0.9532,
-    "x1_in": 1.0499
+    "hex": "228cd7",
+    "fraction": 0.0384,
+    "x0_in": 0.7939,
+    "x1_in": 0.8468
    },
    {
     "index": 19,
-    "hex": "b0aa7e",
-    "fraction": 0.0341,
-    "x0_in": 1.0499,
-    "x1_in": 1.0968
+    "hex": "1f2b54",
+    "fraction": 0.04,
+    "x0_in": 0.8468,
+    "x1_in": 0.9017
    },
    {
     "index": 20,
-    "hex": "c9c123",
-    "fraction": 0.0341,
-    "x0_in": 1.0968,
-    "x1_in": 1.1437
+    "hex": "8ec2e4",
+    "fraction": 0.0368,
+    "x0_in": 0.9017,
+    "x1_in": 0.9523
    },
    {
     "index": 21,
-    "hex": "cf844c",
-    "fraction": 0.0159,
-    "x0_in": 1.1437,
-    "x1_in": 1.1656
+    "hex": "2e6854",
+    "fraction": 0.0366,
+    "x0_in": 0.9523,
+    "x1_in": 1.0026
    },
    {
     "index": 22,
-    "hex": "cb8c1a",
-    "fraction": 0.0591,
-    "x0_in": 1.1656,
-    "x1_in": 1.2469
+    "hex": "219d79",
+    "fraction": 0.0354,
+    "x0_in": 1.0026,
+    "x1_in": 1.0513
    },
    {
     "index": 23,
-    "hex": "d05710",
-    "fraction": 0.05,
-    "x0_in": 1.2469,
-    "x1_in": 1.3156
+    "hex": "c8bb89",
+    "fraction": 0.0326,
+    "x0_in": 1.0513,
+    "x1_in": 1.0961
    },
    {
     "index": 24,
-    "hex": "9d0c0d",
-    "fraction": 0.0432,
-    "x0_in": 1.3156,
+    "hex": "ebe51c",
+    "fraction": 0.0338,
+    "x0_in": 1.0961,
+    "x1_in": 1.1426
+   },
+   {
+    "index": 25,
+    "hex": "f39853",
+    "fraction": 0.0155,
+    "x0_in": 1.1426,
+    "x1_in": 1.1639
+   },
+   {
+    "index": 26,
+    "hex": "e5a212",
+    "fraction": 0.0121,
+    "x0_in": 1.1639,
+    "x1_in": 1.1805
+   },
+   {
+    "index": 27,
+    "hex": "f56405",
+    "fraction": 0.0139,
+    "x0_in": 1.1805,
+    "x1_in": 1.1997
+   },
+   {
+    "index": 28,
+    "hex": "ebe51c",
+    "fraction": 0.0116,
+    "x0_in": 1.1997,
+    "x1_in": 1.2157
+   },
+   {
+    "index": 29,
+    "hex": "f56405",
+    "fraction": 0.01,
+    "x0_in": 1.2157,
+    "x1_in": 1.2295
+   },
+   {
+    "index": 30,
+    "hex": "ebe51c",
+    "fraction": 0.0115,
+    "x0_in": 1.2295,
+    "x1_in": 1.2454
+   },
+   {
+    "index": 31,
+    "hex": "f56405",
+    "fraction": 0.05,
+    "x0_in": 1.2454,
+    "x1_in": 1.3141
+   },
+   {
+    "index": 32,
+    "hex": "b60304",
+    "fraction": 0.0443,
+    "x0_in": 1.3141,
     "x1_in": 1.375
    }
   ],
@@ -226,10 +282,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/b2806e6d5459.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit: Military Order of World Wars",
   "vendor_product_url": "https://www.vanguardmil.com/products/usmc-rotc-military-order-of-world-wars-ribbon-unit",
@@ -242,24 +300,84 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":25,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    216
+   ],
+   [
+    600,
+    216
+   ],
+   [
+    600,
+    383
+   ],
+   [
+    0,
+    383
+   ]
+  ],
+  "rectified_px": [
+   600,
+   167
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.2,
+   0.4,
+   1,
+   0.2,
+   0.3,
+   0.9,
+   1,
+   0.2,
+   0.5,
+   0.5,
+   0.4,
+   0.5,
+   0.2,
+   0.5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0.8,
+   0.5,
+   0.5,
+   0.4,
+   0.4,
+   0.5,
+   0.3,
+   0.8,
+   0.7,
+   0,
+   2.1,
+   0.9,
+   0.2,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 25,
-   "stripes_after": 25,
-   "max_snap_delta": 14.7,
-   "unsnapped": 22,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 2
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Military Order of World Wars",
+   "url": "https://www.vanguardmil.com/products/usmc-rotc-military-order-of-world-wars-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.1,
   "threshold": null
  },
  "grade": "ribbon"

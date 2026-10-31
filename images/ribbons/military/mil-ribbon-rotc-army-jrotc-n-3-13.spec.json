@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2e5b2a",
-    "fraction": 0.0932,
+    "hex": "2f6629",
+    "fraction": 0.0934,
     "x0_in": 0,
-    "x1_in": 0.1282
+    "x1_in": 0.1284
    },
    {
     "index": 1,
-    "hex": "9ea2a2",
-    "fraction": 0.0386,
-    "x0_in": 0.1282,
-    "x1_in": 0.1812
+    "hex": "b2b1b2",
+    "fraction": 0.0388,
+    "x0_in": 0.1284,
+    "x1_in": 0.1818
    },
    {
     "index": 2,
-    "hex": "b26d16",
-    "fraction": 0.1137,
-    "x0_in": 0.1812,
-    "x1_in": 0.3376
+    "hex": "d57e0b",
+    "fraction": 0.112,
+    "x0_in": 0.1818,
+    "x1_in": 0.3358
    },
    {
     "index": 3,
-    "hex": "9ea2a2",
-    "fraction": 0.1727,
-    "x0_in": 0.3376,
-    "x1_in": 0.575
+    "hex": "b2b1b2",
+    "fraction": 0.1738,
+    "x0_in": 0.3358,
+    "x1_in": 0.5748
    },
    {
     "index": 4,
-    "hex": "b06c15",
-    "fraction": 0.1636,
-    "x0_in": 0.575,
-    "x1_in": 0.8
+    "hex": "d57e0b",
+    "fraction": 0.1639,
+    "x0_in": 0.5748,
+    "x1_in": 0.8002
    },
    {
     "index": 5,
-    "hex": "9ea2a2",
-    "fraction": 0.1727,
-    "x0_in": 0.8,
-    "x1_in": 1.0374
+    "hex": "b2b1b2",
+    "fraction": 0.1738,
+    "x0_in": 0.8002,
+    "x1_in": 1.0392
    },
    {
     "index": 6,
-    "hex": "b26d16",
-    "fraction": 0.1137,
-    "x0_in": 1.0374,
-    "x1_in": 1.1938
+    "hex": "d57e0b",
+    "fraction": 0.112,
+    "x0_in": 1.0392,
+    "x1_in": 1.1932
    },
    {
     "index": 7,
-    "hex": "9ea2a2",
-    "fraction": 0.0386,
-    "x0_in": 1.1938,
-    "x1_in": 1.2469
+    "hex": "b2b1b2",
+    "fraction": 0.0388,
+    "x0_in": 1.1932,
+    "x1_in": 1.2466
    },
    {
     "index": 8,
-    "hex": "2e5b29",
-    "fraction": 0.0932,
-    "x0_in": 1.2469,
+    "hex": "2f6629",
+    "fraction": 0.0934,
+    "x0_in": 1.2466,
     "x1_in": 1.375
    }
   ],
@@ -114,10 +114,12 @@
  "service": "army-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/1e885f6be7db.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Army ROTC Ribbon Unit: N-3-13: AJROTC Competitive Drill Individual",
   "vendor_product_url": "https://www.vanguardmil.com/products/army-n313-ajrotc-competitive-drill-individual-rotc-ribbon-unit",
@@ -130,24 +132,60 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    217
+   ],
+   [
+    600,
+    217
+   ],
+   [
+    600,
+    383
+   ],
+   [
+    0,
+    383
+   ]
+  ],
+  "rectified_px": [
+   600,
+   166
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0.6,
+   0,
+   0.9,
+   0.4,
+   0.9,
+   0,
+   0.6,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 12,
-   "unsnapped": 5,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Army ROTC Ribbon Unit: N-3-13: AJROTC Competitive Drill Individual",
+   "url": "https://www.vanguardmil.com/products/army-n313-ajrotc-competitive-drill-individual-rotc-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.9,
   "threshold": null
  },
  "grade": "ribbon"

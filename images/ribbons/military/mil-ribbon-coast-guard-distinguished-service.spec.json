@@ -44,80 +44,102 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "6f263d",
-    "fraction": 0.1727,
+    "hex": "6b106c",
+    "fraction": 0.1706,
     "x0_in": 0,
-    "x1_in": 0.2375
+    "x1_in": 0.2345
    },
    {
     "index": 1,
-    "hex": "bbb9b5",
-    "fraction": 0.0455,
-    "x0_in": 0.2375,
-    "x1_in": 0.3
+    "hex": "ffffff",
+    "fraction": 0.0479,
+    "x0_in": 0.2345,
+    "x1_in": 0.3004
    },
    {
     "index": 2,
-    "hex": "9ea2a2",
-    "fraction": 0.0136,
-    "x0_in": 0.3,
-    "x1_in": 0.3187
+    "hex": "56b6cb",
+    "fraction": 0.563,
+    "x0_in": 0.3004,
+    "x1_in": 1.0746
    },
    {
     "index": 3,
-    "hex": "008080",
-    "fraction": 0.5546,
-    "x0_in": 0.3187,
-    "x1_in": 1.0813
+    "hex": "ffffff",
+    "fraction": 0.0479,
+    "x0_in": 1.0746,
+    "x1_in": 1.1405
    },
    {
     "index": 4,
-    "hex": "bbb9b5",
-    "fraction": 0.0454,
-    "x0_in": 1.0813,
-    "x1_in": 1.1437
-   },
-   {
-    "index": 5,
-    "hex": "6f263d",
-    "fraction": 0.1682,
-    "x0_in": 1.1437,
+    "hex": "6b106c",
+    "fraction": 0.1706,
+    "x0_in": 1.1405,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 6,
-   "stripes_after": 6,
-   "max_snap_delta": 19.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Distinguished Service",
+   "url": "https://www.vanguardmil.com/products/uscg-distinguished-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_distinguished_service.jpg"
+   "img/ribbons/1421b8b8e57a.jpg"
   ],
-  "residual": {
-   "vertical": 31,
-   "horizontal": 86,
-   "central_vertical": 19.8
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Distinguished Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-distinguished-service-ribbon-unit",
+  "corners_px": [
+   [
+    71.7,
+    448.1
+   ],
+   [
+    1133,
+    450.8
+   ],
+   [
+    1133,
+    748.4
+   ],
+   [
+    74,
+    750.8
+   ]
+  ],
+  "rectified_px": [
+   1060,
+   300
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.2,
+   4.8,
+   0,
+   4.9,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":6,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -134,8 +156,8 @@
   "Coast Guard Distinguished Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 31,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.9,
   "threshold": null
  },
  "grade": "ribbon"

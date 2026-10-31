@@ -44,73 +44,85 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "b0aa7e",
-    "fraction": 0.0409,
+    "hex": "eb3543",
+    "fraction": 1,
     "x0_in": 0,
-    "x1_in": 0.0562
-   },
-   {
-    "index": 1,
-    "hex": "a08346",
-    "fraction": 0.05,
-    "x0_in": 0.0562,
-    "x1_in": 0.125
-   },
-   {
-    "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.8182,
-    "x0_in": 0.125,
-    "x1_in": 1.25
-   },
-   {
-    "index": 3,
-    "hex": "a08346",
-    "fraction": 0.0773,
-    "x0_in": 1.25,
-    "x1_in": 1.3563
-   },
-   {
-    "index": 4,
-    "hex": "b0aa7e",
-    "fraction": 0.0136,
-    "x0_in": 1.3563,
     "x1_in": 1.375
    }
   ],
   "stars": [],
-  "frame": null
+  "frame": {
+   "color_hex": "dcb97a",
+   "light_hex": "faebc1",
+   "dark_hex": "9e7756",
+   "thickness_in": {
+    "top": 0.0584,
+    "bottom": 0.0592,
+    "left": 0.1045,
+    "right": 0.0981
+   },
+   "laurel": {
+    "period_in": 0.0675,
+    "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
+   },
+   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+  }
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes_framed",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 6,
-   "stripes_after": 5,
-   "max_snap_delta": 17.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit Citation: Army Meritorious Unit Commendation",
+   "url": "https://www.vanguardmil.com/products/army-meritorious-unit-commendation-citation",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_meritorious_unit_commendation.jpg"
+   "img/ribbons/1d312c132293.jpg"
   ],
-  "residual": {
-   "vertical": 63.8,
-   "horizontal": 51.4,
-   "central_vertical": 18.8
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit Citation: Army Meritorious Unit Commendation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-meritorious-unit-commendation-citation",
+  "corners_px": [
+   [
+    66.3,
+    374.6
+   ],
+   [
+    1140.5,
+    368.2
+   ],
+   [
+    1142.3,
+    826.6
+   ],
+   [
+    57.6,
+    828.6
+   ]
+  ],
+  "rectified_px": [
+   1079,
+   456
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
   "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -127,8 +139,8 @@
   "Army Meritorious Unit Commendation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 51.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "9ea2a2",
-    "fraction": 0.1591,
+    "hex": "b2b2b2",
+    "fraction": 0.158,
     "x0_in": 0,
-    "x1_in": 0.2188
+    "x1_in": 0.2172
    },
    {
     "index": 1,
-    "hex": "b26e16",
-    "fraction": 0.0409,
-    "x0_in": 0.2188,
-    "x1_in": 0.275
+    "hex": "d67f0b",
+    "fraction": 0.0422,
+    "x0_in": 0.2172,
+    "x1_in": 0.2752
    },
    {
     "index": 2,
-    "hex": "9ea2a2",
-    "fraction": 0.2591,
-    "x0_in": 0.275,
-    "x1_in": 0.6313
+    "hex": "b2b2b2",
+    "fraction": 0.2582,
+    "x0_in": 0.2752,
+    "x1_in": 0.6301
    },
    {
     "index": 3,
-    "hex": "2e592a",
-    "fraction": 0.0841,
-    "x0_in": 0.6313,
-    "x1_in": 0.7469
+    "hex": "2f6629",
+    "fraction": 0.0834,
+    "x0_in": 0.6301,
+    "x1_in": 0.7449
    },
    {
     "index": 4,
-    "hex": "9ea2a2",
-    "fraction": 0.2568,
-    "x0_in": 0.7469,
-    "x1_in": 1.1
+    "hex": "b2b2b2",
+    "fraction": 0.2582,
+    "x0_in": 0.7449,
+    "x1_in": 1.0998
    },
    {
     "index": 5,
-    "hex": "b26e17",
-    "fraction": 0.0432,
-    "x0_in": 1.1,
-    "x1_in": 1.1594
+    "hex": "d67f0b",
+    "fraction": 0.0421,
+    "x0_in": 1.0998,
+    "x1_in": 1.1578
    },
    {
     "index": 6,
-    "hex": "9ea2a2",
-    "fraction": 0.1568,
-    "x0_in": 1.1594,
+    "hex": "b2b2b2",
+    "fraction": 0.158,
+    "x0_in": 1.1578,
     "x1_in": 1.375
    }
   ],
@@ -100,10 +100,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/ac992d68362e.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Marine Corps ROTC Ribbon Unit: Best Drill Squad",
   "vendor_product_url": "https://www.vanguardmil.com/products/usmc-rotc-best-drill-squad-ribbon-unit",
@@ -116,24 +118,58 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor title: Marine Corps ROTC Ribbon Unit Best Drill Squad",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    218
+   ],
+   [
+    600,
+    218
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   164
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0.4,
+   0.3,
+   0,
+   0.3,
+   0.1,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 12.5,
-   "unsnapped": 3,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Marine Corps ROTC Ribbon Unit: Best Drill Squad",
+   "url": "https://www.vanguardmil.com/products/usmc-rotc-best-drill-squad-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.4,
   "threshold": null
  },
  "grade": "ribbon"

@@ -45,64 +45,64 @@
    {
     "index": 0,
     "hex": "ffffff",
-    "fraction": 0.1273,
+    "fraction": 0.1366,
     "x0_in": 0,
-    "x1_in": 0.175
+    "x1_in": 0.1879
    },
    {
     "index": 1,
-    "hex": "012169",
-    "fraction": 0.0818,
-    "x0_in": 0.175,
-    "x1_in": 0.2875
+    "hex": "333783",
+    "fraction": 0.0876,
+    "x0_in": 0.1879,
+    "x1_in": 0.3083
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.1136,
-    "x0_in": 0.2875,
-    "x1_in": 0.4437
+    "fraction": 0.0921,
+    "x0_in": 0.3083,
+    "x1_in": 0.4349
    },
    {
     "index": 3,
-    "hex": "ba0c2f",
-    "fraction": 0.1591,
-    "x0_in": 0.4437,
-    "x1_in": 0.6625
+    "hex": "cf2532",
+    "fraction": 0.1613,
+    "x0_in": 0.4349,
+    "x1_in": 0.6567
    },
    {
     "index": 4,
-    "hex": "f6f034",
-    "fraction": 0.0364,
-    "x0_in": 0.6625,
-    "x1_in": 0.7125
+    "hex": "f6d750",
+    "fraction": 0.0448,
+    "x0_in": 0.6567,
+    "x1_in": 0.7183
    },
    {
     "index": 5,
-    "hex": "ba0c2f",
-    "fraction": 0.1591,
-    "x0_in": 0.7125,
-    "x1_in": 0.9313
+    "hex": "cf2532",
+    "fraction": 0.1613,
+    "x0_in": 0.7183,
+    "x1_in": 0.9401
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.1136,
-    "x0_in": 0.9313,
-    "x1_in": 1.0875
+    "fraction": 0.0921,
+    "x0_in": 0.9401,
+    "x1_in": 1.0667
    },
    {
     "index": 7,
-    "hex": "012169",
-    "fraction": 0.0864,
-    "x0_in": 1.0875,
-    "x1_in": 1.2063
+    "hex": "333783",
+    "fraction": 0.0876,
+    "x0_in": 1.0667,
+    "x1_in": 1.1871
    },
    {
     "index": 8,
     "hex": "ffffff",
-    "fraction": 0.1227,
-    "x0_in": 1.2063,
+    "fraction": 0.1366,
+    "x0_in": 1.1871,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 8.8
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Recruit Training Honor Graduate",
+   "url": "https://www.vanguardmil.com/products/copy-of-coast-guard-ribbon-unit-overseas-service",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_basic_training_honor_graduate.jpg"
+   "img/ribbons/d61b34285d00.jpg"
   ],
-  "residual": {
-   "vertical": 8.8,
-   "horizontal": 155.3,
-   "central_vertical": 8.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Recruit Training Honor Graduate",
+  "vendor_product_url": "https://www.vanguardmil.com/products/copy-of-coast-guard-ribbon-unit-overseas-service",
+  "corners_px": [
+   [
+    71,
+    464.2
+   ],
+   [
+    1125,
+    460.2
+   ],
+   [
+    1125,
+    742.7
+   ],
+   [
+    85.6,
+    740.6
+   ]
+  ],
+  "rectified_px": [
+   1047,
+   280
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   2.3,
+   0.2,
+   2,
+   0.2,
+   0,
+   0.2,
+   1.7,
+   0.2,
+   2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -155,8 +188,8 @@
   "Basic Training Honor Graduate"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.3,
   "threshold": null
  },
  "grade": "ribbon"

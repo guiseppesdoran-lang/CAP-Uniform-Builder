@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "0100fb",
+    "hex": "7bafd4",
     "fraction": 1,
     "x0_in": 0,
     "x1_in": 1.375
@@ -54,84 +54,92 @@
    {
     "index": 0,
     "center_in": [
-     0.4198,
-     0.1125
+     0.4159,
+     0.1614
     ],
-    "outer_radius_in": 0.0625,
-    "point_to_point_in": 0.1249
+    "outer_radius_in": 0.0565,
+    "point_to_point_in": 0.1131,
+    "rotation_deg": 51
    },
    {
     "index": 1,
     "center_in": [
-     1.0076,
-     0.1107
+     0.9581,
+     0.1614
     ],
-    "outer_radius_in": 0.0625,
-    "point_to_point_in": 0.1249
+    "outer_radius_in": 0.0565,
+    "point_to_point_in": 0.1131,
+    "rotation_deg": 51
    },
    {
     "index": 2,
     "center_in": [
-     0.193,
-     0.2819
+     0.687,
+     0.1928
     ],
-    "outer_radius_in": 0.0657,
-    "point_to_point_in": 0.1314
+    "outer_radius_in": 0.0565,
+    "point_to_point_in": 0.1131,
+    "rotation_deg": 51
    },
    {
     "index": 3,
     "center_in": [
-     0.7113,
-     0.2839
+     0.1449,
+     0.2242
     ],
-    "outer_radius_in": 0.0625,
-    "point_to_point_in": 0.1249
+    "outer_radius_in": 0.0565,
+    "point_to_point_in": 0.1131,
+    "rotation_deg": 51
    },
    {
     "index": 4,
     "center_in": [
-     1.2319,
-     0.293
+     1.2292,
+     0.2242
     ],
-    "outer_radius_in": 0.0625,
-    "point_to_point_in": 0.1249
+    "outer_radius_in": 0.0565,
+    "point_to_point_in": 0.1131,
+    "rotation_deg": 51
    }
   ],
   "frame": null
  },
- "classification": "starfield",
+ "classification": "stripes_emblem",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 1,
-   "stripes_after": 1,
-   "max_snap_delta": 1
+  "color_source": "Not sold by Vanguard. Field fill and the five stars from the cached public-domain vector; its black rib lines are texture and are dropped.",
+  "geometry_source": "Wikimedia Commons File:Medal of Honor ribbon.svg (public domain, cached in ribbons/military/references.cache.json), mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Wikimedia Commons File:Medal of Honor ribbon.svg (public domain, cached in ribbons/military/references.cache.json)",
+   "url": null,
+   "image_px": [
+    null,
+    null
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Read from the source named in quality; no fabric photograph of this award exists at the vendor",
   "source_images": [
-   "images/military-ribbons/air_force_medal_of_honor.png",
-   "images/military-ribbons/army_medal_of_honor.png",
-   "images/military-ribbons/coast_guard_medal_of_honor.png",
-   "images/military-ribbons/medal_of_honor.png"
+   "Wikimedia Commons File:Medal of Honor ribbon.svg (public domain, cached in ribbons/military/references.cache.json)"
   ],
-  "residual": {
-   "vertical": 47,
-   "horizontal": 44,
-   "central_vertical": 28.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor_product": "Wikimedia Commons File:Medal of Honor ribbon.svg (public domain, cached in ribbons/military/references.cache.json)",
+  "corners_px": null,
+  "rectified_px": [
+   1400,
+   382
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "reference",
+  "source_kind": "public-reference",
+  "stripe_distance_to_lit": [
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":1,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -171,8 +179,8 @@
   "Medal of Honor"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 44,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

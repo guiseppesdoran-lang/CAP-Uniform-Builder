@@ -44,93 +44,93 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a08346",
-    "fraction": 0.1136,
+    "hex": "603524",
+    "fraction": 0.1395,
     "x0_in": 0,
-    "x1_in": 0.1562
+    "x1_in": 0.1918
    },
    {
     "index": 1,
-    "hex": "215732",
-    "fraction": 0.05,
-    "x0_in": 0.1562,
-    "x1_in": 0.225
+    "hex": "e8e3de",
+    "fraction": 0.0464,
+    "x0_in": 0.1918,
+    "x1_in": 0.2556
    },
    {
     "index": 2,
-    "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 0.225,
-    "x1_in": 0.3062
+    "hex": "151419",
+    "fraction": 0.046,
+    "x0_in": 0.2556,
+    "x1_in": 0.3189
    },
    {
     "index": 3,
-    "hex": "cf0e34",
-    "fraction": 0.0318,
-    "x0_in": 0.3062,
-    "x1_in": 0.3499
+    "hex": "e8e3de",
+    "fraction": 0.0474,
+    "x0_in": 0.3189,
+    "x1_in": 0.3841
    },
    {
     "index": 4,
-    "hex": "215732",
-    "fraction": 0.1955,
-    "x0_in": 0.3499,
-    "x1_in": 0.6188
+    "hex": "0e7f55",
+    "fraction": 0.1674,
+    "x0_in": 0.3841,
+    "x1_in": 0.6143
    },
    {
     "index": 5,
-    "hex": "31319c",
-    "fraction": 0.0273,
-    "x0_in": 0.6188,
-    "x1_in": 0.6563
+    "hex": "8e3030",
+    "fraction": 0.0465,
+    "x0_in": 0.6143,
+    "x1_in": 0.6783
    },
    {
     "index": 6,
-    "hex": "ffffff",
-    "fraction": 0.0409,
-    "x0_in": 0.6563,
-    "x1_in": 0.7125
+    "hex": "e8e3de",
+    "fraction": 0.0308,
+    "x0_in": 0.6783,
+    "x1_in": 0.7207
    },
    {
     "index": 7,
-    "hex": "ba0c2f",
-    "fraction": 0.0273,
-    "x0_in": 0.7125,
-    "x1_in": 0.7501
+    "hex": "142172",
+    "fraction": 0.0296,
+    "x0_in": 0.7207,
+    "x1_in": 0.7613
    },
    {
     "index": 8,
-    "hex": "215732",
-    "fraction": 0.1772,
-    "x0_in": 0.7501,
-    "x1_in": 0.9937
+    "hex": "0e7f55",
+    "fraction": 0.1811,
+    "x0_in": 0.7613,
+    "x1_in": 1.0103
    },
    {
     "index": 9,
-    "hex": "ffffff",
-    "fraction": 0.0546,
-    "x0_in": 0.9937,
-    "x1_in": 1.0688
+    "hex": "b51725",
+    "fraction": 0.0454,
+    "x0_in": 1.0103,
+    "x1_in": 1.0728
    },
    {
     "index": 10,
-    "hex": "000000",
-    "fraction": 0.0545,
-    "x0_in": 1.0688,
-    "x1_in": 1.1437
+    "hex": "e8e3de",
+    "fraction": 0.0454,
+    "x0_in": 1.0728,
+    "x1_in": 1.1352
    },
    {
     "index": 11,
-    "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 1.1437,
-    "x1_in": 1.225
+    "hex": "0e7f55",
+    "fraction": 0.0455,
+    "x0_in": 1.1352,
+    "x1_in": 1.1977
    },
    {
     "index": 12,
-    "hex": "6f263d",
-    "fraction": 0.1091,
-    "x0_in": 1.225,
+    "hex": "603524",
+    "fraction": 0.129,
+    "x0_in": 1.1977,
     "x1_in": 1.375
    }
   ],
@@ -139,34 +139,71 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 13,
-   "stripes_after": 13,
-   "max_snap_delta": 29.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: European African Middle Eastern Campaigns",
+   "url": "https://www.vanguardmil.com/products/european-african-middle-eastern-campaigns-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/european_african_middle_eastern_campaign.jpg"
+   "img/ribbons/d777bd7698f9.jpg"
   ],
-  "residual": {
-   "vertical": 11.2,
-   "horizontal": 110.9,
-   "central_vertical": 10.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: European African Middle Eastern Campaigns",
+  "vendor_product_url": "https://www.vanguardmil.com/products/european-african-middle-eastern-campaigns-ribbon-unit",
+  "corners_px": [
+   [
+    67,
+    445.9
+   ],
+   [
+    1130.4,
+    454.5
+   ],
+   [
+    1133.8,
+    752.9
+   ],
+   [
+    67,
+    738.8
+   ]
+  ],
+  "rectified_px": [
+   1065,
+   296
+  ],
+  "symmetry": "none",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.1,
+   0.9,
+   0,
+   0.5,
+   0.4,
+   0,
+   0.4,
+   0,
+   0.3,
+   0,
+   0.7,
+   0.8,
+   1.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -187,8 +224,8 @@
   "european african middle eastern campaign"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 11.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.3,
   "threshold": null
  },
  "grade": "ribbon"

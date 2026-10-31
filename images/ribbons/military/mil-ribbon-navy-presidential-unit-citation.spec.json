@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "00205b",
-    "fraction": 0.2333,
+    "hex": "44467a",
+    "fraction": 0.2665,
     "y0_in": 0,
-    "y1_in": 0.0875
+    "y1_in": 0.0999
    },
    {
     "index": 1,
-    "hex": "ffb511",
-    "fraction": 0.5667,
-    "y0_in": 0.0875,
-    "y1_in": 0.3
+    "hex": "fce05c",
+    "fraction": 0.4671,
+    "y0_in": 0.0999,
+    "y1_in": 0.2751
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.2,
-    "y0_in": 0.3,
+    "hex": "f72f42",
+    "fraction": 0.2665,
+    "y0_in": 0.2751,
     "y1_in": 0.375
    }
   ],
@@ -69,34 +69,61 @@
  },
  "classification": "hstripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 8.9
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy Presidential Unit Citation",
+   "url": "https://www.vanguardmil.com/products/usn-presidential-unit-citation-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_presidential_unit_citation.jpg"
+   "img/ribbons/6b5d1f8aa793.jpg"
   ],
-  "residual": {
-   "vertical": 96.1,
-   "horizontal": 4.7,
-   "central_vertical": 0.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Presidential Unit Citation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-presidential-unit-citation-ribbon-unit",
+  "corners_px": [
+   [
+    69.4,
+    463.6
+   ],
+   [
+    1122,
+    457.1
+   ],
+   [
+    1122,
+    732.7
+   ],
+   [
+    75.6,
+    742.5
+   ]
+  ],
+  "rectified_px": [
+   1050,
+   277
+  ],
+  "symmetry": "layout",
   "photographic_source": false,
-  "border_frame_detected": true,
+  "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"horizontal-bands\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD",
@@ -115,8 +142,8 @@
   "Navy Presidential Unit Citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 4.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "b26d15",
-    "fraction": 0.0932,
+    "hex": "d47e0b",
+    "fraction": 0.0936,
     "x0_in": 0,
-    "x1_in": 0.1282
+    "x1_in": 0.1288
    },
    {
     "index": 1,
-    "hex": "9ea2a2",
-    "fraction": 0.0386,
-    "x0_in": 0.1282,
-    "x1_in": 0.1812
+    "hex": "b1b1b1",
+    "fraction": 0.0389,
+    "x0_in": 0.1288,
+    "x1_in": 0.1822
    },
    {
     "index": 2,
-    "hex": "2f5b2b",
-    "fraction": 0.1137,
-    "x0_in": 0.1812,
-    "x1_in": 0.3376
+    "hex": "2f6729",
+    "fraction": 0.1118,
+    "x0_in": 0.1822,
+    "x1_in": 0.3359
    },
    {
     "index": 3,
-    "hex": "9ea2a2",
-    "fraction": 0.1727,
-    "x0_in": 0.3376,
-    "x1_in": 0.575
+    "hex": "b1b1b1",
+    "fraction": 0.1738,
+    "x0_in": 0.3359,
+    "x1_in": 0.5748
    },
    {
     "index": 4,
-    "hex": "b06c15",
-    "fraction": 0.1636,
-    "x0_in": 0.575,
-    "x1_in": 0.8
+    "hex": "d47e0b",
+    "fraction": 0.1639,
+    "x0_in": 0.5748,
+    "x1_in": 0.8002
    },
    {
     "index": 5,
-    "hex": "9ea2a2",
-    "fraction": 0.1727,
-    "x0_in": 0.8,
-    "x1_in": 1.0374
+    "hex": "b1b1b1",
+    "fraction": 0.1738,
+    "x0_in": 0.8002,
+    "x1_in": 1.0391
    },
    {
     "index": 6,
-    "hex": "2f5b2b",
-    "fraction": 0.1137,
-    "x0_in": 1.0374,
-    "x1_in": 1.1938
+    "hex": "2f6729",
+    "fraction": 0.1118,
+    "x0_in": 1.0391,
+    "x1_in": 1.1928
    },
    {
     "index": 7,
-    "hex": "9ea2a2",
-    "fraction": 0.0363,
-    "x0_in": 1.1938,
-    "x1_in": 1.2437
+    "hex": "b1b1b1",
+    "fraction": 0.0389,
+    "x0_in": 1.1928,
+    "x1_in": 1.2462
    },
    {
     "index": 8,
-    "hex": "b26d15",
-    "fraction": 0.0955,
-    "x0_in": 1.2437,
+    "hex": "d47e0b",
+    "fraction": 0.0936,
+    "x0_in": 1.2462,
     "x1_in": 1.375
    }
   ],
@@ -114,10 +114,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/78d588a2796c.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Marine Corps ROTC Ribbon Unit: Superior Marksman",
   "vendor_product_url": "https://www.vanguardmil.com/products/usmc-rotc-superior-marksman-ribbon-unit",
@@ -130,24 +132,60 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor title: Marine Corps ROTC Ribbon Unit n-3-11 MCJROTC superior marksman",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    217
+   ],
+   [
+    600,
+    217
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   165
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.3,
+   0,
+   0,
+   0.3,
+   0,
+   0,
+   0.6,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 12.1,
-   "unsnapped": 5,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Marine Corps ROTC Ribbon Unit: Superior Marksman",
+   "url": "https://www.vanguardmil.com/products/usmc-rotc-superior-marksman-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.6,
   "threshold": null
  },
  "grade": "ribbon"

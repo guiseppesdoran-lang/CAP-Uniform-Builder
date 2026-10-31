@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "55a7ba",
-    "fraction": 0.3477,
+    "hex": "5bc0d6",
+    "fraction": 0.3458,
     "x0_in": 0,
-    "x1_in": 0.4781
+    "x1_in": 0.4755
    },
    {
     "index": 1,
-    "hex": "db241c",
-    "fraction": 0.1023,
-    "x0_in": 0.4781,
-    "x1_in": 0.6188
+    "hex": "f20404",
+    "fraction": 0.1051,
+    "x0_in": 0.4755,
+    "x1_in": 0.62
    },
    {
     "index": 2,
-    "hex": "131b4e",
-    "fraction": 0.1023,
-    "x0_in": 0.6188,
-    "x1_in": 0.7594
+    "hex": "0b195b",
+    "fraction": 0.0981,
+    "x0_in": 0.62,
+    "x1_in": 0.755
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.1045,
-    "x0_in": 0.7594,
-    "x1_in": 0.9031
+    "fraction": 0.1051,
+    "x0_in": 0.755,
+    "x1_in": 0.8995
    },
    {
     "index": 4,
-    "hex": "54a7ba",
-    "fraction": 0.3432,
-    "x0_in": 0.9031,
+    "hex": "5bc0d6",
+    "fraction": 0.3458,
+    "x0_in": 0.8995,
     "x1_in": 1.375
    }
   ],
@@ -86,10 +86,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/05b87475a8e3.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit: Reserve Officers Association",
   "vendor_product_url": "https://www.vanguardmil.com/products/marine-corps-rotc-ribbon-unit-reserve-officers-association",
@@ -102,24 +104,56 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor title: Marine Corps ROTC ribbon unit, Reserve Officers Association (MCJROTC / AFJROTC)",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    216
+   ],
+   [
+    600,
+    216
+   ],
+   [
+    600,
+    383
+   ],
+   [
+    0,
+    383
+   ]
+  ],
+  "rectified_px": [
+   600,
+   167
+  ],
+  "symmetry": "layout",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0.4,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 10.2,
-   "unsnapped": 3,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Reserve Officers Association",
+   "url": "https://www.vanguardmil.com/products/marine-corps-rotc-ribbon-unit-reserve-officers-association",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.4,
   "threshold": null
  },
  "grade": "ribbon"

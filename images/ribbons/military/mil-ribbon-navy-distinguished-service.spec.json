@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "041e42",
-    "fraction": 0.4091,
+    "hex": "2c336a",
+    "fraction": 0.4105,
     "x0_in": 0,
-    "x1_in": 0.5625
+    "x1_in": 0.5644
    },
    {
     "index": 1,
-    "hex": "f7ee2a",
-    "fraction": 0.1909,
-    "x0_in": 0.5625,
-    "x1_in": 0.825
+    "hex": "f6db4e",
+    "fraction": 0.1791,
+    "x0_in": 0.5644,
+    "x1_in": 0.8106
    },
    {
     "index": 2,
-    "hex": "041e42",
-    "fraction": 0.4,
-    "x0_in": 0.825,
+    "hex": "2c336a",
+    "fraction": 0.4105,
+    "x0_in": 0.8106,
     "x1_in": 1.375
    }
   ],
@@ -69,34 +69,61 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 12.4
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy Distinguished Service Medal",
+   "url": "https://www.vanguardmil.com/products/usn-distinguished-service-medal-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_distinguished_service.jpg"
+   "img/ribbons/ea0bcef66b9d.jpg"
   ],
-  "residual": {
-   "vertical": 3.2,
-   "horizontal": 97,
-   "central_vertical": 2.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Distinguished Service Medal",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-distinguished-service-medal-ribbon-unit",
+  "corners_px": [
+   [
+    63,
+    452.6
+   ],
+   [
+    1134,
+    447.6
+   ],
+   [
+    1134,
+    752
+   ],
+   [
+    63,
+    752
+   ]
+  ],
+  "rectified_px": [
+   1071,
+   302
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -114,8 +141,8 @@
   "Navy Distinguished Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 3.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.2,
   "threshold": null
  },
  "grade": "ribbon"

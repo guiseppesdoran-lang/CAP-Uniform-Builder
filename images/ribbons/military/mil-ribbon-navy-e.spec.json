@@ -44,65 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a08346",
-    "fraction": 0.0545,
+    "hex": "f7dda6",
+    "fraction": 0.0502,
     "x0_in": 0,
-    "x1_in": 0.0749
+    "x1_in": 0.069
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.091,
-    "x0_in": 0.0749,
-    "x1_in": 0.2001
+    "fraction": 0.0888,
+    "x0_in": 0.069,
+    "x1_in": 0.1911
    },
    {
     "index": 2,
-    "hex": "012169",
-    "fraction": 0.259,
-    "x0_in": 0.2001,
-    "x1_in": 0.5562
+    "hex": "434f7e",
+    "fraction": 0.722,
+    "x0_in": 0.1911,
+    "x1_in": 1.1839
    },
    {
     "index": 3,
-    "hex": "2f3b77",
-    "fraction": 0.0137,
-    "x0_in": 0.5562,
-    "x1_in": 0.575
+    "hex": "ffffff",
+    "fraction": 0.0888,
+    "x0_in": 1.1839,
+    "x1_in": 1.306
    },
    {
     "index": 4,
-    "hex": "53749d",
-    "fraction": 0.0409,
-    "x0_in": 0.575,
-    "x1_in": 0.6313
-   },
-   {
-    "index": 5,
-    "hex": "2f3b77",
-    "fraction": 0.1182,
-    "x0_in": 0.6313,
-    "x1_in": 0.7938
-   },
-   {
-    "index": 6,
-    "hex": "012169",
-    "fraction": 0.2818,
-    "x0_in": 0.7938,
-    "x1_in": 1.1813
-   },
-   {
-    "index": 7,
-    "hex": "ffffff",
-    "fraction": 0.0909,
-    "x0_in": 1.1813,
-    "x1_in": 1.3063
-   },
-   {
-    "index": 8,
-    "hex": "a08346",
-    "fraction": 0.05,
-    "x0_in": 1.3063,
+    "hex": "f7dda6",
+    "fraction": 0.0502,
+    "x0_in": 1.306,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 11.8
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy E for Efficiency with letter E for Efficiency",
+   "url": "https://www.vanguardmil.com/products/navy-ribbon-unit-e-for-efficiency-with-letter-e-for-efficiency",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_e.jpg"
+   "img/ribbons/8e74c9340053.jpg"
   ],
-  "residual": {
-   "vertical": 18.7,
-   "horizontal": 119.1,
-   "central_vertical": 14.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy E for Efficiency with letter E for Efficiency",
+  "vendor_product_url": "https://www.vanguardmil.com/products/navy-ribbon-unit-e-for-efficiency-with-letter-e-for-efficiency",
+  "corners_px": [
+   [
+    68.6,
+    451.9
+   ],
+   [
+    1135.1,
+    457.5
+   ],
+   [
+    1130.1,
+    748
+   ],
+   [
+    64,
+    743.9
+   ]
+  ],
+  "rectified_px": [
+   1066,
+   291
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.5,
+   3.6,
+   0,
+   3.8,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -156,8 +157,8 @@
   "Navy E"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 18.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.8,
   "threshold": null
  },
  "grade": "ribbon"

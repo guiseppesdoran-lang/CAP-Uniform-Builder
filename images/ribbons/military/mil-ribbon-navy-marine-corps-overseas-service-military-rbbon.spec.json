@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "008eaa",
-    "fraction": 0.0773,
+    "hex": "61b4cc",
+    "fraction": 0.0782,
     "x0_in": 0,
-    "x1_in": 0.1063
+    "x1_in": 0.1075
    },
    {
     "index": 1,
-    "hex": "f6c80e",
-    "fraction": 0.05,
-    "x0_in": 0.1063,
-    "x1_in": 0.175
+    "hex": "f1c51f",
+    "fraction": 0.0474,
+    "x0_in": 0.1075,
+    "x1_in": 0.1726
    },
    {
     "index": 2,
-    "hex": "041e42",
-    "fraction": 0.2318,
-    "x0_in": 0.175,
-    "x1_in": 0.4938
+    "hex": "273070",
+    "fraction": 0.2235,
+    "x0_in": 0.1726,
+    "x1_in": 0.4799
    },
    {
     "index": 3,
-    "hex": "f6c80e",
-    "fraction": 0.05,
-    "x0_in": 0.4938,
-    "x1_in": 0.5625
+    "hex": "f1c51f",
+    "fraction": 0.0574,
+    "x0_in": 0.4799,
+    "x1_in": 0.5588
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.1864,
-    "x0_in": 0.5625,
-    "x1_in": 0.8188
+    "hex": "de2939",
+    "fraction": 0.1873,
+    "x0_in": 0.5588,
+    "x1_in": 0.8162
    },
    {
     "index": 5,
-    "hex": "f6c80e",
-    "fraction": 0.0454,
-    "x0_in": 0.8188,
-    "x1_in": 0.8812
+    "hex": "f1c51f",
+    "fraction": 0.0574,
+    "x0_in": 0.8162,
+    "x1_in": 0.8951
    },
    {
     "index": 6,
-    "hex": "041e42",
-    "fraction": 0.2318,
-    "x0_in": 0.8812,
-    "x1_in": 1.2
+    "hex": "273070",
+    "fraction": 0.2235,
+    "x0_in": 0.8951,
+    "x1_in": 1.2024
    },
    {
     "index": 7,
-    "hex": "f6c80e",
-    "fraction": 0.0546,
-    "x0_in": 1.2,
-    "x1_in": 1.275
+    "hex": "f1c51f",
+    "fraction": 0.0474,
+    "x0_in": 1.2024,
+    "x1_in": 1.2675
    },
    {
     "index": 8,
-    "hex": "008eaa",
-    "fraction": 0.0727,
-    "x0_in": 1.275,
+    "hex": "61b4cc",
+    "fraction": 0.0782,
+    "x0_in": 1.2675,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 8.9
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: USN and USMC Overseas Service",
+   "url": "https://www.vanguardmil.com/products/usn-and-usmc-overseas-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_marine_corps_overseas_service_military_rbbon.jpg"
+   "img/ribbons/e067a6400a7a.jpg"
   ],
-  "residual": {
-   "vertical": 7.9,
-   "horizontal": 115.1,
-   "central_vertical": 6.5
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: USN and USMC Overseas Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-and-usmc-overseas-service-ribbon-unit",
+  "corners_px": [
+   [
+    65.8,
+    457.4
+   ],
+   [
+    1120.2,
+    453.8
+   ],
+   [
+    1134.7,
+    743.1
+   ],
+   [
+    86.6,
+    748.8
+   ]
+  ],
+  "rectified_px": [
+   1051,
+   291
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.3,
+   0.9,
+   0.3,
+   0,
+   0.3,
+   0.8,
+   0.4,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -156,8 +189,8 @@
   "Navy & Marine Corps Overseas Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 7.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.9,
   "threshold": null
  },
  "grade": "ribbon"

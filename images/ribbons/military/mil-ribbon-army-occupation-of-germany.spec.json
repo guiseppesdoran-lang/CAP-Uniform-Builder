@@ -44,65 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ffffff",
-    "fraction": 0.05,
+    "hex": "041e42",
+    "fraction": 0.0189,
     "x0_in": 0,
-    "x1_in": 0.0688
+    "x1_in": 0.026
    },
    {
     "index": 1,
-    "hex": "041e42",
-    "fraction": 0.0318,
-    "x0_in": 0.0688,
-    "x1_in": 0.1125
+    "hex": "ba0c2f",
+    "fraction": 0.0283,
+    "x0_in": 0.026,
+    "x1_in": 0.0649
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.0273,
-    "x0_in": 0.1125,
-    "x1_in": 0.15
+    "hex": "ffffff",
+    "fraction": 0.1226,
+    "x0_in": 0.0649,
+    "x1_in": 0.2335
    },
    {
     "index": 3,
-    "hex": "ffffff",
-    "fraction": 0.1273,
-    "x0_in": 0.15,
-    "x1_in": 0.3251
+    "hex": "000000",
+    "fraction": 0.6604,
+    "x0_in": 0.2335,
+    "x1_in": 1.1415
    },
    {
     "index": 4,
-    "hex": "000000",
-    "fraction": 0.4772,
-    "x0_in": 0.3251,
-    "x1_in": 0.9812
+    "hex": "ffffff",
+    "fraction": 0.1226,
+    "x0_in": 1.1415,
+    "x1_in": 1.3101
    },
    {
     "index": 5,
-    "hex": "ffffff",
-    "fraction": 0.1273,
-    "x0_in": 0.9812,
-    "x1_in": 1.1562
+    "hex": "ba0c2f",
+    "fraction": 0.0283,
+    "x0_in": 1.3101,
+    "x1_in": 1.349
    },
    {
     "index": 6,
-    "hex": "ba0c2f",
-    "fraction": 0.0318,
-    "x0_in": 1.1562,
-    "x1_in": 1.2
-   },
-   {
-    "index": 7,
     "hex": "041e42",
-    "fraction": 0.0228,
-    "x0_in": 1.2,
-    "x1_in": 1.2313
-   },
-   {
-    "index": 8,
-    "hex": "ffffff",
-    "fraction": 0.1045,
-    "x0_in": 1.2313,
+    "fraction": 0.0189,
+    "x0_in": 1.349,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +97,46 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 9.5
+  "color_source": "Not sold by Vanguard. Stripe widths from the cached public-domain vector (the repo raster has white padding that was read as stripes); colours kept from the earlier measurement.",
+  "geometry_source": "Wikimedia Commons File:Army of Occupation of Germany ribbon.svg (public domain, cached), mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Wikimedia Commons File:Army of Occupation of Germany ribbon.svg (public domain, cached)",
+   "url": null,
+   "image_px": [
+    null,
+    null
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Read from the source named in quality; no fabric photograph of this award exists at the vendor",
   "source_images": [
-   "images/military-ribbons/army_occupation_of_germany.jpg"
+   "Wikimedia Commons File:Army of Occupation of Germany ribbon.svg (public domain, cached)"
   ],
-  "residual": {
-   "vertical": 11.8,
-   "horizontal": 191.2,
-   "central_vertical": 7.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor_product": "Wikimedia Commons File:Army of Occupation of Germany ribbon.svg (public domain, cached)",
+  "corners_px": null,
+  "rectified_px": [
+   1375,
+   375
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "reference",
+  "source_kind": "public-reference",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -155,8 +153,8 @@
   "Army Occupation of Germany Military Medal &"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 11.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

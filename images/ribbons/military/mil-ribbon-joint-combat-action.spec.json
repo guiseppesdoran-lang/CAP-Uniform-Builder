@@ -44,87 +44,118 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "041e42",
-    "fraction": 0.2273,
+    "hex": "283066",
+    "fraction": 0.2147,
     "x0_in": 0,
-    "x1_in": 0.3125
+    "x1_in": 0.2952
    },
    {
     "index": 1,
-    "hex": "e2b41e",
-    "fraction": 0.2318,
-    "x0_in": 0.3125,
-    "x1_in": 0.6313
+    "hex": "f6c924",
+    "fraction": 0.2397,
+    "x0_in": 0.2952,
+    "x1_in": 0.6249
    },
    {
     "index": 2,
-    "hex": "e67272",
-    "fraction": 0.0318,
-    "x0_in": 0.6313,
-    "x1_in": 0.675
+    "hex": "af2636",
+    "fraction": 0.0297,
+    "x0_in": 0.6249,
+    "x1_in": 0.6657
    },
    {
     "index": 3,
-    "hex": "bbb9b5",
-    "fraction": 0.0273,
-    "x0_in": 0.675,
-    "x1_in": 0.7125
+    "hex": "ffffff",
+    "fraction": 0.0317,
+    "x0_in": 0.6657,
+    "x1_in": 0.7093
    },
    {
     "index": 4,
-    "hex": "808080",
-    "fraction": 0.0318,
-    "x0_in": 0.7125,
-    "x1_in": 0.7562
+    "hex": "283066",
+    "fraction": 0.0297,
+    "x0_in": 0.7093,
+    "x1_in": 0.7501
    },
    {
     "index": 5,
-    "hex": "e2b41e",
-    "fraction": 0.2318,
-    "x0_in": 0.7562,
-    "x1_in": 1.075
+    "hex": "f6c924",
+    "fraction": 0.2397,
+    "x0_in": 0.7501,
+    "x1_in": 1.0798
    },
    {
     "index": 6,
-    "hex": "ba0c2f",
-    "fraction": 0.2182,
-    "x0_in": 1.075,
+    "hex": "af2636",
+    "fraction": 0.2147,
+    "x0_in": 1.0798,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 20.9
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Combat Action",
+   "url": "https://www.vanguardmil.com/products/combat-action-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/combat_action.jpg"
+   "img/ribbons/2bd260f4e27a.jpg"
   ],
-  "residual": {
-   "vertical": 34.9,
-   "horizontal": 86,
-   "central_vertical": 17.5
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Combat Action",
+  "vendor_product_url": "https://www.vanguardmil.com/products/combat-action-ribbon-unit",
+  "corners_px": [
+   [
+    61.4,
+    458.6
+   ],
+   [
+    1126.7,
+    449.1
+   ],
+   [
+    1138.2,
+    748
+   ],
+   [
+    71.5,
+    751
+   ]
+  ],
+  "rectified_px": [
+   1066,
+   296
+  ],
+  "symmetry": "layout",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.6,
+   0.2,
+   1.5,
+   2.5,
+   4.4,
+   0.1,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -142,8 +173,8 @@
   "Combat Action"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 34.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.4,
   "threshold": null
  },
  "grade": "ribbon"

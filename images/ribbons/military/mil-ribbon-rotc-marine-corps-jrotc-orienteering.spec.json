@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "3e5c2f",
-    "fraction": 0.4,
+    "hex": "4c7c31",
+    "fraction": 0.3984,
     "x0_in": 0,
-    "x1_in": 0.55
+    "x1_in": 0.5478
    },
    {
     "index": 1,
-    "hex": "8a2319",
-    "fraction": 0.0591,
-    "x0_in": 0.55,
-    "x1_in": 0.6313
+    "hex": "aa2110",
+    "fraction": 0.0605,
+    "x0_in": 0.5478,
+    "x1_in": 0.631
    },
    {
     "index": 2,
-    "hex": "c9c02a",
+    "hex": "d7d129",
     "fraction": 0.0273,
-    "x0_in": 0.6313,
-    "x1_in": 0.6688
+    "x0_in": 0.631,
+    "x1_in": 0.6685
    },
    {
     "index": 3,
-    "hex": "415f30",
-    "fraction": 0.0272,
-    "x0_in": 0.6688,
-    "x1_in": 0.7062
+    "hex": "4c7c31",
+    "fraction": 0.0276,
+    "x0_in": 0.6685,
+    "x1_in": 0.7065
    },
    {
     "index": 4,
-    "hex": "c2b92b",
-    "fraction": 0.0296,
-    "x0_in": 0.7062,
-    "x1_in": 0.7469
+    "hex": "d7d129",
+    "fraction": 0.0273,
+    "x0_in": 0.7065,
+    "x1_in": 0.744
    },
    {
     "index": 5,
-    "hex": "88241a",
-    "fraction": 0.0591,
-    "x0_in": 0.7469,
-    "x1_in": 0.8282
+    "hex": "aa2110",
+    "fraction": 0.0605,
+    "x0_in": 0.744,
+    "x1_in": 0.8272
    },
    {
     "index": 6,
-    "hex": "3e5d2f",
-    "fraction": 0.3977,
-    "x0_in": 0.8282,
+    "hex": "4c7c31",
+    "fraction": 0.3984,
+    "x0_in": 0.8272,
     "x1_in": 1.375
    }
   ],
@@ -100,10 +100,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/5e0c55f58db5.jpg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit #5204 - Marine Corps ROTC: Orienteering",
   "vendor_product_url": "https://www.vanguardmil.com/products/usmc-rotc-orienteering-ribbon-unit",
@@ -116,24 +118,58 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor title: unit 5204 Marine Corps ROTC Orienteering (MCJROTC)",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    175
+   ],
+   [
+    480,
+    175
+   ],
+   [
+    480,
+    305
+   ],
+   [
+    0,
+    305
+   ]
+  ],
+  "rectified_px": [
+   480,
+   130
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.2,
+   0.2,
+   0.2,
+   0.2,
+   0.2,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 14.4,
-   "unsnapped": 7,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit #5204 - Marine Corps ROTC: Orienteering",
+   "url": "https://www.vanguardmil.com/products/usmc-rotc-orienteering-ribbon-unit",
+   "image_px": [
+    480,
+    480
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.2,
   "threshold": null
  },
  "grade": "ribbon"

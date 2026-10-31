@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "339966",
-    "fraction": 0.0591,
+    "hex": "066739",
+    "fraction": 0.054,
     "x0_in": 0,
-    "x1_in": 0.0813
+    "x1_in": 0.0742
    },
    {
     "index": 1,
-    "hex": "ffcd00",
-    "fraction": 0.0227,
-    "x0_in": 0.0813,
-    "x1_in": 0.1125
+    "hex": "fdd804",
+    "fraction": 0.0263,
+    "x0_in": 0.0742,
+    "x1_in": 0.1103
    },
    {
     "index": 2,
-    "hex": "ee0028",
-    "fraction": 0.3273,
-    "x0_in": 0.1125,
-    "x1_in": 0.5625
+    "hex": "ed2025",
+    "fraction": 0.3339,
+    "x0_in": 0.1103,
+    "x1_in": 0.5695
    },
    {
     "index": 3,
-    "hex": "215732",
-    "fraction": 0.1773,
-    "x0_in": 0.5625,
-    "x1_in": 0.8063
+    "hex": "066739",
+    "fraction": 0.1717,
+    "x0_in": 0.5695,
+    "x1_in": 0.8055
    },
    {
     "index": 4,
-    "hex": "ee0028",
-    "fraction": 0.3318,
-    "x0_in": 0.8063,
-    "x1_in": 1.2625
+    "hex": "ed2025",
+    "fraction": 0.334,
+    "x0_in": 0.8055,
+    "x1_in": 1.2647
    },
    {
     "index": 5,
-    "hex": "ffcd00",
-    "fraction": 0.0273,
-    "x0_in": 1.2625,
-    "x1_in": 1.3001
+    "hex": "fdd804",
+    "fraction": 0.0262,
+    "x0_in": 1.2647,
+    "x1_in": 1.3008
    },
    {
     "index": 6,
-    "hex": "339966",
-    "fraction": 0.0545,
-    "x0_in": 1.3001,
+    "hex": "066739",
+    "fraction": 0.054,
+    "x0_in": 1.3008,
     "x1_in": 1.375
    }
   ],
@@ -97,34 +97,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 11.9
+  "color_source": "repo raster images/military-ribbons/naval_reserve_special_commendation.jpg, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "repo raster images/military-ribbons/naval_reserve_special_commendation.jpg, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "repo raster (flat art)",
+   "url": null,
+   "image_px": [
+    215,
+    59
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
    "images/military-ribbons/naval_reserve_special_commendation.jpg"
   ],
-  "residual": {
-   "vertical": 7.7,
-   "horizontal": 98.6,
-   "central_vertical": 7.7
-  },
-  "edge_frame_trimmed": 0,
+  "vendor_product": "repo raster (flat art)",
+  "corners_px": [
+   [
+    0,
+    0
+   ],
+   [
+    215,
+    0
+   ],
+   [
+    215,
+    59
+   ],
+   [
+    0,
+    59
+   ]
+  ],
+  "rectified_px": [
+   215,
+   59
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
   "source_kind": "raster",
-  "note": ""
+  "stripe_distance_to_lit": [
+   0.3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "NAVY"
@@ -141,8 +170,8 @@
   "navy reserve special commendation ribbon"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 7.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.4,
   "threshold": null
  },
  "grade": "ribbon"

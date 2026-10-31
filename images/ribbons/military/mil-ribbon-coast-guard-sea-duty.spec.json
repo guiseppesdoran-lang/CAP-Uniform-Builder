@@ -44,116 +44,150 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "041e42",
-    "fraction": 0.1115,
+    "hex": "273168",
+    "fraction": 0.1009,
     "x0_in": 0,
-    "x1_in": 0.1533
+    "x1_in": 0.1388
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.114,
-    "x0_in": 0.1533,
-    "x1_in": 0.3101
+    "hex": "e23140",
+    "fraction": 0.1226,
+    "x0_in": 0.1388,
+    "x1_in": 0.3073
    },
    {
     "index": 2,
-    "hex": "e2b41e",
-    "fraction": 0.1145,
-    "x0_in": 0.3101,
-    "x1_in": 0.4675
+    "hex": "e2bf44",
+    "fraction": 0.1114,
+    "x0_in": 0.3073,
+    "x1_in": 0.4605
    },
    {
     "index": 3,
-    "hex": "003e51",
-    "fraction": 0.0685,
-    "x0_in": 0.4675,
-    "x1_in": 0.5617
+    "hex": "4a7ca1",
+    "fraction": 0.0722,
+    "x0_in": 0.4605,
+    "x1_in": 0.5597
    },
    {
     "index": 4,
-    "hex": "00c1d5",
-    "fraction": 0.069,
-    "x0_in": 0.5617,
-    "x1_in": 0.6566
+    "hex": "8bc8dc",
+    "fraction": 0.0695,
+    "x0_in": 0.5597,
+    "x1_in": 0.6552
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.045,
-    "x0_in": 0.6566,
-    "x1_in": 0.7184
+    "fraction": 0.047,
+    "x0_in": 0.6552,
+    "x1_in": 0.7198
    },
    {
     "index": 6,
-    "hex": "00c1d5",
-    "fraction": 0.069,
-    "x0_in": 0.7184,
-    "x1_in": 0.8133
+    "hex": "8bc8dc",
+    "fraction": 0.0695,
+    "x0_in": 0.7198,
+    "x1_in": 0.8153
    },
    {
     "index": 7,
-    "hex": "003e51",
-    "fraction": 0.0685,
-    "x0_in": 0.8133,
-    "x1_in": 0.9075
+    "hex": "4a7ca1",
+    "fraction": 0.0722,
+    "x0_in": 0.8153,
+    "x1_in": 0.9145
    },
    {
     "index": 8,
-    "hex": "e2b41e",
-    "fraction": 0.1145,
-    "x0_in": 0.9075,
-    "x1_in": 1.0649
+    "hex": "e2bf44",
+    "fraction": 0.1114,
+    "x0_in": 0.9145,
+    "x1_in": 1.0677
    },
    {
     "index": 9,
-    "hex": "ba0c2f",
-    "fraction": 0.114,
-    "x0_in": 1.0649,
-    "x1_in": 1.2217
+    "hex": "e23140",
+    "fraction": 0.1226,
+    "x0_in": 1.0677,
+    "x1_in": 1.2362
    },
    {
     "index": 10,
-    "hex": "041e42",
-    "fraction": 0.1115,
-    "x0_in": 1.2217,
+    "hex": "273168",
+    "fraction": 0.1009,
+    "x0_in": 1.2362,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:U.S. Coast Guard Sea Service Ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:U.S. Coast Guard Sea Service Ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/U.S._Coast_Guard_Sea_Service_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Coast Guard Sea Service Deployment",
+   "url": "https://www.vanguardmil.com/products/uscg-sea-service-deployment-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_sea_duty.jpg"
+   "img/ribbons/695e93d2865d.jpg"
   ],
-  "residual": {
-   "vertical": 35.8,
-   "horizontal": 89.3,
-   "central_vertical": 18.5
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Sea Service Deployment",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-sea-service-deployment-ribbon-unit",
+  "corners_px": [
+   [
+    66.2,
+    453.4
+   ],
+   [
+    1132,
+    456.4
+   ],
+   [
+    1132,
+    743.9
+   ],
+   [
+    73.5,
+    741.6
+   ]
+  ],
+  "rectified_px": [
+   1062,
+   288
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.7,
+   1.2,
+   1.1,
+   2.4,
+   1,
+   3.5,
+   1.1,
+   2,
+   1.1,
+   1,
+   0.9
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Coast Guard Sea Service Ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -170,8 +204,8 @@
   "Coast Guard Sea Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 35.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.5,
   "threshold": null
  },
  "grade": "ribbon"

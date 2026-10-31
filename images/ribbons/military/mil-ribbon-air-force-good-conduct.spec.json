@@ -44,102 +44,134 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a3c7d2",
-    "fraction": 0.1358,
+    "hex": "dae4ea",
+    "fraction": 0.1297,
     "x0_in": 0,
-    "x1_in": 0.1867
+    "x1_in": 0.1783
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.0453,
-    "x0_in": 0.1867,
-    "x1_in": 0.249
+    "hex": "ef3946",
+    "fraction": 0.0473,
+    "x0_in": 0.1783,
+    "x1_in": 0.2434
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.0491,
-    "x0_in": 0.249,
-    "x1_in": 0.3165
+    "fraction": 0.0473,
+    "x0_in": 0.2434,
+    "x1_in": 0.3084
    },
    {
     "index": 3,
-    "hex": "001489",
-    "fraction": 0.0453,
-    "x0_in": 0.3165,
-    "x1_in": 0.3788
+    "hex": "2345b9",
+    "fraction": 0.046,
+    "x0_in": 0.3084,
+    "x1_in": 0.3717
    },
    {
     "index": 4,
-    "hex": "a3c7d2",
-    "fraction": 0.449,
-    "x0_in": 0.3788,
-    "x1_in": 0.9962
+    "hex": "dae4ea",
+    "fraction": 0.4593,
+    "x0_in": 0.3717,
+    "x1_in": 1.0033
    },
    {
     "index": 5,
-    "hex": "001489",
-    "fraction": 0.0453,
-    "x0_in": 0.9962,
-    "x1_in": 1.0585
+    "hex": "2345b9",
+    "fraction": 0.046,
+    "x0_in": 1.0033,
+    "x1_in": 1.0666
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.0491,
-    "x0_in": 1.0585,
-    "x1_in": 1.126
+    "fraction": 0.0473,
+    "x0_in": 1.0666,
+    "x1_in": 1.1316
    },
    {
     "index": 7,
-    "hex": "ba0c2f",
-    "fraction": 0.0453,
-    "x0_in": 1.126,
-    "x1_in": 1.1883
+    "hex": "ef3946",
+    "fraction": 0.0473,
+    "x0_in": 1.1316,
+    "x1_in": 1.1967
    },
    {
     "index": 8,
-    "hex": "a3c7d2",
-    "fraction": 0.1358,
-    "x0_in": 1.1883,
+    "hex": "dae4ea",
+    "fraction": 0.1297,
+    "x0_in": 1.1967,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:U.S. Air Force Good Conduct Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:U.S. Air Force Good Conduct Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/U.S._Air_Force_Good_Conduct_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Air Force Good Conduct",
+   "url": "https://www.vanguardmil.com/products/usaf-good-conduct-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_force_good_conduct.jpg"
+   "img/ribbons/48617574bdc1.jpg"
   ],
-  "residual": {
-   "vertical": 30.3,
-   "horizontal": 62.3,
-   "central_vertical": 19.8
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Good Conduct",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-good-conduct-ribbon-unit",
+  "corners_px": [
+   [
+    79.1,
+    452.8
+   ],
+   [
+    1131.8,
+    457.2
+   ],
+   [
+    1116.4,
+    743
+   ],
+   [
+    70.6,
+    743
+   ]
+  ],
+  "rectified_px": [
+   1049,
+   288
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.6,
+   0.9,
+   3.2,
+   0.4,
+   0.5,
+   0.7,
+   3,
+   0.9,
+   0.8
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Air Force Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -156,8 +188,8 @@
   "air force good condcut"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 30.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.2,
   "threshold": null
  },
  "grade": "ribbon"

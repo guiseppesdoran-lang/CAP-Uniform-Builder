@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "000000",
-    "fraction": 0.3295,
+    "hex": "101010",
+    "fraction": 0.3364,
     "x0_in": 0,
-    "x1_in": 0.4531
+    "x1_in": 0.4626
    },
    {
     "index": 1,
-    "hex": "aa0b2b",
-    "fraction": 0.325,
-    "x0_in": 0.4531,
-    "x1_in": 0.8999
+    "hex": "b90c2f",
+    "fraction": 0.3272,
+    "x0_in": 0.4626,
+    "x1_in": 0.9124
    },
    {
     "index": 2,
-    "hex": "000000",
-    "fraction": 0.3455,
-    "x0_in": 0.8999,
+    "hex": "101010",
+    "fraction": 0.3364,
+    "x0_in": 0.9124,
     "x1_in": 1.375
    }
   ],
@@ -72,10 +72,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/ebac2789dbb4.png"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit #4040: Bataan Death March Memorial Hike unmounted.",
   "vendor_product_url": "https://www.vanguardmil.com/products/bataan-memorial-death-march-4040-ribbon-unmounted",
@@ -88,24 +90,54 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    220
+   ],
+   [
+    596,
+    220
+   ],
+   [
+    596,
+    385
+   ],
+   [
+    0,
+    385
+   ]
+  ],
+  "rectified_px": [
+   596,
+   165
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 5.5,
-   "unsnapped": 1,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit #4040: Bataan Death March Memorial Hike unmounted.",
+   "url": "https://www.vanguardmil.com/products/bataan-memorial-death-march-4040-ribbon-unmounted",
+   "image_px": [
+    601,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

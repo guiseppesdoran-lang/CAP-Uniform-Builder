@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "53749d",
+    "hex": "5989b9",
     "fraction": 0.1818,
     "x0_in": 0,
     "x1_in": 0.25
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "53749d",
+    "hex": "5989b9",
     "fraction": 0.5636,
     "x0_in": 0.3125,
     "x1_in": 1.0875
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "53749d",
+    "hex": "5989b9",
     "fraction": 0.1591,
     "x0_in": 1.1562,
     "x1_in": 1.375
@@ -83,34 +83,44 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 5.2
+  "color_source": "Vanguard product not matched. Geometry unchanged; the dull flat blue replaced by the same dye measured on the United Nations Service ribbon.",
+  "geometry_source": "repo raster images/military-ribbons/united_nations.jpg for widths; the UN blue measured on the United Nations Service ribbon",
+  "snap": null,
+  "reference": {
+   "title": "repo raster images/military-ribbons/united_nations.jpg for widths; the UN blue measured on the United Nations Service ribbon",
+   "url": null,
+   "image_px": [
+    null,
+    null
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Read from the source named in quality; no fabric photograph of this award exists at the vendor",
   "source_images": [
-   "images/military-ribbons/united_nations.jpg"
+   "repo raster images/military-ribbons/united_nations.jpg for widths; the UN blue measured on the United Nations Service ribbon"
   ],
-  "residual": {
-   "vertical": 3.3,
-   "horizontal": 38.1,
-   "central_vertical": 3.3
-  },
-  "edge_frame_trimmed": 0,
+  "vendor_product": "repo raster images/military-ribbons/united_nations.jpg for widths; the UN blue measured on the United Nations Service ribbon",
+  "corners_px": null,
+  "rectified_px": [
+   1375,
+   375
+  ],
+  "symmetry": "none",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "reference",
+  "source_kind": "public-reference",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -131,8 +141,8 @@
   "united nations"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 3.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

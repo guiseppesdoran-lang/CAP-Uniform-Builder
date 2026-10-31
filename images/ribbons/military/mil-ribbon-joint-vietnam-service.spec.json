@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "009a44",
-    "fraction": 0.0919,
+    "hex": "17a855",
+    "fraction": 0.0869,
     "x0_in": 0,
-    "x1_in": 0.1264
+    "x1_in": 0.1195
    },
    {
     "index": 1,
-    "hex": "ffcd00",
-    "fraction": 0.2251,
-    "x0_in": 0.1264,
-    "x1_in": 0.4359
+    "hex": "f3cd2f",
+    "fraction": 0.2311,
+    "x0_in": 0.1195,
+    "x1_in": 0.4372
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.0459,
-    "x0_in": 0.4359,
-    "x1_in": 0.499
+    "hex": "bd2933",
+    "fraction": 0.0469,
+    "x0_in": 0.4372,
+    "x1_in": 0.5016
    },
    {
     "index": 3,
-    "hex": "ffcd00",
-    "fraction": 0.1149,
-    "x0_in": 0.499,
-    "x1_in": 0.657
+    "hex": "f3cd2f",
+    "fraction": 0.1133,
+    "x0_in": 0.5016,
+    "x1_in": 0.6575
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.0444,
-    "x0_in": 0.657,
-    "x1_in": 0.718
+    "hex": "bd2933",
+    "fraction": 0.0437,
+    "x0_in": 0.6575,
+    "x1_in": 0.7175
    },
    {
     "index": 5,
-    "hex": "ffcd00",
-    "fraction": 0.1149,
-    "x0_in": 0.718,
-    "x1_in": 0.876
+    "hex": "f3cd2f",
+    "fraction": 0.1133,
+    "x0_in": 0.7175,
+    "x1_in": 0.8734
    },
    {
     "index": 6,
-    "hex": "ba0c2f",
-    "fraction": 0.0459,
-    "x0_in": 0.876,
-    "x1_in": 0.9391
+    "hex": "bd2933",
+    "fraction": 0.0469,
+    "x0_in": 0.8734,
+    "x1_in": 0.9378
    },
    {
     "index": 7,
-    "hex": "ffcd00",
-    "fraction": 0.2251,
-    "x0_in": 0.9391,
-    "x1_in": 1.2486
+    "hex": "f3cd2f",
+    "fraction": 0.2311,
+    "x0_in": 0.9378,
+    "x1_in": 1.2555
    },
    {
     "index": 8,
-    "hex": "009a44",
-    "fraction": 0.0919,
-    "x0_in": 1.2486,
+    "hex": "17a855",
+    "fraction": 0.0869,
+    "x0_in": 1.2555,
     "x1_in": 1.375
    }
   ],
@@ -111,35 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Vietnam Service Medal ribbon, 5th award.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Vietnam Service Medal ribbon, 5th award.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Vietnam_Service_Medal_ribbon%2C_5th_award.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Vietnam Service",
+   "url": "https://www.vanguardmil.com/products/vietnam-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/vietnam_service.jpg"
+   "img/ribbons/6b34e40ccdeb.jpg"
   ],
-  "residual": {
-   "vertical": 6.8,
-   "horizontal": 80.6,
-   "central_vertical": 6.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Vietnam Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/vietnam-service-ribbon-unit",
+  "corners_px": [
+   [
+    64.8,
+    456.4
+   ],
+   [
+    1134,
+    453.4
+   ],
+   [
+    1134,
+    743.3
+   ],
+   [
+    72.3,
+    746.3
+   ]
+  ],
+  "rectified_px": [
+   1065,
+   290
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.3,
+   1,
+   1,
+   0.3,
+   0.8,
+   0.6,
+   0.5,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Vietnam Service Medal ribbon, 5th award.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -160,8 +192,8 @@
   "vietnam service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 6.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1,
   "threshold": null
  },
  "grade": "ribbon"

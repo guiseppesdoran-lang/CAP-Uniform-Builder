@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ee0028",
-    "fraction": 0.0682,
+    "hex": "d13433",
+    "fraction": 0.0483,
     "x0_in": 0,
-    "x1_in": 0.0938
+    "x1_in": 0.0664
    },
    {
     "index": 1,
-    "hex": "a08346",
-    "fraction": 0.8727,
-    "x0_in": 0.0938,
-    "x1_in": 1.2937
+    "hex": "dcaf2a",
+    "fraction": 0.9034,
+    "x0_in": 0.0664,
+    "x1_in": 1.3086
    },
    {
     "index": 2,
-    "hex": "ee0028",
-    "fraction": 0.0591,
-    "x0_in": 1.2937,
+    "hex": "d13433",
+    "fraction": 0.0483,
+    "x0_in": 1.3086,
     "x1_in": 1.375
    }
   ],
@@ -69,34 +69,61 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 12
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: US Marine Corps Reserve",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-us-marine-corps-reserve",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/marine_corps_reserve.jpg"
+   "img/ribbons/17de17589724.jpg"
   ],
-  "residual": {
-   "vertical": 2.4,
-   "horizontal": 31.3,
-   "central_vertical": 2.2
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: US Marine Corps Reserve",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-us-marine-corps-reserve",
+  "corners_px": [
+   [
+    78,
+    456
+   ],
+   [
+    1122,
+    456
+   ],
+   [
+    1122,
+    748
+   ],
+   [
+    69.5,
+    748
+   ]
+  ],
+  "rectified_px": [
+   1048,
+   292
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.8,
+   0,
+   1.9
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS"
@@ -113,8 +140,8 @@
   "Marine Corps Reserve"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 2.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.9,
   "threshold": null
  },
  "grade": "ribbon"

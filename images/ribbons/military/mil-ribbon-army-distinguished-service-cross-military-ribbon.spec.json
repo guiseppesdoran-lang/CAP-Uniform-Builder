@@ -44,74 +44,102 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
+    "hex": "c12433",
+    "fraction": 0.0785,
     "x0_in": 0,
-    "x1_in": 0.1258
+    "x1_in": 0.108
    },
    {
     "index": 1,
-    "hex": "fcfcfc",
-    "fraction": 0.0455,
-    "x0_in": 0.1258,
-    "x1_in": 0.1884
+    "hex": "ffffff",
+    "fraction": 0.0479,
+    "x0_in": 0.108,
+    "x1_in": 0.1737
    },
    {
     "index": 2,
-    "hex": "003da5",
-    "fraction": 0.726,
-    "x0_in": 0.1884,
-    "x1_in": 1.1866
+    "hex": "1663c5",
+    "fraction": 0.7473,
+    "x0_in": 0.1737,
+    "x1_in": 1.2013
    },
    {
     "index": 3,
-    "hex": "fcfcfc",
-    "fraction": 0.0455,
-    "x0_in": 1.1866,
-    "x1_in": 1.2492
+    "hex": "ffffff",
+    "fraction": 0.0478,
+    "x0_in": 1.2013,
+    "x1_in": 1.267
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
-    "x0_in": 1.2492,
+    "hex": "c12433",
+    "fraction": 0.0785,
+    "x0_in": 1.267,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Distinguished Service Cross ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Distinguished Service Cross ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Distinguished_Service_Cross_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Army Distinguished Service Cross",
+   "url": "https://www.vanguardmil.com/products/army-distinguished-service-cross-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_distinguished_service_cross_military_ribb0n.jpg"
+   "img/ribbons/338102b0aa80.jpg"
   ],
-  "residual": {
-   "vertical": 34.8,
-   "horizontal": 74.8,
-   "central_vertical": 14.8
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Distinguished Service Cross",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-distinguished-service-cross-ribbon-unit",
+  "corners_px": [
+   [
+    78,
+    456.2
+   ],
+   [
+    1135,
+    454.5
+   ],
+   [
+    1135,
+    749
+   ],
+   [
+    78,
+    749
+   ]
+  ],
+  "rectified_px": [
+   1057,
+   294
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.3,
+   3.4,
+   0,
+   3.8,
+   0.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Distinguished Service Cross ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -128,8 +156,8 @@
   "army distinguished service cross"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 34.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.8,
   "threshold": null
  },
  "grade": "ribbon"

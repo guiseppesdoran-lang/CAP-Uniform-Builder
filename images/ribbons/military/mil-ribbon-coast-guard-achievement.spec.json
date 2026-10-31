@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "215732",
-    "fraction": 0.1227,
+    "hex": "03a163",
+    "fraction": 0.1097,
     "x0_in": 0,
-    "x1_in": 0.1687
+    "x1_in": 0.1508
    },
    {
     "index": 1,
-    "hex": "ed0009",
-    "fraction": 0.1455,
-    "x0_in": 0.1687,
-    "x1_in": 0.3688
+    "hex": "fb883e",
+    "fraction": 0.1543,
+    "x0_in": 0.1508,
+    "x1_in": 0.363
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.1818,
-    "x0_in": 0.3688,
-    "x1_in": 0.6188
+    "hex": "03a163",
+    "fraction": 0.2015,
+    "x0_in": 0.363,
+    "x1_in": 0.6401
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0909,
-    "x0_in": 0.6188,
-    "x1_in": 0.7437
+    "fraction": 0.069,
+    "x0_in": 0.6401,
+    "x1_in": 0.7349
    },
    {
     "index": 4,
-    "hex": "215732",
-    "fraction": 0.1818,
-    "x0_in": 0.7437,
-    "x1_in": 0.9937
+    "hex": "03a163",
+    "fraction": 0.2015,
+    "x0_in": 0.7349,
+    "x1_in": 1.012
    },
    {
     "index": 5,
-    "hex": "ed0009",
-    "fraction": 0.15,
-    "x0_in": 0.9937,
-    "x1_in": 1.2
+    "hex": "fb883e",
+    "fraction": 0.1543,
+    "x0_in": 1.012,
+    "x1_in": 1.2242
    },
    {
     "index": 6,
-    "hex": "215732",
-    "fraction": 0.1273,
-    "x0_in": 1.2,
+    "hex": "03a163",
+    "fraction": 0.1097,
+    "x0_in": 1.2242,
     "x1_in": 1.375
    }
   ],
@@ -97,34 +97,65 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 16
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Achievement",
+   "url": "https://www.vanguardmil.com/products/uscg-achievement-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_achievement.jpg"
+   "img/ribbons/546fd415edcb.jpg"
   ],
-  "residual": {
-   "vertical": 7.7,
-   "horizontal": 112.8,
-   "central_vertical": 4.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Achievement",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-achievement-ribbon-unit",
+  "corners_px": [
+   [
+    20,
+    441
+   ],
+   [
+    1179.5,
+    441
+   ],
+   [
+    1182.1,
+    759
+   ],
+   [
+    20,
+    759
+   ]
+  ],
+  "rectified_px": [
+   1161,
+   318
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   2.6,
+   0.7,
+   1.6,
+   3.5,
+   1.6,
+   0.3,
+   4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -141,8 +172,8 @@
   "Coast Guard Achievement"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 7.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4,
   "threshold": null
  },
  "grade": "ribbon"

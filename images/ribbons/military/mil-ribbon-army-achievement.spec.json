@@ -44,116 +44,150 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "215732",
-    "fraction": 0.0915,
+    "hex": "5b874b",
+    "fraction": 0.0847,
     "x0_in": 0,
-    "x1_in": 0.1258
+    "x1_in": 0.1165
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 0.1258,
-    "x1_in": 0.1884
+    "fraction": 0.0469,
+    "x0_in": 0.1165,
+    "x1_in": 0.181
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.0915,
-    "x0_in": 0.1884,
-    "x1_in": 0.3142
+    "hex": "5b874b",
+    "fraction": 0.0918,
+    "x0_in": 0.181,
+    "x1_in": 0.3073
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.3142,
-    "x1_in": 0.3774
+    "fraction": 0.0646,
+    "x0_in": 0.3073,
+    "x1_in": 0.3961
    },
    {
     "index": 4,
-    "hex": "001489",
-    "fraction": 0.2025,
-    "x0_in": 0.3774,
-    "x1_in": 0.6559
+    "hex": "1c36a3",
+    "fraction": 0.1872,
+    "x0_in": 0.3961,
+    "x1_in": 0.6536
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.6559,
-    "x1_in": 0.7191
+    "fraction": 0.0494,
+    "x0_in": 0.6536,
+    "x1_in": 0.7214
    },
    {
     "index": 6,
-    "hex": "001489",
-    "fraction": 0.2025,
-    "x0_in": 0.7191,
-    "x1_in": 0.9976
+    "hex": "1c36a3",
+    "fraction": 0.1872,
+    "x0_in": 0.7214,
+    "x1_in": 0.9789
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.9976,
-    "x1_in": 1.0608
+    "fraction": 0.0646,
+    "x0_in": 0.9789,
+    "x1_in": 1.0677
    },
    {
     "index": 8,
-    "hex": "215732",
-    "fraction": 0.0915,
-    "x0_in": 1.0608,
-    "x1_in": 1.1866
+    "hex": "5b874b",
+    "fraction": 0.0918,
+    "x0_in": 1.0677,
+    "x1_in": 1.194
    },
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 1.1866,
-    "x1_in": 1.2492
+    "fraction": 0.0469,
+    "x0_in": 1.194,
+    "x1_in": 1.2585
    },
    {
     "index": 10,
-    "hex": "215732",
-    "fraction": 0.0915,
-    "x0_in": 1.2492,
+    "hex": "5b874b",
+    "fraction": 0.0847,
+    "x0_in": 1.2585,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Army Achievement Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Army Achievement Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Army_Achievement_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Army Achievement",
+   "url": "https://www.vanguardmil.com/products/army-achievement-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_achievement.jpg"
+   "img/ribbons/5c7cc40b26a5.jpg"
   ],
-  "residual": {
-   "vertical": 30.3,
-   "horizontal": 75.9,
-   "central_vertical": 18.7
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Achievement",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-achievement-ribbon-unit",
+  "corners_px": [
+   [
+    24.7,
+    444.7
+   ],
+   [
+    1182,
+    442.6
+   ],
+   [
+    1178.9,
+    758
+   ],
+   [
+    18.5,
+    758
+   ]
+  ],
+  "rectified_px": [
+   1159,
+   314
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.9,
+   5.5,
+   2.2,
+   5.8,
+   0.7,
+   3.3,
+   0.5,
+   5,
+   1.2,
+   4.6,
+   2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Army Achievement Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -170,8 +204,8 @@
   "army achievement"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 30.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.8,
   "threshold": null
  },
  "grade": "ribbon"

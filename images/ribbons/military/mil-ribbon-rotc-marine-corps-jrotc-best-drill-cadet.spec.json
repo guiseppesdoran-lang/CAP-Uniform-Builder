@@ -44,107 +44,107 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "29651d",
-    "fraction": 0.0682,
+    "hex": "276d19",
+    "fraction": 0.0684,
     "x0_in": 0,
-    "x1_in": 0.0938
+    "x1_in": 0.094
    },
    {
     "index": 1,
-    "hex": "d9b718",
-    "fraction": 0.0795,
-    "x0_in": 0.0938,
-    "x1_in": 0.2031
+    "hex": "f6cf0e",
+    "fraction": 0.0799,
+    "x0_in": 0.094,
+    "x1_in": 0.2039
    },
    {
     "index": 2,
-    "hex": "bf7d0f",
+    "hex": "d88a05",
     "fraction": 0.05,
-    "x0_in": 0.2031,
-    "x1_in": 0.2718
+    "x0_in": 0.2039,
+    "x1_in": 0.2727
    },
    {
     "index": 3,
-    "hex": "d8b518",
-    "fraction": 0.05,
-    "x0_in": 0.2718,
-    "x1_in": 0.3406
+    "hex": "f6cf0e",
+    "fraction": 0.0516,
+    "x0_in": 0.2727,
+    "x1_in": 0.3437
    },
    {
     "index": 4,
-    "hex": "be7e10",
-    "fraction": 0.0523,
-    "x0_in": 0.3406,
-    "x1_in": 0.4125
+    "hex": "d88a05",
+    "fraction": 0.0501,
+    "x0_in": 0.3437,
+    "x1_in": 0.4126
    },
    {
     "index": 5,
-    "hex": "d9b718",
-    "fraction": 0.05,
-    "x0_in": 0.4125,
-    "x1_in": 0.4813
+    "hex": "f6cf0e",
+    "fraction": 0.0516,
+    "x0_in": 0.4126,
+    "x1_in": 0.4836
    },
    {
     "index": 6,
-    "hex": "bd7c0f",
+    "hex": "d88a05",
     "fraction": 0.05,
-    "x0_in": 0.4813,
-    "x1_in": 0.55
+    "x0_in": 0.4836,
+    "x1_in": 0.5523
    },
    {
     "index": 7,
-    "hex": "d7b517",
-    "fraction": 0.1977,
-    "x0_in": 0.55,
-    "x1_in": 0.8218
+    "hex": "f6cf0e",
+    "fraction": 0.1966,
+    "x0_in": 0.5523,
+    "x1_in": 0.8227
    },
    {
     "index": 8,
-    "hex": "bd7c10",
+    "hex": "d88a05",
     "fraction": 0.05,
-    "x0_in": 0.8218,
-    "x1_in": 0.8906
+    "x0_in": 0.8227,
+    "x1_in": 0.8914
    },
    {
     "index": 9,
-    "hex": "d9b617",
-    "fraction": 0.0523,
-    "x0_in": 0.8906,
-    "x1_in": 0.9625
+    "hex": "f6cf0e",
+    "fraction": 0.0516,
+    "x0_in": 0.8914,
+    "x1_in": 0.9624
    },
    {
     "index": 10,
-    "hex": "bd7b0f",
-    "fraction": 0.0477,
-    "x0_in": 0.9625,
-    "x1_in": 1.0281
+    "hex": "d88a05",
+    "fraction": 0.0501,
+    "x0_in": 0.9624,
+    "x1_in": 1.0313
    },
    {
     "index": 11,
-    "hex": "d7b417",
-    "fraction": 0.0523,
-    "x0_in": 1.0281,
-    "x1_in": 1.1
+    "hex": "f6cf0e",
+    "fraction": 0.0516,
+    "x0_in": 1.0313,
+    "x1_in": 1.1023
    },
    {
     "index": 12,
-    "hex": "bf7d0f",
+    "hex": "d88a05",
     "fraction": 0.05,
-    "x0_in": 1.1,
-    "x1_in": 1.1687
+    "x0_in": 1.1023,
+    "x1_in": 1.1711
    },
    {
     "index": 13,
-    "hex": "d9b718",
-    "fraction": 0.0795,
-    "x0_in": 1.1687,
-    "x1_in": 1.2781
+    "hex": "f6cf0e",
+    "fraction": 0.0799,
+    "x0_in": 1.1711,
+    "x1_in": 1.281
    },
    {
     "index": 14,
-    "hex": "2c661e",
-    "fraction": 0.0705,
-    "x0_in": 1.2781,
+    "hex": "276d19",
+    "fraction": 0.0684,
+    "x0_in": 1.281,
     "x1_in": 1.375
    }
   ],
@@ -156,10 +156,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/a989c1818817.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "ROTC Ribbon Unit #N-3-1",
   "vendor_product_url": "https://www.vanguardmil.com/products/rotc-n31-ribbon-unit",
@@ -172,24 +174,66 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor description N-3-1: MCJROTC Best Drill Cadet",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":15,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    216
+   ],
+   [
+    600,
+    216
+   ],
+   [
+    600,
+    384
+   ],
+   [
+    0,
+    384
+   ]
+  ],
+  "rectified_px": [
+   600,
+   168
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0.3,
+   0.2,
+   0.4,
+   0,
+   0.3,
+   0,
+   0.6,
+   0,
+   0.3,
+   0.2,
+   0.3,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 15,
-   "stripes_after": 15,
-   "max_snap_delta": 17.4,
-   "unsnapped": 15,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "ROTC Ribbon Unit #N-3-1",
+   "url": "https://www.vanguardmil.com/products/rotc-n31-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.6,
   "threshold": null
  },
  "grade": "ribbon"

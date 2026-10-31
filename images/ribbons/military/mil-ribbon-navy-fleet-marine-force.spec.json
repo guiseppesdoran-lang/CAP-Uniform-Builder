@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "041e42",
-    "fraction": 0.2091,
+    "hex": "343b77",
+    "fraction": 0.2134,
     "x0_in": 0,
-    "x1_in": 0.2875
+    "x1_in": 0.2934
    },
    {
     "index": 1,
-    "hex": "f6c80e",
-    "fraction": 0.0591,
-    "x0_in": 0.2875,
-    "x1_in": 0.3688
+    "hex": "fae87d",
+    "fraction": 0.0546,
+    "x0_in": 0.2934,
+    "x1_in": 0.3685
    },
    {
     "index": 2,
-    "hex": "008080",
-    "fraction": 0.0909,
-    "x0_in": 0.3688,
-    "x1_in": 0.4938
+    "hex": "86cee1",
+    "fraction": 0.0941,
+    "x0_in": 0.3685,
+    "x1_in": 0.4978
    },
    {
     "index": 3,
-    "hex": "ffcd00",
-    "fraction": 0.05,
-    "x0_in": 0.4938,
-    "x1_in": 0.5625
+    "hex": "fae87d",
+    "fraction": 0.0463,
+    "x0_in": 0.4978,
+    "x1_in": 0.5615
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.1727,
-    "x0_in": 0.5625,
-    "x1_in": 0.8
+    "hex": "f53d44",
+    "fraction": 0.1833,
+    "x0_in": 0.5615,
+    "x1_in": 0.8135
    },
    {
     "index": 5,
-    "hex": "ffcd00",
-    "fraction": 0.0591,
-    "x0_in": 0.8,
-    "x1_in": 0.8812
+    "hex": "fae87d",
+    "fraction": 0.0463,
+    "x0_in": 0.8135,
+    "x1_in": 0.8772
    },
    {
     "index": 6,
-    "hex": "008eaa",
-    "fraction": 0.0909,
-    "x0_in": 0.8812,
-    "x1_in": 1.0062
+    "hex": "86cee1",
+    "fraction": 0.0941,
+    "x0_in": 0.8772,
+    "x1_in": 1.0065
    },
    {
     "index": 7,
-    "hex": "f6c80e",
-    "fraction": 0.0637,
-    "x0_in": 1.0062,
-    "x1_in": 1.0938
+    "hex": "fae87d",
+    "fraction": 0.0546,
+    "x0_in": 1.0065,
+    "x1_in": 1.0816
    },
    {
     "index": 8,
-    "hex": "041e42",
-    "fraction": 0.2045,
-    "x0_in": 1.0938,
+    "hex": "343b77",
+    "fraction": 0.2134,
+    "x0_in": 1.0816,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 13
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Fleet Marine Force",
+   "url": "https://www.vanguardmil.com/products/fleet-marine-force-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/fleet_marine_force.jpg"
+   "img/ribbons/3a654e3143a6.jpg"
   ],
-  "residual": {
-   "vertical": 8.4,
-   "horizontal": 121.9,
-   "central_vertical": 8.1
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Fleet Marine Force",
+  "vendor_product_url": "https://www.vanguardmil.com/products/fleet-marine-force-ribbon-unit",
+  "corners_px": [
+   [
+    48,
+    456
+   ],
+   [
+    1128,
+    456
+   ],
+   [
+    1128,
+    754.9
+   ],
+   [
+    45.8,
+    752.1
+   ]
+  ],
+  "rectified_px": [
+   1081,
+   298
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.1,
+   0.4,
+   0.6,
+   0.9,
+   0,
+   1.2,
+   0.7,
+   0.6,
+   1.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "NAVY"
@@ -155,8 +188,8 @@
   "Fleet Marine Force"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.3,
   "threshold": null
  },
  "grade": "ribbon"

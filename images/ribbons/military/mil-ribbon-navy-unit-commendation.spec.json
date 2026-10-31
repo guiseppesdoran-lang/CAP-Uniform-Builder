@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "001489",
-    "fraction": 0.0915,
+    "hex": "153391",
+    "fraction": 0.0833,
     "x0_in": 0,
-    "x1_in": 0.1258
+    "x1_in": 0.1146
    },
    {
     "index": 1,
-    "hex": "ffcd00",
-    "fraction": 0.0915,
-    "x0_in": 0.1258,
-    "x1_in": 0.2516
+    "hex": "f6c731",
+    "fraction": 0.0913,
+    "x0_in": 0.1146,
+    "x1_in": 0.24
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
-    "x0_in": 0.2516,
-    "x1_in": 0.3774
+    "hex": "b32b37",
+    "fraction": 0.0938,
+    "x0_in": 0.24,
+    "x1_in": 0.369
    },
    {
     "index": 3,
-    "hex": "007a33",
-    "fraction": 0.451,
-    "x0_in": 0.3774,
-    "x1_in": 0.9976
+    "hex": "12764b",
+    "fraction": 0.4632,
+    "x0_in": 0.369,
+    "x1_in": 1.0059
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
-    "x0_in": 0.9976,
-    "x1_in": 1.1234
+    "hex": "b32b37",
+    "fraction": 0.0938,
+    "x0_in": 1.0059,
+    "x1_in": 1.135
    },
    {
     "index": 5,
-    "hex": "ffcd00",
-    "fraction": 0.086,
-    "x0_in": 1.1234,
-    "x1_in": 1.2416
+    "hex": "f6c731",
+    "fraction": 0.0913,
+    "x0_in": 1.135,
+    "x1_in": 1.2604
    },
    {
     "index": 6,
-    "hex": "001489",
-    "fraction": 0.097,
-    "x0_in": 1.2416,
+    "hex": "153391",
+    "fraction": 0.0833,
+    "x0_in": 1.2604,
     "x1_in": 1.375
    }
   ],
@@ -97,35 +97,65 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:U.S. Navy Unit Commendation ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:U.S. Navy Unit Commendation ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/5/54/U.S._Navy_Unit_Commendation_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Navy Unit Commendation",
+   "url": "https://www.vanguardmil.com/products/usn-unit-commendation-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_unit_commendation.jpg"
+   "img/ribbons/5f86598237d2.jpg"
   ],
-  "residual": {
-   "vertical": 4.8,
-   "horizontal": 104.5,
-   "central_vertical": 4.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Unit Commendation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-unit-commendation-ribbon-unit",
+  "corners_px": [
+   [
+    72.8,
+    454
+   ],
+   [
+    1133.4,
+    454
+   ],
+   [
+    1128.8,
+    747
+   ],
+   [
+    66,
+    747
+   ]
+  ],
+  "rectified_px": [
+   1062,
+   293
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.2,
+   0.3,
+   0,
+   0.2,
+   0,
+   0.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Navy Unit Commendation ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -143,8 +173,8 @@
   "Navy Unit Commendation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 4.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.5,
   "threshold": null
  },
  "grade": "ribbon"

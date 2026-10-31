@@ -44,115 +44,150 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2f3b77",
-    "fraction": 0.2227,
+    "hex": "38329a",
+    "fraction": 0.2135,
     "x0_in": 0,
-    "x1_in": 0.3062
+    "x1_in": 0.2936
    },
    {
     "index": 1,
-    "hex": "a08346",
-    "fraction": 0.0455,
-    "x0_in": 0.3062,
-    "x1_in": 0.3688
+    "hex": "f8d672",
+    "fraction": 0.057,
+    "x0_in": 0.2936,
+    "x1_in": 0.3719
    },
    {
     "index": 2,
-    "hex": "808080",
-    "fraction": 0.0454,
-    "x0_in": 0.3688,
-    "x1_in": 0.4312
+    "hex": "4f8345",
+    "fraction": 0.0494,
+    "x0_in": 0.3719,
+    "x1_in": 0.4399
    },
    {
     "index": 3,
-    "hex": "53749d",
-    "fraction": 0.1409,
-    "x0_in": 0.4312,
-    "x1_in": 0.6249
+    "hex": "6d9dc9",
+    "fraction": 0.1386,
+    "x0_in": 0.4399,
+    "x1_in": 0.6304
    },
    {
     "index": 4,
-    "hex": "bbb9b5",
-    "fraction": 0.0319,
-    "x0_in": 0.6249,
-    "x1_in": 0.6688
+    "hex": "ffffff",
+    "fraction": 0.0313,
+    "x0_in": 0.6304,
+    "x1_in": 0.6735
    },
    {
     "index": 5,
-    "hex": "6f263d",
-    "fraction": 0.0227,
-    "x0_in": 0.6688,
-    "x1_in": 0.7
+    "hex": "f0353b",
+    "fraction": 0.0204,
+    "x0_in": 0.6735,
+    "x1_in": 0.7015
    },
    {
     "index": 6,
-    "hex": "bbb9b5",
-    "fraction": 0.0318,
-    "x0_in": 0.7,
-    "x1_in": 0.7437
+    "hex": "ffffff",
+    "fraction": 0.0313,
+    "x0_in": 0.7015,
+    "x1_in": 0.7446
    },
    {
     "index": 7,
-    "hex": "53749d",
-    "fraction": 0.1364,
-    "x0_in": 0.7437,
-    "x1_in": 0.9313
+    "hex": "6d9dc9",
+    "fraction": 0.1386,
+    "x0_in": 0.7446,
+    "x1_in": 0.9351
    },
    {
     "index": 8,
-    "hex": "808080",
-    "fraction": 0.05,
-    "x0_in": 0.9313,
-    "x1_in": 1
+    "hex": "4f8345",
+    "fraction": 0.0494,
+    "x0_in": 0.9351,
+    "x1_in": 1.0031
    },
    {
     "index": 9,
-    "hex": "a08346",
-    "fraction": 0.0454,
-    "x0_in": 1,
-    "x1_in": 1.0625
+    "hex": "f8d672",
+    "fraction": 0.057,
+    "x0_in": 1.0031,
+    "x1_in": 1.0814
    },
    {
     "index": 10,
-    "hex": "2f3b77",
-    "fraction": 0.2273,
-    "x0_in": 1.0625,
+    "hex": "38329a",
+    "fraction": 0.2135,
+    "x0_in": 1.0814,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 12,
-   "stripes_after": 11,
-   "max_snap_delta": 19.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon unit: Coast Guard Special Operations Service",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-coast-guard-special-operations-service",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_special_operations_service.jpg"
+   "img/ribbons/6d117e799fee.jpg"
   ],
-  "residual": {
-   "vertical": 42.6,
-   "horizontal": 65,
-   "central_vertical": 18.7
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon unit: Coast Guard Special Operations Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-coast-guard-special-operations-service",
+  "corners_px": [
+   [
+    76.3,
+    453
+   ],
+   [
+    1119.3,
+    453
+   ],
+   [
+    1125,
+    748.5
+   ],
+   [
+    78.3,
+    745.8
+   ]
+  ],
+  "rectified_px": [
+   1045,
+   294
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.3,
+   0.4,
+   1.6,
+   0.2,
+   1.7,
+   0,
+   2,
+   0.4,
+   1.5,
+   0.4,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -169,8 +204,8 @@
   "Special Operations Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 42.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2,
   "threshold": null
  },
  "grade": "ribbon"

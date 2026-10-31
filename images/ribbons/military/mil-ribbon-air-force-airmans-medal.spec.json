@@ -44,164 +44,182 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "9ea2a2",
-    "fraction": 0.1955,
+    "hex": "bbcbd9",
+    "fraction": 0.1943,
     "x0_in": 0,
-    "x1_in": 0.2688
+    "x1_in": 0.2671
    },
    {
     "index": 1,
-    "hex": "f2c75c",
-    "fraction": 0.05,
-    "x0_in": 0.2688,
-    "x1_in": 0.3376
+    "hex": "f9d234",
+    "fraction": 0.0525,
+    "x0_in": 0.2671,
+    "x1_in": 0.3394
    },
    {
     "index": 2,
-    "hex": "2f3b77",
-    "fraction": 0.05,
-    "x0_in": 0.3376,
-    "x1_in": 0.4063
+    "hex": "3442bf",
+    "fraction": 0.0452,
+    "x0_in": 0.3394,
+    "x1_in": 0.4015
    },
    {
     "index": 3,
-    "hex": "f2c75c",
-    "fraction": 0.0409,
-    "x0_in": 0.4063,
-    "x1_in": 0.4625
+    "hex": "f9d234",
+    "fraction": 0.0405,
+    "x0_in": 0.4015,
+    "x1_in": 0.4571
    },
    {
     "index": 4,
-    "hex": "2f3b77",
-    "fraction": 0.05,
-    "x0_in": 0.4625,
-    "x1_in": 0.5313
+    "hex": "3442bf",
+    "fraction": 0.0474,
+    "x0_in": 0.4571,
+    "x1_in": 0.5224
    },
    {
     "index": 5,
-    "hex": "f2c75c",
-    "fraction": 0.05,
-    "x0_in": 0.5313,
-    "x1_in": 0.6
+    "hex": "f9d234",
+    "fraction": 0.0491,
+    "x0_in": 0.5224,
+    "x1_in": 0.5898
    },
    {
     "index": 6,
-    "hex": "2f3b77",
-    "fraction": 0.0454,
-    "x0_in": 0.6,
-    "x1_in": 0.6625
+    "hex": "3442bf",
+    "fraction": 0.0514,
+    "x0_in": 0.5898,
+    "x1_in": 0.6605
    },
    {
     "index": 7,
-    "hex": "f2c75c",
-    "fraction": 0.0455,
-    "x0_in": 0.6625,
-    "x1_in": 0.725
+    "hex": "f9d234",
+    "fraction": 0.0393,
+    "x0_in": 0.6605,
+    "x1_in": 0.7145
    },
    {
     "index": 8,
-    "hex": "53749d",
-    "fraction": 0.0182,
-    "x0_in": 0.725,
-    "x1_in": 0.7501
+    "hex": "3442bf",
+    "fraction": 0.0514,
+    "x0_in": 0.7145,
+    "x1_in": 0.7852
    },
    {
     "index": 9,
-    "hex": "2f3b77",
-    "fraction": 0.0318,
-    "x0_in": 0.7501,
-    "x1_in": 0.7938
+    "hex": "f9d234",
+    "fraction": 0.0491,
+    "x0_in": 0.7852,
+    "x1_in": 0.8526
    },
    {
     "index": 10,
-    "hex": "f2c75c",
-    "fraction": 0.0454,
-    "x0_in": 0.7938,
-    "x1_in": 0.8562
+    "hex": "3442bf",
+    "fraction": 0.0474,
+    "x0_in": 0.8526,
+    "x1_in": 0.9179
    },
    {
     "index": 11,
-    "hex": "2f3b77",
-    "fraction": 0.05,
-    "x0_in": 0.8562,
-    "x1_in": 0.925
+    "hex": "f9d234",
+    "fraction": 0.0405,
+    "x0_in": 0.9179,
+    "x1_in": 0.9735
    },
    {
     "index": 12,
-    "hex": "f2c75c",
-    "fraction": 0.0455,
-    "x0_in": 0.925,
-    "x1_in": 0.9875
+    "hex": "3442bf",
+    "fraction": 0.0452,
+    "x0_in": 0.9735,
+    "x1_in": 1.0356
    },
    {
     "index": 13,
-    "hex": "2f3b77",
-    "fraction": 0.0363,
-    "x0_in": 0.9875,
-    "x1_in": 1.0374
+    "hex": "f9d234",
+    "fraction": 0.0526,
+    "x0_in": 1.0356,
+    "x1_in": 1.1079
    },
    {
     "index": 14,
-    "hex": "53749d",
-    "fraction": 0.0137,
-    "x0_in": 1.0374,
-    "x1_in": 1.0563
-   },
-   {
-    "index": 15,
-    "hex": "f2c75c",
-    "fraction": 0.0363,
-    "x0_in": 1.0563,
-    "x1_in": 1.1062
-   },
-   {
-    "index": 16,
-    "hex": "b0aa7e",
-    "fraction": 0.0137,
-    "x0_in": 1.1062,
-    "x1_in": 1.125
-   },
-   {
-    "index": 17,
-    "hex": "9ea2a2",
-    "fraction": 0.1818,
-    "x0_in": 1.125,
+    "hex": "bbcbd9",
+    "fraction": 0.1943,
+    "x0_in": 1.1079,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 18,
-   "stripes_after": 18,
-   "max_snap_delta": 16.5
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Airman Medal",
+   "url": "https://www.vanguardmil.com/products/airman-medal-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/airmans_medal.jpg"
+   "img/ribbons/09d64349775a.jpg"
   ],
-  "residual": {
-   "vertical": 36.4,
-   "horizontal": 84,
-   "central_vertical": 26.7
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": true,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Airman Medal",
+  "vendor_product_url": "https://www.vanguardmil.com/products/airman-medal-ribbon-unit",
+  "corners_px": [
+   [
+    63,
+    452.6
+   ],
+   [
+    1135,
+    447.3
+   ],
+   [
+    1135,
+    746.4
+   ],
+   [
+    63,
+    749.7
+   ]
+  ],
+  "rectified_px": [
+   1072,
+   298
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.2,
+   0.3,
+   1,
+   0.2,
+   0.7,
+   0.3,
+   0,
+   0.4,
+   0.7,
+   0.3,
+   1,
+   0.4,
+   1,
+   0.4,
+   0.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":18,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -218,8 +236,8 @@
   "airmans medal"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 36.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1,
   "threshold": null
  },
  "grade": "ribbon"

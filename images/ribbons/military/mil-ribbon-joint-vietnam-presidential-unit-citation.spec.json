@@ -44,87 +44,118 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ffcd00",
-    "fraction": 0.3227,
+    "hex": "fbd430",
+    "fraction": 0.3099,
     "x0_in": 0,
-    "x1_in": 0.4437
+    "x1_in": 0.4261
    },
    {
     "index": 1,
-    "hex": "ee0028",
-    "fraction": 0.0864,
-    "x0_in": 0.4437,
-    "x1_in": 0.5625
+    "hex": "bb272b",
+    "fraction": 0.095,
+    "x0_in": 0.4261,
+    "x1_in": 0.5567
    },
    {
     "index": 2,
-    "hex": "ffcd00",
-    "fraction": 0.05,
-    "x0_in": 0.5625,
-    "x1_in": 0.6313
+    "hex": "fbd430",
+    "fraction": 0.048,
+    "x0_in": 0.5567,
+    "x1_in": 0.6228
    },
    {
     "index": 3,
-    "hex": "ee0028",
-    "fraction": 0.0864,
-    "x0_in": 0.6313,
-    "x1_in": 0.7501
+    "hex": "bb272b",
+    "fraction": 0.0942,
+    "x0_in": 0.6228,
+    "x1_in": 0.7522
    },
    {
     "index": 4,
-    "hex": "ffcd00",
-    "fraction": 0.05,
-    "x0_in": 0.7501,
-    "x1_in": 0.8188
+    "hex": "fbd430",
+    "fraction": 0.0481,
+    "x0_in": 0.7522,
+    "x1_in": 0.8183
    },
    {
     "index": 5,
-    "hex": "ee0028",
-    "fraction": 0.0863,
-    "x0_in": 0.8188,
-    "x1_in": 0.9375
+    "hex": "bb272b",
+    "fraction": 0.095,
+    "x0_in": 0.8183,
+    "x1_in": 0.9489
    },
    {
     "index": 6,
-    "hex": "ffcd00",
-    "fraction": 0.3182,
-    "x0_in": 0.9375,
+    "hex": "fbd430",
+    "fraction": 0.3099,
+    "x0_in": 0.9489,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 5.4
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Vietnam Presidential Unit Citation",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-vietnam-presidential-unit-citation",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/vietnam_presidential_unit_citation.jpg"
+   "img/ribbons/338d6359727f.jpg"
   ],
-  "residual": {
-   "vertical": 29.9,
-   "horizontal": 44.2,
-   "central_vertical": 8.7
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Vietnam Presidential Unit Citation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-vietnam-presidential-unit-citation",
+  "corners_px": [
+   [
+    78.2,
+    459.6
+   ],
+   [
+    1125.7,
+    455.1
+   ],
+   [
+    1123.6,
+    749.5
+   ],
+   [
+    75.8,
+    746.2
+   ]
+  ],
+  "rectified_px": [
+   1048,
+   290
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.3,
+   0.2,
+   0.2,
+   0,
+   0.5,
+   0.2,
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "ARMY",
@@ -144,8 +175,8 @@
   "Republic of Vietnam Presidential Unit Citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 29.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.5,
   "threshold": null
  },
  "grade": "ribbon"

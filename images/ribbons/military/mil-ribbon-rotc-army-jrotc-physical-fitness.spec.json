@@ -44,79 +44,79 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "492c17",
-    "fraction": 0.0295,
+    "hex": "512c12",
+    "fraction": 0.0309,
     "x0_in": 0,
-    "x1_in": 0.0406
+    "x1_in": 0.0424
    },
    {
     "index": 1,
-    "hex": "9ea2a2",
-    "fraction": 0.0364,
-    "x0_in": 0.0406,
-    "x1_in": 0.0906
+    "hex": "bfbfbf",
+    "fraction": 0.0349,
+    "x0_in": 0.0424,
+    "x1_in": 0.0904
    },
    {
     "index": 2,
-    "hex": "2e6520",
-    "fraction": 0.0409,
-    "x0_in": 0.0906,
-    "x1_in": 0.1469
+    "hex": "2e741b",
+    "fraction": 0.0418,
+    "x0_in": 0.0904,
+    "x1_in": 0.1479
    },
    {
     "index": 3,
-    "hex": "9ea2a2",
-    "fraction": 0.0409,
-    "x0_in": 0.1469,
-    "x1_in": 0.2031
+    "hex": "bfbfbf",
+    "fraction": 0.0407,
+    "x0_in": 0.1479,
+    "x1_in": 0.2039
    },
    {
     "index": 4,
-    "hex": "b06925",
-    "fraction": 0.3091,
-    "x0_in": 0.2031,
-    "x1_in": 0.6281
+    "hex": "d37a23",
+    "fraction": 0.3075,
+    "x0_in": 0.2039,
+    "x1_in": 0.6267
    },
    {
     "index": 5,
-    "hex": "492c17",
-    "fraction": 0.0864,
-    "x0_in": 0.6281,
-    "x1_in": 0.7469
+    "hex": "512c12",
+    "fraction": 0.0885,
+    "x0_in": 0.6267,
+    "x1_in": 0.7483
    },
    {
     "index": 6,
-    "hex": "b06925",
-    "fraction": 0.3068,
-    "x0_in": 0.7469,
-    "x1_in": 1.1687
+    "hex": "d37a23",
+    "fraction": 0.3075,
+    "x0_in": 0.7483,
+    "x1_in": 1.1711
    },
    {
     "index": 7,
-    "hex": "9ea2a2",
-    "fraction": 0.0432,
-    "x0_in": 1.1687,
-    "x1_in": 1.2282
+    "hex": "bfbfbf",
+    "fraction": 0.0407,
+    "x0_in": 1.1711,
+    "x1_in": 1.2271
    },
    {
     "index": 8,
-    "hex": "2d6520",
-    "fraction": 0.0409,
-    "x0_in": 1.2282,
-    "x1_in": 1.2844
+    "hex": "2e741b",
+    "fraction": 0.0418,
+    "x0_in": 1.2271,
+    "x1_in": 1.2846
    },
    {
     "index": 9,
-    "hex": "9ea2a2",
-    "fraction": 0.0364,
-    "x0_in": 1.2844,
-    "x1_in": 1.3344
+    "hex": "bfbfbf",
+    "fraction": 0.0349,
+    "x0_in": 1.2846,
+    "x1_in": 1.3326
    },
    {
     "index": 10,
-    "hex": "492c17",
-    "fraction": 0.0295,
-    "x0_in": 1.3344,
+    "hex": "512c12",
+    "fraction": 0.0308,
+    "x0_in": 1.3326,
     "x1_in": 1.375
    }
   ],
@@ -128,10 +128,12 @@
  "service": "army-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/8d815ada040e.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Army ROTC Ribbon Unit: N-2-2: AJROTC Physical Fitness",
   "vendor_product_url": "https://www.vanguardmil.com/products/army-n22-ajrotc-physical-fitness-rotc-ribbon-unit",
@@ -144,24 +146,62 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    216
+   ],
+   [
+    600,
+    216
+   ],
+   [
+    600,
+    383
+   ],
+   [
+    0,
+    383
+   ]
+  ],
+  "rectified_px": [
+   600,
+   167
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.7,
+   1.1,
+   0,
+   0.6,
+   0,
+   0.3,
+   0,
+   0.3,
+   0,
+   0.3,
+   0.3
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 11,
-   "stripes_after": 11,
-   "max_snap_delta": 18.8,
-   "unsnapped": 7,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Army ROTC Ribbon Unit: N-2-2: AJROTC Physical Fitness",
+   "url": "https://www.vanguardmil.com/products/army-n22-ajrotc-physical-fitness-rotc-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.1,
   "threshold": null
  },
  "grade": "ribbon"

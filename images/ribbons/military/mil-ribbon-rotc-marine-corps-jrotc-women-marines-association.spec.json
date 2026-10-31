@@ -44,30 +44,30 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "c40c0d",
-    "fraction": 0.1364,
+    "hex": "e30304",
+    "fraction": 0.1285,
     "x0_in": 0,
-    "x1_in": 0.1875
+    "x1_in": 0.1766
    },
    {
     "index": 1,
-    "hex": "d2c211",
-    "fraction": 0.3636,
-    "x0_in": 0.1875,
+    "hex": "f4e106",
+    "fraction": 0.3715,
+    "x0_in": 0.1766,
     "x1_in": 0.6875
    },
    {
     "index": 2,
-    "hex": "1d6415",
-    "fraction": 0.3636,
+    "hex": "196e0f",
+    "fraction": 0.3715,
     "x0_in": 0.6875,
-    "x1_in": 1.1875
+    "x1_in": 1.1984
    },
    {
     "index": 3,
-    "hex": "c10d0d",
-    "fraction": 0.1364,
-    "x0_in": 1.1875,
+    "hex": "e30304",
+    "fraction": 0.1285,
+    "x0_in": 1.1984,
     "x1_in": 1.375
    }
   ],
@@ -79,10 +79,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/e703e3901da5.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit #5119",
   "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-5119",
@@ -95,24 +97,55 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor description unit 5119: MCJROTC Women Marines Association",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":4,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    217
+   ],
+   [
+    600,
+    217
+   ],
+   [
+    600,
+    384
+   ],
+   [
+    0,
+    384
+   ]
+  ],
+  "rectified_px": [
+   600,
+   167
+  ],
+  "symmetry": "layout",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 4,
-   "stripes_after": 4,
-   "max_snap_delta": 11.3,
-   "unsnapped": 4,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit #5119",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-5119",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

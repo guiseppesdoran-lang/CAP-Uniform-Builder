@@ -44,108 +44,134 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "9ea2a2",
-    "fraction": 0.0136,
+    "hex": "263165",
+    "fraction": 0.1685,
     "x0_in": 0,
-    "x1_in": 0.0187
+    "x1_in": 0.2317
    },
    {
     "index": 1,
-    "hex": "041e42",
-    "fraction": 0.1773,
-    "x0_in": 0.0187,
-    "x1_in": 0.2625
+    "hex": "2544b2",
+    "fraction": 0.1433,
+    "x0_in": 0.2317,
+    "x1_in": 0.4288
    },
    {
     "index": 2,
-    "hex": "283c92",
-    "fraction": 0.1273,
-    "x0_in": 0.2625,
-    "x1_in": 0.4375
+    "hex": "5380c2",
+    "fraction": 0.0948,
+    "x0_in": 0.4288,
+    "x1_in": 0.5591
    },
    {
     "index": 3,
-    "hex": "53749d",
-    "fraction": 0.0954,
-    "x0_in": 0.4375,
-    "x1_in": 0.5687
+    "hex": "e3e1e2",
+    "fraction": 0.0471,
+    "x0_in": 0.5591,
+    "x1_in": 0.6238
    },
    {
     "index": 4,
-    "hex": "bbb9b5",
-    "fraction": 0.0455,
-    "x0_in": 0.5687,
-    "x1_in": 0.6313
+    "hex": "603425",
+    "fraction": 0.0927,
+    "x0_in": 0.6238,
+    "x1_in": 0.7512
    },
    {
     "index": 5,
-    "hex": "6f263d",
-    "fraction": 0.0954,
-    "x0_in": 0.6313,
-    "x1_in": 0.7624
+    "hex": "e3e1e2",
+    "fraction": 0.0471,
+    "x0_in": 0.7512,
+    "x1_in": 0.8159
    },
    {
     "index": 6,
-    "hex": "bbb9b5",
-    "fraction": 0.0455,
-    "x0_in": 0.7624,
-    "x1_in": 0.825
+    "hex": "5380c2",
+    "fraction": 0.0948,
+    "x0_in": 0.8159,
+    "x1_in": 0.9462
    },
    {
     "index": 7,
-    "hex": "53749d",
-    "fraction": 0.0955,
-    "x0_in": 0.825,
-    "x1_in": 0.9563
+    "hex": "2544b2",
+    "fraction": 0.1433,
+    "x0_in": 0.9462,
+    "x1_in": 1.1433
    },
    {
     "index": 8,
-    "hex": "283c92",
-    "fraction": 0.1272,
-    "x0_in": 0.9563,
-    "x1_in": 1.1312
-   },
-   {
-    "index": 9,
-    "hex": "041e42",
-    "fraction": 0.1773,
-    "x0_in": 1.1312,
+    "hex": "263165",
+    "fraction": 0.1685,
+    "x0_in": 1.1433,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 10,
-   "stripes_after": 10,
-   "max_snap_delta": 17.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Restricted Duty",
+   "url": "https://www.vanguardmil.com/products/uscg-restricted-duty-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_restricted_duty.jpg"
+   "img/ribbons/f92854b48397.jpg"
   ],
-  "residual": {
-   "vertical": 29.6,
-   "horizontal": 72.1,
-   "central_vertical": 17.4
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Restricted Duty",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-restricted-duty-ribbon-unit",
+  "corners_px": [
+   [
+    73.7,
+    449.6
+   ],
+   [
+    1126.1,
+    454.6
+   ],
+   [
+    1131.6,
+    750.1
+   ],
+   [
+    76,
+    748.1
+   ]
+  ],
+  "rectified_px": [
+   1054,
+   297
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.6,
+   0.4,
+   0.4,
+   0.2,
+   0,
+   0.5,
+   0.4,
+   0.4,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -162,8 +188,8 @@
   "Coast Guard Restricted Duty"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 29.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.6,
   "threshold": null
  },
  "grade": "ribbon"

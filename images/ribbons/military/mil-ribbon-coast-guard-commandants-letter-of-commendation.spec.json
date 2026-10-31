@@ -44,101 +44,134 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "b0aa7e",
-    "fraction": 0.0682,
+    "hex": "addc85",
+    "fraction": 0.0614,
     "x0_in": 0,
-    "x1_in": 0.0938
+    "x1_in": 0.0845
    },
    {
     "index": 1,
-    "hex": "6f263d",
-    "fraction": 0.1954,
-    "x0_in": 0.0938,
-    "x1_in": 0.3624
+    "hex": "643f2c",
+    "fraction": 0.1884,
+    "x0_in": 0.0845,
+    "x1_in": 0.3435
    },
    {
     "index": 2,
-    "hex": "f2c75c",
-    "fraction": 0.0455,
-    "x0_in": 0.3624,
-    "x1_in": 0.425
+    "hex": "efdd63",
+    "fraction": 0.0514,
+    "x0_in": 0.3435,
+    "x1_in": 0.4142
    },
    {
     "index": 3,
-    "hex": "b0aa7e",
-    "fraction": 0.0182,
-    "x0_in": 0.425,
-    "x1_in": 0.45
+    "hex": "71bed3",
+    "fraction": 0.1011,
+    "x0_in": 0.4142,
+    "x1_in": 0.5532
    },
    {
     "index": 4,
-    "hex": "53749d",
-    "fraction": 0.3682,
-    "x0_in": 0.45,
-    "x1_in": 0.9563
+    "hex": "2585cc",
+    "fraction": 0.1953,
+    "x0_in": 0.5532,
+    "x1_in": 0.8218
    },
    {
     "index": 5,
-    "hex": "b0aa7e",
-    "fraction": 0.0181,
-    "x0_in": 0.9563,
-    "x1_in": 0.9812
+    "hex": "71bed3",
+    "fraction": 0.1011,
+    "x0_in": 0.8218,
+    "x1_in": 0.9608
    },
    {
     "index": 6,
-    "hex": "f2c75c",
-    "fraction": 0.0409,
-    "x0_in": 0.9812,
-    "x1_in": 1.0374
+    "hex": "efdd63",
+    "fraction": 0.0514,
+    "x0_in": 0.9608,
+    "x1_in": 1.0315
    },
    {
     "index": 7,
-    "hex": "6f263d",
-    "fraction": 0.191,
-    "x0_in": 1.0374,
-    "x1_in": 1.3001
+    "hex": "643f2c",
+    "fraction": 0.1884,
+    "x0_in": 1.0315,
+    "x1_in": 1.2905
    },
    {
     "index": 8,
-    "hex": "b0aa7e",
-    "fraction": 0.0545,
-    "x0_in": 1.3001,
+    "hex": "addc85",
+    "fraction": 0.0614,
+    "x0_in": 1.2905,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 10,
-   "stripes_after": 9,
-   "max_snap_delta": 21.5
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Letter of Commendation",
+   "url": "https://www.vanguardmil.com/products/uscg-letter-of-commendation-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_commandants_letter_of_commendation.jpg"
+   "img/ribbons/f163b7985737.jpg"
   ],
-  "residual": {
-   "vertical": 30.8,
-   "horizontal": 85.7,
-   "central_vertical": 25.5
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Letter of Commendation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-letter-of-commendation-ribbon-unit",
+  "corners_px": [
+   [
+    69.2,
+    455
+   ],
+   [
+    1120.5,
+    455
+   ],
+   [
+    1122.3,
+    745
+   ],
+   [
+    73.4,
+    745
+   ]
+  ],
+  "rectified_px": [
+   1050,
+   290
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": true,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.5,
+   0.6,
+   0.3,
+   0.1,
+   0,
+   0.3,
+   0.1,
+   0.3,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -155,8 +188,8 @@
   "Commandants Letter Of Commendation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 30.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.6,
   "threshold": null
  },
  "grade": "ribbon"

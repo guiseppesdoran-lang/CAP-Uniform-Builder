@@ -44,105 +44,134 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2f2932",
-    "fraction": 0.14,
+    "hex": "26233b",
+    "fraction": 0.1512,
     "x0_in": 0,
-    "x1_in": 0.1925
+    "x1_in": 0.2079
    },
    {
     "index": 1,
-    "hex": "a29691",
-    "fraction": 0.05,
-    "x0_in": 0.1925,
-    "x1_in": 0.2612
+    "hex": "e6d9d5",
+    "fraction": 0.039,
+    "x0_in": 0.2079,
+    "x1_in": 0.2616
    },
    {
     "index": 2,
-    "hex": "a02a3c",
-    "fraction": 0.05,
-    "x0_in": 0.2612,
-    "x1_in": 0.33
+    "hex": "eb2833",
+    "fraction": 0.0553,
+    "x0_in": 0.2616,
+    "x1_in": 0.3376
    },
    {
     "index": 3,
-    "hex": "596071",
-    "fraction": 0.05,
-    "x0_in": 0.33,
-    "x1_in": 0.3987
+    "hex": "aab5be",
+    "fraction": 0.0457,
+    "x0_in": 0.3376,
+    "x1_in": 0.4005
    },
    {
     "index": 4,
-    "hex": "322d38",
-    "fraction": 0.42,
-    "x0_in": 0.3987,
-    "x1_in": 0.9762
+    "hex": "26233b",
+    "fraction": 0.4175,
+    "x0_in": 0.4005,
+    "x1_in": 0.9745
    },
    {
     "index": 5,
-    "hex": "59667b",
-    "fraction": 0.04,
-    "x0_in": 0.9762,
-    "x1_in": 1.0313
+    "hex": "aab5be",
+    "fraction": 0.0457,
+    "x0_in": 0.9745,
+    "x1_in": 1.0374
    },
    {
     "index": 6,
-    "hex": "804052",
-    "fraction": 0.02,
-    "x0_in": 1.0313,
-    "x1_in": 1.0588
+    "hex": "eb2833",
+    "fraction": 0.0553,
+    "x0_in": 1.0374,
+    "x1_in": 1.1134
    },
    {
     "index": 7,
-    "hex": "a52a3a",
-    "fraction": 0.04,
-    "x0_in": 1.0588,
-    "x1_in": 1.1138
+    "hex": "e6d9d5",
+    "fraction": 0.039,
+    "x0_in": 1.1134,
+    "x1_in": 1.1671
    },
    {
     "index": 8,
-    "hex": "ab9b94",
-    "fraction": 0.04,
-    "x0_in": 1.1138,
-    "x1_in": 1.1687
-   },
-   {
-    "index": 9,
-    "hex": "2f2631",
-    "fraction": 0.15,
-    "x0_in": 1.1687,
+    "hex": "26233b",
+    "fraction": 0.1512,
+    "x0_in": 1.1671,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "McChord-style precomposed variant (flat art), award air_force_military_training_instructor",
-  "geometry_source": "McChord-style variant base",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
-  "superseded_photo_by_clean_variant": true,
+  "reference": {
+   "title": "Ribbon Unit: Air Force Military Training Instructor",
+   "url": "https://www.vanguardmil.com/products/usaf-military-training-instructor-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_force_military_training_instructor.jpg",
-   "images/military-ribbon-variants/air-force/air_force_military_training_instructor/fc1862c7b9c654ca.png"
+   "img/ribbons/b54777ef7a9c.jpg"
   ],
-  "residual": {
-   "vertical": 31,
-   "horizontal": 58.8,
-   "central_vertical": 14.6
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "clean-variant",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Military Training Instructor",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-military-training-instructor-ribbon-unit",
+  "corners_px": [
+   [
+    12,
+    451.2
+   ],
+   [
+    1178.3,
+    446.7
+   ],
+   [
+    1173.9,
+    760
+   ],
+   [
+    12,
+    760
+   ]
+  ],
+  "rectified_px": [
+   1164,
+   311
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.7,
+   0.9,
+   0.3,
+   1.2,
+   0.4,
+   1,
+   0.4,
+   0.9,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"clean-variant\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art), award air_force_military_training_instructor\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -165,8 +194,8 @@
   "air force military training instructor"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 31,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.2,
   "threshold": null
  },
  "grade": "ribbon"

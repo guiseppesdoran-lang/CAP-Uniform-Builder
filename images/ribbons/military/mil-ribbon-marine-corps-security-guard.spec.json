@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "00205b",
-    "fraction": 0.3273,
+    "hex": "2b44bd",
+    "fraction": 0.3144,
     "x0_in": 0,
-    "x1_in": 0.45
+    "x1_in": 0.4323
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.1318,
-    "x0_in": 0.45,
-    "x1_in": 0.6313
+    "fraction": 0.1365,
+    "x0_in": 0.4323,
+    "x1_in": 0.62
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.0818,
-    "x0_in": 0.6313,
-    "x1_in": 0.7437
+    "hex": "f23d40",
+    "fraction": 0.0981,
+    "x0_in": 0.62,
+    "x1_in": 0.755
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.1318,
-    "x0_in": 0.7437,
-    "x1_in": 0.925
+    "fraction": 0.1365,
+    "x0_in": 0.755,
+    "x1_in": 0.9427
    },
    {
     "index": 4,
-    "hex": "00205b",
-    "fraction": 0.3273,
-    "x0_in": 0.925,
+    "hex": "2b44bd",
+    "fraction": 0.3144,
+    "x0_in": 0.9427,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 11.7
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Marine Security Guard",
+   "url": "https://www.vanguardmil.com/products/marine-security-guard-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/marine_corps_security_guard.jpg"
+   "img/ribbons/35e5d35434ed.jpg"
   ],
-  "residual": {
-   "vertical": 4.8,
-   "horizontal": 141.7,
-   "central_vertical": 4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Marine Security Guard",
+  "vendor_product_url": "https://www.vanguardmil.com/products/marine-security-guard-ribbon-unit",
+  "corners_px": [
+   [
+    57.9,
+    449.6
+   ],
+   [
+    1144,
+    440
+   ],
+   [
+    1144,
+    743.3
+   ],
+   [
+    52.7,
+    752.1
+   ]
+  ],
+  "rectified_px": [
+   1089,
+   303
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.1,
+   2.9,
+   0,
+   2.8,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS"
@@ -127,8 +156,8 @@
   "Marine Corps Sercurity Guard"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 4.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.9,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,157 +44,198 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "53749d",
-    "fraction": 0.1273,
+    "hex": "60a2bd",
+    "fraction": 0.1215,
     "x0_in": 0,
-    "x1_in": 0.175
+    "x1_in": 0.1671
    },
    {
     "index": 1,
-    "hex": "9ea2a2",
-    "fraction": 0.0454,
-    "x0_in": 0.175,
-    "x1_in": 0.2375
+    "hex": "c9d3da",
+    "fraction": 0.0474,
+    "x0_in": 0.1671,
+    "x1_in": 0.2323
    },
    {
     "index": 2,
-    "hex": "6f263d",
-    "fraction": 0.0455,
-    "x0_in": 0.2375,
-    "x1_in": 0.3
+    "hex": "a1212d",
+    "fraction": 0.0469,
+    "x0_in": 0.2323,
+    "x1_in": 0.2968
    },
    {
     "index": 3,
-    "hex": "9ea2a2",
-    "fraction": 0.0409,
-    "x0_in": 0.3,
-    "x1_in": 0.3563
+    "hex": "c9d3da",
+    "fraction": 0.0479,
+    "x0_in": 0.2968,
+    "x1_in": 0.3627
    },
    {
     "index": 4,
-    "hex": "6f263d",
-    "fraction": 0.05,
-    "x0_in": 0.3563,
-    "x1_in": 0.425
+    "hex": "a1212d",
+    "fraction": 0.0472,
+    "x0_in": 0.3627,
+    "x1_in": 0.4276
    },
    {
     "index": 5,
-    "hex": "9ea2a2",
-    "fraction": 0.0454,
-    "x0_in": 0.425,
-    "x1_in": 0.4874
+    "hex": "c9d3da",
+    "fraction": 0.0477,
+    "x0_in": 0.4276,
+    "x1_in": 0.4932
    },
    {
     "index": 6,
-    "hex": "6f263d",
-    "fraction": 0.0546,
-    "x0_in": 0.4874,
-    "x1_in": 0.5625
+    "hex": "a1212d",
+    "fraction": 0.0471,
+    "x0_in": 0.4932,
+    "x1_in": 0.558
    },
    {
     "index": 7,
-    "hex": "9ea2a2",
-    "fraction": 0.0409,
-    "x0_in": 0.5625,
-    "x1_in": 0.6188
+    "hex": "c9d3da",
+    "fraction": 0.0472,
+    "x0_in": 0.558,
+    "x1_in": 0.6229
    },
    {
     "index": 8,
-    "hex": "53749d",
-    "fraction": 0.0909,
-    "x0_in": 0.6188,
-    "x1_in": 0.7437
+    "hex": "60a2bd",
+    "fraction": 0.094,
+    "x0_in": 0.6229,
+    "x1_in": 0.7521
    },
    {
     "index": 9,
-    "hex": "9ea2a2",
-    "fraction": 0.05,
-    "x0_in": 0.7437,
-    "x1_in": 0.8125
+    "hex": "c9d3da",
+    "fraction": 0.0472,
+    "x0_in": 0.7521,
+    "x1_in": 0.817
    },
    {
     "index": 10,
-    "hex": "6f263d",
-    "fraction": 0.0455,
-    "x0_in": 0.8125,
-    "x1_in": 0.875
+    "hex": "a1212d",
+    "fraction": 0.0471,
+    "x0_in": 0.817,
+    "x1_in": 0.8818
    },
    {
     "index": 11,
-    "hex": "9ea2a2",
-    "fraction": 0.05,
-    "x0_in": 0.875,
-    "x1_in": 0.9438
+    "hex": "c9d3da",
+    "fraction": 0.0477,
+    "x0_in": 0.8818,
+    "x1_in": 0.9474
    },
    {
     "index": 12,
-    "hex": "6f263d",
-    "fraction": 0.05,
-    "x0_in": 0.9438,
-    "x1_in": 1.0126
+    "hex": "a1212d",
+    "fraction": 0.0472,
+    "x0_in": 0.9474,
+    "x1_in": 1.0123
    },
    {
     "index": 13,
-    "hex": "9ea2a2",
-    "fraction": 0.0409,
-    "x0_in": 1.0126,
-    "x1_in": 1.0688
+    "hex": "c9d3da",
+    "fraction": 0.0479,
+    "x0_in": 1.0123,
+    "x1_in": 1.0782
    },
    {
     "index": 14,
-    "hex": "6f263d",
-    "fraction": 0.05,
-    "x0_in": 1.0688,
-    "x1_in": 1.1375
+    "hex": "a1212d",
+    "fraction": 0.0469,
+    "x0_in": 1.0782,
+    "x1_in": 1.1427
    },
    {
     "index": 15,
-    "hex": "9ea2a2",
-    "fraction": 0.0409,
-    "x0_in": 1.1375,
-    "x1_in": 1.1938
+    "hex": "c9d3da",
+    "fraction": 0.0474,
+    "x0_in": 1.1427,
+    "x1_in": 1.2079
    },
    {
     "index": 16,
-    "hex": "53749d",
-    "fraction": 0.1318,
-    "x0_in": 1.1938,
+    "hex": "60a2bd",
+    "fraction": 0.1215,
+    "x0_in": 1.2079,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 17,
-   "stripes_after": 17,
-   "max_snap_delta": 16
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Medal for Heroism",
+   "url": "https://www.vanguardmil.com/products/uscg-medal-for-heroism-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_medal.jpg"
+   "img/ribbons/8aae056690ba.jpg"
   ],
-  "residual": {
-   "vertical": 38.8,
-   "horizontal": 82.4,
-   "central_vertical": 25.2
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": true,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Medal for Heroism",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-medal-for-heroism-ribbon-unit",
+  "corners_px": [
+   [
+    79.5,
+    447.6
+   ],
+   [
+    1114.7,
+    455.2
+   ],
+   [
+    1118.2,
+    749.7
+   ],
+   [
+    85.1,
+    744.6
+   ]
+  ],
+  "rectified_px": [
+   1034,
+   296
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.9,
+   0.2,
+   1.2,
+   0.4,
+   0.5,
+   0.2,
+   0.3,
+   0.9,
+   1,
+   0.5,
+   0.3,
+   0.5,
+   0.9,
+   0.5,
+   0.6,
+   0.8,
+   1
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":17,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -211,8 +252,8 @@
   "Coast Guard Medal"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 38.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.2,
   "threshold": null
  },
  "grade": "ribbon"

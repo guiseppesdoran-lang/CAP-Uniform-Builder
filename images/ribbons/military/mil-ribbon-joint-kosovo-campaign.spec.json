@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "012169",
-    "fraction": 0.3655,
+    "hex": "2c2b86",
+    "fraction": 0.3553,
     "x0_in": 0,
-    "x1_in": 0.5026
+    "x1_in": 0.4885
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.0775,
-    "x0_in": 0.5026,
-    "x1_in": 0.6091
+    "hex": "da2936",
+    "fraction": 0.0825,
+    "x0_in": 0.4885,
+    "x1_in": 0.6019
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.114,
-    "x0_in": 0.6091,
-    "x1_in": 0.7659
+    "fraction": 0.1244,
+    "x0_in": 0.6019,
+    "x1_in": 0.7731
    },
    {
     "index": 3,
-    "hex": "012169",
-    "fraction": 0.0775,
-    "x0_in": 0.7659,
-    "x1_in": 0.8724
+    "hex": "2c2b86",
+    "fraction": 0.0825,
+    "x0_in": 0.7731,
+    "x1_in": 0.8865
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.3655,
-    "x0_in": 0.8724,
+    "hex": "da2936",
+    "fraction": 0.3553,
+    "x0_in": 0.8865,
     "x1_in": 1.375
    }
   ],
@@ -83,35 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Kosovo Campaign Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
   "snap": null,
   "reference": {
-   "title": "File:Kosovo Campaign Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Kosovo_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Kosovo Campaign Medal",
+   "url": "https://www.vanguardmil.com/products/kosovo-campaign-medal-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/kosovo_campaign.jpg"
+   "img/ribbons/06d01bb95ed9.jpg"
   ],
-  "residual": {
-   "vertical": 5.7,
-   "horizontal": 108.3,
-   "central_vertical": 4.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Kosovo Campaign Medal",
+  "vendor_product_url": "https://www.vanguardmil.com/products/kosovo-campaign-medal-ribbon-unit",
+  "corners_px": [
+   [
+    64.2,
+    454
+   ],
+   [
+    1115.7,
+    454
+   ],
+   [
+    1129.4,
+    745.2
+   ],
+   [
+    78.9,
+    749.9
+   ]
+  ],
+  "rectified_px": [
+   1051,
+   294
+  ],
+  "symmetry": "layout",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0.6,
+   3.9,
+   0.3,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Kosovo Campaign Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -132,8 +160,8 @@
   "kosovo campaign"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 5.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.9,
   "threshold": null
  },
  "grade": "ribbon"

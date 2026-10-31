@@ -44,69 +44,85 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "d3c6b6",
-    "fraction": 0.02,
+    "hex": "153da5",
+    "fraction": 1,
     "x0_in": 0,
-    "x1_in": 0.0275
-   },
-   {
-    "index": 1,
-    "hex": "8d8367",
-    "fraction": 0.07,
-    "x0_in": 0.0275,
-    "x1_in": 0.1237
-   },
-   {
-    "index": 2,
-    "hex": "7a7470",
-    "fraction": 0.8,
-    "x0_in": 0.1237,
-    "x1_in": 1.2237
-   },
-   {
-    "index": 3,
-    "hex": "6b6259",
-    "fraction": 0.03,
-    "x0_in": 1.2237,
-    "x1_in": 1.265
-   },
-   {
-    "index": 4,
-    "hex": "887a5d",
-    "fraction": 0.08,
-    "x0_in": 1.265,
     "x1_in": 1.375
    }
   ],
   "stars": [],
-  "frame": null
+  "frame": {
+   "color_hex": "dcbc80",
+   "light_hex": "fbebc1",
+   "dark_hex": "9d7e58",
+   "thickness_in": {
+    "top": 0.057,
+    "bottom": 0.0592,
+    "left": 0.069,
+    "right": 0.0805
+   },
+   "laurel": {
+    "period_in": 0.0716,
+    "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
+   },
+   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+  }
  },
- "classification": "stripes",
+ "classification": "stripes_framed",
  "quality": {
-  "color_source": "McChord-style precomposed variant (flat art)",
-  "geometry_source": "variant base, top/bottom bands",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
+  "reference": {
+   "title": "Ribbon Unit Citation: Air Force Presidential Unit Citation: PUC",
+   "url": "https://www.vanguardmil.com/products/usaf-citation-for-the-presidential-unit-citation-puc",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbon-variants/air-force/air_force_presidential_unit_citation/fc1862c7b9c654ca.png"
+   "img/ribbons/5c3aeea8e905.jpg"
   ],
-  "residual": {
-   "variant_bases_measured": 14,
-   "variants_agreeing": 14,
-   "exact_svg": false
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit Citation: Air Force Presidential Unit Citation: PUC",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-citation-for-the-presidential-unit-citation-puc",
+  "corners_px": [
+   [
+    63,
+    427.4
+   ],
+   [
+    1137.8,
+    423.8
+   ],
+   [
+    1141,
+    765
+   ],
+   [
+    64.7,
+    769.7
+   ]
+  ],
+  "rectified_px": [
+   1076,
+   342
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
-  "border_frame_detected": false,
+  "border_frame_detected": true,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "variant",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -123,8 +139,8 @@
   "air force presidential unit citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 99,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

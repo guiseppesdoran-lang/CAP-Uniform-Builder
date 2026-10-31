@@ -44,93 +44,93 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "003da5",
-    "fraction": 0.0448,
+    "hex": "2336a8",
+    "fraction": 0.0494,
     "x0_in": 0,
-    "x1_in": 0.0616
+    "x1_in": 0.068
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0378,
-    "x0_in": 0.0616,
-    "x1_in": 0.1136
+    "fraction": 0.0373,
+    "x0_in": 0.068,
+    "x1_in": 0.1193
    },
    {
     "index": 2,
-    "hex": "e6ad2d",
-    "fraction": 0.1792,
-    "x0_in": 0.1136,
-    "x1_in": 0.36
+    "hex": "ecb828",
+    "fraction": 0.1798,
+    "x0_in": 0.1193,
+    "x1_in": 0.3666
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0471,
-    "x0_in": 0.36,
-    "x1_in": 0.4248
+    "fraction": 0.0417,
+    "x0_in": 0.3666,
+    "x1_in": 0.4239
    },
    {
     "index": 4,
-    "hex": "31319c",
-    "fraction": 0.0472,
-    "x0_in": 0.4248,
-    "x1_in": 0.4897
+    "hex": "2336a8",
+    "fraction": 0.054,
+    "x0_in": 0.4239,
+    "x1_in": 0.4981
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0471,
-    "x0_in": 0.4897,
-    "x1_in": 0.5545
+    "fraction": 0.046,
+    "x0_in": 0.4981,
+    "x1_in": 0.5613
    },
    {
     "index": 6,
-    "hex": "b3232d",
-    "fraction": 0.1864,
-    "x0_in": 0.5545,
-    "x1_in": 0.8108
+    "hex": "bd1826",
+    "fraction": 0.1836,
+    "x0_in": 0.5613,
+    "x1_in": 0.8137
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0471,
-    "x0_in": 0.8108,
-    "x1_in": 0.8756
+    "fraction": 0.046,
+    "x0_in": 0.8137,
+    "x1_in": 0.8769
    },
    {
     "index": 8,
-    "hex": "003da5",
-    "fraction": 0.0496,
-    "x0_in": 0.8756,
-    "x1_in": 0.9438
+    "hex": "2336a8",
+    "fraction": 0.054,
+    "x0_in": 0.8769,
+    "x1_in": 0.9511
    },
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.0448,
-    "x0_in": 0.9438,
-    "x1_in": 1.0054
+    "fraction": 0.0417,
+    "x0_in": 0.9511,
+    "x1_in": 1.0084
    },
    {
     "index": 10,
-    "hex": "e6ae2e",
-    "fraction": 0.1863,
-    "x0_in": 1.0054,
-    "x1_in": 1.2616
+    "hex": "ecb828",
+    "fraction": 0.1798,
+    "x0_in": 1.0084,
+    "x1_in": 1.2557
    },
    {
     "index": 11,
     "hex": "ffffff",
-    "fraction": 0.0378,
-    "x0_in": 1.2616,
-    "x1_in": 1.3135
+    "fraction": 0.0373,
+    "x0_in": 1.2557,
+    "x1_in": 1.307
    },
    {
     "index": 12,
-    "hex": "283592",
-    "fraction": 0.0447,
-    "x0_in": 1.3135,
+    "hex": "2336a8",
+    "fraction": 0.0494,
+    "x0_in": 1.307,
     "x1_in": 1.375
    }
   ],
@@ -142,10 +142,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/dfe7991ae99a.jpg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit: Air Force ROTC Recruiting Award",
   "vendor_product_url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-recruiting-award-ribbon-unit",
@@ -158,27 +160,64 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    14.5,
+    423.3
+   ],
+   [
+    1177,
+    428.5
+   ],
+   [
+    1177,
+    756.4
+   ],
+   [
+    19.5,
+    753.3
+   ]
+  ],
+  "rectified_px": [
+   1160,
+   329
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.3,
+   3.5,
+   1.4,
+   5.4,
+   0.6,
+   6.4,
+   0,
+   6.4,
+   0.6,
+   5.4,
+   1,
+   5,
+   1.4
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 13,
-   "stripes_after": 13,
-   "max_snap_delta": 6,
-   "unsnapped": 1,
-   "margin_runs_trimmed": [
-    "first",
-    "last"
-   ],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force ROTC Recruiting Award",
+   "url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-recruiting-award-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 6.4,
   "threshold": null
  },
  "grade": "ribbon"

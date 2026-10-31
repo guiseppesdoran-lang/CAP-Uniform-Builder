@@ -44,79 +44,79 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a5bdbe",
-    "fraction": 0.04,
+    "hex": "bdcfcd",
+    "fraction": 0.0512,
     "x0_in": 0,
-    "x1_in": 0.055
+    "x1_in": 0.0703
    },
    {
     "index": 1,
-    "hex": "ffffff",
-    "fraction": 0.09,
-    "x0_in": 0.055,
-    "x1_in": 0.1787
+    "hex": "f2ecde",
+    "fraction": 0.0779,
+    "x0_in": 0.0703,
+    "x1_in": 0.1774
    },
    {
     "index": 2,
-    "hex": "303d94",
-    "fraction": 0.07,
-    "x0_in": 0.1787,
-    "x1_in": 0.275
+    "hex": "3b53ab",
+    "fraction": 0.0632,
+    "x0_in": 0.1774,
+    "x1_in": 0.2644
    },
    {
     "index": 3,
-    "hex": "e6e51d",
-    "fraction": 0.03,
-    "x0_in": 0.275,
-    "x1_in": 0.3162
+    "hex": "f0d348",
+    "fraction": 0.0418,
+    "x0_in": 0.2644,
+    "x1_in": 0.3218
    },
    {
     "index": 4,
-    "hex": "2f3c91",
-    "fraction": 0.07,
-    "x0_in": 0.3162,
-    "x1_in": 0.4125
+    "hex": "3b53ab",
+    "fraction": 0.0743,
+    "x0_in": 0.3218,
+    "x1_in": 0.424
    },
    {
     "index": 5,
-    "hex": "8fa9ab",
-    "fraction": 0.4,
-    "x0_in": 0.4125,
-    "x1_in": 0.9625
+    "hex": "bdcfcd",
+    "fraction": 0.3832,
+    "x0_in": 0.424,
+    "x1_in": 0.951
    },
    {
     "index": 6,
-    "hex": "283592",
-    "fraction": 0.06,
-    "x0_in": 0.9625,
-    "x1_in": 1.045
+    "hex": "3b53ab",
+    "fraction": 0.0743,
+    "x0_in": 0.951,
+    "x1_in": 1.0532
    },
    {
     "index": 7,
-    "hex": "dede23",
-    "fraction": 0.03,
-    "x0_in": 1.045,
-    "x1_in": 1.0862
+    "hex": "f0d348",
+    "fraction": 0.0418,
+    "x0_in": 1.0532,
+    "x1_in": 1.1106
    },
    {
     "index": 8,
-    "hex": "33408f",
-    "fraction": 0.07,
-    "x0_in": 1.0862,
-    "x1_in": 1.1825
+    "hex": "3b53ab",
+    "fraction": 0.0632,
+    "x0_in": 1.1106,
+    "x1_in": 1.1976
    },
    {
     "index": 9,
-    "hex": "ffffff",
-    "fraction": 0.1,
-    "x0_in": 1.1825,
-    "x1_in": 1.32
+    "hex": "f2ecde",
+    "fraction": 0.0779,
+    "x0_in": 1.1976,
+    "x1_in": 1.3047
    },
    {
     "index": 10,
-    "hex": "99b3b5",
-    "fraction": 0.04,
-    "x0_in": 1.32,
+    "hex": "bdcfcd",
+    "fraction": 0.0512,
+    "x0_in": 1.3047,
     "x1_in": 1.375
    }
   ],
@@ -125,31 +125,69 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "McChord-style precomposed variant (flat art), award air_reserve_forces_meritorious_service",
-  "geometry_source": "McChord-style variant base",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
-  "superseded_photo_by_clean_variant": true,
+  "reference": {
+   "title": "Ribbon Yardage Air Reserve Forces Meritorious Service",
+   "url": "https://www.vanguardmil.com/products/air-reserve-forces-meritorious-service-ribbon-yardage",
+   "image_px": [
+    600,
+    600
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_reserve_forces_meritorious_service.jpg",
-   "images/military-ribbon-variants/air-force/air_reserve_forces_meritorious_service/fc1862c7b9c654ca.png"
+   "img/ribbons/41554715f058.jpg"
   ],
-  "residual": {
-   "vertical": 8.8,
-   "horizontal": 80.2,
-   "central_vertical": 8.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Yardage Air Reserve Forces Meritorious Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/air-reserve-forces-meritorious-service-ribbon-yardage",
+  "corners_px": [
+   [
+    0,
+    0
+   ],
+   [
+    600,
+    0
+   ],
+   [
+    600,
+    600
+   ],
+   [
+    0,
+    600
+   ]
+  ],
+  "rectified_px": [
+   600,
+   600
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "clean-variant",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   7.4,
+   0,
+   0.8,
+   0.5,
+   0.7,
+   1.5,
+   0.6,
+   0.5,
+   0.4,
+   0,
+   2.1
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"clean-variant\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art), award air_reserve_forces_meritorious_service\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -172,8 +210,8 @@
   "air reserve forces meritorious service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 7.4,
   "threshold": null
  },
  "grade": "ribbon"

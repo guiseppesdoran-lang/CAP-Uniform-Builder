@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "53749d",
-    "fraction": 0.1864,
+    "hex": "5094c6",
+    "fraction": 0.1742,
     "x0_in": 0,
-    "x1_in": 0.2563
+    "x1_in": 0.2396
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.1,
-    "x0_in": 0.2563,
-    "x1_in": 0.3938
+    "fraction": 0.0948,
+    "x0_in": 0.2396,
+    "x1_in": 0.37
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.0636,
-    "x0_in": 0.3938,
-    "x1_in": 0.4813
+    "hex": "06794b",
+    "fraction": 0.0662,
+    "x0_in": 0.37,
+    "x1_in": 0.461
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.1,
-    "x0_in": 0.4813,
-    "x1_in": 0.6188
+    "fraction": 0.0953,
+    "x0_in": 0.461,
+    "x1_in": 0.592
    },
    {
     "index": 4,
-    "hex": "215732",
-    "fraction": 0.1182,
-    "x0_in": 0.6188,
-    "x1_in": 0.7813
+    "hex": "06794b",
+    "fraction": 0.139,
+    "x0_in": 0.592,
+    "x1_in": 0.783
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.1091,
-    "x0_in": 0.7813,
-    "x1_in": 0.9313
+    "fraction": 0.0953,
+    "x0_in": 0.783,
+    "x1_in": 0.914
    },
    {
     "index": 6,
-    "hex": "215732",
-    "fraction": 0.0636,
-    "x0_in": 0.9313,
-    "x1_in": 1.0187
+    "hex": "06794b",
+    "fraction": 0.0662,
+    "x0_in": 0.914,
+    "x1_in": 1.005
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0727,
-    "x0_in": 1.0187,
-    "x1_in": 1.1187
+    "fraction": 0.0948,
+    "x0_in": 1.005,
+    "x1_in": 1.1354
    },
    {
     "index": 8,
-    "hex": "53749d",
-    "fraction": 0.1864,
-    "x0_in": 1.1187,
+    "hex": "5094c6",
+    "fraction": 0.1742,
+    "x0_in": 1.1354,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 15.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Joint Service Commendation",
+   "url": "https://www.vanguardmil.com/products/joint-service-commendation-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/joint_service_commendation.jpg"
+   "img/ribbons/590c367d7d61.jpg"
   ],
-  "residual": {
-   "vertical": 9.5,
-   "horizontal": 119.6,
-   "central_vertical": 8.7
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Joint Service Commendation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/joint-service-commendation-ribbon-unit",
+  "corners_px": [
+   [
+    69,
+    449.3
+   ],
+   [
+    1128,
+    453.5
+   ],
+   [
+    1128,
+    753.1
+   ],
+   [
+    66.5,
+    747.7
+   ]
+  ],
+  "rectified_px": [
+   1060,
+   299
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   2.3,
+   4.1,
+   2.5,
+   4.3,
+   1.4,
+   3.5,
+   0.4,
+   5.2,
+   2.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -159,8 +192,8 @@
   "joint service commendation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 9.5,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.2,
   "threshold": null
  },
  "grade": "ribbon"

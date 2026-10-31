@@ -44,124 +44,165 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "000000",
-    "fraction": 0.0909,
+    "hex": "1f191a",
+    "fraction": 0.0927,
     "x0_in": 0,
-    "x1_in": 0.125
+    "x1_in": 0.1275
    },
    {
     "index": 1,
-    "hex": "ffffff",
-    "fraction": 0.1364,
-    "x0_in": 0.125,
-    "x1_in": 0.3125
+    "hex": "f8ebe5",
+    "fraction": 0.1315,
+    "x0_in": 0.1275,
+    "x1_in": 0.3084
    },
    {
     "index": 2,
-    "hex": "000000",
-    "fraction": 0.0454,
-    "x0_in": 0.3125,
-    "x1_in": 0.375
+    "hex": "1f191a",
+    "fraction": 0.0442,
+    "x0_in": 0.3084,
+    "x1_in": 0.3692
    },
    {
     "index": 3,
-    "hex": "ba0c2f",
-    "fraction": 0.05,
-    "x0_in": 0.375,
-    "x1_in": 0.4437
+    "hex": "f74f1d",
+    "fraction": 0.049,
+    "x0_in": 0.3692,
+    "x1_in": 0.4366
    },
    {
     "index": 4,
-    "hex": "ffffff",
-    "fraction": 0.1409,
-    "x0_in": 0.4437,
-    "x1_in": 0.6375
+    "hex": "f8ebe5",
+    "fraction": 0.137,
+    "x0_in": 0.4366,
+    "x1_in": 0.6249
    },
    {
     "index": 5,
-    "hex": "012169",
-    "fraction": 0.0819,
-    "x0_in": 0.6375,
-    "x1_in": 0.7501
+    "hex": "2e2598",
+    "fraction": 0.0944,
+    "x0_in": 0.6249,
+    "x1_in": 0.7548
    },
    {
     "index": 6,
-    "hex": "ffffff",
-    "fraction": 0.1454,
-    "x0_in": 0.7501,
-    "x1_in": 0.95
+    "hex": "f8ebe5",
+    "fraction": 0.137,
+    "x0_in": 0.7548,
+    "x1_in": 0.9432
    },
    {
     "index": 7,
-    "hex": "ba0c2f",
-    "fraction": 0.0409,
-    "x0_in": 0.95,
-    "x1_in": 1.0062
+    "hex": "f74f1d",
+    "fraction": 0.049,
+    "x0_in": 0.9432,
+    "x1_in": 1.0105
    },
    {
     "index": 8,
-    "hex": "000000",
-    "fraction": 0.0455,
-    "x0_in": 1.0062,
-    "x1_in": 1.0688
+    "hex": "1f191a",
+    "fraction": 0.0442,
+    "x0_in": 1.0105,
+    "x1_in": 1.0714
    },
    {
     "index": 9,
-    "hex": "ffffff",
-    "fraction": 0.1363,
-    "x0_in": 1.0688,
-    "x1_in": 1.2562
+    "hex": "f8ebe5",
+    "fraction": 0.1315,
+    "x0_in": 1.0714,
+    "x1_in": 1.2522
    },
    {
     "index": 10,
-    "hex": "000000",
-    "fraction": 0.0864,
-    "x0_in": 1.2562,
+    "hex": "1f191a",
+    "fraction": 0.0893,
+    "x0_in": 1.2522,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": {
-   "color_hex": "f1bd00",
+   "color_hex": "f5c266",
+   "light_hex": "fdeac0",
+   "dark_hex": "c6883f",
    "thickness_in": {
-    "top": 0.075,
-    "bottom": 0.0625,
-    "left": 0.0688,
-    "right": 0.0688
+    "top": 0.0671,
+    "bottom": 0.0681,
+    "left": 0.0805,
+    "right": 0.0758
    },
-   "note": "gold unit-award frame; thickness measured on the 220x60 grid (1/160 in cells), colour sampled; laurel texture not modeled"
+   "laurel": {
+    "period_in": 0.0734,
+    "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
+   },
+   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
   }
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes_framed",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 11,
-   "stripes_after": 11,
-   "max_snap_delta": 10.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: DOT Outstanding Unit Award with small frame",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-dept-of-transportation-outstanding-achievement-small-frame",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/dot_outstanding_unit_award.jpg"
+   "img/ribbons/8aedf371ce98.jpg"
   ],
-  "residual": {
-   "vertical": 93.9,
-   "horizontal": 103.6,
-   "central_vertical": 9.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: DOT Outstanding Unit Award with small frame",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-dept-of-transportation-outstanding-achievement-small-frame",
+  "corners_px": [
+   [
+    19,
+    417.2
+   ],
+   [
+    1178.8,
+    413.3
+   ],
+   [
+    1180.6,
+    786.7
+   ],
+   [
+    19,
+    781.7
+   ]
+  ],
+  "rectified_px": [
+   1161,
+   369
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": true,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   3,
+   1.2,
+   1.1,
+   0.7,
+   0.8,
+   0,
+   0.5,
+   0.4,
+   1.5,
+   0.5,
+   0.9
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -178,8 +219,8 @@
   "DOT Outstanding Unit Award"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 93.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3,
   "threshold": null
  },
  "grade": "ribbon"

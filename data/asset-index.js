@@ -976,6 +976,7 @@
     "mil-ribbon-joint-global-war-terror-expeditionary": "ribbons/military/mil-ribbon-joint-global-war-terror-expeditionary.svg",
     "mil-ribbon-joint-global-war-terror-service": "ribbons/military/mil-ribbon-joint-global-war-terror-service.svg",
     "mil-ribbon-joint-humanitarian-service": "ribbons/military/mil-ribbon-joint-humanitarian-service.svg",
+    "mil-ribbon-joint-inherent-resolve-campaign-medal": "ribbons/military/mil-ribbon-joint-inherent-resolve-campaign-medal.svg",
     "mil-ribbon-joint-inherent-resolve-campaign-medal-2": "ribbons/military/mil-ribbon-joint-inherent-resolve-campaign-medal-2.svg",
     "mil-ribbon-joint-inter-american-defense-board": "ribbons/military/mil-ribbon-joint-inter-american-defense-board.svg",
     "mil-ribbon-joint-iraq-campaign": "ribbons/military/mil-ribbon-joint-iraq-campaign.svg",
@@ -1548,7 +1549,7 @@
     "usmc-flight-surgeon-default": "military-badges/marine-corps/marine_corps_flight_surgeon_insignia/default.svg",
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "9658bd600a", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "650b744f72", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "9658bd600a"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "650b744f72"; }
 })(typeof self !== 'undefined' ? self : this);

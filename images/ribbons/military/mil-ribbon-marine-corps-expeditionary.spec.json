@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.0682,
+    "hex": "a82533",
+    "fraction": 0.0509,
     "x0_in": 0,
-    "x1_in": 0.0938
+    "x1_in": 0.07
    },
    {
     "index": 1,
-    "hex": "b0aa7e",
-    "fraction": 0.3,
-    "x0_in": 0.0938,
-    "x1_in": 0.5063
+    "hex": "deb589",
+    "fraction": 0.3107,
+    "x0_in": 0.07,
+    "x1_in": 0.4973
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.2727,
-    "x0_in": 0.5063,
-    "x1_in": 0.8812
+    "hex": "a82533",
+    "fraction": 0.2767,
+    "x0_in": 0.4973,
+    "x1_in": 0.8777
    },
    {
     "index": 3,
-    "hex": "b0aa7e",
-    "fraction": 0.3,
-    "x0_in": 0.8812,
-    "x1_in": 1.2937
+    "hex": "deb589",
+    "fraction": 0.3107,
+    "x0_in": 0.8777,
+    "x1_in": 1.305
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.0591,
-    "x0_in": 1.2937,
+    "hex": "a82533",
+    "fraction": 0.0509,
+    "x0_in": 1.305,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 14.7
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Marine Corps Expeditionary",
+   "url": "https://www.vanguardmil.com/products/usmc-expeditionary-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/marine_corps_expeditionary.jpg"
+   "img/ribbons/2f2f628d962e.jpg"
   ],
-  "residual": {
-   "vertical": 4.2,
-   "horizontal": 74,
-   "central_vertical": 4.1
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Marine Corps Expeditionary",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usmc-expeditionary-ribbon-unit",
+  "corners_px": [
+   [
+    63.4,
+    455.9
+   ],
+   [
+    1136.6,
+    459.1
+   ],
+   [
+    1138.3,
+    746.8
+   ],
+   [
+    65.8,
+    744.4
+   ]
+  ],
+  "rectified_px": [
+   1073,
+   288
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   2.7,
+   0.3,
+   0.9,
+   0.8,
+   2.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS"
@@ -127,8 +156,8 @@
   "Marine Corps Expeditionary"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 4.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.7,
   "threshold": null
  },
  "grade": "ribbon"

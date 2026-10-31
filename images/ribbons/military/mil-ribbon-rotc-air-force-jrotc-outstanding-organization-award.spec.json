@@ -44,30 +44,44 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "8fa9ab",
-    "fraction": 0.2977,
+    "hex": "90b1aa",
+    "fraction": 0.2948,
     "x0_in": 0,
-    "x1_in": 0.4093
+    "x1_in": 0.4054
    },
    {
     "index": 1,
-    "hex": "4b7e91",
-    "fraction": 0.1409,
-    "x0_in": 0.4093,
-    "x1_in": 0.6031
+    "hex": "548ea1",
+    "fraction": 0.1445,
+    "x0_in": 0.4054,
+    "x1_in": 0.6041
    },
    {
     "index": 2,
-    "hex": "1e396c",
-    "fraction": 0.4205,
-    "x0_in": 0.6031,
-    "x1_in": 1.1813
+    "hex": "1c5187",
+    "fraction": 0.1426,
+    "x0_in": 0.6041,
+    "x1_in": 0.8002
    },
    {
     "index": 3,
-    "hex": "322d38",
-    "fraction": 0.1409,
-    "x0_in": 1.1813,
+    "hex": "133484",
+    "fraction": 0.1425,
+    "x0_in": 0.8002,
+    "x1_in": 0.9962
+   },
+   {
+    "index": 4,
+    "hex": "203c77",
+    "fraction": 0.1445,
+    "x0_in": 0.9962,
+    "x1_in": 1.1949
+   },
+   {
+    "index": 5,
+    "hex": "0f1118",
+    "fraction": 0.131,
+    "x0_in": 1.1949,
     "x1_in": 1.375
    }
   ],
@@ -79,10 +93,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/7d6e5245beef.jpg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit: Air Force JROTC  Outstanding Organization Award",
   "vendor_product_url": "https://www.vanguardmil.com/products/air-force-jrotc-ribbon-unit-outstanding-organization-award",
@@ -92,27 +108,60 @@
    "horizontal": 82.1,
    "central_vertical": 17.8
   },
-  "border_frame_detected": true,
+  "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":4,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    2,
+    220.9
+   ],
+   [
+    594,
+    222.4
+   ],
+   [
+    594,
+    388
+   ],
+   [
+    2,
+    388
+   ]
+  ],
+  "rectified_px": [
+   592,
+   166
+  ],
+  "symmetry": "none",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 4,
-   "stripes_after": 4,
-   "max_snap_delta": 13.3,
-   "unsnapped": 2,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force JROTC  Outstanding Organization Award",
+   "url": "https://www.vanguardmil.com/products/air-force-jrotc-ribbon-unit-outstanding-organization-award",
+   "image_px": [
+    599,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,93 +44,93 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "007a33",
-    "fraction": 0.0682,
+    "hex": "4f7c4b",
+    "fraction": 0.0668,
     "x0_in": 0,
-    "x1_in": 0.0938
+    "x1_in": 0.0919
    },
    {
     "index": 1,
-    "hex": "f7ee2a",
-    "fraction": 0.0636,
-    "x0_in": 0.0938,
-    "x1_in": 0.1812
+    "hex": "f4c926",
+    "fraction": 0.0698,
+    "x0_in": 0.0919,
+    "x1_in": 0.1879
    },
    {
     "index": 2,
-    "hex": "6f263d",
-    "fraction": 0.0591,
-    "x0_in": 0.1812,
-    "x1_in": 0.2625
+    "hex": "6e4432",
+    "fraction": 0.0631,
+    "x0_in": 0.1879,
+    "x1_in": 0.2747
    },
    {
     "index": 3,
-    "hex": "000000",
-    "fraction": 0.0636,
-    "x0_in": 0.2625,
-    "x1_in": 0.3499
+    "hex": "16151d",
+    "fraction": 0.0611,
+    "x0_in": 0.2747,
+    "x1_in": 0.3588
    },
    {
     "index": 4,
-    "hex": "0072ce",
-    "fraction": 0.1728,
-    "x0_in": 0.3499,
-    "x1_in": 0.5875
+    "hex": "589acc",
+    "fraction": 0.1646,
+    "x0_in": 0.3588,
+    "x1_in": 0.5851
    },
    {
     "index": 5,
-    "hex": "283c92",
-    "fraction": 0.05,
-    "x0_in": 0.5875,
-    "x1_in": 0.6563
+    "hex": "da2c3d",
+    "fraction": 0.0533,
+    "x0_in": 0.5851,
+    "x1_in": 0.6584
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.0454,
-    "x0_in": 0.6563,
-    "x1_in": 0.7187
+    "fraction": 0.0423,
+    "x0_in": 0.6584,
+    "x1_in": 0.7166
    },
    {
     "index": 7,
-    "hex": "ba0c2f",
-    "fraction": 0.0455,
-    "x0_in": 0.7187,
-    "x1_in": 0.7813
+    "hex": "10329c",
+    "fraction": 0.0533,
+    "x0_in": 0.7166,
+    "x1_in": 0.7899
    },
    {
     "index": 8,
-    "hex": "0072ce",
-    "fraction": 0.1818,
-    "x0_in": 0.7813,
-    "x1_in": 1.0313
+    "hex": "589acc",
+    "fraction": 0.1646,
+    "x0_in": 0.7899,
+    "x1_in": 1.0162
    },
    {
     "index": 9,
-    "hex": "000000",
-    "fraction": 0.0636,
-    "x0_in": 1.0313,
-    "x1_in": 1.1187
+    "hex": "16151d",
+    "fraction": 0.0611,
+    "x0_in": 1.0162,
+    "x1_in": 1.1003
    },
    {
     "index": 10,
-    "hex": "6f263d",
-    "fraction": 0.0591,
-    "x0_in": 1.1187,
-    "x1_in": 1.2
+    "hex": "6e4432",
+    "fraction": 0.0631,
+    "x0_in": 1.1003,
+    "x1_in": 1.1871
    },
    {
     "index": 11,
-    "hex": "f7ee2a",
-    "fraction": 0.0682,
-    "x0_in": 1.2,
-    "x1_in": 1.2937
+    "hex": "f4c926",
+    "fraction": 0.0698,
+    "x0_in": 1.1871,
+    "x1_in": 1.2831
    },
    {
     "index": 12,
-    "hex": "007a33",
-    "fraction": 0.0591,
-    "x0_in": 1.2937,
+    "hex": "4f7c4b",
+    "fraction": 0.0668,
+    "x0_in": 1.2831,
     "x1_in": 1.375
    }
   ],
@@ -139,34 +139,71 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 13,
-   "stripes_after": 13,
-   "max_snap_delta": 21.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Armed Forces Expeditionary",
+   "url": "https://www.vanguardmil.com/products/armed-forces-expeditionary-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/armed_forces_expeditionary.jpg"
+   "img/ribbons/a632a86015f5.jpg"
   ],
-  "residual": {
-   "vertical": 8.3,
-   "horizontal": 121.3,
-   "central_vertical": 8.2
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Armed Forces Expeditionary",
+  "vendor_product_url": "https://www.vanguardmil.com/products/armed-forces-expeditionary-ribbon-unit",
+  "corners_px": [
+   [
+    67,
+    454.1
+   ],
+   [
+    1130,
+    449.4
+   ],
+   [
+    1130,
+    741.5
+   ],
+   [
+    67,
+    748.9
+   ]
+  ],
+  "rectified_px": [
+   1063,
+   293
+  ],
+  "symmetry": "layout",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   3.7,
+   0.4,
+   0.3,
+   1.9,
+   0.3,
+   0,
+   5.6,
+   0,
+   0.7,
+   0,
+   0.6,
+   0.3,
+   3.6
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -187,8 +224,8 @@
   "armed forces expeditionary"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.6,
   "threshold": null
  },
  "grade": "ribbon"

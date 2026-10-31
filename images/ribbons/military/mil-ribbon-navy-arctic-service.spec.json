@@ -44,79 +44,107 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "0072ce",
-    "fraction": 0.2818,
+    "hex": "258fd6",
+    "fraction": 0.217,
     "x0_in": 0,
-    "x1_in": 0.3875
+    "x1_in": 0.2984
    },
    {
     "index": 1,
-    "hex": "008eaa",
-    "fraction": 0.0318,
-    "x0_in": 0.3875,
-    "x1_in": 0.4312
+    "hex": "77a0dd",
+    "fraction": 0.0501,
+    "x0_in": 0.2984,
+    "x1_in": 0.3672
    },
    {
     "index": 2,
-    "hex": "ffffff",
-    "fraction": 0.0773,
-    "x0_in": 0.4312,
-    "x1_in": 0.5375
+    "hex": "d9e9f0",
+    "fraction": 0.0433,
+    "x0_in": 0.3672,
+    "x1_in": 0.4267
    },
    {
     "index": 3,
-    "hex": "008eaa",
-    "fraction": 0.0182,
-    "x0_in": 0.5375,
-    "x1_in": 0.5625
+    "hex": "ffffff",
+    "fraction": 0.0964,
+    "x0_in": 0.4267,
+    "x1_in": 0.5593
    },
    {
     "index": 4,
-    "hex": "0072ce",
-    "fraction": 0.0773,
-    "x0_in": 0.5625,
-    "x1_in": 0.6688
+    "hex": "d9e9f0",
+    "fraction": 0.0225,
+    "x0_in": 0.5593,
+    "x1_in": 0.5903
    },
    {
     "index": 5,
-    "hex": "00205b",
-    "fraction": 0.0318,
-    "x0_in": 0.6688,
-    "x1_in": 0.7125
+    "hex": "77a0dd",
+    "fraction": 0.0227,
+    "x0_in": 0.5903,
+    "x1_in": 0.6214
    },
    {
     "index": 6,
-    "hex": "0072ce",
-    "fraction": 0.0636,
-    "x0_in": 0.7125,
-    "x1_in": 0.8
+    "hex": "258fd6",
+    "fraction": 0.0254,
+    "x0_in": 0.6214,
+    "x1_in": 0.6563
    },
    {
     "index": 7,
-    "hex": "008eaa",
-    "fraction": 0.0137,
-    "x0_in": 0.8,
-    "x1_in": 0.8188
+    "hex": "2c3570",
+    "fraction": 0.0453,
+    "x0_in": 0.6563,
+    "x1_in": 0.7187
    },
    {
     "index": 8,
-    "hex": "ffffff",
-    "fraction": 0.0818,
-    "x0_in": 0.8188,
-    "x1_in": 0.9313
+    "hex": "258fd6",
+    "fraction": 0.0254,
+    "x0_in": 0.7187,
+    "x1_in": 0.7536
    },
    {
     "index": 9,
-    "hex": "008eaa",
-    "fraction": 0.0363,
-    "x0_in": 0.9313,
-    "x1_in": 0.9812
+    "hex": "77a0dd",
+    "fraction": 0.0227,
+    "x0_in": 0.7536,
+    "x1_in": 0.7847
    },
    {
     "index": 10,
-    "hex": "0072ce",
-    "fraction": 0.2864,
-    "x0_in": 0.9812,
+    "hex": "d9e9f0",
+    "fraction": 0.0225,
+    "x0_in": 0.7847,
+    "x1_in": 0.8157
+   },
+   {
+    "index": 11,
+    "hex": "ffffff",
+    "fraction": 0.0964,
+    "x0_in": 0.8157,
+    "x1_in": 0.9483
+   },
+   {
+    "index": 12,
+    "hex": "d9e9f0",
+    "fraction": 0.0433,
+    "x0_in": 0.9483,
+    "x1_in": 1.0078
+   },
+   {
+    "index": 13,
+    "hex": "77a0dd",
+    "fraction": 0.05,
+    "x0_in": 1.0078,
+    "x1_in": 1.0766
+   },
+   {
+    "index": 14,
+    "hex": "258fd6",
+    "fraction": 0.217,
+    "x0_in": 1.0766,
     "x1_in": 1.375
    }
   ],
@@ -125,34 +153,73 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 11,
-   "stripes_after": 11,
-   "max_snap_delta": 15.6
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Navy Arctic Service",
+   "url": "https://www.vanguardmil.com/products/usn-arctic-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_arctic_service.jpg"
+   "img/ribbons/e429a1ba98ed.jpg"
   ],
-  "residual": {
-   "vertical": 8.6,
-   "horizontal": 82.9,
-   "central_vertical": 6.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Arctic Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-arctic-service-ribbon-unit",
+  "corners_px": [
+   [
+    57.3,
+    452.8
+   ],
+   [
+    1133.4,
+    454.3
+   ],
+   [
+    1141.7,
+    747
+   ],
+   [
+    68.4,
+    747
+   ]
+  ],
+  "rectified_px": [
+   1075,
+   294
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.1,
+   0.3,
+   0,
+   2.7,
+   0.5,
+   0.6,
+   0.9,
+   0,
+   0.4,
+   0.4,
+   0.2,
+   2.3,
+   0,
+   0.6,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -170,8 +237,8 @@
   "Navy Arctic Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.7,
   "threshold": null
  },
  "grade": "ribbon"

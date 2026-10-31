@@ -40,75 +40,375 @@
   "ribbon_width_in": 1.375,
   "ribbon_height_in": 0.375,
   "aspect": "11:3",
-  "orientation": "traced-polygons",
-  "stripes": [],
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "a71b29",
+    "fraction": 0.2612,
+    "x0_in": 0,
+    "x1_in": 0.3592
+   },
+   {
+    "index": 1,
+    "hex": "e6a11c",
+    "fraction": 0.0278,
+    "x0_in": 0.3592,
+    "x1_in": 0.3975
+   },
+   {
+    "index": 2,
+    "hex": "be4827",
+    "fraction": 0.0047,
+    "x0_in": 0.3975,
+    "x1_in": 0.404
+   },
+   {
+    "index": 3,
+    "hex": "e6a11c",
+    "fraction": 0.0118,
+    "x0_in": 0.404,
+    "x1_in": 0.4202
+   },
+   {
+    "index": 4,
+    "hex": "be4827",
+    "fraction": 0.0052,
+    "x0_in": 0.4202,
+    "x1_in": 0.4273
+   },
+   {
+    "index": 5,
+    "hex": "e6a11c",
+    "fraction": 0.0329,
+    "x0_in": 0.4273,
+    "x1_in": 0.4726
+   },
+   {
+    "index": 6,
+    "hex": "be4827",
+    "fraction": 0.0041,
+    "x0_in": 0.4726,
+    "x1_in": 0.4782
+   },
+   {
+    "index": 7,
+    "hex": "e6a11c",
+    "fraction": 0.012,
+    "x0_in": 0.4782,
+    "x1_in": 0.4947
+   },
+   {
+    "index": 8,
+    "hex": "be4827",
+    "fraction": 0.0049,
+    "x0_in": 0.4947,
+    "x1_in": 0.5015
+   },
+   {
+    "index": 9,
+    "hex": "e6a11c",
+    "fraction": 0.0334,
+    "x0_in": 0.5015,
+    "x1_in": 0.5474
+   },
+   {
+    "index": 10,
+    "hex": "be4827",
+    "fraction": 0.0046,
+    "x0_in": 0.5474,
+    "x1_in": 0.5538
+   },
+   {
+    "index": 11,
+    "hex": "e6a11c",
+    "fraction": 0.0119,
+    "x0_in": 0.5538,
+    "x1_in": 0.5702
+   },
+   {
+    "index": 12,
+    "hex": "be4827",
+    "fraction": 0.0055,
+    "x0_in": 0.5702,
+    "x1_in": 0.5778
+   },
+   {
+    "index": 13,
+    "hex": "e6a11c",
+    "fraction": 0.0331,
+    "x0_in": 0.5778,
+    "x1_in": 0.6234
+   },
+   {
+    "index": 14,
+    "hex": "be4827",
+    "fraction": 0.0048,
+    "x0_in": 0.6234,
+    "x1_in": 0.63
+   },
+   {
+    "index": 15,
+    "hex": "e6a11c",
+    "fraction": 0.0118,
+    "x0_in": 0.63,
+    "x1_in": 0.6463
+   },
+   {
+    "index": 16,
+    "hex": "be4827",
+    "fraction": 0.0045,
+    "x0_in": 0.6463,
+    "x1_in": 0.6524
+   },
+   {
+    "index": 17,
+    "hex": "e6a11c",
+    "fraction": 0.0324,
+    "x0_in": 0.6524,
+    "x1_in": 0.697
+   },
+   {
+    "index": 18,
+    "hex": "be4827",
+    "fraction": 0.0045,
+    "x0_in": 0.697,
+    "x1_in": 0.7032
+   },
+   {
+    "index": 19,
+    "hex": "e6a11c",
+    "fraction": 0.0118,
+    "x0_in": 0.7032,
+    "x1_in": 0.7194
+   },
+   {
+    "index": 20,
+    "hex": "be4827",
+    "fraction": 0.0048,
+    "x0_in": 0.7194,
+    "x1_in": 0.726
+   },
+   {
+    "index": 21,
+    "hex": "e6a11c",
+    "fraction": 0.0331,
+    "x0_in": 0.726,
+    "x1_in": 0.7716
+   },
+   {
+    "index": 22,
+    "hex": "be4827",
+    "fraction": 0.0055,
+    "x0_in": 0.7716,
+    "x1_in": 0.7792
+   },
+   {
+    "index": 23,
+    "hex": "e6a11c",
+    "fraction": 0.0119,
+    "x0_in": 0.7792,
+    "x1_in": 0.7957
+   },
+   {
+    "index": 24,
+    "hex": "be4827",
+    "fraction": 0.0046,
+    "x0_in": 0.7957,
+    "x1_in": 0.802
+   },
+   {
+    "index": 25,
+    "hex": "e6a11c",
+    "fraction": 0.0334,
+    "x0_in": 0.802,
+    "x1_in": 0.848
+   },
+   {
+    "index": 26,
+    "hex": "be4827",
+    "fraction": 0.0049,
+    "x0_in": 0.848,
+    "x1_in": 0.8548
+   },
+   {
+    "index": 27,
+    "hex": "e6a11c",
+    "fraction": 0.012,
+    "x0_in": 0.8548,
+    "x1_in": 0.8713
+   },
+   {
+    "index": 28,
+    "hex": "be4827",
+    "fraction": 0.0041,
+    "x0_in": 0.8713,
+    "x1_in": 0.8769
+   },
+   {
+    "index": 29,
+    "hex": "e6a11c",
+    "fraction": 0.0329,
+    "x0_in": 0.8769,
+    "x1_in": 0.9221
+   },
+   {
+    "index": 30,
+    "hex": "be4827",
+    "fraction": 0.0052,
+    "x0_in": 0.9221,
+    "x1_in": 0.9293
+   },
+   {
+    "index": 31,
+    "hex": "e6a11c",
+    "fraction": 0.0118,
+    "x0_in": 0.9293,
+    "x1_in": 0.9455
+   },
+   {
+    "index": 32,
+    "hex": "be4827",
+    "fraction": 0.0047,
+    "x0_in": 0.9455,
+    "x1_in": 0.952
+   },
+   {
+    "index": 33,
+    "hex": "e6a11c",
+    "fraction": 0.0278,
+    "x0_in": 0.952,
+    "x1_in": 0.9903
+   },
+   {
+    "index": 34,
+    "hex": "a71b29",
+    "fraction": 0.2798,
+    "x0_in": 0.9903,
+    "x1_in": 1.375
+   }
+  ],
   "stars": [],
-  "frame": null,
-  "traced_layers": [
-   {
-    "hex": "f9c317",
-    "area_fraction": 0.4491,
-    "loops": 9
+  "frame": {
+   "color_hex": "cead6e",
+   "light_hex": "fae8b8",
+   "dark_hex": "916d44",
+   "thickness_in": {
+    "top": 0.0636,
+    "bottom": 0.0669,
+    "left": 0.0613,
+    "right": 0.0869
    },
-   {
-    "hex": "d62026",
-    "area_fraction": 0.2984,
-    "loops": 27
+   "laurel": {
+    "period_in": 0.0741,
+    "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
    },
+   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+  },
+  "emblems": [
    {
-    "hex": "a16a29",
-    "area_fraction": 0.0744,
-    "loops": 1
-   },
-   {
-    "hex": "e37d1f",
-    "area_fraction": 0.069,
-    "loops": 33
-   },
-   {
-    "hex": "f6ed14",
-    "area_fraction": 0.0627,
-    "loops": 22
-   },
-   {
-    "hex": "fce7be",
-    "area_fraction": 0.0333,
-    "loops": 13
-   },
-   {
-    "hex": "fde78f",
-    "area_fraction": 0.013,
-    "loops": 7
+    "kind": "palm",
+    "center_in": [
+     0.6923,
+     0.2038
+    ],
+    "length_in": 0.514,
+    "tilt_deg": 9,
+    "base_hex": "b7876d",
+    "relief_hex": "67412e",
+    "source": "silhouette traced from the unmounted device in the Vanguard photograph; placement and size from the mounted device in the framed citation"
    }
   ]
  },
- "classification": "traced",
+ "classification": "stripes_emblem",
  "quality": {
-  "color_source": "measured (vendor raster)",
-  "geometry_source": "vendor raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
+  "reference": {
+   "title": "Ribbon Unit Citation: Vietnam Gallantry Cross with small frame.  Palm attachment included but not mounted.",
+   "url": "https://www.vanguardmil.com/products/usaf-citation-for-the-vietnam-gallantry-cross",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/vietnam_gallantry_cross_unit_citation.png"
+   "img/ribbons/843ae48f0499.jpg"
   ],
-  "residual": {
-   "vertical": 61.8,
-   "horizontal": 40.8,
-   "central_vertical": 29.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit Citation: Vietnam Gallantry Cross with small frame.  Palm attachment included but not mounted.",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-citation-for-the-vietnam-gallantry-cross",
+  "corners_px": [
+   [
+    61,
+    428
+   ],
+   [
+    1137,
+    428
+   ],
+   [
+    1137,
+    770
+   ],
+   [
+    61,
+    770
+   ]
+  ],
+  "rectified_px": [
+   1076,
+   342
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": true,
-  "fidelity": "simplified",
-  "traced_from_raster_residual": 7,
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.3,
+   2.7,
+   2.4,
+   0.6,
+   1.2,
+   1.5,
+   1.2,
+   0.4,
+   4.4,
+   1.6,
+   5.5,
+   0.1,
+   2.5,
+   1.2,
+   4.6,
+   0.3,
+   1.7,
+   1.1,
+   1.8,
+   1.5,
+   1.2,
+   0.3,
+   10.7,
+   1.8,
+   2.3,
+   2.5,
+   3.5,
+   2,
+   1.2,
+   3.5,
+   4.9,
+   3.4,
+   1.2,
+   0.6,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -129,8 +429,8 @@
   "vietnam gallantry cross unit citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 10.7,
   "threshold": null
  },
  "grade": "ribbon"

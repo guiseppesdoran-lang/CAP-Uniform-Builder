@@ -44,116 +44,150 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a3c7d2",
-    "fraction": 0.071,
+    "hex": "b8c9d6",
+    "fraction": 0.0525,
     "x0_in": 0,
-    "x1_in": 0.0976
+    "x1_in": 0.0721
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.047,
-    "x0_in": 0.0976,
-    "x1_in": 0.1622
+    "hex": "ec3843",
+    "fraction": 0.0439,
+    "x0_in": 0.0721,
+    "x1_in": 0.1324
    },
    {
     "index": 2,
-    "hex": "001489",
-    "fraction": 0.165,
-    "x0_in": 0.1622,
-    "x1_in": 0.3891
+    "hex": "1e40b3",
+    "fraction": 0.1699,
+    "x0_in": 0.1324,
+    "x1_in": 0.3661
    },
    {
     "index": 3,
-    "hex": "a3c7d2",
-    "fraction": 0.0475,
-    "x0_in": 0.3891,
-    "x1_in": 0.4544
+    "hex": "b8c9d6",
+    "fraction": 0.0414,
+    "x0_in": 0.3661,
+    "x1_in": 0.4229
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.0355,
-    "x0_in": 0.4544,
-    "x1_in": 0.5032
+    "fraction": 0.0754,
+    "x0_in": 0.4229,
+    "x1_in": 0.5266
    },
    {
     "index": 5,
-    "hex": "a3c7d2",
-    "fraction": 0.268,
-    "x0_in": 0.5032,
-    "x1_in": 0.8718
+    "hex": "b8c9d6",
+    "fraction": 0.234,
+    "x0_in": 0.5266,
+    "x1_in": 0.8484
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.0355,
-    "x0_in": 0.8718,
-    "x1_in": 0.9206
+    "fraction": 0.0754,
+    "x0_in": 0.8484,
+    "x1_in": 0.952
    },
    {
     "index": 7,
-    "hex": "a3c7d2",
-    "fraction": 0.0475,
-    "x0_in": 0.9206,
-    "x1_in": 0.9859
+    "hex": "b8c9d6",
+    "fraction": 0.0414,
+    "x0_in": 0.952,
+    "x1_in": 1.0089
    },
    {
     "index": 8,
-    "hex": "001489",
-    "fraction": 0.165,
-    "x0_in": 0.9859,
-    "x1_in": 1.2127
+    "hex": "1e40b3",
+    "fraction": 0.1699,
+    "x0_in": 1.0089,
+    "x1_in": 1.2426
    },
    {
     "index": 9,
-    "hex": "ba0c2f",
-    "fraction": 0.047,
-    "x0_in": 1.2127,
-    "x1_in": 1.2774
+    "hex": "ec3843",
+    "fraction": 0.0439,
+    "x0_in": 1.2426,
+    "x1_in": 1.3029
    },
    {
     "index": 10,
-    "hex": "a3c7d2",
-    "fraction": 0.071,
-    "x0_in": 1.2774,
+    "hex": "b8c9d6",
+    "fraction": 0.0525,
+    "x0_in": 1.3029,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Air and Space Campaign Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Air and Space Campaign Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Air_and_Space_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Air Force Air and Space Campaign",
+   "url": "https://www.vanguardmil.com/products/usaf-air-and-space-campaign-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_and_space_campaign.jpg"
+   "img/ribbons/88786dc9262d.jpg"
   ],
-  "residual": {
-   "vertical": 33.7,
-   "horizontal": 75,
-   "central_vertical": 16.8
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Air and Space Campaign",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-air-and-space-campaign-ribbon-unit",
+  "corners_px": [
+   [
+    63.2,
+    453.6
+   ],
+   [
+    1137,
+    455.7
+   ],
+   [
+    1137,
+    749.9
+   ],
+   [
+    66.4,
+    746.5
+   ]
+  ],
+  "rectified_px": [
+   1072,
+   294
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   3.5,
+   0.3,
+   0.1,
+   4.5,
+   2.7,
+   0.2,
+   2.7,
+   1.7,
+   0.3,
+   0.2,
+   3.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Air and Space Campaign Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -170,8 +204,8 @@
   "air and space campaign"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 33.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.5,
   "threshold": null
  },
  "grade": "ribbon"

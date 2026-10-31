@@ -44,107 +44,107 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "808080",
-    "fraction": 0.1136,
+    "hex": "a6a6a5",
+    "fraction": 0.1144,
     "x0_in": 0,
-    "x1_in": 0.1562
+    "x1_in": 0.1574
    },
    {
     "index": 1,
-    "hex": "3f1d62",
-    "fraction": 0.1046,
-    "x0_in": 0.1562,
-    "x1_in": 0.3
+    "hex": "441872",
+    "fraction": 0.0995,
+    "x0_in": 0.1574,
+    "x1_in": 0.2941
    },
    {
     "index": 2,
-    "hex": "808080",
-    "fraction": 0.0363,
-    "x0_in": 0.3,
-    "x1_in": 0.3499
+    "hex": "a6a6a5",
+    "fraction": 0.0369,
+    "x0_in": 0.2941,
+    "x1_in": 0.3449
    },
    {
     "index": 3,
-    "hex": "3e1c60",
-    "fraction": 0.041,
-    "x0_in": 0.3499,
-    "x1_in": 0.4063
+    "hex": "441872",
+    "fraction": 0.0433,
+    "x0_in": 0.3449,
+    "x1_in": 0.4045
    },
    {
     "index": 4,
-    "hex": "808080",
-    "fraction": 0.0363,
-    "x0_in": 0.4063,
-    "x1_in": 0.4562
+    "hex": "a6a6a5",
+    "fraction": 0.0366,
+    "x0_in": 0.4045,
+    "x1_in": 0.4548
    },
    {
     "index": 5,
-    "hex": "412063",
-    "fraction": 0.0432,
-    "x0_in": 0.4562,
-    "x1_in": 0.5156
+    "hex": "441872",
+    "fraction": 0.0418,
+    "x0_in": 0.4548,
+    "x1_in": 0.5123
    },
    {
     "index": 6,
-    "hex": "808080",
-    "fraction": 0.0386,
-    "x0_in": 0.5156,
-    "x1_in": 0.5687
+    "hex": "a6a6a5",
+    "fraction": 0.0399,
+    "x0_in": 0.5123,
+    "x1_in": 0.5672
    },
    {
     "index": 7,
-    "hex": "2e5d29",
+    "hex": "2f6a29",
     "fraction": 0.175,
-    "x0_in": 0.5687,
-    "x1_in": 0.8093
+    "x0_in": 0.5672,
+    "x1_in": 0.8078
    },
    {
     "index": 8,
-    "hex": "808080",
-    "fraction": 0.0409,
-    "x0_in": 0.8093,
-    "x1_in": 0.8656
+    "hex": "a6a6a5",
+    "fraction": 0.0399,
+    "x0_in": 0.8078,
+    "x1_in": 0.8627
    },
    {
     "index": 9,
-    "hex": "3f1d62",
-    "fraction": 0.041,
-    "x0_in": 0.8656,
-    "x1_in": 0.9219
+    "hex": "441872",
+    "fraction": 0.0418,
+    "x0_in": 0.8627,
+    "x1_in": 0.9202
    },
    {
     "index": 10,
-    "hex": "808080",
-    "fraction": 0.0363,
-    "x0_in": 0.9219,
-    "x1_in": 0.9718
+    "hex": "a6a6a5",
+    "fraction": 0.0366,
+    "x0_in": 0.9202,
+    "x1_in": 0.9705
    },
    {
     "index": 11,
-    "hex": "3e1c61",
-    "fraction": 0.0409,
-    "x0_in": 0.9718,
-    "x1_in": 1.0281
+    "hex": "441872",
+    "fraction": 0.0433,
+    "x0_in": 0.9705,
+    "x1_in": 1.0301
    },
    {
     "index": 12,
-    "hex": "808080",
-    "fraction": 0.0387,
-    "x0_in": 1.0281,
-    "x1_in": 1.0813
+    "hex": "a6a6a5",
+    "fraction": 0.0369,
+    "x0_in": 1.0301,
+    "x1_in": 1.0809
    },
    {
     "index": 13,
-    "hex": "3f1c63",
-    "fraction": 0.1022,
-    "x0_in": 1.0813,
-    "x1_in": 1.2218
+    "hex": "441872",
+    "fraction": 0.0995,
+    "x0_in": 1.0809,
+    "x1_in": 1.2176
    },
    {
     "index": 14,
-    "hex": "808080",
-    "fraction": 0.1114,
-    "x0_in": 1.2218,
+    "hex": "a6a6a5",
+    "fraction": 0.1144,
+    "x0_in": 1.2176,
     "x1_in": 1.375
    }
   ],
@@ -156,10 +156,12 @@
  "service": "army-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/5b7cc11bd832.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Army ROTC Ribbon Unit: N-1-4: AJROTC Perfect Attendance",
   "vendor_product_url": "https://www.vanguardmil.com/products/army-n14-ajrotc-perfect-attendance-rotc-ribbon-unit",
@@ -172,24 +174,66 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":15,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    217
+   ],
+   [
+    600,
+    217
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   165
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.6,
+   0.2,
+   0.6,
+   0.5,
+   0.6,
+   0.2,
+   0.5,
+   0,
+   0,
+   0,
+   0.6,
+   0.5,
+   1.4,
+   0,
+   0.6
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 15,
-   "stripes_after": 15,
-   "max_snap_delta": 10.9,
-   "unsnapped": 7,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Army ROTC Ribbon Unit: N-1-4: AJROTC Perfect Attendance",
+   "url": "https://www.vanguardmil.com/products/army-n14-ajrotc-perfect-attendance-rotc-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.4,
   "threshold": null
  },
  "grade": "ribbon"

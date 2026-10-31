@@ -40,75 +40,152 @@
   "ribbon_width_in": 1.375,
   "ribbon_height_in": 0.375,
   "aspect": "11:3",
-  "orientation": "traced-polygons",
-  "stripes": [],
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "029dbb",
+    "fraction": 0.1641,
+    "x0_in": 0,
+    "x1_in": 0.2257
+   },
+   {
+    "index": 1,
+    "hex": "ffffff",
+    "fraction": 0.0472,
+    "x0_in": 0.2257,
+    "x1_in": 0.2905
+   },
+   {
+    "index": 2,
+    "hex": "e73a44",
+    "fraction": 0.0314,
+    "x0_in": 0.2905,
+    "x1_in": 0.3337
+   },
+   {
+    "index": 3,
+    "hex": "ffffff",
+    "fraction": 0.0445,
+    "x0_in": 0.3337,
+    "x1_in": 0.3949
+   },
+   {
+    "index": 4,
+    "hex": "eede2d",
+    "fraction": 0.4255,
+    "x0_in": 0.3949,
+    "x1_in": 0.9801
+   },
+   {
+    "index": 5,
+    "hex": "ffffff",
+    "fraction": 0.0445,
+    "x0_in": 0.9801,
+    "x1_in": 1.0413
+   },
+   {
+    "index": 6,
+    "hex": "e73a44",
+    "fraction": 0.0314,
+    "x0_in": 1.0413,
+    "x1_in": 1.0845
+   },
+   {
+    "index": 7,
+    "hex": "ffffff",
+    "fraction": 0.0472,
+    "x0_in": 1.0845,
+    "x1_in": 1.1493
+   },
+   {
+    "index": 8,
+    "hex": "029dbb",
+    "fraction": 0.1641,
+    "x0_in": 1.1493,
+    "x1_in": 1.375
+   }
+  ],
   "stars": [],
   "frame": null,
-  "traced_layers": [
+  "emblems": [
    {
-    "hex": "f6eb16",
-    "area_fraction": 0.4316,
-    "loops": 2
-   },
-   {
-    "hex": "ffffff",
-    "area_fraction": 0.1864,
-    "loops": 4
-   },
-   {
-    "hex": "71cddf",
-    "area_fraction": 0.1517,
-    "loops": 11
-   },
-   {
-    "hex": "ed2629",
-    "area_fraction": 0.1372,
-    "loops": 3
-   },
-   {
-    "hex": "000000",
-    "area_fraction": 0.0889,
-    "loops": 1
-   },
-   {
-    "hex": "513d0a",
-    "area_fraction": 0.0023,
-    "loops": 11
-   },
-   {
-    "hex": "d29315",
-    "area_fraction": 0.0018,
-    "loops": 8
+    "kind": "taeguk",
+    "center_in": [
+     0.6914,
+     0.1869
+    ],
+    "radius_in": 0.1264,
+    "tilt_deg": 186,
+    "red_hex": "c24a35",
+    "blue_hex": "32465e",
+    "fit_share": 0.984
    }
   ]
  },
- "classification": "traced",
+ "classification": "stripes_emblem",
  "quality": {
-  "color_source": "measured (vendor raster)",
-  "geometry_source": "vendor raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
+  "reference": {
+   "title": "Ribbon Unit: Republic of Korea War Service with Device",
+   "url": "https://www.vanguardmil.com/products/republic-of-korea-war-service-ribbon-unit-with-device",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/republic_of_korean_war_service.jpg"
+   "img/ribbons/a3371b8e90cf.jpg"
   ],
-  "residual": {
-   "vertical": 38.8,
-   "horizontal": 138.1,
-   "central_vertical": 25.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Republic of Korea War Service with Device",
+  "vendor_product_url": "https://www.vanguardmil.com/products/republic-of-korea-war-service-ribbon-unit-with-device",
+  "corners_px": [
+   [
+    77.8,
+    456.1
+   ],
+   [
+    1120.6,
+    449.8
+   ],
+   [
+    1125.1,
+    742.4
+   ],
+   [
+    74.4,
+    748.5
+   ]
+  ],
+  "rectified_px": [
+   1047,
+   293
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "simplified",
-  "traced_from_raster_residual": 6.8,
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.6,
+   4,
+   0.4,
+   4.3,
+   0,
+   4.7,
+   0.4,
+   4.8,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -129,8 +206,8 @@
   "rok war service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 6.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.8,
   "threshold": null
  },
  "grade": "ribbon"

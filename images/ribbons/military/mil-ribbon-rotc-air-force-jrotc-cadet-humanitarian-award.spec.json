@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2a3f84",
-    "fraction": 0.3568,
+    "hex": "2d4aa9",
+    "fraction": 0.3576,
     "x0_in": 0,
-    "x1_in": 0.4906
+    "x1_in": 0.4918
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.1182,
-    "x0_in": 0.4906,
-    "x1_in": 0.6531
+    "fraction": 0.1165,
+    "x0_in": 0.4918,
+    "x1_in": 0.6519
    },
    {
     "index": 2,
-    "hex": "c90c2b",
-    "fraction": 0.05,
-    "x0_in": 0.6531,
-    "x1_in": 0.7219
+    "hex": "f90230",
+    "fraction": 0.0517,
+    "x0_in": 0.6519,
+    "x1_in": 0.7231
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.1182,
-    "x0_in": 0.7219,
-    "x1_in": 0.8844
+    "fraction": 0.1165,
+    "x0_in": 0.7231,
+    "x1_in": 0.8832
    },
    {
     "index": 4,
-    "hex": "2a3f84",
-    "fraction": 0.3568,
-    "x0_in": 0.8844,
+    "hex": "2d4aa9",
+    "fraction": 0.3576,
+    "x0_in": 0.8832,
     "x1_in": 1.375
    }
   ],
@@ -86,10 +86,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/4e2ce27001d7.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit #3600: AFJROTC Cadet Humanitarian Award",
   "vendor_product_url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-afjrotc-cadet-humanitarian-award-ribbon-unit",
@@ -102,24 +104,56 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    218
+   ],
+   [
+    600,
+    218
+   ],
+   [
+    600,
+    383
+   ],
+   [
+    0,
+    383
+   ]
+  ],
+  "rectified_px": [
+   600,
+   165
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0,
+   0.4
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 5.6,
-   "unsnapped": 3,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit #3600: AFJROTC Cadet Humanitarian Award",
+   "url": "https://www.vanguardmil.com/products/usaf-rotc-afrotc-afjrotc-cadet-humanitarian-award-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.4,
   "threshold": null
  },
  "grade": "ribbon"

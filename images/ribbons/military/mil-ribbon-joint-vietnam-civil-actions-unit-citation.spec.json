@@ -40,80 +40,138 @@
   "ribbon_width_in": 1.375,
   "ribbon_height_in": 0.375,
   "aspect": "11:3",
-  "orientation": "traced-polygons",
-  "stripes": [],
-  "stars": [],
-  "frame": null,
-  "traced_layers": [
+  "orientation": "vertical-stripes",
+  "stripes": [
    {
-    "hex": "fac517",
-    "area_fraction": 0.375,
-    "loops": 2
+    "index": 0,
+    "hex": "345f4e",
+    "fraction": 0.0676,
+    "x0_in": 0,
+    "x1_in": 0.093
    },
    {
-    "hex": "065637",
-    "area_fraction": 0.2867,
-    "loops": 6
+    "index": 1,
+    "hex": "802329",
+    "fraction": 0.1328,
+    "x0_in": 0.093,
+    "x1_in": 0.2756
    },
    {
-    "hex": "ed2f24",
-    "area_fraction": 0.1847,
-    "loops": 6
+    "index": 2,
+    "hex": "345f4e",
+    "fraction": 0.266,
+    "x0_in": 0.2756,
+    "x1_in": 0.6412
    },
    {
-    "hex": "95652a",
-    "area_fraction": 0.0838,
-    "loops": 5
+    "index": 3,
+    "hex": "633836",
+    "fraction": 0.0149,
+    "x0_in": 0.6412,
+    "x1_in": 0.6617
    },
    {
-    "hex": "fcd664",
-    "area_fraction": 0.0418,
-    "loops": 1
+    "index": 4,
+    "hex": "345f4e",
+    "fraction": 0.0375,
+    "x0_in": 0.6617,
+    "x1_in": 0.7133
    },
    {
-    "hex": "ffffff",
-    "area_fraction": 0.0136,
-    "loops": 2
+    "index": 5,
+    "hex": "633836",
+    "fraction": 0.0149,
+    "x0_in": 0.7133,
+    "x1_in": 0.7338
    },
    {
-    "hex": "999924",
-    "area_fraction": 0.0089,
-    "loops": 4
+    "index": 6,
+    "hex": "345f4e",
+    "fraction": 0.2659,
+    "x0_in": 0.7338,
+    "x1_in": 1.0995
    },
    {
-    "hex": "f58b1d",
-    "area_fraction": 0.0055,
-    "loops": 4
+    "index": 7,
+    "hex": "802329",
+    "fraction": 0.1328,
+    "x0_in": 1.0995,
+    "x1_in": 1.282
+   },
+   {
+    "index": 8,
+    "hex": "345f4e",
+    "fraction": 0.0676,
+    "x0_in": 1.282,
+    "x1_in": 1.375
    }
-  ]
+  ],
+  "stars": [],
+  "frame": null
  },
- "classification": "traced",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured (vendor raster)",
-  "geometry_source": "vendor raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
+  "reference": {
+   "title": "Ribbon Unit: Vietnam Civil Action First Class",
+   "url": "https://www.vanguardmil.com/products/vietnam-civil-action-first-class-ribbon-unit",
+   "image_px": [
+    2000,
+    2000
+   ]
+  },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/vietnam_civil_actions_unit_citation.png"
+   "img/ribbons/cc16e24eecd6.jpg"
   ],
-  "residual": {
-   "vertical": 87.9,
-   "horizontal": 69.4,
-   "central_vertical": 32.7
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Vietnam Civil Action First Class",
+  "vendor_product_url": "https://www.vanguardmil.com/products/vietnam-civil-action-first-class-ribbon-unit",
+  "corners_px": [
+   [
+    68,
+    758
+   ],
+   [
+    1934,
+    758
+   ],
+   [
+    1934,
+    1286
+   ],
+   [
+    68,
+    1286
+   ]
+  ],
+  "rectified_px": [
+   1866,
+   528
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
-  "border_frame_detected": true,
-  "fidelity": "simplified",
-  "traced_from_raster_residual": 6.1,
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   1.1,
+   1,
+   0,
+   0.8,
+   0.4,
+   0.5,
+   1,
+   2.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -134,8 +192,8 @@
   "vietnam civil actions unit citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 6.1,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.3,
   "threshold": null
  },
  "grade": "ribbon"

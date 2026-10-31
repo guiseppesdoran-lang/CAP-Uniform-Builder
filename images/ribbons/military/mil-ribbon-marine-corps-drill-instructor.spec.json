@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "215732",
-    "fraction": 0.3909,
+    "hex": "908b71",
+    "fraction": 0.3817,
     "x0_in": 0,
-    "x1_in": 0.5375
+    "x1_in": 0.5249
    },
    {
     "index": 1,
-    "hex": "b0aa7e",
-    "fraction": 0.2318,
-    "x0_in": 0.5375,
-    "x1_in": 0.8562
+    "hex": "f7e5c4",
+    "fraction": 0.2365,
+    "x0_in": 0.5249,
+    "x1_in": 0.8501
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.3773,
-    "x0_in": 0.8562,
+    "hex": "908b71",
+    "fraction": 0.3817,
+    "x0_in": 0.8501,
     "x1_in": 1.375
    }
   ],
@@ -69,34 +69,61 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 3,
-   "stripes_after": 3,
-   "max_snap_delta": 18.4
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Marine Corps Drill Instructor",
+   "url": "https://www.vanguardmil.com/products/usmc-drill-instructor-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/marine_corps_drill_instructor.jpg"
+   "img/ribbons/c9f844a48f16.jpg"
   ],
-  "residual": {
-   "vertical": 2.4,
-   "horizontal": 69.6,
-   "central_vertical": 1.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Marine Corps Drill Instructor",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usmc-drill-instructor-ribbon-unit",
+  "corners_px": [
+   [
+    62,
+    453.8
+   ],
+   [
+    1135,
+    448.7
+   ],
+   [
+    1135,
+    743.2
+   ],
+   [
+    62,
+    749.5
+   ]
+  ],
+  "rectified_px": [
+   1073,
+   295
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.7,
+   0,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "MARINE_CORPS"
@@ -113,8 +140,8 @@
   "Marine Corps Drill Instructor"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 2.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.7,
   "threshold": null
  },
  "grade": "ribbon"

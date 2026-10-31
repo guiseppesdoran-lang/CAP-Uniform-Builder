@@ -44,37 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "283c92",
-    "fraction": 0.1273,
+    "hex": "1940a0",
+    "fraction": 0.1247,
     "x0_in": 0,
-    "x1_in": 0.175
+    "x1_in": 0.1715
    },
    {
     "index": 1,
-    "hex": "ffffff",
-    "fraction": 0.0272,
-    "x0_in": 0.175,
-    "x1_in": 0.2124
+    "hex": "ccc9cd",
+    "fraction": 0.7505,
+    "x0_in": 0.1715,
+    "x1_in": 1.2035
    },
    {
     "index": 2,
-    "hex": "bbb9b5",
-    "fraction": 0.6955,
-    "x0_in": 0.2124,
-    "x1_in": 1.1687
-   },
-   {
-    "index": 3,
-    "hex": "ffffff",
-    "fraction": 0.0273,
-    "x0_in": 1.1687,
-    "x1_in": 1.2063
-   },
-   {
-    "index": 4,
-    "hex": "283c92",
-    "fraction": 0.1227,
-    "x0_in": 1.2063,
+    "hex": "1940a0",
+    "fraction": 0.1248,
+    "x0_in": 1.2035,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +69,61 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 5.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Lifesaving - silver",
+   "url": "https://www.vanguardmil.com/products/silver-lifesaving-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/silver_life_saving.jpg"
+   "img/ribbons/d85075eeba7d.jpg"
   ],
-  "residual": {
-   "vertical": 3.2,
-   "horizontal": 72.1,
-   "central_vertical": 2.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Lifesaving - silver",
+  "vendor_product_url": "https://www.vanguardmil.com/products/silver-lifesaving-ribbon-unit",
+  "corners_px": [
+   [
+    14,
+    437
+   ],
+   [
+    1186,
+    437
+   ],
+   [
+    1186,
+    763
+   ],
+   [
+    14,
+    763
+   ]
+  ],
+  "rectified_px": [
+   1172,
+   326
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.2,
+   0,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -127,8 +140,8 @@
   "Silver Life Saving"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 3.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.3,
   "threshold": null
  },
  "grade": "ribbon"

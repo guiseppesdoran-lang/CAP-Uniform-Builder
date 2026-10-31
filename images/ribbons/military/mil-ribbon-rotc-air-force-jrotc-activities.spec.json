@@ -45,15 +45,15 @@
    {
     "index": 0,
     "hex": "ffffff",
-    "fraction": 0.5081,
+    "fraction": 0.5,
     "x0_in": 0,
-    "x1_in": 0.6986
+    "x1_in": 0.6875
    },
    {
     "index": 1,
-    "hex": "3a35a9",
-    "fraction": 0.4919,
-    "x0_in": 0.6986,
+    "hex": "403abc",
+    "fraction": 0.5,
+    "x0_in": 0.6875,
     "x1_in": 1.375
    }
   ],
@@ -65,10 +65,12 @@
  "service": "air-force-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/97052ed38c64.jpg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Ribbon Unit #3108",
   "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-3108",
@@ -81,26 +83,53 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor description: AFJROTC Activities (unit 3108)",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":2,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    19,
+    416
+   ],
+   [
+    1178.2,
+    416
+   ],
+   [
+    1183.5,
+    741.9
+   ],
+   [
+    24.8,
+    737.2
+   ]
+  ],
+  "rectified_px": [
+   1159,
+   324
+  ],
+  "symmetry": "layout",
+  "stripe_distance_to_lit": [
+   2.4,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 2,
-   "stripes_after": 2,
-   "max_snap_delta": 5.1,
-   "unsnapped": 1,
-   "margin_runs_trimmed": [
-    "last"
-   ],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit #3108",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-3108",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.4,
   "threshold": null
  },
  "grade": "ribbon"

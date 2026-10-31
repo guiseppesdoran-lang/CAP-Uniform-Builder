@@ -44,93 +44,93 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "f7ee2a",
-    "fraction": 0.0455,
+    "hex": "f1c827",
+    "fraction": 0.0393,
     "x0_in": 0,
-    "x1_in": 0.0626
+    "x1_in": 0.054
    },
    {
     "index": 1,
-    "hex": "00205b",
-    "fraction": 0.1181,
-    "x0_in": 0.0626,
-    "x1_in": 0.225
+    "hex": "293067",
+    "fraction": 0.135,
+    "x0_in": 0.054,
+    "x1_in": 0.2396
    },
    {
     "index": 2,
-    "hex": "f7ee2a",
-    "fraction": 0.15,
-    "x0_in": 0.225,
-    "x1_in": 0.4312
+    "hex": "f1c827",
+    "fraction": 0.1388,
+    "x0_in": 0.2396,
+    "x1_in": 0.4305
    },
    {
     "index": 3,
-    "hex": "009a44",
-    "fraction": 0.0682,
-    "x0_in": 0.4312,
-    "x1_in": 0.525
+    "hex": "4db856",
+    "fraction": 0.0779,
+    "x0_in": 0.4305,
+    "x1_in": 0.5377
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 0.525,
-    "x1_in": 0.6062
+    "fraction": 0.0493,
+    "x0_in": 0.5377,
+    "x1_in": 0.6055
    },
    {
     "index": 5,
-    "hex": "2f3b77",
-    "fraction": 0.0546,
-    "x0_in": 0.6062,
-    "x1_in": 0.6813
+    "hex": "293067",
+    "fraction": 0.0412,
+    "x0_in": 0.6055,
+    "x1_in": 0.6621
    },
    {
     "index": 6,
-    "hex": "ee0028",
-    "fraction": 0.0136,
-    "x0_in": 0.6813,
-    "x1_in": 0.7
+    "hex": "c72134",
+    "fraction": 0.0369,
+    "x0_in": 0.6621,
+    "x1_in": 0.7129
    },
    {
     "index": 7,
-    "hex": "00205b",
-    "fraction": 0.0454,
-    "x0_in": 0.7,
-    "x1_in": 0.7624
+    "hex": "293067",
+    "fraction": 0.0412,
+    "x0_in": 0.7129,
+    "x1_in": 0.7695
    },
    {
     "index": 8,
     "hex": "ffffff",
-    "fraction": 0.05,
-    "x0_in": 0.7624,
-    "x1_in": 0.8312
+    "fraction": 0.0493,
+    "x0_in": 0.7695,
+    "x1_in": 0.8373
    },
    {
     "index": 9,
-    "hex": "009a44",
-    "fraction": 0.0682,
-    "x0_in": 0.8312,
-    "x1_in": 0.925
+    "hex": "4db856",
+    "fraction": 0.0779,
+    "x0_in": 0.8373,
+    "x1_in": 0.9445
    },
    {
     "index": 10,
-    "hex": "f7ee2a",
-    "fraction": 0.1637,
-    "x0_in": 0.925,
-    "x1_in": 1.1501
+    "hex": "f1c827",
+    "fraction": 0.1388,
+    "x0_in": 0.9445,
+    "x1_in": 1.1354
    },
    {
     "index": 11,
-    "hex": "00205b",
-    "fraction": 0.1181,
-    "x0_in": 1.1501,
-    "x1_in": 1.3124
+    "hex": "293067",
+    "fraction": 0.135,
+    "x0_in": 1.1354,
+    "x1_in": 1.321
    },
    {
     "index": 12,
-    "hex": "f7ee2a",
-    "fraction": 0.0455,
-    "x0_in": 1.3124,
+    "hex": "f1c827",
+    "fraction": 0.0392,
+    "x0_in": 1.321,
     "x1_in": 1.375
    }
   ],
@@ -139,34 +139,71 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 13,
-   "stripes_after": 13,
-   "max_snap_delta": 11.5
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Recruiting Service",
+   "url": "https://www.vanguardmil.com/products/uscg-recruiting-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_recruiting_service.jpg"
+   "img/ribbons/7cf9e21b152a.jpg"
   ],
-  "residual": {
-   "vertical": 10.6,
-   "horizontal": 138.9,
-   "central_vertical": 10.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Recruiting Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-recruiting-service-ribbon-unit",
+  "corners_px": [
+   [
+    64.5,
+    454.5
+   ],
+   [
+    1130,
+    451.7
+   ],
+   [
+    1130,
+    744.2
+   ],
+   [
+    67.6,
+    748.7
+   ]
+  ],
+  "rectified_px": [
+   1064,
+   293
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.9,
+   0.4,
+   0.3,
+   0.5,
+   5.2,
+   0.5,
+   0,
+   1.2,
+   4.5,
+   0.5,
+   0.4,
+   0.3,
+   0.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -183,8 +220,8 @@
   "Coast Guard Recruiting Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 10.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.2,
   "threshold": null
  },
  "grade": "ribbon"

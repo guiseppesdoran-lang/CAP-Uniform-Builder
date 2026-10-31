@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "e0272e",
-    "fraction": 0.08,
+    "hex": "d62530",
+    "fraction": 0.0779,
     "x0_in": 0,
-    "x1_in": 0.11
+    "x1_in": 0.1071
    },
    {
     "index": 1,
-    "hex": "e9d9da",
-    "fraction": 0.03,
-    "x0_in": 0.11,
-    "x1_in": 0.1512
+    "hex": "ffffff",
+    "fraction": 0.0236,
+    "x0_in": 0.1071,
+    "x1_in": 0.1395
    },
    {
     "index": 2,
-    "hex": "d9272e",
-    "fraction": 0.08,
-    "x0_in": 0.1512,
-    "x1_in": 0.2612
+    "hex": "d62530",
+    "fraction": 0.0921,
+    "x0_in": 0.1395,
+    "x1_in": 0.2661
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.18,
-    "x0_in": 0.2612,
-    "x1_in": 0.5088
+    "fraction": 0.165,
+    "x0_in": 0.2661,
+    "x1_in": 0.493
    },
    {
     "index": 4,
-    "hex": "2c3381",
-    "fraction": 0.28,
-    "x0_in": 0.5088,
-    "x1_in": 0.8938
+    "hex": "403a9e",
+    "fraction": 0.2829,
+    "x0_in": 0.493,
+    "x1_in": 0.882
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.17,
-    "x0_in": 0.8938,
-    "x1_in": 1.1275
+    "fraction": 0.165,
+    "x0_in": 0.882,
+    "x1_in": 1.1089
    },
    {
     "index": 6,
-    "hex": "d81d24",
-    "fraction": 0.07,
-    "x0_in": 1.1275,
-    "x1_in": 1.2237
+    "hex": "d62530",
+    "fraction": 0.0921,
+    "x0_in": 1.1089,
+    "x1_in": 1.2355
    },
    {
     "index": 7,
-    "hex": "ecd5d6",
-    "fraction": 0.03,
-    "x0_in": 1.2237,
-    "x1_in": 1.265
+    "hex": "ffffff",
+    "fraction": 0.0236,
+    "x0_in": 1.2355,
+    "x1_in": 1.2679
    },
    {
     "index": 8,
-    "hex": "e0272e",
-    "fraction": 0.08,
-    "x0_in": 1.265,
+    "hex": "d62530",
+    "fraction": 0.0779,
+    "x0_in": 1.2679,
     "x1_in": 1.375
    }
   ],
@@ -111,30 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "McChord-style precomposed variant (flat art)",
-  "geometry_source": "variant base, top/bottom bands",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force Meritorious Unit Award",
+   "url": "https://www.vanguardmil.com/products/usaf-meritorious-unit-award-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbon-variants/air-force/air_force_meritorious_unit_award/fc1862c7b9c654ca.png"
+   "img/ribbons/e06d9b4ea0bb.jpg"
   ],
-  "residual": {
-   "variant_bases_measured": 14,
-   "variants_agreeing": 14,
-   "exact_svg": false
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Meritorious Unit Award",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-meritorious-unit-award-ribbon-unit",
+  "corners_px": [
+   [
+    12.6,
+    446.7
+   ],
+   [
+    1178.8,
+    439.5
+   ],
+   [
+    1183,
+    754.2
+   ],
+   [
+    17,
+    762.2
+   ]
+  ],
+  "rectified_px": [
+   1166,
+   315
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "variant",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.1,
+   1.9,
+   0.5,
+   3.4,
+   0,
+   3.4,
+   1,
+   3.4,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -151,8 +188,8 @@
   "air force meritorious unit award"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 99,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.4,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,79 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.1727,
+    "hex": "dc2838",
+    "fraction": 0.1496,
     "x0_in": 0,
-    "x1_in": 0.2375
+    "x1_in": 0.2057
    },
    {
     "index": 1,
-    "hex": "ff8040",
-    "fraction": 0.0909,
-    "x0_in": 0.2375,
-    "x1_in": 0.3624
+    "hex": "f37635",
+    "fraction": 0.1165,
+    "x0_in": 0.2057,
+    "x1_in": 0.3659
    },
    {
     "index": 2,
-    "hex": "e2b41e",
-    "fraction": 0.0773,
-    "x0_in": 0.3624,
-    "x1_in": 0.4687
+    "hex": "efc317",
+    "fraction": 0.0765,
+    "x0_in": 0.3659,
+    "x1_in": 0.471
    },
    {
     "index": 3,
-    "hex": "4a7729",
-    "fraction": 0.0136,
-    "x0_in": 0.4687,
-    "x1_in": 0.4874
+    "hex": "4dbe53",
+    "fraction": 0.0822,
+    "x0_in": 0.471,
+    "x1_in": 0.584
    },
    {
     "index": 4,
-    "hex": "215732",
-    "fraction": 0.0819,
-    "x0_in": 0.4874,
-    "x1_in": 0.6
+    "hex": "1c39a9",
+    "fraction": 0.1505,
+    "x0_in": 0.584,
+    "x1_in": 0.791
    },
    {
     "index": 5,
-    "hex": "2f3b77",
-    "fraction": 0.1272,
-    "x0_in": 0.6,
-    "x1_in": 0.775
+    "hex": "4dbe53",
+    "fraction": 0.0822,
+    "x0_in": 0.791,
+    "x1_in": 0.904
    },
    {
     "index": 6,
-    "hex": "215732",
-    "fraction": 0.0909,
-    "x0_in": 0.775,
-    "x1_in": 0.8999
+    "hex": "efc317",
+    "fraction": 0.0765,
+    "x0_in": 0.904,
+    "x1_in": 1.0091
    },
    {
     "index": 7,
-    "hex": "4a7729",
-    "fraction": 0.0137,
-    "x0_in": 0.8999,
-    "x1_in": 0.9188
+    "hex": "f37635",
+    "fraction": 0.1165,
+    "x0_in": 1.0091,
+    "x1_in": 1.1693
    },
    {
     "index": 8,
-    "hex": "e2b41e",
-    "fraction": 0.0636,
-    "x0_in": 0.9188,
-    "x1_in": 1.0062
-   },
-   {
-    "index": 9,
-    "hex": "ff8040",
-    "fraction": 0.1227,
-    "x0_in": 1.0062,
-    "x1_in": 1.1749
-   },
-   {
-    "index": 10,
-    "hex": "ba0c2f",
-    "fraction": 0.1455,
-    "x0_in": 1.1749,
+    "hex": "dc2838",
+    "fraction": 0.1496,
+    "x0_in": 1.1693,
     "x1_in": 1.375
    }
   ],
@@ -125,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 11,
-   "stripes_after": 11,
-   "max_snap_delta": 22.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Army Service",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-army-service",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_service.jpg"
+   "img/ribbons/3de7b4ec9293.jpg"
   ],
-  "residual": {
-   "vertical": 24.9,
-   "horizontal": 90.1,
-   "central_vertical": 18.3
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-army-service",
+  "corners_px": [
+   [
+    67.8,
+    459
+   ],
+   [
+    1133.6,
+    451.1
+   ],
+   [
+    1130,
+    739.7
+   ],
+   [
+    65.8,
+    751.9
+   ]
+  ],
+  "rectified_px": [
+   1065,
+   291
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1,
+   1.3,
+   0.5,
+   0.6,
+   0,
+   0.6,
+   0.3,
+   1.1,
+   1.1
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -169,8 +188,8 @@
   "Army Service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 24.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.3,
   "threshold": null
  },
  "grade": "ribbon"

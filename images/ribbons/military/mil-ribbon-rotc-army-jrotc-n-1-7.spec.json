@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "dbbc25",
+    "hex": "f9d51f",
     "fraction": 0.0841,
     "x0_in": 0,
-    "x1_in": 0.1156
+    "x1_in": 0.1157
    },
    {
     "index": 1,
-    "hex": "2e5526",
-    "fraction": 0.2386,
-    "x0_in": 0.1156,
-    "x1_in": 0.4437
+    "hex": "2c5b23",
+    "fraction": 0.2384,
+    "x0_in": 0.1157,
+    "x1_in": 0.4435
    },
    {
     "index": 2,
-    "hex": "9ea2a2",
-    "fraction": 0.0909,
-    "x0_in": 0.4437,
-    "x1_in": 0.5687
+    "hex": "bdbdbd",
+    "fraction": 0.0913,
+    "x0_in": 0.4435,
+    "x1_in": 0.569
    },
    {
     "index": 3,
-    "hex": "d5b92f",
-    "fraction": 0.0341,
-    "x0_in": 0.5687,
-    "x1_in": 0.6156
+    "hex": "f9d51f",
+    "fraction": 0.0334,
+    "x0_in": 0.569,
+    "x1_in": 0.6149
    },
    {
     "index": 4,
-    "hex": "9ea2a2",
-    "fraction": 0.1068,
-    "x0_in": 0.6156,
-    "x1_in": 0.7624
+    "hex": "bdbdbd",
+    "fraction": 0.1056,
+    "x0_in": 0.6149,
+    "x1_in": 0.7601
    },
    {
     "index": 5,
-    "hex": "d5b92d",
-    "fraction": 0.0341,
-    "x0_in": 0.7624,
-    "x1_in": 0.8093
+    "hex": "f9d51f",
+    "fraction": 0.0334,
+    "x0_in": 0.7601,
+    "x1_in": 0.806
    },
    {
     "index": 6,
-    "hex": "9ea2a2",
-    "fraction": 0.0887,
-    "x0_in": 0.8093,
-    "x1_in": 0.9313
+    "hex": "bdbdbd",
+    "fraction": 0.0913,
+    "x0_in": 0.806,
+    "x1_in": 0.9315
    },
    {
     "index": 7,
-    "hex": "2e5526",
-    "fraction": 0.2386,
-    "x0_in": 0.9313,
-    "x1_in": 1.2594
+    "hex": "2c5b23",
+    "fraction": 0.2384,
+    "x0_in": 0.9315,
+    "x1_in": 1.2593
    },
    {
     "index": 8,
-    "hex": "dabc25",
+    "hex": "f9d51f",
     "fraction": 0.0841,
-    "x0_in": 1.2594,
+    "x0_in": 1.2593,
     "x1_in": 1.375
    }
   ],
@@ -114,10 +114,12 @@
  "service": "army-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/bd58e425895e.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "Army ROTC Ribbon Unit: N-1-7: AJROTC Honor Roll",
   "vendor_product_url": "https://www.vanguardmil.com/products/army-n17-ajrotc-honor-roll-rotc-ribbon-unit",
@@ -130,24 +132,60 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor product title names the award",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    216
+   ],
+   [
+    600,
+    216
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   166
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.3,
+   0,
+   0,
+   0.3,
+   0,
+   0.5,
+   0,
+   0,
+   0
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 9.3,
-   "unsnapped": 6,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Army ROTC Ribbon Unit: N-1-7: AJROTC Honor Roll",
+   "url": "https://www.vanguardmil.com/products/army-n17-ajrotc-honor-roll-rotc-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.5,
   "threshold": null
  },
  "grade": "ribbon"

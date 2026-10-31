@@ -40,80 +40,216 @@
   "ribbon_width_in": 1.375,
   "ribbon_height_in": 0.375,
   "aspect": "11:3",
-  "orientation": "traced-polygons",
-  "stripes": [],
-  "stars": [],
-  "frame": null,
-  "traced_layers": [
+  "orientation": "vertical-stripes",
+  "stripes": [
    {
-    "hex": "f9c51d",
-    "area_fraction": 0.4213,
-    "loops": 2
+    "index": 0,
+    "hex": "3f5c32",
+    "fraction": 0.1717,
+    "x0_in": 0,
+    "x1_in": 0.2361
    },
    {
+    "index": 1,
     "hex": "ffffff",
-    "area_fraction": 0.3571,
-    "loops": 7
+    "fraction": 0.0098,
+    "x0_in": 0.2361,
+    "x1_in": 0.2495
    },
    {
-    "hex": "20343a",
-    "area_fraction": 0.0946,
-    "loops": 4
+    "index": 2,
+    "hex": "bf3343",
+    "fraction": 0.0097,
+    "x0_in": 0.2495,
+    "x1_in": 0.2629
    },
    {
-    "hex": "eb2628",
-    "area_fraction": 0.0457,
-    "loops": 2
+    "index": 3,
+    "hex": "ffffff",
+    "fraction": 0.0111,
+    "x0_in": 0.2629,
+    "x1_in": 0.2782
    },
    {
-    "hex": "f26164",
-    "area_fraction": 0.0336,
-    "loops": 11
+    "index": 4,
+    "hex": "bf3343",
+    "fraction": 0.0085,
+    "x0_in": 0.2782,
+    "x1_in": 0.2899
    },
    {
-    "hex": "f6d6b3",
-    "area_fraction": 0.0199,
-    "loops": 19
+    "index": 5,
+    "hex": "ffffff",
+    "fraction": 0.0104,
+    "x0_in": 0.2899,
+    "x1_in": 0.3042
    },
    {
-    "hex": "545f27",
-    "area_fraction": 0.0151,
-    "loops": 7
+    "index": 6,
+    "hex": "3f5c32",
+    "fraction": 0.0081,
+    "x0_in": 0.3042,
+    "x1_in": 0.3153
    },
    {
-    "hex": "768979",
-    "area_fraction": 0.0127,
-    "loops": 8
+    "index": 7,
+    "hex": "ffffff",
+    "fraction": 0.5414,
+    "x0_in": 0.3153,
+    "x1_in": 1.0597
+   },
+   {
+    "index": 8,
+    "hex": "3f5c32",
+    "fraction": 0.0081,
+    "x0_in": 1.0597,
+    "x1_in": 1.0708
+   },
+   {
+    "index": 9,
+    "hex": "ffffff",
+    "fraction": 0.0104,
+    "x0_in": 1.0708,
+    "x1_in": 1.0851
+   },
+   {
+    "index": 10,
+    "hex": "bf3343",
+    "fraction": 0.0085,
+    "x0_in": 1.0851,
+    "x1_in": 1.0968
+   },
+   {
+    "index": 11,
+    "hex": "ffffff",
+    "fraction": 0.0111,
+    "x0_in": 1.0968,
+    "x1_in": 1.1121
+   },
+   {
+    "index": 12,
+    "hex": "bf3343",
+    "fraction": 0.0097,
+    "x0_in": 1.1121,
+    "x1_in": 1.1255
+   },
+   {
+    "index": 13,
+    "hex": "ffffff",
+    "fraction": 0.0098,
+    "x0_in": 1.1255,
+    "x1_in": 1.1389
+   },
+   {
+    "index": 14,
+    "hex": "3f5c32",
+    "fraction": 0.1717,
+    "x0_in": 1.1389,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": {
+   "color_hex": "d4b073",
+   "light_hex": "fae7bd",
+   "dark_hex": "8d6b48",
+   "thickness_in": {
+    "top": 0.0659,
+    "bottom": 0.0605,
+    "left": 0.0724,
+    "right": 0.0724
+   },
+   "laurel": {
+    "period_in": 0.0743,
+    "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
+   },
+   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+  },
+  "emblems": [
+   {
+    "kind": "taeguk",
+    "center_in": [
+     0.6875,
+     0.1875
+    ],
+    "radius_in": 0.1035,
+    "tilt_deg": 177,
+    "red_hex": "e6444b",
+    "blue_hex": "385793",
+    "fit_share": 0.956
    }
   ]
  },
- "classification": "traced",
+ "classification": "stripes_emblem",
  "quality": {
-  "color_source": "measured (vendor raster)",
-  "geometry_source": "vendor raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
-  "reference": null,
+  "reference": {
+   "title": "Ribbon Unit Citation: Korean Presidential Unit Citation",
+   "url": "https://www.vanguardmil.com/products/usaf-citation-for-the-korean-presidential-unit-citation",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/korean_presidential_unit_citation.jpg"
+   "img/ribbons/283d98ebb156.jpg"
   ],
-  "residual": {
-   "vertical": 95.1,
-   "horizontal": 85.2,
-   "central_vertical": 27.4
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit Citation: Korean Presidential Unit Citation",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-citation-for-the-korean-presidential-unit-citation",
+  "corners_px": [
+   [
+    54.6,
+    423
+   ],
+   [
+    1147,
+    423
+   ],
+   [
+    1151,
+    772.2
+   ],
+   [
+    59.2,
+    768.5
+   ]
+  ],
+  "rectified_px": [
+   1092,
+   347
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": true,
-  "fidelity": "simplified",
-  "traced_from_raster_residual": 11.4,
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   4.3,
+   9.2,
+   4.1,
+   11.5,
+   3,
+   10,
+   6.8,
+   5,
+   6.8,
+   10,
+   3,
+   11.5,
+   4.1,
+   9.2,
+   4.3
+  ],
+  "mirrored_from_left": "the photographed unit sits off centre in its frame; the mirrored design is built from its uncut left half",
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -134,8 +270,8 @@
   "korean presidential unit citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 11.4,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 11.5,
   "threshold": null
  },
  "grade": "ribbon"

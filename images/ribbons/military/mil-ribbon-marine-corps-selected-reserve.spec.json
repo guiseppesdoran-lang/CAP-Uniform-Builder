@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
+    "hex": "f24a53",
+    "fraction": 0.0595,
     "x0_in": 0,
-    "x1_in": 0.1258
+    "x1_in": 0.0818
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0685,
-    "x0_in": 0.1258,
-    "x1_in": 0.22
+    "fraction": 0.0657,
+    "x0_in": 0.0818,
+    "x1_in": 0.1721
    },
    {
     "index": 2,
-    "hex": "00205b",
-    "fraction": 0.0685,
-    "x0_in": 0.22,
-    "x1_in": 0.3142
+    "hex": "434579",
+    "fraction": 0.0633,
+    "x0_in": 0.1721,
+    "x1_in": 0.2592
    },
    {
     "index": 3,
-    "hex": "e2b41e",
-    "fraction": 0.18,
-    "x0_in": 0.3142,
-    "x1_in": 0.5617
+    "hex": "eecd55",
+    "fraction": 0.2149,
+    "x0_in": 0.2592,
+    "x1_in": 0.5546
    },
    {
     "index": 4,
-    "hex": "ba0c2f",
-    "fraction": 0.183,
-    "x0_in": 0.5617,
-    "x1_in": 0.8133
+    "hex": "f24a53",
+    "fraction": 0.1933,
+    "x0_in": 0.5546,
+    "x1_in": 0.8204
    },
    {
     "index": 5,
-    "hex": "e2b41e",
-    "fraction": 0.18,
-    "x0_in": 0.8133,
-    "x1_in": 1.0608
+    "hex": "eecd55",
+    "fraction": 0.2149,
+    "x0_in": 0.8204,
+    "x1_in": 1.1158
    },
    {
     "index": 6,
-    "hex": "00205b",
-    "fraction": 0.0685,
-    "x0_in": 1.0608,
-    "x1_in": 1.155
+    "hex": "434579",
+    "fraction": 0.0633,
+    "x0_in": 1.1158,
+    "x1_in": 1.2028
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0685,
-    "x0_in": 1.155,
-    "x1_in": 1.2492
+    "fraction": 0.0657,
+    "x0_in": 1.2028,
+    "x1_in": 1.2932
    },
    {
     "index": 8,
-    "hex": "ba0c2f",
-    "fraction": 0.0915,
-    "x0_in": 1.2492,
+    "hex": "f24a53",
+    "fraction": 0.0595,
+    "x0_in": 1.2932,
     "x1_in": 1.375
    }
   ],
@@ -111,35 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Selected Marine Corps Reserve Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Selected Marine Corps Reserve Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Selected_Marine_Corps_Reserve_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Marine Corps Selected Marine Corps Reserve",
+   "url": "https://www.vanguardmil.com/products/usmc-organized-reserve-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/selected_marine_corps_reserve.jpg"
+   "img/ribbons/bb983c7af439.jpg"
   ],
-  "residual": {
-   "vertical": 9.3,
-   "horizontal": 113.3,
-   "central_vertical": 7.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Marine Corps Selected Marine Corps Reserve",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usmc-organized-reserve-ribbon-unit",
+  "corners_px": [
+   [
+    58,
+    453.1
+   ],
+   [
+    1140.8,
+    457
+   ],
+   [
+    1142.9,
+    752
+   ],
+   [
+    58,
+    742.8
+   ]
+  ],
+  "rectified_px": [
+   1084,
+   292
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   3.1,
+   2.5,
+   4.2,
+   0.4,
+   1.8,
+   0.3,
+   3.7,
+   1.6,
+   2.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Selected Marine Corps Reserve Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "MARINE_CORPS"
@@ -156,8 +188,8 @@
   "Selected Marine Corps Reserve"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 9.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.2,
   "threshold": null
  },
  "grade": "ribbon"

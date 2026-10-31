@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "000000",
-    "fraction": 0.2045,
+    "hex": "191721",
+    "fraction": 0.1999,
     "x0_in": 0,
-    "x1_in": 0.2812
+    "x1_in": 0.2748
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.05,
-    "x0_in": 0.2812,
-    "x1_in": 0.3499
+    "fraction": 0.0476,
+    "x0_in": 0.2748,
+    "x1_in": 0.3403
    },
    {
     "index": 2,
-    "hex": "0072ce",
-    "fraction": 0.1955,
-    "x0_in": 0.3499,
-    "x1_in": 0.6188
+    "hex": "41739a",
+    "fraction": 0.2086,
+    "x0_in": 0.3403,
+    "x1_in": 0.6272
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 0.6188,
-    "x1_in": 0.6813
+    "fraction": 0.0306,
+    "x0_in": 0.6272,
+    "x1_in": 0.6694
    },
    {
     "index": 4,
-    "hex": "ee0028",
-    "fraction": 0.0227,
-    "x0_in": 0.6813,
-    "x1_in": 0.7125
+    "hex": "ec3742",
+    "fraction": 0.0264,
+    "x0_in": 0.6694,
+    "x1_in": 0.7056
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0409,
-    "x0_in": 0.7125,
-    "x1_in": 0.7688
+    "fraction": 0.0306,
+    "x0_in": 0.7056,
+    "x1_in": 0.7478
    },
    {
     "index": 6,
-    "hex": "0072ce",
-    "fraction": 0.1954,
-    "x0_in": 0.7688,
-    "x1_in": 1.0374
+    "hex": "41739a",
+    "fraction": 0.2087,
+    "x0_in": 0.7478,
+    "x1_in": 1.0347
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0546,
-    "x0_in": 1.0374,
-    "x1_in": 1.1125
+    "fraction": 0.0476,
+    "x0_in": 1.0347,
+    "x1_in": 1.1002
    },
    {
     "index": 8,
-    "hex": "000000",
-    "fraction": 0.1909,
-    "x0_in": 1.1125,
+    "hex": "191721",
+    "fraction": 0.1999,
+    "x0_in": 1.1002,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 12
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Medal for Humane Action",
+   "url": "https://www.vanguardmil.com/products/medal-for-humane-action-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/medal_for_humane_action.jpg"
+   "img/ribbons/8bc18f6e4d8f.jpg"
   ],
-  "residual": {
-   "vertical": 11.7,
-   "horizontal": 135.9,
-   "central_vertical": 11.1
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Medal for Humane Action",
+  "vendor_product_url": "https://www.vanguardmil.com/products/medal-for-humane-action-ribbon-unit",
+  "corners_px": [
+   [
+    60.3,
+    461.2
+   ],
+   [
+    1137.4,
+    451.4
+   ],
+   [
+    1144.4,
+    747.6
+   ],
+   [
+    64.4,
+    751.2
+   ]
+  ],
+  "rectified_px": [
+   1079,
+   293
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   3,
+   0.5,
+   2.8,
+   0,
+   2.8,
+   0.4,
+   3.3,
+   1
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -159,8 +192,8 @@
   "medal for humane action"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 11.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.3,
   "threshold": null
  },
  "grade": "ribbon"

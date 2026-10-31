@@ -44,23 +44,23 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "001489",
-    "fraction": 0.4055,
+    "hex": "1736a5",
+    "fraction": 0.4039,
     "x0_in": 0,
-    "x1_in": 0.5576
+    "x1_in": 0.5554
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.183,
-    "x0_in": 0.5576,
-    "x1_in": 0.8092
+    "hex": "e83345",
+    "fraction": 0.1921,
+    "x0_in": 0.5554,
+    "x1_in": 0.8196
    },
    {
     "index": 2,
-    "hex": "001489",
-    "fraction": 0.4115,
-    "x0_in": 0.8092,
+    "hex": "1736a5",
+    "fraction": 0.4039,
+    "x0_in": 0.8196,
     "x1_in": 1.375
    }
   ],
@@ -69,35 +69,61 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Marine Corps Recruiting Ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Marine Corps Recruiting Ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Marine_Corps_Recruiting_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Marine Corps Recruiting Service",
+   "url": "https://www.vanguardmil.com/products/usmc-recruiting-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/marine_corps_recruiting.jpg"
+   "img/ribbons/e595383daf87.jpg"
   ],
-  "residual": {
-   "vertical": 0.9,
-   "horizontal": 46.2,
-   "central_vertical": 0.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Marine Corps Recruiting Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usmc-recruiting-service-ribbon-unit",
+  "corners_px": [
+   [
+    60,
+    454.6
+   ],
+   [
+    1138.2,
+    457.5
+   ],
+   [
+    1129.1,
+    748.2
+   ],
+   [
+    60,
+    745
+   ]
+  ],
+  "rectified_px": [
+   1074,
+   291
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Marine Corps Recruiting Ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "MARINE_CORPS"
@@ -114,8 +140,8 @@
   "Marine Corps Recruiting"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 0.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.3,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,63 +44,63 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "7a7470",
+    "hex": "808080",
     "fraction": 0.0568,
     "x0_in": 0,
     "x1_in": 0.0781
    },
    {
     "index": 1,
-    "hex": "b30d0f",
-    "fraction": 0.0387,
+    "hex": "d00404",
+    "fraction": 0.0455,
     "x0_in": 0.0781,
-    "x1_in": 0.1313
+    "x1_in": 0.1407
    },
    {
     "index": 2,
-    "hex": "7a7470",
-    "fraction": 0.2704,
-    "x0_in": 0.1313,
-    "x1_in": 0.5031
+    "hex": "808080",
+    "fraction": 0.2643,
+    "x0_in": 0.1407,
+    "x1_in": 0.5042
    },
    {
     "index": 3,
-    "hex": "221f1f",
-    "fraction": 0.0636,
-    "x0_in": 0.5031,
+    "hex": "161616",
+    "fraction": 0.0629,
+    "x0_in": 0.5042,
     "x1_in": 0.5906
    },
    {
     "index": 4,
-    "hex": "af0d0e",
-    "fraction": 0.1432,
+    "hex": "d00404",
+    "fraction": 0.141,
     "x0_in": 0.5906,
-    "x1_in": 0.7875
+    "x1_in": 0.7844
    },
    {
     "index": 5,
-    "hex": "21201f",
-    "fraction": 0.0591,
-    "x0_in": 0.7875,
-    "x1_in": 0.8687
+    "hex": "161616",
+    "fraction": 0.0628,
+    "x0_in": 0.7844,
+    "x1_in": 0.8708
    },
    {
     "index": 6,
-    "hex": "7a7470",
-    "fraction": 0.2705,
-    "x0_in": 0.8687,
-    "x1_in": 1.2407
+    "hex": "808080",
+    "fraction": 0.2643,
+    "x0_in": 0.8708,
+    "x1_in": 1.2343
    },
    {
     "index": 7,
-    "hex": "ae0f10",
-    "fraction": 0.0409,
-    "x0_in": 1.2407,
+    "hex": "d00404",
+    "fraction": 0.0455,
+    "x0_in": 1.2343,
     "x1_in": 1.2969
    },
    {
     "index": 8,
-    "hex": "7a7470",
+    "hex": "808080",
     "fraction": 0.0568,
     "x0_in": 1.2969,
     "x1_in": 1.375
@@ -114,10 +114,12 @@
  "service": "marine-corps-jrotc",
  "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
  "measurement": {
-  "method": "stripe widths and colours measured by script from a vendor product photograph (column segmentation at 440x120 area-averaged grid, white margins trimmed)",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "fidelity": "measured_from_vendor_image",
   "source_kind": "vendor-photo-measured",
-  "source_images": [],
+  "source_images": [
+   "img/ribbons/b1c38feb7439.jpeg"
+  ],
   "vendor": "Vanguard Industries (vanguardmil.com)",
   "vendor_product": "ROTC Ribbon Unit: American Veterans Award",
   "vendor_product_url": "https://www.vanguardmil.com/products/rotc-american-veterans-award-ribbon-unit",
@@ -130,24 +132,60 @@
   "border_frame_detected": false,
   "photographic_source": false,
   "match_basis": "vendor description unit 1112: American Veterans award worn by Marine Corps ROTC, AFJROTC, AFROTC",
-  "note": "photograph used for measurement only and not stored; the vendor title may name a different service (ROTC vs JROTC) than the award list, check before relying on it"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    218
+   ],
+   [
+    600,
+    218
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   164
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.4,
+   0.6,
+   0,
+   0,
+   0.2,
+   0,
+   0,
+   0.1,
+   0.7
+  ]
  },
  "quality": {
-  "color_source": "vendor photo, snapped to the repo palette where within Lab distance 5",
-  "geometry_source": "vendor photo, mid-height columns",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 8.4,
-   "unsnapped": 5,
-   "margin_runs_trimmed": [],
-   "shadow_bands_merged": 0
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "ROTC Ribbon Unit: American Veterans Award",
+   "url": "https://www.vanguardmil.com/products/rotc-american-veterans-award-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
   },
+  "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "fit": {
-  "method": "n/a (vendor photo measured)",
-  "score": null,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.7,
   "threshold": null
  },
  "grade": "ribbon"

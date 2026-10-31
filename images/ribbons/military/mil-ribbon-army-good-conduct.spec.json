@@ -44,130 +44,166 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "6f263d",
-    "fraction": 0.0455,
+    "hex": "961a2a",
+    "fraction": 0.0442,
     "x0_in": 0,
-    "x1_in": 0.0626
+    "x1_in": 0.0608
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.0626,
-    "x1_in": 0.1258
+    "fraction": 0.0404,
+    "x0_in": 0.0608,
+    "x1_in": 0.1163
    },
    {
     "index": 2,
-    "hex": "6f263d",
+    "hex": "961a2a",
     "fraction": 0.0455,
-    "x0_in": 0.1258,
-    "x1_in": 0.1884
+    "x0_in": 0.1163,
+    "x1_in": 0.1788
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.1884,
-    "x1_in": 0.2516
+    "fraction": 0.0468,
+    "x0_in": 0.1788,
+    "x1_in": 0.2432
    },
    {
     "index": 4,
-    "hex": "6f263d",
-    "fraction": 0.0455,
-    "x0_in": 0.2516,
-    "x1_in": 0.3142
+    "hex": "961a2a",
+    "fraction": 0.0464,
+    "x0_in": 0.2432,
+    "x1_in": 0.307
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.3142,
-    "x1_in": 0.3774
+    "fraction": 0.0493,
+    "x0_in": 0.307,
+    "x1_in": 0.3747
    },
    {
     "index": 6,
-    "hex": "6f263d",
-    "fraction": 0.451,
-    "x0_in": 0.3774,
-    "x1_in": 0.9976
+    "hex": "961a2a",
+    "fraction": 0.455,
+    "x0_in": 0.3747,
+    "x1_in": 1.0003
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.9976,
-    "x1_in": 1.0608
+    "fraction": 0.0493,
+    "x0_in": 1.0003,
+    "x1_in": 1.068
    },
    {
     "index": 8,
-    "hex": "6f263d",
-    "fraction": 0.0455,
-    "x0_in": 1.0608,
-    "x1_in": 1.1234
+    "hex": "961a2a",
+    "fraction": 0.0464,
+    "x0_in": 1.068,
+    "x1_in": 1.1318
    },
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 1.1234,
-    "x1_in": 1.1866
+    "fraction": 0.0468,
+    "x0_in": 1.1318,
+    "x1_in": 1.1962
    },
    {
     "index": 10,
-    "hex": "6f263d",
+    "hex": "961a2a",
     "fraction": 0.0455,
-    "x0_in": 1.1866,
-    "x1_in": 1.2492
+    "x0_in": 1.1962,
+    "x1_in": 1.2587
    },
    {
     "index": 11,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 1.2492,
-    "x1_in": 1.3124
+    "fraction": 0.0404,
+    "x0_in": 1.2587,
+    "x1_in": 1.3142
    },
    {
     "index": 12,
-    "hex": "6f263d",
-    "fraction": 0.0455,
-    "x0_in": 1.3124,
+    "hex": "961a2a",
+    "fraction": 0.0442,
+    "x0_in": 1.3142,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Army Good Conduct Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Army Good Conduct Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Army_Good_Conduct_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Army Good Conduct",
+   "url": "https://www.vanguardmil.com/products/army-good-conduct-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_good_conduct.jpg"
+   "img/ribbons/455a718461d7.jpg"
   ],
-  "residual": {
-   "vertical": 35,
-   "horizontal": 75.2,
-   "central_vertical": 20.4
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
-  "border_frame_detected": true,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Good Conduct",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-good-conduct-ribbon-unit",
+  "corners_px": [
+   [
+    82.4,
+    460.5
+   ],
+   [
+    1115.8,
+    446.8
+   ],
+   [
+    1123.5,
+    750.6
+   ],
+   [
+    86,
+    745.3
+   ]
+  ],
+  "rectified_px": [
+   1035,
+   294
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.7,
+   5,
+   0.7,
+   3.7,
+   0.7,
+   4.8,
+   0.4,
+   3.8,
+   0.6,
+   5.1,
+   0.5,
+   5.5,
+   1.1
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Army Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -184,8 +220,8 @@
   "Army Good Conduct"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 35,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.5,
   "threshold": null
  },
  "grade": "ribbon"

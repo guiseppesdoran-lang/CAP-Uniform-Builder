@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1546,
+ "count": 1547,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -67615,6 +67615,39 @@
     },
     "art_tree": "military/v3/out/af-professional-military-education-default"
    }
+  },
+  {
+   "id": "mil-ribbon-joint-inherent-resolve-campaign-medal",
+   "path": "ribbons/military/mil-ribbon-joint-inherent-resolve-campaign-medal.svg",
+   "category": "ribbons",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.375,
+   "h_in": 0.375,
+   "size_source": "regulation",
+   "anchors": {
+    "top_center": [
+     68.75,
+     0
+    ],
+    "bottom_center": [
+     68.75,
+     37.5
+    ],
+    "center": [
+     68.75,
+     18.75
+    ],
+    "left_edge": [
+     0,
+     18.75
+    ],
+    "right_edge": [
+     137.5,
+     18.75
+    ]
+   },
+   "landmarks": []
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

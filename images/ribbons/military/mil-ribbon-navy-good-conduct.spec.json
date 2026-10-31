@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "6f263d",
+    "hex": "a23c3a",
     "fraction": 1,
     "x0_in": 0,
     "x1_in": 1.375
@@ -55,35 +55,59 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:U.S. Navy Good Conduct Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:U.S. Navy Good Conduct Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/U.S._Navy_Good_Conduct_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Navy Good Conduct",
+   "url": "https://www.vanguardmil.com/products/usn-good-conduct-ribbon-unit",
+   "image_px": [
+    500,
+    500
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_good_conduct.jpg"
+   "img/ribbons/0fb21b92bccd.jpeg"
   ],
-  "residual": {
-   "vertical": 0.8,
-   "horizontal": 1.3,
-   "central_vertical": 0
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Good Conduct",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-good-conduct-ribbon-unit",
+  "corners_px": [
+   [
+    0,
+    180
+   ],
+   [
+    500,
+    180
+   ],
+   [
+    500,
+    319
+   ],
+   [
+    0,
+    319
+   ]
+  ],
+  "rectified_px": [
+   500,
+   139
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":1,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Navy Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "NAVY"
@@ -100,8 +124,8 @@
   "navy good conduct"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 0.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0,
   "threshold": null
  },
  "grade": "ribbon"

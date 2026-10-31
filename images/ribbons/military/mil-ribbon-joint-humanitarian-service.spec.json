@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "981d97",
-    "fraction": 0.137,
+    "hex": "731b7d",
+    "fraction": 0.133,
     "x0_in": 0,
-    "x1_in": 0.1884
+    "x1_in": 0.1829
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.046,
-    "x0_in": 0.1884,
-    "x1_in": 0.2516
+    "fraction": 0.0471,
+    "x0_in": 0.1829,
+    "x1_in": 0.2477
    },
    {
     "index": 2,
-    "hex": "7bafd4",
-    "fraction": 0.2255,
-    "x0_in": 0.2516,
-    "x1_in": 0.5617
+    "hex": "599ccb",
+    "fraction": 0.2291,
+    "x0_in": 0.2477,
+    "x1_in": 0.5628
    },
    {
     "index": 3,
-    "hex": "041e42",
-    "fraction": 0.189,
-    "x0_in": 0.5617,
-    "x1_in": 0.8216
+    "hex": "1e1e38",
+    "fraction": 0.1814,
+    "x0_in": 0.5628,
+    "x1_in": 0.8122
    },
    {
     "index": 4,
-    "hex": "7bafd4",
-    "fraction": 0.226,
-    "x0_in": 0.8216,
-    "x1_in": 1.1323
+    "hex": "599ccb",
+    "fraction": 0.2291,
+    "x0_in": 0.8122,
+    "x1_in": 1.1273
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 1.1323,
-    "x1_in": 1.1949
+    "fraction": 0.0471,
+    "x0_in": 1.1273,
+    "x1_in": 1.1921
    },
    {
     "index": 6,
-    "hex": "981d97",
-    "fraction": 0.131,
-    "x0_in": 1.1949,
+    "hex": "731b7d",
+    "fraction": 0.133,
+    "x0_in": 1.1921,
     "x1_in": 1.375
    }
   ],
@@ -97,35 +97,65 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Humanitarian Service Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Humanitarian Service Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Humanitarian_Service_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Humanitarian Service",
+   "url": "https://www.vanguardmil.com/products/humanitarian-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/humanitarian_service.jpg"
+   "img/ribbons/72da77d4861f.jpg"
   ],
-  "residual": {
-   "vertical": 3.9,
-   "horizontal": 97.1,
-   "central_vertical": 3.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Humanitarian Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/humanitarian-service-ribbon-unit",
+  "corners_px": [
+   [
+    66.4,
+    451.6
+   ],
+   [
+    1126.1,
+    457.4
+   ],
+   [
+    1124.3,
+    748.3
+   ],
+   [
+    68.6,
+    743.1
+   ]
+  ],
+  "rectified_px": [
+   1058,
+   291
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   4.3,
+   0.4,
+   0,
+   0.7,
+   4.5,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Humanitarian Service Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -146,8 +176,8 @@
   "humanitarian service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 3.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.5,
   "threshold": null
  },
  "grade": "ribbon"

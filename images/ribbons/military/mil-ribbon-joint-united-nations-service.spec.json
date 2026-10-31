@@ -44,121 +44,121 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "53749d",
-    "fraction": 0.0727,
+    "hex": "5989b9",
+    "fraction": 0.0741,
     "x0_in": 0,
-    "x1_in": 0.1
+    "x1_in": 0.1019
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0637,
-    "x0_in": 0.1,
-    "x1_in": 0.1875
+    "fraction": 0.0531,
+    "x0_in": 0.1019,
+    "x1_in": 0.175
    },
    {
     "index": 2,
-    "hex": "53749d",
-    "fraction": 0.0591,
-    "x0_in": 0.1875,
-    "x1_in": 0.2688
+    "hex": "5989b9",
+    "fraction": 0.0573,
+    "x0_in": 0.175,
+    "x1_in": 0.2538
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0545,
-    "x0_in": 0.2688,
-    "x1_in": 0.3438
+    "fraction": 0.0569,
+    "x0_in": 0.2538,
+    "x1_in": 0.332
    },
    {
     "index": 4,
-    "hex": "53749d",
-    "fraction": 0.0636,
-    "x0_in": 0.3438,
-    "x1_in": 0.4312
+    "hex": "5989b9",
+    "fraction": 0.0583,
+    "x0_in": 0.332,
+    "x1_in": 0.4122
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.05,
-    "x0_in": 0.4312,
-    "x1_in": 0.4999
+    "fraction": 0.0568,
+    "x0_in": 0.4122,
+    "x1_in": 0.4903
    },
    {
     "index": 6,
-    "hex": "53749d",
-    "fraction": 0.0591,
-    "x0_in": 0.4999,
-    "x1_in": 0.5812
+    "hex": "5989b9",
+    "fraction": 0.0577,
+    "x0_in": 0.4903,
+    "x1_in": 0.5696
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0546,
-    "x0_in": 0.5812,
-    "x1_in": 0.6563
+    "fraction": 0.0569,
+    "x0_in": 0.5696,
+    "x1_in": 0.6479
    },
    {
     "index": 8,
-    "hex": "53749d",
-    "fraction": 0.0591,
-    "x0_in": 0.6563,
-    "x1_in": 0.7375
+    "hex": "5989b9",
+    "fraction": 0.0576,
+    "x0_in": 0.6479,
+    "x1_in": 0.7271
    },
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 0.7375,
-    "x1_in": 0.8188
+    "fraction": 0.0569,
+    "x0_in": 0.7271,
+    "x1_in": 0.8054
    },
    {
     "index": 10,
-    "hex": "53749d",
-    "fraction": 0.059,
-    "x0_in": 0.8188,
-    "x1_in": 0.8999
+    "hex": "5989b9",
+    "fraction": 0.0577,
+    "x0_in": 0.8054,
+    "x1_in": 0.8847
    },
    {
     "index": 11,
     "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 0.8999,
-    "x1_in": 0.9812
+    "fraction": 0.0568,
+    "x0_in": 0.8847,
+    "x1_in": 0.9628
    },
    {
     "index": 12,
-    "hex": "53749d",
-    "fraction": 0.0591,
-    "x0_in": 0.9812,
-    "x1_in": 1.0625
+    "hex": "5989b9",
+    "fraction": 0.0583,
+    "x0_in": 0.9628,
+    "x1_in": 1.043
    },
    {
     "index": 13,
     "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 1.0625,
-    "x1_in": 1.1437
+    "fraction": 0.0569,
+    "x0_in": 1.043,
+    "x1_in": 1.1212
    },
    {
     "index": 14,
-    "hex": "53749d",
-    "fraction": 0.0591,
-    "x0_in": 1.1437,
-    "x1_in": 1.225
+    "hex": "5989b9",
+    "fraction": 0.0573,
+    "x0_in": 1.1212,
+    "x1_in": 1.2
    },
    {
     "index": 15,
     "hex": "ffffff",
-    "fraction": 0.05,
-    "x0_in": 1.225,
-    "x1_in": 1.2937
+    "fraction": 0.0531,
+    "x0_in": 1.2,
+    "x1_in": 1.2731
    },
    {
     "index": 16,
-    "hex": "53749d",
-    "fraction": 0.0591,
-    "x0_in": 1.2937,
+    "hex": "5989b9",
+    "fraction": 0.0741,
+    "x0_in": 1.2731,
     "x1_in": 1.375
    }
   ],
@@ -167,34 +167,75 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 17,
-   "stripes_after": 17,
-   "max_snap_delta": 14.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: United Nations Service",
+   "url": "https://www.vanguardmil.com/products/united-nations-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/united_nations_service.jpg"
+   "img/ribbons/f120c3693f80.jpg"
   ],
-  "residual": {
-   "vertical": 9.9,
-   "horizontal": 79.2,
-   "central_vertical": 9.9
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: United Nations Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/united-nations-service-ribbon-unit",
+  "corners_px": [
+   [
+    74,
+    455.5
+   ],
+   [
+    1130.5,
+    448.4
+   ],
+   [
+    1135.4,
+    740.3
+   ],
+   [
+    74,
+    748.3
+   ]
+  ],
+  "rectified_px": [
+   1059,
+   292
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1,
+   4.6,
+   0.7,
+   5,
+   0.7,
+   4.8,
+   0.4,
+   5,
+   0.3,
+   5,
+   0.4,
+   4.8,
+   0.7,
+   5.3,
+   2.3,
+   5.3,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":17,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -215,8 +256,8 @@
   "united nations service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 9.9,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.3,
   "threshold": null
  },
  "grade": "ribbon"

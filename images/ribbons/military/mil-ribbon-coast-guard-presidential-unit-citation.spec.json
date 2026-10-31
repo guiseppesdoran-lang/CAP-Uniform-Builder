@@ -45,64 +45,64 @@
    {
     "index": 0,
     "hex": "ffffff",
-    "fraction": 0.0864,
+    "fraction": 0.0685,
     "x0_in": 0,
-    "x1_in": 0.1188
+    "x1_in": 0.0942
    },
    {
     "index": 1,
-    "hex": "cf0e34",
-    "fraction": 0.1863,
-    "x0_in": 0.1188,
-    "x1_in": 0.375
+    "hex": "f8742d",
+    "fraction": 0.2167,
+    "x0_in": 0.0942,
+    "x1_in": 0.3922
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.0773,
-    "x0_in": 0.375,
-    "x1_in": 0.4813
+    "fraction": 0.0738,
+    "x0_in": 0.3922,
+    "x1_in": 0.4936
    },
    {
     "index": 3,
-    "hex": "041e42",
-    "fraction": 0.0773,
-    "x0_in": 0.4813,
-    "x1_in": 0.5875
+    "hex": "2b3cb7",
+    "fraction": 0.0718,
+    "x0_in": 0.4936,
+    "x1_in": 0.5924
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.1454,
-    "x0_in": 0.5875,
-    "x1_in": 0.7875
+    "fraction": 0.1384,
+    "x0_in": 0.5924,
+    "x1_in": 0.7826
    },
    {
     "index": 5,
-    "hex": "041e42",
-    "fraction": 0.0728,
-    "x0_in": 0.7875,
-    "x1_in": 0.8876
+    "hex": "2b3cb7",
+    "fraction": 0.0718,
+    "x0_in": 0.7826,
+    "x1_in": 0.8814
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.0727,
-    "x0_in": 0.8876,
-    "x1_in": 0.9875
+    "fraction": 0.0738,
+    "x0_in": 0.8814,
+    "x1_in": 0.9828
    },
    {
     "index": 7,
-    "hex": "cf0e34",
-    "fraction": 0.2,
-    "x0_in": 0.9875,
-    "x1_in": 1.2625
+    "hex": "f8742d",
+    "fraction": 0.2167,
+    "x0_in": 0.9828,
+    "x1_in": 1.2808
    },
    {
     "index": 8,
     "hex": "ffffff",
-    "fraction": 0.0818,
-    "x0_in": 1.2625,
+    "fraction": 0.0685,
+    "x0_in": 1.2808,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 16.7
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit Citation: Coast Guard Presidential Unit Citation (PUC)",
+   "url": "https://www.vanguardmil.com/products/uscg-presidential-unit-citation",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_presidential_unit_citation.jpg"
+   "img/ribbons/d4a41ce98a29.jpg"
   ],
-  "residual": {
-   "vertical": 9.8,
-   "horizontal": 153.3,
-   "central_vertical": 9.7
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit Citation: Coast Guard Presidential Unit Citation (PUC)",
+  "vendor_product_url": "https://www.vanguardmil.com/products/uscg-presidential-unit-citation",
+  "corners_px": [
+   [
+    78.1,
+    456
+   ],
+   [
+    1119.3,
+    456
+   ],
+   [
+    1121.7,
+    742
+   ],
+   [
+    94.7,
+    742
+   ]
+  ],
+  "rectified_px": [
+   1034,
+   286
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   3.3,
+   0.6,
+   2.7,
+   0.3,
+   3.1,
+   0.3,
+   3.3,
+   0.2,
+   3.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -155,8 +188,8 @@
   "coast guard presidential unit citation"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 9.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 3.4,
   "threshold": null
  },
  "grade": "ribbon"

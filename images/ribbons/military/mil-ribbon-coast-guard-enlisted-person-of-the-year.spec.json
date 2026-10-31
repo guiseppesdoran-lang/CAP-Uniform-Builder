@@ -45,64 +45,64 @@
    {
     "index": 0,
     "hex": "ffffff",
-    "fraction": 0.0727,
+    "fraction": 0.0665,
     "x0_in": 0,
-    "x1_in": 0.1
+    "x1_in": 0.0915
    },
    {
     "index": 1,
-    "hex": "31319c",
-    "fraction": 0.0318,
-    "x0_in": 0.1,
-    "x1_in": 0.1437
+    "hex": "312fbd",
+    "fraction": 0.0315,
+    "x0_in": 0.0915,
+    "x1_in": 0.1348
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.1046,
-    "x0_in": 0.1437,
-    "x1_in": 0.2875
+    "fraction": 0.0976,
+    "x0_in": 0.1348,
+    "x1_in": 0.269
    },
    {
     "index": 3,
-    "hex": "fe0406",
-    "fraction": 0.1727,
-    "x0_in": 0.2875,
-    "x1_in": 0.525
+    "hex": "b91e1e",
+    "fraction": 0.153,
+    "x0_in": 0.269,
+    "x1_in": 0.4793
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.2455,
-    "x0_in": 0.525,
-    "x1_in": 0.8625
+    "fraction": 0.3028,
+    "x0_in": 0.4793,
+    "x1_in": 0.8957
    },
    {
     "index": 5,
-    "hex": "ff0202",
-    "fraction": 0.1727,
-    "x0_in": 0.8625,
-    "x1_in": 1.1
+    "hex": "b91e1e",
+    "fraction": 0.153,
+    "x0_in": 0.8957,
+    "x1_in": 1.106
    },
    {
     "index": 6,
     "hex": "ffffff",
-    "fraction": 0.1091,
-    "x0_in": 1.1,
-    "x1_in": 1.25
+    "fraction": 0.0976,
+    "x0_in": 1.106,
+    "x1_in": 1.2402
    },
    {
     "index": 7,
-    "hex": "283c92",
-    "fraction": 0.0318,
-    "x0_in": 1.25,
-    "x1_in": 1.2937
+    "hex": "312fbd",
+    "fraction": 0.0315,
+    "x0_in": 1.2402,
+    "x1_in": 1.2835
    },
    {
     "index": 8,
     "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 1.2937,
+    "fraction": 0.0665,
+    "x0_in": 1.2835,
     "x1_in": 1.375
    }
   ],
@@ -111,34 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 6.8
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Coast Guard Person of the Year",
+   "url": "https://www.vanguardmil.com/products/coast-guard-ribbon-unit-person-of-the-year",
+   "image_px": [
+    500,
+    500
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/coast_guard_enlisted_person_of_the_year.png"
+   "img/ribbons/34c5a465002e.jpeg"
   ],
-  "residual": {
-   "vertical": 12,
-   "horizontal": 156,
-   "central_vertical": 8.1
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Coast Guard Person of the Year",
+  "vendor_product_url": "https://www.vanguardmil.com/products/coast-guard-ribbon-unit-person-of-the-year",
+  "corners_px": [
+   [
+    0,
+    181
+   ],
+   [
+    500,
+    181
+   ],
+   [
+    500,
+    319
+   ],
+   [
+    0,
+    319
+   ]
+  ],
+  "rectified_px": [
+   500,
+   138
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   6.7,
+   1.7,
+   6.5,
+   0.3,
+   3.9,
+   0.2,
+   6.3,
+   1.5,
+   6.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "COAST_GUARD"
@@ -155,8 +188,8 @@
   "Coast Guard Enlisted Person of the Year"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 12,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 6.7,
   "threshold": null
  },
  "grade": "ribbon"

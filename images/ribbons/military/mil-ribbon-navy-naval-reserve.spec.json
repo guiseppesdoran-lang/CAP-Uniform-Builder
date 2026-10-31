@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "012169",
-    "fraction": 0.0727,
+    "hex": "2a2f5e",
+    "fraction": 0.0499,
     "x0_in": 0,
-    "x1_in": 0.1
+    "x1_in": 0.0686
    },
    {
     "index": 1,
-    "hex": "e2b41e",
-    "fraction": 0.0364,
-    "x0_in": 0.1,
-    "x1_in": 0.15
+    "hex": "d2a750",
+    "fraction": 0.0356,
+    "x0_in": 0.0686,
+    "x1_in": 0.1175
    },
    {
     "index": 2,
-    "hex": "ba0c2f",
-    "fraction": 0.7864,
-    "x0_in": 0.15,
-    "x1_in": 1.2313
+    "hex": "b02330",
+    "fraction": 0.8291,
+    "x0_in": 0.1175,
+    "x1_in": 1.2575
    },
    {
     "index": 3,
-    "hex": "e2b41e",
-    "fraction": 0.0409,
-    "x0_in": 1.2313,
-    "x1_in": 1.2875
+    "hex": "d2a750",
+    "fraction": 0.0356,
+    "x0_in": 1.2575,
+    "x1_in": 1.3064
    },
    {
     "index": 4,
-    "hex": "012169",
-    "fraction": 0.0636,
-    "x0_in": 1.2875,
+    "hex": "2a2f5e",
+    "fraction": 0.0499,
+    "x0_in": 1.3064,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 11.2
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Naval Reserve",
+   "url": "https://www.vanguardmil.com/products/ribbon-unit-naval-reserve",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/naval_reserve.jpg"
+   "img/ribbons/7fe63850b228.jpg"
   ],
-  "residual": {
-   "vertical": 5.3,
-   "horizontal": 42.6,
-   "central_vertical": 2.7
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Naval Reserve",
+  "vendor_product_url": "https://www.vanguardmil.com/products/ribbon-unit-naval-reserve",
+  "corners_px": [
+   [
+    61,
+    457.7
+   ],
+   [
+    1135.3,
+    451.4
+   ],
+   [
+    1138.1,
+    737.4
+   ],
+   [
+    61,
+    746.1
+   ]
+  ],
+  "rectified_px": [
+   1076,
+   287
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.4,
+   0.3,
+   0,
+   0.7,
+   1.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "NAVY"
@@ -127,8 +156,8 @@
   "Naval Reserve"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 5.3,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.4,
   "threshold": null
  },
  "grade": "ribbon"

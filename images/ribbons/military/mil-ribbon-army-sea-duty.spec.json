@@ -44,93 +44,93 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "041e42",
-    "fraction": 0.0685,
+    "hex": "262f65",
+    "fraction": 0.0527,
     "x0_in": 0,
-    "x1_in": 0.0942
+    "x1_in": 0.0725
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.1145,
-    "x0_in": 0.0942,
-    "x1_in": 0.2516
+    "hex": "e33145",
+    "fraction": 0.1093,
+    "x0_in": 0.0725,
+    "x1_in": 0.2227
    },
    {
     "index": 2,
-    "hex": "e2b41e",
-    "fraction": 0.114,
-    "x0_in": 0.2516,
-    "x1_in": 0.4084
+    "hex": "debd44",
+    "fraction": 0.1156,
+    "x0_in": 0.2227,
+    "x1_in": 0.3817
    },
    {
     "index": 3,
-    "hex": "003e51",
-    "fraction": 0.0685,
-    "x0_in": 0.4084,
-    "x1_in": 0.5026
+    "hex": "3e6991",
+    "fraction": 0.078,
+    "x0_in": 0.3817,
+    "x1_in": 0.489
    },
    {
     "index": 4,
-    "hex": "008eaa",
-    "fraction": 0.089,
-    "x0_in": 0.5026,
-    "x1_in": 0.6249
+    "hex": "7bc2d6",
+    "fraction": 0.0913,
+    "x0_in": 0.489,
+    "x1_in": 0.6145
    },
    {
     "index": 5,
-    "hex": "6f263d",
-    "fraction": 0.034,
-    "x0_in": 0.6249,
-    "x1_in": 0.6717
+    "hex": "951e31",
+    "fraction": 0.0394,
+    "x0_in": 0.6145,
+    "x1_in": 0.6686
    },
    {
     "index": 6,
-    "hex": "e2b41e",
-    "fraction": 0.023,
-    "x0_in": 0.6717,
-    "x1_in": 0.7033
+    "hex": "debd44",
+    "fraction": 0.0275,
+    "x0_in": 0.6686,
+    "x1_in": 0.7064
    },
    {
     "index": 7,
-    "hex": "6f263d",
-    "fraction": 0.034,
-    "x0_in": 0.7033,
-    "x1_in": 0.7501
+    "hex": "951e31",
+    "fraction": 0.0394,
+    "x0_in": 0.7064,
+    "x1_in": 0.7605
    },
    {
     "index": 8,
-    "hex": "008eaa",
-    "fraction": 0.089,
-    "x0_in": 0.7501,
-    "x1_in": 0.8724
+    "hex": "7bc2d6",
+    "fraction": 0.0913,
+    "x0_in": 0.7605,
+    "x1_in": 0.886
    },
    {
     "index": 9,
-    "hex": "003e51",
-    "fraction": 0.0685,
-    "x0_in": 0.8724,
-    "x1_in": 0.9666
+    "hex": "3e6991",
+    "fraction": 0.078,
+    "x0_in": 0.886,
+    "x1_in": 0.9933
    },
    {
     "index": 10,
-    "hex": "e2b41e",
-    "fraction": 0.114,
-    "x0_in": 0.9666,
-    "x1_in": 1.1234
+    "hex": "debd44",
+    "fraction": 0.1156,
+    "x0_in": 0.9933,
+    "x1_in": 1.1523
    },
    {
     "index": 11,
-    "hex": "ba0c2f",
-    "fraction": 0.1145,
-    "x0_in": 1.1234,
-    "x1_in": 1.2808
+    "hex": "e33145",
+    "fraction": 0.1093,
+    "x0_in": 1.1523,
+    "x1_in": 1.3025
    },
    {
     "index": 12,
-    "hex": "041e42",
-    "fraction": 0.0685,
-    "x0_in": 1.2808,
+    "hex": "262f65",
+    "fraction": 0.0527,
+    "x0_in": 1.3025,
     "x1_in": 1.375
    }
   ],
@@ -139,35 +139,71 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:U.S. Army Sea Duty Ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:U.S. Army Sea Duty Ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/U.S._Army_Sea_Duty_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Army Sea Duty",
+   "url": "https://www.vanguardmil.com/products/army-sea-duty-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_sea_duty.jpg"
+   "img/ribbons/b7e750db065d.jpg"
   ],
-  "residual": {
-   "vertical": 6.6,
-   "horizontal": 111.4,
-   "central_vertical": 6.3
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Sea Duty",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-sea-duty-ribbon-unit",
+  "corners_px": [
+   [
+    70.3,
+    453.3
+   ],
+   [
+    1128,
+    457.6
+   ],
+   [
+    1131.8,
+    748
+   ],
+   [
+    73,
+    748
+   ]
+  ],
+  "rectified_px": [
+   1058,
+   293
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.6,
+   0.4,
+   0.8,
+   2.7,
+   1,
+   1.2,
+   1.6,
+   1.2,
+   1,
+   2.7,
+   0.5,
+   0.4,
+   0.5
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Army Sea Duty Ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -184,8 +220,8 @@
   "Army Sea Duty"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 6.6,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 2.7,
   "threshold": null
  },
  "grade": "ribbon"

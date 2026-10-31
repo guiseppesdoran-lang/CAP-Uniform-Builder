@@ -44,51 +44,51 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ffcd00",
-    "fraction": 0.2273,
+    "hex": "edc33d",
+    "fraction": 0.2177,
     "x0_in": 0,
-    "x1_in": 0.3125
+    "x1_in": 0.2994
    },
    {
     "index": 1,
-    "hex": "283c92",
-    "fraction": 0.0772,
-    "x0_in": 0.3125,
-    "x1_in": 0.4187
+    "hex": "273ca5",
+    "fraction": 0.0971,
+    "x0_in": 0.2994,
+    "x1_in": 0.4329
    },
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.0546,
-    "x0_in": 0.4187,
-    "x1_in": 0.4938
+    "fraction": 0.0422,
+    "x0_in": 0.4329,
+    "x1_in": 0.4909
    },
    {
     "index": 3,
-    "hex": "cf0e34",
-    "fraction": 0.2818,
-    "x0_in": 0.4938,
-    "x1_in": 0.8812
+    "hex": "ee3c3f",
+    "fraction": 0.286,
+    "x0_in": 0.4909,
+    "x1_in": 0.8841
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.0591,
-    "x0_in": 0.8812,
-    "x1_in": 0.9625
+    "fraction": 0.0422,
+    "x0_in": 0.8841,
+    "x1_in": 0.9421
    },
    {
     "index": 5,
-    "hex": "283c92",
-    "fraction": 0.0727,
-    "x0_in": 0.9625,
-    "x1_in": 1.0625
+    "hex": "273ca5",
+    "fraction": 0.0971,
+    "x0_in": 0.9421,
+    "x1_in": 1.0756
    },
    {
     "index": 6,
-    "hex": "ffcd00",
-    "fraction": 0.2273,
-    "x0_in": 1.0625,
+    "hex": "edc33d",
+    "fraction": 0.2177,
+    "x0_in": 1.0756,
     "x1_in": 1.375
    }
   ],
@@ -97,34 +97,65 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 7,
-   "stripes_after": 7,
-   "max_snap_delta": 9.2
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Army Reserve Components Achievement",
+   "url": "https://www.vanguardmil.com/products/army-reserve-components-achievement-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/army_reserve_components_achievement.jpg"
+   "img/ribbons/419a079e28eb.jpg"
   ],
-  "residual": {
-   "vertical": 7.2,
-   "horizontal": 127.1,
-   "central_vertical": 4.8
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Army Reserve Components Achievement",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-reserve-components-achievement-ribbon-unit",
+  "corners_px": [
+   [
+    22.2,
+    444.2
+   ],
+   [
+    1172,
+    450.4
+   ],
+   [
+    1172,
+    759.5
+   ],
+   [
+    17.8,
+    753.2
+   ]
+  ],
+  "rectified_px": [
+   1152,
+   309
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.9,
+   0.6,
+   5.5,
+   0,
+   5.1,
+   0.5,
+   0.9
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "ARMY"
@@ -141,8 +172,8 @@
   "Reserve Componets Achievement"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 7.2,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.5,
   "threshold": null
  },
  "grade": "ribbon"

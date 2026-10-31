@@ -44,101 +44,118 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a08346",
-    "fraction": 0.0773,
+    "hex": "e9c95d",
+    "fraction": 0.102,
     "x0_in": 0,
-    "x1_in": 0.1063
+    "x1_in": 0.1402
    },
    {
     "index": 1,
-    "hex": "2f3b77",
-    "fraction": 0.1909,
-    "x0_in": 0.1063,
-    "x1_in": 0.3688
+    "hex": "274ab0",
+    "fraction": 0.1697,
+    "x0_in": 0.1402,
+    "x1_in": 0.3735
    },
    {
     "index": 2,
-    "hex": "b0aa7e",
-    "fraction": 0.0136,
-    "x0_in": 0.3688,
-    "x1_in": 0.3875
+    "hex": "e9c95d",
+    "fraction": 0.047,
+    "x0_in": 0.3735,
+    "x1_in": 0.4381
    },
    {
     "index": 3,
-    "hex": "a08346",
-    "fraction": 0.0409,
-    "x0_in": 0.3875,
-    "x1_in": 0.4437
+    "hex": "efe9df",
+    "fraction": 0.3627,
+    "x0_in": 0.4381,
+    "x1_in": 0.9369
    },
    {
     "index": 4,
-    "hex": "bbb9b5",
-    "fraction": 0.35,
-    "x0_in": 0.4437,
-    "x1_in": 0.925
+    "hex": "e9c95d",
+    "fraction": 0.047,
+    "x0_in": 0.9369,
+    "x1_in": 1.0015
    },
    {
     "index": 5,
-    "hex": "b0aa7e",
-    "fraction": 0.0137,
-    "x0_in": 0.925,
-    "x1_in": 0.9438
+    "hex": "274ab0",
+    "fraction": 0.1697,
+    "x0_in": 1.0015,
+    "x1_in": 1.2348
    },
    {
     "index": 6,
-    "hex": "a08346",
-    "fraction": 0.0454,
-    "x0_in": 0.9438,
-    "x1_in": 1.0062
-   },
-   {
-    "index": 7,
-    "hex": "2f3b77",
-    "fraction": 0.1864,
-    "x0_in": 1.0062,
-    "x1_in": 1.2625
-   },
-   {
-    "index": 8,
-    "hex": "a08346",
-    "fraction": 0.0818,
-    "x0_in": 1.2625,
+    "hex": "e9c95d",
+    "fraction": 0.102,
+    "x0_in": 1.2348,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": null
  },
- "classification": "stripes_framed_or_photo",
+ "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 9,
-   "stripes_after": 9,
-   "max_snap_delta": 19.3
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force Distinguished Service Medal",
+   "url": "https://www.vanguardmil.com/products/usaf-distinguished-service-medal-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/air_force_distinguished_service.jpg"
+   "img/ribbons/c6cc9e5be78a.jpg"
   ],
-  "residual": {
-   "vertical": 28.7,
-   "horizontal": 102.7,
-   "central_vertical": 21.8
-  },
-  "edge_frame_trimmed": 0,
-  "photographic_source": true,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Distinguished Service Medal",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-distinguished-service-medal-ribbon-unit",
+  "corners_px": [
+   [
+    55,
+    456.7
+   ],
+   [
+    1135,
+    441.6
+   ],
+   [
+    1142.8,
+    742
+   ],
+   [
+    57.8,
+    752.1
+   ]
+  ],
+  "rectified_px": [
+   1083,
+   298
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "approximate",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": "Source is a photograph of fabric (ribbing, sheen, possibly a gold unit-award frame); stripe widths measured at mid-height, colours are averaged; frame/border not modeled"
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0,
+   0.3,
+   0.6,
+   0,
+   0.7,
+   0.3,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -155,8 +172,8 @@
   "air force distinguishd service"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 28.7,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.7,
   "threshold": null
  },
  "grade": "ribbon"

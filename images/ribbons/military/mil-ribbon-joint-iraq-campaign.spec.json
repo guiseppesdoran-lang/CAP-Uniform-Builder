@@ -44,79 +44,79 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "ba0c2f",
-    "fraction": 0.1145,
+    "hex": "e32e3c",
+    "fraction": 0.1042,
     "x0_in": 0,
-    "x1_in": 0.1574
+    "x1_in": 0.1433
    },
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 0.1574,
-    "x1_in": 0.22
+    "fraction": 0.0435,
+    "x0_in": 0.1433,
+    "x1_in": 0.2031
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.023,
-    "x0_in": 0.22,
-    "x1_in": 0.2516
+    "hex": "55884a",
+    "fraction": 0.0227,
+    "x0_in": 0.2031,
+    "x1_in": 0.2343
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 0.2516,
-    "x1_in": 0.3142
+    "fraction": 0.0473,
+    "x0_in": 0.2343,
+    "x1_in": 0.2993
    },
    {
     "index": 4,
-    "hex": "000000",
-    "fraction": 0.1145,
-    "x0_in": 0.3142,
-    "x1_in": 0.4716
+    "hex": "18171e",
+    "fraction": 0.1167,
+    "x0_in": 0.2993,
+    "x1_in": 0.4597
    },
    {
     "index": 5,
-    "hex": "f2c75c",
-    "fraction": 0.314,
-    "x0_in": 0.4716,
-    "x1_in": 0.9034
+    "hex": "edd5a4",
+    "fraction": 0.3314,
+    "x0_in": 0.4597,
+    "x1_in": 0.9153
    },
    {
     "index": 6,
-    "hex": "000000",
-    "fraction": 0.1145,
-    "x0_in": 0.9034,
-    "x1_in": 1.0608
+    "hex": "18171e",
+    "fraction": 0.1166,
+    "x0_in": 0.9153,
+    "x1_in": 1.0757
    },
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 1.0608,
-    "x1_in": 1.1234
+    "fraction": 0.0473,
+    "x0_in": 1.0757,
+    "x1_in": 1.1407
    },
    {
     "index": 8,
-    "hex": "215732",
-    "fraction": 0.023,
-    "x0_in": 1.1234,
-    "x1_in": 1.155
+    "hex": "55884a",
+    "fraction": 0.0227,
+    "x0_in": 1.1407,
+    "x1_in": 1.1719
    },
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.0455,
-    "x0_in": 1.155,
-    "x1_in": 1.2176
+    "fraction": 0.0435,
+    "x0_in": 1.1719,
+    "x1_in": 1.2317
    },
    {
     "index": 10,
-    "hex": "ba0c2f",
-    "fraction": 0.1145,
-    "x0_in": 1.2176,
+    "hex": "e32e3c",
+    "fraction": 0.1042,
+    "x0_in": 1.2317,
     "x1_in": 1.375
    }
   ],
@@ -125,35 +125,69 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Iraq Campaign Medal ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Iraq Campaign Medal ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Iraq_Campaign_Medal_ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Iraq Campaign",
+   "url": "https://www.vanguardmil.com/products/iraq-campaign-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/iraq_campaign.jpg"
+   "img/ribbons/24b439657993.jpg"
   ],
-  "residual": {
-   "vertical": 11.8,
-   "horizontal": 138.1,
-   "central_vertical": 11.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Iraq Campaign",
+  "vendor_product_url": "https://www.vanguardmil.com/products/iraq-campaign-ribbon-unit",
+  "corners_px": [
+   [
+    118.3,
+    482.6
+   ],
+   [
+    1082.4,
+    478.2
+   ],
+   [
+    1085.9,
+    743.6
+   ],
+   [
+    120,
+    746.1
+   ]
+  ],
+  "rectified_px": [
+   965,
+   264
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   4.5,
+   0,
+   3.9,
+   0.6,
+   0,
+   0.7,
+   3.3,
+   0.2,
+   5.1,
+   0.2
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Iraq Campaign Medal ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "AIR_FORCE",
@@ -174,8 +208,8 @@
   "iraq campaign"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 11.8,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.1,
   "threshold": null
  },
  "grade": "ribbon"

@@ -44,37 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a3c7d2",
-    "fraction": 0.1955,
+    "hex": "9fb4c7",
+    "fraction": 0.177,
     "x0_in": 0,
-    "x1_in": 0.2688
+    "x1_in": 0.2434
    },
    {
     "index": 1,
-    "hex": "f7ee2a",
-    "fraction": 0.0454,
-    "x0_in": 0.2688,
-    "x1_in": 0.3312
+    "hex": "f0cd32",
+    "fraction": 0.0608,
+    "x0_in": 0.2434,
+    "x1_in": 0.3269
    },
    {
     "index": 2,
-    "hex": "215732",
-    "fraction": 0.5318,
-    "x0_in": 0.3312,
-    "x1_in": 1.0625
+    "hex": "427841",
+    "fraction": 0.5244,
+    "x0_in": 0.3269,
+    "x1_in": 1.0481
    },
    {
     "index": 3,
-    "hex": "f7ee2a",
-    "fraction": 0.0409,
-    "x0_in": 1.0625,
-    "x1_in": 1.1187
+    "hex": "f0cd32",
+    "fraction": 0.0608,
+    "x0_in": 1.0481,
+    "x1_in": 1.1316
    },
    {
     "index": 4,
-    "hex": "a3c7d2",
-    "fraction": 0.1864,
-    "x0_in": 1.1187,
+    "hex": "9fb4c7",
+    "fraction": 0.177,
+    "x0_in": 1.1316,
     "x1_in": 1.375
    }
   ],
@@ -83,34 +83,63 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "measured raster, snapped to the repo palette",
-  "geometry_source": "vendor raster (mid-height columns)",
-  "snap": {
-   "stripes_before": 5,
-   "stripes_after": 5,
-   "max_snap_delta": 9.1
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Air Force Small Arms Expert",
+   "url": "https://www.vanguardmil.com/products/usaf-small-arms-expert-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
-  "reference": null,
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/small_arms_expert_military_ribbons.jpg"
+   "img/ribbons/111d6b4d41d5.jpg"
   ],
-  "residual": {
-   "vertical": 5.1,
-   "horizontal": 104.2,
-   "central_vertical": 3.6
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Air Force Small Arms Expert",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usaf-small-arms-expert-ribbon-unit",
+  "corners_px": [
+   [
+    16,
+    442
+   ],
+   [
+    1183,
+    442
+   ],
+   [
+    1183,
+    756.8
+   ],
+   [
+    16,
+    758.4
+   ]
+  ],
+  "rectified_px": [
+   1167,
+   316
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
   "fidelity": "measured",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.7,
+   0.7,
+   0,
+   0.4,
+   0.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
  },
  "authorized_services": [
   "AIR_FORCE"
@@ -127,8 +156,8 @@
   "air force small arms expert marksmanship"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 5.1,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.7,
   "threshold": null
  },
  "grade": "ribbon"

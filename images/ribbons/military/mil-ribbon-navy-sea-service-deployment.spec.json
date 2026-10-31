@@ -44,65 +44,65 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "041e42",
-    "fraction": 0.1115,
+    "hex": "2f3774",
+    "fraction": 0.1073,
     "x0_in": 0,
-    "x1_in": 0.1533
+    "x1_in": 0.1475
    },
    {
     "index": 1,
-    "hex": "ba0c2f",
-    "fraction": 0.114,
-    "x0_in": 0.1533,
-    "x1_in": 0.3101
+    "hex": "e43342",
+    "fraction": 0.1093,
+    "x0_in": 0.1475,
+    "x1_in": 0.2978
    },
    {
     "index": 2,
-    "hex": "e2b41e",
-    "fraction": 0.1145,
-    "x0_in": 0.3101,
-    "x1_in": 0.4675
+    "hex": "e4c044",
+    "fraction": 0.1212,
+    "x0_in": 0.2978,
+    "x1_in": 0.4645
    },
    {
     "index": 3,
-    "hex": "003e51",
-    "fraction": 0.0685,
-    "x0_in": 0.4675,
-    "x1_in": 0.5617
+    "hex": "5183a9",
+    "fraction": 0.0697,
+    "x0_in": 0.4645,
+    "x1_in": 0.5603
    },
    {
     "index": 4,
-    "hex": "008eaa",
-    "fraction": 0.183,
-    "x0_in": 0.5617,
-    "x1_in": 0.8133
+    "hex": "7cc3d8",
+    "fraction": 0.185,
+    "x0_in": 0.5603,
+    "x1_in": 0.8147
    },
    {
     "index": 5,
-    "hex": "003e51",
-    "fraction": 0.0685,
-    "x0_in": 0.8133,
-    "x1_in": 0.9075
+    "hex": "5183a9",
+    "fraction": 0.0697,
+    "x0_in": 0.8147,
+    "x1_in": 0.9105
    },
    {
     "index": 6,
-    "hex": "e2b41e",
-    "fraction": 0.1145,
-    "x0_in": 0.9075,
-    "x1_in": 1.0649
+    "hex": "e4c044",
+    "fraction": 0.1212,
+    "x0_in": 0.9105,
+    "x1_in": 1.0772
    },
    {
     "index": 7,
-    "hex": "ba0c2f",
-    "fraction": 0.114,
-    "x0_in": 1.0649,
-    "x1_in": 1.2217
+    "hex": "e43342",
+    "fraction": 0.1093,
+    "x0_in": 1.0772,
+    "x1_in": 1.2275
    },
    {
     "index": 8,
-    "hex": "041e42",
-    "fraction": 0.1115,
-    "x0_in": 1.2217,
+    "hex": "2f3774",
+    "fraction": 0.1073,
+    "x0_in": 1.2275,
     "x1_in": 1.375
    }
   ],
@@ -111,35 +111,67 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "public reference: Wikimedia Commons File:Navy and Marine Corps Sea Service Deployment Ribbon.svg (Public domain), boundary match 1",
-  "geometry_source": "public reference, cross-validated against the raster",
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
-   "title": "File:Navy and Marine Corps Sea Service Deployment Ribbon.svg",
-   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Navy_and_Marine_Corps_Sea_Service_Deployment_Ribbon.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-   "license": "Public domain",
-   "boundary_match": 1
+   "title": "Ribbon Unit: Navy Sea Service Deployment",
+   "url": "https://www.vanguardmil.com/products/usn-sea-service-deployment-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
   },
   "superseded_photo_by_clean_variant": false,
   "min_stripe_in": "1/64"
  },
  "measurement": {
-  "method": "Stripe fractions and colours measured by script from the vendor raster (images/military-ribbons); not drawn by eye",
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
   "source_images": [
-   "images/military-ribbons/navy_sea_service_deployment.jpg"
+   "img/ribbons/fe692564cf71.jpg"
   ],
-  "residual": {
-   "vertical": 8.5,
-   "horizontal": 123,
-   "central_vertical": 8.2
-  },
-  "edge_frame_trimmed": 0,
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Navy Sea Service Deployment",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usn-sea-service-deployment-ribbon-unit",
+  "corners_px": [
+   [
+    77.7,
+    453.4
+   ],
+   [
+    1126.2,
+    450.8
+   ],
+   [
+    1123,
+    739
+   ],
+   [
+    75.8,
+    752.5
+   ]
+  ],
+  "rectified_px": [
+   1048,
+   294
+  ],
+  "symmetry": "mirror",
   "photographic_source": false,
   "border_frame_detected": false,
-  "fidelity": "reference",
-  "fallback_central_stripes_only": false,
-  "source_kind": "raster",
-  "note": ""
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   0.4,
+   1,
+   0.3,
+   1.1,
+   0,
+   1.5,
+   0.3,
+   1.1,
+   0.4
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Navy and Marine Corps Sea Service Deployment Ribbon.svg (Public domain), boundary match 1\"}"
  },
  "authorized_services": [
   "MARINE_CORPS",
@@ -157,8 +189,8 @@
   "Navy Sea Service Deployment"
  ],
  "fit": {
-  "method": "column/row block-mean residual vs run colour",
-  "score": 8.5,
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.5,
   "threshold": null
  },
  "grade": "ribbon"
