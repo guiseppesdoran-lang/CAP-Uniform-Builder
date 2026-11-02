@@ -175,9 +175,11 @@
   // Who wears what (CAPR 39-1 4.1.5.2.2.4.2, 4.1.9.4.4.2, Attachment 4). The STEM, Cyber, Model Rocketry
   // and NRA Marksmanship badges are worn by cadets only; a cadet wears only the badges the chart
   // authorizes for cadets (CAP service badges only by officers and NCOs). The page's picker and the
-  // engine's drawing both read these two lists.
+  // engine's drawing both read these two lists. The sUAS technician badges are aviation badges worn "in the same manner as other
+  // aviation badges" (ICL 21-01 to CAPR 39-1, Figure A7-1), awarded to cadets too (CAPR 35-6), so cadets see them as they see the
+  // sUAS pilot badges (LIVE13 E124, Ethan: "troup said he didnt see the tech badge").
   const CADET_ONLY = ["model_rocketry_badge", "cyber_badges", "stem_badges", "nra_marksman_badge"];
-  const CADET_AUTHORIZED = ["model_rocketry_badge", "cyber_badges", "stem_badges", "nra_marksman_badge", "pre_solo_badge", "solo_badge", "CAPPilot1_FA9D33EA587D8", "observer_badge", "SeniorObserver1_0E35802A29801", "AirCrew1_DB3F0FCC3650F", "SeniorAirCrew1_B289BAE6E515C", "MasterAirCrew1_72AC4CAE7A310", "uas_pilot_basic_badge", "uas_pilot_senior_badge", "uas_pilot_master_badge", "ground_team_basic_badge", "senior_ground_team_badge", "master_ground_team_badge", "emt_basic_badge", "emt_intermediate", "emt_paramedic", "emergency_services_badge", "information_technology_technician_badge", "historian_technicianIbadge", "communications_technician_badge", "communications_senior_badge", "communications_master_badge"];
+  const CADET_AUTHORIZED = ["model_rocketry_badge", "cyber_badges", "stem_badges", "nra_marksman_badge", "pre_solo_badge", "solo_badge", "CAPPilot1_FA9D33EA587D8", "observer_badge", "SeniorObserver1_0E35802A29801", "AirCrew1_DB3F0FCC3650F", "SeniorAirCrew1_B289BAE6E515C", "MasterAirCrew1_72AC4CAE7A310", "uas_pilot_basic_badge", "uas_pilot_senior_badge", "uas_pilot_master_badge", "uas_technician_basic_badge", "uas_technician_senior_badge", "uas_technician_master_badge", "ground_team_basic_badge", "senior_ground_team_badge", "master_ground_team_badge", "emt_basic_badge", "emt_intermediate", "emt_paramedic", "emergency_services_badge", "information_technology_technician_badge", "historian_technicianIbadge", "communications_technician_badge", "communications_senior_badge", "communications_master_badge"];
   const cadetOnlySet = new Set(CADET_ONLY), cadetAuthorizedSet = new Set(CADET_AUTHORIZED);
   // 'cadet' | 'senior' (anything else is not checked).
   function eligibleFor(id, membership){
