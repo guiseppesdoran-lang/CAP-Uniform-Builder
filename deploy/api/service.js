@@ -170,15 +170,20 @@ function createService(opts = {}){
   const now = opts.now || (() => Date.now());
   const store = createStore(opts.dataDir);
   const adminPassword = opts.adminPassword || '';
-  const adminOn = adminPassword.length > 0;
+  // A second password (ADMIN_PASSWORD_2, Ethan: "set up a second password for the admin page for doran") opens the same dashboard;
+  // the log says which one signed in. Either may be set; the dashboard is on while at least one is.
+  const adminPassword2 = opts.adminPassword2 || '';
+  const passwords = [['ADMIN_PASSWORD', adminPassword], ['ADMIN_PASSWORD_2', adminPassword2]].filter(([, pw]) => pw.length > 0);
+  const adminOn = passwords.length > 0;
   if(!adminOn) log('ADMIN_PASSWORD is not set: /admin and /api/admin answer 503 until it is set in deploy/.env and the container is restarted. Events and feedback are still taken.');
-  else if(adminPassword.length < 12) log('ADMIN_PASSWORD is shorter than 12 characters; a longer one is advised.');
+  for(const [name, pw] of passwords) if(pw.length < 12) log(`${name} is shorter than 12 characters; a longer one is advised.`);
   const cookieSecure = opts.cookieSecure !== false;
   const timezone = opts.timezone || 'UTC';
 
   // Keys. The cookie key depends on the password too, so changing ADMIN_PASSWORD signs every session out.
   const secret = store.sessionSecret(opts.sessionSecret);
-  const pwHash = crypto.createHash('sha256').update(adminPassword).digest();
+  const pwHashes = passwords.map(([name, pw]) => [name, crypto.createHash('sha256').update(pw).digest()]);
+  const pwHash = crypto.createHash('sha256').update(passwords.map(([, pw]) => pw).join('\n')).digest();
   const cookieKey = crypto.createHmac('sha256', secret).update('capub-admin-session\n').update(pwHash).digest();
   const addrKey = crypto.randomBytes(32);   // in memory only: the address hashes mean nothing after a restart
   const addrHash = req => crypto.createHmac('sha256', addrKey).update(clientAddress(req)).digest('base64url').slice(0, 22);
@@ -227,9 +232,12 @@ function createService(opts = {}){
     return { exp: Number(exp), nonce };
   }
   const cookie = (value, maxAge) => `${COOKIE}=${value}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${cookieSecure ? '; Secure' : ''}`;
+  // The name of the password that matches, or null. Every stored hash is compared, so the time taken does not say which one failed.
   function passwordMatches(given){
     const a = crypto.createHash('sha256').update(String(given)).digest();
-    return crypto.timingSafeEqual(a, pwHash);
+    let hit = null;
+    for(const [name, h] of pwHashes) if(crypto.timingSafeEqual(a, h)) hit = hit || name;
+    return hit;
   }
 
   // ---- handlers ----
@@ -291,9 +299,10 @@ function createService(opts = {}){
     }
     if(!f || f.lockedUntil) f = { n: 0, lockedUntil: 0, last: t };   // a lock that has run out starts the count again
     const form = new URLSearchParams((await readBody(req, LIMITS.loginBody)).toString('utf8'));
-    if(passwordMatches(form.get('password') || '')){
+    const which = passwordMatches(form.get('password') || '');
+    if(which){
       failures.delete(key);
-      log('admin signed in');
+      log(`admin signed in (${which})`);
       return send(res, 303, '', 'text/plain; charset=utf-8', { Location: '/admin', 'Set-Cookie': cookie(makeToken(), SESSION_MS / 1000) });
     }
     f.n++; f.last = t;

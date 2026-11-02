@@ -92,6 +92,7 @@ mkdir -p deploy/var && sudo chown 1000:1000 deploy/var   # the container runs as
 docker compose -f deploy/docker-compose.yml up -d --build
 ```
 
+- `ADMIN_PASSWORD_2` (optional; a second password that opens the same dashboard, for a second admin; the log says which signed in)
 - `ADMIN_PASSWORD` (required for `/admin`; without it `/admin` answers 503 and the log says why;
   the counts and feedback still work). Use a long passphrase.
 - `TIMEZONE` (optional, default UTC): the dashboard's days, an IANA name.

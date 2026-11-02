@@ -468,3 +468,23 @@ test('the Caddyfile sends /api/* and /admin* to uniform-api before the static ru
   assert.ok(caddy.indexOf('Content-Security-Policy') < api);
   assert.ok(caddy.includes(buildCsp({ forHeader: true })));
 });
+
+test('a second admin password (ADMIN_PASSWORD_2) opens the same dashboard, the log names which one signed in, and changing either signs everyone out', async () => {
+  const t = await start({ adminPassword2: 'second-admin-password-for-tests' });
+  try{
+    const second = await t.login('second-admin-password-for-tests');
+    assert.equal(second.r.status, 303, 'the second password signs in');
+    assert.equal((await t.req('GET', '/api/admin/summary', { headers: { Cookie: second.cookie } })).status, 200);
+    const first = await t.login();
+    assert.equal(first.r.status, 303, 'the first still works');
+    assert.ok(t.logs.some(l => /admin signed in \(ADMIN_PASSWORD_2\)/.test(l)), 'the log names the second password');
+    assert.ok(t.logs.some(l => /admin signed in \(ADMIN_PASSWORD\)/.test(l)), 'the log names the first password');
+    assert.equal((await t.login('not-either-password')).r.status, 401);
+    // Changing the second password signs every session out too (the cookie key covers both).
+    const other = createService({ dataDir: t.dataDir, adminPassword: PASSWORD, adminPassword2: 'changed-second-password', cookieSecure: false, now: () => t.clock.t, log: () => {} });
+    await new Promise(r => other.server.listen(0, '127.0.0.1', r));
+    const status = await new Promise(resolve => http.get({ host: '127.0.0.1', port: other.server.address().port, path: '/api/admin/summary', headers: { Cookie: second.cookie } }, res => { res.resume(); resolve(res.statusCode); }));
+    assert.equal(status, 401);
+    await other.close();
+  }finally{ await t.close(); }
+});

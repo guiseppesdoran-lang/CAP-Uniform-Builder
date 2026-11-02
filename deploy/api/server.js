@@ -2,6 +2,7 @@
 // Entry point of the uniform-api container (deploy/api/Dockerfile). Settings come from the environment, which
 // docker-compose fills from deploy/.env on the server (deploy/README.md):
 //   ADMIN_PASSWORD   required for /admin; without it the dashboard answers 503 and this says why at start
+//   ADMIN_PASSWORD_2 optional second password for the same dashboard (a second admin); the log names which one signed in
 //   SESSION_SECRET   optional; made at first start and kept in DATA_DIR/session-secret
 //   DATA_DIR         where the events and feedback are kept (default /data, the bind mount of deploy/var)
 //   TIMEZONE         the dashboard's days (default UTC), an IANA name such as America/New_York
@@ -14,6 +15,7 @@ try{
   svc = createService({
     dataDir: env.DATA_DIR || '/data',
     adminPassword: env.ADMIN_PASSWORD || '',
+    adminPassword2: env.ADMIN_PASSWORD_2 || '',
     sessionSecret: env.SESSION_SECRET || '',
     timezone: env.TIMEZONE || 'UTC',
     cookieSecure: env.COOKIE_SECURE !== '0'
