@@ -133,7 +133,7 @@ test('a military badge has one form: metal, and nothing draws one on a utility u
   const pilot = DATA.badges.find(b => b.id === 'air_force_pilot_badge');
   assert.equal(MIL.resolveBadgeRepresentation(pilot, { service: 'AIR_FORCE' }).representation, 'metal');
   assert.equal(MIL.resolveBadgeRepresentation(pilot, { service: 'AIR_FORCE', preferred: 'AUTO' }).representation, 'metal');
-  const militaryBadges = [{ id: 'air_force_pilot_badge', variant: 'pilot', title: 'Pilot', href: 'images/military-badges/x.png', family: 'AVIATION' }];
+  const militaryBadges = [{ id: 'air_force_pilot_badge', variant: 'pilot', title: 'Pilot', href: 'images/military-badges/x.svg', family: 'AVIATION' }];
   for(const uniform of ['ocp', 'abu', 'corporate_field', 'cfdu', 'flight_suit']){
     const s = await P.composeUniform(dressBuild(uniform, { militaryBadges }), store).catch(() => null);
     if(s) assert.ok(!s.layers.some(l => l.key === 'badge:air_force_pilot_badge' || String(l.href || '').includes('military-badges')), uniform);

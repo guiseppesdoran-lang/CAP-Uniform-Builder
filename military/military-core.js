@@ -3,8 +3,6 @@
   if(typeof module === 'object' && module.exports) module.exports = api;
   if(root){
     root.CAPUBMilitary = Object.assign(root.CAPUBMilitary || {}, api);
-    // Traced SVG badges into the catalog's records when both are already loaded (the table does the same when it loads later).
-    if(root.CAPUBMilitaryData && root.CAPUBMilitaryBadgeSizes) api.applyBadgeArt(root.CAPUBMilitaryData, root.CAPUBMilitaryBadgeSizes);
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function(){
   'use strict';
@@ -609,38 +607,6 @@
     return { valid:errors.length === 0, errors:unique(errors), warnings:unique(warnings) };
   }
 
-  // The traced SVG badges (LIVE13 E104). data/military-badge-sizes.js (scripts/sync-military-badges.cjs) says, for each
-  // "<badge id>/<variant>", which metal badge has its traced SVG beside its PNG (`svg`). This points the catalog's metal
-  // records at that SVG: `asset` becomes the SVG, the PNG moves to `rasterAsset`, so the picker's thumbnails (js/wiring.js reads
-  // the record's asset) and the preview (js/uniform-view.js, through resolveBadgeRepresentation) take the SVG, and the engine
-  // finds the badge's entry by id and variant or by either path. The catalog object is frozen at its root only; its records are
-  // not. Idempotent: a record already on its SVG is left alone. Called when this file loads if the catalog and the table are
-  // both here, and by the table when it loads after this file.
-  function applyBadgeArt(data, table){
-    const badges = data && Array.isArray(data.badges) ? data.badges : (Array.isArray(data) ? data : []);
-    let n = 0;
-    if(!table) return n;
-    for(const badge of badges){
-      const metal = badge && badge.representations && badge.representations.metal;
-      if(!metal) continue;
-      const variants = metal.variants && Object.keys(metal.variants).length ? metal.variants : { [metal.defaultVariant || 'default']: metal };
-      for(const [variant, rec] of Object.entries(variants)){
-        const entry = table[`${badge.id}/${variant}`];
-        if(!rec || !entry || !entry.svg || Object.isFrozen(rec)) continue;
-        if(rec.asset === entry.svg) continue;
-        if(rec.asset && !rec.rasterAsset) rec.rasterAsset = rec.asset;
-        rec.asset = entry.svg;
-        n++;
-        // The representation's own asset is the default variant's: it follows that variant's SVG.
-        if(rec !== metal && metal.asset && (metal.defaultVariant || 'default') === variant && !Object.isFrozen(metal)){
-          if(!metal.rasterAsset) metal.rasterAsset = metal.asset;
-          metal.asset = entry.svg;
-        }
-      }
-    }
-    return n;
-  }
-
   return {
     ORGANIZATIONS, COMPONENTS, VERIFICATION_STATUSES, AWARD_STATUSES, REPRESENTATION_STATUSES,
     DEFAULT_CATEGORY_ORDER, normalizeService, normalizeName, slugify, inferredCategory,
@@ -649,7 +615,7 @@
     sortAwardsForMember, canonicalAwardKey, canonicalizeAwards, compareAwardsUniversal,
     isBadgeAuthorizedForService, getBadgePrecedence, sortBadgesForMember,
     inferDeviceRules, normalizeRepresentations, createAwardSelection, canonicalDeviceVariantKey,
-    resolveBadgeRepresentation, getAwardRepresentation, applyBadgeArt,
+    resolveBadgeRepresentation, getAwardRepresentation,
     calculateDevices, splitRibbonAwardInstances, mergeAwardRecords, validateCatalog
   };
 });

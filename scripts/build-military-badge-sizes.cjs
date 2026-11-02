@@ -1,35 +1,27 @@
 #!/usr/bin/env node
-// Writes data/military-badge-sizes.js: the real size of every U.S. military badge the page offers on the dress
-// uniforms, so the engine draws each raster at its published width (js/engine/profiles-dress.js putBadge) instead
-// of in one fixed 2.75 x 0.75 in box.
+// Writes data/military-badge-sizes.js: for every U.S. military badge the page offers on the dress uniforms, the traced SVG it is
+// drawn from and that SVG's real size, so the engine lays each badge out at its published width (js/engine/profiles-dress.js
+// putBadge) instead of in one fixed box.
 //
 //   node scripts/build-military-badge-sizes.cjs            rewrite data/military-badge-sizes.js, print the report
 //   node scripts/build-military-badge-sizes.cjs --check    exit 1 when the file is not what this script writes
 //
-// Sources:
-//   * the badges and their metal PNGs: military/military-data.js (window.CAPUBMilitaryData.badges, representations.metal);
-//   * the sizes: the in-house SVG badge specs of the artwork tree, <ARTWORK_SRC>/military/**/<art-id>.spec.json
-//     (ARTWORK_SRC defaults to ../UniformBuilder/artwork-samples/assets, as scripts/sync-artwork.cjs). Two spec dialects
-//     exist: size_in {w,h} or width_in / height_in. The non-field specs (the metal dress badges) are used; the *-field
-//     specs are the embroidered utility forms and are not drawn on a dress uniform.
-//     Sizes come from Vanguard's regulation-size listings where the art tree has one (size_source measured) and are
-//     estimated from the badge's aspect otherwise (art commit afe8b075; neither DAFI 36-2903 nor CAPR 39-1 prints a
-//     badge size). The size_source and the art id travel with each entry.
-//   * the ink: the badge's box inside its PNG, from the art spec's source_bbox_user_units (the pixels of the reference PNG
-//     the art was traced from), so the engine can draw the PNG with the badge, not the margin or the cloth around it,
-//     filling the real size.
+// Sources, both in this tree:
+//   * the badges and their assets: military/military-data.js (window.CAPUBMilitaryData.badges, representations.metal; each
+//     variant's `asset` is the path of its traced SVG, images/military-badges/<service>/<badge dir>/<variant>.svg, written there by
+//     scripts/sync-military-badges.cjs);
+//   * the sizes: that SVG's row in images/MANIFEST.json (category military-badges; w_in x h_in is the viewBox at 0.01 in per unit,
+//     size_source measured = Vanguard's regulation-size listing, estimated = from the badge's aspect; neither DAFI 36-2903 nor
+//     CAPR 39-1 prints a badge size). The row's id is the art id the engine places.
 //
-// Matching a page badge to an art spec: the art spec's `reference` names the PNG it was traced from as
-// images/military-badges/<service>/<design>__<variant>; the page's PNG is images/military-badges/<service>/<badge dir>/
-// <variant>.png. The two agree once the service prefix and the _badge / _insignia / _identification suffixes are stripped
-// from the design. The Air Force pilot variants (pilot, senior_pilot, command_pilot) are the art's basic, senior and command
-// levels; the Army basic parachutist is the art's basic.
+// A badge/variant whose asset has no manifest row, or still names a raster, gets no entry: the engine draws nothing for it and the
+// scene says so (there is no raster fallback; LIVE13 E118, "nothing should be photos"). The report lists them; the sync fixes them.
 //
-// A badge/variant with no art spec keeps the old fixed box (the engine's FALLBACK); the report lists them.
-//
-// A badge/variant whose traced SVG scripts/sync-military-badges.cjs has copied beside its PNG (images/military-badges/<service>/
-// <badge dir>/<variant>.svg, listed in images/MANIFEST.json) also carries `svg`, and its w, h are that SVG's viewBox size (the
-// manifest row), so the engine draws the SVG at its own inches where the PNG's ink box was (js/engine/profiles-dress.js putBadge).
+// Matching a page badge to its traced art (used by the sync, exported from here so both use one matcher): the art spec's `reference`
+// names the raster it was traced from as images/military-badges/<service>/<design>__<variant>; the page's asset is
+// images/military-badges/<service>/<badge dir>/<variant>.svg. The two agree once the service prefix and the _badge / _insignia /
+// _identification suffixes are stripped from the design. The Air Force pilot variants (pilot, senior_pilot, command_pilot) are the
+// art's basic, senior and command levels; the Army basic parachutist is the art's basic.
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
@@ -37,9 +29,6 @@ const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const OUT = path.join(root, 'data', 'military-badge-sizes.js');
-const ART = process.env.ARTWORK_SRC || path.join(root, '..', 'UniformBuilder', 'artwork-samples', 'assets');
-// What putBadge drew every military raster in before this table (CAPR 39-1 4.1.5.2.2 places the badge; no size is printed).
-const FALLBACK = { w: 2.75, h: 0.75 };
 
 // ---- the page's military badges ------------------------------------------------------------------
 
@@ -50,7 +39,7 @@ function pageBadges(){
   return sandbox.CAPUBMilitaryData.badges;
 }
 
-// Every (badge id, variant, PNG path) with an available metal asset.
+// Every (badge id, variant, asset path) with a metal asset.
 function metalAssets(badges){
   const out = [];
   for(const b of badges){
@@ -64,34 +53,7 @@ function metalAssets(badges){
   return out;
 }
 
-// ---- the art tree's badge specs ------------------------------------------------------------------
-
-function artSpecs(){
-  const dir = path.join(ART, 'military');
-  const specs = [];
-  (function walk(d){
-    for(const e of fs.readdirSync(d, { withFileTypes: true })){
-      const f = path.join(d, e.name);
-      if(e.isDirectory()) walk(f);
-      else if(e.name.endsWith('.spec.json')){
-        const id = e.name.replace(/\.spec\.json$/, '');
-        if(/-field$/.test(id) || /^medals/.test(path.relative(dir, f))) continue;
-        const s = JSON.parse(fs.readFileSync(f, 'utf8'));
-        const w = s.size_in ? s.size_in.w : s.width_in, h = s.size_in ? s.size_in.h : s.height_in;
-        const m = /military-badges\/([^/]+)\/([^/]+)__(.+)$/.exec(s.reference || '');
-        if(!(w > 0 && h > 0) || !m) continue;
-        if(!Array.isArray(s.source_bbox_user_units) || s.source_bbox_user_units.length !== 4) continue;
-        // The same asset id can have a spec in a work-in-progress lane (assets/military/v3/out, a redraw being gated) and in
-        // its final/ directory; the final one is the asset the builder draws, so it wins and the other is ignored.
-        const spec = { id, w, h, source: s.size_source || 'estimated', basis: s.size_basis || '', service: m[1], design: m[2], variant: m[3], bbox: s.source_bbox_user_units, final: /\/final\//.test(f) };
-        const dup = specs.findIndex(x => x.id === id);
-        if(dup < 0) specs.push(spec);
-        else if(spec.final && !specs[dup].final) specs[dup] = spec;
-      }
-    }
-  })(dir);
-  return specs;
-}
+// ---- matching an art spec to a page badge --------------------------------------------------------
 
 const normDesign = x => String(x).replace(/^(air_force|army|navy|coast_guard|marine_corps)_/, '').replace(/_(identification_badge|insignia|badge|identification)$/, '');
 
@@ -101,6 +63,7 @@ function variantCandidates(v){
   return [...new Set(c)];
 }
 
+// specs: [{ id, service, design, variant, ... }] from the art specs' references. Returns (asset, variant) -> the spec, or null.
 function match(specs){
   const by = new Map();
   for(const s of specs){
@@ -109,7 +72,7 @@ function match(specs){
     by.get(k).set(s.variant, s);
   }
   return (asset, variant) => {
-    const p = asset.split('/'); // images/military-badges/<service>/<badge dir>/<variant>.png
+    const p = asset.split('/'); // images/military-badges/<service>/<badge dir>/<variant>.svg
     const g = by.get(p[2] + '|' + normDesign(p[3]));
     if(!g) return null;
     for(const c of variantCandidates(variant)) if(g.has(c)) return g.get(c);
@@ -117,26 +80,9 @@ function match(specs){
   };
 }
 
-// ---- the PNG's pixel size ------------------------------------------------------------------------
-
-// The width and height in the IHDR chunk of a PNG.
-function pngSize(file){
-  const b = fs.readFileSync(file);
-  if(b.toString('ascii', 1, 4) !== 'PNG') throw new Error(`${file}: not a PNG`);
-  return [b.readUInt32BE(16), b.readUInt32BE(20)];
-}
-
-// ---- build ---------------------------------------------------------------------------------------
-
-const r3 = n => Math.round(n * 1000) / 1000;
-
 // ---- the traced SVGs the sync has brought into this tree -----------------------------------------
 
-// scripts/sync-military-badges.cjs copies a badge's traced SVG (the art tree's assets/military/v3/out/<art id>/) to
-// images/military-badges/<service>/<badge dir>/<variant>.svg beside the PNG and lists it in images/MANIFEST.json under the
-// art id (category military-badges). An entry whose SVG is here gets `svg` (its path) and takes the SVG's own size from the
-// manifest row, so the engine draws the SVG at the inches its viewBox is. Read from this tree, not from the art tree: a
-// v3 asset that has not been synced yet changes nothing here.
+// 'images/<path>' -> manifest row, for every military-badges row whose SVG is in the tree.
 function syncedSvgs(){
   const file = path.join(root, 'images', 'MANIFEST.json');
   const byPath = new Map();
@@ -147,61 +93,40 @@ function syncedSvgs(){
   return byPath;
 }
 
+// ---- build ---------------------------------------------------------------------------------------
+
+const r3 = n => Math.round(n * 1000) / 1000;
+
 function build(){
   const assets = metalAssets(pageBadges());
-  const find = match(artSpecs());
   const svgs = syncedSvgs();
-  const table = {}, fallback = [], aspectOff = [], svgOff = [];
-  let withSvg = 0;
+  const table = {}, missing = [];
   for(const a of assets){
-    const s = find(a.asset, a.variant);
-    if(!s){ fallback.push(`${a.badge}/${a.variant}`); continue; }
-    const img = pngSize(path.join(root, a.asset));
-    // The badge's box in the PNG, in pixels: the art spec's source_bbox_user_units (user units are the reference PNG's pixels;
-    // the art size is that box scaled). Not read from the PNG's alpha: the Army and some Navy PNGs are photographs on a
-    // camouflage cloth, opaque to the edge.
-    const ink = s.bbox.map(n => Math.round(n * 10) / 10);
-    const inkW = ink[2] - ink[0], inkH = ink[3] - ink[1];
-    if(ink[0] < 0 || ink[1] < 0 || ink[2] > img[0] + 1 || ink[3] > img[1] + 1) aspectOff.push({ key: `${a.badge}/${a.variant}`, why: 'bbox outside the PNG' });
-    const entry = { w: r3(s.w), h: r3(s.h), source: s.source, artId: s.id, asset: a.asset, img, ink };
-    const svg = svgs.get(a.asset.replace(/\.png$/, '.svg'));
-    if(svg){
-      // The synced SVG is the asset of the same art id; its row's size is the SVG's viewBox, which is what the engine draws.
-      if(svg.id !== s.id) svgOff.push({ key: `${a.badge}/${a.variant}`, why: `the synced SVG is ${svg.id}, the size spec ${s.id}` });
-      entry.svg = 'images/' + svg.path;
-      entry.w = r3(svg.w_in); entry.h = r3(svg.h_in);
-      if(svg.size_source) entry.source = svg.size_source;
-      withSvg++;
+    const key = `${a.badge}/${a.variant}`;
+    const row = svgs.get(a.asset);
+    if(!row){
+      missing.push({ key, asset: a.asset, why: /\.svg$/.test(a.asset) ? 'no manifest row (category military-badges) or the file is missing' : 'the catalog names a raster: run node scripts/sync-military-badges.cjs' });
+      continue;
     }
-    table[`${a.badge}/${a.variant}`] = entry;
-    const aspectPng = inkW / inkH, aspectArt = entry.w / entry.h;
-    if(Math.abs(aspectPng / aspectArt - 1) > 0.03) aspectOff.push({ key: `${a.badge}/${a.variant}`, why: `bbox aspect ${r3(aspectPng)} vs art ${r3(aspectArt)}` });
+    table[key] = { w: r3(row.w_in), h: r3(row.h_in), source: row.size_source || 'estimated', artId: row.id, asset: a.asset };
   }
   const keys = Object.keys(table).sort();
   const body = keys.map(k => `  ${JSON.stringify(k)}: ${JSON.stringify(table[k])}`).join(',\n');
-  const text = `// Generated by scripts/build-military-badge-sizes.cjs from military/military-data.js, the artwork tree's military badge
-// specs and the traced SVGs scripts/sync-military-badges.cjs has copied into images/military-badges/. Do not edit by hand.
+  const text = `// Generated by scripts/build-military-badge-sizes.cjs from military/military-data.js and images/MANIFEST.json. Do not edit by hand.
 // "<badge id>/<variant>": { w, h } is the badge's real size in inches (source: measured = Vanguard's regulation-size listing,
-// estimated = from the badge's aspect; artId = the SVG spec it came from, asset = the page's PNG), img the PNG's pixel size and
-// ink the badge's box [x0, y0, x1, y1] in it in pixels, so putBadge draws the ink at w x h. An entry with \`svg\` has its traced
-// SVG beside the PNG (the asset artId in images/MANIFEST.json, viewBox w x h): the engine draws that at w x h, centred where the
-// PNG's ink box was, and the page shows it in the picker; the PNG stays as the fallback.
-// ${fallback.length} of ${assets.length} badge/variants have no art spec and keep the old ${FALLBACK.w} x ${FALLBACK.h} in box; ${withSvg} draw a traced SVG.
+// estimated = from the badge's aspect), artId the traced SVG's manifest id (category military-badges; its viewBox is w x h) and asset
+// its path, the path the catalog record names. js/engine/profiles-dress.js putBadge places the SVG at w x h; a badge/variant with no
+// entry is not drawn and the scene says so. Nothing here is a raster (LIVE13 E118, "nothing should be photos").
+// ${keys.length} of ${assets.length} metal badge/variants draw a traced SVG; ${missing.length} have none.
 (function(root){
   const sizes = {
 ${body}
   };
-  Object.defineProperty(sizes, 'FALLBACK', { value: ${JSON.stringify(FALLBACK)}, enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = sizes;
-  else {
-    root.CAPUBMilitaryBadgeSizes = sizes;
-    // Point the catalog's badge records at the traced SVGs (military/military-core.js applyBadgeArt; idempotent, also run when
-    // military-core.js loads after this file), so the picker's thumbnails and the preview take the SVG where there is one.
-    if(root.CAPUBMilitary && typeof root.CAPUBMilitary.applyBadgeArt === 'function' && root.CAPUBMilitaryData) root.CAPUBMilitary.applyBadgeArt(root.CAPUBMilitaryData, sizes);
-  }
+  else root.CAPUBMilitaryBadgeSizes = sizes;
 })(typeof self !== 'undefined' ? self : this);
 `;
-  return { text, table, fallback, aspectOff, svgOff, withSvg, total: assets.length, assets };
+  return { text, table, missing, withSvg: keys.length, total: assets.length, assets };
 }
 
 if(require.main === module){
@@ -211,14 +136,11 @@ if(require.main === module){
     console.log('data/military-badge-sizes.js is current.');
   }else{
     fs.writeFileSync(OUT, r.text);
-    const n = Object.keys(r.table).length;
-    console.log(`wrote ${path.relative(root, OUT)}: ${n} of ${r.total} metal badge/variants mapped to an art spec, ${r.fallback.length} on the old ${FALLBACK.w} x ${FALLBACK.h} in box, ${r.withSvg} with a traced SVG`);
+    console.log(`wrote ${path.relative(root, OUT)}: ${r.withSvg} of ${r.total} metal badge/variants draw a traced SVG, ${r.missing.length} have none`);
     const src = {};
     Object.values(r.table).forEach(e => { src[e.source] = (src[e.source] || 0) + 1; });
     console.log('size sources:', JSON.stringify(src));
-    if(r.fallback.length) console.log('fallback:\n  ' + r.fallback.join('\n  '));
-    if(r.aspectOff.length) console.log(`art spec boxes that do not fit their PNG (${r.aspectOff.length}):\n  ` + r.aspectOff.map(a => `${a.key}: ${a.why}`).join('\n  '));
-    if(r.svgOff.length) console.log(`synced SVGs that are not the size spec's asset (${r.svgOff.length}):\n  ` + r.svgOff.map(a => `${a.key}: ${a.why}`).join('\n  '));
+    if(r.missing.length) console.log('no traced SVG (not drawn):\n  ' + r.missing.map(m => `${m.key} (${m.asset}): ${m.why}`).join('\n  '));
   }
 }
-module.exports = { build, OUT, ART, FALLBACK, pageBadges, metalAssets, artSpecs, match, normDesign, variantCandidates, syncedSvgs };
+module.exports = { build, OUT, pageBadges, metalAssets, match, normDesign, variantCandidates, syncedSvgs };

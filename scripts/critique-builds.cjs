@@ -18,9 +18,9 @@ const cadRib = [['mitchell_award', 'earned_cos_star'], ['armstrong_achievement']
 const twelve = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
 const A4 = ['CAPPilot1_FA9D33EA587D8', 'observer_badge'];
 const AIRCREW = 'AirCrew1_DB3F0FCC3650F';
-const unitFull = { id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp', label: 'TN-330 Sequoyah Cadet Squadron' };
-const unitNoArt = { id: 'TN-185_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-185_ocp_patch.webp', label: 'TN-185' };
-const hhq = { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' };
+const unitFull = { id: 'TN-330_ocp_patch', kind: 'unit', label: 'TN-330 Sequoyah Cadet Squadron' };
+const unitNoArt = { id: 'TN-185_ocp_patch', kind: 'unit', label: 'TN-185' };
+const hhq = { id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'ARCHER' };
 // A wing patch (echelon wing): the left sleeve of the ABU and the CFU takes it (5.1.1.1.2.2, 5.2.1.1.2.2); ARCHER, a special activity patch, does not.
 const wing = { id: 'nywg_patch', kind: 'general', slot: 'L_SHOULDER', label: 'New York Wing' };
 const mk = (name, uniform, gender, membership, rank, o) => out.push({ name, build: Object.assign({ uniform, gender, membership, rank, name: nm, opt: Object.assign({}, base) }, o || {}) });

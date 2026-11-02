@@ -46,7 +46,6 @@ SOURCE_SUFFIXES = {".png", ".jpg", ".jpeg"}
 BUDGETS = {
     "badges": 240,      # customBadgeSizes tops out at 60x60
     "patches": 800,     # PATCH_META tops out at 200x200
-    "mini_medals": 200,  # mini medals draw 50 px tall
     "medals": 200,
     "devices": 64,       # deviceMeta is 10x10; floored at 64 for Phase 4 headroom
     "cords": 400,

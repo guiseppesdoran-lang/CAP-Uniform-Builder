@@ -1,9 +1,4 @@
 {
-  "images/military-badges/air-force/": "Air Force metal badge PNGs, waiting on their traced SVGs (scripts/sync-military-badges.cjs)",
-  "images/military-badges/army/": "Army metal badge PNGs, waiting on their traced SVGs (scripts/sync-military-badges.cjs)",
-  "images/military-badges/coast-guard/": "Coast Guard metal badge PNGs, waiting on their traced SVGs (scripts/sync-military-badges.cjs)",
-  "images/military-badges/marine-corps/": "Marine Corps metal badge PNGs, waiting on their traced SVGs (scripts/sync-military-badges.cjs)",
-  "images/military-badges/navy/": "Navy metal badge PNGs, waiting on their traced SVGs (scripts/sync-military-badges.cjs)",
   "export-names.js": "the name of the PNG a member downloads, in a comment; not a site image",
   "patch-submission.js": "member uploads, the one exception: the file types a member may send"
 }

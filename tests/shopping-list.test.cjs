@@ -284,3 +284,19 @@ test('the grade is read from the artwork id',()=>{
   assert.equal(SHOP.gradeFromAsset('rank-epaulet-sleeve-gray-lieutenant-colonel'),'Lt Col');
   assert.equal(SHOP.gradeFromAsset('rank-cadet-nco-master-sergeant-first-sergeant-metal'),'C/MSgt (First Sergeant)');
 });
+
+test('a U.S. military badge is listed in its military form (a military-spec item may be bought), told by the engine\'s mark on the layer, not by a picture type',async()=>{
+  // LIVE13 E118: the badge is a traced SVG asset like a CAP badge; js/engine/profiles-dress.js putBadge marks its layer `military`.
+  const mil={id:'air_force_pilot_badge',variant:'command_pilot',href:'images/military-badges/air-force/air_force_pilot_badge/command_pilot.svg?v=t',title:'Command Pilot Badge',family:'AVIATION'};
+  const b=build('blues_a','male','senior','Capt',{badges:[{id:PILOT}],militaryBadges:[mil]});
+  const scene=await P.composeUniform(b,store);
+  const layer=scene.layers.find(l=>l.key==='badge:air_force_pilot_badge');
+  assert.ok(layer&&layer.type==='asset'&&layer.military===true,'the engine draws the asset and marks it military');
+  assert.ok(!scene.layers.some(l=>l.type==='raster'),'nothing is a raster');
+  const res=SHOP.deriveList(scene,b,{badges:BADGES});
+  const line=res.lines.find(l=>l.key==='badge:air_force_pilot_badge');
+  assert.ok(line,'the badge has its line');
+  assert.equal(line.rule,'MILSPEC_OK'); assert.equal(line.detail,'Military'); assert.match(line.name,/Command Pilot Badge/);
+  const cap=res.lines.find(l=>l.key==='badge:'+PILOT);
+  assert.ok(cap&&cap.rule==='CAP_ONLY'&&cap.detail==='Regular size','the CAP pilot badge beside it stays CAP-only, regular size');
+});

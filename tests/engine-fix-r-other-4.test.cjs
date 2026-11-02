@@ -407,7 +407,7 @@ test('ABU and CFU cadet and officer builds without sleeve items add nothing to t
     const scene = await compose(hb(uniform, 'male', 'senior', 'Capt', {}));
     assert.ok(!scene.layers.some(l => /:edge$/.test(l.key || '')), `${uniform}: an officer wears no sleeve chevron or patch here`);
   }
-  const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [{ id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' }] }));
+  const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [{ id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'ARCHER' }] }));
   assert.ok(ocp.layers.some(l => /:edge$/.test(l.key || '')), 'the OCP edge views stay');
 });
 

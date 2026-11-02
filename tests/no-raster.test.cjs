@@ -19,11 +19,13 @@ test('a build publishes no png, jpg, webp or gif under images/ outside the allow
   assert.deepEqual(strayRasters(published()), []);
 });
 
-test('the directories the page no longer reads are not published at all, their SVGs included', () => {
-  const files = published();
-  for(const dir of ['images/military-ribbons/', 'images/military-ribbon-variants/', 'images/military-mini-medals/', 'images/military-full-size-medals/', 'images/mini_medals/', 'images/military-badges/embroidered/', 'images/patches/ocp/']){
-    assert.deepEqual(files.filter(f => f.startsWith(dir)), [], dir);
+test('the raster directories the page stopped reading are gone from the tree; the one kept for the medal art worker is not published', () => {
+  for(const dir of ['images/military-ribbons', 'images/military-ribbon-variants', 'images/military-full-size-medals', 'images/mini_medals', 'images/military-badges/embroidered', 'images/patches/ocp']){
+    assert.equal(fs.existsSync(path.join(ROOT, dir)), false, `${dir} was deleted (LIVE13 E118); nothing reads it`);
   }
+  const files = published();
+  assert.deepEqual(files.filter(f => f.startsWith('images/military-mini-medals/')), [], 'images/military-mini-medals/ (reference for the medal art, not shipped)');
+  assert.deepEqual(files.filter(f => /^images\/military-badges\/.*\.(png|webp)$/.test(f)), [], 'no military badge raster');
 });
 
 test('no page script names a raster outside the allowlist', () => {

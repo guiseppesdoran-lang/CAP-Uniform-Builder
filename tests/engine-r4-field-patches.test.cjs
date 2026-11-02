@@ -18,9 +18,9 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.
 const compose = b => P.composeUniform(b, store);
 const NAME = { first: 'Pat', last: 'Doran', show: true };
 const hb = (uniform, gender, membership, rank, o) => HARNESS.makeBuild(Object.assign({ uniform, gender, membership, rank, name: NAME, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } }, o || {}));
-const ARCHER = { id: 'archer_ocp_patch', kind: 'general', img: 'patches/ocp/archer_ocp_patch.webp', slot: 'L_SHOULDER', label: 'ARCHER' };
+const ARCHER = { id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'ARCHER' };
 const WING = { id: 'nywg_patch', kind: 'general', slot: 'L_SHOULDER', label: 'New York Wing' };
-const UNIT = { id: 'TN-330_ocp_patch', kind: 'unit', img: 'patches/ocp/TN-330_ocp_patch.webp', label: 'TN-330 Sequoyah Cadet Squadron' };
+const UNIT = { id: 'TN-330_ocp_patch', kind: 'unit', label: 'TN-330 Sequoyah Cadet Squadron' };
 const flat = (scene, id) => scene.layers.find(l => l.role === 'patch' && l.key.startsWith(`patch:${id}:`) && !/:edge$/.test(l.key));
 
 test('the page and the harness mark the wing, region and national patches with their echelon', () => {

@@ -380,7 +380,7 @@
         const bid = key.replace(/^badge:/, '').split(':')[0];
         const meta = B && B.get ? B.get(bid) : null;
         let form = 'dress';
-        if(l.type === 'raster' || l.raster) form = 'military';
+        if(l.military) form = 'military'; // the engine marks a U.S. military badge's layer (js/engine/profiles-dress.js putBadge)
         else if(build.uniform === 'polo') form = 'polo';
         else if(meta && meta.mini === id) form = 'mini';
         else if(meta && meta.cloth === id) form = 'cloth';

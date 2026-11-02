@@ -1,38 +1,44 @@
 #!/usr/bin/env node
 // Brings the traced U.S. military badge SVGs of the artwork tree into this tree (LIVE13 E104, Ethan: "military badges need to
-// be the custom artwork. same rigorous process as the cap badges").
+// be the custom artwork. same rigorous process as the cap badges"; E118: "nothing should be photos").
 //
-//   node scripts/sync-military-badges.cjs              sync, then rewrite data/military-badge-sizes.js and data/asset-index.js
+//   node scripts/sync-military-badges.cjs              sync, then rewrite military/military-data.js, data/military-badge-sizes.js and data/asset-index.js
 //   node scripts/sync-military-badges.cjs --dry-run    report what a sync would do; write nothing
 //   node scripts/sync-military-badges.cjs --all        also take assets whose spec says the fidelity gates failed (see below)
 //   node scripts/sync-military-badges.cjs --check      exit 1 when a sync would change a file (the tree is behind the art tree)
 //
 // Source: <ARTWORK_SRC>/military/v3/out/<art id>/<art id>.svg + .spec.json (ARTWORK_SRC defaults to ../UniformBuilder/
 // artwork-samples/assets, as scripts/sync-artwork.cjs). Only v3/out is read: the older shells in assets/military/<service>/final/
-// have the same ids and geometry but rejected art, and are never copied. A badge/variant with no v3 asset keeps its PNG.
+// have the same ids and geometry but rejected art, and are never copied.
 //
 // Matching a v3 asset to a page badge: the spec's `reference` names the builder raster it was traced from as
-// images/military-badges/<service>/<design>__<variant>; the page's PNG (military/military-data.js representations.metal) is
-// images/military-badges/<service>/<badge dir>/<variant>.png. The two agree once the service prefix and the _badge / _insignia /
+// images/military-badges/<service>/<design>__<variant>; the page's asset (military/military-data.js representations.metal) is
+// images/military-badges/<service>/<badge dir>/<variant>.svg. The two agree once the service prefix and the _badge / _insignia /
 // _identification suffixes are stripped from the design (scripts/build-military-badge-sizes.cjs normDesign), the Air Force pilot
 // variants (pilot, senior_pilot, command_pilot) being the art's basic, senior and command levels and the Army basic parachutist the
-// art's basic (variantCandidates). The same matcher the size table uses, so the SVG an entry draws is the asset its size came from.
+// art's basic (variantCandidates). The same matcher the size table's module exports, so the SVG an entry draws is the asset matched here.
 //
 // Gate: the art tree writes every trace to v3/out with its fidelity block (gate-badge.js: silhouette IoU, aspect, interior-edge
 // recall, light-tone face count, tone RMS; a cloth-photo source fails by definition). An asset whose spec says `fidelity.pass`
 // is false, or has no fidelity block, is not finished art and is left out unless --all is given; the report lists each with the
-// spec's note. The PNG stays in place for it.
+// spec's note. A badge/variant with no synced SVG has no art: the engine draws nothing for it and the scene says so. There is no
+// raster fallback; the PNG references were deleted.
 //
 // What a sync writes, for each matched, passing asset:
-//   * images/military-badges/<service>/<badge dir>/<variant>.svg      the SVG, byte for byte (the .spec.json is not copied: the
-//                                                                      manifest row carries what the engine reads)
+//   * images/military-badges/<service>/<badge dir>/<variant>.svg      the SVG, byte for byte, at the path the catalog record names
+//                                                                      (the .spec.json is not copied: the manifest row carries what the
+//                                                                      engine reads)
 //   * images/MANIFEST.json                                             a row under the art id, category military-badges, with the
 //                                                                      spec's size, anchors, size_source, basis and provenance
 //                                                                      (reference raster, generator, fidelity scores); count updated
-//   * data/military-badge-sizes.js                                     scripts/build-military-badge-sizes.cjs (each synced entry gains svg)
+//   * military/military-data.js                                        each synced badge/variant's metal record names its SVG (`asset`;
+//                                                                      the representation's own asset follows its default variant). The
+//                                                                      file is one JSON literal in its wrapper (scripts/case-names.cjs
+//                                                                      rewrites it the same way); nothing else in it changes
+//   * data/military-badge-sizes.js                                     scripts/build-military-badge-sizes.cjs (from the catalog and the manifest)
 //   * data/asset-index.js                                              scripts/build-asset-index.cjs (id -> path, artwork version)
-// Idempotent: an SVG already identical is left alone, a row already equal is left alone; running twice changes nothing.
-// The master stamps index.html afterwards (npm run stamp:assets); this script never touches index.html.
+// Idempotent: an SVG already identical is left alone, a row already equal is left alone, a record already on its SVG is left alone;
+// running twice changes nothing. The master stamps index.html afterwards (npm run stamp:assets); this script never touches index.html.
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
@@ -42,8 +48,12 @@ const sizes = require('./build-military-badge-sizes.cjs');
 const root = path.join(__dirname, '..');
 const images = path.join(root, 'images');
 const manifestPath = path.join(images, 'MANIFEST.json');
-const ART = sizes.ART;
+const ART = process.env.ARTWORK_SRC || path.join(root, '..', 'UniformBuilder', 'artwork-samples', 'assets');
 const V3 = path.join(ART, 'military', 'v3', 'out');
+const MIL_FILE = path.join(root, 'military', 'military-data.js');
+// The catalog's wrapper, the same constants scripts/case-names.cjs checks before it rewrites the file.
+const MIL_PRE = '(function(root){ root.CAPUBMilitaryData = Object.freeze(';
+const MIL_POST = "); })(typeof globalThis !== 'undefined' ? globalThis : window);\n";
 const CATEGORY = 'military-badges';
 // The asset rules the v3 art keeps (v3/README.md): no text, image, filter, opacity or gradient; a copy that breaks one is refused.
 const FORBIDDEN = /<(text|image|filter|linearGradient|radialGradient|foreignObject|script)\b|\s(opacity|fill-opacity|stroke-opacity|filter)=/;
@@ -137,21 +147,22 @@ function plan({ all = false } = {}){
   const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : { assets: [] };
   const rows = new Map((manifest.assets || []).map(r => [r.id, r]));
   const used = new Set();
-  const sync = [], excluded = [], onPng = [];
+  const sync = [], excluded = [], unsynced = [];
   for(const b of badges){
     const key = `${b.badge}/${b.variant}`;
     const hit = find(b.asset, b.variant);
-    if(!hit){ onPng.push({ key, why: 'no v3 asset' }); continue; }
+    if(!hit){ unsynced.push({ key, why: 'no v3 asset' }); continue; }
     const a = byId.get(hit.id);
     used.add(a.id);
-    const rel = b.asset.replace(/^images\//, '').replace(/\.png$/, '.svg');
+    // The SVG's place: the catalog's path for this badge/variant, whatever extension the record still carries.
+    const rel = b.asset.replace(/^images\//, '').replace(/\.[a-z0-9]+$/i, '.svg');
     const dest = path.join(images, rel);
     const haveSvg = fs.existsSync(dest) ? fs.readFileSync(dest, 'utf8') : null;
     const row = manifestRow(a, rel);
     const have = rows.get(a.id);
     if(!a.pass && !all){
       excluded.push({ key, id: a.id, why: a.note, synced: haveSvg !== null });
-      onPng.push({ key, why: `v3 asset ${a.id} failed its gate: ${a.note}` });
+      unsynced.push({ key, why: `v3 asset ${a.id} failed its gate: ${a.note}` });
       continue;
     }
     sync.push({
@@ -162,7 +173,39 @@ function plan({ all = false } = {}){
     });
   }
   const unmatched = assets.filter(a => !used.has(a.id)).map(a => ({ id: a.id, reference: a.spec.reference, why: 'no page badge/variant has this reference' }));
-  return { sync, excluded, onPng, unmatched, broken, badges: badges.length, v3: assets.length, manifest };
+  return { sync, excluded, unsynced, unmatched, broken, badges: badges.length, v3: assets.length, manifest, catalog: catalogRewrite(sync) };
+}
+
+// ---- the catalog ---------------------------------------------------------------------------------
+
+// The catalog with each synced badge/variant's metal record pointing at its SVG: { changes: [{ key, from, to }], text }. The
+// representation's own `asset` is its default variant's and follows it. Reads the file as scripts/case-names.cjs does and refuses a
+// file whose wrapper or JSON is not what it expects, so nothing but these paths can change. Idempotent: no change, no write.
+function catalogRewrite(sync){
+  const text = fs.readFileSync(MIL_FILE, 'utf8');
+  if(!text.startsWith(MIL_PRE) || !text.endsWith(MIL_POST)) throw new Error('military-data.js wrapper changed; update sync-military-badges.cjs');
+  const json = text.slice(MIL_PRE.length, text.length - MIL_POST.length);
+  const data = JSON.parse(json);
+  if(JSON.stringify(data) !== json) throw new Error('military-data.js JSON does not round-trip; refusing to rewrite');
+  const want = new Map(sync.map(s => [s.key, 'images/' + s.rel]));
+  const changes = [];
+  for(const badge of data.badges || []){
+    const metal = badge.representations && badge.representations.metal;
+    if(!metal) continue;
+    const variants = metal.variants && Object.keys(metal.variants).length ? metal.variants : null;
+    const records = variants ? Object.entries(variants) : [[metal.defaultVariant || 'default', metal]];
+    for(const [variant, rec] of records){
+      const to = want.get(`${badge.id}/${variant}`);
+      if(!to || !rec || rec.asset === to) continue;
+      changes.push({ key: `${badge.id}/${variant}`, from: rec.asset, to });
+      rec.asset = to;
+      if(variants && metal.asset && (metal.defaultVariant || 'default') === variant && metal.asset !== to){
+        changes.push({ key: `${badge.id}/metal`, from: metal.asset, to });
+        metal.asset = to;
+      }
+    }
+  }
+  return { changes, text: MIL_PRE + JSON.stringify(data) + MIL_POST };
 }
 
 // ---- apply ---------------------------------------------------------------------------------------
@@ -184,7 +227,8 @@ function apply(p){
     if(manifest.by_category) manifest.by_category[CATEGORY] = manifest.assets.filter(r => r.category === CATEGORY).length;
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 1) + '\n');
   }
-  // The size table reads the synced SVGs and the manifest; the asset index reads the manifest and every file under images/.
+  if(p.catalog.changes.length){ fs.writeFileSync(MIL_FILE, p.catalog.text); changed++; }
+  // The size table reads the catalog and the manifest; the asset index reads the manifest and every file under images/.
   const before = fs.existsSync(sizes.OUT) ? fs.readFileSync(sizes.OUT, 'utf8') : '';
   const table = sizes.build();
   if(table.text !== before){ fs.writeFileSync(sizes.OUT, table.text); changed++; }
@@ -195,9 +239,10 @@ function apply(p){
   return { changed, table };
 }
 
-// True when a sync would write something (the files, the manifest, the size table or the asset index).
+// True when a sync would write something (the files, the manifest, the catalog, the size table or the asset index).
 function pending(p){
   if(p.sync.some(s => s.svgChange !== 'same' || s.rowChange !== 'same')) return true;
+  if(p.catalog.changes.length) return true;
   const before = fs.existsSync(sizes.OUT) ? fs.readFileSync(sizes.OUT, 'utf8') : '';
   if(sizes.build().text !== before) return true;
   const idx = require('./build-asset-index.cjs');
@@ -207,11 +252,12 @@ function pending(p){
 function report(p, out){
   const n = k => p.sync.filter(s => s.svgChange === k).length;
   out(`v3 assets: ${p.v3} readable (${p.broken.length} unreadable or malformed); page badge/variants: ${p.badges}`);
-  out(`synced: ${p.sync.length} (${n('new')} new, ${n('updated')} updated, ${n('same')} unchanged); ${p.onPng.length} badge/variants stay on their PNG; ${p.excluded.length} v3 assets left out by the gate; ${p.unmatched.length} v3 assets match no page badge`);
+  out(`synced: ${p.sync.length} (${n('new')} new, ${n('updated')} updated, ${n('same')} unchanged); ${p.unsynced.length} badge/variants have no synced art and are not drawn; ${p.excluded.length} v3 assets left out by the gate; ${p.unmatched.length} v3 assets match no page badge; catalog records to point at their SVG: ${p.catalog.changes.length}`);
   if(p.sync.length) out('synced:\n  ' + p.sync.map(s => `${s.key} <- ${s.id} (${s.w} x ${s.h} in${s.pass ? '' : ', GATE FAILED, taken with --all'}) [svg ${s.svgChange}, row ${s.rowChange}]`).join('\n  '));
-  if(p.excluded.length) out('left out (fidelity gate; the PNG stays):\n  ' + p.excluded.map(e => `${e.key} <- ${e.id}: ${e.why}${e.synced ? ' (an earlier sync left its SVG in place)' : ''}`).join('\n  '));
-  const noArt = p.onPng.filter(x => x.why === 'no v3 asset');
-  if(noArt.length) out(`on the PNG, no v3 asset yet (${noArt.length}):\n  ` + noArt.map(x => x.key).join('\n  '));
+  if(p.excluded.length) out('left out (fidelity gate; no art, not drawn):\n  ' + p.excluded.map(e => `${e.key} <- ${e.id}: ${e.why}${e.synced ? ' (an earlier sync left its SVG in place)' : ''}`).join('\n  '));
+  const noArt = p.unsynced.filter(x => x.why === 'no v3 asset');
+  if(noArt.length) out(`no v3 asset yet, not drawn (${noArt.length}):\n  ` + noArt.map(x => x.key).join('\n  '));
+  if(p.catalog.changes.length) out('catalog records to rewrite:\n  ' + p.catalog.changes.map(c => `${c.key}: ${c.from} -> ${c.to}`).join('\n  '));
   if(p.unmatched.length) out('v3 assets no page badge names:\n  ' + p.unmatched.map(u => `${u.id} (${u.reference})`).join('\n  '));
   if(p.broken.length) out('unreadable or malformed v3 assets:\n  ' + p.broken.map(b => `${b.id}: ${b.why}`).join('\n  '));
 }
@@ -222,14 +268,14 @@ if(require.main === module){
   const p = plan({ all });
   if(args.includes('--check')){
     if(pending(p)){ report(p, console.error); console.error('the tree is behind the art tree: run node scripts/sync-military-badges.cjs'); process.exit(1); }
-    console.log(`military badge SVGs are current (${p.sync.length} synced, ${p.onPng.length} on the PNG).`);
+    console.log(`military badge SVGs are current (${p.sync.length} synced, ${p.unsynced.length} without art).`);
   }else if(args.includes('--dry-run')){
     report(p, console.log);
   }else{
     const r = apply(p);
     report(p, console.log);
     console.log(`${r.changed ? r.changed + ' file(s) or row(s) written' : 'nothing to write'}; data/military-badge-sizes.js: ${r.table.withSvg} of ${r.table.total} badge/variants draw a traced SVG.`);
-    if(r.table.svgOff.length) console.log('size table: synced SVGs that are not the size spec\'s asset:\n  ' + r.table.svgOff.map(a => `${a.key}: ${a.why}`).join('\n  '));
+    if(r.table.missing.length) console.log('size table: badge/variants with no traced SVG (not drawn):\n  ' + r.table.missing.map(m => `${m.key} (${m.asset}): ${m.why}`).join('\n  '));
   }
 }
-module.exports = { plan, apply, pending, v3Assets, manifestRow, V3, ART, CATEGORY };
+module.exports = { plan, apply, pending, v3Assets, manifestRow, catalogRewrite, V3, ART, CATEGORY, MIL_FILE, MIL_PRE, MIL_POST };
