@@ -263,6 +263,26 @@ test('the engine\'s BODY_SIDE table is the body\'s side edge below the armpit of
   }
 });
 
+// LIVE13 E120 (Ethan, the women's Class A with the Group cord: "I dont think you understand how cords work. they follow the seam (the line) exactly. They also
+// should be a tad bit thicker."): the run the braid is drawn on is the armhole seam the sheet DRAWS (ARM_SEAM, from scripts/measure-armpit.cjs computeSeam), not the
+// overlay's hand-fitted landmark, on every sheet that draws one; the men's Class A coat draws none and keeps the landmark. The braid is 0.5 in across (core.CORD_WIDTH).
+test('the engine\'s ARM_SEAM table is the drawn armhole seam of the current cord sheets, and every sheet but the men\'s coat draws one (regenerate with scripts/measure-armpit.cjs)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const body = /\/\/ ARM_SEAM begin\n([\s\S]*?)\/\/ ARM_SEAM end/.exec(src);
+  assert.ok(body, 'the table is marked in the engine');
+  const seams = MEASURE_ARMPIT.computeSeam();
+  assert.deepEqual(new Function(body[1] + '; return ARM_SEAM;')(), seams);
+  assert.deepEqual(Object.keys(seams).sort(), FIT_GARMENTS.map(g => g[0]).filter(id => id !== 'garment-blues-class-a-coat').sort(), 'the sheets that draw a seam line');
+  const armpits = MEASURE_ARMPIT.compute();
+  for(const [id, seam] of Object.entries(seams)){
+    assert.ok(seam.length >= 5, `${id}: ${seam.length} vertices`);
+    const end = seam[seam.length - 1], ap = armpits[id];
+    assert.ok(Math.hypot(end[0] - ap[0], end[1] - ap[1]) <= 0.5, `${id}: the drawn seam ends ${Math.hypot(end[0] - ap[0], end[1] - ap[1]).toFixed(3)} in from the armpit`);
+    assert.ok(ringDist(seam[0], outerRing(id)) <= 0.35, `${id}: the drawn seam starts ${ringDist(seam[0], outerRing(id)).toFixed(3)} in from the shoulder outline`);
+    for(let i = 1; i < seam.length; i++) assert.ok(seam[i][1] > seam[i - 1][1], `${id}: the seam runs down`);
+  }
+});
+
 test('every cord kind on every garment and both sexes: one smooth run from the top of the shoulder to the armpit (9.3)', async () => {
   const armpits = MEASURE_ARMPIT.compute();
   let checked = 0;
@@ -292,19 +312,27 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     const ring = outerRing(gid);
     assert.ok(ringDist(top, ring) <= 0.1, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);
     const ap = armpits[gid], notch = notchOf(gid);
-    assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= 0.1, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
-    // The armpit is the notch of the silhouette, measured independently of the table: 0.05 in.
-    assert.ok(Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]) <= 0.05, `${tag}: the run's armpit end is ${Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
-    const sil = silhouette(read(gid)), BRAID = 0.25;
+    // E120: on a sheet that draws its seam the run's bottom end is the drawn seam's own end, which reaches the armpit (the women's coat's ends 0.31 in out from
+    // the apex of the gap); on the men's coat (no drawn seam) the landmark run is fitted to the armpit, which is the notch of the silhouette, measured
+    // independently of the table.
+    const exact = !!cl.cordPath.exact, endTol = exact ? 0.5 : 0.1;
+    assert.equal(exact, gid !== 'garment-blues-class-a-coat', `${tag}: the run is the drawn seam where the sheet draws one`);
+    assert.ok(Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]) <= endTol, `${tag}: the run's bottom end is ${Math.hypot(bottom[0] - ap[0], bottom[1] - ap[1]).toFixed(3)} in from the armpit`);
+    assert.ok(Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]) <= (exact ? 0.5 : 0.05), `${tag}: the run's armpit end is ${Math.hypot(bottom[0] - notch[0], bottom[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
+    assert.equal(cl.cordPath.width, core.CORD_WIDTH, `${tag}: the braid's width is the engine's`);
+    assert.ok(Math.abs(core.CORD_WIDTH - 0.5) < 1e-9, 'the braid is 0.5 in across with its outline (the sheets drew 0.40; E120 "a tad bit thicker", a quarter)');
+    const sil = silhouette(read(gid)), BRAID = core.CORD_WIDTH / 2, INSET = tail.inset, SETTLE = tail.settle;
+    assert.ok(Math.abs(INSET - (BRAID + 0.05)) < 1e-9 && SETTLE >= 0.8 && SETTLE <= 1.2, `${tag}: inset ${INSET} (half the braid and a margin), settled ${SETTLE} in below the notch`);
     const tp = tail.points, cum = [0];
     for(let i = 1; i < tp.length; i++) cum.push(cum[i - 1] + Math.hypot(tp[i][0] - tp[i - 1][0], tp[i][1] - tp[i - 1][1]));
     const at = a => { let i = 1; while(i < cum.length - 1 && cum[i] < a) i++; const f = (a - cum[i - 1]) / ((cum[i] - cum[i - 1]) || 1), p = tp[i - 1], q = tp[i], d = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1; return { p: [p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f], n: [-(q[1] - p[1]) / d, (q[0] - p[0]) / d], d: [(q[0] - p[0]) / d, (q[1] - p[1]) / d] }; };
     // Arc distance from the notch: the tail starts at the point of the path nearest it. It is 0.8 in at full width and then 0.8 in of fade: 1.6 in.
     assert.ok(Math.abs(cum[cum.length - 1] - 1.6) < 0.02 && tail.end === 1.6, `${tag}: the tail is ${cum[cum.length - 1].toFixed(3)} in long beyond the notch (0.8 full, 0.8 fading)`);
     assert.ok(tail.notchDistance <= 0.45 && tail.notchDistance >= 0.0, `${tag}: the braid's centre line passes ${tail.notchDistance.toFixed(2)} in from the notch (inside the cloth, within the braid's width)`);
-    // The direction of the centre line at the notch is the seam's, within 10 degrees: the seam's direction is the sheet's own run over its last inch above the armpit.
+    // Past the notch the braid turns from the seam's direction toward the body's edge (the dive under the arm) and has settled on the inset line by SETTLE: at a
+    // quarter inch past the notch it has turned less than 45 degrees (the women's sheets' body edges angle inward 25 degrees below the armpit), never back outward.
     const seam = tail.seam, d0 = at(0.25).d, dirDiff = angDiff(ang(seam), ang(d0));
-    assert.ok(dirDiff <= 10, `${tag}: at the notch the braid runs ${dirDiff.toFixed(1)} degrees off the seam's direction`);
+    assert.ok(dirDiff <= 45, `${tag}: a quarter inch past the notch the braid runs ${dirDiff.toFixed(1)} degrees off the seam's direction`);
     // Full width through the notch and for 0.8 in past it: the fade begins 0.8 in beyond the notch and ends at the braid's end, opacity falling monotonically from 1 to 0.
     const L = Math.hypot(fade.to[0] - fade.from[0], fade.to[1] - fade.from[1]);
     const opacity = p => Math.max(0, Math.min(1, 1 - ((p[0] - fade.from[0]) * (fade.to[0] - fade.from[0]) + (p[1] - fade.from[1]) * (fade.to[1] - fade.from[1])) / (L * L)));
@@ -319,32 +347,42 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     }
     assert.ok(opacity(at(1.6).p) < 0.02, `${tag}: the braid has faded to nothing at its end`);
     assert.ok(opacity(at(1.2).p) > 0.3 && opacity(at(1.2).p) < 0.7, `${tag}: the braid is about half faded half way along the fade`);
-    // The last visible segment is inside the silhouette (as the sheet draws it): every point of the centre line that can still be seen (opacity over 5 percent) is, and from 0.4 in past
-    // the notch on, where the braid has settled inside the edge, the whole 0.5 in braid is on cloth (no row of it ends on the silhouette edge).
+    // The last visible segment is inside the silhouette (as the sheet draws it): every point of the centre line that can still be seen (opacity over 5 percent) is, apart from the
+    // first 0.6 in past the notch, where the braid may lie across the hairline gap between arm and body (E120: the layer is cut to the sheet's OUTER outline there, clipOuter);
+    // from SETTLE + 0.15 in on, where the braid has settled inside the edge, the whole 0.5 in braid is on cloth (no row of it ends on the silhouette edge).
     for(let a = 0; a <= 1.6 + 1e-9; a += 0.05){
       const { p, n } = at(a), o = opacity(p);
-      if(o > 0.05) assert.ok(inSil(p, sil), `${tag}: the braid's centre line ${a.toFixed(2)} in past the notch (${p.map(v => v.toFixed(2))}, opacity ${o.toFixed(2)}) is outside the silhouette`);
-      if(a >= 0.4) for(const v of [-BRAID + 0.02, BRAID - 0.02]) assert.ok(inSil([p[0] + n[0] * v, p[1] + n[1] * v], sil), `${tag}: the braid's side ${v.toFixed(2)} ${a.toFixed(2)} in past the notch is on the silhouette's edge or off the cloth`);
+      if(o > 0.05 && a > 0.6) assert.ok(inSil(p, sil), `${tag}: the braid's centre line ${a.toFixed(2)} in past the notch (${p.map(v => v.toFixed(2))}, opacity ${o.toFixed(2)}) is outside the silhouette`);
+      if(a >= SETTLE + 0.15) for(const v of [-BRAID + 0.02, BRAID - 0.02]) assert.ok(inSil([p[0] + n[0] * v, p[1] + n[1] * v], sil), `${tag}: the braid's side ${v.toFixed(2)} ${a.toFixed(2)} in past the notch is on the silhouette's edge or off the cloth`);
     }
     assert.ok(inSil(under, sil), `${tag}: the last point of the braid is inside the silhouette`);
-    // It follows the body's edge past the notch (within 0.04 of the half-width inset) and runs along it.
+    assert.equal(cl.clipOuter, true, `${tag}: cut to the sheet's outer outline, not to the gap between arm and body`);
+    // It follows the body's edge past the notch (within 0.05 of the inset) and runs along it.
     const edge = gid in SIDE_EDGE ? SIDE_EDGE[gid] : (SIDE_EDGE[gid] = MEASURE_ARMPIT.computeSide()[gid]);
-    for(let a = 1.2; a <= 1.6 + 1e-9; a += 0.1){
+    for(let a = SETTLE + 0.1; a <= 1.6 + 1e-9; a += 0.1){
       const p = at(a).p, dEdge = Math.min(...edge.slice(1).map((q, i) => segDist(p, edge[i], q)));
-      assert.ok(Math.abs(dEdge - 0.25) < 0.05, `${tag}: the braid is ${dEdge.toFixed(3)} in from the body's edge ${a.toFixed(2)} in past the notch (inset 0.25, half the braid's width)`);
+      assert.ok(Math.abs(dEdge - INSET) < 0.05, `${tag}: the braid is ${dEdge.toFixed(3)} in from the body's edge ${a.toFixed(2)} in past the notch (inset ${INSET})`);
     }
-    // The braid keeps the seam's line: where the run above the notch is concerned, the centre line is never more than 0.45 in from the sheet (the inset is half the braid, 0.25 in, from the body edge, which lies up to 0.2 in off the seam at the notch)'s own run, it has drifted back onto
-    // it (within 0.02) 8 in above the notch, and the drift is gradual: at most 0.16 in sideways per inch of braid (about 9 degrees), the inset reached over more than 1.5 in
-    // starting above the notch.
-    const runPts = cl.cordPath.points, drawnLine = (() => { const pcs = pieces, out = []; for(const pc of pcs){ if(!out.length) out.push(pc.a); out.push(pc.type === 'Q' ? pc.c : pc.b); } return out; })();
+    // E120 "they follow the seam (the line) exactly": the braid's centre line is on the run (the drawn seam, or the men's coat's landmark) to 0.04 in everywhere above the
+    // last two inches (the rounding of a 17 degree bend over 0.25 in lies 0.04 off the corner), and over those two inches it drifts toward the body by no more than
+    // `cover` (0.18 in), so the 0.05 in seam line is under the 0.5 in braid along its whole length: every vertex of the run lies within cover + 0.03 of the centre line.
+    const runPts = cl.cordPath.exact ? cl.cordPath.seam : cl.cordPath.points, drawnLine = [];
+    for(const pc of pieces){ const seg = pc.type === 'Q' ? [[pc.a, pc.c], [pc.c, pc.b]] : [[pc.a, pc.b]]; for(const [a0, b0] of seg) for(let t = 0; t < 1; t += 0.25) drawnLine.push([a0[0] + (b0[0] - a0[0]) * t, a0[1] + (b0[1] - a0[1]) * t]); }
     const runDist = p => Math.min(...runPts.slice(1).map((q, i) => segDist(p, runPts[i], q)));
-    let maxDev = 0, slopeMax = 0, last = null;
-    for(let k = 0; k < drawnLine.length; k++){
-      const q = drawnLine[k], dBottom = Math.hypot(q[0] - bottom[0], q[1] - bottom[1]);
-      if(q[1] < bottom[1] && dBottom > 0.3 && dBottom < 9){ const dev = runDist(q); maxDev = Math.max(maxDev, dev); if(last && Math.abs(dBottom - last.d) > 0.2) { slopeMax = Math.max(slopeMax, Math.abs(dev - last.dev) / Math.abs(dBottom - last.d)); last = { d: dBottom, dev }; } if(!last) last = { d: dBottom, dev }; }
+    const lineDist = p => Math.min(...drawnLine.slice(1).map((q, i) => segDist(p, drawnLine[i], q)));
+    const seamEnd = runPts[runPts.length - 1], cover = tail.cover, leadIn = tail.leadIn;
+    assert.ok(Math.abs(cover - 0.18) < 1e-9 && Math.abs(leadIn - 2) < 1e-9, `${tag}: cover ${cover}, lead-in ${leadIn}`);
+    let maxAbove = 0, maxLead = 0;
+    for(const q of drawnLine){
+      if(q[1] >= seamEnd[1] - 1e-6) continue;
+      const arcToEnd = Math.hypot(q[0] - seamEnd[0], q[1] - seamEnd[1]), top0 = Math.hypot(q[0] - top[0], q[1] - top[1]);
+      if(top0 < 0.3) continue;                                     // the first segment is extended to the shoulder outline past the run's first vertex
+      const dev = runDist(q);
+      if(arcToEnd > leadIn + 0.2) maxAbove = Math.max(maxAbove, dev); else maxLead = Math.max(maxLead, dev);
     }
-    assert.ok(maxDev <= 0.45, `${tag}: the braid strays ${maxDev.toFixed(2)} in from the sheet's run above the notch`);
-    assert.ok(slopeMax <= 0.16 + 1e-9, `${tag}: the braid drifts ${slopeMax.toFixed(3)} in sideways per inch above the notch`);
+    assert.ok(maxAbove <= 0.04, `${tag}: the braid's centre line strays ${maxAbove.toFixed(3)} in from the drawn seam above the lead-in`);
+    assert.ok(maxLead <= cover + 0.01, `${tag}: the braid's centre line strays ${maxLead.toFixed(3)} in from the drawn seam over the lead-in (cover ${cover})`);
+    for(const v of runPts) assert.ok(lineDist(v) <= cover + 0.03, `${tag}: the seam's vertex ${v.map(x => x.toFixed(2))} lies ${lineDist(v).toFixed(3)} in from the braid's centre line: not under the braid`);
     // Only the straight run is stretched: the length changes by no more than 15 percent (the sheets draw no loop or tip to keep).
     assert.ok(stretch.to / stretch.from > 0.85 && stretch.to / stretch.from < 1.15, `${tag}: length ${stretch.from.toFixed(2)} to ${stretch.to.toFixed(2)} in`);
     assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);
@@ -352,7 +390,15 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
       // Under the shoulder board's strip at the shoulder seam: the strip covers the run's top end (it is drawn over the cord).
       const strip = scene.layers.find(x => x.key === 'epaulet:left'), o = strip.origin, R = strip.rotate || 0;
       const poly = [[strip.x, strip.y], [strip.x + strip.w, strip.y], [strip.x + strip.w, strip.y + strip.h], [strip.x, strip.y + strip.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, R); return [q.x, q.y]; });
-      assert.ok(polyDist(top, poly) <= 0.1, `${tag}: the run's top end is ${polyDist(top, poly).toFixed(3)} in from the strip`);
+      // E120: the braid is on the drawn seam, whose top is the shoulder tip. On the women's coat the sheet's strap axis (and so the board's strip) stops 0.70 in short
+      // of its own seam line there, so the braid's top shows past the board's outer end instead of coming out from under it (9.3): the gap is the art's and is
+      // pinned here at its measured size (a little over) so it cannot grow unseen (art follow-up: extend the strap landmark to the drawn seam). On the men's coat
+      // the landmark run's top is under the strip.
+      const underStrip = Math.min(...drawnLine.map(q => polyDist(q, poly)));
+      const KNOWN_SEAM_PAST_STRIP = { 'garment-blues-class-a-coat-female': 0.72 };
+      assert.ok(underStrip <= (KNOWN_SEAM_PAST_STRIP[gid] || 0.02), `${tag}: the braid passes ${underStrip.toFixed(3)} in from the strip: it is not under it`);
+      if(KNOWN_SEAM_PAST_STRIP[gid]) assert.ok(underStrip > KNOWN_SEAM_PAST_STRIP[gid] - 0.1, `${tag}: the strap reaches the seam now (${underStrip.toFixed(3)} in): retire the allowance`);
+      if(!cl.cordPath.exact) assert.ok(polyDist(top, poly) <= 0.1, `${tag}: the run's top end is ${polyDist(top, poly).toFixed(3)} in from the strip`);
       assert.ok(cl.z < strip.z, `${tag}: under the strip`);
     }
     checked++;

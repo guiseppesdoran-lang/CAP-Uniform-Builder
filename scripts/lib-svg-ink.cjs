@@ -91,7 +91,7 @@ function scanline(subs,y){
   for(const p of subs)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];if((a[1]<=y&&b[1]>y)||(b[1]<=y&&a[1]>y))xs.push(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]));}
   return xs.sort((a,b)=>a-b);
 }
-module.exports={polys,lowerHull,silhouette,scanline};
+module.exports={polys,lowerHull,silhouette,scanline,flatten};
 if(false){
  const f=process.argv[2];const svg=fs.readFileSync(f,'utf8');const P=polys(svg);
  let minx=1e9,maxx=-1e9,maxy=-1e9,miny=1e9;for(const p of P)for(const [x,y] of p){minx=Math.min(minx,x);maxx=Math.max(maxx,x);maxy=Math.max(maxy,y);miny=Math.min(miny,y);}

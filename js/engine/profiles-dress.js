@@ -1093,6 +1093,23 @@
   };
   // BODY_SIDE end
 
+  // The armhole seam of the wearer's left arm as each cord sheet DRAWS it, sheet inches, flattened (scripts/measure-armpit.cjs computeSeam;
+  // tests/engine-live-cord-joins.test.cjs compares this table with the sheets). LIVE13 E120, Ethan, on the women's Class A with the Group cord:
+  // "I dont think you understand how cords work. they follow the seam (the line) exactly." The cord overlays' own `cord` landmarks were hand-fitted
+  // polylines that lay 0.18 in inboard of the women's coat's drawn seam and started an inch in from its top; the braid is now drawn on the seam the
+  // sheet draws, so the braid and the line cannot part. The men's Class A coat draws no seam line (its coat body has no armhole stroke), so it has
+  // no entry and keeps the overlay's landmark; the Class B shirts' seams are the sheets' cubic curves, sampled every 0.1 in.
+  // ARM_SEAM begin
+  const ARM_SEAM = {
+    'garment-blues-class-a-coat-female': [[20.838, 2.863], [19.184, 6.171], [18.853, 8.239], [19.184, 10.307], [19.391, 12.872]],
+    'garment-blues-class-b-shirt-male': [[23.097, 3.838], [23.051, 4.06], [22.99, 4.352], [22.918, 4.7], [22.838, 5.088], [22.751, 5.501], [22.662, 5.923], [22.573, 6.34], [22.488, 6.735], [22.402, 7.101], [22.314, 7.449], [22.223, 7.792], [22.131, 8.144], [22.038, 8.519], [21.946, 8.929], [21.855, 9.387], [21.767, 9.908], [21.675, 10.54], [21.579, 11.293], [21.481, 12.118], [21.385, 12.967], [21.294, 13.791], [21.213, 14.541], [21.145, 15.17], [21.093, 15.629]],
+    'garment-blues-class-b-shirt-male-long': [[22.657, 3.56], [22.606, 3.805], [22.539, 4.13], [22.458, 4.518], [22.368, 4.949], [22.273, 5.405], [22.176, 5.867], [22.08, 6.317], [21.989, 6.735], [21.898, 7.111], [21.801, 7.459], [21.701, 7.795], [21.601, 8.136], [21.504, 8.501], [21.415, 8.906], [21.335, 9.369], [21.268, 9.908], [21.215, 10.575], [21.172, 11.377], [21.138, 12.262], [21.112, 13.174], [21.091, 14.062], [21.074, 14.872], [21.06, 15.551], [21.046, 16.044]],
+    'garment-blues-class-b-blouse-female': [[21.945, 3.155], [21.842, 3.483], [21.699, 3.926], [21.53, 4.454], [21.343, 5.037], [21.152, 5.645], [20.966, 6.247], [20.796, 6.814], [20.654, 7.316], [20.536, 7.743], [20.429, 8.119], [20.332, 8.466], [20.244, 8.804], [20.163, 9.156], [20.088, 9.542], [20.018, 9.984], [19.951, 10.503], [19.888, 11.146], [19.83, 11.914], [19.778, 12.757], [19.731, 13.625], [19.69, 14.468], [19.655, 15.237], [19.625, 15.881], [19.6, 16.35]],
+    'garment-blues-class-b-blouse-female-long': [[21.601, 3.185], [21.498, 3.51], [21.357, 3.949], [21.188, 4.473], [21.004, 5.051], [20.813, 5.655], [20.629, 6.253], [20.46, 6.817], [20.319, 7.316], [20.199, 7.748], [20.09, 8.138], [19.99, 8.504], [19.898, 8.859], [19.815, 9.221], [19.741, 9.605], [19.675, 10.027], [19.616, 10.503], [19.567, 11.07], [19.529, 11.73], [19.501, 12.444], [19.481, 13.172], [19.466, 13.875], [19.454, 14.513], [19.444, 15.049], [19.434, 15.442]]
+  };
+  // ARM_SEAM end
+
+
   // The cord overlay is one braided run drawn along the armhole seam, and the sheet's polyline stops short of the armpit and of the top
   // of the shoulder. Ethan, live: 'cords are still fucked up. they arent going to the top of the shoulder nor the bottom of the thing', and
   // 'shoulder cords dont line up' (the run bent where its two straight pieces met). The run is fitted to the sheet: top end on the shoulder
@@ -1108,15 +1125,28 @@
   // LIVE10-MASTER-4 (Ethan: "now the cord is cut off lmao. its supposed to be continuous"): the braid past the notch was clipped to the silhouette and ended on a straight cut at the
   // arm gap, then the pale tongue. It now passes under the arm and goes on INSIDE the garment along the body's side edge (BODY_SIDE: the silhouette's edge on the body's side of
   // the gap, from the armpit down), bending with it, for CORD_UNDER (0.8 in) at full width and then fades out over a further 0.8 in as if passing behind the arm (core.fitCord, CORD_FADE).
+  // LIVE13 E120 (Ethan: "they follow the seam (the line) exactly. They also should be a tad bit thicker"): the run is the seam the sheet draws (ARM_SEAM,
+  // core.fitCord `exact`: followed as drawn, its first segment extended to the shoulder outline, its end kept), the turn under the arm begins only at
+  // the seam's end, and the braid is 0.5 in across (core.CORD_WIDTH, from the sheets' 0.40: a quarter thicker). The layer is cut to the sheet's OUTER
+  // outline only (clipOuter): the gap between arm and body is a hairline for the first half inch below the armpit, and cutting the braid where it
+  // crosses that crease showed as a slit through it; the braid lies over the crease as a cord does, and from CORD_SETTLE below the armpit it is on the
+  // body's cloth inside the edge.
   const CORD_UNDER = 0.8;
+  function cordRun(id, lm){
+    const seam = ARM_SEAM[id];
+    if(seam) return { points: seam.map(p => [p[0], p[1]]), exact: true };
+    return lm && lm.points && lm.points.length >= 2 ? { points: lm.points.map(p => [p.x, p.y]), exact: false } : null;
+  }
   function fitCordLayer(ctx, spec){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
-    if(!layer || !lm || !lm.points || lm.points.length < 2) return;
+    const run = cordRun(id, lm);
+    if(!layer || !run) return;
     const ring = GARMENT_TOP[id];
     const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
-    const fit = core.fitCord(lm.points.map(p => [p.x, p.y]), outline, ARMPIT[id] || null, CORD_UNDER, BODY_SIDE[id] || null);
-    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, fade: fit.fade, tail: fit.tail, stretch: fit.stretch };
+    const fit = core.fitCord(run.points, outline, ARMPIT[id] || null, CORD_UNDER, BODY_SIDE[id] || null, { exact: run.exact });
+    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, under: fit.under, visible: fit.visible, fade: fit.fade, tail: fit.tail, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
     layer.clipSil = id;
+    layer.clipOuter = true;
   }
 
   // The Aide de Camp cord overlays carry the aiguillette (9.3.4): the loop hanging from the front of the shoulder and the cord and

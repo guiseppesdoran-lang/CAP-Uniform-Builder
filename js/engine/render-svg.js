@@ -364,7 +364,19 @@
         const art = byId('art'), cord = byId('cord'), t = art && /translate\(([-\d.]+)[ ,]+([-\d.]+)\)\s*scale\(([-\d.]+)\)/.exec(art.getAttribute('transform') || '');
         if(cord && t){
           const d = cordPathToArt(layer.cordPath.d, Number(t[1]), Number(t[2]), Number(t[3]));
-          cord.querySelectorAll('path').forEach(pn => { if(/^M/.test(pn.getAttribute('d') || '')) pn.setAttribute('d', d); });
+          const strokes = [...cord.querySelectorAll('path')].filter(pn => /^M/.test(pn.getAttribute('d') || ''));
+          strokes.forEach(pn => pn.setAttribute('d', d));
+          // The braid's width (engine: core.CORD_WIDTH, LIVE13 E120 "a tad bit thicker"): the sheet's widest stroke (the outline) is scaled to it in
+          // sheet inches, and its body, its dashed twist and the twist's pitch by the same factor, so the braid keeps its drawing at the new width.
+          const sIn = Number(t[3]) / 100, widths = strokes.map(pn => Number(pn.getAttribute('stroke-width')) || 0), widest = Math.max(...widths);
+          if(layer.cordPath.width > 0 && widest > 0 && sIn > 0){
+            const k = layer.cordPath.width / (widest * sIn);
+            strokes.forEach((pn, i) => {
+              if(widths[i]) pn.setAttribute('stroke-width', fmt(widths[i] * k));
+              const dash = pn.getAttribute('stroke-dasharray');
+              if(dash) pn.setAttribute('stroke-dasharray', dash.trim().split(/[\s,]+/).map(v => fmt(Number(v) * k)).join(' '));
+            });
+          }
         }
       }else if(layer.hideGroups && !(layer.onlyGroups && layer.onlyGroups.length)){
         layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
@@ -394,8 +406,17 @@
     const layers = [...scene.layers].sort((a, b2) => (a.z || 0) - (b2.z || 0));
     const clipIds = new Map();
     const silIds = new Map();
-    function silhouetteClip(garmentId){
-      if(silIds.has(garmentId)) return silIds.get(garmentId);
+    // The sheet's silhouette path with only its largest subpath (by the area of its M/L vertices): the garment's outer outline without the holes
+    // between arm and body (`clipOuter`, the shoulder cord: LIVE13 E120).
+    function outerSubpath(d){
+      const subs = String(d).split(/(?=[Mm])/).filter(x => /^[Mm]/.test(x));
+      if(subs.length < 2) return d;
+      const area = sub => { const pts = [...sub.matchAll(/[ML]\s*(-?[\d.]+)[ ,](-?[\d.]+)/g)].map(m => [Number(m[1]), Number(m[2])]); let a = 0; for(let i = 0; i < pts.length; i++){ const q = pts[(i + 1) % pts.length]; a += pts[i][0] * q[1] - q[0] * pts[i][1]; } return Math.abs(a); };
+      return subs.reduce((b, sub) => area(sub) > area(b) ? sub : b, subs[0]);
+    }
+    function silhouetteClip(garmentId, outer){
+      const key = garmentId + (outer ? ':outer' : '');
+      if(silIds.has(key)) return silIds.get(key);
       let cid = null;
       const base = scene.layers.find(l => l.type === 'asset' && l.id === garmentId && l.role === 'garment');
       const data = symbolData.get(garmentId);
@@ -403,13 +424,13 @@
       if(base && data && path && art){
         const vbox = data.viewBox.split(/\s+/).map(Number);
         const cp = el('clipPath', { id: 'clipsil-' + silIds.size, clipPathUnits: 'userSpaceOnUse' });
-        const copy = el('path', { d: path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null,
+        const copy = el('path', { d: outer ? outerSubpath(path.getAttribute('d')) : path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null,
           transform: `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}` });
         cp.appendChild(copy);
         defs.appendChild(cp);
         cid = cp.getAttribute('id');
       }
-      silIds.set(garmentId, cid);
+      silIds.set(key, cid);
       return cid;
     }
     const drawn = [];
@@ -496,7 +517,7 @@
       if(layer.clipSil){
         // Clipped to the garment sheet's own silhouette (its `clipSil` path, in the sheet's art frame): a
         // copy of the path carried into the scene by the same transform the sheet's symbol is drawn with.
-        const sil = silhouetteClip(layer.clipSil);
+        const sil = silhouetteClip(layer.clipSil, !!layer.clipOuter);
         if(sil){
           const g = el('g', { 'clip-path': `url(#${sil})` });
           g.appendChild(node);
