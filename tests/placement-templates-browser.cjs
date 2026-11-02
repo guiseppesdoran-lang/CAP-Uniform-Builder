@@ -7,7 +7,7 @@
 // Opens the real page, sets up a men's Class A for a Capt with seven ribbons, the Pilot and the Emergency Services badges, clicks the
 // Templates control beside Download PNG, and checks the window lists the sides that carry pins (left and right chest, both lapels), each
 // with Paper (PDF) as the main button, 3D jig (STL), and the SVG as an "also as SVG" link; then clicks the left chest's three buttons and reads the files Chrome saves:
-//   - the SVG is one US Letter page at 1:1 (width 8.5in, height 11in) with the print note and the pin rule,
+//   - the SVG is one US Letter page at 1:1 (width 8.5in, height 11in), a stencil with the print line, the cut line and the pin rule,
 //   - the PDF is a one-page PDF,
 //   - the STL is binary, closed (every edge used twice) and has one 1.5 mm hole per pin the page's plan lists;
 // then switches to the ABU and checks its sides are paper-only sewing guides. Until index.html loads js/placement-stl.js and
@@ -120,7 +120,7 @@ async function launch(){
     if(svgFile){
       const svg = fs.readFileSync(svgFile, 'utf8');
       expect(/<svg [^>]*width="8\.5in" height="11in"/.test(svg), 'the SVG is not a 1:1 US Letter page');
-      expect(/PRINT AT 100% \(ACTUAL SIZE\), NO SCALING/.test(svg) && /Pin holes estimated from item width/.test(svg), 'the SVG lacks the print note or the pin rule');
+      expect(/Print at 100% \(actual size\), no scaling/.test(svg) && /Pin ticks are estimated from each item's width/.test(svg) && /Cut out each solid outline, starting at its scissor mark/.test(svg), 'the SVG lacks the print line, the pin rule or the cut line');
       if(OUT) fs.copyFileSync(svgFile, path.join(OUT, path.basename(svgFile)));
     }
     if(pdfFile){ const pdf = fs.readFileSync(pdfFile, 'latin1'); expect(pdf.startsWith('%PDF-1.4') && /\/Count 1 /.test(pdf) && /\/MediaBox \[0 0 612 792\]/.test(pdf), 'the PDF is not one US Letter page'); }

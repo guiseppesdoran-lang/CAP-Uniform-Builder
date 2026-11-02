@@ -5,9 +5,10 @@
 //
 // From the scene the engine composed for the current build (every piece's box in scene inches, its rotation, role and
 // key) and the garment sheet's landmarks (images/*.spec.json), this makes, for each garment side that carries items:
-//   - a 1:1 paper template (SVG, and a PDF written here with no library): every item's outline, centre, name and pin
-//     holes, the garment edges to line the paper up on, a 1 in / 25 mm scale bar; tiled over US Letter or A4 pages with
-//     crop marks when the side does not fit one page;
+//   - a 1:1 paper stencil (SVG, and a PDF written here with no library): every item's footprint as a cut line with a scissor
+//     mark, so the paper left is the space between the items and its holes show where each sits; the pins as ticks outside
+//     each hole, the garment edges to line the paper up on, a 1 in / 25 mm scale bar; one US Letter or A4 page when the side
+//     fits one, else split between the holes and tiled with crop marks;
 //   - a 3D-print jig (binary STL, js/placement-stl.js): a 2.5 mm plate with a 1.5 mm hole at every pin, a 0.6 mm pocket
 //     in each item's outline and 3 mm lips along the registration edges.
 // Pin spacing is not in the catalog: pins are estimated from each item's width (PIN_RULE).
@@ -29,7 +30,7 @@
   const OVERHANG = 0.3;          // plate/paper beyond a registration line it was extended to, in
   const CLEARANCE_MM = 0.25;     // pocket clearance around an item, each side
   const BUTTON_R_EST = 0.25;     // button radius when the sheet gives only the centre, in (estimate)
-  const PIN_RULE = 'Pin holes estimated from item width: 1/4 in in from each end on the item\'s horizontal centreline for items wider than 1 in, one centre pin for smaller pins; ribbon and miniature medal racks: the mounting bar\'s two pins, 1/4 in in from the ends of the rack\'s widest row.';
+  const PIN_RULE = 'Pin ticks are estimated from each item\'s width: 1/4 in in from each end on its centreline for items wider than 1 in, the centre for smaller ones; a ribbon or miniature medal rack: the mounting bar\'s two pins, 1/4 in in from the ends of its widest row. Check them against your own items.';
   const JIG_RULE = 'Plate 2.5 mm thick, 1.5 mm pin holes, 0.6 mm item pockets (0.25 mm clearance), 3 mm x 2 mm lips on the registration edges; lip, pocket depth and clearance are estimates for a typical garment and printer.';
   const PAPERS = { letter: { w: 8.5, h: 11, label: 'US Letter' }, a4: { w: 210 / MM, h: 297 / MM, label: 'A4' } };
   const FIELD_UNIFORMS = new Set(['abu', 'ocp', 'corporate_field', 'flight_suit', 'corporate_flight_suit', 'polo']);
@@ -131,7 +132,8 @@
     const count = parts.length;
     return {
       kind, attach: 'pin', name: kind === 'rack' ? `Ribbon rack, ${count} ribbon${count === 1 ? '' : 's'}` : `Miniature medals, ${count}`,
-      outline, parts: [...parts, ...(extra || [])].map(p => p.corners), c: { x: all.x + all.w / 2, y: all.y + all.h / 2 }, box: all, pins,
+      outline, cut: [{ x: all.x, y: all.y }, { x: all.x + all.w, y: all.y }, { x: all.x + all.w, y: all.y + all.h }, { x: all.x, y: all.y + all.h }],
+      parts: [...parts, ...(extra || [])].map(p => p.corners), c: { x: all.x + all.w / 2, y: all.y + all.h / 2 }, box: all, pins,
       legend: (kind === 'rack' ? 'Ribbon rack, top row first: ' : 'Miniature medals, top row first: ') + names.join('; '), meta
     };
   }
@@ -159,7 +161,7 @@
     const f = frameOf(layer);
     const attach = attachFor(kind, layer, meta);
     if(!attach) return null;
-    return Object.assign({ kind, name, attach, outline: f.corners, parts: [], c: f.c, box: boxOf(f.corners), pins: attach === 'pin' ? pinsFor(f) : [], frame: f }, extra || {});
+    return Object.assign({ kind, name, attach, outline: f.corners, cut: f.corners, parts: [], c: f.c, box: boxOf(f.corners), pins: attach === 'pin' ? pinsFor(f) : [], frame: f }, extra || {});
   }
 
   // The items of the scene, each with its zone (chest, collar, shoulder), wearer's side and garment.
@@ -402,6 +404,22 @@
   }
 
   // ---- paper: one display list, written as SVG and as PDF ---------------------------------------------
+  //
+  // The sheet is a stencil (Doran, 2026-11-02: "a cutout of the space between the badges or ribbons, not the actual ribbons and
+  // badge space themselves"). Every item's footprint (a ribbon rack as one rectangle) is a solid cut line with a scissor mark at
+  // its top-left corner; cut out, the paper that remains is the space between the items, and laid on the garment its holes show
+  // where each item sits. A pin's position is a red tick on the paper outside its hole, where the pin's line meets the cut (a mark
+  // inside the hole is cut away with it); the garment edges to line the sheet up on are blue dashed lines with a one-word label.
+  // The sheet is the items with a small margin and the registration lines beside them, on one page whenever it fits the printable
+  // area at true scale (the footer gives up space first: more columns, then a smaller size); a sheet taller or wider than a page is
+  // split between the holes where it can be and tiled with crop marks.
+
+  const SHEET_MARGIN = 0.25;   // paper beyond the holes, in: room for the labels, the scissor marks and the pin ticks
+  const PAGE_MARGIN = 0.3;     // the page's unprinted edge, in
+  const GAP = 0.1;             // between the header, the sheet and the footer, in
+  const TICK = 0.1;            // a pin tick's length outside the cut, in
+  const SHORT = { 'pocket-top': 'pocket', 'pocket-side': 'pocket', 'button-line': 'buttons', 'lapel-edge': 'lapel', seam: 'seam', 'collar-edge': 'collar', 'gorge-seam': 'gorge', 'seam-point': 'seam', 'epaulet-edge': 'board' };
+  const shortLabel = r => /placket/.test(r.label) ? 'placket' : (r.kind === 'seam-point' && /button/.test(r.label)) ? 'button' : (SHORT[r.kind] || String(r.label).split(' ')[0]);
 
   const COLORS = { ink: [0.08, 0.1, 0.14], grey: [0.55, 0.58, 0.62], ref: [0.05, 0.36, 0.75], pin: [0.75, 0.1, 0.1], light: [0.8, 0.82, 0.86], warn: [0.62, 0.09, 0.09] };
   // Helvetica advance widths (per 1000 em), for centring and wrapping; other characters use 556.
@@ -421,32 +439,105 @@
     return lines;
   }
 
-  function footerNotes(side, meta){
+  // The four lines under the title.
+  function howTo(side){
+    return [
+      'Print at 100% (actual size), no scaling: the bars at the top right must measure 1 in and 25 mm.',
+      'Cut out each solid outline, starting at its scissor mark; the paper left is the space between the items.',
+      'Lay the sheet on the garment and line up the blue dashed lines with the garment edges they name, then tape it down.',
+      side.attach === 'sew' ? 'Mark the garment through each hole with tailor\'s chalk, lift the sheet and sew each item inside its mark.'
+        : 'Mark the garment through each hole; the red ticks outside a hole are where its pins go. Lift the sheet and pin.'
+    ];
+  }
+  // The small block at the foot: the pin rule, the ribbon list, the estimates.
+  function footerNotes(side){
     const notes = [];
-    if(side.attach === 'sew') notes.push('SEWING GUIDE: the items on this side are sewn on (or embroidered), not pinned, so this sheet has no pin holes and there is no 3D jig for it. Use the outlines to mark the placement with tailor\'s chalk.');
-    else notes.push('How to use: lay the sheet on the garment and line up the blue dashed lines with the garment edges they name; tape it down. Set each item on its outline and push its pins through the pin-hole marks, or pierce the marks, lift the sheet and pin each item through the marks.');
-    if(side.items.some(i => i.attach === 'pin')) notes.push(PIN_RULE);
-    if(side.items.some(i => i.attach === 'pin') && side.items.some(i => i.attach === 'sew')) notes.push('Items marked (sewn) are sewn on: outline only.');
+    const pinned = side.items.some(i => i.attach === 'pin'), sewn = side.items.some(i => i.attach === 'sew');
+    if(side.attach === 'sew') notes.push('Sewing guide: the items on this side are sewn on (or embroidered), not pinned, so there are no pin ticks and no 3D jig for it.');
+    if(pinned) notes.push(PIN_RULE);
+    if(pinned && sewn) notes.push('Items marked (sewn) are sewn on: no pin ticks.');
     for(const it of side.items) if(it.legend) notes.push(it.legend + '.');
     if(side.refs.some(r => (r.circles || []).some(c => c.estimated))) notes.push('Button size not in the garment sheet: buttons drawn 1/2 in across (estimate).');
-    notes.push('Drawn as you face the garment (the wearer\'s left is on your right). Positions are the CAP Uniform Builder\'s placement of this build; the garment edges come from the builder\'s garment drawing, a typical size, so check the regulation distances on your own garment.');
-    void meta;
+    notes.push('Drawn as you face the garment (the wearer\'s left is on your right), from the builder\'s placement for this build on a typical garment: check the regulation distances on yours.');
     return notes;
   }
+  // The notes in ncol columns at one size: { cols: [[line]], colW, gutter, size, pitch, h }.
+  function footerLayout(notes, cw, ncol, size){
+    const pitch = size * 1.28, gutter = 0.2, colW = (cw - gutter * (ncol - 1)) / ncol;
+    const lines = notes.flatMap((n, i) => wrap(n, size, colW, false).concat(i < notes.length - 1 ? [''] : []));
+    const per = Math.ceil(lines.length / ncol);
+    const cols = []; for(let i = 0; i < ncol; i++) cols.push(lines.slice(i * per, (i + 1) * per));
+    return { cols, colW, gutter, size, pitch, h: per * pitch + 0.04 };
+  }
 
-  // Pages for one side: [{ w, h, ops }] in page inches (origin top-left).
+  // The paper's box in scene inches: the items with SHEET_MARGIN around them, the registration lines where they pass the items
+  // (a level line over the items' width, an upright or sloping one beside their height) and the cord marks, within the side's region.
+  function sheetOf(side){
+    const R = side.region;
+    const items = unionBox(side.items.map(i => i.box));
+    let b = grow(items, SHEET_MARGIN);
+    const over = { x: items.x - 0.5, y: R.y, w: items.w + 1, h: R.h }, beside = { x: R.x, y: items.y - 0.5, w: R.w, h: items.h + 1 };
+    for(const r of side.refs){
+      for(const s of r.segs){
+        // A line reaches the sheet across itself only: a level line widens the sheet downward or upward, not sideways.
+        const level = Math.abs(s[1].y - s[0].y) <= Math.abs(s[1].x - s[0].x) / 3;
+        const c = clipSeg(s[0], s[1], level ? over : beside);
+        if(!c) continue;
+        const sb = grow(boxOf(c), 0.15);
+        b = level ? unionBox([b, { x: b.x, y: sb.y, w: b.w, h: sb.h }]) : unionBox([b, { x: sb.x, y: b.y, w: sb.w, h: b.h }]);
+      }
+      for(const c of r.circles || []) b = unionBox([b, grow({ x: c.x - c.r, y: c.y - c.r, w: 2 * c.r, h: 2 * c.r }, 0.1)]);
+      for(const p of r.points || []) b = unionBox([b, grow({ x: p.x, y: p.y, w: 0, h: 0 }, 0.2)]);
+    }
+    for(const m of side.marks || []) b = unionBox([b, grow({ x: m.p.x, y: m.p.y, w: 0, h: 0 }, 0.4)]);
+    const x = Math.max(b.x, R.x), y = Math.max(b.y, R.y);
+    return { x: r4(x), y: r4(y), w: r4(Math.min(b.x + b.w, R.x + R.w) - x), h: r4(Math.min(b.y + b.h, R.y + R.h) - y) };
+  }
+
+  // Where to split a length into tiles no longer than max: between the items' spans where one lies within reach, else at max.
+  function cuts(start, len, max, spans){
+    const end = start + len, out = [start];
+    const merged = [];
+    for(const s of spans.slice().sort((a, b) => a[0] - b[0])){ const m = merged[merged.length - 1]; if(m && s[0] <= m[1] + 1e-9) m[1] = Math.max(m[1], s[1]); else merged.push([s[0], s[1]]); }
+    let at = start;
+    while(end - at > max + 1e-6){
+      const cand = at + max;
+      let cut = null;
+      for(let i = 1; i < merged.length; i++){
+        const lo = merged[i - 1][1], hi = merged[i][0];
+        const c = Math.min(cand, hi - 0.1);
+        if(c > lo + 0.1 && c > at + 0.5 && (cut === null || c > cut)) cut = c;
+      }
+      if(cut === null) cut = cand;
+      out.push(r4(cut)); at = cut;
+    }
+    out.push(end);
+    return out;
+  }
+
+  // Pages for one side: [{ w, h, ops, tile, origin, sheet }] in page inches (origin top-left).
   function paperPages(side, meta, paperKey){
     const paper = PAPERS[paperKey] || PAPERS.letter;
-    const M = 0.4, cw = paper.w - 2 * M;
+    const M = PAGE_MARGIN, cw = paper.w - 2 * M;
     const title = `Placement template: ${side.label}`;
     const sub = ascii([meta.uniformLabel || side.garment, meta.rank, meta.name].filter(Boolean).join(', ')) + (meta.date ? ` (${meta.date})` : '');
-    const notes = footerNotes(side, meta);
-    const noteLines = notes.flatMap(n => wrap(n, 0.085, cw, false).concat(['']));
-    const footerH = noteLines.length * 0.118 + 0.1;
-    const headerH = 0.95;
-    const drawW = cw, drawH = paper.h - 2 * M - headerH - footerH - 0.25;
-    const R = side.region;
-    const cols = Math.max(1, Math.ceil((R.w - 1e-6) / drawW)), rows = Math.max(1, Math.ceil((R.h - 1e-6) / drawH));
+    const steps = howTo(side);
+    const notes = footerNotes(side);
+    const sheet = sheetOf(side);
+    const headerH = n => 0.3 + n * 0.115 + 0.05;  // the title and subtitle (beside the scale bars), then n lines
+    // One page when the sheet fits above the footer: the notes in one column first, then more columns, then a smaller size.
+    let footer = null;
+    if(sheet.w <= cw + 1e-6) for(const [ncol, size] of [[1, 0.065], [2, 0.065], [3, 0.065], [3, 0.058], [4, 0.055]]){
+      const f = footerLayout(notes, cw, ncol, size);
+      if(sheet.h <= paper.h - 2 * M - headerH(steps.length) - f.h - 2 * GAP + 1e-6){ footer = f; break; }
+    }
+    const one = !!footer;
+    if(!footer) footer = footerLayout(notes, cw, 4, 0.055);
+    const hH = headerH(steps.length + (one ? 0 : 1));
+    const drawW = cw, drawH = paper.h - 2 * M - hH - footer.h - 2 * GAP;
+    const xs = cuts(sheet.x, sheet.w, drawW, side.items.map(i => [i.box.x, i.box.x + i.box.w]));
+    const ys = cuts(sheet.y, sheet.h, drawH, side.items.map(i => [i.box.y, i.box.y + i.box.h]));
+    const cols = xs.length - 1, rows = ys.length - 1;
     const pages = [];
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const edgeLetter = (r, c, dir) => { // the same letter on both pages of a shared edge
@@ -454,16 +545,16 @@
       return letters[n % 26] + (n >= 26 ? String(Math.floor(n / 26)) : '');
     };
     for(let r = 0; r < rows; r++) for(let c = 0; c < cols; c++){
-      const tile = { x: R.x + c * drawW, y: R.y + r * drawH, w: Math.min(drawW, R.w - c * drawW), h: Math.min(drawH, R.h - r * drawH) };
-      const ox = M + (cols === 1 ? (drawW - tile.w) / 2 : 0), oy = M + headerH + 0.15;
+      const tile = { x: xs[c], y: ys[r], w: r4(xs[c + 1] - xs[c]), h: r4(ys[r + 1] - ys[r]) };
+      const ox = M + (cols === 1 ? (drawW - tile.w) / 2 : 0), oy = M + hH + GAP;
       const ops = [];
       const T = (x, y, s, text, o) => ops.push(Object.assign({ t: 'text', x, y, s, text: ascii(text) }, o || {}));
-      T(M, M + 0.17, 0.17, title, { bold: true });
-      T(M, M + 0.38, 0.105, sub);
-      T(M, M + 0.58, 0.115, 'PRINT AT 100% (ACTUAL SIZE), NO SCALING. Check that the scale bar measures 1 in and 25 mm.', { bold: true, color: COLORS.warn });
+      T(M, M + 0.15, 0.15, title, { bold: true });
+      T(M, M + 0.28, 0.09, sub);
       const many = rows * cols > 1;
-      T(M, M + 0.78, 0.095, many ? `Page ${r * cols + c + 1} of ${rows * cols} (row ${r + 1}, column ${c + 1}). Trim along the crop marks where pages join and tape the pages edge to edge, matching the lettered marks.` : (side.attach === 'pin' ? 'Symbols: black outline = item, + = item centre, red ring = pin hole, blue dashed = garment edge to line up.' : 'Symbols: black outline = item, + = item centre, blue dashed = garment edge to line up.'));
-      // Scale bar: 1 in and 25 mm, top right.
+      const lines = many ? steps.concat([`Page ${r * cols + c + 1} of ${rows * cols} (row ${r + 1}, column ${c + 1}): trim at the crop marks where pages join and tape them edge to edge, matching the letters.`]) : steps;
+      lines.forEach((line, i) => T(M, M + 0.3 + 0.085 + i * 0.115, 0.085, line, i === 0 ? { bold: true, color: COLORS.warn } : {}));
+      // Scale bars: 1 in and 25 mm, top right.
       const sx = paper.w - M - 1.6, sy = M + 0.1;
       ops.push({ t: 'line', x1: sx, y1: sy + 0.12, x2: sx + 1, y2: sy + 0.12, w: 0.02, color: COLORS.ink });
       for(let i = 0; i <= 4; i++) ops.push({ t: 'line', x1: sx + i / 4, y1: sy + (i % 4 ? 0.06 : 0.02), x2: sx + i / 4, y2: sy + 0.12, w: 0.01, color: COLORS.ink });
@@ -472,11 +563,11 @@
       ops.push({ t: 'line', x1: sx, y1: my, x2: sx + mmIn, y2: my, w: 0.02, color: COLORS.ink });
       for(let i = 0; i <= 5; i++) ops.push({ t: 'line', x1: sx + i * 5 / MM, y1: my - (i % 5 ? 0.06 : 0.1), x2: sx + i * 5 / MM, y2: my, w: 0.01, color: COLORS.ink });
       T(sx + mmIn + 0.08, my, 0.09, '25 mm');
-      // The drawing, clipped to the tile.
+      // The stencil, clipped to the tile.
       const g = { t: 'group', dx: ox - tile.x, dy: oy - tile.y, clip: tile, ops: [] };
-      drawSide(g.ops, side);
+      drawSide(g.ops, side, sheet);
       ops.push(g);
-      // Tile frame and crop marks.
+      // The sheet's edge (a trim line) and, when tiled, crop marks and letters.
       const fx = ox, fy = oy, fw = tile.w, fh = tile.h;
       ops.push({ t: 'poly', pts: [[fx, fy], [fx + fw, fy], [fx + fw, fy + fh], [fx, fy + fh]], closed: true, w: 0.006, color: COLORS.light, dash: [0.05, 0.05] });
       if(many){
@@ -490,25 +581,59 @@
         if(r > 0) mark(fx + fw / 2, fy, edgeLetter(r - 1, c, 'h'));
         if(r < rows - 1) mark(fx + fw / 2, fy + fh, edgeLetter(r, c, 'h'));
       }
-      // Footer notes.
-      let ny = paper.h - M - footerH + 0.1;
-      for(const line of noteLines){ if(line) T(M, ny, 0.085, line); ny += 0.118; }
-      pages.push({ w: paper.w, h: paper.h, ops, tile, origin: { x: ox, y: oy } });
+      // Footer notes in columns.
+      const fy0 = paper.h - M - footer.h + footer.size;
+      footer.cols.forEach((col, j) => { let ny = fy0; const x = M + j * (footer.colW + footer.gutter); for(const line of col){ if(line) T(x, ny, footer.size, line); ny += footer.pitch; } });
+      pages.push({ w: paper.w, h: paper.h, ops, tile, origin: { x: ox, y: oy }, sheet });
     }
     return pages;
   }
 
-  // The side's drawing in scene inches.
-  function drawSide(ops, side){
+  // The ticks outside a cut at the pins' positions: the foot of the perpendicular from each pin to each edge of the cut it meets.
+  function pinTicks(cut, pins){
+    const n = cut.length, cx = cut.reduce((a, p) => a + p.x, 0) / n, cy = cut.reduce((a, p) => a + p.y, 0) / n;
+    const ticks = [];
+    for(const p of pins) for(let i = 0; i < n; i++){
+      const a = cut[i], b = cut[(i + 1) % n], dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy;
+      if(l2 < 1e-12) continue;
+      const t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / l2;
+      if(t < 1e-6 || t > 1 - 1e-6) continue;
+      const f = { x: a.x + t * dx, y: a.y + t * dy }, l = Math.sqrt(l2);
+      let nx = -dy / l, ny = dx / l;
+      if(nx * (f.x - cx) + ny * (f.y - cy) < 0){ nx = -nx; ny = -ny; }
+      if(!ticks.some(q => Math.abs(q.x1 - f.x) < 1e-6 && Math.abs(q.y1 - f.y) < 1e-6)) ticks.push({ x1: f.x, y1: f.y, x2: f.x + nx * TICK, y2: f.y + ny * TICK });
+    }
+    return ticks;
+  }
+  // The corner of a cut its scissor mark sits on (the top-left one) and the unit direction of the edge the cut starts along.
+  function scissorsAt(cut){
+    let k = 0;
+    cut.forEach((p, i) => { if(p.y < cut[k].y - 1e-6 || (Math.abs(p.y - cut[k].y) <= 1e-6 && p.x < cut[k].x)) k = i; });
+    const at = cut[k], n = cut.length;
+    const dir = [cut[(k + 1) % n], cut[(k - 1 + n) % n]].map(q => { const dx = q.x - at.x, dy = q.y - at.y, l = Math.hypot(dx, dy) || 1; return { x: dx / l, y: dy / l }; }).sort((a, b) => Math.abs(b.x) - Math.abs(a.x))[0];
+    return { at, u: dir.x < 0 ? { x: -dir.x, y: -dir.y } : dir };
+  }
+  // A scissor mark centred on a corner, its handles on the paper and its blades along the cut.
+  function scissors(ops, at, u){
+    const P = (s, t) => [at.x + u.x * s - u.y * t, at.y + u.y * s + u.x * t];
+    const seg = (s1, t1, s2, t2) => { const a = P(s1, t1), b = P(s2, t2); ops.push({ t: 'line', x1: a[0], y1: a[1], x2: b[0], y2: b[1], w: 0.012, color: COLORS.ink, scissors: true }); };
+    seg(-0.1, -0.045, 0.1, 0.03); seg(-0.1, 0.045, 0.1, -0.03);
+    for(const t of [-0.065, 0.065]){ const c = P(-0.13, t); ops.push({ t: 'circle', cx: c[0], cy: c[1], r: 0.028, w: 0.012, color: COLORS.ink, scissors: true }); }
+  }
+
+  // The side's stencil in scene inches, on the sheet.
+  function drawSide(ops, side, sheet){
+    const S = sheet || side.region;
     for(const r of side.refs){
       for(const s of r.segs) ops.push({ t: 'line', x1: s[0].x, y1: s[0].y, x2: s[1].x, y2: s[1].y, w: 0.012, color: COLORS.ref, dash: [0.08, 0.05] });
       for(const c of r.circles || []) ops.push({ t: 'circle', cx: c.x, cy: c.y, r: c.r, w: 0.01, color: COLORS.ref, dash: [0.04, 0.03] });
       for(const p of r.points || []){ ops.push({ t: 'line', x1: p.x - 0.12, y1: p.y, x2: p.x + 0.12, y2: p.y, w: 0.012, color: COLORS.ref }); ops.push({ t: 'line', x1: p.x, y1: p.y - 0.12, x2: p.x, y2: p.y + 0.12, w: 0.012, color: COLORS.ref }); }
-      // The label beside the longest piece, on the side away from the items.
-      const longest = r.segs.slice().sort((a, b) => segLen(b) - segLen(a))[0];
+      // The one-word label beside the longest piece on the sheet, on the side away from the items.
+      const segs = r.segs.map(s => clipSeg(s[0], s[1], S)).filter(s => s && segLen(s) > 0.05);
+      const longest = segs.slice().sort((a, b) => segLen(b) - segLen(a))[0];
       const at = longest ? { x: (longest[0].x + longest[1].x) / 2, y: (longest[0].y + longest[1].y) / 2 } : (r.points || [])[0] || (r.circles || [])[0];
       if(at){
-        const R = side.region, size = 0.075, w = textWidth(r.label, size), c = side.centre;
+        const label = shortLabel(r), size = 0.075, w = textWidth(label, size), c = side.centre;
         let nx = 0, ny = -1;
         if(longest){ const l = segLen(longest) || 1; nx = -(longest[1].y - longest[0].y) / l; ny = (longest[1].x - longest[0].x) / l; }
         if(nx * (at.x - c.x) + ny * (at.y - c.y) < 0){ nx = -nx; ny = -ny; }
@@ -517,35 +642,30 @@
         let x = at.x + nx * 0.1, y = at.y + ny * 0.1;
         if(nx < -0.5) x -= w; else if(Math.abs(nx) <= 0.5) x -= w / 2;
         if(ny > 0.5) y += size * 0.8; else if(Math.abs(ny) <= 0.5) y += size * 0.35;
-        x = Math.max(R.x + 0.05, Math.min(R.x + R.w - w - 0.05, x)); y = Math.max(R.y + 0.12, Math.min(R.y + R.h - 0.15, y));
-        ops.push({ t: 'text', x, y, s: size, text: ascii(r.label), color: COLORS.ref });
+        x = Math.max(S.x + 0.05, Math.min(S.x + S.w - w - 0.05, x)); y = Math.max(S.y + 0.12, Math.min(S.y + S.h - 0.15, y));
+        ops.push({ t: 'text', x, y, s: size, text: ascii(label), color: COLORS.ref });
       }
     }
     for(const it of side.items){
-      for(const part of it.parts || []) ops.push({ t: 'poly', pts: part.map(p => [p.x, p.y]), closed: true, w: 0.006, color: COLORS.grey });
-      ops.push({ t: 'poly', pts: it.outline.map(p => [p.x, p.y]), closed: true, w: 0.014, color: COLORS.ink, dash: it.attach === 'sew' ? [0.06, 0.03] : null });
-      const c = it.c;
-      ops.push({ t: 'line', x1: c.x - 0.1, y1: c.y, x2: c.x + 0.1, y2: c.y, w: 0.008, color: COLORS.ink });
-      ops.push({ t: 'line', x1: c.x, y1: c.y - 0.1, x2: c.x, y2: c.y + 0.1, w: 0.008, color: COLORS.ink });
-      for(const p of it.pins){
-        ops.push({ t: 'circle', cx: p.x, cy: p.y, r: 0.06, w: 0.012, color: COLORS.pin });
-        ops.push({ t: 'circle', cx: p.x, cy: p.y, r: 0.018, fill: COLORS.pin });
-      }
+      const cut = it.cut || it.outline;
+      ops.push({ t: 'poly', pts: cut.map(p => [p.x, p.y]), closed: true, w: 0.014, color: COLORS.ink, cut: true });
+      const sc = scissorsAt(cut);
+      scissors(ops, sc.at, sc.u);
+      for(const k of pinTicks(cut, it.pins)) ops.push(Object.assign({ t: 'line', w: 0.014, color: COLORS.pin, tick: true }, k));
       const label = ascii(it.name + (it.attach === 'sew' ? ' (sewn)' : ''));
-      const size = 0.085, w = textWidth(label, size), R = side.region;
-      let y = it.box.y - 0.05;
-      if(y - size < R.y) y = it.box.y + it.box.h + size + 0.03;
-      const x = Math.max(R.x + 0.03, Math.min(R.x + R.w - w - 0.03, c.x - w / 2));
+      const size = 0.085, w = textWidth(label, size), c = it.c;
+      let y = it.box.y - 0.13;   // clear of the scissor mark's handles at the corner
+      if(y - size < S.y) y = it.box.y + it.box.h + size + 0.12;
+      const x = Math.max(S.x + 0.03, Math.min(S.x + S.w - w - 0.03, c.x - w / 2));
       ops.push({ t: 'text', x, y, s: size, text: label, color: COLORS.ink });
     }
     for(const m of side.marks || []){
       ops.push({ t: 'circle', cx: m.p.x, cy: m.p.y, r: 0.08, w: 0.012, color: COLORS.ink, dash: [0.03, 0.02] });
-      const R = side.region, w = textWidth(ascii(m.name), 0.075);
-      const x = m.p.x + 0.12 + w > R.x + R.w - 0.03 ? m.p.x - 0.12 - w : m.p.x + 0.12;
-      ops.push({ t: 'text', x: Math.max(R.x + 0.03, x), y: m.p.y + 0.03, s: 0.075, text: ascii(m.name), color: COLORS.ink });
+      const w = textWidth(ascii(m.name), 0.075);
+      const x = m.p.x + 0.12 + w > S.x + S.w - 0.03 ? m.p.x - 0.12 - w : m.p.x + 0.12;
+      ops.push({ t: 'text', x: Math.max(S.x + 0.03, x), y: m.p.y + 0.03, s: 0.075, text: ascii(m.name), color: COLORS.ink });
     }
-    const R = side.region;
-    ops.push({ t: 'text', x: R.x + 0.05, y: R.y + R.h - 0.06, s: 0.07, text: 'trim line (optional)', color: COLORS.grey });
+    ops.push({ t: 'text', x: S.x + 0.05, y: S.y + S.h - 0.06, s: 0.07, text: 'trim line (optional)', color: COLORS.grey });
   }
 
   const f4 = n => String(Math.round(n * 10000) / 10000);
@@ -796,7 +916,7 @@
     d.id = 'placementTemplates';
     d.setAttribute('aria-labelledby', 'placementTemplatesTitle');
     d.innerHTML = `<h2 id="placementTemplatesTitle">Placement templates</h2>
-<p>Full-size helpers for putting your items on the garment, from the uniform as drawn. Print the paper template at 100% (actual size), lay it on the garment lined up with the edges it names, and pin through the marks. The 3D jig is the same layout as a plate with a hole at every pin, a shallow pocket for each item and lips that seat on the garment's edges. Pin holes are estimated from each item's width; check them against your own items.</p>
+<p>Full-size helpers for putting your items on the garment, from the uniform as drawn. The paper template is a stencil: print it at 100% (actual size), cut out each item's outline, lay the sheet on the garment lined up with the edges it names, and mark through the holes; the ticks outside each hole are its pins. The 3D jig is the same layout as a plate with a hole at every pin, a shallow pocket for each item and lips that seat on the garment's edges. Pin positions are estimated from each item's width; check them against your own items.</p>
 <div class="ptPaper" role="radiogroup" aria-label="Paper size"><span>Paper</span><label><input type="radio" name="ptPaper" value="letter"> US Letter</label><label><input type="radio" name="ptPaper" value="a4"> A4</label></div>
 <ul id="placementTemplatesList" aria-live="polite"></ul>
 <div class="ptFoot"><button type="button" class="ghost" id="placementTemplatesClose">Close</button></div>`;
@@ -816,7 +936,7 @@
     const pins = side.items.reduce((a, i) => a + i.pins.length, 0);
     const what = side.items.map(i => i.name + (i.attach === 'sew' ? ' (sewn)' : '')).join(', ');
     if(side.attach === 'sew') return `${what}. Sewn on: paper sewing guide only, no 3D jig.`;
-    return `${what}. ${pins} pin hole${pins === 1 ? '' : 's'}.`;
+    return `${what}. ${pins} pin${pins === 1 ? '' : 's'} marked.`;
   }
   function fillList(d){
     const list = d.querySelector('#placementTemplatesList');
@@ -854,5 +974,5 @@
     document.addEventListener('capub:rendered', () => { const d = document.getElementById('placementTemplates'); if(d && d.open) open(); });
   }
 
-  return { plan, paperPages, paperSvg, paperPdf, jig, jigStl, jigInput, collectItems, sidesFrom, specIds, open, install, fileNames, humanize, PIN_RULE, JIG_RULE, PAPERS, MM };
+  return { plan, paperPages, paperSvg, paperPdf, sheetOf, jig, jigStl, jigInput, collectItems, sidesFrom, specIds, open, install, fileNames, humanize, PIN_RULE, JIG_RULE, PAPERS, MM };
 });
