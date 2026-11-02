@@ -2,29 +2,29 @@
  "asset_id": "garment-underlayer-turtleneck-female",
  "name": "White turtleneck sweater, women's corporate blazer V insert (registered to the blazer)",
  "size_in": {
-  "w": 19.3579,
+  "w": 21.53,
   "h": 36.2124
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  1935.79,
+  2153,
   3621.24
  ],
  "size_source": "estimated",
  "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names the garment but gives no figure or dimension: 3.6 in neck width and 3.2 in neck height are estimates.",
  "anchors": {
   "top_center": [
-   967.8967741935484,
+   1076.4999999999998,
    0
   ],
   "bottom_center": [
-   967.8967741935484,
+   1076.4999999999998,
    3621.2354838709684
   ],
   "center": [
-   967.8967741935484,
+   1076.4999999999998,
    1810.6177419354842
   ],
   "left_edge": [
@@ -32,15 +32,15 @@
    1810.6177419354842
   ],
   "right_edge": [
-   1935.7935483870967,
+   2152.9999999999995,
    1810.6177419354842
   ],
   "neck_top_center": [
-   967.9,
+   1076.5,
    15
   ],
   "neck_base_center": [
-   967.9,
+   1076.5,
    335
   ]
  },
