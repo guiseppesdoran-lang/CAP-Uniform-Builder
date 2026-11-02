@@ -784,6 +784,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         // Unit patches remain handled by the separate Unit Patch dropdown.
         return capubPatchHasOcpAsset(patchId);
       }
+      // The OCP's own listing of a patch (ocp-patch-variants.js, ocpVariant) is not shown on the other uniforms, which list the patch itself.
+      if(PATCH_META[patchId]?.ocpVariant) return false;
       return true;
     }
 
@@ -841,19 +843,59 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     getPatchAuthorizationReason = function capubGetPatchAuthorizationReasonOcpFiltered(patchId, uniformId = State.uniform, membership = State.membership){
       const uniformKey = capubFieldUniformKey(uniformId);
       if(uniformKey === 'ocp' && !capubPatchIsUnitPatchId(patchId) && !capubPatchHasOcpAsset(patchId)){
-        return 'The OCP patch list holds only general patches whose file name or path contains OCP. Unit patches use the separate Unit Patch selector.';
+        return 'On the OCP this patch is listed in its OCP sleeve form; the unit patch is chosen in the Unit patch list.';
       }
       return capubPreviousGetPatchAuthorizationReason(patchId, uniformId, membership);
     };
 
+    // The general patches the picker lists on the selected uniform: not the two the sheets draw (flag, AUX), not the unit patches (the
+    // Unit patch list has them), on the OCP its own listings only, elsewhere the patches themselves; a patch group of its own (the Hawk
+    // Mountain Ranger tabs) only where it is authorized, listed last under its heading.
     function capubVisiblePatchIdsForGallery(){
+      const grouped = id => !!PATCH_META[id]?.group;
       return (patchList || []).filter(id => {
         if(!PATCH_META[id]) return false;
         if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) return false;
         if(capubPatchIsUnitPatchId(id)) return false; // unit patches stay in the Unit Patch dropdown
+        if(grouped(id)) return isPatchAuthorizedForUniform(id);
         if(!capubGeneralPatchVisibleForCurrentUniform(id)) return false;
         return true;
+      }).sort((a, b) => grouped(a) - grouped(b));
+    }
+
+    // Picking one of a one-only group (a Ranger tab) drops the others; the tiles shown follow.
+    function capubKeepOneOfGroup(id){
+      if(PATCH_META[id]?.oneOnly && State.patchSelections[id]?.checked) capubKeepOneRangerTab(id);
+    }
+    function capubSyncGalleryChecks(host){
+      (host || document).querySelectorAll('.galleryTile[data-patch-id]').forEach(tile => {
+        const id = tile.dataset.patchId, box = tile.querySelector('.ptChk');
+        if(id && box && PATCH_META[id]) box.checked = !!State.patchSelections[id]?.checked && isPatchAuthorizedForUniform(id);
       });
+    }
+
+    // One tile: patchTileHtml (js/catalog.js) draws it, the tile carries its id as data-patch-id for the popup's wiring; nothing on it
+    // names an id, a file or a slot constant.
+    function capubPatchTile(id){
+      const meta = PATCH_META[id];
+      const sel = State.patchSelections[id] || (State.patchSelections[id] = { checked:false });
+      const authorized = isPatchAuthorizedForUniform(id);
+      const tile = document.createElement('div');
+      tile.className = `galleryTile${authorized ? '' : ' disabledBlock'}`;
+      tile.dataset.patchId = id;
+      tile.innerHTML = patchTileHtml(id);
+      const chk = tile.querySelector('.ptChk');
+      chk.checked = !!sel.checked && authorized;
+      chk.disabled = !authorized;
+      chk.onchange = () => {
+        sel.checked = authorized && chk.checked;
+        State.patchSelections[id] = sel;
+        capubKeepOneOfGroup(id);
+        rebuildPatchesFromGallery();
+        chk.checked = !!State.patchSelections[id]?.checked;
+        capubSyncGalleryChecks(tile.parentElement);
+      };
+      return tile;
     }
 
     buildPatchGallery = function capubBuildPatchGalleryOcpAware(){
@@ -869,47 +911,51 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(!visibleIds.length){
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
-        tile.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">No general patches available</div><div class="sub">On the OCP, only general patch files with OCP in the name or path are listed. Unit patches are selected in the Unit Patch list below.</div></div>`;
+        tile.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">No general patches available</div><div class="sub">Unit patches are selected in the Unit patch list above.</div></div>`;
         wrap.appendChild(tile);
         return;
       }
 
+      let heading = null;
       for(let idx=0; idx<showCount; idx++){
         const id = visibleIds[idx];
         const meta = PATCH_META[id];
-        const sel = State.patchSelections[id] || (State.patchSelections[id] = { checked:false });
-        const authorized = isPatchAuthorizedForUniform(id);
-        const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.innerHTML = `
-          ${meta.img ? `<img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">` : ''}
-          <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}</div>
-            <div class="sub">(${escapeHtml(id)})</div>
-            <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-            <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px</div>
-          </div>`;
-
-        const chk = tile.querySelector('.ptChk');
-        chk.checked = !!sel.checked && authorized;
-        chk.disabled = !authorized;
-        if(!authorized){
-          tile.classList.add('disabledBlock');
-          const sub = tile.querySelector('.sub:last-child');
-          const reason = getPatchAuthorizationReason(id);
-          if(sub) sub.innerHTML += ` • <b>${escapeHtml(reason || 'Not authorized on current uniform')}</b>`;
+        if(meta.group && meta.group !== heading){
+          heading = meta.group;
+          const head = document.createElement('div');
+          head.className = 'galleryTile patchGroupHeading';
+          head.style.gridColumn = '1 / -1';
+          head.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">${escapeHtml(meta.group)}</div><div class="sub">${escapeHtml(meta.note || '')}</div></div>`;
+          wrap.appendChild(head);
         }
-        chk.onchange = () => {
-          if(!authorized){ chk.checked = false; sel.checked = false; return; }
-          sel.checked = chk.checked;
-          State.patchSelections[id] = sel;
-          rebuildPatchesFromGallery();
-        };
-        wrap.appendChild(tile);
+        wrap.appendChild(capubPatchTile(id));
       }
     };
+
+    // The Choose… popup copies the sidebar's tiles as HTML (js/wiring.js openGalleryModal), so their handlers are lost: this one
+    // listener, on the popup, finds the tile's patch by its data-patch-id and does what the sidebar tile would. Capture phase, so the
+    // popup's older per-position wiring (which numbered the tiles by patchList order) never sees the change.
+    if(typeof modalHost !== 'undefined' && modalHost && !modalHost.dataset.patchTileWiring){
+      modalHost.dataset.patchTileWiring = '1';
+      modalHost.addEventListener('change', event => {
+        const tile = event.target.closest?.('.galleryTile[data-patch-id]');
+        const id = tile?.dataset.patchId;
+        if(!id || !PATCH_META[id]) return;
+        const checkbox = event.target.closest('.ptChk');
+        if(!checkbox) return;
+        event.stopImmediatePropagation();
+        State.patchSelections[id] = { ...(State.patchSelections[id] || {}), checked: !checkbox.disabled && checkbox.checked && isPatchAuthorizedForUniform(id) };
+        capubKeepOneOfGroup(id);
+        rebuildPatchesFromGallery();
+        checkbox.checked = !!State.patchSelections[id]?.checked;
+        capubSyncGalleryChecks(modalHost);
+      }, true);
+      const capubPreviousOpenGalleryModal = openGalleryModal;
+      openGalleryModal = function capubOpenGalleryModalPatchTiles(kind){
+        capubPreviousOpenGalleryModal(kind);
+        if(kind === 'patches') capubSyncGalleryChecks(modalHost);
+      };
+    }
 
     const capubPreviousClearUnauthorizedPatchesForCurrentUniform = clearUnauthorizedPatchesForCurrentUniform;
     clearUnauthorizedPatchesForCurrentUniform = function capubClearUnauthorizedPatchesUtilityAware(){
@@ -1152,7 +1198,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const ncsaPatches = capubDetectNCSAPatchesFromReport(normalized);
       if(ncsaPatches.length){
         result.patches = [...new Set([...(result.patches || []), ...ncsaPatches])];
-        result.notes.push(`NCSA/activity patch match(es): ${ncsaPatches.join(', ')}.`);
+        result.notes.push(`NCSA/activity patch match(es): ${ncsaPatches.map(id => PATCH_META[id]?.label || id.replace(/_/g, ' ')).join(', ')}.`);
       }
       return result;
     };

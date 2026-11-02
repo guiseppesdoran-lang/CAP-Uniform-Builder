@@ -1573,32 +1573,17 @@ function buildPatchGallery(){
 
     const sel = State.patchSelections[id];
 
+    // The tile's words are patchTileHtml's (js/catalog.js): the name, Add, and where the patch is worn; never an id or a file name.
     const tile = document.createElement('div');
     tile.className='galleryTile';
-
-    const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    tile.innerHTML=`
-      ${meta.img ? `<img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">` : ''}
-      <div style="flex:1;min-width:0;">
-        <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">(${escapeHtml(id)})</div>
-        <div class="miniRow">
-          <label><input type="checkbox" class="ptChk"> Add</label>
-        </div>
-        <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px</div>
-      </div>
-    `;
+    tile.dataset.patchId = id;
+    tile.innerHTML = patchTileHtml(id);
 
     const chk = tile.querySelector('.ptChk');
     const authorized = isPatchAuthorizedForUniform(id);
     chk.checked = !!sel.checked && authorized;
     chk.disabled = !authorized;
-    if(!authorized){
-      tile.classList.add('disabledBlock');
-      const sub = tile.querySelector('.sub:last-child');
-      const reason = getPatchAuthorizationReason(id);
-      if(sub) sub.innerHTML += ` • <b>${escapeHtml(reason || 'Not authorized on current uniform')}</b>`;
-    }
+    if(!authorized) tile.classList.add('disabledBlock');
 
     chk.onchange=()=>{
       if(!authorized){

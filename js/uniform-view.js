@@ -158,7 +158,7 @@
       if(out.some(p => p.id === resolved)) return;
       if(!meta.img){ patchNotes.push(`${meta.label || resolved} has no full patch artwork yet, so it is not shown`); return; }
       // `asset`: the patch's SVG, drawn at its spec's size. A patch still waiting for its vector hands its picture (`href`, the whole patch: square).
-      out.push({ id: resolved, title: meta.label || resolved, asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind, echelon: meta.echelon || null });
+      out.push({ id: resolved, title: meta.label || resolved.replace(/_/g, ' '), asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind, echelon: meta.echelon || null });
     };
     const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
     if(unit) add(unit, 'unit');
