@@ -630,7 +630,10 @@
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
  "dimensions": {
   "print_cell_in": 0.125,
-  "print_tile_in": 28,
+  "print_tile_in": [
+   17.5,
+   14.75
+  ],
   "coat_length_in": 29.96,
   "max_width_in": 24.6,
   "chest_pocket_in": [
@@ -660,7 +663,7 @@
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
   "lower pocket size",
-  "tiger-stripe print is seeded and generated (base-art/abu-print.js) from 1/8 in cells, the cell measured on the ABU raster against its 5 1/4 x 1 in CAP tape; the stripe structure (bars, rims, light streaks, tone shares and order) is a model fitted to statistics measured on a close-up photograph of the fabric, not a copy of any piece of it; palette from that photograph, its exposure matched to the ABU raster",
+  "tiger-stripe print: a tile TRACED from a region of the Vanguard ABU shirt photograph (reference only, not shipped; base-art/abu-trace.js) and snapped to 1/8 in cells, the cell measured on the ABU raster against its 5 1/4 x 1 in CAP tape; the photograph is 500 px wide, the garment scale (20.4 px per in) comes from the pocket flaps, and the photo is too soft to show its own cell lattice, so cells are snapped on the scale-derived lattice and thin streaks are approximate; the placket shadow is cut out and the tile edges are blended by a minimum-error cut; the tile is a staggered 17.5 x 14.75 in repeat; palette from the photograph (k-means), its exposure matched to the ABU raster",
   "T-shirt colours in the neck (Desert Tan, estimated; the regulation names the colour, not a value)",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
  ],
