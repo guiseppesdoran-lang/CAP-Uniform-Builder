@@ -2220,6 +2220,41 @@
   // line (nothing worn above the coat) twice as heavily as the seam.
   const overScore = o => o.seam + 2 * o.shoulder;
 
+  // LIVE13 E127 (Ethan, on the women's corporate blazer: "the mini medals go onto the sleeve, and the crest doesnt fit. female uniforms need different placements
+  // than male ones"). The women's sheet states where each thing goes, from CAPR 39-1 4.2.2 and 4.2.4 (the men's rules are 4.2.1 and 4.2.3, with a pocket this
+  // cut does not have), in the spec's `placement` object: the nameplate slot (top edge 1/2 in above the crest, 4.2.4.1.1.2), the miniature medal slot in the
+  // nametag's place for the semi-formal (4.2.2.4 with ICL 25-02, bottom 1/2 in above the crest), the crest (4.2.4.1.1.1) and the lapel pins. The engine takes
+  // the nameplate, the rack and the crest from those slots (ctx.rect('nameplate_slot'), ctx.rect('medal_slot'), crest_center), and this guard checks the
+  // slots themselves against the sheet's own lapel and armhole seam: a slot that comes within SLOT_CLEAR of either is told in a note (a sheet edit that
+  // moved a slot or a seam would otherwise put the medals back on the sleeve unseen). The sheet is gated to 1/4 in clear in the art tree; the guard holds the
+  // engine to 0.2 in. Sheets without a `placement` object (the men's) are not held to it. Returns [{ slot, lapel, seam }] (inches), for the tests.
+  const SLOT_CLEAR = 0.2;
+  function blazerSlotGuard(ctx, base){
+    const pl = base && base.raw && base.raw.placement;
+    if(!pl || !pl.nameplate_slot) return [];
+    const lapel = blazerLine(ctx, 'lapel_left'), seam = blazerLine(ctx, 'arm_seam_left');
+    if(!lapel || !seam) return [];
+    const crest = ctx.point('crest_center'), cs = pl.crest && pl.crest.size_in;
+    const slots = [['nameplate', ctx.rect('nameplate_slot')], ['miniature medal', ctx.rect('medal_slot')], ['crest', crest && cs ? { x: crest.x - cs[0] / 2, y: crest.y - cs[1] / 2, w: cs[0], h: cs[1] } : null]];
+    const segDist = (p, a, c) => { const dx = c.x - a.x, dy = c.y - a.y, t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1))); return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy); };
+    const lineDist = (r, line) => {
+      let m = Infinity;
+      const pts = []; for(let i = 0; i <= 8; i++){ pts.push({ x: r.x + r.w * i / 8, y: r.y }, { x: r.x + r.w * i / 8, y: r.y + r.h }, { x: r.x, y: r.y + r.h * i / 8 }, { x: r.x + r.w, y: r.y + r.h * i / 8 }); }
+      for(const p of pts) for(let i = 1; i < line.length; i++) m = Math.min(m, segDist(p, line[i - 1], line[i]));
+      for(let i = 1; i < line.length; i++) for(const q of [line[i - 1], line[i]]) if(q.x >= r.x && q.x <= r.x + r.w && q.y >= r.y && q.y <= r.y + r.h) m = 0;
+      return m;
+    };
+    const out = [];
+    for(const [slot, r] of slots){
+      if(!r) continue;
+      const rec = { slot, lapel: lineDist(r, lapel), seam: lineDist(r, seam) };
+      out.push(rec);
+      if(rec.lapel < SLOT_CLEAR) ctx.note(`The ${slot} place on this coat lies ${rec.lapel.toFixed(2)} in from the lapel edge: closer than the 0.2 in it is placed to keep (CAPR 39-1 4.2.4)`);
+      if(rec.seam < SLOT_CLEAR) ctx.note(`The ${slot} place on this coat lies ${rec.seam.toFixed(2)} in from the armhole seam: closer than the 0.2 in it is placed to keep, so it would sit on the sleeve (CAPR 39-1 4.2.4)`);
+    }
+    return out;
+  }
+
   async function composeBlazer(ctx, b){
     const semi = b.uniform === 'semi_formal';
     const g = b.grade;
@@ -2241,6 +2276,7 @@
       ctx.layers.push(Object.assign(core.registerAtOrigin(us, Z.under, 'underlayer'), { key: 'layer:' + under }));
     }
     await ctx.garment(V.garment, hide.length ? { hideGroups: [...new Set(hide)] } : null);
+    blazerSlotGuard(ctx, base);
     if(g.cadet) ctx.note('Cadets wear corporate uniforms only when 18 or older and not eligible for the USAF-style uniform (CAPR 39-1, 1.2.5.2)');
 
     if(semi && !female && !under) await ctx.place('tie-bow-black', { pieceAnchor: 'knot_center', at: V.bowTie, z: Z.garmentLayer, role: 'tie', key: 'tie:bow' });
