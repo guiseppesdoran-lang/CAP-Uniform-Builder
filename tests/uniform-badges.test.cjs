@@ -36,7 +36,7 @@ const TABLE = {
   aviator_blazer: { families: ['chaplain', 'service'], refs: ['4.2.3.1.1.1', '4.2.3.1.1.3', '4.2.4.1.1.3'], ids: [...fam('chaplain'), ...CREST_SERVICE], opts: { underlayer: 'turtleneck' } },
   abu: { families: LEFT_BREAST, fieldArt: true, refs: ['5.1.1.1.2.4', '5.1.1.1.2.5'], ids: field(LEFT_BREAST.flatMap(fam)) },
   corporate_field: { families: LEFT_BREAST, fieldArt: true, refs: ['5.2.1.1.2.6', '5.2.1.1.2.9'], ids: field(LEFT_BREAST.flatMap(fam)) },
-  ocp: { families: LEFT_BREAST, fieldArt: true, refs: ['7.1.1.3.1', '7.1.1.3.1.5', '7.1.1.3.1.7'], ids: field(LEFT_BREAST.flatMap(fam)) },
+  ocp: { families: LEFT_BREAST, fieldArt: true, refs: ['7.1.1.3.1', '7.1.1.3.1.5', '7.1.1.3.1.6'], ids: field(LEFT_BREAST.flatMap(fam)) },
   flight_suit: { families: LEFT_BREAST, refs: ['8.2.4.1'], ids: LEFT_BREAST.flatMap(fam) },
   corporate_flight_suit: { families: LEFT_BREAST, refs: ['8.3.4.1'], ids: LEFT_BREAST.flatMap(fam) },
   polo: { families: ['service', 'aviation', 'occupational', 'chaplain', 'specialty'], fieldArt: true, refs: ['5.3.2.1.1'],

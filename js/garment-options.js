@@ -13,9 +13,15 @@
   // The most badges each field uniform draws above the CAP tape (js/engine/profiles-field.js MAX_BADGES): the OCP four, the ABU and
   // CFU two (aviation and occupational badges only, 5.1.1.1.2.4, 5.2.1.1.2.6).
   const FIELD_CHEST_MAX = { ocp: 4, abu: 2, corporate_field: 2 };
+  // ICL 26-14 (7.1.1.2.1, 7.1.1.8): on the OCP a chaplain wears the chaplain badge on the 2 x 2 in chest square and on the cap front, in place of the grade, and
+  // it is not one of the four above the CAP tape. The ABU and CFU rules are unchanged.
+  function hasChaplainBadge(){
+    return typeof CAPUBBadgeCatalog !== 'undefined' && (State.badges || []).some(id => CAPUBBadgeCatalog.family(id) === 'chaplain');
+  }
   function chestBadgeCount(){
     const max = FIELD_CHEST_MAX[State.uniform];
-    return max ? Math.min((State.badges || []).length, max) : 0;
+    const own = State.uniform === 'ocp' && hasChaplainBadge() ? (State.badges || []).filter(id => CAPUBBadgeCatalog.family(id) !== 'chaplain') : (State.badges || []);
+    return max ? Math.min(own.length, max) : 0;
   }
 
   // The polo (Corporate Working Uniform, 5.3). The screen-printed shirt has no accoutrements (5.3.2.1.2): its name and badge options
@@ -99,7 +105,12 @@
     // 1/8 in of blue past the insignia, is the default; the hook-and-loop form is drawn as the 2 x 2 in square of the chest (LIVE13 E82).
     { key: 'capGrade', label: 'Cap grade', type: 'select',
       choices: [['sewn', 'Sewn, 1/8 in of blue showing (7.1.1.8)'], ['square', '2 x 2 in hook-and-loop square (7.1.1.8)']],
-      when: c => c.u === 'ocp' && !!c.g.officer && !['none', 'beret'].includes(c.o.headgear || 'auto') },
+      when: c => c.u === 'ocp' && !!c.g.officer && !c.chaplain && !['none', 'beret'].includes(c.o.headgear || 'auto') },
+    // The meme (Ethan: "i know it says that its 2 foot by 2 foot, but its wrong. its 2 inches. however just for the meme, we should add it"): ICL 26-14 7.1.1.2.1
+    // reads "2' x 2'". Off by default; on draws the chest square 24 in across with the badge scaled to it. Not a regulation placement.
+    { key: 'chaplainAsWritten', label: 'As written in ICL 26-14 (2 ft x 2 ft chaplain patch)', type: 'check', defaultValue: false,
+      note: () => 'For the joke only: the letter says 2 feet, the regulation means 2 inches.',
+      when: c => c.u === 'ocp' && !!c.chaplain },
     // The tie (men) or tie tab (women): worn with long sleeves, optional with short ones (data/uniform-rules.js tieRule, CAPR 39-1 4.1.11.1.1.3,
     // 4.1.12.4, 4.2.5.1.4, 4.2.6.3). The box starts at what the regulation requires for the sleeve length the member picked.
     { key: 'tie', label: c => c.female ? 'Tie tab' : 'Tie', type: 'check', defaultValue: c => tieOf(c).defaultOn,
@@ -154,7 +165,7 @@
   }
 
   function context(){
-    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount(), o: State.garment || {} };
+    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount(), chaplain: hasChaplainBadge(), o: State.garment || {} };
   }
 
   // Name fields that only some uniforms use: the first name on the flight suit tags (8.2.4.1), the
@@ -178,7 +189,7 @@
     const active = OPTIONS.filter(o => o.when(c));
     const g = State.garment || {};
     // The text in a text field is not part of the signature: typing must not rebuild the field being typed in.
-    const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
+    const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, c.chaplain, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
     host.textContent = '';

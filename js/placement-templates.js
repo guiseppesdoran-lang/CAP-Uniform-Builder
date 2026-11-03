@@ -180,7 +180,8 @@
       it.zone = zone; it.side = sideHint || sideOf(it.c, g); it.garment = g ? g.index : 0;
       items.push(it);
     };
-    const L = scene.layers || [];
+    // A layer flagged `meme` (the chaplain patch as ICL 26-14 is written, 2 ft square) is a joke, not a placement: no stencil or jig item.
+    const L = (scene.layers || []).filter(l => !l.meme);
     // Ribbon racks and miniature medals, one per garment side.
     const groupBySide = (ls, fn) => {
       const m = new Map();

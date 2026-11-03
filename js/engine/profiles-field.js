@@ -63,10 +63,17 @@
   }
 
   // Officers' grade on the front of the caps the sheet draws (7.1.1.8, 5.1.1.6, 6.2.9-6.2.11).
+  // ICL 26-14 (7.1.1.8, effective 30 November 2026): on the OCP patrol and tactical caps chaplains WILL (it was "may") wear the chaplain occupational badge
+  // sewn-on or Velcro and centred 1/2 in above the visor in place of rank insignia, so it is the only thing a chaplain's cap front carries: officer or not.
+  function ocpChaplain(ctx, b){
+    return b.uniform === 'ocp' ? H.badgeSet(ctx, b, 'field').chaplain[0] || null : null;
+  }
+
   async function capGrade(ctx, b){
     const g = b.grade;
-    if(!g.officer) return;
-    const id = g.cadet ? G.cadetOfficerInsignia(g, 'cloth-bordered-regular') : G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: true });
+    const chaplain = ocpChaplain(ctx, b);
+    if(!g.officer && !chaplain) return;
+    const id = chaplain ? chaplain.art : g.cadet ? G.cadetOfficerInsignia(g, 'cloth-bordered-regular') : G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: true });
     const zones = [['patrol_cap_front_insignia_zone', b.uniform === 'ocp' ? 'visor' : 'center'], ['baseball_cap_front_insignia_zone', 'visor'], ['boonie_hat_front_insignia_zone', 'center']];
     // Only the cap that is worn has a front to carry it.
     for(const [name, mode] of zones.filter(([n]) => ctx.headgear && ctx.headgear.zone === n)){
@@ -90,7 +97,7 @@
       // grade's rule ("Members' sewing rank on the cap will only have 1/8th inch of blue fabric showing"), so it is not measured on the square.
       // The default stays the sewn grade with its 1/8 in border (Ethan's standing ruling).
       let piece = id, square = false;
-      if(b.uniform === 'ocp' && b.opt.capGrade === 'square'){
+      if(b.uniform === 'ocp' && b.opt.capGrade === 'square' && !chaplain){
         const sq = ocpSquareId(g);
         if(sq && ctx.has(sq)){ piece = sq; square = true; }
         else ctx.note('No 2 x 2 in square artwork for this grade, so the cap shows the sewn grade');
@@ -110,15 +117,43 @@
       }
       // On the cap seated on the figure the grade lies over the hat (R6).
       const cg = await ctx.place(piece, Object.assign({ pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name }, square ? { scale: k, title: 'Grade on a 2 x 2 in hook-and-loop square' } : {}));
-      if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at, null, { caption: 'visor to grade' });
+      if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at, null, { caption: chaplain ? 'visor to chaplain badge' : 'visor to grade' });
       // OCP caps: 'only 1/8th inch of blue fabric showing past the widest and tallest part of the insignia' (7.1.1.8).
       if(b.uniform === 'ocp' && !square) await H.blueBorder(ctx, cg);
     }
   }
 
+  // Chaplains on the OCP (ICL 26-14, 7.1.1.2.1): "Chaplains of all grades will wear the chaplain occupational badge embroidered on 2' x 2' dark blue
+  // material on the front of the OCP in the center of the chest instead of above the CAP tape." The letter says feet; Ethan rules it is inches (a typo,
+  // 2 in x 2 in like the grade square beside it in the same paragraph). So the chest square carries the chaplain badge (light silver on dark blue, the
+  // field art with its 1/8 in blue margin all round, 7.1.1.3.1) in place of the grade insignia, and the badge is not in the stack above the CAP tape.
+  // opt.chaplainAsWritten (the meme, Ethan: "i know it says that its 2 foot by 2 foot, but its wrong. its 2 inches. however just for the meme, we
+  // should add it"): the letter as written, a 24 x 24 in dark blue square centred on the chest with the badge scaled by the same 12. It is flagged `meme`:
+  // no measurement, no obstacle, left out of the placement templates, and the scene says it is not the regulation.
+  const CHAPLAIN_SQUARE_IN = 2, CHAPLAIN_MEME_IN = 24, SQUARE_FILL = '#142347';
+  async function chaplainSquare(ctx, b, chaplain, at){
+    const meme = !!(b.opt && b.opt.chaplainAsWritten);
+    const k = meme ? CHAPLAIN_MEME_IN / CHAPLAIN_SQUARE_IN : 1;
+    if(meme){
+      const side = CHAPLAIN_MEME_IN;
+      ctx.layers.push({ type: 'rect', x: at.x - side / 2, y: at.y - side / 2, w: side, h: side, fill: SQUARE_FILL, rotate: 0, origin: { x: at.x, y: at.y }, z: Z.insignia - 0.1, role: 'grade', key: 'grade:chest-meme', title: '24 x 24 in square, as ICL 26-14 is written', meme: true });
+      ctx.note('As written in ICL 26-14, 7.1.1.2.1: a 2 ft x 2 ft chaplain patch. The regulation means 2 in x 2 in (a typo); this is for the joke only and is not what is worn.');
+    }
+    const layer = await ctx.place(chaplain.art, { pieceAnchor: 'center', at, scale: k, z: Z.insignia + 0.1, role: 'badge', key: 'badge:' + chaplain.id + ':chest', title: chaplain.title + ' on the 2 x 2 in chest square', className: 'badge' });
+    if(layer && meme) layer.meme = true;
+    if(layer && !meme) await H.blueBorder(ctx, layer);
+    return layer;
+  }
+
   async function ocpGrade(ctx, b){
     const g = b.grade;
     const at = ctx.point('rank_square_center');
+    const chaplain = ocpChaplain(ctx, b);
+    if(chaplain){
+      await chaplainSquare(ctx, b, chaplain, at);
+      await capGrade(ctx, b);
+      return;
+    }
     const nco = g.category === 'senior-nco' ? `rank-senior-${g.key}-ocp-square` : null;
     if(nco && ctx.has(nco)){
       await ctx.place(nco, { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:chest' });
@@ -319,10 +354,12 @@
     const form = 'field';
     const set = H.badgeSet(ctx, b, form);
     // ABU and CFU: aviation and occupational badges only (5.1.1.1.2.4, 5.2.1.1.2.6).
+    // ICL 26-14 7.1.1.2.1: the OCP's chaplain badge is on the chest square, not above the CAP tape, so it is not among the four (7.1.1.3.1); the old
+    // 7.1.1.3.1.6 that put it highest in the stack is deleted. The ABU and CFU rules are unchanged.
     const ordered = b.uniform === 'ocp'
-      ? [...set.chaplain, ...set.aviation, ...set.occupational, ...set.specialty, ...set.service, ...set.nationalStaff]
+      ? [...set.aviation, ...set.occupational, ...set.specialty, ...set.service, ...set.nationalStaff]
       : [...set.chaplain, ...set.aviation, ...set.occupational];
-    const skipped = set.all.length - ordered.length;
+    const skipped = set.all.length - ordered.length - (b.uniform === 'ocp' ? set.chaplain.length : 0);
     if(skipped > 0) ctx.note('Only aviation and occupational badges are worn above the CAP tape on this uniform; the others are not shown');
     const max = MAX_BADGES[b.uniform];
     const list = ordered.slice(0, max);
@@ -428,7 +465,7 @@
 
   // Command insignia: current commanders 1/2 in above the name tape; graduated commanders on the
   // OCP left sleeve tab, the ABU flap 1/2 in below the tape, or the CFU right pocket flap
-  // (7.1.1.3.1.7, 5.1.1.1.2.5, 5.2.1.1.2.9). It never counts toward the badge limit.
+  // (7.1.1.3.1.6, 5.1.1.1.2.5, 5.2.1.1.2.9). It never counts toward the badge limit. ICL 26-14 renumbered the OCP's paragraph: the old 7.1.1.3.1.6 (chaplain precedence) is deleted and the commander's insignia moves up from .7.
   async function fieldCommand(ctx, b){
     const pin = H.commandPin(ctx, b, 'field');
     if(!pin) return;
@@ -449,7 +486,7 @@
   }
 
   // Graduated commanders: the 1 in x 1 in insignia patch on the small Velcro piece on top of the
-  // left sleeve, centred above the shoulder patches (7.1.1.3.1.7). The sheet's piece is the IFF loop,
+  // left sleeve, centred above the shoulder patches (7.1.1.3.1.6, ICL 26-14). The sheet's piece is the IFF loop,
   // 1 x 3 1/4 in, whose upper 1 7/8 in is covered by the camouflage flap; the patch goes on the loop
   // that shows, centred in it, never across the flap's edge. Drawn in the flat sleeve view and in the
   // edge view of the sleeve.
@@ -467,7 +504,7 @@
       const e = f.map({ x: flat.x, y: flat.y, w: flat.w, h: flat.h });
       await ctx.place(pin.art, Object.assign({}, o, { pieceAnchor: 'center', at: e.center, scaleX: f.sx, rotate: f.tilt, key: o.key + ':edge', clip }));
     }
-    // Centred on the loop that shows ('centered horizontally and vertically', 7.1.1.3.1.7): one 'centered' line over the
+    // Centred on the loop that shows ('centered horizontally and vertically', 7.1.1.3.1.6): one 'centered' line over the
     // loop, its tick at the patch's centre, beside the sleeve view.
     if(flat){
       const cx = flat.x + flat.w / 2;

@@ -124,7 +124,7 @@ test('OCP: a patch stays inside the Velcro of its sleeve in the flat view (7.1.1
 
 // ---- D23: no grade piece is mounted above the AUX panel -------------------------------------------
 
-test('OCP: the grade is the chest square and the cap piece; nothing mounted on the sleeve tabs but the graduated commander\'s patch (7.1.1.2, 7.1.1.3.1.7, 7.1.1.8)', async () => {
+test('OCP: the grade is the chest square and the cap piece; nothing mounted on the sleeve tabs but the graduated commander\'s patch (7.1.1.2, 7.1.1.3.1.6, 7.1.1.8)', async () => {
   const tabs = [await rectOf('glint_tab_left'), await rectOf('glint_tab_right')];
   const inTab = l => tabs.some(t => l.x + l.w / 2 > t.x && l.x + l.w / 2 < t.x + t.w && l.y + l.h / 2 > t.y && l.y + l.h / 2 < t.y + t.h);
   for(const [m, r] of [['cadet', 'C/SSgt'], ['cadet', 'C/Maj'], ['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'Col'], ['senior', 'SMSgt'], ['senior', 'Brig Gen']]){
@@ -146,7 +146,7 @@ test('OCP: the grade is the chest square and the cap piece; nothing mounted on t
   }
 });
 
-test('OCP: the graduated commander\'s 1 in patch rests on the loop that shows, centred in it, never across the flap\'s edge (7.1.1.3.1.7)', async () => {
+test('OCP: the graduated commander\'s 1 in patch rests on the loop that shows, centred in it, never across the flap\'s edge (7.1.1.3.1.6)', async () => {
   const scene = await P.composeUniform(build('ocp', 'senior', 'Capt', { command: PIN }), store());
   const tab = await rectOf('glint_tab_left');
   const spec = await ST.load(OCP);

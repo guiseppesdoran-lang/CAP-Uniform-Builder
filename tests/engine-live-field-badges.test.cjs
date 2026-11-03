@@ -112,7 +112,7 @@ async function chest(uniform, membership, rank, ids, opt){
   const scene = await compose(build(uniform, membership, rank, ids, { opt: Object.assign({ headgear: 'auto' }, opt || {}) }));
   const garment = await store.load({ ocp: OCP, abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' }[uniform]);
   const T = core.anchor(garment, 'cap_tape_top_center');
-  const badges = scene.layers.filter(l => l.role === 'badge' && !/:(ON|UN):/.test(l.key || ''));
+  const badges = scene.layers.filter(l => l.role === 'badge' && !/:(ON|UN):/.test(l.key || '') && !/:chest$/.test(l.key || ''));
   const byId = {};
   for(const l of badges) byId[l.key.replace(/^badge:/, '')] = l;
   return { scene, T, badges, byId };
@@ -186,17 +186,24 @@ test('four badges, the other form: two side by side on the tape, the other two s
   near(cx(a), T.x, 'stack on the centre line'); near(cx(b), T.x, 'stack on the centre line');
 });
 
-test('precedence: chaplain first (highest), then aviation, then CAP occupational badges, whatever order the member lists them; one aviation badge (7.1.1.3.1.5.1, 7.1.1.3.1.6)', async () => {
+test('precedence on the OCP: aviation, then CAP occupational badges, whatever order the member lists them; one aviation badge; the chaplain badge is not in the stack (7.1.1.3.1.5.1; ICL 26-14, 7.1.1.2.1 deletes the old 7.1.1.3.1.6)', async () => {
   const { byId, scene } = await chest('ocp', 'senior', 'Lt Col', [GT, LEGAL, 'SeniorAirCrew1_B289BAE6E515C', PILOT, CHAPLAIN]);
   assert.ok(!byId[PILOT], 'only the first aviation badge is worn');
   assert.ok(scene.notes.some(n => /Only one CAP aviation badge/.test(n)));
-  const ys = [CHAPLAIN, 'SeniorAirCrew1_B289BAE6E515C', GT, LEGAL].map(id => byId[id]);
-  assert.ok(ys.every(Boolean), 'four badges drawn');
-  // Top left, top right, bottom left, bottom right: chaplain, aviation, then the occupational badges in the order listed.
-  assert.ok(ys[0].y < ys[2].y && ys[1].y < ys[3].y && ys[0].x < ys[1].x && ys[2].x < ys[3].x, 'chaplain top left, aviation top right');
-  const five = await chest('ocp', 'senior', 'Lt Col', [GT, LEGAL, EMT, MED, CHAPLAIN]);
+  assert.ok(!byId[CHAPLAIN], 'the chaplain badge is not above the CAP tape');
+  const ys = ['SeniorAirCrew1_B289BAE6E515C', GT, LEGAL].map(id => byId[id]);
+  assert.ok(ys.every(Boolean), 'three badges drawn above the tape');
+  // Three badges, a single column, highest on top: aviation, then the occupational badges in the order listed.
+  assert.ok(ys[0].y < ys[1].y && ys[1].y < ys[2].y, 'aviation on top, then the occupational badges as listed');
+  // The chaplain badge does not count toward the four: four others and the chaplain draw all four, with no note that badges were left off.
+  const four = await chest('ocp', 'senior', 'Lt Col', [GT, LEGAL, EMT, MED, CHAPLAIN]);
+  assert.equal(four.badges.length, 4);
+  assert.ok(four.byId[MED], 'four badges above the tape besides the chaplain badge');
+  assert.ok(!four.scene.notes.some(n => /At most 4 badges|others are not shown/.test(n)));
+  assert.ok(four.scene.layers.some(l => l.key === 'badge:' + CHAPLAIN + ':chest'), 'and the chaplain badge on the chest square');
+  const five = await chest('ocp', 'senior', 'Lt Col', [GT, LEGAL, EMT, MED, PILOT, CHAPLAIN]);
   assert.equal(five.badges.length, 4);
-  assert.ok(five.byId[CHAPLAIN] && !five.byId[MED], 'the lowest in precedence is left off');
+  assert.ok(five.byId[PILOT] && !five.byId[MED], 'the lowest in precedence is left off');
   assert.ok(five.scene.notes.some(n => /At most 4 badges/.test(n)));
 });
 

@@ -314,7 +314,7 @@ test('critique set: the utility builds draw the unit and HHQ patches (patchRefs)
   assert.ok((noArtBuild.harnessNotes || []).some(n => NOT_DRAWN.test(n)), 'the no-art build carries the note');
 });
 
-test('critique set: OCP graduated and current commander builds draw the left-loop insignia and the chest badge (D23, 7.1.1.4.2, 7.1.1.3.1.7)', async () => {
+test('critique set: OCP graduated and current commander builds draw the left-loop insignia and the chest badge (D23, 7.1.1.4.2, 7.1.1.3.1.6)', async () => {
   const grad = await composeNamed(critique, 'ocp-male-senior-LtCol-graduated-commander');
   const cur = await composeNamed(critique, 'ocp-male-senior-LtCol-current-commander');
   const gl = grad.layers.filter(l => /^badge:squadron_commander_badge/.test(l.key || ''));
