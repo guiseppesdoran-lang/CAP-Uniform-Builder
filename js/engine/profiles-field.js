@@ -116,7 +116,18 @@
         }
       }
       // On the cap seated on the figure the grade lies over the hat (R6).
-      const cg = await ctx.place(piece, Object.assign({ pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name }, square ? { scale: k, title: 'Grade on a 2 x 2 in hook-and-loop square' } : {}));
+      // A cadet officer's grade is turned a quarter on the OCP (7.1.1.2.2: "centered vertically with the long points on the cadet field grade insignia
+      // positioned horizontally, and each subsequent circle of cadet company grade insignia added vertically"; Doran, on the C/Col's three diamonds in a row:
+      // "Something doesn't look right"). The art is drawn as a row; turned, its diamonds stack one above the other, each long across, centred on the cap's
+      // middle line, its lower edge still the same distance from the visor: the turned piece is placed by its centre, half its turned height up.
+      const turn = b.uniform === 'ocp' && !chaplain && g.cadet && g.category === 'cadet-officer' ? 90 : 0;
+      let cg;
+      if(turn){
+        const ps = await ctx.spec(piece), sc = square ? k : 1;
+        cg = await ctx.place(piece, Object.assign({ pieceAnchor: 'center', at: { x: at.x, y: mode === 'visor' ? at.y - ps.w * sc / 2 : at.y }, rotate: turn, z: Z.hatDevice, role: 'grade', key: 'grade:' + name }, square ? { scale: k, title: 'Grade on a 2 x 2 in hook-and-loop square' } : {}));
+      }else{
+        cg = await ctx.place(piece, Object.assign({ pieceAnchor: mode === 'visor' ? 'bottom_center' : 'center', at, z: Z.hatDevice, role: 'grade', key: 'grade:' + name }, square ? { scale: k, title: 'Grade on a 2 x 2 in hook-and-loop square' } : {}));
+      }
       if(mode === 'visor') ctx.measure({ x: at.x, y: at.y + 0.5 }, at, null, { caption: chaplain ? 'visor to chaplain badge' : 'visor to grade' });
       // OCP caps: 'only 1/8th inch of blue fabric showing past the widest and tallest part of the insignia' (7.1.1.8).
       if(b.uniform === 'ocp' && !square) await H.blueBorder(ctx, cg);
@@ -163,7 +174,8 @@
       await H.placeFitted(ctx, id, at, 1.75, 1.75, { z: Z.insignia, role: 'grade', key: 'grade:chest' });
     }else{
       const id = ocpSquareId(g);
-      if(id) await ctx.place(id, { pieceAnchor: 'center', at, z: Z.insignia, role: 'grade', key: 'grade:chest' });
+      // Cadet officers: the row of the art turned a quarter, so the diamonds and discs stack vertically (7.1.1.2.2; see capGrade).
+      if(id) await ctx.place(id, { pieceAnchor: 'center', at, rotate: g.category === 'cadet-officer' ? 90 : 0, z: Z.insignia, role: 'grade', key: 'grade:chest' });
     }
     await capGrade(ctx, b);
   }

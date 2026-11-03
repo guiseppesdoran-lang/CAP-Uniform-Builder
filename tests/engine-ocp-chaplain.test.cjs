@@ -98,3 +98,34 @@ test('a build that is not a chaplain on the OCP is unchanged: the grade on the c
   const abu = await compose(build('abu', 'Lt Col', [CHAPLAIN, GT]));
   assert.ok(abu.layers.some(l => l.key === `badge:${CHAPLAIN}`) && !abu.layers.some(l => l.key === `badge:${CHAPLAIN}:chest`));
 });
+
+// ---- the cadet officer's grade on the OCP chest square and caps (7.1.1.2.2, 7.1.1.8) ------------------------------------
+// Doran, on the C/Col's three diamonds in a row: "Something doesn't look right". 7.1.1.2.2: cadet officer insignia is "centered vertically with the long
+// points on the cadet field grade insignia positioned horizontally, and each subsequent circle of cadet company grade insignia added vertically": the art is a
+// row, so it is turned a quarter and the diamonds and discs stack one above the other.
+test('the cadet officer\'s grade on the OCP chest square and caps is turned a quarter so its diamonds and discs stack vertically, centred (7.1.1.2.2)', async () => {
+  const sq = await squareRect();
+  for(const rank of ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']){
+    const mk = (opt) => Object.assign(build('ocp', rank, [], opt), { grade: G.gradeInfo('cadet', rank, {}) });
+    const scene = await compose(mk({ headgear: 'auto' }));
+    const chest = scene.layers.find(l => l.key === 'grade:chest');
+    assert.equal(chest.rotate, 90, `${rank}: the chest piece is turned a quarter`);
+    const b = core.layerBounds(chest), spec = await store.load(chest.id);
+    assert.ok(b.h >= b.w - 1e-6 || spec.w === spec.h, `${rank}: the row stands vertical (${b.w.toFixed(2)} x ${b.h.toFixed(2)} in)`);
+    near(b.x + b.w / 2, sq.x + sq.w / 2, 0.01, `${rank}: centred across the square`); near(b.y + b.h / 2, sq.y + sq.h / 2, 0.01, `${rank}: centred down the square`);
+    // The cap (sewn grade): turned, centred on the cap's middle line, its lower edge 1/2 in over the visor (the unturned piece's own place).
+    for(const [headgear, zone] of [['auto', 'patrol_cap_front_insignia_zone'], ['tactical', 'baseball_cap_front_insignia_zone']]){
+      const cap = await compose(mk({ headgear }));
+      const g = cap.layers.find(l => l.key === 'grade:' + zone);
+      assert.equal(g.rotate, 90, `${rank} ${headgear}: the cap piece is turned a quarter`);
+      const gb = core.layerBounds(g), z = await store.load('garment-ocp-coat-abu-cut').then(() => null);
+      assert.ok(gb.h > 0 && g.origin, `${rank} ${headgear}: placed`);
+      const half = cap.layers.find(l => l.type === 'measure' && l.label === '½ in' && Math.abs(l.to.y - (gb.y + gb.h)) < 0.01);
+      assert.ok(half, `${rank} ${headgear}: the turned piece's lower edge is the 1/2 in measure's end`);
+      near(gb.x + gb.w / 2, half.to.x, 0.01, `${rank} ${headgear}: centred on the cap's line`);
+    }
+  }
+  // The chaplain's badge and senior officers' grades are not turned.
+  const lt = await compose(build('ocp', 'Lt Col', []));
+  assert.equal(lt.layers.find(l => l.key === 'grade:chest').rotate, 0);
+});

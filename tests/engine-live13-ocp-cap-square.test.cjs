@@ -64,7 +64,9 @@ for(const [membership, rank] of [['cadet', 'C/Col'], ['senior', 'Maj']]){
       const sewn = await P.composeUniform(build(membership, rank, headgear), store);
       const sq = await P.composeUniform(build(membership, rank, headgear, 'square'), store);
       const key = 'grade:' + ZONE[headgear];
-      const s0 = sewn.layers.find(l => l.key === key), s1 = sq.layers.find(l => l.key === key);
+      // E124: a cadet officer's grade is turned a quarter (7.1.1.2.2), so its box is the turned one (layerBounds).
+      const r0 = sewn.layers.find(l => l.key === key), r1 = sq.layers.find(l => l.key === key);
+      const s0 = Object.assign({ id: r0.id }, core.layerBounds(r0)), s1 = Object.assign({ id: r1.id }, core.layerBounds(r1));
       // Sewn (default): the cloth-bordered piece with its 1/8 in border measured.
       assert.match(s0.id, /cloth-bordered/);
       assert.ok(sewn.layers.some(l => l.type === 'measure' && l.label === '⅛ in' && l.from.y >= s0.y - 1e-6 && l.from.y <= s0.y + s0.h + 1e-6), 'the 1/8 in border on the sewn grade');
@@ -72,7 +74,7 @@ for(const [membership, rank] of [['cadet', 'C/Col'], ['senior', 'Maj']]){
       // Square: the ocp-square device and the sheet's 2 x 2 in field, both 2 x 2 in at the cap's scale (1), bottom on the sewn grade's bottom
       // (1/2 in from the visor), centred on its centre line.
       assert.match(s1.id, /-ocp-square$/);
-      near(s1.w, 2, 1e-6, 'square width'); near(s1.h, 2, 1e-6, 'square height');
+      near(s1.w, 2, 1e-6, 'square width'); near(s1.h, 2, 1e-6, 'square height');   // the 2 x 2 box is the same turned or not
       near(s1.x + s1.w / 2, s0.x + s0.w / 2, 1e-6, 'centred where the sewn grade is');
       near(s1.y + s1.h, s0.y + s0.h, 1e-6, 'bottom where the sewn grade\'s bottom is');
       const field = sq.layers.find(l => l.key === 'grade-field:' + ZONE[headgear]);
