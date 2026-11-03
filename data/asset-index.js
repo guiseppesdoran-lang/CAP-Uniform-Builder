@@ -1700,7 +1700,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "0b7adf0a5c", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "c7906c642f", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "0b7adf0a5c"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "c7906c642f"; }
 })(typeof self !== 'undefined' ? self : this);
