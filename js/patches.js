@@ -895,6 +895,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         chk.checked = !!State.patchSelections[id]?.checked;
         capubSyncGalleryChecks(tile.parentElement);
       };
+      // The place picker (patchTileHtml draws one where the patch has more than one place on this uniform): the pick is kept per
+      // uniform (setPatchPlacement, js/catalog.js) and the drawing follows (js/uniform-view.js buildPatches reads getPatchSlot).
+      const place = tile.querySelector('.ptPlace');
+      if(place) place.onchange = () => { setPatchPlacement(id, place.value); rebuildPatchesFromGallery(); };
       return tile;
     }
 
@@ -941,6 +945,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const tile = event.target.closest?.('.galleryTile[data-patch-id]');
         const id = tile?.dataset.patchId;
         if(!id || !PATCH_META[id]) return;
+        const place = event.target.closest('.ptPlace');
+        if(place){
+          event.stopImmediatePropagation();
+          setPatchPlacement(id, place.value);
+          rebuildPatchesFromGallery();
+          return;
+        }
         const checkbox = event.target.closest('.ptChk');
         if(!checkbox) return;
         event.stopImmediatePropagation();

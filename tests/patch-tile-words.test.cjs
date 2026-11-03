@@ -39,7 +39,15 @@ test('no patch tile text carries an id, a file name, a slot constant or a pixel 
         if(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)})`)){
           const label = ev(`getPatchPlaceLabel(${JSON.stringify(id)})`);
           assert.ok(label, `an authorized patch has a place in words: ${where}`);
-          assert.ok(t.includes(`Worn: ${label}`), `the place is spelled out: ${where}`);
+          const places = ev(`getPatchPlaces(${JSON.stringify(id)}).map(p => p.label)`);
+          if(places.length > 1){
+            // More than one place: a picker whose options are the places in words, the drawn one selected.
+            const options = [...String(html).matchAll(/<option value="[A-Z_]+"( selected)?>([^<]+)<\/option>/g)].map(m => [m[2], !!m[1]]);
+            assert.deepEqual(options.map(o => o[0]), places, `the picker lists the places: ${where}`);
+            assert.deepEqual(options.filter(o => o[1]).map(o => o[0]), [label], `the drawn place is selected: ${where}`);
+          }else{
+            assert.ok(t.includes(`Worn: ${label}`), `the place is spelled out: ${where}`);
+          }
         }else{
           assert.match(t, /not authorized on|only\.|OCP sleeve form/i, `the reason is in words: ${where}`);
         }

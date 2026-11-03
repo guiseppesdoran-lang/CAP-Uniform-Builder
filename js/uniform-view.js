@@ -158,11 +158,24 @@
       if(out.some(p => p.id === resolved)) return;
       if(!meta.img){ patchNotes.push(`${meta.label || resolved} has no full patch artwork yet, so it is not shown`); return; }
       // `asset`: the patch's SVG, drawn at its spec's size. A patch still waiting for its vector hands its picture (`href`, the whole patch: square).
-      out.push({ id: resolved, title: meta.label || resolved.replace(/_/g, ' '), asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot: kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'), kind, echelon: meta.echelon || null });
+      // `slot`: the place the patch is worn on this uniform (js/catalog.js getPatchSlot: the member's pick among the regulation's places for
+      // it, else the primary one); the engine draws it there (profiles-field.js fieldPatches, profiles.js flightPatches).
+      const chosen = typeof getPatchSlot === 'function' ? getPatchSlot(resolved, State.uniform) : null;
+      const slot = chosen || (kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'));
+      out.push({ id: resolved, title: meta.label || resolved.replace(/_/g, ' '), asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot, kind, echelon: meta.echelon || null });
     };
     const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
     if(unit) add(unit, 'unit');
     (State.patches || []).forEach(id => add(id, 'general'));
+    // The ABU breast pocket takes one patch in all (5.1.1.1.2.3): the unit patch when it is worn, so another pocket patch is not drawn; the
+    // page says so, since the engine passes over it without a note.
+    if(State.uniform === 'abu'){
+      const pocket = out.filter(p => p.slot === 'CHEST_RIGHT' || p.slot === 'CHEST_LEFT');
+      if(pocket.length > 1){
+        const shown = pocket.find(p => p.kind === 'unit') || pocket[0];
+        for(const p of pocket) if(p !== shown) patchNotes.push(`${p.title} is not shown: the ABU breast pocket takes one patch, and the ${shown.title} is on it (CAPR 39-1, 5.1.1.1.2.3)`);
+      }
+    }
     return out;
   }
 

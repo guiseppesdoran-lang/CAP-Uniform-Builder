@@ -1388,24 +1388,29 @@ const PATCH_UNIFORM_WORDS = Object.freeze({
 
 // Where a patch is worn on each field uniform, in the regulation's words (CAPR 39-1). One row per place: the engine's slot
 // (js/engine/profiles-field.js fieldPatches, profiles.js flightPatches read `slot`), its name in words, and which patches it takes
-// (the unit patch, or by the patch's echelon: a wing, region or national patch against every other patch).
+// (the unit patch, or by the patch's echelon: a wing, region or national patch against every other patch). Attachment 4's table gives
+// the places patch by patch: wing, national rocker and overseas patches LS; region patches LS or RP; the organizational (unit) patch
+// RP; every other patch L/RP on the ABU and CFU, the NCSA patches RS or L/RP on the CFU; RS on the flight suits.
 //  ABU    5.1.1.1.2.2: the left sleeve takes one wing, region or national patch, 1/2 in below the shoulder seam; 5.1.1.1.2.3: one patch
-//         on the breast pocket (the unit patch, or one other), centred on the lower pocket; the right sleeve has no place.
-//  CFU    5.2.1.1.2.2: left sleeve, wing, region or national patch; 5.2.1.1.2.3: right sleeve, one special activity patch;
+//         in all on the breast pocket (the unit patch, a region patch, or one other, Attachment 4); the right sleeve has no place.
+//  CFU    5.2.1.1.2.2: left sleeve, wing, region or national patch; 5.2.1.1.2.3: right sleeve, one special activity (NCSA) patch;
 //         5.2.1.1.2.4: left breast pocket, one patch; 5.2.1.1.2.5: right breast pocket, one patch (the unit patch goes there).
 //  OCP    7.1.1.4.1.2: right sleeve, the unit patch centred under the flag; 7.1.1.4.2.1: left sleeve, the higher headquarters patch
 //         under the AUX identifier; 7.1.1.4.2.2: the patches worn in lieu of it, in the same place.
 //  FDU    8.2.4.5 (CFDU 8.3.4.5): one authorized patch on the right sleeve, inside the loop tape.
 // The member picks among the places a patch may take (State.patchPlacements); the first place is the regulation's primary one.
+// The National Cadet Special Activity patches (10.9.14): the ones the CFU's right sleeve takes (5.2.1.1.2.3, Attachment 4 "NCSA Patches").
+const NCSA_PATCH_IDS = new Set(['pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch','engineering_academy_patch','nfa_patch','cla_patch','nbb_patch','honor_guard_academy_patch']);
 const PATCH_PLACES = Object.freeze({
   abu: [
     { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.1.1.1.2.2', takes: p => !p.unit && !!p.echelon },
-    { slot:'CHEST_RIGHT', label:'Right breast pocket', ref:'5.1.1.1.2.3', takes: p => !p.echelon }
+    { slot:'CHEST_RIGHT', label:'Right breast pocket', ref:'5.1.1.1.2.3', takes: p => !p.echelon || p.echelon === 'region' },
+    { slot:'CHEST_LEFT', label:'Left breast pocket', ref:'5.1.1.1.2.3', takes: p => !p.unit && !p.echelon }
   ],
   corporate_field: [
     { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.2.1.1.2.2', takes: p => !p.unit && !!p.echelon },
-    { slot:'R_SHOULDER', label:'Right sleeve, ½ in below the shoulder seam', ref:'5.2.1.1.2.3', takes: p => !p.unit && !p.echelon },
-    { slot:'CHEST_RIGHT', label:'Right breast pocket', ref:'5.2.1.1.2.5', takes: p => !p.echelon },
+    { slot:'R_SHOULDER', label:'Right sleeve, ½ in below the shoulder seam', ref:'5.2.1.1.2.3', takes: p => p.ncsa },
+    { slot:'CHEST_RIGHT', label:'Right breast pocket', ref:'5.2.1.1.2.5', takes: p => !p.echelon || p.echelon === 'region' },
     { slot:'CHEST_LEFT', label:'Left breast pocket', ref:'5.2.1.1.2.4', takes: p => !p.unit && !p.echelon }
   ],
   ocp: [
@@ -1426,7 +1431,7 @@ function isUnitPatchId(patchId){
 function getPatchPlaces(patchId, uniformId = State.uniform){
   const meta = PATCH_META[patchId];
   if(!meta) return [];
-  const p = { unit: isUnitPatchId(patchId), echelon: meta.echelon || null };
+  const p = { unit: isUnitPatchId(patchId), echelon: meta.echelon || null, ncsa: NCSA_PATCH_IDS.has(patchId) };
   return (PATCH_PLACES[normalizeUniformKeyForPatches(uniformId)] || []).filter(place => place.takes(p));
 }
 
@@ -1467,8 +1472,17 @@ function patchTileHtml(patchId, { uniformId = State.uniform, membership = State.
   if(!authorized){
     where = `<div class="sub"><b>${escapeHtml(getPatchAuthorizationReason(patchId, uniformId, membership) || 'Not authorized on this uniform.')}</b></div>`;
   }else{
-    const label = getPatchPlaceLabel(patchId, uniformId);
-    where = `<div class="sub">Worn: <b>${escapeHtml(label || meta.note || 'where CAPR 39-1 puts it')}</b></div>`;
+    const places = getPatchPlaces(patchId, uniformId);
+    if(places.length > 1){
+      // More than one authorized place (the Corporate Field Uniform's right sleeve and two pockets): the member picks, the regulation's
+      // primary place first and chosen until the member changes it (Osprey: "a drop down for the authorised patch placements").
+      const slot = getPatchSlot(patchId, uniformId);
+      const options = places.map(pl => `<option value="${escapeHtml(pl.slot)}"${pl.slot === slot ? ' selected' : ''}>${escapeHtml(pl.label)}</option>`).join('');
+      where = `<div class="miniRow"><label>Worn <select class="ptPlace" aria-label="Where the ${escapeHtml(title)} is worn">${options}</select></label></div>`;
+    }else{
+      const label = getPatchPlaceLabel(patchId, uniformId);
+      where = `<div class="sub">Worn: <b>${escapeHtml(label || meta.note || 'where CAPR 39-1 puts it')}</b></div>`;
+    }
   }
   return `
     ${meta.img ? `<img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">` : ''}

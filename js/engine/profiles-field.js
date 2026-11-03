@@ -726,15 +726,22 @@
           ctx.note(`${stray.title} is not worn on the ABU sleeve: the left sleeve takes one wing, region or national patch only (CAPR 39-1, 5.1.1.1.2.2)`);
         }
       }
-      // Breast pocket patches: one in all on the ABU (5.1.1.1.2.3), one per pocket on the CFU.
+      // Breast pocket patches: one in all on the ABU (5.1.1.1.2.3), one per pocket on the CFU. The unit patch is the right pocket's
+      // (5.1.1.1.2.3, 5.2.1.1.2.5); a patch the page placed on a pocket (its slot, the member's pick among the regulation's places,
+      // js/catalog.js getPatchSlot) goes to that pocket, in a first pass, so a lone left-pocket patch is not pulled to the right; a
+      // second pass fills a pocket still empty with any pocket patch left.
       const pockets = b.uniform === 'abu' ? 1 : 2;
       let used = 0;
-      for(const side of ['right', 'left']){
-        if(used >= pockets) break;
+      const filled = { right: false, left: false };
+      for(const pass of ['picked', 'any']) for(const side of ['right', 'left']){
+        if(used >= pockets || filled[side]) continue;
         const want = side === 'right' ? 'CHEST_RIGHT' : 'CHEST_LEFT';
-        const p = (side === 'right' && unit) || take(x => x.slot === want) || take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
+        const p = pass === 'picked'
+          ? ((side === 'right' && unit) || take(x => x.slot === want))
+          : take(x => x.slot === 'CHEST_LEFT' || x.slot === 'CHEST_RIGHT');
         const z = pocketZone(ctx, side);
         if(p && z){
+          filled[side] = true;
           const layer = await fitPatch(ctx, p, z, want);
           used++;
           // 'centered on the lower portion of the breast pocket ... between left and right edges and bottom of flap and pocket'
