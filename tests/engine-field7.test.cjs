@@ -51,36 +51,47 @@ test('FIELD7-5: a member with the master Ground Team badge and no aviation badge
   }
 });
 
-test('FIELD7-5: with the pilot badge and the master Ground Team badge the tag shows the pilot badge unless the member chooses the Ground Team badge; the scene reports the conflict at position tag (8.2.4.1, 8.3.4.1)', async () => {
+test('FIELD7-5: with the pilot badge and the master Ground Team badge the tag shows both, the wings in the rating place and the Ground Team badge in the other (2 November 2026: up to two); no conflict, nothing to choose (8.2.4.1, 8.3.4.1)', async () => {
   for(const uniform of ['flight_suit', 'corporate_flight_suit']){
     for(const [m, r] of [['senior', 'Capt'], ['senior', 'SMSgt'], ['cadet', 'C/SSgt']]){
-      const badges = [PILOT, MASTER_GT];
-      const dflt = await compose(build(uniform, m, r, { badges }));
-      assert.deepEqual(onSuit(dflt, l => l.role === 'badge').map(l => l.key), ['badge:' + PILOT.id], `${uniform} ${r} default`);
-      const c = dflt.conflicts.find(x => x.position === 'tag');
-      assert.ok(c, `${uniform} ${r}: conflict reported`);
-      assert.deepEqual(c.candidates.map(x => x.id), [PILOT.id, MASTER_GT.id]);
-      assert.equal(c.limit, 1);
-      assert.deepEqual(c.shown, [PILOT.id]);
-      assert.equal(c.choice, null);
-      const picked = await compose(build(uniform, m, r, { badges, badgeChoices: { tag: MASTER_GT.id } }));
-      assert.deepEqual(onSuit(picked, l => l.role === 'badge').map(l => l.key), ['badge:' + MASTER_GT.id], `${uniform} ${r} chosen`);
-      const c2 = picked.conflicts.find(x => x.position === 'tag');
-      assert.deepEqual(c2.shown, [MASTER_GT.id]);
-      assert.equal(c2.choice, MASTER_GT.id);
-      assert.ok(picked.notes.some(n => /Master Ground Team Badge is shown; Pilot Badge is not shown/.test(n)), picked.notes.join(' | '));
+      const dflt = await compose(build(uniform, m, r, { badges: [PILOT, MASTER_GT] }));
+      assert.deepEqual(onSuit(dflt, l => l.role === 'badge').map(l => l.key).sort(), ['badge:' + MASTER_GT.id, 'badge:' + PILOT.id].sort(), `${uniform} ${r}`);
+      assert.ok(!dflt.conflicts.some(x => x.position === 'tag'), `${uniform} ${r}: a rating and an occupational badge fill the two places, nothing to choose`);
     }
   }
 });
 
-test('FIELD7-5: the command pin stays an alternative on the tag and can be chosen over the occupational badge or the wings', async () => {
+test('FIELD7-5: three badges the tag takes: the scene reports the conflict at position tag with a place for the rating and one for the other badge, and the member\'s pick (a badge id or { rating, other }) goes there', async () => {
+  const SENIOR_GT = { id: 'senior_ground_team_badge', title: 'Senior Ground Team Badge' };
+  for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+    const badges = [PILOT, MASTER_GT, SENIOR_GT];
+    const dflt = await compose(build(uniform, 'senior', 'SMSgt', { badges }));
+    assert.equal(onSuit(dflt, l => l.role === 'badge').length, 2, `${uniform} default: two`);
+    const c = dflt.conflicts.find(x => x.position === 'tag');
+    assert.ok(c, `${uniform}: conflict reported`);
+    assert.deepEqual(c.candidates.map(x => x.id), [PILOT.id, MASTER_GT.id, SENIOR_GT.id]);
+    assert.equal(c.limit, 2);
+    assert.deepEqual(c.slots.map(x => x.key), ['rating', 'other']);
+    assert.deepEqual(c.shown, [PILOT.id, MASTER_GT.id]);
+    for(const choice of [SENIOR_GT.id, { other: SENIOR_GT.id }]){
+      const picked = await compose(build(uniform, 'senior', 'SMSgt', { badges, badgeChoices: { tag: choice } }));
+      assert.deepEqual(onSuit(picked, l => l.role === 'badge').map(l => l.key).sort(), ['badge:' + PILOT.id, 'badge:' + SENIOR_GT.id].sort(), `${uniform} chosen ${JSON.stringify(choice)}`);
+      assert.ok(picked.notes.some(n => /Pilot Badge and Senior Ground Team Badge are shown; Master Ground Team Badge is not shown/.test(n)), picked.notes.join(' | '));
+    }
+    // A rating pick cannot take the occupational place.
+    const wrong = await compose(build(uniform, 'senior', 'SMSgt', { badges, badgeChoices: { tag: { other: PILOT.id } } }));
+    assert.deepEqual(onSuit(wrong, l => l.role === 'badge').map(l => l.key).sort(), ['badge:' + PILOT.id, 'badge:' + MASTER_GT.id].sort());
+  }
+});
+
+test('FIELD7-5: the command pin stays an alternative on the tag: it takes the occupational place by default and the member can choose the Ground Team badge over it', async () => {
   const dflt = await compose(build('flight_suit', 'senior', 'SMSgt', { badges: [MASTER_GT], command: GROUP_PIN }));
   assert.deepEqual(onSuit(dflt, l => l.role === 'badge').map(l => l.key), ['badge:' + GROUP_PIN.id], 'the pin takes the occupational badge\'s place by default');
   const picked = await compose(build('flight_suit', 'senior', 'SMSgt', { badges: [MASTER_GT, PILOT], command: GROUP_PIN, badgeChoices: { tag: GROUP_PIN.id } }));
-  assert.deepEqual(onSuit(picked, l => l.role === 'badge').map(l => l.key), ['badge:' + GROUP_PIN.id]);
+  assert.deepEqual(onSuit(picked, l => l.role === 'badge').map(l => l.key).sort(), ['badge:' + GROUP_PIN.id, 'badge:' + PILOT.id].sort());
   assert.deepEqual(picked.conflicts.find(x => x.position === 'tag').candidates.map(x => x.id), [PILOT.id, GROUP_PIN.id, MASTER_GT.id]);
   const gt = await compose(build('flight_suit', 'senior', 'SMSgt', { badges: [MASTER_GT, PILOT], command: GROUP_PIN, badgeChoices: { tag: MASTER_GT.id } }));
-  assert.deepEqual(onSuit(gt, l => l.role === 'badge').map(l => l.key), ['badge:' + MASTER_GT.id]);
+  assert.deepEqual(onSuit(gt, l => l.role === 'badge').map(l => l.key).sort(), ['badge:' + MASTER_GT.id, 'badge:' + PILOT.id].sort());
   const stale = await compose(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT], badgeChoices: { tag: MASTER_GT.id } }));
   assert.deepEqual(onSuit(stale, l => l.role === 'badge').map(l => l.key), ['badge:' + PILOT.id], 'a choice that is not held changes nothing');
 });

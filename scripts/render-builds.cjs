@@ -198,8 +198,8 @@ const SPECIALTY_BADGE = 'emergency_services_badge';
 // The OCP, ABU and Corporate Field Uniform wear only badges with genuine field artwork (data/badge-catalog.js, LIVE-FIELD B6): the Emergency
 // Services badge has none, so their matrix builds wear the Ground Team badge as the second badge.
 const FIELD_UNIFORMS = new Set(['ocp', 'abu', 'corporate_field']);
-// The flight suit name tag carries ONE badge (Ethan's ruling over 'up to two' in CAPR 39-1 8.2.4.1, 8.3.4.1, LIVE-FIELD B8): the aeronautical
-// rating if held, so the flight suits' matrix builds wear the aviation badge alone (a second would only be named in a note).
+// The flight suit name tag carries one badge by default and a second if the member adds it (Ethan, 2 November 2026, over his B8 cut to one; CAPR 39-1
+// 8.2.4.1, 8.3.4.1): the flight suits' matrix builds wear the aviation badge alone, the default.
 const OCCUPATIONAL_BADGE = 'ground_team_basic_badge';
 const FLIGHT_UNIFORMS = new Set(['flight_suit', 'corporate_flight_suit']);
 const CHAPLAIN_BADGE = 'christian_chaplin';

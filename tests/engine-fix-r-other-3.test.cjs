@@ -324,18 +324,17 @@ test('critique set: OCP graduated and current commander builds draw the left-loo
   assert.deepEqual(cl.map(l => l.key), ['badge:squadron_commander_badge:ON:0'], 'current: the chest badge only');
 });
 
-test('critique set: the flight builds cover the one-badge tag (wings, ground team badge and command pin listed), the command pin, C/Capt on both suits and both ES patch styles (D14, D17, 8.2.4.1, 8.3.4.1, 8.2.4.3)', async () => {
+test('critique set: the flight builds cover the two-badge tag (wings, ground team badge and command pin listed), the command pin, C/Capt on both suits and both ES patch styles (D14, D17, 8.2.4.1, 8.3.4.1, 8.2.4.3)', async () => {
   const names = new Set(critique.map(b => b.name));
   for(const n of ['flight_suit-male-cadet-CSSgt-wings-ground-team', 'flight_suit-female-cadet-CSSgt-wings-ground-team', 'flight_suit-female-senior-SMSgt-wings-pin', 'flight_suit-male-cadet-CCapt-es-style1', 'flight_suit-male-cadet-CCapt-es-style2', 'corporate_flight_suit-female-cadet-CCapt-es-style1', 'corporate_flight_suit-female-cadet-CCapt-es-style2']) assert.ok(names.has(n), n);
   const two = await composeNamed(critique, 'flight_suit-male-cadet-CSSgt-wings-ground-team');
-  assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 1, 'one badge on the cadet tag, whatever is listed (Ethan, LIVE-FIELD B8)');
-  assert.ok(!two.notes.some(n => /not worn on the flight suit name tag/.test(n)), 'no rejection note');
-  assert.ok(two.notes.some(n => /Ground Team Badge is not shown/.test(n)), 'the note names the badge left off');
+  assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2, 'wings and the ground team badge on the cadet tag: two picked, two drawn (Ethan, 2 November 2026)');
+  assert.ok(!two.notes.some(n => /not worn on the flight suit name tag|name tag carries/.test(n)), 'no rejection note, nothing left off');
   const pin = await composeNamed(critique, 'flight_suit-female-senior-SMSgt-wings-pin');
-  assert.equal(pin.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 1, 'the wings alone on the NCO tag; the command pin is left off');
+  assert.equal(pin.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2, 'the wings and the command pin on the NCO tag: two');
   const all3 = await composeNamed(critique, 'flight_suit-male-senior-Capt-wings-ground-team-pin');
-  assert.deepEqual(all3.layers.filter(l => l.role === 'badge' && l.figure !== 2).map(l => l.key), ['badge:CAPPilot1_FA9D33EA587D8'], 'wings, ground team badge and command pin: the wings');
-  assert.ok(all3.notes.some(n => /Pilot Badge is shown; .*not shown/.test(n)) || all3.notes.some(n => /one badge here/.test(n)), all3.notes.join(' | '));
+  assert.deepEqual(all3.layers.filter(l => l.role === 'badge' && l.figure !== 2).map(l => l.key).sort(), ['badge:CAPPilot1_FA9D33EA587D8', 'badge:group_commander_badge'].sort(), 'wings, ground team badge and command pin: the wings and the pin (two places)');
+  assert.ok(all3.notes.some(n => /carries up to two badges.*Ground Team Badge is not shown/.test(n)), all3.notes.join(' | '));
   for(const [n, style] of [['flight_suit-male-cadet-CCapt-es-style1', 'patch-es-style-1'], ['flight_suit-male-cadet-CCapt-es-style2', 'patch-es-style-2'], ['corporate_flight_suit-female-cadet-CCapt-es-style1', 'patch-es-style-1'], ['corporate_flight_suit-female-cadet-CCapt-es-style2', 'patch-es-style-2']]){
     const sc = await composeNamed(critique, n);
     assert.ok(sc.layers.some(l => l.id === style), `${n}: ES patch ${style} drawn`);
@@ -343,7 +342,7 @@ test('critique set: the flight builds cover the one-badge tag (wings, ground tea
   }
 });
 
-test('standard matrix: the flight suits wear the aviation badge, the one badge on the name tag (Ethan, LIVE-FIELD B8)', async () => {
+test('standard matrix: the flight suits wear the aviation badge on the name tag, one badge by default', async () => {
   const { builds } = HARNESS.matrix();
   for(const uniform of ['flight_suit', 'corporate_flight_suit']){
     const b = builds.find(x => x.name === `${uniform}-male-senior-SMSgt`);

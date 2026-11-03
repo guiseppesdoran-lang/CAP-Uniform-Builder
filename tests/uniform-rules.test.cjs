@@ -147,10 +147,10 @@ const REG={
     para:'5.1.1.1.2 (badges and patches together not more than four; military badges count toward it)'},
   ocp:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:4,shared:false,
     para:'ICL 26-14 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
-  flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:1,shared:false,
-    para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 ("up to two badges" on the nametag; Ethan\'s ruling B8, 58a5f4d3, reaffirmed 2 November 2026: ONE badge on the tag)'},
-  corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
-    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 ("up to two"; Ethan\'s ruling B8 reaffirmed 2 November 2026: ONE badge on the tag)'},
+  flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:2,shared:false,
+    para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 ("up to two badges" on the nametag; Ethan, 2 November 2026: "default of 1 badge for the fdu\'s with the option for 2")'},
+  corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
+    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 (one aeronautical rating and one occupational badge; Ethan, 2 November 2026: "default of 1 badge for the fdu\'s with the option for 2")'},
   polo:{style:'corporate',who:['senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
     para:'5.3 (Corporate Working Uniform), 1.2.5.2 (no adult cadets: it allows no grade insignia), 11.1.3 (no ribbons), 5.3.2.1.1 (one badge or duty title)'}
 };
@@ -245,13 +245,16 @@ test('the AFOEA stays off Corporate-style uniforms and the mess dress (11.2.3, I
   assert.equal(R.isAwardAllowedOnUniform('x', 'aviator', { isMilitary: true }), true, 'ICL 25-02');
 });
 
-// Ethan's ruling B8 (58a5f4d3), reaffirmed 2 November 2026: the flight suits' name tag draws one badge, so the page's limit is one. Doran's report: the Badges panel said "At
-// most 2", a member picked two and saw one.
-test('both flight suits: the badge limit is one, a second badge is over it, and the panel line says "At most 1 on this uniform"',()=>{
+// Ethan, 2 November 2026 (after Doran): "default of 1 badge for the fdu's with the option for 2". The flight suits' name tag draws what the member picked, one by default
+// and a second if he adds it, so the page's limit is two, the panel says one by default, and a third is over it.
+test('both flight suits: one badge is under the limit, two are at it, three are over it, and the panel line says "1 by default, up to 2 on this uniform"',()=>{
   for(const u of ['flight_suit','corporate_flight_suit']){
-    assert.deepEqual(rules.badgeLimit(u,{badges:1}),{cap:1,counted:1,shared:false,over:false},u);
-    assert.equal(rules.badgeLimit(u,{badges:2}).over,true,u+': two is over');
+    assert.deepEqual(rules.badgeLimit(u,{badges:1}),{cap:2,counted:1,shared:false,over:false},u);
+    assert.equal(rules.badgeLimit(u,{badges:2}).over,false,u+': two is allowed');
+    assert.equal(rules.badgeLimit(u,{badges:3}).over,true,u+': three is over');
+    assert.equal(rules.getUniformRule(u).badgeDefault,1,u+': one by default');
   }
   const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
-  assert.match(ui,/`At most \$\{cap\} on this uniform, each where CAPR 39-1 puts it\.`/,'the panel line is the cap');
+  assert.match(ui,/`\$\{dflt\} by default, up to \$\{cap\} on this uniform, each where CAPR 39-1 puts it\.`/,'the panel line says the default and the cap');
+  assert.equal(ui.includes('badgeDefault'),true);
 });

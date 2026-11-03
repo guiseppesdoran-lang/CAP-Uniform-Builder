@@ -211,6 +211,7 @@
     const ribbons=new Set((State.ribbons||[]).map(x=>x.id)).size;
     const badges=typeof countBadgesForLimit==='function' ? countBadgesForLimit() : (State.badges||[]).length;
     const cap=r ? (r.getUniformRule(u)||{}).badgeCap : null;
+    const dflt=r ? (r.getUniformRule(u)||{}).badgeDefault : null;
     const patches=(State.patches||[]).length;
     const set=(key,count,n,rule,usable)=>{
       const card=document.querySelector(`.itemCard[data-card="${key}"]`); if(!card) return;
@@ -229,7 +230,7 @@
     set('badges',
       planned ? `Up to ${planned.count}` : (cap ? `${badges} of ${cap}` : `${badges} selected`),
       badges,
-      (!planned && cap) ? `At most ${cap} on this uniform, each where CAPR 39-1 puts it.` : BADGE_RULE,
+      (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where CAPR 39-1 puts it.` : `At most ${cap} on this uniform, each where CAPR 39-1 puts it.`) : BADGE_RULE,
       !!auth.showBadges || !!planned);
     set('patches',`${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
   }

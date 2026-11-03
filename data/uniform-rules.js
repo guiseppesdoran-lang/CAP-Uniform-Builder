@@ -80,15 +80,16 @@
     ocp:{group:'field',style:'usaf',membership:['cadet','senior'],adultCadet:false,
       ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:4,
       refs:{ribbons:'7.1.1.1.2',badges:'7.1.1.3.1'}},
-    // The name tag draws ONE badge on both flight suits: Ethan's ruling B8 (58a5f4d3, 22 October 2026), reaffirmed 2 November 2026, over 8.2.4.1 and 8.3.4.1 ("may include up
-    // to two badges"). The page's cap says so, so a member does not pick two and see one (the engine's note still names what the tag leaves off).
+    // The name tag draws one badge by default and a second if the member adds it (8.2.4.1 'up to two badges', 8.3.4.1 one aeronautical rating and one
+    // occupational badge): Ethan, 2 November 2026, after Doran, over his ruling B8 (58a5f4d3, 22 October), which had cut the tag to one:
+    // "default of 1 badge for the fdu's with the option for 2". badgeDefault is the count the panel says a member starts with.
     flight_suit:{group:'field',style:'usaf',membership:['cadet','senior'],adultCadet:false,
-      ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:1,
+      ribbons:'none',mini:false,usafAwards:true,rackColumns:[],badgeCap:2,badgeDefault:1,
       refs:{who:'8.2.1',ribbons:'11.1.3',badges:'8.2.4.1'}},
     // 8.3.1 opens it to active members, but a cadet is a member only of the USAF-style uniforms (1.2.5.2),
     // so a cadet reaches it only as an adult cadet over the weight standard.
     corporate_flight_suit:{group:'field',style:'corporate',membership:['senior'],adultCadet:true,
-      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:1,
+      ribbons:'none',mini:false,usafAwards:false,rackColumns:[],badgeCap:2,badgeDefault:1,
       refs:{who:'8.3.1',ribbons:'11.1.3',badges:'8.3.4.1',adultCadet:'1.2.5.2'}},
     // The Corporate Working Uniform (polo, 5.3). Cadets never wear it: 1.2.5.2 lets an adult cadet wear all the
     // Corporate-style combinations "except the Corporate Working Uniform since it does not allow for wear of grade

@@ -91,8 +91,8 @@ mk('corporate_field-female-senior-Capt', 'corporate_field', 'female', 'senior', 
 // The wing patch is on the left sleeve of both (above); ARCHER, a special activity patch, is the CFU's right sleeve (5.2.1.1.2.3) and is noted, not drawn, on the ABU.
 mk('corporate_field-male-senior-Col', 'corporate_field', 'male', 'senior', 'Col', { patchRefs: [unitFull, wing, hhq], badgeIds: [A4[0], 'ground_team_basic_badge'] });
 
-// Flight suits (items 16-17): the name tag carries ONE badge whatever the member lists (Ethan, LIVE-FIELD B8: the aviation badge, else the command pin, else the
-// occupational badge; the note names what is left off; names with 'two-badges' list two badges), the command pin, both ES patch styles, the scarf,
+// Flight suits (items 16-17): the name tag carries the badges the member lists, one by default and two at most (Ethan, 2 November 2026, over his B8 cut to one: a
+// rating in one place, an occupational badge or the command pin in the other; the note names what is left off), the command pin, both ES patch styles, the scarf,
 // and the general officers.
 const GROUP_PIN = { id: 'group_commander_badge', title: 'Group Commander Badge', graduated: false };
 // The flight suit name tag takes wings and an occupational badge (8.2.4.1, 8.3.4.1, 10.4.5); the Emergency Services badge is a specialty
@@ -145,8 +145,8 @@ for(const g of ['male', 'female']){
 }
 
 // LIVE-FIELD: the OCP chest with one to four genuine field badges (B6, 7.1.1.3.1.1-4: the column of three and the two stacks of four are the defaults, the
-// regulation's other forms are opt.badgeLayout 'pair'), the ABU cadet officer with two (5.1.1.1.2.4), and the flight suit tag that carries one badge
-// where the member holds wings, a ground team badge and the command pin (B8).
+// regulation's other forms are opt.badgeLayout 'pair'), the ABU cadet officer with two (5.1.1.1.2.4), and the flight suit tag that carries two badges
+// where the member holds wings, a ground team badge and the command pin (the pin takes the occupational place; the ground team badge is named as left off).
 const GT = 'ground_team_basic_badge', EMT = 'emt_basic_badge', CHAP = 'christian_chaplin';
 mk('ocp-male-senior-Capt-1-badge', 'ocp', 'male', 'senior', 'Capt', { badgeIds: [A4[0]] });
 mk('ocp-male-senior-Capt-2-badges', 'ocp', 'male', 'senior', 'Capt', { badgeIds: [A4[0], GT] });
@@ -154,6 +154,12 @@ mk('ocp-male-senior-Capt-3-badges', 'ocp', 'male', 'senior', 'Capt', { badgeIds:
 mk('ocp-male-senior-Capt-4-badges', 'ocp', 'male', 'senior', 'Capt', { badgeIds: [CHAP, A4[0], GT, EMT] });
 mk('abu-male-cadet-CMaj-2-badges', 'abu', 'male', 'cadet', 'C/Maj', { badgeIds: [AIRCREW, GT] });
 mk('flight_suit-male-senior-Capt-wings-ground-team-pin', 'flight_suit', 'male', 'senior', 'Capt', { badgeIds: [A4[0], GT], command: GROUP_PIN });
+// The name tag's one badge by default and two on request (2 November 2026): the Observer badge alone, with the Master Ground Team badge, and the Pilot badge with the EMT badge, on both suits.
+for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+  mk(`${uniform}-male-senior-Capt-observer`, uniform, 'male', 'senior', 'Capt', { badgeIds: ['observer_badge'] });
+  mk(`${uniform}-male-senior-Capt-observer-master-ground-team`, uniform, 'male', 'senior', 'Capt', { badgeIds: ['observer_badge', 'master_ground_team_badge'] });
+  mk(`${uniform}-male-senior-Capt-pilot-emt`, uniform, 'male', 'senior', 'Capt', { badgeIds: [A4[0], EMT] });
+}
 
 // The polo, the Corporate Working Uniform (CAPR 39-1 5.3, Figure 5.5): the embroidered knit, tactical and screen-printed shirts, short and long, both cuts,
 // with and without the name and the badge, the duty title, the badge choice among several, a woman in the men's cut.

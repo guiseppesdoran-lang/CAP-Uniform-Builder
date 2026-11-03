@@ -258,16 +258,16 @@ test('flight suit name tag: wings plus a specialty badge says specialty badges a
   for(const [uniform, para] of [['flight_suit', '8.2.4.1'], ['corporate_flight_suit', '8.3.4.1']]){
     const nco = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge']));
     assert.ok(nco.notes.some(n => n === `Specialty track and service badges are not worn on the flight suit name tag (CAPR 39-1, ${para})`), `${uniform}: ${nco.notes.join(' | ')}`);
-    assert.ok(!nco.notes.some(n => /one badge here/.test(n)), `${uniform}: the wings are the only candidate, so nothing is left off for the one-badge rule`);
+    assert.ok(!nco.notes.some(n => /name tag carries/.test(n)), `${uniform}: the wings are the only candidate, so nothing is left off`);
     assert.ok(!nco.layers.some(l => l.key === 'badge:emergency_services_badge'));
-    // Wings, an occupational badge and a third eligible badge: the tag carries one badge (Ethan, LIVE-FIELD B8), and says which were left off.
+    // Wings, an occupational badge and a third eligible badge: the tag carries two (a rating and one occupational badge), and says which was left off.
     const full = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge', 'emt_basic_badge']));
-    assert.ok(full.notes.some(n => /one badge here.*is shown; .* not shown/.test(n)), `${uniform}: the other eligible badges are named as left off`);
+    assert.ok(full.notes.some(n => /carries up to two badges.*are shown; .* not shown/.test(n)), `${uniform}: the other eligible badge is named as left off`);
     assert.ok(!full.notes.some(n => /Specialty track/.test(n)));
-    // Wings and an occupational badge: the wings only, and the note names the occupational badge.
+    // Wings and an occupational badge: both on the tag, nothing left off.
     const two = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge']));
-    assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 1);
-    assert.ok(two.notes.some(n => /one badge here.*ground_team_basic_badge is not shown|one badge here.*Ground Team.*not shown/.test(n)), two.notes.join(' | '));
+    assert.equal(two.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2);
+    assert.ok(!two.notes.some(n => /name tag carries/.test(n)), two.notes.join(' | '));
   }
 });
 

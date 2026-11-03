@@ -627,14 +627,26 @@
   // (the first slot's pick), slots: [{ key, label, choice, badge, shown }], note }. finish() later sets `shown` from the badges actually drawn.
   function chooseBadges(ctx, position, label, list, slots, opts){
     const raw = ctx.build && ctx.build.badgeChoices && ctx.build.badgeChoices[position];
-    const picks = typeof raw === 'string' ? (slots[0] ? { [slots[0].key]: raw } : {}) : (raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {});
+    // A slot may carry `accepts(item)`: the kind of badge the place takes (the name tag's place for the aeronautical rating takes only a rating). A
+    // single saved id reads as the first slot that accepts it.
+    const takes = (sl, item) => !sl.accepts || sl.accepts(item);
+    let picks = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+    if(typeof raw === 'string'){
+      const held = list.find(x => x.id === raw);
+      const sl = slots.find(s => held && takes(s, held)) || slots[0];
+      picks = sl ? { [sl.key]: raw } : {};
+    }
     const used = new Set(), picked = {};
     for(const sl of slots){
       const item = typeof picks[sl.key] === 'string' ? list.find(x => x.id === picks[sl.key]) : null;
-      if(item && !used.has(item.id)){ picked[sl.key] = item; used.add(item.id); }
+      if(item && !used.has(item.id) && takes(sl, item)){ picked[sl.key] = item; used.add(item.id); }
     }
     const spare = list.filter(x => !used.has(x.id));
-    const ordered = slots.map(sl => picked[sl.key] || spare.shift() || null);
+    const ordered = slots.map(sl => {
+      if(picked[sl.key]) return picked[sl.key];
+      const i = spare.findIndex(x => takes(sl, x));
+      return i >= 0 ? spare.splice(i, 1)[0] : null;
+    });
     const first = picked[slots[0] && slots[0].key];
     const c = {
       position, label, limit: slots.length,
