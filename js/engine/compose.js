@@ -613,7 +613,11 @@
   function finish(ctx, title){
     settleConflicts(ctx);
     const bounds = shownBounds(ctx);
-    return { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], garment: ctx.base && ctx.base.id };
+    const scene = { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
+    // Every callout quotes the regulation paragraph it carries out (measure-layout.js refFor).
+    const ML = measureLayoutModule();
+    if(ML && ML.refFor) for(const l of ctx.layers) if(l.type === 'measure') l.ref = ML.refFor(scene, l);
+    return scene;
   }
 
   // ---- Badge conflicts and the member's choice ------------------------------------------------------------------------------------

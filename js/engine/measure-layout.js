@@ -26,7 +26,7 @@
   // Preview pixels.
   const PX = {
     // The pill: the length in `font`, the caption under it in `capFont`.
-    font: 11, capFont: 8.5, padX: 5, padY: 3, labelGap: 3,
+    font: 11, capFont: 7.5, padX: 5, padY: 3, labelGap: 3,
     // The dimension line's ends: the bar across an end drawn on the measured edge itself, the halfway tick's half length, the arrowhead (length, half width) and the tail an
     // outside arrowhead rides on; the witness lines start extGap past the piece's edge and overshoot the dimension line by extOver.
     bar: 10, tick: 3.2, arrow: 7, arrowHalf: 2.6, tail: 10, centre: 5, extGap: 1.5, extOver: 5,
@@ -48,7 +48,7 @@
   // the cloth whenever a clear side lies nearer than that and sits by its line on clear cloth otherwise), the leader's run over the cloth
   // (per pixel), a dimension line past the drawing's edge (per pixel; the frame holds it). Captions wrap at `wrap`
   // characters; capWidth scales the bold-face width table for the caption's lighter face.
-  const PILL = { search: [6, 10, 16, 24, 34, 46, 60, 76, 94, 114, 136, 160, 188, 220, 256, 296, 340, 390, 445, 505, 570, 640], angles: 24, alongCost: 240, outsideCost: 30, lineOutsideCost: 3, clothCost: 0.06, clothTouch: 60, leaderClothCost: 0.3, wrap: 22, capWidth: 0.92 };
+  const PILL = { search: [6, 10, 16, 24, 34, 46, 60, 76, 94, 114, 136, 160, 188, 220, 256, 296, 340, 390, 445, 505, 570, 640], angles: 24, alongCost: 240, outsideCost: 30, lineOutsideCost: 3, clothCost: 0.06, clothTouch: 60, leaderClothCost: 0.3, wrap: 26, refWrap: 26, capWidth: 0.92 };
 
   // Placed pieces the overlay keeps clear of. Garment sheets and their overlays are the cloth itself;
   // `clear` marks drawn-in pieces (a nametag on the sheet) that the profile asks to keep clear.
@@ -211,6 +211,101 @@
     };
     const a = at(m.from), b = at(m.to);
     return a && b && a !== b ? a + ' to ' + b : '';
+  }
+
+  // The regulation paragraph each distance carries out, quoted on its callout (Ethan, 2 November 2026: every callout quotes the inch value and the paragraph). One row per
+  // measure the engine draws: [uniform, caption (the pill's or the magnified callout's words), label, paragraph]; the first row that matches wins. A paragraph is one string, a
+  // pair [men's cut, women's cut], or an object keyed by uniform where the uniforms that share the row cite different paragraphs. The uniform tests in
+  // tests/engine-measurement-refs.test.cjs fail for a measure no row names.
+  const SEAT = '4.1.5.2.2.4.1', SEATW = '4.1.9.4.4.1';
+  const REFS = [
+    // Field uniforms
+    [/^abu$|^corporate_field$/, /tape to the embroidery/, /./, { abu: '5.1.1.1.2.4', corporate_field: '5.2.1.1.2.6' }],
+    [/^ocp$/, /tape to the embroidery/, /^½ in$/, '7.1.1.3.1.1-2'],
+    [/^ocp$/, /tape to the embroidery/, /^⅛ in$/, '7.1.1.3.1.3-4'],
+    [/^ocp$/, /blue around/, /./, '7.1.1.3.1, 7.1.1.8'],
+    [/^abu$/, /blue around/, /./, '5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.2.4'],
+    [/^corporate_field$/, /blue around/, /./, '5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.2.6'],
+    [/^(corporate_)?flight_suit$/, /blue around/, /./, { flight_suit: '8.3.5.1', corporate_flight_suit: '8.3.5.1' }],
+    [/^abu$/, /collar bottom to grade/, /./, '5.1.1.1.1.1'],
+    [/^abu$/, /collar front to grade/, /./, '5.1.1.1.1.3'],
+    [/^corporate_field$/, /collar bottom to grade/, /./, '5.2.1.1.1.1'],
+    [/^corporate_field$/, /collar front to grade/, /./, '5.2.1.1.1.4'],
+    [/^abu$|^corporate_field$/, /lower badge to upper badge|badge to badge/, /./, { abu: '5.1.1.1.2.4', corporate_field: '5.2.1.1.2.6' }],
+    [/^abu$|^corporate_field$/, /patch on the lower pocket/, /./, { abu: '5.1.1.1.2.3', corporate_field: '5.2.1.1.2.4-5' }],
+    [/^abu$|^corporate_field$/, /shoulder seam to patch/, /./, { abu: '5.1.1.1.2.2', corporate_field: '5.2.1.1.2.2-3' }],
+    [/^abu$|^corporate_field$/, /chevron's centre/, /./, { abu: '5.1.1.1.1.2', corporate_field: '5.2.1.1.1.3' }],
+    [/^abu$|^corporate_field$/, /(command pin|name tape) to (ES|command)|command pin to/, /./, { abu: '5.1.1.1.2.5', corporate_field: '5.2.1.1.2.9' }],
+    [/^corporate_field$/, /name tape to ES patch|command pin to ES patch/, /./, '5.2.1.1.2.8'],
+    [/^ocp$/, /badge to badge|between the badges|badge row|between the columns/, /./, '7.1.1.3.1.3-4'],
+    [/^ocp$/, /lower badge to upper badge/, /./, '7.1.1.3.1.2'],
+    [/^ocp$/, /grade square on the chest/, /./, '7.1.1.2.1, 7.1.1.2.2'],
+    [/^ocp$/, /command pin on the loop/, /./, '7.1.1.3.1.6'],
+    [/^ocp$/, /name tape to command pin|command pin to/, /./, '7.1.1.3.1.6'],
+    [/^ocp$/, /patch on the sleeve pocket/, /./, '7.1.1.4.1.2'],
+    [/^ocp$/, /visor to/, /./, '7.1.1.8, ICL 25-02 6.2.11.1'],
+    [/^abu$|^corporate_field$/, /visor to/, /./, 'ICL 25-02 6.2.11.1'],
+    // Flight duty uniforms
+    [/^(corporate_)?flight_suit$/, /ES patch on the pocket/, /./, { flight_suit: '8.2.4.3', corporate_flight_suit: '8.3.4.3' }],
+    [/^(corporate_)?flight_suit$/, /shoulder seam to flag/, /./, { flight_suit: '8.2.4.4', corporate_flight_suit: '8.3.4.4' }],
+    [/^(corporate_)?flight_suit$/, /shoulder seam to grade/, /./, { flight_suit: '8.2.3.2', corporate_flight_suit: '8.3.3.2' }],
+    [/^(corporate_)?flight_suit$|^blues_[ab]$|^aviator$|^ocp$|^abu$|^corporate_field$/, /cap front to the grade/, /./, '6.2.2.2.1-3'],
+    // Service dress (Class A) and the cadet semi-formal
+    [/^blues_a$|^semi_formal_usaf$/, /shoulder board on the seam/, /./, ['4.1.5.2.1.3', '4.1.9.3.4']],
+    [/^blues_a$|^semi_formal_usaf$|^blues_b$/, /under the board/, /./, { blues_a: '9.3, 9.3.4', semi_formal_usaf: '9.3, 9.3.4', blues_b: '9.3, 9.3.4' }],
+    [/^blues_a$|^semi_formal_usaf$/, /between the badges/, /./, ['4.1.5.2.2.4.2', '4.1.9.4.4.2']],
+    [/^blues_a$|^semi_formal_usaf$/, /chevron on the sleeve/, /./, ['4.1.5.2.1.2', '4.1.9.3.3']],
+    [/^blues_a$|^semi_formal_usaf$/, /insignia on the seam/, /./, ['4.1.5.2.2.1', '4.1.9.4.1']],
+    [/^blues_a$/, /nameplate between seam and lapel/, /./, ['4.1.5.2.2.2.1-2', '4.1.9.4.2.1-2']],
+    [/^blues_a$/, /nameplate bottom to ribbons bottom/, /./, ['4.1.5.2.2.2.1-2', '4.1.9.4.2.1-2']],
+    [/^semi_formal_usaf$/, /badge bottom to ribbons bottom/, /./, ['4.1.3.2.2', '4.1.4.2']],
+    [/^blues_a$|^semi_formal_usaf$/, /nameplate to badge|pocket to badge/, /./, ['4.1.5.2.2.4.2', '4.1.9.4.4.2']],
+    [/^blues_a$|^semi_formal_usaf$/, /ribbons resting on the welt pocket/, /./, ['4.1.5.2.2.3', '4.1.9.4.3']],
+    [/^blues_a$|^semi_formal_usaf$/, /ribbons to badge/, /^1½ in$/, ['4.1.5.2.2.4.2', '4.1.9.4.4.2']],
+    [/^blues_a$|^semi_formal_usaf$/, /ribbons to badge/, /./, [SEAT, SEATW]],
+    [/^blues_a$/, /sleeve end to braid/, /./, ['4.1.5.2', '4.1.9.3']],
+    // Service dress (Class B)
+    [/^blues_b$/, /badge on the lower pocket/, /./, '4.1.11.1.1.2.3.2'],
+    [/^blues_b$/, /between the badges|nameplate to badge/, /./, ['4.1.11.1.1.2.3.1', '4.1.12.2.5.2']],
+    [/^blues_b$/, /button to the nameplate/, /./, '4.1.12.2.4.1'],
+    [/^blues_b$/, /chevron on the sleeve/, /./, ['4.1.11.1.1.1.3', '4.1.12.2.3.3']],
+    [/^blues_b$/, /collar edge to grade/, /./, ['4.1.11.1.1.1.4', '4.1.12.2.3.5']],
+    [/^blues_b$/, /nameplate bottom to ribbons bottom/, /./, ['4.1.11.1.1.2.1', '4.1.12.2.4.2']],
+    [/^blues_b$/, /nameplate resting on the right pocket/, /./, '4.1.11.1.1.2.1'],
+    [/^blues_b$/, /pocket to badge|ribbons to badge/, /./, ['4.1.11.1.1.2.3.1', '4.1.12.2.5.1']],
+    [/^blues_b$/, /ribbons resting on the left pocket/, /./, '4.1.11.1.1.2.2'],
+    // Mess dress
+    [/^mess_dress$/, /chevron on the sleeve/, /./, ['4.1.1.1.1.4', '4.1.2.1.1.4']],
+    [/^mess_dress$/, /medals between shoulder/, /./, ['4.1.1.1.2.2', '4.1.2.1.2.2']],
+    [/^mess_dress$/, /medals to badge|badges to command|badge to command/, /./, ['4.1.1.1.2.3', '4.1.2.1.2.3']],
+    [/^mess_dress$/, /sleeve end to braid/, /^3 in$/, '4.1.1.1'],
+    [/^mess_dress$/, /sleeve end to braid/, /./, '4.1.2.1'],
+    // Aviator shirt and the corporate blazer
+    [/^aviator$|^aviator_blazer$/, /chevron on the sleeve/, /./, ['4.2.5.1.1.3', '4.2.6.2.3']],
+    [/^aviator$/, /collar edge to grade/, /./, ['4.2.5.1.1.5', '4.2.6.2.5']],
+    [/^aviator$|^aviator_blazer$/, /nameplate bottom to ribbons bottom/, /./, ['4.2.5.1.2.1-2', '4.2.6.2.6.2.2']],
+    [/^aviator$/, /nameplate to badge/, /./, ['4.2.5.1.3.2', '4.2.6.2.7.2']],
+    [/^aviator$|^aviator_blazer$/, /pocket to badge|ribbons to badge|badge to badge/, /./, ['4.2.5.1.3.1', '4.2.6.2.7.1']],
+    [/^aviator_blazer$/, /nameplate to chaplain badge/, /./, ['4.2.3.1.1.3', '4.2.4.1.1.3']],
+    [/^aviator_blazer$/, /nameplate top to pocket top/, /./, ['4.2.3.1.1.2', '4.2.4.1.1.2']],
+    [/^semi_formal$/, /crest to medals/, /./, ['4.2.1.4', '4.2.2.4']],
+    [/^semi_formal$/, /medals to chaplain badge/, /./, ['4.2.1.5', '4.2.2.5']],
+    [/^polo$/, /name to/, /./, '5.3.2.1.1']
+  ];
+  // How a paragraph is quoted on a callout: a CAPR 39-1 paragraph by its number, another document (an ICL) by the name it already carries.
+  const refText = ref => (/^\d/.test(ref) ? 'CAPR 39-1, ' : '') + ref;
+  // The paragraph(s) a measure carries out: its own (`opts.ref`) or the row above that names its uniform, caption and label. '' for a measure no row names.
+  function refFor(scene, m){
+    const o = m.opts || {};
+    if(o.ref) return o.ref;
+    if(m.ref) return m.ref;
+    const uniform = scene.uniform || '', women = scene.gender === 'female';
+    const caption = (o.caption != null ? o.caption : (o.callout && o.callout.caption)) || '';
+    for(const [u, c, l, ref] of REFS){
+      if(!u.test(uniform) || !c.test(caption) || !l.test(m.label || '')) continue;
+      return typeof ref === 'string' ? ref : Array.isArray(ref) ? ref[women ? 1 : 0] : (ref[uniform] || '');
+    }
+    return '';
   }
 
   // Label width in ems for Arial Bold (close enough to size the pill around the text).
@@ -453,7 +548,7 @@
         if(!arr) return null;
         // The caption under the circle: the words split into lines of at most 15 characters.
         const capSize = CO.captionFont * P;
-        const words = String(o.caption || '').split(/\s+/).filter(Boolean), capLines = [];
+        const words = (String(o.caption || '') + (m.ref ? ' ' + refText(m.ref) : '')).split(/\s+/).filter(Boolean), capLines = [];
         for(const w of words){ const last = capLines[capLines.length - 1]; if(last && (last + ' ' + w).length <= 15) capLines[capLines.length - 1] = last + ' ' + w; else capLines.push(w); }
         const capW = capLines.length ? Math.max(...capLines.map(t => textWidth(t, capSize))) + 2 * PX.padX * P : 0;
         const capH = capLines.length ? capLines.length * capSize * 1.2 + 2 * PX.padY * P : 0;
@@ -630,7 +725,10 @@
     // The callouts go last: the plain dimensions keep the places they have always had, and each circle, which can sit a long way from its piece, finds room around them.
     const measures = scene.layers.filter(l => l.type === 'measure');
     const isCallout = m => !!(m.opts && m.opts.callout);
-    const order = measures.map((m, i) => i).sort((i, j) => (isCallout(measures[i]) ? 1 : 0) - (isCallout(measures[j]) ? 1 : 0));
+    // A measure inside a cap view is laid out before the others: its dimension and pill stay beside that view, and the pills of the paragraphs under the collar and the chest, which can
+    // go further out, must not have taken the room by the cap first.
+    const inView = m => views.some(v => contains(v, mul(add(m.from, m.to), 0.5))) ? 0 : 1;
+    const order = measures.map((m, i) => i).sort((i, j) => ((isCallout(measures[i]) ? 2 : 0) + inView(measures[i])) - ((isCallout(measures[j]) ? 2 : 0) + inView(measures[j])));
     const slots = new Array(measures.length).fill(null);
 
     for(const mi of order){
@@ -645,7 +743,8 @@
       const text = m.label;
       // The pill: the length over the caption of what is measured (the profile's words, else the two pieces the measure joins), the caption
       // in lines of at most PILL.wrap characters.
-      const capLines = wrapWords(o.caption != null ? o.caption : captionFor(scene, m), PILL.wrap);
+      // The paragraph the distance carries out is the last line of the pill (CAPR 39-1, 4.1.5.2.2.4.1).
+      const capLines = wrapWords(o.caption != null ? o.caption : captionFor(scene, m), PILL.wrap).concat(m.ref ? wrapWords(refText(m.ref), PILL.refWrap) : []);
       const lw = Math.max(textWidth(text, fontSize), ...capLines.map(t => textWidth(t, capSize) * PILL.capWidth)) + 2 * PX.padX * P;
       const lh = fontSize * 1.25 + capLines.length * capSize * 1.2 + 2 * PX.padY * P;
 
@@ -753,6 +852,9 @@
           if(hard && placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0) || E.tails.some(([p, q]) => insideLength(p, q, lab) > 0))) continue;
           if(hard && placedLines.some(([p, q]) => segsCross(a, b, p, q))) continue;
           lineCost += c.d / P;
+          // A measure inside a cap view keeps its dimension line within an inch of that view (D26: every label sits at the distance it reports); the pill, which a leader joins to the
+          // line, goes where there is room (the paragraph line makes the pills taller).
+          if(owner) lineCost += 400 * (Math.max(0, pointBoxDistance(a, owner) - 1) + Math.max(0, pointBoxDistance(b, owner) - 1)) / P;
           // The bars, the tails and the halfway tick are part of the drawing: none crosses a piece either.
           const barSegs = E.bars.concat(E.tails);
           if(o.mid){ const tp = add(a, mul(u, dot(sub(o.mid, A), u))), tk = mul(n, PX.tick * P); barSegs.push([sub(tp, tk), add(tp, tk)]); }
@@ -847,5 +949,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, rimPoint, segsCross, wrapWords, captionFor, PX, PILL, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
+  return { layout, refFor, refText, REFS, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, rimPoint, segsCross, wrapWords, captionFor, PX, PILL, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
 });

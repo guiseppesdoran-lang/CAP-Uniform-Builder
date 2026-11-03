@@ -210,7 +210,7 @@ for(const [name, b] of CAP_BUILDS){
     // The device's own ink under the mark: four thin arms with the middle open, so the device's centre, where its eagle or shield is, is untouched.
     const dev = scene.layers.find(l => l.role === 'hat-device');
     assert.ok(Math.abs(d.centres[0].x - (dev.x + dev.w / 2)) < 0.05 && Math.abs(d.centres[0].y - (dev.y + dev.h / 2)) < 0.05, 'centred on the device');
-    assert.equal(d.label.caption.join(' '), "cap front to the grade's centre", 'the caption says the distance ends at the centre (E101)');
+    assert.equal(d.label.caption.join(' '), "cap front to the grade's centre CAPR 39-1, 6.2.2.2.1-3", 'the caption says the distance ends at the centre, then the paragraph (E101)');
     // The line reaches the crosshair's centre; its arrowhead there sits inside the device only because the device has room for it.
     const end = d.dim.find(p => Math.hypot(p.x - m.to.x, p.y - m.to.y) < 1e-9);
     assert.ok(end, 'the dimension line ends on the centre');

@@ -1245,6 +1245,15 @@
     return true;
   }
 
+  // The cord's top end lies under the board, on the seam: drawn from the board's outer end (the shoulder point) to where the braid starts, labelled in words (9.3: "aligned
+  // along the left shoulder seam. If the garment has an epaulet, the cord will be worn underneath the epaulet"; the Aide de Camp cord, 9.3.4).
+  function cordUnderBoard(ctx, layer, what){
+    const sm = ctx.base && shoulderSeamOf(ctx.base.id, 'left');
+    if(!layer || !layer.cordPath || !sm || !ctx.layers.some(l => l.key === 'epaulet:left')) return;
+    const top = layer.cordPath.top;
+    ctx.measure({ x: sm.outer.x, y: sm.outer.y }, { x: top[0], y: top[1] }, 'under the board', { mid: { x: top[0], y: top[1] }, side: { x: 1, y: 0 }, offsetOnly: true, reference: true, caption: what + ' under the board' });
+  }
+
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
   // cord turned to follow it and moved 1/8 in toward the neck.
   async function shoulderCord(ctx, b, axis){
@@ -1257,8 +1266,9 @@
     if(own && ctx.has(own)){
       const s = await ctx.overlay(own, Z.epauletLayer - 0.5);
       if(s){
-        if(b.cord === 'aide_de_camp' && await aiguillettePendant(ctx, s)) return;
+        if(b.cord === 'aide_de_camp' && await aiguillettePendant(ctx, s)) { cordUnderBoard(ctx, ctx.layers.find(l => l.cordPath && l.cordPath.pendant), 'Aide de Camp cord'); return; }
         fitCordLayer(ctx, s);
+        cordUnderBoard(ctx, ctx.layers.find(l => l.cordPath && !l.cordPath.pendant), 'shoulder cord');
       }
       return;
     }
@@ -1484,6 +1494,8 @@
       await ctx.place(id, { pieceAnchor: 'board_outer_end', at, rotate: rot, scale: k, scaleX: 1 / k, z: BOARD_STRIP_Z, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
       const c = { x: at.x + f.axis.x * board.w / 2, y: at.y + f.axis.y * board.w / 2 };
       stripShading(ctx, side, c, f.axis, f.normal, board.w, BOARD_STRIP_THICK, BOARD_PEAK, BOARD_STRIP_Z + 0.1);
+      // The board lies on the shoulder seam, from the collar seam to the shoulder point (4.1.5.2.1.3, 4.1.9.3.4; Class A), drawn once, on the wearer's right shoulder.
+      if(side === 'right') ctx.measure(f.outer, f.neck, 'on the seam', { mid: c, side: { x: 0, y: -1 }, offsetOnly: true, reference: true, caption: 'shoulder board on the seam' });
       if(overlay) overlay.hideGroups = [...new Set([...(overlay.hideGroups || []), 'shoulder-strip-right', 'shoulder-strip-left'])];
     }
   }

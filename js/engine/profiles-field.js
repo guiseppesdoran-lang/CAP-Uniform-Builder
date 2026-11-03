@@ -177,12 +177,18 @@
       // Cadet officers: the row of the art turned a quarter, so the diamonds and discs stack vertically (7.1.1.2.2; see capGrade).
       if(id) await ctx.place(id, { pieceAnchor: 'center', at, rotate: g.category === 'cadet-officer' ? 90 : 0, z: Z.insignia, role: 'grade', key: 'grade:chest' });
     }
+    // 'In the center of the chest' (7.1.1.2.1, 7.1.1.2.2): centred between the two breast pockets, drawn from the right pocket's inner edge to the left's at the square's height.
+    const pr = ctx.landmark('chest_pocket_right'), pl = ctx.landmark('chest_pocket_left'), sq = ctx.rect('rank_square');
+    if(pr && pl && pr.points && pl.points && sq){
+      const cy = sq.y + sq.h / 2, edgeAt = (pts, pick) => { const xs = []; for(let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i + 1) % pts.length]; if((p.y - cy) * (q.y - cy) < 0) xs.push(p.x + (q.x - p.x) * (cy - p.y) / (q.y - p.y)); } return xs.length ? pick(...xs) : null; };
+      const a = edgeAt(pr.points, Math.max), c = edgeAt(pl.points, Math.min);
+      if(a != null && c != null && c > a) ctx.measure({ x: a, y: cy }, { x: c, y: cy }, 'centered', { mid: { x: at.x, y: cy }, side: { x: 0, y: 1 }, offsetOnly: true, reference: true, caption: 'grade square on the chest' });
+    }
     await capGrade(ctx, b);
   }
 
-  // The chest square has no measure on the overlay: the 2 x 2 in square is bought (7.1.1.2.1, 7.1.1.2.2) and goes on the
-  // Velcro sewn to the coat at the factory, so neither its size nor its distance from the collar is something the member
-  // sets (Ethan: "the 2x2 square isn't needed ... and neither is the 4.9 inches from the collar to the square").
+  // The chest square's size (2 x 2 in) and its distance from the collar are the maker's (the Velcro is sewn to the coat at the factory) and carry no measure; what the
+  // paragraph states, "in the center of the chest", is the one callout above (centered between the pockets).
 
   // ---- the arms of the ABU and CFU front figure -------------------------------------------------------
   // The coat sheets draw the sleeves twice: flat, at the sides (where the chevrons and sleeve patches are placed, from

@@ -56,6 +56,9 @@ const CITE = {
   ocpBase: '⅛ in: from the top of the CAP tape to the bottom of the lowest badge\'s embroidery, three or four badges (7.1.1.3.1.3-4; Ethan)',
   ocpPair: '½ in: badges side by side (7.1.1.3.1.3-4)',
   ocpStack: '¼ in: between stacked badges (7.1.1.3.1.3-4)',
+  boardSeam: 'on the seam: the Class A cadet officer shoulder board along the shoulder seam (4.1.5.2.1.3, 4.1.9.3.4; 2 November 2026)',
+  cordUnder: 'under the board: the shoulder cord starts under the board, on the seam (9.3, 9.3.4; 2 November 2026)',
+  ocpSquare: 'centered: the grade square in the center of the chest between the pockets (7.1.1.2.1, 7.1.1.2.2)',
   fduGrade: '½ in: officer grade from the shoulder seam (8.2.3.2, 8.3.3.2)',
   esCentered: 'centered: ES patch centred on the right breast pocket (8.2.4.3, 8.3.4.3; LIVE9-4)',
   fduFlag: '½ in: U.S. flag below the shoulder seam (8.2.4.4, 8.3.4.4)',
@@ -78,7 +81,7 @@ const L = key => CITE[key].split(':')[0];
 // [build name, [cite keys, one per measure drawn]]
 const TABLE = [
   ['blues_a-male-senior-Capt', ['braid', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagEven']],
-  ['blues_a-male-cadet-C-Maj', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagEven']],
+  ['blues_a-male-cadet-C-Maj', ['boardSeam', 'cordUnder', 'badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagEven']],
   ['blues_a-female-senior-SMSgt', ['sleeveChevronElbow', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagParallel']],
   ['blues_a-female-senior-MajGen', ['braid', 'badgeAboveRibbons', 'aboveNametag', 'lapel', 'lapel', 'flightCap', 'rackWelt', 'nametagCentred', 'nametagParallel']],
   ['blues_b-male-cadet-C-SSgt', ['collarChevron', 'collarChevron', 'badgeAboveRibbons', 'pocketBadge', 'flightCap', 'plateRests', 'rackRests']],
@@ -90,14 +93,14 @@ const TABLE = [
   ['semi_formal-male-senior-Capt', ['chaplainSemi']],
   ['semi_formal-female-senior-Col', ['crest', 'chaplainSemi']],
   ['semi_formal_usaf-male-cadet-C-SSgt', ['badgeAboveRibbons', 'welt', 'lapel', 'lapel', 'rackWelt']],
-  ['semi_formal_usaf-female-cadet-C-Maj', ['badgeAboveRibbons', 'lapel', 'lapel', 'rackWelt', 'semiEven']],
+  ['semi_formal_usaf-female-cadet-C-Maj', ['boardSeam', 'badgeAboveRibbons', 'lapel', 'lapel', 'rackWelt', 'semiEven']],
   ['aviator-male-senior-SMSgt', ['sleeveChevron', 'badgeAboveRibbons', 'rackPlateEven']],
   ['aviator-female-senior-Capt', ['badgeAboveRibbons', 'aboveNametag', 'rackPlateEven']],
   ['aviator_blazer-male-senior-Capt', ['chaplainBlazer', 'plateTopEven', 'badgeAboveRibbons']],
   ['aviator_blazer-female-senior-Col', ['chaplainBlazer', 'badgeAboveRibbons']],
-  ['ocp-male-senior-Capt', ['capVisor', 'blue', 'fieldBadge', 'fieldBadge', 'blue']],
-  ['ocp-female-cadet-C-SSgt', ['fieldBadge', 'fieldBadge', 'blue']],
-  ['ocp-male-senior-SMSgt', ['fieldBadge', 'fieldBadge', 'blue']],
+  ['ocp-male-senior-Capt', ['ocpSquare', 'capVisor', 'blue', 'fieldBadge', 'fieldBadge', 'blue']],
+  ['ocp-female-cadet-C-SSgt', ['ocpSquare', 'fieldBadge', 'fieldBadge', 'blue']],
+  ['ocp-male-senior-SMSgt', ['ocpSquare', 'fieldBadge', 'fieldBadge', 'blue']],
   ['abu-male-senior-Capt', ['abuCollar', 'blue', 'fieldBadge', 'fieldBadge', 'blue']],
   ['abu-male-cadet-C-Maj', ['abuCollar', 'blue', 'fieldBadge', 'fieldBadge', 'blue']],
   ['abu-male-cadet-C-SSgt', ['fieldBadge', 'fieldBadge', 'blue']],
@@ -112,8 +115,8 @@ const TABLE = [
   ['corporate_flight_suit-male-senior-Col', ['fduGrade', 'blue', 'fduFlag']],
   ['corporate_flight_suit-female-senior-SMSgt', ['fduFlag']],
   // Builds with patches, command insignia and more badges than the standard matrix wears.
-  ['x-ocp-male-Capt-patches-gradcmd', ['capVisor', 'blue', 'fieldBadge', 'fieldBadge', 'blue', 'ocpGradCmd', 'ocpUnit']],
-  ['x-ocp-male-Capt-4badges', ['capVisor', 'blue', 'ocpBase', 'ocpPair', 'ocpStack', 'ocpStack', 'blue']],
+  ['x-ocp-male-Capt-patches-gradcmd', ['ocpSquare', 'capVisor', 'blue', 'fieldBadge', 'fieldBadge', 'blue', 'ocpGradCmd', 'ocpUnit']],
+  ['x-ocp-male-Capt-4badges', ['ocpSquare', 'capVisor', 'blue', 'ocpBase', 'ocpPair', 'ocpStack', 'ocpStack', 'blue']],
   ['x-abu-male-Capt-patches-cmd', ['abuCollar', 'blue', 'fieldBadge', 'fieldBadge', 'blue', 'command', 'sleevePatch', 'pocketPatch']],
   ['x-abu-male-Capt-gradcmd', ['abuCollar', 'blue', 'fieldBadge', 'fieldBadge', 'blue', 'command']],
   ['x-cfu-male-Capt-patches-es', ['abuCollar', 'blue', 'fieldBadge', 'fieldBadge', 'blue', 'command', 'sleevePatch', 'sleevePatch', 'pocketPatch', 'pocketPatch', 'esPatch']],
@@ -186,7 +189,7 @@ test('every table entry names a cited paragraph', () => {
 });
 
 test('an inch label is the drawn distance (the sleeve braid, measured to the drawn braid, within 0.15 in), a word label marks a position', async () => {
-  const WORDS = new Set(['centered', 'halfway', 'halfway to elbow', 'midway', 'even with', 'parallel with']);
+  const WORDS = new Set(['centered', 'halfway', 'halfway to elbow', 'midway', 'even with', 'parallel with', 'on the seam', 'under the board']);
   for(const [name] of TABLE){
     for(const m of await measuresOf(name)){
       if(WORDS.has(m.label)) continue;
@@ -306,7 +309,7 @@ for(const [label, sex, rank, ids, inPlace, rightPocket] of [
     const onPiece = p => pieces.some(l => p.x >= l.x - 1e-3 && p.x <= l.x + l.w + 1e-3 && p.y >= l.y - 1e-3 && p.y <= l.y + l.h + 1e-3);
     const coat = await store.load(sex === 'male' ? 'garment-semiformal-class-a-coat-male' : 'garment-semiformal-class-a-coat-female');
     const weltY = core.anchor(coat, 'welt_top_center').y;
-    for(const m of ms.filter(m => m.label !== 'halfway')) for(const p of [m.from, m.to]) assert.ok(onPiece(p) || Math.abs(p.y - weltY) < 1e-6, `${m.label} end ${p.x.toFixed(2)},${p.y.toFixed(2)} on a drawn piece`);
+    for(const m of ms.filter(m => m.label !== 'halfway' && m.label !== 'on the seam')) for(const p of [m.from, m.to]) assert.ok(onPiece(p) || Math.abs(p.y - weltY) < 1e-6, `${m.label} end ${p.x.toFixed(2)},${p.y.toFixed(2)} on a drawn piece`);
     const even = ms.filter(m => m.label === 'even with');
     if(inPlace){
       const box = inPlace === 'pair' ? (() => { const two = ['stem_badges', 'cyber_badges'].map(badge); const x0 = Math.min(...two.map(l => l.x)), x1 = Math.max(...two.map(l => l.x + l.w)); return { x: x0, w: x1 - x0, y: Math.min(...two.map(l => l.y)), h: rackBottom - Math.min(...two.map(l => l.y)) }; })() : badge(inPlace);
