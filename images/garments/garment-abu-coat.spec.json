@@ -13,7 +13,7 @@
   3886
  ],
  "size_source": "estimated",
- "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Body basis only: MIL-DTL-44048H (BDU-style combat coat) gives the same body (Medium Regular half chest 24-1/4 in, back length about 29-3/8 to 29-1/2 in, Large about 30 in), so the 29.96 in length is consistent with a Large Regular; that spec has no pocket sizes in its text, so pocket, tape and button sizes remain estimates. Sleeve cap/width widened by script (same as the OCP coat).",
+ "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Body basis only: MIL-DTL-44048H (BDU-style combat coat) gives the same body (Medium Regular half chest 24-1/4 in, back length about 29-3/8 to 29-1/2 in, Large about 30 in), so the 29.96 in length is consistent with a Large Regular; that spec has no pocket sizes in its text, so pocket, tape and button sizes remain estimates. Sleeve cap/width widened by script (same as the OCP coat). Print cell: 1/16 in, from the weave pitch of the cloth (abu-weave-measure.json) and the autocorrelation of the Vanguard coat front (abu-scale-check.json), not from the tape or the pocket size (the pockets and tape are estimates).",
  "anchors": {
   "top_center": [
    1965,
@@ -629,10 +629,10 @@
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
  "dimensions": {
-  "print_cell_in": 0.125,
+  "print_cell_in": 0.0625,
   "print_tile_in": [
-   17.5,
-   14.75
+   19,
+   14.25
   ],
   "coat_length_in": 29.96,
   "max_width_in": 24.6,
@@ -663,7 +663,7 @@
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
   "lower pocket size",
-  "tiger-stripe print: a tile TRACED from a region of the Vanguard ABU shirt photograph (reference only, not shipped; base-art/abu-trace.js) and snapped to 1/8 in cells, the cell measured on the ABU raster against its 5 1/4 x 1 in CAP tape; the photograph is 500 px wide, the garment scale (20.4 px per in) comes from the pocket flaps, and the photo is too soft to show its own cell lattice, so cells are snapped on the scale-derived lattice and thin streaks are approximate; the placket shadow is cut out and the tile edges are blended by a minimum-error cut; the tile is a staggered 17.5 x 14.75 in repeat; palette from the photograph (k-means), its exposure matched to the ABU raster",
+  "tiger-stripe print: a tile TRACED from two flat pieces of a 6000 px photograph of ABU fabric (Wikimedia Commons, Qirille, CC BY-SA 4.0; a reference only, not shipped; base-art/abu-trace.js), the draped swatch rectified onto its own cell lattice (cell 14.89 px = 0.0625 in, 238.2 px per in; abu-ref-measure.json; the cloth's weave, abu-weave-measure.json, and the Vanguard autocorrelation, abu-scale-check.json, suggest a cell nearer 1/16 to 3/32 in than the 1/8 in taken from the garment), colours matched to the Vanguard shirt photograph, snapped to 1/8 in cells and joined into a seamless periodic tile by minimum-error cuts (no mirroring, nothing generated); the cell is 1/16 in from the weave pitch of the cloth (abu-weave-measure.json) and the autocorrelation of the Vanguard coat front (abu-scale-check.json), NOT from the CAP tape or the pocket size; band-row density along the chest matches the Vanguard shirt (abu-density-check.json); the band length, thickness and stripe angle of the tile agree with those of the photograph within one cell (abu-trace-report.json), the tile is 19 x 14.25 in",
   "T-shirt colours in the neck (Desert Tan, estimated; the regulation names the colour, not a value)",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
  ],
