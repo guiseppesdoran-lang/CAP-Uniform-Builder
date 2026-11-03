@@ -131,7 +131,13 @@ test('short aviator sheets: the collar of the state shown lies over the badges a
       const polys = (tie ? ['collar_closed_right', 'collar_closed_left'] : ['collar_right', 'collar_left']).map(n => sp.landmarks[n].points);
       const reaches = placed.some(l => l.role === 'ribbon' && polys.some(poly => C.rectHitsPolygon(l, poly)));
       assert.equal(reaches, !(gender === 'female' && tie), `${gender} tie ${tie}: a ribbon reaches a collar leaf of the state shown`);
-      for(const l of placed){ assert.ok(!l.clipOut, `${l.key}: covered by the collar, not cut`); assert.ok(fg.every(f => l.z < f.z), `${l.key}: below the foreground`); }
+      // E130 (Doran: "It's cutting the wings off"): a ribbon or device is tucked under the collar; a badge the leaf reaches keeps its place and is drawn whole above the foreground.
+      for(const l of placed){
+        assert.ok(!l.clipOut, `${l.key}: covered by the collar, not cut`);
+        const touches = l.role === 'badge' && polys.some(poly => C.rectHitsPolygon(l, poly));
+        if(touches) assert.ok(fg.every(f => l.z > f.z), `${l.key}: a badge on the collar leaf is above the foreground, whole`);
+        else assert.ok(fg.every(f => l.z < f.z), `${l.key}: below the foreground`);
+      }
     }
   }
 });

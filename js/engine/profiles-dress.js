@@ -651,7 +651,14 @@
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
       if(!hit.length) continue;
       if(l.role === 'badge'){
-        if(!foregroundGroup) ctx.note(`The collar leaf reaches the ${l.title || l.id}: it is shown whole, over the collar, because this garment's artwork has no collar layer to draw over it (CAPR 39-1 4.2.5.1.3.1, 4.2.6.2.7.1)`);
+        // LIVE13 E130 (Doran, on the Class B short-sleeve shirt with the Observer wings: "It's cutting the wings off"): a badge is never cut by the collar. The first badge
+        // is worn 1/2 in above the highest row of ribbons and the second 1/2 in above the first (4.1.11.1.1.2.3.1; 4.2.5.1.3.1, 4.2.6.2.7.1 on the aviator shirts), the ribbons rest
+        // on the pocket, so a tall rack or a second badge can bring one to the collar leaf in the flat drawing: it keeps its regulation place and is drawn whole over the
+        // leaf (above the collar foreground), with a note. Ribbons are still tucked under the collar.
+        l.z = Math.max(l.z || 0, Z.badge + 0.6);
+        ctx.note(foregroundGroup
+          ? `The collar leaf reaches the ${l.title || l.id}: it keeps its place 1/2 in above the ribbons or the badge below it and is shown whole, over the collar (CAPR 39-1 4.1.11.1.1.2.3.1, 4.2.5.1.3.1, 4.2.6.2.7.1)`
+          : `The collar leaf reaches the ${l.title || l.id}: it is shown whole, over the collar, because this garment's artwork has no collar layer to draw over it (CAPR 39-1 4.2.5.1.3.1, 4.2.6.2.7.1)`);
       }else if(!foregroundGroup) l.clipOut = hit;
     }
   }
@@ -1722,6 +1729,7 @@
     const base = V.garment;
     const tie = tieOn(b, 'blues_b', long, false);
     await dressGarment(ctx, base, tie);
+    if(tie) await tieClasp(ctx, b);
 
     // The officers' and cadet officers' slide-on sleeves lie on top of the shoulder: seen edge-on from the front (epauletStrips), with the top view above.
     const sleeveId = epauletSleeveId(g);
@@ -2067,6 +2075,7 @@
     const V = AVIATOR[garment];
     const tie = tieOn(b, 'aviator', long, !!V.overblouse);
     await dressGarment(ctx, garment, tie);
+    if(tie) await tieClasp(ctx, b);
     if(g.cadet) ctx.note('Cadets wear corporate uniforms only when 18 or older and not eligible for the USAF-style uniform (CAPR 39-1, 1.2.5.2)');
 
     // Grade. The shirts draw the epaulet sleeve edge-on; its top view (with the grade) goes above.
@@ -2189,6 +2198,41 @@
     const r = RULES.tieRule(uniform, { gender: b.gender, sleeve: long ? 'long' : 'short', overblouse, withBlazer: !!b.opt.withBlazer });
     if(!r.offered) return r.defaultOn;
     return typeof b.opt.tie === 'boolean' ? b.opt.tie : r.defaultOn;
+  }
+
+  // The tie clasp (LIVE13 E129; Doran, on the Class B shirt: "it's missing the tie clip"). CAPR 39-1 4.1.3.2.4, 4.1.11.1.1.3, 4.2.5.1.4: "A tie tack or clasp may be
+  // worn with the tie. If worn, the tie tack or clasp will have the CAP Crest, 'Wing and Star' design, AF symbol, or the appropriate grade insignia. The tie tack or
+  // clasp will be centered between the bottom edge of the knot and the bottom tip of the tie." (The regulation names no button: the clasp is between the knot and
+  // the tip.) The sheets draw the tie as one shape, so the knot's bottom edge is its narrowest point, 1.643 in below the apex on the Class B
+  // shirts (the tie of Figs 4.6 and 4.8: neck 1.00 in wide there) and 1.288 in on the aviator shirts, read from each sheet's tie path (a test re-derives them);
+  // the tip is the `tie` landmark's apex plus its length. The Class A coat is not given one: its closed front hides everything of the tie below the lapels' V, the clasp
+  // with it. The clasp is the accessory sheet's silver bar (2.0 x 0.3 in,
+  // 'typical commercial tie bar', not dimensioned in the regulation: images/accessories/tie-clasp-silver), centred on the tie's axis at the midpoint and turned
+  // square to it. Women's sheets draw a tie tab, which takes none. `opt.tieClasp` (default on) takes it off.
+  // TIE_KNOT_DEPTH begin
+  const TIE_KNOT_DEPTH = {
+    'garment-blues-class-b-shirt-male': 1.643, 'garment-blues-class-b-shirt-male-long': 1.643,
+    'garment-aviator-shirt-male': 1.288, 'garment-aviator-shirt-male-long': 1.288
+  };
+  // TIE_KNOT_DEPTH end
+  // { knot: [x, y] (the knot's bottom edge on the tie's axis), tip: [x, y], at: [x, y] (the midpoint), deg } in sheet inches, or null when the sheet draws no men's tie.
+  function tieClaspSite(spec){
+    const lm = spec && spec.raw && spec.raw.landmarks && spec.raw.landmarks.tie;
+    if(!lm) return null;
+    let knot, tip;
+    if(lm.kind === 'tie' && lm.knot && lm.length_in > 0 && TIE_KNOT_DEPTH[spec.id]){
+      knot = [lm.knot.x / 100, lm.knot.y / 100 + TIE_KNOT_DEPTH[spec.id]];
+      tip = [lm.knot.x / 100, lm.knot.y / 100 + lm.length_in];
+    }else return null;
+    const at = [(knot[0] + tip[0]) / 2, (knot[1] + tip[1]) / 2];
+    return { knot, tip, at, deg: Math.atan2(-(tip[0] - knot[0]), tip[1] - knot[1]) * 180 / Math.PI };
+  }
+  async function tieClasp(ctx, b){
+    if(b.opt.tieClasp === false || !ctx.base || !ctx.has('tie-clasp-silver')) return null;
+    const site = tieClaspSite(ctx.base);
+    if(!site) return null;
+    const layer = await ctx.place('tie-clasp-silver', { pieceAnchor: 'center', at: { x: site.at[0], y: site.at[1] }, rotate: site.deg, z: Z.badge + 0.7, role: 'tie', key: 'tie:clasp', title: 'Tie clasp' });
+    return layer;
   }
 
   // ---- Corporate Service Dress (blazer, 4.2.3 / 4.2.4) and Corporate Semi-Formal (4.2.1 / 4.2.2) ---------
