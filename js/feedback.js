@@ -22,7 +22,7 @@
   <label class="fieldLabel" for="feedbackMessage">Your message</label>
   <textarea id="feedbackMessage" rows="6" maxlength="${MAX_MESSAGE}" required aria-describedby="feedbackCount"></textarea>
   <div class="hintText feedbackCount" id="feedbackCount" aria-live="polite">0 / ${MAX_MESSAGE}</div>
-  <label class="fieldLabel" for="feedbackContact">Email or Discord (optional)</label>
+  <label class="fieldLabel" for="feedbackContact">Email or other contact (optional)</label>
   <input id="feedbackContact" type="text" maxlength="${MAX_CONTACT}" autocomplete="off" spellcheck="false" placeholder="Only if you would like a reply">
   <label class="fieldNote feedbackSetupRow"><input type="checkbox" id="feedbackSetup"> Include my current uniform setup</label>
   <div class="hintText" id="feedbackSetupHint">The uniform, cut, membership, grade, how many ribbons, badges and patches, and the options you set. Never your name.</div>

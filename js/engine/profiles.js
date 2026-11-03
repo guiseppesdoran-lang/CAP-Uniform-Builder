@@ -787,7 +787,7 @@
     const other_kinds = set.all.length - set.chaplain.length - set.aviation.length - set.occupational.length;
     if(other_kinds > 0) ctx.note(`Specialty track and service badges are not worn on the flight suit name tag (CAPR 39-1, ${para})`);
     const left = candidates.filter(it => !chosen.includes(it));
-    if(left.length && chosen.length) ctx.note(`The flight suit name tag carries up to two badges, one aeronautical rating and one occupational badge or command pin (CAPR 39-1, ${para}): ${chosen.map(it => it.title).join(' and ')} ${chosen.length > 1 ? 'are' : 'is'} shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
+    if(left.length && chosen.length) ctx.note(`The name tag takes up to two badges, one aeronautical rating and one occupational badge or the command pin (CAPR 39-1, ${para}): ${chosen.map(it => it.title).join(' and ')} ${chosen.length > 1 ? 'are' : 'is'} shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
   }
 
   // The Emergency Services patch (8.2.4.3, 8.3.4.3): LIVE9-4 (Ethan, on the render: "is this really where the es patch goes?" then "it says on the breast pocket", and

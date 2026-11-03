@@ -336,7 +336,7 @@ test('critique set: the flight builds cover the two-badge tag (wings, ground tea
   assert.equal(pin.layers.filter(l => l.role === 'badge' && l.figure !== 2).length, 2, 'the wings and the command pin on the NCO tag: two');
   const all3 = await composeNamed(critique, 'flight_suit-male-senior-Capt-wings-ground-team-pin');
   assert.deepEqual(all3.layers.filter(l => l.role === 'badge' && l.figure !== 2).map(l => l.key).sort(), ['badge:CAPPilot1_FA9D33EA587D8', 'badge:group_commander_badge'].sort(), 'wings, ground team badge and command pin: the wings and the pin (two places)');
-  assert.ok(all3.notes.some(n => /carries up to two badges.*Ground Team Badge is not shown/.test(n)), all3.notes.join(' | '));
+  assert.ok(all3.notes.some(n => /takes up to two badges.*Ground Team Badge is not shown/.test(n)), all3.notes.join(' | '));
   for(const [n, style] of [['flight_suit-male-cadet-CCapt-es-style1', 'patch-es-style-1'], ['flight_suit-male-cadet-CCapt-es-style2', 'patch-es-style-2'], ['corporate_flight_suit-female-cadet-CCapt-es-style1', 'patch-es-style-1'], ['corporate_flight_suit-female-cadet-CCapt-es-style2', 'patch-es-style-2']]){
     const sc = await composeNamed(critique, n);
     assert.ok(sc.layers.some(l => l.id === style), `${n}: ES patch ${style} drawn`);

@@ -154,7 +154,7 @@ function dashboard(){
       <a class="button" href="/api/admin/export.csv?what=feedback" download>Export feedback (CSV)</a>
     </div>
     <div class="notes">
-      <p><b>Retention.</b> Everything is kept until Ethan says otherwise. The events are one file per month and the feedback one file, in deploy/var on the server (deploy/README.md says how to back them up or delete a month).</p>
+      <p><b>Retention.</b> Everything is kept until the administrator deletes it. The events are one file per month and the feedback one file, in deploy/var on the server (deploy/README.md says how to back them up or delete a month).</p>
       <p><b>What is collected.</b> Anonymous events: a random visitor id kept in the member's browser (none when the browser sends Do Not Track), a random id per page load, and what was done: the uniform, cut, membership, grade, how many ribbons, devices, badges, military badges, patches and cords, which uniform options are set, and which buttons were used. Script errors carry their message and file. Feedback carries the message, the contact the member chose to give, the page, and, if they ticked the box, the same anonymous setup summary.</p>
       <p><b>What is not collected.</b> No names, CAPIDs, nameplate or duty-title text, member report contents or file names, unit charters, IP addresses (only hashed in memory for the sign-in lockout and rate limits, never written), cookies on the member's side, or anything from other sites.</p>
     </div>

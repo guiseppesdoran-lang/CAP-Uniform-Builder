@@ -262,7 +262,7 @@ test('flight suit name tag: wings plus a specialty badge says specialty badges a
     assert.ok(!nco.layers.some(l => l.key === 'badge:emergency_services_badge'));
     // Wings, an occupational badge and a third eligible badge: the tag carries two (a rating and one occupational badge), and says which was left off.
     const full = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge', 'emt_basic_badge']));
-    assert.ok(full.notes.some(n => /carries up to two badges.*are shown; .* not shown/.test(n)), `${uniform}: the other eligible badge is named as left off`);
+    assert.ok(full.notes.some(n => /takes up to two badges.*are shown; .* not shown/.test(n)), `${uniform}: the other eligible badge is named as left off`);
     assert.ok(!full.notes.some(n => /Specialty track/.test(n)));
     // Wings and an occupational badge: both on the tag, nothing left off.
     const two = await compose(build(uniform, 'male', 'senior', 'SMSgt', ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge']));

@@ -713,7 +713,7 @@
         z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:edge`, title: t.title || t.id, className: 'patch' });
     }
     measureSleevePatch(ctx, flat, 'sleeve_flap_velcro_left', 'patch_aux_left', false);
-    ctx.note(`The CAP Ranger tab is worn by Hawk Mountain Ranger School graduates on the OCP only, in lieu of the HHQ patch, in its place under the AUX identifier (Ethan's ruling, 2026-10-29; CAPR 39-1, 7.1.1.4.2, 7.1.1.4.2.1)${replaced ? `; ${replaced.title || 'the HHQ patch'} is not shown while the tab is worn` : ''}`);
+    ctx.note(`The CAP Ranger tab is worn by Hawk Mountain Ranger School graduates on the OCP only, in lieu of the HHQ patch, in its place under the AUX identifier (CAPR 39-1, 7.1.1.4.2, 7.1.1.4.2.1)${replaced ? `; ${replaced.title || 'the HHQ patch'} is not shown while the tab is worn` : ''}`);
     return flat;
   }
 
@@ -759,7 +759,7 @@
       // The Ranger tab is not worn on the ABU or the CFU (Ethan's ruling, 2026-10-29; see rangerTabInHhqSlot).
       if(patches.some(isRangerTab)){
         while(take(isRangerTab));
-        ctx.note('The CAP Ranger tab is worn on the OCP only, in lieu of the HHQ patch (Ethan\'s ruling, 2026-10-29), so it is not shown on this uniform');
+        ctx.note('The CAP Ranger tab is worn on the OCP only, in lieu of the HHQ patch (CAPR 39-1, 7.1.1.4.2), so it is not shown on this uniform');
       }
       // The unit (organizational) patch is worn on the right breast pocket of the ABU and the CFU, not on
       // a sleeve (Attachment 4: Organizational Patch RP; 5.1.1.1.2.3, 5.2.1.1.2.5); the CFU's right

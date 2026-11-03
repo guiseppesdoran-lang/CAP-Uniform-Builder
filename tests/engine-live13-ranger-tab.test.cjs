@@ -59,7 +59,7 @@ test('OCP: the Ranger tab takes the HHQ patch\'s place under AUX, centred; the H
   const ms = scene.layers.filter(l => l.type === 'measure');
   assert.ok(ms.some(m => m.label === '½ in' && Math.abs(m.from.y - T.y) < 1e-6 && /from the tape/.test(m.opts.callout.caption)), 'the 1/2 in from the tape');
   assert.ok(!ms.some(m => /touching/.test(m.label) || /from the tab/.test((m.opts && m.opts.callout && m.opts.callout.caption) || '')));
-  assert.ok(scene.notes.some(n => /in lieu of the HHQ patch.*Ethan's ruling, 2026-10-29.*7\.1\.1\.4\.2/.test(n) && /New York Wing Patch is not shown/.test(n)), scene.notes.join(' | '));
+  assert.ok(scene.notes.some(n => /in lieu of the HHQ patch.*CAPR 39-1, 7\.1\.1\.4\.2/.test(n) && /New York Wing Patch is not shown/.test(n)), scene.notes.join(' | '));
 });
 
 for(const [uniform, name] of [['abu', 'abu-male-cadet-C-Maj'], ['corporate_field', 'corporate_field-male-senior-Capt']]){

@@ -241,7 +241,7 @@ test('TWO badges with the command pin: the pin on the wearer\'s right, the wings
 test('THREE badges: the tag takes two (a rating and an occupational badge or the pin), the third is not shown and the note names it (8.2.4.1, 8.3.4.1)', async () => {
   const sc = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT, GROUND_TEAM], command: GROUP_PIN }), store());
   assert.deepEqual(badgeLayers(sc, FIGURES[0]).map(l => l.key).sort(), ['badge:' + GROUP_PIN.id, 'badge:' + PILOT.id].sort(), 'the pin takes the occupational badge\'s place by default');
-  assert.ok(sc.notes.some(n => /carries up to two badges.*Pilot Badge and Group Commander Badge are shown; Ground Team Badge is not shown/.test(n)), sc.notes.join(' | '));
+  assert.ok(sc.notes.some(n => /takes up to two badges.*Pilot Badge and Group Commander Badge are shown; Ground Team Badge is not shown/.test(n)), sc.notes.join(' | '));
   const picked = await P.composeUniform(build('flight_suit', 'senior', 'SMSgt', { badges: [PILOT, GROUND_TEAM], command: GROUP_PIN, badgeChoices: { tag: { other: GROUND_TEAM.id } } }), store());
   assert.deepEqual(badgeLayers(picked, FIGURES[0]).map(l => l.key).sort(), ['badge:' + GROUND_TEAM.id, 'badge:' + PILOT.id].sort(), 'the member\'s pick takes the second place');
   const c = picked.conflicts.find(x => x.position === 'tag');
