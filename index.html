@@ -369,49 +369,62 @@
       <div class="stepGroup" id="stepGroup-export" role="tabpanel" aria-labelledby="stepTab-export" hidden>
         <h3 class="stepGroupTitle" tabindex="-1">Extra</h3>
 
-        <section id="capubV2StatusPanel" class="panelBlock">
-          <label class="fieldLabel">Check your uniform</label>
-          <div class="statusGrid">
-            <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
-            <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
-            <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
-            <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
-          </div>
-          <ul id="capubV2Notices" class="noticeList"></ul>
-        </section>
+        <!-- Two tabs inside the step: the checks and the downloads (the step's own content), and the Regulation list (js/measure-panel.js fills it). -->
+        <div class="subTabs" id="extraTabs" role="tablist" aria-label="Extra">
+          <button type="button" role="tab" id="extraTab-main" class="subTab" data-tab="main" aria-controls="extraPanel-main" aria-selected="true">Check and save</button>
+          <button type="button" role="tab" id="extraTab-regulation" class="subTab" data-tab="regulation" aria-controls="extraPanel-regulation" aria-selected="false" tabindex="-1">Regulation</button>
+        </div>
+        <div id="extraPanel-main" role="tabpanel" aria-labelledby="extraTab-main">
+          <section id="capubV2StatusPanel" class="panelBlock">
+            <label class="fieldLabel">Check your uniform</label>
+            <div class="statusGrid">
+              <div class="statusCard"><strong>Ribbons</strong><span id="capubV2RibbonCount">0</span></div>
+              <div class="statusCard"><strong>Badges</strong><span id="capubV2BadgeCount">0</span></div>
+              <div class="statusCard"><strong>Patches</strong><span id="capubV2PatchCount">0</span></div>
+              <div class="statusCard"><strong>Warnings</strong><span id="capubV2WarningCount">0</span></div>
+            </div>
+            <ul id="capubV2Notices" class="noticeList"></ul>
+          </section>
 
-        <section id="finishPanel" class="panelBlock">
-          <label class="fieldLabel">Extra</label>
-          <!-- The download is the step's primary action: js/workspace-ui.js moves this button into the panel's footer once the
-               page is up (js/placement-templates.js adds its Templates entry after this block first). -->
-          <div class="finishAction" id="downloadAction">
-            <button id="downloadImage" type="button">Download picture (PNG)</button>
-          </div>
-          <div class="finishAction" id="purchaseListSlot">
-            <div class="hintText">Where to buy each item, with an estimated cost.</div>
-          </div>
-          <div class="finishAction">
-            <div class="row two">
-              <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Save to a file</button></div>
-              <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Open a saved file</button></div>
+          <section id="finishPanel" class="panelBlock">
+            <label class="fieldLabel">Extra</label>
+            <!-- The download is the step's primary action: js/workspace-ui.js moves this button into the panel's footer once the
+                 page is up (js/placement-templates.js adds its Templates entry after this block first). -->
+            <div class="finishAction" id="downloadAction">
+              <button id="downloadImage" type="button">Download picture (PNG)</button>
             </div>
-            <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
-            <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
-          </div>
-          <details class="moreDetails" id="savedSetupsMore">
-            <summary>Saved setups</summary>
-            <div id="capubV2QuickPanel">
+            <div class="finishAction" id="purchaseListSlot">
+              <div class="hintText">Where to buy each item, with an estimated cost.</div>
+            </div>
+            <div class="finishAction">
               <div class="row two">
-                <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to browser</button></div>
-                <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load saved</button></div>
+                <div class="col"><button id="capubV2ExportJson" class="ghost" type="button">Save to a file</button></div>
+                <div class="col"><button id="capubV2ImportBtn" class="ghost" type="button">Open a saved file</button></div>
               </div>
-              <div class="row two mt-6">
-                <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset builder</button></div>
-              </div>
-              <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
+              <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
+              <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
             </div>
-          </details>
-        </section>
+            <details class="moreDetails" id="savedSetupsMore">
+              <summary>Saved setups</summary>
+              <div id="capubV2QuickPanel">
+                <div class="row two">
+                  <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to browser</button></div>
+                  <div class="col"><button id="capubV2LoadLocal" class="ghost" type="button">Load saved</button></div>
+                </div>
+                <div class="row two mt-6">
+                  <div class="col"><button id="capubV2Reset" class="ghost" type="button">Reset builder</button></div>
+                </div>
+                <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
+              </div>
+            </details>
+          </section>
+        </div>
+        <div id="extraPanel-regulation" role="tabpanel" aria-labelledby="extraTab-regulation" hidden>
+          <section class="panelBlock">
+            <label class="fieldLabel">Rules this drawing applies</label>
+            <div id="regulationBody"></div>
+          </section>
+        </div>
       </div>
 
     </div>

@@ -323,6 +323,28 @@ header h1::after{
 .stepTab.blocked{cursor:not-allowed}
 .stepTab.blocked:hover{background:transparent;border-bottom-color:transparent}
 .stepTab.blocked .stepNum{border-style:dashed;border-color:var(--line);background:transparent;color:var(--muted)}
+/* The Extra step holds two tabs, in the stepper's own style: underlined, the selected one in the action colour. */
+.subTabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 var(--s3);border-bottom:1px solid var(--line)}
+.subTab{
+  min-height:44px;margin:0;padding:var(--s1) var(--s2);
+  background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;
+  color:var(--muted);font-family:var(--font-body);font-size:var(--t-sm);font-weight:700;letter-spacing:0;
+}
+.subTab:hover{background:var(--panel-2);border-color:transparent;border-bottom-color:var(--line)}
+.subTab:focus-visible{outline-offset:-3px}
+.subTab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--action)}
+.subTab[aria-selected="true"]:hover{background:transparent;border-bottom-color:var(--action)}
+/* The Regulation list: a compact table by area, the rule, its value and its paragraph. */
+.regNote{margin:0 0 var(--s2)}
+.regTable{width:100%;border-collapse:collapse;font-size:var(--t-sm);line-height:1.25}
+.regTable th,.regTable td{padding:var(--s1) var(--s2) var(--s1) 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-weight:400}
+.regTable thead th{padding-bottom:var(--s1);font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
+.regTable tbody th[scope="row"]{color:var(--ink)}
+.regTable .regArea th{padding:var(--s2) 0 var(--s1);border-bottom:2px solid var(--line-strong);font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+.regTable .regVal{white-space:nowrap;font-weight:700;color:var(--ink)}
+.regTable .regRef{min-width:5.5em;padding-right:0;overflow-wrap:anywhere}
+.regTable .regRef span{display:block}
+.regTable .regIcl,.regTable .regNone{color:var(--muted)}
 .controlsScrollArea{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:var(--s2) var(--s4) var(--s3)}
 .controlsFooter{position:relative;flex:0 0 auto;padding:var(--s2) var(--s4) var(--s3);background:var(--panel);border-top:1px solid var(--line)}
 /* The fade above the footer while the step has more below the fold. */
