@@ -279,6 +279,12 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     const cl = scene.layers.find(l => l.id === `${gid}-cord-${k}`);
     const tag = `${gid} ${k}`;
     assert.ok(cl && cl.cordPath, `${tag}: the cord is drawn with its fitted path`);
+    if(k === 'aide-de-camp'){
+      // E128: the aide cord does not follow the seam: one braid straight down from the attachment (tests/engine-live-aiguillette).
+      assert.ok(cl.cordPath.pendant && cl.cordPath.pieces.length === 1 && cl.cordPath.top[0] === cl.cordPath.end[0], `${tag}: one vertical braid`);
+      checked++;
+      continue;
+    }
     const { pieces, top, bottom, stretch } = cl.cordPath;
     // Continuity: each piece starts where the one before ends, along the same tangent.
     assert.ok(pieces.length >= 3, `${tag}: ${pieces.length} pieces`);

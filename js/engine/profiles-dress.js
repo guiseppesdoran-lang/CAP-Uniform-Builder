@@ -1136,17 +1136,63 @@
     layer.clipOuter = true;
   }
 
-  // The Aide de Camp cord overlays carry the aiguillette (9.3.4): the loop hanging from the front of the shoulder and the cord and
-  // pencil tip down the chest beside the run. The sheet states the box that holds all of it as `aiguillette_pendant` {x, y, w_in, h_in}
-  // (x, y the top-left in hundredths of an inch, the size in inches; core reads only {x, y, w, h} landmarks, so it is read from the
-  // sheet's own JSON). It is registered as a piece the measurement labels and callouts keep clear of; the badges, ribbons and nameplates
-  // stay at their regulation places and the cord, drawn above them, lies over any that reach it.
-  function aiguilletteKeepClear(ctx, spec){
-    const lm = spec && spec.raw && spec.raw.landmarks && spec.raw.landmarks.aiguillette_pendant;
-    if(!lm || !(lm.w_in > 0) || !(lm.h_in > 0)) return null;
-    const rect = { x: lm.x / 100, y: lm.y / 100, w: lm.w_in, h: lm.h_in };
-    ctx.keepClear(rect, 'aiguillette_pendant');
-    return rect;
+  // The Aide de Camp cord (9.3.4; DAFI 36-2903 10.7.7.1). Ethan, LIVE13 E128, on the aiguillette that looped across the chest: "it falls with gravity... its only one
+  // thing, not 2. it should go straight down. not following the seam like the cord, but straight down." Doran's screenshot of the Class A with a full rack: "It's
+  // putting the cord behind the ribbons". So the drawing is ONE braid, hung from its attachment under the board at the top of the armhole seam, straight down with
+  // gravity, ending in its chrome tip: no loop on the chest, no second strand, and never over or behind the ribbon rack. The sizes are the sheet's own, measured on
+  // the aiguillette it draws (images/garments/*-cord-aide-de-camp): the braid is `dimensions.braid_thickness_in` (0.36 in, its outline 0.04 in wider, the strokes the
+  // renderer already draws for the shoulder cords), the pendant's drop is `dimensions.pendant_drop_in` (the aiguillette_pendant box's height, 5.9 to 6.2 in, from the
+  // attachment to the tip's end) and the tip is `aiguillette_tip` (1.15 in, the chrome tip group of the sheet turned from its 3.6 to 11.7 degree hang to the plumb
+  // line and set at the braid's end). The braid is the sheet's `cord` group on a vertical path; the sheet's loops, thin cords and whippings are left off.
+  // Fit guard: the braid's box (its width and the 0.1 in margin, from the attachment to the tip's end) must not meet any ribbon or miniature of the rack; where it
+  // would, the attachment moves outboard along the shoulder in 0.05 in steps, never the rack; where no place within 2 in clears it, a note says so.
+  const AIDE_MARGIN = 0.1, AIDE_SLIDE_MAX = 2;
+  function aideHangBox(ax, y0, w, drop){ return { x: ax - w / 2 - AIDE_MARGIN, y: y0, w: w + 2 * AIDE_MARGIN, h: drop }; }
+  const boxesMeet = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+  // Returns the pendant { attach, end, tipHead, box, drop, braidLen, width } in sheet inches, or null.
+  async function aiguilletteHang(ctx, spec){
+    const id = ctx.base && ctx.base.id, raw = spec.raw || {};
+    const dims = raw.dimensions || {}, lms = raw.landmarks || {}, tipLm = lms.aiguillette_tip;
+    const drop = dims.pendant_drop_in || (lms.aiguillette_pendant && lms.aiguillette_pendant.h_in);
+    const thick = dims.braid_thickness_in;
+    if(!(drop > 0) || !(thick > 0) || !tipLm || !tipLm.tips || !tipLm.tips[1]) return null;
+    const run = cordRun(id, core.landmark(spec, 'cord'));
+    if(!run) return null;
+    const ring = GARMENT_TOP[id], outline = ring ? ring.slice(1).concat([ring[0]]) : null;
+    const top = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact }).top;
+    const tipLen = tipLm.len_in, braidLen = drop - tipLen, width = thick + 0.04;
+    const racks = ctx.layers.filter(l => l.role === 'ribbon' || /^mini/.test(l.role || '')).map(l => core.layerBounds(l));
+    const centreX = ctx.base.w / 2, sign = top[0] >= centreX ? 1 : -1;
+    let ax = top[0], clear = false;
+    for(let d = 0; d <= AIDE_SLIDE_MAX + 1e-9; d += 0.05){
+      ax = top[0] + sign * d;
+      if(!racks.some(r => boxesMeet(aideHangBox(ax, top[1], width, drop), r))){ clear = true; break; }
+    }
+    if(!clear){
+      ax = top[0];
+      ctx.note('The Aide de Camp cord hangs straight down from the shoulder and cannot clear this rack within 2 in of the seam: it is drawn at the seam and lies over part of the rack (CAPR 39-1 9.3.4)');
+    }
+    const end = [ax, top[1] + braidLen];
+    return { attach: [ax, top[1]], moved: Math.abs(ax - top[0]), end, drop, braidLen, tipLen, width, box: aideHangBox(ax, top[1], width, drop), tip: tipLm.tips[1] };
+  }
+
+  async function aiguillettePendant(ctx, spec){
+    const layer = ctx.layers[ctx.layers.length - 1];
+    const hang = await aiguilletteHang(ctx, spec);
+    if(!layer || !hang) return false;
+    const id = ctx.base.id, A = hang.attach, E = hang.end;
+    layer.cordPath = { d: `M${A[0]},${A[1]}L${E[0]},${E[1]}`, pieces: [{ type: 'L', a: A, b: E }], points: [A, E], top: A, bottom: E, end: E, width: hang.width, exact: true, seam: null, pendant: true,
+      stretch: { from: hang.braidLen, to: hang.braidLen, dTop: [0, 0], dBottom: [0, 0] } };
+    layer.hideGroups = ['aiguillette-loop', 'aiguillette-hang'];
+    layer.clipSil = id;
+    layer.clipOuter = true;
+    // The chrome tip: the sheet's own tip group, turned plumb about its head and moved so the head is at the braid's end.
+    const head = [hang.tip.head_x / 100, hang.tip.head_y / 100], point = [hang.tip.x / 100, hang.tip.y / 100];
+    const rotate = Math.atan2(point[0] - head[0], point[1] - head[1]) * 180 / Math.PI;
+    ctx.layers.push(Object.assign(core.registerAtOrigin(spec, Z.epauletLayer - 0.49, 'cord'), { key: spec.id + ':tip', x: E[0] - head[0], y: E[1] - head[1], rotate, origin: { x: E[0], y: E[1] },
+      onlyGroups: ['aiguillette-tip-long'], clipSil: id, clipOuter: true, title: 'Aide de Camp cord, tip', pendant: hang }));
+    ctx.keepClear(hang.box, 'aiguillette_pendant');
+    return true;
   }
 
   // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
@@ -1161,8 +1207,8 @@
     if(own && ctx.has(own)){
       const s = await ctx.overlay(own, Z.epauletLayer - 0.5);
       if(s){
+        if(b.cord === 'aide_de_camp' && await aiguillettePendant(ctx, s)) return;
         fitCordLayer(ctx, s);
-        aiguilletteKeepClear(ctx, s);
       }
       return;
     }

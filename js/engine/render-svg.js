@@ -417,6 +417,8 @@
             });
           }
         }
+        // A cord sheet that draws more than the braid (the Aide de Camp aiguillette's loops and thin cords) has those groups left off here.
+        if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }else if(layer.hideGroups && !(layer.onlyGroups && layer.onlyGroups.length)){
         layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
       }else{
