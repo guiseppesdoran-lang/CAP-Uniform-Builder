@@ -283,7 +283,7 @@
       patchNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
       ribbonNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
       if(seq !== renderSeq) return null; // a newer render started
-      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, { pad: 0.4, measure: !!State.showMeasurements });
+      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, Object.assign({ pad: 0.4, measure: !!State.showMeasurements }, window.CAPUBMeasure ? window.CAPUBMeasure.renderOptions(State.uniform) : null));
       if(seq !== renderSeq) return null;
       host.querySelectorAll('svg.uniformSvg, .layer').forEach(n => n.remove());
       sizeStage(svg);

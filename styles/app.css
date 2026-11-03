@@ -574,6 +574,41 @@ header h1::after{
 .previewToolCard button[aria-pressed="true"]{background:var(--select-bg);border-color:var(--select-line)}
 .previewToolCard .zoomReadout{min-width:48px;text-align:center;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
 
+/* The measurement panel: a popover under the preview's toolbar; on a phone a sheet over the bottom of the screen (below). */
+.previewToolbar .measurePanel{
+  position:absolute;
+  top:100%;
+  right:var(--s5);
+  z-index:90;
+  width:min(340px,calc(100% - 2 * var(--s5)));
+  max-height:min(70vh,560px);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+  padding:var(--s3);
+  background:var(--panel);
+  border:1px solid var(--line-strong);
+  border-radius:var(--r);
+  box-shadow:0 10px 28px -12px rgba(0,0,0,.45);
+}
+.measurePanel[hidden]{display:none}
+.mpHead{display:flex;align-items:center;gap:var(--s2)}
+.mpHead strong{flex:1 1 auto;font-family:var(--font-head);font-size:var(--t-md)}
+.mpCount{font-size:var(--t-sm);color:var(--muted)}
+.mpHead .mpDone{width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
+.mpSwitch,.mpRow{display:flex;align-items:center;gap:var(--s2);margin:0;font-size:var(--t-sm);font-weight:400;color:var(--ink);cursor:pointer}
+.mpSwitch input,.mpRow input{flex:0 0 auto;width:18px;height:18px;margin:0}
+.mpBulk{display:flex;gap:var(--s2)}
+.mpBulk button{width:auto;min-height:34px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
+.mpList{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:var(--s1)}
+.mpGroup{margin:0 0 var(--s2);padding:0;border:0;min-width:0}
+.mpGroup legend{padding:0;margin:0 0 2px;font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
+.mpRow{min-height:32px;padding:2px 0;border-bottom:1px solid var(--line)}
+.mpName{flex:1 1 auto;min-width:0;line-height:1.2}
+.mpTimes{color:var(--muted)}
+.mpVal{flex:0 0 auto;font-weight:700;white-space:nowrap}
+.mpEmpty{margin:0}
+
 .capubToast{
   position:fixed;
   right:var(--s5);
@@ -983,6 +1018,12 @@ header h1::after{
   .previewToolCard .zoomReadout{min-width:40px}
   #previewCloseBtn{display:inline-flex;align-items:center}
   .previewToolCard[aria-label="Close the preview"]{order:-1}
+  /* The measurement panel is a sheet over the bottom of the screen, the preview still showing above it. */
+  .previewToolbar .measurePanel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:11100;width:auto;max-height:56vh;max-height:56dvh;padding:var(--s3) var(--s3) calc(var(--s3) + env(safe-area-inset-bottom,0px));border-width:1px 0 0;border-radius:var(--r-lg,12px) var(--r-lg,12px) 0 0;box-shadow:0 -10px 28px -12px rgba(0,0,0,.5)}
+  .mpHead .mpDone{min-height:44px}
+  .mpBulk button{min-height:44px}
+  .mpRow{min-height:44px}
+  .mpSwitch{min-height:44px}
 
   /* The steps. */
   .uniformGrid{grid-template-columns:minmax(0,1fr)}

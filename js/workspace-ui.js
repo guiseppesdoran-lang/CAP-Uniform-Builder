@@ -363,6 +363,7 @@
     safeBy('measureBtn').onclick=()=>{
       State.showMeasurements=!State.showMeasurements;
       safeBy('measureBtn').setAttribute('aria-pressed', String(!!State.showMeasurements));
+      window.CAPUBMeasure&&CAPUBMeasure.sync();
       window.CAPUBUniformView&&CAPUBUniformView.scheduleRender();
     };
   }
