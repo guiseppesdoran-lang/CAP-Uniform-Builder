@@ -42,11 +42,12 @@ const nodeStore = () => core.createSpecStore(manifest, p => Promise.resolve(JSON
 // ---- arguments ---------------------------------------------------------------------------------
 
 function parseArgs(argv){
-  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null, measure: false, clip: null };
+  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null, measure: false, clip: null, svg: false };
   for(let i = 0; i < argv.length; i++){
     const t = argv[i];
     if(t === '--all') a.all = true;
     else if(t === '--measure') a.measure = true;
+    else if(t === '--svg') a.svg = true;
     else if(t === '--clip'){ a.clip = String(argv[++i]).split(',').map(Number); if(a.clip.length !== 4 || a.clip.some(n => !Number.isFinite(n))) throw new Error('--clip x,y,w,h in inches'); }
     else if(t === '--out') a.out = argv[++i];
     else if(t === '--ppi') a.ppi = Number(argv[++i]);
@@ -63,6 +64,7 @@ const USAGE = `Usage:
   node scripts/render-builds.cjs --all --out DIR [--ppi 40] [--pad 0.4] [--only REGEX] [--jobs 4] [--measure]
   node scripts/render-builds.cjs builds.json --out DIR [same options]
   --clip x,y,w,h renders only that box of the scene (inches, scene coordinates) at --ppi, for close-ups of a large uniform sheet.
+  --svg also writes <name>.svg, the drawing as the page serializes it, its engraved font embedded (for another rasterizer: qlmanage -t renders it with WebKit).
   --measure draws the measurement overlay (the page's Measurements button) on every build; a build with
   opt.overlay: true gets it alone.`;
 
@@ -305,18 +307,19 @@ window.__warnings = [];
 ['warn', 'error'].forEach(k => { const o = console[k].bind(console); console[k] = (...a) => { window.__warnings.push(a.map(String).join(' ')); o(...a); }; });
 window.addEventListener('error', e => window.__warnings.push('error: ' + e.message));
 window.__ready = (async () => {
-  const E = CAPUBEngine; E.assetUrl = p => '/images/' + p;
+  const E = CAPUBEngine; E.assetUrl = p => '/images/' + p; E.fontUrl = f => '/vendor/fonts/' + f;
   const manifest = await fetch('/images/MANIFEST.json').then(r => r.json());
   window.__store = E.core.createSpecStore(manifest, p => fetch('/images/' + p).then(r => r.json()));
   return true;
 })();
-window.renderBuild = async function(build, ppi, pad, measure, clip){
+window.renderBuild = async function(build, ppi, pad, measure, clip, wantSvg){
   const E = CAPUBEngine, store = window.__store;
   window.__warnings.length = 0;
   const scene = await E.profiles.composeUniform(build, store);
   const b = scene.bounds;
   const widthPx = Math.ceil((b.w + 2 * pad) * ppi);
   const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx, measure: !!measure });
+  if(wantSvg) await E.renderSvg.embedFonts(svg);   // the saved markup stands alone, as the PNG export's does
   const heightPx = Math.ceil((b.h + 2 * pad) * ppi);
   svg.setAttribute('width', widthPx); svg.setAttribute('height', heightPx);
   let outW = widthPx, outH = heightPx;
@@ -329,7 +332,7 @@ window.renderBuild = async function(build, ppi, pad, measure, clip){
   await Promise.all(imgs.map(im => im.decode ? im.decode().catch(() => {}) : null));
   await (document.fonts && document.fonts.ready);
   await new Promise(r => setTimeout(r, 30)); // not rAF: it never fires in a background tab
-  return { w: outW, h: outH, layers: scene.layers.length, notes: scene.notes, warnings: window.__warnings.slice() };
+  return { w: outW, h: outH, layers: scene.layers.length, notes: scene.notes, warnings: window.__warnings.slice(), svg: wantSvg ? new XMLSerializer().serializeToString(svg) : null };
 };
 </script>`;
 
@@ -508,8 +511,9 @@ async function main(){
             viewBox: [b.x - args.pad, b.y - args.pad, b.w + 2 * args.pad, b.h + 2 * args.pad].map(n => +n.toFixed(4)),
             notes: scene.notes, conflicts: scene.conflicts || [], layers: scene.layers
           }, null, 1));
-          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))}, ${JSON.stringify(args.clip)})`);
+          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))}, ${JSON.stringify(args.clip)}, ${!!args.svg})`);
           r.px = [shot.w, shot.h];
+          if(args.svg && shot.svg){ r.svg = `${name}.svg`; fs.writeFileSync(path.join(args.out, r.svg), shot.svg); }
           r.warnings = shot.warnings;
           if(shot.layers !== scene.layers.length) r.warnings.push(`browser composed ${shot.layers} layers, node ${scene.layers.length}`);
           await chrome.cdp.send('Emulation.setDeviceMetricsOverride', { width: shot.w, height: shot.h, deviceScaleFactor: 1, mobile: false }, page.sessionId);

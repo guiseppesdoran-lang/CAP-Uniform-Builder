@@ -26,11 +26,14 @@
   // Last name on the coat's name tape and on any cap back tape the sheet draws: light silver block
   // capitals in the same lettering as the drawn CAP tape (7.1.1.2.3, 5.1.1.1.2.1, 5.2.1.1.2.1,
   // 7.1.1.8). The coat sheets draw 'CIVIL AIR PATROL' as Arial Bold outlines at a fixed em, 0.81 in (capitals 0.58 in
-  // tall) on every sheet whatever the tape's height, condensed by the sheet's own x/y scale, so the name on the coat's
-  // name tape takes that em and condense (Ethan: 'dynamic name in CAP-tape font'): the two tapes of a set have the
-  // same capital height and stroke. COAT_CAP_LETTERING is read from the sheets' cap-tape-lettering transforms
-  // (scale y x 100 glyph units = em; scale x / scale y = condense) and a test re-reads them; a sheet not in the
-  // table, and the caps' back tapes, which have no CAP lettering beside them, keep the em of 0.915 of the tape.
+  // tall, 0.716 of the em) on every sheet whatever the tape's height, condensed by the sheet's own x/y scale, so the name on the
+  // coat's name tape takes that CAPITAL HEIGHT and condense (Ethan: 'dynamic name in CAP-tape font'): the two tapes of a set have
+  // the same capital height and stroke. The name is set in the bundled engraved face (E121, compose: Ubuntu Bold, capitals 0.693 of
+  // its em), so it is sized by capital height, not by the em, to stand as tall as the sheet's Arial outlines. COAT_CAP_LETTERING is
+  // read from the sheets' cap-tape-lettering transforms (scale y x 100 glyph units = em; scale x / scale y = condense) and a test
+  // re-reads them; a sheet not in the table, and the caps' back tapes, which have no CAP lettering beside them, keep an em of 0.915
+  // of the tape.
+  const SHEET_CAP_OF_EM = 0.716;   // Arial Bold capitals, the sheets' outlines
   const COAT_CAP_LETTERING = {
     'garment-ocp-coat-abu-cut': { em: 0.81, condense: 0.5728 },
     'garment-abu-coat': { em: 0.81, condense: 0.5457 },
@@ -47,7 +50,7 @@
       ctx.keepClear(r, lm);
       const inset = 0.25 * r.h;
       const cap = lm === 'name_tape' ? COAT_CAP_LETTERING[ctx.base.id] : null;
-      C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, { color: TAPE_TEXT, size: cap ? cap.em : 0.915 * r.h, condense: cap ? cap.condense : 0.546, advance: 0.72, font: 'Arial, Helvetica, sans-serif', key: 'text:' + lm });
+      C.nameText(ctx, b.name.last, { x: r.x + inset, y: r.y, w: r.w - 2 * inset, h: r.h }, Object.assign({ color: TAPE_TEXT, condense: cap ? cap.condense : 0.546, key: 'text:' + lm }, cap ? { capHeight: cap.em * SHEET_CAP_OF_EM } : { size: 0.915 * r.h }));
     }
   }
 

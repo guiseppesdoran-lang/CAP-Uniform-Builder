@@ -9,6 +9,7 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
 const P = require('../js/engine/profiles.js');
+const C = require('../js/engine/compose.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 const HARNESS = require('../scripts/render-builds.cjs');
@@ -39,11 +40,13 @@ test('the name on the OCP, ABU and CFU name tape has the CAP tape lettering\'s c
       const t = scene.layers.find(l => l.key === 'text:name_tape');
       assert.ok(t, `${uniform} ${gender}: name on the name tape`);
       const label = `${uniform} ${gender}`;
-      assert.ok(Math.abs(t.size - want.em) < 0.005, `${label}: em ${t.size} against the CAP lettering's ${want.em.toFixed(3)}`);
+      // E121: the name is set in the bundled engraved face (Ubuntu Bold, capitals 0.693 of its em), sized so its capitals stand as tall as the sheet's Arial outlines
+      // (0.716 of their 0.81 in em): the em differs, the capital height and the condense are the sheet's.
+      assert.ok(Math.abs(t.size * C.CAP_HEIGHT - want.capHeight) < 0.005, `${label}: capital height ${(t.size * C.CAP_HEIGHT).toFixed(3)} in against the CAP tape's ${want.capHeight.toFixed(3)} in`);
+      assert.ok(Math.abs(t.size - want.capHeight / C.CAP_HEIGHT) < 0.005, `${label}: em ${t.size.toFixed(3)} is the CAP tape's capital height over the face's cap height`);
       assert.ok(Math.abs(t.condense - want.condense) < 0.002, `${label}: condense ${t.condense} against ${want.condense.toFixed(4)}`);
-      // Arial Bold capitals are 0.716 em tall.
-      assert.ok(Math.abs(t.size * 0.716 - want.capHeight) < 0.005, `${label}: capital height ${(t.size * 0.716).toFixed(3)} in against the CAP tape's ${want.capHeight.toFixed(3)} in`);
       assert.equal(t.weight || 700, 700, `${label}: bold, as the lettering`);
+      assert.equal(t.font, undefined, `${label}: no face named on the layer: the renderer's bundled engraved face`);
     }
   }
 });

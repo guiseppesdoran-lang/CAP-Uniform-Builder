@@ -11,6 +11,42 @@
   const symbolCache = new Map();   // asset id -> Promise<{viewBox, inner}>
   const rasterCache = new Map();   // url -> Promise<dataURL>
 
+  // The engraved lettering's face (LIVE13 E121, Ethan: "the uniform generation shouldn't differ between mobile and PC. the name on the nameplate is
+  // shifted up on mobile but normal on PC"): Ubuntu Bold, bundled (vendor/fonts, the CAP Brand Guide kit, Ubuntu Font Licence 1.0 beside it), declared
+  // by the drawing itself in a <style> in its defs so the page draws the plate with it wherever the page's own stylesheet is not loaded (the render
+  // harness), and embedded as a data: URL in the PNG export (embedFonts): an SVG rasterized through an <img> loads no external file, so without the
+  // embedding the export fell back to the system face. Every engraved <text> is laid out on its baseline (cap-height arithmetic, below), never on
+  // dominant-baseline, which Safari computes from the substituted face's ascent and descent.
+  // capHeight: OS/2 sCapHeight over unitsPerEm of the file (scripts/font-metrics.cjs; a test compares it with compose.CAP_HEIGHT).
+  const ENGRAVED_FONT = { family: 'Ubuntu', weight: 700, file: 'Ubuntu-Bold.woff2', fallback: 'Arial, Helvetica, sans-serif', capHeight: 0.693 };
+  const ENGRAVED_FAMILY = `${ENGRAVED_FONT.family}, ${ENGRAVED_FONT.fallback}`;
+  function fontUrl(file){
+    const E = root.CAPUBEngine || {};
+    return typeof E.fontUrl === 'function' ? E.fontUrl(file) : 'vendor/fonts/' + file;
+  }
+  const fontFaceCss = src => `@font-face{font-family:"${ENGRAVED_FONT.family}";font-weight:${ENGRAVED_FONT.weight};font-style:normal;src:url("${src}") format("woff2");}`;
+  const fontDataCache = new Map();  // file -> Promise<data URL>
+  function fontDataUrl(file){
+    if(fontDataCache.has(file)) return fontDataCache.get(file);
+    const p = fetch(fontUrl(file)).then(r => { if(!r.ok) throw new Error(`${r.status} ${file}`); return r.arrayBuffer(); }).then(buf => {
+      const bytes = new Uint8Array(buf);
+      let bin = '';
+      for(let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      return 'data:font/woff2;base64,' + btoa(bin);
+    });
+    fontDataCache.set(file, p);
+    p.catch(() => fontDataCache.delete(file));
+    return p;
+  }
+  // Replace the drawing's font declaration with one that carries the font's bytes, so the markup stands alone (the PNG export, a saved SVG).
+  async function embedFonts(svg){
+    const style = svg.querySelector('style.engraved-fonts');
+    if(!style) return svg;
+    try{ style.textContent = fontFaceCss(await fontDataUrl(ENGRAVED_FONT.file)); }
+    catch(e){ console.warn('[render] engraved font not embedded', e); }
+    return svg;
+  }
+
   function assetUrl(path){
     const E = root.CAPUBEngine || {};
     if(typeof E.assetUrl === 'function') return E.assetUrl(path);
@@ -180,7 +216,7 @@
       const c = co.caption, g = el('g', { class: 'measure-callout-caption' });
       g.appendChild(el('rect', { x: fmt(c.x), y: fmt(c.y), width: fmt(c.w), height: fmt(c.h), rx: fmt(Math.min(c.h / 2, 3 * px)), fill: MEASURE.halo, 'fill-opacity': 0.88, stroke: MEASURE.color, 'stroke-width': fmt(0.7 * px) }));
       c.lines.forEach((t, i) => {
-        const text = el('text', { x: fmt(c.x + c.w / 2), y: fmt(c.y + c.h / 2 + (i - (c.lines.length - 1) / 2) * c.size * 1.2), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(c.size), fill: MEASURE.color });
+        const text = el('text', { x: fmt(c.x + c.w / 2), y: fmt(c.y + c.h / 2 + (i - (c.lines.length - 1) / 2) * c.size * 1.2 + ENGRAVED_FONT.capHeight * c.size / 2), 'text-anchor': 'middle', 'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(c.size), fill: MEASURE.color });
         text.textContent = t;
         g.appendChild(text);
       });
@@ -225,15 +261,15 @@
       const L = d.label, size = L.size || fontPx * px, capSize = L.captionSize || size * 0.8, caption = L.caption || [], padY = (L.h - size * 1.25 - caption.length * capSize * 1.2) / 2;
       g.appendChild(el('rect', { x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(Math.min(L.h / 2, 5 * px)), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) }));
       const text = el('text', {
-        x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 / 2), 'text-anchor': 'middle', 'dominant-baseline': 'central',
-        'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 700, 'font-size': fmt(size), fill: MEASURE.color
+        x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 / 2 + ENGRAVED_FONT.capHeight * size / 2), 'text-anchor': 'middle',
+        'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(size), fill: MEASURE.color
       });
       text.textContent = L.text;
       g.appendChild(text);
       caption.forEach((t, i) => {
         const c = el('text', {
-          class: 'caption', x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 + (i + 0.5) * capSize * 1.2), 'text-anchor': 'middle', 'dominant-baseline': 'central',
-          'font-family': 'Arial, Helvetica, sans-serif', 'font-weight': 500, 'font-size': fmt(capSize), fill: MEASURE.caption
+          class: 'caption', x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 + (i + 0.5) * capSize * 1.2 + ENGRAVED_FONT.capHeight * capSize / 2), 'text-anchor': 'middle',
+          'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(capSize), fill: MEASURE.caption
         });
         c.textContent = t;
         g.appendChild(c);
@@ -291,6 +327,9 @@
     svg.setAttribute('xmlns:xlink', XLINK_NS);
     const defs = el('defs');
     svg.appendChild(defs);
+    const fontStyle = el('style', { class: 'engraved-fonts' });
+    fontStyle.textContent = fontFaceCss(fontUrl(ENGRAVED_FONT.file));
+    defs.appendChild(fontStyle);
 
     // Ribbon and medal devices are drawn from a copy with an opaque metal base, darker metal and a thin dark edge
     // (awards.deviceInner), so they read on any ribbon colour. The copy is a separate symbol; overflow is visible
@@ -464,11 +503,12 @@
         // A flat-filled polygon in scene inches (the slide-on epaulet sleeve over its strap and its two shading bands).
         node = el('polygon', { points: layer.points.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' '), fill: layer.fill || 'none', 'fill-opacity': layer.fillOpacity != null ? layer.fillOpacity : null, stroke: layer.stroke || null, 'stroke-width': layer.stroke ? fmt(layer.strokeWidth || 0.02) : null, 'stroke-linejoin': 'round' });
       }else if(layer.type === 'text'){
+        // The layer's y is the capitals' middle; the text sits on its baseline, half a cap height lower (E121). No dominant-baseline: Safari
+        // computes that from the ascent and descent of whatever face it substitutes.
         node = el('text', {
-          x: fmt(layer.x), y: fmt(layer.y),
+          x: fmt(layer.x), y: fmt(layer.y + ENGRAVED_FONT.capHeight * layer.size / 2),
           'text-anchor': layer.anchor || 'middle',
-          'dominant-baseline': 'central',
-          'font-family': layer.font || 'Arial, Helvetica, sans-serif',
+          'font-family': layer.font || ENGRAVED_FAMILY,
           'font-weight': layer.weight || 700,
           'font-size': fmt(layer.size),
           fill: layer.color || '#d8dbe0',
@@ -600,12 +640,12 @@
     return svg;
   }
 
-  // Rasterize an <svg> to a canvas. Fonts in <text> are the system sans-serif, which an SVG image
-  // can use without loading anything.
-  function svgToCanvas(svg, widthPx){
+  // Rasterize an <svg> to a canvas. An SVG drawn through an <img> loads no file, so the engraved face travels inside the markup (embedFonts).
+  async function svgToCanvas(svg, widthPx){
     const vb = svg.getAttribute('viewBox').split(/\s+/).map(Number);
     const w = Math.round(widthPx), h = Math.round(widthPx * vb[3] / vb[2]);
     const clone = svg.cloneNode(true);
+    await embedFonts(clone);   // the <img> an SVG is rasterized through loads no external font (E121)
     clone.setAttribute('width', w);
     clone.setAttribute('height', h);
     const markup = new XMLSerializer().serializeToString(clone);
@@ -629,5 +669,5 @@
   }
 
   root.CAPUBEngine = root.CAPUBEngine || {};
-  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, loadSymbol, measureNodes, cordPathToArt, hashText, scopeIds };
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, embedFonts, ENGRAVED_FONT, loadSymbol, measureNodes, cordPathToArt, hashText, scopeIds };
 })(typeof self !== 'undefined' ? self : this);

@@ -249,14 +249,16 @@
     const str = String(text || '').trim();
     if(!str) return null;
     const value = o.upper === false ? str : str.toUpperCase();
-    const size = o.size || Math.min(o.maxH || zone.h * 0.8, zone.h * 0.9);
-    // Approximate advance of bold sans capitals: 0.68 em, times any horizontal condensing (the
+    // `o.capHeight`: the capitals' height in inches (the field name tapes match the sheet's own CAP tape lettering); else `o.size`, the em; else the zone.
+    const size = o.capHeight ? o.capHeight / CAP_HEIGHT : (o.size || Math.min(o.maxH || zone.h * 0.8, zone.h * 0.9));
+    // The lettering's natural width from the face's own advances (E121; it was a guessed 0.68 em per capital), times any horizontal condensing (the
     // tape lettering is condensed); shrink to fit.
-    const natural = value.length * size * (o.advance || 0.68) * (o.condense || 1);
+    const natural = textAdvance(value) * size * (o.condense || 1);
     const fitWidth = natural > zone.w ? zone.w : null;
     return ctx.text({
       text: value,
       x: zone.x + zone.w / 2,
+      // The capitals' middle on the zone's middle; the renderer sets the baseline from the face's metrics (E121).
       y: zone.y + zone.h / 2,
       size,
       w: Math.min(natural, zone.w),
@@ -272,19 +274,26 @@
     });
   }
 
-  // Engraved lettering on a nameplate (D30). The lettering is Arial Bold capitals, the face the CAP
-  // tape and plate sheets are drawn in, and it is sized from real metrics rather than a guessed
-  // em: advance widths per glyph and the cap height, both measured in Chrome at 1000 px
-  // (canvas measureText, 700 weight Arial: capital H advance 722, cap height 716 of the 1000 em).
+  // Engraved lettering on a nameplate (D30; LIVE13 E121). Ethan: "the uniform generation shouldn't differ between mobile and PC. the name on the
+  // nameplate is shifted up on mobile but normal on PC." The lettering was Arial through 'dominant-baseline: central', and Safari on iOS lays that
+  // baseline out from the ascent and descent of whatever face it substitutes for Arial, so the name rode high on phones. Now every engraved text is
+  // one bundled face, Ubuntu Bold (vendor/fonts/Ubuntu-Bold.woff2, the CAP Brand Guide kit; the other bundled face, Rajdhani, is condensed and
+  // squared, unlike the regular-width block capitals engraved on a CAP plate), declared in the drawing itself and embedded in the PNG export
+  // (render-svg). The layer's y stays the capitals' MIDDLE (the engine's frame: bounds, measurements, tests); the renderer draws the text on its
+  // BASELINE (no dominant-baseline), baseline = middle + CAP_HEIGHT * size / 2, so the capitals' middle lands on the zone's middle by arithmetic
+  // every renderer agrees on. The metrics are the font file's own (scripts/font-metrics.cjs reads them; a test compares): 1000 units per em,
+  // capitals 693 units tall, the advance of each glyph below.
+  const ENGRAVED_FONT = 'Ubuntu';   // the family the renderer declares (render-svg ENGRAVED_FONT: Ubuntu Bold from vendor/fonts)
   const GLYPH_ADV = {
-    A: 722, B: 722, C: 722, D: 722, E: 667, F: 611, G: 778, H: 722, I: 278, J: 556, K: 722, L: 611, M: 833,
-    N: 722, O: 778, P: 667, Q: 778, R: 722, S: 667, T: 611, U: 722, V: 667, W: 944, X: 667, Y: 667, Z: 611,
-    0: 556, 1: 556, 2: 556, 3: 556, 4: 556, 5: 556, 6: 556, 7: 556, 8: 556, 9: 556,
-    ' ': 278, '-': 333, "'": 238, '.': 278, ',': 278
+    0: 568, 1: 568, 2: 568, 3: 568, 4: 568, 5: 568, 6: 568, 7: 568, 8: 568, 9: 568, A: 721, B: 672, C: 648,
+    D: 737, E: 606, F: 574, G: 702, H: 734, I: 316, J: 529, K: 684, L: 563, M: 897, N: 756, O: 790, P: 644,
+    Q: 790, R: 667, S: 582, T: 614, U: 707, V: 722, W: 948, X: 675, Y: 661, Z: 610,
+    " ": 240, "-": 340, "'": 247, ".": 246, ",": 246
   };
-  const CAP_HEIGHT = 0.716;       // capital letters, in em
-  const CENTRAL_BASELINE = 0.3465; // 'dominant-baseline: central' sits (ascent 0.905 - descent 0.212) / 2 above the baseline
-  const GLYPH_FALLBACK = 722;      // accented and other capitals
+  const CAP_HEIGHT = 0.693;        // capital letters, in em (OS/2 sCapHeight 693 of 1000)
+  const GLYPH_FALLBACK = 721;      // accented and other capitals: the A
+  // The baseline that puts the capitals' middle on `middleY` at `size` em.
+  function baselineFor(middleY, size){ return middleY + CAP_HEIGHT * size / 2; }
 
   function textAdvance(text){
     let sum = 0;
@@ -315,14 +324,14 @@
     const layer = ctx.text({
       text: value,
       x: zone.x + zone.w / 2,
-      // The capitals' middle on the zone's middle (the baseline 'central' is the em box's middle).
-      y: zone.y + zone.h / 2 + (CAP_HEIGHT / 2 - CENTRAL_BASELINE) * size,
+      // The capitals' middle on the zone's middle; the renderer sets the baseline from the face's metrics (E121).
+      y: zone.y + zone.h / 2,
       size,
       w: width * condense,
       h: capH,
       color: o.color || '#d8dbe0',
       weight: 700,
-      font: o.font || 'Arial, Helvetica, sans-serif',
+      font: o.font || null,
       fitWidth: width,
       condense: condense < 1 ? condense : null,
       key: o.key || 'text:name',
@@ -664,5 +673,5 @@
     }
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict };
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict };
 });

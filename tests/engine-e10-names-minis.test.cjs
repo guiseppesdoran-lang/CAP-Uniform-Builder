@@ -39,11 +39,25 @@ const FILL = 0.9;
 
 // ---- the metrics ----------------------------------------------------------------------------------
 
-test('lettering metrics: Arial Bold advances (per 1000 em) and the 0.716 cap height', () => {
-  near(C.textAdvance('H'), 0.722, 1e-9, 'H');
-  near(C.textAdvance('DORAN'), 3.666, 1e-9, 'DORAN');
-  near(C.textAdvance('A-B'), 0.722 + 0.333 + 0.722, 1e-9, 'hyphen');
-  near(C.CAP_HEIGHT, 0.716, 1e-9, 'cap height');
+// LIVE13 E121 (Ethan: "the uniform generation shouldn't differ between mobile and PC. the name on the nameplate is shifted up on mobile but normal on PC"):
+// the engraved lettering is the bundled Ubuntu Bold, its metrics the font file's own, and its y the baseline: the capitals' middle lands on the zone's
+// middle by arithmetic (baseline = middle + cap height / 2), not by a renderer's 'dominant-baseline: central'.
+test('lettering metrics: the advances and cap height in compose.js are those of vendor/fonts/Ubuntu-Bold.woff2 (scripts/font-metrics.cjs)', () => {
+  const FM = require('../scripts/font-metrics.cjs');
+  const m = FM.metrics(path.join(__dirname, '..', 'vendor', 'fonts', 'Ubuntu-Bold.woff2'));
+  assert.equal(m.fullName, 'Ubuntu Bold');
+  assert.equal(m.unitsPerEm, 1000);
+  assert.deepEqual(C.GLYPH_ADV, m.advances, 'the advance table is the font file\'s');
+  near(C.CAP_HEIGHT, m.os2.capHeight / m.unitsPerEm, 1e-9, 'cap height from OS/2');
+  assert.equal(C.ENGRAVED_FONT, 'Ubuntu');
+  near(C.textAdvance('H'), 0.734, 1e-9, 'H');
+  near(C.textAdvance('DORAN'), (737 + 790 + 667 + 721 + 756) / 1000, 1e-9, 'DORAN');
+  near(C.textAdvance('A-B'), (721 + 340 + 672) / 1000, 1e-9, 'hyphen');
+  near(C.baselineFor(10, 0.4), 10 + 0.693 * 0.2, 1e-9, 'baseline below the middle by half the cap height');
+  global.self = global.self || global;
+  require('../js/engine/render-svg.js');
+  assert.equal(global.self.CAPUBEngine.renderSvg.ENGRAVED_FONT.capHeight, C.CAP_HEIGHT, 'the renderer\'s cap height is compose\'s');
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'vendor', 'fonts', 'UFL-Ubuntu.txt')), 'the Ubuntu Font Licence travels with the font');
 });
 
 function fakeCtx(){
@@ -57,12 +71,13 @@ test('plateName: a name that fits fills the zone height at normal width, centred
   const r = C.plateName(ctx, 'Doran', zone, {});
   near(r.capH, FILL * zone.h, 1e-9, 'cap height');
   assert.equal(r.condense, 1);
-  near(r.width, 3.666 * r.size, 1e-9, 'width is the measured advance');
+  near(r.width, C.textAdvance('DORAN') * r.size, 1e-9, 'width is the measured advance');
   assert.ok(r.width < zone.w);
   const l = r.layer;
   near(l.x, zone.x + zone.w / 2, 1e-9, 'centred across');
-  // 'central' baseline is the em box middle; the capitals' middle is moved onto the zone middle.
-  near(l.y - zone.y - zone.h / 2, (0.358 - 0.3465) * l.size, 1e-9, 'cap middle on the zone middle');
+  // y is the capitals' middle, on the zone's middle; the renderer's baseline is half a cap height below it (E121, tests/engine-r5-engraved-font.test.cjs).
+  near(l.y - zone.y - zone.h / 2, 0, 1e-9, 'cap middle on the zone middle');
+  assert.equal(l.font, null, 'no face named on the layer: the renderer\'s bundled engraved face');
   assert.equal(l.fitWidth, r.width, 'textLength is the measured width, so the font cannot widen it');
 });
 
@@ -124,7 +139,7 @@ for(const [uniform, sex, membership, rank, plateKey, plateId, single] of PLATES)
       assert.ok(t.w <= zone.w + 1e-6, `width ${t.w.toFixed(3)} within the zone ${zone.w.toFixed(3)}`);
       near(t.x, zone.x + zone.w / 2, 1e-6, 'centred across the zone');
       // The capitals' middle is the zone's middle.
-      near(t.y - (0.358 - 0.3465) * t.size, zone.y + zone.h / 2, 1e-6, 'centred up and down');
+      near(t.y, zone.y + zone.h / 2, 1e-6, 'centred up and down');
       if(last !== 'Vandenberg-Castellano') near(t.h, FILL * zone.h, 1e-6, 'a name that fits fills the zone height');
       else assert.ok(t.h < FILL * zone.h, 'a long name shrinks');
       // It is a real size: Doran on the 3-line plate is well over the old 0.17 in em.
@@ -232,3 +247,13 @@ for(const sex of ['male', 'female']){
     assert.ok(second.some(l => /aviator|blues-class-b|shirt/.test(l.id || '')), 'shirt');
   });
 }
+
+// E121: no renderer lays the engraved lettering out from its own idea of a baseline.
+test('the renderer sets every text on its baseline from the face\'s cap height, never dominant-baseline, and declares the bundled face', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'render-svg.js'), 'utf8');
+  assert.ok(!/dominant-baseline/.test(src.replace(/\/\/.*$/gm, '')), 'no dominant-baseline attribute is drawn');
+  assert.match(src, /y: fmt\(layer\.y \+ ENGRAVED_FONT\.capHeight \* layer\.size \/ 2\)/);
+  assert.match(src, /Ubuntu-Bold\.woff2/);
+  assert.match(src, /embedFonts\(clone\)/, 'the PNG export embeds the face');
+  assert.ok(fs.existsSync(path.join(root, 'vendor', 'fonts', 'Ubuntu-Bold.woff2')));
+});
