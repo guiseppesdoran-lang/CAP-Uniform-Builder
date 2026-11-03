@@ -180,11 +180,13 @@
   // last name only: the Corporate Service Dress nameplate is "last name and state, region, or national" (4.2.3.1.1.2, 4.2.4.1.1.2), the aviator shirt's nametag "the last name
   // engraved" (4.2.5.1.2.1, 4.2.6.2.6.1), the Class A and B tags and the field uniforms' tapes the last name too. So the First name field is offered on those uniforms
   // only, and the line under the fields says which ones use the full name and what this uniform's name is.
-  const FULL_NAME = ['polo', ...FLIGHT];
-  const FULL_NAME_PARA = { polo: '5.3.2.1.1', flight_suit: '8.2.4.1', corporate_flight_suit: '8.3.4.1' };
-  const NAME_PARA = { aviator_blazer: '4.2.3.1.1.2, 4.2.4.1.1.2', semi_formal: 'no nametag, 4.2.1, 4.2.2', aviator: '4.2.5.1.2.1, 4.2.6.2.6.1', blues_a: '4.1.5.2.2.2, 4.1.9.4.2', blues_b: '4.1.11.1.1.2.1, 4.1.12.2.4', ocp: '7.1.1.2.3', abu: '5.1.1.1.2.1', corporate_field: '5.2.1.1.2.1', mess_dress: 'no nametag, 4.1.1.1.2.1' };
+  // 2 November 2026 (Ethan, on the corporate nameplate): the Corporate Service Dress nameplate (4.2.3.1.1.2, 4.2.4.1.1.2) takes the first name too, when one is entered, ahead of the last name; its
+  // state, region or national line is unchanged. The aviator shirt's own nametag (4.2.5.1.2.1, 4.2.6.2.6.1) and every other tag and tape stay last name only.
+  const FULL_NAME = ['polo', ...FLIGHT, 'aviator_blazer'];
+  const FULL_NAME_PARA = { polo: '5.3.2.1.1', flight_suit: '8.2.4.1', corporate_flight_suit: '8.3.4.1', aviator_blazer: '4.2.3.1.1.2, 4.2.4.1.1.2' };
+  const NAME_PARA = { semi_formal: 'no nametag, 4.2.1, 4.2.2', aviator: '4.2.5.1.2.1, 4.2.6.2.6.1', blues_a: '4.1.5.2.2.2, 4.1.9.4.2', blues_b: '4.1.11.1.1.2.1, 4.1.12.2.4', ocp: '7.1.1.2.3', abu: '5.1.1.1.2.1', corporate_field: '5.2.1.1.2.1', mess_dress: 'no nametag, 4.1.1.1.2.1' };
   function nameHint(u){
-    const all = 'The full name is worn on the polo (5.3.2.1.1) and the flight duty uniforms (8.2.4.1, 8.3.4.1); every other uniform shows the last name only.';
+    const all = 'The full name is worn on the polo (5.3.2.1.1), the flight duty uniforms (8.2.4.1, 8.3.4.1) and the Corporate Service Dress nameplate (4.2.3.1.1.2, 4.2.4.1.1.2); every other uniform shows the last name only.';
     if(FULL_NAME.includes(u)) return `This uniform shows the first and last name (CAPR 39-1 ${FULL_NAME_PARA[u]}). ${all}`;
     return `This uniform shows the last name only${NAME_PARA[u] ? ' (CAPR 39-1 ' + NAME_PARA[u] + ')' : ''}. ${all}`;
   }

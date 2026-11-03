@@ -2516,9 +2516,14 @@
         if(Math.max(right, left) > 0.1) ctx.measure(right >= left ? { x: plate.x + plate.w, y: plate.y } : { x: plate.x, y: plate.y }, right >= left ? { x: pocket.x + pocket.w, y: pocket.y } : { x: pocket.x, y: pocket.y }, 'even with', { side: { x: 0, y: -1 }, caption: 'nameplate top to pocket top' });
       }
       if(b.name.show){
-        // Last name and state (4.2.3.1.1.2).
+        // First name (when one is given) and last name, and the state (4.2.3.1.1.2, 4.2.4.1.1.2). 2 November 2026 (Ethan): the plate takes the first name ahead of the last, in the same lettering
+        // and zone; a name too long for the zone is condensed, then set smaller (C.plateName), and the note says so.
         const nameZone = H.pieceRect(plate, ps, 'name');
-        if(nameZone && b.name.last) C.plateName(ctx, b.name.last, nameZone, { color: PLATE_WHITE, key: 'text:name' });
+        const plateText = [b.name.first, b.name.last].map(x => String(x || '').trim()).filter(Boolean).join(' ');
+        if(nameZone && b.name.last){
+          const put = C.plateName(ctx, plateText, nameZone, { color: PLATE_WHITE, key: 'text:name' });
+          if(put && put.capH < nameZone.h * 0.9 - 1e-6 && String(b.name.first || '').trim()) ctx.note('The name is set smaller to fit the nameplate (CAPR 39-1 4.2.3.1.1.2, 4.2.4.1.1.2)');
+        }
         const stateZone = H.pieceRect(plate, ps, 'state');
         if(stateZone && b.name.state) C.plateName(ctx, b.name.state, stateZone, { color: PLATE_WHITE, key: 'text:state' });
       }

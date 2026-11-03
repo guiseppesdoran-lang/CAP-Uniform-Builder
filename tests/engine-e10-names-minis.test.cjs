@@ -150,7 +150,7 @@ for(const [uniform, sex, membership, rank, plateKey, plateId, single] of PLATES)
 
 for(const sex of ['male', 'female']){
   test(`aviator_blazer ${sex}: the name and the state are sized from the blazer plate's zones`, async () => {
-    const scene = await P.composeUniform(build('aviator_blazer', sex, 'senior', 'Capt', 'Doe', { name: { first: 'Pat', last: 'Doe', state: 'New York', show: true } }), store);
+    const scene = await P.composeUniform(build('aviator_blazer', sex, 'senior', 'Capt', 'Doe', { name: { first: '', last: 'Doe', state: 'New York', show: true } }), store);
     const plate = scene.layers.find(l => l.key === 'nametag' && l.id === 'nameplate-blazer-adult');
     assert.ok(plate, 'blazer plate');
     for(const [lm, key] of [['name', 'text:name'], ['state', 'text:state']]){
@@ -163,6 +163,7 @@ for(const sex of ['male', 'female']){
   });
 }
 
+// 2 November 2026: with a first name the name line is FIRST LAST in the same zone, condensed and then set smaller to fit (tests/engine-blazer-nameplate-first-name.test.cjs).
 test('the blazer plate\'s long name stays inside the name zone', async () => {
   const scene = await P.composeUniform(build('aviator_blazer', 'male', 'senior', 'Capt', 'Vandenberg-Castellano'), store);
   const plate = scene.layers.find(l => l.key === 'nametag' && l.id === 'nameplate-blazer-adult');

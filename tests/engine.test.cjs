@@ -137,14 +137,16 @@ test('hats are drawn on top of the uniform, with the right device', async () => 
   assert.equal(layersBy(mess, l => l.role === 'hat').length, 0, 'no headgear with mess dress');
 });
 
-test('the corporate blazer nameplate sits straight across from the left breast pocket, last name only, chaplain badge above (4.2.3.1.1.2-3)', async () => {
+test('the corporate blazer nameplate sits straight across from the left breast pocket, first and last name (last name alone when no first is given), chaplain badge above (4.2.3.1.1.2-3)', async () => {
   const scene = await P.composeUniform(build('aviator_blazer', 'senior', 'Col', { badges: [{ id: 'christian_chaplin' }] }), store());
   const plate = layersBy(scene, l => l.key === 'nametag')[0];
   // Figure 4.14: on the wearer's left (the picture's right), over the crest on the left breast pocket (LIVE12 E52).
   assert.ok(plate.x + plate.w / 2 > 12.761, 'wearer\'s left (viewer\'s right) of the centre line');
   assert.ok(Math.abs(plate.x + plate.w / 2 - 18.2475) < 0.01, 'centred over the crest and the pocket');
   assert.ok(Math.abs(plate.y - 12.377) < 0.01, 'top even with the pocket top');
-  assert.equal(layersBy(scene, l => l.key === 'text:name')[0].text, 'DOE');
+  assert.equal(layersBy(scene, l => l.key === 'text:name')[0].text, 'PAT DOE');
+  const lastOnly = await P.composeUniform(build('aviator_blazer', 'senior', 'Col', { name: { first: '', last: 'Doe', show: true } }), store());
+  assert.equal(layersBy(lastOnly, l => l.key === 'text:name')[0].text, 'DOE');
   const chaplain = layersBy(scene, l => l.key === 'badge:christian_chaplin')[0];
   assert.ok(Math.abs(plate.y - (chaplain.y + chaplain.h) - 0.5) < 0.001);
 });

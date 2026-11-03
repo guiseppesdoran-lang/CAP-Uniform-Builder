@@ -69,7 +69,7 @@ test('the page builds the polo options with defaults and asks for the first name
   const view = read('js/uniform-view.js');
   assert.match(view, /poloShirt: 'embroidered', poloCut: '', poloName: true, poloMark: 'badge', dutyTitle: ''/);
   assert.match(read('js/garment-options.js'), /first\.hidden = !FULL_NAME\.includes\(u\)/);
-  assert.match(read('js/garment-options.js'), /const FULL_NAME = \['polo', \.\.\.FLIGHT\]/);   // E131: the polo and the flight duty uniforms
+  assert.match(read('js/garment-options.js'), /const FULL_NAME = \['polo', \.\.\.FLIGHT, 'aviator_blazer'\]/);   // E131: the polo and the flight duty uniforms; 2 November 2026 the Corporate Service Dress nameplate
   assert.match(read('js/wiring.js'), /BADGE_POSITIONS = \['aviation', 'over-pocket', 'service', 'pocket', 'polo', 'tag'\]/);
   assert.match(read('js/badge-rules.js'), /allowsBadgeFamily\(State\.uniform, family\)/);
 });
