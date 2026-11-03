@@ -49,7 +49,7 @@ test('no patch tile text carries an id, a file name, a slot constant or a pixel 
             assert.ok(t.includes(`Worn: ${label}`), `the place is spelled out: ${where}`);
           }
         }else{
-          assert.match(t, /not authorized on|only\.|OCP sleeve form/i, `the reason is in words: ${where}`);
+          assert.match(t, /not authorized on|only[.:]|OCP sleeve form/i, `the reason is in words: ${where}`);
         }
         tiles++;
       }
@@ -73,9 +73,11 @@ test('places are spelled out per uniform: the sleeve and pocket names of CAPR 39
   assert.equal(label('nesa_patch', 'flight_suit'), 'Right sleeve, on the loop tape');
   assert.equal(label('nesa_patch', 'corporate_flight_suit'), 'Right sleeve, on the loop tape');
   // The reasons are words too: no uniform key in capitals, no membership key.
-  assert.equal(ev(`getPatchAuthorizationReason('national_staff_ocp_patch', 'abu', 'senior')`), 'Not authorized on the ABU.');
+  assert.equal(ev(`getPatchAuthorizationReason('dog_patch', 'abu', 'senior')`), 'This patch is not authorized on ABUs.');
+  assert.equal(ev(`getPatchAuthorizationReason('nesa_ocp_patch', 'abu', 'senior')`), 'Not authorized on the ABU.');
   assert.equal(ev(`getPatchAuthorizationReason('nesa_patch', 'corporate_flight_suit', 'senior')`), '');
-  assert.equal(ev(`getPatchAuthorizationReason('national_staff_ocp_patch', 'ocp', 'cadet')`), 'Senior members only.');
+  assert.equal(ev(`getPatchAuthorizationReason('model_rocketry_patch', 'abu', 'senior')`), 'Model Rocketry patch is cadet-only.');
+  assert.equal(ev(`getPatchAuthorizationReason('national_staff_ocp_patch', 'ocp', 'cadet')`), 'Senior members only: worn by members appointed to a National Staff position (CAPR 39-1, 10.2.3).');
   assert.equal(ev(`getPatchAuthorizationReason('model_rocketry_patch', 'corporate_field', 'senior')`), 'Model Rocketry patch is cadet-only.');
 });
 

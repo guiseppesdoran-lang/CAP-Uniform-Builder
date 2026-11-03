@@ -1182,12 +1182,17 @@ const patchList = [
 const FIELD_BASE_BUILT_IN_PATCH_IDS = new Set(['us_flag_patch','aux_duty_identifier']);
 
 const PATCH_META = {
+  // The National Staff patch (the National Staff Badge in cloth). Attachment 4 puts the badge on the right pocket of the ABU and the CFU
+  // (RP), on the right sleeve of the flight suits (RS), and 7.1.1.4.2.2 lets it be worn in lieu of the HHQ patch on the OCP's left sleeve;
+  // the Corporate Service Uniform and the dress uniforms wear the metal badge (the badge chooser). It is no wing, region or national
+  // patch (the ABU and CFU left sleeve takes those, 5.1.1.1.2.2), so it has no echelon and `placesOnly` keeps it to its pocket
+  // (CAPR 39-1, 10.2.3: members appointed to a National Staff position).
   'national_staff_ocp_patch':{
-    label:'National Staff OCP Sleeve Patch',
+    label:'National Staff Patch',
     slotHint:'L_SHOULDER',
-    echelon:'national',
     w:70,h:70,
-    authorizedUniforms:['ocp'],
+    authorizedUniforms:['abu','ocp','corporate_field','flight_suit','cfdu'],
+    placesOnly:{ abu:['CHEST_RIGHT'], corporate_field:['CHEST_RIGHT'] },
     allowedMemberships:['senior'],
     sourceBadgeId:'national_staff_badge'
   },
@@ -1373,6 +1378,7 @@ function getPatchAuthorizationReason(patchId, uniformId = State.uniform, members
   if(allowedMemberships && !allowedMemberships.includes(membership)){
     if(patchId === 'model_rocketry_patch') return 'Model Rocketry patch is cadet-only.';
     if(patchId === 'safety_patch') return 'Safety patch is senior-member-only.';
+    if(patchId === 'national_staff_ocp_patch') return 'Senior members only: worn by members appointed to a National Staff position (CAPR 39-1, 10.2.3).';
     const who = allowedMemberships.map(m => m === 'senior' ? 'senior members' : m === 'cadet' ? 'cadets' : m).join(' and ');
     return `${who.charAt(0).toUpperCase()}${who.slice(1)} only.`;
   }
@@ -1432,7 +1438,8 @@ function getPatchPlaces(patchId, uniformId = State.uniform){
   const meta = PATCH_META[patchId];
   if(!meta) return [];
   const p = { unit: isUnitPatchId(patchId), echelon: meta.echelon || null, ncsa: NCSA_PATCH_IDS.has(patchId) };
-  return (PATCH_PLACES[normalizeUniformKeyForPatches(uniformId)] || []).filter(place => place.takes(p));
+  const key = normalizeUniformKeyForPatches(uniformId), only = meta.placesOnly?.[key];
+  return (PATCH_PLACES[key] || []).filter(place => place.takes(p) && (!only || only.includes(place.slot)));
 }
 
 // The place the patch is drawn in: the member's pick for this uniform when it is one of the patch's places, else the catalog's
