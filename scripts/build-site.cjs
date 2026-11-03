@@ -53,10 +53,10 @@ for (const rel of referenced) {
 // Directories the code reads from at runtime without naming each file in the HTML.
 const runtimeDirs = ['images', 'vendor'];
 const skipFile = name => name.startsWith('.') || name.endsWith('.md') || name.endsWith('.keep');
-// No picture is a photo (LIVE13 E118): the raster directories the page stopped reading were deleted; images/military-mini-medals stays in the
-// source tree while the medal art worker reads it and is not published; a raster under images/ is published only while
-// tests/no-raster-allowlist.json keeps it, for art still to come.
-const NOT_SHIPPED = ['images/military-mini-medals'];
+// No picture is a photo (LIVE13 E118): the raster directories the page stopped reading were deleted, images/military-mini-medals last
+// (the medal bodies are traced in the art tree from Vanguard references; the builder keeps only its names in data/military-medals.js).
+// A raster under images/ is published only while tests/no-raster-allowlist.json keeps it, for art still to come.
+const NOT_SHIPPED = [];
 const RASTER = /\.(png|jpe?g|webp|gif)$/i;
 const allowed = Object.keys(JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'no-raster-allowlist.json'), 'utf8')));
 const onAllowlist = rel => allowed.some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry);
