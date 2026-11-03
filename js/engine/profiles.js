@@ -339,8 +339,9 @@
     return Math.atan2(dx, -dy) * 180 / Math.PI;
   }
 
-  // The common factor of the enlisted collar chevrons on this sheet (COLLAR8, Ethan's ruling and an estimate; see collarChevrons): tallIn / (the C/CMSgt metal chevron's height), reduced until the
-  // CMSgt chevron plus clearIn on every side lies inside both leaves, each turned along its own front edge. Returns the factor (1 = the art's own size).
+  // The common factor of the enlisted collar chevrons on this sheet (COLLAR8, Ethan's ruling and an estimate; see collarChevrons): `opts.maxScale` (the ABU and CFU: 1, the art's true size, never
+  // larger, 2 November 2026) or else tallIn / (the C/CMSgt metal chevron's height), reduced until the C/CMSgt chevron (the largest grade, so it sets the factor for all) plus clearIn on every side lies
+  // inside both leaves, each turned along its own edge and, with `opts.atOf`, placed where that puts it. Returns the factor (1 = the art's own size).
   async function collarChevronScale(ctx, polys, opts){
     const refId = 'rank-cadet-nco-chief-master-sergeant-metal';
     if(!ctx.has(refId)) return 1;
@@ -349,7 +350,7 @@
       const turn = edgeTurn(opts.edgeOf(poly)), put = opts.atOf && opts.atOf(poly, { w: r.w * f, h: r.h * f, rotate: turn });
       return boxInPolygon(poly.points, put ? put.at : polygonCentroid(poly.points), r.w * f + 2 * clear, r.h * f + 2 * clear, turn);
     });
-    const want = opts.tallIn / r.h;
+    const want = opts.maxScale != null ? opts.maxScale : opts.tallIn / r.h;
     if(fits(want)) return want;
     let lo = 0, hi = want;
     for(let i = 0; i < 40; i++){ const mid = (lo + hi) / 2; if(fits(mid)) lo = mid; else hi = mid; }
