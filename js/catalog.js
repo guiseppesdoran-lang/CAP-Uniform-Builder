@@ -1122,7 +1122,10 @@ function getBadgeCategoriesForCurrentMembership(){
         'pre_solo_badge','solo_badge','CAPPilot1_FA9D33EA587D8',
         'observer_badge','SeniorObserver1_0E35802A29801',
         'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
-        'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'
+        'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
+        // The sUAS technician badges are cadet-authorized (data/badge-catalog.js CADET_AUTHORIZED) like the sUAS pilot badges; the cadet
+        // list left them out, so a cadet's chooser never showed them (Doran: "I'm not seeing the sUAS technician badges").
+        'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'
       ]},
       { key:'Emergency Services / Ground / EMS', ids:[
         'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
