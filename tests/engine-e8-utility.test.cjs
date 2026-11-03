@@ -288,10 +288,10 @@ test('badges over the CAP tape: three then four, every regulation gap is measure
 
 test('ABU and CFU overlay: grade centred on the collar, no chevron or patch widths, badges (5.1.1.1.1, 5.2.1.1.1, 5.1.1.1.2)', async () => {
   for(const u of ['abu', 'corporate_field']){
-    // an officer: the grade is centred on each collar leaf (COLLAR6), so no 1 in measure is drawn on the collar
+    // an officer: the grade is 1 in from the bottom of the collar, and the 1 in is drawn once (2 November 2026; COLLAR6 had it centred, no measure)
     const scene = await P.composeUniform(build(u, 'senior', 'Capt', { badges: [PILOT, GT], patches: [UNIT, WING] }), store());
     const ms = measures(scene);
-    assert.equal(ms.filter(m => m.label === '1 in').length, 0, `${u}: nothing is 1 in from an edge`);
+    assert.equal(ms.filter(m => m.label === '1 in').length, 1, `${u}: the grade's 1 in from the bottom of the collar`);
     assert.ok(ms.filter(m => m.label === '½ in').length >= 2, `${u}: badges`);
     // D8 (MEAS): the chevron's 4 or 3 1/2 in and the patches' widths are the sizes they are bought in; none is measured.
     const nco = await P.composeUniform(build(u, 'senior', 'SMSgt', { opt: { headgear: 'auto', chevron: '3.5' }, patches: [UNIT, WING] }), store());
@@ -321,7 +321,7 @@ test('ABU and CFU collar grade is centred on the leaf and stands in the frame of
       assert.equal(be.p1[1], be.p2[1], `${u} ${side}: the seam is level`);
       assert.equal(be.angle_deg, 0, `${u} ${side}: the seam's angle`);
     }
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron a quarter turn, apex toward the V (COLLAR10); both centred on the leaf, no measure drawn.
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron a quarter turn, apex toward the V (COLLAR10); the cloth 1 in from the front of the collar and centred (2 November 2026), the chevron on the leaf's centroid.
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col', 'C/Lt Col', 'C/SSgt', 'C/MSgt']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
@@ -332,10 +332,21 @@ test('ABU and CFU collar grade is centred on the leaf and stands in the frame of
           assert.ok(Math.abs(g.rotate - (sd + (side === 'right' ? 90 : -90))) < 0.1, `${u} ${rank} ${side}: turn ${g.rotate} vs the seam ${sd} +/- 90`);
           assert.ok((side === 'right' ? 1 : -1) * Math.sin(g.rotate * Math.PI / 180) > 0.99, `${u} ${rank} ${side}: apex points toward the V`);
         }else assert.equal(g.rotate, 90, `${u} ${rank} ${side}: turn`);
-        const want = centroid(core.landmark(spec, 'collar_' + side).points), c = { x: g.x + g.w / 2, y: g.y + g.h / 2 };
-        assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${u} ${rank} ${side}: centred on the leaf`);
+        const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 };
+        if(/SSgt|MSgt/.test(rank)){
+          const want = centroid(core.landmark(spec, 'collar_' + side).points);
+          assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${u} ${rank} ${side}: the chevron stays on the leaf's centroid`);
+        }else{
+          // 2 November 2026: the cadet officer cloth lies 1 in from the front of the collar (its near side 7/8 in from the leading edge, the cloth's 1/8 in of blue inside it), centred (checked fully in engine-live-field-collar)
+          const le = spec.raw.collar_slots[side].leading_edge.points, a = { x: le[0][0] / 100, y: le[0][1] / 100 }, b = { x: le[1][0] / 100, y: le[1][1] / 100 };
+          const L = Math.hypot(b.x - a.x, b.y - a.y), nrm = { x: (b.y - a.y) / L, y: -(b.x - a.x) / L }, cen = centroid(core.landmark(spec, 'collar_' + side).points);
+          const sg = Math.sign((cen.x - a.x) * nrm.x + (cen.y - a.y) * nrm.y), r = g.rotate * Math.PI / 180;
+          const half = g.w / 2 * Math.abs(nrm.x * Math.cos(r) + nrm.y * Math.sin(r)) + g.h / 2 * Math.abs(-nrm.x * Math.sin(r) + nrm.y * Math.cos(r));
+          const d = sg * ((c.x - a.x) * nrm.x + (c.y - a.y) * nrm.y) - half;
+          assert.ok(Math.abs(d - 0.875) < 0.01, `${u} ${rank} ${side}: the cloth's near side is ${d.toFixed(3)} in from the front of the collar`);
+        }
       }
-      assert.equal(measures(scene).filter(m => m.label === '1 in').length, 0, `${u} ${rank}: no 1 in measure`);
+      assert.equal(measures(scene).filter(m => m.label === '1 in').length, /SSgt|MSgt/.test(rank) ? 0 : 1, `${u} ${rank}: the 1 in from the front is drawn once, on the chevron's none`);
     }
     // Officers: bars (2d Lt, 1st Lt, Capt) a quarter turn so they lie along the seam, Colonel and generals unturned (beak forward on the Colonel), stem parallel to the ground for Maj/Lt Col.
     const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);

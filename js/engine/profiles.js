@@ -213,6 +213,38 @@
     return t ? [{ points: t.a }, { points: t.b }] : [];
   }
 
+  // A piece placed by its distance from a collar edge, as the ABU and CFU paragraphs word it (5.1.1.1.1.1 "centered 1 inch from the bottom of the collar", 5.1.1.1.1.3-4
+  // "one inch from the front of the collar and centered", the same in 5.2.1.1.1.1 and 5.2.1.1.1.4). Ethan, 2 November 2026: "for ABU rank alignment, it should be based off
+  // from an inch from the collar, not in the vertical center." `edge` { a, b } is the collar edge (the leaf's lower seam for the officers, its front edge for the cadets), sheet
+  // inches; `box` { w, h, rotate } the piece's art box and its turn (SVG degrees, about its centre); `nearIn` the distance from the edge to the piece's near side (the
+  // embroidery's, the cloth's blue border being inside the art box). The piece's centre lies on the perpendicular to the edge's direction that puts its near side `nearIn`
+  // from the edge, and is centred between the leaf's two sides there: the midpoint of the chord the line parallel to the edge cuts across the leaf (`points`). Returns
+  // { at, foot, near } (the centre, the point on the edge below the piece's middle, the piece's near side straight above it) or null.
+  function collarSlot(points, edge, nearIn, box){
+    if(!edge || !points || points.length < 3) return null;
+    const dx = edge.b.x - edge.a.x, dy = edge.b.y - edge.a.y, len = Math.hypot(dx, dy);
+    if(!len) return null;
+    const t = { x: dx / len, y: dy / len };
+    const cen = polygonCentroid(points);
+    let n = { x: -t.y, y: t.x };
+    if((cen.x - edge.a.x) * n.x + (cen.y - edge.a.y) * n.y < 0) n = { x: -n.x, y: -n.y };   // into the leaf
+    const r = (box.rotate || 0) * Math.PI / 180, ex = { x: Math.cos(r), y: Math.sin(r) }, ey = { x: -Math.sin(r), y: Math.cos(r) };
+    const half = box.w / 2 * Math.abs(n.x * ex.x + n.y * ex.y) + box.h / 2 * Math.abs(n.x * ey.x + n.y * ey.y);
+    const c = nearIn + half;
+    let lo = Infinity, hi = -Infinity;
+    for(let i = 0; i < points.length; i++){
+      const p = points[i], q = points[(i + 1) % points.length];
+      const dp = (p.x - edge.a.x) * n.x + (p.y - edge.a.y) * n.y - c, dq = (q.x - edge.a.x) * n.x + (q.y - edge.a.y) * n.y - c;
+      if(dp * dq > 0 || dp === dq) continue;
+      const k = dp / (dp - dq), x = p.x + k * (q.x - p.x), y = p.y + k * (q.y - p.y);
+      const along = (x - edge.a.x) * t.x + (y - edge.a.y) * t.y;
+      lo = Math.min(lo, along); hi = Math.max(hi, along);
+    }
+    if(!(hi > lo)) return null;
+    const m = (lo + hi) / 2, foot = { x: edge.a.x + t.x * m, y: edge.a.y + t.y * m };
+    return { at: { x: foot.x + n.x * c, y: foot.y + n.y * c }, foot, near: { x: foot.x + n.x * nearIn, y: foot.y + n.y * nearIn } };
+  }
+
   // The area centroid of a polygon given as points [{x, y}] (inches), the point a piece is 'centred on the leaf' at (COLLAR6). Falls back to the vertex mean for a degenerate polygon.
   function polygonCentroid(points){
     const n = points.length;
@@ -246,12 +278,14 @@
     const centerX = ctx.base.w / 2;
     const turns = polys.map(poly => opts && opts.turnOf ? opts.turnOf(poly) : 0);
     // regular size that does not fit on both leaves, centred: the miniature form
-    if(!mini && polys.some((poly, i) => !boxInPolygon(poly.points, polygonCentroid(poly.points), s.w, s.h, turns[i]))){
+    // `opts.atOf(poly, box)` (the ABU and CFU: the paragraph's distance from the collar edge, collarSlot) gives the piece's centre; without it the leaf's centroid.
+    const centreOf = (poly, spec, turn) => (opts && opts.atOf && opts.atOf(poly, { w: spec.w, h: spec.h, rotate: turn }, id)) || { at: polygonCentroid(poly.points) };
+    if(!mini && polys.some((poly, i) => !boxInPolygon(poly.points, centreOf(poly, s, turns[i]).at, s.w, s.h, turns[i]))){
       const small = G.cadetOfficerInsignia(g, 'cloth-bordered-miniature');
       if(small && ctx.has(small)){ id = small; s = await ctx.spec(id); }
     }
     for(let i = 0; i < polys.length; i++){
-      const poly = polys[i], at = polygonCentroid(poly.points);
+      const poly = polys[i], at = centreOf(poly, s, turns[i]).at;
       const side = at.x < centerX ? 'right' : 'left';
       await ctx.place(id, { pieceAnchor: 'center', at, rotate: turns[i], z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
     }
@@ -281,8 +315,9 @@
     }
     for(const poly of polys){
       if(edgeOf){
-        const at = polygonCentroid(poly.points), side = at.x < centerX ? 'right' : 'left';
-        await ctx.place(id, { pieceAnchor: 'center', at, scale, rotate: edgeTurn(edgeOf(poly)), z, role: 'grade', key: 'grade:' + side });
+        const turn = edgeTurn(edgeOf(poly)), put = opts.atOf && opts.atOf(poly, { w: s.w * scale, h: s.h * scale, rotate: turn }, id);
+        const at = put ? put.at : polygonCentroid(poly.points), side = at.x < centerX ? 'right' : 'left';
+        await ctx.place(id, { pieceAnchor: 'center', at, scale, rotate: turn, z, role: 'grade', key: 'grade:' + side });
         continue;
       }
       const edge = collarLeadingEdge(poly.points, centerX);
@@ -310,7 +345,10 @@
     const refId = 'rank-cadet-nco-chief-master-sergeant-metal';
     if(!ctx.has(refId)) return 1;
     const r = await ctx.spec(refId), clear = opts.clearIn == null ? 0.1 : opts.clearIn;
-    const fits = f => polys.every(poly => boxInPolygon(poly.points, polygonCentroid(poly.points), r.w * f + 2 * clear, r.h * f + 2 * clear, edgeTurn(opts.edgeOf(poly))));
+    const fits = f => polys.every(poly => {
+      const turn = edgeTurn(opts.edgeOf(poly)), put = opts.atOf && opts.atOf(poly, { w: r.w * f, h: r.h * f, rotate: turn });
+      return boxInPolygon(poly.points, put ? put.at : polygonCentroid(poly.points), r.w * f + 2 * clear, r.h * f + 2 * clear, turn);
+    });
     const want = opts.tallIn / r.h;
     if(fits(want)) return want;
     let lo = 0, hi = want;
@@ -917,5 +955,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, badgesWorn, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, badgesWorn, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarSlot, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

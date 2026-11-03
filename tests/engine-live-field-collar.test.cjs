@@ -1,5 +1,6 @@
 'use strict';
-// ABU and Corporate Field Uniform collar grade (CAPR 39-1 5.1.1.1.1, 5.2.1.1.1), COLLAR6.
+// ABU and Corporate Field Uniform collar grade (CAPR 39-1 5.1.1.1.1, 5.2.1.1.1), COLLAR6; the POSITION of every piece but the cadet NCO chevron is the paragraphs' 1 in from the collar's edge since
+// 2 November 2026 (Ethan: "for ABU rank alignment, it should be based off from an inch from the collar, not in the vertical center"): the turns below stand.
 // Ethan, on the cadet Lt Col cloth drawn as a level rectangle pushed toward the leaf's outer side: "flip it 90 degrees, and center it, and apply that logic for everything else." Every collar grade
 // piece is centred on its leaf (its centre the centroid of the collar_left / collar_right polygon, both axes) and stands in the frame of the leaf's lower seam (collar_slots[side].bottom_edge, level on
 // both sheets): the cadet officers' cloth and the bars are turned a quarter turn from that frame so the cloth's long side stands vertical, the cadet NCO metal chevron is turned so its apex points at the V (COLLAR10), the Major's and
@@ -113,16 +114,48 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: every piece is centred on the leaf: its centre is the centroid of the collar polygon, both axes, both leaves, every grade (COLLAR6)`, async () => {
-      const cases = [...CADET_OFFICERS.map(r => ['cadet', r]), ...CADET_NCOS.map(r => ['cadet', r]), ...SENIOR_OFFICERS.map(r => ['senior', r])];
+    test(`${uniform} ${gender}: officers' grade is 1 in from the bottom of the collar, cadet officers' 1 in from the front, each centred between the leaf's sides there; the cadet NCO chevron stays on the leaf's centroid (5.1.1.1.1.1, 5.1.1.1.1.3, 5.2.1.1.1.1, 5.2.1.1.1.4; Ethan, 2 November 2026: "it should be based off from an inch from the collar, not in the vertical center")`, async () => {
+      const cases = [...CADET_OFFICERS.map(r => ['cadet', r]), ...SENIOR_OFFICERS.map(r => ['senior', r])];
       const spec = await store.load(SHEETS[uniform]);
       for(const [membership, rank] of cases){
         const scene = await P.composeUniform(build(uniform, gender, membership, rank), store);
         for(const side of ['right', 'left']){
+          const l = layer(scene, side), poly = polyOf(spec, side);
+          // the edge: the sheet's lower seam for the officers, its leading (front) edge for the cadets
+          let a, b;
+          if(membership === 'senior'){ const se = seamOf(spec, side); a = se.a; b = se.b; }
+          else { const le = leadingOf(spec, side); a = le.top; b = le.bottom; }
+          const len = Math.hypot(b.x - a.x, b.y - a.y), t = { x: (b.x - a.x) / len, y: (b.y - a.y) / len }, cen = centroidOf(poly);
+          let n = { x: -t.y, y: t.x }; if((cen.x - a.x) * n.x + (cen.y - a.y) * n.y < 0) n = { x: -n.x, y: -n.y };
+          const dist = q => (q.x - a.x) * n.x + (q.y - a.y) * n.y, along = q => (q.x - a.x) * t.x + (q.y - a.y) * t.y;
+          // the art box includes the cloth's 1/8 in of blue, so the embroidery's near side is 1 in from the edge when the box's is 7/8 in
+          const near = Math.min(...cornersOf(l).map(dist));
+          assert.ok(Math.abs(near - 0.875) < 0.01, `${rank} ${side}: the cloth's near side is ${near.toFixed(3)} in from the ${membership === 'senior' ? 'bottom' : 'front'} of the collar, the embroidery's 1 in less the 1/8 in of blue`);
+          // centred between the leaf's sides at the piece's height: the middle of the chord the parallel to the edge through the piece's centre cuts across the leaf
+          const c = centreOf(l), d = dist(c), xs = [];
+          for(let i = 0; i < poly.length; i++){
+            const p0 = poly[i], p1 = poly[(i + 1) % poly.length], d0 = dist(p0) - d, d1 = dist(p1) - d;
+            if(d0 * d1 > 0 || d0 === d1) continue;
+            const k = d0 / (d0 - d1); xs.push(along({ x: p0.x + k * (p1.x - p0.x), y: p0.y + k * (p1.y - p0.y) }));
+          }
+          const mid = (Math.min(...xs) + Math.max(...xs)) / 2;
+          assert.ok(Math.abs(along(c) - mid) < 0.02, `${rank} ${side}: centred ${along(c).toFixed(3)} along the edge, the chord's middle is ${mid.toFixed(3)}`);
+        }
+        // the 1 in is drawn once, on the wearer's right leaf
+        const ones = measures(scene).filter(m => m.label === '1 in');
+        assert.equal(ones.length, 1, `${rank}: one 1 in measure on the collar`);
+        assert.ok(Math.abs(Math.hypot(ones[0].to.x - ones[0].from.x, ones[0].to.y - ones[0].from.y) - 1) < 0.01, `${rank}: it spans 1 in`);
+      }
+    });
+
+    test(`${uniform} ${gender}: the cadet NCO chevron is centred on the leaf's centroid, both leaves (COLLAR6, COLLAR8: the chief's size cannot also be 1 in from the front edge on this leaf)`, async () => {
+      const spec = await store.load(SHEETS[uniform]);
+      for(const rank of CADET_NCOS){
+        const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
+        for(const side of ['right', 'left']){
           const c = centreOf(layer(scene, side)), want = centroidOf(polyOf(spec, side));
           assert.ok(Math.hypot(c.x - want.x, c.y - want.y) < 0.02, `${rank} ${side}: centre (${c.x.toFixed(3)}, ${c.y.toFixed(3)}) vs the leaf's centroid (${want.x.toFixed(3)}, ${want.y.toFixed(3)})`);
         }
-        // no 1 in measure is drawn on the collar any more: nothing sits 1 in from an edge
         assert.equal(measures(scene).filter(m => m.label === '1 in').length, 0, `${rank}: no 1 in measure`);
       }
     });
