@@ -318,7 +318,7 @@ window.renderBuild = async function(build, ppi, pad, measure, clip, wantSvg){
   const scene = await E.profiles.composeUniform(build, store);
   const b = scene.bounds;
   const widthPx = Math.ceil((b.w + 2 * pad) * ppi);
-  const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx, measure: !!measure });
+  const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx, measure: !!measure, measureRefs: true });   // the harness shows every paragraph; the page leaves them off until asked
   if(wantSvg) await E.renderSvg.embedFonts(svg);   // the saved markup stands alone, as the PNG export's does
   const heightPx = Math.ceil((b.h + 2 * pad) * ppi);
   svg.setAttribute('width', widthPx); svg.setAttribute('height', heightPx);

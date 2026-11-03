@@ -591,7 +591,9 @@
       await Promise.all(lapelIds.map(id => fetch(assetUrl(manifestPath(id).replace(/\.svg$/, '.spec.json')), { cache: 'no-cache' })
         .then(r => (r.ok ? r.json() : null)).then(raw => { if(raw && CORE0) landmarks.set(id, CORE0.normalizeSpec({ id }, raw).landmarks); }).catch(() => null)));
       const pieces = ML.lapelPieces(scene, id => landmarks.get(id) || null);
-      const drawings = ML.layout(scene, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea: ML.calloutRoom(vb, px), pieces });
+      // The member's choices: measurements hidden (ids from measure-layout's catalogue), and whether each callout quotes its paragraph.
+      const shown = ML.filterScene ? ML.filterScene(scene, { hidden: options.measureHide, refs: !!options.measureRefs }) : scene;
+      const drawings = ML.layout(shown, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea: ML.calloutRoom(vb, px), pieces });
       // The magnified insets are set outside the garment, above the figure or beside it: the frame grows to hold the ones that do not fit in it.
       const frame = ML.frameFor(vb, drawings, px);
       if(frame.some((v, i) => Math.abs(v - vb[i]) > 1e-9)){

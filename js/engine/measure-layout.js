@@ -306,6 +306,60 @@
     return '';
   }
 
+  // ---- the list of what the overlay draws: for the member's show/hide panel and the Regulation tab ----
+  //
+  // One entry per distinct measure, named by the caption the pill carries and its value ("Collar bottom to grade", 1 in); two callouts that read the same (the
+  // blue border on both badges, the insignia on each shoulder seam) are one entry that hides or shows both. The id is the caption with the value, so a choice
+  // made on one build still holds on another that draws the same distance; it is never shown.
+  const AREAS = ['Collar', 'Shoulders', 'Chest', 'Pockets', 'Sleeves', 'Badges', 'Headgear', 'Belt', 'Other'];
+  const AREA_RULES = [
+    ['Headgear', /\b(cap|visor|beret|hat|boonie)\b/], ['Collar', /collar/], ['Sleeves', /sleeve|chevron|braid|cuff/], ['Pockets', /pocket/],
+    ['Chest', /medals|ribbons|nameplate|crest|button|name to|grade square|chaplain/], ['Shoulders', /shoulder|epaulet|on the seam/],
+    ['Badges', /badge|embroidery|blue/], ['Belt', /belt|buckle/]
+  ];
+  const areaOf = caption => { const c = String(caption || '').toLowerCase(); for(const [a, re] of AREA_RULES) if(re.test(c)) return a; return 'Other'; };
+  // The caption a measure's pill (or its magnified callout) carries.
+  function captionOf(scene, m){
+    const o = m.opts || {};
+    return String(o.caption != null ? o.caption : (o.callout && o.callout.caption) || captionFor(scene, m) || '').trim();
+  }
+  // The caption as a list item: a callout's "of blue around the embroidery" starts mid-sentence, so its lead word goes; the first letter is capital.
+  const nameOf = caption => { const c = String(caption || '').replace(/^(of|from the|from)\s+/i, '').trim() || 'Other distance'; return c[0].toUpperCase() + c.slice(1); };
+  const idOf = (caption, label) => (String(caption).toLowerCase() + '|' + String(label)).replace(/\s+/g, ' ');
+  // The ids of the distinct measures the scene carries, in the order they are drawn, as { id, name, value, area, ref, keys, count }; `groups` them by area in AREAS' order.
+  function catalogue(scene){
+    const byId = new Map();
+    for(const m of scene.layers){
+      if(m.type !== 'measure' || len(sub(m.to, m.from)) < 1e-6) continue;
+      const cap = captionOf(scene, m), id = idOf(cap, m.label);
+      let e = byId.get(id);
+      if(!e){ e = { id, name: nameOf(cap), value: String(m.label), area: areaOf(cap), ref: m.ref || refFor(scene, m) || '', keys: [], count: 0 }; byId.set(id, e); }
+      e.keys.push(m.key); e.count++;
+    }
+    const entries = [...byId.values()];
+    const groups = AREAS.map(area => ({ area, entries: entries.filter(e => e.area === area) })).filter(g => g.entries.length);
+    return { entries, groups };
+  }
+  // The scene as the overlay should draw it: the measures whose id is in `hidden` left out (the rest are laid out over the room they free), and, unless `refs`,
+  // the paragraph taken off every callout.
+  function filterScene(scene, opts){
+    const o = opts || {}, hidden = new Set(o.hidden || []);
+    if(!hidden.size && o.refs) return scene;
+    const layers = [];
+    for(const l of scene.layers){
+      if(l.type !== 'measure'){ layers.push(l); continue; }
+      if(hidden.has(idOf(captionOf(scene, l), l.label))) continue;
+      layers.push(o.refs || !l.ref ? l : Object.assign({}, l, { ref: '' }));
+    }
+    return Object.assign({}, scene, { layers });
+  }
+  // A paragraph string as the Regulation tab quotes it: the CAPR 39-1 part and the ICL part, if the engine cites one ("7.1.1.8, ICL 25-02 6.2.11.1").
+  function refParts(ref){
+    const s = String(ref || ''), i = s.search(/(^|,\s*)ICL\s/);
+    if(i < 0) return { capr: s, icl: '' };
+    return { capr: s.slice(0, i).replace(/[,\s]+$/, ''), icl: s.slice(i).replace(/^,\s*/, '') };
+  }
+
   // Label width in ems for Arial Bold (close enough to size the pill around the text).
   const EM = { ' ': 0.278, i: 0.278, l: 0.278, j: 0.278, f: 0.333, t: 0.333, r: 0.389, m: 0.889, w: 0.778 };
   function textWidth(text, size){
@@ -947,5 +1001,5 @@
     return Math.max(vb[3] / s.h, vb[2] / s.maxW);
   }
 
-  return { layout, refFor, refText, REFS, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, rimPoint, segsCross, wrapWords, captionFor, PX, PILL, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
+  return { layout, refFor, refText, REFS, AREAS, areaOf, captionOf, nameOf, idOf, catalogue, filterScene, refParts, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, rimPoint, segsCross, wrapWords, captionFor, PX, PILL, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
 });
