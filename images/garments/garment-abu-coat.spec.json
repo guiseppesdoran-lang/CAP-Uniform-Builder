@@ -660,7 +660,7 @@
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
   "lower pocket size",
-  "tiger-stripe print is seeded and generated (base-art/abu-print.js) from 1/8 in cells, the cell measured on the ABU raster against its 5 1/4 x 1 in CAP tape; palette sampled from the raster",
+  "tiger-stripe print is seeded and generated (base-art/abu-print.js) from 1/8 in cells, the cell measured on the ABU raster against its 5 1/4 x 1 in CAP tape; the stripe structure (bars, rims, light streaks, tone shares and order) is a model fitted to statistics measured on a close-up photograph of the fabric, not a copy of any piece of it; palette from that photograph, its exposure matched to the ABU raster",
   "T-shirt colours in the neck (Desert Tan, estimated; the regulation names the colour, not a value)",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
  ],
