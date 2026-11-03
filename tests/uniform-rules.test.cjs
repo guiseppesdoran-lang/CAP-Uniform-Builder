@@ -147,10 +147,10 @@ const REG={
     para:'5.1.1.1.2 (badges and patches together not more than four; military badges count toward it)'},
   ocp:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:4,shared:false,
     para:'ICL 25-06 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
-  flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:2,shared:false,
-    para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 (up to two badges on the nametag, military aviation badges allowed)'},
-  corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
-    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 (up to two badges on the nametag)'},
+  flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:1,shared:false,
+    para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 ("up to two badges" on the nametag; Ethan\'s ruling B8, 58a5f4d3, reaffirmed 2 November 2026: ONE badge on the tag)'},
+  corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
+    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 ("up to two"; Ethan\'s ruling B8 reaffirmed 2 November 2026: ONE badge on the tag)'},
   polo:{style:'corporate',who:['senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
     para:'5.3 (Corporate Working Uniform), 1.2.5.2 (no adult cadets: it allows no grade insignia), 11.1.3 (no ribbons), 5.3.2.1.1 (one badge or duty title)'}
 };
@@ -243,4 +243,15 @@ test('the AFOEA stays off Corporate-style uniforms and the mess dress (11.2.3, I
   for(const u of ['aviator', 'semi_formal', 'mess_dress']) assert.equal(R.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award', u), false, u);
   for(const u of ['blues_a', 'blues_b']) assert.equal(R.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award', u), true, u);
   assert.equal(R.isAwardAllowedOnUniform('x', 'aviator', { isMilitary: true }), true, 'ICL 25-02');
+});
+
+// Ethan's ruling B8 (58a5f4d3), reaffirmed 2 November 2026: the flight suits' name tag draws one badge, so the page's limit is one. Doran's report: the Badges panel said "At
+// most 2", a member picked two and saw one.
+test('both flight suits: the badge limit is one, a second badge is over it, and the panel line says "At most 1 on this uniform"',()=>{
+  for(const u of ['flight_suit','corporate_flight_suit']){
+    assert.deepEqual(rules.badgeLimit(u,{badges:1}),{cap:1,counted:1,shared:false,over:false},u);
+    assert.equal(rules.badgeLimit(u,{badges:2}).over,true,u+': two is over');
+  }
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/`At most \$\{cap\} on this uniform, each where CAPR 39-1 puts it\.`/,'the panel line is the cap');
 });
