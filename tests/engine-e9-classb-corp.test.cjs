@@ -1,7 +1,7 @@
 'use strict';
 // Class B, the aviator shirt, the corporate blazer and the corporate semi-formal: badge size and place.
 //   - Badges are placed at their own size on every dress uniform; only field Velcro zones fit a piece
-//     to its slot (ICL 25-06 7.1.1.4). A badge never scales to the pocket (critique D29, D35).
+//     to its slot (ICL 26-14 7.1.1.4). A badge never scales to the pocket (critique D29, D35).
 //   - CAPR 39-1 4.2.3.1.1.1 / 4.2.4.1.1.1: the crest, or the CSAG, Command Council, National Board or NEC
 //     badge in its place, is centred on the left breast pocket body, the sheet's crest_center (below the
 //     welt opening; centring on the welt strip was rejected, tracker placement item 4). The women's

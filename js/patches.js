@@ -1121,7 +1121,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
         .sort((a, b) => capubUtilityBadgePriority(a) - capubUtilityBadgePriority(b));
       // Qualification badges form the one-to-four-badge arrangement over the CIVIL AIR PATROL
-      // tape (ICL 25-06 7.1.1.3.1). A cloth command insignia is a separate item over the name
+      // tape (ICL 26-14 7.1.1.3.1). A cloth command insignia is a separate item over the name
       // tape and does not take a badge position.
       const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 4);
       const command = selected.filter(id => isCommandInsigniaBadge(id)).slice(0, 1);

@@ -146,7 +146,7 @@ const REG={
   abu:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:4,shared:true,
     para:'5.1.1.1.2 (badges and patches together not more than four; military badges count toward it)'},
   ocp:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:4,shared:false,
-    para:'ICL 25-06 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
+    para:'ICL 26-14 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
   flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:1,shared:false,
     para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 ("up to two badges" on the nametag; Ethan\'s ruling B8, 58a5f4d3, reaffirmed 2 November 2026: ONE badge on the tag)'},
   corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,

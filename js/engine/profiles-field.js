@@ -1,4 +1,4 @@
-// Field uniforms: OCP (chapter 7, ICL 25-06), ABU (5.1.1) and Corporate Field Uniform (5.2.1).
+// Field uniforms: OCP (chapter 7, ICL 26-14), ABU (5.1.1) and Corporate Field Uniform (5.2.1).
 // The garment sheets already draw the tapes (CAP tape lettered), the OCP flag and AUX, the rank
 // square and the caps; this adds the member's grade, last name, badges, command insignia and patches.
 (function(root, factory){

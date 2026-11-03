@@ -97,7 +97,7 @@ test('OCP, ABU and CFU: every badge in the catalog either draws its field form o
   }
 });
 
-// ---- LIVE-FIELD B6: the arrangement above the CAP tape, measured on the composed scene (CAPR 39-1 ICL 25-06 7.1.1.3.1.1-6) ----------------
+// ---- LIVE-FIELD B6: the arrangement above the CAP tape, measured on the composed scene (CAPR 39-1 ICL 26-14 7.1.1.3.1.1-6) ----------------
 // Every distance is read from the badge layers' boxes (the blue cloth edges, the 1/8 in border counted) in scene inches; the single badge is
 // measured to its silver (7.1.1.3.1.1), the multi-badge layouts blue edge to blue edge (7.1.1.3.1); FIELD7-1 (Ethan: "from the top of the blue on
 // the civil air patrol to the white of the first badge"): the lowest badge of every count is measured from the tape's top edge to its silver, so

@@ -1,5 +1,5 @@
 'use strict';
-// E8-UTILITY: the OCP, ABU and Corporate Field Uniform (ICL 25-06 chapter 7, CAPR 39-1 5.1.1 and 5.2.1),
+// E8-UTILITY: the OCP, ABU and Corporate Field Uniform (ICL 26-14 chapter 7, CAPR 39-1 5.1.1 and 5.2.1),
 // measured in inches on the composed scene: the sleeve patches show in the flat sleeve view and in
 // the edge view on the coat, the graduated commander's insignia rests on the loop that shows, no
 // grade piece is mounted anywhere but the chest square and the caps, and the measurement overlay

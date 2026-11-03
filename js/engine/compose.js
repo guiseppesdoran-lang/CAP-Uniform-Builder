@@ -228,7 +228,7 @@
   }
 
   // Fit a piece inside a rectangle (keeping its proportions), centred. For patches with no
-  // regulation size: they may not extend past their Velcro or zone (ICL 25-06 7.1.1.4).
+  // regulation size: they may not extend past their Velcro or zone (ICL 26-14 7.1.1.4).
   async function fitIn(ctx, id, rect, opts){
     const s = await ctx.spec(id);
     const scale = Math.min(1, rect.w / s.w, rect.h / s.h) * ((opts && opts.fill) || 1);
