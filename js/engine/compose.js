@@ -549,8 +549,8 @@
         const at = { x: p.x + MINI_DRAPE.w / 2, y: p.y + MINI_DRAPE.h };
         ctx.layers.push(Object.assign(core.placeAsset(s, { pieceAnchor: attach, at, z: zBase + 0.0005, role: 'mini-medal', key: m.key + ':medal', title: m.title }), { className: 'ribbonMini' }));
       }
-      // Devices on the drape, vertical, precedence at the top (11.4.2). A device worn centred on
-      // the ribbon (propeller, longevity numeral) is centred vertically, the others above and below.
+      // Devices on the drape, turned clockwise to lie vertical, precedence at the top (11.4.2). A device worn centred on
+      // the ribbon (propeller, lifesaving star) is centred vertically, its clasps below and above it.
       const own = (m.devices || []).filter(d => sizes[d]);
       const devs = m.centered ? own : awards.sortRun(own);
       // The devices go in the exposed part of the drape: from just below the lowest body of an upper
@@ -564,18 +564,17 @@
         if(c.x1 > colX - colHalf && c.x0 < colX + colHalf) exposedTop = Math.max(exposedTop, c.bottom + DEVICE_GAP);
       }
       const exposedBottom = p.y + MINI_DRAPE.h - MINI_DRAPE.point;
-      const midY = (Math.min(exposedTop, exposedBottom) + exposedBottom) / 2;
-      // The stack's height is the first device's length plus a step for each further one; where less than
-      // that is exposed, the step shrinks (devices nest, they never leave the exposed part).
-      const lead = devs.length ? Math.max(...devs.map(d => sizes[d].w)) : 0;
-      let step = 0.24 * MINI_DEVICE_SCALE;
-      if(!m.centered && devs.length > 1) step = Math.max(0.05, Math.min(step, (exposedBottom - exposedTop - lead) / (devs.length - 1)));
-      const y0 = midY - (devs.length - 1) * step / 2;
-      devs.forEach((d, i) => {
-        const sz = sizes[d];
-        const cx = p.x + MINI_DRAPE.w / 2;
-        const cy = m.centered ? midY + (i === 0 ? 0 : (i % 2 ? -1 : 1) * Math.ceil(i / 2) * step) : y0 + i * step;
-        ctx.layers.push({ type: 'asset', id: d, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 90, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
+      // The devices lie along that exposed length by the bar's rule turned clockwise (awards.layoutDevicesAlong, 11.4.2): centred, touching,
+      // a single device or a centred one at the middle, the first clasp beside a centred device on the bottom side. Each is turned 90 degrees, so
+      // its width runs down the drape. Where less is exposed than they need, they nest rather than shrink (one size on the whole rack).
+      const spanTop = Math.min(exposedTop, exposedBottom);
+      const lengths = {};
+      for(const d of devs) lengths[d] = sizes[d].w;
+      const placed = awards.layoutDevicesAlong(devs, lengths, exposedBottom - spanTop, { centered: m.centered, gap: 0.04 * MINI_DEVICE_SCALE });
+      placed.forEach((d, i) => {
+        const sz = sizes[d.id];
+        const cx = p.x + MINI_DRAPE.w / 2, cy = spanTop + d.y;
+        ctx.layers.push({ type: 'asset', id: d.id, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 90, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
       });
     }
     return core.unionBounds(out.placements.map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: p.row === lowRow ? drawnBottom + shift - p.y : MINI_DRAPE.h + (hang.get(p.item) || 0) })));

@@ -121,6 +121,56 @@
     }), scale);
   }
 
+  // Devices on a miniature medal's ribbon (CAPR 39-1 11.4.2): the ribbon-bar rule (CAPR 39-3 6b) with the devices "rotated clockwise to be worn
+  // vertically rather than horizontally", so what the bar puts on the viewer's left (precedence, 'to the right' of the wearer) is the top of the
+  // drape and what it puts on the viewer's right (the wearer's left, the first clasp beside a centred device) is the bottom. `devices` is in the bar's
+  // order (viewer's left first = top first); `lengths` maps each device id to its length along the drape (its width, before it is turned); `span`
+  // is the length of ribbon the devices may use (the exposed part of the drape). Returns centres measured from the span's start, and `.nested`:
+  // true when the devices could not all lie in the span clear of one another, so they overlap (the miniature's size is fixed, so they never shrink:
+  // 11.4.2 and ICL 25-02 4.2.2.4, all devices on a rack the same size).
+  //  - free run: centred on the span, touching as the bar's run is (the gap is `gap` for two or fewer, `gap / 4` for more), the gap closing first;
+  //  - centred device (a propeller, the lifesaving star, a numeral): at the middle of the span, the first clasp halfway between it and the bottom
+  //    end, the second opposite (39-3 9h, 21c, 21d), any further clasps following outward.
+  const DEVICE_RUN_MIN_PITCH = 0.05;
+  function layoutDevicesAlong(devices, lengths, span, opts){
+    const o = opts || {};
+    const gapFor = n => (o.gap == null ? 0 : o.gap) / (n <= 2 ? 1 : 4);
+    const out = [];
+    out.nested = false;
+    if(!devices.length) return out;
+    const L = d => lengths[d];
+    const mid = span / 2;
+    if(o.centered){
+      const c = devices[0], half = L(c) / 2;
+      out.push({ id: c, y: mid });
+      const sides = [{ list: devices.filter((d, i) => i > 0 && i % 2 === 1), dir: 1, edge: span }, { list: devices.filter((d, i) => i > 0 && i % 2 === 0), dir: -1, edge: 0 }];
+      for(const side of sides){
+        let prev = null;
+        for(const d of side.list){
+          let y = prev ? prev.y + side.dir * (L(prev.id) / 2 + gapFor(devices.length) + L(d) / 2) : (mid + side.dir * half + side.edge) / 2;
+          const lo = L(d) / 2, hi = span - L(d) / 2;
+          if(y < lo || y > hi){ y = Math.max(lo, Math.min(hi, y)); }
+          out.push(prev = { id: d, y });
+        }
+      }
+      out.nested = out.some((a, i) => out.some((b, j) => j > i && Math.abs(a.y - b.y) < (L(a.id) + L(b.id)) / 2 - 1e-9));
+      return out;
+    }
+    const sum = devices.reduce((t, d) => t + L(d), 0), gaps = devices.length - 1;
+    let gap = gapFor(devices.length);
+    if(sum + gap * gaps <= span + 1e-9 || sum <= span + 1e-9){
+      if(sum + gap * gaps > span) gap = gaps ? (span - sum) / gaps : 0;
+      let y = (span - (sum + gap * gaps)) / 2;
+      for(const d of devices){ out.push({ id: d, y: y + L(d) / 2 }); y += L(d) + gap; }
+      return out;
+    }
+    out.nested = true;
+    const first = L(devices[0]) / 2, last = span - L(devices[gaps]) / 2;
+    const pitch = Math.max(DEVICE_RUN_MIN_PITCH, gaps ? (last - first) / gaps : 0);
+    devices.forEach((d, i) => out.push({ id: d, y: mid + (i - gaps / 2) * pitch }));
+    return out;
+  }
+
   // Precedence order for a free run (viewer's left first): level devices, then silver, then bronze.
   const RUN_ORDER = [DEVICE.v_silver, DEVICE.star_gold, DEVICE.star_silver, DEVICE.star_bronze, DEVICE.propeller_silver, DEVICE.propeller_bronze, DEVICE.clasp_silver, DEVICE.clasp_bronze];
   function sortRun(devices){
@@ -424,7 +474,7 @@
     RIBBON_W, RIBBON_H, MAX_DEVICES, DEVICE,
     xAtY, miniRackCenterX,
     deviceInner, deviceMetal, DEVICE_EDGE_IN, DEVICE_EDGE_COLOR, DEVICE_EDGE_OPACITY, DEVICE_TONE, DEVICE_PALETTE,
-    claspsFor, splitAwardCount, layoutDevices, DEVICE_END_MARGIN, sortRun,
+    claspsFor, splitAwardCount, layoutDevices, layoutDevicesAlong, DEVICE_END_MARGIN, sortRun,
     rackRows, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
     miniMedalRows, layoutMiniMedals
   };
