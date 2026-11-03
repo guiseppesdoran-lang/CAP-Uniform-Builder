@@ -754,7 +754,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         // w x h: the tab's 5.0 x 0.815 in at the gallery's 14 px to the inch (the patches' own 70 px for a 5 in patch).
         PATCH_META[id] = PATCH_META[id] || { label: `CAP Ranger tab: ${CAPUB_RANGER_TAB_LABELS[grade]}`, slotHint: 'L_SHOULDER', w: 70, h: 11,
           img: `patches/${id}/${id}.svg`, authorizedUniforms: ['ocp'], kind: 'ranger-tab', group: CAPUB_RANGER_TAB_GROUP, oneOnly: true,
-          note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the HHQ patch, in its place on the left sleeve under AUX (Ethan\'s ruling, 2026-10-29; CAPR 39-1, 7.1.1.4.2)' };
+          note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the HHQ patch, in its place on the left sleeve under AUX (CAPR 39-1, 7.1.1.4.2)' };
         if(!patchList.includes(id)) patchList.push(id);
       }
     }
