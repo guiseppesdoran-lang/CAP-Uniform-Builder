@@ -273,8 +273,6 @@
     if(d > 90) d -= 180; if(d <= -90) d += 180;
     return Math.abs(d) < 1e-9 ? 0 : d;
   }
-  // A leaf's front (leading) edge as { top, bottom } in sheet inches, the tip end first: the sheet's collar_slots[side].leading_edge (two points, 0.01 in) when it states one, else the leaf polygon's
-  // longest edge (the front edge of the leaf on both sheets, H.collarLeadingEdge). Null when neither is found.
   // An edge from the leaf's centroid, one inch long, pointing along the seam toward the placket V (COLLAR10): on the wearer's right leaf (the viewer's left) the seam's direction, on the wearer's left
   // leaf the reverse, so H.collarChevrons lays the chevron's apex (the art's top) along it and the two apexes face each other across the V: the turn is the seam's angle + 90 on the wearer's right
   // leaf and - 90 on the wearer's left.
@@ -282,68 +280,51 @@
     const c = H.polygonCentroid(poly.points), a = seamAngle(ctx, poly) * Math.PI / 180, k = leafSide(ctx, poly) === 'right' ? 1 : -1;
     return { bottom: { x: c.x, y: c.y }, top: { x: c.x + k * Math.cos(a), y: c.y + k * Math.sin(a) } };
   }
-  function leadingEdgeOf(ctx, poly){
-    const side = leafSide(ctx, poly), slots = ctx.base && ctx.base.raw && ctx.base.raw.collar_slots, le = slots && slots[side] && slots[side].leading_edge;
-    const pair = le && (le.points || (le.p1 && le.p2 ? [le.p1, le.p2] : le));
-    let a, b;
-    if(pair && pair[0] && pair[1]){
-      const pt = q => ({ x: (q.x != null ? q.x : q[0]) / 100, y: (q.y != null ? q.y : q[1]) / 100 });
-      a = pt(pair[0]); b = pt(pair[1]);
-    }else{
-      const e = H.collarLeadingEdge(poly.points, ctx.base.w / 2);
-      if(!e) return { top: { x: 0, y: 0 }, bottom: { x: 0, y: 1 } };
-      a = e.collarPoint; b = e.rollEnd;
-    }
-    return a.y <= b.y ? { top: a, bottom: b } : { top: b, bottom: a };
-  }
-  // 2 November 2026 (Ethan: "for ABU rank alignment, it should be based off from an inch from the collar, not in the vertical center"): the pieces stand where the paragraphs put them, by
-  // their distance from the collar. The officers' grade is 1 inch from the BOTTOM of the collar (5.1.1.1.1.1, 5.2.1.1.1.1: the generals' stars "begin 1 inch from the bottom of the collar",
-  // the colonel's eagle "centered, perpendicular to, and 1 inch from the bottom", the Major's and Lieutenant Colonel's leaf "centered 1 inch from the bottom", "the long end of the
-  // Lieutenant and Captain bars will be centered 1 inch from the bottom"); the cadets' is 1 inch from the FRONT of the collar and centred (5.1.1.1.1.3-4, 5.2.1.1.1.4, 5.2.1.1.1.6).
-  // The sheet's own collar_slots say the same (`officer`: 1 in from `bottom_edge` on the chord's midpoint; `cadet_*`: 1 in from `leading_edge`). The distance is to the insignia's near side, the
-  // embroidery's (the cloth pieces' 1/8 in of blue, R5, is inside the art box); the piece is centred between the leaf's two sides at that height (the chord's midpoint, H.collarSlot) and
-  // keeps the turn the earlier rulings gave it (COLLAR6, COLLAR10, LIVE13 E125). Before, every piece stood on the leaf's centroid.
+  // 2 November 2026: every collar insignia stands where the paragraphs put it, ONE INCH FROM THE BOTTOM OF THE COLLAR (5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.1.4, 5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.1.6):
+  // the officers' grade, the cadet officers' cloth, and the cadet NCO and airman chevron, each centred between the leaf's two sides at its height; the collar's front edge plays no part. The edge is the
+  // sheet's own collar_slots[side].bottom_edge (the leaf's lower seam, level on both sheets). The distance is to the insignia's near side, the embroidery's (the cloth pieces' 1/8 in of blue, R5,
+  // is inside the art box, so the box's near side is 7/8 in); the metal chevron has no cloth and its near side is the 1 in. The piece keeps the turn the earlier rulings gave it (COLLAR6, COLLAR10,
+  // LIVE13 E125). Before, every piece stood on the leaf's centroid.
   const COLLAR_NEAR_IN = 1, CLOTH_BORDER_IN = 0.125;
   const bottomEdgeOf = (ctx, poly) => { const e = seamEdge(ctx, poly); return e && { a: e.a, b: e.b }; };
-  const frontEdgeOf = (ctx, poly) => { const e = leadingEdgeOf(ctx, poly); return { a: e.top, b: e.bottom }; };
   // The 1 in line (collar edge to the piece's near side) is drawn once, on the wearer's right leaf, from the slot the piece was placed by.
   // `to` is the embroidery's edge, the cloth's 1/8 in of blue past the art box's near side (the 1/8 in is its own measure), so the line reads the paragraph's 1 in.
-  function measureCollarSlot(ctx, poly, put, caption, borderIn){
+  // The paragraph the distance carries out, by uniform and kind of piece: the officers', the cadet officers' or the cadet NCO's and airman's (5.1.1.1.1.1/.3/.4, 5.2.1.1.1.1/.4/.6).
+  const COLLAR_REFS = { abu: { officer: '5.1.1.1.1.1', 'cadet-officer': '5.1.1.1.1.3', 'cadet-nco': '5.1.1.1.1.4' }, corporate_field: { officer: '5.2.1.1.1.1', 'cadet-officer': '5.2.1.1.1.4', 'cadet-nco': '5.2.1.1.1.6' } };
+  const collarRef = (b, kind) => (COLLAR_REFS[b.uniform] || {})[kind];
+  function measureCollarSlot(ctx, poly, put, caption, borderIn, ref){
     if(!put || leafSide(ctx, poly) !== 'right') return;
     const dx = put.near.x - put.foot.x, dy = put.near.y - put.foot.y, d = Math.hypot(dx, dy) || 1;
-    ctx.measure(put.foot, { x: put.near.x + dx / d * (borderIn == null ? CLOTH_BORDER_IN : borderIn), y: put.near.y + dy / d * (borderIn == null ? CLOTH_BORDER_IN : borderIn) }, '1 in', { caption });
+    ctx.measure(put.foot, { x: put.near.x + dx / d * (borderIn == null ? CLOTH_BORDER_IN : borderIn), y: put.near.y + dy / d * (borderIn == null ? CLOTH_BORDER_IN : borderIn) }, '1 in', { caption, ref });
   }
   async function collarGrade(ctx, b){
     const g = b.grade;
     if(g.category === 'cadet-nco'){
-      // Centred on the leaf (COLLAR6; 5.1.1.1.1.4, 5.2.1.1.1.6), upright, bottom edge parallel to the leaf's lower seam (unturned when the seam is level); drawn once, for both leaves.
-      // COLLAR8 (Ethan, on the C/CMSgt chevrons standing small and upright on each leaf: "the long edge needs to be parallel to the collar, and the chief specifically needs to be bigger. for all enlisted
-      // things."): the chevron's long edge lies along the leaf's FRONT (leading) edge, 'one inch from and parallel to the front of the collar' (5.1.1.1.1.4, 5.2.1.1.1), apex toward the tip, centred on the
-      // leaf, and every enlisted collar chevron is scaled by one common factor so the C/CMSgt one stands 2.5 in tall (H.collarChevrons: an estimate, no collar size is published).
-      // COLLAR9 (Ethan, on the tilted chevrons: "parallel to the bottom seam, same as the officer insignia"): the chevron's bottom edge was parallel to the leaf's lower seam, centred, keeping the COLLAR8 size.
-      // COLLAR10 (Ethan: "flip it 90 so the points are basically pointing at each other"): the chevron is turned a quarter turn from that frame so its apex points inward toward the placket V (seam
-      // angle + 90 on the wearer's right leaf, - 90 on the left), the two apexes facing each other; still centred on the leaf centroid at the COLLAR8 common scale, which shrinks (0.1 in clear) if the
-      // turned chevron would cross the leaf outline.
-      // Position (2 November 2026, Ethan: "the one-inch rule wins"): the chevron's near edge is 1 inch from the front of the collar and it is centred between the leaf's sides there (5.1.1.1.1.4,
-      // 5.2.1.1.1.6: "1 inch from and parallel to the front of the collar and centered"; H.collarSlot), turned as the cadet officers' cloth is (the seam's angle + 90 on the wearer's right leaf, - 90 on the
-      // left, COLLAR10). The size gives way to the position: one factor for every enlisted chevron of the sheet, never above the art's true size (it replaces the COLLAR8 2.5 in chief), the largest
-      // factor at which the C/CMSgt chevron, the largest grade, lies inside both leaves with the cloth's 1/8 in of blue margin all round (R5); the smaller grades keep their proportion to it.
+      // The chevron's near edge is 1 inch from the BOTTOM of the collar and it is centred between the leaf's sides there (5.1.1.1.1.4, 5.2.1.1.1.6; H.collarSlot, the sheet's bottom_edge), turned a
+      // quarter turn from the seam's frame so its apex points inward toward the placket V and its long edge lies parallel to the bottom edge (COLLAR10: the seam's angle + 90 on the wearer's right leaf,
+      // - 90 on the left); drawn once for both leaves. The size gives way to the position (COLLAR8's 2.5 in chief is replaced): one factor for every enlisted chevron of the sheet, never above the art's
+      // true size, the largest factor at which the C/CMSgt chevron, the largest grade, lies inside both leaves with the cloth's 1/8 in of blue margin all round (R5); the smaller grades keep their
+      // proportion to it (H.collarChevronScale).
       await H.collarChevrons(ctx, g, { z: Z_COLLAR_GRADE, edgeOf: poly => seamInwardEdge(ctx, poly), maxScale: 1, clearIn: CLOTH_BORDER_IN,
-        atOf: (poly, box) => H.collarSlot(poly.points, frontEdgeOf(ctx, poly), COLLAR_NEAR_IN, box) });
-      // The 1 in from the front to the chevron's near edge (metal: no cloth border), drawn once on the wearer's right leaf from the piece as placed.
+        atOf: (poly, box) => H.collarSlot(poly.points, bottomEdgeOf(ctx, poly), COLLAR_NEAR_IN, box) });
+      // The 1 in from the bottom to the chevron's near edge (metal: no cloth border), drawn once on the wearer's right leaf from the piece as placed.
       const chev = ctx.layers.filter(l => l.key === 'grade:right').pop(), rpoly = H.collarPolygons(ctx).find(poly => leafSide(ctx, poly) === 'right');
-      if(chev && rpoly) measureCollarSlot(ctx, rpoly, H.collarSlot(rpoly.points, frontEdgeOf(ctx, rpoly), COLLAR_NEAR_IN, { w: chev.w, h: chev.h, rotate: chev.rotate }), 'collar front to grade', 0);
+      if(chev && rpoly) measureCollarSlot(ctx, rpoly, H.collarSlot(rpoly.points, bottomEdgeOf(ctx, rpoly), COLLAR_NEAR_IN, { w: chev.w, h: chev.h, rotate: chev.rotate }), 'collar bottom to grade', 0, collarRef(b, 'cadet-nco'));
     }else if(g.category === 'cadet-officer'){
       // Centred on the leaf (5.1.1.1.1.3, 5.2.1.1.1.4), turned a quarter turn from the seam's frame so the cloth's long side stands vertical (COLLAR6), drawn once for both leaves (H.collarOfficerRow, from
       // the sheet's collar_left / collar_right polygons). Every cadet officer wears the regular-size cloth; the miniature form
       // (which 5.1.1.1.1.3 / 5.2.1.1.1.4 allow Cadet Colonels and Cadet Captains) is used only when the regular cloth, stood
       // vertical and centred, would cross the leaf's outline (Ethan: the Spaatz and C/Capt rows read too small as miniatures).
-      // Position (2 November 2026): 1 in from the front of the collar (5.1.1.1.1.3, 5.2.1.1.1.4) to the cloth's embroidery, centred between the leaf's sides there (H.collarSlot).
+      // Position (2 November 2026): 1 in from the bottom of the collar (5.1.1.1.1.3, 5.2.1.1.1.4) to the cloth's embroidery, centred between the leaf's sides there (H.collarSlot).
       await H.collarOfficerRow(ctx, g, { z: Z_COLLAR_GRADE, turnOf: poly => seamAngle(ctx, poly) + 90,
-        atOf: (poly, box) => { const put = H.collarSlot(poly.points, frontEdgeOf(ctx, poly), COLLAR_NEAR_IN - CLOTH_BORDER_IN, box); return put; } });
-      // The 1 in from the front, drawn once on the wearer's right leaf from the piece as placed.
+        atOf: (poly, box) => H.collarSlot(poly.points, bottomEdgeOf(ctx, poly), COLLAR_NEAR_IN - CLOTH_BORDER_IN * (box.scale || 1), box) });
+      // The 1 in from the bottom, drawn once on the wearer's right leaf from the piece as placed.
       const cadet = ctx.layers.filter(l => l.key === 'grade:right').pop(), cpoly = H.collarPolygons(ctx).find(poly => leafSide(ctx, poly) === 'right');
-      if(cadet && cpoly) measureCollarSlot(ctx, cpoly, H.collarSlot(cpoly.points, frontEdgeOf(ctx, cpoly), COLLAR_NEAR_IN - CLOTH_BORDER_IN, { w: cadet.w, h: cadet.h, rotate: cadet.rotate }), 'collar front to grade');
+      if(cadet && cpoly){
+        // the cloth's blue border is the art's own 1/8 in drawn at the family's factor, so the embroidery stands 1 in from the edge when the box's near side is 1 in less the scaled border
+        const k = cadet.h / (await ctx.spec(cadet.id)).h, border = CLOTH_BORDER_IN * k;
+        measureCollarSlot(ctx, cpoly, H.collarSlot(cpoly.points, bottomEdgeOf(ctx, cpoly), COLLAR_NEAR_IN - border, { w: cadet.w, h: cadet.h, rotate: cadet.rotate }), 'collar bottom to grade', border, collarRef(b, 'cadet-officer'));
+      }
     }else if(g.officer && !g.cadet){
       const id = G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
       const art = ctx.has(id) ? await ctx.spec(id) : null;
@@ -359,13 +340,17 @@
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = seam + (R ? 90 : -90);
         // 1 in from the bottom of the collar to the embroidery's near side, centred between the leaf's sides there (H.collarSlot); the leaf's centroid when the sheet states no seam.
         const put = art && H.collarSlot(poly.points, bottomEdgeOf(ctx, poly), COLLAR_NEAR_IN - CLOTH_BORDER_IN, { w: art.w, h: art.h, rotate });
-        measureCollarSlot(ctx, poly, put, 'collar bottom to grade');
+        measureCollarSlot(ctx, poly, put, 'collar bottom to grade', null, collarRef(b, 'officer'));
         await ctx.place(id, { pieceAnchor: 'center', at: put ? put.at : H.polygonCentroid(poly.points), rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
       }
     }
     // The cloth grade on the collar shows 1/8 in of blue past the embroidery (5.1.1.1.1.1, 5.1.1.1.1.3, 5.2.1.1.1.1, 5.2.1.1.1.4):
     // measured once, on the wearer's right leaf.
-    if(g.category === 'cadet-officer' || (g.officer && !g.cadet)) await H.blueBorder(ctx, ctx.layers.filter(l => l.key === 'grade:right').pop());
+    // A cloth drawn smaller than its art to fit a short leaf (the cadet officers' family factor) no longer shows 1/8 in of blue, so no 1/8 in is drawn on it.
+    if(g.category === 'cadet-officer' || (g.officer && !g.cadet)){
+      const cloth = ctx.layers.filter(l => l.key === 'grade:right').pop(), art = cloth && ctx.has(cloth.id) ? await ctx.spec(cloth.id) : null;
+      if(cloth && art && cloth.h / art.h > 0.999) await H.blueBorder(ctx, cloth);
+    }
     if(g.category === 'senior-nco'){
       const id = G.seniorChevron(g, { size: b.opt.chevron });
       let drawn = 0;

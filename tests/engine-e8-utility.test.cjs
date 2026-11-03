@@ -321,7 +321,7 @@ test('ABU and CFU collar grade is centred on the leaf and stands in the frame of
       assert.equal(be.p1[1], be.p2[1], `${u} ${side}: the seam is level`);
       assert.equal(be.angle_deg, 0, `${u} ${side}: the seam's angle`);
     }
-    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron a quarter turn, apex toward the V (COLLAR10); the cloth and the chevron 1 in from the front of the collar and centred (2 November 2026).
+    // Cadet officer (5.1.1.1.1.3, 5.2.1.1.1.4): a quarter turn from the seam (90), long side vertical; cadet NCO chevron a quarter turn, apex toward the V (COLLAR10); the cloth and the chevron 1 in from the bottom of the collar and centred (2 November 2026).
     for(const rank of ['C/2d Lt', 'C/Capt', 'C/Maj', 'C/Col', 'C/Lt Col', 'C/SSgt', 'C/MSgt']){
       const scene = await P.composeUniform(build(u, 'cadet', rank), store());
       for(const side of ['right', 'left']){
@@ -333,15 +333,15 @@ test('ABU and CFU collar grade is centred on the leaf and stands in the frame of
           assert.ok((side === 'right' ? 1 : -1) * Math.sin(g.rotate * Math.PI / 180) > 0.99, `${u} ${rank} ${side}: apex points toward the V`);
         }else assert.equal(g.rotate, 90, `${u} ${rank} ${side}: turn`);
         const c = { x: g.x + g.w / 2, y: g.y + g.h / 2 }, chev = /SSgt|MSgt/.test(rank);
-        // 2 November 2026: the cadet officer cloth lies 1 in from the front of the collar (its near side 7/8 in from the leading edge, the cloth's 1/8 in of blue inside it), the metal chevron's near edge 1 in, both centred (checked fully in engine-live-field-collar)
-        const le = spec.raw.collar_slots[side].leading_edge.points, a = { x: le[0][0] / 100, y: le[0][1] / 100 }, b = { x: le[1][0] / 100, y: le[1][1] / 100 };
+        // 2 November 2026: the cadet officer cloth lies 1 in from the bottom of the collar (its box's near side 1 in less the cloth's 1/8 in of blue, drawn at the family's factor), the metal chevron's near edge 1 in, both centred (checked fully in engine-live-field-collar)
+        const be = spec.raw.collar_slots[side].bottom_edge, a = { x: be.p1[0] / 100, y: be.p1[1] / 100 }, b = { x: be.p2[0] / 100, y: be.p2[1] / 100 };
         const L = Math.hypot(b.x - a.x, b.y - a.y), nrm = { x: (b.y - a.y) / L, y: -(b.x - a.x) / L }, cen = centroid(core.landmark(spec, 'collar_' + side).points);
         const sg = Math.sign((cen.x - a.x) * nrm.x + (cen.y - a.y) * nrm.y), r = g.rotate * Math.PI / 180;
         const half = g.w / 2 * Math.abs(nrm.x * Math.cos(r) + nrm.y * Math.sin(r)) + g.h / 2 * Math.abs(-nrm.x * Math.sin(r) + nrm.y * Math.cos(r));
-        const d = sg * ((c.x - a.x) * nrm.x + (c.y - a.y) * nrm.y) - half;
-        assert.ok(Math.abs(d - (chev ? 1 : 0.875)) < 0.01, `${u} ${rank} ${side}: the near side is ${d.toFixed(3)} in from the front of the collar`);
+        const d = sg * ((c.x - a.x) * nrm.x + (c.y - a.y) * nrm.y) - half, border = chev ? 0 : 0.125 * g.h / (await ST.load(g.id)).h;
+        assert.ok(Math.abs(d + border - 1) < 0.01, `${u} ${rank} ${side}: the embroidery's near side is ${(d + border).toFixed(3)} in from the bottom of the collar`);
       }
-      assert.equal(measures(scene).filter(m => m.label === '1 in').length, 1, `${u} ${rank}: the 1 in from the front is drawn once`);
+      assert.equal(measures(scene).filter(m => m.label === '1 in').length, 1, `${u} ${rank}: the 1 in from the bottom is drawn once`);
     }
     // Officers: bars (2d Lt, 1st Lt, Capt) a quarter turn so they lie along the seam, Colonel and generals unturned (beak forward on the Colonel), stem parallel to the ground for Maj/Lt Col.
     const rotOf = async (rank, side) => (await P.composeUniform(build(u, 'senior', rank), store())).layers.find(l => l.key === 'grade:' + side);

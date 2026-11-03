@@ -1,16 +1,15 @@
 'use strict';
-// ABU and Corporate Field Uniform collar grade (CAPR 39-1 5.1.1.1.1, 5.2.1.1.1), COLLAR6; the POSITION of every piece is the paragraphs' 1 in from the collar's edge since
-// 2 November 2026 (Ethan: "for ABU rank alignment, it should be based off from an inch from the collar, not in the vertical center"): the turns below stand.
+// ABU and Corporate Field Uniform collar grade (CAPR 39-1 5.1.1.1.1, 5.2.1.1.1), COLLAR6; the POSITION of every piece is 1 in from the BOTTOM of the collar, centred between the leaf's
+// sides, since 2 November 2026: officers, cadet officers, cadet NCO and airman chevrons alike (5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.1.4, 5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.1.6); the front edge plays no part. The turns below stand.
 // Ethan, on the cadet Lt Col cloth drawn as a level rectangle pushed toward the leaf's outer side: "flip it 90 degrees, and center it, and apply that logic for everything else." Every collar grade
 // piece is centred on its leaf (its centre the centroid of the collar_left / collar_right polygon, both axes) and stands in the frame of the leaf's lower seam (collar_slots[side].bottom_edge, level on
 // both sheets): the cadet officers' cloth and the bars are turned a quarter turn from that frame so the cloth's long side stands vertical, the cadet NCO metal chevron is turned so its apex points at the V (COLLAR10), the Major's and
 // Lieutenant Colonel's stem stays parallel to the ground away from the neck, the Colonel's beak forward, the generals' stars stacked perpendicular to the seam. D8: the COLLAR5 tests had the cadet pieces
-// 1 in from the front edge and the officers 1 in above the seam, unturned; Ethan's ruling replaces those positions.
+// 1 in from the front edge and the officers 1 in above the seam, unturned; Ethan's ruling replaces those positions (and, 2 November 2026, every piece's distance is from the bottom edge).
 // COLLAR8 (Ethan, on the C/CMSgt chevrons standing small and upright on each leaf: "the long edge needs to be parallel to the collar, and the chief specifically needs to be bigger. for all enlisted
-// things."): the cadet NCO metal chevron's long edge lies along the leaf's front (leading) edge, mirrored on the two leaves, and all enlisted collar chevrons are scaled by one common factor so the
-// C/CMSgt one stands 2.5 in tall (less if it would not clear the leaf outline by 0.1 in). D8: the COLLAR6 tests had the chevrons upright.
-// 2 November 2026 (the one-inch rule wins): the chevron's near edge is 1 in from the front edge, centred between the leaf's sides, one factor for the sheet never above the art's true size and small
-// enough that the largest grade clears the leaf outline by the cloth's 1/8 in; the COLLAR8 2.5 in chief is gone.
+// things."): all enlisted collar chevrons are scaled by one common factor (COLLAR8's 2.5 in chief is gone, below). D8: the COLLAR6 tests had the chevrons upright.
+// 2 November 2026 (the one-inch rule wins): the chevron's near edge is 1 in from the bottom edge, centred between the leaf's sides, one factor for the sheet never above the art's true size and small
+// enough that the largest grade clears the leaf outline by the cloth's 1/8 in. The cadet officers' regular cloth: one factor for the family on the same terms (the miniature only on a leaf far too small).
 // COLLAR10 (Ethan: "flip it 90 so the points are basically pointing at each other"): the chevron is a quarter turn from the seam's frame, apex inward toward the V (seam + 90 on the wearer's right leaf, - 90 on the left).
 
 const test = require('node:test');
@@ -22,6 +21,7 @@ const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
 const G = require('../js/engine/grades.js');
 const P = require('../js/engine/profiles.js');
+const ML = require('../js/engine/measure-layout.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 
@@ -116,23 +116,23 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: officers' grade is 1 in from the bottom of the collar, cadet officers' 1 in from the front, each centred between the leaf's sides there; the cadet NCO chevron's near edge is 1 in from the front (5.1.1.1.1.1, 5.1.1.1.1.3-4, 5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.1.6)`, async () => {
+    test(`${uniform} ${gender}: every collar insignia (officers, cadet officers, cadet NCO and airman chevrons) stands 1 in from the bottom of the collar, centred between the leaf's sides there (5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.1.4, 5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.1.6)`, async () => {
       const cases = [...CADET_OFFICERS.map(r => ['cadet', r]), ...CADET_NCOS.map(r => ['cadet', r]), ...SENIOR_OFFICERS.map(r => ['senior', r])];
       const spec = await store.load(SHEETS[uniform]);
       for(const [membership, rank] of cases){
         const scene = await P.composeUniform(build(uniform, gender, membership, rank), store), chevron = CADET_NCOS.includes(rank);
         for(const side of ['right', 'left']){
           const l = layer(scene, side), poly = polyOf(spec, side);
-          // the edge: the sheet's lower seam for the officers, its leading (front) edge for the cadets
-          let a, b;
-          if(membership === 'senior'){ const se = seamOf(spec, side); a = se.a; b = se.b; }
-          else { const le = leadingOf(spec, side); a = le.top; b = le.bottom; }
+          // the edge: the sheet's lower seam (bottom_edge), for every grade
+          const se = seamOf(spec, side), a = se.a, b = se.b;
           const len = Math.hypot(b.x - a.x, b.y - a.y), t = { x: (b.x - a.x) / len, y: (b.y - a.y) / len }, cen = centroidOf(poly);
           let n = { x: -t.y, y: t.x }; if((cen.x - a.x) * n.x + (cen.y - a.y) * n.y < 0) n = { x: -n.x, y: -n.y };
           const dist = q => (q.x - a.x) * n.x + (q.y - a.y) * n.y, along = q => (q.x - a.x) * t.x + (q.y - a.y) * t.y;
-          // the art box includes the cloth's 1/8 in of blue, so the embroidery's near side is 1 in from the edge when the box's is 7/8 in; the metal chevron has no cloth: its near edge is 1 in
+          // the art box includes the cloth's 1/8 in of blue (drawn at the piece's own factor, which is 1 but for the cadet officers' family on a short leaf), so the embroidery's near side is 1 in from
+          // the edge when the box's is 1 in less that border; the metal chevron has no cloth: its near edge is 1 in
+          const art = await store.load(l.id), border = chevron ? 0 : 0.125 * l.h / art.h;
           const near = Math.min(...cornersOf(l).map(dist));
-          assert.ok(Math.abs(near - (chevron ? 1 : 0.875)) < 0.01, `${rank} ${side}: the near side is ${near.toFixed(3)} in from the ${membership === 'senior' ? 'bottom' : 'front'} of the collar (the embroidery's 1 in, less the cloth's 1/8 in of blue)`);
+          assert.ok(Math.abs(near + border - 1) < 0.01, `${rank} ${side}: the embroidery's near side is ${(near + border).toFixed(3)} in from the bottom of the collar`);
           // centred between the leaf's sides at the piece's height: the middle of the chord the parallel to the edge through the piece's centre cuts across the leaf
           const c = centreOf(l), d = dist(c), xs = [];
           for(let i = 0; i < poly.length; i++){
@@ -143,10 +143,18 @@ for(const uniform of ['abu', 'corporate_field']){
           const mid = (Math.min(...xs) + Math.max(...xs)) / 2;
           assert.ok(Math.abs(along(c) - mid) < 0.02, `${rank} ${side}: centred ${along(c).toFixed(3)} along the edge, the chord's middle is ${mid.toFixed(3)}`);
         }
-        // the 1 in is drawn once, on the wearer's right leaf
+        // the 1 in is drawn once, on the wearer's right leaf, from the collar's bottom to the grade, for every grade
         const ones = measures(scene).filter(m => m.label === '1 in');
         assert.equal(ones.length, 1, `${rank}: one 1 in measure on the collar`);
         assert.ok(Math.abs(Math.hypot(ones[0].to.x - ones[0].from.x, ones[0].to.y - ones[0].from.y) - 1) < 0.01, `${rank}: it spans 1 in`);
+        assert.equal(ones[0].opts.caption, 'collar bottom to grade', `${rank}: the measure's caption`);
+        // the paragraph it cites: the officers', the cadet officers' or the chevron's, of the uniform's own part
+        const refs = { abu: ['5.1.1.1.1.1', '5.1.1.1.1.3', '5.1.1.1.1.4'], corporate_field: ['5.2.1.1.1.1', '5.2.1.1.1.4', '5.2.1.1.1.6'] }[uniform];
+        assert.equal(ML.refFor(scene, ones[0]), refs[membership === 'senior' ? 0 : chevron ? 2 : 1], `${rank}: the paragraph the measure cites`);
+        const se = seamOf(spec, 'right'), mx = ones[0];
+        assert.ok(Math.abs(mx.from.y - se.a.y) < 0.01, `${rank}: the measure starts on the bottom edge`);
+        // it runs perpendicular to the edge (straight up from it)
+        assert.ok(Math.abs(mx.to.x - mx.from.x) < 0.01, `${rank}: the measure stands perpendicular to the bottom edge`);
       }
     });
 
@@ -156,9 +164,10 @@ for(const uniform of ['abu', 'corporate_field']){
         for(const side of ['right', 'left']){
           const l = layer(scene, side), spec = await store.load(l.id);
           // the art is drawn with the row of diamonds horizontal; a quarter turn stands the row vertical, so the cloth's drawn long side is vertical: w x h swap
-          const cs = cornersOf(l), xs = cs.map(q => q.x), ys = cs.map(q => q.y);
+          // drawn at the cadet officers' one factor (1 unless the leaf is short, below)
+          const k = l.h / spec.h, cs = cornersOf(l), xs = cs.map(q => q.x), ys = cs.map(q => q.y);
           const ext = { w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
-          assert.ok(Math.abs(ext.w - spec.h) < 0.01 && Math.abs(ext.h - spec.w) < 0.01, `${rank} ${side}: on the leaf the cloth is ${ext.w.toFixed(2)} x ${ext.h.toFixed(2)} (the art is ${spec.w} x ${spec.h})`);
+          assert.ok(Math.abs(ext.w - spec.h * k) < 0.01 && Math.abs(ext.h - spec.w * k) < 0.01, `${rank} ${side}: on the leaf the cloth is ${ext.w.toFixed(2)} x ${ext.h.toFixed(2)} (the art is ${spec.w} x ${spec.h}, drawn at ${k.toFixed(3)})`);
           if(rank !== 'C/Maj') assert.ok(ext.h > ext.w, `${rank} ${side}: the row of diamonds stands vertical`);
           assert.ok(Math.abs(l.rotate - 90) < 0.01, `${rank} ${side}: rotate ${l.rotate}`);
         }
@@ -190,17 +199,22 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: every cadet officer, C/2d Lt to C/Col, wears the regular cloth-bordered form; the miniature only where the regular would cross the leaf (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
+    test(`${uniform} ${gender}: every cadet officer, C/2d Lt to C/Col, wears the regular cloth-bordered form, the whole family at one factor never above 1, all inside the leaf (5.1.1.1.1.3, 5.2.1.1.1.4)`, async () => {
       // Ethan, on the Spaatz and C/Capt drawn as miniatures: "why is the spaatz so small lol, and c/capt". D8: the COLLAR6 test had C/Capt and C/Col in the miniature form always.
-      const spec = await store.load(SHEETS[uniform]);
+      const spec = await store.load(SHEETS[uniform]), factors = [];
       for(const rank of CADET_OFFICERS){
         const scene = await P.composeUniform(build(uniform, gender, 'cadet', rank), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side);
+          const l = layer(scene, side), art = await store.load(l.id);
           assert.match(l.id, /cloth-bordered-regular$/, `${rank} ${side}`);
+          factors.push(l.h / art.h);
+          assert.ok(l.h / art.h <= 1 + 1e-6 && Math.abs(l.w / art.w - l.h / art.h) < 1e-3, `${rank} ${side}: one aspect, never above the art (${(l.h / art.h).toFixed(4)})`);
           for(const q of cornersOf(l)) assert.ok(inside(q, polyOf(spec, side)), `${rank} ${side}: the regular cloth lies inside the leaf`);
         }
       }
+      // one factor for the family; at 1 in from the bottom the C/Col and C/Capt cloth would not fit at its true size on these leaves (measured: 0.918 of the art), so the whole family is drawn smaller
+      assert.ok(Math.max(...factors) - Math.min(...factors) < 1e-3, `one common factor: ${Math.min(...factors)} .. ${Math.max(...factors)}`);
+      assert.ok(Math.abs(factors[0] - 0.918) < 0.005, `the family's factor is ${factors[0].toFixed(4)}`);
     });
   }
 }
@@ -219,7 +233,7 @@ test('a leaf too small for the regular cloth falls back to the miniature cloth-b
   }
 });
 
-// ---- COLLAR8: the enlisted chevrons along the leaf's front edge, at one common larger size -----------------------
+// ---- COLLAR8: the enlisted chevrons, at one common size -----------------------
 
 const NCO_BUILDS = [...CADET_NCOS.map(r => [r, false]), ['C/MSgt', true], ['C/SMSgt', true], ['C/CMSgt', true]];   // the last three also as first sergeants
 const buildNco = (u, gender, rank, fs) => Object.assign(build(u, gender, 'cadet', rank), { grade: G.gradeInfo('cadet', rank, { firstSergeant: fs }) });
@@ -262,24 +276,26 @@ for(const uniform of ['abu', 'corporate_field']){
       }
     });
 
-    test(`${uniform} ${gender}: every cadet NCO and airman collar chevron has its near edge 1.00 in from the front edge of the collar, lies inside the leaf with the cloth's 1/8 in of blue margin, and all share one scale never above the art's true size (5.1.1.1.1.4, 5.2.1.1.1.6)`, async () => {
+    test(`${uniform} ${gender}: every cadet NCO and airman collar chevron has its near edge 1.00 in from the bottom of the collar, lies inside the leaf with the cloth's 1/8 in of blue margin, and all share one scale never above the art's true size (5.1.1.1.1.4, 5.2.1.1.1.6)`, async () => {
       const spec = await store.load(SHEETS[uniform]);
       const factors = [];
       for(const [rank, fs] of NCO_BUILDS){
         const scene = await P.composeUniform(buildNco(uniform, gender, rank, fs), store);
         for(const side of ['right', 'left']){
-          const l = layer(scene, side), art = await store.load(l.id), le = leadingOf(spec, side), poly = polyOf(spec, side);
+          const l = layer(scene, side), art = await store.load(l.id), le = seamOf(spec, side), poly = polyOf(spec, side);
           factors.push(l.h / art.h);
           assert.ok(Math.abs(l.w / art.w - l.h / art.h) < 1e-3, `${ncoLabel(rank, fs)} ${side}: keeps its own aspect`);
           assert.ok(l.h / art.h <= 1 + 1e-6, `${ncoLabel(rank, fs)} ${side}: never larger than the art (${(l.h / art.h).toFixed(4)})`);
           assert.ok(boxInside(l, poly, 0.125 - 1e-3), `${ncoLabel(rank, fs)} ${side}: inside the leaf with 1/8 in to spare`);
           for(const q of cornersOf(l)) assert.ok(inside(q, poly), `${ncoLabel(rank, fs)} ${side}: corner off the leaf`);
-          // the near edge: the nearest corner of the turned art box to the front edge, on the leaf's side of it
-          const len = Math.hypot(le.bottom.x - le.top.x, le.bottom.y - le.top.y), cen = centroidOf(poly);
-          let n = { x: -(le.bottom.y - le.top.y) / len, y: (le.bottom.x - le.top.x) / len };
-          if((cen.x - le.top.x) * n.x + (cen.y - le.top.y) * n.y < 0) n = { x: -n.x, y: -n.y };
-          const near = Math.min(...cornersOf(l).map(q => (q.x - le.top.x) * n.x + (q.y - le.top.y) * n.y));
-          assert.ok(Math.abs(near - 1) < 0.01, `${ncoLabel(rank, fs)} ${side}: near edge ${near.toFixed(3)} in from the front edge`);
+          // the near edge: the nearest corner of the turned art box to the bottom edge, on the leaf's side of it
+          const len = Math.hypot(le.b.x - le.a.x, le.b.y - le.a.y), cen = centroidOf(poly);
+          let n = { x: -(le.b.y - le.a.y) / len, y: (le.b.x - le.a.x) / len };
+          if((cen.x - le.a.x) * n.x + (cen.y - le.a.y) * n.y < 0) n = { x: -n.x, y: -n.y };
+          const near = Math.min(...cornersOf(l).map(q => (q.x - le.a.x) * n.x + (q.y - le.a.y) * n.y));
+          assert.ok(Math.abs(near - 1) < 0.01, `${ncoLabel(rank, fs)} ${side}: near edge ${near.toFixed(3)} in from the bottom edge`);
+          // the chevron's long edge lies parallel to the bottom edge
+          assert.ok(Math.abs(Math.sin((l.rotate - seamOf(spec, side).angle) * Math.PI / 180)) > 0.999, `${ncoLabel(rank, fs)} ${side}: the art's long axis lies along the bottom edge`);
         }
       }
       assert.ok(Math.max(...factors) - Math.min(...factors) < 1e-3, `one common factor: ${Math.min(...factors)} .. ${Math.max(...factors)}`);
@@ -288,12 +304,12 @@ for(const uniform of ['abu', 'corporate_field']){
 }
 
 test('the enlisted chevron factor is never above 1, the art\'s true size, however much room the leaf has (5.1.1.1.1.4)', async () => {
-  // Both leaves of the ABU sheet enlarged by 1.5 about their centroids (the stated front edge moves out with them): the chief would clear at far above 1; it stays 1.
+  // Both leaves of the ABU sheet enlarged by 1.5 about their centroids (the stated bottom edge moves out with them): the chief would clear at far above 1; it stays 1.
   const big = edited(j => {
     for(const n of ['collar_right', 'collar_left']){
-      const pts = j.landmarks[n].map(([x, y]) => ({ x, y })), c = centroidOf(pts), side = n === 'collar_right' ? 'right' : 'left', le = j.collar_slots[side].leading_edge;
+      const pts = j.landmarks[n].map(([x, y]) => ({ x, y })), c = centroidOf(pts), side = n === 'collar_right' ? 'right' : 'left', be = j.collar_slots[side].bottom_edge;
       j.landmarks[n] = pts.map(p => [c.x + (p.x - c.x) * 1.5, c.y + (p.y - c.y) * 1.5]);
-      le.points = le.points.map(([x, y]) => [Math.round((c.x + (x / 100 - c.x) * 1.5) * 100), Math.round((c.y + (y / 100 - c.y) * 1.5) * 100)]);
+      be.points = be.points.map(([x, y]) => [Math.round(c.x + (x - c.x) * 1.5), Math.round(c.y + (y - c.y) * 1.5)]);
     }
   });
   for(const rank of CADET_NCOS){
@@ -303,12 +319,12 @@ test('the enlisted chevron factor is never above 1, the art\'s true size, howeve
 });
 
 test('a leaf too small for the chevron at true size shrinks the common factor to the largest that clears by 1/8 in; the grade below keeps the same factor (5.1.1.1.1.4)', async () => {
-  // Both leaves of the ABU sheet shrunk to 70 percent about their centroids, the stated front edge with them.
+  // Both leaves of the ABU sheet shrunk to 70 percent about their centroids, the stated bottom edge with them.
   const small = edited(j => {
     for(const n of ['collar_right', 'collar_left']){
-      const pts = j.landmarks[n].map(([x, y]) => ({ x, y })), c = centroidOf(pts), side = n === 'collar_right' ? 'right' : 'left', le = j.collar_slots[side].leading_edge;
+      const pts = j.landmarks[n].map(([x, y]) => ({ x, y })), c = centroidOf(pts), side = n === 'collar_right' ? 'right' : 'left', be = j.collar_slots[side].bottom_edge;
       j.landmarks[n] = pts.map(p => [c.x + (p.x - c.x) * 0.7, c.y + (p.y - c.y) * 0.7]);
-      le.points = le.points.map(([x, y]) => [Math.round((c.x + (x / 100 - c.x) * 0.7) * 100), Math.round((c.y + (y / 100 - c.y) * 0.7) * 100)]);
+      be.points = be.points.map(([x, y]) => [Math.round(c.x + (x - c.x) * 0.7), Math.round(c.y + (y - c.y) * 0.7)]);
     }
   });
   const spec = await small.load('garment-abu-coat');
@@ -344,17 +360,57 @@ test('the seam angle is read from the sheet: a seam stated 10 degrees off turns 
   assert.equal(layer(sc, 'left').rotate, 90);
 });
 
-test('the chevron stands 1 in from the sheet\'s stated front edge: moving the stated edge moves the chevron with it and does not turn it (5.1.1.1.1.4; COLLAR10: the seam and the side turn it)', async () => {
+test('a short leaf: the cadet officers\' regular cloth is drawn smaller by one factor for the family, all inside the leaf, 1 in from the bottom to the embroidery; no 1/8 in is drawn on a cloth that is not at its true size (5.1.1.1.1.3)', async () => {
+  // Both leaves of the ABU sheet shrunk to 85 percent about their centroids, the stated bottom edge with them: the family's factor falls below the 0.918 of the sheet as drawn.
+  const small = edited(j => {
+    for(const n of ['collar_right', 'collar_left']){
+      const pts = j.landmarks[n].map(([x, y]) => ({ x, y })), c = centroidOf(pts), side = n === 'collar_right' ? 'right' : 'left', be = j.collar_slots[side].bottom_edge;
+      j.landmarks[n] = pts.map(p => [c.x + (p.x - c.x) * 0.85, c.y + (p.y - c.y) * 0.85]);
+      be.points = be.points.map(([x, y]) => [Math.round(c.x + (x - c.x) * 0.85), Math.round(c.y + (y - c.y) * 0.85)]);
+    }
+  });
+  const spec = await small.load('garment-abu-coat'), ks = [];
+  for(const rank of CADET_OFFICERS){
+    const scene = await P.composeUniform(build('abu', 'male', 'cadet', rank), small);
+    for(const side of ['right', 'left']){
+      const l = layer(scene, side), art = await small.load(l.id);
+      assert.match(l.id, /cloth-bordered-regular$/, `${rank} ${side}`);
+      ks.push(l.h / art.h);
+      for(const q of cornersOf(l)) assert.ok(inside(q, polyOf(spec, side)), `${rank} ${side}: inside the shortened leaf`);
+      const se = seamOf(spec, side), len = Math.hypot(se.b.x - se.a.x, se.b.y - se.a.y);
+      const nrm = { x: -(se.b.y - se.a.y) / len, y: (se.b.x - se.a.x) / len }, sgn = Math.sign((centroidOf(polyOf(spec, side)).y - se.a.y) * nrm.y + (centroidOf(polyOf(spec, side)).x - se.a.x) * nrm.x);
+      const near = Math.min(...cornersOf(l).map(q => sgn * ((q.x - se.a.x) * nrm.x + (q.y - se.a.y) * nrm.y)));
+      assert.ok(Math.abs(near + 0.125 * l.h / art.h - 1) < 0.01, `${rank} ${side}: the embroidery is ${(near + 0.125 * l.h / art.h).toFixed(3)} in from the bottom`);
+    }
+    assert.equal(scene.layers.filter(m => m.type === 'measure' && m.label === '⅛ in').length, 0, `${rank}: no 1/8 in on a cloth drawn below its true size`);
+  }
+  assert.ok(Math.max(...ks) - Math.min(...ks) < 1e-3 && ks[0] < 0.9, `one factor below 0.9: ${Math.min(...ks)} .. ${Math.max(...ks)}`);
+  // a senior officer's cloth is untouched by the cadet family and keeps its 1/8 in
+  const sr = await P.composeUniform(build('abu', 'male', 'senior', 'Capt'), store);
+  assert.equal(sr.layers.filter(m => m.type === 'measure' && m.label === '⅛ in').length >= 1, true);
+});
+
+test('the chevron stands 1 in from the sheet\'s stated bottom edge: moving the stated edge moves the chevron with it and does not turn it; the front edge plays no part (5.1.1.1.1.4; COLLAR10: the seam and the side turn it)', async () => {
   const base = await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), store);
-  const st = edited(j => { j.collar_slots.right.leading_edge = { points: [[1709, 807], [1709, 1110]] }; });
+  // the right leaf's bottom edge raised 0.2 in (it is level at y = 12.37 in)
+  const st = edited(j => { j.collar_slots.right.bottom_edge = { points: [[1467, 1217], [1737, 1217]] }; });
   const moved = await P.composeUniform(build('abu', 'male', 'cadet', 'C/SSgt'), st);
   const a = centreOf(layer(base, 'right')), b = centreOf(layer(moved, 'right'));
   assert.ok(Math.hypot(a.x - b.x, a.y - b.y) > 0.01, 'the right chevron follows the stated edge');
-  // the new edge is the vertical line x = 17.09 in: the chevron's nearest corner stands 1 in from it
-  const near = Math.min(...cornersOf(layer(moved, 'right')).map(q => Math.abs(q.x - 17.09)));
-  assert.ok(Math.abs(near - 1) < 0.01, `the near edge is ${near.toFixed(3)} in from the moved front edge`);
+  // the chevron's nearest corner (the largest y) stands 1 in above the new edge
+  const near = 12.17 - Math.max(...cornersOf(layer(moved, 'right')).map(q => q.y));
+  assert.ok(Math.abs(near - 1) < 0.01, `the near edge is ${near.toFixed(3)} in from the moved bottom edge`);
   assert.equal(layer(moved, 'right').rotate, 90);
   assert.equal(layer(moved, 'left').rotate, -90);
+  // the front edge plays no part: a leading_edge stated anywhere else leaves every grade where it was
+  const odd = edited(j => { for(const side of ['right', 'left']) j.collar_slots[side].leading_edge = { points: [[1709, 807], [1709, 1110]] }; });
+  for(const [m, rank] of [['cadet', 'C/SSgt'], ['cadet', 'C/Lt Col'], ['senior', 'Capt'], ['senior', 'Col']]){
+    const x = await P.composeUniform(build('abu', 'male', m, rank), store), y = await P.composeUniform(build('abu', 'male', m, rank), odd);
+    for(const side of ['right', 'left']){
+      const p = layer(x, side), q = layer(y, side);
+      assert.ok(Math.hypot(centreOf(p).x - centreOf(q).x, centreOf(p).y - centreOf(q).y) < 1e-9 && p.rotate === q.rotate && p.w === q.w, `${rank} ${side}: unmoved by the front edge`);
+    }
+  }
 });
 
 test('a seam stated 10 degrees off turns the chevron by 10 degrees from its quarter turn, apex still inward on that leaf (COLLAR10)', async () => {

@@ -213,13 +213,11 @@
     return t ? [{ points: t.a }, { points: t.b }] : [];
   }
 
-  // A piece placed by its distance from a collar edge, as the ABU and CFU paragraphs word it (5.1.1.1.1.1 "centered 1 inch from the bottom of the collar", 5.1.1.1.1.3-4
-  // "one inch from the front of the collar and centered", the same in 5.2.1.1.1.1 and 5.2.1.1.1.4). Ethan, 2 November 2026: "for ABU rank alignment, it should be based off
-  // from an inch from the collar, not in the vertical center." `edge` { a, b } is the collar edge (the leaf's lower seam for the officers, its front edge for the cadets), sheet
-  // inches; `box` { w, h, rotate } the piece's art box and its turn (SVG degrees, about its centre); `nearIn` the distance from the edge to the piece's near side (the
-  // embroidery's, the cloth's blue border being inside the art box). The piece's centre lies on the perpendicular to the edge's direction that puts its near side `nearIn`
-  // from the edge, and is centred between the leaf's two sides there: the midpoint of the chord the line parallel to the edge cuts across the leaf (`points`). Returns
-  // { at, foot, near } (the centre, the point on the edge below the piece's middle, the piece's near side straight above it) or null.
+  // A piece placed by its distance from a collar edge, as the ABU and CFU paragraphs word it (5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.1.4, 5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.1.6: one inch from the bottom of the
+  // collar, centred). `edge` { a, b } is the collar edge (the leaf's lower seam, the sheet's bottom_edge), sheet inches; `box` { w, h, rotate } the piece's art box and its turn (SVG degrees, about its
+  // centre); `nearIn` the distance from the edge to the piece's near side (the embroidery's, the cloth's blue border being inside the art box). The piece's centre lies on the perpendicular to the
+  // edge's direction that puts its near side `nearIn` from the edge, and is centred between the leaf's two sides there: the midpoint of the chord the line parallel to the edge cuts across the leaf
+  // (`points`). Returns { at, foot, near } (the centre, the point on the edge below the piece's middle, the piece's near side straight above it) or null.
   function collarSlot(points, edge, nearIn, box){
     if(!edge || !points || points.length < 3) return null;
     const dx = edge.b.x - edge.a.x, dy = edge.b.y - edge.a.y, len = Math.hypot(dx, dy);
@@ -262,11 +260,13 @@
     return [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]].every(([i, j]) => inside(q(i, j)));
   }
 
-  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: 'one inch from the front of the collar and centered'). COLLAR6 (Ethan, on the cloth drawn as a level rectangle pushed toward the
+  // Cadet officers on both collars of the ABU and CFU (5.1.1.1.1.3, 5.2.1.1.1.4: one inch from the bottom of the collar, centred). COLLAR6 (Ethan, on the cloth drawn as a level rectangle pushed toward the
   // leaf's outer side: "flip it 90 degrees, and center it, and apply that logic for everything else"): the cloth is turned a quarter turn from the seam's frame, so its long side stands vertical (`opts.turnOf(poly)`
-  // supplies the turn, the seam's angle + 90: the diamonds of the Lt Col stack one above the other, each with its long axis along the seam), and its centre is the centroid of the leaf polygon on both axes.
-  // The art is drawn with its diamonds' long axis vertical and its row horizontal. A grade worn in the regular size whose cloth would cross the leaf's outline when centred is drawn in the miniature
-  // cloth-bordered form instead (5.1.1.1.1.3: miniature insignia may be worn); `opts.miniatureKeys` names the grades that wear the miniature form always (Cadet Colonels and Captains).
+  // supplies the turn, the seam's angle + 90: the diamonds of the Lt Col stack one above the other, each with its long axis along the seam), and its centre is `opts.atOf(poly, box)`'s (the ABU and CFU: 1 in from the bottom of the collar, H.collarSlot) or else the centroid of the leaf polygon on both axes.
+  // The art is drawn with its diamonds' long axis vertical and its row horizontal. With `opts.atOf` (the ABU and CFU) the regular cloth is never drawn in the miniature while it can be drawn nearly its size: ONE factor serves the whole family of regular cadet officer cloth on the
+  // sheet, never above 1, the largest at which every grade's cloth lies inside both leaves at its place; only a leaf so small that the factor would make a cloth no larger than its miniature gets the
+  // miniature cloth-bordered form (5.1.1.1.1.3: miniature insignia may be worn). Without `opts.atOf` a regular cloth that would cross the leaf's outline when centred is drawn in the miniature form;
+  // `opts.miniatureKeys` names the grades that wear the miniature form always.
   async function collarOfficerRow(ctx, g, opts){
     const mini = opts && opts.miniatureKeys && opts.miniatureKeys.includes(g.key);
     const polys = collarPolygons(ctx);
@@ -277,30 +277,49 @@
     let s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
     const turns = polys.map(poly => opts && opts.turnOf ? opts.turnOf(poly) : 0);
-    // regular size that does not fit on both leaves, centred: the miniature form
-    // `opts.atOf(poly, box)` (the ABU and CFU: the paragraph's distance from the collar edge, collarSlot) gives the piece's centre; without it the leaf's centroid.
-    const centreOf = (poly, spec, turn) => (opts && opts.atOf && opts.atOf(poly, { w: spec.w, h: spec.h, rotate: turn }, id)) || { at: polygonCentroid(poly.points) };
-    if(!mini && polys.some((poly, i) => !boxInPolygon(poly.points, centreOf(poly, s, turns[i]).at, s.w, s.h, turns[i]))){
+    // `opts.atOf(poly, box)` (the ABU and CFU: the paragraph's distance from the collar edge, collarSlot) gives the piece's centre; without it the leaf's centroid. `box` carries `scale`, the factor the
+    // piece is drawn at, so the caller can keep the embroidery (not the cloth's box) at its distance.
+    const centreOf = (poly, spec, turn, scale) => (opts && opts.atOf && opts.atOf(poly, { w: spec.w * scale, h: spec.h * scale, rotate: turn, scale }, id)) || { at: polygonCentroid(poly.points) };
+    const fits = (spec, scale) => polys.every((poly, i) => boxInPolygon(poly.points, centreOf(poly, spec, turns[i], scale).at, spec.w * scale, spec.h * scale, turns[i]));
+    // One factor for the whole family of regular cloth on this sheet (the chevrons' rule): never above 1, the art's own size, and the largest at which every regular cadet officer cloth lies inside both
+    // leaves at its place, so the grades keep their sizes relative to each other. A regular cloth that does not fit at its true size is drawn at that factor; the miniature form is drawn instead only
+    // where the factor would make the regular cloth no larger than the miniature itself (a leaf far too small).
+    let scale = 1, useMini = false;
+    if(!mini && opts && opts.atOf){
+      const family = [];
+      for(const e of Object.values(G.CADET)){
+        if(e.category !== 'cadet-officer') continue;
+        const fid = G.cadetOfficerInsignia(e, 'cloth-bordered-regular');
+        if(fid && ctx.has(fid)) family.push(await ctx.spec(fid));
+      }
+      const fitsAll = f => family.every(spec => fits(spec, f));
+      if(!fitsAll(1)){
+        let lo = 0, hi = 1;
+        for(let i = 0; i < 40; i++){ const mid = (lo + hi) / 2; if(fitsAll(mid)) lo = mid; else hi = mid; }
+        scale = lo;
+        const small = G.cadetOfficerInsignia(g, 'cloth-bordered-miniature');
+        if(small && ctx.has(small) && s.w * scale <= (await ctx.spec(small)).w + 1e-9) useMini = true;
+      }
+    }else if(!mini && !fits(s, 1)) useMini = true;
+    if(useMini){
       const small = G.cadetOfficerInsignia(g, 'cloth-bordered-miniature');
-      if(small && ctx.has(small)){ id = small; s = await ctx.spec(id); }
+      if(small && ctx.has(small)){ id = small; s = await ctx.spec(id); scale = 1; }
     }
     for(let i = 0; i < polys.length; i++){
-      const poly = polys[i], at = centreOf(poly, s, turns[i]).at;
+      const poly = polys[i], at = centreOf(poly, s, turns[i], scale).at;
       const side = at.x < centerX ? 'right' : 'left';
-      await ctx.place(id, { pieceAnchor: 'center', at, rotate: turns[i], z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
+      await ctx.place(id, { pieceAnchor: 'center', at, scale, rotate: turns[i], z: opts && opts.z != null ? opts.z : Z.insignia, role: 'grade', key: 'grade:' + side });
     }
   }
 
   // Cadet NCO and Airman chevrons on both collars. On the shirts (Class B, aviator shirt, overblouse), the rule of Figure A5-5 ('shirt without necktie', CAPR 39-1 page 134): the chevron's
   // axis parallel to the leading edge of the collar leaf (its bottom edge, collar point to roll line), top of the insignia (peak / shield canton) toward the roll-line end, rockers toward the
   // collar point, the near outline 1 in from the edge, centred on the leaf (4.1.11.1.1.1.4, 4.1.12.2.3.5, 4.2.5.1.1.5, 4.2.6.2.5).
-  // `opts.edgeOf(poly)` (the ABU and CFU, COLLAR8): the leaf's front (leading) edge as { top, bottom } in sheet inches, tip end first. 5.1.1.1.1.4 / 5.2.1.1.1: the chevron is 'parallel to the front of the
-  // collar', so its long edge (the art's vertical axis, apex up) lies along that edge, apex toward the tip, the turn mirrored on the two leaves because the edges are; its centre is the centroid of the
-  // leaf polygon (Ethan's centring rule, COLLAR6). Ethan's ruling (COLLAR8, "the chief specifically needs to be bigger ... for all enlisted things"): every enlisted collar chevron is drawn at ONE
-  // common factor of its metal art so the C/CMSgt chevron stands `opts.tallIn` (2.5 in, the long dimension the regular officer rows take on this leaf); each grade keeps its own aspect and the grades
-  // keep their sizes relative to each other. No collar size is published for the chevron (an estimate, D2); if the scaled C/CMSgt chevron, with `opts.clearIn` (0.1 in) all round, would cross the
-  // leaf outline on either leaf, the factor is reduced (bisection) until it clears. The factor does not depend on the grade shown, so a smaller chevron, concentric with the C/CMSgt one and turned the
-  // same, always lies inside it.
+  // `opts.edgeOf(poly)` (the ABU and CFU): an edge { top, bottom } in sheet inches that sets the chevron's turn, apex up along it (the seam inward toward the placket V, COLLAR10: the turn is mirrored on
+  // the two leaves). 5.1.1.1.1.4 / 5.2.1.1.1.6: the chevron's near edge is 1 in from the bottom of the collar, centred (`opts.atOf`, H.collarSlot), else its centre is the centroid of the leaf polygon.
+  // Every enlisted collar chevron is drawn at ONE common factor of its metal art, never above `opts.maxScale` (the art's true size) and reduced (bisection) until the C/CMSgt chevron, the largest grade,
+  // with `opts.clearIn` all round, lies inside both leaves at its place (H.collarChevronScale); each grade keeps its own aspect and the grades keep their sizes relative to each other. The factor does not
+  // depend on the grade shown, so a smaller chevron, concentric with the C/CMSgt one and turned the same, always lies inside it.
   async function collarChevrons(ctx, g, opts){
     const id = G.cadetNcoChevron(g, 'metal');
     const polys = collarPolygons(ctx);
