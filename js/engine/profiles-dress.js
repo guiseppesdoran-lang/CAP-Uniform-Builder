@@ -810,7 +810,11 @@
     const id = (opts && opts.id) || epauletGradeId(g);
     if(!id || !ctx.has(id)) return null;
     const gs = await ctx.spec(id);
-    const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
+    // LIVE13 E123 (Ethan, on the cadet officers' grades on the boards: "the cadet officer insignia should be shifted 90 degrees. for example, the 3 diamonds for c/col
+    // should all be on top of each other"; the coordinator's reading: stacked along the board's long axis, over the Figure A5-6 side-by-side reading): the discs
+    // and diamonds of a cadet officer run ALONG the strap, one behind the next, centred on its line, the quarter turn the officers' bars take. The strip keeps
+    // them at true length along the strap and squeezes them across it like the strip itself.
+    const quarter = ACROSS_GRADES.has(g.key) || g.category === 'cadet-officer';
     const o = opts || {};
     // `along` (default 1): the factor the strip itself is squeezed to along the strap (the officers' Class A strip, shorter than the sleeve art), which the grade shares so it keeps its
     // place among the art's lettering and stripes (LIVE11-2: unsqueezed it ran over the CAP).
@@ -960,7 +964,11 @@
     const s = await ctx.spec(sleeveId);
     const gradeId = epauletGradeId(g);
     const gs = gradeId && ctx.has(gradeId) ? await ctx.spec(gradeId) : null;
-    const quarter = ACROSS_GRADES.has(g.key) && g.category !== 'cadet-officer';
+    // LIVE13 E123 (Ethan, on the cadet officers' grades on the boards: "the cadet officer insignia should be shifted 90 degrees. for example, the 3 diamonds for c/col
+    // should all be on top of each other"; the coordinator's reading: stacked along the board's long axis, over the Figure A5-6 side-by-side reading): the discs
+    // and diamonds of a cadet officer run ALONG the strap, one behind the next, centred on its line, the quarter turn the officers' bars take. The strip keeps
+    // them at true length along the strap and squeezes them across it like the strip itself.
+    const quarter = ACROSS_GRADES.has(g.key) || g.category === 'cadet-officer';
     for(const side of ['right', 'left']){
       const f = bandFrame(ctx, side, H.epauletFrame(ctx, side));
       if(!f) continue;
@@ -1297,6 +1305,13 @@
     return frames;
   }
 
+  // The size a cadet officer's grade is drawn on a board: the art's row runs along the board, so its length must lie in the rank slot's band along the board and
+  // its height across it, 0.06 in of blue each end (never above true size). The edge-on strip takes the same factor along the strap.
+  async function boardGradeScale(ctx, boardSpec, gradeId){
+    const gs = await ctx.spec(gradeId), band = core.landmarkBounds(boardSpec, 'rank_slot');
+    return band ? Math.min(1, (band.w - 0.12) / gs.w, (band.h - 0.12) / gs.h) : 1;
+  }
+
   // Cadet officer shoulder boards (4.1.5.2.1.3): edge-on on the coat sheet, and seen from above, each
   // turned to lie along its strap with its near edge just above the shoulder (R7), the regular-size
   // grade on its rank slot.
@@ -1325,12 +1340,11 @@
       const slot = core.anchor(s, 'rank_slot_center');
       const at = view && slot && core.rotatePoint({ x: c.x + (slot.x - s.w / 2), y: c.y + (slot.y - s.h / 2) }, c, rot);
       if(!at || !grade || !ctx.has(grade)) continue;
-      // The grade's discs or diamonds sit side by side across the board (Figure A5-6). The figure's
-      // board is wider than this one: a grade wider than the band (the Colonel's three diamonds) is
-      // drawn just small enough to sit on it.
-      const gs = await ctx.spec(grade), band = core.landmarkBounds(s, 'rank_slot');
-      const scale = band ? Math.min(1, (band.h - 0.12) / gs.w, (band.w - 0.12) / gs.h) : 1;
-      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: rot + 90, scale, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
+      // The grade's discs or diamonds run along the board's long axis, centred on the rank slot (LIVE13 E123, Ethan: "the cadet officer insignia should be shifted
+      // 90 degrees. for example, the 3 diamonds for c/col should all be on top of each other"; it overrules the Figure A5-6 side-by-side reading, which had them
+      // in a row across the board). A grade longer than the band (the Colonel's three diamonds) is drawn just small enough to sit on it.
+      const scale = await boardGradeScale(ctx, s, grade);
+      await ctx.place(grade, { pieceAnchor: 'center', at, rotate: rot, scale, z: Z.epauletTopGrade, role: 'grade', key: 'grade:top-' + side });
     }
     seatViewsAboveOutline(ctx);
     await boardStrips(ctx, sex, frames, overlay);
@@ -1490,12 +1504,16 @@
       // Its centre is as far from the board's outer end as the top view's rank slot is (the board sheet's
       // rank_slot_center and board_outer_end), so the two views place one piece at one distance (R7).
       const fromEnd = {};
+      const stripGrade = G.cadetOfficerInsignia(g, 'metal-regular');
+      let along = 1;
       for(const side of ['right', 'left']){
         const bs = await ctx.spec(`garment-blues-shoulder-board-top-${sex}-${side}`).catch(() => null);
         const slot = bs && core.anchor(bs, 'rank_slot_center'), outer = bs && core.anchor(bs, 'board_outer_end');
         if(slot && outer) fromEnd[side] = Math.hypot(slot.x - outer.x, slot.y - outer.y);
+        if(bs && stripGrade && ctx.has(stripGrade)) along = Math.min(along, await boardGradeScale(ctx, bs, stripGrade));
       }
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: BOARD_STRIP_DROP, z: BOARD_STRIP_Z + 0.2 });
+      // The strip is the board seen edge-on: the grade at the top view's length along the strap, squeezed across it.
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), stripGrade, fromEnd, { thick: BOARD_STRIP_THICK, drop: BOARD_STRIP_DROP, along, z: BOARD_STRIP_Z + 0.2 });
     }
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);

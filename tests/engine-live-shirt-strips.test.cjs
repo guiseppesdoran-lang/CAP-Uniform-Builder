@@ -158,7 +158,7 @@ async function checkStrip(scene, sheet, side, tag, rank, cloth, thickWanted, st)
       const gc = core.rotatePoint({ x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, grade.origin, grade.rotate || 0);
       const gs = await st.load(grade.id);
       assert.ok(inside(box, gc), `${tag}: the grade is on the strip`);
-      const quarter = /^(second-lieutenant|first-lieutenant|captain|flight-officer)/.test(grade.id.replace(/^rank-(senior|cadet-officer)-/, '')) && cloth === 'gray';
+      const quarter = /^(second-lieutenant|first-lieutenant|captain|flight-officer)/.test(grade.id.replace(/^rank-(senior|cadet-officer)-/, '')) && cloth === 'gray' || /^rank-cadet-officer-/.test(grade.id);   // E123: a cadet officer's row runs along the strap
       const gAlong = along(gc), gHalf = (quarter ? gs.w : gs.h) / 2;
       assert.ok(Math.abs((gAlong - gHalf) - 0.625) < 0.03, `${tag}: the grade's outer edge is ${(gAlong - gHalf).toFixed(3)} in from the strip's end (5/8 in)`);
       assert.ok(gAlong + gHalf < capAlong - (sleeve.raw.dimensions.cap_word_h_in * kLen) / 2 + 0.05, `${tag}: the grade does not run onto the CAP lettering`);
