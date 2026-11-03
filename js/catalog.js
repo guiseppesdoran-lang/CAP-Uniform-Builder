@@ -1251,6 +1251,40 @@ function getSelectedUnitPatchId(){
   return getUnitPatchIdForCharter(State.unitPatchCharter);
 }
 
+// The level of a unit, from its charter number (data/unit-options.js): XXX-XXX-000 and -001 are a region's headquarters (and its headquarters
+// squadron), XXX-YY-000 and -001 a wing's, NHQ-NHQ-000, -001 and the three-letter sections are National Headquarters; every other number is a
+// group, a squadron or a flight, which the flight suits do not wear a patch for.
+const UNIT_LEVEL_RANK = Object.freeze({ squadron:0, group:1, wing:2, region:3, national:4 });
+function getUnitEchelon(code){
+  const parts = String(code || '').trim().toUpperCase().split('-');
+  if(parts.length < 2) return 'squadron';
+  const last = parts[parts.length - 1], mid = parts.length > 2 ? parts[parts.length - 2] : '', first = parts[0];
+  if(first === 'NHQ' && mid === 'NHQ') return (last === '000' || last === '001' || /^[A-Z]{3}$/.test(last)) ? 'national' : 'squadron';
+  if(last === '000' || last === '001') return mid && mid === first ? 'region' : 'wing';
+  const unit = (typeof CAP_UNIT_OPTIONS !== 'undefined' ? CAP_UNIT_OPTIONS : []).find(u => u.code === String(code).trim());
+  return unit && /\bGROUP\b|\bGP\b|\bHQ GROUP\b/i.test(unit.name) ? 'group' : 'squadron';
+}
+
+// Where a unit's own patch is not worn below a level: the flight suits take no organizational patch for a group, a squadron or a flight
+// (CAPR 39-1, 8.2.4.5 FDU, 8.3.4.5 CFDU: "except organizational patches for groups, squadrons or flights are not approved for wear").
+const UNIT_PATCH_FLOOR = Object.freeze({
+  flight_suit: { level:'wing', ref:'8.2.4.5', words:'the flight suit' },
+  cfdu: { level:'wing', ref:'8.3.4.5', words:'the Corporate Flight Duty Uniform' }
+});
+function getUnitPatchFloor(uniformId = State.uniform){
+  // The patch catalog files the Corporate Flight Suit under the flight suit's key; its own paragraph is 8.3.4.5.
+  if(/corporate_flight|cfdu/i.test(String(uniformId || ''))) return UNIT_PATCH_FLOOR.cfdu;
+  return UNIT_PATCH_FLOOR[normalizeUniformKeyForPatches(uniformId)] || null;
+}
+function isUnitCharterWornOnUniform(code, uniformId = State.uniform){
+  const floor = getUnitPatchFloor(uniformId);
+  return !floor || UNIT_LEVEL_RANK[getUnitEchelon(code)] >= UNIT_LEVEL_RANK[floor.level];
+}
+// The charters whose patch is this patch (the unit patches have a picture by charter number).
+function getUnitPatchCharters(patchId){
+  return Object.keys(UNIT_PATCH_IMAGE_BY_CHARTER).filter(code => UNIT_PATCH_IMAGE_BY_CHARTER[code] === patchId);
+}
+
 function isUnitPatchAuthorizedForCurrentUniform(){
   const patchId = getSelectedUnitPatchId();
   return !!patchId && isPatchAuthorizedForUniform(patchId);
@@ -1261,11 +1295,22 @@ function getUnitPatchSelectionLabel(code){
   return unit ? `${unit.code} - ${unit.name}` : String(code || '');
 }
 
+// The one line the Unit patch list carries on a uniform that takes no patch below wing level.
+function getUnitPatchFloorNote(uniformId = State.uniform){
+  const floor = getUnitPatchFloor(uniformId);
+  return floor ? `Only wing, region and national units are listed: ${floor.words} takes no group or squadron patch (CAPR 39-1, ${floor.ref}).` : '';
+}
+
 function renderUnitPatchStatus(){
   const status = by('unitPatchStatus');
   if(!status) return;
+  const floorNote = getUnitPatchFloorNote();
   if(!State.unitPatchCharter){
-    status.textContent = 'No unit patch selected.';
+    status.textContent = floorNote ? `No unit patch selected. ${floorNote}` : 'No unit patch selected.';
+    return;
+  }
+  if(!isUnitCharterWornOnUniform(State.unitPatchCharter)){
+    status.textContent = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not worn on this uniform. ${floorNote}`;
     return;
   }
   const patchId = getSelectedUnitPatchId();
@@ -1287,6 +1332,7 @@ function buildUnitPatchSelector(filterText=''){
   const normalized = String(filterText || '').trim().toLowerCase();
   const selected = State.unitPatchCharter || '';
   const matches = CAP_UNIT_OPTIONS.filter(unit => {
+    if(!isUnitCharterWornOnUniform(unit.code)) return false;
     if(!normalized) return true;
     return `${unit.code} ${unit.name}`.toLowerCase().includes(normalized);
   });
@@ -1309,7 +1355,8 @@ function buildUnitPatchSelector(filterText=''){
     const unit = CAP_UNIT_OPTIONS.find(u => u.code === selected);
     const opt = document.createElement('option');
     opt.value = selected;
-    opt.textContent = unit ? `${unit.code} - ${unit.name}  (selected)` : `${selected}  (selected)`;
+    const kept = isUnitCharterWornOnUniform(selected) ? '(selected)' : '(selected, not worn on this uniform)';
+    opt.textContent = unit ? `${unit.code} - ${unit.name}  ${kept}` : `${selected}  ${kept}`;
     sel.appendChild(opt);
   }
 
@@ -1356,7 +1403,17 @@ function isPatchAuthorizedForUniform(patchId, uniformId = State.uniform, members
   const allowedMemberships = meta.allowedMemberships || null;
   if(allowedMemberships && !allowedMemberships.includes(membership)) return false;
 
+  // A unit's own patch below wing level is not worn on the flight suits (8.2.4.5, 8.3.4.5).
+  if(unitPatchBelowFloor(patchId, uniformId)) return false;
+
   return true;
+}
+
+// True when this is a unit patch whose unit is a group, squadron or flight and the uniform takes none of those.
+function unitPatchBelowFloor(patchId, uniformId = State.uniform){
+  if(!getUnitPatchFloor(uniformId)) return false;
+  const codes = getUnitPatchCharters(patchId);
+  return codes.length > 0 && codes.every(code => !isUnitCharterWornOnUniform(code, uniformId));
 }
 
 function getPatchAuthorizationReason(patchId, uniformId = State.uniform, membership = State.membership){
@@ -1365,6 +1422,10 @@ function getPatchAuthorizationReason(patchId, uniformId = State.uniform, members
 
   const uniformKey = normalizeUniformKeyForPatches(uniformId);
   const allowedUniforms = meta.authorizedUniforms || ['abu','ocp','flight_suit','corporate_field','cfdu'];
+  if(allowedUniforms.includes(uniformKey) && unitPatchBelowFloor(patchId, uniformId)){
+    const floor = getUnitPatchFloor(uniformId);
+    return `Only a wing, region or national patch is worn on ${floor.words}, not a group or squadron patch (CAPR 39-1, ${floor.ref}).`;
+  }
   if(!allowedUniforms.includes(uniformKey)){
     if(patchId === 'comms_patch' || patchId === 'communications_patch') return 'Communications patch is not authorized on OCP.';
     if(patchId === 'model_rocketry_patch') return 'Model Rocketry patch is not authorized on OCP.';

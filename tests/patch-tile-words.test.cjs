@@ -49,7 +49,7 @@ test('no patch tile text carries an id, a file name, a slot constant or a pixel 
             assert.ok(t.includes(`Worn: ${label}`), `the place is spelled out: ${where}`);
           }
         }else{
-          assert.match(t, /not authorized on|only[.:]|OCP sleeve form/i, `the reason is in words: ${where}`);
+          assert.match(t, /not authorized on|only[.:]|OCP sleeve form|Only a wing, region or national patch/i, `the reason is in words: ${where}`);
         }
         tiles++;
       }
