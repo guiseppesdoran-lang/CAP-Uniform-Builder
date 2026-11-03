@@ -343,14 +343,11 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
       // Under the shoulder board's strip at the shoulder seam: the strip covers the run's top end (it is drawn over the cord).
       const strip = scene.layers.find(x => x.key === 'epaulet:left'), o = strip.origin, R = strip.rotate || 0;
       const poly = [[strip.x, strip.y], [strip.x + strip.w, strip.y], [strip.x + strip.w, strip.y + strip.h], [strip.x, strip.y + strip.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, R); return [q.x, q.y]; });
-      // E120: the braid is on the drawn seam, whose top is the shoulder tip. On the women's coat the sheet's strap axis (and so the board's strip) stops 0.70 in short
-      // of its own seam line there, so the braid's top shows past the board's outer end instead of coming out from under it (9.3): the gap is the art's and is
-      // pinned here at its measured size (a little over) so it cannot grow unseen (art follow-up: extend the strap landmark to the drawn seam). On the men's coat
-      // the landmark run's top is under the strip.
+      // 2 November 2026 (Ethan: "cord should be under the shoulder board ... which should match with the seam"): the board lies on the sheet's shoulder seam with its
+      // outer end on the shoulder point, and the braid starts on that seam under it, so the braid's top is under the strip on both coats (before then the women's strap
+      // stopped 0.62 in short of the drawn seam and the braid's top showed past the board's outer end).
       const underStrip = Math.min(...drawnLine.map(q => polyDist(q, poly)));
-      const KNOWN_SEAM_PAST_STRIP = { 'garment-blues-class-a-coat-female': 0.62 };
-      assert.ok(underStrip <= (KNOWN_SEAM_PAST_STRIP[gid] || 0.02), `${tag}: the braid passes ${underStrip.toFixed(3)} in from the strip: it is not under it`);
-      if(KNOWN_SEAM_PAST_STRIP[gid]) assert.ok(underStrip > KNOWN_SEAM_PAST_STRIP[gid] - 0.1, `${tag}: the strap reaches the seam now (${underStrip.toFixed(3)} in): retire the allowance`);
+      assert.ok(underStrip <= 0.02, `${tag}: the braid passes ${underStrip.toFixed(3)} in from the strip: it is not under it`);
       if(!cl.cordPath.exact) assert.ok(polyDist(top, poly) <= 0.1, `${tag}: the run's top end is ${polyDist(top, poly).toFixed(3)} in from the strip`);
       assert.ok(cl.z < strip.z, `${tag}: under the strip`);
     }

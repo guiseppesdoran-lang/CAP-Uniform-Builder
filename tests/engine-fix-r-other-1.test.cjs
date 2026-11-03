@@ -86,18 +86,18 @@ test('Class A and semi-formal: the edge-on epaulet strip carries the grade, 5/8 
   }
 });
 
-test('Class A officer: the edge-on grade lies 5/8 in from the outer end of the strap, on the strap axis (DAFI 36-2903 4.5.1.1.1)', async () => {
+test('Class A officer: the edge-on grade lies 5/8 in from the outer end of the strap, on the shoulder seam (DAFI 36-2903 4.5.1.1.1)', async () => {
   const scene = await compose(build('blues_a', 'male', 'senior', 'Capt', []));
   const edge = byKey(scene, 'grade:edge-right');
-  // Right strap, from the left strap axis the coat sheet states (the cord assets' garment_fit) mirrored on the coat's width.
-  const { neck, arm } = require('./helpers/class-a-sheet.cjs').strap('male').mirror('right');
+  // Right strap, on the shoulder seam the coat sheet draws (its outline, measured: tests/helpers/class-a-sheet.cjs), collar seam to shoulder point.
+  const sm = require('./helpers/class-a-sheet.cjs').seam('garment-blues-class-a-coat', 'right'), neck = sm.neck, arm = sm.outer;
   const len = Math.hypot(arm.x - neck.x, arm.y - neck.y), u = { x: (neck.x - arm.x) / len, y: (neck.y - arm.y) / len };
   const c = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
   // Distance of the grade centre from the outer end along the axis: 5/8 in plus half the grade's length.
   const along = (c.x - arm.x) * u.x + (c.y - arm.y) * u.y;
   assert.ok(along > 0.625 && along < 0.625 + 0.5, `grade ${along.toFixed(3)} in from the outer end`);
   const across = Math.abs((c.x - arm.x) * u.y - (c.y - arm.y) * u.x);
-  assert.ok(across < 0.05, `centred on the strap axis (${across.toFixed(3)} in off)`);
+  assert.ok(across < 0.05, `centred on the seam (${across.toFixed(3)} in off)`);
 });
 
 // ---- 4. Class B short sleeve: the chevron is centred on the outer arm (4.1.11.1.1.1.3, 4.1.12.2.3.3) --------

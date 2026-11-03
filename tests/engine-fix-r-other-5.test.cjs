@@ -55,10 +55,9 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
 });
 
 test('Class A and cadet semi-formal coats: the edge-on grade\'s centre is as far from the strap\'s outer end as the top view\'s rank slot is from the board\'s outer end, on both sides and both cuts (R7; the board sheets\' rank_slot_center and board_outer_end)', async () => {
-  // The strap's arm end (its outer end) is the strap axis the coat sheet states (the cord assets' garment_fit, tests/helpers/class-a-sheet.cjs), mirrored for the wearer's right.
+  // The strap's outer end is the shoulder point of the seam the coat sheet draws (its outline, tests/helpers/class-a-sheet.cjs), each side's own.
   const SHEET = require('./helpers/class-a-sheet.cjs');
-  const ARM = {};
-  for(const sx of ['male', 'female']){ const st = SHEET.strap(sx); ARM[sx] = { W: st.w, a: st.axis[1] }; }
+  const COATS = { blues_a: { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' }, semi_formal_usaf: { male: 'garment-semiformal-class-a-coat-male', female: 'garment-semiformal-class-a-coat-female' } };
   let n = 0;
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const gender of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
     const scene = await compose(hb(uniform, gender, 'cadet', rank, { badgeIds: [AIRCREW] }));
@@ -67,7 +66,7 @@ test('Class A and cadet semi-formal coats: the edge-on grade\'s centre is as far
       const slot = core.anchor(bs, 'rank_slot_center'), outer = core.anchor(bs, 'board_outer_end');
       const want = Math.hypot(slot.x - outer.x, slot.y - outer.y);
       const edge = byKey(scene, `grade:edge-${side}`);
-      const end = side === 'left' ? { x: ARM[gender].a[0], y: ARM[gender].a[1] } : { x: ARM[gender].W - ARM[gender].a[0], y: ARM[gender].a[1] };
+      const end = SHEET.seam(COATS[uniform][gender], side).outer;
       const got = Math.hypot(edge.origin.x - end.x, edge.origin.y - end.y);
       assert.ok(Math.abs(got - want) < 0.02, `${uniform} ${gender} ${rank} ${side}: edge-on centre ${got.toFixed(3)} in from the strap's outer end, the top view's slot is ${want.toFixed(3)} in from the board's`);
       n++;

@@ -1077,6 +1077,31 @@
     return null;
   }
 
+  // The shoulder seam of a Class A coat as the sheet draws it (GARMENT_TOP, the sheet's upper outline): on each side the run of the outline from the collar seam
+  // (the vertex where the shoulder line leaves the neck and collar, `neck`) out to the shoulder point (the vertex before the sleeve drops away steeply, `outer`),
+  // the segments between them all within SEAM_SLOPE_MAX degrees of level. Ethan, 2 November 2026, looking at the Spaatz image: "the shoulder boards on class a's
+  // should always match the shoulder seam. basically cord should be under the shoulder board (if applicable) which should match with the seam." So the board's
+  // long axis is this line (its inner end toward `neck`, its outer end at `outer`), and the shoulder cord starts at `outer`, under the board. Sheet inches;
+  // `side` is the wearer's side ('left' is the sheet's right half). Null when the sheet has no outline table.
+  const SEAM_SLOPE_MAX = 25, SHOULDER_DROP_MIN = 40;
+  function shoulderSeamOf(coatId, side){
+    const ring = GARMENT_TOP[coatId];
+    if(!ring) return null;
+    const pts = ring.slice(1);
+    const mid = (Math.min(...pts.map(p => p[0])) + Math.max(...pts.map(p => p[0]))) / 2;
+    const half = pts.filter(p => side === 'left' ? p[0] > mid : p[0] < mid).sort((a, b) => side === 'left' ? b[0] - a[0] : a[0] - b[0]);   // outward first
+    const slope = (a, b) => Math.atan2(Math.abs(b[1] - a[1]), Math.abs(b[0] - a[0])) * 180 / Math.PI;
+    let iS = -1;
+    for(let i = 0; i < half.length - 1; i++) if(slope(half[i], half[i + 1]) < SEAM_SLOPE_MAX){ iS = i; break; }
+    if(iS < 0) return null;
+    let iN = iS;
+    for(let i = iS; i < half.length - 1 && slope(half[i], half[i + 1]) < SEAM_SLOPE_MAX; i++) iN = i + 1;
+    if(iN === iS) return null;
+    return { neck: { x: half[iN][0], y: half[iN][1] }, outer: { x: half[iS][0], y: half[iS][1] } };
+  }
+
+  H.shoulderSeamOf = shoulderSeamOf;
+
   // The wearer's-left epaulet strap axis as [neck end, arm end] points, from the garment's landmark.
   function strapAxis(ctx, side){
     const f = H.epauletFrame(ctx, side);
@@ -1126,10 +1151,22 @@
   // the arm. The braid ends there, squarely and fully opaque (no fade, no run down the body's side, never on the chest); the earlier turn under the arm
   // and its fade (LIVE10-4) are gone. The layer is cut to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
   // arm and body as a cord does.
+  // The run starts at the board's outer end on the shoulder seam (shoulderSeamOf's shoulder point), under the board (the cord is drawn below it), and
+  // continues down the armhole seam as the sheet draws it, or the cord overlay's own landmark where the sheet draws no seam (Ethan, 2 November 2026: "cord should
+  // be under the shoulder board ... which should match with the seam"). `topAt` is that start, kept as the braid's top end.
   function cordRun(id, lm){
+    // Half the braid's width inboard of the shoulder point along the seam, so the braid's square top end lies wholly under the board's outer end.
+    const sm = shoulderSeamOf(id, 'left');
+    let start = null;
+    if(sm){
+      const L = Math.hypot(sm.neck.x - sm.outer.x, sm.neck.y - sm.outer.y), k = core.CORD_WIDTH / 2 / L;
+      start = [sm.outer.x + (sm.neck.x - sm.outer.x) * k, sm.outer.y + (sm.neck.y - sm.outer.y) * k];
+    }
     const seam = ARM_SEAM[id];
-    if(seam) return { points: seam.map(p => [p[0], p[1]]), exact: true };
-    return lm && lm.points && lm.points.length >= 2 ? { points: lm.points.map(p => [p.x, p.y]), exact: false } : null;
+    const pts = seam ? seam.map(p => [p[0], p[1]]) : (lm && lm.points && lm.points.length >= 2 ? lm.points.map(p => [p.x, p.y]) : null);
+    if(!pts) return null;
+    const near = start && Math.hypot(pts[0][0] - start[0], pts[0][1] - start[1]) < 0.01;
+    return { points: start && !near ? [start, ...pts] : pts, exact: !!seam, topAt: start };
   }
   function fitCordLayer(ctx, spec){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
@@ -1137,7 +1174,7 @@
     if(!layer || !run) return;
     const ring = GARMENT_TOP[id];
     const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
-    const fit = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact });
+    const fit = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact, topAt: run.topAt });
     layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, end: fit.end, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
     layer.clipSil = id;
     layer.clipOuter = true;
@@ -1166,7 +1203,13 @@
     const run = cordRun(id, core.landmark(spec, 'cord'));
     if(!run) return null;
     const ring = GARMENT_TOP[id], outline = ring ? ring.slice(1).concat([ring[0]]) : null;
-    const top = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact }).top;
+    // The attachment is under the board, a half braid inboard of the shoulder point along the seam so the whole braid lies under the board's outer end.
+    const sm = shoulderSeamOf(id, 'left');
+    let top = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact, topAt: run.topAt }).top;
+    if(sm){
+      const L = Math.hypot(sm.neck.x - sm.outer.x, sm.neck.y - sm.outer.y), k = (thick + 0.04) / 2 / L;
+      top = [sm.outer.x + (sm.neck.x - sm.outer.x) * k, sm.outer.y + (sm.neck.y - sm.outer.y) * k];
+    }
     const tipLen = tipLm.len_in, braidLen = drop - tipLen, width = thick + 0.04;
     const racks = ctx.layers.filter(l => l.role === 'ribbon' || /^mini/.test(l.role || '')).map(l => core.layerBounds(l));
     const centreX = ctx.base.w / 2, sign = top[0] >= centreX ? 1 : -1;
@@ -1336,11 +1379,14 @@
   // The strap's frame on each side, from A.cord (the wearer's left strap axis, neck end then arm end) mirrored about the coat's centre.
   function strapFrames(ctx, A){
     const W = ctx.base.w, frames = {};
-    if(!A.cord) return frames;
-    const [n, a] = A.cord;
     for(const side of ['left', 'right']){
-      const neck = side === 'left' ? { x: n[0], y: n[1] } : { x: W - n[0], y: n[1] };
-      const arm = side === 'left' ? { x: a[0], y: a[1] } : { x: W - a[0], y: a[1] };
+      // The strap lies on the sheet's drawn shoulder seam (shoulderSeamOf), each side's own; a sheet with no outline table falls back to the strap axis the cord
+      // sheets state, mirrored about the coat's centre.
+      const sm = shoulderSeamOf(ctx.base.id, side);
+      if(!sm && !A.cord) continue;
+      const [n, a] = A.cord || [];
+      const neck = sm ? sm.neck : (side === 'left' ? { x: n[0], y: n[1] } : { x: W - n[0], y: n[1] });
+      const arm = sm ? sm.outer : (side === 'left' ? { x: a[0], y: a[1] } : { x: W - a[0], y: a[1] });
       const len = Math.hypot(arm.x - neck.x, arm.y - neck.y), u = { x: (arm.x - neck.x) / len, y: (arm.y - neck.y) / len };
       const h = EDGE_ON_THICK / 2, v = { x: -u.y * h, y: u.x * h };
       const f = H.frameFromPolygon(ctx, side, [
@@ -1415,7 +1461,10 @@
   // product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board is drawn. Neither sheet
   // has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
   const BOARD_STRIP_THICK = 0.5;
-  const BOARD_STRIP_DROP = (BOARD_STRIP_THICK - EDGE_ON_THICK) / 2;
+  // The strip is centred on the shoulder seam, its axis ON the seam (Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder
+  // seam"), so nothing is dropped: the strip's thickness lies half on each side of the line. (Until then the strip hung from the strap's upper edge: its axis
+  // lay 0.18 to 0.21 in below the seam, the outer end 0.19 in (men) and 0.63 in (women) short of the shoulder point.)
+  const BOARD_STRIP_DROP = 0;
   // Depth of the board's pointed neck end (the board sheets' size basis: 0.74 in peak).
   const BOARD_PEAK = 0.74;
   // The board's neck end runs on past the strap's, toward the neck, where the coat's collar leaf (the lapel foreground, Z.badge + 0.5)
@@ -1448,7 +1497,23 @@
   // The art's own grade (SLEEVE_GRADE_GROUPS) is left off: the grade is drawn separately, foreshortened along the strip, by epauletEdgeGrades. The length is the box's, not the art's
   // 3.843 in, when the sheet's box is shorter (the art is squeezed along the strap as the shirts' strips are limited to EDGE_ON_COVER of the strap).
   // Returns { thick, along }: the strip's thickness (inches, the larger of the two sides), which the grade on it is squeezed to, and the factor the art is squeezed to along the strap (epauletEdgeGrades), or null when the sheet states none.
-  async function officerStripShading(ctx, g, overlayId, frames){
+  // The coat's own strap (the blue loop of coat cloth the epaulet sleeve slides over, with its button) of the officers' Class A overlays, drawn on the seam: the
+  // overlays' strap is a 0.40 in band, `#03256a` with a `#00102f` edge, from the shoulder point to the neck end, the button (`#c9ccd2`, 0.16 in radius) 0.39 in from
+  // the neck end. The overlay's own strap, sleeve band and button groups are hidden on the layer so they do not show beside it.
+  const STRAP_FILL = '#03256a', STRAP_EDGE = '#00102f', BUTTON_FILL = '#c9ccd2', BUTTON_EDGE = '#8d939e', BUTTON_R = 0.16, BUTTON_FROM_NECK = 0.39;
+  function drawOfficerStrap(ctx, side, f){
+    const half = EDGE_ON_THICK / 2;
+    const p = (s, t) => ({ x: f.outer.x + f.axis.x * s + f.normal.x * t, y: f.outer.y + f.axis.y * s + f.normal.y * t });
+    const quad = [p(0, half), p(f.length, half), p(f.length, -half), p(0, -half)];
+    ctx.layers.push({ type: 'polygon', points: quad, fill: STRAP_FILL, stroke: STRAP_EDGE, strokeWidth: 0.05, z: Z.epauletLayer + 0.1, ...core.polygonBounds(quad),
+      role: 'epaulet-strap', noBounds: true, key: 'epaulet-strap:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder strap` });
+    const c = p(f.length - BUTTON_FROM_NECK, 0), ring = Array.from({ length: 24 }, (_, i) => ({ x: c.x + BUTTON_R * Math.cos(i * Math.PI / 12), y: c.y + BUTTON_R * Math.sin(i * Math.PI / 12) }));
+    ctx.layers.push({ type: 'polygon', points: ring, fill: BUTTON_FILL, stroke: BUTTON_EDGE, strokeWidth: 0.03, z: Z.epauletLayer + 0.2, ...core.polygonBounds(ring), role: 'epaulet-strap', noBounds: true, key: 'epaulet-button:' + side, title: 'Strap button' });
+    const overlay = ctx.layers.find(l => l.type === 'asset' && l.role === 'garment-layer' && /-(general|senior)-officer$/.test(l.id || ''));
+    if(overlay) overlay.hideGroups = [...new Set([...(overlay.hideGroups || []), `epaulet-${side}`, `epaulet-sleeve-${side}`])];
+  }
+
+  async function officerStripShading(ctx, g, overlayId, frames, dim){
     if(!ctx.has(overlayId)) return null;
     const s = await ctx.spec(overlayId);
     const sleeveId = epauletSleeveId(g), sleeve = sleeveId && ctx.has(sleeveId) ? await ctx.spec(sleeveId) : null;
@@ -1456,11 +1521,18 @@
     for(const side of ['right', 'left']){
       const f = frames[side], box = core.landmarkBounds(s, 'epaulet_sleeve_' + side);
       if(!f || !box) continue;
-      const cs = Math.abs(f.axis.x), sn = Math.abs(f.axis.y), det = cs * cs - sn * sn;
+      // The strip's size is read from the overlay's box, a box round the strip as the overlay draws it: along the strap axis the cord sheets state (the angle the
+      // overlay's strip lies at), not the seam's, which the strip is now drawn on; a coat with no such axis uses the seam's.
+      const dirAxis = dim && dim.cord ? (() => { const [n, a] = dim.cord, l = Math.hypot(a[0] - n[0], a[1] - n[1]); return { x: (a[0] - n[0]) / l, y: (a[1] - n[1]) / l }; })() : f.axis;
+      const cs = Math.abs(dirAxis.x), sn = Math.abs(dirAxis.y), det = cs * cs - sn * sn;
       if(det < 0.2) continue;
       const length = (box.w * cs - box.h * sn) / det, thick = (box.h * cs - box.w * sn) / det;
       if(!(length > 1 && thick > 0.2 && thick < 0.8)) continue;
-      const mid = { x: box.x + box.w / 2, y: box.y + box.h / 2 };
+      // The strip lies on the shoulder seam with its outer end at the shoulder point (strapFrames: the frame's outer end is the sheet's shoulder point and its axis
+      // the seam), its centre line ON the seam; the overlay's own strap and gray band, drawn from the product photo 0.2 in off the seam, are left off and the
+      // strap is drawn here, the same blue along the same seam, so the gray strip, the blue strap and its button all lie on one line.
+      const mid = { x: f.outer.x + f.axis.x * length / 2, y: f.outer.y + f.axis.y * length / 2 };
+      drawOfficerStrap(ctx, side, f);
       stripShading(ctx, side, mid, f.axis, f.normal, length, thick, 0, Z.epauletLayer + 0.6);
       if(sleeve){
         const k = length / sleeve.h;
@@ -1541,9 +1613,9 @@
     const semi = b.uniform === 'semi_formal_usaf';
     const g = b.grade;
     const sex = b.gender === 'female' ? 'female' : 'male';
-    // The strap axis comes from the sheet (strapAxisOf), not from a table here.
+    // The strap lies on the shoulder seam the sheet's outline draws (shoulderSeamOf); the cord sheets' strap axis (strapAxisOf) is the fallback where a sheet has no outline table.
     const A = Object.assign({}, CLASS_A[sex], { cord: await strapAxisOf(ctx, sex) });
-    if(!A.cord) ctx.note('No artwork for the shoulder strap position on this coat');
+    if(!A.cord && !shoulderSeamOf(semi ? A.semi : A.coat, 'left')) ctx.note('No artwork for the shoulder strap position on this coat');
     await ctx.garment(semi ? A.semi : A.coat);
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
 
@@ -1572,12 +1644,12 @@
     }
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);
-      stripThick = await officerStripShading(ctx, g, `${A.layer}-general-officer`, strapFrames(ctx, A));
+      stripThick = await officerStripShading(ctx, g, `${A.layer}-general-officer`, strapFrames(ctx, A), A);
       sleeveBraidMeasure(ctx, '3 in', 1.5);
     }
     else if(!semi && isOfficerLike(g)){
       await ctx.overlay(`${A.layer}-senior-officer`);
-      stripThick = await officerStripShading(ctx, g, `${A.layer}-senior-officer`, strapFrames(ctx, A));
+      stripThick = await officerStripShading(ctx, g, `${A.layer}-senior-officer`, strapFrames(ctx, A), A);
       sleeveBraidMeasure(ctx, '3 in', 0.5);
     }
     else if(!semi && g.category === 'senior-nco'){

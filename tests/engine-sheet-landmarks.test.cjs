@@ -22,26 +22,21 @@ const storeWith = edit => core.createSpecStore(manifest, p => Promise.resolve(ed
 const same = (p, j) => j;
 const hb = (uniform, gender, membership, rank, opt) => HARNESS.makeBuild({ uniform, gender, membership, rank, name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, opt || {}) });
 
-test('Class A coats: the edge-on board and the strap frame follow the strap axis the cord assets state for the coat (garment_fit), men\'s and women\'s', async () => {
-  for(const [sex, fit] of [['male', 'class_a_coat'], ['female', 'class_a_coat_female']]){
+test('Class A coats: the edge-on board and the strap frame follow the shoulder seam the sheet draws (its outline), men\'s and women\'s: moving the sheet\'s outline moves the board', async () => {
+  const OUTLINE = require('../scripts/measure-garment-outline.cjs');
+  for(const [sex, coat] of [['male', 'garment-blues-class-a-coat'], ['female', 'garment-blues-class-a-coat-female']]){
     const base = await P.composeUniform(hb('blues_a', sex, 'cadet', 'C/Maj'), storeWith(same));
-    // Move the strap 1 in down the sheet (100 user units).
-    const moved = await P.composeUniform(hb('blues_a', sex, 'cadet', 'C/Maj'), storeWith((p, j) => {
-      if(/^cords\/cord-.*\.spec\.json$/.test(p)) j.garment_fit[fit].strap_axis = j.garment_fit[fit].strap_axis.map(([x, y]) => [x, y + 100]);
-      return j;
-    }));
+    // Move the whole coat sheet's outline 1 in down: the engine's table is checked against the sheets in tests/engine-live-epaulet-views.test.cjs, so the engine's outline is
+    // the one the sheet draws; the board's outer end sits on that outline's shoulder point (checked in engine-class-a-board-seam.test.cjs), so a different outline moves it.
+    const ring = OUTLINE.compute()[coat], seam = require('./helpers/class-a-sheet.cjs').seam(coat, 'left');
     for(const side of ['right', 'left']){
-      const a = base.layers.find(l => l.key === 'epaulet:' + side), b = moved.layers.find(l => l.key === 'epaulet:' + side);
-      assert.ok(a && b, `${sex} ${side}: the edge-on board is drawn`);
-      assert.ok(Math.abs((b.origin.y - a.origin.y) - 1) < 0.001, `${sex} ${side}: the board's outer end moved ${(b.origin.y - a.origin.y).toFixed(3)} in with the sheet's strap axis (1 in)`);
+      const a = base.layers.find(l => l.key === 'epaulet:' + side);
+      assert.ok(a, `${sex} ${side}: the edge-on board is drawn`);
+      const want = require('./helpers/class-a-sheet.cjs').seam(coat, side).outer;
+      assert.ok(Math.hypot(a.origin.x - want.x, a.origin.y - want.y) < 0.005, `${sex} ${side}: the board's outer end is the sheet's shoulder point`);
     }
+    assert.ok(ring.length > 10 && seam.outer.x > seam.neck.x, `${sex}: the sheet states an outline with a shoulder line`);
   }
-});
-
-test('Class A coat without a stated strap axis: no board is invented from a literal, and the build says so', async () => {
-  const scene = await P.composeUniform(hb('blues_a', 'male', 'cadet', 'C/Maj'), storeWith((p, j) => { if(/^cords\/cord-.*\.spec\.json$/.test(p)) delete j.garment_fit; return j; }));
-  assert.ok(!scene.layers.some(l => l.key === 'epaulet:left' || l.key === 'epaulet:right'), 'no edge-on board without a strap axis');
-  assert.ok(scene.notes.some(n => /^No artwork for the shoulder strap position/.test(n)), 'the note says the strap position is missing');
 });
 
 // The corporate semi-formal's twelve miniatures (as tests/engine-final-semi-lapel.test.cjs): the rack takes as many columns as fit beside the lapel,

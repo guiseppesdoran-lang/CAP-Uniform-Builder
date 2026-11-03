@@ -264,7 +264,8 @@
     for(let i = 1; i < n; i++) lens.push(lens[i - 1] + Math.hypot(orig[i][0] - orig[i - 1][0], orig[i][1] - orig[i - 1][1]));
     const total0 = lens[n - 1] || 1;
     let top = orig[0];
-    if(outline){
+    if(o.topAt) top = [o.topAt[0], o.topAt[1]];
+    else if(outline){
       const d0 = [orig[0][0] - orig[1][0], orig[0][1] - orig[1][1]], l0 = Math.hypot(d0[0], d0[1]) || 1;
       const hit = lineMeetsRing(orig[0], [d0[0] / l0, d0[1] / l0], outline);
       if(hit) top = hit.p;

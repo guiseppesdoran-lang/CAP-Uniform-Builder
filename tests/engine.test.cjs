@@ -111,10 +111,10 @@ test('cadet officer shoulder boards: edge-on on the coat, seen from above with t
   const tops = layersBy(scene, l => l.role === 'epaulet-top');
   assert.equal(tops.length, 2);
   // Seen from above the shoulder, not floating over the sheet's top edge (R7); the layer box is the
-  // unrotated art, so its pivot (origin) is the board's centre: above the shoulder seam and within 2 3/4 in of it (the
-  // boards are level, DORAN5-ENG-3, so they stand over the highest point of the sloping shoulder).
+  // unrotated art, so its pivot (origin) is the board's centre: above the shoulder seam and within 3 in of it (the
+  // boards are level, DORAN5-ENG-3, so they stand over the highest point of the sloping shoulder; 2 3/4 in before the strap moved onto the seam, 0.2 in higher).
   const seam = core.anchor(await store().load('garment-blues-class-a-coat'), 'shoulder_seam_right');
-  assert.ok(tops.every(t => t.origin.y < seam.y && seam.y - t.origin.y < 2.75), 'just above the shoulder');
+  assert.ok(tops.every(t => t.origin.y < seam.y && seam.y - t.origin.y < 3), 'just above the shoulder');
   // The grade is on the view from above (regular size) and on the edge-on board at the shoulder line
   // (miniature size), as on the Class B (R7, D6, D42).
   const grade = layersBy(scene, l => l.role === 'grade');

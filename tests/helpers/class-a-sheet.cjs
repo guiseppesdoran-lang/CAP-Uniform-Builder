@@ -28,4 +28,23 @@ function strap(sex){
 const anchorIn = (id, name) => { const p = specOf(id).anchors[name]; return p && { x: p[0] / 100, y: p[1] / 100 }; };
 const rectIn = (id, name) => { const r = specOf(id).landmarks[name]; return r && { x: r.x / 100, y: r.y / 100, w: r.w / 100, h: r.h / 100 }; };
 
-module.exports = { strap, specOf, anchorIn, rectIn, COAT };
+// The shoulder seam of a Class A coat sheet on each side, measured from the sheet's own silhouette (scripts/measure-garment-outline.cjs, the sheet's clip path cut
+// 6 in from its top): the run of the outline between the collar seam (`neck`, where the shoulder line leaves the neck and collar) and the shoulder point (`outer`,
+// the last vertex before the sleeve drops away steeply), every segment of it within 25 degrees of level; the sleeve's drop is a run of segments steeper than 40.
+// Sheet inches; `side` is the wearer's side ('left' is the sheet's right half). Ethan, 2 November 2026: "the shoulder boards on class a's should always match the
+// shoulder seam".
+const OUTLINE = require('../../scripts/measure-garment-outline.cjs');
+let rings = null;
+function seam(coatId, side){
+  rings = rings || OUTLINE.compute();
+  const pts = rings[coatId].slice(1);
+  const mid = (Math.min(...pts.map(p => p[0])) + Math.max(...pts.map(p => p[0]))) / 2;
+  const half = pts.filter(p => side === 'left' ? p[0] > mid : p[0] < mid).sort((a, b) => side === 'left' ? b[0] - a[0] : a[0] - b[0]);
+  const slope = (a, b) => Math.atan2(Math.abs(b[1] - a[1]), Math.abs(b[0] - a[0])) * 180 / Math.PI;
+  const iS = half.findIndex((p, i) => i < half.length - 1 && slope(p, half[i + 1]) < 25);
+  let iN = iS;
+  while(iN < half.length - 1 && slope(half[iN], half[iN + 1]) < 25) iN++;
+  return { neck: { x: half[iN][0], y: half[iN][1] }, outer: { x: half[iS][0], y: half[iS][1] } };
+}
+
+module.exports = { strap, seam, specOf, anchorIn, rectIn, COAT };
