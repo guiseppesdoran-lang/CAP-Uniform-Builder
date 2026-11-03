@@ -606,23 +606,24 @@ function importedCacLevelFromDutyPositions(text){
 }
 
 // A senior member wears one cadet program award ribbon, the highest earned (js/catalog.js
-// SENIOR_HIGHEST_CADET_AWARD_RIBBONS, js/galleries.js enforceSeniorSingleCadetAwardRibbon). Only the highest
-// milestone used to be kept, so the eight achievement ribbons stayed in the import beside it and the picker kept
-// whichever it selected last. The Cadet Officer School star is worn on the Mitchell; a senior who wears a higher
-// award instead moves it there (CAPR 39-3 14j, data/ribbon-awards.js), so it is not lost with the Mitchell.
+// SENIOR_HIGHEST_CADET_AWARD_RIBBONS), but may wear every cadet milestone medal earned as a miniature medal on the mess dress and the
+// corporate semi-formal (CAPR 39-1 11.1.4, js/galleries.js enforceSeniorSingleCadetAwardRibbon). So when the report shows milestones
+// (Wright Brothers, Mitchell, Earhart, Eaker, Spaatz) they are all kept, each as the report gives it (the Cadet Officer School star stays
+// on the Mitchell; the rack moves it onto the highest ribbon, CAPR 39-3 14j, js/uniform-view.js buildRibbons); the eight achievement
+// ribbons stay out, since a milestone outranks them. A report with achievements only keeps the highest.
 function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership, text=''){
   if(membership !== 'senior') return ribbons;
   const cadetAwards = typeof SENIOR_HIGHEST_CADET_AWARD_RIBBONS !== 'undefined' ? SENIOR_HIGHEST_CADET_AWARD_RIBBONS
     : new Set(['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award']);
+  const milestoneIds = typeof CADET_MILESTONES !== 'undefined' ? CADET_MILESTONES
+    : new Set(['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award']);
   const held = ribbons.filter(r => cadetAwards.has(r?.id));
   if(held.length === 0) return ribbons;
-  const highest = held.slice().sort((a, b) => precedence(a.id) - precedence(b.id))[0];
-  const cos = ribbons.some(r => r?.id === 'mitchell_award' && r.value === 'earned_cos_star') || (text && hasCosGraduateCreditFromReport(text) && held.some(r => r.id === 'mitchell_award'));
-  const canCarryCos = id => typeof getRibbonAwardOptions === 'function' && (getRibbonAwardOptions(id) || []).some(o => o?.value === 'earned_cos_star');
-  const kept = cos && highest.id !== 'mitchell_award' && canCarryCos(highest.id)
-    ? { ...highest, value:'earned_cos_star', reason:`${highest.reason || highest.id} + COS graduate star moved from the Mitchell` }
-    : highest;
-  return ribbons.filter(r => !cadetAwards.has(r?.id) || r === highest).map(r => r === highest ? kept : r);
+  const milestones = held.filter(r => milestoneIds.has(r.id));
+  const keep = new Set(milestones.length ? milestones : [held.slice().sort((a, b) => precedence(a.id) - precedence(b.id))[0]]);
+  const cos = milestones.length && (ribbons.some(r => r?.id === 'mitchell_award' && r.value === 'earned_cos_star') || (text && hasCosGraduateCreditFromReport(text) && held.some(r => r.id === 'mitchell_award')));
+  return ribbons.filter(r => !cadetAwards.has(r?.id) || keep.has(r)).map(r => cos && r.id === 'mitchell_award' && keep.has(r) && r.value !== 'earned_cos_star'
+    ? { ...r, value:'earned_cos_star', reason:`${r.reason || r.id} + COS graduate star` } : r);
 }
 
 // The highest of Achievements 1-8 the Cadet Achievements table shows, and the honor credits. A row is read by

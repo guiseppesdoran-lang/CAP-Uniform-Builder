@@ -48,15 +48,27 @@
     return 'ribbon-' + String(id).replace(/_/g, '-');
   }
 
-  // The ribbons to wear, in precedence order, each split into the ribbons its devices need.
-  function buildRibbons(){
+  // The ribbons to wear, in precedence order, each split into the ribbons its devices need. A senior member wears one cadet award
+  // ribbon, the highest earned (CAPR 39-3 Attachment 2, 14j-14m), with the Cadet Officer School star moved onto it from the Mitchell
+  // (14j); `allMilestones` keeps every cadet milestone award earned, for the miniature medals, which a senior may wear in full
+  // on the mess dress and the corporate semi-formal (CAPR 39-1 11.1.4), each medal as chosen.
+  function buildRibbons(opts){
+    const allMilestones = !!(opts && opts.allMilestones);
     const out = [];
     const seen = new Set();
     // Remove ribbons (LIVE13): on a shirt where ribbons are optional the member may leave the rack off; the selections stay.
     const removed = !!State.hideRibbons && CAPUBUniformRules.ribbonPolicy(State.uniform) === 'optional';
     const ordered = removed ? [] : (typeof sortRibbons === 'function' ? sortRibbons(State.ribbons || []) : (State.ribbons || []));
-    for(const inst of ordered){
-      const id = inst.id;
+    const milestones = State.membership === 'senior' && !allMilestones ? ordered.filter(r => CADET_MILESTONES.has(r.id)) : [];
+    const topMilestone = milestones[0] ? milestones[0].id : null;
+    const mitchellStar = milestones.some(r => r.id === 'mitchell_award' && r.awardValue === 'earned_cos_star');
+    for(const inst0 of ordered){
+      const id = inst0.id;
+      if(milestones.length && CADET_MILESTONES.has(id) && id !== topMilestone) continue;
+      let inst = inst0;
+      if(mitchellStar && id === topMilestone && id !== 'mitchell_award' && (getRibbonAwardOptions(id) || []).some(o => o?.value === 'earned_cos_star')){
+        inst = Object.assign({}, inst0, { awardValue: 'earned_cos_star', awardLabel: 'Earned + COS star moved from the Mitchell' });
+      }
       if(isMilitaryRibbonId(id)){
         const devices = (inst.militaryDevices || []).map(militaryDeviceAsset).filter(Boolean);
         out.push({ key: `ribbon:${id}#${out.length}`, title: getRibbonDisplayName(id), asset: getMilitaryRibbonAward(id)?.images?.ribbonAsset || null, devices, centered: false, military: true });
@@ -225,7 +237,7 @@
     const g = E.grades.gradeInfo(State.membership, State.rank, { firstSergeant: !!State.cadetFirstSergeant, track: opt.noGradeTrack, commandChief: !!opt.commandChief });
     const ribbons = CAPUBUniformRules.allowsRibbons(State.uniform) ? buildRibbons() : [];
     const mini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
-    const allRibbons = mini ? buildRibbons() : ribbons;
+    const allRibbons = mini ? buildRibbons({ allMilestones: true }) : ribbons;
     ribbonNotes = CAPUBUniformRules.allowsRibbons(State.uniform) || mini ? rotcNotes(mini) : [];
     const { badges, command } = buildBadges();
     const text = State.text || {};

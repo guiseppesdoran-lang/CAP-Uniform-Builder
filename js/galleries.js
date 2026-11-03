@@ -746,11 +746,17 @@ function enforceRotcRibbonLimit(selectedId){
   if(typeof window.capubToastShow === 'function') window.capubToastShow(capubRotcLimitMessage());
 }
 
+// A senior member wears one cadet program award ribbon (CAPR 39-3 Attachment 2, 14j-14m speak of ribbons), but may choose some or all of
+// the medals he or she earned for the mess dress and the corporate semi-formal (CAPR 39-1 11.1.4), so the cadet milestone awards
+// (Wright Brothers, Mitchell, Earhart, Eaker, Spaatz) may be picked together: the rack shows the highest, the miniature medals every one that
+// has a medal. Any other cadet award still excludes the rest, and a milestone excludes the awards that are not milestones.
 function enforceSeniorSingleCadetAwardRibbon(selectedId){
   const selected = State.ribbonSelections?.[selectedId];
   if(State.membership !== 'senior' || !selected?.checked || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(selectedId)) return;
+  const keepsMilestones = CADET_MILESTONES.has(selectedId);
   for(const otherId of Object.keys(State.ribbonSelections)){
     if(otherId === selectedId || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)) continue;
+    if(keepsMilestones && CADET_MILESTONES.has(otherId)) continue;
     State.ribbonSelections[otherId].checked = false;
     State.ribbonSelections[otherId].awardValue = '';
     State.ribbonSelections[otherId].awardLabel = '';
