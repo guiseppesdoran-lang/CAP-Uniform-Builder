@@ -258,3 +258,15 @@ test('both flight suits: one badge is under the limit, two are at it, three are 
   assert.match(ui,/`\$\{dflt\} by default, up to \$\{cap\} on this uniform, each where CAPR 39-1 puts it\.`/,'the panel line says the default and the cap');
   assert.equal(ui.includes('badgeDefault'),true);
 });
+
+// CAPR 39-1 8.2.4.1 and 8.3.4.1: "Cloth nametag for Officers will include name (first and last) and may include one badge". An officer's tag is the cloth one.
+test('both flight suits: an officer\'s cloth name tag takes one badge, and the panel says so with the paragraph',()=>{
+  for(const u of ['flight_suit','corporate_flight_suit']){
+    const rule=rules.getUniformRule(u);
+    assert.equal(rule.officerBadgeCap,1,u);
+    assert.ok(rule.refs.badges,u+': cites the paragraph');
+  }
+  assert.equal(rules.getUniformRule('flight_suit').refs.badges,'8.2.4.1');
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/The officer's cloth name tag may include one badge \(CAPR 39-1 \$\{/,'the panel line states the rule and the paragraph');
+});

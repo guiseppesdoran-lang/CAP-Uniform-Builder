@@ -202,10 +202,10 @@ test('ONE badge by default: one badge of any kind is centred in badge_zone, on e
   }
 });
 
-test('TWO badges when two are picked: the rating on the wearer\'s right (the viewer\'s left) of the occupational badge, in the 0.7 / 0.3 slots of badge_zone, never touching (8.2.4.1, 8.3.4.1)', async () => {
+test('TWO badges when two are picked (NCOs and cadets; an officer\'s cloth tag takes one, below): the rating on the wearer\'s right (the viewer\'s left) of the occupational badge, in the 0.7 / 0.3 slots of badge_zone, never touching (8.2.4.1, 8.3.4.1)', async () => {
   for(const f of FIGURES){
     for(const gender of ['male', 'female']){
-      for(const [m, r] of EVERYONE){
+      for(const [m, r] of NON_OFFICERS){
         const scene = await P.composeUniform(build(f.uniform, m, r, { gender, badges: [PILOT, GROUND_TEAM] }), store());
         const { tag, zone } = await badgeZoneOf(scene, f);
         const bs = badgeLayers(scene, f);
@@ -219,6 +219,28 @@ test('TWO badges when two are picked: the rating on the wearer\'s right (the vie
         assert.ok(!scene.notes.some(n => /name tag carries/.test(n)), `${f.name} ${gender} ${r}: both shown, no note`);
       }
     }
+  }
+});
+
+test('an officer\'s cloth name tag may include ONE badge: two picked, one drawn (the rating, else the pin, else the first occupational badge), the other named; the member may pick (8.2.4.1, 8.3.4.1)', async () => {
+  for(const f of FIGURES){
+    const para = f.uniform === 'corporate_flight_suit' ? '8.3.4.1' : '8.2.4.1';
+    for(const gender of ['male', 'female']){
+      for(const [m, r] of OFFICERS){
+        const scene = await P.composeUniform(build(f.uniform, m, r, { gender, badges: [PILOT, GROUND_TEAM] }), store());
+        const { zone } = await badgeZoneOf(scene, f);
+        const bs = badgeLayers(scene, f);
+        assert.deepEqual(bs.map(l => l.key), ['badge:' + PILOT.id], `${f.name} ${gender} ${r}: the wings alone`);
+        assert.ok(Math.abs(bs[0].x + bs[0].w / 2 - (zone.x + zone.w / 2)) < EPS, `${f.name} ${gender} ${r}: centred in badge_zone`);
+        assert.ok(scene.notes.some(n => new RegExp(`cloth name tag for officers may include one badge \\(CAPR 39-1, ${para.replace(/\./g, '\\.')}\\).*Pilot Badge is shown; Ground Team Badge is not shown`).test(n)), `${f.name} ${r}: ${scene.notes.join(' | ')}`);
+        const c = scene.conflicts.find(x => x.position === 'tag');
+        assert.ok(c && c.limit === 1 && c.slots.length === 1, `${f.name} ${r}: one place to choose`);
+        const picked = await P.composeUniform(build(f.uniform, m, r, { gender, badges: [PILOT, GROUND_TEAM], badgeChoices: { tag: GROUND_TEAM.id } }), store());
+        assert.deepEqual(badgeLayers(picked, f).map(l => l.key), ['badge:' + GROUND_TEAM.id], `${f.name} ${r}: the member's pick`);
+      }
+    }
+    const pin = await P.composeUniform(build(f.uniform, 'senior', 'Col', { badges: [GROUND_TEAM], command: GROUP_PIN }), store());
+    assert.equal(badgeLayers(pin, f).length, 1, `${f.name}: an occupational badge and the command pin are one badge on the officer's tag`);
   }
 });
 

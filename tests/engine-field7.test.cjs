@@ -53,7 +53,7 @@ test('FIELD7-5: a member with the master Ground Team badge and no aviation badge
 
 test('FIELD7-5: with the pilot badge and the master Ground Team badge the tag shows both, the wings in the rating place and the Ground Team badge in the other (2 November 2026: up to two); no conflict, nothing to choose (8.2.4.1, 8.3.4.1)', async () => {
   for(const uniform of ['flight_suit', 'corporate_flight_suit']){
-    for(const [m, r] of [['senior', 'Capt'], ['senior', 'SMSgt'], ['cadet', 'C/SSgt']]){
+    for(const [m, r] of [['senior', 'SMSgt'], ['cadet', 'C/SSgt']]){
       const dflt = await compose(build(uniform, m, r, { badges: [PILOT, MASTER_GT] }));
       assert.deepEqual(onSuit(dflt, l => l.role === 'badge').map(l => l.key).sort(), ['badge:' + MASTER_GT.id, 'badge:' + PILOT.id].sort(), `${uniform} ${r}`);
       assert.ok(!dflt.conflicts.some(x => x.position === 'tag'), `${uniform} ${r}: a rating and an occupational badge fill the two places, nothing to choose`);

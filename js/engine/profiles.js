@@ -723,8 +723,8 @@
     if(!at) return;
     const spec = await ctx.spec(id);
     const tag = await ctx.place(id, { pieceAnchor: 'center', at, z: Z.tape, role: 'nametag', key: 'nametag' });
-    // Officers: the cloth tag carries the name only (8.2.4.1, 8.3.4.1). The page lets an officer add a second badge too (the leather tag, which an officer wearing
-    // plastic-encased grade may wear, takes two), so the one drawn tag takes two for everyone.
+    // Officers: the cloth tag carries the name only and 'may include one badge' (8.2.4.1, 8.3.4.1); the officer's tag drawn here is that cloth tag, so it takes one.
+    // The NCO's and the cadet's tag takes up to two, one by default (the leather tag's 'up to two badges', 8.2.4.1).
     const officerLike = g.officer && !g.cadet || (g.category === 'senior-none' && g.track === 'officer');
     if(b.name.show){
       const full = [b.name.first, b.name.last].filter(Boolean).join(' ');
@@ -755,15 +755,18 @@
     const ratings = [...set.chaplain, ...set.aviation];
     const candidates = [...ratings, ...(pinItem ? [pinItem] : []), ...set.occupational];
     const isRating = it => ratings.includes(it);
-    const places = [
-      { key: 'rating', label: 'Aeronautical rating', accepts: isRating },
-      { key: 'other', label: 'Occupational badge or command pin', accepts: it => !isRating(it) }
-    ];
-    // A place is asked about only where the member holds more badges than the tag has places for, or two of one kind.
-    const competing = candidates.length > 2 || ratings.length > 1 || candidates.length - ratings.length > 1;
+    const places = officerLike
+      ? [{ key: 'only', label: 'Name tag badge' }]
+      : [
+        { key: 'rating', label: 'Aeronautical rating', accepts: isRating },
+        { key: 'other', label: 'Occupational badge or command pin', accepts: it => !isRating(it) }
+      ];
+    // A place is asked about only where the member holds more badges than the tag has places for, or two of one kind. The officer's cloth tag has
+    // the one place (the rating first, else the command pin, else the first occupational badge listed, when the member picks none).
+    const competing = officerLike ? candidates.length > 1 : candidates.length > 2 || ratings.length > 1 || candidates.length - ratings.length > 1;
     let chosen;
-    if(competing) chosen = C.chooseBadges(ctx, 'tag', 'Flight suit name tag badges', candidates, places);
-    else chosen = [ratings[0], candidates.find(it => !isRating(it))].filter(Boolean);
+    if(competing) chosen = C.chooseBadges(ctx, 'tag', officerLike ? 'Flight suit name tag badge' : 'Flight suit name tag badges', candidates, places);
+    else chosen = officerLike ? candidates.slice(0, 1) : [ratings[0], candidates.find(it => !isRating(it))].filter(Boolean);
     const zone = pieceRect(tag, spec, 'badge_zone');
     const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
     // The two places are fractions of the tag's badge_zone landmark (3.1 x 0.62 in, read from Fig A6-3), the viewer's left to right. The narrow badge
@@ -787,7 +790,8 @@
     const other_kinds = set.all.length - set.chaplain.length - set.aviation.length - set.occupational.length;
     if(other_kinds > 0) ctx.note(`Specialty track and service badges are not worn on the flight suit name tag (CAPR 39-1, ${para})`);
     const left = candidates.filter(it => !chosen.includes(it));
-    if(left.length && chosen.length) ctx.note(`The name tag takes up to two badges, one aeronautical rating and one occupational badge or the command pin (CAPR 39-1, ${para}): ${chosen.map(it => it.title).join(' and ')} ${chosen.length > 1 ? 'are' : 'is'} shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
+    const takes = officerLike ? 'The cloth name tag for officers may include one badge' : 'The name tag takes up to two badges, one aeronautical rating and one occupational badge or the command pin';
+    if(left.length && chosen.length) ctx.note(`${takes} (CAPR 39-1, ${para}): ${chosen.map(it => it.title).join(' and ')} ${chosen.length > 1 ? 'are' : 'is'} shown; ${left.map(it => it.title).join(' and ')} ${left.length > 1 ? 'are' : 'is'} not shown`);
   }
 
   // The Emergency Services patch (8.2.4.3, 8.3.4.3): LIVE9-4 (Ethan, on the render: "is this really where the es patch goes?" then "it says on the breast pocket", and

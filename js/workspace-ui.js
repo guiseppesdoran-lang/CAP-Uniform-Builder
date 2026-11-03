@@ -212,6 +212,9 @@
     const badges=typeof countBadgesForLimit==='function' ? countBadgesForLimit() : (State.badges||[]).length;
     const cap=r ? (r.getUniformRule(u)||{}).badgeCap : null;
     const dflt=r ? (r.getUniformRule(u)||{}).badgeDefault : null;
+    // An officer's flight suit tag is the cloth one, 'may include one badge' (CAPR 39-1 8.2.4.1, 8.3.4.1).
+    const officerCap=r ? (r.getUniformRule(u)||{}).officerBadgeCap : null;
+    const officerTag=!!officerCap && typeof CAPUBEngine!=='undefined' && (()=>{ const g=CAPUBEngine.grades.gradeInfo(State.membership,State.rank,{track:(State.garment||{}).noGradeTrack}); return !!(g.officer && !g.cadet || (g.category==='senior-none' && g.track==='officer')); })();
     const patches=(State.patches||[]).length;
     const set=(key,count,n,rule,usable)=>{
       const card=document.querySelector(`.itemCard[data-card="${key}"]`); if(!card) return;
@@ -228,8 +231,9 @@
     if(removeBox) removeBox.checked=!!State.hideRibbons;
     const planned=(!auth.showBadges && r) ? r.plannedBadge(u) : null;
     set('badges',
-      planned ? `Up to ${planned.count}` : (cap ? `${badges} of ${cap}` : `${badges} selected`),
+      planned ? `Up to ${planned.count}` : (cap ? `${badges} of ${officerTag ? officerCap : cap}` : `${badges} selected`),
       badges,
+      (!planned && cap && officerTag) ? `The officer's cloth name tag may include one badge (CAPR 39-1 ${((r.getUniformRule(u)||{}).refs||{}).badges}).` :
       (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where CAPR 39-1 puts it.` : `At most ${cap} on this uniform, each where CAPR 39-1 puts it.`) : BADGE_RULE,
       !!auth.showBadges || !!planned);
     set('patches',`${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
