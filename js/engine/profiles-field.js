@@ -317,7 +317,9 @@
         // vertically; the Major's and Lieutenant Colonel's stem parallel to the ground pointing away from the neck (a quarter turn the other way on each leaf); the Colonel's beak forward
         // (mirrored on the right leaf); the generals' stars stacked perpendicular to the seam (5.1.1.1.1.1, 5.2.1.1.1.1).
         let rotate = seam;
-        if(['second-lieutenant', 'first-lieutenant', 'captain'].includes(g.key)) rotate = seam + 90;
+        // The Flight Officer, Technical Flight Officer and Senior Flight Officer bars go exactly where the lieutenants' do (Doran: "supposed to be placed the same as
+        // Lieutenant insignia. They should be rotated at 90 degrees on the collar"; LIVE13 E125): their cloth-bordered art is the lieutenants' size, a bar.
+        if(['second-lieutenant', 'first-lieutenant', 'captain', 'flight-officer', 'technical-flight-officer', 'senior-flight-officer'].includes(g.key)) rotate = seam + 90;
         if(g.key === 'major' || g.key === 'lieutenant-colonel') rotate = seam + (R ? 90 : -90);
         await ctx.place(id, { pieceAnchor: 'center', at: H.polygonCentroid(poly.points), rotate, flipX: g.key === 'colonel' && R, z: Z_COLLAR_GRADE, role: 'grade', key: 'grade:' + side });
       }

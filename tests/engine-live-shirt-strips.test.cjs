@@ -147,7 +147,7 @@ async function checkStrip(scene, sheet, side, tag, rank, cloth, thickWanted, st)
   }
   // The CAP lettering is on the strip, at its collar end, and the grade stands 5/8 in from the outer end clear of it.
   assert.ok(!(strip.hideGroups || []).includes('cap'), `${tag}: the sleeve's CAP lettering is not hidden`);
-  assert.deepEqual(strip.hideGroups, ['grade', 'star1', 'star2', 'star3'], `${tag}: only the art's own grade, in whichever group the sleeve draws it (LIVE11-1), is left off (it is drawn foreshortened)`);
+  assert.deepEqual(strip.hideGroups, ['grade', 'star1', 'star2', 'star3', 'stripe1', 'stripe2', 'stripe3', 'lace__edge'], `${tag}: only the art's own grade, in whichever group the sleeve draws it (LIVE11-1), is left off (it is drawn foreshortened)`);
   const capAnchor = sleeve.anchors.cap_center, kLen = strip.h / sleeve.h;
   const capAlong = len - capAnchor.y * kLen;       // the art's top is the collar end
   assert.ok(capAlong > len / 2 && capAlong < len, `${tag}: the CAP lettering is at the collar end (${capAlong.toFixed(2)} of ${len.toFixed(2)} in)`);
@@ -239,7 +239,7 @@ test('the Class A officers\' strip is the whole sleeve art, the same asset as th
         assert.ok(strip && strip.type === 'asset' && top, `${gender} ${rank} ${side}: the strip and the view from above`);
         assert.equal(strip.id, top.id, `${gender} ${rank} ${side}: the strip is the view from above's art`);
         assert.ok(!strip.onlyGroups, 'the whole art is drawn, not the lettering alone');
-        assert.deepEqual(strip.hideGroups, ['grade', 'star1', 'star2', 'star3'], `${gender} ${rank} ${side}: only the art's own grade is left off`);
+        assert.deepEqual(strip.hideGroups, ['grade', 'star1', 'star2', 'star3', 'stripe1', 'stripe2', 'stripe3', 'lace__edge'], `${gender} ${rank} ${side}: only the art's own grade is left off`);
         const shade = scene.layers.find(l => l.key === `epaulet-shade:light:${side}`), grade = scene.layers.find(l => l.key === `grade:edge-${side}`);
         assert.ok(strip.z < shade.z && strip.z < grade.z, `${gender} ${rank} ${side}: under the shading bands and the grade`);
         // The lettering is at the strip's collar end: the art's cap_center, counted from the art's top (the collar end), turned with the strip; the grade is clear of it.
@@ -265,7 +265,7 @@ test('the Class A officers\' strip is the whole sleeve art, the same asset as th
 // `grade` group, so hiding `grade` left them on the strip beside the grade the engine draws. For every sleeve asset the groups left visible once the grade groups are hidden are cloth,
 // the lace edge and the CAP lettering only.
 test('every epaulet sleeve asset: hiding the grade groups leaves only the cloth, the lace edge and the CAP lettering visible (LIVE11-1)', () => {
-  const HIDDEN = ['grade', 'star1', 'star2', 'star3'];
+  const HIDDEN = ['grade', 'star1', 'star2', 'star3', 'stripe1', 'stripe2', 'stripe3', 'lace__edge'];
   const sleeves = manifest.assets.filter(a => /^rank-epaulet-sleeve-/.test(a.id));
   assert.ok(sleeves.length >= 19, 'the sleeve assets are in the manifest');
   for(const a of sleeves){
