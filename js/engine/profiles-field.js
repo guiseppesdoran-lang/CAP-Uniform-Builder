@@ -69,6 +69,9 @@
     return b.uniform === 'ocp' ? H.badgeSet(ctx, b, 'field').chaplain[0] || null : null;
   }
 
+  // The cadet company grades (discs); the field grades (diamonds) are the other cadet officers.
+  const CADET_COMPANY = ['second-lieutenant', 'first-lieutenant', 'captain'];
+
   async function capGrade(ctx, b){
     const g = b.grade;
     const chaplain = ocpChaplain(ctx, b);
@@ -116,11 +119,14 @@
         }
       }
       // On the cap seated on the figure the grade lies over the hat (R6).
-      // A cadet officer's grade is turned a quarter on the OCP (7.1.1.2.2: "centered vertically with the long points on the cadet field grade insignia
-      // positioned horizontally, and each subsequent circle of cadet company grade insignia added vertically"; Doran, on the C/Col's three diamonds in a row:
-      // "Something doesn't look right"). The art is drawn as a row; turned, its diamonds stack one above the other, each long across, centred on the cap's
-      // middle line, its lower edge still the same distance from the visor: the turned piece is placed by its centre, half its turned height up.
-      const turn = b.uniform === 'ocp' && !chaplain && g.cadet && g.category === 'cadet-officer' ? 90 : 0;
+      // On the OCP caps (7.1.1.8: rank "centered, 1/2 inch from the visor", "only 1/8th inch of blue fabric showing past the widest and tallest part of the
+      // insignia"; Ethan, on the C/Maj's diamond lying with its long points across: "this is incorrect. flip it 90") the cadet FIELD grades are not turned:
+      // the art is drawn with each diamond's long points vertical, and the C/Lt Col's two and the C/Col's three diamonds side by side in one centred row,
+      // so the cap carries it as drawn, its lower edge 1/2 in over the visor. The chest (ocpGrade) keeps the quarter turn 7.1.1.2.2 gives its square.
+      // Cadet COMPANY grades (the discs) keep the cap arrangement b78a4271 gave them, a vertical stack (7.1.1.2.2: "each subsequent circle of cadet company
+      // grade insignia added vertically"): the art turned a quarter, the turned piece placed by its centre, half its turned height up, so its lower edge is
+      // still the 1/2 in measure's end and it stays centred on the cap's line. The stack fits the 2 x 2 in square (C/Capt 0.58 x 1.75 in of art), so no row rule is needed.
+      const turn = b.uniform === 'ocp' && !chaplain && g.cadet && CADET_COMPANY.includes(g.key) ? 90 : 0;
       let cg;
       if(turn){
         const ps = await ctx.spec(piece), sc = square ? k : 1;
