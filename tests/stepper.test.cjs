@@ -96,7 +96,7 @@ test('the uniform cards are one flat two-column grid in the regulation\'s order,
   assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
   assert.match(aside,/<details class="lockedFold" id="lockedUniforms" hidden>/);
   // Headgear, sleeves, skirt and the cord fold under one line whose text says what is chosen.
-  assert.match(aside,/<details class="moreDetails optionsFold" id="uniformOptionsMore">\s*<summary id="uniformOptionsSummary">Uniform options<\/summary>/);
+  assert.match(aside,/<details class="moreDetails optionsFold" id="uniformOptionsMore" open>\s*<summary id="uniformOptionsSummary">Uniform options<\/summary>/);
   assert.match(ui,/summary\.textContent=picks\.length \? `Uniform options: \$\{picks\.join\(' · '\)\}` : 'Uniform options';/);
 });
 

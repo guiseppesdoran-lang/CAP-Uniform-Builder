@@ -53,11 +53,11 @@ test('the collar and lapel mask editor is gone: the engine redraws the lapel fro
   assert.ok(!html.includes('id="editGarmentMaskBtn"'));
 });
 
-test('the name is an optional, folded block at the end of the Profile step',()=>{
-  assert.match(profile,/<details class="optionalName" id="optionalName">\s*<summary>Add your name \(optional\)<\/summary>/);
+test('the name is an optional block at the end of the Profile step, open by default',()=>{
+  assert.match(profile,/<details class="optionalName" id="optionalName" open>\s*<summary>Add your name \(optional\)<\/summary>/);
   assert.ok(profile.includes('id="capubV2LastName"'));
   assert.ok(profile.indexOf('id="genderBlock"')<profile.indexOf('id="optionalName"'),'the cut comes before the name');
-  assert.doesNotMatch(profile.slice(profile.indexOf('id="optionalName"'),profile.indexOf('id="optionalName"')+60),/\bopen\b/);
+  assert.match(profile.slice(profile.indexOf('id="optionalName"'),profile.indexOf('id="optionalName"')+60),/\bopen\b/,'the name fold is open by default so the fields are in view');
 });
 
 test('the ribbon rack layout controls are folded under the Ribbons card as Advanced: rack layout',()=>{
