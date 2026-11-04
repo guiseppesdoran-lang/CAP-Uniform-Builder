@@ -186,7 +186,7 @@ test('shoulder cords: cadets wear the cadet cords on Class A and Class B, the Ai
 
 test('the cord control offers the Aide de Camp cord, names the white and silver cords, and notes what each is for', () => {
   const html = read('index.html');
-  assert.match(html, /<option value="aide_de_camp">Aide-de-camp shoulder cord<\/option>/);
+  assert.match(html, /<option value="aide_de_camp">Aide de Camp shoulder cord<\/option>/);
   assert.match(html, /<option value="color_guard">Color Guard shoulder cord - white<\/option>/);
   assert.match(html, /<option value="honor_guard">Honor Guard shoulder cord - silver<\/option>/);
   assert.match(html, /id="shoulderCordNote"/);

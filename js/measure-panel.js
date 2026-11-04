@@ -62,7 +62,7 @@
     if(!cat || !cat.entries.length) return '<p class="hintText">Choose a uniform to see the rules the drawing applies.</p>';
     const rows = cat.groups.map(g => `<tbody><tr class="regArea"><th colspan="3" scope="colgroup">${esc(g.area)}</th></tr>` + g.entries.map(e => {
       const p = ML.refParts(e.ref);
-      const cell = (p.capr ? `<span class="regCapr">${esc(p.capr)}</span>` : '') + (p.icl ? `<span class="regIcl">${esc(p.icl)}</span>` : '') || '<span class="regNone">none</span>';
+      const cell = (p.capr ? `<span class="regCapr">${esc(p.capr)}</span>` : '') + (p.icl ? `<span class="regIcl">${esc(p.icl)}</span>` : '') || '<span class="regNone">None</span>';
       return `<tr><th scope="row">${esc(e.name)}</th><td class="regVal">${esc(e.value)}</td><td class="regRef">${cell}</td></tr>`;
     }).join('') + '</tbody>').join('');
     return `<p class="hintText regNote">References are from CAPR 39-1 with ICL 26-14; a row names any other letter it cites.</p>`

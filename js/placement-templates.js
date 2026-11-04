@@ -30,7 +30,7 @@
   const OVERHANG = 0.3;          // plate/paper beyond a registration line it was extended to, in
   const CLEARANCE_MM = 0.25;     // pocket clearance around an item, each side
   const BUTTON_R_EST = 0.25;     // button radius when the sheet gives only the centre, in (estimate)
-  const PIN_RULE = 'Pin ticks are estimated from each item\'s width: 1/4 in in from each end on its centreline for items wider than 1 in, the centre for smaller ones; a ribbon or miniature medal rack: the mounting bar\'s two pins, 1/4 in in from the ends of its widest row. Check them against your own items.';
+  const PIN_RULE = 'Pin ticks are estimated from each item\'s width: 1/4 in in from each end on its centerline for items wider than 1 in, the center for smaller ones; a ribbon or miniature medal rack: the mounting bar\'s two pins, 1/4 in in from the ends of its widest row. Check them against your own items.';
   const JIG_RULE = 'Plate 2.5 mm thick, 1.5 mm pin holes, 0.6 mm item pockets (0.25 mm clearance), 3 mm x 2 mm lips on the registration edges; lip, pocket depth and clearance are estimates for a typical garment and printer.';
   const PAPERS = { letter: { w: 8.5, h: 11, label: 'US Letter' }, a4: { w: 210 / MM, h: 297 / MM, label: 'A4' } };
   const FIELD_UNIFORMS = new Set(['abu', 'ocp', 'corporate_field', 'flight_suit', 'corporate_flight_suit', 'polo']);
@@ -289,7 +289,7 @@
     for(const c of cols){
       const ys = c.list.map(b => b.y), x = c.list.reduce((a, b) => a + b.x, 0) / c.list.length;
       const r = c.list[0].r;
-      refs.push({ zone: 'chest', kind: 'button-line', label: 'button line (centre of the buttons)', segs: [[off({ x, y: Math.min(...ys) - 3 }), off({ x, y: Math.max(...ys) + 3 })]], circles: c.list.map(b => Object.assign(off(b), { r: b.r || BUTTON_R_EST, estimated: !b.r })), lip: true, lipOffset: r || BUTTON_R_EST, extend: 'button' });
+      refs.push({ zone: 'chest', kind: 'button-line', label: 'button line (center of the buttons)', segs: [[off({ x, y: Math.min(...ys) - 3 }), off({ x, y: Math.max(...ys) + 3 })]], circles: c.list.map(b => Object.assign(off(b), { r: b.r || BUTTON_R_EST, estimated: !b.r })), lip: true, lipOffset: r || BUTTON_R_EST, extend: 'button' });
     }
     const poly = (k, closed) => { const v = lm[k]; if(!v || !v.points) return []; const pts = v.points.map(off); const segs = []; for(let i = 0; i < pts.length - (closed ? 0 : 1); i++) segs.push([pts[i], pts[(i + 1) % pts.length]]); return segs; };
     for(const k of Object.keys(lm)){

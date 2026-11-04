@@ -116,6 +116,9 @@ function syncRibbonRackColumnsControl(){
     : '3';
   select.disabled = !classA;
   select.value = classA ? preferredLayout : '3';
+  // The rack layout controls are the Class A coat's (and the cadet semi-formal coat's): they are not shown on a uniform that takes rows of three only.
+  const rackFold = by('rackLayoutMore');
+  if(rackFold) rackFold.classList.toggle('hidden', !classA);
 
   if(hint){
     hint.textContent = classA && preferredLayout === '4-center'

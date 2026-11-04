@@ -53,8 +53,8 @@ test('the collar and lapel mask editor is gone: the engine redraws the lapel fro
   assert.ok(!html.includes('id="editGarmentMaskBtn"'));
 });
 
-test('the name is an optional block at the end of the Profile step, open by default',()=>{
-  assert.match(profile,/<details class="optionalName" id="optionalName" open>\s*<summary>Add your name \(optional\)<\/summary>/);
+test('the name block ends the Profile step, open by default, titled Your name (all three fields are asked of every member, so it is no longer called optional)',()=>{
+  assert.match(profile,/<details class="optionalName" id="optionalName" open>\s*<summary>Your name<\/summary>/);
   assert.ok(profile.includes('id="capubV2LastName"'));
   assert.ok(profile.indexOf('id="genderBlock"')<profile.indexOf('id="optionalName"'),'the cut comes before the name');
   assert.match(profile.slice(profile.indexOf('id="optionalName"'),profile.indexOf('id="optionalName"')+60),/\bopen\b/,'the name fold is open by default so the fields are in view');

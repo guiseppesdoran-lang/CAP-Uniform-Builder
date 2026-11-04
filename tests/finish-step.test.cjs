@@ -40,7 +40,7 @@ test('the shopping list button goes into the Finish slot and reads as secondary'
 test('step four is named Extra everywhere the member sees it, and its download is the footer primary',()=>{
   assert.match(exportStep,/<h3 class="stepGroupTitle" tabindex="-1">Extra<\/h3>/);
   assert.match(html,/id="stepTab-export"[^>]*><span class="stepNum">4<\/span><span class="stepLabel">Extra<\/span>/);
-  assert.match(finish,/<label class="fieldLabel">Extra<\/label>/);
+  assert.match(finish,/<label class="fieldLabel">Downloads and files<\/label>/, 'the card inside Extra has a name of its own');
   const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
   assert.match(ui,/export:'Extra'/);
   assert.doesNotMatch(ui,/Check & finish|'Finish'/);

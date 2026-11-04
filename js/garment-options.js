@@ -119,7 +119,7 @@
     // The tie clasp (CAPR 39-1 4.1.3.2.4, 4.1.11.1.1.3, 4.2.5.1.4): "may be worn with the tie", centred between the bottom of the knot and the tie's tip. Men's tie only
     // (the women's tab takes none), on the shirts when the member wears the tie; the Class A coat's closed front hides the tie below the lapels, so it has none.
     { key: 'tieClasp', label: 'Tie clasp', type: 'check', defaultValue: true,
-      note: () => 'A tie tack or clasp may be worn with the tie, centred between the bottom of the knot and the tie\'s tip (CAPR 39-1 4.1.11.1.1.3).',
+      note: () => 'A tie tack or clasp may be worn with the tie, centered between the bottom of the knot and the tie\'s tip (CAPR 39-1 4.1.11.1.1.3).',
       when: c => !c.female && ['blues_b', 'aviator'].includes(c.u) && (typeof c.o.tie === 'boolean' ? c.o.tie : tieOf(c).defaultOn) },
     { key: 'chevron', label: 'Chevron size', type: 'select',
       choices: c => {

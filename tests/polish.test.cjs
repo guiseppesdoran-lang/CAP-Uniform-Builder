@@ -29,7 +29,7 @@ test('the controls and the preview are labelled regions, and the preview says wh
   assert.match(ui,/Select an item to remove it/);
 });
 
-test('on a phone the scaled uniform is centred beside the sheet',()=>{
+test('the scaled uniform is centered in the room beside the panel, on a phone and on a desktop',()=>{
   assert.match(ui,/area\.style\.marginLeft=free>0 \? Math\.round\(free\/2\)\+'px' : ''/);
 });
 

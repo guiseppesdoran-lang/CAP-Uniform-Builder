@@ -392,6 +392,10 @@ test('the Items cards carry a count and the uniform\'s rule',()=>{
   assert.equal(rule('ribbons'),'Required on this uniform.');
   assert.equal(chip('badges').textContent,`1 of ${rules.getUniformRule('blues_a').badgeCap}`);
   assert.equal(chip('patches').textContent,'0 selected'); assert.equal(chip('patches').classList.contains('hasItems'),false);
+  // A ribbon chosen but left off the rack (the Short Stack keeps the lower cadet achievements chosen) is still chosen: the count does not fall.
+  t.State.ribbons=[{id:'a'}]; t.State.ribbonSelections={a:{checked:true},b:{checked:true},c:{checked:true},d:{checked:false}}; t.refresh();
+  assert.equal(chip('ribbons').textContent,'3 selected');
+  t.State.ribbons=[{id:'a'},{id:'b'},{id:'a'}]; t.State.ribbonSelections={}; t.refresh();
   t.State.uniform='mess_dress'; t.refresh();
   assert.equal(rule('ribbons'),'Worn as miniature medals on this uniform.');
   t.State.uniform='ocp'; t.refresh();

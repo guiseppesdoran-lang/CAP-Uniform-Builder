@@ -216,11 +216,18 @@
     const base=`Ribbons are not worn on this uniform (CAPR 39-1, ${noRibbonsRef(uniformId)}).`;
     return kept ? `${base} Your ${kept} ribbon choice${kept===1?' is':'s are'} kept for the uniforms that wear them.` : `${base} Choices you make on another uniform are kept for the ones that wear them.`;
   }
+  function chosenRibbonCount(){
+    const ids=new Set((State.ribbons||[]).map(x=>x.id));
+    Object.entries(State.ribbonSelections||{}).forEach(([id,sel])=>{ if(sel && sel.checked) ids.add(id); });
+    return ids.size;
+  }
   function updateItemCards(){
     if(typeof State==='undefined') return;
     const r=rules(), u=State.uniform;
     const auth=(typeof UI_AUTHZ!=='undefined' && UI_AUTHZ[u]) || {showBadges:true,showPatches:true};
-    const ribbons=new Set((State.ribbons||[]).map(x=>x.id)).size;
+    // The ribbons chosen: those the rack holds and those chosen but left off it (the Short Stack keeps the lower cadet achievements chosen, a uniform that
+    // does not wear a ribbon keeps its choice), so the count does not fall when a ribbon is merely not worn.
+    const ribbons=chosenRibbonCount();
     // What the drawing wears, not what is selected (js/badge-rules.js): the badges the uniform wears, military badges included.
     const badges=typeof countBadgesShown==='function' ? countBadgesShown() : (State.badges||[]).length;
     const cap=r ? (r.getUniformRule(u)||{}).badgeCap : null;
@@ -403,9 +410,9 @@
       // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
       area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
       area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
-      // On a phone, centre the scaled uniform in the room beside it instead of hugging the left.
+      // Center the scaled uniform in the room beside it instead of hugging the left, on a phone and beside the panel alike.
       const wrap=safeBy('previewWrapper');
-      if(wrap && isPhone()){
+      if(wrap){
         const style=getComputedStyle(wrap);
         const inner=wrap.clientWidth - parseFloat(style.paddingLeft||0) - parseFloat(style.paddingRight||0);
         const free=inner - area.offsetWidth*V3.zoom;
@@ -481,7 +488,7 @@
     if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? uniformName(State.uniform) : '—';
     // Items are the ribbons, badges and patches on the uniform as drawn; what it does not wear stays chosen and is not counted.
     const shown = typeof countRibbonsShown==='function' ? { ribbons:countRibbonsShown(), badges:countBadgesShown(), patches:countPatchesShown() } : { ribbons:(State.ribbons||[]).length, badges:(State.badges||[]).length, patches:(State.patches||[]).length };
-    const chosenRibbons = new Set((State.ribbons||[]).map(r=>r.id)).size;
+    const chosenRibbons = chosenRibbonCount();
     if(items){
       items.textContent = String(shown.ribbons + shown.badges + shown.patches);
       const pill = items.closest('.capubPill');
