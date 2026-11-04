@@ -25,7 +25,7 @@
     if(variantId !== 'pjoc_ocp_patch'){
       PATCH_META[variantId] = {
         ...base,
-        label:`${base.label} — OCP sleeve`,
+        label:base.label,
         w:200, h:100,
         img:base.img, asset:base.asset || null,
         authorizedUniforms:['ocp'],
@@ -34,7 +34,7 @@
       };
     }else{
       Object.assign(PATCH_META[variantId], {
-        label:'PJOC Patch — OCP sleeve', w:200, h:100, img:base.img, asset:base.asset || null,
+        label:base.label, w:200, h:100, img:base.img, asset:base.asset || null,
         authorizedUniforms:['ocp'], ocpVariant:true, basePatchId:baseId
       });
     }

@@ -54,11 +54,11 @@ test('validateBuild: an award a uniform does not wear is named with the paragrap
   notices = ev('CAPUB_V2.validateBuild()');
   assert.match(notices.find(n => /Organizational Excellence/.test(n.msg)).msg, /not worn on the CAP Corporate uniforms \(CAPR 39-1, 11\.2\.3\)/);
   ev(`State.ribbonSelections = {}; State.uniform = 'abu'; State.militaryBadges = { army_air_assault_badge: { selected: true } }; State.patches = ['ner_patch', 'comms_patch', 'check_pilot_patch']`);
-  context.__scene = { uniform: 'abu', notes: ['Check Pilot Patch is not shown: the ABU breast pocket takes one patch, and the Communications Patch is on it (CAPR 39-1, 5.1.1.1.2.3)'],
+  context.__scene = { uniform: 'abu', notes: ['National Check Pilot Patch is not shown: the ABU breast pocket takes one patch, and the Communications Patch is on it (CAPR 39-1, 5.1.1.1.2.3)'],
     layers: [{ role: 'patch', key: 'patch:ner_patch:L_SHOULDER:0' }, { role: 'patch', key: 'patch:comms_patch:CHEST_RIGHT:0' }] };
   ev('window.CAPUBUniformView = { scene: __scene }');
   notices = ev('CAPUB_V2.validateBuild()');
-  const hidden = notices.find(n => /^Check Pilot Patch is not shown/.test(n.msg));
+  const hidden = notices.find(n => /^National Check Pilot Patch is not shown/.test(n.msg));
   assert.ok(hidden && hidden.type === 'ok', 'the dropped patch is named, as information');
   assert.ok(notices.some(n => /1 U\.S\. military badge is chosen but not drawn on this uniform yet/.test(n.msg)));
   assert.ok(!notices.some(n => /No automatic validation issues/.test(n.msg)), 'no "no issues" line beside them');

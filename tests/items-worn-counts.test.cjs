@@ -76,13 +76,13 @@ test('the patches the drawing leaves off are listed, each with the drawing\'s ow
   setState(`State.uniform = 'abu'; State.patches = ['ner_patch', 'comms_patch', 'check_pilot_patch', 'nesa_patch']`);
   context.__scene = {
     uniform: 'abu', layers: [{ role: 'patch', key: 'patch:ner_patch:L_SHOULDER:0' }, { role: 'patch', key: 'patch:comms_patch:CHEST_RIGHT:0' }],
-    notes: ['Check Pilot Patch is not shown: the ABU breast pocket takes one patch, and the Communications Patch is on it (CAPR 39-1, 5.1.1.1.2.3)', 'Some selected patches have no place left on this uniform and are not shown']
+    notes: ['National Check Pilot Patch is not shown: the ABU breast pocket takes one patch, and the Communications Patch is on it (CAPR 39-1, 5.1.1.1.2.3)', 'Some selected patches have no place left on this uniform and are not shown']
   };
   const plan = ev('capubPatchPlan(__scene)');
   assert.equal(plan.chosen.length, 4);
   assert.deepEqual(plan.shown.map(c => c.id), ['ner_patch', 'comms_patch']);
   assert.deepEqual(plan.hidden.map(c => c.id), ['check_pilot_patch', 'nesa_patch']);
-  assert.match(plan.hidden[0].line, /^Check Pilot Patch is not shown: the ABU breast pocket takes one patch/);
+  assert.match(plan.hidden[0].line, /^National Check Pilot Patch is not shown: the ABU breast pocket takes one patch/);
   assert.match(plan.hidden[1].line, /^.+ is not shown: no place is left for it on this uniform$/, 'a patch with no note of its own gets the plain reason');
   assert.equal(ev('countPatchesShown(__scene)'), 2);
 });

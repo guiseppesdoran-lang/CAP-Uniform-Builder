@@ -1183,9 +1183,11 @@ const patchList = [
   'honor_guard_patch','engineering_academy_patch','nfa_patch','cla_patch',
   'proficient_pilot_patch','model_rocketry_patch','safety_patch','undergrad_pilot_training_patch',
   'nbb_patch','honor_guard_academy_patch','af_space_command_patch','dog_patch',
-  'archer_patch','orientation_pilot_patch','cism_patch','plane_patch',
-  'aerospace_education_patch','communications_patch'
+  'archer_patch','orientation_pilot_patch','cism_patch','plane_patch'
 ];
+// A saved setup's patch id that is no longer offered, and the patch it was: the Legacy Communications Patch was the Communications Patch
+// (10.9.18) twice over, one picture, one paragraph.
+const PATCH_ALIASES = Object.freeze({ communications_patch: 'comms_patch' });
 
 const FIELD_BASE_BUILT_IN_PATCH_IDS = new Set(['us_flag_patch','aux_duty_identifier']);
 
@@ -1208,37 +1210,33 @@ const PATCH_META = {
   'ner_patch':{label:'Northeast Region Patch', slotHint:'L_SHOULDER', echelon:'region', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'nywg_patch':{label:'New York Wing Patch', slotHint:'L_SHOULDER', echelon:'wing', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'comms_patch':{label:'Communications Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'},
-  'check_pilot_patch':{label:'Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'check_pilot_patch':{label:'National Check Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
 
   // OCP-specific patches added May 2026.
-  'pjoc_ocp_patch':{label:'PJOC OCP Patch', slotHint:'L_SHOULDER', w:200,h:100, authorizedUniforms:['ocp']},
+  'pjoc_ocp_patch':{label:'Pararescue Orientation Course Patch', slotHint:'L_SHOULDER', w:200,h:100, authorizedUniforms:['ocp']},
   'tn185_ocp_patch':{label:'SER-TN-185 Music City Composite Squadron Unit Patch', slotHint:'R_SHOULDER', w:200,h:100, authorizedUniforms:['abu','ocp','corporate_field']},
 
   // New field-uniform patches added May 2026.
-  'pjoc_patch':{label:'PJOC Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'nesa_patch':{label:'NESA Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'civil_engineering_academy_patch':{label:'Civil Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'pjoc_patch':{label:'Pararescue Orientation Course Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'nesa_patch':{label:'National Emergency Services Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'civil_engineering_academy_patch':{label:'Air Force Civil Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'cos_patch':{label:'Cadet Officer School Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'honor_guard_patch':{label:'Honor Guard Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field']},
   'engineering_academy_patch':{label:'Engineering Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'nfa_patch':{label:'National Flight Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'cla_patch':{label:'Civic Leadership Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'proficient_pilot_patch':{label:'Proficient Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'proficient_pilot_patch':{label:'Pilot Proficiency Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'model_rocketry_patch':{label:'Model Rocketry Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['cadet']},
   'safety_patch':{label:'Safety Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','flight_suit','corporate_field'], allowedMemberships:['senior']},
-  'undergrad_pilot_training_patch':{label:'Undergraduate Pilot Training Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'undergrad_pilot_training_patch':{label:'Specialized Undergraduate Pilot Training Familiarization Course Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'nbb_patch':{label:'National Blue Beret Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
   'honor_guard_academy_patch':{label:'Honor Guard Academy Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'af_space_command_patch':{label:'Air Force Space Command Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'dog_patch':{label:'DOG Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
+  'af_space_command_patch':{label:'Air Force Space Command Familiarization Course Patch', slotHint:'L_SHOULDER', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'dog_patch':{label:'Emergency Services Patch (style 2)', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
   'archer_patch':{label:'ARCHER Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'orientation_pilot_patch':{label:'Orientation Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'cism_patch':{label:'CISM Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'plane_patch':{label:'Plane Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
-
-  // Legacy patch IDs kept for backward compatibility with older saved setups.
-  'aerospace_education_patch':{label:'Aerospace Education Patch', slotHint:'CHEST_LEFT', w:60,h:60, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
-  'communications_patch':{label:'Legacy Communications Patch', slotHint:'CHEST_RIGHT', w:60,h:60, authorizedUniforms:['abu','flight_suit','corporate_field'], requiresSpecialty:'communications_technician'}
+  'orientation_pilot_patch':{label:'Cadet Orientation Pilot Patch', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'cism_patch':{label:'Critical Incident Stress Management (CISM) Patch', slotHint:'CHEST_RIGHT', w:70,h:70, authorizedUniforms:['abu','ocp','flight_suit','corporate_field','cfdu']},
+  'plane_patch':{label:'Emergency Services Patch (style 1)', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
 };
 
 // Each patch's picture: its SVG, from data/patch-art.js (scripts/sync-patches.cjs). A patch not listed has no picture yet.
@@ -1583,7 +1581,9 @@ const PATCH_UNIFORM_WORDS = Object.freeze({
 //  FDU    8.2.4.5 (CFDU 8.3.4.5): one authorized patch on the right sleeve, inside the loop tape.
 // The member picks among the places a patch may take (State.patchPlacements); the first place is the regulation's primary one.
 // The National Cadet Special Activity patches (10.9.14): the ones the CFU's right sleeve takes (5.2.1.1.2.3, Attachment 4 "NCSA Patches").
-const NCSA_PATCH_IDS = new Set(['pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch','engineering_academy_patch','nfa_patch','cla_patch','nbb_patch','honor_guard_academy_patch']);
+// Fig A8-2 (Special Activity Attendance Patches) also lists the Air Force Space Command Familiarization Course and the Specialized Undergraduate Pilot
+// Training Familiarization Course, so the CFU's right sleeve takes them too.
+const NCSA_PATCH_IDS = new Set(['pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch','engineering_academy_patch','nfa_patch','cla_patch','nbb_patch','honor_guard_academy_patch','af_space_command_patch','undergrad_pilot_training_patch']);
 // The activity patches of the art tree (kind "activity": the NCSA schools and academies without a catalog entry of their own) are NCSA patches like NESA
 // and PJOC: the same uniforms, the same places (the CFU's right sleeve, the pockets, the flight suit's sleeve), the Worn picker where there are several.
 for(const row of UNIT_PATCH_ALL_ROWS){

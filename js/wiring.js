@@ -861,7 +861,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       return kept;
     };
     out.badges = (Array.isArray(p.badges) ? p.badges : []).filter(id => typeof id === 'string' && badgeList.includes(id));
-    out.patches = (Array.isArray(p.patches) ? p.patches : []).filter(id => typeof id === 'string' && patchList.includes(id));
+    // An id no longer offered keeps its meaning (PATCH_ALIASES), so a setup saved before the change loads with the same patch.
+    const aliased = id => (typeof id === 'string' && Object.prototype.hasOwnProperty.call(PATCH_ALIASES, id)) ? PATCH_ALIASES[id] : id;
+    out.patches = [...new Set((Array.isArray(p.patches) ? p.patches : []).map(aliased))].filter(id => typeof id === 'string' && patchList.includes(id));
     out.badgeSelections = pick(badgeList, p.badgeSelections);
     // The member's choice of badge per uniform and position (the Badges panel): known uniforms, known positions, known badge ids.
     out.badgeChoices = {};
@@ -887,7 +889,12 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(!milBadgeIds.has(id) || !sel || typeof sel !== 'object' || !sel.selected) continue;
       out.militaryBadges[id] = { selected: true, variant: safeToken(sel.variant) || undefined };
     }
-    out.patchSelections = pick(patchList, p.patchSelections);
+    const patchSelectionsIn = {};
+    for(const [id, sel] of Object.entries(p.patchSelections && typeof p.patchSelections === 'object' ? p.patchSelections : {})){
+      const to = aliased(id);
+      if(!(patchSelectionsIn[to] && patchSelectionsIn[to].checked)) patchSelectionsIn[to] = sel;
+    }
+    out.patchSelections = pick(patchList, patchSelectionsIn);
 
     out.cadetHighestOnly = !!p.cadetHighestOnly;
     out.adultCadet = out.membership === 'cadet' && !!p.adultCadet;
