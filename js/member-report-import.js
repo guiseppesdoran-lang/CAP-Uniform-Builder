@@ -40,6 +40,36 @@ function setMemberReportImportStatus(lines, type='info'){
   el.innerHTML = arr.map(line => `<div>${String(line).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))}</div>`).join('');
 }
 
+// The notes an import leaves, as the member reads them: one per line, no note twice, no internal id, no eServices capitals.
+// The parsers push a note at each stage they run (the Cadet Advisory Council ribbon and cord are said three times, the last a restatement
+// of the first), so the lines are tidied here, where they are shown.
+const CAPUB_NOTE_CAPS_KEEP = new Set(['CAP', 'CAC', 'NCSA', 'USAF', 'ABU', 'OCP', 'PDF', 'STEM', 'NHQ', 'HQ', 'CAPR']);
+const CAPUB_NOTE_LEVELS = new Set(['WING', 'GROUP']);
+function capubImportNoteLines(notes){
+  let list = [...new Set((notes || []).map(n => String(n || '').trim()).filter(Boolean))];
+  // "CAC final check: ..." restates the notes before it.
+  list = list.filter(n => !/^CAC final check:/.test(n));
+  // Of the lines that say the Cadet Advisory Council ribbon was imported, the last (it gives the reason) is the one kept.
+  const ribbonLines = list.filter(n => /^CAC ribbon imported/.test(n));
+  if(ribbonLines.length > 1) list = list.filter(n => !/^CAC ribbon imported/.test(n) || n === ribbonLines[ribbonLines.length - 1]);
+  // A line that is the opening of a longer one says less: only the longer is kept.
+  list = list.filter(n => { const stem = n.replace(/\.$/, ''); return !list.some(m => m !== n && m.startsWith(stem) && m.length > n.length); });
+  const cac = { group: 'Group CAC / Basic Ribbon', wing_bronze_star: 'Wing CAC / Bronze Star', region_silver_star: 'Region CAC / Silver Star', national_gold_star: 'National CAC / Gold Star' };
+  const title = w => w.charAt(0) + w.slice(1).toLowerCase();
+  return list.map(n => n
+    .replace(/\b(wing_bronze_star|region_silver_star|national_gold_star)\b/g, id => cac[id])
+    .replace(/\bas group([.:])/g, (m, end) => `as ${cac.group}${end}`)
+    .replace(/\b[a-z]+(?:_[a-z0-9]+)+\b/g, id => id.split('_').map((w, i) => i ? w : title(w)).join(' '))
+    // eServices prints names in capitals; a charter (GLR-IL-049) and the abbreviations keep theirs.
+    // A run of capital words ("CADET PROGRAMS TECHNICIAN") or a long single one ("WING") is a name in capitals; a short single one ("PJOC") is an abbreviation.
+    .replace(/(?<![A-Za-z0-9-])[A-Z]{3,}(?: [A-Z]{3,})*(?![A-Za-z0-9-])/g, run => {
+      const words = run.split(' ');
+      if(words.length === 1 && (CAPUB_NOTE_CAPS_KEEP.has(run) || run.length < 5 && !CAPUB_NOTE_LEVELS.has(run))) return run;
+      return words.map(w => CAPUB_NOTE_CAPS_KEEP.has(w) ? w : title(w)).join(' ');
+    })
+    .replace(/\s+/g, ' '));
+}
+
 // PDF.js is only needed when a member imports a PDF report, so it is fetched on
 // first use instead of blocking every page load.
 // Vendored (pdfjs-dist 3.11.174, Apache-2.0; see vendor/pdfjs/LICENSE) so no third-party code loads at runtime.
@@ -1781,7 +1811,7 @@ function applyCapMemberReportImport(parsed){
     }else if(isCommsPatchId(id)){
       State.patchSelections[id].checked = false;
       parsed.notes = parsed.notes || [];
-      parsed.notes.push('Communications patch not rendered because it is not authorized on the selected OCP uniform.');
+      parsed.notes.push('Communications patch not shown because it is not authorized on the selected OCP uniform.');
     }
   }
   clearUnauthorizedPatchesForCurrentUniform();
@@ -1845,7 +1875,7 @@ function wireMemberReportImporter(){
         parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
         `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
         'Reminder: double-check imported results; Unit Citation ribbons and other record-dependent items may not appear correctly.',
-        parsed.notes?.length ? `Notes: ${parsed.notes.join('; ')}` : ''
+        ...(capubImportNoteLines(parsed.notes).length ? ['Notes:', ...capubImportNoteLines(parsed.notes)] : [])
       ].filter(Boolean);
 
       setMemberReportImportStatus(lines, 'ok');

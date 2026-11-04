@@ -514,10 +514,6 @@ function openGalleryModal(kind){
         notDrawn.textContent='U.S. military badges are not drawn on this uniform yet. Your choices are kept for the uniforms that show them.';
         militaryRoot.appendChild(notDrawn);
       }
-      const note=document.createElement('div');
-      note.className='sub'; note.style.margin='6px 0 8px';
-      note.textContent='Only badge variants with reviewed local artwork are selectable. Missing artwork is never substituted.';
-      militaryRoot.appendChild(note);
 
       for(const branch of MILITARY_BRANCH_ORDER){
         const records=militaryBadges.filter(badge=>{
@@ -544,7 +540,7 @@ function openGalleryModal(kind){
           preview.src=representation.asset; preview.alt=badge.officialName || badge.id;
           const body=document.createElement('div'); body.style.cssText='flex:1;min-width:0;';
           const title=document.createElement('div'); title.className='title'; title.textContent=badge.officialName || badge.id;
-          const sub=document.createElement('div'); sub.className='sub'; sub.textContent=`${badge.family || 'OTHER'} • ${(badge.authorizedServices || []).map(service=>MILITARY_BRANCH_LABELS[service] || service).join(' / ')}`;
+          const sub=document.createElement('div'); sub.className='sub'; sub.textContent=[(badge.family && badge.family!=='OTHER') ? String(badge.family).charAt(0)+String(badge.family).slice(1).toLowerCase() : '',(badge.authorizedServices || []).map(militaryServiceLabel).join(' / ')].filter(Boolean).join(' • ');
           const controls=document.createElement('div'); controls.className='miniRow';
           const label=document.createElement('label');
           const checkbox=document.createElement('input'); checkbox.type='checkbox'; checkbox.className='militaryBadgeCatalogCheck'; checkbox.checked=!!selected;
@@ -985,8 +981,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(!State.rank) addNotice('warn','Select rank before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
     if(!State.gender) addNotice('warn','Select the male or female cut so the uniform can be drawn.',{id:'jacketSelect',label:'Choose'});
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
-    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`Unit patch selected for ${getUnitPatchSelectionLabel(State.unitPatchCharter)}, but no patch image asset is available yet.`);
-    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`Unit patch ${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not authorized on the current uniform.`);
+    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} patch picture is not available yet, so no unit patch is shown.`);
+    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} unit patch is not worn on this uniform, so it is not shown.`);
     if(State.membership === 'cadet'){
       const bad = State.badges.filter(id=>!isCadetAuthorized(id));
       if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '),{id:'expandBadges',label:'Review badges'});

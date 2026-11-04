@@ -136,11 +136,11 @@ test('the status names the unit patch, and with art and a higher headquarters pa
     globalThis.document = new Proxy({}, { get: (_t, key) => key === 'getElementById' ? id => id === 'unitPatchStatus' ? el : realDocument.getElementById(id) : realDocument[key] });
     renderUnitPatchStatus(); globalThis.document = realDocument; return el.textContent; })()`);
   const ocp = run('ocp', 'MAR-DC-026');
-  assert.match(ocp, /^MAR-DC-026 - ARLINGTON COMPOSITE SQUADRON will render as the unit patch\. The National Capital Wing patch, its higher headquarters, goes on the left sleeve under the AUX identifier \(CAPR 39-1, 7\.1\.1\.4\.2\.1\); a patch you pick in lieu of it takes its place \(7\.1\.1\.4\.2\.2\)\.$/);
-  assert.doesNotMatch(ocp, /unit_|patch-|\.svg|HHQ/);
-  assert.equal(run('abu', 'MAR-DC-026'), 'MAR-DC-026 - ARLINGTON COMPOSITE SQUADRON will render as the unit patch.', 'the ABU takes no automatic left sleeve patch');
+  assert.match(ocp, /^ARLINGTON COMPOSITE SQUADRON is shown as the unit patch\. The National Capital Wing patch, its higher headquarters, goes on the left sleeve under the AUX identifier \(CAPR 39-1, 7\.1\.1\.4\.2\.1\); a patch you pick in lieu of it takes its place \(7\.1\.1\.4\.2\.2\)\.$/);
+  assert.doesNotMatch(ocp, /unit_|patch-|\.svg|HHQ|MAR-DC|\brender/i, 'no id, file name, charter string or the word render');
+  assert.equal(run('abu', 'MAR-DC-026'), 'ARLINGTON COMPOSITE SQUADRON is shown as the unit patch.', 'the ABU takes no automatic left sleeve patch');
   assert.match(run('ocp', 'MAR-DC-026', ['pjoc_ocp_patch']), /is not placed: the patch you picked in lieu of it is on the left sleeve \(CAPR 39-1, 7\.1\.1\.4\.2\.2\)\.$/);
-  assert.match(run('ocp', 'MAR-DC-033'), /^MAR-DC-033 - ANDREWS COMPOSITE SQDN selected\. No image asset is available for this charter yet\.$/, 'a charter without art keeps the plain note');
+  assert.match(run('ocp', 'MAR-DC-033'), /^ANDREWS COMPOSITE SQDN is selected\. Its patch picture is not available yet, so no patch is shown\.$/, 'a charter without art keeps the plain note');
   ev(`State.patches = []; State.unitPatchCharter = ''`);
 });
 

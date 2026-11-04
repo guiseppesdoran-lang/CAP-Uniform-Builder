@@ -259,7 +259,12 @@ function getMilitaryRibbonIds(){
   return [...militaryRibbonCatalogCache.ids];
 }
 const MILITARY_BRANCH_ORDER=['JOINT','ARMY','MARINE_CORPS','NAVY','AIR_FORCE','SPACE_FORCE','COAST_GUARD'];
-const MILITARY_BRANCH_LABELS={JOINT:'Joint / Multi-Service',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
+const MILITARY_BRANCH_LABELS={JOINT:'Joint / Multi-Service',JOINT_DOD:'Department of Defense',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
+// A service as the member reads it: its name, never the catalog's token ("JOINT_DOD", "SPACE_FORCE").
+function militaryServiceLabel(service){
+  const key=String(service||'');
+  return MILITARY_BRANCH_LABELS[key] || key.toLowerCase().split('_').filter(Boolean).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+}
 function getMilitaryAwardBranch(award){
   const services=[...new Set((award?.authorizedServices || []).filter(service=>MILITARY_BRANCH_ORDER.includes(service)))];
   return services.length === 1 ? services[0] : 'JOINT';
@@ -1377,6 +1382,11 @@ function getUnitPatchSelectionLabel(code){
   const unit = CAP_UNIT_OPTIONS.find(u => u.code === code);
   return unit ? `${unit.code} - ${unit.name}` : String(code || '');
 }
+// The unit as the member reads it in a sentence: its name, not the charter string ("SER-TN-185 - ..." stays in the searchable list).
+function getUnitPatchSpokenName(code){
+  const unit = CAP_UNIT_OPTIONS.find(u => u.code === code);
+  return unit && unit.name ? unit.name : String(code || '');
+}
 
 // The one line the Unit patch list carries on a uniform that takes no patch below wing level.
 function getUnitPatchFloorNote(uniformId = State.uniform){
@@ -1393,19 +1403,19 @@ function renderUnitPatchStatus(){
     return;
   }
   if(!isUnitCharterWornOnUniform(State.unitPatchCharter)){
-    status.textContent = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not worn on this uniform. ${floorNote}`;
+    status.textContent = `${getUnitPatchSpokenName(State.unitPatchCharter)} is not worn on this uniform. ${floorNote}`.trim();
     return;
   }
   const patchId = getSelectedUnitPatchId();
   if(!patchId){
-    status.textContent = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} selected. No image asset is available for this charter yet.`;
+    status.textContent = `${getUnitPatchSpokenName(State.unitPatchCharter)} is selected. Its patch picture is not available yet, so no patch is shown.`;
     return;
   }
   if(!isPatchAuthorizedForUniform(patchId)){
-    status.textContent = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} has an image asset, but it is not authorized for the current uniform selection.`;
+    status.textContent = `The ${getUnitPatchSpokenName(State.unitPatchCharter)} patch is not worn on this uniform.`;
     return;
   }
-  let line = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} will render as the unit patch.`;
+  let line = `${getUnitPatchSpokenName(State.unitPatchCharter)} is shown as the unit patch.`;
   const hhq = getUnitHhqPlan();
   if(hhq && hhq.worn) line += ` The ${hhq.label} patch, its higher headquarters, goes on the left sleeve under the AUX identifier (CAPR 39-1, 7.1.1.4.2.1); a patch you pick in lieu of it takes its place (7.1.1.4.2.2).`;
   else if(hhq) line += ` The ${hhq.label} patch, its higher headquarters, is not placed: the patch you picked in lieu of it is on the left sleeve (CAPR 39-1, 7.1.1.4.2.2).`;

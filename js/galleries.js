@@ -1060,7 +1060,7 @@ function buildRibbonGallery(options={}){
       ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${escapeHtml(title)}"></span>` : `<img loading="lazy" decoding="async" alt="${escapeHtml(title)}">`}
       <div style="flex:1;min-width:0;">
         <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">${isRotcRibbonId(id) ? 'JROTC / ROTC' : military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
+        <div class="sub">${isRotcRibbonId(id) ? 'JROTC / ROTC' : military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(militaryServiceLabel(service))).join(' / ') || 'U.S. military'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
         ${miniPreview}
         ${military ? `<label class="ribbonAwardLabel">Awarding / wearer service<select class="militaryServiceSelect" data-ribbon-id="${escapeHtml(id)}">${serviceOptions}</select></label>` : ''}
         <label class="ribbonAwardLabel">
@@ -1122,7 +1122,7 @@ function buildRibbonGallery(options={}){
     militaryMenu.appendChild(summary);
     const intro=document.createElement('div');
     intro.className='sub';
-    intro.innerHTML=`Shared awards appear once under Joint / Multi-Service. Normal mode only exposes award-specific device rules in the local verified dataset. <label style="display:inline-flex;gap:5px;align-items:center;margin-left:8px"><input class="militaryAdvancedMode" type="checkbox" ${getMilitaryUIState().advancedMode?'checked':''}> Manual / unverified configurations</label>`;
+    intro.innerHTML=`Shared awards appear once under Joint / Multi-Service. Each award offers the devices its own rule allows. <label style="display:inline-flex;gap:5px;align-items:center;margin-left:8px"><input class="militaryAdvancedMode" type="checkbox" ${getMilitaryUIState().advancedMode?'checked':''}> Choose devices by hand</label>`;
     militaryMenu.appendChild(intro);
     const filters=document.createElement('div');
     filters.className='militaryRibbonCatalogFilters';
@@ -1140,7 +1140,7 @@ function buildRibbonGallery(options={}){
     militaryMenu.appendChild(filters);
     const resultSummary=document.createElement('div');
     resultSummary.className='sub militaryRibbonCatalogSummary';
-    resultSummary.textContent=`${militaryIds.length} of ${allMilitaryIds.length} unique military awards shown. Branch contents load when opened.`;
+    resultSummary.textContent=`${militaryIds.length} of ${allMilitaryIds.length} unique military awards shown.`;
     militaryMenu.appendChild(resultSummary);
     const filtersActive=!!galleryQuery || ui.galleryServiceFilter!=='ALL' || ui.galleryAwardTypeFilter!=='ALL';
     const expandedSections=new Set(ui.expandedSections || []);
