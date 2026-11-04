@@ -37,7 +37,14 @@ const NOT_DRAWN = /not drawn|only a crop|no full patch artwork|\bcannot be shown
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
 const manifestIds = new Set(manifest.assets.map(a => a.id));
-const nodeStore = () => core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(ROOT, 'images', p), 'utf8'))));
+// A manifest path can name a picture (the official unit emblems are PNGs the browser draws as pictures, never specs): reading one as a spec is a
+// rejected promise (the store then keeps the manifest's own record of it), not a JSON.parse exception thrown out of the loader.
+const nodeStore = () => core.createSpecStore(manifest, p => new Promise((resolve, reject) => {
+  try{
+    if(!/\.json$/i.test(p)) throw new Error(`${p} is a picture, not a spec`);
+    resolve(JSON.parse(fs.readFileSync(path.join(ROOT, 'images', p), 'utf8')));
+  }catch(e){ reject(e); }
+}));
 
 // ---- arguments ---------------------------------------------------------------------------------
 
@@ -126,13 +133,28 @@ function patchMeta(){
   return Function(`return ${src.slice(start, i + 1)}`)();
 }
 const OCP_BASE = { 'TN-330_ocp_patch': 'tn330_ocp_patch' };
+// A patch's picture: a row of data/patch-art.js (by patch id), else a unit emblem of data/unit-patch-art.js (by patch id or charter). An official emblem is a
+// PNG, handed over as a picture with its spec's size (the page does the same: js/uniform-view.js buildPatches); an SVG is handed over as its asset.
+let UNIT_ROWS = null;
+function unitRow(id){
+  UNIT_ROWS = UNIT_ROWS || req('data/unit-patch-art.js');
+  const key = String(id || '');
+  return UNIT_ROWS.find(r => r.patchId === key) || UNIT_ROWS.find(r => r.charter && r.charter.toUpperCase() === key.toUpperCase()) || null;
+}
 function patchesFrom(refs){
   const art = req('data/patch-art.js'), meta = patchMeta();
   const patches = [], notes = [];
   for(const ref of refs || []){
     const row = art[ref.id] || art[OCP_BASE[ref.id]] || art[String(ref.id).replace(/_ocp_patch$/, '_patch')];
-    const label = ref.label || (meta[ref.id] && meta[ref.id].label) || ref.id;
-    if(!row){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
+    const unit = row ? null : unitRow(ref.id);
+    const label = ref.label || (meta[ref.id] && meta[ref.id].label) || (unit && unit.label) || ref.id;
+    if(!row && !unit){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
+    if(unit){
+      const raster = /\.png$/i.test(unit.img);
+      patches.push({ id: unit.patchId, title: label, asset: raster ? null : unit.asset, href: raster ? '/images/' + unit.img : null, aspect: unit.w / unit.h, size: raster ? { w: unit.w, h: unit.h } : null,
+        slot: ref.kind === 'hhq' ? 'L_SHOULDER' : ref.kind === 'unit' || !ref.slot ? 'R_SHOULDER' : ref.slot, kind: ref.kind || 'unit', echelon: ref.echelon || (['wing', 'region', 'national'].includes(unit.echelon) ? unit.echelon : null) });
+      continue;
+    }
     patches.push({ id: ref.id, title: label, asset: row.asset || null, href: row.asset ? null : '/images/' + row.img, aspect: 1,
       slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general',
       echelon: ref.echelon || (meta[ref.id] && meta[ref.id].echelon) || null });
@@ -550,4 +572,4 @@ async function main(){
 }
 
 if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom, NOT_DRAWN, MISSING_ART };
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom, NOT_DRAWN, MISSING_ART, nodeStore };
