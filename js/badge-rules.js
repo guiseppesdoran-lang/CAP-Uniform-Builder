@@ -124,6 +124,16 @@ function capubBadgesNotWornLine(ids = State.badges){
   return `${n} selected badge${n === 1 ? ' is' : 's are'} not worn on this uniform${where}.`;
 }
 
+// The one line for badges chosen beyond the places the uniform has: selected, worn here, and left off by the drawing. They stay selected (the member picks
+// which to show under Badges); the line says how many are not shown and why, with the paragraph that sets the limit. '' when there are none.
+function capubBadgesNotShownLine(scene){
+  const n = countBadgesSelectedNotDrawn(State.badges, capubDrawnScene(scene));
+  if(!n) return '';
+  const rule = (window.CAPUBUniformRules && CAPUBUniformRules.getUniformRule(State.uniform)) || {};
+  const room = rule.badgeCap ? ` This uniform wears ${rule.badgeCap}${(rule.refs || {}).badges ? ` (CAPR 39-1, ${rule.refs.badges})` : ''}.` : '';
+  return `${n} selected badge${n === 1 ? ' has' : 's have'} no place left on this uniform and ${n === 1 ? 'is' : 'are'} not shown.${room} Choose which to show under Badges.`;
+}
+
 // Specialty/occupational badge visual families. These let one calibrated badge zone
 // carry over to similar badges without forcing every badge to use the same dimensions.
 const ES_POCKET_BADGE_IDS = new Set([

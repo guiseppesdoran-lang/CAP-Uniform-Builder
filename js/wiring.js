@@ -84,7 +84,7 @@ function capubSyncBadgesNotWornNote(){
     if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(el, anchor.nextSibling);
     else group.appendChild(el);
   }
-  const line = capubBadgesNotWornLine();
+  const line = [capubBadgesNotWornLine(), typeof capubBadgesNotShownLine === 'function' ? capubBadgesNotShownLine() : ''].filter(Boolean).join(' ');
   el.textContent = line;
   el.classList.toggle('hidden', !line);
 }
@@ -286,7 +286,9 @@ function capubModalCountText(kind){
   if(kind === 'badges'){
     // The CAP badges and the U.S. military badges selected (the military ones are drawn among the badges over the left pocket).
     const counted = (typeof countBadgesForLimit === 'function' ? countBadgesForLimit() : (State.badges || []).length) + (typeof countMilitaryBadgesSelected === 'function' ? countMilitaryBadgesSelected() : 0);
-    const cap = (CAPUBUniformRules.getUniformRule(State.uniform) || {}).badgeCap;
+    const rule = CAPUBUniformRules.getUniformRule(State.uniform) || {};
+    const cap = rule.badgeCap;
+    if(cap && counted > cap) return `${counted} of ${cap} badges selected. This uniform wears ${cap} (CAPR 39-1, ${(rule.refs || {}).badges}); choose which to show under Badges.`;
     return cap ? `${counted} of ${cap} badges selected` : `${counted} badge${counted === 1 ? '' : 's'} selected`;
   }
   if(kind === 'patches'){
@@ -656,10 +658,16 @@ function openGalleryModal(kind){
   syncFromSidebar();
 
   // openGalleryModal is called twice (a later patch re-wraps it); only the first call knows the opener.
-  if(!modalOverlay.classList.contains('open')) modalOpener = document.activeElement;
+  const freshOpen = !modalOverlay.classList.contains('open');
+  if(freshOpen) modalOpener = document.activeElement;
   modalOverlay.classList.add('open');
   modalOverlay.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
+  // A chooser opens at its top, not where the one before it was left (the body scrolls, and keeps its position between choosers).
+  if(freshOpen){
+    if(modalHost.parentElement) modalHost.parentElement.scrollTop = 0;
+    if(typeof getMilitaryUIState === 'function') getMilitaryUIState().modalScrollTop = 0;
+  }
   modalClose.focus();
 }
 
@@ -1214,6 +1222,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       return result;
     };
   })();
+  // A pick in a chooser (a ribbon, a badge, a patch, a unit) redraws without a full render, so it was recorded only with the next full render and Undo took the
+  // pick and whatever came after it in one step. Every change or click in the page now records what it changed once the handler has run; captureHistory records
+  // nothing when the setup is the same as the last one, so a click that changes nothing adds no step.
+  ['change','click'].forEach(evt => document.addEventListener(evt, () => setTimeout(captureHistory, 30), true));
 
   function wireV2Controls(){
     syncTextControls();
@@ -1246,7 +1258,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   CAPUB_V2.validateBuild = validateBuild;
 
   // The Check panel follows the drawing just made: which badges are worn is known once the engine has drawn them (LIVE13 E77).
-  document.addEventListener('capub:rendered', () => updateStatusPanel());
+  document.addEventListener('capub:rendered', () => { updateStatusPanel(); capubRefreshModalCount(); });
 
   // Wire once after this script block has loaded.
   setTimeout(()=>{ wireV2Controls(); updateStatusPanel(); },0);
