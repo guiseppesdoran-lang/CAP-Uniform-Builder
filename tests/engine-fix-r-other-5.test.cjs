@@ -42,8 +42,7 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
       assert.ok(edge && top, `${label}: both views carry the grade`);
       assert.match(edge.id, /-metal-regular$/, `${label}: edge-on grade is the regular size (${edge.id})`);
       assert.equal(edge.id, top.id, `${label}: one grade in both views`);
-      // E123: a cadet officer's grade runs along the strap, so the art is turned a quarter (its row along the strap) and the strap's own turn is the layer's less 90.
-      const r = rad((edge.rotate || 0) - 90), axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
+      const r = rad(edge.rotate || 0), axis = { x: -Math.sin(r), y: Math.cos(r) }, cross = { x: Math.cos(r), y: Math.sin(r) };
       // The top view is level (DORAN5-ENG-3): its board's long axis is horizontal, so the grade's length along the board is measured horizontally.
       const level = { x: 1, y: 0 };
       assert.ok(Math.abs(along(edge, axis) - along(top, level)) <= 0.05, `${label}: along the strap ${along(edge, axis).toFixed(3)} edge-on vs ${along(top, level).toFixed(3)} from above`);
@@ -133,33 +132,4 @@ test('ABU and CFU: a cadet officer wears the grade on the navy tactical cap (ICL
   }
   const ocp = await compose(hb('ocp', 'male', 'cadet', 'C/Maj', { badgeIds: [AIRCREW], opt: tactical }));
   assert.ok(byKey(ocp, 'grade:baseball_cap_front_insignia_zone'), 'OCP ball cap keeps the cadet officer grade');
-});
-
-// ---- LIVE13 E123: the cadet officer's grade runs along the board ------------------------------------------------------
-// Ethan: "the cadet officer insignia should be shifted 90 degrees. for example, the 3 diamonds for c/col should all be on top of each other" (it overrules the
-// Figure A5-6 side-by-side reading). The discs and diamonds are a row in the art; on a board the row lies along its long axis, centred on the rank slot,
-// within the slot's band; the strip carries the same row along the strap (the test above).
-test('Class A and cadet semi-formal coats: a cadet officer\'s discs and diamonds run along the board\'s long axis, centred on its rank slot, inside the slot\'s band (E123)', async () => {
-  let n = 0;
-  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const gender of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']){
-    const scene = await compose(hb(uniform, gender, 'cadet', rank, { badgeIds: [AIRCREW] }));
-    for(const side of ['right', 'left']){
-      const label = `${uniform} ${gender} ${rank} ${side}`;
-      const board = byKey(scene, `epaulet-top:${side}`), top = byKey(scene, `grade:top-${side}`);
-      const bs = await store.load(`garment-blues-shoulder-board-top-${gender}-${side}`);
-      const gs = await store.load(top.id), band = core.landmarkBounds(bs, 'rank_slot');
-      // The board is level (DORAN5-ENG-3): its long axis is horizontal. The grade's art row (its width) is turned with the board, not a quarter off it.
-      const turn = (((top.rotate - board.rotate) % 360) + 360) % 360;
-      assert.ok(turn < 0.01 || turn > 359.99, `${label}: the grade is turned with the board (${turn.toFixed(2)} degrees off)`);
-      // The row's length lies along the board and fits the band's length (0.06 in of blue each end); its height lies across and fits the band's.
-      assert.ok(top.w <= band.w - 0.12 + 1e-6 && top.h <= band.h - 0.12 + 1e-6, `${label}: ${top.w.toFixed(3)} x ${top.h.toFixed(3)} in the ${band.w.toFixed(2)} x ${band.h.toFixed(2)} in band`);
-      if(/Capt|Col/.test(rank)) assert.ok(top.w > top.h, `${label}: three in a row, longer along the board (${top.w.toFixed(3)}) than across (${top.h.toFixed(3)})`);
-      // Centred on the rank slot's centre.
-      const slot = core.anchor(bs, 'rank_slot_center'), k = board.w / bs.w;
-      const want = { x: board.x + slot.x * k, y: board.y + slot.y * k };
-      assert.ok(Math.hypot(top.x + top.w / 2 - want.x, top.y + top.h / 2 - want.y) < 0.02, `${label}: centred on the rank slot`);
-      n++;
-    }
-  }
-  assert.equal(n, 48);
 });

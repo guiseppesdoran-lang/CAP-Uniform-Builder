@@ -71,9 +71,8 @@ test('Class A and cadet semi-formal: the edge-on board is the top board flattene
           const slot = core.anchor(spec, 'rank_slot_center');
           const fromEnd = Math.hypot(slot.x - outer.x, slot.y - outer.y);
           assert.ok(Math.abs(off(c).along - fromEnd) < 0.01, `${tag}: the grade is on the band's centre, ${fromEnd.toFixed(3)} in from the outer end`);
-          const deg = (180 + Math.atan2(u.y, u.x) * 180 / Math.PI) % 180,   // E123: the cadet officer's row runs along the strap, a quarter turn from the strap's own
-             got = ((grade.rotate % 180) + 180) % 180, want = ((deg % 180) + 180) % 180;
-          assert.ok(Math.abs(got - want) < 0.02 || Math.abs(Math.abs(got - want) - 180) < 0.02, `${tag}: grade turn ${grade.rotate} follows the strap, a quarter turned (${deg.toFixed(2)})`);
+          const deg = (90 + Math.atan2(u.y, u.x) * 180 / Math.PI) % 180, got = ((grade.rotate % 180) + 180) % 180, want = ((deg % 180) + 180) % 180;
+          assert.ok(Math.abs(got - want) < 0.02 || Math.abs(Math.abs(got - want) - 180) < 0.02, `${tag}: grade turn ${grade.rotate} follows the strap (${deg.toFixed(2)})`);
           assert.ok(strip.z < grade.z, `${tag}: the grade is above the board`);
         }
       }
