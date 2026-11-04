@@ -79,17 +79,36 @@ function capubExtractCommanderDutyWindows(section){
   return rows;
 }
 
+// The duty tables of the member report. A "Current Duty Positions" table ends where the past table (under any of
+// its headings) or the next report section begins, and a row that carries an end date is a past assignment
+// whichever table it is printed in; only what the current table lists, with no end date, is a current duty.
+const CAPUB_PAST_DUTY_HEADING = '(?:(?:Cadet\\s+)?(?:Past|Previous|Prior|Former|Historical|Completed|Ended)\\s+Duty\\s+(?:Positions|Assignments)|Duty\\s+(?:Positions|Assignments)\\s+History|Duty\\s+History)';
+const CAPUB_AFTER_CURRENT_DUTY = [CAPUB_PAST_DUTY_HEADING, 'Current\\s+Committees', 'Transfer\\s+History', 'Professional\\s+Development',
+  'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Cadet\\s+Achievements', 'Awards', 'Promotions', 'Decorations'];
+const CAPUB_AFTER_PAST_DUTY = ['Current\\s+Duty\\s+(?:Positions|Assignments)', 'Current\\s+Committees', 'Transfer\\s+History', 'Level',
+  'Professional\\s+Development', 'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Awards', 'Promotions'];
+
+function capubCurrentDutySection(text){
+  return getReportSectionUntilAny(text, 'Current\\s+Duty\\s+(?:Positions|Assignments)', CAPUB_AFTER_CURRENT_DUTY);
+}
+
+function capubCurrentCadetDutySection(text){
+  return getReportSectionUntilAny(text, 'Cadet\\s+Duty\\s+(?:Positions|Assignments)', CAPUB_AFTER_CURRENT_DUTY);
+}
+
+function capubPastDutySection(text){
+  return getReportSectionUntilAny(text, CAPUB_PAST_DUTY_HEADING, CAPUB_AFTER_PAST_DUTY);
+}
+
 function hasCurrentCommanderDutyPosition(text){
-  const current = getReportSection(text, 'Current Duty Positions', 'Past Duty Positions');
+  const current = capubCurrentDutySection(text);
   if(!current) return false;
-  return capubExtractCommanderDutyWindows(current).some(row => capubIsExactCommanderDutyTitle(row.title));
+  return capubExtractCommanderDutyWindows(current).some(row => capubIsExactCommanderDutyTitle(row.title) && !row.end);
 }
 
 function hasGraduatedCommanderDutyPosition(text){
-  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
-    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
-    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
-  ]);
+  // Rows with an end date are past assignments wherever they are printed.
+  const past = [capubPastDutySection(text), capubCurrentDutySection(text)].filter(Boolean).join(' ');
   if(!past) return false;
 
   return capubExtractCommanderDutyWindows(past).some(row => {
@@ -104,14 +123,11 @@ function extractCommandServiceCommanderAssignments(text){
   const sections = [
     {
       current:true,
-      text:getReportSection(text, 'Current Duty Positions', 'Past Duty Positions')
+      text:capubCurrentDutySection(text)
     },
     {
       current:false,
-      text:getReportSectionUntilAny(text, 'Past Duty Positions', [
-        'Current Committees', 'Transfer History', 'Level', 'Professional Development',
-        'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
-      ])
+      text:capubPastDutySection(text)
     }
   ];
 
@@ -302,9 +318,8 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
 
 function capubGetCurrentCACDutyAssignments(text){
   const sections = [
-    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
-    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
-    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+    capubCurrentCadetDutySection(text),
+    capubCurrentDutySection(text)
   ].filter(Boolean);
 
   const rows = [];
@@ -323,11 +338,7 @@ function capubGetCurrentCACDutyAssignments(text){
 }
 
 function capubGetPastCACDutyAssignments(text){
-  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
-    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
-    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
-  ]);
-  return capubExtractCACDutyAssignmentsFromSection(past, false);
+  return capubExtractCACDutyAssignmentsFromSection(capubPastDutySection(text), false);
 }
 
 function capubChooseHighestCACLevel(rows){
@@ -585,10 +596,8 @@ function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
 
 function capubGetCurrentCACSectionFinal(text){
   return [
-    getReportSection(text, 'Cadet Duty Positions', 'Cadet Past Duty Positions'),
-    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
-    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
-    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+    capubCurrentCadetDutySection(text),
+    capubCurrentDutySection(text)
   ].filter(Boolean).join(' ');
 }
 

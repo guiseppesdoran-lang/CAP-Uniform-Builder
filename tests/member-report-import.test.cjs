@@ -35,7 +35,7 @@ function runImport(text, before=''){
     const selected = {};
     for(const [id, s] of Object.entries(State.ribbonSelections)) if(s.checked) selected[id] = { awardValue: s.awardValue, awardLabel: s.awardLabel };
     globalThis.document = realDocument;
-    return JSON.stringify({ parsed, selected, membership: State.membership, rank: State.rank, uniform: State.uniform, adultCadet: State.adultCadet, text: State.text, fields });
+    return JSON.stringify({ parsed, selected, badges: State.badges, commandInsignia: State.commandInsignia, membership: State.membership, rank: State.rank, uniform: State.uniform, adultCadet: State.adultCadet, text: State.text, fields });
   })`, context)(text);
   const data = JSON.parse(out);
   const devices = id => RA.resolve(id, { ...data.selected[id], membership: data.membership }).map(r => ({ devices: r.devices.map(short), centered: r.centered }));
@@ -598,4 +598,49 @@ test('a past First Sergeant tour is not the current one: the diamond follows the
   assert.equal(past.parsed.cadetFirstSergeant, false);
   const current = runImport(msgt.replace('Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026', 'Cadet First Sergeant GLR-IL-049 UNIT No 01 Jan 2026'));
   assert.equal(current.parsed.cadetFirstSergeant, true);
+});
+
+// Member feedback: a report that lists the Squadron Commander only under past duty positions was imported as the
+// current squadron commander. Two faults: the graduated status the parser found was cleared again when the import
+// was applied (so a past tour wore the pin over the nameplate, as a current commander does), and a past table under
+// another heading ("Previous Duty Positions") was read as part of the current one (CAPR 39-1 10.2.5).
+const PAST_COMMANDER = fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-senior-past-commander.txt'), 'utf8');
+
+test('a Squadron Commander listed only under past duty positions is a graduated commander, never the current one (10.2.5)', () => {
+  const r = runImport(PAST_COMMANDER);
+  assert.ok(r.parsed.badges.includes('squadron_commander_badge'), 'a tour of a year or more earns the pin');
+  assert.equal(r.parsed.commandStatus, 'graduated');
+  assert.equal(r.commandInsignia.graduatedCommander, true, 'graduated: the pin goes under the nameplate, not over it');
+  assert.match(r.parsed.notes.join(' '), /graduated commander/);
+  assert.doesNotMatch(r.parsed.notes.join(' '), /Current commander duty found/);
+  // Printed in a current table, the same row is the current commander.
+  const current = runImport(PAST_COMMANDER.replace('Aerospace Education Officer GLR-IL-049 UNIT No 01 Jan 2023', 'Squadron Commander GLR-IL-049 UNIT No 01 Jan 2023'));
+  assert.equal(current.parsed.commandStatus, 'current');
+  assert.equal(current.commandInsignia.graduatedCommander, false);
+});
+
+test('a past commander tour under any heading, or with an end date, is not a current duty; a short tour wears no pin', () => {
+  for(const heading of ['Previous Duty Positions', 'Prior Duty Positions', 'Former Duty Positions', 'Historical Duty Positions', 'Past Duty Assignments', 'Duty Positions History']){
+    const r = runImport(PAST_COMMANDER.replace('Past Duty Positions', heading));
+    assert.equal(r.parsed.commandStatus, 'graduated', heading);
+    assert.equal(r.commandInsignia.graduatedCommander, true, heading);
+  }
+  // Only a past table, none current (the member holds no duty now).
+  const none = runImport(PAST_COMMANDER.replace(/Duty Positions\nDuty Position Unit Echelon Asst Start Date End Date\nAerospace[^\n]*\n/, ''));
+  assert.equal(none.parsed.commandStatus, 'graduated');
+  // A row with an end date in the current table is an ended assignment.
+  const ended = runImport(PAST_COMMANDER.replace('Aerospace Education Officer GLR-IL-049 UNIT No 01 Jan 2023', 'Squadron Commander GLR-IL-049 UNIT No 01 Jan 2019 31 Dec 2022'));
+  assert.equal(ended.parsed.commandStatus, 'graduated');
+  assert.equal(ended.commandInsignia.graduatedCommander, true);
+  // Under a year: no pin at all, and no command status.
+  const shortTour = runImport(PAST_COMMANDER.replace('01 Jan 2019 31 Dec 2022\nDeputy', '01 Jan 2022 31 Dec 2022\nDeputy'));
+  assert.ok(!shortTour.parsed.badges.includes('squadron_commander_badge'));
+  assert.equal(shortTour.parsed.commandStatus, undefined);
+  assert.equal(shortTour.commandInsignia.graduatedCommander, false);
+});
+
+test('a previous member\'s current-commander status does not carry into a report with no commander duty', () => {
+  const r = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025\n', ''), "State.commandInsignia = { graduatedCommander: true };");
+  assert.equal(r.commandInsignia.graduatedCommander, false);
+  assert.ok(!r.parsed.badges.includes('squadron_commander_badge'));
 });

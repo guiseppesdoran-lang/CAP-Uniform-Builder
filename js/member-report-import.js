@@ -1262,14 +1262,19 @@ function highestProfessionalDevelopmentLevelFromReport(text){
   return highest;
 }
 
-// A current duty table headed "Duty Positions" alone (as the cadet one is "Cadet Duty Positions") is read as
-// "Current Duty Positions", the heading the commander rules (js/patches.js) look for; "Cadet", "Current" and
-// "Past" headings are left as they are.
+// The duty tables under the names a report may give them. A table headed "Duty Positions" or "Duty Assignments"
+// alone (as the cadet one is "Cadet Duty Positions") is read as "Current Duty Positions", the heading the commander
+// rules (js/patches.js) look for; a past, previous, prior, former or historical table is "Past Duty Positions", so
+// its rows are never read as current; "Cadet", "Current" and "Past" headings are left as they are.
 function labelCurrentDutyPositionsHeading(text){
-  return String(text || '').replace(/(^|[^A-Za-z])(Duty\s+Positions)\b/g, (match, pre, heading, offset, source) => {
-    const before = source.slice(Math.max(0, offset - 12), offset + pre.length);
-    return /(?:Cadet|Current|Past)\s*$/i.test(before) ? match : `${pre}Current ${heading}`;
-  });
+  return String(text || '')
+    .replace(/\b(Past|Previous|Prior|Former|Historical|Completed|Ended)\s+Duty\s+(?:Positions|Assignments)\b/gi, '$1 Duty Positions')
+    .replace(/\b(Previous|Prior|Former|Historical|Completed|Ended)\s+Duty\s+Positions\b/gi, 'Past Duty Positions')
+    .replace(/\bDuty\s+Assignments\b/gi, 'Duty Positions')
+    .replace(/(^|[^A-Za-z])(Duty\s+Positions)\b/g, (match, pre, heading, offset, source) => {
+      const before = source.slice(Math.max(0, offset - 12), offset + pre.length);
+      return /(?:Cadet|Current|Past)\s*$/i.test(before) ? match : `${pre}Current ${heading}`;
+    });
 }
 
 function parseCapMemberReport(textRaw){
@@ -1540,7 +1545,8 @@ function parseCapMemberReport(textRaw){
   const commandStatus = getCommandInsigniaStatusForMember(text, result);
   if(commandStatus){
     result.badges.push('squadron_commander_badge');
-    if(State?.commandInsignia) State.commandInsignia.graduatedCommander = (commandStatus === 'graduated');
+    // Applied by applyCapMemberReportImport, after it clears the previous member's status.
+    result.commandStatus = commandStatus;
     result.notes.push(commandStatus === 'current'
       ? 'Current commander duty found; Command Insignia Pin imported as current commander.'
       : 'Past commander duty of at least one year found; Command Insignia Pin imported as graduated commander.');
@@ -1794,6 +1800,8 @@ function applyCapMemberReportImport(parsed){
   // member's current/graduated commander status cannot carry over.
   if(State.commandInsignia) State.commandInsignia.graduatedCommander = false;
   if(State.badgeSelections?.squadron_commander_badge) State.badgeSelections.squadron_commander_badge.checked = false;
+  // A past commander (one year or more) is a graduated commander: the pin under the nameplate, not over it.
+  if(State.commandInsignia && (parsed.badges || []).includes('squadron_commander_badge')) State.commandInsignia.graduatedCommander = (parsed.commandStatus === 'graduated');
   for(const id of parsed.badges || []){
     if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(!State.badges.includes(id)) State.badges.push(id);
