@@ -10,27 +10,27 @@
  },
  "count": 1730,
  "by_category": {
-  "accessories": 30,
+  "accessories": 33,
   "badges": 1,
   "cloth": 37,
   "cords": 7,
   "devices": 128,
   "enamel": 90,
-  "field": 38,
-  "garments": 105,
-  "insignia": 182,
-  "medals": 76,
+  "field": 97,
+  "garments": 217,
+  "insignia": 188,
+  "medals": 159,
   "mini": 27,
   "nameplates": 11,
-  "patches": 3,
-  "ribbons": 68,
+  "patches": 70,
+  "ribbons": 351,
   "silver": 33,
   "military-badges": 281
  },
  "by_size_source": {
-  "estimated": 502,
-  "measured": 8,
-  "regulation": 284
+  "estimated": 1098,
+  "measured": 63,
+  "regulation": 569
  },
  "duplicate_ids": [],
  "assets": [

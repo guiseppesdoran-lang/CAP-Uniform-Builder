@@ -11,7 +11,9 @@ const day=new Date(2026,9,10,15,30);
 test('a download names the rank, the uniform and the day',()=>{
   assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a'},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
   assert.equal(exportFileName({rank:'Lt Col',uniform:'aviator_blazer'},'json',day),'CAP-Uniform_Lt-Col_Aviator-Blazer_2026-10-10.json');
-  assert.equal(exportFileName({rank:'C/Capt',uniform:'ocp'},'.png',day),'CAP-Uniform_C-Capt_Ocp_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Capt',uniform:'ocp'},'.png',day),'CAP-Uniform_C-Capt_OCP_2026-10-10.png');
+  assert.equal(exportFileName({rank:'Maj',uniform:'abu'},'png',day),'CAP-Uniform_Maj_ABU_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'semi_formal_usaf'},'json',day),'CAP-Uniform_C-Maj_Semi-Formal-USAF_2026-10-10.json');
 });
 
 test('missing parts are left out rather than printed as null or undefined',()=>{

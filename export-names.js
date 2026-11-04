@@ -15,11 +15,13 @@
       .replace(/-{2,}/g,'-')
       .replace(/^-+|-+$/g,'');
   }
+  // The uniforms that are known by their initials: ABU, OCP, and the USAF in Semi-Formal-USAF.
+  const INITIALS=new Set(['abu','ocp','usaf']);
   function uniformWords(uniformId){
     return String(uniformId || '')
       .split('_')
       .filter(Boolean)
-      .map(word=>word.length<=1 ? word.toUpperCase() : word[0].toUpperCase()+word.slice(1))
+      .map(word=>word.length<=1 || INITIALS.has(word.toLowerCase()) ? word.toUpperCase() : word[0].toUpperCase()+word.slice(1))
       .join('-');
   }
   function datePart(date){

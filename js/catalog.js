@@ -1075,7 +1075,13 @@ const BADGE_DISPLAY_NAMES = Object.freeze({
   drug_demand_reduction_basic_badge: 'Drug Demand Reduction Basic Badge',
   drug_demand_reduction_technician_badge: 'Drug Demand Reduction Technician Badge',
   drug_demand_reduction_senior_badge: 'Drug Demand Reduction Senior Badge',
-  drug_demand_reduction_master_badge: 'Drug Demand Reduction Master Badge'
+  drug_demand_reduction_master_badge: 'Drug Demand Reduction Master Badge',
+  // The names data/badge-catalog.js gives them (the pickers, the notes and the shopping list read the same name): CAPR 39-1 10.4.5 calls the basic
+  // one the Ground Team Badge; the specialty track is Recruiting and Retention.
+  ground_team_basic_badge: 'Ground Team Badge',
+  recruiting_retention_technician_badge: 'Recruiting and Retention Technician Badge',
+  recruiting_retention_senior_badge: 'Recruiting and Retention Senior Badge',
+  recruiting_retention_master_badge: 'Recruiting and Retention Master Badge'
 });
 function getBadgeDisplayName(id){
   return BADGE_DISPLAY_NAMES[id]

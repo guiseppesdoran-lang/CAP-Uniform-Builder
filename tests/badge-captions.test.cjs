@@ -60,3 +60,17 @@ test('the top pilot badge is named Command Pilot, and a member report may say Co
   assert.match(importer,/\(\?:Master\|Command\)\\s\+Pilot\\s\+Badge/);
   assert.match(names,/cdi_senior_badge: 'Character Development Instructor Senior Badge'/);
 });
+
+test('a badge has one name: the page\'s display names agree with the badge catalog\'s (Ground Team Badge, CAPR 39-1 10.4.5; Recruiting and Retention)', () => {
+  const vm=require('node:vm');
+  const { loadPageScripts }=require('./helpers/page-scripts.cjs');
+  const { context }=loadPageScripts();
+  const ev=src=>vm.runInContext(src,context);
+  const B=require('../data/badge-catalog.js').BADGES;
+  const differ=[];
+  for(const [id,b] of Object.entries(B)){
+    const shown=ev(`getBadgeDisplayName(${JSON.stringify(id)})`);
+    if(b.name && shown!==b.name) differ.push(`${id}: page "${shown}", catalog "${b.name}"`);
+  }
+  assert.deepEqual(differ,[]);
+});
