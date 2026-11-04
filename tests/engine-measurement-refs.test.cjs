@@ -23,7 +23,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.
 const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
 const MATRIX = R.matrix().builds;
 const WORDS = new Set(['centered', 'halfway', 'halfway to elbow', 'midway', 'even with', 'parallel with', 'level with', 'on the seam', 'under the board']);
-const named = name => { const b = MATRIX.find(x => x.name === name); assert.ok(b, name + ' is in the standard matrix'); return JSON.parse(JSON.stringify(b.build)); };
+const named = name => { if(typeof name === 'object') return JSON.parse(JSON.stringify(name)); const b = MATRIX.find(x => x.name === name); assert.ok(b, name + ' is in the standard matrix'); return JSON.parse(JSON.stringify(b.build)); };
 const compose = build => P.composeUniform(R.makeBuild(build), store);
 
 // The overlay's own layout of a scene, as the page and the harness lay it out.
@@ -34,6 +34,10 @@ function laidOut(scene){
 
 // A build with its fields changed: opt merged, the rest replaced.
 const variant = (name, extra) => { const b = named(name); return Object.assign(b, extra, extra.opt ? { opt: Object.assign({}, b.opt, extra.opt) } : {}); };
+
+const WING = { id: 'nywg_patch', kind: 'general', slot: 'L_SHOULDER', label: 'New York Wing' };
+const UNIT = { id: 'TN-330_ocp_patch', kind: 'unit', label: 'TN-330 Sequoyah Cadet Squadron' };
+const ARCHER = { id: 'archer_ocp_patch', kind: 'general', slot: 'R_SHOULDER', label: 'ARCHER' };
 
 // [uniform, what, build (a matrix name or a build), the paragraphs the engine applies on it]. A paragraph is quoted as the engine's table cites it.
 const RULES = [
@@ -54,7 +58,12 @@ const RULES = [
   ['ocp', 'OCP, captain: square, cap grade, badges', 'ocp-male-senior-Capt', ['7.1.1.2.1, 7.1.1.2.2', '7.1.1.8, ICL 25-02 6.2.11.1', '7.1.1.3.1.1-2', '7.1.1.3.1.2']],
   ['flight_suit', 'flight duty uniform, captain', 'flight_suit-male-senior-Capt', ['8.2.3.2', '8.2.4.4', '6.2.2.2.1-3']],
   ['corporate_flight_suit', 'Corporate Flight Duty Uniform, colonel', 'corporate_flight_suit-male-senior-Col', ['8.3.3.2', '8.3.4.4']],
-  ['polo', 'polo, captain', 'polo-male-senior-Capt', ['5.3.2.1.1']]
+  ['polo', 'polo, captain', 'polo-male-senior-Capt', ['5.3.2.1.1']],
+  // The flag and AUX the OCP sheet draws, and the patches under them (LIVE13, Ethan 3 November 2026: "aux and flag should have measurements"): the ICL states no inch for them, so the
+  // callouts say centered / top of the field and show the drawn distance.
+  ['ocp', 'OCP, flag, AUX, unit patch and HHQ patch', variant('ocp-male-senior-Capt', { patchRefs: [UNIT, WING] }), ['7.1.1.4.1.1', '7.1.1.4.2', '7.1.1.4.1.2', '7.1.1.4.2.1']],
+  ['abu', 'ABU, wing patch 1/2 in below the shoulder seam', variant('abu-male-senior-Capt', { patchRefs: [WING] }), ['5.1.1.1.2.2']],
+  ['corporate_field', 'Corporate Field Uniform, wing patch 1/2 in below the shoulder seam', variant('corporate_field-male-senior-Capt', { patchRefs: [WING] }), ['5.2.1.1.2.2-3']]
 ];
 
 for(const [uniform, what, name, refs] of RULES){
@@ -94,4 +103,69 @@ test('every callout the engine draws on every build of the standard matrix names
     for(const m of scene.layers.filter(l => l.type === 'measure')) if(!m.ref) bare.push(`${b.name}: ${m.label} ${(m.opts && (m.opts.caption || (m.opts.callout && m.opts.callout.caption))) || ''}`);
   }
   assert.deepEqual(bare, [], 'callouts with no paragraph:\n' + bare.join('\n'));
+});
+
+// The pill's text for a callout, as laid out.
+const textOf = d => (d.callout ? (d.callout.caption && d.callout.caption.lines || []) : (d.label && d.label.caption || [])).join(' ').replace(/\s+/g, ' ');
+// A label like '4.95 in' (an inch value the sheet draws that is not a whole eighth), as a number.
+const inches = label => Number(label.replace(/\s*in$/, ''));
+
+test('OCP: the flag and AUX each carry a centered line across the Velcro and the distance from the shoulder seam to their top, whether or not a patch is worn (7.1.1.4.1.1, 7.1.1.4.2)', async () => {
+  for(const build of [named('ocp-male-senior-Capt'), variant('ocp-female-senior-Capt', { patchRefs: [UNIT, WING] })]){
+    const scene = await compose(build);
+    const sheet = await store.load('garment-ocp-coat-abu-cut');
+    const ms = scene.layers.filter(l => l.type === 'measure');
+    const drawn = laidOut(scene);
+    for(const [side, drawnName, what, ref] of [['right', 'patch_flag_right', 'flag', '7.1.1.4.1.1'], ['left', 'patch_aux_left', 'AUX', '7.1.1.4.2']]){
+      const d = core.landmarkBounds(sheet, drawnName), v = core.landmarkBounds(sheet, 'sleeve_flap_velcro_' + side);
+      const centred = ms.find(m => m.ref === ref && m.label === 'centered');
+      assert.ok(centred, `${what}: a centered line`);
+      assert.ok(Math.abs(centred.to.x - centred.from.x - v.w) < 1e-6, `${what}: the line spans the Velcro's width`);
+      assert.ok(Math.abs(centred.opts.mid.x - (d.x + d.w / 2)) < 1e-6 && Math.abs((centred.from.x + centred.to.x) / 2 - centred.opts.mid.x) < 1e-6, `${what}: centred on the Velcro, its tick at the ${what}'s centre`);
+      const seam = ms.find(m => m.ref === ref && /seam/.test(m.opts.caption));
+      assert.ok(seam, `${what}: the shoulder seam to its top`);
+      assert.ok(Math.abs(seam.to.y - d.y) < 1e-6 && seam.from.y < d.y - 3, `${what}: from the sleeve's top edge (${seam.from.y.toFixed(3)}) to the ${what}'s top (${d.y.toFixed(3)})`);
+      assert.ok(Math.abs(inches(seam.label) - (seam.to.y - seam.from.y)) < 0.006, `${what}: the label ${seam.label} is the drawn distance ${(seam.to.y - seam.from.y).toFixed(3)} in`);
+      for(const m of [centred, seam]){
+        const l = drawn.find(x => x.key === m.key);
+        assert.ok(l && /7\.1\.1\.4/.test(textOf(l)) && textOf(l).includes('CAPR 39-1'), `${what}: ${m.opts.caption} quotes ${ref} (${l && textOf(l)})`);
+      }
+    }
+  }
+});
+
+test('OCP: the gap from the flag to the unit patch and from AUX to the HHQ patch is shown as drawn, with the paragraph (7.1.1.4.1.2, 7.1.1.4.2.1)', async () => {
+  const scene = await compose(variant('ocp-male-senior-Capt', { patchRefs: [UNIT, WING] }));
+  const sheet = await store.load('garment-ocp-coat-abu-cut');
+  const ms = scene.layers.filter(l => l.type === 'measure');
+  for(const [key, drawnName, ref, patchId] of [['flag', 'patch_flag_right', '7.1.1.4.1.2', 'TN-330_ocp_patch'], ['AUX', 'patch_aux_left', '7.1.1.4.2.1', 'nywg_patch']]){
+    const d = core.landmarkBounds(sheet, drawnName);
+    const patch = scene.layers.find(l => l.role === 'patch' && l.key.startsWith(`patch:${patchId}:`) && !/:edge$/.test(l.key));
+    const m = ms.find(x => x.ref === ref && x.opts.caption.startsWith(key));
+    assert.ok(patch && m, `${key}: the gap measure`);
+    assert.ok(Math.abs(m.from.y - (d.y + d.h)) < 1e-6 && Math.abs(m.to.y - patch.y) < 1e-6, `${key}: from the ${key}'s bottom to the patch's top`);
+    assert.ok(Math.abs(inches(m.label) - (patch.y - d.y - d.h)) < 0.006, `${key}: ${m.label}`);
+  }
+  // The unit patch also keeps its centered line (7.1.1.4.1.2).
+  assert.ok(ms.some(m => m.ref === '7.1.1.4.1.2' && m.label === 'centered'), 'the unit patch is centered under the flag');
+});
+
+test('flight duty uniform and CFDU: the flag is 1/2 in below the shoulder seam as a true inch rule (8.2.4.4, 8.3.4.4); 8.2.4.5 and 8.3.4.5 give the right sleeve patch no distance', async () => {
+  for(const [name, ref] of [['flight_suit-male-senior-Capt', '8.2.4.4'], ['corporate_flight_suit-male-senior-Col', '8.3.4.4']]){
+    const scene = await compose(variant(name, { patchRefs: [UNIT] }));
+    const ms = scene.layers.filter(l => l.type === 'measure' && l.ref === ref);
+    assert.equal(ms.length, 1, `${name}: one flag callout`);
+    const len = ms[0].to.y - ms[0].from.y;
+    assert.ok(Math.abs(len - 0.5) < 1e-6 && ms[0].label === '½ in', `${name}: ${ms[0].label}, ${len} in`);
+    assert.ok(!scene.layers.some(l => l.type === 'measure' && /^8\.[23]\.4\.5/.test(l.ref || '')), `${name}: no distance is invented for the right sleeve patch`);
+  }
+});
+
+test('ABU and CFU: the sleeve patches hang 1/2 in below the shoulder seam (5.1.1.1.2.2, 5.2.1.1.2.2-3), on the CFU right sleeve too', async () => {
+  for(const [name, ref, patches] of [['abu-male-senior-Capt', '5.1.1.1.2.2', [WING]], ['corporate_field-male-senior-Capt', '5.2.1.1.2.2-3', [WING, ARCHER]]]){
+    const scene = await compose(variant(name, { patchRefs: patches }));
+    const ms = scene.layers.filter(l => l.type === 'measure' && l.ref === ref);
+    assert.equal(ms.length, patches.length, `${name}: a callout for each sleeve patch`);
+    for(const m of ms) assert.ok(Math.abs(m.to.y - m.from.y - 0.5) < 1e-6 && m.label === '½ in', `${name}: ${m.label}`);
+  }
 });

@@ -240,7 +240,11 @@
     [/^ocp$/, /grade square on the chest/, /./, '7.1.1.2.1, 7.1.1.2.2'],
     [/^ocp$/, /command pin on the loop/, /./, '7.1.1.3.1.6'],
     [/^ocp$/, /name tape to command pin|command pin to/, /./, '7.1.1.3.1.6'],
-    [/^ocp$/, /patch on the sleeve pocket/, /./, '7.1.1.4.1.2'],
+    [/^ocp$/, /patch on the sleeve pocket|flag to the unit patch/, /./, '7.1.1.4.1.2'],
+    // The ICL states no inch for the flag, AUX or the HHQ patch: these say what the paragraph says (centered, top of the field) and show the drawn distance
+    [/^ocp$/, /flag centered|seam to the flag/, /./, '7.1.1.4.1.1'],
+    [/^ocp$/, /AUX centered|seam to the AUX/, /./, '7.1.1.4.2'],
+    [/^ocp$/, /AUX to the HHQ patch/, /./, '7.1.1.4.2.1'],
     [/^ocp$/, /visor to/, /./, '7.1.1.8, ICL 25-02 6.2.11.1'],
     [/^abu$|^corporate_field$/, /visor to/, /./, 'ICL 25-02 6.2.11.1'],
     // Flight duty uniforms

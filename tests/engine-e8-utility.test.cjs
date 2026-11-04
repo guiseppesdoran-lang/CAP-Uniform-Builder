@@ -259,7 +259,8 @@ test('OCP overlay: no chest square measures, badges and the cap, the unit patch 
   // no patch widths; the unit patch 'centered in the middle of the Velcro area under the U.S. Flag', the HHQ patch has no stated place
   assert.equal(ms.filter(m => m.label === '3½ in').length, 0, 'no patch width');
   const flag = await rectOf('patch_flag_right'), velcro = await rectOf('sleeve_flap_velcro_right');
-  const centred = ms.filter(m => m.label === 'centered' && m.opts.caption !== 'grade square on the chest');
+  // The flag and AUX the sheet draws carry their own 'centered' lines (7.1.1.4.1.1, 7.1.1.4.2; Ethan, 3 November 2026: "aux and flag should have measurements").
+  const centred = ms.filter(m => m.label === 'centered' && m.opts.caption !== 'grade square on the chest' && !/^(flag|AUX) centered/.test(m.opts.caption));
   assert.equal(centred.length, 1, 'the unit patch only (the grade square has its own, centered between the pockets)');
   assert.ok(Math.abs(centred[0].from.y - (flag.y + flag.h)) < 1e-6 && Math.abs(centred[0].to.y - (velcro.y + velcro.h)) < 1e-6, 'from the flag to the bottom of the Velcro');
   const unit = scene.layers.find(l => /^patch:sequoyah[^:]*:R_SHOULDER:0$/.test(l.key));

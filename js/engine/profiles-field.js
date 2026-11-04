@@ -648,29 +648,61 @@
     return flat;
   }
 
-  // Overlay: where the patch sits on the Velcro. The unit patch is 'centered in the middle of the Velcro area under the
-  // U.S. Flag' (7.1.1.4.1.2): one 'centered' line from the flag's bottom edge to the Velcro's, its tick at the patch's
-  // centre, drawn beside the sleeve (the patch covers the straight line). The patch's own width is not shown: it is the
-  // size the patch is bought in. The HHQ patch under AUX has no stated position (7.1.1.4.2.1), so nothing is measured for
-  // it. The labels keep off the flag or AUX patch the sheet draws, flat and seen edge-on (D26).
+  // Overlay: the flag, AUX and the patches under them on the OCP sleeves' Velcro (7.1.1.4).
+  // The ICL states one inch for none of these: the flag is "centered at the top of Velcro" (7.1.1.4.1.1), the unit patch "centered in the middle of the
+  // Velcro area under the U.S. Flag" (7.1.1.4.1.2), AUX "affixed in the top position" (7.1.1.4.2), the HHQ patch simply the other of the two (7.1.1.4.2.1).
+  // Ethan, 3 November 2026: "aux and flag should have measurements". So each callout says what the paragraph says (centered, top of the field) and
+  // shows the distance the sheet draws, in inches, as information: the flag (and AUX) on a 'centered' line across the Velcro with its tick at the
+  // piece's centre, the shoulder seam to the piece's top, and the gap from the piece to the patch under it. The unit patch's own 'centered' line
+  // (flag bottom to the Velcro's bottom, tick at the patch's centre) is measureSleevePatch's. The labels keep off the flag or AUX patch the sheet
+  // draws, flat and seen edge-on (D26).
+  //
+  // The shoulder seam of the flat sleeve view is its top edge: the sheet has no anchor for it (the ABU and CFU sheets do, seam_top_center_*), so it is
+  // OCP_SEAM_ABOVE_POCKET inches above the sleeve pocket's top: the flat sleeve's crown is the quadratic arch of the sheet's sleeve-view path, its top
+  // at local y 0.70 in under the art group's origin (13.043 in down the sheet), the pocket's top at 18.068 in (landmark sleeve_pocket_*), 4.325 in
+  // lower; the arch is level there at the sleeve's centre line, where the flag and AUX stand.
+  const OCP_SEAM_ABOVE_POCKET = 4.325;
+  function sleeveSeamY(ctx, side){
+    const a = ctx.point('seam_top_center_' + side);
+    if(a) return a.y;
+    const pocket = ctx.rect('sleeve_pocket_' + side);
+    return pocket ? pocket.y - OCP_SEAM_ABOVE_POCKET : null;
+  }
+
+  // The flag (right sleeve) or AUX (left sleeve) the sheet draws at the top of the Velcro: kept clear, and measured. Every OCP has both, worn or not.
+  function measureSleeveTop(ctx, side){
+    const velcroName = 'sleeve_flap_velcro_' + side, drawnName = side === 'right' ? 'patch_flag_right' : 'patch_aux_left';
+    const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
+    if(!v || !d) return;
+    ctx.keepClear(d, drawnName);
+    const f = edgeFrame(ctx, side);
+    if(f){
+      const e = f.map(d), R = f.tilt * Math.PI / 180, c = Math.abs(Math.cos(R)), s = Math.abs(Math.sin(R));
+      const w = e.w * c + e.h * s, h = e.w * s + e.h * c;
+      ctx.keepClear({ x: e.center.x - w / 2, y: e.center.y - h / 2, w, h }, drawnName + '-seen-edge-on');
+    }
+    const flag = side === 'right', what = flag ? 'flag' : 'AUX';
+    const cx = d.x + d.w / 2, inward = flag ? 1 : -1;
+    // 'Centered' across the Velcro: the line spans the Velcro's width, the tick at the piece's centre, drawn above the piece.
+    ctx.measure({ x: v.x, y: d.y }, { x: v.x + v.w, y: d.y }, 'centered', { mid: { x: cx, y: d.y }, side: { x: 0, y: -1 }, offsetOnly: true, caption: `${what} centered on the sleeve's Velcro` });
+    // The shoulder seam to the piece's top: the position at the top of the field, in inches as drawn.
+    const seam = sleeveSeamY(ctx, side);
+    if(seam != null) ctx.measure({ x: cx, y: seam }, { x: cx, y: d.y }, null, { side: { x: -inward, y: 0 }, offsetOnly: true, caption: `shoulder seam to the ${what}` });
+  }
+
+  // The patch under the flag or AUX: the unit patch 'centered' (7.1.1.4.1.2) when `centred`, and the gap from the flag's or AUX's bottom edge to the patch's top
+  // edge, as drawn.
   function measureSleevePatch(ctx, layer, velcroName, drawnName, centred){
     const v = ctx.rect(velcroName), d = ctx.rect(drawnName);
     if(!layer) return;
     const cx = layer.x + layer.w / 2;
-    if(d){
-      ctx.keepClear(d, drawnName);
-      const f = edgeFrame(ctx, velcroName.endsWith('right') ? 'right' : 'left');
-      if(f){
-        const e = f.map(d), R = f.tilt * Math.PI / 180, c = Math.abs(Math.cos(R)), s = Math.abs(Math.sin(R));
-        const w = e.w * c + e.h * s, h = e.w * s + e.h * c;
-        ctx.keepClear({ x: e.center.x - w / 2, y: e.center.y - h / 2, w, h }, drawnName + '-seen-edge-on');
-      }
-    }
+    const right = velcroName.endsWith('right');
+    // The flat sleeve views lie at the sides of the sheet: the line goes beside the patch on the side toward the coat.
+    const inward = right ? 1 : -1;
     if(centred && v && d){
-      // The flat sleeve views lie at the sides of the sheet: the line goes beside the patch on the side toward the coat.
-      const inward = velcroName.endsWith('right') ? 1 : -1;
       ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: v.y + v.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: inward, y: 0 }, offsetOnly: true, caption: 'patch on the sleeve pocket' });
     }
+    if(d && layer.y > d.y + d.h) ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: layer.y }, null, { side: { x: -inward, y: 0 }, offsetOnly: true, caption: right ? 'flag to the unit patch on the sleeve' : 'AUX to the HHQ patch on the sleeve' });
   }
 
   // ---- the CAP Ranger tab ----
@@ -682,7 +714,7 @@
   // sheet (patch-ranger-tab-<grade>, Figure A8-2), drawn at the sheet's size (2.7 x 0.44 in since art aa950a56, measured on the HMRS 2021 uniform
   // poster; it was 5.0 x 0.815, the CAP tape's width) by its centre on the place's centre (the sheet's hhq_patch_left_center, else the middle of the
   // Velcro below AUX), flat on the sleeve view and seen edge-on on the coat like the other sleeve patches. One tab only.
-  // The HHQ place has no stated position, so nothing is measured for it (measureSleevePatch).
+  // The HHQ place has no stated position: only the drawn gap under AUX is shown, as information (measureSleevePatch).
   const isRangerTab = p => !!p && /^patch-ranger-tab-[a-z0-9-]+$/.test(String(p.id || ''));
   async function rangerTabInHhqSlot(ctx, tabs, replaced){
     if(tabs.length > 1) ctx.note('Only one CAP Ranger tab is worn; the first selected is shown');
@@ -723,6 +755,9 @@
     const patches = [...(b.patches || [])];   // a copy: patches are taken out of it as they are placed
     const take = pred => { const i = patches.findIndex(pred); return i < 0 ? null : patches.splice(i, 1)[0]; };
     if(b.uniform === 'ocp'){
+      // The flag and AUX the sheet draws, measured whether or not a patch is worn under them.
+      measureSleeveTop(ctx, 'right');
+      measureSleeveTop(ctx, 'left');
       // Right sleeve: unit patch centred under the drawn flag (7.1.1.4.1.2). Left: HHQ patch under AUX.
       const unit = take(p => p.kind === 'unit' || p.slot === 'R_SHOULDER');
       if(unit){

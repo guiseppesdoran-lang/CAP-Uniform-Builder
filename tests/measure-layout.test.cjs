@@ -58,6 +58,10 @@ const CASES = [
   ['Class B, technical sergeant', build('blues_b', 'senior', 'TSgt', { ribbons: rack, badges: badges(['emergency_services_badge', 'model_rocketry_badge', 'CAPPilot1_FA9D33EA587D8']) })],
   ['Class B long sleeve', build('blues_b', 'senior', 'MSgt', { opt: { headgear: 'auto', sleeve: 'long' }, ribbons: rack })],
   ['OCP', build('ocp', 'senior', 'Maj', { badges: badges(['CAPPilot1_FA9D33EA587D8']) })],
+  // The flag, AUX, the seam distances and the gaps under them (Ethan, 3 November 2026: "aux and flag should have measurements").
+  ['OCP with the unit patch and the HHQ patch', build('ocp', 'senior', 'Maj', { badges: badges(['CAPPilot1_FA9D33EA587D8']), patches: [
+    { id: 'unit-x', href: 'images/patches/nywg_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit', title: 'Unit patch', size: { w: 3, h: 3 } },
+    { id: 'wing-x', href: 'images/patches/nywg_patch.webp', aspect: 1, slot: 'L_SHOULDER', kind: 'general', echelon: 'wing', title: 'Wing patch', size: { w: 3.25, h: 3.095 } }] })],
   ['Corporate Field Uniform with ES patch', build('corporate_field', 'senior', 'Capt', { opt: { headgear: 'auto', esPatch: 'style-1' }, badges: badges(['CAPPilot1_FA9D33EA587D8']) })],
   ['Blazer, women', build('aviator_blazer', 'senior', 'Lt Col', { gender: 'female', badges: badges(['christian_chaplin']) })],
   ['Class A, cadet officer', build('blues_a', 'cadet', 'C/Col', { ribbons: rack, badges: badges(['emergency_services_badge', 'CAPPilot1_FA9D33EA587D8']), cord: 'group' })],
@@ -90,6 +94,21 @@ for(const [name, b] of CASES){
     });
   });
 }
+
+test('the OCP flag and AUX callouts exist, have a distance and lie clear of each other (7.1.1.4.1.1, 7.1.1.4.2, 7.1.1.4.1.2, 7.1.1.4.2.1)', async () => {
+  const { scene, drawings } = await laidOut(CASES.find(c => /^OCP with/.test(c[0]))[1]);
+  const wanted = [/flag centered/, /shoulder seam to the flag/, /flag to the unit patch/, /AUX centered/, /shoulder seam to the AUX/, /AUX to the HHQ patch/];
+  const ms = scene.layers.filter(l => l.type === 'measure');
+  const found = wanted.map(re => {
+    const m = ms.find(x => re.test(x.opts && x.opts.caption || ''));
+    assert.ok(m, `${re} is drawn`);
+    assert.ok(Math.hypot(m.to.x - m.from.x, m.to.y - m.from.y) > 0.04, `${re} has a distance`);
+    const d = drawings.find(x => x.key === m.key);
+    assert.ok(d && d.label.text, `${re} is laid out with a label`);
+    return d;
+  });
+  found.forEach((d, i) => found.slice(i + 1).forEach(e => assert.equal(overlap(d.label, e.label), 0, `${d.label.text} and ${e.label.text} labels apart`)));
+});
 
 test('the lapel insignia seam is measured halfway, below the seam, with its tick on the midpoint', async () => {
   const { scene, drawings } = await laidOut(CASES[0][1]);
