@@ -142,6 +142,24 @@ test('the preview draws with the member\'s choices, and the PNG is that drawing'
   assert.match(ui, /CAPUBMeasure&&CAPUBMeasure\.sync\(\)/);
 });
 
+test('Measurements is one control: the button and an attached caret that opens the panel; no separate Show or hide button', () => {
+  const ui = read('js/workspace-ui.js'), panel = read('js/measure-panel.js'), css = read('styles/app.css');
+  // One group in the toolbar holds both buttons.
+  const groups = ui.match(/setAttribute\('aria-label','Measurements'\)/g) || [];
+  assert.equal(groups.length, 1, 'exactly one Measurements control group is built');
+  assert.match(ui, /measure\.classList\.add\('measureGroup'\)/);
+  assert.match(ui, /id="measureBtn" aria-pressed="false"[^>]*>Measurements<\/button>'\s*\+'<button type="button" class="ghost measureCaret" id="measureListBtn" aria-label="Measurement options"/);
+  assert.match(ui, /id="measureListBtn"[^>]*aria-haspopup="dialog" aria-expanded="false" aria-controls="measurePanel"/);
+  assert.doesNotMatch(ui + panel, /Show or hide'|>Show or hide</, 'there is no button called Show or hide');
+  assert.doesNotMatch(panel, /createElement\('button'\)[\s\S]{0,200}measureListBtn/, 'the panel script does not add a second button');
+  assert.match(css, /\.measureGroup \.measureCaret\{[^}]*margin-left:-1px;/, 'attached to the button');
+  // The panel opens by itself once a session, the first time Measurements is turned on; the Esc key and a click outside close it.
+  assert.match(ui, /if\(State\.showMeasurements && window\.CAPUBMeasure\) CAPUBMeasure\.firstTimeOn\(\)/);
+  assert.match(panel, /function firstTimeOn\(\)\{[\s\S]*sessionStorage[\s\S]*setOpen\(true\)/);
+  assert.equal(typeof MP.firstTimeOn, 'function');
+  assert.equal(MP.KEY_INTRO, 'capubMeasureIntro');
+});
+
 test('the page: the panel button, a sheet on the phone, the script, the Extra step\'s two tabs', () => {
   const html = read('index.html'), css = read('styles/app.css');
   assert.match(html, /<script src="js\/measure-panel\.js[^"]*" defer><\/script>/);

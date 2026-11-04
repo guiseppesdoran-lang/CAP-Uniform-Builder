@@ -1,6 +1,7 @@
 // The measurement panel and the Regulation tab.
 //
-// With Measurements on, a list beside the preview names every distance the build draws, by area, each with a checkbox; one that is unchecked is left
+// The Measurements button has a caret attached to it that opens a list beside the preview (it also opens by itself the first time Measurements is turned
+// on in a session); the list names every distance the build draws, by area, each with a checkbox; one that is unchecked is left
 // off the drawing and the rest are laid out again over the room it frees (measure-layout.js filterScene). The choice is kept per uniform in this browser,
 // with the switch that puts each callout's paragraph back on its pill (off by default). The Regulation tab in the Extra step lists the same distances
 // with their paragraphs, for a member who asks for them. Everything here is plain functions over measure-layout.js's catalogue; the page's glue is at the end.
@@ -13,7 +14,7 @@
 })(typeof self !== 'undefined' ? self : this, function(ML){
   'use strict';
 
-  const KEY_HIDDEN = 'capubMeasureHidden', KEY_REFS = 'capubMeasureRefs';
+  const KEY_HIDDEN = 'capubMeasureHidden', KEY_REFS = 'capubMeasureRefs', KEY_INTRO = 'capubMeasureIntro';
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
   // ---- what is kept: { uniform: [ids hidden] } and the references switch, in the browser's storage (a stored value that does not read is ignored) ----
@@ -97,15 +98,10 @@
     panel.hidden = !open; btn.setAttribute('aria-expanded', String(open));
     if(open) fillPanel();
   }
-  // The button that opens the panel sits beside Measurements and shows only while Measurements is on.
+  // The caret that opens the panel is part of the Measurements control (js/workspace-ui.js builds both buttons as one group); this adds the panel and wires it.
   function ensureControls(){
-    const measureBtn = by('measureBtn'), toolbar = by('previewToolbar'); if(!measureBtn || !toolbar) return false;
-    if(!by('measureListBtn')){
-      const btn = document.createElement('button');
-      btn.type = 'button'; btn.id = 'measureListBtn'; btn.className = 'ghost'; btn.hidden = true;
-      btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', 'measurePanel');
-      btn.title = 'Choose which measurements are drawn'; btn.textContent = 'Show or hide';
-      measureBtn.insertAdjacentElement('afterend', btn);
+    const measureBtn = by('measureBtn'), toolbar = by('previewToolbar'), btn = by('measureListBtn'); if(!measureBtn || !toolbar || !btn) return false;
+    if(!by('measurePanel')){
       const panel = document.createElement('div');
       panel.id = 'measurePanel'; panel.className = 'measurePanel'; panel.hidden = true;
       panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-labelledby', 'measurePanelTitle');
@@ -134,7 +130,7 @@
         if(cat) panel.dataset.shown = panelHtml(cat, hidden, prefs.refs());
         rerender();
       });
-      document.addEventListener('click', e => { const p = by('measurePanel'); if(p && !p.hidden && !p.contains(e.target)) setOpen(false); });
+      document.addEventListener('click', e => { const p = by('measurePanel'); if(p && !p.hidden && !p.contains(e.target) && !(e.target.closest && e.target.closest('.measureGroup'))) setOpen(false); });
       document.addEventListener('keydown', e => { const p = by('measurePanel'); if(e.key === 'Escape' && p && !p.hidden){ setOpen(false); btn.focus(); } });
     }
     return true;
@@ -142,11 +138,16 @@
   // Called whenever the preview has drawn, and when Measurements is toggled.
   function sync(){
     if(!ensureControls()) return;
-    const on = typeof State !== 'undefined' && !!State.showMeasurements;
-    by('measureListBtn').hidden = !on;
-    if(!on && !by('measurePanel').hidden) setOpen(false);
-    else if(!by('measurePanel').hidden) fillPanel();
+    if(!by('measurePanel').hidden) fillPanel();
     fillRegulation();
+  }
+  // The panel opens on its own the first time Measurements is turned on in a session, so a member sees what can be chosen; after that only the caret opens it.
+  let introShown = false;
+  function firstTimeOn(){
+    if(introShown) return;
+    try{ if(sessionStorage.getItem(KEY_INTRO) === '1'){ introShown = true; return; } sessionStorage.setItem(KEY_INTRO, '1'); }catch(e){ /* no session storage: once per page load */ }
+    introShown = true;
+    if(ensureControls()) setOpen(true);
   }
 
   // The Extra step's two tabs: the existing content and the Regulation list.
@@ -176,5 +177,5 @@
   }
 
   const renderOptions = uniform => renderOptionsFor(prefs, uniform);
-  return { createPrefs, panelHtml, regulationHtml, renderOptions, renderOptionsFor, esc, sync, start, KEY_HIDDEN, KEY_REFS };
+  return { createPrefs, panelHtml, regulationHtml, renderOptions, renderOptionsFor, esc, sync, start, firstTimeOn, KEY_HIDDEN, KEY_REFS, KEY_INTRO };
 });

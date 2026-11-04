@@ -352,7 +352,10 @@
     // Measurements: the regulation distances drawn on the uniform, for copying onto a real one.
     const measure=document.createElement('div');
     measure.className='previewToolCard'; measure.setAttribute('role','group'); measure.setAttribute('aria-label','Measurements');
-    measure.innerHTML='<button type="button" class="ghost" id="measureBtn" aria-pressed="false" title="Show the regulation distances on the uniform">Measurements</button>';
+    // One control: the button switches the overlay, the caret attached to it opens the list of what is drawn (js/measure-panel.js).
+    measure.classList.add('measureGroup');
+    measure.innerHTML='<button type="button" class="ghost" id="measureBtn" aria-pressed="false" title="Show the regulation distances on the uniform">Measurements</button>'
+      +'<button type="button" class="ghost measureCaret" id="measureListBtn" aria-label="Measurement options" title="Choose which measurements are drawn" aria-haspopup="dialog" aria-expanded="false" aria-controls="measurePanel"><span class="measureCaretIcon" aria-hidden="true"></span></button>';
     safeBy('previewTools').appendChild(measure);
     // On a phone the preview opens over the page; this closes it (hidden everywhere else, styles/app.css).
     const closeCard=document.createElement('div');
@@ -364,6 +367,7 @@
       State.showMeasurements=!State.showMeasurements;
       safeBy('measureBtn').setAttribute('aria-pressed', String(!!State.showMeasurements));
       window.CAPUBMeasure&&CAPUBMeasure.sync();
+      if(State.showMeasurements && window.CAPUBMeasure) CAPUBMeasure.firstTimeOn();
       window.CAPUBUniformView&&CAPUBUniformView.scheduleRender();
     };
   }
