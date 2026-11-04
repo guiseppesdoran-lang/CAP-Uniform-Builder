@@ -142,8 +142,9 @@
     abu:{families:LEFT_BREAST_FAMILIES,fieldArt:true,ref:'5.1.1.1.2.4, 5.1.1.1.2.5'},
     // 5.2.1.1.2.6: two aviation or occupational badges (CAP only); 5.2.1.1.2.9: the command insignia pin.
     corporate_field:{families:LEFT_BREAST_FAMILIES,fieldArt:true,ref:'5.2.1.1.2.6, 5.2.1.1.2.9'},
-    // 7.1.1.3.1: up to four occupational, qualification and/or skill badges, light silver on dark blue; precedence 7.1.1.3.1.5-6 (chaplain,
-    // aviation first, CAP badges before the military group 2); 7.1.1.3.1.6 (ICL 26-14; was .7): the commander's insignia. Ethan's B6: only the genuine field set.
+    // 7.1.1.3.1: up to four occupational, qualification and/or skill badges, light silver on dark blue; 7.1.1.3.1.5 the order of precedence (.5.1 group 1,
+    // the mandatory badges: CAP chaplain, aviation, then the military aeronautical badges; .5.2 group 2, the optional ones, CAP badges before the military
+    // ones); 7.1.1.3.1.6 (ICL 26-14; was .7) the CAP Commander's Insignia, which does not count towards the four. Ethan's B6: only the genuine field set.
     ocp:{families:LEFT_BREAST_FAMILIES,fieldArt:true,ref:'7.1.1.3.1, 7.1.1.3.1.5, 7.1.1.3.1.6'},
     // 8.2.4.1: the name tag takes one CAP aeronautical rating, CAP occupational badges (the chaplain badge is one) or the current
     // commander's Command Insignia Pin; no specialty track or service badge.
