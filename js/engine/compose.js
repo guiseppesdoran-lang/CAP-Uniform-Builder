@@ -410,7 +410,10 @@
       });
     }
     const box = core.unionBounds(rack.placements.map(p => ({ x: p.x, y: p.y, w: p.w, h: p.h })));
-    return Object.assign(box, { mode: rack.mode, rows: rack.rows.map(r => r.length) });
+    // The highest row (row 0 of the layout): the first badge is centred over it, not over the whole rack (CAPR 39-1 4.1.5.2.2.4.1,
+    // 4.1.9.4.4.1, 4.2.6.2.7.1). A shortened top row lies off the rack's centre line.
+    const topRow = core.unionBounds(rack.placements.filter(p => p.row === 0).map(p => ({ x: p.x, y: p.y, w: p.w, h: p.h })));
+    return Object.assign(box, { mode: rack.mode, rows: rack.rows.map(r => r.length), topRow });
   }
 
   // Miniature medals: medal body under a vertical ribbon drape (devices turned vertical with
@@ -578,7 +581,10 @@
         ctx.layers.push({ type: 'asset', id: d.id, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 90, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
       });
     }
-    return core.unionBounds(out.placements.map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: p.row === lowRow ? drawnBottom + shift - p.y : MINI_DRAPE.h + (hang.get(p.item) || 0) })));
+    const miniBox = core.unionBounds(out.placements.map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: p.row === lowRow ? drawnBottom + shift - p.y : MINI_DRAPE.h + (hang.get(p.item) || 0) })));
+    // The highest row of medals (row 0): the first badge is centred over it, ½ inch above (4.1.1.1.3.1, 4.1.2.1.2.5).
+    miniBox.topRow = core.unionBounds(out.placements.filter(p => p.row === 0).map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: MINI_DRAPE.h })));
+    return miniBox;
   }
 
   // ---- The scene ---------------------------------------------------------------------------------

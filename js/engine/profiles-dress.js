@@ -194,6 +194,9 @@
     return top;
   }
 
+  // The first badge is centred over the highest row of ribbons or medals (the row `topRow` of a rack box), over the rack's own line when nothing is worn.
+  const olpCenterX = (box, fallback) => box && box.topRow ? box.topRow.x + box.topRow.w / 2 : fallback;
+
   // Badges side by side, `gap` apart, the pair centred on x, bottoms on `bottomY`. `order` is
   // viewer's left first.
   // `out`, when given, receives the row's box (out.box).
@@ -1727,7 +1730,7 @@
     }
 
     const geo = {
-      olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' },
+      olp: { x: olpCenterX(rack, rest.x), baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' },
       nametag: tagRect,
       // Men: 1 1/2 in below the welt top and below the nametag, edge to edge: the top of the badge
       // (4.1.5.2.2.4.2, Figure 4.6), like every other distance between pieces.
@@ -1836,7 +1839,7 @@
     // Ribbons (optional): men on the left pocket top, women with the bottom even with the nametag.
     const rest = ctx.point('ribbon_row_bottom_center');
     const rack = await ribbonRack(ctx, b, rest, { perRow: 3 });
-    const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
+    const geo = { nametag: tag, olp: { x: olpCenterX(rack, rest.x), baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
     if(!female){
       const pocketL = ctx.rect('pocket_left'), pocketR = ctx.rect('pocket_right');
       const flapY = pocketL.y + 2.02;
@@ -2057,7 +2060,7 @@
     }
     // Aviation / occupational: 1/2 in above the medals; none worn: centred on the medal spot.
     if(plan.olp.length){
-      if(box) await stackBadges(ctx, plan.olp, center.x, box.y, 0.5, 'medals');
+      if(box) await stackBadges(ctx, plan.olp, olpCenterX(box, center.x), box.y, 0.5, 'medals');
       else{
         const first = await putBadge(ctx, plan.olp[0], center, 'center');
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], center.x, first.y, 0.5, 'badge');
@@ -2181,7 +2184,7 @@
     const rest = { x: ctx.point('ribbon_slot_center').x, y: slot.y + slot.h };
     const rack = await ribbonRack(ctx, b, rest, { perRow: 3 });
 
-    const geo = { nametag: tag, olp: { x: rest.x, baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
+    const geo = { nametag: tag, olp: { x: olpCenterX(rack, rest.x), baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
     if(V.overblouse && !rack) geo.olp.gap = 0; // parallel with the nameplate
     // LIVE13 E99. Overblouse: the nametag against the first exposed button (4.2.6.2.6.1.2), the bottom row of ribbons even with the nameplate's
     // bottom (4.2.6.2.6.2.2). Aviator shirt: nametag and ribbons each 'centered, resting on, but not over the edge of' their pocket (4.2.5.1.2.1-2,
