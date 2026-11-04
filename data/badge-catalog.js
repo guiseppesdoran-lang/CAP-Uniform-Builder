@@ -150,6 +150,20 @@
   // Precedence of the families on the wearer's left (4.1.5.2.2.4.1): chaplain highest, then CAP
   // aviation, then occupational.
   const LEFT_STACK_ORDER = ['chaplain', 'aviation', 'occupational'];
+  // Which of two occupational badges is the higher one on the wearer's left. CAPR 39-1 (4.1.5.2.2.4.1, 4.1.9.4.4.1, 4.1.11.1.1.2.3.1,
+  // 4.1.12.2.5.1, 4.2.5.1.3.1, 4.2.6.2.7.1) says only that the chaplain badge is worn in the highest position and that two occupational badges
+  // are the same size; it states no order between them, and 7.1.1.3.1.5.2 puts all CAP occupational badges in one group. The order below is a
+  // project decision, highest first: Incident Commander, Ground Team, then the emergency medical and medical badges, then the others as listed.
+  const OCCUPATIONAL_PRECEDENCE = [
+    ['incident_commander_1_badge', 'incident_commander_2_badge', 'basic_incident_commander_badge'],
+    ['master_ground_team_badge', 'senior_ground_team_badge', 'ground_team_basic_badge'],
+    ['emt_paramedic', 'emt_intermediate', 'emt_basic_badge', 'medical_officer', 'nurse_officer']
+  ];
+  // 0 for the highest tier; a badge in none of them (and any badge of another family) ranks after every tier, so a stable sort keeps those as listed.
+  function occupationalRank(id){
+    const i = OCCUPATIONAL_PRECEDENCE.findIndex(tier => tier.includes(id));
+    return i < 0 ? OCCUPATIONAL_PRECEDENCE.length : i;
+  }
   function get(id){ return BADGES[id] || null; }
   function family(id){ const b = BADGES[id]; return b ? b.family : null; }
   // A badge earned in levels (STEM, Cyber, NRA): [key, label, dress art], lowest first.
@@ -187,5 +201,5 @@
     if(membership === 'senior') return !cadetOnlySet.has(id);
     return true;
   }
-  return { BADGES, LEFT_STACK_ORDER, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
+  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
 });

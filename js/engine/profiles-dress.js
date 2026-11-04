@@ -63,8 +63,11 @@
   function planBadges(ctx, b, opts){
     const set = H.badgeSet(ctx, b, 'dress');
     const o = opts || {};
+    // Two occupational badges: the higher one by the order of data/badge-catalog.js (the regulation gives none), first in `occ`. The stack below is
+    // listed bottom first, so the lower badge comes first there and the higher one is worn highest of the two.
+    const occ = [...set.occupational].sort((a, b) => B.occupationalRank(a.id) - B.occupationalRank(b.id));
     // Over the left pocket, bottom first: occupational under aviation, chaplain always on top.
-    const olpAll = [...set.occupational, ...set.aviation, ...set.chaplain];
+    const olpAll = [...occ].reverse().concat(set.aviation, set.chaplain);
     const military = (b.militaryBadges || []).map(m => ({ id: m.id, variant: m.variant, href: m.href, title: m.title, family: 'military', military: true }));
     let olp = olpAll;
     if(military.length){
@@ -76,7 +79,7 @@
       ctx.note('At most two aviation and occupational badges are worn over the left pocket; the rest are not shown');
       // Keep the chaplain badge and the aviation badge first; the member's choice (build.badgeChoices['over-pocket'], one entry per place) goes there.
       // The two worn are stacked in the regulation's order whichever places they were picked for.
-      const byRule = [...set.chaplain, ...set.aviation, ...military, ...set.occupational];
+      const byRule = [...set.chaplain, ...set.aviation, ...military, ...occ];
       const keep = C.chooseBadges(ctx, 'over-pocket', 'Over the left pocket', byRule,
         [{ key: 'first', label: 'First badge' }, { key: 'second', label: 'Second badge' }],
         { note: 'The two are stacked in the order the regulation sets.' });
