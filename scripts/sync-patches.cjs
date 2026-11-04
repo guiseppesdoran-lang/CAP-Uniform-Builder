@@ -13,12 +13,16 @@
 // patch has no vector, { img } with its picture from WAITING. js/catalog.js puts these on PATCH_META, so the art of a patch lands by running this
 // script: its row turns into the SVG and its raster goes off the list in tests/no-raster-allowlist.json.
 //
-// data/unit-patch-art.js: one row per unit emblem, {charter, patchId, label, echelon, w, h, asset, img}, for every patch spec of the art tree that
+// data/unit-patch-art.js: one row per unit emblem, {charter, patchId, label, echelon, kind, w, h, asset, img}, for every patch spec of the art tree that
 // carries a `charter` (the unit's charter number, e.g. "MAR-DC-026"; a wing's or region's emblem carries the code of its headquarters,
 // "PCR-CA-001" or "PCR-PCR-001"). The spec's other keys: `label` (or `unit_label`, `unit_name`) names the unit, `echelon` is one of national, region,
 // wing, group, squadron (otherwise read from the charter number: -000 and -001 are a headquarters). js/catalog.js builds the unit patch table
 // (charter -> patch), the patch catalog entries and each unit's higher headquarters patch from these rows, so a new unit emblem needs no code:
-// its spec carries the charter and this script is run. patchId is `unit_` and the charter in lower case with underscores.
+// its spec carries the charter and this script is run. patchId is `unit_` and the charter in lower case with underscores. A spec with
+// `kind: "activity"` and no charter (an NCSA activity patch) gets a row too, charter null, kind "activity", patchId <name>_patch.
+// The art is the SVG, or, for official digital artwork ingested as given, the PNG the spec's `file` names (copied byte for byte by
+// scripts/sync-artwork.cjs; tests/no-raster.test.cjs allows a PNG only where the spec's data_source says it is official artwork as given).
+// A spec's own charter beats the default list below. patch-pcr-ca-110 is left out (UNIT_SKIP).
 // A few emblems made before the specs carried a charter have theirs in UNIT_SPEC_DEFAULTS below; a spec's own value wins.
 // Idempotent. The master stamps index.html afterwards; this script never touches it.
 'use strict';
@@ -90,35 +94,60 @@ function echelonOfCharter(code){
 const unitPatchId = charter => 'unit_' + charter.toLowerCase().replace(/[^a-z0-9]+/g, '_');
 const humanize = asset => asset.replace(/^patch-/, '').split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-// Rows for every spec of the art tree that has a charter, sorted by charter. Warnings name a charter two specs claim (the first by name wins).
-function unitRows(){
-  const base = path.join(artRoot(), 'patches'), rows = [], warnings = [];
+// The art file of a patch spec: the `file` it names, else <id>.svg, else <id>.png (official digital artwork is ingested as a PNG, as given).
+function artFileOf(dir, asset, s){
+  for(const name of [s.file, asset + '.svg', asset + '.png']) if(typeof name === 'string' && /\.(svg|png)$/.test(name) && !name.includes('/') && fs.existsSync(path.join(dir, name))) return name;
+  return null;
+}
+
+// Specs the sync leaves out although they carry a charter, with the reason.
+const UNIT_SKIP = { 'patch-pcr-ca-110': 'its SVG fails the art validator' };
+
+// Rows for every spec of the art tree that has a charter, or is an activity patch (`kind: "activity"`, no charter) that no catalog id maps to,
+// charter rows sorted by charter, then the activity rows by id. A spec's own charter beats the default list, so the New York Wing's official
+// artwork (patch-new-york-wing-brand-tools) wins NER-NY-001 over the older geometric patch-new-york-wing. Warnings name a charter two specs claim
+// (the first by name wins) and the specs left out.
+function unitRows(catalogAssets = new Set()){
+  const base = path.join(artRoot(), 'patches'), rows = [], warnings = [], pending = [];
   if(!fs.existsSync(base)) return { rows, warnings };
   for(const asset of fs.readdirSync(base).sort()){
-    const specFile = path.join(base, asset, asset + '.spec.json');
-    if(!fs.existsSync(specFile) || !fs.existsSync(path.join(base, asset, asset + '.svg'))) continue;
+    const dir = path.join(base, asset), specFile = path.join(dir, asset + '.spec.json');
+    if(!fs.existsSync(specFile)) continue;
     let s;
     try{ s = JSON.parse(fs.readFileSync(specFile, 'utf8')); }catch(e){ continue; }
     const dflt = UNIT_SPEC_DEFAULTS[asset] || {};
-    const charter = String(s.charter || dflt.charter || '').trim().toUpperCase();
-    if(!/^[A-Z0-9]{2,4}(-[A-Z0-9]{2,4}){1,2}$/.test(charter)) continue;
+    const activity = String(s.kind || '').toLowerCase() === 'activity' && !s.charter;
+    const charter = activity ? '' : String(s.charter || dflt.charter || '').trim().toUpperCase();
+    if(activity ? catalogAssets.has(asset) : !/^[A-Z0-9]{2,4}(-[A-Z0-9]{2,4}){1,2}$/.test(charter)) continue;
+    if(UNIT_SKIP[asset]){ warnings.push(`${asset}: left out, ${UNIT_SKIP[asset]}`); continue; }
+    const file = artFileOf(dir, asset, s);
     const w = s.size_in ? s.size_in.w : s.width_in, h = s.size_in ? s.size_in.h : s.height_in;
-    if(!(w > 0 && h > 0)) continue;
+    if(!file || !(w > 0 && h > 0)) continue;
     let echelon = String(s.echelon || '').trim().toLowerCase();
     if(echelon === 'flight') echelon = 'squadron';
-    if(!ECHELONS.includes(echelon)) echelon = echelonOfCharter(charter);
+    if(!ECHELONS.includes(echelon)) echelon = activity ? 'activity' : echelonOfCharter(charter);
     const label = String(s.label || s.unit_label || s.unit_name || dflt.label || humanize(asset)).trim();
-    if(rows.some(r => r.charter === charter)){ warnings.push(`${charter}: ${asset} repeats a charter already taken, left out`); continue; }
-    rows.push({ charter, patchId: unitPatchId(charter), label, echelon, w, h, asset, img: `patches/${asset}/${asset}.svg` });
+    const row = activity
+      ? { charter: null, patchId: asset.replace(/^patch-/, '').replace(/[^a-z0-9]+/g, '_') + '_patch', label, echelon: 'activity', kind: 'activity', w, h, asset, img: `patches/${asset}/${file}` }
+      : { charter, patchId: unitPatchId(charter), label, echelon, kind: 'unit', w, h, asset, img: `patches/${asset}/${file}` };
+    // Explicit charters first; a charter that only the default list gives waits for them.
+    (activity || s.charter ? rows : pending).push(row);
   }
-  rows.sort((a, b) => a.charter < b.charter ? -1 : a.charter > b.charter ? 1 : 0);
-  return { rows, warnings };
+  for(const row of pending) if(!rows.some(r => r.charter === row.charter)) rows.push(row);
+  const out = [];
+  for(const row of rows){
+    if(row.charter && out.some(r => r.charter === row.charter)){ warnings.push(`${row.charter}: ${row.asset} repeats a charter already taken, left out`); continue; }
+    out.push(row);
+  }
+  const key = r => r.charter ? '0' + r.charter : '1' + r.patchId;
+  out.sort((a, b) => key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0);
+  return { rows: out, warnings };
 }
 
 function unitText(rows){
   const lines = rows.map(r => `    ${JSON.stringify(r)}`);
   return `// Generated by scripts/sync-patches.cjs from the artwork tree's patch specs that carry a charter. Do not edit by hand.
-// One row per unit emblem: { charter, patchId, label, echelon, w, h, asset, img }. js/catalog.js builds the unit patch table from it.
+// One row per unit emblem or activity patch: { charter, patchId, label, echelon, kind, w, h, asset, img }. js/catalog.js builds the unit patch table from it.
 (function(root){
   const rows = [
 ${lines.join(',\n')}
@@ -137,7 +166,7 @@ function plan(){
     else if(WAITING[id]){ rows[id] = { img: WAITING[id] }; pending.push(id); }
     else none.push(id);
   }
-  const units = unitRows();
+  const units = unitRows(new Set(patchIds().map(assetFor)));
   for(const r of units.rows) copy.add(r.asset);
   return { rows, copy: [...copy].sort(), pending, none, units: units.rows, warnings: units.warnings };
 }
@@ -161,7 +190,9 @@ if(require.main === module){
   const p = plan();
   const say = out => {
     out(`${p.copy.length} assets for ${Object.keys(p.rows).length - p.pending.length} patches; on a raster until the art lands: ${p.pending.join(', ') || 'none'}; no picture: ${p.none.join(', ') || 'none'}`);
-    out(`${p.units.length} unit emblems with a charter: ${p.units.map(r => r.charter).join(', ') || 'none'}`);
+    const unitOnly = p.units.filter(r => r.kind !== 'activity'), activity = p.units.filter(r => r.kind === 'activity');
+    out(`${unitOnly.length} unit emblems with a charter: ${unitOnly.map(r => r.charter).join(', ') || 'none'}`);
+    out(`${activity.length} activity patches: ${activity.map(r => r.patchId).join(', ') || 'none'}`);
     for(const w of p.warnings) out(`warning: ${w}`);
   };
   const behind = file => !fs.existsSync(file.path) || fs.readFileSync(file.path, 'utf8') !== file.text;

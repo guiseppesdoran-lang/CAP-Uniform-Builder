@@ -212,7 +212,9 @@ test('the patches present today: the New York Wing and Northeast Region emblems 
   assert.equal(real(`getUnitPatchIdForCharter('NER-NER-001')`), 'unit_ner_ner_001');
   assert.equal(real(`getUnitHhqPatchId('NER-NY-001')`), 'unit_ner_ner_001');
   assert.equal(real(`getUnitHhqPatchId('NER-NY-390')`), 'unit_ner_ny_001');
-  assert.equal(real(`PATCH_META.unit_ner_ny_001.img`), 'patches/patch-new-york-wing/patch-new-york-wing.svg');
+  assert.equal(real(`PATCH_META.unit_ner_ny_001.img`), 'patches/patch-new-york-wing-brand-tools/patch-new-york-wing-brand-tools.png', 'the official artwork wins the charter over the older geometric patch');
+  assert.equal(real(`PATCH_META.unit_ner_ner_001.img`), 'patches/patch-northeast-region/patch-northeast-region.svg');
+  assert.equal(real(`PATCH_META.nywg_patch.img`), 'patches/patch-new-york-wing/patch-new-york-wing.svg', 'the general patch list keeps the geometric wing patch');
   assert.equal(real(`getUnitPatchIdForCharter('SER-TN-185')`), 'tn185_ocp_patch');
   assert.equal(real(`getUnitPatchIdForCharter('TN-185')`), 'tn185_ocp_patch');
   assert.equal(real(`getUnitPatchIdForCharter('SER-TN-330')`), 'tn330_ocp_patch');
@@ -221,6 +223,58 @@ test('the patches present today: the New York Wing and Northeast Region emblems 
     State.unitPatchCharter = 'NER-NY-001'; const a = CAPUBUniformView.buildFromState().patches.map(p => [p.id, p.kind, p.slot, p.asset]);
     State.unitPatchCharter = 'SER-TN-185'; const b = CAPUBUniformView.buildFromState().patches.map(p => [p.id, p.kind, p.slot, p.asset]);
     State.unitPatchCharter = ''; return { a, b }; })()`);
-  assert.deepEqual(p.a, [['unit_ner_ny_001', 'unit', 'R_SHOULDER', 'patch-new-york-wing'], ['unit_ner_ner_001', 'hhq', 'L_SHOULDER', 'patch-northeast-region']]);
+  assert.deepEqual(p.a, [['unit_ner_ny_001', 'unit', 'R_SHOULDER', null], ['unit_ner_ner_001', 'hhq', 'L_SHOULDER', 'patch-northeast-region']]);
   assert.deepEqual(p.b, [['tn185_ocp_patch', 'unit', 'R_SHOULDER', 'patch-music-city-composite-squadron']]);
+});
+
+// Official digital artwork as given: a PNG at the size its spec gives, and the activity patches of the art tree.
+const png = (charter, label, echelon, asset, w, h) => Object.assign(row(charter, label, echelon, asset), { kind: 'unit', w, h, img: `patches/${asset}/${asset}.png` });
+const ACTIVITY = { charter: null, patchId: 'ncsa_mots_patch', label: 'Medical Orientation & Training School', echelon: 'activity', kind: 'activity', w: 3, h: 3.05, asset: 'patch-ncsa-mots', img: 'patches/patch-ncsa-mots/patch-ncsa-mots.png' };
+const ACTIVITY2 = Object.assign({}, ACTIVITY, { patchId: 'ncsa_national_geospatial_academy_patch', label: 'National Geospatial Academy', h: 3.384, asset: 'patch-ncsa-national-geospatial-academy', img: 'patches/patch-ncsa-national-geospatial-academy/patch-ncsa-national-geospatial-academy.png' });
+const RASTER_ROWS = [png('MAR-DC-026', 'Arlington Composite Squadron', 'squadron', 'patch-mar-dc-026', 3, 2.968), png('MAR-DC-001', 'National Capital Wing', 'wing', 'patch-national-capital-wing', 3.25, 4.317), ACTIVITY, ACTIVITY2];
+const evp = load(RASTER_ROWS);
+
+test('a unit row on a PNG is a picture at its spec\'s size, not an engine asset; the page hands the engine href, aspect and size', () => {
+  const meta = evp(`PATCH_META.unit_mar_dc_026`);
+  assert.equal(meta.img, 'patches/patch-mar-dc-026/patch-mar-dc-026.png');
+  assert.equal(meta.asset, null);
+  assert.deepEqual(meta.sizeIn, { w: 3, h: 2.968 });
+  assert.deepEqual([meta.w, meta.h], [3, 2.968]);
+  const p = evp(`(function(){ State.uniform = 'ocp'; State.membership = 'senior'; State.gender = 'male'; State.rank = 'Capt'; State.patches = []; State.unitPatchCharter = 'MAR-DC-026';
+    return CAPUBUniformView.buildFromState().patches.map(p => ({ id: p.id, kind: p.kind, slot: p.slot, asset: p.asset, href: p.href, aspect: p.aspect, size: p.size })); })()`);
+  assert.equal(p.length, 2);
+  assert.deepEqual([p[0].id, p[0].asset, p[0].size], ['unit_mar_dc_026', null, { w: 3, h: 2.968 }]);
+  assert.match(p[0].href, /patches\/patch-mar-dc-026\/patch-mar-dc-026\.png/);
+  assert.ok(Math.abs(p[0].aspect - 3 / 2.968) < 1e-9);
+  assert.deepEqual([p[1].id, p[1].kind, p[1].slot, p[1].size], ['unit_mar_dc_001', 'hhq', 'L_SHOULDER', { w: 3.25, h: 4.317 }]);
+  evp(`State.unitPatchCharter = ''`);
+});
+
+test('an activity patch is a catalog entry of the NCSA kind: in the patch list, authorized and placed as NESA is, with the Worn picker where it has several places', () => {
+  for(const id of ['ncsa_mots_patch', 'ncsa_national_geospatial_academy_patch']){
+    const meta = evp(`PATCH_META[${j(id)}]`);
+    assert.equal(meta.kind, 'activity');
+    assert.ok(!('echelon' in meta));
+    assert.equal(meta.asset, null);
+    assert.ok(evp(`patchList.includes(${j(id)})`), `${id} is in the patch list`);
+    assert.ok(evp(`NCSA_PATCH_IDS.has(${j(id)})`));
+    assert.deepEqual(meta.authorizedUniforms, evp('PATCH_META.nesa_patch.authorizedUniforms'));
+    for(const u of ALL){
+      assert.equal(evp(`isPatchAuthorizedForUniform(${j(id)}, ${j(u)}, 'cadet')`), evp(`isPatchAuthorizedForUniform('nesa_patch', ${j(u)}, 'cadet')`), `${id} on ${u}`);
+      assert.deepEqual(evp(`getPatchPlaces(${j(id)}, ${j(u)}).map(p => p.slot)`), evp(`getPatchPlaces('nesa_patch', ${j(u)}).map(p => p.slot)`), `${id} places on ${u}`);
+    }
+    evp(`State.uniform = 'corporate_field'; State.membership = 'cadet'`);
+    const tile = evp(`patchTileHtml(${j(id)})`);
+    assert.match(tile, /<select class="ptPlace"/, 'the Worn picker');
+    assert.match(tile, /patches\/patch-ncsa-[a-z-]+\.png|\.png/);
+    assert.doesNotMatch(tile.replace(/<img[^>]*>/, ''), /ncsa_|patch-ncsa|\.png/, 'no id or file name in the text');
+  }
+  assert.equal(evp(`getUnitPatchIdForCharter('NCSA')`), null, 'an activity patch has no charter');
+});
+
+test('an activity patch is drawn where the member puts it, on the picture at its spec\'s size', () => {
+  const placed = evp(`(function(){ State.uniform = 'corporate_field'; State.membership = 'cadet'; State.gender = 'male'; State.rank = 'C/Capt'; State.unitPatchCharter = '';
+    State.patches = ['ncsa_mots_patch']; return CAPUBUniformView.buildFromState().patches.map(p => ({ id: p.id, kind: p.kind, slot: p.slot, asset: p.asset, size: p.size })); })()`);
+  assert.deepEqual(placed, [{ id: 'ncsa_mots_patch', kind: 'general', slot: 'R_SHOULDER', asset: null, size: { w: 3, h: 3.05 } }]);
+  evp(`State.patches = []`);
 });

@@ -552,7 +552,7 @@
     cap.x = rect.x + (rect.w - cap.w) / 2;
     cap.y = rect.y + (rect.h - cap.h) / 2;
     if(patch.asset) return C.fitIn(ctx, patch.asset, cap, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
-    return C.fitRaster(ctx, patch.href, cap, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' });
+    return C.fitRaster(ctx, patch.href, cap, patch.aspect || 1, { z: Z.patch, role: 'patch', key: `patch:${patch.id}:${slot}:0`, title: patch.title, className: 'patch' }, patch.size);
   }
 
   // The OCP sheet draws each shoulder pocket twice: flat (the sleeve views at the sides) and seen
@@ -773,7 +773,9 @@
         }else{
           let w = box.w, h = w / (patch.aspect || 1);
           if(h > 3.5){ h = 3.5; w = h * (patch.aspect || 1); }
-          layer = C.fitRaster(ctx, patch.href, { x: box.x, y: zone.y, w: box.w, h }, patch.aspect || 1, opts);
+          // A patch with its size from the spec is drawn at that size (capped at 3.5 in), its top on the zone's top.
+          if(patch.size && patch.size.w > 0 && patch.size.h > 0){ const k = Math.min(1, 3.5 / patch.size.w, 3.5 / patch.size.h); w = patch.size.w * k; h = patch.size.h * k; }
+          layer = C.fitRaster(ctx, patch.href, { x: box.x + (box.w - w) / 2, y: zone.y, w, h }, patch.aspect || 1, opts);
         }
         // And edge-on on the figure's arm.
         const e = layer && armEdgeOf(ctx, side, layer);

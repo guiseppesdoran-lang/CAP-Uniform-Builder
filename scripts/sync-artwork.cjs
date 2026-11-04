@@ -26,17 +26,21 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 let failed = 0;
 for(const id of ids){
   const entry = manifest.assets.find(a => a.id === id);
-  const svg = findFile(src, id + '.svg');
+  // Vector art is <id>.svg; official digital artwork taken as given is <id>.png, copied byte for byte.
+  const svg = findFile(src, id + '.svg') || findFile(src, id + '.png');
   const spec = findFile(src, id + '.spec.json');
   if(!svg || !spec){ console.error(`${id}: no source .svg/.spec.json under ${src}`); failed++; continue; }
-  const rel = entry ? entry.path : path.relative(src, svg).split(path.sep).join('/');
+  let rel = entry ? entry.path : path.relative(src, svg).split(path.sep).join('/');
+  // An id that had an SVG and now has the official PNG (or the reverse) takes the path of the file it has.
+  if(entry && path.extname(rel) !== path.extname(svg)) rel = rel.replace(/\.[a-z]+$/, path.extname(svg));
   const dest = path.join(images, rel);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.copyFileSync(svg, dest);
-  fs.copyFileSync(spec, dest.replace(/\.svg$/, '.spec.json'));
+  fs.copyFileSync(spec, dest.replace(/\.(svg|png)$/, '.spec.json'));
   const s = JSON.parse(fs.readFileSync(spec, 'utf8'));
   // Two spec dialects exist: size_in {w,h} (garments, badges) and width_in/height_in (enamel, traced patches).
   if(!s.size_in) s.size_in = { w: s.width_in, h: s.height_in };
+  if(entry) entry.path = rel;
   const next = Object.assign(entry || { id, path: rel, category: rel.split('/')[0], has_spec: true, issues: [] }, {
     w_in: s.size_in.w, h_in: s.size_in.h,
     size_source: s.size_source, basis: s.size_basis || (entry && entry.basis),

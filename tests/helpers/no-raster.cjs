@@ -6,7 +6,9 @@ const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..', '..');
 const allowlist = () => JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'no-raster-allowlist.json'), 'utf8'));
-const onList = (list, rel) => Object.keys(list).some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry);
+const { isOfficialRaster } = require('../../scripts/lib-official-art.cjs');
+// On the allowlist, or official digital artwork as given (a patch's PNG whose spec says so: scripts/lib-official-art.cjs).
+const onList = (list, rel) => Object.keys(list).some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry) || isOfficialRaster(ROOT, rel);
 const RASTER = /\.(png|jpe?g|webp|gif)$/i;
 
 // The rasters of a list of paths (relative to the site's root) that are not on the allowlist.

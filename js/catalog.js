@@ -1245,7 +1245,9 @@ const CAP_UNIT_OPTIONS = window.CAP_UNIT_OPTIONS || [];
 // The unit emblems: one row per art-tree patch spec that carries a charter (data/unit-patch-art.js, written by scripts/sync-patches.cjs):
 // { charter, patchId, label, echelon, w, h, asset, img }. A new unit emblem is a spec with its charter and a sync, no code. The charter table
 // below, the patch catalog entries and each unit's higher headquarters patch are all built from these rows.
-const UNIT_PATCH_ART = Array.isArray(window.CAPUBUnitPatchArt) ? window.CAPUBUnitPatchArt : [];
+// Rows of kind "activity" (an NCSA activity patch: no charter) are catalog entries below the NCSA patches' constant; the unit rows have charters.
+const UNIT_PATCH_ALL_ROWS = Array.isArray(window.CAPUBUnitPatchArt) ? window.CAPUBUnitPatchArt : [];
+const UNIT_PATCH_ART = UNIT_PATCH_ALL_ROWS.filter(row => row.kind !== 'activity' && row.charter);
 const UNIT_PATCH_ROW_BY_CHARTER = Object.fromEntries(UNIT_PATCH_ART.map(row => [row.charter, row]));
 
 // Charter number -> the patch it wears. The hand entry is the fallback (SER-TN-185 before its spec carried a charter); a row wins over it.
@@ -1271,8 +1273,13 @@ for(const row of UNIT_PATCH_ART){
     label: row.label, kind: 'unit', unitEchelon: row.echelon, charter: row.charter,
     slotHint: 'R_SHOULDER', w: 70, h: 70,
     authorizedUniforms: UNIT_PATCH_UNIFORMS_BY_ECHELON[row.echelon] || UNIT_PATCH_UNIFORMS_BY_ECHELON.squadron.slice(),
-    img: row.img, asset: row.asset
-  }, hq ? { echelon: row.echelon } : {});
+  }, unitPatchPicture(row), hq ? { echelon: row.echelon } : {});
+}
+// How a row's picture reaches the page: an SVG is an engine asset (drawn at its spec's size); official digital artwork taken as given is a PNG, drawn
+// as a picture at the size its spec gives (`sizeIn`, inches; w and h carry the proportions).
+function unitPatchPicture(row){
+  if(/\.svg$/i.test(row.img)) return { img: row.img, asset: row.asset };
+  return { img: row.img, asset: null, w: row.w, h: row.h, sizeIn: { w: row.w, h: row.h } };
 }
 
 // The patch of a charter: its own, or, for a wing's or region's headquarters squadron (-000), the headquarters' (-001), which wears the same emblem.
@@ -1567,6 +1574,17 @@ const PATCH_UNIFORM_WORDS = Object.freeze({
 // The member picks among the places a patch may take (State.patchPlacements); the first place is the regulation's primary one.
 // The National Cadet Special Activity patches (10.9.14): the ones the CFU's right sleeve takes (5.2.1.1.2.3, Attachment 4 "NCSA Patches").
 const NCSA_PATCH_IDS = new Set(['pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch','engineering_academy_patch','nfa_patch','cla_patch','nbb_patch','honor_guard_academy_patch']);
+// The activity patches of the art tree (kind "activity": the NCSA schools and academies without a catalog entry of their own) are NCSA patches like NESA
+// and PJOC: the same uniforms, the same places (the CFU's right sleeve, the pockets, the flight suit's sleeve), the Worn picker where there are several.
+for(const row of UNIT_PATCH_ALL_ROWS){
+  if(row.kind !== 'activity' || PATCH_META[row.patchId]) continue;
+  PATCH_META[row.patchId] = Object.assign({
+    label: row.label, kind: 'activity', slotHint: 'L_SHOULDER', w: 70, h: 70,
+    authorizedUniforms: ['abu','ocp','flight_suit','corporate_field','cfdu']
+  }, unitPatchPicture(row));
+  NCSA_PATCH_IDS.add(row.patchId);
+  if(!patchList.includes(row.patchId)) patchList.push(row.patchId);
+}
 const PATCH_PLACES = Object.freeze({
   abu: [
     { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.1.1.1.2.2', takes: p => !!p.echelon },

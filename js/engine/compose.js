@@ -235,10 +235,11 @@
     return ctx.place(id, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(rect), scale }, opts));
   }
 
-  function fitRaster(ctx, href, rect, aspect, opts){
-    // aspect = w / h of the image; fit inside rect, centred.
+  function fitRaster(ctx, href, rect, aspect, opts, size){
+    // aspect = w / h of the image; fit inside rect, centred. `size` ({ w, h } in inches, a patch whose spec gives its size): drawn at that size, shrunk only where it would pass the rect.
     let w = rect.w, h = w / aspect;
-    if(h > rect.h){ h = rect.h; w = h * aspect; }
+    if(size && size.w > 0 && size.h > 0){ const k = Math.min(1, rect.w / size.w, rect.h / size.h); w = size.w * k; h = size.h * k; }
+    else if(h > rect.h){ h = rect.h; w = h * aspect; }
     return ctx.raster(Object.assign({ href, x: rect.x + (rect.w - w) / 2, y: rect.y + (rect.h - h) / 2, w, h }, opts));
   }
 

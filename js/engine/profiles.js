@@ -857,7 +857,7 @@
     if(slot && patch){
       const opts = { z: Z.patch, role: 'patch', key: 'patch:' + patch.id + ':RS:0', title: patch.title };
       if(patch.asset) await C.fitIn(ctx, patch.asset, slot, opts);
-      else C.fitRaster(ctx, patch.href, slot, patch.aspect || 1, opts);
+      else C.fitRaster(ctx, patch.href, slot, patch.aspect || 1, opts, patch.size);
       if((b.patches || []).length > 1) ctx.note('Only one patch is worn on the flight suit sleeve (CAPR 39-1, 8.2.4.5)');
     }
   }

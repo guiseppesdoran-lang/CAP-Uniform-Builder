@@ -175,7 +175,7 @@
       // it, else the primary one); the engine draws it there (profiles-field.js fieldPatches, profiles.js flightPatches).
       const chosen = typeof getPatchSlot === 'function' ? getPatchSlot(resolved, State.uniform) : null;
       const slot = kind === 'hhq' ? 'L_SHOULDER' : (chosen || (kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER')));
-      out.push({ id: resolved, title: meta.label || resolved.replace(/_/g, ' '), asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot, kind, echelon: meta.echelon || null });
+      out.push({ id: resolved, title: meta.label || resolved.replace(/_/g, ' '), asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), size: meta.sizeIn || null, slot, kind, echelon: meta.echelon || null });
     };
     const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
     if(unit) add(unit, 'unit');

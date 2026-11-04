@@ -59,7 +59,9 @@ const skipFile = name => name.startsWith('.') || name.endsWith('.md') || name.en
 const NOT_SHIPPED = [];
 const RASTER = /\.(png|jpe?g|webp|gif)$/i;
 const allowed = Object.keys(JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'no-raster-allowlist.json'), 'utf8')));
-const onAllowlist = rel => allowed.some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry);
+const { isOfficialRaster } = require('./lib-official-art.cjs');
+// Official digital artwork taken as given (a patch's PNG whose spec says so) is published without being listed.
+const onAllowlist = rel => allowed.some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry) || isOfficialRaster(ROOT, rel);
 function walk(dir, out) {
   for (const entry of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
     const rel = path.posix.join(dir.split(path.sep).join('/'), entry.name);

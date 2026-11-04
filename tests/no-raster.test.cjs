@@ -42,3 +42,39 @@ test('every allowlist entry has a one-line reason and still names something', ()
     assert.ok(fs.existsSync(path.join(ROOT, entry)), `${entry} is gone: take it off the list`);
   }
 });
+
+// Official digital artwork taken as given (unit and activity patch emblems): the PNG beside a spec whose data_source says so, read from the spec.
+test('every patch PNG the build publishes is official artwork as given: its spec says so, and the allowlist names none of it', () => {
+  const { isOfficialRaster, PROVENANCE } = require('../scripts/lib-official-art.cjs');
+  const list = Object.keys(allowlist());
+  const pngs = published().filter(f => /^images\/patches\/.*\.png$/.test(f));
+  assert.ok(pngs.length >= 30, `${pngs.length} patch PNGs`);
+  for(const rel of pngs){
+    const m = /^images\/patches\/([^/]+)\/\1\.png$/.exec(rel);
+    assert.ok(m, `${rel}: a patch PNG is <id>/<id>.png`);
+    const spec = JSON.parse(fs.readFileSync(path.join(ROOT, 'images', 'patches', m[1], m[1] + '.spec.json'), 'utf8'));
+    assert.equal(spec.data_source, PROVENANCE, rel);
+    assert.equal(spec.file, m[1] + '.png', rel);
+    assert.ok(isOfficialRaster(ROOT, rel));
+    assert.ok(!list.some(e => rel.startsWith(e) || e === rel), `${rel} is allowed by its spec, not the list`);
+  }
+});
+
+test('a patch PNG whose spec does not say official artwork as given, or has no spec, is stray', () => {
+  const { isOfficialRaster } = require('../scripts/lib-official-art.cjs');
+  const root = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'official-art-'));
+  const put = (id, spec) => {
+    const dir = path.join(root, 'images', 'patches', id);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, id + '.png'), 'x');
+    if(spec) fs.writeFileSync(path.join(dir, id + '.spec.json'), JSON.stringify(spec));
+  };
+  put('patch-a', { data_source: 'official-digital-artwork-as-given' });
+  put('patch-b', { data_source: 'reference-art-measured' });
+  put('patch-c', null);
+  assert.equal(isOfficialRaster(root, 'images/patches/patch-a/patch-a.png'), true);
+  assert.equal(isOfficialRaster(root, 'images/patches/patch-b/patch-b.png'), false);
+  assert.equal(isOfficialRaster(root, 'images/patches/patch-c/patch-c.png'), false);
+  assert.equal(isOfficialRaster(root, 'images/patches/patch-a/other.png'), false, 'only <id>/<id>.png');
+  assert.equal(isOfficialRaster(root, 'images/badges/patch-a/patch-a.png'), false, 'only under images/patches');
+});
