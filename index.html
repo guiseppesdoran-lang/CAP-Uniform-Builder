@@ -131,6 +131,7 @@
             <div id="plateLineRow">
               <label class="fieldLabel mt-8" for="capubV2PlateLine">Nameplate state, region or national</label>
               <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. New York, Tennessee, etc."/>
+              <div class="hintText">The state or region shown on nameplates.</div>
             </div>
             <label class="fieldNote mt-8">
               <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
@@ -211,32 +212,34 @@
           </div>
         </section>
 
-        <!-- Headgear, sleeves, skirt and the cord: folded, the summary line says what is chosen (js/workspace-ui.js). -->
-        <details class="moreDetails optionsFold" id="uniformOptionsMore" open>
-          <summary id="uniformOptionsSummary">Uniform options</summary>
-        <section id="garmentOptionsPanel" class="panelBlock plainPanel" hidden>
-          <div id="garmentOptions" class="garmentOptions"></div>
-        </section>
-
-        <section id="shoulderCordPanel" class="panelBlock plainPanel">
-          <label class="fieldLabel" for="shoulderCordSelect">Shoulder cord</label>
-          <select id="shoulderCordSelect">
-            <option value="">No shoulder cord</option>
-            <option value="group">Group CAC shoulder cord - green</option>
-            <option value="wing">Wing CAC shoulder cord - red</option>
-            <option value="region">Region CAC shoulder cord - blue</option>
-            <option value="national">National CAC shoulder cord - gold</option>
-            <option value="color_guard">Color Guard shoulder cord - white</option>
-            <option value="honor_guard">Honor Guard shoulder cord - silver</option>
-            <option value="aide_de_camp">Aide-de-camp shoulder cord</option>
-          </select>
-          <div id="shoulderCordNote" class="hintText"></div>
-        </section>
-        </details>
       </div>
 
       <div class="stepGroup" id="stepGroup-items" role="tabpanel" aria-labelledby="stepTab-items" hidden>
         <h3 class="stepGroupTitle" tabindex="-1">Items</h3>
+
+        <!-- UNIFORM OPTIONS: everything built around the chosen uniform (headgear, sleeves, skirt, the cord and the rest of js/garment-options.js).
+             It follows the uniform picked in step 2 and shows only what that uniform has an option for (js/workspace-ui.js syncUniformOptionsCard). -->
+        <section id="uniformOptionsCard" class="panelBlock optionsCard" data-card="options" hidden>
+          <label class="fieldLabel" id="uniformOptionsTitle">Uniform options</label>
+          <section id="garmentOptionsPanel" class="panelBlock plainPanel" hidden>
+            <div id="garmentOptions" class="garmentOptions"></div>
+          </section>
+
+          <section id="shoulderCordPanel" class="panelBlock plainPanel">
+            <label class="fieldLabel" for="shoulderCordSelect">Shoulder cord</label>
+            <select id="shoulderCordSelect">
+              <option value="">No shoulder cord</option>
+              <option value="group">Group CAC shoulder cord - green</option>
+              <option value="wing">Wing CAC shoulder cord - red</option>
+              <option value="region">Region CAC shoulder cord - blue</option>
+              <option value="national">National CAC shoulder cord - gold</option>
+              <option value="color_guard">Color Guard shoulder cord - white</option>
+              <option value="honor_guard">Honor Guard shoulder cord - silver</option>
+              <option value="aide_de_camp">Aide-de-camp shoulder cord</option>
+            </select>
+            <div id="shoulderCordNote" class="hintText"></div>
+          </section>
+        </section>
 
         <!-- RIBBONS: one card, the picker opens in a window (the sidebar gallery div is kept for the modal plumbing and hidden by CSS) -->
         <section id="groupRibbons" class="panelBlock itemCard" data-card="ribbons">

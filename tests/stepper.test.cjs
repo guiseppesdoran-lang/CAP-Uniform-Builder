@@ -66,8 +66,8 @@ test('only the first step is shown before the scripts run; each step is a tabpan
 test('the controls sit in the step they belong to; the cut is part of the profile',()=>{
   const where={
     profile:['memberReportImportPanel','membershipType','rankSetupSelect','jacketSelect','adultCadetCheckbox','cadetFirstSergeantCheckbox','optionalName'],
-    uniform:['uniformList','garmentOptionsPanel','shoulderCordSelect'],
-    items:['expandRibbons','clearRibbons','cadetHighestOnly','removeRibbons','miniMountStyle','ribbonRackColumns','ribbonRowOverridePanel','expandBadges','badgesPlannedNote','expandPatches','unitPatchSearch','unitPatchSelect'],
+    uniform:['uniformList','lockedUniforms'],
+    items:['uniformOptionsCard','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordSelect','shoulderCordNote','expandRibbons','clearRibbons','cadetHighestOnly','removeRibbons','miniMountStyle','ribbonRackColumns','ribbonRowOverridePanel','expandBadges','badgesPlannedNote','expandPatches','unitPatchSearch','unitPatchSelect'],
     export:['capubV2StatusPanel','capubV2Notices','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset']
   };
   for(const [step,ids] of Object.entries(where)) for(const id of ids) assert.equal(stepOf(id),step,`${id} is in step ${step}`);
@@ -95,9 +95,14 @@ test('the uniform cards are one flat two-column grid in the regulation\'s order,
   assert.match(css,/\.uniformGrid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
   assert.match(aside,/<details class="lockedFold" id="lockedUniforms" hidden>/);
-  // Headgear, sleeves, skirt and the cord fold under one line whose text says what is chosen.
-  assert.match(aside,/<details class="moreDetails optionsFold" id="uniformOptionsMore" open>\s*<summary id="uniformOptionsSummary">Uniform options<\/summary>/);
-  assert.match(ui,/summary\.textContent=picks\.length \? `Uniform options: \$\{picks\.join\(' · '\)\}` : 'Uniform options';/);
+  // The Uniform step is only the choice of uniform: headgear, sleeves, skirt and the cord are the Items step's first card, open, above Ribbons.
+  const uniformStep=aside.slice(aside.indexOf('id="stepGroup-uniform"'),aside.indexOf('id="stepGroup-items"'));
+  assert.doesNotMatch(uniformStep,/garmentOption|shoulderCord|uniformOptions/,'no options in the Uniform step');
+  const itemsStep=aside.slice(aside.indexOf('id="stepGroup-items"'),aside.indexOf('id="stepGroup-export"'));
+  assert.ok(itemsStep.indexOf('id="uniformOptionsCard"')>0 && itemsStep.indexOf('id="uniformOptionsCard"')<itemsStep.indexOf('id="groupRibbons"'),'the card is above Ribbons');
+  assert.match(itemsStep,/<section id="uniformOptionsCard" class="panelBlock optionsCard" data-card="options" hidden>\s*<label class="fieldLabel" id="uniformOptionsTitle">Uniform options<\/label>/);
+  assert.doesNotMatch(itemsStep.slice(itemsStep.indexOf('id="uniformOptionsCard"'),itemsStep.indexOf('id="groupRibbons"')),/<details|<summary/,'the card is not a fold');
+  assert.match(ui,/function syncUniformOptionsCard\(\)\{/);
 });
 
 test('the floating command bar and the ?ux=2 flag are gone from every file',()=>{

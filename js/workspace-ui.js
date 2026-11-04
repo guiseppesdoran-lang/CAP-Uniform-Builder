@@ -37,7 +37,9 @@
     // The cut is part of the profile: the preview cannot draw without it.
     const hasProfile=!!(State.membership && State.rank && State.gender);
     const hasUniform=hasProfile && !!State.uniform;
-    const hasItems=!!((State.ribbons&&State.ribbons.length)||(State.badges&&State.badges.length)||(State.patches&&State.patches.length));
+    // Items holds the uniform's own options too (headgear, sleeves, the cord): choosing one counts as working on the step.
+    const hasOptions=!!(State.shoulderCord || (State.garment && Object.keys(State.garment).length));
+    const hasItems=!!((State.ribbons&&State.ribbons.length)||(State.badges&&State.badges.length)||(State.patches&&State.patches.length)||hasOptions);
     const warnings=parseInt((safeBy('capubV2WarningCount')||{}).textContent||'0',10)||0;
     const done={profile:hasProfile,uniform:hasUniform,items:hasUniform&&hasItems,export:hasUniform&&hasItems&&warnings===0};
     const current=STEP_ORDER.find(k=>!done[k]) || 'export';
@@ -477,20 +479,14 @@
     if(typeof State==='undefined') return;
     document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===State.uniform));
   }
-  // Step 2's fold of options (headgear, sleeves, skirt, the cord): hidden when neither panel in it has anything to
-  // show, its summary naming what is chosen so the fold can stay closed.
-  function syncUniformOptionsFold(){
-    const fold=safeBy('uniformOptionsMore'), summary=safeBy('uniformOptionsSummary');
-    if(!fold || !summary) return;
+  // The Uniform options card at the top of the Items step (headgear, sleeves, skirt, the cord and the rest): shown while one of its two panels
+  // has something for the uniform chosen, hidden when neither has. The panels follow the uniform themselves (js/garment-options.js render,
+  // js/patches.js syncShoulderCordControl).
+  function syncUniformOptionsCard(){
+    const card=safeBy('uniformOptionsCard');
+    if(!card) return;
     const shown=['garmentOptionsPanel','shoulderCordPanel'].map(safeBy).filter(p=>p && !p.hidden && !p.classList.contains('hidden'));
-    fold.hidden=!shown.length;
-    const picks=[];
-    shown.forEach(p=>{
-      p.querySelectorAll('select').forEach(sel=>{ const o=sel.options[sel.selectedIndex]; if(o && !sel.closest('.hidden') && !sel.hidden) picks.push(o.textContent.trim()); });
-      p.querySelectorAll('input[type="checkbox"]:checked').forEach(box=>{ const l=box.closest('label'); if(l) picks.push(l.textContent.trim().replace(/\s+/g,' ')); });
-    });
-    summary.textContent=picks.length ? `Uniform options: ${picks.join(' · ')}` : 'Uniform options';
-    summary.title=picks.join(' · ');
+    card.hidden=!shown.length;
   }
   // The uniforms this member may not wear (js/setup.js marks them .locked with the reason) move out of the grid into
   // one fold at the end of the list, and back to their place in the regulation's order when they are allowed again, so
@@ -546,7 +542,7 @@
     label();
     header.appendChild(btn);
   }
-  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsFold(); refitIfStageChanged(); }
+  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsCard(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };

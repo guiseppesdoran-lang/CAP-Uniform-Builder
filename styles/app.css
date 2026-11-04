@@ -436,10 +436,11 @@ header h1::after{
 .moreDetails[open]>summary{margin-bottom:var(--s1)}
 .moreDetails .hintText:first-of-type{margin-top:0}
 /* The fold as a block of its own (step 2: headgear, sleeves, skirt and cord), its summary carrying the choices. */
-.optionsFold{margin-top:0;padding:0 var(--s4);border:1px solid var(--line);border-radius:var(--r-lg)}
-.optionsFold>summary{min-height:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;line-height:44px}
-.optionsFold[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
-.optionsFold .fieldLabel{margin-top:0}
+/* The Uniform options card (Items step): the panels inside it are plain, the card draws the box. */
+.optionsCard>.fieldLabel{margin-top:0}
+.optionsCard .plainPanel{border:0;padding:0;margin:0 0 var(--s3);background:transparent;box-shadow:none}
+.optionsCard .plainPanel:last-child{margin-bottom:0}
+.optionsCard .plainPanel .fieldLabel:first-child{margin-top:0}
 .importCard>button{margin-top:0}
 .importCard .hintText{margin-top:var(--s2)}
 /* The patch submission button (patch-submission.js adds it under Choose patches) reads as secondary. */
