@@ -764,7 +764,8 @@
       // The unit (organizational) patch is worn on the right breast pocket of the ABU and the CFU, not on
       // a sleeve (Attachment 4: Organizational Patch RP; 5.1.1.1.2.3, 5.2.1.1.2.5); the CFU's right
       // sleeve is for a special activity patch (5.2.1.1.2.3).
-      const unit = take(p => p.kind === 'unit');
+      // A wing's, region's or national unit patch has an echelon and is worn on the left sleeve like any other such patch.
+      const unit = take(p => p.kind === 'unit' && !p.echelon);
       // The left sleeve of both uniforms takes one wing, region or national patch and nothing else (5.1.1.1.2.2 ABU,
       // 5.2.1.1.2.2 CFU): only a patch the page marks with its echelon goes there, whatever slot it was filed under.
       // A special activity patch is the CFU's right sleeve (5.2.1.1.2.3); the ABU has no sleeve place for it.

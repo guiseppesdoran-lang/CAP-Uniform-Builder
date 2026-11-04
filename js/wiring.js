@@ -990,7 +990,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     // Badge limits and award wear come from data/uniform-rules.js (CAPR 39-1).
     // Some uniforms count patches against the same limit as badges (ABU, Corporate Field).
     const patchTotal = (State.patches || []).length
-      + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
+      + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0)
+      + ((typeof getUnitHhqPlan === 'function' && getUnitHhqPlan()?.worn) ? 1 : 0);
     // The limit is on badges worn: the ones the drawing puts on this uniform, command insignia excluded (js/badge-rules.js
     // countBadgesWornForLimit). A badge the uniform does not wear (LIVE13 E67), or one selected beyond its positions, is not drawn
     // and does not count (LIVE13 E77; Ethan: "the check thing says the uniform is wrong despite it being right when [you pick every one]
@@ -1047,7 +1048,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const rc = by('capubV2RibbonCount'), bc = by('capubV2BadgeCount'), pc = by('capubV2PatchCount'), wc = by('capubV2WarningCount');
     if(rc) rc.textContent = State.ribbons.length;
     if(bc) bc.textContent = State.badges.length;
-    if(pc) pc.textContent = State.patches.length + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
+    if(pc) pc.textContent = State.patches.length + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0) + ((typeof getUnitHhqPlan === 'function' && getUnitHhqPlan()?.worn) ? 1 : 0);
     if(wc) wc.textContent = notices.filter(n=>n.type !== 'ok').length;
     const ul = by('capubV2Notices');
     if(ul){

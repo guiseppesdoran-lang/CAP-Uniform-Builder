@@ -167,17 +167,21 @@
       const meta = PATCH_META[resolved] || PATCH_META[id];
       if(!meta) return;
       if(typeof isPatchAuthorizedForUniform === 'function' && !isPatchAuthorizedForUniform(resolved)) return;
-      if(out.some(p => p.id === resolved)) return;
+      // The higher headquarters patch is a second copy of a patch only when it is the unit's own (National Headquarters' command patch on both sleeves).
+      if(out.some(p => p.id === resolved && (p.kind === 'hhq') === (kind === 'hhq'))) return;
       if(!meta.img){ patchNotes.push(`${meta.label || resolved} has no full patch artwork yet, so it is not shown`); return; }
       // `asset`: the patch's SVG, drawn at its spec's size. A patch still waiting for its vector hands its picture (`href`, the whole patch: square).
       // `slot`: the place the patch is worn on this uniform (js/catalog.js getPatchSlot: the member's pick among the regulation's places for
       // it, else the primary one); the engine draws it there (profiles-field.js fieldPatches, profiles.js flightPatches).
       const chosen = typeof getPatchSlot === 'function' ? getPatchSlot(resolved, State.uniform) : null;
-      const slot = chosen || (kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER'));
+      const slot = kind === 'hhq' ? 'L_SHOULDER' : (chosen || (kind === 'unit' ? 'R_SHOULDER' : (meta.slotHint || 'L_SHOULDER')));
       out.push({ id: resolved, title: meta.label || resolved.replace(/_/g, ' '), asset: meta.asset || null, href: meta.asset ? null : ASSET(meta.img), aspect: meta.ocpVariant ? 1 : patchAspect(meta), slot, kind, echelon: meta.echelon || null });
     };
     const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
     if(unit) add(unit, 'unit');
+    // The OCP's left sleeve: the unit's higher headquarters patch under AUX, placed for the member unless one was picked in lieu of it (7.1.1.4.2.1, 7.1.1.4.2.2).
+    const hhq = unit && typeof getUnitHhqPlan === 'function' ? getUnitHhqPlan() : null;
+    if(hhq && hhq.worn) add(hhq.patchId, 'hhq');
     (State.patches || []).forEach(id => add(id, 'general'));
     // The ABU breast pocket takes one patch in all (5.1.1.1.2.3): the unit patch when it is worn, so another pocket patch is not drawn; the
     // page says so, since the engine passes over it without a note.
