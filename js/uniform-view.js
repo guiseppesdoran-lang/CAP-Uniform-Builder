@@ -245,6 +245,8 @@
     ribbonNotes = CAPUBUniformRules.allowsRibbons(State.uniform) || mini ? rotcNotes(mini) : [];
     const { badges, command } = buildBadges();
     const text = State.text || {};
+    const fullNames = window.CAPUBGarmentOptions && window.CAPUBGarmentOptions.FULL_NAME;
+    const nameWorn = { first: !fullNames || fullNames.includes(State.uniform) };
     return {
       uniform: State.uniform,
       gender: State.gender === 'female' ? 'female' : 'male',
@@ -253,7 +255,8 @@
       opt: Object.assign(opt, rackOptions(), {
         miniStyle: State.miniMountStyle === 'holding' ? 'holding' : 'mounting'
       }),
-      name: { first: text.firstName || '', last: text.lastName || '', state: text.plateLine || '', show: text.show !== false },
+      // The page asks for every part of the name; the first name goes to the engine only where a regulation prints it (js/garment-options.js FULL_NAME).
+      name: { first: nameWorn.first ? (text.firstName || '') : '', last: text.lastName || '', state: text.plateLine || '', show: text.show !== false },
       ribbons: mini ? [] : ribbons,
       medals: mini ? buildMedals(allRibbons) : [],
       badges,

@@ -129,14 +129,14 @@
             <label class="fieldLabel mt-8" for="capubV2LastName">Last name</label>
             <input id="capubV2LastName" maxlength="18" placeholder="Last name" autocomplete="family-name"/>
             <div id="plateLineRow">
-              <label class="fieldLabel mt-8" for="capubV2PlateLine">Nameplate state, region or national</label>
+              <label class="fieldLabel mt-8" for="capubV2PlateLine">Wing</label>
               <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. New York, Tennessee, etc."/>
               <div class="hintText">The state or region shown on nameplates.</div>
             </div>
             <label class="fieldNote mt-8">
               <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
             </label>
-            <div class="hintText">Name tapes and nametags show the last name; flight suit name tags show the full name.</div>
+            <div class="hintText" id="nameHint">Name tapes and nametags show the last name; flight suit name tags show the full name.</div>
           </section>
         </details>
       </div>

@@ -173,31 +173,31 @@
     return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount(), chaplain: hasChaplainBadge(), o: State.garment || {} };
   }
 
-  // Name fields that only some uniforms use: the first name on the flight suit tags (8.2.4.1), the
-  // state line on the Corporate Service Dress nameplate (4.2.3.1.1.2).
-  // LIVE13 E131 (Doran: "it's not allowing first names... the corporate dress nameplate has first names. The polo lets me enter it"). CAPR 39-1 puts the first name on the
+  // The name block (Profile step) asks for every part up front, for every member: first name, last name and wing (the state or region line). This rule decides only
+  // what the engraving shows. LIVE13 E131 (Doran: "it's not allowing first names... the corporate dress nameplate has first names. The polo lets me enter it"): CAPR 39-1 puts the first name on the
   // polo's embroidered name (5.3.2.1.1) and on the flight duty uniform tags (8.2.4.1, 8.3.4.1: "name (first and last)"); every other nametag, nameplate and tape reads the
-  // last name only: the Corporate Service Dress nameplate is "last name and state, region, or national" (4.2.3.1.1.2, 4.2.4.1.1.2), the aviator shirt's nametag "the last name
-  // engraved" (4.2.5.1.2.1, 4.2.6.2.6.1), the Class A and B tags and the field uniforms' tapes the last name too. So the First name field is offered on those uniforms
-  // only, and the line under the fields says which ones use the full name and what this uniform's name is.
+  // last name only: the aviator shirt's nametag "the last name engraved" (4.2.5.1.2.1, 4.2.6.2.6.1), the Class A and B tags and the field uniforms' tapes the last name too.
   // 2 November 2026 (Ethan, on the corporate nameplate): the Corporate Service Dress nameplate (4.2.3.1.1.2, 4.2.4.1.1.2) takes the first name too, when one is entered, ahead of the last name; its
-  // state, region or national line is unchanged. The aviator shirt's own nametag (4.2.5.1.2.1, 4.2.6.2.6.1) and every other tag and tape stay last name only.
+  // state, region or national line (the wing) is unchanged. Ethan, 3 November 2026: "in the beginning, ask for all parts (first last and wing)", so no field is hidden; the line under the fields says which
+  // uniforms show the first name and what the chosen uniform shows.
   const FULL_NAME = ['polo', ...FLIGHT, 'aviator_blazer'];
   const FULL_NAME_PARA = { polo: '5.3.2.1.1', flight_suit: '8.2.4.1', corporate_flight_suit: '8.3.4.1', aviator_blazer: '4.2.3.1.1.2, 4.2.4.1.1.2' };
   const NAME_PARA = { semi_formal: 'no nametag, 4.2.1, 4.2.2', aviator: '4.2.5.1.2.1, 4.2.6.2.6.1', blues_a: '4.1.5.2.2.2, 4.1.9.4.2', blues_b: '4.1.11.1.1.2.1, 4.1.12.2.4', ocp: '7.1.1.2.3', abu: '5.1.1.1.2.1', corporate_field: '5.2.1.1.2.1', mess_dress: 'no nametag, 4.1.1.1.2.1' };
   function nameHint(u){
-    const all = 'The full name is worn on the polo (5.3.2.1.1), the flight duty uniforms (8.2.4.1, 8.3.4.1) and the Corporate Service Dress nameplate (4.2.3.1.1.2, 4.2.4.1.1.2); every other uniform shows the last name only.';
+    const all = 'The first name is shown on the polo (5.3.2.1.1), the flight duty uniforms (8.2.4.1, 8.3.4.1) and the Corporate Service Dress nameplate (4.2.3.1.1.2, 4.2.4.1.1.2); every other uniform shows the last name only.';
+    if(!u) return all;
     if(FULL_NAME.includes(u)) return `This uniform shows the first and last name (CAPR 39-1 ${FULL_NAME_PARA[u]}). ${all}`;
     return `This uniform shows the last name only${NAME_PARA[u] ? ' (CAPR 39-1 ' + NAME_PARA[u] + ')' : ''}. ${all}`;
   }
+  // The three fields are always there; only the line under them follows the uniform.
   function syncNameFields(){
     const u = State.uniform;
     const first = document.getElementById('firstNameRow');
     const plate = document.getElementById('plateLineRow');
-    if(first) first.hidden = !FULL_NAME.includes(u);
-    if(plate) plate.hidden = u !== 'aviator_blazer';
-    const hint = document.querySelector && document.querySelector('#capubV2TextPanel .hintText');
-    if(hint && u) hint.textContent = nameHint(u);
+    if(first) first.hidden = false;
+    if(plate) plate.hidden = false;
+    const hint = document.getElementById('nameHint');
+    if(hint) hint.textContent = nameHint(u);
   }
 
   let lastSignature = null;

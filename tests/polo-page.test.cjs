@@ -68,7 +68,7 @@ test('a saved setup keeps only values the panel can produce, the duty title clea
 test('the page builds the polo options with defaults and asks for the first name (5.3.2.1.1); a polo badge choice is saved', () => {
   const view = read('js/uniform-view.js');
   assert.match(view, /poloShirt: 'embroidered', poloCut: '', poloName: true, poloMark: 'badge', dutyTitle: ''/);
-  assert.match(read('js/garment-options.js'), /first\.hidden = !FULL_NAME\.includes\(u\)/);
+  assert.match(read('js/garment-options.js'), /if\(first\) first\.hidden = false;/);   // every member is asked for the first name up front; FULL_NAME decides only what is engraved
   assert.match(read('js/garment-options.js'), /const FULL_NAME = \['polo', \.\.\.FLIGHT, 'aviator_blazer'\]/);   // E131: the polo and the flight duty uniforms; 2 November 2026 the Corporate Service Dress nameplate
   assert.match(read('js/wiring.js'), /BADGE_POSITIONS = \['aviation', 'over-pocket', 'service', 'pocket', 'polo', 'tag'\]/);
   assert.match(read('js/badge-rules.js'), /allowsBadgeFamily\(State\.uniform, family\)/);
