@@ -362,7 +362,7 @@ function countMilitaryBadgesWorn(scene){
 }
 // The U.S. military badges selected, where the uniform allows them (the picker's footer counts them with the CAP badges).
 function countMilitaryBadgesSelected(){
-  if(typeof isMilitaryAwardWornOnUniform === 'function' && !isMilitaryAwardWornOnUniform()) return 0;
+  if(!CAPUBUniformRules.drawsMilitaryBadges(State.uniform)) return 0;
   return Object.keys(State.militaryBadges || {}).filter(id => State.militaryBadges[id] && State.militaryBadges[id].selected).length;
 }
 // The badges on the uniform: the CAP badges it wears (command insignia excluded, as the limit counts them) and the U.S. military badges drawn.

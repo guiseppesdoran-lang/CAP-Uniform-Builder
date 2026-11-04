@@ -189,6 +189,10 @@
   // off the Corporate uniforms.
   const USAF_ONLY_AWARD_IDS=Object.freeze(['Air_Force_Organizational_Excellence_Award']);
 
+  // The uniforms that allow U.S. military badges (usafAwards, 5.1.1.1.2.6 for the ABU, 7.1.1.3.1 for the OCP) where the builder does not draw
+  // them yet: the dress profiles are the only ones that do (js/engine/profiles-dress.js planBadges). The picker says so on these.
+  const MILITARY_BADGES_NOT_DRAWN=Object.freeze(['semi_formal','abu','ocp','flight_suit']);
+
   function getUniformRule(uniformId){
     return RULES[String(uniformId || '')] || null;
   }
@@ -225,6 +229,10 @@
   }
   // `isMilitary` is passed by the caller because the military catalog's id prefix lives with
   // the catalog, not here.
+  // Whether the builder draws U.S. military badges on the uniform: it allows them and has a place for them.
+  function drawsMilitaryBadges(uniformId){
+    return isAwardAllowedOnUniform('',uniformId,{isMilitary:true}) && !MILITARY_BADGES_NOT_DRAWN.includes(String(uniformId||''));
+  }
   function isAwardAllowedOnUniform(awardId,uniformId,{isMilitary=false}={}){
     const rule=getUniformRule(uniformId);
     // The AFOEA is not worn on Corporate-style uniforms (11.2.3) or the mess dress (ICL 18-02, 4b);
@@ -328,7 +336,7 @@
   return {
     GROUPS,RULES,NOT_MODELLED,BADGES_NOT_PLACED,USAF_ONLY_AWARD_IDS,
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
-    allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,uniformIdsInGroup,
+    allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,drawsMilitaryBadges,MILITARY_BADGES_NOT_DRAWN,uniformIdsInGroup,
     BADGE_WEAR,ALL_BADGE_FAMILIES,badgeWear,isBadgeWornOn,
     lockedReason,allowsOnlyChaplainBadge,allowsBadgeFamily,allowsGrade,allowsShoulderCord,allowsAideCord,allowsCord,tieRule,badgeLimit,plannedUniformsFor,plannedBadge
   };

@@ -507,6 +507,13 @@ function openGalleryModal(kind){
       militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
       militarySummary.textContent=`U.S. military badges (${militaryBadges.length})`;
       militaryRoot.appendChild(militarySummary);
+      // The ABU, OCP, flight suit and Corporate Semi-Formal allow military badges and the builder does not draw them there yet.
+      if(!CAPUBUniformRules.drawsMilitaryBadges(State.uniform)){
+        const notDrawn=document.createElement('div');
+        notDrawn.className='sub militaryBadgesNotDrawn'; notDrawn.setAttribute('role','note'); notDrawn.style.cssText='margin:6px 0 8px;font-weight:700;';
+        notDrawn.textContent='U.S. military badges are not drawn on this uniform yet. Your choices are kept for the uniforms that show them.';
+        militaryRoot.appendChild(notDrawn);
+      }
       const note=document.createElement('div');
       note.className='sub'; note.style.margin='6px 0 8px';
       note.textContent='Only badge variants with reviewed local artwork are selectable. Missing artwork is never substituted.';
@@ -1016,10 +1023,19 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       && (State.badges || []).some(id => !isBadgeAuthorizedOnCurrentDressUniform(id))){
       addNotice('ok','On the blazer itself only the chaplain badge and, in place of the CAP Crest, the CSAG, Command Council, National Board or NEC badge are worn (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3); the other badges are shown on the aviator shirt drawn beside it.');
     }
-    const unwornAwards = Object.entries(State.ribbonSelections || {})
-      .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;
-    if(unwornAwards){
-      addNotice('warn',`${unwornAwards} selected award${unwornAwards===1?' is':'s are'} not shown: U.S. military awards and the Air Force Organizational Excellence Award are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6 and 11.2.3). ${unwornAwards===1?'It comes':'They come'} back on a USAF-style uniform.`,{id:'expandRibbons',label:'Review ribbons'});
+    // Each award chosen that this uniform does not wear, named, with the paragraph that says so (the choice is kept for the uniforms that wear it).
+    for(const id of Object.entries(State.ribbonSelections || {}).filter(([k,sel])=>sel && sel.checked && !isAwardWornOnUniform(k)).map(([k])=>k)){
+      const name = typeof getRibbonDisplayName === 'function' ? getRibbonDisplayName(id) : pretty(id);
+      const why = (id === 'Air_Force_Organizational_Excellence_Award')
+        ? (State.uniform === 'mess_dress' ? 'is not worn on the Mess Dress (ICL 18-02, 4b)' : 'is not worn on the CAP Corporate uniforms (CAPR 39-1, 11.2.3)')
+        : 'is not worn on this uniform (CAPR 39-1, 11.1.6)';
+      addNotice('warn',`${name} ${why}, so it is not shown. It comes back on a uniform that wears it.`,{id:'expandRibbons',label:'Review ribbons'});
+    }
+    // Patches chosen that the drawing leaves off, each with its reason; badges likewise (the drawing's own words, js/uniform-view.js).
+    for(const c of capubPatchPlan().hidden) addNotice('ok',c.line,{id:'expandPatches',label:'Review patches'});
+    const milChosen = Object.keys(State.militaryBadges || {}).filter(id => State.militaryBadges[id] && State.militaryBadges[id].selected);
+    if(milChosen.length && !CAPUBUniformRules.drawsMilitaryBadges(State.uniform)){
+      addNotice('ok',`${milChosen.length} U.S. military badge${milChosen.length===1?' is':'s are'} chosen but not drawn on this uniform yet. ${milChosen.length===1?'It stays':'They stay'} chosen for the uniforms that show them.`,{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'ocp'){
       // U.S. flag and AUX duty identifier are mandatory but are now baked into the OCP base image.
