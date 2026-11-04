@@ -82,7 +82,8 @@
       const byRule = [...set.chaplain, ...set.aviation, ...military, ...occ];
       const keep = C.chooseBadges(ctx, 'over-pocket', 'Over the left pocket', byRule,
         [{ key: 'first', label: 'First badge' }, { key: 'second', label: 'Second badge' }],
-        { note: 'The two are stacked in the order the regulation sets.' });
+        { note: 'The two are stacked in the order the regulation sets.',
+          why: 'Not more than two aviation and occupational badges are worn' + (H.oneAviationBadgeParagraph && H.oneAviationBadgeParagraph(b) ? ` (CAPR 39-1, ${H.oneAviationBadgeParagraph(b)})` : '') });
       olp = olp.filter(x => keep.includes(x));
     }
     // Everything else goes on the pockets or over the nametag. National Staff is always on the
@@ -91,7 +92,7 @@
     let service = set.service.slice(0, 1);
     if(set.service.length > 1){
       ctx.note('Only one service badge is worn; the others are not shown');
-      service = C.chooseBadges(ctx, 'service', 'Service badge', set.service, [{ key: 'only', label: 'Service badge' }]);
+      service = C.chooseBadges(ctx, 'service', 'Service badge', set.service, [{ key: 'only', label: 'Service badge' }], { why: 'Only one CAP service badge is worn' });
     }
     const others = [...service, ...set.cadetSpecialty, ...set.specialty, ...set.rocketry, ...set.marksmanship];
     const total = olp.length + nationalStaff.length + others.length;
@@ -167,7 +168,7 @@
   const milWidth = item => { const e = milEntry(item); return e ? e.w : 0; };
 
   // Place a dress badge (or a military badge) with a given anchor at a point.
-  async function putBadge(ctx, item, at, anchor, key){
+  async function putBadge(ctx, item, at, anchor, key, where){
     if(item.military){
       const e = milEntry(item);
       if(!e || !ctx.has(e.artId)){ ctx.note(`${item.title || 'This badge'} cannot be shown on this uniform`); return null; }
@@ -175,13 +176,13 @@
       const w = e.w, h = e.h;
       const x = at.x - w / 2;
       const y = anchor === 'bottom_center' ? at.y - h : anchor === 'top_center' ? at.y : at.y - h / 2;
-      const l = await ctx.place(e.artId, { pieceAnchor: 'center', at: { x: x + w / 2, y: y + h / 2 }, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' });
+      const l = await ctx.place(e.artId, { pieceAnchor: 'center', at: { x: x + w / 2, y: y + h / 2 }, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge', place: where });
       if(!l) return null;
       l.sizeSource = e.source; l.artId = e.artId; l.military = true;
       return { x: l.x, y: l.y, w: l.w, h: l.h, layer: l };
     }
     const s = await ctx.spec(item.art);
-    const l = await ctx.place(item.art, { pieceAnchor: anchor, at, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge' });
+    const l = await ctx.place(item.art, { pieceAnchor: anchor, at, z: Z.badge, role: 'badge', key: key || 'badge:' + item.id, title: item.title, className: 'badge', place: where });
     return l ? { x: l.x, y: l.y, w: l.w, h: l.h, spec: s } : null;
   }
 
@@ -279,9 +280,12 @@
         ctx.note(`The ${limit.what || 'ribbons'} are too tall for the badge to sit 1/2 in above them on this cut: it is ${BADGE_EDGE_WORDS[why]}, and lies over the top of the ${limit.what || 'ribbons'} (CAPR 39-1, ${limit.cite})`);
       }
     }
+    // Where each badge of the stack is worn, in words: the first over what it stands on, the others over the badge below.
+    let prev = null;
     for(const it of items){
-      const p = await putBadge(ctx, it, { x, y: y - gap }, 'bottom_center');
-      if(p){ if(!moved) ctx.measure({ x, y }, { x, y: y - gap }, null, { caption: under + ' to badge' }); y = p.y; top = p.y; under = 'badge'; moved = 0; }
+      const where = prev ? `above the ${prev}` : under === 'badge' ? 'above the badge below it' : `above the ${under === 'pocket' ? 'left pocket' : under}`;
+      const p = await putBadge(ctx, it, { x, y: y - gap }, 'bottom_center', undefined, where);
+      if(p){ if(!moved) ctx.measure({ x, y }, { x, y: y - gap }, null, { caption: under + ' to badge' }); y = p.y; top = p.y; under = 'badge'; moved = 0; prev = it.title || 'badge below it'; }
     }
     return top;
   }
@@ -292,14 +296,14 @@
   // Badges side by side, `gap` apart, the pair centred on x, bottoms on `bottomY`. `order` is
   // viewer's left first.
   // `out`, when given, receives the row's box (out.box).
-  async function rowOfBadges(ctx, items, cx, bottomY, gap, anchor, out){
+  async function rowOfBadges(ctx, items, cx, bottomY, gap, anchor, out, whereOf){
     const widths = [];
     for(const it of items) widths.push(it.military ? milWidth(it) : (await ctx.spec(it.art)).w);
     const total = widths.reduce((a, w) => a + w, 0) + gap * (items.length - 1);
     let x = cx - total / 2;
     let top = bottomY;
     for(let i = 0; i < items.length; i++){
-      const p = await putBadge(ctx, items[i], { x: x + widths[i] / 2, y: bottomY }, anchor || 'bottom_center');
+      const p = await putBadge(ctx, items[i], { x: x + widths[i] / 2, y: bottomY }, anchor || 'bottom_center', undefined, whereOf ? whereOf(i, items.length) : undefined);
       if(p) top = Math.min(top, p.y);
       if(i && gap) ctx.measure({ x: x - gap, y: bottomY }, { x, y: bottomY }, null, { caption: 'between the badges' });
       x += widths[i] + gap;
@@ -328,7 +332,7 @@
     // Over the left pocket.
     if(plan.olp.length){
       if(geo.olpCenter){
-        const first = await putBadge(ctx, plan.olp[0], geo.olpCenter, 'center');
+        const first = await putBadge(ctx, plan.olp[0], geo.olpCenter, 'center', undefined, "on the wearer's left, level with the name tag");
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], geo.olp.x, first.y, 0.5, 'badge');
       }else{
         await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, geo.olp.gap == null ? 0.5 : geo.olp.gap, geo.olp.below, geo.olp.limits ? { limits: geo.olp.limits, cite: geo.olp.cite } : null);
@@ -341,7 +345,7 @@
     const pinGrad = plan.pin && plan.pin.graduated ? plan.pin : null;
     if(pinGrad){
       if(geo.un){
-        await putBadge(ctx, { id: pinGrad.id, art: pinGrad.art, title: pinGrad.title }, geo.un, geo.un.anchor || 'center', `badge:${pinGrad.id}:UN:0`);
+        await putBadge(ctx, { id: pinGrad.id, art: pinGrad.art, title: pinGrad.title }, geo.un, geo.un.anchor || 'center', `badge:${pinGrad.id}:UN:0`, 'below the name tag');
         if(tag && geo.un.anchor === 'top_center') ctx.measure({ x: geo.un.x, y: tag.y + tag.h }, { x: geo.un.x, y: geo.un.y }, null, { caption: 'nameplate to insignia' });
       }else ctx.note('The graduated commander insignia has no place on this uniform');
     }
@@ -377,7 +381,7 @@
       // Model rocketry is worn only on the left pocket; marksmanship on the welt or pocket flap.
       const queue = [...regular];
       if(marks){
-        if(geo.marks) await putBadge(ctx, marks, geo.marks, geo.marks.anchor || 'top_center');
+        if(geo.marks) await putBadge(ctx, marks, geo.marks, geo.marks.anchor || 'top_center', undefined, 'top of the left pocket flap');
         else queue.push(marks);
       }
       const lpItem = geo.lp ? (rocketry || queue.shift()) : null;
@@ -385,16 +389,19 @@
       let rpItem = plan.nationalStaff[0] || null;
       if(!rpItem && geo.rp) rpItem = queue.shift() || null;
       let lpBox = null, rpBox = null, levelBox = null;
-      if(lpItem){ lpBox = await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center'); pocketMeasure(geo.lp); }
-      if(rpItem && geo.rp){ rpBox = await putBadge(ctx, rpItem, geo.rp, geo.rp.anchor || 'center'); if(!geo.semi) pocketMeasure(geo.rp); }
+      // Where the pocket badges are worn: on the pocket where the uniform has one there; the Class A coat's are set from the ribbons and the nameplate.
+      const lpWhere = geo.lp && geo.lp.from != null && /ribbons/.test(geo.lp.caption || '') ? "on the wearer's left, below the ribbons" : 'left pocket';
+      const rpWhere = geo.rp && geo.rp.from != null ? "on the wearer's right, below the name tag" : 'right pocket';
+      if(lpItem){ lpBox = await putBadge(ctx, lpItem, geo.lp, geo.lp.anchor || 'center', undefined, lpWhere); pocketMeasure(geo.lp); }
+      if(rpItem && geo.rp){ rpBox = await putBadge(ctx, rpItem, geo.rp, geo.rp.anchor || 'center', undefined, rpWhere); if(!geo.semi) pocketMeasure(geo.rp); }
       else if(rpItem) queue.unshift(rpItem);
       let y = onBottom;
       if(pinItem && onX != null){
-        const p = await putBadge(ctx, pinItem, { x: onX, y }, 'bottom_center', pinKey);
+        const p = await putBadge(ctx, pinItem, { x: onX, y }, 'bottom_center', pinKey, 'above the name tag');
         if(p){ onMeasure(); y = p.y; levelBox = p; } // the next badge stacks 1/2 in above the pin
       }
       if(queue.length && onX != null){
-        const p = await putBadge(ctx, queue.shift(), { x: onX, y: pinItem ? y - 0.5 : y }, 'bottom_center');
+        const p = await putBadge(ctx, queue.shift(), { x: onX, y: pinItem ? y - 0.5 : y }, 'bottom_center', undefined, pinItem ? 'above the command pin' : 'above the name tag');
         if(pinItem) ctx.measure({ x: onX, y }, { x: onX, y: y - 0.5 }, null, { caption: 'command pin to badge' });
         else{ onMeasure(); if(p) levelBox = p; }
       }
@@ -432,25 +439,27 @@
       return;
     }
     if(pinItem || pair.length) onMeasure();
+    // Where the pair is worn: over the name tag, the first of two on the wearer's right and the CAP service badge or the second on the wearer's left (4.1.9.4.4.2).
+    const overTag = (base = 'above the name tag') => (i, n) => n === 2 ? `${base}, wearer's ${i === 0 ? 'right' : 'left'}` : base;
     const row = {};
     if(geo.onStyle === 'women-a' && pinItem && pair.length){
       // Women's Class A: the pin sits 1/2 in above the badge(s) (4.1.9.4.4.3).
-      const top = await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row);
-      await putBadge(ctx, pinItem, { x: onX, y: top - 0.5 }, 'bottom_center', pinKey);
+      const top = await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row, overTag());
+      await putBadge(ctx, pinItem, { x: onX, y: top - 0.5 }, 'bottom_center', pinKey, 'above the badges over the name tag');
       ctx.measure({ x: onX, y: top }, { x: onX, y: top - 0.5 }, null, { caption: 'badge to command pin' });
     }else if(pinItem && pair.length === 1){
       // One badge: the badge 1/2 in above the pin.
-      const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
+      const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey, 'above the name tag');
       row.box = p;
-      await rowOfBadges(ctx, pair, onX, (p ? p.y : onBottom) - 0.5, 0.5);
+      await rowOfBadges(ctx, pair, onX, (p ? p.y : onBottom) - 0.5, 0.5, null, null, overTag('above the command pin'));
     }else if(pinItem && pair.length === 2){
-      const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
+      const p = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey, 'above the name tag');
       row.box = p;
-      await rowOfBadges(ctx, pair, onX, (p ? p.y : onBottom) - 0.5, 0.5);
+      await rowOfBadges(ctx, pair, onX, (p ? p.y : onBottom) - 0.5, 0.5, null, null, overTag('above the command pin'));
     }else if(pinItem){
-      row.box = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey);
+      row.box = await putBadge(ctx, pinItem, { x: onX, y: onBottom }, 'bottom_center', pinKey, 'above the name tag');
     }else if(pair.length){
-      await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row);
+      await rowOfBadges(ctx, pair, onX, onBottom, 0.5, null, row, overTag());
     }
     if(geo.semi) semiLevel(row.box);
     // Rocketry and marksmanship moved off the nametag: women's aviator shirt to the left pocket and
@@ -460,7 +469,7 @@
       const spot = it.family === 'rocketry' ? (geo.rocketAlt || geo.belowRibbons) : (geo.marksAlt || geo.belowRibbons);
       if(!spot || (spot === geo.belowRibbons && belowUsed)){ left.push(it); continue; }
       if(spot === geo.belowRibbons){ belowUsed = true; ctx.measure({ x: spot.x, y: spot.y - 1.5 }, { x: spot.x, y: spot.y }, null, { caption: 'ribbons to badge' }); }
-      await putBadge(ctx, it, spot, spot.anchor || 'top_center');
+      await putBadge(ctx, it, spot, spot.anchor || 'top_center', undefined, spot === geo.belowRibbons ? "on the wearer's left, below the ribbons" : (it.family === 'rocketry' ? 'left pocket' : 'top of the left pocket flap'));
     }
     if(left.length) ctx.note('Some badges have no place left on this uniform and are not shown');
   }
@@ -2154,7 +2163,7 @@
     if(plan.olp.length){
       if(box) await stackBadges(ctx, plan.olp, olpCenterX(box, center.x), box.y, 0.5, 'medals', { what: 'medals', limits: badgeLimits(ctx, { strips: layerStrips(ctx) }), cite: female ? '4.1.2.1.2.5' : '4.1.1.1.3.1' });
       else{
-        const first = await putBadge(ctx, plan.olp[0], center, 'center');
+        const first = await putBadge(ctx, plan.olp[0], center, 'center', undefined, 'where the medals would be');
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], center.x, first.y, 0.5, 'badge');
       }
     }
@@ -2166,11 +2175,11 @@
       // in the same spot on the wearer's right; National Staff always on the right.
       const lpItem = others.find(x => x.family !== 'national-staff');
       const rpItem = others.find(x => x !== lpItem);
-      if(lpItem && await putBadge(ctx, lpItem, { x: center.x, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: center.x, y: medBottom }, { x: center.x, y: medBottom + 0.5 }, null, { caption: 'medals to badge' });
-      if(rpItem && await putBadge(ctx, rpItem, { x: wrX, y: medBottom + 0.5 }, 'top_center')) ctx.measure({ x: wrX, y: medBottom }, { x: wrX, y: medBottom + 0.5 }, null, { caption: 'medals to badge' });
+      if(lpItem && await putBadge(ctx, lpItem, { x: center.x, y: medBottom + 0.5 }, 'top_center', undefined, "below the medals, wearer's left")) ctx.measure({ x: center.x, y: medBottom }, { x: center.x, y: medBottom + 0.5 }, null, { caption: 'medals to badge' });
+      if(rpItem && await putBadge(ctx, rpItem, { x: wrX, y: medBottom + 0.5 }, 'top_center', undefined, "below the medals, wearer's right")) ctx.measure({ x: wrX, y: medBottom }, { x: wrX, y: medBottom + 0.5 }, null, { caption: 'medals to badge' });
       if(plan.pin){
         const y = plan.pin.graduated ? medBottom : medTop;
-        await putBadge(ctx, { id: plan.pin.id, art: plan.pin.art, title: plan.pin.title }, { x: wrX, y }, plan.pin.graduated ? 'bottom_center' : 'top_center', `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`);
+        await putBadge(ctx, { id: plan.pin.id, art: plan.pin.art, title: plan.pin.title }, { x: wrX, y }, plan.pin.graduated ? 'bottom_center' : 'top_center', `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`, plan.pin.graduated ? "below the medals, wearer's right" : "level with the top of the medals, wearer's right");
       }
       if(others.length > 2) ctx.note('Some badges have no place left on this uniform and are not shown');
     }else{
@@ -2185,7 +2194,7 @@
         const total = widths.reduce((a, w) => a + w, 0) + 0.5 * (pair.length - 1);
         let x = wrX - total / 2;
         for(let i = 0; i < pair.length; i++){
-          const p = await putBadge(ctx, pair[i], { x: x + widths[i] / 2, y: medTop }, 'top_center');
+          const p = await putBadge(ctx, pair[i], { x: x + widths[i] / 2, y: medTop }, 'top_center', undefined, "on the wearer's right, level with the top of the medals");
           if(p) bottom = Math.max(bottom, p.y + p.h);
           x += widths[i] + 0.5;
         }
@@ -2194,10 +2203,10 @@
         const pin = { id: plan.pin.id, art: plan.pin.art, title: plan.pin.title };
         const key = `badge:${plan.pin.id}:${plan.pin.graduated ? 'UN' : 'ON'}:0`;
         if(plan.pin.graduated){
-          await putBadge(ctx, pin, { x: wrX, y: (pair.length ? bottom : medBottom) + (pair.length ? 0.5 : 0) }, pair.length ? 'top_center' : 'bottom_center', key);
+          await putBadge(ctx, pin, { x: wrX, y: (pair.length ? bottom : medBottom) + (pair.length ? 0.5 : 0) }, pair.length ? 'top_center' : 'bottom_center', key, pair.length ? "below the badges, wearer's right" : "below the medals, wearer's right");
           if(pair.length) ctx.measure({ x: wrX, y: bottom }, { x: wrX, y: bottom + 0.5 }, null, { caption: 'badges to command insignia' });
         }else{
-          await putBadge(ctx, pin, { x: wrX, y: pair.length ? top - 0.5 : top }, pair.length ? 'bottom_center' : 'top_center', key);
+          await putBadge(ctx, pin, { x: wrX, y: pair.length ? top - 0.5 : top }, pair.length ? 'bottom_center' : 'top_center', key, pair.length ? "above the badges, wearer's right" : "level with the top of the medals, wearer's right");
           if(pair.length) ctx.measure({ x: wrX, y: top }, { x: wrX, y: top - 0.5 }, null, { caption: 'badges to command pin' });
         }
       }
@@ -2536,7 +2545,7 @@
     if(semi && !female && !under) await ctx.place('tie-bow-black', { pieceAnchor: 'knot_center', at: V.bowTie, z: Z.garmentLayer, role: 'tie', key: 'tie:bow' });
 
     // The CSAG, Command Council, National Board or NEC badge is worn in place of the crest.
-    const crestLayer = crestBadge ? await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: ctx.point('crest_center'), z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge' }) : null;
+    const crestLayer = crestBadge ? await ctx.place(crestBadge.art, { pieceAnchor: 'center', at: ctx.point('crest_center'), z: Z.badge, role: 'badge', key: 'badge:' + crestBadge.id, title: crestBadge.title, className: 'badge', place: 'where the CAP Crest is worn, on the left pocket' }) : null;
     const chaplain = set.chaplain[0] || null;
     const dropped = set.all.filter(x => x !== crestBadge && x !== chaplain);
     // The aviator shirt drawn beside the aviator blazer (no turtleneck or shell) wears the aviation and occupational
@@ -2616,7 +2625,7 @@
         if(gid) await C.fitIn(ctx, gid, gz, { z: Z.insignia + 5, role: 'grade', key: 'grade:plate' });
       }
       if(chaplain){
-        await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+        await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge', place: 'above the name tag' });
         ctx.measure({ x: plate.x + plate.w / 2, y: plate.y }, { x: plate.x + plate.w / 2, y: plate.y - 0.5 }, null, { caption: 'nameplate to chaplain badge' });
       }
       ctx.foreground(['lapel-foreground'], Z.text + 1);
@@ -2696,7 +2705,7 @@
       // chaplain_badge_semiformal anchor states the x, which moves with the rack.
       const y = (box ? box.y : ms.y + ms.h) - 0.5;
       const at = win && win.badgeAt ? win.badgeAt : { x: cb ? cb.x : medalX, y };
-      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: at.x, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge' });
+      await ctx.place(chaplain.art, { pieceAnchor: 'bottom_center', at: { x: at.x, y }, z: Z.badge, role: 'badge', key: 'badge:' + chaplain.id, title: chaplain.title, className: 'badge', place: box ? 'above the medals' : 'above the CAP Crest line' });
       if(box) ctx.measure({ x: at.x, y: y + 0.5 }, { x: at.x, y }, null, { caption: 'medals to chaplain badge' });
     }
     // The lapel (and the collar, over the bow tie) is drawn again above the garment layers, under the tie.

@@ -664,7 +664,9 @@
       shown: ordered.filter(Boolean).map(x => x.id),
       choice: first ? first.id : null,
       slots: slots.map((sl, i) => ({ key: sl.key, label: sl.label, choice: picked[sl.key] ? picked[sl.key].id : null, badge: ordered[i] ? ordered[i].id : null, shown: !!ordered[i] })),
-      note: (opts && opts.note) || ''
+      note: (opts && opts.note) || '',
+      // Why the candidates that are not shown are left off, in words with the paragraph (the page lists it under the badge).
+      why: (opts && opts.why) || ''
     };
     const key = JSON.stringify([c.position, c.candidates.map(x => x.id)]);
     ctx.conflicts = ctx.conflicts || [];

@@ -154,6 +154,8 @@
     };
     if(opts.flipX) layer.flipX = true;
     if(opts.title) layer.title = opts.title;
+    // `place`: where a badge is worn, in words (scene.layers[].place), for the page's list of what is on the uniform.
+    if(opts.place) layer.place = opts.place;
     if(opts.className) layer.className = opts.className;
     if(opts.hideGroups) layer.hideGroups = opts.hideGroups;
     if(opts.onlyGroups) layer.onlyGroups = opts.onlyGroups;

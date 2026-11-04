@@ -143,7 +143,7 @@
       ctx.layers.push({ type: 'rect', x: at.x - side / 2, y: at.y - side / 2, w: side, h: side, fill: SQUARE_FILL, rotate: 0, origin: { x: at.x, y: at.y }, z: Z.insignia - 0.1, role: 'grade', key: 'grade:chest-meme', title: '24 x 24 in square, as ICL 26-14 is written', meme: true });
       ctx.note('The chaplain patch is drawn 2 ft x 2 ft, the size printed in ICL 26-14, 7.1.1.2.1');
     }
-    const layer = await ctx.place(chaplain.art, { pieceAnchor: 'center', at, scale: k, z: Z.insignia + 0.1, role: 'badge', key: 'badge:' + chaplain.id + ':chest', title: chaplain.title + ' on the 2 x 2 in chest square', className: 'badge' });
+    const layer = await ctx.place(chaplain.art, { pieceAnchor: 'center', at, scale: k, z: Z.insignia + 0.1, role: 'badge', key: 'badge:' + chaplain.id + ':chest', title: chaplain.title + ' on the 2 x 2 in chest square', className: 'badge', place: 'on the 2 x 2 in square on the chest' });
     if(layer && meme) layer.meme = true;
     if(layer && !meme) await H.blueBorder(ctx, layer);
     return layer;
@@ -399,7 +399,7 @@
     const T = ctx.point('cap_tape_top_center');
     const specs = [];
     for(const it of list) specs.push(await ctx.spec(it.art));
-    const opts = i => ({ z: Z.badge, role: 'badge', key: 'badge:' + list[i].id, title: list[i].title, className: 'badge' });
+    const opts = i => ({ z: Z.badge, role: 'badge', key: 'badge:' + list[i].id, title: list[i].title, className: 'badge', place: 'above the CAP tape' });
 
     if(list.length <= 2){
       // One: 1/2 in from the tape to the silver. Two: the second sits above the first, 1/2 in apart,
@@ -501,7 +501,8 @@
     const pin = H.commandPin(ctx, b, 'field');
     if(!pin) return;
     const tape = ctx.rect('name_tape');
-    const o = { z: Z.badge, role: 'badge', key: `badge:${pin.id}:${pin.graduated ? 'UN' : 'ON'}:0`, title: pin.title, className: 'badge' };
+    const o = { z: Z.badge, role: 'badge', key: `badge:${pin.id}:${pin.graduated ? 'UN' : 'ON'}:0`, title: pin.title, className: 'badge',
+      place: !pin.graduated ? 'above the name tape' : b.uniform === 'ocp' ? 'on the left sleeve, centred above the shoulder patches' : b.uniform === 'abu' ? 'below the name tape' : 'on the right pocket flap' };
     const tx = tape.x + tape.w / 2;
     if(!pin.graduated){
       if(await ctx.place(pin.art, Object.assign({ pieceAnchor: 'bottom_center', at: { x: tx, y: tape.y - 0.5 } }, o))) ctx.measure({ x: tx, y: tape.y }, { x: tx, y: tape.y - 0.5 }, null, { caption: 'name tape to command pin' });

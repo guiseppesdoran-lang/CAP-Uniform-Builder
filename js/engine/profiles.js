@@ -452,7 +452,7 @@
       if(para !== false) ctx.note('Only one CAP aviation badge is worn; the others are not shown' + (para ? ` (CAPR 39-1, ${para})` : ''));
       // The member's choice for this position (build.badgeChoices.aviation) shows that badge; else the first listed.
       const one = [{ key: 'only', label: 'CAP aviation badge' }];
-      out.aviation = para !== false ? C.chooseBadges(ctx, 'aviation', 'CAP aviation badge', out.aviation, one) : out.aviation.slice(0, 1);
+      out.aviation = para !== false ? C.chooseBadges(ctx, 'aviation', 'CAP aviation badge', out.aviation, one, { why: 'Only one CAP aviation badge is worn' + (para ? ` (CAPR 39-1, ${para})` : '') }) : out.aviation.slice(0, 1);
     }
     return out;
   }
@@ -797,7 +797,7 @@
     if(competing) chosen = C.chooseBadges(ctx, 'tag', officerLike ? 'Flight suit name tag badge' : 'Flight suit name tag badges', candidates, places);
     else chosen = officerLike ? candidates.slice(0, 1) : [ratings[0], candidates.find(it => !isRating(it))].filter(Boolean);
     const zone = pieceRect(tag, spec, 'badge_zone');
-    const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title });
+    const opts = it => ({ z: Z.badge, role: 'badge', key: 'badge:' + it.id, title: it.title, place: chosen.length === 1 ? 'on the name tag' : `on the name tag, wearer's ${(it.command ? 'right' : isRating(it) ? (chosen.some(x => x.command) ? 'left' : 'right') : 'left')}` });
     // The two places are fractions of the tag's badge_zone landmark (3.1 x 0.62 in, read from Fig A6-3), the viewer's left to right. The narrow badge
     // (pin or occupational) takes 0.3 of the zone and the wings the other 0.7; each is centred in its slot, inset 0.04 of the zone on each side so
     // the two never touch. 'Wings will be to the right or above an occupational badge', and CAPR 39-1 reads left and right from the wearer's side,
@@ -988,5 +988,5 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, badgesWorn, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarSlot, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  return { PROFILES, register, composeUniform, badgesWorn, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarSlot, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, oneAviationBadgeParagraph, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
 });

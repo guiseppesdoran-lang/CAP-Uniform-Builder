@@ -172,7 +172,7 @@
     if(!pick) return;
     const spec = await ctx.spec(pick.art);
     const bottomAnchor = core.anchor(spec, 'art_bottom_center') ? 'art_bottom_center' : 'bottom_center';
-    const layer = await ctx.place(pick.art, { pieceAnchor: bottomAnchor, at: { x, y: bottom }, z: Z.badge, role: 'badge', key: 'badge:' + pick.id, title: pick.title, className: 'badge',
+    const layer = await ctx.place(pick.art, { pieceAnchor: bottomAnchor, at: { x, y: bottom }, z: Z.badge, role: 'badge', key: 'badge:' + pick.id, title: pick.title, className: 'badge', place: 'over the name on the left breast',
       // Embroidered on the shirt itself, not sewn on as a patch: the field badge's dark blue cloth backing is not drawn (its silver art is).
       hideGroups: ['backing'] });
     if(layer) measureOver(name.nameTop, bottom, 'badge');
