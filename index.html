@@ -38,7 +38,7 @@
   <span class="unofficialTag" title="Not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force">Unofficial</span>
 </header>
 
-<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Menu" aria-controls="controls" aria-expanded="true">
+<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Hide the controls" title="Hide the controls" aria-controls="controls" aria-expanded="true">
   <span></span><span></span><span></span>
 </button>
 
@@ -65,14 +65,11 @@
           <button id="importMemberReportBtn" class="ghost" type="button">Import member report…</button>
           <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
           <div id="memberReportImportStatus" class="hintText" aria-live="polite">Nothing is imported yet. A report is read on your device and is not kept or sent.</div>
-          <details class="moreDetails" id="memberReportImportMore">
-            <summary>What the import reads</summary>
-            <div class="hintText">
-              Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
-              The builder reads rank, gender, ribbons, achievements, qualifications and the badges it can match.
-            </div>
-            <button id="clearImportedReportBtn" class="ghost mt-8" type="button">Clear import notes</button>
-          </details>
+          <div class="hintText mt-8" id="memberReportImportMore">
+            Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
+            The builder reads rank, gender, ribbons, achievements, qualifications and the badges it can match.
+          </div>
+          <button id="clearImportedReportBtn" class="ghost mt-8" type="button">Clear import notes</button>
         </section>
 
         <section id="capMembershipPanel" class="panelBlock">
@@ -404,8 +401,8 @@
               <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
               <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
             </div>
-            <details class="moreDetails" id="savedSetupsMore">
-              <summary>Saved setups</summary>
+            <div class="finishAction" id="savedSetupsMore">
+              <label class="fieldLabel">Saved setups</label>
               <div id="capubV2QuickPanel">
                 <div class="row two">
                   <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to browser</button></div>
@@ -416,7 +413,7 @@
                 </div>
                 <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
               </div>
-            </details>
+            </div>
           </section>
         </div>
         <div id="extraPanel-regulation" role="tabpanel" aria-labelledby="extraTab-regulation" hidden>
