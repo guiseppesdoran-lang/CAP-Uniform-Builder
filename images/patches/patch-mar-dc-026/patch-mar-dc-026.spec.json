@@ -1,0 +1,73 @@
+{
+ "asset_id": "patch-mar-dc-026",
+ "label": "MAR-DC-026",
+ "charter": "MAR-DC-026",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-mar-dc-026.png",
+ "width_in": 3,
+ "height_in": 2.968,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   296.791
+  ],
+  "center": [
+   150,
+   148.396
+  ],
+  "left_edge": [
+   0,
+   148.396
+  ],
+  "right_edge": [
+   300,
+   148.396
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/squadron/dc026emblem.png",
+ "emblemoptions": {
+  "label": "MAR-DC-026",
+  "type": "Squadron",
+  "path": "squadron/dc026emblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   199,
+   196
+  ],
+  "trim_bbox_px": [
+   6,
+   7,
+   187,
+   185
+  ],
+  "trimmed": true,
+  "px": [
+   187,
+   185
+  ],
+  "bytes": 29218,
+  "chunks_kept": [
+   "sBIT"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"MAR-DC-026\" (Squadron), path squadron/dc026emblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (199 x 196 px to 187 x 185 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

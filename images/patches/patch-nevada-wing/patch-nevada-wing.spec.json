@@ -1,0 +1,73 @@
+{
+ "asset_id": "patch-nevada-wing",
+ "label": "Nevada Wing",
+ "charter": "PCR-NV-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-nevada-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.252,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   325.217
+  ],
+  "center": [
+   162.5,
+   162.608
+  ],
+  "left_edge": [
+   0,
+   162.608
+  ],
+  "right_edge": [
+   325,
+   162.608
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/nvemblem.png",
+ "emblemoptions": {
+  "label": "Nevada",
+  "type": "Wing",
+  "path": "wing/nvemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   1600,
+   1600
+  ],
+  "trim_bbox_px": [
+   51,
+   50,
+   1498,
+   1499
+  ],
+  "trimmed": true,
+  "px": [
+   1498,
+   1499
+  ],
+  "bytes": 932372,
+  "chunks_kept": [
+   "sBIT"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Nevada\" (Wing), path wing/nvemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (1600 x 1600 px to 1498 x 1499 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

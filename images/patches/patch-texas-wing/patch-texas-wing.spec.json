@@ -1,0 +1,71 @@
+{
+ "asset_id": "patch-texas-wing",
+ "label": "Texas Wing",
+ "charter": "SWR-TX-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-texas-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.283,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   328.27
+  ],
+  "center": [
+   162.5,
+   164.135
+  ],
+  "left_edge": [
+   0,
+   164.135
+  ],
+  "right_edge": [
+   325,
+   164.135
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/txemblem.png",
+ "emblemoptions": {
+  "label": "Texas",
+  "type": "Wing",
+  "path": "wing/txemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   497,
+   502
+  ],
+  "trim_bbox_px": [
+   0,
+   0,
+   497,
+   502
+  ],
+  "trimmed": false,
+  "px": [
+   497,
+   502
+  ],
+  "bytes": 275295,
+  "chunks_kept": []
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Texas\" (Wing), path wing/txemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (497 x 502 px to 497 x 502 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

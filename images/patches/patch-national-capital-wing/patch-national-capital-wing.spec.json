@@ -1,0 +1,75 @@
+{
+ "asset_id": "patch-national-capital-wing",
+ "label": "National Capital Wing",
+ "charter": "MAR-DC-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-national-capital-wing.png",
+ "width_in": 3.25,
+ "height_in": 4.317,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   431.727
+  ],
+  "center": [
+   162.5,
+   215.863
+  ],
+  "left_edge": [
+   0,
+   215.863
+  ],
+  "right_edge": [
+   325,
+   215.863
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/natcapemblem.png",
+ "emblemoptions": {
+  "label": "National Capital",
+  "type": "Wing",
+  "path": "wing/natcapemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   475,
+   627
+  ],
+  "trim_bbox_px": [
+   2,
+   0,
+   472,
+   627
+  ],
+  "trimmed": true,
+  "px": [
+   472,
+   627
+  ],
+  "bytes": 148962,
+  "chunks_kept": [
+   "pHYs",
+   "iCCP",
+   "cHRM"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"National Capital\" (Wing), path wing/natcapemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (475 x 627 px to 472 x 627 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

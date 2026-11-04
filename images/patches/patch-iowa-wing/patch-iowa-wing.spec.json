@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-iowa-wing",
+ "label": "Iowa Wing",
+ "charter": "NCR-IA-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-iowa-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.14,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   313.983
+  ],
+  "center": [
+   162.5,
+   156.992
+  ],
+  "left_edge": [
+   0,
+   156.992
+  ],
+  "right_edge": [
+   325,
+   156.992
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/iaemblem.png",
+ "emblemoptions": {
+  "label": "Iowa",
+  "type": "Wing",
+  "path": "wing/iaemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   794,
+   767
+  ],
+  "trim_bbox_px": [
+   14,
+   19,
+   767,
+   741
+  ],
+  "trimmed": true,
+  "px": [
+   767,
+   741
+  ],
+  "bytes": 393652,
+  "chunks_kept": [
+   "sBIT",
+   "iCCP"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Iowa\" (Wing), path wing/iaemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (794 x 767 px to 767 x 741 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

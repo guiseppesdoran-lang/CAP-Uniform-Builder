@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1698,
+ "count": 1730,
  "by_category": {
   "accessories": 30,
   "badges": 1,
@@ -75644,6 +75644,1094 @@
     },
     "art_tree": "military/v3/out-medals/medal-space-force-space-force-good-conduct-medal-mini"
    }
+  },
+  {
+   "id": "patch-arizona-wing",
+   "path": "patches/patch-arizona-wing/patch-arizona-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.169,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     316.925
+    ],
+    "center": [
+     162.5,
+     158.463
+    ],
+    "left_edge": [
+     0,
+     158.463
+    ],
+    "right_edge": [
+     325,
+     158.463
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-arkansas-wing",
+   "path": "patches/patch-arkansas-wing/patch-arkansas-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.205,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     320.45
+    ],
+    "center": [
+     162.5,
+     160.225
+    ],
+    "left_edge": [
+     0,
+     160.225
+    ],
+    "right_edge": [
+     325,
+     160.225
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-california-wing",
+   "path": "patches/patch-california-wing/patch-california-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 2.856,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     285.592
+    ],
+    "center": [
+     162.5,
+     142.796
+    ],
+    "left_edge": [
+     0,
+     142.796
+    ],
+    "right_edge": [
+     325,
+     142.796
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-georgia-wing",
+   "path": "patches/patch-georgia-wing/patch-georgia-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.235,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     323.46
+    ],
+    "center": [
+     162.5,
+     161.73
+    ],
+    "left_edge": [
+     0,
+     161.73
+    ],
+    "right_edge": [
+     325,
+     161.73
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-glr-in-002",
+   "path": "patches/patch-glr-in-002/patch-glr-in-002.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.174,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     317.391
+    ],
+    "center": [
+     150,
+     158.696
+    ],
+    "left_edge": [
+     0,
+     158.696
+    ],
+    "right_edge": [
+     300,
+     158.696
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-iowa-wing",
+   "path": "patches/patch-iowa-wing/patch-iowa-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.14,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     313.983
+    ],
+    "center": [
+     162.5,
+     156.992
+    ],
+    "left_edge": [
+     0,
+     156.992
+    ],
+    "right_edge": [
+     325,
+     156.992
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-louisiana-wing",
+   "path": "patches/patch-louisiana-wing/patch-louisiana-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.424,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     342.409
+    ],
+    "center": [
+     162.5,
+     171.204
+    ],
+    "left_edge": [
+     0,
+     171.204
+    ],
+    "right_edge": [
+     325,
+     171.204
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-mar-dc-026",
+   "path": "patches/patch-mar-dc-026/patch-mar-dc-026.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.968,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     296.791
+    ],
+    "center": [
+     150,
+     148.396
+    ],
+    "left_edge": [
+     0,
+     148.396
+    ],
+    "right_edge": [
+     300,
+     148.396
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-mar-dc-033",
+   "path": "patches/patch-mar-dc-033/patch-mar-dc-033.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.86,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     286.047
+    ],
+    "center": [
+     150,
+     143.023
+    ],
+    "left_edge": [
+     0,
+     143.023
+    ],
+    "right_edge": [
+     300,
+     143.023
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-mar-dc-045",
+   "path": "patches/patch-mar-dc-045/patch-mar-dc-045.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.91,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     291
+    ],
+    "center": [
+     150,
+     145.5
+    ],
+    "left_edge": [
+     0,
+     145.5
+    ],
+    "right_edge": [
+     300,
+     145.5
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-mar-dc-051",
+   "path": "patches/patch-mar-dc-051/patch-mar-dc-051.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.093,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     309.326
+    ],
+    "center": [
+     150,
+     154.663
+    ],
+    "left_edge": [
+     0,
+     154.663
+    ],
+    "right_edge": [
+     300,
+     154.663
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-mar-dc-053",
+   "path": "patches/patch-mar-dc-053/patch-mar-dc-053.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.871,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     287.097
+    ],
+    "center": [
+     150,
+     143.548
+    ],
+    "left_edge": [
+     0,
+     143.548
+    ],
+    "right_edge": [
+     300,
+     143.548
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-mar-dc-060",
+   "path": "patches/patch-mar-dc-060/patch-mar-dc-060.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.77,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     277.033
+    ],
+    "center": [
+     150,
+     138.517
+    ],
+    "left_edge": [
+     0,
+     138.517
+    ],
+    "right_edge": [
+     300,
+     138.517
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-national-capital-wing",
+   "path": "patches/patch-national-capital-wing/patch-national-capital-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 4.317,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     431.727
+    ],
+    "center": [
+     162.5,
+     215.863
+    ],
+    "left_edge": [
+     0,
+     215.863
+    ],
+    "right_edge": [
+     325,
+     215.863
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-ncsa-mots",
+   "path": "patches/patch-ncsa-mots/patch-ncsa-mots.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.05,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     305.008
+    ],
+    "center": [
+     150,
+     152.504
+    ],
+    "left_edge": [
+     0,
+     152.504
+    ],
+    "right_edge": [
+     300,
+     152.504
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-ncsa-national-geospatial-academy",
+   "path": "patches/patch-ncsa-national-geospatial-academy/patch-ncsa-national-geospatial-academy.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.384,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     338.442
+    ],
+    "center": [
+     150,
+     169.221
+    ],
+    "left_edge": [
+     0,
+     169.221
+    ],
+    "right_edge": [
+     300,
+     169.221
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-ner-ny-117",
+   "path": "patches/patch-ner-ny-117/patch-ner-ny-117.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.444,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     344.404
+    ],
+    "center": [
+     150,
+     172.202
+    ],
+    "left_edge": [
+     0,
+     172.202
+    ],
+    "right_edge": [
+     300,
+     172.202
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-nevada-wing",
+   "path": "patches/patch-nevada-wing/patch-nevada-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.252,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     325.217
+    ],
+    "center": [
+     162.5,
+     162.608
+    ],
+    "left_edge": [
+     0,
+     162.608
+    ],
+    "right_edge": [
+     325,
+     162.608
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-new-mexico-wing",
+   "path": "patches/patch-new-mexico-wing/patch-new-mexico-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.176,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     317.59
+    ],
+    "center": [
+     162.5,
+     158.795
+    ],
+    "left_edge": [
+     0,
+     158.795
+    ],
+    "right_edge": [
+     325,
+     158.795
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-new-york-wing-brand-tools",
+   "path": "patches/patch-new-york-wing-brand-tools/patch-new-york-wing-brand-tools.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.182,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     318.172
+    ],
+    "center": [
+     162.5,
+     159.086
+    ],
+    "left_edge": [
+     0,
+     159.086
+    ],
+    "right_edge": [
+     325,
+     159.086
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-oklahoma-wing",
+   "path": "patches/patch-oklahoma-wing/patch-oklahoma-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.245,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     324.474
+    ],
+    "center": [
+     162.5,
+     162.237
+    ],
+    "left_edge": [
+     0,
+     162.237
+    ],
+    "right_edge": [
+     325,
+     162.237
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-pacific-region",
+   "path": "patches/patch-pacific-region/patch-pacific-region.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.936,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (regions 3 in, as patch-northeast-region); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     293.617
+    ],
+    "center": [
+     150,
+     146.809
+    ],
+    "left_edge": [
+     0,
+     146.809
+    ],
+    "right_edge": [
+     300,
+     146.809
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-pcr-ca-345",
+   "path": "patches/patch-pcr-ca-345/patch-pcr-ca-345.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.141,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     314.139
+    ],
+    "center": [
+     150,
+     157.07
+    ],
+    "left_edge": [
+     0,
+     157.07
+    ],
+    "right_edge": [
+     300,
+     157.07
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-southwest-region",
+   "path": "patches/patch-southwest-region/patch-southwest-region.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.927,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (regions 3 in, as patch-northeast-region); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     292.683
+    ],
+    "center": [
+     150,
+     146.341
+    ],
+    "left_edge": [
+     0,
+     146.341
+    ],
+    "right_edge": [
+     300,
+     146.341
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-swr-tx-030-group",
+   "path": "patches/patch-swr-tx-030-group/patch-swr-tx-030-group.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.038,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     303.763
+    ],
+    "center": [
+     150,
+     151.881
+    ],
+    "left_edge": [
+     0,
+     151.881
+    ],
+    "right_edge": [
+     300,
+     151.881
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-swr-tx-060-group",
+   "path": "patches/patch-swr-tx-060-group/patch-swr-tx-060-group.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.874,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     287.448
+    ],
+    "center": [
+     150,
+     143.724
+    ],
+    "left_edge": [
+     0,
+     143.724
+    ],
+    "right_edge": [
+     300,
+     143.724
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-swr-tx-076",
+   "path": "patches/patch-swr-tx-076/patch-swr-tx-076.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.43,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     343.041
+    ],
+    "center": [
+     150,
+     171.52
+    ],
+    "left_edge": [
+     0,
+     171.52
+    ],
+    "right_edge": [
+     300,
+     171.52
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-swr-tx-154",
+   "path": "patches/patch-swr-tx-154/patch-swr-tx-154.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.205,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     320.497
+    ],
+    "center": [
+     150,
+     160.248
+    ],
+    "left_edge": [
+     0,
+     160.248
+    ],
+    "right_edge": [
+     300,
+     160.248
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-swr-tx-376",
+   "path": "patches/patch-swr-tx-376/patch-swr-tx-376.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.912,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     391.244
+    ],
+    "center": [
+     150,
+     195.622
+    ],
+    "left_edge": [
+     0,
+     195.622
+    ],
+    "right_edge": [
+     300,
+     195.622
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-swr-tx-388",
+   "path": "patches/patch-swr-tx-388/patch-swr-tx-388.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.361,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     336.08
+    ],
+    "center": [
+     150,
+     168.04
+    ],
+    "left_edge": [
+     0,
+     168.04
+    ],
+    "right_edge": [
+     300,
+     168.04
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-texas-wing",
+   "path": "patches/patch-texas-wing/patch-texas-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.283,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     328.27
+    ],
+    "center": [
+     162.5,
+     164.135
+    ],
+    "left_edge": [
+     0,
+     164.135
+    ],
+    "right_edge": [
+     325,
+     164.135
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-washington-wing",
+   "path": "patches/patch-washington-wing/patch-washington-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.198,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     319.8
+    ],
+    "center": [
+     162.5,
+     159.9
+    ],
+    "left_edge": [
+     0,
+     159.9
+    ],
+    "right_edge": [
+     325,
+     159.9
+    ]
+   },
+   "landmarks": []
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."

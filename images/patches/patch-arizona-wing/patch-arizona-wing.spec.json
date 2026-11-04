@@ -1,0 +1,73 @@
+{
+ "asset_id": "patch-arizona-wing",
+ "label": "Arizona Wing",
+ "charter": "PCR-AZ-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-arizona-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.169,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   316.925
+  ],
+  "center": [
+   162.5,
+   158.463
+  ],
+  "left_edge": [
+   0,
+   158.463
+  ],
+  "right_edge": [
+   325,
+   158.463
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/azemblem.png",
+ "emblemoptions": {
+  "label": "Arizona",
+  "type": "Wing",
+  "path": "wing/azemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   350,
+   347
+  ],
+  "trim_bbox_px": [
+   10,
+   20,
+   322,
+   314
+  ],
+  "trimmed": true,
+  "px": [
+   322,
+   314
+  ],
+  "bytes": 146001,
+  "chunks_kept": [
+   "pHYs"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Arizona\" (Wing), path wing/azemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (350 x 347 px to 322 x 314 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

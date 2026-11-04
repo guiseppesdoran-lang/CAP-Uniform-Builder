@@ -1,0 +1,71 @@
+{
+ "asset_id": "patch-glr-in-002",
+ "label": "GLR-IN-002",
+ "charter": "GLR-IN-002",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-glr-in-002.png",
+ "width_in": 3,
+ "height_in": 3.174,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   317.391
+  ],
+  "center": [
+   150,
+   158.696
+  ],
+  "left_edge": [
+   0,
+   158.696
+  ],
+  "right_edge": [
+   300,
+   158.696
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/squadron/in002emblem.webp",
+ "emblemoptions": {
+  "label": "GLR-IN-002",
+  "type": "Squadron",
+  "path": "squadron/in002emblem.webp"
+ },
+ "artwork": {
+  "format": "webp (VP8L lossless) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   485,
+   515
+  ],
+  "trim_bbox_px": [
+   1,
+   2,
+   483,
+   511
+  ],
+  "trimmed": true,
+  "px": [
+   483,
+   511
+  ],
+  "bytes": 301987,
+  "chunks_kept": []
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"GLR-IN-002\" (Squadron), path squadron/in002emblem.webp. Official digital artwork shipped as given: webp (VP8L lossless) -> png via dwebp; trimmed to its alpha bounding box only (485 x 515 px to 483 x 511 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}
