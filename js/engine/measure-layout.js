@@ -290,7 +290,7 @@
     [/^aviator$|^aviator_blazer$/, /pocket to badge|ribbons to badge|badge to badge/, /./, ['4.2.5.1.3.1', '4.2.6.2.7.1']],
     [/^aviator_blazer$/, /nameplate to chaplain badge/, /./, ['4.2.3.1.1.3', '4.2.4.1.1.3']],
     [/^aviator_blazer$/, /nameplate top to pocket top/, /./, ['4.2.3.1.1.2', '4.2.4.1.1.2']],
-    [/^semi_formal$/, /crest to medals/, /./, ['4.2.1.4', '4.2.2.4']],
+    [/^semi_formal$/, /crest to medals/, /./, '4.2.2.4'],
     [/^semi_formal$/, /medals to chaplain badge/, /./, ['4.2.1.5', '4.2.2.5']],
     [/^polo$/, /name to/, /./, '5.3.2.1.1']
   ];

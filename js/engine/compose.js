@@ -491,7 +491,7 @@
       slotW: slot.w, centerX: slot.centerX, bottomY: 0
     });
     // The lowest row's medal bodies end exactly on the line the slot names (1/2 in above the service
-    // badge or crest, CAPR 39-1 4.2.1.4 and 4.2.2.4 with ICL 25-02), or the group is centred on the
+    // badge or crest, CAPR 39-1 4.2.2.4 with ICL 25-02; the men's copy is printed as 4.1.2.4 and corrected to 4.2.2.4), or the group is centred on the
     // slot's point (the mess dress, 4.1.1.1.2.2): measured from the lowest drawn body, not the
     // tallest body of the whole set, so a taller medal in an upper row cannot leave a gap.
     const lowRow = out.rows.length - 1;

@@ -448,7 +448,7 @@
   // Two different rules, one per uniform (Doran: "the medals need to move left"):
   //  - Corporate semi-formal, 4.2.2.4 as rewritten by ICL 25-02: "centered above the pocket" (the lowest row 1/2 in above
   //    the CAP crest or service badge); the rack's centre is the pocket's centre, the crest's x. Nothing in the text
-  //    moves it toward the arm. (4.2.1.4 states the same for the corporate service dress.)
+  //    moves it toward the arm. (4.2.2.4 as changed by ICL 25-02 states the same for the corporate semi-formal dress; the men's copy is printed as 4.1.2.4, which ICL 25-02 corrects to 4.2.2.4.)
   //  - Mess dress, 4.1.1.1.2.2: "centered on the wearer's left between the lapel and arm seam" and midway between the top
   //    shoulder seam and the top button: the centre is the midpoint of the lapel's outer edge and the arm seam, both
   //    taken at the rack's height.

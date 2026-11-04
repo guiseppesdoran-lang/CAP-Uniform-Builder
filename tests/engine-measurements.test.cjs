@@ -41,7 +41,7 @@ const CITE = {
   pocketBadge: 'centered: badge on the lower portion of the pocket (4.1.11.1.1.2.3.2)',
   messMidway: 'midway: miniature medals between the top shoulder seam and the top button (4.1.1.1.2.2, 4.1.2.1.2.2)',
   messBelow: '½ in: men\'s mess dress badge below the medals (4.1.1.1.2.3)',
-  crest: '½ in: miniature medals above the CAP crest (4.2.1.4, 4.2.2.4 with ICL 25-02)',
+  crest: '½ in: miniature medals above the CAP crest (4.2.2.4 with ICL 25-02)',
   chaplainSemi: '½ in: chaplain insignia above the top row of medals (4.2.1.5, 4.2.2.5)',
   chaplainBlazer: '½ in: chaplain badge above the blazer nametag (4.2.3.1.1.3, 4.2.4.1.1.3)',
   fieldBadge: '½ in: from the top of the CAP tape to the bottom of the first badge\'s embroidery, second above the first (7.1.1.3.1.1-2, 5.1.1.1.2.4, 5.2.1.1.2.6; Ethan)',
