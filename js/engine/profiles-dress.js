@@ -182,14 +182,103 @@
     return l ? { x: l.x, y: l.y, w: l.w, h: l.h, spec: s } : null;
   }
 
+  // Badges never leave the garment (CAPR 39-1 4.1.5.2.2.4.1, 4.1.9.4.4.1, 4.2.6.2.7.1, 4.1.1.1.3.1, 4.1.2.1.2.5: the first badge is centred 1/2 in above the
+  // highest row). A rack tall enough to push the badge past the garment's top edge (the shoulder seam, the top of the sheet), onto a shoulder board or, on the
+  // overblouse, further onto the collar leaf than the accepted three rows put it, would draw the badge off the cut. The badge then stops at that edge and
+  // lies over the top of the ribbons, and the scene says the rack is too tall for it to sit 1/2 in above. `limits`:
+  //   ring:      the garment's upper outline (GARMENT_TOP[sheet], sheet inches) the stack's top edge must stay inside,
+  //   strips:    polygons (the shoulder boards seen edge-on) no badge may touch,
+  //   minBottom: the lowest place the stack's bottom may rise to (the overblouse: where it stands over three rows of ribbons).
+  const BADGE_EDGE_CLEAR = 0.05, BADGE_STEP = 0.02;
+  const OUTLINE_CUT = 5.9;   // GARMENT_TOP is cut at 6 in below the sheet's top
+  const RIBBON_ROW_H = 0.375;   // a ribbon is 3/8 in high (CAPR 39-1 11.3)
+  function pointInRing(p, ring){
+    let c = false;
+    for(let i = 0, j = ring.length - 1; i < ring.length; j = i++){
+      const a = ring[i], b = ring[j];
+      if((a[1] > p.y) !== (b[1] > p.y) && p.x < (b[0] - a[0]) * (p.y - a[1]) / (b[1] - a[1]) + a[0]) c = !c;
+    }
+    return c;
+  }
+  // What a stack of boxes (sheet inches) crosses: 'collar' | 'board' | 'seam', or null when it stays on the garment.
+  function badgeBlocker(boxes, limits, dy){
+    if(!limits) return null;
+    if(limits.minBottom != null && boxes[0].y + boxes[0].h + dy < limits.minBottom - 1e-9) return 'collar';
+    const moved = boxes.map(b => ({ x: b.x, y: b.y + dy, w: b.w, h: b.h }));
+    if(limits.strips && moved.some(b => limits.strips.some(poly => boxTouchesPolygon(b, poly)))) return 'board';
+    if(limits.ring){
+      // The outline table is cut 6 in below the sheet's top (GARMENT_TOP): a point lower than that is on the cloth.
+      for(const b of moved) for(let i = 0; i <= 6; i++){
+        const q = { x: b.x + b.w * i / 6, y: b.y - BADGE_EDGE_CLEAR };
+        if(q.y < OUTLINE_CUT && !pointInRing(q, limits.ring)) return 'seam';
+      }
+    }
+    return null;
+  }
+  const BADGE_EDGE_WORDS = {
+    collar: 'kept where it stands over three rows of ribbons, short of the shoulder and the top of the garment',
+    board: 'kept below the shoulder board',
+    seam: 'kept below the shoulder seam, the top edge of the garment'
+  };
+  // The shoulder boards of a coat sheet as quadrilaterals along the drawn shoulder seam, each side's own (shoulderSeamOf), the board's thickness plus BADGE_EDGE_CLEAR.
+  function seamStrips(ctx){
+    const out = [];
+    for(const side of ['left', 'right']){
+      const sm = ctx.base && shoulderSeamOf(ctx.base.id, side);
+      if(!sm) continue;
+      const len = Math.hypot(sm.outer.x - sm.neck.x, sm.outer.y - sm.neck.y) || 1;
+      const u = { x: (sm.outer.x - sm.neck.x) / len, y: (sm.outer.y - sm.neck.y) / len }, h = EDGE_ON_THICK / 2 + BADGE_EDGE_CLEAR;
+      const n0 = { x: sm.neck.x - u.x * BADGE_EDGE_CLEAR, y: sm.neck.y - u.y * BADGE_EDGE_CLEAR }, o0 = { x: sm.outer.x + u.x * BADGE_EDGE_CLEAR, y: sm.outer.y + u.y * BADGE_EDGE_CLEAR };
+      out.push([{ x: n0.x - u.y * h, y: n0.y + u.x * h }, { x: o0.x - u.y * h, y: o0.y + u.x * h }, { x: o0.x + u.y * h, y: o0.y - u.x * h }, { x: n0.x + u.y * h, y: n0.y - u.x * h }]);
+    }
+    return out;
+  }
+  // The edge-on shoulder boards already drawn on the scene (the mess dress boards), each its rotated rectangle grown by BADGE_EDGE_CLEAR.
+  function layerStrips(ctx){
+    return ctx.layers.filter(l => l.role === 'epaulet-edge' && l.strip).map(l => {
+      const t = l.strip, g = BADGE_EDGE_CLEAR, o = t.origin || { x: t.x + t.w / 2, y: t.y + t.h / 2 };
+      return [[t.x - g, t.y - g], [t.x + t.w + g, t.y - g], [t.x + t.w + g, t.y + t.h + g], [t.x - g, t.y + t.h + g]].map(([x, y]) => core.rotatePoint({ x, y }, o, t.rotate || 0));
+    });
+  }
+  function badgeLimits(ctx, o){
+    const ring = ctx.base && GARMENT_TOP[ctx.base.id];
+    return { ring: ring || null, strips: o && o.strips ? o.strips : null, minBottom: o && o.minBottom != null ? o.minBottom : null };
+  }
+  // The box a badge item takes when placed (its art's own size).
+  async function badgeSize(ctx, item){
+    if(item.military){ const e = milEntry(item); return e ? { w: e.w, h: e.h } : null; }
+    const s = await ctx.spec(item.art);
+    return s ? { w: s.w, h: s.h } : null;
+  }
+
   // Stack badges upward, each `gap` above the one below. The first item is the lowest; `below` names what it stands over (the pill's caption).
-  async function stackBadges(ctx, items, x, bottomY, gap, below){
+  // With `limit` ({ limits, cite }) the stack is kept on the garment (see above): it comes down by the least that keeps it there.
+  async function stackBadges(ctx, items, x, bottomY, gap, below, limit){
     let y = bottomY;
     let top = bottomY;
     let under = below || 'ribbons';
+    let moved = 0;
+    if(limit && limit.limits){
+      const boxes = [];
+      let yy = bottomY;
+      for(const it of items){
+        const sz = await badgeSize(ctx, it);
+        if(!sz) continue;
+        boxes.push({ x: x - sz.w / 2, y: yy - gap - sz.h, w: sz.w, h: sz.h });
+        yy -= gap + sz.h;
+      }
+      const why = boxes.length ? badgeBlocker(boxes, limit.limits, 0) : null;
+      if(why){
+        let dy = 0;
+        while(dy < 60 && badgeBlocker(boxes, limit.limits, dy)) dy += BADGE_STEP;
+        moved = dy;
+        y = bottomY + dy;
+        ctx.note(`The ${limit.what || 'ribbons'} are too tall for the badge to sit 1/2 in above them on this cut: it is ${BADGE_EDGE_WORDS[why]}, and lies over the top of the ${limit.what || 'ribbons'} (CAPR 39-1, ${limit.cite})`);
+      }
+    }
     for(const it of items){
       const p = await putBadge(ctx, it, { x, y: y - gap }, 'bottom_center');
-      if(p){ ctx.measure({ x, y }, { x, y: y - gap }, null, { caption: under + ' to badge' }); y = p.y; top = p.y; under = 'badge'; }
+      if(p){ if(!moved) ctx.measure({ x, y }, { x, y: y - gap }, null, { caption: under + ' to badge' }); y = p.y; top = p.y; under = 'badge'; moved = 0; }
     }
     return top;
   }
@@ -239,7 +328,7 @@
         const first = await putBadge(ctx, plan.olp[0], geo.olpCenter, 'center');
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], geo.olp.x, first.y, 0.5, 'badge');
       }else{
-        await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, geo.olp.gap == null ? 0.5 : geo.olp.gap, geo.olp.below);
+        await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, geo.olp.gap == null ? 0.5 : geo.olp.gap, geo.olp.below, geo.olp.limits ? { limits: geo.olp.limits, cite: geo.olp.cite } : null);
       }
     }
     const tag = geo.nametag;
@@ -1730,7 +1819,7 @@
     }
 
     const geo = {
-      olp: { x: olpCenterX(rack, rest.x), baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' },
+      olp: { x: olpCenterX(rack, rest.x), baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket', limits: badgeLimits(ctx, { strips: seamStrips(ctx) }), cite: sex === 'male' ? '4.1.5.2.2.4.1' : '4.1.9.4.4.1' },
       nametag: tagRect,
       // Men: 1 1/2 in below the welt top and below the nametag, edge to edge: the top of the badge
       // (4.1.5.2.2.4.2, Figure 4.6), like every other distance between pieces.
@@ -2060,7 +2149,7 @@
     }
     // Aviation / occupational: 1/2 in above the medals; none worn: centred on the medal spot.
     if(plan.olp.length){
-      if(box) await stackBadges(ctx, plan.olp, olpCenterX(box, center.x), box.y, 0.5, 'medals');
+      if(box) await stackBadges(ctx, plan.olp, olpCenterX(box, center.x), box.y, 0.5, 'medals', { what: 'medals', limits: badgeLimits(ctx, { strips: layerStrips(ctx) }), cite: female ? '4.1.2.1.2.5' : '4.1.1.1.3.1' });
       else{
         const first = await putBadge(ctx, plan.olp[0], center, 'center');
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], center.x, first.y, 0.5, 'badge');
@@ -2185,6 +2274,9 @@
     const rack = await ribbonRack(ctx, b, rest, { perRow: 3 });
 
     const geo = { nametag: tag, olp: { x: olpCenterX(rack, rest.x), baseY: rack ? rack.y : rest.y, below: rack ? 'ribbons' : 'pocket' } };
+    // The overblouse: the first badge never goes higher than it stands over three rows of ribbons, where its overlap with the collar leaf is the accepted one
+    // (Figure 4.18 gives the leaf its proportion); a taller rack would take it up the leaf, over the shoulder and off the sheet (4.2.6.2.7.1).
+    if(V.overblouse && rack) geo.olp = Object.assign(geo.olp, { limits: badgeLimits(ctx, { minBottom: rest.y - 3 * RIBBON_ROW_H - 0.5 }), cite: '4.2.6.2.7.1' });
     if(V.overblouse && !rack) geo.olp.gap = 0; // parallel with the nameplate
     // LIVE13 E99. Overblouse: the nametag against the first exposed button (4.2.6.2.6.1.2), the bottom row of ribbons even with the nameplate's
     // bottom (4.2.6.2.6.2.2). Aviator shirt: nametag and ribbons each 'centered, resting on, but not over the edge of' their pocket (4.2.5.1.2.1-2,
