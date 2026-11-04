@@ -300,3 +300,17 @@ test('a U.S. military badge is listed in its military form (a military-spec item
   const cap=res.lines.find(l=>l.key==='badge:'+PILOT);
   assert.ok(cap&&cap.rule==='CAP_ONLY'&&cap.detail==='Regular size','the CAP pilot badge beside it stays CAP-only, regular size');
 });
+
+test('an item links to its own product page: no two items share one (the mess dress shirt, blouse and skirt and the slacks used to link to the coat\'s page, with the coat\'s SKU)', () => {
+  const C = require('../purchase-catalog.js');
+  const byUrl = {};
+  for(const [id, it] of Object.entries(C.items)) for(const o of it.offers) if(o.url) (byUrl[o.url] = byUrl[o.url] || []).push(id);
+  const shared = Object.entries(byUrl).filter(([, ids]) => ids.length > 1).map(([url, ids]) => `${url}: ${ids.join(', ')}`);
+  assert.deepEqual(shared, []);
+  for(const id of ['mess_shirt_male', 'mess_blouse_female', 'mess_skirt_a_line', 'slacks_blue_female']){
+    const offer = C.items[id].offers.find(o => o.vendor === 'uniforms4u');
+    assert.equal(offer.url, null, `${id} searches for itself`);
+    assert.equal(offer.sku, null, `${id} carries no other item's SKU`);
+    assert.equal(offer.status, 'estimated', `${id}'s price is not verified from a page that sells something else`);
+  }
+});

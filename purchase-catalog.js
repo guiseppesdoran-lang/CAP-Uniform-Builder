@@ -61,11 +61,11 @@
     white_shirt_semiformal_male: item("Men's white long-sleeve dress shirt (cadet semi-formal)", 'Garments', 'GENERIC_SPEC', [U(39.99, 'estimated', AUG), V(null), I(null)], { q: 'white long sleeve dress shirt', ref: '4.1.3.2.3' }),
     white_blouse_semiformal_female: item("Women's white princess-line blouse (cadet semi-formal)", 'Garments', 'GENERIC_SPEC', [U(39.99, 'estimated', OCT), V(null), I(null)], { q: 'white dress blouse women', ref: '4.1.4.3' }),
     mess_coat_male: item("Men's USAF mess dress coat", 'Garments', 'MILSPEC_OK', [U(229.99, 'verified', AUG, u4('/p-usaf-mess-dress-officer-uniform-11745.aspx')), V(null), I(null)], { ref: '4.1.1.1' }),
-    mess_shirt_male: item("Men's white mess dress shirt (French cuffs)", 'Garments', 'MILSPEC_OK', [U(89.99, 'verified', AUG, u4('/p-usaf-mess-dress-officer-uniform-11745.aspx')), V(null), I(null)], { q: 'mess dress shirt white french cuff', ref: '4.1.1.2' }),
+    mess_shirt_male: item("Men's white mess dress shirt (French cuffs)", 'Garments', 'MILSPEC_OK', [U(89.99, 'estimated', AUG), V(null), I(null)], { q: 'mess dress shirt white french cuff', ref: '4.1.1.2' }),
     mess_trousers_male: item('USAF mess dress trousers (high rise, 7/8 in blue stripe)', 'Garments', 'MILSPEC_OK', [U(99.99, 'verified', AUG, u4('/p-us-air-force-mess-dress-uniform-high-rise-trousers-8294.aspx')), V(null), I(null)], { q: 'Air Force mess dress trousers', ref: '4.1.1.3' }),
     mess_coat_female: item("Women's USAF mess dress coat", 'Garments', 'MILSPEC_OK', [U(229.99, 'verified', AUG, u4('/p-usaf-female-officer-mess-dress-4020.aspx')), V(null), I(null)], { ref: '4.1.2.1' }),
-    mess_blouse_female: item("Women's white mess dress blouse", 'Garments', 'MILSPEC_OK', [U(89.99, 'estimated', AUG, u4('/p-usaf-female-officer-mess-dress-4020.aspx')), V(null), I(null)], { q: 'mess dress blouse women', ref: '4.1.2.2' }),
-    mess_skirt_a_line: item("Women's mess dress skirt, A-line", 'Garments', 'MILSPEC_OK', [U(99.99, 'estimated', AUG, u4('/p-usaf-female-officer-mess-dress-4020.aspx')), V(null), I(null)], { q: 'mess dress skirt', ref: '4.1.2.3' }),
+    mess_blouse_female: item("Women's white mess dress blouse", 'Garments', 'MILSPEC_OK', [U(89.99, 'estimated', AUG), V(null), I(null)], { q: 'mess dress blouse women', ref: '4.1.2.2' }),
+    mess_skirt_a_line: item("Women's mess dress skirt, A-line", 'Garments', 'MILSPEC_OK', [U(99.99, 'estimated', AUG), V(null), I(null)], { q: 'mess dress skirt', ref: '4.1.2.3' }),
     mess_skirt_straight_split: item("Women's mess dress skirt, straight with side split", 'Garments', 'MILSPEC_OK', [U(99.99, 'estimated', OCT), V(null), I(null)], { q: 'mess dress skirt straight split', ref: '4.1.2.3', note: 'Special order (CAPR 39-1, 4.1.2.3).' }),
     mess_cummerbund: item('Blue satin cummerbund', 'Accessories', 'MILSPEC_OK', [U(52.99, 'verified', AUG), V(null), I(null)], { q: 'Air Force blue satin cummerbund', ref: '4.1.1.3.2' }),
     mess_bow_tie: item('Blue satin bow tie', 'Accessories', 'MILSPEC_OK', [U(24.99, 'estimated', AUG), V(null), I(null)], { q: 'Air Force blue satin bow tie' }),
@@ -98,7 +98,7 @@
 
     // ---- trousers, slacks, skirts --------------------------------------------------------------------------
     trousers_blue_male: item('USAF blue service trousers', 'Garments', 'MILSPEC_OK', [U(99.99, 'verified', AUG, u4('/p-us-air-force-class-a-dress-uniform-trousers-6662.aspx')), V(null), I(null)], { q: 'Air Force blue service trousers', ref: '4.1.6.4' }),
-    slacks_blue_female: item("Women's USAF blue slacks", 'Garments', 'MILSPEC_OK', [U(99.99, 'estimated', AUG, u4('/p-usaf-female-officer-dress-uniform-5254.aspx')), V(null), I(null)], { q: 'Air Force women blue slacks', ref: '4.1.12.5' }),
+    slacks_blue_female: item("Women's USAF blue slacks", 'Garments', 'MILSPEC_OK', [U(99.99, 'estimated', AUG), V(null), I(null)], { q: 'Air Force women blue slacks', ref: '4.1.12.5' }),
     gray_trousers: item('Medium gray trousers', 'Garments', 'GENERIC_SPEC', [V(54.99, 'estimated', AUG), U(null), I(null)], { q: 'Civil Air Patrol gray slacks', ref: '4.2.5.1.5' }),
     gray_slacks_female: item("Women's medium gray slacks", 'Garments', 'GENERIC_SPEC', [V(54.99, 'estimated', AUG), U(null), I(null)], { q: 'Civil Air Patrol gray slacks women', ref: '4.2.6.4' }),
     ocp_trousers: item('OCP trousers', 'Garments', 'MILSPEC_OK', [V(69, 'verified', AUG), U(null), I(null)], { ref: '7.1.1.6' }),
