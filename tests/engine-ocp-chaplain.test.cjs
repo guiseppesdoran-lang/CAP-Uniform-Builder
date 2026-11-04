@@ -103,7 +103,7 @@ test('a build that is not a chaplain on the OCP is unchanged: the grade on the c
 // Doran, on the C/Col's three diamonds in a row: "Something doesn't look right". 7.1.1.2.2: cadet officer insignia is "centered vertically with the long
 // points on the cadet field grade insignia positioned horizontally, and each subsequent circle of cadet company grade insignia added vertically": the art is a
 // row, so it is turned a quarter and the diamonds and discs stack one above the other.
-test('the cadet officer\'s grade on the OCP chest square is turned a quarter, and on the caps the discs are (7.1.1.2.2); the cap diamonds stand as drawn (7.1.1.8)', async () => {
+test('the cadet officer\'s grade on the OCP chest square is turned a quarter (7.1.1.2.2); on the caps it is not (7.1.1.8)', async () => {
   const sq = await squareRect();
   for(const rank of ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']){
     const mk = (opt) => Object.assign(build('ocp', rank, [], opt), { grade: G.gradeInfo('cadet', rank, {}) });
@@ -117,8 +117,8 @@ test('the cadet officer\'s grade on the OCP chest square is turned a quarter, an
     for(const [headgear, zone] of [['auto', 'patrol_cap_front_insignia_zone'], ['tactical', 'baseball_cap_front_insignia_zone']]){
       const cap = await compose(mk({ headgear }));
       const g = cap.layers.find(l => l.key === 'grade:' + zone);
-      // The cap: the company grades' discs stack vertically (turned a quarter); the field grades' diamonds are not turned (tests/engine-ocp-cap-cadet-field.test.cjs).
-      assert.equal(g.rotate, /Lt$|Capt$/.test(rank) ? 90 : 0, `${rank} ${headgear}: the cap piece is turned a quarter for the discs only`);
+      // The cap: no cadet officer's art is turned, discs and diamonds alike (7.1.1.8; tests/engine-ocp-cap-cadet-field.test.cjs).
+      assert.equal(g.rotate || 0, 0, `${rank} ${headgear}: the cap piece is not turned`);
       const gb = core.layerBounds(g), z = await store.load('garment-ocp-coat-abu-cut').then(() => null);
       assert.ok(gb.h > 0 && g.origin, `${rank} ${headgear}: placed`);
       const half = cap.layers.find(l => l.type === 'measure' && l.label === '½ in' && Math.abs(l.to.y - (gb.y + gb.h)) < 0.01);
