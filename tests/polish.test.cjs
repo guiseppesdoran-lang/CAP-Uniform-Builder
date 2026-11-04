@@ -33,10 +33,11 @@ test('on a phone the scaled uniform is centred beside the sheet',()=>{
   assert.match(ui,/area\.style\.marginLeft=free>0 \? Math\.round\(free\/2\)\+'px' : ''/);
 });
 
-test('the member-report importer is one button with its explanation folded, and the clear button appears with a result',()=>{
+test('the member-report importer is one button with its explanation in plain words, and the clear button appears with a result',()=>{
   const card=html.slice(html.indexOf('id="memberReportImportPanel"'),html.indexOf('id="capMembershipPanel"'));
   assert.match(card,/<button id="importMemberReportBtn" class="ghost" type="button">Import member report…<\/button>/);
-  assert.match(card,/<details class="moreDetails" id="memberReportImportMore">\s*<summary>What the import reads<\/summary>/);
+  assert.doesNotMatch(card,/<details/,'nothing in the import card is folded away');
+  assert.match(card,/<div class="hintText mt-8" id="memberReportImportMore">\s*Upload a CAP Member Search/);
   assert.ok(card.indexOf('id="memberReportImportStatus"')<card.indexOf('id="clearImportedReportBtn"'),'the clear button follows the status line');
   assert.match(ui,/const sync=\(\)=>\{ clear\.hidden=idle\(\); \};/);
   assert.match(ui,/new MutationObserver\(sync\)\.observe\(status,\{childList:true,characterData:true,subtree:true\}\)/);

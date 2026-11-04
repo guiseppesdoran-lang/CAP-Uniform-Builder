@@ -8,7 +8,7 @@ const path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
 const section=(startMarker,endMarker)=>html.slice(html.indexOf(startMarker),html.indexOf(endMarker,html.indexOf(startMarker)));
 const finish=section('id="finishPanel"','</section>');
-const saved=section('id="savedSetupsMore"','</details>');
+const saved=section('id="savedSetupsMore"','<div class="controlsFooter"');
 const exportStep=section('id="stepGroup-export"','<div class="controlsFooter"');
 
 test('the Finish section holds the three ways to finish',()=>{
@@ -19,11 +19,12 @@ test('the Finish section holds the three ways to finish',()=>{
   assert.match(finish,/id="capubV2ImportFile"/);
 });
 
-test('saving to a file is in the open; the browser slot is the folded Saved setups',()=>{
+test('saving to a file and the browser slot are both in the open: Saved setups is plain, not a fold',()=>{
   for(const id of ['capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile']){
     assert.doesNotMatch(saved,new RegExp(`id="${id}"`),`${id} is not under Saved setups`);
   }
-  assert.match(saved,/<summary>Saved setups<\/summary>/);
+  assert.match(saved,/<label class="fieldLabel">Saved setups<\/label>/);
+  assert.doesNotMatch(exportStep,/<details/,'no fold on the Extra step hides a control');
   for(const id of ['capubV2SaveLocal','capubV2LoadLocal','capubV2Reset']) assert.match(saved,new RegExp(`id="${id}"`));
   assert.match(saved,/>Save to browser</);
   assert.match(saved,/>Load saved</);
