@@ -644,3 +644,13 @@ test('a previous member\'s current-commander status does not carry into a report
   assert.equal(r.commandInsignia.graduatedCommander, false);
   assert.ok(!r.parsed.badges.includes('squadron_commander_badge'));
 });
+
+test('a past Cadet Advisory Council term sets no shoulder cord; a current one does (current duty only)', () => {
+  const head = 'SMITH, JANE FEMALE CADET C/Capt Cadet Duty Positions Duty Position Unit Echelon Asst Start Date End Date ';
+  const past = head + 'Cadet Past Duty Positions Duty Position Unit Echelon Asst Start Date End Date RCAC Chair PCR-CA-001 REGION No 01 Jan 2021 31 Dec 2022 Professional Development';
+  const current = head + 'RCAC Chair PCR-CA-001 REGION No 01 Jan 2024 Cadet Past Duty Positions Duty Position Unit Echelon Asst Start Date End Date Professional Development';
+  const { context } = loadPageScripts();
+  const cord = t => vm.runInContext('(t) => parseCapMemberReport(t).shoulderCord', context)(t);
+  assert.equal(cord(past), null);
+  assert.equal(cord(current), 'region');
+});
