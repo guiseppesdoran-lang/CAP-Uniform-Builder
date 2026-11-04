@@ -48,13 +48,15 @@ test('semi-formal cadet NCO chevrons rest on the gorge seam exactly as on the Cl
 
 // ---- 2. Cadet-only badges are not drawn on adults, and the other way round ----------------------------
 
-test('a senior member is never shown a cadet-only badge, with a note (4.1.5.2.2.4.2, 4.1.9.4.4.2)', async () => {
+test('a senior member is never shown a cadet-only badge, with a note naming the paragraph of the cut (4.1.5.2.2.4.2, 4.1.9.4.4.2, 4.1.11.1.1.2.3.2, 4.1.12.2.5.2, 4.2.5.1.3.2, 4.2.6.2.7.2)', async () => {
   for(const uniform of ['blues_a', 'blues_b', 'aviator']){
     for(const sex of ['male', 'female']){
       const scene = await compose(build(uniform, sex, 'senior', 'Capt', ['model_rocketry_badge', 'stem_badges', 'cyber_badges', 'nra_marksman_badge', 'emergency_services_badge']));
       const ids = scene.layers.filter(l => l.role === 'badge').map(l => l.key);
       for(const id of ['model_rocketry_badge', 'stem_badges', 'cyber_badges', 'nra_marksman_badge']) assert.ok(!ids.includes('badge:' + id), `${uniform} ${sex}: ${id} is not drawn on a senior member`);
-      assert.ok(scene.notes.some(n => /Model Rocketry Badge is worn by cadets only \(CAPR 39-1, 4\.1\.5\.2\.2\.4\.2\)/.test(n)), `${uniform} ${sex}: the note names the badge and paragraph: ${scene.notes.join(' | ')}`);
+      // Each cut prints its own paragraph for the cadets-only badges.
+      const para = { blues_a: { male: '4\\.1\\.5\\.2\\.2\\.4\\.2', female: '4\\.1\\.9\\.4\\.4\\.2' }, blues_b: { male: '4\\.1\\.11\\.1\\.1\\.2\\.3\\.2', female: '4\\.1\\.12\\.2\\.5\\.2' }, aviator: { male: '4\\.2\\.5\\.1\\.3\\.2', female: '4\\.2\\.6\\.2\\.7\\.2' } }[uniform][sex];
+      assert.ok(scene.notes.some(n => new RegExp(`Model Rocketry Badge is worn by cadets only \\(CAPR 39-1, ${para}\\)`).test(n)), `${uniform} ${sex}: the note names the badge and its own paragraph: ${scene.notes.join(' | ')}`);
     }
   }
 });

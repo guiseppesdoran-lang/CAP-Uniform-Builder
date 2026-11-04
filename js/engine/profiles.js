@@ -413,6 +413,15 @@
 
   // The badges a member wears on a uniform, split by Attachment 4 family, each with the art for the
   // uniform's form ('dress' | 'field' | 'cloth' | 'mini'); badges without art in that form are noted.
+  // The paragraph that keeps the STEM, Cyber, Model Rocketry and NRA Marksmanship badges to cadets, for the uniform and cut in hand (each cut prints its own;
+  // the cadet semi-formal is worn as for the service dress, 4.1.3.2 and 4.1.4). Other uniforms: the chart of authorized badges.
+  const CADET_ONLY_PARA = {
+    blues_a: { male: '4.1.5.2.2.4.2', female: '4.1.9.4.4.2' },
+    semi_formal_usaf: { male: '4.1.5.2.2.4.2', female: '4.1.9.4.4.2' },
+    blues_b: { male: '4.1.11.1.1.2.3.2', female: '4.1.12.2.5.2' },
+    aviator: { male: '4.2.5.1.3.2', female: '4.2.6.2.7.2' }
+  };
+  const cadetOnlyPara = b => (CADET_ONLY_PARA[b.uniform] || {})[b.gender === 'female' ? 'female' : 'male'] || 'Attachment 4';
   function badgeSet(ctx, b, form){
     const out = { chaplain: [], aviation: [], occupational: [], specialty: [], service: [], nationalStaff: [], rocketry: [], marksmanship: [], cadetSpecialty: [], all: [] };
     for(const sel of b.badges || []){
@@ -425,7 +434,7 @@
         const label = sel.title || (B.get(sel.id) || {}).name || sel.id;
         ctx.note(b.grade.cadet
           ? `${label} is not worn by cadets (CAPR 39-1, Attachment 4)`
-          : `${label} is worn by cadets only (CAPR 39-1, 4.1.5.2.2.4.2)`);
+          : `${label} is worn by cadets only (CAPR 39-1, ${cadetOnlyPara(b)})`);
         continue;
       }
       const art = B.art(sel.id, form, sel.level) || (form === 'mini' ? B.art(sel.id, 'dress', sel.level) : null);
