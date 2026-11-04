@@ -1242,12 +1242,54 @@ for(const [id, art] of Object.entries(window.CAPUBPatchArt || {})) if(PATCH_META
 // CAP_UNIT_OPTIONS lives in data/unit-options.js (loaded above), keeping a 102 KB single-line literal out of this file.
 const CAP_UNIT_OPTIONS = window.CAP_UNIT_OPTIONS || [];
 
+// The unit emblems: one row per art-tree patch spec that carries a charter (data/unit-patch-art.js, written by scripts/sync-patches.cjs):
+// { charter, patchId, label, echelon, w, h, asset, img }. A new unit emblem is a spec with its charter and a sync, no code. The charter table
+// below, the patch catalog entries and each unit's higher headquarters patch are all built from these rows.
+const UNIT_PATCH_ART = Array.isArray(window.CAPUBUnitPatchArt) ? window.CAPUBUnitPatchArt : [];
+const UNIT_PATCH_ROW_BY_CHARTER = Object.fromEntries(UNIT_PATCH_ART.map(row => [row.charter, row]));
+
+// Charter number -> the patch it wears. The hand entry is the fallback (SER-TN-185 before its spec carried a charter); a row wins over it.
 const UNIT_PATCH_IMAGE_BY_CHARTER = {
   'SER-TN-185':'tn185_ocp_patch'
 };
+for(const row of UNIT_PATCH_ART) UNIT_PATCH_IMAGE_BY_CHARTER[row.charter] = row.patchId;
 
+// Where each level's patch is worn (CAPR 39-1, 8.2.4.5 and 8.3.4.5): a wing, region or national patch on every field uniform and on the flight
+// suits; a group's or a squadron's on the ABU, the OCP and the Corporate Field Uniform only.
+const UNIT_PATCH_UNIFORMS_BY_ECHELON = Object.freeze({
+  national: ['abu','ocp','flight_suit','corporate_field','cfdu'],
+  region: ['abu','ocp','flight_suit','corporate_field','cfdu'],
+  wing: ['abu','ocp','flight_suit','corporate_field','cfdu'],
+  group: ['abu','ocp','corporate_field'],
+  squadron: ['abu','ocp','corporate_field']
+});
+// `echelon` on a patch catalog entry marks the wing, region and national patches that the ABU and CFU left sleeve takes and the engine
+// reads as headquarters patches; a group's or squadron's patch has `unitEchelon` only and is worn as the organizational patch.
+for(const row of UNIT_PATCH_ART){
+  const hq = row.echelon === 'wing' || row.echelon === 'region' || row.echelon === 'national';
+  PATCH_META[row.patchId] = Object.assign({
+    label: row.label, kind: 'unit', unitEchelon: row.echelon, charter: row.charter,
+    slotHint: 'R_SHOULDER', w: 70, h: 70,
+    authorizedUniforms: UNIT_PATCH_UNIFORMS_BY_ECHELON[row.echelon] || UNIT_PATCH_UNIFORMS_BY_ECHELON.squadron.slice(),
+    img: row.img, asset: row.asset
+  }, hq ? { echelon: row.echelon } : {});
+}
+
+// The patch of a charter: its own, or, for a wing's or region's headquarters squadron (-000), the headquarters' (-001), which wears the same emblem.
 function getUnitPatchIdForCharter(code = State.unitPatchCharter){
-  return UNIT_PATCH_IMAGE_BY_CHARTER[String(code || '').trim()] || null;
+  const c = String(code || '').trim();
+  if(!c) return null;
+  const hit = UNIT_PATCH_IMAGE_BY_CHARTER[c] || UNIT_PATCH_IMAGE_BY_CHARTER[c.toUpperCase()];
+  if(hit) return hit;
+  const up = c.toUpperCase();
+  if(/-000$/.test(up) && ['wing', 'region'].includes(getUnitEchelon(up))) return UNIT_PATCH_IMAGE_BY_CHARTER[up.replace(/-000$/, '-001')] || null;
+  return null;
+}
+
+// True when the charter's own patch artwork exists (the Unit patch list marks it).
+function unitCharterHasArtwork(code){
+  const id = getUnitPatchIdForCharter(code);
+  return !!id && !!PATCH_META[id]?.img;
 }
 
 function getSelectedUnitPatchId(){
@@ -1259,6 +1301,8 @@ function getSelectedUnitPatchId(){
 // group, a squadron or a flight, which the flight suits do not wear a patch for.
 const UNIT_LEVEL_RANK = Object.freeze({ squadron:0, group:1, wing:2, region:3, national:4 });
 function getUnitEchelon(code){
+  const row = UNIT_PATCH_ROW_BY_CHARTER[String(code || '').trim().toUpperCase()];
+  if(row) return row.echelon;
   const parts = String(code || '').trim().toUpperCase().split('-');
   if(parts.length < 2) return 'squadron';
   const last = parts[parts.length - 1], mid = parts.length > 2 ? parts[parts.length - 2] : '', first = parts[0];
@@ -1286,6 +1330,35 @@ function isUnitCharterWornOnUniform(code, uniformId = State.uniform){
 // The charters whose patch is this patch (the unit patches have a picture by charter number).
 function getUnitPatchCharters(patchId){
   return Object.keys(UNIT_PATCH_IMAGE_BY_CHARTER).filter(code => UNIT_PATCH_IMAGE_BY_CHARTER[code] === patchId);
+}
+
+// The higher headquarters (HHQ) patch of a unit, from its charter number: a group's or squadron's is its wing's patch (the wing's headquarters,
+// XXX-YY-001), a wing's is its region's (XXX-XXX-001), a region's and National Headquarters' the CAP command patch. Null when that patch has no
+// artwork in the unit emblem rows. (CAPR 39-1, 7.1.1.4.2.1: the OCP's left sleeve carries the higher headquarters patch under AUX.)
+const UNIT_COMMAND_PATCH_ROW = UNIT_PATCH_ART.find(r => r.charter === 'NHQ-NHQ-000') || UNIT_PATCH_ART.find(r => r.asset === 'patch-cap-command-patch') || UNIT_PATCH_ART.find(r => r.echelon === 'national') || null;
+function getUnitHhqPatchId(code = State.unitPatchCharter){
+  const c = String(code || '').trim().toUpperCase();
+  if(!c) return null;
+  const level = getUnitEchelon(c);
+  if(level === 'region' || level === 'national') return UNIT_COMMAND_PATCH_ROW ? UNIT_COMMAND_PATCH_ROW.patchId : null;
+  const parts = c.split('-');
+  if(parts.length < 3) return null;
+  if(level === 'wing') return UNIT_PATCH_IMAGE_BY_CHARTER[`${parts[0]}-${parts[0]}-001`] || null;
+  if(parts[0] === 'NHQ') return UNIT_COMMAND_PATCH_ROW ? UNIT_COMMAND_PATCH_ROW.patchId : null;
+  return UNIT_PATCH_IMAGE_BY_CHARTER[`${parts[0]}-${parts[1]}-001`] || null;
+}
+
+// What the OCP's left sleeve carries for the chosen unit: its higher headquarters patch, placed automatically under AUX when the unit patch has
+// artwork and the HHQ patch exists (7.1.1.4.2.1), unless the member has picked a patch in lieu of it (7.1.1.4.2.2: any other patch of the OCP's left
+// sleeve, a Ranger tab included). Null off the OCP, with no unit patch, or when there is no HHQ patch to place.
+function getUnitHhqPlan(uniformId = State.uniform){
+  if(normalizeUniformKeyForPatches(uniformId) !== 'ocp') return null;
+  const unit = getUnitPatchIdForCharter(State.unitPatchCharter);
+  if(!unit || !PATCH_META[unit]?.img || !isPatchAuthorizedForUniform(unit, uniformId)) return null;
+  const hhq = getUnitHhqPatchId(State.unitPatchCharter);
+  if(!hhq || !PATCH_META[hhq]?.img || !isPatchAuthorizedForUniform(hhq, uniformId)) return null;
+  const inLieu = (State.patches || []).find(id => id !== hhq && PATCH_META[id] && isPatchAuthorizedForUniform(id, uniformId) && getPatchSlot(id, uniformId) === 'L_SHOULDER') || null;
+  return { patchId: hhq, label: PATCH_META[hhq].label, worn: !inLieu, inLieu };
 }
 
 function isUnitPatchAuthorizedForCurrentUniform(){
@@ -1325,20 +1398,44 @@ function renderUnitPatchStatus(){
     status.textContent = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} has an image asset, but it is not authorized for the current uniform selection.`;
     return;
   }
-  status.textContent = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} will render as the unit patch.`;
+  let line = `${getUnitPatchSelectionLabel(State.unitPatchCharter)} will render as the unit patch.`;
+  const hhq = getUnitHhqPlan();
+  if(hhq && hhq.worn) line += ` The ${hhq.label} patch, its higher headquarters, goes on the left sleeve under the AUX identifier (CAPR 39-1, 7.1.1.4.2.1); a patch you pick in lieu of it takes its place (7.1.1.4.2.2).`;
+  else if(hhq) line += ` The ${hhq.label} patch, its higher headquarters, is not placed: the patch you picked in lieu of it is on the left sleeve (CAPR 39-1, 7.1.1.4.2.2).`;
+  status.textContent = line;
+  const img = PATCH_META[patchId]?.img;
+  if(img && typeof document !== 'undefined' && document.createElement){
+    const thumb = document.createElement('img');
+    thumb.className = 'unitPatchThumb';
+    thumb.alt = '';
+    thumb.src = ASSET(img);
+    thumb.style.cssText = 'display:block;height:56px;width:auto;margin:6px 0 0;';
+    status.appendChild(thumb);
+  }
+}
+
+// The units the Unit patch list offers for a search, the ones whose patch artwork exists first, each with its line of text.
+function getUnitPatchOptions(filterText=''){
+  const normalized = String(filterText || '').trim().toLowerCase();
+  const found = CAP_UNIT_OPTIONS.filter(unit => {
+    if(!isUnitCharterWornOnUniform(unit.code)) return false;
+    if(!normalized) return true;
+    return `${unit.code} ${unit.name}`.toLowerCase().includes(normalized);
+  });
+  const rows = found.map(unit => {
+    const hasArtwork = unitCharterHasArtwork(unit.code);
+    return { code: unit.code, hasArtwork, text: `${unit.code} - ${unit.name}${hasArtwork ? '  ✓ artwork available' : ''}` };
+  });
+  // The units whose patch artwork exists come first, so a member finds them without searching.
+  return [...rows.filter(r => r.hasArtwork), ...rows.filter(r => !r.hasArtwork)];
 }
 
 function buildUnitPatchSelector(filterText=''){
   const sel = by('unitPatchSelect');
   if(!sel) return;
 
-  const normalized = String(filterText || '').trim().toLowerCase();
   const selected = State.unitPatchCharter || '';
-  const matches = CAP_UNIT_OPTIONS.filter(unit => {
-    if(!isUnitCharterWornOnUniform(unit.code)) return false;
-    if(!normalized) return true;
-    return `${unit.code} ${unit.name}`.toLowerCase().includes(normalized);
-  });
+  const matches = getUnitPatchOptions(filterText);
 
   sel.innerHTML = '';
   const none = document.createElement('option');
@@ -1349,8 +1446,7 @@ function buildUnitPatchSelector(filterText=''){
   matches.slice(0, 350).forEach(unit => {
     const opt = document.createElement('option');
     opt.value = unit.code;
-    const hasPatch = !!UNIT_PATCH_IMAGE_BY_CHARTER[unit.code];
-    opt.textContent = `${unit.code} - ${unit.name}${hasPatch ? '  ✓ patch available' : ''}`;
+    opt.textContent = unit.text;
     sel.appendChild(opt);
   });
 
@@ -1425,7 +1521,7 @@ function getPatchAuthorizationReason(patchId, uniformId = State.uniform, members
 
   const uniformKey = normalizeUniformKeyForPatches(uniformId);
   const allowedUniforms = meta.authorizedUniforms || ['abu','ocp','flight_suit','corporate_field','cfdu'];
-  if(allowedUniforms.includes(uniformKey) && unitPatchBelowFloor(patchId, uniformId)){
+  if((allowedUniforms.includes(uniformKey) || meta.kind === 'unit') && unitPatchBelowFloor(patchId, uniformId)){
     const floor = getUnitPatchFloor(uniformId);
     return `Only a wing, region or national patch is worn on ${floor.words}, not a group or squadron patch (CAPR 39-1, ${floor.ref}).`;
   }
@@ -1473,12 +1569,12 @@ const PATCH_UNIFORM_WORDS = Object.freeze({
 const NCSA_PATCH_IDS = new Set(['pjoc_patch','nesa_patch','civil_engineering_academy_patch','cos_patch','engineering_academy_patch','nfa_patch','cla_patch','nbb_patch','honor_guard_academy_patch']);
 const PATCH_PLACES = Object.freeze({
   abu: [
-    { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.1.1.1.2.2', takes: p => !p.unit && !!p.echelon },
+    { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.1.1.1.2.2', takes: p => !!p.echelon },
     { slot:'CHEST_RIGHT', label:'Right breast pocket', ref:'5.1.1.1.2.3', takes: p => !p.echelon || p.echelon === 'region' },
     { slot:'CHEST_LEFT', label:'Left breast pocket', ref:'5.1.1.1.2.3', takes: p => !p.unit && !p.echelon }
   ],
   corporate_field: [
-    { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.2.1.1.2.2', takes: p => !p.unit && !!p.echelon },
+    { slot:'L_SHOULDER', label:'Left sleeve, ½ in below the shoulder seam', ref:'5.2.1.1.2.2', takes: p => !!p.echelon },
     { slot:'R_SHOULDER', label:'Right sleeve, ½ in below the shoulder seam', ref:'5.2.1.1.2.3', takes: p => p.ncsa },
     { slot:'CHEST_RIGHT', label:'Right breast pocket', ref:'5.2.1.1.2.5', takes: p => !p.echelon || p.echelon === 'region' },
     { slot:'CHEST_LEFT', label:'Left breast pocket', ref:'5.2.1.1.2.4', takes: p => !p.unit && !p.echelon }

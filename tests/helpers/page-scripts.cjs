@@ -6,10 +6,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function loadPageScripts(){
+// `sources` replaces the text of a script by its path in index.html (a test's fixture data), {'data/unit-patch-art.js': '...'}.
+function loadPageScripts(sources = {}){
   const ROOT = path.join(__dirname, '..', '..');
   const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-  const sources = [...html.matchAll(/<script src="([^"?]+)(?:\?[^"]*)?"/g)].map(m => m[1]).filter(src => !/^https?:/.test(src));
+  const scripts = [...html.matchAll(/<script src="([^"?]+)(?:\?[^"]*)?"/g)].map(m => m[1]).filter(src => !/^https?:/.test(src));
   const element = () => new Proxy(function(){}, {
     get(_t, key){
       if(key === 'style' || key === 'dataset' || key === 'classList') return new Proxy({}, { get: () => () => {}, set: () => true });
@@ -34,8 +35,8 @@ function loadPageScripts(){
   context.window = context; context.self = context; context.globalThis = context;
   vm.createContext(context);
   const referenceErrors = [];
-  for(const src of sources){
-    try{ vm.runInContext(fs.readFileSync(path.join(ROOT, src), 'utf8'), context, { filename: src }); }
+  for(const src of scripts){
+    try{ vm.runInContext(Object.prototype.hasOwnProperty.call(sources, src) ? sources[src] : fs.readFileSync(path.join(ROOT, src), 'utf8'), context, { filename: src }); }
     catch(error){ if(error?.name === 'ReferenceError') referenceErrors.push(src + ': ' + error.message); }
   }
   return { context, referenceErrors };

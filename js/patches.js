@@ -809,8 +809,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     // Keep SER-TN-185 as the logical unit identity and let the renderer resolve the file.
     if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
-      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
+      // The hand entries are the fallback: a unit emblem row of data/unit-patch-art.js already filed the charter wins.
+      if(!UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185']) UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
+      if(!UNIT_PATCH_IMAGE_BY_CHARTER['TN-185']) UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'];
     }
 
     const capubPreviousGetBadgeAssetPath = getBadgeAssetPath;
@@ -1174,7 +1175,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     function capubDetectUnitCharterFromReport(text){
       const t = String(text || '').replace(/\s+/g, ' ');
-      const explicit = t.match(/\b([A-Z]{2,3}-[A-Z]{2}-\d{3})\b/);
+      const explicit = t.match(/\b([A-Z]{2,3}-[A-Z]{2,3}-\d{3})\b/);
       if(explicit && CAP_UNIT_OPTIONS?.some?.(u => u.code === explicit[1])) return explicit[1];
 
       const short = t.match(/\b([A-Z]{2}-\d{3})\b/);
@@ -1315,10 +1316,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // Make the new unit patch known to the unit-patch dropdown while keeping
     // generic unit patches out of the general patch picker.
     if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
-      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-330'] = 'tn330_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['TN-330'] = 'tn330_ocp_patch';
+      for(const [code, id] of [['SER-TN-185', 'tn185_ocp_patch'], ['SER-TN-330', 'tn330_ocp_patch']]){
+        if(!UNIT_PATCH_IMAGE_BY_CHARTER[code]) UNIT_PATCH_IMAGE_BY_CHARTER[code] = id;
+        const short = code.replace(/^SER-/, '');
+        if(!UNIT_PATCH_IMAGE_BY_CHARTER[short]) UNIT_PATCH_IMAGE_BY_CHARTER[short] = UNIT_PATCH_IMAGE_BY_CHARTER[code];
+      }
     }
 
     // Rebuild the selector because this mapping is installed after its initial
