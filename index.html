@@ -38,7 +38,7 @@
   <span class="unofficialTag" title="Not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force">Unofficial</span>
 </header>
 
-<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Hide the controls" title="Hide the controls" aria-controls="controls" aria-expanded="true">
+<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Menu" aria-controls="controls" aria-expanded="true">
   <span></span><span></span><span></span>
 </button>
 
@@ -65,11 +65,14 @@
           <button id="importMemberReportBtn" class="ghost" type="button">Import member report…</button>
           <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
           <div id="memberReportImportStatus" class="hintText" aria-live="polite">Nothing is imported yet. A report is read on your device and is not kept or sent.</div>
-          <div class="hintText mt-8" id="memberReportImportMore">
-            Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
-            The builder reads rank, gender, ribbons, achievements, qualifications and the badges it can match.
-          </div>
-          <button id="clearImportedReportBtn" class="ghost mt-8" type="button">Clear import notes</button>
+          <details class="moreDetails" id="memberReportImportMore">
+            <summary>What the import reads</summary>
+            <div class="hintText">
+              Upload a CAP Member Search “Printer Friendly View - Member Details” PDF or copied text file.
+              The builder reads rank, gender, ribbons, achievements, qualifications and the badges it can match.
+            </div>
+            <button id="clearImportedReportBtn" class="ghost mt-8" type="button">Clear import notes</button>
+          </details>
         </section>
 
         <section id="capMembershipPanel" class="panelBlock">
@@ -401,8 +404,8 @@
               <input id="capubV2ImportFile" type="file" accept="application/json,.json" hidden/>
               <div class="hintText">Keep a copy or move your setup to another device. It is also saved in this browser as you work.</div>
             </div>
-            <div class="finishAction" id="savedSetupsMore">
-              <label class="fieldLabel">Saved setups</label>
+            <details class="moreDetails" id="savedSetupsMore">
+              <summary>Saved setups</summary>
               <div id="capubV2QuickPanel">
                 <div class="row two">
                   <div class="col"><button id="capubV2SaveLocal" class="ghost" type="button">Save to browser</button></div>
@@ -413,7 +416,7 @@
                 </div>
                 <div class="hintText">Keeps your whole setup in this browser. It is also saved automatically as you work.</div>
               </div>
-            </div>
+            </details>
           </section>
         </div>
         <div id="extraPanel-regulation" role="tabpanel" aria-labelledby="extraTab-regulation" hidden>
@@ -514,10 +517,10 @@
 <script src="js/engine/grades.js?v=1fa2f0941f" defer></script>
 <script src="js/engine/compose.js?v=4deb6b46b8" defer></script>
 <script src="js/engine/profiles.js?v=8d32aedc5b" defer></script>
-<script src="js/engine/profiles-field.js?v=afb1c4c2d9" defer></script>
+<script src="js/engine/profiles-field.js?v=0350fa972f" defer></script>
 <script src="js/engine/profiles-dress.js?v=722cd94227" defer></script>
 <script src="js/engine/profiles-polo.js?v=09a832c03d" defer></script>
-<script src="js/engine/measure-layout.js?v=c6ce1e1d68" defer></script>
+<script src="js/engine/measure-layout.js?v=67342e8c42" defer></script>
 <script src="js/engine/render-svg.js?v=cf2364eff4" defer></script>
 <script src="badge-captions.js?v=1db6f784fa" defer></script>
 <script src="export-names.js?v=88358fb111" defer></script>
