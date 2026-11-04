@@ -8,6 +8,10 @@ function capubSetSidebarOpen(open){
   layoutShell.classList.toggle('sidebar-open', open);
   layoutShell.classList.toggle('sidebar-collapsed', !open);
   hamburgerBtn.setAttribute('aria-expanded', String(open));
+  // The button says what it does now (the label a screen reader reads and the tooltip).
+  const menuLabel = open ? 'Hide the controls' : 'Show the controls';
+  hamburgerBtn.setAttribute('aria-label', menuLabel);
+  hamburgerBtn.title = menuLabel;
   // The preview refits: on a phone the controls are a sheet over the lower part of the screen.
   document.dispatchEvent(new CustomEvent('capub:sidebar',{detail:{open}}));
 }

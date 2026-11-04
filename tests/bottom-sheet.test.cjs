@@ -22,12 +22,15 @@ function block(query){
   return css.slice(begin,i+1);
 }
 
-test('there is no bottom sheet and no menu button at any width',()=>{
+test('there is no bottom sheet; the menu button hides and shows the panel on a desktop and is gone on a phone',()=>{
   for(const f of ['index.html','styles/app.css','js/workspace-ui.js']) assert.doesNotMatch(read(f),/sheetGrip|sheetHandle|sheetTall|sheetDragging|wireSheet|--sheet-h/,f);
   assert.doesNotMatch(html,/id="sheetClose"/);
-  assert.match(css,/\.hamburgerBtn\{display:none\}/);
-  // The button stays in the markup because js/setup.js reads it by id; the panel is opened for good at load.
-  assert.match(html,/<button id="hamburgerBtn"/);
+  assert.match(css,/\.hamburgerBtn\{display:none\}/,'hidden by default, so a phone has none');
+  const wide=block('min-width:701px');
+  assert.match(wide,/\.hamburgerBtn\{[^}]*display:flex;/,'shown above 700px');
+  assert.match(html,/<button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Hide the controls" title="Hide the controls" aria-controls="controls" aria-expanded="true">/);
+  const setup=read('js/setup.js');
+  assert.match(setup,/const menuLabel = open \? 'Hide the controls' : 'Show the controls';/);
   assert.match(ui,/if\(typeof capubSetSidebarOpen==='function'\) capubSetSidebarOpen\(true\);\s*\/\/ The tabs and footer work from the first paint/);
   assert.match(ui,/const PHONE_QUERY='\(max-width:700px\)';/);
 });
@@ -74,7 +77,8 @@ test('the preview: hidden on step 1, a peek on 2 and 3, in the page on 4, full-s
 
 test('above 700px the panel sits beside the preview, narrower on a tablet; pickers two across there',()=>{
   const desktop=block('min-width:701px');
-  assert.match(desktop,/#layoutShell\.sidebar-collapsed #controls\{width:var\(--sidebar-w\)/);
+  assert.doesNotMatch(desktop,/#layoutShell\.sidebar-collapsed #controls\{width:var\(--sidebar-w\)/,'a collapsed panel stays collapsed on a desktop');
+  assert.match(css,/#layoutShell\.sidebar-collapsed #controls\{\s*width:0;/);
   const tablet=block('min-width:701px) and (max-width:1024px');
   assert.match(tablet,/:root\{--sidebar-w:340px\}/);
   assert.match(tablet,/\.modal \.galleryGrid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);

@@ -142,7 +142,7 @@ test('phone CSS: a stack with a sticky step strip, a fixed 48px action bar over 
   assert.match(html,/<span class="footerTiny">Unofficial<\/span>/);
   assert.match(html,/<button type="button" id="aboutFeedback" class="ghost" hidden>Send feedback<\/button>/);
   assert.match(ui,/feedback\.addEventListener\('click', \(\) => \{ dialog\.close\(\); window\.CAPUBFeedback\?\.open\(\); \}\);/);
-  // No sheet, no menu button, anywhere.
+  // No sheet anywhere; the menu button is the desktop's (tests/bottom-sheet.test.cjs).
   for(const f of ['index.html','styles/app.css','js/workspace-ui.js']) assert.doesNotMatch(read(f),/sheetGrip|sheetHandle|sheetTall|wireSheet/,f);
   assert.match(css,/\.hamburgerBtn\{display:none\}/);
 });

@@ -942,13 +942,22 @@ header h1::after{
 }
 
 /* ---- Responsive ---- */
-/* Above 700px the panel sits beside the preview at every width (a tablet gets a narrower one). The menu button and the
-   bottom sheet are gone. */
+/* Above 700px the panel sits beside the preview at every width (a tablet gets a narrower one). The menu button at the left
+   of the header hides it and brings it back, so the preview can take the whole width; there is no bottom sheet. */
 .previewPeekBtn,#previewCloseBtn,.footerTiny{display:none}
 .footerShort{display:none}
 .footerCredit{margin-left:var(--s1)}
 @media (min-width:701px){
-  #layoutShell.sidebar-collapsed #controls{width:var(--sidebar-w);min-width:260px;max-width:var(--sidebar-w);border-right:1px solid var(--line)}
+  header{padding-left:calc(var(--s4) + 44px + var(--s3))}
+  .hamburgerBtn{
+    position:fixed;left:var(--s4);top:calc((var(--chrome-header-h,var(--capub-header-h)) - 44px) / 2);z-index:10000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    width:44px;min-height:44px;height:44px;margin:0;padding:0;
+    border-radius:var(--r);border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);
+  }
+  .hamburgerBtn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.8)}
+  .hamburgerBtn span{display:block;width:20px;height:2px;background:#fff;border-radius:1px}
+  #layoutShell.sidebar-collapsed #previewWrapper{justify-content:center}
 }
 @media (min-width:701px) and (max-width:1024px){
   :root{--sidebar-w:340px}
