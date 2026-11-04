@@ -260,13 +260,35 @@
       (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where CAPR 39-1 puts it.` : `At most ${cap} on this uniform, each where CAPR 39-1 puts it.`) : BADGE_RULE,
       !!auth.showBadges || !!planned);
     set('patches',patchesNotShown ? `${patches} shown` : `${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
-    // The patches chosen that the drawing leaves off, one line each with the reason (the same lines Extra lists).
-    const hiddenNote=safeBy('patchesNotShownNote');
-    if(hiddenNote){
-      hiddenNote.replaceChildren(...(plan ? plan.hidden : []).map(c=>{ const line=document.createElement('div'); line.textContent=c.line; return line; }));
-      hiddenNote.classList.toggle('hidden',!patchesNotShown);
-    }
+    updateItemSummaries();
     syncCommandRow();
+  }
+
+  /* ---------- what is chosen and where it sits (the Badges and Patches cards) ---------- */
+  // One list under each card: every badge or patch chosen, by name, with the place the drawing put it in words, and for each the drawing leaves
+  // off the reason with its paragraph (js/badge-rules.js capubBadgeSummary, capubPatchSummary; the places are the engine's own).
+  const sentence=t=>{ const s=String(t||''); return s.charAt(0).toUpperCase()+s.slice(1); };
+  function fillSummary(hostId,rows){
+    const host=safeBy(hostId); if(!host) return;
+    const list=host.querySelector('.itemSummaryList'); if(!list) return;
+    host.classList.toggle('hidden',!rows.length);
+    list.replaceChildren(...rows.map(r=>{
+      const li=document.createElement('li');
+      li.className='itemSummaryRow'+(r.shown||r.pending?'':' notShown');
+      const name=document.createElement('span'); name.className='itemSummaryName'; name.textContent=r.name;
+      const place=document.createElement('span'); place.className='itemSummaryPlace';
+      place.textContent=r.shown ? sentence(r.place) : (r.pending ? '' : 'Not shown');
+      li.append(name,place);
+      if(!r.shown && !r.pending && r.why){
+        const why=document.createElement('span'); why.className='itemSummaryWhy'; why.textContent=/[.)]$/.test(r.why) ? sentence(r.why) : sentence(r.why)+'.';
+        li.append(why);
+      }
+      return li;
+    }));
+  }
+  function updateItemSummaries(){
+    if(typeof capubBadgeSummary==='function') fillSummary('badgeSummary',capubBadgeSummary());
+    if(typeof capubPatchSummary==='function') fillSummary('patchSummary',capubPatchSummary());
   }
 
   /* ---------- the command insignia pin, set on the Items step (CAPR 39-1, 10.2.5) ---------- */
@@ -652,7 +674,7 @@
   // The side panel is always open; js/setup.js closed it below 768px for the sheet that is gone.
   if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
   // The tabs and footer work from the first paint: wire them now, and again (idempotently) with the first refresh.
-  wireStepper(); wirePhone(); wireCommandRow(); watchImporter(); renderStepper();
+  wireStepper(); wirePhone(); watchImporter(); renderStepper();
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 

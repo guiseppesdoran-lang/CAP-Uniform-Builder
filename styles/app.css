@@ -1355,7 +1355,16 @@ html[data-access="guest"] #accessGate{display:none}
 .badgeChooserSlotName{margin:0;font-family:inherit;font-size:var(--t-sm);font-weight:700;line-height:1.3;color:var(--ink);min-width:0;overflow-wrap:anywhere}
 .badgeChooserTag{margin-left:auto;flex:none;text-align:right;font-size:var(--t-xs);color:var(--muted)}
 
-/* ---- The command insignia pin row (Badges card) ---- */
+/* ---- What is chosen and where it sits (Badges and Patches cards), and the command insignia pin row ---- */
+.itemSummary{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s1);min-width:0}
+.itemSummary.hidden{display:none}
+.itemSummaryTitle{margin:0;font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.itemSummaryList{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2)}
+.itemSummaryRow{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 var(--s2);min-width:0;font-size:var(--t-sm);line-height:1.35}
+.itemSummaryName{flex:1 0 100%;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere}
+.itemSummaryPlace{flex:1 0 100%;font-size:var(--t-xs);color:var(--muted);min-width:0}
+.itemSummaryRow.notShown .itemSummaryPlace{color:var(--ink);font-weight:700}
+.itemSummaryWhy{flex:1 0 100%;margin-top:0;font-size:var(--t-xs);color:var(--muted)}
 .commandRow{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s1);min-width:0}
 .commandRow.hidden{display:none}
 .commandRowHead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 var(--s2)}

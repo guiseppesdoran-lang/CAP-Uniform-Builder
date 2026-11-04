@@ -336,6 +336,13 @@
             <button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button>
           </div>
           <div class="hintText cardRule" data-rule="badges">Each badge is placed where CAPR 39-1 puts it.</div>
+
+          <!-- What is chosen and where it sits on the uniform, from the drawing (js/workspace-ui.js updateItemSummaries). -->
+          <div id="badgeSummary" class="itemSummary hidden">
+            <h4 class="itemSummaryTitle" id="badgeSummaryTitle">Where your badges are worn</h4>
+            <ul class="itemSummaryList" aria-labelledby="badgeSummaryTitle"></ul>
+          </div>
+
           <!-- The command insignia pin, set here without opening the chooser (js/workspace-ui.js wireCommandRow). -->
           <div id="commandInsigniaRow" class="commandRow hidden" role="group" aria-labelledby="commandInsigniaLabel">
             <div class="commandRowHead">
@@ -366,7 +373,10 @@
             <button id="clearPatches" class="ghost" type="button" aria-label="Clear patches">Clear</button>
           </div>
           <div class="hintText cardRule" data-rule="patches">Choose the patches you wear.</div>
-          <div id="patchesNotShownNote" class="hintText hidden" role="note"></div>
+          <div id="patchSummary" class="itemSummary hidden">
+            <h4 class="itemSummaryTitle" id="patchSummaryTitle">Where your patches are worn</h4>
+            <ul class="itemSummaryList" aria-labelledby="patchSummaryTitle"></ul>
+          </div>
 
           <div class="panelDivider">
             <label class="fieldLabel" for="unitPatchSelect">Unit patch</label>

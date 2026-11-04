@@ -134,6 +134,71 @@ function capubBadgesNotShownLine(scene){
   return `${n} selected badge${n === 1 ? ' has' : 's have'} no place left on this uniform and ${n === 1 ? 'is' : 'are'} not shown.${room} Choose which to show under Badges.`;
 }
 
+// ---- what is chosen and where it sits ---------------------------------------------------------------------------------------------
+// The list under the Badges card (js/workspace-ui.js): each badge the member chose, by name, with the place the drawing put it in words (the
+// engine's own, scene.layers[].place, set where it lays the badge out) or, for a badge the drawing leaves off, why, with the paragraph. The reason
+// is the drawing's: the position's own (scene.conflicts[].why), the note the drawing wrote for that badge, else that no place is left on the uniform.
+function capubBadgeNotDrawnReason(id, title, sc){
+  const conflict = ((sc && sc.conflicts) || []).find(c => (c.candidates || []).some(x => x.id === id) && !(c.shown || []).includes(id) && c.why);
+  if(conflict) return conflict.why;
+  const notes = (sc && sc.notes) || [];
+  const own = notes.find(n => n.startsWith(title + ' '));
+  if(own) return 'It ' + own.slice(title.length + 1);
+  if(isCommandInsigniaBadge(id)){
+    const pin = notes.find(n => /command insignia/i.test(n));
+    if(pin) return pin;
+  }
+  const rule = (window.CAPUBUniformRules && CAPUBUniformRules.getUniformRule(State.uniform)) || {};
+  return `No place is left for it on this uniform${rule.badgeCap ? `, which wears ${rule.badgeCap}${(rule.refs || {}).badges ? ` (CAPR 39-1, ${rule.refs.badges})` : ''}` : ''}`;
+}
+function capubBadgeSummary(scene){
+  const sc = capubDrawnScene(scene);
+  const layers = ((sc && sc.layers) || []).filter(l => l.role === 'badge');
+  const layerOf = id => layers.find(l => { const m = /^badge:(.+?)(?::(?:ON|UN):\d+|:chest)?$/.exec(l.key || ''); return !!m && m[1] === id; });
+  const rows = [];
+  const add = (id, name, worn, whyIfUnworn) => {
+    const row = { id, name, shown: false, place: '', why: '' };
+    const layer = worn ? layerOf(id) : null;
+    if(!worn) row.why = whyIfUnworn;
+    else if(layer){ row.shown = true; row.place = layer.place || ''; }
+    else if(sc) row.why = capubBadgeNotDrawnReason(id, name, sc);
+    else row.pending = true;
+    rows.push(row);
+  };
+  const ids = [...new Set(State.badges || [])].filter(id => typeof isBadgeEligibleForMembership !== 'function' || isBadgeEligibleForMembership(id, State.membership));
+  const wear = window.CAPUBUniformRules ? CAPUBUniformRules.badgeWear(State.uniform, capubBadgeWearOptions()) : null;
+  for(const id of ids){
+    const name = typeof getBadgeWornName === 'function' ? getBadgeWornName(id) : getBadgeDisplayName(id);
+    add(id, name, isBadgeWornOnCurrentUniform(id), `This uniform does not wear it${wear ? ` (CAPR 39-1, ${wear.ref})` : ''}`);
+  }
+  const drawsMilitary = !window.CAPUBUniformRules || CAPUBUniformRules.drawsMilitaryBadges(State.uniform);
+  for(const id of Object.keys(State.militaryBadges || {}).filter(k => State.militaryBadges[k] && State.militaryBadges[k].selected)){
+    const badge = ((window.CAPUBMilitaryData && CAPUBMilitaryData.badges) || []).find(b => b.id === id);
+    add(id, (badge && badge.officialName) || getBadgeDisplayName(id), drawsMilitary, 'U.S. military badges are not drawn on this uniform yet');
+  }
+  return rows;
+}
+
+// The same list for patches (the Patches card): the place each patch the drawing wears is in, in words from the uniform's own places
+// (js/catalog.js PATCH_PLACES), and the reason for each it leaves off (capubPatchPlan).
+function capubPatchSummary(scene){
+  const sc = capubDrawnScene(scene);
+  const plan = capubPatchPlan(scene);
+  const layers = ((sc && sc.layers) || []).filter(l => l.role === 'patch');
+  const slotOf = c => { for(const l of layers){ const m = /^patch:([^:]+)(?::([A-Z_]+))?/.exec(l.key || ''); if(m && m[1] === c.resolved && m[2]) return m[2]; } return null; };
+  const rows = plan.shown.map(c => {
+    const slot = slotOf(c);
+    const places = typeof getPatchPlaces === 'function' ? getPatchPlaces(c.resolved) : [];
+    const place = (slot && (places.find(pl => pl.slot === slot) || {}).label) || (typeof getPatchPlaceLabel === 'function' ? getPatchPlaceLabel(c.resolved) : '');
+    return { id: c.resolved, name: c.title, shown: true, place: place || '', why: '' };
+  });
+  for(const c of plan.hidden){
+    const why = c.line.startsWith(c.title + ' is not shown: ') ? c.line.slice((c.title + ' is not shown: ').length) : c.line;
+    rows.push({ id: c.resolved, name: c.title, shown: false, place: '', why: why.charAt(0).toUpperCase() + why.slice(1) });
+  }
+  return rows;
+}
+
 // Specialty/occupational badge visual families. These let one calibrated badge zone
 // carry over to similar badges without forcing every badge to use the same dimensions.
 const ES_POCKET_BADGE_IDS = new Set([
