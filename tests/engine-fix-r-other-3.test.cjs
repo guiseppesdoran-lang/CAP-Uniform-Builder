@@ -356,14 +356,14 @@ test('standard matrix: the flight suits wear the aviation badge on the name tag,
 });
 
 test('the harness flags engine notes that say a piece is not drawn, as it flags "No artwork for"', () => {
-  assert.ok(NOT_DRAWN.test('TN-185_ocp_patch is only a crop of the old sleeve drawing, so it is not drawn; it needs full patch artwork'));
+  assert.ok(NOT_DRAWN.test('TN-185_ocp_patch cannot be shown on this uniform'));
   const src = fs.readFileSync(path.join(root, 'scripts', 'render-builds.cjs'), 'utf8');
   assert.match(src, /withNotDrawn/);
 });
 
 test('the harness flags the engine\'s missing-art note for a badge with no field artwork (OCP Command Council badge, a service badge with no field form, G4)', async () => {
   const scene = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Capt', badgeIds: ['command_council_badge'], ribbonSel: [] }));
-  const missing = scene.notes.filter(n => /has no \w+ artwork/.test(n));
+  const missing = scene.notes.filter(n => /cannot be shown/.test(n));
   assert.ok(missing.length, 'the engine says the badge is not shown: ' + JSON.stringify(scene.notes));
   assert.deepEqual(missing.filter(n => !NOT_DRAWN.test(n)), [], 'and the harness counts it as not drawn');
   assert.ok(!NOT_DRAWN.test('At most two aviation and occupational badges are worn over the left pocket; the rest are not shown'), 'a rule trim is not missing art');

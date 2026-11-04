@@ -178,10 +178,10 @@ test('only service, aviation, occupational (chaplain included) and specialty tra
   assert.ok(staff.notes.some(n => /not worn on the polo/.test(n) && /5\.3\.2\.1\.1/.test(n)), staff.notes.join('|'));
   const service = await compose(build({ badgeIds: ['command_council_badge'] }));
   assert.equal(service.layers.filter(l => l.role === 'badge').length, 0, 'a service badge is named by 5.3.1.1 but has no embroidered art');
-  assert.ok(service.notes.some(n => /no field artwork/.test(n)), service.notes.join('|'));
+  assert.ok(service.notes.some(n => /cannot be shown on this uniform/.test(n)), service.notes.join('|'));
   const es = await compose(build({ badgeIds: ['emergency_services_badge'] }));
   assert.equal(es.layers.filter(l => l.role === 'badge').length, 0);
-  assert.ok(es.notes.some(n => /no field artwork/.test(n)), 'a specialty badge with no embroidered form is refused');
+  assert.ok(es.notes.some(n => /cannot be shown on this uniform/.test(n)), 'a specialty badge with no embroidered form is refused');
   const chaplain = await compose(build({ badgeIds: ['christian_chaplin'] }));
   assert.equal(chaplain.layers.filter(l => l.role === 'badge').length, 1);
 });

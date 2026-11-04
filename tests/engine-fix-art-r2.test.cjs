@@ -152,6 +152,6 @@ test('the specialty family badges have no field form: the OCP does not draw them
     const scene = await compose(build('ocp', 'male', 'senior', 'Capt', { badges: [{ id }] }));
     assert.ok(!scene.layers.find(l => l.key === 'badge:' + id), `${id} not drawn on the OCP`);
     assert.ok(!scene.layers.some(l => /^enamel-/.test(l.id || '')), `${id}: no enamel art on the OCP`);
-    assert.ok((scene.notes || []).some(n => /no field artwork/.test(n)), `${id}: the note says why`);
+    assert.ok((scene.notes || []).some(n => /cannot be shown on this uniform/.test(n)), `${id}: the note says why`);
   }
 });

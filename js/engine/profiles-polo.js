@@ -61,7 +61,7 @@
   }
 
   async function seal(ctx, slot){
-    if(!slot){ ctx.note('This polo sheet states no seal_slot, so the CAP seal is not placed'); return null; }
+    if(!slot){ ctx.note('The CAP seal cannot be shown on this polo'); return null; }
     const spec = await ctx.spec(SEAL_ID);
     // The seal is 2 1/2 in across (Figure A6-4); the slot states the size the sheet gives it.
     const k = slot.w / spec.w;
@@ -153,7 +153,7 @@
     const badgeAt = slotPoint(ctx, 'badge_slot');
     const x = badgeAt ? badgeAt.x : (nameSlot ? nameSlot.x + nameSlot.w / 2 : null);
     if(!nameSlot || x == null){
-      if(wantsName || wantsMark) ctx.note('This polo sheet states no name_slot, so the name and the badge are not placed');
+      if(wantsName || wantsMark) ctx.note('The name and the badge cannot be shown on this polo');
       return;
     }
     const bottom = name.nameTop - OVER_NAME;

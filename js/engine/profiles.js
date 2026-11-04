@@ -273,7 +273,7 @@
     if(polys.length < 2) return;
     let id = G.cadetOfficerInsignia(g, mini ? 'cloth-bordered-miniature' : 'cloth-bordered-regular');
     if(!id) return;
-    if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
+    if(!ctx.has(id)){ ctx.note('The grade insignia on the collar cannot be shown'); return; }
     let s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
     const turns = polys.map(poly => opts && opts.turnOf ? opts.turnOf(poly) : 0);
@@ -324,7 +324,7 @@
     const id = G.cadetNcoChevron(g, 'metal');
     const polys = collarPolygons(ctx);
     if(!id || polys.length < 2) return;
-    if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
+    if(!ctx.has(id)){ ctx.note('The chevron on the collar cannot be shown'); return; }
     const s = await ctx.spec(id);
     const centerX = ctx.base.w / 2;
     const edgeOf = opts && opts.edgeOf, z = opts && opts.z != null ? opts.z : Z.insignia;
@@ -438,7 +438,7 @@
         continue;
       }
       const art = B.art(sel.id, form, sel.level) || (form === 'mini' ? B.art(sel.id, 'dress', sel.level) : null);
-      if(!art){ ctx.note(`${sel.title || sel.id} has no ${form} artwork, so it is not shown on this uniform`); continue; }
+      if(!art){ ctx.note(`${sel.title || (B.get(sel.id) || {}).name || sel.id} cannot be shown on this uniform`); continue; }
       const item = { id: sel.id, art, family: fam, title: sel.title || sel.id };
       const key = { 'national-staff': 'nationalStaff', 'cadet-specialty': 'cadetSpecialty' }[fam] || fam;
       (out[key] || out.specialty).push(item);
@@ -488,7 +488,7 @@
       return null;
     }
     const art = B.art(b.command.id, form);
-    if(!art){ ctx.note(`${b.command.title || b.command.id} has no ${form} artwork`); return null; }
+    if(!art){ ctx.note(`${b.command.title || b.command.id} cannot be shown on this uniform`); return null; }
     return { id: b.command.id, art, graduated: !!b.command.graduated, title: b.command.title || b.command.id };
   }
 

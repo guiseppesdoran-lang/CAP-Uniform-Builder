@@ -167,7 +167,7 @@
   async function putBadge(ctx, item, at, anchor, key){
     if(item.military){
       const e = milEntry(item);
-      if(!e || !ctx.has(e.artId)){ ctx.note(`No artwork for ${item.title || item.id}`); return null; }
+      if(!e || !ctx.has(e.artId)){ ctx.note(`${item.title || 'This badge'} cannot be shown on this uniform`); return null; }
       // The SVG at its own size, its centre on the centre of the w x h box the anchor puts at `at`.
       const w = e.w, h = e.h;
       const x = at.x - w / 2;
@@ -749,8 +749,8 @@
         // leaf (above the collar foreground), with a note. Ribbons are still tucked under the collar.
         l.z = Math.max(l.z || 0, Z.badge + 0.6);
         ctx.note(foregroundGroup
-          ? `The collar leaf reaches the ${l.title || l.id}: it keeps its place 1/2 in above the ribbons or the badge below it and is shown whole, over the collar (CAPR 39-1 4.1.11.1.1.2.3.1, 4.2.5.1.3.1, 4.2.6.2.7.1)`
-          : `The collar leaf reaches the ${l.title || l.id}: it is shown whole, over the collar, because this garment's artwork has no collar layer to draw over it (CAPR 39-1 4.2.5.1.3.1, 4.2.6.2.7.1)`);
+          ? `The collar leaf reaches the ${l.title || 'badge'}: it keeps its place 1/2 in above the ribbons or the badge below it and is shown whole, over the collar (CAPR 39-1 4.1.11.1.1.2.3.1, 4.2.5.1.3.1, 4.2.6.2.7.1)`
+          : `The collar leaf reaches the ${l.title || 'badge'}: it is shown whole, over the collar (CAPR 39-1 4.2.5.1.3.1, 4.2.6.2.7.1)`);
       }else if(!foregroundGroup) l.clipOut = hit;
     }
   }
@@ -1357,7 +1357,7 @@
       return;
     }
     if(!axis) return;
-    if(!ctx.has(id)){ ctx.note('No artwork for the selected shoulder cord'); return; }
+    if(!ctx.has(id)){ ctx.note('The selected shoulder cord cannot be shown'); return; }
     const [n, a] = axis;
     const dx = a[0] - n[0], dy = a[1] - n[1];
     const len = Math.hypot(dx, dy);
@@ -1705,7 +1705,7 @@
     const sex = b.gender === 'female' ? 'female' : 'male';
     // The strap lies on the shoulder seam the sheet's outline draws (shoulderSeamOf); the cord sheets' strap axis (strapAxisOf) is the fallback where a sheet has no outline table.
     const A = Object.assign({}, CLASS_A[sex], { cord: await strapAxisOf(ctx, sex) });
-    if(!A.cord && !shoulderSeamOf(semi ? A.semi : A.coat, 'left')) ctx.note('No artwork for the shoulder strap position on this coat');
+    if(!A.cord && !shoulderSeamOf(semi ? A.semi : A.coat, 'left')) ctx.note('The shoulder boards cannot be placed on this coat');
     await ctx.garment(semi ? A.semi : A.coat);
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
 
@@ -1784,7 +1784,7 @@
       const size = sex === 'male' ? '4' : (b.opt.chevron === '3.5' ? '3.5' : '4');
       const sheetPts = chevronAnchors(ctx);
       if(sheetPts) await sleeveChevrons(ctx, G.seniorChevron(g, { size }), sheetPts);
-      else ctx.note('No artwork for the sleeve chevron position on this sheet');
+      else ctx.note('The sleeve chevron cannot be shown on this uniform');
     }else if(!semi && isOfficerLike(g)){
       // The coat's epaulets are edge-on in the front view and carry the grade there too, 5/8 in from the
       // outer end like the Class B (D6, D42; R7), as well as on the views from above.
@@ -1815,7 +1815,7 @@
       const tagBottom = tagRect.y + tagRect.h;
       ctx.measure({ x: span.seamX, y: tagBottom }, { x: span.lapelX, y: tagBottom }, 'centered', { mid: { x: tagRect.x + tagRect.w / 2, y: tagBottom }, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 14, caption: 'nameplate between seam and lapel' });
       if(rack) ctx.measure({ x: tagRect.x + tagRect.w, y: tagBottom }, { x: rack.x, y: rack.y + rack.h }, sex === 'male' ? 'even with' : 'parallel with', { side: { x: 0, y: 1 }, caption: 'nameplate bottom to ribbons bottom' });
-      else ctx.note(`With no ribbons worn, the overlay has no ribbon bottom to show the nametag's bottom ${sex === 'male' ? 'even with' : 'parallel with'} (CAPR 39-1, ${sex === 'male' ? '4.1.5.2.2.2' : '4.1.9.4.2'})`);
+      else ctx.note(`With no ribbons worn there is no ribbon bottom to measure from: the nametag's bottom is ${sex === 'male' ? 'even with' : 'parallel with'} the bottom of the ribbons (CAPR 39-1, ${sex === 'male' ? '4.1.5.2.2.2' : '4.1.9.4.2'})`);
     }
 
     const geo = {
@@ -1915,7 +1915,7 @@
       const id = G.seniorChevron(g, { size });
       const sheetPts = chevronAnchors(ctx);
       if(sheetPts) await sleeveChevrons(ctx, id, sheetPts);
-      else ctx.note('No artwork for the sleeve chevron position on this sheet');
+      else ctx.note('The sleeve chevron cannot be shown on this uniform');
     }
     // The epaulet sleeves are edge-on in the front view, each with its grade, and seen from above
     // just over the shoulder with the grade in place (R7).
@@ -2016,7 +2016,7 @@
 
   async function messBoards(ctx, g, M, female, buttons){
     const id = g.general && ctx.has(`${M.garment}-general-officer-shoulder-boards`) ? `${M.garment}-general-officer-shoulder-boards` : `${M.garment}-officer-shoulder-boards`;
-    if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return; }
+    if(!ctx.has(id)){ ctx.note('The shoulder boards cannot be shown on this uniform'); return; }
     const s = await ctx.spec(id);
     ctx.overlays = ctx.overlays || [];
     ctx.overlays.push(s);
@@ -2124,7 +2124,7 @@
       const size = female && b.opt.chevron === '3.5' ? '3.5' : '4';
       const pts = chevronAnchors(ctx);
       if(pts) await sleeveChevrons(ctx, G.seniorChevron(g, { white: true, size }), pts);
-      else ctx.note('The mess dress sheet states no sleeve anchors for the chevron');
+      else ctx.note('The sleeve chevron cannot be shown on this uniform');
     }
 
     // Miniature medals centred between the lapel and the arm seam (4.1.1.1.2.2, 11.2.8).
@@ -2259,7 +2259,7 @@
       // true-size chevron lies on it): the chevron is centred there and turned along the sleeve axis, as on the Class B sheets (chevronAnchors).
       const pts = chevronAnchors(ctx);
       if(pts) await sleeveChevrons(ctx, id, pts);
-      else ctx.note('No artwork for the sleeve chevron position on this sheet');
+      else ctx.note('The sleeve chevron cannot be shown on this uniform');
     }
 
     // Nametag over the right pocket (4.2.5.1.2.1, 4.2.6.2.6.1).
@@ -2541,8 +2541,8 @@
     // only that they are not worn on the blazer.
     const shirtBeside = b.uniform === 'aviator_blazer' && b.opt.underlayer !== 'turtleneck' && b.opt.underlayer !== 'shell';
     if(dropped.length) ctx.note(shirtBeside
-      ? 'Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on the blazer; the other badges are not worn on it, the shirt beside it shows the ones it takes'
-      : 'Only the chaplain badge and the CSAG, Command Council, National Board or NEC badge are worn on this uniform; the other badges are not shown');
+      ? 'Only the chaplain badge and the Civil Air Patrol Senior Advisory Group, Command Council, National Board or National Executive Committee badge are worn on the blazer; the other badges are not worn on it, the shirt beside it shows the ones it takes'
+      : 'Only the chaplain badge and the Civil Air Patrol Senior Advisory Group, Command Council, National Board or National Executive Committee badge are worn on this uniform; the other badges are not shown');
     if(b.command) ctx.note('Command insignia is not worn on this uniform');
 
     if(!semi){

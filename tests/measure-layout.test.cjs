@@ -97,7 +97,7 @@ for(const [name, b] of CASES){
 
 test('the OCP flag and AUX callouts exist, have a distance and lie clear of each other (7.1.1.4.1.1, 7.1.1.4.2, 7.1.1.4.1.2, 7.1.1.4.2.1)', async () => {
   const { scene, drawings } = await laidOut(CASES.find(c => /^OCP with/.test(c[0]))[1]);
-  const wanted = [/flag centered/, /shoulder seam to the flag/, /flag to the unit patch/, /AUX centered/, /shoulder seam to the AUX/, /AUX to the HHQ patch/];
+  const wanted = [/flag centered/, /shoulder seam to the flag/, /flag to the unit patch/, /AUX centered/, /shoulder seam to the AUX/, /AUX to the higher headquarters patch/];
   const ms = scene.layers.filter(l => l.type === 'measure');
   const found = wanted.map(re => {
     const m = ms.find(x => re.test(x.opts && x.opts.caption || ''));

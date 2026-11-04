@@ -221,12 +221,12 @@ test('the one-aviation-badge note cites the uniform\'s own paragraph and is not 
   assert.ok(turtle.notes.some(n => /are worn on this uniform; the other badges are not shown/.test(n)), 'no shirt beside the blazer: the plain note');
   assert.ok(!turtle.notes.some(n => /Only one CAP aviation badge/.test(n)));
   const semi = await compose(build('semi_formal', 'male', 'senior', 'Capt', two));
-  assert.ok(semi.notes.some(n => /Only the chaplain badge and the CSAG/.test(n)), 'the corporate badge note stays');
+  assert.ok(semi.notes.some(n => /Only the chaplain badge and the Civil Air Patrol Senior Advisory Group/.test(n)), 'the corporate badge note stays');
 });
 
 // ---- 13. The ES badges have no genuine field artwork: no field uniform draws them (LIVE-FIELD B6) -----------------------------
 
-test('the Emergency Services badges are dress-only: the OCP, ABU and CFU draw the aviation badge alone and note the ES badge as having no field artwork', async () => {
+test('the Emergency Services badges are dress-only: the OCP, ABU and CFU draw the aviation badge alone and note the ES badge as not shown', async () => {
   const B = require('../data/badge-catalog.js');
   for(const id of ['emergency_services_badge', 'senior_emergency_services_badge', 'master_emergency_services_badge']) assert.equal(B.art(id, 'field'), null, `${id} has no field form`);
   const badges = ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge'];
@@ -234,7 +234,7 @@ test('the Emergency Services badges are dress-only: the OCP, ABU and CFU draw th
     const scene = await compose(build(u, 'male', 'senior', 'Col', badges));
     assert.ok(byKey(scene, 'badge:CAPPilot1_FA9D33EA587D8'), `${u}: the pilot badge is drawn`);
     assert.ok(!byKey(scene, 'badge:emergency_services_badge'), `${u}: no ES badge`);
-    assert.ok(scene.notes.some(n => /has no field artwork/.test(n)), `${u}: ${scene.notes.join(' | ')}`);
+    assert.ok(scene.notes.some(n => /cannot be shown on this uniform/.test(n)), `${u}: ${scene.notes.join(' | ')}`);
   }
 });
 
@@ -244,7 +244,7 @@ test('the engine does not draw a patches/ocp crop; the harness resolves patches 
   const crop = { id: 'TN-185_ocp_patch', title: 'TN-185', href: '/images/patches/ocp/TN-185_ocp_patch.webp', aspect: 1, slot: 'R_SHOULDER', kind: 'unit' };
   const scene = await compose(build('ocp', 'male', 'senior', 'Lt Col', ['CAPPilot1_FA9D33EA587D8'], { patches: [crop] }));
   assert.ok(!scene.layers.some(l => l.role === 'patch'), 'no patch layer from a crop');
-  assert.ok(scene.notes.some(n => /only a crop of the old sleeve drawing/.test(n)), scene.notes.join(' | '));
+  assert.ok(scene.notes.some(n => /TN-185 cannot be shown on this uniform/.test(n)), scene.notes.join(' | '));
   // The harness maps a crop to the whole patch (TN-330 has full art, archer_ocp_patch resolves through its base id) or leaves it off.
   const r = HARNESS.patchesFrom([{ id: 'TN-330_ocp_patch', kind: 'unit' }, { id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER' }, { id: 'TN-185_ocp_patch', kind: 'unit' }]);
   assert.deepEqual(r.patches.map(p => p.asset), ['patch-sequoyah-cadet-squadron', 'patch-archer']);

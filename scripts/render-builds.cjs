@@ -28,11 +28,11 @@ const RULES = req('data/uniform-rules.js');
 const RA = req('data/ribbon-awards.js');
 const BADGES = req('data/badge-catalog.js');
 const ROTC = req('data/rotc-ribbons.js');
-// An engine note that says a requested piece was left out of the picture because the art is missing: a crop of the
-// old sleeve drawing, no full patch artwork, '<Badge> has no field artwork, so it is not shown on this uniform'
-// (profiles.js), 'No ribbon artwork for ...'. Notes that trim a selection by rule ('At most two badges ... the rest
-// are not shown') are not missing art and do not match.
-const NOT_DRAWN = /not drawn|only a crop|no full patch artwork|\bhas no [\w-]+ artwork\b|^No ribbon artwork for/i;
+// An engine note that says a requested piece was left out of the picture because its drawing is missing: '<Piece> cannot be shown
+// on this uniform' (and the shorter forms of the same sentence), a crop of the old sleeve drawing, no full patch artwork (the harness's
+// own patch note). Notes that trim a selection by rule ('At most two badges ... the rest are not shown') are not missing art and do not match.
+const MISSING_ART = /\bcannot be shown\b/i;
+const NOT_DRAWN = /not drawn|only a crop|no full patch artwork|\bcannot be shown\b/i;
 
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
@@ -429,7 +429,7 @@ function contactSheet(summary){
     byUniform.get(u).push(b);
   }
   const card = b => {
-    const notes = (b.notes || []).map(n => `<li class="${/^No artwork for/.test(n) || NOT_DRAWN.test(n) ? 'bad' : /artwork/i.test(n) ? 'warn' : ''}">${esc(n)}</li>`).join('');
+    const notes = (b.notes || []).map(n => `<li class="${NOT_DRAWN.test(n) ? 'bad' : /artwork/i.test(n) ? 'warn' : ''}">${esc(n)}</li>`).join('');
     const warn = (b.warnings || []).map(n => `<li class="warn">${esc(n)}</li>`).join('');
     const img = b.error ? `<div class="err">${esc(b.error)}</div>` : `<a href="${esc(b.png)}"><img loading="lazy" src="${esc(b.png)}" alt="${esc(b.name)}"></a>`;
     return `<figure class="${b.error || b.missingArtwork.length || (b.notDrawn || []).length ? 'flag' : ''}" data-name="${esc(b.name)}"><figcaption><b>${esc(b.name)}</b> <a href="${esc(b.scene)}">scene.json</a> <span>${b.px ? b.px.join('x') + 'px' : ''}</span></figcaption>${img}<ul>${notes}${warn}</ul></figure>`;
@@ -503,7 +503,7 @@ async function main(){
           const b = scene.bounds;
           for(const n of build.harnessNotes || []) if(!scene.notes.includes(n)) scene.notes.push(n);
           r.notes = scene.notes.slice();
-          r.missingArtwork = r.notes.filter(n => /^No artwork for/.test(n));
+          r.missingArtwork = r.notes.filter(n => MISSING_ART.test(n));
           r.notDrawn = r.notes.filter(n => NOT_DRAWN.test(n));
           fs.writeFileSync(path.join(args.out, r.scene), JSON.stringify({
             name, build: spec, title: scene.title, unit: 'inches (scene x right, y down, origin at the garment top-left)',
@@ -540,14 +540,14 @@ async function main(){
     withMissingArtwork: results.filter(r => r.missingArtwork.length).length,
     withNotDrawn: results.filter(r => r.notDrawn.length).length,
     elapsedMs, skipped, matrixWarnings: warnings,
-    builds: results.map(r => ({ name: r.name, build: r.build, png: r.png, scene: r.scene, px: r.px, notes: r.notes, missingArtwork: r.missingArtwork, notDrawn: r.notDrawn, artworkNotes: r.notes.filter(n => /artwork/i.test(n) && !/^No artwork for/.test(n)), warnings: r.warnings, error: r.error, ms: r.ms }))
+    builds: results.map(r => ({ name: r.name, build: r.build, png: r.png, scene: r.scene, px: r.px, notes: r.notes, missingArtwork: r.missingArtwork, notDrawn: r.notDrawn, artworkNotes: r.notes.filter(n => /artwork/i.test(n) && !MISSING_ART.test(n)), warnings: r.warnings, error: r.error, ms: r.ms }))
   };
   fs.writeFileSync(path.join(args.out, 'summary.json'), JSON.stringify(summary, null, 1));
   fs.writeFileSync(path.join(args.out, 'index.html'), contactSheet(summary));
-  console.log(`${summary.count} builds in ${(elapsedMs / 1000).toFixed(1)}s (${summary.count ? Math.round(elapsedMs / summary.count) : 0} ms/build): ${summary.failed} failed, ${summary.withMissingArtwork} with "No artwork for", ${summary.withNotDrawn} with a piece "not drawn", ${skipped.length} combinations skipped (uniform not offered).`);
+  console.log(`${summary.count} builds in ${(elapsedMs / 1000).toFixed(1)}s (${summary.count ? Math.round(elapsedMs / summary.count) : 0} ms/build): ${summary.failed} failed, ${summary.withMissingArtwork} with a piece that "cannot be shown", ${summary.withNotDrawn} with a piece "not drawn", ${skipped.length} combinations skipped (uniform not offered).`);
   console.log(`Wrote ${path.join(args.out, 'index.html')} and summary.json`);
   process.exitCode = summary.failed ? 1 : 0;
 }
 
 if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom, NOT_DRAWN };
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom, NOT_DRAWN, MISSING_ART };

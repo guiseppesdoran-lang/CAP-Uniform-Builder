@@ -87,7 +87,7 @@
       // the visor like the officers' (6.2.11.1 for officers); cadet NCOs and airmen wear none (6.2.11.1), which the
       // `g.officer` test above already skips. The OCP's ball cap is covered by 7.1.1.8, which names cadet officers.
       if(name === 'baseball_cap_front_insignia_zone' && g.cadet && b.uniform !== 'ocp'){
-        ctx.note('ICL 25-02 contradicts itself on the navy blue tactical cap: 6.2.11 has cadet officers wear grade on dark blue cloth centered on the front, 6.2.11.1 has NCOs and cadets wear no insignia; the grade is shown for cadet officers only');
+        ctx.note('Cadet officers wear grade on dark blue cloth centered on the front of the navy blue tactical cap; NCOs and cadets wear no insignia on it (ICL 25-02, 6.2.11 and 6.2.11.1)');
       }
       // "1/2 inch from the visor": the zone's bottom edge already sits 1/2 in above the visor.
       const at = mode === 'visor' ? { x: z.x + z.w / 2, y: z.y + z.h } : core.rectCenter(z);
@@ -100,7 +100,7 @@
       if(b.uniform === 'ocp' && b.opt.capGrade === 'square' && !chaplain){
         const sq = ocpSquareId(g);
         if(sq && ctx.has(sq)){ piece = sq; square = true; }
-        else ctx.note('No 2 x 2 in square artwork for this grade, so the cap shows the sewn grade');
+        else ctx.note('The 2 x 2 in square grade is not shown for this grade, so the cap shows the sewn grade (CAPR 39-1, 7.1.1.8)');
       }
       const k = (ctx.landmarkShift && ctx.landmarkShift[name] && ctx.landmarkShift[name].k) || 1;
       if(square){
@@ -141,7 +141,7 @@
     if(meme){
       const side = CHAPLAIN_MEME_IN;
       ctx.layers.push({ type: 'rect', x: at.x - side / 2, y: at.y - side / 2, w: side, h: side, fill: SQUARE_FILL, rotate: 0, origin: { x: at.x, y: at.y }, z: Z.insignia - 0.1, role: 'grade', key: 'grade:chest-meme', title: '24 x 24 in square, as ICL 26-14 is written', meme: true });
-      ctx.note('As written in ICL 26-14, 7.1.1.2.1: a 2 ft x 2 ft chaplain patch. The regulation means 2 in x 2 in (a typo); this is for the joke only and is not what is worn.');
+      ctx.note('The chaplain patch is drawn 2 ft x 2 ft, the size printed in ICL 26-14, 7.1.1.2.1');
     }
     const layer = await ctx.place(chaplain.art, { pieceAnchor: 'center', at, scale: k, z: Z.insignia + 0.1, role: 'badge', key: 'badge:' + chaplain.id + ':chest', title: chaplain.title + ' on the 2 x 2 in chest square', className: 'badge' });
     if(layer && meme) layer.meme = true;
@@ -365,7 +365,7 @@
           drawn++;
         }
       }
-      if(drawn === 1) ctx.note('The ABU sheet shows only the left sleeve; the chevron is worn on both sleeves');
+      if(drawn === 1) ctx.note('The chevron is worn on both sleeves; only the left sleeve is shown');
     }
     await capGrade(ctx, b);
   }
@@ -702,7 +702,7 @@
     if(centred && v && d){
       ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: v.y + v.h }, 'centered', { mid: { x: cx, y: layer.y + layer.h / 2 }, side: { x: inward, y: 0 }, offsetOnly: true, caption: 'patch on the sleeve pocket' });
     }
-    if(d && layer.y > d.y + d.h) ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: layer.y }, null, { side: { x: -inward, y: 0 }, offsetOnly: true, caption: right ? 'flag to the unit patch on the sleeve' : 'AUX to the HHQ patch on the sleeve' });
+    if(d && layer.y > d.y + d.h) ctx.measure({ x: cx, y: d.y + d.h }, { x: cx, y: layer.y }, null, { side: { x: -inward, y: 0 }, offsetOnly: true, caption: right ? 'flag to the unit patch on the sleeve' : 'AUX to the higher headquarters patch on the sleeve' });
   }
 
   // ---- the CAP Ranger tab ----
@@ -719,7 +719,7 @@
   async function rangerTabInHhqSlot(ctx, tabs, replaced){
     if(tabs.length > 1) ctx.note('Only one CAP Ranger tab is worn; the first selected is shown');
     const t = tabs[0];
-    if(!ctx.has(t.id)){ ctx.note(`No artwork for ${t.id}`); return null; }
+    if(!ctx.has(t.id)){ ctx.note(`${t.title || 'The CAP Ranger tab'} cannot be shown on this uniform`); return null; }
     const zone = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
     if(!zone) return null;
     const flat = await ctx.place(t.id, { pieceAnchor: 'center', at: ctx.point('hhq_patch_left_center') || core.rectCenter(zone), z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:0`, title: t.title || t.id, className: 'patch' });
@@ -732,7 +732,7 @@
         z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:edge`, title: t.title || t.id, className: 'patch' });
     }
     measureSleevePatch(ctx, flat, 'sleeve_flap_velcro_left', 'patch_aux_left', false);
-    ctx.note(`The CAP Ranger tab is worn by Hawk Mountain Ranger School graduates on the OCP only, in lieu of the HHQ patch, in its place under the AUX identifier (CAPR 39-1, 7.1.1.4.2, 7.1.1.4.2.1)${replaced ? `; ${replaced.title || 'the HHQ patch'} is not shown while the tab is worn` : ''}`);
+    ctx.note(`The CAP Ranger tab is worn by Hawk Mountain Ranger School graduates on the OCP only, in lieu of the higher headquarters patch, in its place under the AUX identifier (CAPR 39-1, 7.1.1.4.2, 7.1.1.4.2.1)${replaced ? `; ${replaced.title || 'the higher headquarters patch'} is not shown while the tab is worn` : ''}`);
     return flat;
   }
 
@@ -781,7 +781,7 @@
       // The Ranger tab is not worn on the ABU or the CFU (Ethan's ruling, 2026-10-29; see rangerTabInHhqSlot).
       if(patches.some(isRangerTab)){
         while(take(isRangerTab));
-        ctx.note('The CAP Ranger tab is worn on the OCP only, in lieu of the HHQ patch (CAPR 39-1, 7.1.1.4.2), so it is not shown on this uniform');
+        ctx.note('The CAP Ranger tab is worn on the OCP only, in lieu of the higher headquarters patch (CAPR 39-1, 7.1.1.4.2), so it is not shown on this uniform');
       }
       // The unit (organizational) patch is worn on the right breast pocket of the ABU and the CFU, not on
       // a sleeve (Attachment 4: Organizational Patch RP; 5.1.1.1.2.3, 5.2.1.1.2.5); the CFU's right

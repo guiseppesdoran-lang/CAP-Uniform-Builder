@@ -57,3 +57,17 @@ test('the visible text of index.html mentions none of them either, but the devel
   const hits = texts.map(t => t.trim()).filter(t => t && BAD.test(t) && !CREDIT.test(t));
   assert.deepEqual(hits, [], 'index.html text:\n' + hits.join('\n'));
 });
+
+// The engine's notes (js/engine) are text a member reads on the figure: no process wording (artwork, overlay, pending), no commentary on the regulation (typo, joke,
+// contradicts), no abbreviation a member has to decode (CSAG, NEC, HHQ; AUX stays, it is the patch's own text), and no bare id interpolated into a note (E156).
+test('the engine\'s string literals carry no process wording, commentary or undecoded abbreviation, and no note prints an id', () => {
+  const PROCESS = /\b(artwork|overlay|pending|typo|joke|contradict\w*|CSAG|NEC|HHQ)\b/i;
+  const dir = path.join(root, 'js', 'engine');
+  const hits = [];
+  for(const f of fs.readdirSync(dir).filter(n => /\.js$/.test(n))){
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    for(const { text, line } of stringLiterals(src)) if(PROCESS.test(text)) hits.push(`js/engine/${f}:${line}: ${text.slice(0, 140)}`);
+    src.split('\n').forEach((l, i) => { if(/\bnote\(`[^`]*\$\{(?:[\w.]*\.)?id\}/.test(l)) hits.push(`js/engine/${f}:${i + 1}: a note prints an id: ${l.trim().slice(0, 120)}`); });
+  }
+  assert.deepEqual(hits, [], 'engine notes state the rule and the paragraph in plain words:\n' + hits.join('\n'));
+});

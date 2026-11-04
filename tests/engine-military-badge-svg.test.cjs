@@ -84,11 +84,11 @@ test('a badge whose art is not in the manifest is not drawn: the scene says so, 
   const scene = await P.composeUniform(build('blues_a', 'male', 'Maj', [m]), noBadgeStore);
   assert.equal(badge(scene, 'air_force_pilot_badge'), undefined, 'not drawn');
   assert.ok(!scene.layers.some(l => l.type === 'raster'), 'no raster layer');
-  assert.ok(scene.notes.includes(`No artwork for ${m.title}`), scene.notes.join(' | '));
+  assert.ok(scene.notes.includes(`${m.title} cannot be shown on this uniform`), scene.notes.join(' | '));
   // The badge below it still takes its place from the ribbons, as if the missing badge were not selected.
   const two = await P.composeUniform(build('blues_a', 'male', 'Maj', [m, mil('navy_surface_warfare_insignia', 'officer')]), noBadgeStore);
   assert.equal(two.layers.filter(l => l.role === 'badge').length, 0);
-  assert.equal(two.notes.filter(n => /^No artwork for/.test(n)).length, 2);
+  assert.equal(two.notes.filter(n => /cannot be shown on this uniform$/.test(n)).length, 2);
 });
 
 test('stacking: the SVG badge sits 1/2 in above the badge below, measured from its own box, and over the EMT badge', async () => {

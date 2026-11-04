@@ -107,7 +107,7 @@
       },
       // A layer drawn to share the base garment's box (nametag, epaulet sleeves, braid).
       async overlay(id, z){
-        if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return null; }
+        if(!ctx.has(id)){ ctx.note('A part of this uniform cannot be shown'); return null; }
         const s = await store.load(id);
         ctx.layers.push(Object.assign(core.registerAtOrigin(s, z == null ? Z.garmentLayer : z, 'garment-layer'), { key: 'layer:' + id }));
         ctx.overlays = ctx.overlays || [];
@@ -135,7 +135,7 @@
         return null;
       },
       async place(id, opts){
-        if(!ctx.has(id)){ ctx.note(`No artwork for ${id}`); return null; }
+        if(!ctx.has(id)){ ctx.note(`${(opts && opts.title) || 'A piece of this uniform'} cannot be shown`); return null; }
         const s = await store.load(id);
         const layer = core.placeAsset(s, Object.assign({ z: Z.insignia }, opts));
         ctx.layers.push(layer);
@@ -145,7 +145,7 @@
         // The patches/ocp images are crops of the old sleeve drawing (a small patch and a sliver of the next),
         // not patches: nothing draws them, whoever asks. The page hands the engine the patch's full artwork.
         if(/(^|\/)patches\/ocp\//.test(String(opts.href || ''))){
-          ctx.note(`${opts.title || 'A patch'} is only a crop of the old sleeve drawing, so it is not drawn; it needs full patch artwork`);
+          ctx.note(`${opts.title || 'A patch'} cannot be shown on this uniform`);
           return null;
         }
         const layer = Object.assign({ type: 'raster', rotate: 0, origin: { x: opts.x, y: opts.y }, z: Z.patch }, opts);
@@ -387,7 +387,7 @@
         const s = await ctx.spec(r.asset);
         ctx.layers.push({ type: 'asset', id: r.asset, x: p.x, y: p.y, w: p.w, h: p.h, rotate: 0, origin: { x: p.x, y: p.y }, z: Z.ribbon, role: 'ribbon', key: r.key, title: r.title, className: 'ribbonTile', sw: s.w });
       }else{
-        ctx.note(`No ribbon artwork for ${r.title || r.key}`);
+        ctx.note(`The ribbon for ${r.title || r.key} cannot be shown`);
         continue;
       }
       if(r.devicePlan){
@@ -460,7 +460,7 @@
     });
     if(!medals.length) return null;
     const pending = medals.filter(m => m.pendingMedal).map(m => m.title);
-    if(pending.length) ctx.note(`Medal art pending for ${pending.join(', ')}: only the ribbon is shown`);
+    if(pending.length) ctx.note(`The medal for ${pending.join(', ')} cannot be shown: only the ribbon is drawn`);
     const o = opts || {};
     let maxBodyH = 0;
     for(const m of medals){ if(m.medal && ctx.has(m.medal)){ const s = await ctx.spec(m.medal); maxBodyH = Math.max(maxBodyH, s.h); } }

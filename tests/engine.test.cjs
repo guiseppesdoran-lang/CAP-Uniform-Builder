@@ -52,7 +52,7 @@ test('every uniform composes for every member category and cut without missing a
       for(const [m, r] of members){
         const scene = await P.composeUniform(build(id, m, r, { gender }), s);
         assert.ok(scene.layers.length > 0, `${id} ${gender} ${r}`);
-        const missing = scene.notes.filter(n => /^No artwork for/.test(n));
+        const missing = scene.notes.filter(n => /cannot be shown/.test(n));
         assert.deepEqual(missing, [], `${id} ${gender} ${r}`);
         for(const l of scene.layers) assert.ok([l.x, l.y, l.w, l.h].every(Number.isFinite), `${id} ${r} ${l.key} has a finite box`);
       }
@@ -229,7 +229,7 @@ test('an appointed Command Chief wears the Command Chief chevron on every unifor
     const scene = await P.composeUniform(build(u, 'senior', 'CMSgt', { grade: G.gradeInfo('senior', 'CMSgt', { commandChief: true }) }), store());
     const chev = scene.layers.filter(l => l.role === 'grade');
     assert.ok(chev.length && chev.every(l => /command-chief/.test(l.id)), u);
-    assert.deepEqual(scene.notes.filter(n => /^No artwork/.test(n)), [], u);
+    assert.deepEqual(scene.notes.filter(n => /cannot be shown/.test(n)), [], u);
   }
 });
 

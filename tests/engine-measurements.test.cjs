@@ -41,7 +41,7 @@ const CITE = {
   pocketBadge: 'centered: badge on the lower portion of the pocket (4.1.11.1.1.2.3.2)',
   messMidway: 'midway: miniature medals between the top shoulder seam and the top button (4.1.1.1.2.2, 4.1.2.1.2.2)',
   messBelow: '½ in: men\'s mess dress badge below the medals (4.1.1.1.2.3)',
-  crest: '½ in: miniature medals above the CAP crest (4.2.2.4 with ICL 25-02)',
+  crest: '½ in: miniature medals above the CAP crest (4.2.1.4, 4.2.2.4 with ICL 25-02)',
   chaplainSemi: '½ in: chaplain insignia above the top row of medals (4.2.1.5, 4.2.2.5)',
   chaplainBlazer: '½ in: chaplain badge above the blazer nametag (4.2.3.1.1.3, 4.2.4.1.1.3)',
   fieldBadge: '½ in: from the top of the CAP tape to the bottom of the first badge\'s embroidery, second above the first (7.1.1.3.1.1-2, 5.1.1.1.2.4, 5.2.1.1.2.6; Ethan)',
@@ -287,7 +287,7 @@ test('the Class A nametag with no ribbons: the centred measure stays, the level 
   const labels = scene.layers.filter(l => l.type === 'measure').map(m => m.label);
   assert.ok(labels.includes('centered'));
   assert.ok(!labels.includes('even with'));
-  assert.ok(scene.notes.some(n => /no ribbon bottom to show the nametag's bottom even with/.test(n)), scene.notes.join(' | '));
+  assert.ok(scene.notes.some(n => /no ribbon bottom to measure from: the nametag's bottom is even with/.test(n)), scene.notes.join(' | '));
   for(const name of ['semi_formal_usaf-male-cadet-C-SSgt', 'semi_formal_usaf-female-cadet-C-Maj']){
     const ms = await measuresOf(name);
     assert.ok(!ms.some(m => m.label === 'parallel with') && !ms.some(m => m.label === 'centered' && /nameplate/.test(m.opts.caption)), name);

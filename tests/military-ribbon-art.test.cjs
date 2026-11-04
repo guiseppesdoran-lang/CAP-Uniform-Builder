@@ -69,7 +69,7 @@ test('a rack of 12 military ribbons with devices is drawn as a CAP rack: the sam
 
 test('a ribbon with no art says so instead of drawing a picture', async () => {
   const s = await P.composeUniform(dressBuild('blues_a', { ribbons: [{ key: 'ribbon:military:none#0', title: 'None', asset: null, devices: [], centered: false, military: true }] }), store);
-  assert.ok(s.notes.includes('No ribbon artwork for None'));
+  assert.ok(s.notes.includes('The ribbon for None cannot be shown'));
   assert.ok(!s.layers.some(l => l.type === 'raster'));
 });
 
@@ -108,7 +108,7 @@ test('a military miniature is its ribbon SVG; with no body art the drape hangs a
   assert.ok(!s.layers.some(l => l.type === 'raster'), 'no picture');
   const a = s.layers.filter(l => /^mini:military:a#0/.test(l.key || ''));
   assert.deepEqual(a.map(l => l.role).sort(), ['device', 'mini-drape']);
-  assert.ok(s.notes.includes('Medal art pending for Air Medal: only the ribbon is shown'), s.notes.join(' | '));
+  assert.ok(s.notes.includes('The medal for Air Medal cannot be shown: only the ribbon is drawn'), s.notes.join(' | '));
   const drape = a.find(l => l.role === 'mini-drape'), cap = s.layers.find(l => l.key === 'mini:cap');
   assert.equal(drape.y, cap.y, 'the row keeps its line');
 });

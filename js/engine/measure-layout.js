@@ -244,7 +244,7 @@
     // The ICL states no inch for the flag, AUX or the HHQ patch: these say what the paragraph says (centered, top of the field) and show the drawn distance
     [/^ocp$/, /flag centered|seam to the flag/, /./, '7.1.1.4.1.1'],
     [/^ocp$/, /AUX centered|seam to the AUX/, /./, '7.1.1.4.2'],
-    [/^ocp$/, /AUX to the HHQ patch/, /./, '7.1.1.4.2.1'],
+    [/^ocp$/, /AUX to the higher headquarters patch/, /./, '7.1.1.4.2.1'],
     [/^ocp$/, /visor to/, /./, '7.1.1.8, ICL 25-02 6.2.11.1'],
     [/^abu$|^corporate_field$/, /visor to/, /./, 'ICL 25-02 6.2.11.1'],
     // Flight duty uniforms

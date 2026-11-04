@@ -91,7 +91,7 @@ test('a badge box that meets a collar leaf polygon is reported in the scene note
   const under = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: SEVEN, badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
   const wings = under.layers.find(l => l.role === 'badge');
   assert.ok(wings && !wings.clipOut, 'the wings are never cut by the leaf');
-  assert.ok(under.notes.some(n => /collar leaf reaches the Pilot Badge: it is shown whole, over the collar, because this garment's artwork has no collar layer/.test(n)), `notes: ${JSON.stringify(under.notes)}`);
+  assert.ok(under.notes.some(n => /collar leaf reaches the Pilot Badge: it is shown whole, over the collar \(CAPR 39-1 4\.2\.5\.1\.3\.1/.test(n)), `notes: ${JSON.stringify(under.notes)}`);
   const clear = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: [], badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
   assert.ok(!clear.layers.find(l => l.role === 'badge').clipOut, 'no ribbons: the wings sit below the leaves');
   assert.ok(!clear.notes.some(n => /collar leaf reaches/i.test(n)), `notes: ${JSON.stringify(clear.notes)}`);

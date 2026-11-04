@@ -150,7 +150,7 @@ test('a military badge the table does not know is not drawn: no picture of any k
   const scene = await P.composeUniform(build('blues_a', 'male', 'Capt', [], [unknown]), store);
   assert.deepEqual(badgeLayers(scene), []);
   assert.ok(!scene.layers.some(l => l.type === 'raster'), 'nothing is a raster');
-  assert.ok(scene.notes.includes('No artwork for Unknown badge'), scene.notes.join(' | '));
+  assert.ok(scene.notes.includes('Unknown badge cannot be shown on this uniform'), scene.notes.join(' | '));
 });
 
 test('stacking two military badges uses their real heights (0.5 in between)', async () => {

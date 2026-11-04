@@ -91,7 +91,7 @@ test('OCP, ABU and CFU: every badge in the catalog either draws its field form o
         assert.equal(drawn[0].id, CAT.art(id, 'field'));
       }else if(!CAT.hasField(id) && CAT.eligibleFor(id, 'senior')){
         assert.equal(drawn.length, 0, `${uniform} ${id}: not drawn`);
-        assert.ok(scene.notes.some(n => /has no field artwork/.test(n)), `${uniform} ${id}: says why (${scene.notes.join(' | ')})`);
+        assert.ok(scene.notes.some(n => /cannot be shown on this uniform/.test(n)), `${uniform} ${id}: says why (${scene.notes.join(' | ')})`);
       }
     }
   }

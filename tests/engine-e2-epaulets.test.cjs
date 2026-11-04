@@ -101,7 +101,7 @@ for(const [label, uniform, gender, opt, garment] of CUTS){
     for(const [m, r] of SLEEVE_MEMBERS){
       const scene = await P.composeUniform(build(uniform, m, r, gender, opt), store);
       const tag = `${label} ${r}`;
-      assert.deepEqual(scene.notes.filter(n => /^No artwork for/.test(n)), [], tag);
+      assert.deepEqual(scene.notes.filter(n => /cannot be shown/.test(n)), [], tag);
       const g = G.gradeInfo(m, r, {});
       for(const side of SIDES){
         const poly = pts(spec.landmarks[`epaulet_${side}`]);

@@ -78,7 +78,8 @@ test('the letter as written (opt.chaplainAsWritten, the meme): a 24 x 24 in squa
   near(square.x + 12, cx, 0.01, 'centred across'); near(square.y + 12, cy, 0.01, 'centred down');
   const badge = scene.layers.find(l => l.key === `badge:${CHAPLAIN}:chest`), one = plain.layers.find(l => l.key === `badge:${CHAPLAIN}:chest`);
   near(badge.w, 12 * one.w, 0.01, 'the badge is scaled with the square'); assert.ok(badge.meme, 'the badge is flagged');
-  assert.ok(scene.notes.some(n => /ICL 26-14/.test(n) && /joke/.test(n)), 'the scene says it is not the regulation');
+  assert.ok(scene.notes.some(n => /2 ft x 2 ft/.test(n) && /ICL 26-14, 7\.1\.1\.2\.1/.test(n)), 'the scene says the size is the one printed in the letter, no commentary');
+  assert.ok(!scene.notes.some(n => /joke|typo/i.test(n)), 'no commentary on the letter');
   assert.ok(!plain.layers.some(l => l.meme) && !plain.notes.some(n => /ICL 26-14/.test(n)), 'off by default');
   // No measurement is drawn for it, and the placement templates leave it out.
   assert.ok(!scene.layers.some(l => l.meme && l.type === 'measure'));
