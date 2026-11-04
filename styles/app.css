@@ -661,6 +661,11 @@ header h1::after{
   transition:opacity .18s ease,transform .18s ease;
 }
 .capubToast.show{opacity:1;transform:translateY(0)}
+/* While a chooser is open its footer (the count and Done) is at the bottom of the window: the message rides just above it. */
+.capubToast.aboveModal{
+  right:calc((100vw - min(1100px,96vw)) / 2 + var(--s4));
+  bottom:calc((100vh - min(720px,86vh)) / 2 + 76px);
+}
 
 
 .tooltipBubble{
@@ -1019,11 +1024,14 @@ header h1::after{
   .controlsFooter::before,.stepMoreBtn{display:none}
   .stepFooterRow button{min-height:48px}
   .capubToast{right:var(--s3);bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--phone-bar-h) + var(--s3))}
+  /* The chooser is the whole screen on a phone: above its footer, which has the bottom safe area under it. */
+  .capubToast.aboveModal{right:var(--s3);bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 
   /* The preview. */
   #previewWrapper{display:none;flex:0 0 auto;width:100%;padding:var(--s2) var(--s3);overflow:hidden;gap:0;justify-content:flex-start;align-content:flex-start}
   #previewWrapper .previewToolbar{display:none}
-  #layoutShell[data-step="uniform"] #previewWrapper,#layoutShell[data-step="items"] #previewWrapper{
+  /* A short strip of the whole uniform beside the Expand button on every step that has a preview: the Check and the downloads of Extra stay in view under it. */
+  #layoutShell[data-step="uniform"] #previewWrapper,#layoutShell[data-step="items"] #previewWrapper,#layoutShell[data-step="export"] #previewWrapper{
     display:flex;
     position:relative;
     height:var(--peek-h);
@@ -1031,12 +1039,8 @@ header h1::after{
     background:var(--panel-2);
     border-bottom:1px solid var(--line);
   }
-  #layoutShell[data-step="uniform"] #uniformCanvas,#layoutShell[data-step="items"] #uniformCanvas{pointer-events:none}
-  #layoutShell[data-step="export"] #previewWrapper{display:flex;flex-wrap:wrap;overflow:visible;padding:var(--s3) var(--s3) var(--s2)}
-  #layoutShell[data-step="export"] #previewWrapper .previewToolbar{display:flex;flex-basis:calc(100% + 2 * var(--s3));position:static;margin:calc(-1 * var(--s3)) calc(-1 * var(--s3)) var(--s3);padding:var(--s2) var(--s3)}
-  #layoutShell[data-step="export"] .previewToolCard[aria-label="Preview zoom"]{display:none}
+  #layoutShell[data-step="uniform"] #uniformCanvas,#layoutShell[data-step="items"] #uniformCanvas,#layoutShell[data-step="export"] #uniformCanvas{pointer-events:none}
   .previewPeekBtn{display:inline-flex;align-items:center;position:absolute;right:var(--s3);bottom:var(--s2);width:auto;min-height:40px;margin:0;padding:0 var(--s3);font-size:var(--t-sm);background:var(--panel)}
-  #layoutShell[data-step="export"] .previewPeekBtn{position:static;flex:0 0 100%;justify-content:center;margin-top:var(--s2)}
   body.previewFull{overflow:hidden}
   body.previewFull #previewWrapper,body.previewFull #layoutShell[data-step] #previewWrapper{
     display:flex;
@@ -1165,8 +1169,8 @@ header h1::after{
 .plannedFacts{margin:0;padding:0 var(--s3) var(--s3) calc(var(--s3) + var(--s4));font-size:var(--t-sm);color:var(--muted)}
 .plannedFacts li+li{margin-top:var(--s1)}
 
-/* ---- About dialog (unofficial-site and privacy notice) ---- */
-#aboutDialog{
+/* ---- About dialog (unofficial-site and privacy notice) and the confirm dialog (js/state.js capubConfirm) ---- */
+#aboutDialog,#confirmDialog{
   width:min(520px,calc(100vw - 32px));
   padding:var(--s5);
   border:1px solid var(--line);
@@ -1174,11 +1178,12 @@ header h1::after{
   background:var(--panel);
   color:var(--ink);
 }
-#aboutDialog::backdrop{background:var(--scrim)}
-#aboutDialog h2{margin:0 0 var(--s3);font-size:var(--t-xl);line-height:1.1}
-#aboutDialog p{margin:0 0 var(--s3);font-size:var(--t-md);line-height:1.5}
-#aboutDialog .aboutActions{margin-top:var(--s4);text-align:right}
-#aboutDialog .aboutActions button{width:auto;margin:0;padding:0 var(--s5)}
+#aboutDialog::backdrop,#confirmDialog::backdrop{background:var(--scrim)}
+#aboutDialog h2,#confirmDialog h2{margin:0 0 var(--s3);font-size:var(--t-xl);line-height:1.1}
+#aboutDialog p,#confirmDialog p{margin:0 0 var(--s3);font-size:var(--t-md);line-height:1.5}
+#aboutDialog .aboutActions,#confirmDialog .aboutActions{margin-top:var(--s4);text-align:right}
+#aboutDialog .aboutActions button,#confirmDialog .aboutActions button{width:auto;margin:0;padding:0 var(--s5)}
+#confirmDialog .aboutActions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--s2)}
 
 /* ---- Feedback dialog (js/feedback.js, LIVE13 E70) ---- */
 #feedbackDialog{

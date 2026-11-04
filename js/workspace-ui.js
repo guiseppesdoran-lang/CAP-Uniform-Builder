@@ -20,6 +20,9 @@
       t.setAttribute('role','status'); t.setAttribute('aria-live','polite');
       document.body.appendChild(t);
     }
+    // Over a chooser the message sits above the window's footer, not on its Done button.
+    const overlay=safeBy('galleryModalOverlay');
+    t.classList.toggle('aboveModal',!!(overlay && overlay.classList.contains('open')));
     t.textContent=msg; t.classList.add('show');
     clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),ms||2200);
   }
@@ -288,7 +291,7 @@
     const peek=safeBy('previewPeekBtn'); if(peek) peek.hidden=!phone || full;
     const close=safeBy('previewCloseBtn'); if(close) close.hidden=!(phone && full);
   }
-  // On a phone the preview is a peek on steps 2 and 3 and at full width on step 4; a tap opens it over the page with
+  // On a phone the preview is a peek on steps 2, 3 and 4; a tap opens it over the page with
   // its own Close, Fit, zoom and Measurements.
   function openPreview(){
     if(!isPhone() || isPreviewFull()) return;
@@ -315,7 +318,7 @@
     wrap.addEventListener('click',e=>{
       if(!isPhone() || isPreviewFull()) return;
       const step=safeBy('layoutShell')?.getAttribute('data-step');
-      if(step!=='uniform' && step!=='items') return;
+      if(step!=='uniform' && step!=='items' && step!=='export') return;
       if(e.target.closest('button,.resumeBanner,.previewToolbar,.itemPopover')) return;
       openPreview();
     });
@@ -455,14 +458,10 @@
         const toolbar=safeBy('previewToolbar');
         const room=window.innerHeight-(toolbar ? toolbar.offsetHeight : 0)-40;
         if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
-      }else if(step==='uniform' || step==='items'){
-        // The peek: the whole uniform in a short strip beside the Expand button.
+      }else if(step==='uniform' || step==='items' || step==='export'){
+        // The peek: the whole uniform in a short strip beside the Expand button, on Extra too, so its Check and downloads stay in view under it.
         const room=wrap.clientHeight-16;
         if(room>40) z=Math.min(z, Math.max(.12, room/previewHeight));
-      }else if(step==='export'){
-        // Extra: the uniform above the check and the actions, not a full screen of it.
-        const room=window.innerHeight*.46;
-        if(room>120) z=Math.min(z, Math.max(.3, room/previewHeight));
       }
     }
     V3.fitWidth=previewWidth;

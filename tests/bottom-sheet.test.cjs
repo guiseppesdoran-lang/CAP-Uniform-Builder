@@ -61,9 +61,9 @@ test('the action bar is fixed over the footer, 48px tall, inset for the home bar
 test('the preview: hidden on step 1, a peek on 2 and 3, in the page on 4, full-screen on demand with its own Close',()=>{
   const phone=block('max-width:700px');
   assert.match(phone,/#previewWrapper\{display:none;flex:0 0 auto;width:100%;/);
-  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);\s*cursor:pointer;/);
-  assert.match(phone,/#layoutShell\[data-step="uniform"\] #uniformCanvas,#layoutShell\[data-step="items"\] #uniformCanvas\{pointer-events:none\}/,'a tap on the peek opens it, not an item');
-  assert.match(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;flex-wrap:wrap;overflow:visible;/);
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper,#layoutShell\[data-step="export"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);\s*cursor:pointer;/);
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #uniformCanvas,#layoutShell\[data-step="items"\] #uniformCanvas,#layoutShell\[data-step="export"\] #uniformCanvas\{pointer-events:none\}/,'a tap on the peek opens it, not an item');
+  assert.doesNotMatch(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;flex-wrap:wrap;overflow:visible;/,'step 4 is a peek now');
   assert.match(phone,/body\.previewFull #previewWrapper,body\.previewFull #layoutShell\[data-step\] #previewWrapper\{\s*display:flex;\s*flex-wrap:wrap;\s*position:fixed;\s*inset:0;\s*z-index:11000;/);
   assert.match(phone,/body\.previewFull #previewWrapper \.previewToolbar\{display:flex;[^}]*position:sticky;top:0;/);
   assert.match(html,/<button type="button" id="previewPeekBtn" class="ghost previewPeekBtn" aria-label="Open the preview full screen" hidden>Expand<\/button>/);

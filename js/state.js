@@ -8,6 +8,32 @@ function capubNotify(message, ms){
   else alert(message);
 }
 
+// A yes-or-no question in the page's own dialog (index.html #confirmDialog): resolves true on the confirm button and false on Cancel, Escape or a click outside.
+// The browser's confirm box is only the fallback where the dialog is missing.
+function capubConfirm({ title = 'Are you sure?', message = '', confirmLabel = 'OK', cancelLabel = 'Cancel' } = {}){
+  const dialog = document.getElementById('confirmDialog');
+  if(!dialog || typeof dialog.showModal !== 'function') return Promise.resolve(window.confirm(message || title));
+  return new Promise(resolve => {
+    const ok = document.getElementById('confirmOk'), cancel = document.getElementById('confirmCancel');
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    ok.textContent = confirmLabel; cancel.textContent = cancelLabel;
+    let answer = false;
+    const onOk = () => { answer = true; dialog.close(); };
+    const onCancel = () => dialog.close();
+    const onBackdrop = event => { if(event.target === dialog) dialog.close(); };
+    const done = () => {
+      ok.removeEventListener('click', onOk); cancel.removeEventListener('click', onCancel);
+      dialog.removeEventListener('click', onBackdrop); dialog.removeEventListener('close', done);
+      resolve(answer);
+    };
+    ok.addEventListener('click', onOk); cancel.addEventListener('click', onCancel);
+    dialog.addEventListener('click', onBackdrop); dialog.addEventListener('close', done);
+    dialog.showModal();
+    cancel.focus();
+  });
+}
+
 // Extracted verbatim from index.html: global state, membership/rank data and the base placement
 // constants. Must load first among the app scripts.
 

@@ -135,8 +135,7 @@ test('phone CSS: a stack with a sticky step strip, a fixed 48px action bar over 
   assert.match(phone,/\.uniformGrid\{grid-template-columns:minmax\(0,1fr\)\}/);
   assert.match(phone,/\.uniformOption\{min-height:56px\}/);
   // The peek and the overlay.
-  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);/);
-  assert.match(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;/);
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper,#layoutShell\[data-step="export"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);/);
   assert.match(phone,/body\.previewFull #previewWrapper,body\.previewFull #layoutShell\[data-step\] #previewWrapper\{\s*display:flex;\s*flex-wrap:wrap;\s*position:fixed;\s*inset:0;/);
   assert.match(phone,/#previewWrapper\{display:none;/,'hidden on step 1');
   // The footer collapses to one word and its links, each drawing its own separator.
@@ -440,7 +439,9 @@ test('on a phone the preview is a peek on steps 2 and 3 that opens full-screen a
   t.V3.showStep('export');
   assert.equal(shell.getAttribute('data-step'),'export');
   t.by('previewWrapper').fire('click',{target:t.by('previewArea')});
-  assert.equal(t.dom.document.body.classList.contains('previewFull'),false,'on step 4 the preview is in the page; only the button opens the overlay');
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),true,'on step 4 the preview is a peek too: a tap opens it');
+  t.by('previewCloseBtn').onclick();
+  assert.equal(t.dom.document.body.classList.contains('previewFull'),false);
   t.by('previewPeekBtn').fire('click',{stopPropagation(){}});
   assert.equal(t.dom.document.body.classList.contains('previewFull'),true);
 });

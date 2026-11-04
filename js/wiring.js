@@ -1237,7 +1237,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(exp) exp.onclick = ()=>(window.CAPUB_TELEMETRY?.track('setup_file', { action: 'save' }), downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2)));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
     if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; window.CAPUB_TELEMETRY?.track('setup_file', { action: 'open' }); };
-    if(reset) reset.onclick = ()=>{ if(!confirm('Reset the entire builder setup?')) return; try{ localStorage.removeItem(CAPUB_V2.storageKey); localStorage.removeItem('cap_uniform_builder_autosave_v1'); }catch(_){} location.reload(); };
+    if(reset) reset.onclick = async ()=>{ if(!await capubConfirm({ title: 'Reset the builder?', message: 'This clears your uniform, ribbons, badges, patches and name from this browser and starts again. A setup you saved to a file is not affected.', confirmLabel: 'Reset', cancelLabel: 'Keep my setup' })) return; try{ localStorage.removeItem(CAPUB_V2.storageKey); localStorage.removeItem('cap_uniform_builder_autosave_v1'); }catch(_){} location.reload(); };
     const readText = ()=>{
       State.text.firstName = fn?.value || '';
       State.text.lastName = ln?.value || '';

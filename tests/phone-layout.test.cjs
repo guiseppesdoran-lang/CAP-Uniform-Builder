@@ -42,14 +42,24 @@ test('the preview toolbar is as wide as the wrapper it sits in, on the desktop a
   assert.match(css,/\.previewToolbar\{[^}]*flex:0 0 calc\(100% \+ 2 \* var\(--s5\)\)/);
   const phone=block('max-width:700px');
   assert.match(phone,/body\.previewFull #previewWrapper \.previewToolbar\{display:flex;flex-basis:calc\(100% \+ 2 \* var\(--s3\)\);/);
-  assert.match(phone,/#layoutShell\[data-step="export"\] #previewWrapper \.previewToolbar\{display:flex;flex-basis:calc\(100% \+ 2 \* var\(--s3\)\);/);
 });
 
 test('the phone toolbar drops the status pills (the check grid has them) and keeps Fit, zoom, Measurements and Close',()=>{
   const phone=block('max-width:700px');
   assert.match(phone,/\.previewToolbar \.capubTopBar\{display:none\}/);
   assert.match(phone,/#previewCloseBtn\{display:inline-flex;align-items:center\}/);
-  assert.match(phone,/#layoutShell\[data-step="export"\] \.previewToolCard\[aria-label="Preview zoom"\]\{display:none\}/,'in the page on step 4 the uniform is fitted to the width');
+  assert.doesNotMatch(phone,/#layoutShell\[data-step="export"\] \.previewToolCard/,'step 4 has no toolbar of its own any more: it is a peek, the overlay has the toolbar');
+});
+
+test('on a phone Extra shows the uniform as a peek, like Uniform and Items, so Check your uniform is on the first screen',()=>{
+  const phone=block('max-width:700px');
+  assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper,#layoutShell\[data-step="export"\] #previewWrapper\{[^}]*height:var\(--peek-h\)/);
+  assert.match(phone,/#layoutShell\[data-step="export"\] #uniformCanvas\{pointer-events:none\}/);
+  assert.doesNotMatch(phone,/#layoutShell\[data-step="export"\] #previewWrapper\{display:flex;flex-wrap:wrap;overflow:visible/,'the full-width preview of step 4 is gone');
+  assert.doesNotMatch(phone,/#layoutShell\[data-step="export"\] \.previewPeekBtn\{position:static/,'the Expand button sits in the peek on step 4 as on steps 2 and 3');
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/step==='uniform' \|\| step==='items' \|\| step==='export'\)\{\s*\/\/ The peek/);
+  assert.doesNotMatch(ui,/window\.innerHeight\*\.46/);
 });
 
 test('the footer is one line on a phone, Unofficial · About · Feedback, with no overlap',()=>{

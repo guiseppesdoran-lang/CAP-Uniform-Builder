@@ -471,6 +471,13 @@
   <div class="aboutActions"><button type="button" id="aboutFeedback" class="ghost" hidden>Send feedback</button><button type="button" id="aboutClose" class="ghost">Close</button></div>
 </dialog>
 
+<!-- A question the member answers in the page (js/state.js capubConfirm), in place of the browser's own confirm box. -->
+<dialog id="confirmDialog" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+  <h2 id="confirmTitle">Are you sure?</h2>
+  <p id="confirmMessage"></p>
+  <div class="aboutActions"><button type="button" id="confirmCancel" class="ghost">Cancel</button><button type="button" id="confirmOk">OK</button></div>
+</dialog>
+
 <!-- ===========================
      GALLERY MODAL
      =========================== -->
