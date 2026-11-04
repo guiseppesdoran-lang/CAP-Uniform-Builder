@@ -1354,3 +1354,11 @@ html[data-access="guest"] #accessGate{display:none}
 .badgeChooserSlotHead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2)}
 .badgeChooserSlotName{margin:0;font-family:inherit;font-size:var(--t-sm);font-weight:700;line-height:1.3;color:var(--ink);min-width:0;overflow-wrap:anywhere}
 .badgeChooserTag{margin-left:auto;flex:none;text-align:right;font-size:var(--t-xs);color:var(--muted)}
+
+/* ---- The command insignia pin row (Badges card) ---- */
+.commandRow{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s1);min-width:0}
+.commandRow.hidden{display:none}
+.commandRowHead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 var(--s2)}
+.commandRowLabel{font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.commandRowState{font-size:var(--t-xs);color:var(--muted);text-align:right;min-width:0}
+.commandRow .hintText{margin-top:var(--s1)}

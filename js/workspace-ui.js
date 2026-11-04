@@ -266,6 +266,51 @@
       hiddenNote.replaceChildren(...(plan ? plan.hidden : []).map(c=>{ const line=document.createElement('div'); line.textContent=c.line; return line; }));
       hiddenNote.classList.toggle('hidden',!patchesNotShown);
     }
+    syncCommandRow();
+  }
+
+  /* ---------- the command insignia pin, set on the Items step (CAPR 39-1, 10.2.5) ---------- */
+  // Three choices instead of the chooser's tick and "Graduated commander" box: not worn, current commander (over the name tag), graduated
+  // commander (under it). It sets the same two things the chooser sets (the badge chosen, State.commandInsignia.graduatedCommander).
+  const COMMAND_ID='squadron_commander_badge';
+  function commandChoice(){
+    if(!(State.badges||[]).includes(COMMAND_ID)) return 'none';
+    return State.commandInsignia && State.commandInsignia.graduatedCommander ? 'graduated' : 'current';
+  }
+  function syncCommandRow(){
+    const row=safeBy('commandInsigniaRow'); if(!row) return;
+    const wornHere=typeof isBadgeWornOnCurrentUniform==='function' ? isBadgeWornOnCurrentUniform(COMMAND_ID) : true;
+    const eligible=!State.membership || typeof isBadgeEligibleForMembership!=='function' || isBadgeEligibleForMembership(COMMAND_ID,State.membership);
+    row.classList.toggle('hidden',!(State.membership && State.uniform && wornHere && eligible));
+    const gradeOk=typeof isCommandInsigniaGradeEligible==='function' ? isCommandInsigniaGradeEligible(State.rank) : true;
+    const choice=commandChoice();
+    row.querySelectorAll('input[name="commandInsignia"]').forEach(i=>{
+      i.checked=i.value===choice;
+      i.disabled=!gradeOk && i.value!=='none';
+    });
+    const state=safeBy('commandInsigniaState');
+    if(state){
+      const summary=typeof capubBadgeSummary==='function' ? capubBadgeSummary().find(r=>r.id===COMMAND_ID) : null;
+      state.textContent=choice==='none' ? 'Not worn'
+        : (choice==='graduated' ? 'Graduated commander' : 'Current commander')+(summary && summary.shown && summary.place ? `: ${summary.place}` : (summary && !summary.shown && !summary.pending ? ': not shown' : ''));
+    }
+  }
+  function wireCommandRow(){
+    const row=safeBy('commandInsigniaRow');
+    if(!row || row.dataset.wired) return;
+    row.dataset.wired='1';
+    row.addEventListener('change',e=>{
+      const input=e.target.closest && e.target.closest('input[name="commandInsignia"]'); if(!input || !input.checked) return;
+      if(typeof normalizeBadgeSelections==='function') normalizeBadgeSelections();
+      const sel=State.badgeSelections[COMMAND_ID]=State.badgeSelections[COMMAND_ID]||{checked:false};
+      if(input.value!=='none' && typeof canSelectCommandInsigniaForCurrentRank==='function' && !canSelectCommandInsigniaForCurrentRank(true)){ syncCommandRow(); return; }
+      if(!State.commandInsignia) State.commandInsignia={};
+      State.commandInsignia.graduatedCommander=input.value==='graduated';
+      sel.checked=input.value!=='none';
+      if(input.value==='none') State.badges=(State.badges||[]).filter(id=>id!==COMMAND_ID);
+      rebuildBadgesFromGallery();
+      syncCommandRow();
+    });
   }
   // The member-report importer: one button at rest; once a report has been read, its result and the clear button.
   function watchImporter(){
@@ -576,7 +621,7 @@
     label();
     header.appendChild(btn);
   }
-  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsCard(); refitIfStageChanged(); }
+  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); wireCommandRow(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsCard(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };
@@ -607,7 +652,7 @@
   // The side panel is always open; js/setup.js closed it below 768px for the sheet that is gone.
   if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);
   // The tabs and footer work from the first paint: wire them now, and again (idempotently) with the first refresh.
-  wireStepper(); wirePhone(); watchImporter(); renderStepper();
+  wireStepper(); wirePhone(); wireCommandRow(); watchImporter(); renderStepper();
   setTimeout(()=>{ refreshAll(); fitZoom(); },80);
 })();
 

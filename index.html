@@ -336,6 +336,20 @@
             <button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button>
           </div>
           <div class="hintText cardRule" data-rule="badges">Each badge is placed where CAPR 39-1 puts it.</div>
+          <!-- The command insignia pin, set here without opening the chooser (js/workspace-ui.js wireCommandRow). -->
+          <div id="commandInsigniaRow" class="commandRow hidden" role="group" aria-labelledby="commandInsigniaLabel">
+            <div class="commandRowHead">
+              <span id="commandInsigniaLabel" class="commandRowLabel">Command insignia pin</span>
+              <span id="commandInsigniaState" class="commandRowState" aria-live="polite"></span>
+            </div>
+            <div class="badgeChooserList" role="radiogroup" aria-labelledby="commandInsigniaLabel">
+              <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="none"><span class="badgeChooserName">Not worn</span></label>
+              <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="current"><span class="badgeChooserName">Current commander</span></label>
+              <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="graduated"><span class="badgeChooserName">Graduated commander</span></label>
+            </div>
+            <div id="commandInsigniaRule" class="hintText">Worn by current and graduated commanders in the grade of lieutenant colonel and below: a current commander's over the name tag, a graduated commander's under it (CAPR 39-1, 10.2.5).</div>
+          </div>
+
           <div id="badgesPlannedNote" class="hintText hidden" role="note"></div>
 
           <div id="badgeGallery" class="galleryGrid"></div>
