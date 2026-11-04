@@ -107,11 +107,37 @@ test('CAP badge names and their option labels are properly cased (data/badge-cat
   check('badge-catalog', entries);
 });
 
-test('unit names are properly cased (data/unit-options.js)', () => {
+test('unit names: the data keeps the eServices string; the page shows it in title case with the abbreviations spelled out', () => {
   const units = runInContext('data/unit-options.js').CAP_UNIT_OPTIONS;
   check('unit-options', units.map(u => [u.code, u.name]));
-  // eServices prints unit names in upper case; a name typed in mixed case among them reads as a slip.
-  assert.deepEqual(Array.from(units.filter(u => /[a-z]/.test(u.name)), u => `${u.code} ${u.name}`), [], 'every unit name in upper case');
+  // eServices prints unit names in upper case; the data file keeps that string (the search reads it), a name typed in mixed case among them reads as a slip.
+  assert.deepEqual(Array.from(units.filter(u => /[a-z]/.test(u.name)), u => `${u.code} ${u.name}`), [], 'every raw unit name in upper case');
+  const { context } = require('./helpers/page-scripts.cjs').loadPageScripts();
+  const ev = src => JSON.parse(JSON.stringify(vm.runInContext(src, context)));
+  const shown = ev('CAP_UNIT_OPTIONS.map(u => [u.code, u.name, u.raw])');
+  assert.equal(shown.length, units.length);
+  assert.deepEqual(shown.filter(([, name, raw], i) => raw !== units[i].name), [], 'the raw string is kept on each row');
+  // Nothing is left in capitals but the exceptions: CAP, HQ, NHQ, USAF, state codes, Roman numerals, initials and the few abbreviations kept as written.
+  const KEEP = new Set(['HQ', 'CAP', 'NHQ', 'USAF', 'ANGB', 'AFB', 'ANG', 'ARS', 'JRB', 'AB', 'DC', 'NC', 'ND', 'WV', 'WA', 'MS', 'PRWG', 'SRQ', 'NRAT', 'FCHS', 'SP', 'WISTAC', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX', 'XI', 'XII']);
+  const caps = [];
+  for(const [code, name] of shown) for(const w of name.match(/[A-Za-z]+/g) || []) if(w.length > 1 && w === w.toUpperCase() && !KEEP.has(w)) caps.push(`${code} ${name}`);
+  assert.deepEqual(caps, [], 'no word left in capitals outside the exceptions');
+  // No eServices abbreviation left in the shown names.
+  const abbr = shown.filter(([, name]) => /\b(SQDN|SQ|SQD|COMP|WG|NATL|HQS|HEADQRTS|GRP|FLT|MASS|ISL|SQUADRODN)\b/i.test(name.replace(/\bMass\b/g, '')));
+  assert.deepEqual(abbr.map(a => `${a[0]} ${a[1]}`), []);
+  const by = Object.fromEntries(shown.map(([code, name]) => [code, name]));
+  assert.equal(by['SER-TN-185'], 'Music City Composite Squadron');
+  assert.equal(by['NHQ-NHQ-000'], 'National Headquarters Unit');
+  assert.equal(by['GLR-IL-049'], 'Palwaukee Composite Squadron');
+  assert.equal(by['MAR-SC-000'], 'South Carolina Wing HQ Squadron');
+  assert.equal(by['GLR-IL-090'], 'Col. Charles Compton Composite Squadron');
+  assert.equal(by['GLR-IL-282'], 'Lake in the Hills Composite Squadron');
+  assert.equal(by['GLR-IL-000'], 'Illinois Wing HQ Squadron');
+  assert.equal(by['MAR-NC-000'], 'NC Wing HQ Squadron');
+  assert.equal(by['GLR-MI-702'], 'Oakland-Macomb-St. Clair Group');
+  assert.equal(by['SWR-AR-040'], '40th Composite Squadron (Hot Springs)');
+  assert.equal(by['SWR-TX-447'], 'West Houston S.A.B.R.E. Senior Squadron');
+  assert.match(by['NHQ-NHQ-004'], /^Aero Education Association Squadron$/);
 });
 
 test('purchase list item and vendor names are properly cased (purchase-catalog.js)', () => {

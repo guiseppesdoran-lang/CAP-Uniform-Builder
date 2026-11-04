@@ -1242,8 +1242,60 @@ const PATCH_META = {
 // Each patch's picture: its SVG, from data/patch-art.js (scripts/sync-patches.cjs). A patch not listed has no picture yet.
 for(const [id, art] of Object.entries(window.CAPUBPatchArt || {})) if(PATCH_META[id]) Object.assign(PATCH_META[id], { img: art.img, asset: art.asset || null });
 
-// CAP_UNIT_OPTIONS lives in data/unit-options.js (loaded above), keeping a 102 KB single-line literal out of this file.
-const CAP_UNIT_OPTIONS = window.CAP_UNIT_OPTIONS || [];
+// The unit names as eServices prints them are capitals and abbreviations ("NATL HQS UNIT", "MUSIC CITY COMPOSITE SQDN"). The member reads them in
+// title case with the abbreviations spelled out ("National Headquarters Unit", "Music City Composite Squadron"); CAP, HQ, NHQ, USAF, the state codes, the
+// Roman numerals, initials and a name's own rank abbreviations (Col, Lt Col, Capt) keep their form. Only an abbreviation eServices uses for the same
+// word everywhere it appears is spelled out: SQDN, SQ, SQD and SQUAD are Squadron, COMP Composite, WG Wing, NATL National, HQS and HEADQRTS Headquarters, ED
+// Education, ASSOC Association, FT Fort, MT Mount, ISL Island, MASS Massachusetts, CALIF California, a leading N, S, E, W or NE, NW, SE, SW the direction; ST is "St." as a place
+// name is written. The raw string stays in `raw` (and in the data file), and the search reads both.
+const CAPUB_UNIT_SPELL = Object.freeze({
+  SQDN:'Squadron', SQ:'Squadron', SQD:'Squadron', SQUAD:'Squadron', SQUADRODN:'Squadron', COMP:'Composite', WG:'Wing', NATL:'National',
+  HQS:'Headquarters', HEADQRTS:'Headquarters', ED:'Education', ASSOC:'Association', FT:'Fort', MT:'Mount', ISL:'Island', MASS:'Massachusetts', CALIF:'California',
+  NE:'Northeast', NW:'Northwest', SE:'Southeast', SW:'Southwest', LEGISTLATIVE:'Legislative',
+  CAPT:'Capt', LT:'Lt', COL:'Col', MAJ:'Maj', GEN:'Gen', CO:'Co', '2LT':'2Lt', ST:'St', DR:'Dr', JR:'Jr', SR:'Sr',
+  MACDILL:'MacDill', LEMAY:'LeMay', OCONNOR:"O'Connor"
+});
+// Abbreviations that are written with their period whether or not eServices put it there ("ST MARYS" is "St. Marys").
+const CAPUB_UNIT_DOTTED = new Set(['St', 'Dr', 'Jr', 'Sr']);
+const CAPUB_UNIT_KEEP = new Set(['CAP','HQ','NHQ','USAF','ANGB','AFB','ANG','ARS','JRB','AB','DC','NC','ND','WV','WA','MS','PRWG','SRQ','NRAT','FCHS','SP','WISTAC','II','III','IV','VI','VII','VIII','IX','XI','XII']);
+const CAPUB_UNIT_SMALL = new Set(['OF','THE','AND','IN','DE','DEL','AT','FOR']);
+const CAPUB_UNIT_DIRECTION = Object.freeze({ N:'North', S:'South', E:'East', W:'West' });
+function capubUnitDisplayName(raw){
+  const text = String(raw == null ? '' : raw).trim();
+  if(!text) return '';
+  const tokens = text.split(/\s+/);
+  // One word without its surrounding punctuation or its closing period.
+  const word = (core, first) => {
+    if(!core) return core;
+    if(/^\d+(ST|ND|RD|TH)$/.test(core)) return core.toLowerCase();                  // 1st, 77th
+    if(Object.prototype.hasOwnProperty.call(CAPUB_UNIT_SPELL, core)) return CAPUB_UNIT_SPELL[core];
+    if(/^[A-Z]$/.test(core) || /^[0-9#]/.test(core) || !/[A-Z]/.test(core)) return core; // a middle initial, a number, #205
+    if(CAPUB_UNIT_KEEP.has(core)) return core;
+    if(core.includes('-')) return core.split('-').map((part, i) => { const w = word(part, first && i === 0); return CAPUB_UNIT_DOTTED.has(w) ? w + '.' : w; }).join('-');
+    if(!first && CAPUB_UNIT_SMALL.has(core)) return core.toLowerCase();
+    if(/^MC[A-Z]/.test(core)) return 'Mc' + core.charAt(2) + core.slice(3).toLowerCase();
+    return core.charAt(0) + core.slice(1).toLowerCase();
+  };
+  const out = tokens.map((token, i) => {
+    const m = /^([^A-Za-z0-9#]*)(.*?)([^A-Za-z0-9.]*)$/.exec(token);
+    const lead = m[1], trail = m[3];
+    let core = m[2];
+    // Initials keep their capitals and periods: R., F.R., H.W., S.A.B.R.E.
+    if(/^([A-Z]\.)+$/.test(core)) return lead + core + trail;
+    const dot = /\.$/.test(core);
+    if(dot) core = core.slice(0, -1);
+    // N, S, E, W as the first word are a direction ("S CAROLINA", "N CENTRAL"); elsewhere a single letter is an initial.
+    if(i === 0 && CAPUB_UNIT_DIRECTION[core] && tokens.length > 2) return lead + CAPUB_UNIT_DIRECTION[core] + trail;
+    const w = word(core, i === 0);
+    // A spelled-out word takes no period ("SQDN." is "Squadron"); a rank or an abbreviation of a name keeps it ("COL." is "Col.", "JR" is "Jr.").
+    const spelled = Object.prototype.hasOwnProperty.call(CAPUB_UNIT_SPELL, core) && CAPUB_UNIT_SPELL[core].length > core.length && !CAPUB_UNIT_DOTTED.has(CAPUB_UNIT_SPELL[core]) && !/^(Capt|Lt|Col|Maj|Gen|Co)$/.test(w);
+    return lead + w + ((dot && !spelled) || CAPUB_UNIT_DOTTED.has(w) ? '.' : '') + trail;
+  });
+  return out.join(' ').replace(/\s+/g, ' ').trim();
+}
+// CAP_UNIT_OPTIONS lives in data/unit-options.js (loaded above), keeping a 102 KB single-line literal out of this file. `name` is the name as the member
+// reads it (capubUnitDisplayName); `raw` is the eServices string, kept for the search.
+const CAP_UNIT_OPTIONS = (window.CAP_UNIT_OPTIONS || []).map(u => Object.assign({}, u, { raw: u.name, name: capubUnitDisplayName(u.name) }));
 
 // The unit emblems: one row per art-tree patch spec that carries a charter (data/unit-patch-art.js, written by scripts/sync-patches.cjs):
 // { charter, patchId, label, echelon, w, h, asset, img }. A new unit emblem is a spec with its charter and a sync, no code. The charter table
@@ -1435,7 +1487,7 @@ function getUnitPatchOptions(filterText=''){
   const found = CAP_UNIT_OPTIONS.filter(unit => {
     if(!isUnitCharterWornOnUniform(unit.code)) return false;
     if(!normalized) return true;
-    return `${unit.code} ${unit.name}`.toLowerCase().includes(normalized);
+    return `${unit.code} ${unit.name} ${unit.raw}`.toLowerCase().includes(normalized);
   });
   const rows = found.map(unit => {
     const hasArtwork = unitCharterHasArtwork(unit.code);

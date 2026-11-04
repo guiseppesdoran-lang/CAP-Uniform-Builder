@@ -119,11 +119,14 @@ test('the Unit patch list marks a charter whose artwork exists with "artwork ava
   assert.ok(!marked.includes('MAR-DC-033'));
   assert.deepEqual(all.slice(0, marked.length).map(o => o.code).sort(), marked.slice().sort(), 'the charters with artwork come first');
   const line = all.find(o => o.code === 'MAR-DC-026').text;
-  assert.equal(line, 'MAR-DC-026 - ARLINGTON COMPOSITE SQUADRON  ✓ artwork available');
+  assert.equal(line, 'MAR-DC-026 - Arlington Composite Squadron  ✓ artwork available');
   assert.doesNotMatch(all.find(o => o.code === 'MAR-DC-033').text, /artwork/);
   assert.doesNotMatch(line, /unit_|patch-|\.svg|_/, 'no id or file name');
   // A search narrows it, and the flight suits list wings and above only.
   assert.deepEqual(ev(`getUnitPatchOptions('mar-dc-026')`).map(o => o.code), ['MAR-DC-026']);
+  // The eServices string stays searchable: SQDN finds Squadron units, and so does Squadron.
+  assert.ok(ev(`getUnitPatchOptions('andrews composite sqdn')`).some(o => o.code === 'MAR-DC-033'), 'the raw string finds the unit');
+  assert.ok(ev(`getUnitPatchOptions('andrews composite squadron')`).some(o => o.code === 'MAR-DC-033'), 'so does the name as read');
   ev(`State.uniform = 'flight_suit'`);
   assert.ok(ev('getUnitPatchOptions()').every(o => !/^(MAR-DC-026|SWR-TX-030)$/.test(o.code)));
   ev(`State.uniform = 'ocp'`);
@@ -136,11 +139,11 @@ test('the status names the unit patch, and with art and a higher headquarters pa
     globalThis.document = new Proxy({}, { get: (_t, key) => key === 'getElementById' ? id => id === 'unitPatchStatus' ? el : realDocument.getElementById(id) : realDocument[key] });
     renderUnitPatchStatus(); globalThis.document = realDocument; return el.textContent; })()`);
   const ocp = run('ocp', 'MAR-DC-026');
-  assert.match(ocp, /^ARLINGTON COMPOSITE SQUADRON is shown as the unit patch\. The National Capital Wing patch, its higher headquarters, goes on the left sleeve under the AUX identifier \(CAPR 39-1, 7\.1\.1\.4\.2\.1\); a patch you pick in lieu of it takes its place \(7\.1\.1\.4\.2\.2\)\.$/);
+  assert.match(ocp, /^Arlington Composite Squadron is shown as the unit patch\. The National Capital Wing patch, its higher headquarters, goes on the left sleeve under the AUX identifier \(CAPR 39-1, 7\.1\.1\.4\.2\.1\); a patch you pick in lieu of it takes its place \(7\.1\.1\.4\.2\.2\)\.$/);
   assert.doesNotMatch(ocp, /unit_|patch-|\.svg|HHQ|MAR-DC|\brender/i, 'no id, file name, charter string or the word render');
-  assert.equal(run('abu', 'MAR-DC-026'), 'ARLINGTON COMPOSITE SQUADRON is shown as the unit patch.', 'the ABU takes no automatic left sleeve patch');
+  assert.equal(run('abu', 'MAR-DC-026'), 'Arlington Composite Squadron is shown as the unit patch.', 'the ABU takes no automatic left sleeve patch');
   assert.match(run('ocp', 'MAR-DC-026', ['pjoc_ocp_patch']), /is not placed: the patch you picked in lieu of it is on the left sleeve \(CAPR 39-1, 7\.1\.1\.4\.2\.2\)\.$/);
-  assert.match(run('ocp', 'MAR-DC-033'), /^ANDREWS COMPOSITE SQDN is selected\. Its patch picture is not available yet, so no patch is shown\.$/, 'a charter without art keeps the plain note');
+  assert.match(run('ocp', 'MAR-DC-033'), /^Andrews Composite Squadron is selected\. Its patch picture is not available yet, so no patch is shown\.$/, 'a charter without art keeps the plain note');
   ev(`State.patches = []; State.unitPatchCharter = ''`);
 });
 
