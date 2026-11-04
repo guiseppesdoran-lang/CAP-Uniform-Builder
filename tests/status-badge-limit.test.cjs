@@ -24,7 +24,7 @@ const SIX = ['CAPPilot1_FA9D33EA587D8', 'emergency_services_badge', 'communicati
 test('the limit line counts the badges worn, the not-worn notice is ok, and the panel follows each drawing', () => {
   assert.match(wiring, /const limit = CAPUBUniformRules\.badgeLimit\(State\.uniform, \{badges: countBadgesWornForLimit\(\), patches: patchTotal\}\);/);
   assert.match(wiring, /addNotice\('ok',`\$\{notWornLine\} Not shown here: \$\{names\}\./);
-  assert.match(wiring, /document\.addEventListener\('capub:rendered', \(\) => updateStatusPanel\(\)\);/);
+  assert.match(wiring, /document\.addEventListener\('capub:rendered', \(\) => \{ updateStatusPanel\(\); capubRefreshModalCount\(\); \}\);/, 'the panel and the picker footer follow each drawing');
 });
 
 test('six badges selected on the men\'s Class B with four drawn: no badge-limit warning and no warning at all from the badges', async () => {
