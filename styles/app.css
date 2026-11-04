@@ -429,6 +429,9 @@ header h1::after{
 .countChip.hasItems{background:var(--select-bg);border-color:var(--select-line);color:var(--ink)}
 .cardRule{margin-top:var(--s1)}
 .itemCard.unavailable .cardHead,.itemCard.unavailable .cardRule{opacity:.7}
+/* A card for something the uniform does not wear keeps only its name, its count and the line saying so (Ribbons on the OCP and the flight suits). */
+.itemCard.unavailable .cardRow button,.itemCard.unavailable>:not(.cardRow):not(.cardRule){display:none}
+.itemCard.unavailable .cardRow{grid-template-columns:minmax(0,1fr)}
 /* Secondary controls folded under a line: the import's explanation, the rack layout, the saved setups. */
 .moreDetails{margin-top:var(--s2);padding-top:2px;border-top:1px solid var(--line)}
 .moreDetails>summary{display:flex;align-items:center;min-height:44px;box-sizing:border-box;cursor:pointer;font-size:var(--t-sm);font-weight:700;color:var(--ink)}

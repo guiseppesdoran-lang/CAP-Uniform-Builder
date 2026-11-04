@@ -284,7 +284,8 @@ function capubModalCountText(kind){
     return `${count} ribbon${count === 1 ? '' : 's'} selected`;
   }
   if(kind === 'badges'){
-    const counted = typeof countBadgesForLimit === 'function' ? countBadgesForLimit() : (State.badges || []).length;
+    // The CAP badges and the U.S. military badges selected (the military ones are drawn among the badges over the left pocket).
+    const counted = (typeof countBadgesForLimit === 'function' ? countBadgesForLimit() : (State.badges || []).length) + (typeof countMilitaryBadgesSelected === 'function' ? countMilitaryBadgesSelected() : 0);
     const cap = (CAPUBUniformRules.getUniformRule(State.uniform) || {}).badgeCap;
     return cap ? `${counted} of ${cap} badges selected` : `${counted} badge${counted === 1 ? '' : 's'} selected`;
   }
@@ -1046,9 +1047,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const notices = validateBuild();
     capubSyncBadgesNotWornNote();
     const rc = by('capubV2RibbonCount'), bc = by('capubV2BadgeCount'), pc = by('capubV2PatchCount'), wc = by('capubV2WarningCount');
-    if(rc) rc.textContent = State.ribbons.length;
-    if(bc) bc.textContent = State.badges.length;
-    if(pc) pc.textContent = State.patches.length + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0) + ((typeof getUnitHhqPlan === 'function' && getUnitHhqPlan()?.worn) ? 1 : 0);
+    // The tiles count what the drawing puts on the uniform (js/badge-rules.js), as the Items cards and the top bar do.
+    if(rc) rc.textContent = countRibbonsShown();
+    if(bc) bc.textContent = countBadgesShown();
+    if(pc) pc.textContent = countPatchesShown();
     if(wc) wc.textContent = notices.filter(n=>n.type !== 'ok').length;
     const ul = by('capubV2Notices');
     if(ul){

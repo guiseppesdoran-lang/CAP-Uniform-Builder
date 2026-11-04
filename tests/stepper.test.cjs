@@ -396,8 +396,13 @@ test('the Items cards carry a count and the uniform\'s rule',()=>{
   t.State.uniform='mess_dress'; t.refresh();
   assert.equal(rule('ribbons'),'Worn as miniature medals on this uniform.');
   t.State.uniform='ocp'; t.refresh();
-  assert.equal(rule('ribbons'),'Not worn on this uniform; kept for the ones that wear them.');
+  // The card stays on a uniform that wears no ribbons and says so, with the paragraph (the OCP's basic configuration lists none, 7.1.1.1.2) and what happens to the choices.
+  assert.equal(rule('ribbons'),'Ribbons are not worn on this uniform (CAPR 39-1, 7.1.1.1.2). Your 2 ribbon choices are kept for the uniforms that wear them.');
+  assert.equal(chip('ribbons').textContent,'2 kept');
   assert.equal(t.by('groupRibbons').classList.contains('unavailable'),true);
+  t.State.ribbons=[]; t.refresh();
+  assert.equal(rule('ribbons'),'Ribbons are not worn on this uniform (CAPR 39-1, 7.1.1.1.2). Choices you make on another uniform are kept for the ones that wear them.');
+  assert.equal(chip('ribbons').textContent,'0 selected');
 });
 
 test('the clear-import button shows once a report has been read',()=>{

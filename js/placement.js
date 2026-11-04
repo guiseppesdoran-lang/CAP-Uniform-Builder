@@ -55,7 +55,8 @@ function renderPatches(){
    =========================== */
 function updateAvailabilityUI(prevUniform){
   const auth = UI_AUTHZ[State.uniform] || {showRibbons:true,showPatches:true,showBadges:true};
-  by('groupRibbons').classList.toggle('hidden', !auth.showRibbons && !UNIFORMS[State.uniform].mini);
+  // The Ribbons card stays on a uniform that wears none: it says so and keeps the member's choices (js/workspace-ui.js updateItemCards).
+  by('groupRibbons').classList.remove('hidden');
   // A uniform that allows a badge but has no placement here (the polo) keeps its Badges panel
   // with a note, instead of the panel vanishing as if no badge were allowed.
   const planned = !auth.showBadges ? CAPUBUniformRules.plannedBadge(State.uniform) : null;

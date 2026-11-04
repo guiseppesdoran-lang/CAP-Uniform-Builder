@@ -198,26 +198,36 @@
   /* ---------- the Items cards: a count and the rule for this uniform on each ---------- */
   const rules=()=>window.CAPUBUniformRules;
   const BADGE_RULE='Each badge is placed where CAPR 39-1 puts it.';
-  function ribbonRule(uniformId){
+  // The paragraph that says a uniform wears no ribbons: 11.1.3 names the Corporate Service Dress, the Battle Dress Uniform (the ABU), the
+  // Corporate Field Uniform, the Flight Duty Uniforms and the Corporate Working Uniform; the OCP's basic configuration (7.1.1.1.2) lists no ribbons.
+  function noRibbonsRef(uniformId){
+    const rule=rules() && rules().getUniformRule(uniformId);
+    return (rule && rule.refs && rule.refs.ribbons) || '11.1.3';
+  }
+  function ribbonRule(uniformId,kept){
     const r=rules(); if(!r) return 'Choose the ribbons you have earned.';
     const policy=r.ribbonPolicy(uniformId);
     if(policy==='required') return 'Required on this uniform.';
     if(policy==='optional') return 'Optional on this uniform.';
     if(r.allowsMiniMedals(uniformId)) return 'Worn as miniature medals on this uniform.';
-    return 'Not worn on this uniform; kept for the ones that wear them.';
+    const base=`Ribbons are not worn on this uniform (CAPR 39-1, ${noRibbonsRef(uniformId)}).`;
+    return kept ? `${base} Your ${kept} ribbon choice${kept===1?' is':'s are'} kept for the uniforms that wear them.` : `${base} Choices you make on another uniform are kept for the ones that wear them.`;
   }
   function updateItemCards(){
     if(typeof State==='undefined') return;
     const r=rules(), u=State.uniform;
     const auth=(typeof UI_AUTHZ!=='undefined' && UI_AUTHZ[u]) || {showBadges:true,showPatches:true};
     const ribbons=new Set((State.ribbons||[]).map(x=>x.id)).size;
-    const badges=typeof countBadgesForLimit==='function' ? countBadgesForLimit() : (State.badges||[]).length;
+    // What the drawing wears, not what is selected (js/badge-rules.js): the badges the uniform wears, military badges included.
+    const badges=typeof countBadgesShown==='function' ? countBadgesShown() : (State.badges||[]).length;
     const cap=r ? (r.getUniformRule(u)||{}).badgeCap : null;
     const dflt=r ? (r.getUniformRule(u)||{}).badgeDefault : null;
     // An officer's flight suit tag is the cloth one, 'may include one badge' (CAPR 39-1 8.2.4.1, 8.3.4.1).
     const officerCap=r ? (r.getUniformRule(u)||{}).officerBadgeCap : null;
     const officerTag=!!officerCap && typeof CAPUBEngine!=='undefined' && (()=>{ const g=CAPUBEngine.grades.gradeInfo(State.membership,State.rank,{track:(State.garment||{}).noGradeTrack}); return !!(g.officer && !g.cadet || (g.category==='senior-none' && g.track==='officer')); })();
-    const patches=(State.patches||[]).length;
+    const plan=typeof capubPatchPlan==='function' ? capubPatchPlan() : null;
+    const patches=plan ? plan.shown.filter(c=>c.kind!=='hhq').length : (State.patches||[]).length;
+    const patchesNotShown=plan ? plan.hidden.length : 0;
     const set=(key,count,n,rule,usable)=>{
       const card=document.querySelector(`.itemCard[data-card="${key}"]`); if(!card) return;
       const chip=card.querySelector('[data-count]');
@@ -226,7 +236,8 @@
       if(line) line.textContent=rule;
       card.classList.toggle('unavailable',!usable);
     };
-    set('ribbons',`${ribbons} selected`,ribbons,ribbonRule(u),!r || r.allowsRibbons(u) || r.allowsMiniMedals(u));
+    const wearsRibbons=!r || r.allowsRibbons(u) || r.allowsMiniMedals(u);
+    set('ribbons',wearsRibbons ? `${ribbons} selected` : (ribbons ? `${ribbons} kept` : '0 selected'),ribbons,ribbonRule(u,ribbons),wearsRibbons);
     // Remove ribbons: only where the regulation makes them optional, and the box follows the saved setup.
     const removeRow=safeBy('removeRibbonsRow'), removeBox=safeBy('removeRibbons');
     if(removeRow) removeRow.classList.toggle('hidden', !(r && r.ribbonPolicy(u)==='optional' && State.membership));
@@ -238,7 +249,13 @@
       (!planned && cap && officerTag) ? `The officer's cloth name tag may include one badge (CAPR 39-1 ${((r.getUniformRule(u)||{}).refs||{}).badges}).` :
       (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where CAPR 39-1 puts it.` : `At most ${cap} on this uniform, each where CAPR 39-1 puts it.`) : BADGE_RULE,
       !!auth.showBadges || !!planned);
-    set('patches',`${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
+    set('patches',patchesNotShown ? `${patches} shown` : `${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
+    // The patches chosen that the drawing leaves off, one line each with the reason (the same lines Extra lists).
+    const hiddenNote=safeBy('patchesNotShownNote');
+    if(hiddenNote){
+      hiddenNote.replaceChildren(...(plan ? plan.hidden : []).map(c=>{ const line=document.createElement('div'); line.textContent=c.line; return line; }));
+      hiddenNote.classList.toggle('hidden',!patchesNotShown);
+    }
   }
   // The member-report importer: one button at rest; once a report has been read, its result and the clear button.
   function watchImporter(){
@@ -463,7 +480,18 @@
     // Until membership, rank and cut are chosen the default would read as a real selection ("BLUES A") over an empty preview.
     const setupNeeded = !(State.membership && State.rank && State.gender);
     if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? uniformName(State.uniform) : '—';
-    if(items) items.textContent = ((State.ribbons||[]).length + (State.badges||[]).length + (State.patches||[]).length).toString();
+    // Items are the ribbons, badges and patches on the uniform as drawn; what it does not wear stays chosen and is not counted.
+    const shown = typeof countRibbonsShown==='function' ? { ribbons:countRibbonsShown(), badges:countBadgesShown(), patches:countPatchesShown() } : { ribbons:(State.ribbons||[]).length, badges:(State.badges||[]).length, patches:(State.patches||[]).length };
+    const chosenRibbons = new Set((State.ribbons||[]).map(r=>r.id)).size;
+    if(items){
+      items.textContent = String(shown.ribbons + shown.badges + shown.patches);
+      const pill = items.closest('.capubPill');
+      if(pill){
+        const plural = (n,w)=>`${n} ${n===1?w:(w==='patch'?'patches':w+'s')}`;
+        const kept = chosenRibbons > shown.ribbons ? ` ${plural(chosenRibbons - shown.ribbons,'ribbon')} chosen but not worn on this uniform stay chosen for the ones that wear them.` : '';
+        pill.title = `Ribbons, badges and patches on this uniform as drawn: ${plural(shown.ribbons,'ribbon')}, ${plural(shown.badges,'badge')}, ${plural(shown.patches,'patch')}.${kept}`;
+      }
+    }
     // The preview is a picture, so say what it shows for anyone who cannot see it.
     const area=safeBy('previewArea');
     if(area){
@@ -567,6 +595,8 @@
   document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
   // A new drawing can change the stage's width (a wide field uniform sheet, a tall coat).
   document.addEventListener('capub:rendered',()=>{ if(!V3.userZoomed) fitZoom(); });
+  // The counts follow the drawing: they are worked out again once each drawing is done.
+  document.addEventListener('capub:rendered',()=>{ updateItemCards(); updateTopBar(); });
   watchChromeHeights();
   // The side panel is always open; js/setup.js closed it below 768px for the sheet that is gone.
   if(typeof capubSetSidebarOpen==='function') capubSetSidebarOpen(true);

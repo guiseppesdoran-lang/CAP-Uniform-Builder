@@ -324,3 +324,87 @@ function countBadgesSelectedNotDrawn(ids = State.badges, scene = (typeof window 
   if(!scene || scene.uniform !== State.uniform || !Array.isArray(scene.badgesWorn)) return 0;
   return selected.length - countBadgesWornForLimit(ids, scene);
 }
+
+// ---- what the drawing wears ------------------------------------------------------------------------------------------------------
+// The cards of the Items step, the top bar and the footers of the pickers count what the drawing puts on the uniform (the engine's
+// scene.ribbonsWorn, scene.badgesWorn and scene.patchesWorn, js/engine/profiles.js), not what is selected: a patch with no place left
+// on the ABU, a badge the uniform does not wear, the ribbons on a uniform that wears none are kept but are not on it, and a count that
+// says otherwise disagrees with the picture. Before the first drawing of this uniform the selections are counted, as before.
+function capubDrawnScene(scene = (typeof window !== 'undefined' && window.CAPUBUniformView) ? window.CAPUBUniformView.scene : null){
+  return scene && scene.uniform === State.uniform ? scene : null;
+}
+// The patches a drawing wears, each once, read off its layers (key 'patch:<id>', 'patch:<id>:<slot>:<n>' or the edge-on copy of one).
+function capubPatchesWorn(scene){
+  const ids = [];
+  for(const l of (scene && scene.layers) || []){
+    const m = l.role === 'patch' ? /^patch:([^:]+)/.exec(l.key || '') : null;
+    if(m && !ids.includes(m[1])) ids.push(m[1]);
+  }
+  return ids;
+}
+// The awards a drawing wears, each once: a ribbon (key 'ribbon:<id>', or 'ribbon:<id>#<n>' for the extra ribbons a second award needs) or a
+// miniature medal's drape ('mini:<id>'; its body and devices are not awards of their own).
+function capubRibbonsWorn(scene){
+  const ids = [];
+  for(const l of (scene && scene.layers) || []){
+    const m = l.role === 'ribbon' ? /^ribbon:(.+?)(?:#\d+)?$/.exec(l.key || '') : (l.role === 'mini-drape' ? /^mini:(.+?)(?:#\d+)?$/.exec(l.key || '') : null);
+    if(m && !ids.includes(m[1])) ids.push(m[1]);
+  }
+  return ids;
+}
+// The U.S. military badges the drawing wears (State.militaryBadges, drawn by the dress profiles, which count them among the badges
+// over the left pocket, 10.10.1.2).
+function countMilitaryBadgesWorn(scene){
+  const sc = capubDrawnScene(scene);
+  const picked = Object.keys(State.militaryBadges || {}).filter(id => State.militaryBadges[id] && State.militaryBadges[id].selected);
+  if(!sc || !Array.isArray(sc.badgesWorn)) return 0;
+  return picked.filter(id => sc.badgesWorn.includes(id)).length;
+}
+// The U.S. military badges selected, where the uniform allows them (the picker's footer counts them with the CAP badges).
+function countMilitaryBadgesSelected(){
+  if(typeof isMilitaryAwardWornOnUniform === 'function' && !isMilitaryAwardWornOnUniform()) return 0;
+  return Object.keys(State.militaryBadges || {}).filter(id => State.militaryBadges[id] && State.militaryBadges[id].selected).length;
+}
+// The badges on the uniform: the CAP badges it wears (command insignia excluded, as the limit counts them) and the U.S. military badges drawn.
+function countBadgesShown(scene){
+  return countBadgesWornForLimit(State.badges, capubDrawnScene(scene)) + countMilitaryBadgesWorn(scene);
+}
+// The ribbons (or miniature medals) on the uniform.
+function countRibbonsShown(scene){
+  const sc = capubDrawnScene(scene);
+  if(!sc || !Array.isArray(sc.layers)) return new Set((State.ribbons || []).map(r => r.id)).size;
+  return capubRibbonsWorn(sc).length;
+}
+// The patches the member chose (general patches, the unit patch, and the higher headquarters patch the OCP adds under it), each with its
+// resolved id (the OCP form of a patch is another asset, js/patches.js capubResolvePatchIdForUniform), and which of them the drawing wears.
+// `hidden` carries the reason the member reads: the drawing's own note for the patch when it gave one, else that no place is left.
+function capubPatchPlan(scene){
+  const sc = capubDrawnScene(scene);
+  const resolve = id => typeof window.capubResolvePatchIdForUniform === 'function' ? window.capubResolvePatchIdForUniform(id, State.uniform) : id;
+  const chosen = [];
+  const add = (id, kind) => {
+    if(!id) return;
+    const resolved = resolve(id);
+    const meta = (typeof PATCH_META !== 'undefined') && (PATCH_META[resolved] || PATCH_META[id]);
+    if(!meta) return;
+    if(chosen.some(c => c.resolved === resolved && (c.kind === 'hhq') === (kind === 'hhq'))) return;
+    chosen.push({ id, resolved, kind, title: meta.label || String(resolved).replace(/_/g, ' ') });
+  };
+  const unit = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
+  if(unit && typeof isUnitPatchAuthorizedForCurrentUniform === 'function' && isUnitPatchAuthorizedForCurrentUniform()) add(unit, 'unit');
+  const hhq = typeof getUnitHhqPlan === 'function' ? getUnitHhqPlan() : null;
+  if(unit && hhq && hhq.worn) add(hhq.patchId, 'hhq');
+  (State.patches || []).forEach(id => add(id, 'general'));
+  const worn = sc && Array.isArray(sc.layers) ? new Set(capubPatchesWorn(sc)) : null;
+  const notes = sc && Array.isArray(sc.notes) ? sc.notes : [];
+  const shown = worn ? chosen.filter(c => worn.has(c.resolved)) : chosen;
+  const hidden = worn ? chosen.filter(c => !worn.has(c.resolved)).map(c => {
+    const own = notes.find(n => n.startsWith(c.title + ' '));
+    return Object.assign({}, c, { line: own || `${c.title} is not shown: no place is left for it on this uniform` });
+  }) : [];
+  return { chosen, shown, hidden };
+}
+// The patches on the uniform, the unit patch and its higher headquarters patch included.
+function countPatchesShown(scene){
+  return capubPatchPlan(scene).shown.length;
+}
