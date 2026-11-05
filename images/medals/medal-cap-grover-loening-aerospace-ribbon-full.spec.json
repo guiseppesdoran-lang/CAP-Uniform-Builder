@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph grover-loening.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/loening.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9847,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#232121",
+  "shadow": "#161414",
+  "base": "#9a9593",
+  "hi": "#b9b5b2",
+  "rim": "#bcb8b5",
+  "rim_hi": "#eae8e6",
+  "lip": "#d3d0cd",
+  "metal": "#86817f",
+  "metal_hi": "#cfcbc8",
+  "bail": "#9a9593"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -68,5 +74,76 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "grover-loening.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 300,
+   "disc_diameter_px": 187.5,
+   "origin_px": [
+    296,
+    507.8
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": 1.65,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.005,
+   "ridge": [
+    0.2955,
+    0.3055
+   ]
+  },
+  "inner_circle": {
+   "cx": -0.0036,
+   "cy": -0.0033,
+   "r": 0.2049,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0098,
+   "top_letters": 14,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.0521,
+   "cap_height_bottom_in": 0.0515
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.085,
+    "top": -0.432,
+    "neck": 0.068,
+    "shoulder": -0.322
+   },
+   "ring": {
+    "c": [
+     0.006,
+     -0.5
+    ],
+    "r": 0.14,
+    "w": 0.012
+   }
+  },
+  "not_measurable": [
+   "the engraving grain (dark pits) of the ground and the bands: flat tones are drawn",
+   "where the two strands cross (x = -0.115 and +0.11) the photograph shows one merged tone, so which strand passes over is not known; the strands are drawn as a union",
+   "the ray burst at the hub is read as the 8 spokes continuing through the eye; the photograph resolves 4 rays above and 4 below the hub at about 0.01 in width, and their exact angles inside the eye are +-3 degrees",
+   "the bands' 1.4 degree tilt against the vertical axis of the spokes and the lettering is measured (left strips centred at v 0.000, right strips at v -0.012), not assumed"
+  ],
+  "tones_luminance": {
+   "ground": 30,
+   "shadow": 13,
+   "base": 150,
+   "hi": 182,
+   "rim": 185,
+   "rim_hi": 235,
+   "metal": 130,
+   "metal_hi": 205,
+   "bail": 150,
+   "lip": 210
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/loening.js"
 }

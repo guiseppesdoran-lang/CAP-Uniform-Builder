@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph commander-commendation.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/commendation.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.984,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#403834",
+  "shadow": "#120f0c",
+  "base": "#a59d98",
+  "hi": "#f2ebe7",
+  "rim": "#dad2cd",
+  "rim_hi": "#f6f0ec",
+  "lip": "#f0e9e5",
+  "metal": "#928984",
+  "metal_hi": "#f0e9e5",
+  "bail": "#9c938e"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -123,5 +129,74 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "commander-commendation.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 308.2,
+   "disc_diameter_px": 192.6,
+   "origin_px": [
+    296.6,
+    505.2
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -1.06,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0075,
+   "ridge": [
+    0.2865,
+    0.2985
+   ]
+  },
+  "lettering": {
+   "stroke_in": 0,
+   "top_letters": 0,
+   "bottom_letters": 0,
+   "cap_height_top_in": null,
+   "cap_height_bottom_in": null
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.083,
+    "top": -0.43,
+    "neck": 0.06,
+    "shoulder": -0.34
+   },
+   "ring": {
+    "c": [
+     0.005,
+     -0.505
+    ],
+    "r": 0.145,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "The matte stippled field (the dots, pits and speckle of the textured ground inside and outside the C) is texture: it is drawn as one flat ground tone, not as dots.",
+   "Mirror reflections in the polished surfaces (the dark faces of the C and of the triangle, the white and blue glints on the bail and the base bar) are drawn as flat tones: dark face 26 and 18, bright bevels 215.",
+   "The blades' matte interior carries a fine engraved pattern that the photograph barely resolves: drawn as one flat tone.",
+   "The rim: the photograph shows a bright outer lip, a thin groove and a raised ridge; their radii (0.303 to 0.3125, 0.298 to 0.302, 0.2865 to 0.2985 in) are read from radial profiles on the lit left side.",
+   "The right and lower bevels of the C are dim in the photograph (the light comes from the upper left); their radii and the two slanted end cuts are fitted from the lit left side and from the end views, the end-cut angles are good to about 2 degrees.",
+   "The suspension ring is hidden by the ribbon: its centre and radius (0.145 in outer) are fitted to the visible lower arcs; the bail is a polished barrel whose glints are not drawn.",
+   "The triangle is not exactly symmetric in the photograph (side bars 31.7 and 29.3 degrees off vertical, apex 0.008 in right of the base middle): the measured corners are used as they are.",
+   "This photograph is a miniature (the disc is 0.625 in); no lettering exists on this medal face."
+  ],
+  "tones_luminance": {
+   "ground": 58,
+   "shadow": 12,
+   "base": 159,
+   "hi": 238,
+   "rim": 212,
+   "rim_hi": 244,
+   "metal": 140,
+   "metal_hi": 235,
+   "bail": 150,
+   "lip": 235
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/commendation.js"
 }

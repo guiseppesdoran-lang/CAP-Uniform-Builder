@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph senior-recruiter.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/recruiter.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9665,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#3a3531",
+  "shadow": "#1f1916",
+  "base": "#8c8580",
+  "hi": "#c0b8b4",
+  "rim": "#b1a9a5",
+  "rim_hi": "#e2d9d5",
+  "lip": "#beb5b1",
+  "metal": "#69625d",
+  "metal_hi": "#b9b0ac",
+  "bail": "#8c8580"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -77,5 +83,80 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "senior-recruiter.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 293.8,
+   "disc_diameter_px": 183.6,
+   "origin_px": [
+    299.4,
+    507.1
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": 0.7,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.006,
+   "ridge": [
+    0.2945,
+    0.3065
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0024,
+   "cy": 0.0015,
+   "r": 0.2049,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0092,
+   "top_letters": 14,
+   "bottom_letters": 10,
+   "cap_height_top_in": 0.0531,
+   "cap_height_bottom_in": 0.0517
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.0854,
+    "top": -0.4304,
+    "neck": 0.0667,
+    "shoulder": -0.349
+   },
+   "ring": {
+    "c": [
+     0.02,
+     -0.494
+    ],
+    "r": 0.143,
+    "w": 0.012
+   }
+  },
+  "not_measurable": [
+   "the pebbled (matte) ground of the lettering band and the worn, mottled field of the big star are texture; the band is drawn as flat ground and the star field as one mid tone (the top point is darker than the other four in the photograph: drawn as a second, darker tone)",
+   "the five-point lobes of the small stars are plump and their centres are dimmer; each star is drawn as a solid star with a small dimple (hole of r 0.0038 in), nothing finer",
+   "letter A of AIR: it merges with pebbles of the ground in the photograph (one component 23 degrees wide); its centre and width (-15.8, 12.4 degrees) are estimated from the strip, not from a clean component; the P-A-T-R-O-L letters are narrower in the photograph than the skeleton font and are fitted by width",
+   "EDGE-RECALL GATE NOT MET (0.728 at 0.012 in, needs 0.80; precision 0.995): the pebbled ground of the lettering band gives the photograph's lit-metal outline hundreds of small pebble contours that no designed shape can match; recall by region: inside r 0.2 0.927, top lettering arcs 0.93 to 0.96, bottom lettering arc 0.74 (pebbles beside the letters), the two pebbled sides of the band (70 to 110 and 250 to 290 deg) 0.18; no stipple was invented to raise it",
+   "the star carries a thin inner bevel line along its edges that the photograph shows only as a blur; it is not drawn",
+   "frame.js disc fit is biased by the photograph cutting the disc bottom (see FRAME NOTE); the rim-ridge circle fit is used instead",
+   "ring: cut by the ribbon over its upper half, centre (0.020 in right of the bail axis) and radius fitted to the visible arcs only; the bail is the shared barrel with the shared shading",
+   "engraving grain, specular highlights and dark pits of the cast metal are not drawn (flat tones)"
+  ],
+  "tones_luminance": {
+   "ground": 54,
+   "shadow": 22,
+   "base": 135,
+   "hi": 188,
+   "rim": 172,
+   "rim_hi": 222,
+   "metal": 100,
+   "metal_hi": 180,
+   "bail": 135,
+   "lip": 185
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/recruiter.js"
 }

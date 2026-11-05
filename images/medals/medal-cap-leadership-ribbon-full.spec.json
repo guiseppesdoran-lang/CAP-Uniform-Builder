@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph leadership-award.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/leadership.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9842,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#312f2e",
+  "shadow": "#191717",
+  "base": "#8d8886",
+  "hi": "#b0aba8",
+  "rim": "#a49f9c",
+  "rim_hi": "#d8d4d1",
+  "lip": "#cac6c3",
+  "metal": "#817c7a",
+  "metal_hi": "#cac6c3",
+  "bail": "#908b89"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -78,5 +84,77 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "leadership-award.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 292,
+   "disc_diameter_px": 182.5,
+   "origin_px": [
+    298.8,
+    510.3
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -2.24,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.005,
+   "ridge": [
+    0.2945,
+    0.3055
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0007,
+   "cy": -0.0041,
+   "r": 0.2037,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0098,
+   "top_letters": 14,
+   "bottom_letters": 10,
+   "cap_height_top_in": 0.0549,
+   "cap_height_bottom_in": 0.0554
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.087,
+    "top": -0.438,
+    "neck": 0.068,
+    "shoulder": -0.318
+   },
+   "ring": {
+    "c": [
+     0.0065,
+     -0.495
+    ],
+    "r": 0.143,
+    "w": 0.012
+   }
+  },
+  "not_measurable": [
+   "the engraving grain (dark pits, crystalline texture) of the ground and the wing face: flat tones are drawn",
+   "the exact curve of the wing's edges between the read points (smooth curves through 4 upper and 6 lower points per half are drawn); the wing is assumed symmetric about u 0.0005 (read on the left half, mirrored)",
+   "the propeller blades are lens shapes of equal width: the photograph shows them slightly teardrop (wider near the hub)",
+   "bar ends: the bars stop 0.014 in inside the inner circle line at the top and bottom (read at three bars); the 13-bar count and 0.0285 pitch are measured, the 0.0075 width is a threshold-blurred width",
+   "the inner circle is slightly wider than tall in the photograph (r 0.210 horizontal, 0.205 vertical by eye): drawn as a circle with the ridge-fit r 0.2037"
+  ],
+  "tones_luminance": {
+   "ground": 45,
+   "shadow": 19,
+   "base": 137,
+   "hi": 172,
+   "rim": 160,
+   "rim_hi": 215,
+   "metal": 125,
+   "metal_hi": 200,
+   "bail": 140,
+   "lip": 200
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/leadership.js"
 }

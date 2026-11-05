@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph membership-award.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/membership.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9609,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#2b2a29",
+  "shadow": "#161513",
+  "base": "#898884",
+  "hi": "#afaeab",
+  "rim": "#969592",
+  "rim_hi": "#c5c4c2",
+  "lip": "#a9a8a5",
+  "metal": "#6c6a67",
+  "metal_hi": "#bcbbb8",
+  "bail": "#82807d"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -68,5 +74,76 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "membership-award.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 311.2,
+   "disc_diameter_px": 194.5,
+   "origin_px": [
+    294.2,
+    504.1
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -2.53,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0065,
+   "ridge": [
+    0.2905,
+    0.3015
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.001,
+   "cy": -0.004,
+   "r": 0.2082,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0108,
+   "top_letters": 14,
+   "bottom_letters": 10,
+   "cap_height_top_in": 0.0521,
+   "cap_height_bottom_in": 0.0517
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.093,
+    "top": -0.441,
+    "neck": 0.067,
+    "shoulder": -0.328
+   },
+   "ring": {
+    "c": [
+     0.003,
+     -0.495
+    ],
+    "r": 0.147,
+    "w": 0.0125
+   }
+  },
+  "not_measurable": [
+   "chevron hatching: at 311 px per inch each engraved stripe is blurred; it is modelled as 3 stripes per quadrant (perpendicular offsets measured by a profile scan, line angle 42 deg), 0.0085 in wide in a mid tone, not as the several finer engraved lines it probably is",
+   "the small dots between some letters of MEMBERSHIP (about 0.003 in) and the casting speck at the lower left of the emblem field are not drawn (not resolved, not part of the design)",
+   "ring and bail: the ring is cut by the ribbon over its upper half, so its centre and radius are fitted to the visible arcs only; the bail is a plain barrel with the shared barrel shading (the photograph's faceted highlights are not modelled)",
+   "engraving grain, specular highlights and the dark pits of the cast metal are not drawn (flat tones)"
+  ],
+  "tones_luminance": {
+   "ground": 42,
+   "shadow": 18,
+   "base": 136,
+   "hi": 176,
+   "rim": 150,
+   "rim_hi": 200,
+   "metal": 105,
+   "metal_hi": 190,
+   "bail": 128,
+   "lip": 170
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/membership.js"
 }

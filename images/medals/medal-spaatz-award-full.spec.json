@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph carl-a-spaatz.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/spaatz.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9764,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#292626",
+  "shadow": "#181616",
+  "base": "#6f6a69",
+  "hi": "#9c9795",
+  "rim": "#716c6b",
+  "rim_hi": "#9a9593",
+  "lip": "#8b8684",
+  "metal": "#5f5b5a",
+  "metal_hi": "#c1bcb9",
+  "bail": "#736e6d"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -70,5 +76,71 @@
  "size_in_previous": {
   "w": 1.3983,
   "h": 1.5148
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "carl-a-spaatz.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 289.4,
+   "disc_diameter_px": 180.9,
+   "origin_px": [
+    300.5,
+    511.1
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.03,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.2925,
+    0.3015
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0022,
+   "cy": -0.004,
+   "r": 0.2041,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0095,
+   "top_letters": 14,
+   "bottom_letters": 12,
+   "cap_height_top_in": 0.0543,
+   "cap_height_bottom_in": 0.0544
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.082,
+    "top": -0.44,
+    "neck": 0.064,
+    "shoulder": -0.35
+   },
+   "ring": {
+    "c": [
+     0,
+     -0.505
+    ],
+    "r": 0.14,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [],
+  "tones_luminance": {
+   "ground": 36,
+   "shadow": 16,
+   "base": 108,
+   "hi": 152,
+   "rim": 110,
+   "rim_hi": 150,
+   "metal": 92,
+   "metal_hi": 190,
+   "bail": 112,
+   "lip": 135
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/spaatz.js"
 }

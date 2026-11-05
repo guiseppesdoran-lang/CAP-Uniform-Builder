@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph achievement-award.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/achievement.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9877,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#a97646",
-  "light": "#dcae74",
-  "dark": "#4a2e14",
-  "rim": "#2d1b0b"
+  "ground": "#362d23",
+  "shadow": "#1d150d",
+  "base": "#7d7055",
+  "hi": "#a49983",
+  "rim": "#a99e88",
+  "rim_hi": "#ccc2a8",
+  "lip": "#958a75",
+  "metal": "#70634b",
+  "metal_hi": "#c2b79f",
+  "bail": "#8b7f67"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -86,5 +92,78 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "achievement-award.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 306.6,
+   "disc_diameter_px": 191.7,
+   "origin_px": [
+    298.5,
+    506.1
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.35,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.005,
+   "ridge": [
+    0.2925,
+    0.3055
+   ]
+  },
+  "inner_circle": {
+   "cx": 0,
+   "cy": 0,
+   "r": 0.2326,
+   "w": 0.0075
+  },
+  "lettering": {
+   "stroke_in": 0.01,
+   "top_letters": 0,
+   "bottom_letters": 0,
+   "cap_height_top_in": null,
+   "cap_height_bottom_in": null
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.089,
+    "top": -0.4325,
+    "neck": 0.0625,
+    "shoulder": -0.36
+   },
+   "ring": {
+    "c": [
+     0.0018,
+     -0.494
+    ],
+    "r": 0.146,
+    "w": 0.0155
+   }
+  },
+  "not_measurable": [
+   "No lettering exists on this medal (none drawn).",
+   "Edge recall at 0.012 in is limited by the photograph: about 530 of the reference lit-outline pixels are bright grains in the matt band (r 0.245..0.289) and about 1240 belong to soft symmetric patina patches on the field beside the shield and silver reflection patches above the eagle; these are surface wear and are not drawn (over the rest of the disc recall is about 0.96).",
+   "The cast-bronze surface: pits, patina haze and silver reflection patches on the field are not drawn (flat tones); the field is one darker flat tone, the band around it one lighter.",
+   "The eagle is blurred to about one pixel (0.0033 in) per feather: the exact feather count per wing, feather shapes, the eye, and the toes of the feet are not resolved; ten bars per wing and a simple hooked beak are used, placed by the lit strokes.",
+   "The cloud bank and what it carries under the eagle (talons, a row of small lit flecks) is two rows of lit specks in the photograph: drawn as one cloud bank of 8 scallops plus a row of four toes; the scallop count is read from the bright flecks.",
+   "Suspension ring: seen slightly tilted in the photograph (right side higher than left); drawn as a circle."
+  ],
+  "tones_luminance": {
+   "ground": 46,
+   "shadow": 18,
+   "base": 112,
+   "hi": 155,
+   "rim": 160,
+   "rim_hi": 196,
+   "metal": 100,
+   "metal_hi": 185,
+   "bail": 128,
+   "lip": 140
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/achievement.js"
 }

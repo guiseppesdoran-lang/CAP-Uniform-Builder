@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph aeroeducation.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/yeager.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9737,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#1e1a17",
+  "shadow": "#100c0a",
+  "base": "#b6b3b1",
+  "hi": "#cac7c5",
+  "rim": "#a3a09d",
+  "rim_hi": "#cac7c5",
+  "lip": "#25211f",
+  "metal": "#aeaca9",
+  "metal_hi": "#dbd8d6",
+  "bail": "#b4b2af"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -68,5 +74,76 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "aeroeducation.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 296.4,
+   "disc_diameter_px": 185.3,
+   "origin_px": [
+    299.5,
+    508.8
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.87,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0065,
+   "ridge": [
+    0.2925,
+    0.3055
+   ]
+  },
+  "inner_circle": {
+   "cx": -0.0009,
+   "cy": -0.0043,
+   "r": 0.2176,
+   "w": 0.0102
+  },
+  "lettering": {
+   "stroke_in": 0.0082,
+   "top_letters": 17,
+   "bottom_letters": 18,
+   "cap_height_top_in": 0.0458,
+   "cap_height_bottom_in": 0.0459
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.108,
+    "top": -0.4367,
+    "neck": 0.098,
+    "shoulder": -0.34
+   },
+   "ring": {
+    "c": [
+     0.003,
+     -0.5
+    ],
+    "r": 0.14,
+    "w": 0.015
+   }
+  },
+  "not_measurable": [
+   "IDENTITY: the Vanguard photograph aeroeducation.jpeg is the CAP Aerospace Education (Air Force Auxiliary / Aerospace Education) miniature medal, NOT the Brig Gen Charles E. Yeager Award; assets/medals-work/NO_REFERENCE.md records that Vanguard sells only a RIBBON for the Yeager award, and no Yeager medal photograph exists in the repository (photomap.json has no Yeager entry; the composite Civil_Air_Patrol_Awards_and_Decorations.jpg is a uniform photograph without a legible medal). This body is therefore the Aerospace Education medal, modelled because it is the only measurable CAP medal body for this asset id; whether the real Yeager medal looks like this is UNCONFIRMED.",
+   "The cast silver surface: soft shading inside the emblem triangle and legs and the engraving grain are not drawn (flat tones).",
+   "The lamp is read from a ~1 px wide silhouette: the small stub above the saucer and the notch at the right end of the crossbar are approximate; the thin light slit between the A and the spout is not drawn (the figure parts simply do not touch).",
+   "Suspension ring: seen as three fine parallel wires in the photograph; drawn as one circle of the combined width."
+  ],
+  "tones_luminance": {
+   "ground": 26,
+   "shadow": 8,
+   "base": 178,
+   "hi": 205,
+   "rim": 158,
+   "rim_hi": 205,
+   "metal": 168,
+   "metal_hi": 222,
+   "bail": 176,
+   "lip": 34
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/yeager.js"
 }

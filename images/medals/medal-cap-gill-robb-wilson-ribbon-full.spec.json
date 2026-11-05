@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph gill-robb-wilson.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/gillrobb.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9765,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#2e2b2a",
+  "shadow": "#181616",
+  "base": "#8a8583",
+  "hi": "#b5b1ae",
+  "rim": "#9a9593",
+  "rim_hi": "#cac6c3",
+  "lip": "#b3aeab",
+  "metal": "#7b7675",
+  "metal_hi": "#cac6c3",
+  "bail": "#908b89"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -72,5 +78,75 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "gill-robb-wilson.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 289.9,
+   "disc_diameter_px": 181.2,
+   "origin_px": [
+    299.5,
+    510.9
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.33,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.292,
+    0.3035
+   ]
+  },
+  "inner_circle": {
+   "cx": -0.0012,
+   "cy": -0.0097,
+   "r": 0.2071,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0098,
+   "top_letters": 14,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.0535,
+   "cap_height_bottom_in": 0.0522
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.088,
+    "top": -0.445,
+    "neck": 0.07,
+    "shoulder": -0.335
+   },
+   "ring": {
+    "c": [
+     0.008,
+     -0.5
+    ],
+    "r": 0.146,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "the engraving grain (dark pits, crystalline texture) of the ground and of the wing face: flat tones are drawn",
+   "the exact curvature of the wing's trailing edge (a shallow convex curve of 0.006 in sag is drawn through 3 read points)",
+   "the dot after AIR is read as an interpunct of 0.0033 in radius (a 22 px blob in the photograph)"
+  ],
+  "tones_luminance": {
+   "ground": 41,
+   "shadow": 17,
+   "base": 134,
+   "hi": 178,
+   "rim": 150,
+   "rim_hi": 200,
+   "metal": 120,
+   "metal_hi": 200,
+   "bail": 140,
+   "lip": 175
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/gillrobb.js"
 }

@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph life-saving.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/lifesaving.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9865,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#2d2a29",
+  "shadow": "#191717",
+  "base": "#847f7d",
+  "hi": "#b7b3b0",
+  "rim": "#847f7d",
+  "rim_hi": "#b5b1ae",
+  "lip": "#9a9593",
+  "metal": "#6c6766",
+  "metal_hi": "#cac6c3",
+  "bail": "#847f7d"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -101,5 +107,71 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "life-saving.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 319.2,
+   "disc_diameter_px": 199.5,
+   "origin_px": [
+    297.4,
+    501.9
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": 1.03,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.006,
+   "ridge": [
+    0.2895,
+    0.2985
+   ]
+  },
+  "inner_circle": {
+   "cx": -0.0019,
+   "cy": 0.0006,
+   "r": 0.1959,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0105,
+   "top_letters": 14,
+   "bottom_letters": 10,
+   "cap_height_top_in": 0.0572,
+   "cap_height_bottom_in": 0.0564
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.079,
+    "top": -0.43,
+    "neck": 0.062,
+    "shoulder": -0.36
+   },
+   "ring": {
+    "c": [
+     0,
+     -0.52
+    ],
+    "r": 0.135,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [],
+  "tones_luminance": {
+   "ground": 40,
+   "shadow": 18,
+   "base": 128,
+   "hi": 180,
+   "rim": 128,
+   "rim_hi": 178,
+   "metal": 105,
+   "metal_hi": 200,
+   "bail": 128,
+   "lip": 150
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/lifesaving.js"
 }

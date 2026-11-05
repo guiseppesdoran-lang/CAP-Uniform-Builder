@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph wartime-wwii-service.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/wwii.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9826,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#33312f",
+  "shadow": "#1b1816",
+  "base": "#8b8886",
+  "hi": "#b6b3b1",
+  "rim": "#aba8a6",
+  "rim_hi": "#d6d4d2",
+  "lip": "#bdbbb9",
+  "metal": "#706d6b",
+  "metal_hi": "#d0cecc",
+  "bail": "#989593"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -68,5 +74,77 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "wartime-wwii-service.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 284.6,
+   "disc_diameter_px": 177.9,
+   "origin_px": [
+    301.9,
+    512.8
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -2.6,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0035,
+   "ridge": [
+    0.2985,
+    0.3095
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0037,
+   "cy": -0.0059,
+   "r": 0.2063,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0078,
+   "top_letters": 14,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.0542,
+   "cap_height_bottom_in": 0.0541
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.078,
+    "top": -0.44,
+    "neck": 0.058,
+    "shoulder": -0.34
+   },
+   "ring": {
+    "c": [
+     0.003,
+     -0.516
+    ],
+    "r": 0.134,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "The photograph's engraving grain, wear and specular highlights are not drawn (flat tones).",
+   "The suspension ring is hidden by the ribbon above its lower third: its centre and radius are fitted to the visible lower arcs (0.134 in outer radius), the upper part is assumed circular; the full body shows it complete.",
+   "The rim is a plain flat band: the photograph shows no separate ridge, so the rim annulus (0.2985 to 0.3095 in) is the lit band itself.",
+   "The engraved star outline and the rays are thin lines near the resolution of the photograph (one pixel = 0.0035 in): their widths (0.004 and 0.0075 in) are set from the blurred line profile; the star valleys on the diagonals lie under the hub circle and are placed (0.104 in) from the straight edges that run into them.",
+   "Letter stroke 0.0078 in is judged from the zoom comparison, thinner than the threshold-blurred 0.0095 in."
+  ],
+  "tones_luminance": {
+   "ground": 50,
+   "shadow": 20,
+   "base": 137,
+   "hi": 182,
+   "rim": 170,
+   "rim_hi": 215,
+   "metal": 110,
+   "metal_hi": 210,
+   "bail": 150,
+   "lip": 190
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/wwii.js"
 }

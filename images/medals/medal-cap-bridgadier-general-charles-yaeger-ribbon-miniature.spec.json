@@ -5,15 +5,8 @@
   "w": 0.625,
   "h": 0.7594
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  75.94
- ],
  "size_source": "estimated",
- "size_basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
+ "size_basis": "Body width 0.625 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring. The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 296.4 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -40,33 +33,158 @@
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle -0.87 deg removed); compose.js hangs it at the drape's V point",
  "ribbon_ref": {
   "asset_id": "ribbon-cap-bridgadier-general-charles-yaeger-ribbon",
   "spec": "../ribbons/ribbon-cap-bridgadier-general-charles-yaeger-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
- "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/yeager.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js yeager --write",
+ "measured": {
+  "photo": "aeroeducation.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 296.4,
+   "disc_diameter_px": 185.3,
+   "origin_px": [
+    299.5,
+    508.8
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.87,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0065,
+   "ridge": [
+    0.2925,
+    0.3055
+   ]
+  },
+  "inner_circle": {
+   "cx": -0.0009,
+   "cy": -0.0043,
+   "r": 0.2176,
+   "w": 0.0102
+  },
+  "lettering": {
+   "stroke_in": 0.0082,
+   "top_letters": 17,
+   "bottom_letters": 18,
+   "cap_height_top_in": 0.0458,
+   "cap_height_bottom_in": 0.0459
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.108,
+    "top": -0.4367,
+    "neck": 0.098,
+    "shoulder": -0.34
+   },
+   "ring": {
+    "c": [
+     0.003,
+     -0.5
+    ],
+    "r": 0.14,
+    "w": 0.015
+   }
+  },
+  "not_measurable": [
+   "IDENTITY: the Vanguard photograph aeroeducation.jpeg is the CAP Aerospace Education (Air Force Auxiliary / Aerospace Education) miniature medal, NOT the Brig Gen Charles E. Yeager Award; assets/medals-work/NO_REFERENCE.md records that Vanguard sells only a RIBBON for the Yeager award, and no Yeager medal photograph exists in the repository (photomap.json has no Yeager entry; the composite Civil_Air_Patrol_Awards_and_Decorations.jpg is a uniform photograph without a legible medal). This body is therefore the Aerospace Education medal, modelled because it is the only measurable CAP medal body for this asset id; whether the real Yeager medal looks like this is UNCONFIRMED.",
+   "The cast silver surface: soft shading inside the emblem triangle and legs and the engraving grain are not drawn (flat tones).",
+   "The lamp is read from a ~1 px wide silhouette: the small stub above the saucer and the notch at the right end of the crossbar are approximate; the thin light slit between the A and the spout is not drawn (the figure parts simply do not touch).",
+   "Suspension ring: seen as three fine parallel wires in the photograph; drawn as one circle of the combined width."
+  ],
+  "tones_luminance": {
+   "ground": 26,
+   "shadow": 8,
+   "base": 178,
+   "hi": 205,
+   "rim": 158,
+   "rim_hi": 205,
+   "metal": 168,
+   "metal_hi": 222,
+   "bail": 176,
+   "lip": 34
+  }
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "metal": "silver",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#1e1a17",
+   "shadow": "#100c0a",
+   "base": "#b6b3b1",
+   "hi": "#cac7c5",
+   "rim": "#a3a09d",
+   "rim_hi": "#cac7c5",
+   "lip": "#25211f",
+   "metal": "#aeaca9",
+   "metal_hi": "#dbd8d6",
+   "bail": "#b4b2af"
+  }
  },
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [],
-  "different_body": []
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9737,
+  "light_class_iou": 0.768,
+  "landmarks_checked": 49,
+  "landmark_max_dist_in": 0.0061,
+  "landmark_worst": [
+   [
+    "apex right edge",
+    0.0061
+   ],
+   [
+    "left leg top",
+    0.0057
+   ],
+   [
+    "right leg top",
+    0.0057
+   ],
+   [
+    "side star 1",
+    0.0047
+   ],
+   [
+    "side star 0",
+    0.0039
+   ]
+  ],
+  "edge_recall_0p006in": 0.91,
+  "edge_recall_0p012in": 0.94,
+  "edge_precision_0p012in": 0.999,
+  "tone_mae_luminance": 29.1,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.81
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
  },
- "finish": "silver",
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- }
+ "fit_score": {
+  "silhouette_iou": 0.9737,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from aeroeducation.jpeg (reference only, never shipped). Reference check: aeroeducation.jpeg shows the CAP Aerospace Education miniature medal (lettering AIR FORCE AUXILIARY / AEROSPACE EDUCATION, lamp emblem on an A triangle, three stars), NOT the Yeager award: the identity of this asset id is unconfirmed. Hang angle -0.87 deg of the photograph removed: the body hangs upright."
 }

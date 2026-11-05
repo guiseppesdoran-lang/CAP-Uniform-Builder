@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph search-and-rescue.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/sar.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9886,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#292524",
+  "shadow": "#181513",
+  "base": "#8c8885",
+  "hi": "#b9b5b2",
+  "rim": "#979491",
+  "rim_hi": "#c4c0bd",
+  "lip": "#2e2a29",
+  "metal": "#4c4947",
+  "metal_hi": "#a8a5a2",
+  "bail": "#76726f"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -101,5 +107,77 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "search-and-rescue.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 295.7,
+   "disc_diameter_px": 184.8,
+   "origin_px": [
+    298.1,
+    508
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": 2.02,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.2905,
+    0.3055
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0023,
+   "cy": -0.0028,
+   "r": 0.2017,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0125,
+   "top_letters": 14,
+   "bottom_letters": 15,
+   "cap_height_top_in": 0.0527,
+   "cap_height_bottom_in": 0.0539
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.086,
+    "top": -0.438,
+    "neck": 0.063,
+    "shoulder": -0.31
+   },
+   "ring": {
+    "c": [
+     0.011,
+     -0.479
+    ],
+    "r": 0.132,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "The suspension ring: the drape hides its top (and the ribbon its upper arc); the full circle (r 0.132 in, centre 0.011 in right of the disc axis, fitted to the visible lower two thirds) is the model, not a measurement of the hidden part.",
+   "Engraving grain, the pitted ground, specular highlights on the bail and the antique (darker) tone in the recesses of the letters are not drawn: flat tones only.",
+   "The S and R are drawn as tapered strokes and one polygon per bar: the serif details (the S beak is a plain vertical tick, the R foot serif a rounded slab, the R leg end a flat cut) are simplified at the photograph resolution (1 px = 0.0034 in).",
+   "The propeller of the CAP triangle (three blades inside) is resolved only as three ovals round a hub; blade shapes and the hub are blurred in the photograph.",
+   "The letters are the skeleton font stretched to each measured width and height; the reference face (a flared humanist capital) has stroke flare and serifs the stroked skeleton does not."
+  ],
+  "tones_luminance": {
+   "ground": 38,
+   "shadow": 16,
+   "base": 137,
+   "hi": 185,
+   "rim": 150,
+   "rim_hi": 195,
+   "metal": 75,
+   "metal_hi": 170,
+   "bail": 114,
+   "lip": 45
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/sar.js"
 }

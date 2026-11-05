@@ -36,7 +36,7 @@
    98.31
   ],
   "ribbon_attach": [
-   68.75,
+   69.19,
    0
   ]
  },
@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph certificate-of-proficiency.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/cop.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9793,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#2c302a",
+  "shadow": "#0d100d",
+  "base": "#878a86",
+  "hi": "#c6c8c3",
+  "rim": "#767975",
+  "rim_hi": "#c6c8c3",
+  "lip": "#7b7e7a",
+  "metal": "#575b56",
+  "metal_hi": "#a4a7a3",
+  "bail": "#464a45"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -68,5 +74,80 @@
  "size_in_previous": {
   "w": 1.4031,
   "h": 1.6276
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "certificate-of-proficiency.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 242.6,
+   "disc_diameter_px": 151.6,
+   "origin_px": [
+    298.1,
+    509
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.93,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.2905,
+    0.2925
+   ]
+  },
+  "inner_circle": {
+   "cx": 0,
+   "cy": -0.002,
+   "r": 0.217,
+   "w": 0.0075
+  },
+  "lettering": {
+   "stroke_in": 0.0105,
+   "top_letters": 14,
+   "bottom_letters": 11,
+   "cap_height_top_in": 0.0447,
+   "cap_height_bottom_in": 0.044
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.073,
+    "top": -0.505,
+    "neck": 0.07,
+    "shoulder": -0.31,
+    "cx": 0.002,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     -0.012,
+     -0.565
+    ],
+    "r": 0.135,
+    "w": 0.009
+   }
+  },
+  "not_measurable": [
+   "The photograph is only 152 px across (1 px = 0.0041 in): letter forms, feather outlines and the C O P serifs are blurred; the C, O and P are drawn as a plain open arc, an oval and the skeleton-font P, with measured position, size and weight, not their serifs.",
+   "The wings: five feather bars per wing (a leading-edge crest, four long bars, a short group of three under the hub drawn as ONE curve) are placed by measurement; the individual feather outlines (each feather is an engraved loop) and the hub dome are not resolved.",
+   "The propeller blades are faint outlines in the photograph; they are drawn as two lens outlines (top blade 0.2 in, bottom 0.17 in long) at a darker tone; their exact outline, the part hidden by the O and the hub are not measured.",
+   "The medal is photographed slightly turned: the face is offset 0.0135 in left and 0.0065 in up from the silhouette centre and the right side wall is visible; the model keeps that (face group translated, wall circle R 0.3125), the wall tone is one flat grey (the photograph shows a bright edge line and a darker groove).",
+   "The suspension: a long barrel bail (0.2 in) and a thin double-wire ring; the ring is open in the photograph and its top is hidden by the drape; the full circle (r 0.135 in, fitted to the visible lower arc) is the model.",
+   "Engraving grain, specular highlights and the green cast of the photograph are not drawn: flat tones through a ramp measured from the metal."
+  ],
+  "tones_luminance": {
+   "ground": 47,
+   "shadow": 12,
+   "base": 137,
+   "hi": 200,
+   "rim": 120,
+   "rim_hi": 200,
+   "metal": 90,
+   "metal_hi": 166,
+   "bail": 73,
+   "lip": 125
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/cop.js"
 }

@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph garber.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/garber.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9856,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#a97646",
-  "light": "#dcae74",
-  "dark": "#4a2e14",
-  "rim": "#2d1b0b"
+  "ground": "#2b1f16",
+  "shadow": "#190e09",
+  "base": "#7d705a",
+  "hi": "#ab9c83",
+  "rim": "#baab8f",
+  "rim_hi": "#f2e0b7",
+  "lip": "#c4b596",
+  "metal": "#988971",
+  "metal_hi": "#b5a68c",
+  "bail": "#92836c"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -72,5 +78,79 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "garber.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 289.8,
+   "disc_diameter_px": 181.1,
+   "origin_px": [
+    295.8,
+    511.5
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.43,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0065,
+   "ridge": [
+    0.2895,
+    0.3035
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0001,
+   "cy": -0.0015,
+   "r": 0.2166,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0092,
+   "top_letters": 14,
+   "bottom_letters": 11,
+   "cap_height_top_in": 0.045,
+   "cap_height_bottom_in": 0.0451
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.108,
+    "top": -0.4325,
+    "neck": 0.098,
+    "shoulder": -0.332
+   },
+   "ring": {
+    "c": [
+     0.01,
+     -0.495
+    ],
+    "r": 0.143,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "the emblem is an engraved line drawing that the 290 px-per-inch photograph resolves only partly: buildings, lens/arch and the main coast lines are modelled (centre-lines read off the photograph, stroke 0.007 in); the finer window frames inside the cells are reduced to dividers and one slot per cell",
+   "the stippled, grainy land area at the lower left of the map (South America side) is texture the photograph shows as noise; it is not drawn and no outline of it is invented beyond the coast line that bounds it",
+   "the identity of the map (which coasts these are) and of the three lines to the right of the tower (pole, second upright, slanted line) cannot be established from the photograph; they are modelled as lines only, named neutrally",
+   "two small specks in the lettering band (between L and E of PAUL E, and a dash between E and G) are not drawn; the full stop after E is drawn as a round dot",
+   "silhouette gate: the shared ref.js ribbon mask leaks through the saturated bronze bail and the dark ground into the disc (IoU 0.12 against a wrongly emptied reference); this module cuts that mask at photo row 400 at run time so the gate compares the disc with the disc (shared files untouched)",
+   "the ring is cut by the ribbon over its upper half, so its centre (0.010 in right of the bail axis) and radius are fitted to the visible arcs only; the bail is the shared barrel with the shared shading (the photograph's faceted highlights are not modelled)",
+   "engraving grain, specular highlights and the dark pits of the cast bronze are not drawn (flat tones)"
+  ],
+  "tones_luminance": {
+   "ground": 33,
+   "shadow": 12,
+   "base": 113,
+   "hi": 160,
+   "rim": 175,
+   "rim_hi": 225,
+   "metal": 140,
+   "metal_hi": 170,
+   "bail": 134,
+   "lip": 185
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/garber.js"
 }

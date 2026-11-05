@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph command-service.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/command.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9868,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#2b2622",
+  "shadow": "#15100d",
+  "base": "#9c9793",
+  "hi": "#cbc6c3",
+  "rim": "#aea9a5",
+  "rim_hi": "#e0dbd9",
+  "lip": "#3f3a36",
+  "metal": "#9a9591",
+  "metal_hi": "#e3dedc",
+  "bail": "#a29d99"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -73,5 +79,76 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "command-service.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 287.9,
+   "disc_diameter_px": 179.9,
+   "origin_px": [
+    298,
+    511.9
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.64,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.292,
+    0.305
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0016,
+   "cy": -0.0016,
+   "r": 0.2168,
+   "w": 0.0092
+  },
+  "lettering": {
+   "stroke_in": 0.0085,
+   "top_letters": 14,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.0465,
+   "cap_height_bottom_in": 0.0467
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.108,
+    "top": -0.4367,
+    "neck": 0.098,
+    "shoulder": -0.34
+   },
+   "ring": {
+    "c": [
+     0.003,
+     -0.5
+    ],
+    "r": 0.14,
+    "w": 0.015
+   }
+  },
+  "not_measurable": [
+   "The cast silver surface: engraving grain, the dark pits and the two-facet shading of every compass point (a lit and a darker half) are not drawn (flat tones); the median ridge of the long points is not drawn.",
+   "The CAP emblem in the centre ring is about 0.1 in across (30 px of the photograph): only the triangle outline and the lens below it are read; the interior detail (prop blades) is not resolved.",
+   "Laurel: the photograph shows each branch as a twisted chain of outlined leaves whose pairs overlap; leaf pair count (11), leaf size and the stem are read from the chain; individual leaf outlines where leaves cross are not resolved.",
+   "Suspension ring: seen slightly tilted; drawn as a circle."
+  ],
+  "tones_luminance": {
+   "ground": 38,
+   "shadow": 12,
+   "base": 152,
+   "hi": 202,
+   "rim": 170,
+   "rim_hi": 222,
+   "metal": 150,
+   "metal_hi": 225,
+   "bail": 158,
+   "lip": 60
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/command.js"
 }

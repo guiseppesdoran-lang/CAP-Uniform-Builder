@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph crossfield.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/crossfield.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9699,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#44403e",
+  "shadow": "#292523",
+  "base": "#7c7875",
+  "hi": "#a6a2a0",
+  "rim": "#989491",
+  "rim_hi": "#bebbb8",
+  "lip": "#989491",
+  "metal": "#5b5754",
+  "metal_hi": "#c7c5c2",
+  "bail": "#86827f"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -68,5 +74,78 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "crossfield.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 290.4,
+   "disc_diameter_px": 181.5,
+   "origin_px": [
+    297.7,
+    510.7
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": 1.28,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.003,
+   "ridge": [
+    0.2995,
+    0.3095
+   ]
+  },
+  "inner_circle": {
+   "cx": -0.003,
+   "cy": -0.007,
+   "r": 0.2261,
+   "w": 0.0075
+  },
+  "lettering": {
+   "stroke_in": 0.0098,
+   "top_letters": 17,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.039,
+   "cap_height_bottom_in": 0.049
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.08,
+    "top": -0.445,
+    "neck": 0.07,
+    "shoulder": -0.31
+   },
+   "ring": {
+    "c": [
+     -0.004,
+     -0.502
+    ],
+    "r": 0.131,
+    "w": 0.0085
+   }
+  },
+  "not_measurable": [
+   "The ground of the photograph is a coarse hammered texture (antiqued silver, grain about 0.004 in): not drawn (flat tones); this is why the lit-class IoU is low (0.41) and the edge recall at 0.006 in is 0.74: the grain makes edges everywhere.",
+   "The rocket plane: fuselage outline, canopy bump, underbody, pod, nose cap and three tail fins are placed by measurement but their inner engraving (the double outline of the fuselage, panel lines, the fin ribs, the canopy frame) is only partly resolved; the fins are polygon outlines, the plane is not identified further than a rocket plane (X-15 type) flying up and to the right.",
+   "The Earth: the limb arc, the inner circle as its lower edge, two land masses and 12 light spots are drawn at their measured places; the darker mottled surface, the cloud and the smaller specks inside the globe (and the second faint arc under the limb) are not resolved and not drawn; the two land masses are irregular shapes read at 3400 px/in, not continents.",
+   "The five sky stars are blobs of 0.02 in in the photograph: drawn as five-point stars of that size, the number of points is not resolved.",
+   "The ring: the drape hides its top; the full circle (r 0.131 in, fitted to the visible lower arcs) is the model. Hang angle 1.28 degrees from the bail axis; the inner circle line is centred 0.003 in left and 0.007 in above the silhouette centre (the same offset the lettering follows).",
+   "Letter positions of both arcs were read from polar strips (5-degree grid) because the textured ground defeats the automatic letter finder; letter widths are those of the strips; the radial extent is the band read from the strip (top 0.2425..0.2825, bottom 0.2285..0.2775)."
+  ],
+  "tones_luminance": {
+   "ground": 66,
+   "shadow": 34,
+   "base": 122,
+   "hi": 165,
+   "rim": 150,
+   "rim_hi": 190,
+   "metal": 90,
+   "metal_hi": 200,
+   "bail": 132,
+   "lip": 150
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/crossfield.js"
 }

@@ -46,18 +46,23 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard photograph air-medal-full-size-medal.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/airmedal.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9665,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
  "palette": {
-  "base": "#a97646",
-  "light": "#dcae74",
-  "dark": "#4a2e14",
-  "rim": "#2d1b0b"
+  "ground": "#705e3b",
+  "shadow": "#41311f",
+  "base": "#baaa77",
+  "hi": "#d1c390",
+  "rim": "#cabb88",
+  "rim_hi": "#f2ebcf",
+  "metal": "#7a6842",
+  "metal_hi": "#cdbf8c",
+  "bail": "#b09f6e"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -70,5 +75,81 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "air-medal-full-size-medal.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 453.6,
+   "disc_diameter_px": 283.5,
+   "origin_px": [
+    297.9,
+    416
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": 0,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "kind": "sixteen-point sunburst (no disc)",
+   "points": 16,
+   "tip_radius_in": 0.3125,
+   "valley_radius_in": 0.235,
+   "tip_width_in": 0.008,
+   "tip_radius_measured_in": "0.310 to 0.316 (15 tips, rms 0.7 px)",
+   "valley_radius_measured_in": "0.232 to 0.239",
+   "flank_check": "half width 0.0303 / 0.0210 / 0.0139 / 0.0096 in at r 0.26 / 0.28 / 0.295 / 0.305 from the mask, model 0.0308 / 0.0206 / 0.0129"
+  },
+  "inner_circle": {
+   "kind": "recessed roundel behind the eagle",
+   "cx": 0,
+   "cy": 0.003,
+   "r": 0.183,
+   "note": "dark rim line fitted on 15 angles (r 0.1815 to the line, 0.183 used for the edge)"
+  },
+  "lettering": {
+   "top_letters": 0,
+   "bottom_letters": 0,
+   "cap_height_top_in": null,
+   "cap_height_bottom_in": null
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.05,
+    "top": -0.465,
+    "neck": 0.04,
+    "shoulder": -0.4
+   },
+   "ring": {
+    "c": [
+     0,
+     -0.5193
+    ],
+    "r": 0.099,
+    "w": 0.0073
+   }
+  },
+  "not_measurable": [
+   "The photograph shows a SIXTEEN-point sunburst (counted: 15 tips visible, the top tip is covered by the fleur-de-lis tails, tips every 22.5 deg, radius 0.310 to 0.316 in), not twelve points; the top spike is assumed the same as the other fifteen (its tip is hidden).",
+   "The top of the suspension ring is behind the ribbon in the photograph: only the lower arc (about 30 percent) is visible; the ring is drawn as the circle through that arc (r 0.099 in, centre v -0.519 in). The top end of the pendant is also under the ribbon; it is drawn up to v -0.465 in where the ribbon begins.",
+   "The two toes-and-claws of each foot are a tangle of five or six rounded knuckles round the bolt: drawn as six rounded lobes per foot (position and extent measured, the toe and claw separation is not resolved); claws are not drawn.",
+   "The bolts run under the feet and the tail: their upper ends are read at about (0.11, -0.05) and (0.19, -0.05) in from the visible parts; each dagger is modelled as a leaf-shaped blade (widest about 35 percent from the tip), the photograph shows a ridge along each blade that is not drawn.",
+   "Fan (far wing): the photograph shows about nine faint feather ridges, five are drawn; secondaries and covert feather lines on the lobes and on the back are only partly drawn (four lines on the back, none inside the lobes).",
+   "The eagle body, back and neck are flat tones with the groove lines the relief edges give; the photograph has smooth shading across them, engraving grain, dark pits and specular highlights, none drawn. The dark halo round the eagle is a flat band (0.013 in beyond the edge of the wing, 0.006 in at the shoulder), the photograph has a gradient 0.02 to 0.03 in wide.",
+   "The shared ribbon mask (ref.js) floods through every coloured pixel, so it takes this bronze body for ribbon; airmedal.js replaces it, for its own process only, with a blue and orange stripe mask (the silhouette gate then sees the body).",
+   "The existing box (0.625 x 0.6898 in miniature, 1.375 x 1.6706 in full) is kept: in the miniature the box top (v -0.377 in) lies just above the fleur-de-lis side petals and cuts the pendant; in the full body it cuts the pendant at v -0.447 in and shows only the lowest 0.03 in of the ring."
+  ],
+  "tones_luminance": {
+   "ground": 95,
+   "shadow": 50,
+   "base": 169.2,
+   "hi": 196,
+   "rim": 187.1,
+   "rim_hi": 249,
+   "metal": 105,
+   "metal_hi": 190.9,
+   "bail": 158.1
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/airmedal.js"
 }
