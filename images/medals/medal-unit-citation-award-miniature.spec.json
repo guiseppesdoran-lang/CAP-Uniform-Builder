@@ -9,7 +9,7 @@
  },
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 186 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6949 x 0.6912 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6949 in).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 186 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6949 x 0.6912 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6949 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 190.1 px = 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -32,11 +32,11 @@
    31.2
   ],
   "ribbon_attach": [
-   30.92,
+   31.25,
    0
   ]
  },
- "ribbon_attach_note": "ribbon_attach is the top of the suspension ring, the body's topmost rows' centre; compose.js hangs it at the drape's V point",
+ "ribbon_attach_note": "ribbon_attach is the top centre of the suspension ring (or of the bail where the box cuts the ring away), on the body axis: the body is upright, the photograph's hang angle (0.8 deg) is removed; compose.js hangs it at the drape's V point",
  "dimensions": {
   "organization": "cap",
   "stem": "unitci01",
@@ -56,8 +56,8 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "data_source": "reference-art-traced",
- "generator": "artwork-samples/assets/military/v3/medals/make-medal.js (cut and measure: medals/lib-medal.js; trace: medals/trace-medal.js over v3/lib.js; gates: medals/gate-medal.js)",
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/b-unit-citation.js (parameters in inches) over lib.js, common.js, font.js, emit.js, lib-b.js; gates: lib-b.js; npm-free, node make-b.js b-unit-citation --write",
  "source_raster": "vanguardmil.com product civil-air-patrol-unit-citation-miniature-medal (civil air patrol unit citation miniature medal), 600 x 600 px, measurement reference only",
  "source_product": {
   "vendor": "vanguardmil.com",
@@ -72,498 +72,174 @@
   "why": null,
   "note": "measurement reference only: never shipped, never committed"
  },
- "source_vendor": "vanguardmil.com",
- "source_handle": "civil-air-patrol-unit-citation-miniature-medal",
- "source_full_ppi": 270.5,
- "source_px": [
-  188,
-  177
- ],
- "source_background": {
-  "kind": "studio",
-  "ground": [
-   255,
-   255,
-   255
-  ],
-  "key_distance": 24,
-  "flooded_px": 266127,
-  "openings": 1,
-  "opening_px": 704,
-  "highlights_kept": 6,
-  "clutch_px": 0,
-  "specks_px": 0,
-  "clipped": null,
-  "full_px": [
-   600,
-   600
-  ],
-  "full_body_px": [
-   188,
-   187
-  ],
-  "full_ppi": 270.5,
-  "work_px": [
-   188,
-   177
-  ],
-  "work_ppi": 239.9,
-  "edge_touch": [
-   "top",
-   "bottom"
-  ],
-  "cut": {
-   "drape_px_visible": 186,
-   "drape_px": 186,
-   "drape_correction": {
-    "left": 0,
-    "right": 0,
-    "applied": false
-   },
-   "drape_in": 0.6875,
-   "photo_shows": "miniature medal",
-   "ppi_in_photo": 270.5,
-   "zone_rows": [
-    18,
-    287
+ "measured": {
+  "photo": "unit-citation.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 190.1,
+   "body_centre_px": [
+    299,
+    506.6
    ],
-   "rect_end_row": 287,
-   "v": {
-    "start_row": 289,
-    "fit_rows": 124,
-    "slope_left": 0.57,
-    "slope_right": -0.65,
-    "apex_row": 428,
-    "ribbon_px_inside": 10449
-   },
-   "clasps_bridged": 0,
-   "tail_filled_px": 511,
-   "tail_filled_frac": 0.0187,
-   "over_bar_rows": 0,
-   "opened_px": 907,
-   "cut_row": 413,
-   "cut_from_object_top": 0.688,
-   "ribbon_palette": [
-    [
-     206,
-     206,
-     205
-    ],
-    [
-     55,
-     130,
-     114
-    ],
-    [
-     177,
-     179,
-     178
-    ],
-    [
-     7,
-     52,
-     45
-    ],
-    [
-     24,
-     77,
-     68
-    ],
-    [
-     39,
-     108,
-     94
-    ],
-    [
-     0,
-     128,
-     0
-    ]
-   ],
-   "body_metal_colours": [
-    {
-     "h": 44.02642829382031,
-     "s": 0.0537935648428843,
-     "l": 0.30582480818414326,
-     "rgb": [
-      82,
-      80,
-      74
-     ],
-     "share": 0.125
-    },
-    {
-     "h": 34.869726004370555,
-     "s": 0.04678836307580988,
-     "l": 0.5072967526931721,
-     "rgb": [
-      135,
-      130,
-      123
-     ],
-     "share": 0.206
-    }
-   ],
-   "body_bbox_px": [
-    206,
-    413,
-    393,
-    599
-   ],
-   "body_px": [
-    188,
-    187
-   ],
-   "body_in_photo": [
-    0.6949,
-    0.6912
-   ],
-   "mini_scale": 1,
-   "width_in": 0.6949,
-   "height_in": 0.6912,
-   "ring_top_x_frac": 0.4947,
-   "ring_top_from": "top rows' extent",
-   "object_bbox_px": [
-    206,
-    0,
-    395,
-    599
-   ],
-   "edge_touch": [
-    "top",
-    "bottom"
-   ],
-   "width_fixed_in": 0.625
+   "ppi_in_frame": 304.2,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
   },
-  "denoised": {
-   "px": 21878,
-   "range_sigma": 18
-  }
- },
- "source_resolution_ppi": 266.4,
- "source_bbox_user_units": [
-  10.75,
-  10.75,
-  177.25,
-  177
- ],
- "measure": {
-  "drape_px_visible": 186,
-  "drape_px": 186,
-  "drape_correction": {
-   "left": 0,
-   "right": 0,
-   "applied": false
-  },
-  "drape_in": 0.6875,
-  "photo_shows": "miniature medal",
-  "ppi_in_photo": 270.5,
-  "zone_rows": [
-   18,
-   287
-  ],
-  "rect_end_row": 287,
-  "v": {
-   "start_row": 289,
-   "fit_rows": 124,
-   "slope_left": 0.57,
-   "slope_right": -0.65,
-   "apex_row": 428,
-   "ribbon_px_inside": 10449
-  },
-  "clasps_bridged": 0,
-  "tail_filled_px": 511,
-  "tail_filled_frac": 0.0187,
-  "over_bar_rows": 0,
-  "opened_px": 907,
-  "cut_row": 413,
-  "cut_from_object_top": 0.688,
-  "ribbon_palette": [
-   [
-    206,
-    206,
-    205
-   ],
-   [
-    55,
-    130,
-    114
-   ],
-   [
-    177,
-    179,
-    178
-   ],
-   [
-    7,
-    52,
-    45
-   ],
-   [
-    24,
-    77,
-    68
-   ],
-   [
-    39,
-    108,
-    94
-   ],
-   [
-    0,
-    128,
-    0
+  "hang_angle_removed_deg": 0.8,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.003,
+   "ridge": [
+    0.2935,
+    0.3105
    ]
-  ],
-  "body_metal_colours": [
-   {
-    "h": 44.02642829382031,
-    "s": 0.0537935648428843,
-    "l": 0.30582480818414326,
-    "rgb": [
-     82,
-     80,
-     74
-    ],
-    "share": 0.125
-   },
-   {
-    "h": 34.869726004370555,
-    "s": 0.04678836307580988,
-    "l": 0.5072967526931721,
-    "rgb": [
-     135,
-     130,
-     123
-    ],
-    "share": 0.206
-   }
-  ],
-  "body_bbox_px": [
-   206,
-   413,
-   393,
-   599
-  ],
-  "body_px": [
-   188,
-   187
-  ],
-  "body_in_photo": [
-   0.6949,
-   0.6912
-  ],
-  "mini_scale": 1,
-  "width_in": 0.6949,
-  "height_in": 0.6912,
-  "ring_top_x_frac": 0.4947,
-  "ring_top_from": "top rows' extent",
-  "object_bbox_px": [
-   206,
-   0,
-   395,
-   599
-  ],
-  "edge_touch": [
-   "top",
-   "bottom"
-  ],
-  "width_fixed_in": 0.625
- },
- "method": {
-  "summary": "The body below the drape cut out of the Vanguard product photograph (lib-medal.js: the drape's rectangle by span and stripe profile, its V by the fitted edges, ribbon inside the V by chromaticity) and traced at 8x as the badges are (v3/lib.js analyse, studio mode): silhouette with holes as the clip; opaque luminance k-means clustered into K metal tones; every tone region its own closed path (outer loop + holes) in the family's studio ramp at the photo tone; the darkest tone is the engraved line work; lighter faces carry a one-step-darker shade band and a lighter crown along their axis (flat colour: no opacity, gradient, filter, text or raster). Enamel keeps its own colour, white paint its own near-white, a secondary metal its own ramp. Letters, rings and rays are faces like any other; every opaque pixel of the photo lies in a face, so the suspension ring is a face with its hole.",
-  "scale": 8,
-  "tones": {
-   "K": 6,
-   "centroids": [
-    17.9,
-    41.4,
-    79.1,
-    112.6,
-    138.6,
-    172.1
-   ],
-   "shares": [
-    0.534,
-    0.089,
-    0.079,
-    0.117,
-    0.139,
-    0.042
-   ],
-   "thresholds": [
-    29.6,
-    60.3,
-    95.8,
-    125.6,
-    155.3
-   ],
-   "merge_gap": 12.6,
-   "lum_p2": 12,
-   "lum_p98": 169,
-   "enamel_share": 0.006,
-   "gilt_share": 0.015,
-   "silver_share": 0,
-   "rest_metal_hue": 31.8,
-   "secondary_metal": null,
-   "secondary_share": 0,
-   "secondary_parts": [],
-   "specks_dropped": 18,
-   "specks_absorbed": 414,
-   "detail_faces": 40
   },
-  "faces": 345,
-  "faces_by_tone": [
-   59,
-   48,
-   53,
-   44,
-   83,
-   47,
-   11
-  ],
-  "edge_polylines": 279,
-  "crowns": 32,
-  "enamel_faces": 11,
-  "secondary_metal": null,
-  "secondary_metal_faces": 0,
-  "white_paint_faces": 0,
-  "detail_faces": 40,
-  "holes_filled": 0,
-  "holes_kept": 0,
-  "art_placement": {
-   "scale_units_per_src_px": 0.37538,
-   "art_size_units": [
-    62.5,
-    62.41
-   ],
-   "box_units": [
-    62.5,
-    62.41
-   ],
-   "fit": "the body's bounding box, measured size",
-   "art_overflow_units": 0
+  "inner_circle": {
+   "cx": 0.0022,
+   "cy": -0.0083,
+   "r": 0.2083,
+   "w": 0.0085
+  },
+  "lettering": {
+   "stroke_in": 0.009,
+   "top_letters": 14,
+   "bottom_letters": 12,
+   "cap_height_top_in": 0.0494,
+   "cap_height_bottom_in": 0.0482,
+   "letter_positions": "angle and radial extent of each letter, measured from the unwrapped annulus (generator, text.top / text.bottom)"
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.087,
+    "top": -0.444,
+    "neck": 0.07,
+    "shoulder": -0.335,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     -0.004,
+     -0.512
+    ],
+    "r": 0.142,
+    "w": 0.012
+   }
+  },
+  "tones_luminance": {
+   "ground": 16,
+   "shadow": 6,
+   "base": 130,
+   "hi": 178,
+   "rim": 168,
+   "rim_hi": 230,
+   "metal": 120,
+   "metal_hi": 200,
+   "bail": 130,
+   "lip": 190
   }
  },
  "palette": {
   "metal": "silver",
-  "chosen_by": "saturation 0.055 at hue 33: grey metal",
-  "pixels": {
-   "hue": 33,
-   "saturation": 0.055,
-   "lightness": 0.461,
-   "warm_hue": 33.5,
-   "warm_saturation": 0.206
-  },
-  "ramp": [
-   [
-    0,
-    "#0e0d0d"
-   ],
-   [
-    20,
-    "#1a1818"
-   ],
-   [
-    50,
-    "#363332"
-   ],
-   [
-    80,
-    "#534f4e"
-   ],
-   [
-    110,
-    "#716c6b"
-   ],
-   [
-    140,
-    "#908b89"
-   ],
-   [
-    170,
-    "#aea9a6"
-   ],
-   [
-    200,
-    "#cac6c3"
-   ],
-   [
-    225,
-    "#e1dedb"
-   ],
-   [
-    245,
-    "#f2f1f0"
-   ],
-   [
-    255,
-    "#f9f8f8"
-   ]
-  ],
-  "tone_colours": [
-   "#191717",
-   "#2e2b2b",
-   "#524e4d",
-   "#746f6e",
-   "#8f8a88",
-   "#b0aba8"
-  ],
-  "luminance_stretch": null
- },
- "fit_score": {
-  "silhouette_iou": 0.996,
-  "note": "bbox-normalised mask IoU vs the cut body of the reference photograph at 8x (medals/gate-medal.js)"
+  "ramp": "silver studio ramp (lib.js SILVER_RAMP)",
+  "tone_colours": {
+   "ground": "#181616",
+   "shadow": "#121010",
+   "base": "#86817f",
+   "hi": "#b5b1ae",
+   "rim": "#aca7a4",
+   "rim_hi": "#e5e3e0",
+   "lip": "#c1bcb9",
+   "metal": "#7b7675",
+   "metal_hi": "#cac6c3",
+   "bail": "#86817f"
+  }
  },
  "fidelity": {
+  "method": "designed",
   "gates": {
-   "iou": 0.95,
-   "edge_recall": 0.8,
-   "tone_rms": 20,
-   "face_ratio": [
-    0.7,
-    1.4
-   ],
-   "aspect_pct": 1,
-   "art_overflow_units": 1
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph mask resampled into the same upright box)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ink_coverage": "lit-metal area of mine / reference between 0.85 and 1.15 (body and named zones): letters and emblem strokes as solid as the reference",
+   "ribbon_attach": "top centre of the ring (or of the bail where the box cuts the ring) at the box top, x on the body axis",
+   "size": "miniature <= 25 KB, full <= 60 KB"
   },
-  "silhouette_iou": 0.996,
-  "bbox_aspect_diff_pct": 0.02,
-  "art_overflow_units": 0,
-  "edge_recall_1p5px": 1,
-  "edge_precision_1p5px": 0.996,
-  "faces_ref_by_tone": [
-   10,
-   40,
-   43,
-   36,
-   45,
-   10,
-   4
+  "silhouette_iou": 0.9849,
+  "light_class_iou": 0.737,
+  "ink_coverage": [
+   {
+    "zone": "body",
+    "ref_px": 40883,
+    "mine_px": 42401,
+    "ratio": 1.037
+   },
+   {
+    "zone": "lettering band",
+    "ref_px": 12208,
+    "mine_px": 13013,
+    "ratio": 1.066
+   },
+   {
+    "zone": "wreath",
+    "ref_px": 14367,
+    "mine_px": 14621,
+    "ratio": 1.018
+   },
+   {
+    "zone": "emblem and gunsight",
+    "ref_px": 9688,
+    "mine_px": 10071,
+    "ratio": 1.04
+   }
   ],
-  "faces_drawn_by_tone": [
-   8,
-   60,
-   62,
-   41,
-   45,
-   9,
-   0
+  "landmarks_checked": 48,
+  "landmark_max_dist_in": 0.0058,
+  "landmark_worst": [
+   [
+    "letter L (top 78.4deg)",
+    0.0058
+   ],
+   [
+    "letter V (top -57.7deg)",
+    0.0036
+   ],
+   [
+    "letter R (top 2.3deg)",
+    0.0031
+   ],
+   [
+    "letter T (top 47.6deg)",
+    0.0027
+   ],
+   [
+    "letter L (top -40.5deg)",
+    0.0026
+   ]
   ],
-  "face_ratio_light_tones": 1.25,
-  "tone_rms_after_linear_fit": 8.4,
-  "tone_mae_direct": 10.4,
-  "tone_fraction_within_20": 0.962,
-  "ring_hole": false,
+  "edge_recall_0p006in": 0.91,
+  "edge_recall_0p012in": 0.916,
+  "edge_precision_0p012in": 1,
+  "tone_mae_luminance": 21.1,
+  "ribbon_attach_units": {
+   "mine": 31.14,
+   "spec_new": [
+    31.25,
+    0
+   ],
+   "spec_old": [
+    31.25,
+    0
+   ]
+  },
   "gate_pass": true,
   "pass": true,
-  "note": "",
-  "flags": [
-   "no closed hole in the top fifth of the body (a ring the drape passes through is open at the cut, so this is the usual case)",
-   "the photo is cut at its top, bottom edge",
-   "the ribbon's end lay over the body in the photo: 511 px (1.9% of the body) painted from the metal round it"
+  "not_measurable": [
+   "The cast surface texture of the ground (pitted)."
   ],
-  "method": "medals/gate-medal.js: render (qlmanage) normalised to the reference body's bbox on the 8x grid; the same analysis on both (gate-badge.js gates)"
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
  },
- "notes": "v3 traced miniature medal body (LIVE13 E118). Reference 188x177 px work image (photo 600 x 600 px), body 166 px wide = 266.4 ppi at 0.625 in. Gates in fidelity (medals/gate-medal.js)."
+ "fit_score": {
+  "silhouette_iou": 0.9849,
+  "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from unit-citation.jpeg (reference only, never shipped). Hang angle 0.8 deg of the photograph removed."
 }

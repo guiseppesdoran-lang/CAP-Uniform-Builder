@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard miniature photograph service-red.jpeg (reference only): each element is a modelled object in inches, the same model as the miniature drawn at 2.2x, upright (design/b-service-red.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall, ink coverage)",
+  "score": 0.9797,
+  "note": "Shape-built art at 2.2x; ring and bail are cut open at the box top (the drape passes through)."
  },
  "palette": {
-  "base": "#b3b7bd",
-  "light": "#e6e8eb",
-  "dark": "#4e525a",
-  "rim": "#2f3238"
+  "ground": "#2b2828",
+  "shadow": "#161515",
+  "base": "#989391",
+  "hi": "#c5c1be",
+  "rim": "#b5b1ae",
+  "rim_hi": "#eae8e6",
+  "lip": "#cac6c3",
+  "metal": "#817c7a",
+  "metal_hi": "#d8d4d1",
+  "bail": "#908b89"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -82,5 +88,72 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "service-red.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 179.2,
+   "body_centre_px": [
+    296.5,
+    511.6
+   ],
+   "ppi_in_frame": 286.7,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
+  },
+  "hang_angle_removed_deg": 0.2,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.003,
+   "ridge": [
+    0.2965,
+    0.3105
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0038,
+   "cy": -0.0064,
+   "r": 0.2053,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.01,
+   "top_letters": 14,
+   "bottom_letters": 7,
+   "cap_height_top_in": 0.0528,
+   "cap_height_bottom_in": 0.05,
+   "letter_positions": "angle and radial extent of each letter, measured from the unwrapped annulus (generator, text.top / text.bottom)"
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.092,
+    "top": -0.442,
+    "neck": 0.071,
+    "shoulder": -0.335,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     0.005,
+     -0.504
+    ],
+    "r": 0.14,
+    "w": 0.0125
+   }
+  },
+  "tones_luminance": {
+   "ground": 38,
+   "shadow": 14,
+   "base": 148,
+   "hi": 195,
+   "rim": 178,
+   "rim_hi": 235,
+   "metal": 125,
+   "metal_hi": 215,
+   "bail": 140,
+   "lip": 200
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/b-service-red.js"
 }

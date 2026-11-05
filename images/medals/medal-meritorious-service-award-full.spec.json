@@ -46,18 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "McChord rack-builder rasters in images/mini_medals/mcchord (measured: finish, body shape, ring position, emblem); no photographs used",
- "fidelity": "constructed_geometric",
+ "source": "Designed and measured from the Vanguard miniature photograph meritorious-service.jpeg (reference only): each element is a modelled object in inches, the same model as the miniature drawn at 2.2x, upright (design/b-meritorious-service-award.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "constructed from measured proportions; compared by eye against the reference raster",
-  "score": null,
-  "note": "Shape-built art: rim, recessed band (lettering left blank), inner ring, raised emblem. Lettering only where legible in the reference."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall, ink coverage)",
+  "score": 0.9669,
+  "note": "Shape-built art at 2.2x; ring and bail are cut open at the box top (the drape passes through)."
  },
  "palette": {
-  "base": "#a97646",
-  "light": "#dcae74",
-  "dark": "#4a2e14",
-  "rim": "#2d1b0b"
+  "ground": "#363021",
+  "shadow": "#0c0a06",
+  "base": "#73684b",
+  "hi": "#aa9d73",
+  "rim": "#665c42",
+  "rim_hi": "#998d66",
+  "lip": "#b9ab7e",
+  "metal": "#645a40",
+  "metal_hi": "#a4976e",
+  "bail": "#827655"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -86,5 +92,65 @@
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
- }
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "meritorious-service.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 157.2,
+   "body_centre_px": [
+    304.6,
+    520.8
+   ],
+   "ppi_in_frame": 251.5,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
+  },
+  "hang_angle_removed_deg": -0.7,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "frame_shift": {
+   "flats_frame_origin_px": [
+    304.65,
+    510.9
+   ],
+   "shipped_origin_px": [
+    304.65,
+    520.8350399999999
+   ],
+   "shift_down_in": 0.0395,
+   "reason": "the box bottom is 0.3125 in below the origin in make-b.js; the hexagon lower vertex is 0.352 in below the centre of the flats"
+  },
+  "hexagon_flats_frame": "top vertex (0.005,-0.343), upper corners (0.3125,-0.186) and (-0.3127,-0.179), lower corners (0.3125,0.1795) and (-0.3127,0.1835), bottom vertex (0,0.352); width across the flats 0.625 in, height 0.695 in; rim lip 0.003 in, bevel bands 0.005 to 0.020/0.026/0.030 in inside the outline (unequal per edge)",
+  "emblem_flats_frame": "circle centre (0.0054,-0.172), centre-line radius 0.0755, width 0.0085; equilateral triangle apex (0.0033,-0.2345), base at v -0.1295; hub (0.0042,-0.172); 8 bars at pitch 0.0147",
+  "band_flats_frame": "outer -0.2924..0.2941 x -0.0411..0.0711, bar width 0.01; capitals cap height 0.058 in, stroke 0.0085 in, centred at v 0.0165",
+  "suspension": {
+   "bail": {
+    "w": 0.092,
+    "top": -0.476,
+    "neck": 0.08,
+    "shoulder": -0.36,
+    "bottom": -0.335
+   },
+   "ring": {
+    "c": [
+     -0.002,
+     -0.568
+    ],
+    "r": 0.1705,
+    "w": 0.031
+   }
+  },
+  "tones_luminance": {
+   "ground": 48,
+   "shadow": 10,
+   "base": 104,
+   "hi": 156,
+   "rim": 92,
+   "rim_hi": 140,
+   "metal": 90,
+   "metal_hi": 150,
+   "bail": 118,
+   "lip": 170
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/b-meritorious-service-award.js"
 }

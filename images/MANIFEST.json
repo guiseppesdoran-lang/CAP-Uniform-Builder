@@ -26843,7 +26843,7 @@
    "w_in": 0.625,
    "h_in": 0.6287,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 317 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7938 x 0.7959 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7938 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 317 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7938 x 0.7959 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7938 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 367.4 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -26866,7 +26866,7 @@
      31.43
     ],
     "ribbon_attach": [
-     31.16,
+     31.25,
      0
     ]
    },
@@ -26919,7 +26919,7 @@
    "w_in": 0.625,
    "h_in": 0.6217,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 183 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7025 x 0.695 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7025 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 183 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7025 x 0.695 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7025 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 188.4 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -26995,7 +26995,7 @@
    "w_in": 0.625,
    "h_in": 0.6691,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 182 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6497 x 0.6951 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6497 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 182 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6497 x 0.6951 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6497 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 172.3 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27018,7 +27018,7 @@
      33.45
     ],
     "ribbon_attach": [
-     32.34,
+     31.25,
      0
     ]
    },
@@ -27071,7 +27071,7 @@
    "w_in": 0.625,
    "h_in": 0.7396,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 174 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7349 x 0.8693 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7349 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 174 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7349 x 0.8693 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7349 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 188.9 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27094,7 +27094,7 @@
      36.98
     ],
     "ribbon_attach": [
-     34.11,
+     31.25,
      0
     ]
    },
@@ -27147,7 +27147,7 @@
    "w_in": 0.625,
    "h_in": 0.615,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 179 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7144 x 0.7029 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7144 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 179 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7144 x 0.7029 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7144 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 187.3 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27223,7 +27223,7 @@
    "w_in": 0.625,
    "h_in": 0.6245,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 191 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6839 x 0.6839 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6839 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 191 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6839 x 0.6839 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6839 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 192.3 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27299,7 +27299,7 @@
    "w_in": 0.625,
    "h_in": 0.798,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 190 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6622 x 0.8467 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6622 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 190 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6622 x 0.8467 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6622 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 180.4 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27322,7 +27322,7 @@
      39.9
     ],
     "ribbon_attach": [
-     29.37,
+     31.25,
      0
     ]
    },
@@ -27451,7 +27451,7 @@
    "w_in": 0.625,
    "h_in": 0.8123,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 172 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6915 x 0.8993 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6915 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 172 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6915 x 0.8993 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6915 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 174.7 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27474,7 +27474,7 @@
      40.62
     ],
     "ribbon_attach": [
-     30.52,
+     31.25,
      0
     ]
    },
@@ -27603,7 +27603,7 @@
    "w_in": 0.625,
    "h_in": 0.9181,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 171 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6272 x 0.9247 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6272 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 171 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6272 x 0.9247 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6272 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 157.2 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27626,7 +27626,7 @@
      45.91
     ],
     "ribbon_attach": [
-     30.45,
+     31.25,
      0
     ]
    },
@@ -27755,7 +27755,7 @@
    "w_in": 0.625,
    "h_in": 0.6559,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 175 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7071 x 0.7386 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7071 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 175 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7071 x 0.7386 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7071 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 182.7 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27778,7 +27778,7 @@
      32.8
     ],
     "ribbon_attach": [
-     31.43,
+     31.25,
      0
     ]
    },
@@ -27831,7 +27831,7 @@
    "w_in": 0.625,
    "h_in": 0.6189,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 189 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6984 x 0.6948 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6984 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 189 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6984 x 0.6948 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6984 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 193.6 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27907,7 +27907,7 @@
    "w_in": 0.625,
    "h_in": 0.6333,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 176 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.707 x 0.7148 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.707 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 176 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.707 x 0.7148 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.707 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 183.6 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -27930,7 +27930,7 @@
      31.66
     ],
     "ribbon_attach": [
-     31.07,
+     31.25,
      0
     ]
    },
@@ -27983,7 +27983,7 @@
    "w_in": 0.625,
    "h_in": 0.6246,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 170 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7077 x 0.7077 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7077 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 170 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7077 x 0.7077 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7077 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 176.9 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -28006,7 +28006,7 @@
      31.23
     ],
     "ribbon_attach": [
-     31.79,
+     31.25,
      0
     ]
    },
@@ -28059,7 +28059,7 @@
    "w_in": 0.625,
    "h_in": 0.6308,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 179 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.676 x 0.6837 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.676 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 179 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.676 x 0.6837 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.676 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 179.2 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -28363,7 +28363,7 @@
    "w_in": 0.625,
    "h_in": 0.6241,
    "size_source": "estimated",
-   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 186 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6949 x 0.6912 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6949 in).",
+   "basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 186 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6949 x 0.6912 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6949 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 190.1 px = 0.625 in).",
    "anchors": {
     "top_center": [
      31.25,
@@ -28386,7 +28386,7 @@
      31.2
     ],
     "ribbon_attach": [
-     30.92,
+     31.25,
      0
     ]
    },
