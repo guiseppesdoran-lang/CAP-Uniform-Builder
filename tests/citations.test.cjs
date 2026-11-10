@@ -3,7 +3,9 @@
 // source, "(CAPR 39-1, 10.2.5)", but on the page js/citations.js takes each reference out of its text and puts it behind a small question mark at
 // the end of the text; the Extra step's Regulation tab has the switch that shows them all in place again and the list of every text with what it
 // cites. The pure parts are tested here: which brackets are a reference, the split, the list's markup, the stored switch, and the page's markup and
-// styles. The last test reads every string of the page's scripts, so a reference written in a new shape cannot stay in a sentence unnoticed.
+// styles. The last test reads every string of the page's scripts, so a reference written in a new shape cannot stay in a sentence unnoticed. A press on the
+// mark opens the reference in a popover over the page, one at a time, held by the mark and not by its text (two rows with the same sentence were opened together
+// by the old text key): the popover's placement, content and open-mark model are tested here as plain functions, and its glue as source.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -83,7 +85,7 @@ test('the page: the script, the switch and the list in the Regulation tab, the m
   assert.match(tab, /<label class="mpSwitch"><input type="checkbox" id="citesShown"><span>[^<]+<\/span><\/label>/);
   assert.ok(tab.indexOf('id="citesShown"') < tab.indexOf('id="regulationNotes"') && tab.indexOf('id="regulationNotes"') < tab.indexOf('id="regulationBody"'));
   // A reference is hidden until its text is opened or the switch is on; the switch takes the marks away.
-  assert.ok(css.includes(':root:not([data-cites="shown"]) .citeHost:not(.citeOpen)>.citeRef{display:none}'));
+  assert.ok(css.includes(':root:not([data-cites="shown"]) .citeRef{display:none}'));
   assert.ok(css.includes(':root[data-cites="shown"] .citeBtn,:root[data-cites="shown"] .citeOfSelect{display:none}'));
   assert.match(css, /\.citeBtn::before\{content:"\?"\}/);
   // The mark is small, so the target around it is larger, and larger again on a phone.
@@ -129,4 +131,104 @@ test('every reference written in a string of the page is one the split takes out
   const inPage = texts.flatMap(t => C.split(t).refs);
   assert.ok(inPage.length >= 3, `index.html's hints cite paragraphs: ${inPage.length}`);
   for(const t of texts) for(const m of C.split(t).text.matchAll(BRACKETS)) assert.ok(!CITES.test(m[0]), t);
+});
+
+// ---- the popover (the owner: "the question marks should open only the thing that it was clicked on, and it shouldnt push everything down (should pop above a bit)") ----
+
+test('the popover lists each reference of the text as the Regulation tab names it', () => {
+  assert.deepEqual(C.refsOfText('Worn on the left (CAPR 39-1, 4.1.2.1).', []), ['CAPR 39-1, 4.1.2.1']);
+  assert.deepEqual(C.refsOfText('It goes under the AUX identifier (CAPR 39-1, 7.1.1.4.2.1); a patch picked in lieu takes its place (7.1.1.4.2.2).', []), ['CAPR 39-1, 7.1.1.4.2.1', '7.1.1.4.2.2']);
+  // A mark on a chip that is only the reference (the shopping list): the chip's own text, brackets or not.
+  assert.deepEqual(C.refsOfText('CAPR 39-1 7.1.1', ['CAPR 39-1 7.1.1']), ['CAPR 39-1 7.1.1']);
+  assert.deepEqual(C.refsOfText('(CAPR 39-1, 10.2.5)', [' (CAPR 39-1, 10.2.5)']), ['CAPR 39-1, 10.2.5']);
+  assert.deepEqual(C.refsOfText('No reference here', []), []);
+  assert.equal(C.popHtml(['5.3.1.1', 'ICL 25-02']), '<span class="citePopRef">CAPR 39-1, 5.3.1.1</span><span class="citePopRef">ICL 25-02</span>');
+  assert.equal(C.popHtml(['A <b> & "c"']), '<span class="citePopRef">A &lt;b&gt; &amp; &quot;c&quot;</span>');
+  assert.equal(C.popHtml([]), '');
+});
+
+test('the popover floats just above its mark, below it where there is no room above, and stays inside the window', () => {
+  const view = { w: 375, h: 740 }, size = { w: 240, h: 37 };
+  const mark = (left, top) => ({ left, top, right: left + 16, bottom: top + 16 });
+  // Room above: the box ends 8px over the mark and is centred on it.
+  let at = C.placePop(mark(200, 300), size, view);
+  assert.deepEqual(at, { left: 88, top: 255, side: 'above', arrow: 120 });
+  assert.equal(at.top + size.h + 8, 300, 'the gap above the mark is 8px');
+  // A mark near the right edge: the box is pushed in by the margin and the pointer still finds the mark.
+  at = C.placePop(mark(340, 300), size, view);
+  assert.equal(at.left + size.w, view.w - 8);
+  assert.equal(at.left + at.arrow, 348, 'the pointer is under the mark\'s centre');
+  // Near the left edge.
+  at = C.placePop(mark(2, 300), size, view);
+  assert.equal(at.left, 8);
+  assert.equal(at.arrow, 12, 'the pointer never leaves the box\'s rounded corner');
+  // No room above (a mark at the top of the window): below it.
+  at = C.placePop(mark(100, 20), size, view);
+  assert.equal(at.side, 'below');
+  assert.equal(at.top, 20 + 16 + 8);
+  // Exactly enough room above keeps it above; one pixel less puts it below.
+  assert.equal(C.placePop(mark(100, 8 + 37 + 8), size, view).side, 'above');
+  assert.equal(C.placePop(mark(100, 8 + 37 + 7), size, view).side, 'below');
+});
+
+test('one mark is open at a time, held by the mark and its place, never by its text', () => {
+  // Two rows say the same sentence ("This uniform does not wear it (CAPR 39-1, ...)"): their marks share a key. The old state was the set of texts
+  // open, so pressing one opened both when the page drew the list again.
+  const open = C.createOpenMark();
+  const [a, b] = [{ id: 'row 1' }, { id: 'row 2' }];
+  assert.equal(open.get(), null);
+  open.open(b, 'same sentence', 1);
+  assert.ok(open.is(b) && !open.is(a), 'only the pressed mark is open');
+  // The page draws the list again: new marks, same text. The open one is the one in the same place; its twin stays shut.
+  const [a2, b2] = [{ id: 'row 1, drawn again' }, { id: 'row 2, drawn again' }];
+  assert.equal(open.again([a2, b2]), b2);
+  assert.ok(open.is(b2) && !open.is(a2));
+  // A list that came back shorter closes it, and nothing opens in its place.
+  assert.equal(open.again([a2]), null);
+  assert.equal(open.get(), null);
+  // Opening another closes the first: the model holds one.
+  open.open(a, 'k', 0); open.open(b, 'k', 1);
+  assert.ok(open.is(b) && !open.is(a));
+  assert.equal(open.close().btn, b);
+  assert.equal(open.get(), null);
+  assert.equal(open.close(), null);
+  assert.equal(C.markAgain(['x', 'y'], 1), 'y');
+  assert.equal(C.markAgain(['x', 'y'], 2), null);
+  assert.equal(C.markAgain(['x', 'y'], -1), null);
+});
+
+test('the popover in the page: one element over the page, closed by a press elsewhere, Escape and moving on; the page does not move', () => {
+  const js = read('js/citations.js'), css = read('styles/app.css'), ui = read('js/workspace-ui.js');
+  // The state is the open mark, not a set of texts, and the host no longer opens in place.
+  assert.doesNotMatch(js, /citeOpen/);
+  assert.doesNotMatch(js, /new Set\(\)[^\n]*(text|reference is showing)/);
+  assert.match(js, /const open = createOpenMark\(\);/);
+  // One popover, made once, outside the texts (so no textContent changes) and emptied when it closes.
+  assert.match(js, /pop\.id = POP_ID; pop\.className = 'citePop';/);
+  assert.match(js, /if\(pop\)\{ pop\.hidden = true; pop\.textContent = ''; \}/);
+  assert.match(js, /btn\.closest\('dialog\[open\]'\) \|\| document\.body/);
+  assert.match(js, /const SKIP = '[^']*\.citePop[^']*'/);
+  // Pressed, pressed elsewhere, Escape, focus moving on, and the page scrolling or resizing: all at the window, before the page's own listeners.
+  assert.match(js, /window\.addEventListener\('click', onClick, true\)/);
+  assert.match(js, /window\.addEventListener\('pointerdown', onDown, true\)/);
+  assert.match(js, /window\.addEventListener\('keydown', onKey, true\)/);
+  assert.match(js, /window\.addEventListener\('focusin', onFocus, true\)/);
+  assert.match(js, /window\.addEventListener\('scroll', queueReposition, \{ capture: true, passive: true \}\)/);
+  assert.match(js, /if\(e\.key === 'Escape' && open\.get\(\)\)\{\s*e\.preventDefault\(\); e\.stopPropagation\(\);/);
+  // The mark that was open is found again when the page draws its list again, and a mark scrolled out of its container closes it.
+  assert.match(js, /function reanchor\(\)/);
+  assert.match(js, /if\(!inView\(cur\.btn, r\)\)\{ close\(\); return; \}/);
+  // A box that is not drawn (display: contents on the phone's panel) clips nothing: the popover opened and closed at once there.
+  assert.match(js, /!p\.getClientRects\(\)\.length\) continue;/);
+  // Fixed over the page, above the toast and the choosers, within the window; the pointer follows the mark.
+  const pop = css.slice(css.indexOf('.citePop{'), css.indexOf('}', css.indexOf('.citePop{')));
+  assert.match(pop, /position:fixed/);
+  assert.match(pop, /z-index:26000/);
+  assert.match(pop, /max-width:min\(300px,calc\(100vw - 16px\)\)/);
+  assert.ok(Number(/z-index:(\d+)/.exec(pop)[1]) > Number(/\.capubToast\{[^}]*z-index:(\d+)/.exec(css)[1]), 'above the toast');
+  assert.match(css, /\.citePop\[data-side="above"\]::after/);
+  assert.match(css, /\.citePop\[data-side="below"\]::after/);
+  // The list of chosen items is rebuilt only when a row changed, so a press (which the page answers with a redraw) leaves the marks in it alone.
+  assert.match(ui, /if\(list\.dataset\.sig===sig\) return;/);
+  assert.match(ui, /if\(line && line\.textContent!==rule\) line\.textContent=rule;/);
 });

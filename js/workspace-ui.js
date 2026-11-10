@@ -241,9 +241,10 @@
     const set=(key,count,n,rule,usable)=>{
       const card=document.querySelector(`.itemCard[data-card="${key}"]`); if(!card) return;
       const chip=card.querySelector('[data-count]');
-      if(chip){ chip.textContent=count; chip.dataset.short=count.replace(/ selected$/,'').replace(/ of /,'/'); chip.classList.toggle('hasItems',n>0); }
+      if(chip){ if(chip.textContent!==count) chip.textContent=count; chip.dataset.short=count.replace(/ selected$/,'').replace(/ of /,'/'); chip.classList.toggle('hasItems',n>0); }
       const line=card.querySelector('[data-rule]');
-      if(line) line.textContent=rule;
+      // Written only when it changed: the line may hold a reference mark, which a rewrite would draw again (js/citations.js).
+      if(line && line.textContent!==rule) line.textContent=rule;
       card.classList.toggle('unavailable',!usable);
     };
     const wearsRibbons=!r || r.allowsRibbons(u) || r.allowsMiniMedals(u);
@@ -272,6 +273,10 @@
     const host=safeBy(hostId); if(!host) return;
     const list=host.querySelector('.itemSummaryList'); if(!list) return;
     host.classList.toggle('hidden',!rows.length);
+    // The list is rebuilt only when a row changed: a rebuild on every press would draw each reference mark again and close the one the member opened.
+    const sig=JSON.stringify(rows.map(r=>[r.id,r.name,!!r.shown,!!r.pending,r.place,r.why]));
+    if(list.dataset.sig===sig) return;
+    list.dataset.sig=sig;
     list.replaceChildren(...rows.map(r=>{
       const li=document.createElement('li');
       li.className='itemSummaryRow'+(r.shown||r.pending?'':' notShown');

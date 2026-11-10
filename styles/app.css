@@ -1376,9 +1376,10 @@ html[data-access="guest"] #accessGate{display:none}
 .commandRowLevel select{width:100%;min-width:0}
 
 /* Regulation references (js/citations.js). A reference is taken out of its text and waits behind the small question mark that ends the text; a
-   press shows it where it was. The Regulation tab's switch sets data-cites="shown" on the root: every reference is back in its text and the marks
-   are gone. The mark is a span, not a button, so the page's button rules (full width, 44px tall) never reach it; the ring around it is the target. */
-:root:not([data-cites="shown"]) .citeHost:not(.citeOpen)>.citeRef{display:none}
+   press opens it in a popover that floats over the page just above the mark, so nothing moves. The Regulation tab's switch sets data-cites="shown"
+   on the root: every reference is back in its text and the marks are gone. The mark is a span, not a button, so the page's button rules (full width,
+   44px tall) never reach it; the ring around it is the target. */
+:root:not([data-cites="shown"]) .citeRef{display:none}
 .citeBtn{
   position:relative;display:inline-flex;align-items:center;justify-content:center;
   width:16px;height:16px;margin:0 0 0 var(--s1);padding:0;vertical-align:-2px;
@@ -1390,6 +1391,21 @@ html[data-access="guest"] #accessGate{display:none}
 .citeBtn::before{content:"?"}
 .citeBtn::after{content:"";position:absolute;inset:-6px}
 .citeBtn:hover,.citeBtn[aria-expanded="true"]{color:var(--ink);border-color:var(--ink)}
+/* The popover: one element, fixed over the page, put by js/citations.js just above the mark (below it where there is no room above). The pointer's
+   place along the edge is --arrow. */
+.citePop{
+  position:fixed;left:0;top:0;z-index:26000;box-sizing:border-box;
+  width:max-content;max-width:min(300px,calc(100vw - 16px));
+  padding:var(--s2) var(--s3);
+  background:var(--panel);color:var(--ink);
+  border:1px solid var(--line-strong);border-radius:var(--r);box-shadow:var(--shadow);
+  font-family:var(--font-body);font-size:var(--t-sm);font-weight:700;font-style:normal;line-height:1.35;letter-spacing:0;
+  text-align:left;text-transform:none;white-space:normal;overflow-wrap:anywhere;
+}
+.citePopRef{display:block}
+.citePop::after{content:"";position:absolute;left:calc(var(--arrow,50%) - 4px);width:8px;height:8px;background:var(--panel);border:1px solid var(--line-strong);transform:rotate(45deg)}
+.citePop[data-side="above"]::after{bottom:-5px;border-top:0;border-left:0}
+.citePop[data-side="below"]::after{top:-5px;border-bottom:0;border-right:0}
 .citeOfSelect>.citeRef{font-weight:400;color:var(--muted)}
 :root[data-cites="shown"] .citeBtn,:root[data-cites="shown"] .citeOfSelect{display:none}
 #citationsPanel .mpSwitch{min-height:44px}
