@@ -1,6 +1,7 @@
 {
   "name": "uniform-builder",
   "private": true,
+  "license": "UNLICENSED",
   "type": "commonjs",
   "scripts": {
     "test": "node --test tests/*.test.cjs",

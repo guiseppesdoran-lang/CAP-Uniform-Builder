@@ -3,11 +3,15 @@
 Uniform Builder for CAP members is an unofficial tool. It is not affiliated with or endorsed by
 Civil Air Patrol or the U.S. Air Force.
 
-## What the MIT license covers
+## What the notice in LICENSE covers
 
-The license in `LICENSE` covers the source code and documentation written for this project:
+The notice in `LICENSE` covers the source code and documentation written for this project:
 `index.html`, `config.js`, `favicon.svg`, the scripts at the top level, and the files in `js/`,
-`styles/`, `scripts/`, `tests/`, `deploy/`, `google-apps-script/` and `docs/`.
+`styles/`, `scripts/`, `tests/`, `deploy/`, `google-apps-script/` and `docs/`. It reserves all rights
+in them. The code is published so it can be read; no license is granted, and copying, modifying,
+hosting, distributing, selling or building on it needs written permission from Ethan Hillard.
+Versions published before 10 November 2026 were offered under the MIT license, and that offer
+stands for those versions only.
 
 ## What it does not cover
 
@@ -56,4 +60,5 @@ The license in `LICENSE` covers the source code and documentation written for th
 - **No other raster files.** A build publishes no PNG, JPG, WebP or GIF under `images/` except the
   emblems above (`tests/no-raster.test.cjs`).
 
-Anyone who reuses the code needs their own permission for the artwork and the names.
+Permission to use the code, where it is given, does not include the artwork, the names or anything
+else listed above as not covered. Those need the permission of their owners.

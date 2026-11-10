@@ -39,7 +39,7 @@ for (const match of html.matchAll(/(?:src|href)="([^"#?]+)/g)) {
   referenced.add(value);
 }
 referenced.add('index.html');
-// The MIT license asks for its notice to travel with copies, so the published site carries both.
+// The copyright notice and the third-party notice are published with the site, so the page's rights and what it does not own are public.
 referenced.add('LICENSE');
 referenced.add('NOTICE.md');
 

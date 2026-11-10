@@ -70,7 +70,7 @@ The visual system is one token block at the top of `styles/app.css`: the colors 
 
 ## License and credits
 
-The code and documentation are under the MIT license (`LICENSE`). That covers what the authors wrote, and nothing else. `NOTICE.md` lists what it does not cover and where the artwork and data come from: CAP and U.S. Air Force names and insignia, the artwork in `images/`, the official unit emblems, compiled and mirrored data, the fonts, and pdf.js (Apache-2.0, in `vendor/pdfjs/`). Confirm that you may redistribute an image before publishing it elsewhere.
+The source is published so it can be read, but all rights are reserved and no license is granted: copying, modifying, hosting, distributing, selling or building on the code or documentation needs written permission from Ethan Hillard, which you can ask for by opening an issue in this repository (`LICENSE`). Using the public website is welcome and is not affected, and versions published before 10 November 2026 were offered under the MIT license, which stands for those versions only. `NOTICE.md` lists what the notice does not cover and where the artwork and data come from: CAP and U.S. Air Force names and insignia, the artwork in `images/`, the official unit emblems, compiled and mirrored data, the fonts, and pdf.js (Apache-2.0, in `vendor/pdfjs/`).
 
 `docs/HISTORY.md` is a digest of the commit history up to 2026-10-07.
 
