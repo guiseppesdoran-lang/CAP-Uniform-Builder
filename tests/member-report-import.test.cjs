@@ -1012,3 +1012,80 @@ test('Local Activities hold nothing the import uses: not a patch, not a badge, n
   assert.deepEqual(got, base);
   assert.ok(!got.badges.includes('model_rocketry_badge') && !got.patches.includes('nbb_patch'));
 });
+
+// ---- What the import tells the member (I2) ----------------------------------------------------------------------------------------------
+const linesText = lines => lines.map(l => typeof l === 'string' ? l : l.heading ? `# ${l.heading}` : `- ${l.item}`);
+const groupOf = (lines, heading) => { const i = lines.findIndex(l => l && l.heading === heading); if(i < 0) return null; const out = []; for(let j = i + 1; j < lines.length && lines[j] && typeof lines[j] === 'object' && 'item' in lines[j]; j++) out.push(lines[j].item); return out; };
+
+test('the panel says what was read and what is on the build, then what was held off the uniform, with the reason', async () => {
+  const { result } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE));
+  assert.equal(result.lines[0], 'Imported member.txt.');
+  assert.equal(result.lines[1], 'Read: cadet, male, C/Col, Guiseppe Mitchell.');
+  assert.match(result.lines[2], /^On the build: 20 ribbons, 0 badges, 0 patches\.$/);
+  const held = groupOf(result.lines, 'Held off the uniform');
+  assert.ok(held, 'the patches the report matched are not on the Blues');
+  assert.match(held[0], /^Pararescue Orientation Course Patch and Cadet Officer School Patch: not worn on Blues.*Patches are worn on the field and flight uniforms; add them under Patches there\.$/);
+});
+
+test('a report that holds nothing back, with nothing unread, has no held off or not understood group', async () => {
+  const { result } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace(/NCSA Pararescue Orientation Course \(PJOC\) 10 Jul 2022\n/, '').replace('Cadet Officers School (COS) 15 Jun 2024\n', '')));
+  assert.equal(groupOf(result.lines, 'Held off the uniform'), null);
+  assert.equal(groupOf(result.lines, 'Not understood'), null);
+});
+
+test('a row of the awards tables that no ribbon matches is listed, in the report\'s words; the rows that are read are not', async () => {
+  const text = cadetWith('Decorations', ['Distinguished Flying Cross Plus 01 Jan 2024', 'Wing Commander Coin of Merit 05 Feb 2024']);
+  const { result } = await importFile(fileLike('member.txt', 'text/plain', text));
+  const unread = groupOf(result.lines, 'Not understood');
+  assert.deepEqual(unread, ['Distinguished Flying Cross Plus 01 Jan 2024: no ribbon or badge matches this row.', 'Wing Commander Coin of Merit 05 Feb 2024: no ribbon or badge matches this row.']);
+  // The same on the line a PDF makes, and a row printed twice is listed once.
+  const oneLine = await importFile(fileLike('member.pdf.txt', 'text/plain', text.replace(/\n/g, ' ')));
+  assert.deepEqual(groupOf(oneLine.result.lines, 'Not understood'), unread);
+  const twice = await importFile(fileLike('member.txt', 'text/plain', cadetWith('Decorations', ['Distinguished Flying Cross Plus 01 Jan 2024', 'Distinguished Flying Cross Plus 01 Jan 2024'])));
+  assert.deepEqual(groupOf(twice.result.lines, 'Not understood'), ['Distinguished Flying Cross Plus 01 Jan 2024: no ribbon or badge matches this row.']);
+  // None of the four fixtures lists a row it does not read.
+  for(const file of FIXTURE_FILES){
+    const r = await importFile(fileLike(file, 'text/plain', fixtureText(file)));
+    assert.equal(groupOf(r.result.lines, 'Not understood'), null, file);
+  }
+});
+
+test('a report without its grade row says the member type and gender are guesses, and a grade it cannot read is left as it was', async () => {
+  const noRow = FIXTURE.replace(/123456 MITCHELL, GUISEPPE MALE CADET C\/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049\n/, '').replace('C/Col Guiseppe Mitchell', 'Guiseppe Mitchell');
+  const { result } = await importFile(fileLike('member.txt', 'text/plain', noRow));
+  assert.match(groupOf(result.lines, 'Not understood')[0], /^The grade row was not found, so the member type and gender come from words in the report and the grade may be missing\. Check them\.$/);
+});
+
+test('what the member had is replaced, and the panel says Undo brings it back; a first import says nothing of the kind', async () => {
+  const first = await importFile(fileLike('member.txt', 'text/plain', FIXTURE));
+  assert.ok(!first.result.lines.some(l => /earlier ribbons/.test(l)));
+  const again = await importFile(fileLike('member.txt', 'text/plain', FIXTURE), { before: BUILD_BEFORE });
+  assert.ok(again.result.lines.includes('Your earlier ribbons, badges and patches were replaced by the report. Undo brings them back.'));
+});
+
+test('a row printed twice, and the badges beyond four, are told in the panel', async () => {
+  const twice = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('Achievement Award 01 Feb 2022\n', 'Achievement Award 01 Feb 2022\nAchievement Award 01 Feb 2022\n')));
+  assert.ok(groupOf(twice.result.lines, 'Notes').includes('1 row listed twice in the report was counted once.'));
+  const tracks = SENIOR.replace('STANDARDIZATION/EVALUATION TECHNICIAN 01 Jun 2022', 'STANDARDIZATION/EVALUATION TECHNICIAN 01 Jun 2022\nOPERATIONS MASTER 01 Jun 2023\nPERSONNEL MASTER 01 Jun 2023\nFINANCE MASTER 01 Jun 2023\nLOGISTICS MASTER 01 Jun 2023');
+  const many = await importFile(fileLike('member.txt', 'text/plain', tracks));
+  const held = groupOf(many.result.lines, 'Held off the uniform');
+  assert.ok(held && held.some(line => /: only four badges are worn at a time \(CAPR 39-1, 4\.1\.5\.2\.2\.4\); the others are listed under Authorized by member report in the badge list\.$/.test(line)), JSON.stringify(held));
+});
+
+test('a ribbon the membership is not offered is named with the reason, not dropped', async () => {
+  const { context } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE));
+  const lines = JSON.parse(vm.runInContext(`(() => { State.membership = 'cadet'; return JSON.stringify(memberReportHeldOffLines({ patches: [], badges: [], authorizedBadges: [], ribbons: [{ id: 'cap_senior_recruiter_ribbon' }] })); })()`, context));
+  assert.deepEqual(lines, ['Senior Recruiter Ribbon: not offered to cadet members.']);
+});
+
+test('the panel is built as text: a file name or a row with markup in it is shown as written, never run', () => {
+  const { context } = loadPageScripts();
+  const made = [];
+  const node = () => { const n = { style: {}, children: [], appendChild(c){ this.children.push(c); }, set innerHTML(v){ made.push(`innerHTML set: ${v}`); }, textContent: '' }; return n; };
+  const panel = node();
+  context.document = { createElement: () => node(), querySelectorAll: () => [], getElementById: id => id === 'memberReportImportStatus' ? panel : null };
+  vm.runInContext(`setMemberReportImportStatus(['Imported <img src=x onerror=alert(1)>.txt.', { heading: '<b>Held</b>' }, { item: '<script>alert(1)</script> & more' }], 'ok')`, context);
+  assert.deepEqual(made, [], 'no markup was set');
+  assert.deepEqual(panel.children.map(c => c.textContent), ['Imported <img src=x onerror=alert(1)>.txt.', '<b>Held</b>', '– <script>alert(1)</script> & more']);
+  assert.equal(panel.style.color, 'var(--ok)');
+});

@@ -31,13 +31,28 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   'nra_marksman_badge'
 ];
 
+// The panel's lines. A line is a sentence, or { heading } for a group's title, or { item } for a row of a group. Everything reaches the page as
+// text: a file name or a row of the report with markup in it is shown as it is written and never run.
 function setMemberReportImportStatus(lines, type='info'){
   const el = by('memberReportImportStatus');
   if(!el) return;
   const arr = Array.isArray(lines) ? lines : [lines];
-  const color = type === 'error' ? 'var(--danger)' : type === 'ok' ? 'var(--ok)' : 'var(--muted)';
-  el.style.color = color;
-  el.innerHTML = arr.map(line => `<div>${String(line).replace(/[<>&]/g, ch => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))}</div>`).join('');
+  el.style.color = type === 'error' ? 'var(--danger)' : type === 'ok' ? 'var(--ok)' : 'var(--muted)';
+  el.textContent = '';
+  for(const line of arr){
+    const row = document.createElement('div');
+    if(line && typeof line === 'object' && 'heading' in line){
+      row.textContent = String(line.heading);
+      row.style.fontWeight = '700';
+      row.style.marginTop = '6px';
+    }else if(line && typeof line === 'object' && 'item' in line){
+      row.textContent = `– ${line.item}`;
+      row.style.paddingLeft = '10px';
+    }else{
+      row.textContent = String(line);
+    }
+    el.appendChild(row);
+  }
 }
 
 // The notes an import leaves, as the member reads them: one per line, no note twice, no internal id, no eServices capitals.
@@ -206,8 +221,7 @@ const MEMBER_REPORT_TABLE_HEADINGS = new RegExp('^(?:.*\\b(?:' + [
   'Encampment Date Completed', 'Orientation Flights', 'Cadet Achievements', 'Achievement Date Completed Test Score', 'Awards', 'Promotions', 'Date Rank',
   'Decorations', 'Activity\\s*\\/\\s*Service Ribbon', 'Emergency Services Qualifications', 'Qualification Status Expiration', 'Transfer History', 'Current Committees'
 ].join('|') + '))\\s+', 'i');
-function dedupeMemberReportRows(text){
-  const source = String(text || '');
+function memberReportDuplicateCuts(source){
   const re = new RegExp(`(${MEMBER_REPORT_DATE})(?:\\s+(${MEMBER_REPORT_DATE}))?`, 'gi');
   const seen = new Set(), cuts = [];
   let previousEnd = 0, m;
@@ -223,20 +237,31 @@ function dedupeMemberReportRows(text){
     if(seen.has(key)) cuts.push([segmentStart + from + (rest.length - rest.trimStart().length), previousEnd]);
     else seen.add(key);
   }
+  return cuts;
+}
+
+function dedupeMemberReportRows(text){
+  const source = String(text || '');
+  const cuts = memberReportDuplicateCuts(source);
   if(!cuts.length) return source;
   let out = '', at = 0;
   for(const [start, end] of cuts){ out += source.slice(at, Math.max(at, start)); at = end; }
   return (out + source.slice(at)).replace(/\s+/g, ' ').trim();
 }
 
-function normalizeMemberReportText(text){
+// Everything but the removal of repeated rows, so the rows removed can be counted and said.
+function memberReportCleanBeforeDedupe(text){
   const cleaned = String(text || '')
-    .replace(/[­​-‏‪-‮⁠⁦-⁩﻿]/g, '')
-    .replace(/[‐-‒−]/g, '-')
-    .replace(/￾|�|/g, ' ')
+    .replace(/[\u00ad\u200b-\u200f\u202a-\u202e\u2060\u2066-\u2069\ufeff]/g, '')
+    .replace(/[\u2010-\u2012\u2212]/g, '-')
+    .replace(/\uFFFE|\uFFFD|\uF0BE/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  return dedupeMemberReportRows(normalizeMemberReportDates(stripMemberReportPageFurniture(removeLocalActivitiesFromMemberReport(cleaned))));
+  return normalizeMemberReportDates(stripMemberReportPageFurniture(removeLocalActivitiesFromMemberReport(cleaned)));
+}
+
+function normalizeMemberReportText(text){
+  return dedupeMemberReportRows(memberReportCleanBeforeDedupe(text));
 }
 
 
@@ -1472,6 +1497,41 @@ const IMPORTED_AIRCREW_QUALIFICATIONS = [
   ['Mission Scanner', '\\bMission\\s+Scanner\\b'], ['Airborne Photographer', '\\b(?:Airborne|Aerial)\\s+Photographer\\b']
 ];
 
+// The rows of the Decorations and Activity/Service Ribbon tables that no reader above recognizes, as "name date". A row the report prints that
+// earns nothing here is told to the member, not dropped. A row is the words since the previous date, less a table heading; the words of the
+// last row, with no date after them, are read too. The Professional Development, Cadet Training and Orientation Flights tables are not in this
+// list: most of their rows (courses, flights, activities) earn no ribbon by design.
+const MEMBER_REPORT_KNOWN_ROWS = [
+  ...MEMBER_REPORT_COUNTED_AWARDS.map(award => award.re), ...MEMBER_REPORT_PD_AWARDS.map(award => award.re),
+  /\bAchievement\s+Award\b/i, /\bCommanders?(?:\s*['‘’ʼ`´]\s*s?)?\s+Commendation\b/i, /Certificate\s+of\s+Recognition\s+for\s+Life[\s-]?saving|\bLife[\s-]?saving\s+Award\b/i,
+  /Air Force Organizational Excellence Award/i, /Exceptional\s+Service\s+Award/i, /Meritorious\s+Service\s+(?:Award|Medal)/i,
+  /\bYeager\b/i, /\b(?:Senior|Cadet)\s+Recruiter\s+Ribbon\b/i, /Crisis\s+Service\s+Award|\bCrisis\s+Ribbon\b/i, /Community\s+Service\s+Ribbon/i,
+  /Search\s*[‘’“”"'`]?\s*Find/i, /\bIACE\b|International\s+Air\s+Cadet\s+Exchange/i, /Disaster\s+Relief\s+Ribbon/i, /Cadet\s+Advisory\s+Council\s+Ribbon/i,
+  /Encampment\s+Ribbon|Piney\s+Creek\s+Camp/i, /Cadet\s+Special\s+Activit(?:y|ies)\s+Ribbon/i, /\bMedal\s+of\s+Valor\b/i, /\bModel\s+Rocketry\b/i,
+  /\b(?:Cadet\s+)?(?:STEM|Cyber)\s+Badge\b/i, /\bNRA\s+Marksman/i
+];
+function memberReportUnreadRows(text){
+  const source = normalizeMemberReportText(text);
+  const section = getReportSectionUntilAny(source, 'Decorations', ['Local\\s+Activities']);
+  if(!section) return [];
+  const rows = [];
+  const check = (segment, date) => {
+    const from = (MEMBER_REPORT_TABLE_HEADINGS.exec(segment) || [''])[0].length;
+    const words = segment.slice(from).trim();
+    if(words.length < 8 || !/[A-Za-z]{4}/.test(words) || MEMBER_REPORT_KNOWN_ROWS.some(re => re.test(words))) return;
+    const row = `${words.slice(0, 90)}${date ? ` ${date}` : ''}`;
+    if(!rows.includes(row)) rows.push(row);
+  };
+  const re = new RegExp(MEMBER_REPORT_DATE, 'gi');
+  let previousEnd = 0, m;
+  while((m = re.exec(section))){
+    check(section.slice(previousEnd, m.index), m[0]);
+    previousEnd = m.index + m[0].length;
+  }
+  check(section.slice(previousEnd), '');
+  return rows.slice(0, 15);
+}
+
 function parseCapMemberReport(textRaw){
   const text = labelCurrentDutyPositionsHeading(normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw)));
   const result = {
@@ -1492,7 +1552,13 @@ function parseCapMemberReport(textRaw){
     result.lastName = memberName.lastName;
   }
 
+  // A row the report lists twice is one record (normalizeMemberReportText): say how many were joined.
+  const repeatedRows = memberReportDuplicateCuts(memberReportCleanBeforeDedupe(textRaw)).length;
+  if(repeatedRows) result.notes.push(`${repeatedRows} row${repeatedRows === 1 ? '' : 's'} listed twice in the report ${repeatedRows === 1 ? 'was' : 'were'} counted once.`);
+
   const currentProfile = getCurrentProfileFromMemberReport(text);
+  result.profileFound = !!currentProfile;
+  result.unreadRows = memberReportUnreadRows(text);
   if(currentProfile){
     result.membership = currentProfile.membership;
     result.gender = currentProfile.gender;
@@ -2048,19 +2114,59 @@ function memberReportReadAnything(parsed){
     (parsed.ribbons || []).length || (parsed.badges || []).length || (parsed.authorizedBadges || []).length || (parsed.patches || []).length));
 }
 
-// The lines the panel shows for a report that was applied.
-function memberReportStatusLines(parsed, fileName){
-  return [
+// The uniform as the member reads it, from its card ("Blues: Class A", "OCP").
+function memberReportUniformName(id){
+  const card = [...document.querySelectorAll('.uniformOption')].find(b => b.dataset.uniformId === id);
+  const name = card && card.querySelector('.uName');
+  return name && name.textContent.trim() ? name.textContent.trim() : String(id || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+const memberReportNameList = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0] || '';
+
+// What the import read and could not put on the uniform, each with the reason, after the build has been applied: the patches a uniform does not
+// wear, the badges beyond the four a member wears (the aviation ones are told in the notes), the badges this uniform does not wear, and the ribbons
+// that were not placed because the membership is not offered them or another ribbon holds their place.
+function memberReportHeldOffLines(parsed){
+  const held = [];
+  const uniform = memberReportUniformName(State.uniform);
+  const patches = (parsed.patches || []).filter(id => !(State.patches || []).includes(id));
+  if(patches.length) held.push(`${memberReportNameList(patches.map(id => PATCH_META[id]?.label || id.replace(/_/g, ' ')))}: not worn on ${uniform}. Patches are worn on the field and flight uniforms; add ${patches.length > 1 ? 'them' : 'it'} under Patches there.`);
+  const aviation = new Set(IMPORTED_AVIATION_BADGES.flatMap(kind => kind.ids));
+  const beyond = (parsed.authorizedBadges || []).filter(id => !(parsed.badges || []).includes(id) && !aviation.has(id));
+  if(beyond.length) held.push(`${memberReportNameList(beyond.map(id => getBadgeDisplayName(id)))}: only four badges are worn at a time (CAPR 39-1, 4.1.5.2.2.4); the others are listed under Authorized by member report in the badge list.`);
+  const notWorn = typeof getSelectedBadgesNotWornOnCurrentUniform === 'function' ? getSelectedBadgesNotWornOnCurrentUniform(State.badges) : [];
+  if(notWorn.length) held.push(`${memberReportNameList(notWorn.map(id => getBadgeDisplayName(id)))}: not worn on ${uniform}.`);
+  const dropped = (parsed.ribbons || []).filter(r => r && r.id && !State.ribbonSelections[r.id]?.checked);
+  const notOffered = dropped.filter(r => !isRibbonEligibleForMembership(r.id, State.membership));
+  if(notOffered.length) held.push(`${memberReportNameList(notOffered.map(r => getRibbonDisplayName(r.id)))}: not offered to ${State.membership || 'these'} members.`);
+  const shared = dropped.filter(r => !notOffered.includes(r));
+  if(shared.length) held.push(`${memberReportNameList(shared.map(r => getRibbonDisplayName(r.id)))}: another ribbon you hold takes its place.`);
+  return held;
+}
+
+// The lines the panel shows for a report that was applied: what was read, what is on the build, what was held off and why, what was not
+// understood, and the notes. `replaced` is true when the member had ribbons, badges or patches that the report replaced.
+function memberReportStatusLines(parsed, fileName, { replaced = false } = {}){
+  const read = [parsed.membership, parsed.gender, parsed.rank, [parsed.firstName, parsed.lastName].filter(Boolean).join(' ')].filter(Boolean);
+  const onBuild = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  const ribbons = Object.values(State.ribbonSelections || {}).filter(s => s && s.checked).length;
+  const lines = [
     `Imported ${fileName}.`,
-    `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
-    `Name: ${parsed.firstName || parsed.lastName ? `${parsed.firstName || ''} ${parsed.lastName || ''}`.trim() : 'not found'}`,
-    `Ribbons selected: ${parsed.ribbons.length}`,
-    parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
-    parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
-    `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
-    'Reminder: double-check imported results; Unit Citation ribbons and other record-dependent items may not appear correctly.',
-    ...(capubImportNoteLines(parsed.notes).length ? ['Notes:', ...capubImportNoteLines(parsed.notes)] : [])
-  ].filter(Boolean);
+    `Read: ${read.length ? read.join(', ') : 'no grade, name or member type'}.`,
+    `On the build: ${onBuild(ribbons, 'ribbon', 'ribbons')}, ${onBuild((State.badges || []).length, 'badge', 'badges')}, ${onBuild((State.patches || []).length, 'patch', 'patches')}.`
+  ];
+  const held = memberReportHeldOffLines(parsed);
+  if(held.length) lines.push({ heading: 'Held off the uniform' }, ...held.map(item => ({ item })));
+  const unread = [];
+  if(!parsed.profileFound) unread.push('The grade row was not found, so the member type and gender come from words in the report and the grade may be missing. Check them.');
+  else if(!parsed.rank) unread.push('The grade was not found, so it was left as it was.');
+  unread.push(...(parsed.unreadRows || []).map(row => `${row}: no ribbon or badge matches this row.`));
+  if(unread.length) lines.push({ heading: 'Not understood' }, ...unread.map(item => ({ item })));
+  const notes = capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n)));
+  if(notes.length) lines.push({ heading: 'Notes' }, ...notes.map(item => ({ item })));
+  if(replaced) lines.push('Your earlier ribbons, badges and patches were replaced by the report. Undo brings them back.');
+  lines.push('Check the result against the member\'s record before relying on it.');
+  return lines;
 }
 
 // A report file in, the build changed and the lines to show out. A file that is not a report, has no text or cannot be opened ends in one
@@ -2093,13 +2199,14 @@ async function importMemberReportFile(file){
   if(!memberReportReadAnything(parsed)){
     return fail('The sections of a report are in the file, but nothing in them could be read, so nothing was changed.', 'nothing');
   }
+  const replaced = Object.values(State.ribbonSelections || {}).some(sel => sel && sel.checked) || (State.badges || []).length > 0 || (State.patches || []).length > 0;
   try{
     applyCapMemberReportImport(parsed);
   }catch(err){
     console.error(err);
     return fail('The report was read but could not be applied. Use Undo to go back to the build you had.', 'apply');
   }
-  return { ok:true, kind:kind || 'text', parsed, lines:memberReportStatusLines(parsed, file.name) };
+  return { ok:true, kind:kind || 'text', parsed, lines:memberReportStatusLines(parsed, file.name, { replaced }) };
 }
 
 function wireMemberReportImporter(){
