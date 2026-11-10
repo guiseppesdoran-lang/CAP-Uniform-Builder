@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1730,
+ "count": 1733,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -76196,7 +76196,7 @@
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.444,
+   "h_in": 3.439,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
@@ -76206,19 +76206,19 @@
     ],
     "bottom_center": [
      150,
-     344.404
+     343.91
     ],
     "center": [
      150,
-     172.202
+     171.955
     ],
     "left_edge": [
      0,
-     172.202
+     171.955
     ],
     "right_edge": [
      300,
-     172.202
+     171.955
     ]
    },
    "landmarks": []
@@ -76729,6 +76729,108 @@
     "right_edge": [
      325,
      159.9
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-connecticut-wing",
+   "path": "patches/patch-connecticut-wing/patch-connecticut-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.192,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     319.196
+    ],
+    "center": [
+     162.5,
+     159.598
+    ],
+    "left_edge": [
+     0,
+     159.598
+    ],
+    "right_edge": [
+     325,
+     159.598
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-glr-il-189",
+   "path": "patches/patch-glr-il-189/patch-glr-il-189.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.302,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     330.189
+    ],
+    "center": [
+     150,
+     165.095
+    ],
+    "left_edge": [
+     0,
+     165.095
+    ],
+    "right_edge": [
+     300,
+     165.095
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-ner-ct-004",
+   "path": "patches/patch-ner-ct-004/patch-ner-ct-004.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.458,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     345.821
+    ],
+    "center": [
+     150,
+     172.911
+    ],
+    "left_edge": [
+     0,
+     172.911
+    ],
+    "right_edge": [
+     300,
+     172.911
     ]
    },
    "landmarks": []

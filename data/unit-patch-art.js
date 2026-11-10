@@ -2,6 +2,7 @@
 // One row per unit emblem or activity patch: { charter, patchId, label, echelon, kind, w, h, asset, img }. js/catalog.js builds the unit patch table from it.
 (function(root){
   const rows = [
+    {"charter":"GLR-IL-189","patchId":"unit_glr_il_189","label":"GLR-IL-189","echelon":"squadron","kind":"unit","w":3,"h":3.302,"asset":"patch-glr-il-189","img":"patches/patch-glr-il-189/patch-glr-il-189.png"},
     {"charter":"GLR-IN-002","patchId":"unit_glr_in_002","label":"GLR-IN-002","echelon":"squadron","kind":"unit","w":3,"h":3.174,"asset":"patch-glr-in-002","img":"patches/patch-glr-in-002/patch-glr-in-002.png"},
     {"charter":"MAR-DC-001","patchId":"unit_mar_dc_001","label":"National Capital Wing","echelon":"wing","kind":"unit","w":3.25,"h":4.317,"asset":"patch-national-capital-wing","img":"patches/patch-national-capital-wing/patch-national-capital-wing.png"},
     {"charter":"MAR-DC-026","patchId":"unit_mar_dc_026","label":"MAR-DC-026","echelon":"squadron","kind":"unit","w":3,"h":2.968,"asset":"patch-mar-dc-026","img":"patches/patch-mar-dc-026/patch-mar-dc-026.png"},
@@ -11,9 +12,11 @@
     {"charter":"MAR-DC-053","patchId":"unit_mar_dc_053","label":"MAR-DC-053","echelon":"squadron","kind":"unit","w":3,"h":2.871,"asset":"patch-mar-dc-053","img":"patches/patch-mar-dc-053/patch-mar-dc-053.png"},
     {"charter":"MAR-DC-060","patchId":"unit_mar_dc_060","label":"MAR-DC-060","echelon":"squadron","kind":"unit","w":3,"h":2.77,"asset":"patch-mar-dc-060","img":"patches/patch-mar-dc-060/patch-mar-dc-060.png"},
     {"charter":"NCR-IA-001","patchId":"unit_ncr_ia_001","label":"Iowa Wing","echelon":"wing","kind":"unit","w":3.25,"h":3.14,"asset":"patch-iowa-wing","img":"patches/patch-iowa-wing/patch-iowa-wing.png"},
+    {"charter":"NER-CT-001","patchId":"unit_ner_ct_001","label":"Connecticut Wing","echelon":"wing","kind":"unit","w":3.25,"h":3.192,"asset":"patch-connecticut-wing","img":"patches/patch-connecticut-wing/patch-connecticut-wing.png"},
+    {"charter":"NER-CT-004","patchId":"unit_ner_ct_004","label":"NER-CT-004","echelon":"squadron","kind":"unit","w":3,"h":3.458,"asset":"patch-ner-ct-004","img":"patches/patch-ner-ct-004/patch-ner-ct-004.png"},
     {"charter":"NER-NER-001","patchId":"unit_ner_ner_001","label":"Northeast Region","echelon":"region","kind":"unit","w":3,"h":3.178,"asset":"patch-northeast-region","img":"patches/patch-northeast-region/patch-northeast-region.svg"},
     {"charter":"NER-NY-001","patchId":"unit_ner_ny_001","label":"New York Wing","echelon":"wing","kind":"unit","w":3.25,"h":3.182,"asset":"patch-new-york-wing-brand-tools","img":"patches/patch-new-york-wing-brand-tools/patch-new-york-wing-brand-tools.png"},
-    {"charter":"NER-NY-117","patchId":"unit_ner_ny_117","label":"NER-NY-117","echelon":"squadron","kind":"unit","w":3,"h":3.444,"asset":"patch-ner-ny-117","img":"patches/patch-ner-ny-117/patch-ner-ny-117.png"},
+    {"charter":"NER-NY-117","patchId":"unit_ner_ny_117","label":"NER-NY-117","echelon":"squadron","kind":"unit","w":3,"h":3.439,"asset":"patch-ner-ny-117","img":"patches/patch-ner-ny-117/patch-ner-ny-117.png"},
     {"charter":"NHQ-NHQ-000","patchId":"unit_nhq_nhq_000","label":"Civil Air Patrol National Headquarters","echelon":"national","kind":"unit","w":3,"h":3.142,"asset":"patch-cap-command-patch","img":"patches/patch-cap-command-patch/patch-cap-command-patch.svg"},
     {"charter":"PCR-AZ-001","patchId":"unit_pcr_az_001","label":"Arizona Wing","echelon":"wing","kind":"unit","w":3.25,"h":3.169,"asset":"patch-arizona-wing","img":"patches/patch-arizona-wing/patch-arizona-wing.png"},
     {"charter":"PCR-CA-001","patchId":"unit_pcr_ca_001","label":"California Wing","echelon":"wing","kind":"unit","w":3.25,"h":2.856,"asset":"patch-california-wing","img":"patches/patch-california-wing/patch-california-wing.png"},

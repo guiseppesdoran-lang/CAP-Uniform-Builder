@@ -9,7 +9,6 @@
     "civil_engineering_academy_patch": {"asset":"patch-civil-engineering-academy","img":"patches/patch-civil-engineering-academy/patch-civil-engineering-academy.svg","w":3,"h":3.072},
     "cla_patch": {"asset":"patch-civic-leadership-academy","img":"patches/patch-civic-leadership-academy/patch-civic-leadership-academy.svg","w":2.75,"h":3.641},
     "comms_patch": {"asset":"patch-communications","img":"patches/patch-communications/patch-communications.svg","w":3,"h":3.427},
-    "communications_patch": {"asset":"patch-communications","img":"patches/patch-communications/patch-communications.svg","w":3,"h":3.427},
     "cos_patch": {"asset":"patch-cadet-officer-school","img":"patches/patch-cadet-officer-school/patch-cadet-officer-school.svg","w":3,"h":2.573},
     "dog_patch": {"asset":"patch-es-style-2","img":"patches/patch-es-style-2/patch-es-style-2.svg","w":3.5,"h":3.5},
     "engineering_academy_patch": {"asset":"patch-engineering-academy","img":"patches/patch-engineering-academy/patch-engineering-academy.svg","w":3.5,"h":3.528},

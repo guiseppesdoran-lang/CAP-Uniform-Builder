@@ -1370,10 +1370,12 @@
     "patch-civic-leadership-academy": "patches/patch-civic-leadership-academy/patch-civic-leadership-academy.svg",
     "patch-civil-engineering-academy": "patches/patch-civil-engineering-academy/patch-civil-engineering-academy.svg",
     "patch-communications": "patches/patch-communications/patch-communications.svg",
+    "patch-connecticut-wing": "patches/patch-connecticut-wing/patch-connecticut-wing.png",
     "patch-engineering-academy": "patches/patch-engineering-academy/patch-engineering-academy.svg",
     "patch-es-style-1": "patches/patch-es-style-1/patch-es-style-1.svg",
     "patch-es-style-2": "patches/patch-es-style-2/patch-es-style-2.svg",
     "patch-georgia-wing": "patches/patch-georgia-wing/patch-georgia-wing.png",
+    "patch-glr-il-189": "patches/patch-glr-il-189/patch-glr-il-189.png",
     "patch-glr-in-002": "patches/patch-glr-in-002/patch-glr-in-002.png",
     "patch-honor-guard": "patches/patch-honor-guard/patch-honor-guard.svg",
     "patch-honor-guard-academy": "patches/patch-honor-guard-academy/patch-honor-guard-academy.svg",
@@ -1393,6 +1395,7 @@
     "patch-national-staff": "patches/patch-national-staff/patch-national-staff.svg",
     "patch-ncsa-mots": "patches/patch-ncsa-mots/patch-ncsa-mots.png",
     "patch-ncsa-national-geospatial-academy": "patches/patch-ncsa-national-geospatial-academy/patch-ncsa-national-geospatial-academy.png",
+    "patch-ner-ct-004": "patches/patch-ner-ct-004/patch-ner-ct-004.png",
     "patch-ner-ny-117": "patches/patch-ner-ny-117/patch-ner-ny-117.png",
     "patch-nesa": "patches/patch-nesa/patch-nesa.svg",
     "patch-nevada-wing": "patches/patch-nevada-wing/patch-nevada-wing.png",
@@ -1732,7 +1735,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "6fd2a2ec35", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "8e4ad25d3a", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "6fd2a2ec35"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "8e4ad25d3a"; }
 })(typeof self !== 'undefined' ? self : this);
