@@ -1,5 +1,5 @@
 // One table for what each uniform allows, taken from CAPR 39-1 (3 March 2020, with ICLs through
-// 26-04, including the OCP wear instructions of ICL 26-14). Every other part of the builder that
+// 26-14, the OCP wear instructions). Every other part of the builder that
 // decides "may this be worn here?" reads from this table, so the sidebar, the renderer and the
 // validator cannot disagree with each other.
 //
