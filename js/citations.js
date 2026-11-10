@@ -265,16 +265,19 @@
     pop.hidden = true;
     return pop;
   }
-  // The mark is on the page and not under a part of its containers that is scrolled away or folded shut.
+  // The mark is on the page and not under a part of its containers that is scrolled away or folded shut. The page itself (the body, which is only as tall
+  // as the header while the panel and the choosers are fixed over it) clips nothing, and a fixed box is clipped by nothing above it.
   function inView(el, r){
     if(!el.getClientRects().length) return false;
     const root = document.documentElement;
     let clip = { left: 0, top: 0, right: root.clientWidth, bottom: root.clientHeight };
-    for(let p = el.parentElement; p && p !== root; p = p.parentElement){
+    for(let p = el.parentElement; p && p !== document.body && p !== root; p = p.parentElement){
       const o = getComputedStyle(p);
-      if(!/auto|scroll|hidden|clip/.test(o.overflowX + o.overflowY) || !p.getClientRects().length) continue;   // a box that is not drawn (display: contents) clips nothing
-      const c = p.getBoundingClientRect();
-      clip = { left: Math.max(clip.left, c.left), top: Math.max(clip.top, c.top), right: Math.min(clip.right, c.right), bottom: Math.min(clip.bottom, c.bottom) };
+      if(/auto|scroll|hidden|clip/.test(o.overflowX + o.overflowY) && p.getClientRects().length){   // a box that is not drawn (display: contents) clips nothing
+        const c = p.getBoundingClientRect();
+        clip = { left: Math.max(clip.left, c.left), top: Math.max(clip.top, c.top), right: Math.min(clip.right, c.right), bottom: Math.min(clip.bottom, c.bottom) };
+      }
+      if(o.position === 'fixed') break;
     }
     return r.bottom > clip.top && r.top < clip.bottom && r.right > clip.left && r.left < clip.right;
   }
