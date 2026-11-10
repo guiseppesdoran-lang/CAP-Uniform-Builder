@@ -129,6 +129,39 @@ function memberReportFileKind(file){
   return null;
 }
 
+// A page's text two ways. In the order the PDF draws it: right for a table drawn row by row (a browser's print), wrong for one drawn
+// column by column (the names, then the dates). By line: the items grouped by their height on the page and read left to right, right
+// for both, wrong for a cell that wraps onto a second line beside its neighbour's. Items without a position are read in order only.
+function memberReportPageText(items){
+  const shown = (items || []).filter(item => item && item.str);
+  const inOrder = shown.map(item => item.str).join(' ');
+  if(!shown.length || !shown.every(item => Array.isArray(item.transform))) return { inOrder, byLine:inOrder };
+  const lines = [];
+  for(const item of [...shown].sort((a, b) => b.transform[5] - a.transform[5])){
+    const line = lines.find(l => Math.abs(l.y - item.transform[5]) <= Math.max(2, (item.height || 0) / 2));
+    if(line) line.items.push(item);
+    else lines.push({ y:item.transform[5], items:[item] });
+  }
+  const byLine = lines.map(l => l.items.sort((a, b) => a.transform[4] - b.transform[4]).map(item => item.str).join(' ')).join(' ');
+  return { inOrder, byLine };
+}
+
+// How well a reading of the report holds its rows: the dates that follow words of their own (a row is its words and then its date), plus
+// the grade row and the section headings. A reading that lost its rows (the names, then all the dates) scores lower than the same text by line.
+function memberReportReadingScore(text){
+  const t = normalizeMemberReportText(text);
+  let rows = 0, previousEnd = 0, m;
+  const re = new RegExp(MEMBER_REPORT_DATE, 'gi');
+  while((m = re.exec(t))){
+    if(/[A-Za-z]{3}/.test(t.slice(previousEnd, m.index).replace(MEMBER_REPORT_TABLE_HEADINGS, ''))) rows++;
+    previousEnd = m.index + m[0].length;
+  }
+  return rows + (getCurrentProfileFromMemberReport(t) ? 20 : 0) + MEMBER_REPORT_HEADINGS.filter(h => h.test(t)).length;
+}
+function memberReportPickReading(inOrder, byLine){
+  return inOrder === byLine || memberReportReadingScore(byLine) <= memberReportReadingScore(inOrder) ? inOrder : byLine;
+}
+
 async function extractMemberReportText(file){
   const kind = memberReportFileKind(file);
   if(!kind) throw memberReportError('type', 'That file is not a PDF or a text file. Save the member report as a PDF, or copy its text into a .txt file.');
@@ -156,18 +189,18 @@ async function extractMemberReportText(file){
     const data = new Uint8Array(await file.arrayBuffer());
     pdf = await pdfjsLib.getDocument({ data, ...MEMBER_REPORT_PDF_OPTIONS }).promise;
     if(pdf.numPages > MEMBER_REPORT_LIMITS.pdfPages) throw memberReportError('size', `That PDF has more than ${MEMBER_REPORT_LIMITS.pdfPages} pages, too many for a member report.`);
-    const pages = [];
+    const inOrder = [], byLine = [];
     let chars = 0;
     for(let p=1; p<=pdf.numPages; p++){
       const page = await pdf.getPage(p);
       const content = await page.getTextContent();
-      const strings = content.items.map(item => item.str || '').filter(Boolean);
-      const line = strings.join(' ');
-      chars += line.length;
+      const pageText = memberReportPageText(content.items);
+      chars += pageText.inOrder.length;
       if(chars > MEMBER_REPORT_LIMITS.textChars) throw memberReportError('size', 'That PDF holds too much text to be a member report.');
-      pages.push(line);
+      inOrder.push(pageText.inOrder);
+      byLine.push(pageText.byLine);
     }
-    return pages.join('\n');
+    return memberReportPickReading(inOrder.join('\n'), byLine.join('\n'));
   }catch(err){
     if(err && err.memberReportCode) throw err;
     throw memberReportError('pdf', /password/i.test(String(err && (err.name || err.message))) ? 'That PDF is locked with a password, so it cannot be read. Save an unlocked copy of the member report.' : 'That PDF could not be opened. Save the member report as a PDF again, or copy its text into a .txt file.');

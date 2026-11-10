@@ -1214,3 +1214,25 @@ test('a name with accents, a hyphen, an apostrophe or a particle is read whole (
   const heading = runImport(FIXTURE.replace(/123456 MITCHELL, GUISEPPE MALE CADET C\/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049\n/, '').replace('C/Col Guiseppe Mitchell', 'C/Col José Peña'));
   assert.deepEqual([heading.text.firstName, heading.text.lastName], ['José', 'Peña']);
 });
+
+// ---- Reading the lines of a PDF (I2) -----------------------------------------------------------------------------------------------------
+test('a PDF drawn row by row is read as drawn, one drawn column by column is read by line, and a wrapped cell keeps its words together', async () => {
+  const at = (str, x, y) => ({ str, transform: [1, 0, 0, 1, x, y], height: 10 });
+  const rows = [['Achievement Award', '01 Feb 2022'], ['Achievement Award', '05 Jun 2022'], ['Crisis Service Award', '15 Dec 2023']];
+  const head = [at('Printer Friendly View - Member Details', 40, 780), at('General Information', 40, 760), at('Decorations', 40, 740)];
+  const read = async items => {
+    const { context } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf: fakePdf({ pages: [[]] }) });
+    context.pdfjsLib = { GlobalWorkerOptions: {}, getDocument: () => ({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items }) }), destroy: async () => {} }) }) };
+    return vm.runInContext('(f) => extractMemberReportText(f)', context)(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'));
+  };
+  const byRow = await read([...head, ...rows.flatMap(([n, d], i) => [at(n, 40, 720 - 14 * i), at(d, 400, 720 - 14 * i)])]);
+  assert.equal(byRow, 'Printer Friendly View - Member Details General Information Decorations Achievement Award 01 Feb 2022 Achievement Award 05 Jun 2022 Crisis Service Award 15 Dec 2023');
+  const byColumn = await read([...head, ...rows.map(([n], i) => at(n, 40, 720 - 14 * i)), ...rows.map(([, d], i) => at(d, 400, 720 - 14 * i))]);
+  assert.equal(byColumn, byRow, 'the columns are put back into rows');
+  // A cell wrapped onto a second line: the cell's own words stay together in the order drawn.
+  const wrapped = await read([...head, at('Commander’s', 40, 720), at('Commendation Award', 40, 708), at('01 Feb 2022', 400, 720)]);
+  assert.ok(wrapped.includes('Commander’s Commendation Award'), wrapped);
+  // The same text through the whole import: the rows count as the report says.
+  const { result } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf: { GlobalWorkerOptions: {}, getDocument: () => ({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [...head, ...rows.map(([n], i) => at(n, 40, 720 - 14 * i)), ...rows.map(([, d], i) => at(d, 400, 720 - 14 * i))] }) }), destroy: async () => {} }) }) } });
+  assert.equal(result.ok, true);
+});
