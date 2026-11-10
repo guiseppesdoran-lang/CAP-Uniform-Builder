@@ -1607,10 +1607,11 @@
   // product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board is drawn. Neither sheet
   // has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
   const BOARD_STRIP_THICK = 0.5;
-  // The strip is centred on the shoulder seam, its axis ON the seam (Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder
-  // seam"), so nothing is dropped: the strip's thickness lies half on each side of the line. (Until then the strip hung from the strap's upper edge: its axis
-  // lay 0.18 to 0.21 in below the seam, the outer end 0.19 in (men) and 0.63 in (women) short of the shoulder point.)
-  const BOARD_STRIP_DROP = 0;
+  // The strip lies along the shoulder seam with its UPPER edge on the seam (the shoulder line the sheet's outline draws), so the whole board is on the coat. Ethan, 2 November 2026: "the
+  // shoulder boards on class a's should always match the shoulder seam"; that put the strip's axis ON the seam, its thickness half on each side, and the upper half stood over the page above
+  // the shoulder, the outer end hanging over the corner of the sleeve. Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating" (a strip of background between the board and
+  // the coat). The strip is dropped by half its thickness: its upper edge is the seam, its outer end at the shoulder point, and nothing of it is outside the coat (the cord still starts on the seam, under it).
+  const BOARD_STRIP_DROP = BOARD_STRIP_THICK / 2;
   // Depth of the board's pointed neck end (the board sheets' size basis: 0.74 in peak).
   const BOARD_PEAK = 0.74;
   // The board's neck end runs on past the strap's, toward the neck, where the coat's collar leaf (the lapel foreground, Z.badge + 0.5)

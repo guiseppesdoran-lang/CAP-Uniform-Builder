@@ -65,8 +65,9 @@ test('Class A and cadet semi-formal coats: the edge-on grade\'s centre is as far
       const slot = core.anchor(bs, 'rank_slot_center'), outer = core.anchor(bs, 'board_outer_end');
       const want = Math.hypot(slot.x - outer.x, slot.y - outer.y);
       const edge = byKey(scene, `grade:edge-${side}`);
-      const end = SHEET.seam(COATS[uniform][gender], side).outer;
-      const got = Math.hypot(edge.origin.x - end.x, edge.origin.y - end.y);
+      const sm = SHEET.seam(COATS[uniform][gender], side), end = sm.outer;
+      // Measured along the seam: the strip hangs from it (its upper edge on the seam, B5), so the grade is half a strip below the seam as well.
+      const sl = Math.hypot(sm.neck.x - end.x, sm.neck.y - end.y), got = ((edge.origin.x - end.x) * (sm.neck.x - end.x) + (edge.origin.y - end.y) * (sm.neck.y - end.y)) / sl;
       assert.ok(Math.abs(got - want) < 0.02, `${uniform} ${gender} ${rank} ${side}: edge-on centre ${got.toFixed(3)} in from the strap's outer end, the top view's slot is ${want.toFixed(3)} in from the board's`);
       n++;
     }

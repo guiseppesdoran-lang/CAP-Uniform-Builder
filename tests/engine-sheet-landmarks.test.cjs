@@ -32,8 +32,11 @@ test('Class A coats: the edge-on board and the strap frame follow the shoulder s
     for(const side of ['right', 'left']){
       const a = base.layers.find(l => l.key === 'epaulet:' + side);
       assert.ok(a, `${sex} ${side}: the edge-on board is drawn`);
-      const want = require('./helpers/class-a-sheet.cjs').seam(coat, side).outer;
-      assert.ok(Math.hypot(a.origin.x - want.x, a.origin.y - want.y) < 0.005, `${sex} ${side}: the board's outer end is the sheet's shoulder point`);
+      const sm = require('./helpers/class-a-sheet.cjs').seam(coat, side), want = sm.outer;
+      // The strip hangs from the seam, its upper edge on it (B5): its outer end is the shoulder point moved half a strip, 0.25 in, square to the seam, down.
+      const sl = Math.hypot(sm.neck.x - want.x, sm.neck.y - want.y);
+      let dn = { x: (sm.neck.y - want.y) / sl, y: -(sm.neck.x - want.x) / sl }; if(dn.y < 0) dn = { x: -dn.x, y: -dn.y };
+      assert.ok(Math.hypot(a.origin.x - (want.x + dn.x * 0.25), a.origin.y - (want.y + dn.y * 0.25)) < 0.005, `${sex} ${side}: the board's outer end is the sheet's shoulder point, half a strip down`);
     }
     assert.ok(ring.length > 10 && seam.outer.x > seam.neck.x, `${sex}: the sheet states an outline with a shoulder line`);
   }

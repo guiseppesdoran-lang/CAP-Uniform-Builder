@@ -1,5 +1,5 @@
 'use strict';
-// Class A shoulder boards on the shoulder seam (Ethan, 2 November 2026, "looking at the spaatz image, the shoulder boards on class a's should always match the
+// Class A shoulder boards on the shoulder seam (Ethan, 2 November 2026; the strip's upper edge since B5, see HALF_STRIP below, "looking at the spaatz image, the shoulder boards on class a's should always match the
 // shoulder seam. basically cord should be under the shoulder board (if applicable) which should match with the seam"). The seam is the run of the coat sheet's
 // outline from the collar seam to the shoulder point (tests/helpers/class-a-sheet.cjs, measured from the shipped sheets). Every board's long axis lies on it with its
 // outer end on the shoulder point, following its angle, and the shoulder cord's top end and the aide cord's attachment lie under the board, drawn below it.
@@ -41,18 +41,21 @@ test('the engine reads the shoulder seam off the sheet\'s outline: the same coll
   }
 });
 
-test('cadet officer boards, every cut and both coats: the strip\'s axis lies on the seam (0.01 in), its outer end on the shoulder point and its direction on the seam\'s angle', async () => {
+// B5 (Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating"): the strip's UPPER edge is the seam, so its axis lies half the strip's thickness (0.25 in) below the seam, its outer end that
+// far square down from the shoulder point, and its direction is still the seam's angle.
+const HALF_STRIP = 0.25;
+test('cadet officer boards, every cut and both coats: the strip\'s upper edge lies on the seam (0.01 in), its outer end half a strip below the shoulder point and its direction on the seam\'s angle', async () => {
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
     const scene = await P.composeUniform(hb(uniform, sex, 'cadet', rank), store);
     for(const side of ['right', 'left']){
       const tag = `${uniform} ${sex} ${rank} ${side}`;
       const sm = SHEET.seam(COATS[uniform][sex], side), strip = scene.layers.find(l => l.key === 'epaulet:' + side);
       const spec = await store.load(strip.id), outer = core.anchor(spec, 'board_outer_end'), button = core.anchor(spec, 'button_end_center');
-      assert.ok(Math.hypot(strip.origin.x - sm.outer.x, strip.origin.y - sm.outer.y) <= TOL, `${tag}: the outer end is on the shoulder point`);
+      assert.ok(Math.abs(Math.hypot(strip.origin.x - sm.outer.x, strip.origin.y - sm.outer.y) - HALF_STRIP) <= TOL && Math.abs(Math.abs(across(strip.origin, sm.outer, sm.neck)) - HALF_STRIP) <= TOL, `${tag}: the outer end is half a strip below the shoulder point (${across(strip.origin, sm.outer, sm.neck).toFixed(4)} off the seam)`);
       // The board's axis (outer end to the button end) as drawn: the unrotated strip is level, so the axis runs along the strip's turn.
       const dir = core.rotatePoint({ x: button.x - outer.x, y: button.y - outer.y }, { x: 0, y: 0 }, strip.rotate);
       const L = Math.hypot(dir.x, dir.y), tip = { x: strip.origin.x + dir.x / L * 4.55, y: strip.origin.y + dir.y / L * 4.55 };
-      assert.ok(Math.abs(across(tip, sm.outer, sm.neck)) <= TOL, `${tag}: the board's far end lies ${across(tip, sm.outer, sm.neck).toFixed(4)} in off the seam`);
+      assert.ok(Math.abs(Math.abs(across(tip, sm.outer, sm.neck)) - HALF_STRIP) <= TOL, `${tag}: the board's far end lies ${across(tip, sm.outer, sm.neck).toFixed(4)} in off the seam (half a strip below it)`);
       const want = Math.atan2(sm.neck.y - sm.outer.y, sm.neck.x - sm.outer.x), got = Math.atan2(dir.y, dir.x);
       assert.ok(Math.abs(want - got) * 180 / Math.PI < 0.05, `${tag}: the board's angle is the seam's`);
     }

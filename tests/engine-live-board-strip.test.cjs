@@ -4,7 +4,7 @@
 // lower copy as well'; then 'the shoulder boards on the uniform are missing the triangle part, and it's looking a little flat'. The lower
 // copy is the shoulder board of the view from above foreshortened across the strap to 0.5 in, true length along it, its outer end on the
 // strap's outer end and its pointed neck end (the peak, with the button) running on past the strap's neck end, drawn over the collar leaf;
-// its centre line on the sheet's shoulder seam, its outer end on the shoulder point (2 November 2026; before then its upper edge stayed on a strap landmark's), and two flat bands
+// its upper edge on the sheet's shoulder seam (B5, 2026-11-10; from 2 November its centre line was on it), its outer end on the shoulder point, and two flat bands
 // (light above, dark below) give it depth. The crest, the button and the blue band are on the strip and the grade is on the band's centre
 // (CAPR 39-1 4.1.5.2.1.3, 4.1.9.3.4, Fig A5-6; R7).
 
@@ -24,9 +24,10 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.
 const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
 const hb = (uniform, gender, rank, membership) => HARNESS.makeBuild({ uniform, gender, membership: membership || 'cadet', rank, name: { first: 'Pat', last: 'Doe', show: true }, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } });
 const rad = d => d * Math.PI / 180;
-// The strip is 0.5 in across and its centre line IS the shoulder seam (Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder
-// seam"): nothing is dropped. Until then its upper edge hung from the strap's and its centre line lay 0.05 in below the strap axis, which itself lay 0.2 in below the seam.
-const DROP = { thick: 0.5, drop: 0 };
+// The strip is 0.5 in across and its UPPER edge is the shoulder seam (Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder seam" put its centre
+// line on the seam; 2026-11-10, B5: "she class a blue shouldet boards are slightly levetating", the upper half stood over the page above the shoulder): its centre line lies half
+// a strip, 0.25 in, below the seam, so the whole board is on the coat.
+const DROP = { thick: 0.5, drop: 0.25 };
 // The coat sheets' shoulder seam on each side, neck end then shoulder point, sheet inches, measured from the sheets' own silhouettes.
 const SHEET = require('./helpers/class-a-sheet.cjs');
 const COATS = { blues_a: { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' }, semi_formal_usaf: { male: 'garment-semiformal-class-a-coat-male', female: 'garment-semiformal-class-a-coat-female' } };
@@ -106,12 +107,14 @@ test('the edge-on board keeps its whole outline: as long as the top view, the pe
       const toScene = p => core.rotatePoint(loc(p), strip.origin, strip.rotate);
       const bl = Math.hypot(button.x - outer.x, button.y - outer.y), tip = toScene({ x: outer.x + (button.x - outer.x) / bl * board.w, y: outer.y });
       const sm = seamOf(uniform, sex, side), arm = sm.outer, neck = sm.neck;
-      assert.ok(Math.hypot(strip.origin.x - arm.x, strip.origin.y - arm.y) < 0.005, `${tag}: the board's outer end is on the shoulder point`);
+      const useam = { x: (neck.x - arm.x) / Math.hypot(neck.x - arm.x, neck.y - arm.y), y: (neck.y - arm.y) / Math.hypot(neck.x - arm.x, neck.y - arm.y) };
+      let dn = { x: useam.y, y: -useam.x }; if(dn.y < 0) dn = { x: -dn.x, y: -dn.y };
+      assert.ok(Math.hypot(strip.origin.x - (arm.x + dn.x * DROP.drop), strip.origin.y - (arm.y + dn.y * DROP.drop)) < 0.005, `${tag}: the board's outer end is on the shoulder point, its upper edge on the seam`);
       const tipFromOuter = Math.hypot(tip.x - arm.x, tip.y - arm.y);
       assert.ok(Math.abs(tipFromOuter - board.w) < 0.02, `${tag}: the peak's tip is ${tipFromOuter.toFixed(3)} in from the outer end (the board is ${board.w})`);
       // The tip lies on the seam line (the seam's direction, outer to neck), to 0.01 in.
       const len = Math.hypot(neck.x - arm.x, neck.y - arm.y), u = { x: (neck.x - arm.x) / len, y: (neck.y - arm.y) / len };
-      assert.ok(Math.abs((tip.x - arm.x) * u.y - (tip.y - arm.y) * u.x) < 0.01, `${tag}: the peak's tip lies on the seam`);
+      assert.ok(Math.abs(Math.abs((tip.x - arm.x) * u.y - (tip.y - arm.y) * u.x) - DROP.drop) < 0.01, `${tag}: the peak's tip lies on the strip's centre line, half a strip below the seam`);
       // The button is inside the strip's box.
       const b = toScene(button);
       const rotBack = core.rotatePoint(b, strip.origin, -(strip.rotate || 0));
@@ -149,4 +152,35 @@ test('the edge-on board and the officers\' epaulet strips on the Class A coat ha
     const scene = await P.composeUniform(hb(uniform, sex, rank, membership), store);
     assert.ok(!scene.layers.some(l => l.role === 'epaulet-shade'), `${rank}: no strip, no shading`);
   }
+});
+
+// B5 (Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating"; a strip of background between the board and the coat): the edge-on board lies on the coat. Its upper
+// edge is the shoulder seam, so the strip's outer end, its lower edge and its peak are inside the coat's silhouette and no part of it is over the page below the shoulder line. With its axis on the seam
+// (2 November) its upper half stood 0.25 in above the shoulder and its outer end hung over the corner of the sleeve.
+test('Class A and cadet semi-formal: no part of the edge-on board is outside the coat below the shoulder line: the outer end, the lower edge and the peak lie on the coat, both cuts, both sides, every cadet officer grade (B5)', async () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const TOP = new Function(/\/\/ GARMENT_TOP begin\n([\s\S]*?)\/\/ GARMENT_TOP end/.exec(src)[1] + '; return GARMENT_TOP;')();
+  const inside = (poly, p) => { let c = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const a = poly[i], b = poly[j]; if((a.y > p.y) !== (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) c = !c; } return c; };
+  const edgeDist = (poly, p) => Math.min(...poly.map((a, i) => { const b = poly[(i + 1) % poly.length], dx = b.x - a.x, dy = b.y - a.y, t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy || 1))); return Math.hypot(p.x - a.x - t * dx, p.y - a.y - t * dy); }));
+  let n = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
+    const scene = await P.composeUniform(hb(uniform, sex, rank), store);
+    const sheet = scene.layers.find(l => l.role === 'garment'), poly = TOP[sheet.id].map(([x, y]) => ({ x, y }));
+    for(const side of ['right', 'left']){
+      const strip = scene.layers.find(l => l.key === 'epaulet:' + side), tag = `${uniform} ${sex} ${rank} ${side}`;
+      // The strip's outline in the art's frame (the layer squeezes the board across to 0.5 in about its outer end, as the tests above place it): sample the board's outer end, the edge that is the lower one on the
+      // sheet from there to 80% of the board's length, and the peak's tip.
+      const spec = await store.load(strip.id), outer = core.anchor(spec, 'board_outer_end'), button = core.anchor(spec, 'button_end_center'), board = core.landmarkBounds(spec, 'board');
+      const bl = Math.hypot(button.x - outer.x, button.y - outer.y), d = { x: (button.x - outer.x) / bl, y: (button.y - outer.y) / bl }, sy = strip.h / spec.h;
+      const toScene = (s_, v) => core.rotatePoint({ x: strip.origin.x + d.x * s_, y: strip.origin.y + v * sy }, strip.origin, strip.rotate);
+      const hb2 = board.h / 2, pts = [], lowA = [], lowB = [];
+      for(let i = 0; i <= 12; i++){ lowA.push(toScene(board.w * 0.8 * i / 12, hb2)); lowB.push(toScene(board.w * 0.8 * i / 12, -hb2)); }
+      pts.push(...(lowA.reduce((t, q) => t + q.y, 0) > lowB.reduce((t, q) => t + q.y, 0) ? lowA : lowB));
+      for(let j = 0; j <= 6; j++) pts.push(toScene(0, hb2 * (2 * j / 6 - 1)));
+      pts.push(toScene(board.w, 0));
+      for(const p of pts) assert.ok(inside(poly, p) || edgeDist(poly, p) < 0.03, `${tag}: the point (${p.x.toFixed(2)}, ${p.y.toFixed(2)}) of the board is over the page, ${edgeDist(poly, p).toFixed(3)} in off the coat`);
+      n++;
+    }
+  }
+  assert.equal(n, 24);
 });
