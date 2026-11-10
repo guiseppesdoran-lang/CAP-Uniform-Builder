@@ -1734,7 +1734,7 @@ function patchTileHtml(patchId, { uniformId = State.uniform, membership = State.
       where = `<div class="miniRow"><label>Worn <select class="ptPlace" aria-label="Where the ${escapeHtml(title)} is worn">${options}</select></label></div>`;
     }else{
       const label = getPatchPlaceLabel(patchId, uniformId);
-      where = `<div class="sub">Worn: <b>${escapeHtml(label || meta.note || 'where CAPR 39-1 puts it')}</b></div>`;
+      where = `<div class="sub">Worn: <b>${escapeHtml(label || meta.note || 'where the regulation puts it')}</b></div>`;
     }
   }
   return `

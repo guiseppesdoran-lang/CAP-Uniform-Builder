@@ -200,7 +200,7 @@
 
   /* ---------- the Items cards: a count and the rule for this uniform on each ---------- */
   const rules=()=>window.CAPUBUniformRules;
-  const BADGE_RULE='Each badge is placed where CAPR 39-1 puts it.';
+  const BADGE_RULE='Each badge is placed where the regulation puts it.';
   // The paragraph that says a uniform wears no ribbons: 11.1.3 names the Corporate Service Dress, the Battle Dress Uniform (the ABU), the
   // Corporate Field Uniform, the Flight Duty Uniforms and the Corporate Working Uniform; the OCP's basic configuration (7.1.1.1.2) lists no ribbons.
   function noRibbonsRef(uniformId){
@@ -257,7 +257,7 @@
       planned ? `Up to ${planned.count}` : (cap ? `${badges} of ${officerTag ? officerCap : cap}` : `${badges} selected`),
       badges,
       (!planned && cap && officerTag) ? `The officer's cloth name tag may include one badge (CAPR 39-1 ${((r.getUniformRule(u)||{}).refs||{}).badges}).` :
-      (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where CAPR 39-1 puts it.` : `At most ${cap} on this uniform, each where CAPR 39-1 puts it.`) : BADGE_RULE,
+      (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where the regulation puts it.` : `At most ${cap} on this uniform, each where the regulation puts it.`) : BADGE_RULE,
       !!auth.showBadges || !!planned);
     set('patches',patchesNotShown ? `${patches} shown` : `${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
     updateItemSummaries();

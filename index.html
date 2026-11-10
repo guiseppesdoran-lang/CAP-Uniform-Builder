@@ -335,7 +335,7 @@
             <button id="expandBadges" type="button" aria-label="Choose badges">Choose…</button>
             <button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button>
           </div>
-          <div class="hintText cardRule" data-rule="badges">Each badge is placed where CAPR 39-1 puts it.</div>
+          <div class="hintText cardRule" data-rule="badges">Each badge is placed where the regulation puts it.</div>
 
           <!-- What is chosen and where it sits on the uniform, from the drawing (js/workspace-ui.js updateItemSummaries). -->
           <div id="badgeSummary" class="itemSummary hidden">
@@ -445,6 +445,14 @@
           </section>
         </div>
         <div id="extraPanel-regulation" role="tabpanel" aria-labelledby="extraTab-regulation" hidden>
+          <!-- The references the notes and hints cite (js/citations.js): on the page each one waits behind the question mark after its text.
+               The switch puts them all back in their texts; the list under it is every text on the page with what it cites. -->
+          <section class="panelBlock" id="citationsPanel">
+            <label class="fieldLabel">References in notes and hints</label>
+            <label class="mpSwitch"><input type="checkbox" id="citesShown"><span>Show every reference in its text</span></label>
+            <div class="hintText">When this is off, the question mark after a text shows its reference.</div>
+            <div id="regulationNotes"></div>
+          </section>
           <section class="panelBlock">
             <label class="fieldLabel">Rules this drawing applies</label>
             <div id="regulationBody"></div>
@@ -572,6 +580,7 @@
 <script src="js/placement-templates.js?v=1785fa138c" defer></script>
 <script src="js/workspace-ui.js?v=659ce6790e" defer></script>
 <script src="js/measure-panel.js?v=8aaeea2a86" defer></script>
+<script src="js/citations.js" defer></script>
 <script src="js/planned-uniforms.js?v=645b98dd2f" defer></script>
 <script src="js/guided-flow.js?v=4aadc676f8" defer></script>
 <script src="js/member-report-import.js?v=adc418ec02" defer></script>

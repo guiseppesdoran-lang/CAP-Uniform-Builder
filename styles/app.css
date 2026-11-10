@@ -1371,3 +1371,29 @@ html[data-access="guest"] #accessGate{display:none}
 .commandRowLabel{font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
 .commandRowState{font-size:var(--t-xs);color:var(--muted);text-align:right;min-width:0}
 .commandRow .hintText{margin-top:var(--s1)}
+
+/* Regulation references (js/citations.js). A reference is taken out of its text and waits behind the small question mark that ends the text; a
+   press shows it where it was. The Regulation tab's switch sets data-cites="shown" on the root: every reference is back in its text and the marks
+   are gone. The mark is a span, not a button, so the page's button rules (full width, 44px tall) never reach it; the ring around it is the target. */
+:root:not([data-cites="shown"]) .citeHost:not(.citeOpen)>.citeRef{display:none}
+.citeBtn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;margin:0 0 0 var(--s1);padding:0;vertical-align:-2px;
+  border:1px solid var(--line-strong);border-radius:50%;background:transparent;
+  color:var(--muted);font-family:var(--font-body);font-size:11px;font-weight:700;font-style:normal;line-height:1;
+  letter-spacing:0;text-indent:0;text-transform:none;white-space:nowrap;
+  cursor:pointer;user-select:none;-webkit-user-select:none;
+}
+.citeBtn::before{content:"?"}
+.citeBtn::after{content:"";position:absolute;inset:-6px}
+.citeBtn:hover,.citeBtn[aria-expanded="true"]{color:var(--ink);border-color:var(--ink)}
+.citeOfSelect>.citeRef{font-weight:400;color:var(--muted)}
+:root[data-cites="shown"] .citeBtn,:root[data-cites="shown"] .citeOfSelect{display:none}
+#citationsPanel .mpSwitch{min-height:44px}
+#citationsPanel .hintText{margin-top:0}
+.citeTable{margin-top:var(--s3)}
+.citeTable tbody th[scope="row"]{color:var(--muted)}
+.citeTable .regRef{min-width:9em;color:var(--ink)}
+@media (max-width:700px){
+  .citeBtn::after{inset:-12px}
+}

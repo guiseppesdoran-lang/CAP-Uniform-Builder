@@ -90,7 +90,7 @@
           const list = [['auto', 'Patrol cap'], ['tactical', 'Tactical cap']];
           if(c.u === 'corporate_field') list.push(['boonie', 'Boonie hat']);
           // The National Blue Beret (ICL 25-02 9.2.3: NBB graduates, with the ABU/OCP and the corporate field uniform at the unit level; LIVE13 E83).
-          list.push(['beret', 'National Blue Beret (graduates, 9.2.3)']);
+          list.push(['beret', 'National Blue Beret, graduates (9.2.3)']);
           list.push(['none', 'No headgear']);
           return list;
         }

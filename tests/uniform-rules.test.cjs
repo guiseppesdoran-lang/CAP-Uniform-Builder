@@ -255,7 +255,7 @@ test('both flight suits: one badge is under the limit, two are at it, three are 
     assert.equal(rules.getUniformRule(u).badgeDefault,1,u+': one by default');
   }
   const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
-  assert.match(ui,/`\$\{dflt\} by default, up to \$\{cap\} on this uniform, each where CAPR 39-1 puts it\.`/,'the panel line says the default and the cap');
+  assert.match(ui,/`\$\{dflt\} by default, up to \$\{cap\} on this uniform, each where the regulation puts it\.`/,'the panel line says the default and the cap');
   assert.equal(ui.includes('badgeDefault'),true);
 });
 
