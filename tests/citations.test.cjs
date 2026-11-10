@@ -218,8 +218,12 @@ test('the popover in the page: one element over the page, closed by a press else
   // The mark that was open is found again when the page draws its list again, and a mark scrolled out of its container closes it.
   assert.match(js, /function reanchor\(\)/);
   assert.match(js, /if\(!inView\(cur\.btn, r\)\)\{ close\(\); return; \}/);
-  // A box that is not drawn (display: contents on the phone's panel) clips nothing: the popover opened and closed at once there.
-  assert.match(js, /!p\.getClientRects\(\)\.length\) continue;/);
+  // What clips the mark: a box that is not drawn (display: contents on the phone's panel) clips nothing, the body clips nothing (it is only as tall as the
+  // header while the panel and the choosers are fixed over it), and a fixed box is clipped by nothing above it. The popover opened and closed at once on
+  // the phone, and again in a chooser, when these were not so.
+  assert.match(js, /p !== document\.body && p !== root/);
+  assert.match(js, /&& p\.getClientRects\(\)\.length\)\{/);
+  assert.match(js, /if\(o\.position === 'fixed'\) break;/);
   // Fixed over the page, above the toast and the choosers, within the window; the pointer follows the mark.
   const pop = css.slice(css.indexOf('.citePop{'), css.indexOf('}', css.indexOf('.citePop{')));
   assert.match(pop, /position:fixed/);
@@ -231,4 +235,47 @@ test('the popover in the page: one element over the page, closed by a press else
   // The list of chosen items is rebuilt only when a row changed, so a press (which the page answers with a redraw) leaves the marks in it alone.
   assert.match(ui, /if\(list\.dataset\.sig===sig\) return;/);
   assert.match(ui, /if\(line && line\.textContent!==rule\) line\.textContent=rule;/);
+});
+
+// ---- a greyed card's question mark (the owner: "i should be able to click on the question mark but i cannot") ----
+// The National Staff Patch card a cadet sees is a .disabledBlock: pointer events off and the whole tile at 55% opacity, so the mark inside it took no press
+// (the press went through to the grid behind) and was greyed with the tile. The fix is for every such card at once: the mark takes presses wherever it sits,
+// and a card is greyed by a veil over it, with the mark above the veil, not by opacity on it.
+
+// The stylesheet's rules as [selector, declarations], at-rules flattened (a rule inside @media is a rule of its own here).
+const cssRules = css => [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}@][^{}]*)\{([^{}]*)\}/g)].map(m => [m[1].trim().replace(/\s+/g, ' '), m[2].replace(/\s+/g, '')]);
+
+test('a greyed, disabled or unavailable card keeps a question mark that takes presses and is not greyed with it', () => {
+  const rules = cssRules(read('styles/app.css'));
+  const decl = sel => rules.filter(([s]) => s.split(',').map(x => x.trim()).includes(sel)).map(r => r[1]).join(';');
+  // The mark takes presses wherever it sits: pointer events are inherited, so it says so itself, and nothing turns them off again.
+  assert.match(decl('.citeBtn'), /(^|;)pointer-events:auto(;|$)/);
+  for(const [sel, d] of rules) if(/(^|[ >+~,])\.citeBtn\b/.test(sel) && /pointer-events:none/.test(d)) assert.fail(`${sel} turns the mark's presses off`);
+  // A disabled block takes no presses of its own, is greyed by a veil, and has no opacity: opacity cannot be undone for a child.
+  const block = decl('.disabledBlock');
+  assert.match(block, /pointer-events:none/);
+  assert.doesNotMatch(block, /opacity/);
+  assert.match(block, /position:relative/);
+  const veil = decl('.disabledBlock::after');
+  assert.match(veil, /content:""/);
+  assert.match(veil, /opacity:\.45/);
+  assert.match(veil, /pointer-events:none/);
+  assert.match(veil, /z-index:1(;|$)/);
+  assert.match(decl('.disabledBlock .citeBtn'), /z-index:2(;|$)/, 'the mark sits above the veil');
+  // No other greyed card is greyed by opacity or turns its presses off: a mark inside it would be dimmed or lost with it.
+  const GREYED = ['.disabledBlock'];
+  for(const [sel, d] of rules){
+    const subject = sel.split(',').map(x => x.trim()).filter(x => GREYED.some(g => x.startsWith(g)) && !/::(?:after|before)$/.test(x) && !/\.citeBtn/.test(x));
+    for(const x of subject){
+      if(x === '.disabledBlock') continue;
+      assert.doesNotMatch(d, /(^|;)opacity:/, `${x} greys by opacity, which greys a reference mark with it`);
+      assert.doesNotMatch(d, /pointer-events:none/, `${x} turns presses off, a reference mark in it needs them`);
+    }
+  }
+  // Every rule that turns presses off belongs to something that cannot hold a reference (a decorative layer, the toast, a hidden source) or to the veil.
+  const OFF = new Set(rules.filter(([, d]) => /pointer-events:none/.test(d)).map(([s]) => s));
+  const KNOWN = ['.controlsFooter::before', '.capubToast', '.tooltipBubble', '.garmentForegroundOverlay', '.measurementOverlay', '.measurementArrowLayer', '.measurementArrowLayer svg',
+    '.calib-selectable .measurementArrowLayer', '.segmentedSource', '.disabledBlock', '.disabledBlock::after',
+    '#layoutShell[data-step="uniform"] #uniformCanvas,#layoutShell[data-step="items"] #uniformCanvas,#layoutShell[data-step="export"] #uniformCanvas'];
+  for(const sel of OFF) assert.ok(KNOWN.includes(sel), `${sel} turns presses off: add it here only if nothing in it can hold a reference mark`);
 });

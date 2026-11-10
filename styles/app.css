@@ -129,7 +129,12 @@ h1,h2,h3{font-family:var(--font-head);font-weight:700}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 [hidden]{display:none !important}
 .hidden{display:none !important}
-.disabledBlock{opacity:.55;pointer-events:none}
+.disabledBlock{position:relative;pointer-events:none}
+/* A block that is not available (a patch the member may not wear, the uniform and cut before a rank is chosen) takes no presses and is greyed by a veil
+   over it, not by opacity on it: opacity would grey the reference mark with the rest, and its question mark must stay readable and keep working
+   (.citeBtn takes presses wherever it sits, and sits above the veil). */
+.disabledBlock::after{content:"";position:absolute;inset:-1px;border-radius:inherit;background:var(--panel);opacity:.45;pointer-events:none;z-index:1}
+.disabledBlock .citeBtn{z-index:2}
 html:not([data-dev]) .devOnly{display:none !important}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none !important;animation:none !important}
@@ -1387,6 +1392,7 @@ html[data-access="guest"] #accessGate{display:none}
   color:var(--muted);font-family:var(--font-body);font-size:11px;font-weight:700;font-style:normal;line-height:1;
   letter-spacing:0;text-indent:0;text-transform:none;white-space:nowrap;
   cursor:pointer;user-select:none;-webkit-user-select:none;
+  pointer-events:auto;
 }
 .citeBtn::before{content:"?"}
 .citeBtn::after{content:"";position:absolute;inset:-6px}
