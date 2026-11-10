@@ -1141,7 +1141,7 @@ test('a name read from the report is letters, apostrophes, periods and hyphens o
   const evil = FIXTURE.replace('C/Col Guiseppe Mitchell', 'C/Col <img src=x onerror=alert(1)> Guiseppe "Mitchell"').replace('123456 MITCHELL, GUISEPPE MALE', '<b>123456</b> <i>MITCHELL</i>, <u>GUISEPPE</u> MALE');
   const r = runImport(evil);
   const name = `${r.text.firstName}${r.text.lastName}`;
-  assert.match(name, /^[A-Za-z'’.\- ]*$/, JSON.stringify(r.text));
+  assert.match(name, /^[\p{L}'’.\- ]*$/u, JSON.stringify(r.text));
 });
 
 test('a stale choice of which badge a position shows does not outlive the badges it chose among', () => {
@@ -1201,4 +1201,16 @@ test('the notes the dated patches write are said in the member\'s words, and any
     'The unit patch for GLR-IL-049 is chosen.',
     'A line nothing rewrites.'
   ]);
+});
+
+test('a name with accents, a hyphen, an apostrophe or a particle is read whole (CAPR 39-1 Attachment 6: a name may carry diacritical accents)', () => {
+  const read = (row, heading) => { const r = runImport(FIXTURE.replace('MITCHELL, GUISEPPE', row).replace('C/Col Guiseppe Mitchell', heading)); return [r.text.firstName, r.text.lastName]; };
+  assert.deepEqual(read('PEÑA, JOSÉ', 'C/Col José Peña'), ['José', 'Peña']);
+  assert.deepEqual(read('MÜLLER, ÉLODIE', 'C/Col Élodie Müller'), ['Élodie', 'Müller']);
+  assert.deepEqual(read('LEWIS-MILES, ANNE MARIE', 'C/Col Anne Lewis-Miles'), ['Anne', 'Lewis-Miles']);
+  assert.deepEqual(read("O'BRIEN, SEAN", "C/Col Sean O'Brien"), ['Sean', "O'Brien"]);
+  assert.deepEqual(read('DE LA CRUZ, MARIA', 'C/Col Maria De La Cruz'), ['Maria', 'De La Cruz']);
+  // Without the General Information row, from the heading.
+  const heading = runImport(FIXTURE.replace(/123456 MITCHELL, GUISEPPE MALE CADET C\/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049\n/, '').replace('C/Col Guiseppe Mitchell', 'C/Col José Peña'));
+  assert.deepEqual([heading.text.firstName, heading.text.lastName], ['José', 'Peña']);
 });

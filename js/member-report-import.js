@@ -632,9 +632,10 @@ function extractEncampmentCountFromReport(text){
 // "MITCHELL, GUISEPPE" -> "Mitchell", "Guiseppe": each word, and each part after a hyphen or apostrophe,
 // capitalised; "MCDONALD" -> "McDonald". The nameplates and tapes uppercase the name again.
 function titleCaseImportedName(raw){
+  // Letters with accents are letters (CAPR 39-1 Attachment 6: a name may carry diacritical accents, PEÑA, MÜLLER).
   return String(raw || '').toLowerCase().replace(/\s+/g, ' ').trim()
-    .replace(/(^|[\s\-'’])([a-z])/g, (m, sep, ch) => sep + ch.toUpperCase())
-    .replace(/\bMc([a-z])/g, (m, ch) => 'Mc' + ch.toUpperCase());
+    .replace(/(^|[\s\-'’])(\p{L})/gu, (m, sep, ch) => sep + ch.toUpperCase())
+    .replace(/\bMc(\p{L})/gu, (m, ch) => 'Mc' + ch.toUpperCase());
 }
 
 // The member's name. The General Information row is authoritative: "CAPID Name Gender ..." then
@@ -644,7 +645,7 @@ function titleCaseImportedName(raw){
 // the last word is the last name.
 function extractMemberNameFromReport(text){
   const t = normalizeMemberReportText(text);
-  const row = t.match(/\b\d{5,7}\s+([A-Z][A-Z'’.\- ]*?)\s*,\s*([A-Z][A-Z'’.\-]*)(?:\s+[A-Z][A-Z'’.\-]*)*?\s+(?:MALE|FEMALE)\b/i);
+  const row = t.match(/\b\d{5,7}\s+(\p{L}[\p{L}'’.\- ]*?)\s*,\s*(\p{L}[\p{L}'’.\-]*)(?:\s+\p{L}[\p{L}'’.\-]*)*?\s+(?:MALE|FEMALE)\b/iu);
   if(row){
     const lastName = titleCaseImportedName(row[1]);
     const firstName = titleCaseImportedName(row[2]);
@@ -659,7 +660,7 @@ function extractMemberNameFromReport(text){
       const re = new RegExp('^' + rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*') + '\\s+', 'i');
       if(re.test(rest)){ rest = rest.replace(re, ''); break; }
     }
-    const words = rest.split(' ').filter(w => /^[A-Za-z][A-Za-z'’.\-]*$/.test(w));
+    const words = rest.split(' ').filter(w => /^\p{L}[\p{L}'’.\-]*$/u.test(w));
     if(words.length >= 2) return { firstName:titleCaseImportedName(words[0]), lastName:titleCaseImportedName(words[words.length - 1]) };
   }
   return null;
