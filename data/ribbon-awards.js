@@ -19,7 +19,8 @@
     propB: 'device-propeller-bronze', vS: 'device-v',
     olcB: 'mil-device-olc-bronze', olcS: 'mil-device-olc-silver'
   };
-  const MAX = 4; // 39-3 6b
+  // 39-3 6b: at most four devices on a ribbon, "unless otherwise stated". An award whose own paragraph states a lower limit sets `max` in FAMILIES (the Lifesaving ribbon, 9h: three).
+  const MAX = 4;
 
   // How each ribbon counts. unit: how the option labels count (awards, or N sorties per award).
   // devices: 'clasps' (bronze per additional, silver = five), 'stars' (same with stars), 'olc'.
@@ -41,7 +42,7 @@
     search_find_ribbon: { devices: 'clasps', per: { find: 1 }, propeller: true },
     disaster_relief_ribbon: { devices: 'clasps', v: true },
     commander_commendation_award: { devices: 'clasps', levelStars: true },
-    lifesaving_award: { devices: 'clasps', lifesavingStar: true },
+    lifesaving_award: { devices: 'clasps', lifesavingStar: true, max: 3 }, // 9h: "A maximum of three devices (one silver star and two clasps)", then a second ribbon
     cadet_recruiter_ribbon: { devices: 'recruiter', first: 2, step: 2, silverStep: 10 },
     cap_senior_recruiter_ribbon: { devices: 'recruiter', first: 7, step: 10, silverStep: 50 },
     // 6b: subsequent awards of the same ribbon are marked by the bronze clasp; the IACE follows that rule.
@@ -163,13 +164,14 @@
   }
 
   // Spread a count over ribbons (39-3 6b): the first ribbon is filled first, each extra ribbon is
-  // worn to the wearer's left of the one before and counts one award for itself.
-  function spread(count, kind, firstFixed, firstMax){
+  // worn to the wearer's left of the one before and counts one award for itself. `firstMax` is the
+  // first ribbon's limit on devices (`firstFixed` of them already placed), `max` every later one's.
+  function spread(count, kind, firstFixed, firstMax, max){
     const ribbons = [];
     let left = Math.max(1, count | 0);
     let first = true;
     while(left > 0){
-      const room = (first ? (firstMax || MAX) - firstFixed : MAX);
+      const room = (first ? (firstMax || MAX) - firstFixed : (max || MAX));
       const take = maxAwardsWith(Math.max(0, room), kind, left);
       ribbons.push(take);
       left -= take;
@@ -353,17 +355,19 @@
       count += 1;
     }
 
+    // The most devices on one ribbon of this award: 39-3 6b's four, or the lower limit its own paragraph states.
+    const limit = fam.max || MAX;
     if(fam.propeller && /prop|aircrew/i.test(text)){
       // 21c(3)/21d(4): propeller centred, first clasp halfway to the wearer's left edge, second
       // opposite; more than three devices means a second ribbon.
-      const parts = spread(count, kind, 1, 3);
+      const parts = spread(count, kind, 1, 3, limit);
       return parts.map((awards, i) => i === 0
         ? { devices: [D.propB, ...clasps(awards - 1, kind)], centered: true }
         : { devices: clasps(awards - 1, kind), centered: false });
     }
     if(fam.lifesavingStar && /star/i.test(text)){
       // 9h: silver star centred, at most two clasps beside it.
-      const parts = spread(count, kind, 1, 3);
+      const parts = spread(count, kind, 1, limit, limit);
       return parts.map((awards, i) => i === 0
         ? { devices: [D.starS, ...clasps(awards - 1, kind)], centered: true }
         : { devices: clasps(awards - 1, kind), centered: false });
@@ -376,7 +380,7 @@
       if(both || /national/i.test(text)) lead.push(D.starS);
       if(both || /region/i.test(text)) lead.push(D.starB);
     }
-    const parts = spread(count, kind, lead.length, MAX);
+    const parts = spread(count, kind, lead.length, limit, limit);
     return parts.map((awards, i) => ({ devices: i === 0 ? [...lead, ...clasps(awards - 1, kind)] : clasps(awards - 1, kind), centered: false }));
   }
 

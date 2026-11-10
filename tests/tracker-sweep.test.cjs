@@ -132,6 +132,37 @@ test('the IACE ribbon takes a bronze clasp for each later award, a silver clasp 
   assert.deepEqual(devices(7), ['device-clasp-silver', 'device-clasp-bronze']);
 });
 
+// 39-3 6b allows four devices on a ribbon "unless otherwise stated"; the Lifesaving ribbon says otherwise (9h: "A maximum of three devices (one silver star and two clasps)", and above three a
+// second ribbon, which counts for one subsequent award). Every ribbon of the award, with the star or without, holds three at most.
+test('the Lifesaving ribbon holds three devices at most, a second ribbon beyond that; every other clasp ribbon still holds four (39-3 6b, 9h)', () => {
+  const awardsOn = part => part.devices.reduce((n, d) => n + (d === 'device-clasp-silver' ? 5 : d === 'device-clasp-bronze' ? 1 : 0), 1);
+  const options = Array.from(ev("getRibbonAwardOptions('lifesaving_award').filter(o => o.value).map(o => ({ value: o.value, label: o.label }))"));
+  assert.ok(options.length >= 40, 'the Lifesaving options run past twenty awards');
+  const check = (selection, total, where) => {
+    const parts = RA.resolve('lifesaving_award', selection);
+    parts.forEach((part, i) => assert.ok(part.devices.length <= 3, `${where}: ribbon ${i + 1} wears ${part.devices.length} devices`));
+    parts.forEach((part, i) => { if(i) assert.ok(!part.devices.includes('device-star-silver'), `${where}: the star stays on the first ribbon`); });
+    assert.equal(parts.reduce((n, part) => n + awardsOn(part), 0), total, `${where}: the ribbons add up to ${total} awards (a second ribbon counts one)`);
+    return parts;
+  };
+  for(const o of options){
+    const total = /basic/i.test(o.label) ? 1 : Number(/(\d+)(?:st|nd|rd|th)/.exec(o.label)[1]);
+    const parts = check({ awardValue: o.value, awardLabel: o.label }, total, o.label);
+    assert.equal(parts[0].devices.includes('device-star-silver'), /star/i.test(o.label), `${o.label}: the silver star on the first ribbon when the award has it`);
+  }
+  // The counts that matter: four awards fit one ribbon; five need a second plain ribbon (it counts for the fifth); with the star, four awards are star and two clasps, then the second ribbon.
+  const parts = (value, label) => RA.resolve('lifesaving_award', { awardValue: value, awardLabel: label }).map(p => p.devices);
+  assert.deepEqual(parts('capub_total_4', '4th Award'), [['device-clasp-bronze', 'device-clasp-bronze', 'device-clasp-bronze']]);
+  assert.deepEqual(parts('capub_total_5', '5th Award'), [['device-clasp-bronze', 'device-clasp-bronze', 'device-clasp-bronze'], []]);
+  assert.deepEqual(parts('capub_total_4', '4th with Star'), [['device-star-silver', 'device-clasp-bronze', 'device-clasp-bronze'], []]);
+  for(let n = 1; n <= 60; n++) for(const star of [false, true]) check({ awardValue: 'capub_total_' + n, awardLabel: n + 'th Award' + (star ? ' with Star' : '') }, n, `${n}${star ? ' with star' : ''}`);
+  // The other ribbons keep 6b's four: a fifth award is four bronze clasps on one ribbon; the Find ribbon's aircrew ribbon keeps its three (21d(4)).
+  assert.deepEqual(RA.resolve('cap_achievment_award', { awardValue: 'capub_total_5', awardLabel: '5th Award' }).map(p => p.devices.length), [4]);
+  assert.deepEqual(RA.resolve('cap_achievment_award', { awardValue: 'capub_total_9', awardLabel: '9th Award' }).map(p => p.devices.length), [4]);
+  assert.deepEqual(RA.resolve('search_find_ribbon', { awardValue: 'mcchord_24601', awardLabel: '4th w/Prop' }).map(p => p.devices.length), [3, 0]);
+  assert.deepEqual(RA.resolve('search_find_ribbon', { awardValue: 'mcchord_23300', awardLabel: '5th Award' }).map(p => p.devices.length), [4], 'a ground find ribbon, no propeller, holds four');
+});
+
 // Ethan: "this isn't a thing" (the Crisis Service Ribbon's Nth service period / N bronze clasps) and "OTY awards
 // are once" (the AFA Award to Unit Cadet of the Year showing 2nd/3rd/4th Award). Each of these is awarded once.
 test('the Crisis Service Ribbon and the Cadet of the Year awards (AFA, AFSA, VFW officer, VFW NCO) are awarded once: only the basic award, no clasps, no repeat counts', () => {
