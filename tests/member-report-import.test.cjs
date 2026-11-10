@@ -933,3 +933,82 @@ test('a PDF with no text, too many pages, a password or a broken structure ends 
     assertKept(state);
   }
 });
+
+// ---- Reports as a PDF or a copy delivers them (I2) -----------------------------------------------------------------------------------
+// The four fixtures, each changed the way a PDF, a browser print or another notation would change it. What the importer reads from the changed
+// text is what it reads from the fixture: the same grade, name, ribbons with their clasps and stars, badges, patches and cord.
+let signatureParser = null;
+function signature(text){
+  if(!signatureParser){
+    const { context } = loadPageScripts();
+    signatureParser = t => JSON.parse(vm.runInContext('(t) => JSON.stringify((() => { const p = parseCapMemberReport(t); return { membership: p.membership, gender: p.gender, rank: p.rank, name: [p.firstName, p.lastName], ribbons: (p.ribbons || []).map(r => r.id + "=" + r.value).sort(), badges: [...p.badges].sort(), authorized: [...p.authorizedBadges].sort(), patches: [...(p.patches || [])].sort(), cord: p.shoulderCord || null, firstSergeant: p.cadetFirstSergeant, charter: p.unitPatchCharter || null, command: p.commandStatus || null }; })())', context)(t));
+  }
+  return signatureParser(text);
+}
+const FIXTURE_FILES = ['eservices-member-details-cadet.txt', 'eservices-member-details-cadet-live12.txt', 'eservices-member-details-senior-live13.txt', 'eservices-member-details-senior-past-commander.txt'];
+const fixtureText = name => fs.readFileSync(path.join(__dirname, 'fixtures', name), 'utf8');
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const redate = fn => t => t.replace(/\b(\d{2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{4})\b/g, (m, d, mo, y) => fn(d, MONTHS.indexOf(mo), y));
+const two = n => String(n + 1).padStart(2, '0');
+const withFurniture = t => t.split('\n').flatMap((l, i) => i % 9 === 8 ? [l, 'https://www.capnhq.gov/CAP.eServices.Web/Member/Details 2/3', '11/10/26, 4:02 PM', 'Printer Friendly View - Member Details', 'Page 2 of 3'] : [l]).join('\n');
+const REPORT_VARIANTS = {
+  'one line, as the text of a PDF is joined': t => t.replace(/\n/g, ' '),
+  'a page per paragraph': t => { const L = t.split('\n'), a = Math.floor(L.length / 3); return [L.slice(0, a), L.slice(a, 2 * a), L.slice(2 * a)].map(p => p.join(' ')).join('\n'); },
+  'a browser\'s print header and footer between rows': withFurniture,
+  'the same on one line': t => withFurniture(t).replace(/\n/g, ' '),
+  'double spaces, tabs and non-breaking spaces': t => t.replace(/ /g, '  ').replace(/\n/g, ' \t\n').replace(/Cadet Training/, 'Cadet Training'),
+  'zero-width characters and soft hyphens inside the words': t => t.replace(/(\w)(\w)/g, '$1​$2').replace(/Award/g, 'A­ward'),
+  'Windows line ends and a byte order mark': t => '﻿' + t.replace(/\n/g, '\r\n'),
+  'rows wrapped inside their names': t => t.replace(/(Commander's|Certificate of Recognition|Community Service|Cadet Advisory|Achievement Award|Crisis Service|Air Search and|Brig Gen Charles E\.) /g, '$1\n'),
+  'no Awards heading': t => t.replace(/\nAwards\n/, '\n'),
+  'no Decorations heading': t => t.replace(/\nDecorations\n/, '\n'),
+  'dates as 2025-12-18': redate((d, m, y) => `${y}-${two(m)}-${d}`),
+  'dates as 12/18/2025': redate((d, m, y) => `${two(m)}/${d}/${y}`),
+  'dates as Dec 18, 2025': redate((d, m, y) => `${MONTHS[m]} ${Number(d)}, ${y}`),
+  'dates as 18-Dec-2025': redate((d, m, y) => `${d}-${MONTHS[m]}-${y}`),
+  'dates as 18 December 2025': redate((d, m, y) => `${d} ${FULL_MONTHS[m]} ${y}`),
+  'every dated row printed twice': t => { let on = false; return t.split('\n').flatMap(l => { if(/^(Decorations|Activity\/Service Ribbon)$/.test(l)) on = true; else if(/^(Local Activities|Awards|Promotions)$/.test(l)) on = false; return on && /\d{4}$/.test(l) ? [l, l] : [l]; }).join('\n'); },
+  'qualifications as Qualified and Training': t => t.replace(/QUALIFIED/g, 'Qualified').replace(/TRAINING/g, 'Training'),
+  'a Transfer History and a Committees table before Local Activities': t => t.replace('Local Activities', 'Transfer History\nUnit Date\nGLR-IL-001 01 Jan 2019\nCurrent Committees\nCommittee Date\nCadet Advisory Council 01 Jan 2020\nLocal Activities'),
+  'the headings in capitals': t => t.replace(/^(Duty Positions|Professional Development|Specialty Tracks|Cadet Training|Encampments|Decorations|Awards)$/gm, h => h.toUpperCase())
+};
+test('the four fixtures read the same however a PDF, a browser print or another notation delivers them', () => {
+  const different = [];
+  for(const file of FIXTURE_FILES){
+    const text = fixtureText(file), base = signature(text);
+    for(const [what, change] of Object.entries(REPORT_VARIANTS)){
+      const got = signature(change(text));
+      for(const key of Object.keys(base)) if(JSON.stringify(base[key]) !== JSON.stringify(got[key])) different.push(`${file} / ${what}: ${key} ${JSON.stringify(base[key])} -> ${JSON.stringify(got[key])}`.slice(0, 260));
+    }
+  }
+  assert.deepEqual(different, []);
+});
+
+test('the cleaning is done once: cleaning the clean text changes nothing, and the rows of a report are not lost', () => {
+  const { context } = loadPageScripts();
+  const clean = t => vm.runInContext('(t) => normalizeMemberReportText(t)', context)(t);
+  for(const file of FIXTURE_FILES){
+    const once = clean(withFurniture(fixtureText(file)));
+    assert.equal(clean(once), once, file);
+    assert.ok(!/https?:|Page 2 of 3|4:02 PM/.test(once), `${file}: the print furniture is gone`);
+    assert.equal((once.match(/Printer Friendly View - Member Details/g) || []).length, 1, `${file}: the title once`);
+  }
+  assert.equal(clean('Achievement Award 01 Feb 2022 Achievement Award 01 Feb 2022 Achievement Award 05 Jun 2022'), 'Achievement Award 01 Feb 2022 Achievement Award 05 Jun 2022');
+  assert.equal(clean('1/2 and 2025-13-45 and 15/20/2024'), '1/2 and 2025-13-45 and 15/20/2024', 'a number that is no date is left as it is');
+  assert.equal(clean('Joined 12/18/2025 and 18/12/2025'), 'Joined 18 Dec 2025 and 18 Dec 2025', 'month first, or day first when the first number is above 12');
+});
+
+test('two awards of the same name on different days are two awards, only a row printed twice is one', () => {
+  const cadet = runImport(cadetWith('Decorations', ['Achievement Award 01 Feb 2022', 'Achievement Award 05 Jun 2022']));
+  assert.match(cadet.selected.cap_achievment_award.awardLabel, /4th Award/, 'the fixture has four, dated apart');
+  const doubled = runImport(FIXTURE.replace('Achievement Award 01 Feb 2022\n', 'Achievement Award 01 Feb 2022\nAchievement Award 01 Feb 2022\n'));
+  assert.match(doubled.selected.cap_achievment_award.awardLabel, /4th Award/, 'a repeated row is not a fifth');
+});
+
+test('Local Activities hold nothing the import uses: not a patch, not a badge, not a unit', () => {
+  const local = FIXTURE.replace('Spaatz Award Presentation 01 May 2025', 'Model Rocketry Day 01 May 2025\nCadet Officer School reunion 02 May 2025\nNational Blue Beret briefing 03 May 2025\nSER-TN-185 visit 04 May 2025');
+  const base = signature(FIXTURE), got = signature(local);
+  assert.deepEqual(got, base);
+  assert.ok(!got.badges.includes('model_rocketry_badge') && !got.patches.includes('nbb_patch'));
+});

@@ -161,11 +161,82 @@ async function extractMemberReportText(file){
   }
 }
 
-function normalizeMemberReportText(text){
+// The report as one clean line. A PDF or a copy adds what is not the report: zero-width and soft-hyphen characters, a browser's print header and
+// footer (its address and page count, its time stamp, "Page 2 of 3", the title again on every page), dates in another notation, a row printed twice.
+// Every parser reads this line, so each of those is taken out here once. Running it again on its own result changes nothing.
+const MEMBER_REPORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MEMBER_REPORT_DATE = '\\d{1,2}\\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\.?\\s+\\d{4}';
+const MEMBER_REPORT_MONTH_WORD = '(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)';
+
+// The date notations other than "18 Dec 2025", each as "18 Dec 2025": 2025-12-18 (with or without a time), 12/18/2025 (month first; day first when
+// the first number is above 12), Dec 18, 2025 and 18-Dec-2025. A number that is no date (a month above 12, a day above 31) is left as it is.
+function normalizeMemberReportDates(text){
+  const date = (d, month, y) => `${String(Number(d)).padStart(2, '0')} ${month} ${y}`;
+  const valid = (d, m) => m >= 1 && m <= 12 && d >= 1 && d <= 31;
+  const abbreviation = word => MEMBER_REPORT_MONTHS.find(m => m.toLowerCase() === word.slice(0, 3).toLowerCase());
   return String(text || '')
-    .replace(/\uFFFE|\uFFFD|\uF0BE/g, ' ')
+    .replace(/\b(\d{4})-(\d{2})-(\d{2})(?:[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?Z?)?\b/g, (m, y, mo, d) => valid(Number(d), Number(mo)) ? date(d, MEMBER_REPORT_MONTHS[Number(mo) - 1], y) : m)
+    .replace(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/g, (m, a, b, y) => {
+      const [mo, d] = Number(a) > 12 ? [Number(b), Number(a)] : [Number(a), Number(b)];
+      return valid(d, mo) ? date(d, MEMBER_REPORT_MONTHS[mo - 1], y) : m;
+    })
+    .replace(new RegExp(`\\b${MEMBER_REPORT_MONTH_WORD}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(\\d{4})\\b`, 'gi'), (m, word, d, y) => valid(Number(d), 1) ? date(d, abbreviation(word), y) : m)
+    .replace(new RegExp(`\\b(\\d{1,2})-${MEMBER_REPORT_MONTH_WORD}\\.?-(\\d{4})\\b`, 'gi'), (m, d, word, y) => date(d, abbreviation(word), y));
+}
+
+// What a browser prints around the pages of a report and the report never says: the address with its page count, the time stamp
+// ("11/10/26, 4:02 PM"), "Page 2 of 3", and the report's title again on every page after the first.
+function stripMemberReportPageFurniture(text){
+  let titles = 0;
+  return String(text || '')
+    .replace(/\bhttps?:\/\/\S+(?:\s+\d{1,3}\s*\/\s*\d{1,3}(?=\s|$))?/gi, ' ')
+    .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4},?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s*[AP]\.?M\.?)?/gi, ' ')
+    .replace(/\bPage\s+\d{1,3}\s+of\s+\d{1,3}\b/gi, ' ')
+    .replace(/Printer\s+Friendly\s+View\s*[-–]\s*Member\s+Details/gi, title => ++titles > 1 ? ' ' : title)
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+// A row printed twice (the same words and the same date or dates) is one record: a duplicated entry must not read as a later award with a
+// clasp. A row is the words since the previous date, less a table heading before it. Rows too short to be a record ("2d Lt") are left alone.
+const MEMBER_REPORT_TABLE_HEADINGS = new RegExp('^(?:.*\\b(?:' + [
+  'Printer Friendly View - Member Details', 'General Information', 'CAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit',
+  '(?:Cadet |Current |Past )?(?:Cadet Past )?Duty Positions', 'Duty Position Unit Echelon Asst Start Date End Date', 'Professional Development',
+  'Course Date Completed', 'Specialty Tracks?', 'Specialty Track Level Completed', 'Cadet Training', 'Activity Date Completed', 'Encampments',
+  'Encampment Date Completed', 'Orientation Flights', 'Cadet Achievements', 'Achievement Date Completed Test Score', 'Awards', 'Promotions', 'Date Rank',
+  'Decorations', 'Activity\\s*\\/\\s*Service Ribbon', 'Emergency Services Qualifications', 'Qualification Status Expiration', 'Transfer History', 'Current Committees'
+].join('|') + '))\\s+', 'i');
+function dedupeMemberReportRows(text){
+  const source = String(text || '');
+  const re = new RegExp(`(${MEMBER_REPORT_DATE})(?:\\s+(${MEMBER_REPORT_DATE}))?`, 'gi');
+  const seen = new Set(), cuts = [];
+  let previousEnd = 0, m;
+  while((m = re.exec(source))){
+    const segmentStart = previousEnd;
+    const segment = source.slice(segmentStart, m.index);
+    previousEnd = m.index + m[0].length;
+    const from = (MEMBER_REPORT_TABLE_HEADINGS.exec(segment) || [''])[0].length;
+    const rest = segment.slice(from);
+    const words = rest.trim();
+    if(words.length < 8 || !/[A-Za-z]{3}/.test(words)) continue;
+    const key = `${words.toLowerCase()}|${m[1].toLowerCase()}|${(m[2] || '').toLowerCase()}`;
+    if(seen.has(key)) cuts.push([segmentStart + from + (rest.length - rest.trimStart().length), previousEnd]);
+    else seen.add(key);
+  }
+  if(!cuts.length) return source;
+  let out = '', at = 0;
+  for(const [start, end] of cuts){ out += source.slice(at, Math.max(at, start)); at = end; }
+  return (out + source.slice(at)).replace(/\s+/g, ' ').trim();
+}
+
+function normalizeMemberReportText(text){
+  const cleaned = String(text || '')
+    .replace(/[­​-‏‪-‮⁠⁦-⁩﻿]/g, '')
+    .replace(/[‐-‒−]/g, '-')
+    .replace(/￾|�|/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return dedupeMemberReportRows(normalizeMemberReportDates(stripMemberReportPageFurniture(removeLocalActivitiesFromMemberReport(cleaned))));
 }
 
 
@@ -1314,7 +1385,7 @@ function labelCurrentDutyPositionsHeading(text){
     .replace(/\b(Past|Previous|Prior|Former|Historical|Completed|Ended)\s+Duty\s+(?:Positions|Assignments)\b/gi, '$1 Duty Positions')
     .replace(/\b(Previous|Prior|Former|Historical|Completed|Ended)\s+Duty\s+Positions\b/gi, 'Past Duty Positions')
     .replace(/\bDuty\s+Assignments\b/gi, 'Duty Positions')
-    .replace(/(^|[^A-Za-z])(Duty\s+Positions)\b/g, (match, pre, heading, offset, source) => {
+    .replace(/(^|[^A-Za-z])(Duty\s+Positions)\b/gi, (match, pre, heading, offset, source) => {
       const before = source.slice(Math.max(0, offset - 12), offset + pre.length);
       return /(?:Cadet|Current|Past)\s*$/i.test(before) ? match : `${pre}Current ${heading}`;
     });
