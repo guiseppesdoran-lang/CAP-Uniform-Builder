@@ -52,10 +52,16 @@ for(const [uniform, gender, opt, sheetId] of SHEETS){
     const sheet = read(`garments/${sheetId}-cord-aide-de-camp.spec.json`);
     const dims = sheet.dimensions, tipLm = sheet.landmarks.aiguillette_tip;
     const cords = scene.layers.filter(l => /cord-aide-de-camp/.test(l.id || ''));
-    const braid = cords.find(l => l.cordPath), tip = cords.find(l => /:tip$/.test(l.key));
-    assert.equal(cords.length, 2, 'one braid and its tip, nothing else');
-    assert.ok(braid && tip, 'the aide cord is drawn as a braid and a tip');
-    assert.ok(braid.z < 10 && tip.z < 10, 'the cord stays under the epaulet strip');
+    // B8 (Ethan, 2026-11-10: "aide de camp cord is just the agiulete at the moment. merge that with the existing honor guard cord and you have the aide de camp cord"): the aide cord is the shoulder cord
+    // (the overlay's `cord` run along the armhole seam, braided as the honor guard cord) and the aiguillette hung from it: the one braid straight down and its tip.
+    const braid = cords.find(l => l.cordPath && l.cordPath.pendant), tip = cords.find(l => /:tip$/.test(l.key)), run = cords.find(l => l.cordPath && !l.cordPath.pendant);
+    assert.equal(cords.length, 3, 'the shoulder cord, the aiguillette\'s braid and its tip, nothing else');
+    assert.ok(braid && tip && run, 'the aide cord is drawn as the shoulder cord, a braid and a tip');
+    assert.ok(braid.z < 10 && tip.z < 10 && run.z < 10, 'the cord stays under the epaulet strip');
+    assert.deepEqual(run.hideGroups, ['aiguillette-loop', 'aiguillette-hang'], 'the shoulder cord is the overlay\'s run alone: its loops and hanging parts are the aiguillette\'s, drawn by the braid and the tip');
+    assert.equal(run.cordPath.width, core.CORD_WIDTH, 'the shoulder cord is the honor guard cord\'s braid, as wide as every shoulder cord');
+    assert.ok(run.cordPath.exact || sheetId === 'garment-blues-class-a-coat', 'the shoulder cord follows the drawn armhole seam where the sheet draws one');
+    assert.ok(run.z >= braid.z, 'the shoulder cord lies over the aiguillette\'s braid at its top');
     // One vertical braid of the sheet's thickness, drop and tip.
     const cp = braid.cordPath, [A, E] = [cp.top, cp.end];
     assert.equal(cp.pieces.length, 1, 'one straight piece');

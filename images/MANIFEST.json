@@ -2420,21 +2420,21 @@
    "id": "cord-aide-de-camp",
    "path": "cords/cord-aide-de-camp.svg",
    "category": "cords",
-   "w_in": 5,
+   "w_in": 5.11,
    "h_in": 5.54,
    "size_source": "estimated",
-   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. LIVE9-ART 2: drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a silver pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. There is no separate run along the shoulder. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin.",
+   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. B8: two existing pieces in one asset. (1) The honor guard shoulder cord as drawn by this file for cord-honor-guard (the shared SHOULDER braid: 4.1 in long, 0.40 in across, 0.25 in bow toward the body, 0.15 in weave pitch), standing on the arm side (right) with its neck end level with the tops of the aiguillette's braids. (2) The aiguillette as worn (LIVE9-ART 2), unchanged: drawn from a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a silver pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin. The asset grew from 5.0 in wide (the aiguillette alone) by the shoulder cord beside it; its height is the aiguillette's.",
    "anchors": {
     "top_center": [
-     250,
+     255.50000000000003,
      0
     ],
     "bottom_center": [
-     250,
+     255.50000000000003,
      554
     ],
     "center": [
-     250,
+     255.50000000000003,
      277
     ],
     "left_edge": [
@@ -2442,20 +2442,24 @@
      277
     ],
     "right_edge": [
-     500,
+     511.00000000000006,
      277
     ],
     "shoulder_seam_attach": [
-     420,
-     72.50000000000001
+     485,
+     35
     ],
     "shoulder_seam_attach_neck_end": [
-     420,
-     72.50000000000001
+     485,
+     35
     ],
     "shoulder_seam_attach_arm_end": [
-     420,
-     72.50000000000001
+     485,
+     445
+    ],
+    "cord_mid": [
+     460,
+     240
     ],
     "aiguillette_attach": [
      420,

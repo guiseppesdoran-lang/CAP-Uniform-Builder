@@ -1455,7 +1455,25 @@
     if(own && ctx.has(own)){
       const s = await ctx.overlay(own, Z.epauletLayer - 0.5);
       if(s){
-        if(b.cord === 'aide_de_camp' && await aiguillettePendant(ctx, s)) { cordUnderBoard(ctx, ctx.layers.find(l => l.cordPath && l.cordPath.pendant), 'Aide de Camp cord'); return; }
+        // B8 (Ethan, 2026-11-10: "aide de camp cord is just the agiulete at the moment. merge that with the existing honor guard cord and you have the aide de camp cord"): the Aide de Camp cord is
+        // the shoulder cord, braided as the honor guard cord and drawn along the armhole seam like every shoulder cord (the overlay's `cord` group, fitted by fitCordLayer), with the aiguillette
+        // hung from it: the one braid straight down from the attachment under the epaulet and its chrome tip (E128). Two layers of the one asset: the run, and under it the aiguillette.
+        if(b.cord === 'aide_de_camp'){
+          const pendantLayer = ctx.layers[ctx.layers.length - 1];
+          if(await aiguillettePendant(ctx, s)){
+            pendantLayer.z = Z.epauletLayer - 0.51;
+            cordUnderBoard(ctx, pendantLayer, 'Aide de Camp cord');
+            const run = await ctx.overlay(own, Z.epauletLayer - 0.5);
+            if(run){
+              fitCordLayer(ctx, run);
+              const runLayer = ctx.layers[ctx.layers.length - 1];
+              runLayer.hideGroups = ['aiguillette-loop', 'aiguillette-hang'];
+              runLayer.key = 'layer:' + own + ':run';
+              cordUnderBoard(ctx, runLayer, 'shoulder cord');
+            }
+            return;
+          }
+        }
         fitCordLayer(ctx, s);
         cordUnderBoard(ctx, ctx.layers.find(l => l.cordPath && !l.cordPath.pendant), 'shoulder cord');
       }

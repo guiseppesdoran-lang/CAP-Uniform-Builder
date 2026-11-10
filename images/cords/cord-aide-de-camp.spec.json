@@ -1,37 +1,42 @@
 {
  "asset_id": "cord-aide-de-camp",
- "name": "USAF aide de camp aiguillette cord (silver, one piece: two braided loops, two chrome tips)",
+ "name": "USAF aide de camp cord (silver: the honor guard shoulder cord with the aiguillette, two braided loops, two chrome tips)",
  "size_in": {
-  "w": 5,
+  "w": 5.11,
   "h": 5.54
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  500,
+  511,
   554
  ],
  "size_source": "estimated",
- "size_basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. LIVE9-ART 2: drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a silver pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. There is no separate run along the shoulder. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin.",
- "provenance": "in-house construction from DAFI 36-2903 10.7.7.1 (\"silver, single loop, chrome tip with raised wing and star emblem\") and the proportions of a photograph of a USAF silver aiguillette on a service dress coat (assets/cords/ref/); same braid as the shoulder cords; the tips are flat silhouettes without the raised emblem",
+ "size_basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. B8: two existing pieces in one asset. (1) The honor guard shoulder cord as drawn by this file for cord-honor-guard (the shared SHOULDER braid: 4.1 in long, 0.40 in across, 0.25 in bow toward the body, 0.15 in weave pitch), standing on the arm side (right) with its neck end level with the tops of the aiguillette's braids. (2) The aiguillette as worn (LIVE9-ART 2), unchanged: drawn from a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a silver pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin. The asset grew from 5.0 in wide (the aiguillette alone) by the shoulder cord beside it; its height is the aiguillette's.",
+ "provenance": "in-house: the honor guard shoulder cord (braid pattern and colours measured from the app's cord images) and the aiguillette (DAFI 36-2903 10.7.7.1: \"silver, single loop, chrome tip with raised wing and star emblem\"; the proportions of a photograph of a USAF silver aiguillette on a service dress coat, assets/cords/ref/) merged from the shared pieces of this file; the tips are flat silhouettes without the raised emblem",
  "colours": {
   "main": "#cdd2d7",
   "groove": "#7f8790",
+  "cord": {
+   "main": "#cdd2d7",
+   "groove": "#7f8790",
+   "source": "honor guard shoulder cord (CORDS honor_guard); the aiguillette art draws the same two values"
+  },
   "tip": "#c9ccd2",
   "tip_edge": "#2e3036"
  },
  "anchors": {
   "top_center": [
-   250,
+   255.50000000000003,
    0
   ],
   "bottom_center": [
-   250,
+   255.50000000000003,
    554
   ],
   "center": [
-   250,
+   255.50000000000003,
    277
   ],
   "left_edge": [
@@ -39,20 +44,24 @@
    277
   ],
   "right_edge": [
-   500,
+   511.00000000000006,
    277
   ],
   "shoulder_seam_attach": [
-   420,
-   72.50000000000001
+   485,
+   35
   ],
   "shoulder_seam_attach_neck_end": [
-   420,
-   72.50000000000001
+   485,
+   35
   ],
   "shoulder_seam_attach_arm_end": [
-   420,
-   72.50000000000001
+   485,
+   445
+  ],
+  "cord_mid": [
+   460,
+   240
   ],
   "aiguillette_attach": [
    420,
@@ -113,17 +122,24 @@
    ]
   }
  },
- "landmarks_note": "aiguillette_loop (the two braided loops), aiguillette_pendant (the whole aiguillette: loops, thin cords, whippings, tips, the keep-clear box): {x,y} top-left of the box in user units (0.01 in), w_in/h_in in inches; aiguillette_tip: {x,y} the lower tip's point, head_x/head_y its cup end, len_in, box = both tips' bounding box, tips = both tip points {x,y,head_x,head_y}",
+ "landmarks_note": "aiguillette_loop (the two braided loops), aiguillette_pendant (the whole aiguillette: loops, thin cords, whippings, tips, the keep-clear box): {x,y} top-left of the box in user units (0.01 in), w_in/h_in in inches; aiguillette_tip: {x,y} the lower tip's point, head_x/head_y its cup end, len_in, box = both tips' bounding box, tips = both tip points {x,y,head_x,head_y}; the anchors shoulder_seam_attach_neck_end / _arm_end / cord_mid are the shoulder cord piece's (as on the other shoulder cords), aiguillette_attach the aiguillette's",
  "dimensions": {
-  "form": "aiguillette: one piece, two nested braided loops, two thin cords with whippings, two pencil tips",
+  "form": "the honor guard shoulder cord with the aiguillette: the shoulder cord (one braid) beside the aiguillette (two nested braided loops, two thin cords with whippings, two pencil tips)",
   "braid_thickness_in": 0.3,
+  "shoulder_cord": {
+   "length_in": 4.1,
+   "thickness_in": 0.4,
+   "sagitta_in": 0.25,
+   "weave_pitch_in": 0.15,
+   "source": "the shared SHOULDER piece, the honor guard cord"
+  },
   "short_loop_bottom_b": 10,
   "long_loop_bottom_b": 15.2,
   "free_ends_b": 3.9,
   "tip_length_in": 0.96,
   "tip_length_b": 3.2,
   "pendant_drop_in": 5.21,
-  "orientation": "braids start at the top (under the epaulet) and hang down the page, chest side toward the left (the neck end). On the dress garments the overlays draw the same piece with the outer braid along the armhole seam"
+  "orientation": "both pieces start at the top (under the epaulet) and hang down the page; the aiguillette's chest side is toward the left (the neck end), the shoulder cord stands on the arm side (right). On the dress garments the overlays draw the shoulder cord as the run along the armhole seam and the aiguillette from it"
  },
  "garment_fit": {
   "note": "strap axis = line from the neck end to the arm end of the garment's left epaulet strap / shoulder strip (garment user units, 0.01 in; wearer's left shoulder is on the viewer's right). Place: centre the cord on the axis with shoulder_seam_attach_neck_end at the neck end, rotate so the neck->arm anchors follow the axis, shift the chord 0.125 in toward the neck side so the 0.25 in bow is centred on the strap; draw order garment, layers, cord, then the epaulet sleeve/strip over it",
@@ -193,7 +209,7 @@
  "mounts": [
   {
    "uniform": "USAF-style service and service dress (Class A / Class B) - aides de camp to general officers (senior and cadet)",
-   "rule": "worn on the left sleeve/shoulder only while acting as an aide de camp; open end grounded under the epaulet at the left shoulder seam (CAPR 39-1 9.3.4; DAFI 36-2903 10.7.7.1)"
+   "rule": "worn on the left sleeve/shoulder only while acting as an aide de camp; the shoulder cord and the aiguillette are grounded under the epaulet at the left shoulder seam (CAPR 39-1 9.3.4; DAFI 36-2903 10.7.7.1)"
   }
  ],
  "regulation": "CAPR 39-1 9.3.4; DAFI 36-2903 10.7.7.1",
