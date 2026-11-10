@@ -1236,3 +1236,23 @@ test('a PDF drawn row by row is read as drawn, one drawn column by column is rea
   const { result } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf: { GlobalWorkerOptions: {}, getDocument: () => ({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [...head, ...rows.map(([n], i) => at(n, 40, 720 - 14 * i)), ...rows.map(([, d], i) => at(d, 400, 720 - 14 * i))] }) }), destroy: async () => {} }) }) } });
   assert.equal(result.ok, true);
 });
+
+// ---- Importing again, and entries that are no longer current (I2) ---------------------------------------------------------------------
+test('importing the same report twice leaves the same build, and a second report replaces the first', async () => {
+  const { context } = await importFile(fileLike('a.txt', 'text/plain', fixtureText('eservices-member-details-cadet-live12.txt')));
+  const held = () => vm.runInContext(`JSON.stringify({ m: State.membership, r: State.rank, g: State.gender, t: State.text, b: State.badges, p: State.patches, c: State.shoulderCord, rb: Object.entries(State.ribbonSelections).filter(([, s]) => s.checked).map(([id, s]) => id + '=' + s.awardValue).sort() })`, context);
+  const once = held();
+  const second = await vm.runInContext('(f) => importMemberReportFile(f)', context)(fileLike('a.txt', 'text/plain', fixtureText('eservices-member-details-cadet-live12.txt')));
+  assert.equal(held(), once);
+  assert.ok(second.lines.includes('Your earlier ribbons, badges and patches were replaced by the report. Undo brings them back.'));
+  await vm.runInContext('(f) => importMemberReportFile(f)', context)(fileLike('b.txt', 'text/plain', SENIOR));
+  const senior = JSON.parse(held());
+  assert.deepEqual([senior.m, senior.r, senior.t.lastName, senior.c], ['senior', '1st Lt', 'Wilson', null], 'nothing of the cadet stays: not the grade, the name, the cord or the cadet ribbons');
+  assert.ok(!senior.rb.some(r => /^(?:curry_achievement|cadet_advisory_council_ribbon|cap_achievment_award=bronze_clasp_3)/.test(r)));
+});
+
+test('a qualification whose date has passed or whose status is Expired still earns its badge: the Ground Team, Incident Commander and EMT badges are for current or previous holders (CAPR 39-1, 10.4.5 to 10.4.7)', () => {
+  const read = status => parseAviation(SENIOR.replace('Ground Team Leader (GTL) QUALIFIED 01 Jan 2027', `Ground Team Leader (GTL) ${status} 01 Jan 2020`)).authorized;
+  for(const status of ['QUALIFIED', 'EXPIRED', 'Expired', 'LAPSED']) assert.ok(read(status).includes('master_ground_team_badge'), status);
+  assert.ok(!read('TRAINING').includes('master_ground_team_badge'), 'a trainee has no badge');
+});
