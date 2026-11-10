@@ -94,6 +94,7 @@
   function showStepFor(el){
     const step=stepOf(el);
     if(step && step!==activeStep) showStep(step,{focus:false});
+    openCardOf(el);
   }
   // Open the step a control is in, scroll to it and focus it. The membership and cut selects stand behind two
   // buttons (js/setup.js), so the first button takes the focus for them.
@@ -243,6 +244,7 @@
       const said=usable ? rule : '';
       if(line && line.textContent!==said) line.textContent=said;
       card.classList.toggle('unavailable',!usable);
+      foldCard(card,key,usable);
     };
     const wearsRibbons=!r || r.allowsRibbons(u) || r.allowsMiniMedals(u);
     set('ribbons',`${ribbons} selected`,ribbons,ribbonRule(u),wearsRibbons);
@@ -260,6 +262,45 @@
     set('patches',patchesNotShown ? `${patches} shown` : `${patches} selected`,patches,'Choose the patches you wear.',!!auth.showPatches);
     updateItemSummaries();
     syncCommandRow();
+  }
+
+  /* ---------- a card folds to its name and its count ---------- */
+  // Ribbons, Badges and Patches each fold to the card's name and the number chosen, and open to everything the card shows (the owner: "when its
+  // collapsed, it should just show like ribbons and the number, and it can be expanded to everything"). A card for something the uniform wears starts
+  // open, as the page always was; one for something it does not wear is greyed out and starts folded. The member's own choice is kept per card for the
+  // session (this tab), whatever uniform is up: once a card has been opened or folded it stays so until the member changes it.
+  const KEY_FOLDS='capubItemCardsOpen';
+  const folds=(()=>{
+    try{ const v=JSON.parse(sessionStorage.getItem(KEY_FOLDS)||'{}'); return v && typeof v==='object' && !Array.isArray(v) ? v : {}; }
+    catch(e){ return {}; }
+  })();
+  const saveFolds=()=>{ try{ sessionStorage.setItem(KEY_FOLDS,JSON.stringify(folds)); }catch(e){ /* no session storage: the choice lasts until the page is loaded again */ } };
+  const cardOpen=(key,worn)=>Object.prototype.hasOwnProperty.call(folds,key) ? !!folds[key] : !!worn;
+  function foldCard(card,key,worn){
+    const open=cardOpen(key,worn);
+    card.classList.toggle('collapsed',!open);
+    const toggle=card.querySelector('.cardToggle');
+    if(toggle) toggle.setAttribute('aria-expanded',String(open));
+  }
+  function setCardOpen(card,open){
+    const key=card.getAttribute('data-card');
+    folds[key]=!!open; saveFolds();
+    foldCard(card,key,!card.classList.contains('unavailable'));
+  }
+  function wireItemCards(){
+    document.querySelectorAll('.itemCard .cardToggle').forEach(toggle=>{
+      if(toggle.dataset.wired) return;
+      toggle.dataset.wired='1';
+      toggle.addEventListener('click',()=>{
+        const card=toggle.closest('.itemCard');
+        if(card) setCardOpen(card,card.classList.contains('collapsed'));   // a folded card opens, an open one folds
+      });
+    });
+  }
+  // A control inside a folded card is reached by opening the card first (a notice's Fix button points at one).
+  function openCardOf(el){
+    const card=el && el.closest ? el.closest('.itemCard.collapsed') : null;
+    if(card) setCardOpen(card,true);
   }
 
   /* ---------- what is chosen and where it sits (the Badges and Patches cards) ---------- */
@@ -666,7 +707,7 @@
     label();
     header.appendChild(btn);
   }
-  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); wireCommandRow(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsCard(); refitIfStageChanged(); }
+  function refreshAll(){ ensureThemeToggle(); ensurePreviewToolbar(); wireStepper(); wirePhone(); wireItemCards(); wireCommandRow(); watchImporter(); renderStepper(); syncPhoneChrome(); updateItemCards(); updateTopBar(); markActiveUniform(); placeLockedUniforms(); syncUniformOptionsCard(); refitIfStageChanged(); }
   const previousFullRender = (typeof fullRender==='function') ? fullRender : null;
   if(previousFullRender){
     fullRender = function capubV3FullRender(){ const result=previousFullRender.apply(this,arguments); scheduleRefresh(); return result; };

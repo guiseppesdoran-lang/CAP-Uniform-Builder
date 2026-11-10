@@ -438,8 +438,23 @@ header h1::after{
 .itemCard.unavailable{background:var(--panel-2);border-style:dashed}
 .itemCard.unavailable .cardHead .fieldLabel{color:var(--muted)}
 .itemCard.unavailable .countChip,.itemCard.unavailable .countChip.hasItems{background:transparent;border-color:var(--line);color:var(--muted)}
-.itemCard.unavailable .cardRow button,.itemCard.unavailable>:not(.cardRow){display:none}
-.itemCard.unavailable .cardRow{grid-template-columns:minmax(0,1fr)}
+.itemCard.unavailable>:not(.cardRow){display:none}
+.itemCard.unavailable .cardToggle{color:var(--muted)}
+/* The name and the count are one button that folds the card (js/workspace-ui.js): a disclosure drawn as the card's heading with a chevron, not as one of
+   its buttons. Folded, only that row is left, and of the row only the button: the card shows its name and its count. */
+.cardRow .cardToggle{
+  display:flex;align-items:center;gap:var(--s2);width:100%;min-height:44px;margin:0;padding:0;
+  background:transparent;border:0;border-radius:var(--r);color:var(--ink);
+  font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:0;text-align:left;
+}
+.cardRow .cardToggle:hover{background:transparent;border-color:transparent}
+.cardRow .cardToggle:hover .fieldLabel{text-decoration:underline}
+.cardToggle .cardHead{flex:1 1 auto}
+.cardChevron{flex:0 0 auto;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid currentColor;transition:transform .15s ease}
+.cardToggle[aria-expanded="true"] .cardChevron{transform:rotate(90deg)}
+.itemCard.collapsed>:not(.cardRow){display:none}
+.itemCard.collapsed .cardRow{grid-template-columns:minmax(0,1fr)}
+.itemCard.collapsed .cardRow button:not(.cardToggle){display:none}
 /* Secondary controls folded under a line: the import's explanation, the rack layout, the saved setups. */
 .moreDetails{margin-top:var(--s2);padding-top:2px;border-top:1px solid var(--line)}
 .moreDetails>summary{display:flex;align-items:center;min-height:44px;box-sizing:border-box;cursor:pointer;font-size:var(--t-sm);font-weight:700;color:var(--ink)}

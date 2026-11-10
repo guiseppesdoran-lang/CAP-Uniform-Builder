@@ -74,10 +74,10 @@ test('the controls sit in the step they belong to; the cut is part of the profil
   assert.ok(aside.indexOf('id="rankSetupSelect"')<aside.indexOf('id="genderBlock"') && aside.indexOf('id="genderBlock"')<aside.indexOf('id="optionalName"'),'rank, then cut, then the name');
 });
 
-test('the Items step is three cards, each one row of name, count, Choose… and Clear, the rule under it',()=>{
+test('the Items step is three cards, each one row of name and count (the button that folds the card), Choose… and Clear, the rule under it',()=>{
   for(const [key,Key] of [['ribbons','Ribbons'],['badges','Badges'],['patches','Patches']]){
     const card=aside.slice(aside.indexOf(`data-card="${key}"`),aside.indexOf('</section>',aside.indexOf(`data-card="${key}"`)));
-    assert.match(card,new RegExp(`<div class="cardRow">\\s*<div class="cardHead">\\s*<label class="fieldLabel">${Key}</label>\\s*<span class="countChip" data-count="${key}" data-short="0" aria-live="polite">0 selected</span>\\s*</div>\\s*<button id="expand${Key}" type="button" aria-label="Choose ${key}">Choose…</button>\\s*<button id="clear${Key}" class="ghost" type="button" aria-label="Clear ${key}">Clear</button>\\s*</div>\\s*<div class="hintText cardRule" data-rule="${key}">`));
+    assert.match(card,new RegExp(`<div class="cardRow">\\s*<button type="button" class="cardToggle" id="toggle${Key}" aria-expanded="true">\\s*<span class="cardChevron" aria-hidden="true"></span>\\s*<span class="cardHead">\\s*<span class="fieldLabel">${Key}</span>\\s*<span class="countChip" data-count="${key}" data-short="0" aria-live="polite">0 selected</span>\\s*</span>\\s*</button>\\s*<button id="expand${Key}" type="button" aria-label="Choose ${key}">Choose…</button>\\s*<button id="clear${Key}" class="ghost" type="button" aria-label="Clear ${key}">Clear</button>\\s*</div>\\s*<div class="hintText cardRule" data-rule="${key}">`));
   }
   assert.match(css,/\.cardRow\{display:grid;grid-template-columns:minmax\(0,1fr\) auto auto;/);
   assert.match(css,/#capubSubmitPatchButton\{grid-column:1 \/ -1;/,'the patch submission button wraps under the row');
@@ -246,7 +246,7 @@ function makeDom(){
   );
   groups.uniform.append(el('section',{id:'uniformBlock',class:'panelBlock'},el('div',{id:'uniformList',class:'uniformList'})));
   for(const key of ['ribbons','badges','patches']){
-    const card=el('section',{id:'group'+key[0].toUpperCase()+key.slice(1),class:'panelBlock itemCard','data-card':key},el('span',{class:'countChip','data-count':key}),el('div',{class:'hintText cardRule','data-rule':key}),el('button',{id:'expand'+key[0].toUpperCase()+key.slice(1)}));
+    const card=el('section',{id:'group'+key[0].toUpperCase()+key.slice(1),class:'panelBlock itemCard','data-card':key},el('button',{id:'toggle'+key[0].toUpperCase()+key.slice(1),class:'cardToggle','aria-expanded':'true'}),el('span',{class:'countChip','data-count':key}),el('div',{class:'hintText cardRule','data-rule':key}),el('button',{id:'expand'+key[0].toUpperCase()+key.slice(1)}));
     groups.items.appendChild(card);
   }
   const downloadAction=el('div',{class:'finishAction',id:'downloadAction'},el('button',{id:'downloadImage'}));
@@ -272,7 +272,7 @@ function makeDom(){
   return {document,byId,groups,Node};
 }
 
-function boot({phone=false}={}){
+function boot({phone=false,session={}}={}){
   const dom=makeDom();
   const src=ui.slice(ui.indexOf('(function capubV3PolishedUI(){'),ui.indexOf('// A short confirmation when ribbons'));
   const calls={sidebar:[]};
@@ -283,6 +283,7 @@ function boot({phone=false}={}){
     ResizeObserver:function(){ this.observe=()=>{}; }, MutationObserver:function(fn){ this.observe=()=>{ context.__statusWatcher=fn; }; },
     CustomEvent:function(type,init){ this.type=type; this.detail=init&&init.detail; }, Event:function(type){ this.type=type; },
     localStorage:{getItem:()=>null,setItem(){},removeItem(){}}, getComputedStyle:()=>({paddingLeft:'0',paddingRight:'0'}),
+    sessionStorage:{getItem:k=>(k in session?session[k]:null),setItem:(k,v)=>{ session[k]=String(v); },removeItem:k=>{ delete session[k]; }},
     console, Object, parseInt, parseFloat, Math, String, Set, Number, Array, Promise, JSON, RegExp,
     innerWidth:1440, innerHeight:900, scrollTo(){},
     capubSetSidebarOpen:open=>{ calls.sidebar.push(open); dom.document.getElementById('layoutShell').classList.toggle('sidebar-open',open); dom.document.getElementById('layoutShell').classList.toggle('sidebar-collapsed',!open); },
@@ -295,7 +296,7 @@ function boot({phone=false}={}){
   const shown=()=>['profile','uniform','items','export'].filter(k=>!by('stepGroup-'+k).hidden);
   const tab=k=>by('stepTab-'+k);
   const refresh=()=>dom.document.dispatchEvent({type:'capub:history'});
-  return {V3:context.CAPUB_V3,State:context.State,by,shown,tab,refresh,calls,context,dom};
+  return {V3:context.CAPUB_V3,State:context.State,by,shown,tab,refresh,calls,context,dom,session};
 }
 
 test('exactly one step body is on screen at a time, and Next names the next step',()=>{
@@ -435,6 +436,85 @@ test('a card for what the uniform does not wear is greyed out and says nothing: 
     assert.doesNotMatch(chip.textContent,/kept/,uniform);
     assert.equal(chip.textContent,'1 selected',uniform);
   }
+});
+
+test('each Items card folds to its name and its count and opens to everything; a card for what the uniform does not wear starts folded',()=>{
+  // The owner: "for all of those UI things it should be collapsable. when its collapsed, it should just show like ribbons and the number, and it can be
+  // expanded to everything."
+  const t=boot();
+  Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'male',uniform:'blues_a',ribbons:[{id:'a'},{id:'b'}],badges:[],patches:[]}); t.refresh();
+  const card=k=>t.by('group'+k[0].toUpperCase()+k.slice(1)), toggle=k=>t.by('toggle'+k[0].toUpperCase()+k.slice(1));
+  const folded=k=>card(k).classList.contains('collapsed'), expanded=k=>toggle(k).getAttribute('aria-expanded');
+  // What the uniform wears starts open, as the page was.
+  for(const k of ['ribbons','badges','patches']){ assert.equal(folded(k),false,k); assert.equal(expanded(k),'true',k); }
+  // A press folds that card and only it; the button says so; the page's own refresh leaves it folded.
+  toggle('ribbons').fire('click');
+  assert.equal(folded('ribbons'),true); assert.equal(expanded('ribbons'),'false');
+  assert.equal(folded('badges'),false); assert.equal(folded('patches'),false);
+  t.refresh(); assert.equal(folded('ribbons'),true,'a redraw does not open it again');
+  // The count is still there to read when it is folded (the chip is in the button, whatever the card hides).
+  assert.equal(card('ribbons').querySelector('[data-count]').textContent,'2 selected');
+  toggle('ribbons').fire('click');
+  assert.equal(folded('ribbons'),false); assert.equal(expanded('ribbons'),'true');
+  // The member's choice is kept per card for the session, whatever the uniform: folded here, folded on the OCP, folded when it is worn again.
+  toggle('badges').fire('click');
+  assert.equal(t.session.capubItemCardsOpen,JSON.stringify({ribbons:true,badges:false}));
+  t.State.uniform='ocp'; t.refresh();
+  assert.equal(folded('badges'),true);
+  t.State.uniform='blues_a'; t.refresh();
+  assert.equal(folded('badges'),true);
+  toggle('badges').fire('click'); assert.equal(folded('badges'),false);
+  // A card the uniform does not wear is greyed out and starts folded; it can still be opened, and stays as the member leaves it.
+  const fresh=boot();
+  Object.assign(fresh.State,{membership:'senior',rank:'Capt',gender:'male',uniform:'ocp',ribbons:[{id:'a'}],badges:[],patches:[]}); fresh.refresh();
+  const fc=k=>fresh.by('group'+k[0].toUpperCase()+k.slice(1)), ft=k=>fresh.by('toggle'+k[0].toUpperCase()+k.slice(1));
+  assert.equal(fc('ribbons').classList.contains('unavailable'),true);
+  assert.equal(fc('ribbons').classList.contains('collapsed'),true,'greyed out and folded');
+  assert.equal(ft('ribbons').getAttribute('aria-expanded'),'false');
+  assert.equal(fc('badges').classList.contains('collapsed'),false,'a card that is worn is open beside it');
+  ft('ribbons').fire('click');
+  assert.equal(fc('ribbons').classList.contains('collapsed'),false,'it can still be opened');
+  assert.equal(fc('ribbons').classList.contains('unavailable'),true,'and is still greyed out');
+  fresh.State.uniform='blues_a'; fresh.refresh();
+  assert.equal(fc('ribbons').classList.contains('collapsed'),false);
+  // A choice from earlier in the session is there when the page is built again (a reload keeps the tab's session).
+  const again=boot({session:{capubItemCardsOpen:JSON.stringify({ribbons:false})}});
+  Object.assign(again.State,{membership:'senior',rank:'Capt',gender:'male',uniform:'blues_a',ribbons:[],badges:[],patches:[]}); again.refresh();
+  assert.equal(again.by('groupRibbons').classList.contains('collapsed'),true);
+  assert.equal(again.by('groupBadges').classList.contains('collapsed'),false);
+  // Storage that fails or holds rubbish is ignored.
+  const broken=boot({session:{capubItemCardsOpen:'not json'}});
+  Object.assign(broken.State,{membership:'senior',rank:'Capt',gender:'male',uniform:'blues_a',ribbons:[],badges:[],patches:[]}); broken.refresh();
+  assert.equal(broken.by('groupRibbons').classList.contains('collapsed'),false);
+});
+
+test('a notice\'s Fix opens a folded card before it points at the control inside',()=>{
+  const t=boot();
+  Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'male',uniform:'blues_a',ribbons:[{id:'a'}],badges:[],patches:[]}); t.refresh();
+  t.by('toggleBadges').fire('click');
+  assert.equal(t.by('groupBadges').classList.contains('collapsed'),true);
+  t.V3.showStepFor(t.by('expandBadges'));
+  assert.equal(t.by('groupBadges').classList.contains('collapsed'),false,'the card is open when its button is pressed');
+  assert.equal(t.by('toggleBadges').getAttribute('aria-expanded'),'true');
+  t.V3.showStep('export'); t.V3.focusControl('expandRibbons');
+  assert.equal(t.by('groupRibbons').classList.contains('collapsed'),false);
+});
+
+test('the fold in the page: one button for the name and count, the rest of the card hidden by the stylesheet, reached by mouse and keyboard',()=>{
+  // A real button (Enter and Space press it, it takes the focus, it names itself as expanded or not); the chevron is drawn by the stylesheet.
+  for(const [key,Key] of [['ribbons','Ribbons'],['badges','Badges'],['patches','Patches']]) assert.match(aside,new RegExp(`<button type="button" class="cardToggle" id="toggle${Key}" aria-expanded="true">`));
+  // Folded: only the row is left, and of the row only the button (the count is in it).
+  assert.match(css,/\.itemCard\.collapsed>:not\(\.cardRow\)\{display:none\}/);
+  assert.match(css,/\.itemCard\.collapsed \.cardRow button:not\(\.cardToggle\)\{display:none\}/);
+  assert.match(css,/\.itemCard\.collapsed \.cardRow\{grid-template-columns:minmax\(0,1fr\)\}/);
+  // The button is the card's heading, not one of its action buttons: no fill, no frame, the full width of the row.
+  const toggle=css.slice(css.indexOf('.cardRow .cardToggle{'),css.indexOf('}',css.indexOf('.cardRow .cardToggle{')));
+  assert.match(toggle,/width:100%/); assert.match(toggle,/background:transparent/); assert.match(toggle,/border:0/); assert.match(toggle,/min-height:44px/);
+  assert.match(css,/\.cardToggle\[aria-expanded="true"\] \.cardChevron\{transform:rotate\(90deg\)\}/);
+  // The choice is kept for the session in this tab, per card.
+  assert.match(ui,/const KEY_FOLDS='capubItemCardsOpen';/);
+  assert.match(ui,/sessionStorage\.getItem\(KEY_FOLDS\)/);
+  assert.match(ui,/wireItemCards\(\); wireCommandRow\(\);/);
 });
 
 test('the clear-import button shows once a report has been read',()=>{

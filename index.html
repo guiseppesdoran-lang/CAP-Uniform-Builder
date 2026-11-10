@@ -241,13 +241,18 @@
           </section>
         </section>
 
-        <!-- RIBBONS: one card, the picker opens in a window (the sidebar gallery div is kept for the modal plumbing and hidden by CSS) -->
+        <!-- RIBBONS: one card, the picker opens in a window (the sidebar gallery div is kept for the modal plumbing and hidden by CSS).
+             Each of the three cards folds to its name and count: the name and count are one button, the rest of the card is shown or hidden
+             by it (js/workspace-ui.js wireItemCards; a card for what the uniform does not wear starts folded). -->
         <section id="groupRibbons" class="panelBlock itemCard" data-card="ribbons">
           <div class="cardRow">
-            <div class="cardHead">
-              <label class="fieldLabel">Ribbons</label>
-              <span class="countChip" data-count="ribbons" data-short="0" aria-live="polite">0 selected</span>
-            </div>
+            <button type="button" class="cardToggle" id="toggleRibbons" aria-expanded="true">
+              <span class="cardChevron" aria-hidden="true"></span>
+              <span class="cardHead">
+                <span class="fieldLabel">Ribbons</span>
+                <span class="countChip" data-count="ribbons" data-short="0" aria-live="polite">0 selected</span>
+              </span>
+            </button>
             <button id="expandRibbons" type="button" aria-label="Choose ribbons">Choose…</button>
             <button id="clearRibbons" class="ghost" type="button" aria-label="Clear ribbons">Clear</button>
           </div>
@@ -328,10 +333,13 @@
         <!-- BADGES -->
         <section id="groupBadges" class="panelBlock itemCard" data-card="badges">
           <div class="cardRow">
-            <div class="cardHead">
-              <label class="fieldLabel">Badges</label>
-              <span class="countChip" data-count="badges" data-short="0" aria-live="polite">0 selected</span>
-            </div>
+            <button type="button" class="cardToggle" id="toggleBadges" aria-expanded="true">
+              <span class="cardChevron" aria-hidden="true"></span>
+              <span class="cardHead">
+                <span class="fieldLabel">Badges</span>
+                <span class="countChip" data-count="badges" data-short="0" aria-live="polite">0 selected</span>
+              </span>
+            </button>
             <button id="expandBadges" type="button" aria-label="Choose badges">Choose…</button>
             <button id="clearBadges" class="ghost" type="button" aria-label="Clear badges">Clear</button>
           </div>
@@ -372,10 +380,13 @@
         <!-- PATCHES -->
         <section id="groupPatches" class="panelBlock itemCard" data-card="patches">
           <div class="cardRow">
-            <div class="cardHead">
-              <label class="fieldLabel">Patches</label>
-              <span class="countChip" data-count="patches" data-short="0" aria-live="polite">0 selected</span>
-            </div>
+            <button type="button" class="cardToggle" id="togglePatches" aria-expanded="true">
+              <span class="cardChevron" aria-hidden="true"></span>
+              <span class="cardHead">
+                <span class="fieldLabel">Patches</span>
+                <span class="countChip" data-count="patches" data-short="0" aria-live="polite">0 selected</span>
+              </span>
+            </button>
             <button id="expandPatches" type="button" aria-label="Choose patches">Choose…</button>
             <button id="clearPatches" class="ghost" type="button" aria-label="Clear patches">Clear</button>
           </div>
