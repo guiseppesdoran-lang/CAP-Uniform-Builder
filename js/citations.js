@@ -55,6 +55,18 @@
     const p = parts(text);
     return { text: p.filter(x => !x.ref).map(x => x.text).join(''), refs: p.filter(x => x.ref).map(x => x.text.trim().slice(1, -1)) };
   }
+  // The drawing's own titles (a tooltip on a part of the art) are notes from whoever drew it, and a reference in them can sit inside a longer remark ("(matches
+  // the coat's tape; CAPR 39-1 7.1.1.8)", "(traced from CAPR 39-1 Fig A6-4)"): so from those, any bracket that names a publication or a paragraph is cut whole.
+  function splitLoose(text){
+    const refs = [];
+    const cut = String(text == null ? '' : text).replace(/\s*\((?:[^()]|\([^()]*\))*\)/g, m => {
+      const inner = m.trim().slice(1, -1);
+      if(!NAMES.test(inner)) return m;
+      refs.push(inner);
+      return '';
+    });
+    return { text: cut.trim(), refs };
+  }
   // A reference as the list names it: a paragraph given by its number alone is CAPR 39-1's.
   const refLabel = ref => /^\d/.test(ref) ? 'CAPR 39-1, ' + ref : ref;
 
@@ -195,11 +207,11 @@
   function visitSvgTitle(t){
     const text = t.textContent;
     if(text.indexOf('(') === -1 && !t.dataset.citeSvgTitle) return;
-    const s = split(text);
+    const s = splitLoose(text);
     if(s.refs.length){
       t.dataset.citeSvgTitle = text;
       if(!prefs.shown()) t.textContent = s.text;
-    }else if(t.dataset.citeSvgTitle && split(t.dataset.citeSvgTitle).text !== text) delete t.dataset.citeSvgTitle;
+    }else if(t.dataset.citeSvgTitle && splitLoose(t.dataset.citeSvgTitle).text !== text) delete t.dataset.citeSvgTitle;
   }
   // The mark on a list's label shows the reference of the option that is picked.
   function syncSelect(sel){
@@ -378,7 +390,7 @@
       }
     }
     for(const t of document.querySelectorAll('[data-cite-svg-title]')){
-      const text = on ? t.dataset.citeSvgTitle : split(t.dataset.citeSvgTitle).text;
+      const text = on ? t.dataset.citeSvgTitle : splitLoose(t.dataset.citeSvgTitle).text;
       if(t.textContent !== text) t.textContent = text;
     }
     const box = by('citesShown');
@@ -435,5 +447,5 @@
     document.addEventListener('capub:rendered', queueList);
   }
 
-  return { isCitation, parts, split, refLabel, refsOfText, popHtml, placePop, markAgain, notesHtml, createPrefs, createOpenMark, esc, start, KEY_SHOWN };
+  return { isCitation, parts, split, splitLoose, refLabel, refsOfText, popHtml, placePop, markAgain, notesHtml, createPrefs, createOpenMark, esc, start, KEY_SHOWN };
 });

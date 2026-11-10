@@ -328,3 +328,40 @@ test('a tooltip, a field hint, an image text and the drawing\'s own titles lose 
   // index.html: no field hint or image text cites a paragraph in the markup itself.
   for(const m of html.matchAll(/\b(placeholder|alt)="([^"]*)"/g)) assert.deepEqual(C.split(m[2]).refs, [], `${m[1]}="${m[2]}"`);
 });
+
+test('the drawing\'s titles lose every bracket that names a publication or a paragraph, whatever the remark around it', () => {
+  assert.deepEqual(C.splitLoose('Name tape centred on the back of the cap, blank (matches coat name tape width; CAPR 39-1 7.1.1.8)'), { text: 'Name tape centred on the back of the cap, blank', refs: ['matches coat name tape width; CAPR 39-1 7.1.1.8'] });
+  assert.deepEqual(C.splitLoose('Patch (traced from CAPR 39-1 Fig A6-4)'), { text: 'Patch', refs: ['traced from CAPR 39-1 Fig A6-4'] });
+  assert.deepEqual(C.splitLoose('Button (one group per design, hidden by name: -wing-star (wing and star, the default) or -cap-crest; CAPR 39-1 4.1.1.1)').text, 'Button');
+  assert.deepEqual(C.splitLoose('Grade (Velcro panel) centred (CAPR 39-1 6.2.7.2, 7.1.1.8)'), { text: 'Grade (Velcro panel) centred', refs: ['CAPR 39-1 6.2.7.2, 7.1.1.8'] });
+  // A bracket that names none stays, and so does a title that has none.
+  for(const t of ['Rank square (1.5 in)', 'Chevrons centred halfway', '', null]) assert.deepEqual(C.splitLoose(t), { text: String(t == null ? '' : t), refs: [] }, String(t));
+});
+
+test('every title in the art cites its paragraph in a shape the page cuts from the tooltip', () => {
+  // The art (images/, copied from the art tree) is drawn into the page as inline SVG, which the walk over the page\'s text skips; its <title> elements are
+  // tooltips, and a few hundred of them cite a paragraph, some inside a longer remark that the plain split does not take for a reference.
+  const walk = (dir, out = []) => {
+    for(const f of fs.readdirSync(dir, { withFileTypes: true })){
+      const p = path.join(dir, f.name);
+      if(f.isDirectory()) walk(p, out); else if(/\.svg$/.test(f.name)) out.push(p);
+    }
+    return out;
+  };
+  const BRACKETS = /\((?:[^()]|\([^()]*\))*\)/g, CITES = /\b(?:CAPR|CAPP|CAPM|ICL|DAFI|AFI)\s?\d|\d+\.\d+\.\d+/;
+  let titles = 0, loose = 0;
+  const left = [];
+  for(const f of walk(path.join(root, 'images'))){
+    const svg = fs.readFileSync(f, 'utf8');
+    if(svg.indexOf('<title') === -1) continue;
+    for(const m of svg.matchAll(/<title>([^<]*)<\/title>/g)){
+      const text = m[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;|&#39;/g, "'");
+      titles++;
+      if(C.split(text).text !== C.splitLoose(text).text) loose++;
+      for(const b of C.splitLoose(text).text.matchAll(BRACKETS)) if(CITES.test(b[0])) left.push(`${path.relative(root, f)}: ${b[0].slice(0, 100)}`);
+    }
+  }
+  assert.ok(titles >= 500, `the art's titles: ${titles}`);
+  assert.deepEqual(left, [], 'a title with a bracketed reference the cut leaves:\n' + left.join('\n'));
+  assert.ok(loose >= 1, 'some titles hold a reference only the loose cut takes out');
+});
