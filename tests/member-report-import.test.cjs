@@ -812,3 +812,124 @@ test('the aviation badges the import wears: the setup keeps one, the picker offe
   assert.deepEqual(aviationIn(s.parsed.authorizedBadges), [AVIATION_IDS.pilot[1], AVIATION_IDS.aircrew[1], AVIATION_IDS.observer[2]]);
   assert.deepEqual(aviationIn(s.badges), [AVIATION_IDS.pilot[1]]);
 });
+
+// ---- Failure handling and the PDF reader (I2) ---------------------------------------------------------------------------------------
+// A file in, the page as the Import button runs it. `files` are objects with the parts of a File the importer reads.
+function fileLike(name, type, body, size){
+  const text = typeof body === 'string' ? body : '';
+  return { name, type, size: size === undefined ? text.length : size, text: async () => text, arrayBuffer: async () => new TextEncoder().encode(text).buffer };
+}
+const STUBS = `for(const n of ['buildRibbonGallery','rebuildRibbonsFromGallery','buildBadgeGallery','rebuildBadgesFromGallery','fullRender','refreshUI',
+  'populateRankSetup','updateSetupGates','highlightActiveUniformButton','applyMemberTypeToUniformOptions','syncCadetFirstSergeantControl',
+  'renderCACShoulderCord','syncShoulderCordControl','clearUnauthorizedPatchesForCurrentUniform']) globalThis[n] = function(){};`;
+async function importFile(file, { before = '', pdf = null } = {}){
+  const { context, referenceErrors } = loadPageScripts();
+  assert.deepEqual(referenceErrors, []);
+  vm.runInContext(STUBS, context);
+  if(before) vm.runInContext(before, context);
+  if(pdf) context.pdfjsLib = pdf;
+  const result = await vm.runInContext('(file) => importMemberReportFile(file)', context)(file);
+  const state = JSON.parse(vm.runInContext(`JSON.stringify({ membership: State.membership, rank: State.rank, gender: State.gender, ribbons: Object.entries(State.ribbonSelections).filter(([, s]) => s.checked).map(([id]) => id), badges: State.badges, patches: State.patches, text: State.text })`, context));
+  return { result, state, context };
+}
+const BUILD_BEFORE = `normalizeRibbonSelections(); State.membership = 'senior'; State.rank = 'Maj'; State.gender = 'female'; State.ribbonSelections.cap_membership_ribbon.checked = true; State.badges = ['solo_badge'];`;
+const KEPT = { membership: 'senior', rank: 'Maj', gender: 'female', ribbons: ['cap_membership_ribbon'], badges: ['solo_badge'] };
+const assertKept = state => { for(const [k, v] of Object.entries(KEPT)) assert.deepEqual(state[k], v, `${k} is the build the member had`); };
+
+test('only a PDF or a text file is a report file', () => {
+  const { context } = loadPageScripts();
+  const kind = (name, type) => vm.runInContext('(a, b) => memberReportFileKind({ name: a, type: b })', context)(name, type);
+  assert.equal(kind('member.PDF', ''), 'pdf');
+  assert.equal(kind('download', 'application/pdf'), 'pdf');
+  assert.equal(kind('report.txt', ''), 'text');
+  assert.equal(kind('report', 'text/plain'), 'text');
+  for(const [n, t] of [['report.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'], ['shot.png', 'image/png'], ['report.html', 'text/html'], ['report', ''], ['data.json', 'application/json']])
+    assert.equal(kind(n, t), null, n);
+});
+
+test('a file that is not a PDF or text, too large, empty, or not a member report ends in one plain sentence and leaves the build as it was', async () => {
+  const cases = [
+    [fileLike('report.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'PK'), /^That file is not a PDF or a text file\./, 'type'],
+    [fileLike('shot.png', 'image/png', ''), /^That file is not a PDF or a text file\./, 'type'],
+    [fileLike('huge.txt', 'text/plain', 'x', 3 * 1024 * 1024), /^That file is too large to be a member report \(the limit is 2 MB\)\.$/, 'size'],
+    [fileLike('huge.pdf', 'application/pdf', 'x', 13 * 1024 * 1024), /^That file is too large to be a member report \(the limit is 12 MB\)\.$/, 'size'],
+    [fileLike('empty.txt', 'text/plain', ''), /^That file is empty\.$/, 'empty'],
+    [fileLike('blank.txt', 'text/plain', ' \n\t ​﻿'), /^That file is empty\.$/, 'empty'],
+    [fileLike('notes.txt', 'text/plain', 'Lorem ipsum dolor sit amet. Shopping list: eggs, milk, bread, 12 Jan 2024.'), /^That does not look like a CAP member report/, 'notReport'],
+    [fileLike('resume.txt', 'text/plain', 'Jane Doe, Senior Engineer. Experience: Acme 01 Jan 2015 to 01 Jan 2020. Education: State University. Awards: Employee of the Year.'), /^That does not look like a CAP member report/, 'notReport']
+  ];
+  for(const [file, message, code] of cases){
+    const { result, state } = await importFile(file, { before: BUILD_BEFORE });
+    assert.equal(result.ok, false, file.name);
+    assert.equal(result.code, code, file.name);
+    assert.equal(result.lines.length, 1, `${file.name}: one sentence`);
+    assert.match(result.lines[0], message, file.name);
+    assertKept(state);
+  }
+});
+
+test('a report with its sections but nothing readable in it changes nothing, and says so', async () => {
+  const { result, state } = await importFile(fileLike('empty-report.txt', 'text/plain', 'Printer Friendly View - Member Details\nGeneral Information\nCAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit\nCadet Training\nActivity Date Completed\nLocal Activities\nActivity Date\n'), { before: BUILD_BEFORE });
+  assert.equal(result.ok, false);
+  assert.equal(result.code, 'nothing');
+  assert.match(result.lines[0], /^The sections of a report are in the file, but nothing in them could be read, so nothing was changed\.$/);
+  assertKept(state);
+});
+
+test('a real report file is imported through the same path, as a text file or as the text of a PDF', async () => {
+  const { result, state } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE), { before: BUILD_BEFORE });
+  assert.equal(result.ok, true);
+  assert.equal(result.kind, 'text');
+  assert.equal(state.membership, 'cadet');
+  assert.equal(state.rank, 'C/Col');
+  assert.ok(result.lines[0] === 'Imported member.txt.');
+  assert.ok(!state.ribbons.includes('cap_membership_ribbon'), 'the earlier build is replaced by the report');
+});
+
+// pdf.js is stood in for by an object with its calls: what is asserted is how the importer opens a file and what it does with the pages.
+function fakePdf({ pages = [['Printer Friendly View - Member Details', 'General Information']], opens = null, calls = {} } = {}){
+  return {
+    GlobalWorkerOptions: {},
+    getDocument(options){
+      calls.options = options;
+      return { promise: opens ? Promise.reject(opens) : Promise.resolve({
+        numPages: pages.length,
+        getPage: async n => ({ getTextContent: async () => ({ items: pages[n - 1].map(str => ({ str })) }) }),
+        destroy: async () => { calls.destroyed = true; }
+      }) };
+    }
+  };
+}
+
+test('pdf.js opens a member\'s PDF with script evaluation off, no forms, fonts or streaming, and the document is released afterwards', async () => {
+  const calls = {};
+  const { context } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf: fakePdf({ pages: [['Printer Friendly View - Member Details', 'C/Col Guiseppe Mitchell'], ['General Information']], calls }) });
+  const text = await vm.runInContext('(f) => extractMemberReportText(f)', context)(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'));
+  assert.equal(text, 'Printer Friendly View - Member Details C/Col Guiseppe Mitchell\nGeneral Information');
+  assert.equal(calls.options.isEvalSupported, false, 'a hostile PDF cannot compile code in the page');
+  assert.equal(calls.options.enableXfa, false);
+  assert.equal(calls.options.disableFontFace, true);
+  assert.equal(calls.options.disableAutoFetch, true);
+  assert.equal(calls.options.disableStream, true);
+  assert.equal(calls.options.disableRange, true);
+  assert.equal(Object.prototype.toString.call(calls.options.data), '[object Uint8Array]');
+  assert.ok(calls.options.maxImageSize > 0);
+  assert.equal(calls.destroyed, true);
+});
+
+test('a PDF with no text, too many pages, a password or a broken structure ends in one plain sentence and leaves the build', async () => {
+  const cases = [
+    [fakePdf({ pages: [[], []] }), /^That PDF has no text to read: it is a scan or a picture\./, 'empty'],
+    [fakePdf({ pages: Array.from({ length: 61 }, () => ['x']) }), /^That PDF has more than 60 pages, too many for a member report\.$/, 'size'],
+    [fakePdf({ opens: { name: 'PasswordException', message: 'No password given' } }), /^That PDF is locked with a password/, 'pdf'],
+    [fakePdf({ opens: { name: 'InvalidPDFException', message: 'Invalid PDF structure.' } }), /^That PDF could not be opened\. Save the member report as a PDF again/, 'pdf']
+  ];
+  for(const [pdf, message, code] of cases){
+    const { result, state } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf, before: BUILD_BEFORE });
+    assert.equal(result.ok, false);
+    assert.equal(result.code, code);
+    assert.match(result.lines[0], message);
+    assert.ok(!/Invalid PDF structure|Exception/.test(result.lines[0]), 'no library wording');
+    assertKept(state);
+  }
+});

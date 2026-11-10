@@ -89,31 +89,76 @@ function loadPdfJs(){
   return pdfJsLoading;
 }
 
-async function extractMemberReportText(file){
-  const name = (file?.name || '').toLowerCase();
+// What a report file may be: a PDF (the page's Print to PDF of Printer Friendly View) or its text copied into a .txt file. The limits are far
+// above a real report (a few pages, under 100 KB of text) and keep a wrong file from locking the page.
+const MEMBER_REPORT_LIMITS = Object.freeze({ textBytes:2 * 1024 * 1024, pdfBytes:12 * 1024 * 1024, pdfPages:60, textChars:600000 });
 
-  if(name.endsWith('.txt') || file.type === 'text/plain'){
-    return await file.text();
+// How pdf.js opens a member's PDF. Nothing in a report needs scripts, fonts, forms or images, so none run: isEvalSupported false is the setting
+// that keeps a hostile PDF from compiling code in the page (pdf.js 3.11 builds font programs with new Function when it is allowed).
+const MEMBER_REPORT_PDF_OPTIONS = Object.freeze({
+  isEvalSupported:false, enableXfa:false, disableFontFace:true, useSystemFonts:false, disableAutoFetch:true, disableStream:true,
+  disableRange:true, maxImageSize:1024 * 1024, stopAtErrors:false, verbosity:0
+});
+
+// An error whose message is the sentence the member reads.
+function memberReportError(code, message){
+  const error = new Error(message);
+  error.memberReportCode = code;
+  return error;
+}
+
+function memberReportFileKind(file){
+  const name = String(file?.name || '').toLowerCase(), type = String(file?.type || '').toLowerCase();
+  if(/\.pdf$/.test(name) || type === 'application/pdf') return 'pdf';
+  if(/\.te?xt$/.test(name) || type === 'text/plain') return 'text';
+  return null;
+}
+
+async function extractMemberReportText(file){
+  const kind = memberReportFileKind(file);
+  if(!kind) throw memberReportError('type', 'That file is not a PDF or a text file. Save the member report as a PDF, or copy its text into a .txt file.');
+  const limit = kind === 'pdf' ? MEMBER_REPORT_LIMITS.pdfBytes : MEMBER_REPORT_LIMITS.textBytes;
+  if(Number(file.size) > limit) throw memberReportError('size', `That file is too large to be a member report (the limit is ${Math.round(limit / 1048576)} MB).`);
+
+  if(kind === 'text'){
+    const text = await file.text();
+    if(text.length > MEMBER_REPORT_LIMITS.textChars) throw memberReportError('size', 'That file holds too much text to be a member report.');
+    return text;
   }
 
-  await loadPdfJs();
+  try{
+    await loadPdfJs();
+  }catch(err){
+    throw memberReportError('pdfjs', 'The PDF reader did not load. Check your connection and try again, or copy the report text into a .txt file.');
+  }
 
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     pdfjsLib.GlobalWorkerOptions.workerSrc ||
     'vendor/pdfjs/pdf.worker.min.js';
 
-  const data = new Uint8Array(await file.arrayBuffer());
-  const pdf = await pdfjsLib.getDocument({ data }).promise;
-  const pages = [];
-
-  for(let p=1; p<=pdf.numPages; p++){
-    const page = await pdf.getPage(p);
-    const content = await page.getTextContent();
-    const strings = content.items.map(item => item.str || '').filter(Boolean);
-    pages.push(strings.join(' '));
+  let pdf = null;
+  try{
+    const data = new Uint8Array(await file.arrayBuffer());
+    pdf = await pdfjsLib.getDocument({ data, ...MEMBER_REPORT_PDF_OPTIONS }).promise;
+    if(pdf.numPages > MEMBER_REPORT_LIMITS.pdfPages) throw memberReportError('size', `That PDF has more than ${MEMBER_REPORT_LIMITS.pdfPages} pages, too many for a member report.`);
+    const pages = [];
+    let chars = 0;
+    for(let p=1; p<=pdf.numPages; p++){
+      const page = await pdf.getPage(p);
+      const content = await page.getTextContent();
+      const strings = content.items.map(item => item.str || '').filter(Boolean);
+      const line = strings.join(' ');
+      chars += line.length;
+      if(chars > MEMBER_REPORT_LIMITS.textChars) throw memberReportError('size', 'That PDF holds too much text to be a member report.');
+      pages.push(line);
+    }
+    return pages.join('\n');
+  }catch(err){
+    if(err && err.memberReportCode) throw err;
+    throw memberReportError('pdf', /password/i.test(String(err && (err.name || err.message))) ? 'That PDF is locked with a password, so it cannot be read. Save an unlocked copy of the member report.' : 'That PDF could not be opened. Save the member report as a PDF again, or copy its text into a .txt file.');
+  }finally{
+    try{ if(pdf) await pdf.destroy(); }catch(err){ /* nothing to release */ }
   }
-
-  return pages.join('\n');
 }
 
 function normalizeMemberReportText(text){
@@ -1914,6 +1959,78 @@ function confirmBeforeMemberReportUpload(){
   );
 }
 
+// The headings of a member report (eServices Member Search, Printer Friendly View - Member Details). A file that has the grade row, two of
+// these headings, or one with a few dated rows is a report; anything else is not, and is not allowed to clear the member's build.
+const MEMBER_REPORT_HEADINGS = [/General\s+Information/i, /Member\s+Details/i, /Duty\s+Positions/i, /Professional\s+Development/i, /Specialty\s+Tracks/i,
+  /Cadet\s+Training/i, /Cadet\s+Achievements/i, /Encampments/i, /Decorations/i, /Activity\s*\/\s*Service\s+Ribbon/i, /Promotions/i, /Local\s+Activities/i];
+function looksLikeMemberReport(text){
+  const t = String(text || '').replace(/\s+/g, ' ');
+  if(getCurrentProfileFromMemberReport(t)) return true;
+  const headings = MEMBER_REPORT_HEADINGS.filter(re => re.test(t)).length;
+  if(headings >= 2) return true;
+  return headings >= 1 && (t.match(/\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/g) || []).length >= 3;
+}
+
+function memberReportReadAnything(parsed){
+  // The member type and gender alone are not read: without the grade row they come from a word such as "Cadet Training" or "MALE".
+  return !!(parsed && (parsed.rank || parsed.firstName || parsed.lastName ||
+    (parsed.ribbons || []).length || (parsed.badges || []).length || (parsed.authorizedBadges || []).length || (parsed.patches || []).length));
+}
+
+// The lines the panel shows for a report that was applied.
+function memberReportStatusLines(parsed, fileName){
+  return [
+    `Imported ${fileName}.`,
+    `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
+    `Name: ${parsed.firstName || parsed.lastName ? `${parsed.firstName || ''} ${parsed.lastName || ''}`.trim() : 'not found'}`,
+    `Ribbons selected: ${parsed.ribbons.length}`,
+    parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
+    parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
+    `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
+    'Reminder: double-check imported results; Unit Citation ribbons and other record-dependent items may not appear correctly.',
+    ...(capubImportNoteLines(parsed.notes).length ? ['Notes:', ...capubImportNoteLines(parsed.notes)] : [])
+  ].filter(Boolean);
+}
+
+// A report file in, the build changed and the lines to show out. A file that is not a report, has no text or cannot be opened ends in one
+// plain sentence and leaves the build exactly as it was: nothing is cleared before the file is known to be a report with something in it.
+async function importMemberReportFile(file){
+  const kind = memberReportFileKind(file);
+  const fail = (message, code) => ({ ok:false, kind:kind || 'text', code, lines:[message] });
+  let text;
+  try{
+    text = await extractMemberReportText(file);
+  }catch(err){
+    if(!(err && err.memberReportCode)) console.error(err);
+    return fail(err && err.memberReportCode ? err.message : 'That file could not be read. Save the member report as a PDF, or copy its text into a .txt file.', err && err.memberReportCode || 'read');
+  }
+  if(!String(text).replace(/[\s\u200b-\u200d\u2060\ufeff\ufffe\ufffd]/g, '')){
+    return fail(kind === 'pdf'
+      ? 'That PDF has no text to read: it is a scan or a picture. Save the member report as a PDF from the browser, or copy its text into a .txt file.'
+      : 'That file is empty.', 'empty');
+  }
+  if(!looksLikeMemberReport(text)){
+    return fail('That does not look like a CAP member report: none of its sections are in the file. Use Printer Friendly View - Member Details from the member search.', 'notReport');
+  }
+  let parsed;
+  try{
+    parsed = parseCapMemberReport(text);
+  }catch(err){
+    console.error(err);
+    return fail('This report could not be read, so nothing was changed.', 'parse');
+  }
+  if(!memberReportReadAnything(parsed)){
+    return fail('The sections of a report are in the file, but nothing in them could be read, so nothing was changed.', 'nothing');
+  }
+  try{
+    applyCapMemberReportImport(parsed);
+  }catch(err){
+    console.error(err);
+    return fail('The report was read but could not be applied. Use Undo to go back to the build you had.', 'apply');
+  }
+  return { ok:true, kind:kind || 'text', parsed, lines:memberReportStatusLines(parsed, file.name) };
+}
+
 function wireMemberReportImporter(){
   const btn = by('importMemberReportBtn');
   const input = by('memberReportUpload');
@@ -1939,29 +2056,16 @@ function wireMemberReportImporter(){
 
     try{
       setMemberReportImportStatus(`Reading ${file.name}...`);
-      const text = await extractMemberReportText(file);
-      const parsed = parseCapMemberReport(text);
-      applyCapMemberReportImport(parsed);
-
-      const lines = [
-        `Imported ${file.name}.`,
-        `Profile: ${parsed.membership || 'unknown'} • ${parsed.gender || 'unknown'} • ${parsed.rank || 'rank not found'}`,
-        `Name: ${parsed.firstName || parsed.lastName ? `${parsed.firstName || ''} ${parsed.lastName || ''}`.trim() : 'not found'}`,
-        `Ribbons selected: ${parsed.ribbons.length}`,
-        parsed.ribbons.some(r => r.id === 'red_service_ribbon') ? `Red Service: ${parsed.ribbons.find(r => r.id === 'red_service_ribbon').reason}` : '',
-        parsed.ribbons.some(r => r.id === 'crisis_ribbon') ? 'Crisis Service Award: selected' : '',
-        `Badges selected: ${parsed.badges.length}${parsed.badges.length >= 4 ? ' (highest four wearable badges kept)' : ''}`,
-        'Reminder: double-check imported results; Unit Citation ribbons and other record-dependent items may not appear correctly.',
-        ...(capubImportNoteLines(parsed.notes).length ? ['Notes:', ...capubImportNoteLines(parsed.notes)] : [])
-      ].filter(Boolean);
-
-      setMemberReportImportStatus(lines, 'ok');
+      const result = await importMemberReportFile(file);
+      setMemberReportImportStatus(result.lines, result.ok ? 'ok' : 'error');
       // Counts only: never the name, the file name or anything read from the report.
-      window.CAPUB_TELEMETRY?.track('import', { ok: true, kind: /pdf/i.test(file.type) || /\.pdf$/i.test(file.name) ? 'pdf' : 'text', membership: !!parsed.membership, rank: !!parsed.rank, gender: !!parsed.gender, ribbons: parsed.ribbons.length, badges: parsed.badges.length, patches: (parsed.patches || []).length, notes: (parsed.notes || []).length });
+      const parsed = result.parsed;
+      if(result.ok) window.CAPUB_TELEMETRY?.track('import', { ok: true, kind: result.kind, membership: !!parsed.membership, rank: !!parsed.rank, gender: !!parsed.gender, ribbons: parsed.ribbons.length, badges: parsed.badges.length, patches: (parsed.patches || []).length, notes: (parsed.notes || []).length });
+      else window.CAPUB_TELEMETRY?.track('import', { ok: false, kind: result.kind });
     }catch(err){
       console.error(err);
-      window.CAPUB_TELEMETRY?.track('import', { ok: false, kind: /pdf/i.test(file.type) || /\.pdf$/i.test(file.name) ? 'pdf' : 'text' });
-      setMemberReportImportStatus(`Import failed: ${err.message || err}`, 'error');
+      window.CAPUB_TELEMETRY?.track('import', { ok: false, kind: memberReportFileKind(file) || 'text' });
+      setMemberReportImportStatus('The import stopped before it finished. Try the file again, or use Undo if the build changed.', 'error');
     }finally{
       input.value = '';
     }
