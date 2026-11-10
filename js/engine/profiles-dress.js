@@ -1118,6 +1118,9 @@
         await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, clip: cover, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
           title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
         const edges = coverEdges(cover, f);
+        // the strap's lower edge, outer end first: the shoulder cord comes out from under it (B7)
+        const lo = edges.lower[edges.lower.length - 1], ln = edges.lower[0];
+        markEpauletEdge(ctx, side, lo, { x: ln.x - lo.x, y: ln.y - lo.y });
         coverBand(ctx, side, 'light', edges.upper, f.normal, -1, SHADE.light, cover, Z.epauletLayer + 0.6);
         coverBand(ctx, side, 'dark', edges.lower, f.normal, 1, SHADE.dark, cover, Z.epauletLayer + 0.6);
       }else{
@@ -1310,16 +1313,57 @@
     const near = start && Math.hypot(pts[0][0] - start[0], pts[0][1] - start[1]) < 0.01;
     return { points: start && !near ? [start, ...pts] : pts, exact: !!seam, topAt: start };
   }
+  // B4 (Ethan, 2026-11-10: "i think ive said this atleat 20 times, the cords still arent right. put them down like an extra 10 pixels so it looks like it should. nothing else has to change
+  // except it needs to go down."): every shoulder cord is drawn CORD_DROP lower, the whole braid moved down with its shape, length, width and colour as they were. His picture of the Class A
+  // coat (img 04) has the braid 45 px wide for its 0.5 in, 90 px to the inch, and the braid's lower end stops 8 px above the notch between arm and body: 10 px of that picture is 0.11 in.
+  // (At the page's Fit zoom on a 1440 x 900 window the coat is 17.5 px to the inch, which would make 10 px 0.57 in, five times the gap the picture shows, and put the braid's end deep in the
+  // notch; so the distance is read off the picture.)
+  const CORD_DROP = 0.11;
+  // B7 (Ethan, 2026-11-10: "cord must be totally under the eppaulet"): the cord comes out from beneath the epaulet and hangs from there. Each epaulet (the edge-on strip of a shirt's sleeve, the plain strap, the
+  // Class A board or officer's strap) records its lower edge on the shoulder in ctx.epauletEdge[side] = { at, dir } (a point on it, outer end first, and its direction toward the neck), and the cord is cut
+  // to the half plane below that line (COVER_TUCK above it, so no hairline of page shows between the two): its square top end, which lay on the shoulder line, and the outer half of the braid beside the
+  // epaulet's end are no longer drawn. The braid's path, and the cord below the epaulet, are as they were. The epaulet is drawn over the cord (z) on every garment.
+  const COVER_TUCK = 0.012;
+  function markEpauletEdge(ctx, side, at, dir){
+    const l = Math.hypot(dir.x, dir.y) || 1;
+    ctx.epauletEdge = ctx.epauletEdge || {};
+    ctx.epauletEdge[side] = { at: { x: at.x, y: at.y }, dir: { x: dir.x / l, y: dir.y / l } };
+  }
+  // The lower edge of a strap band `f` (bandFrame: axis toward the neck, normal up, centre line from the outer end) `thick` inches across.
+  function markBandEdge(ctx, side, f, thick){ markEpauletEdge(ctx, side, { x: f.outer.x - f.normal.x * thick / 2, y: f.outer.y - f.normal.y * thick / 2 }, f.axis); }
+  // The scene-inch polygon of everything on the garment side of that edge, which the cord layer is cut to.
+  function belowEpauletEdge(e){
+    const n = { x: e.dir.y, y: -e.dir.x }, up = n.y > 0 ? { x: -n.x, y: -n.y } : n, B = 60;
+    const P = { x: e.at.x + up.x * COVER_TUCK, y: e.at.y + up.y * COVER_TUCK };
+    return [{ x: P.x - e.dir.x * B, y: P.y - e.dir.y * B }, { x: P.x + e.dir.x * B, y: P.y + e.dir.y * B }, { x: P.x + e.dir.x * B - up.x * B, y: P.y + e.dir.y * B - up.y * B }, { x: P.x - e.dir.x * B - up.x * B, y: P.y - e.dir.y * B - up.y * B }];
+  }
+  function tuckCordUnderEpaulet(ctx, layer){
+    const e = ctx.epauletEdge && ctx.epauletEdge.left;
+    if(layer && e) layer.clip = belowEpauletEdge(e);
+  }
   function fitCordLayer(ctx, spec){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
     const run = cordRun(id, lm);
     if(!layer || !run) return;
     const ring = GARMENT_TOP[id];
-    const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
-    const fit = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact, topAt: run.topAt });
+    const down = p => [p[0], p[1] + CORD_DROP];
+    const outline = ring ? ring.slice(1).concat([ring[0]]).map(down) : null;
+    // The braid moves down whole; its top end, which lay on the shoulder line, is carried on up along the braid's first segment to the height it had, so a coat that wears no epaulet
+    // (the cadet NCOs' Class A) still has the cord run up to the shoulder line, where the silhouette cuts it: the same braid, moved down, its hidden top continued, not shortened.
+    const pts = run.points.map(down);
+    let topAt = run.topAt ? down(run.topAt) : null;
+    {
+      const a = topAt || pts[0], b = pts[1], len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, ux = (b[0] - a[0]) / len, uy = (b[1] - a[1]) / len;
+      const t = uy > 0.05 ? Math.min(CORD_DROP / uy, 0.6) : 0;
+      const top = [a[0] - ux * t, a[1] - uy * t];
+      if(topAt){ topAt = top; pts[0] = top; }
+      else pts.unshift(top);
+    }
+    const fit = core.fitCord(pts, outline, ARMPIT[id] ? down(ARMPIT[id]) : null, { exact: run.exact, topAt });
     layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, end: fit.end, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
     layer.clipSil = id;
     layer.clipOuter = true;
+    tuckCordUnderEpaulet(ctx, layer);
   }
 
   // The Aide de Camp cord (9.3.4; DAFI 36-2903 10.7.7.1). Ethan, LIVE13 E128, on the aiguillette that looped across the chest: "it falls with gravity... its only one
@@ -1352,6 +1396,7 @@
       const L = Math.hypot(sm.neck.x - sm.outer.x, sm.neck.y - sm.outer.y), k = (thick + 0.04) / 2 / L;
       top = [sm.outer.x + (sm.neck.x - sm.outer.x) * k, sm.outer.y + (sm.neck.y - sm.outer.y) * k];
     }
+    top = [top[0], top[1] + CORD_DROP];   // B4: the whole cord, the aiguillette's attachment with it, is drawn CORD_DROP lower
     const tipLen = tipLm.len_in, braidLen = drop - tipLen, width = thick + 0.04;
     const racks = ctx.layers.filter(l => l.role === 'ribbon' || /^mini/.test(l.role || '')).map(l => core.layerBounds(l));
     const centreX = ctx.base.w / 2, sign = top[0] >= centreX ? 1 : -1;
@@ -1372,12 +1417,14 @@
     const layer = ctx.layers[ctx.layers.length - 1];
     const hang = await aiguilletteHang(ctx, spec);
     if(!layer || !hang) return false;
-    const id = ctx.base.id, A = hang.attach, E = hang.end;
+    // Moved down whole (B4). Where the coat wears no epaulet to hide the braid's top (the senior NCOs' Class A), the braid is continued up to the shoulder line, where the silhouette cuts it.
+    const id = ctx.base.id, E = hang.end, A = ctx.epauletEdge && ctx.epauletEdge.left ? hang.attach : [hang.attach[0], hang.attach[1] - CORD_DROP];
     layer.cordPath = { d: `M${A[0]},${A[1]}L${E[0]},${E[1]}`, pieces: [{ type: 'L', a: A, b: E }], points: [A, E], top: A, bottom: E, end: E, width: hang.width, exact: true, seam: null, pendant: true,
       stretch: { from: hang.braidLen, to: hang.braidLen, dTop: [0, 0], dBottom: [0, 0] } };
     layer.hideGroups = ['aiguillette-loop', 'aiguillette-hang'];
     layer.clipSil = id;
     layer.clipOuter = true;
+    tuckCordUnderEpaulet(ctx, layer);
     // The chrome tip: the sheet's own tip group, turned plumb about its head and moved so the head is at the braid's end.
     const head = [hang.tip.head_x / 100, hang.tip.head_y / 100], point = [hang.tip.x / 100, hang.tip.y / 100];
     const rotate = Math.atan2(point[0] - head[0], point[1] - head[1]) * 180 / Math.PI;
@@ -1631,6 +1678,7 @@
       await ctx.place(id, { pieceAnchor: 'board_outer_end', at, rotate: rot, scale: k, scaleX: 1 / k, z: BOARD_STRIP_Z, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
       const c = { x: at.x + f.axis.x * board.w / 2, y: at.y + f.axis.y * board.w / 2 };
       stripShading(ctx, side, c, f.axis, f.normal, board.w, BOARD_STRIP_THICK, BOARD_PEAK, BOARD_STRIP_Z + 0.1);
+      markBandEdge(ctx, side, Object.assign({}, f, { outer: at }), BOARD_STRIP_THICK);   // the cord comes out from under the board's lower edge (B7)
       // The board lies on the shoulder seam, from the collar seam to the shoulder point (4.1.5.2.1.3, 4.1.9.3.4; Class A), drawn once, on the wearer's right shoulder.
       if(side === 'right') ctx.measure(f.outer, f.neck, 'on the seam', { mid: c, side: { x: 0, y: -1 }, offsetOnly: true, reference: true, caption: 'shoulder board on the seam' });
       if(overlay) overlay.hideGroups = [...new Set([...(overlay.hideGroups || []), 'shoulder-strip-right', 'shoulder-strip-left'])];
@@ -1683,6 +1731,7 @@
       const mid = { x: f.outer.x + f.axis.x * length / 2, y: f.outer.y + f.axis.y * length / 2 };
       drawOfficerStrap(ctx, side, f);
       stripShading(ctx, side, mid, f.axis, f.normal, length, thick, 0, Z.epauletLayer + 0.6);
+      markBandEdge(ctx, side, f, Math.max(EDGE_ON_THICK, thick));   // the strap (0.4 in) or the sleeve over it, whichever hangs lower; the cord comes out from under it (B7)
       if(sleeve){
         const k = length / sleeve.h;
         await ctx.place(sleeveId, { pieceAnchor: 'center', at: mid, rotate: f.deg, scale: k, scaleX: thick / (sleeve.w * k), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer + 0.3, role: 'epaulet', key: 'epaulet:' + side,
@@ -2024,6 +2073,8 @@
     const cover = tabUnder ? [`${states.closed}-cover`, `${states.closed}-placket`] : null;
     collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? (tabUnder ? [states.closed] : [states.closed, 'tie']) : [states.open]) : 'collar-foreground',
       tabUnder ? ['tie'] : null, tabUnder ? { except: cover } : null);
+    // The strap's lower edge, whether the sleeve is slipped over it or the plain strap shows: the cord is worn underneath the epaulet and comes out from under that edge (9.3, 9.4.1).
+    { const bf = bandFrame(ctx, 'left', H.epauletFrame(ctx, 'left')); if(bf && bf.band) markBandEdge(ctx, 'left', bf, edgeStripThickness(ctx, 'left')); }
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
   }

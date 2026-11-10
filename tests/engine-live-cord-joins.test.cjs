@@ -271,6 +271,10 @@ test('the engine\'s ARM_SEAM table is the drawn armhole seam of the current cord
   }
 });
 
+// B4 (Ethan, 2026-11-10: "put them down like an extra 10 pixels"): every cord is drawn CORD_DROP lower than the run the sheet states (the braid moved down whole), so the run's bottom end is the
+// armpit and the notch moved down by that much, and the seam the braid follows is the drawn seam moved down by it.
+const CORD_DROP = Number(/const CORD_DROP = ([\d.]+);/.exec(fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8'))[1]);
+const dn = p => [p[0], p[1] + CORD_DROP];
 test('every cord kind on every garment and both sexes: one smooth run from the top of the shoulder to the armpit (9.3)', async () => {
   const armpits = MEASURE_ARMPIT.compute();
   let checked = 0;
@@ -303,8 +307,8 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - end[0], pieces[pieces.length - 1].b[1] - end[1]) < 1e-6 && Math.hypot(end[0] - bottom[0], end[1] - bottom[1]) < 1e-6, `${tag}: the pieces run from the top to the run's bottom, which is the braid's end`);
     // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
     const ring = outerRing(gid);
-    assert.ok(ringDist(top, ring) <= 0.1, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);
-    const ap = armpits[gid], notch = notchOf(gid);
+    assert.ok(ringDist(top, ring) <= 0.15, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);   // continued up its first segment to the height it had before the drop (B4)
+    const ap = dn(armpits[gid]), notch = dn(notchOf(gid));   // moved down with the cord (B4)
     // E120: on a sheet that draws its seam the run's bottom end is the drawn seam's own end, which reaches the armpit (the women's coat's ends 0.31 in out from
     // the apex of the gap); on the men's coat (no drawn seam) the landmark run is fitted to the armpit, which is the notch of the silhouette, measured
     // independently of the table.
@@ -322,13 +326,13 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     assert.ok(capToArmpit <= 0.1, `${tag}: the braid's end cap is ${capToArmpit.toFixed(3)} in from the armpit`);
     // The braid is drawn on the seam: its centre line is on the run to 0.04 in everywhere (the rounding of a bend), so it is never inboard of the seam by more than half its width,
     // and it never runs on past the armpit: no point of it lies below the end.
-    const runPts = cl.cordPath.exact ? cl.cordPath.seam : cl.cordPath.points, drawnLine = [];
+    const runPts = cl.cordPath.exact ? cl.cordPath.seam.map(dn) : cl.cordPath.points, drawnLine = [];
     for(const pc of pieces){ const seg = pc.type === 'Q' ? [[pc.a, pc.c], [pc.c, pc.b]] : [[pc.a, pc.b]]; for(const [a0, b0] of seg) for(let t = 0; t < 1; t += 0.1) drawnLine.push([a0[0] + (b0[0] - a0[0]) * t, a0[1] + (b0[1] - a0[1]) * t]); }
     drawnLine.push(end);
     const runDist = q => Math.min(...runPts.slice(1).map((r, i) => segDist(q, runPts[i], r)));
     let maxDev = 0;
     for(const q of drawnLine){
-      if(Math.hypot(q[0] - top[0], q[1] - top[1]) < 0.3) continue;       // the first segment is extended to the shoulder outline past the run's first vertex
+      if(Math.hypot(q[0] - top[0], q[1] - top[1]) < 0.3 + Math.hypot(top[0] - runPts[0][0], top[1] - runPts[0][1])) continue;       // the first segment is extended to the shoulder outline past the run's first vertex (and, after the drop, up to the height it had)
       maxDev = Math.max(maxDev, runDist(q));
       assert.ok(q[1] <= end[1] + 1e-6, `${tag}: the braid runs ${(q[1] - end[1]).toFixed(3)} in below its end`);
     }
