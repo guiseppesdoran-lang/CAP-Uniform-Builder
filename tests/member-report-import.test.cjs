@@ -673,3 +673,142 @@ test('a past Cadet Advisory Council term sets no shoulder cord; a current one do
   assert.equal(cord(past), null);
   assert.equal(cord(current), 'region');
 });
+
+// ---- The aviation badges (the owner's report: solo, aircrew and observer wings were not found) -------------------------------------
+// The wording of the aviation rows of a real eServices report is not in the fixtures. The names are CAPR 39-1 Figure A7-1's (PILOT,
+// SENIOR PILOT, COMMAND PILOT, MASTER OBSERVER, MASTER AIR CREW, GLIDER PILOT, BALLOON PILOT, SOLO BADGE, PRE-SOLO BADGE, the sUAS
+// pilots and technicians) and the word a member uses for them, "wings"; the importer reads each under Badge, Rating and Wings, with
+// the level before or after the name, so these rows are the shape it is built to read, not a copy of a report.
+const AVIATION_IDS = {
+  pilot: ['CAPPilot1_FA9D33EA587D8', 'CAPSeniorPilot1_D9725AE959752', 'CAPMasterPilot1_621A0E2ED15DA'],
+  observer: ['observer_badge', 'SeniorObserver1_0E35802A29801', 'MasterObserver1_1B88D5071FD5C'],
+  aircrew: ['AirCrew1_DB3F0FCC3650F', 'SeniorAirCrew1_B289BAE6E515C', 'MasterAirCrew1_72AC4CAE7A310'],
+  suasPilot: ['uas_pilot_basic_badge', 'uas_pilot_senior_badge', 'uas_pilot_master_badge'],
+  suasTech: ['uas_technician_basic_badge', 'uas_technician_senior_badge', 'uas_technician_master_badge']
+};
+const ALL_AVIATION = Object.values(AVIATION_IDS).flat().concat(['GliderPilot1_7BFB287379918', 'BalloonPilot1_442D89C94185B', 'solo_badge', 'pre_solo_badge']);
+let aviationParser = null;
+// parseCapMemberReport on a text, in one page for every call: the badge ids worn and offered, and the notes.
+function parseAviation(text){
+  if(!aviationParser){
+    const { context } = loadPageScripts();
+    aviationParser = t => JSON.parse(vm.runInContext('(t) => JSON.stringify((() => { const p = parseCapMemberReport(t); return { badges: p.badges, authorized: p.authorizedBadges, notes: p.notes }; })())', context)(t));
+  }
+  return aviationParser(text);
+}
+const seniorWith = (after, rows) => SENIOR.replace(after, after + '\n' + rows.join('\n'));
+const aviationIn = ids => ids.filter(id => ALL_AVIATION.includes(id));
+
+test('every CAP aviation badge is read from a row that names it, as a Badge, a Rating or Wings, at its level (Figure A7-1)', () => {
+  const rows = [
+    ['Pilot', AVIATION_IDS.pilot[0]], ['Senior Pilot', AVIATION_IDS.pilot[1]], ['Command Pilot', AVIATION_IDS.pilot[2]], ['Master Pilot', AVIATION_IDS.pilot[2]],
+    ['Observer', AVIATION_IDS.observer[0]], ['Senior Observer', AVIATION_IDS.observer[1]], ['Master Observer', AVIATION_IDS.observer[2]],
+    ['Air Crew', AVIATION_IDS.aircrew[0]], ['Aircrew', AVIATION_IDS.aircrew[0]], ['Senior Air Crew', AVIATION_IDS.aircrew[1]], ['Master Aircrew', AVIATION_IDS.aircrew[2]],
+    ['Glider Pilot', 'GliderPilot1_7BFB287379918'], ['Balloon Pilot', 'BalloonPilot1_442D89C94185B'], ['Solo', 'solo_badge'], ['Pre-Solo', 'pre_solo_badge'],
+    ['sUAS Pilot', AVIATION_IDS.suasPilot[0]], ['Senior sUAS Pilot', AVIATION_IDS.suasPilot[1]], ['Command sUAS Pilot', AVIATION_IDS.suasPilot[2]],
+    ['sUAS Technician', AVIATION_IDS.suasTech[0]], ['Senior sUAS Technician', AVIATION_IDS.suasTech[1]], ['Master sUAS Technician', AVIATION_IDS.suasTech[2]]
+  ];
+  const missed = [];
+  for(const [name, id] of rows){
+    for(const word of ['Badge', 'Rating', 'Wings']){
+      // "Pilot Rating" alone may be an FAA rating, so the CAP pilot's rating row says CAP (or a level).
+      const row = word === 'Rating' && name === 'Pilot' ? `CAP ${name} ${word}` : `${name} ${word}`;
+      for(const [heading, text] of [['Decorations', seniorWith('Decorations', [`${row} 01 Jun 2023`])],
+        ['Emergency Services Qualifications', seniorWith('Qualification Status Expiration', [`${row} 01 Jun 2023`])],
+        ['the last row before Local Activities', SENIOR.replace('Local Activities', `${row.toUpperCase()} 01 Jun 2023 Local Activities`)],
+        ['one line, as a PDF is read', seniorWith('Decorations', [`${row} 01 Jun 2023`]).replace(/\n/g, ' ')]]){
+        const got = parseAviation(text).authorized;
+        if(!got.includes(id)) missed.push(`${row} (${heading}): wanted ${id}, got ${aviationIn(got).join(', ') || 'no aviation badge'}`);
+        // The row names one badge: no other aviation badge comes with it (the senior fixture itself names none).
+        const extra = aviationIn(got).filter(g => g !== id);
+        if(extra.length) missed.push(`${row} (${heading}): also read ${extra.join(', ')}`);
+      }
+    }
+  }
+  assert.deepEqual(missed, []);
+});
+
+test('the level may follow the name, and a table of ratings prints the name, the level and a date', () => {
+  const read = row => aviationIn(parseAviation(seniorWith('Decorations', [row])).authorized);
+  assert.deepEqual(read('OBSERVER SENIOR 10 Jan 2019'), [AVIATION_IDS.observer[1]]);
+  assert.deepEqual(read('Observer Wings - Master 10 Jan 2019'), [AVIATION_IDS.observer[2]]);
+  assert.deepEqual(read('Air Crew (Senior) Badge 10 Jan 2019'), [AVIATION_IDS.aircrew[1]]);
+  assert.deepEqual(read('Air Crew Wings (Master) 10 Jan 2019'), [AVIATION_IDS.aircrew[2]]);
+  assert.deepEqual(read('SENIOR PILOT 10 Jan 2019'), [AVIATION_IDS.pilot[1]]);
+  assert.deepEqual(read('SOLO 10 Jan 2019'), ['solo_badge']);
+  assert.deepEqual(read('Cadet Solo Wings 10 Jan 2019'), ['solo_badge']);
+  assert.deepEqual(read('Solo Pilot Wings 10 Jan 2019'), ['solo_badge'], 'a solo pilot\'s wings are the Solo badge, not the CAP Pilot badge');
+  assert.deepEqual(read('Glider Wings 10 Jan 2019'), ['GliderPilot1_7BFB287379918']);
+});
+
+test('the highest level of a kind is the one offered, not each level named', () => {
+  const read = rows => aviationIn(parseAviation(seniorWith('Decorations', rows)).authorized);
+  assert.deepEqual(read(['Observer Badge 01 Jan 2018', 'Senior Observer Badge 01 Jan 2020', 'Master Observer Badge 01 Jan 2022']), [AVIATION_IDS.observer[2]]);
+  assert.deepEqual(read(['Air Crew Badge 01 Jan 2018', 'CAP Senior Air Crew Rating 01 Jan 2020']), [AVIATION_IDS.aircrew[1]]);
+  assert.deepEqual(read(['CAP Pilot Rating 01 Jan 2018', 'Command Pilot Wings 01 Jan 2022']), [AVIATION_IDS.pilot[2]]);
+  assert.deepEqual(read(['sUAS Pilot Badge 01 Jan 2023', 'Senior sUAS Technician Badge 01 Jan 2024']), [AVIATION_IDS.suasPilot[0], AVIATION_IDS.suasTech[1]]);
+});
+
+test('a row that is not the rating is not read: another pilot, an FAA rating, an exam, a course, an award, a qualification, a ceremony, the Local Activities', () => {
+  const no = [
+    'Cadet Orientation Pilot Ribbon 01 Jun 2023', 'Air Search and Rescue Ribbon (Aircrew) 10 Oct 2020', 'Search Find Ribbon Aircrew 12 Dec 2021',
+    'Lt Col T. Keith Riddle Aircrew Member of the Year Award 01 Jan 2024', 'Instructor Pilot Rating 01 Jan 2020', 'Check Pilot Badge 01 Jan 2020',
+    'Mission Pilot Rating 01 Jan 2020', 'Orientation Pilot Wings 01 Jan 2020', 'Private Pilot Rating 01 Jan 2020', 'Pilot Rating 01 Jan 2020',
+    'Observer Rating Exam 01 Jan 2020', 'Technician Rating Exam: Aircrew 01 Jan 2020', 'Aircrew Training Course 01 Jan 2020', 'Observer Training 01 Jan 2020',
+    'Mission Observer 01 Jan 2020', 'Pilot Wings Ceremony 01 Jan 2020', 'Solo Flight 01 Jan 2020', 'Glider 01 Jan 2020', 'Illinois Wing Encampment 20 Jul 2020',
+    'sUAS Pre-Solo Badge 01 Jan 2024'
+  ];
+  for(const row of no) assert.deepEqual(aviationIn(parseAviation(seniorWith('Decorations', [row])).authorized), [], row);
+  // A row in Local Activities, the last section, never earns a badge.
+  assert.deepEqual(aviationIn(parseAviation(SENIOR.replace('Gill Robb Wilson Award Ceremony 01 May 2025', 'Observer Wings 01 May 2025')).authorized), []);
+  // A sUAS or glider pilot is not the CAP pilot, and a sUAS "Pre-Solo" is not the CAP Pre-Solo badge.
+  assert.deepEqual(aviationIn(parseAviation(seniorWith('Decorations', ['sUAS Pilot Wings 01 Jan 2024', 'Glider Pilot Badge 01 Jan 2024'])).authorized).sort(), [AVIATION_IDS.suasPilot[0], 'GliderPilot1_7BFB287379918'].sort());
+});
+
+test('solo, aircrew and observer wings in one cadet report: all three are offered, one is worn, and the import says so', () => {
+  const rows = ['Solo Wings 01 Jun 2023', 'Air Crew Wings 01 Jan 2025', 'Observer Wings 01 Jan 2025'];
+  const r = runImport(cadetWith('Decorations', rows));
+  for(const id of ['solo_badge', AVIATION_IDS.aircrew[0], AVIATION_IDS.observer[0]]) assert.ok(r.parsed.authorizedBadges.includes(id), `${id} is offered under Authorized by member report`);
+  assert.equal(aviationIn(r.parsed.badges).length, 1, 'one CAP aviation badge is worn (CAPR 39-1, 4.1.5.2.2.4.1)');
+  assert.equal(aviationIn(r.badges).length, 1, 'and it is the one the setup holds');
+  const note = r.parsed.notes.find(n => /^The report names these aviation badges/.test(n));
+  assert.ok(note, 'the import names the badges it found and why one is worn');
+  for(const name of ['Solo Badge', 'Air Crew Badge', 'Observer Badge']) assert.ok(note.includes(name), name);
+  assert.match(note, /\(CAPR 39-1, 4\.1\.5\.2\.2\.4\.1\)/);
+  // A single aviation badge needs no such note.
+  assert.ok(!runImport(cadetWith('Decorations', ['Solo Wings 01 Jun 2023'])).parsed.notes.some(n => /^The report names these aviation badges/.test(n)));
+});
+
+test('a badge the membership may not wear is named, not dropped silently; a cadet may wear the observer and the three aircrew badges', () => {
+  const cadet = parseAviation(cadetWith('Decorations', ['Master Observer Wings 01 Jun 2023', 'Senior Observer Badge 01 Jun 2022', 'Master Air Crew Badge 01 Jun 2023', 'Glider Pilot Wings 01 Jun 2023']));
+  assert.ok(cadet.authorized.includes(AVIATION_IDS.aircrew[2]), 'the master aircrew badge is a cadet badge');
+  assert.ok(cadet.authorized.includes(AVIATION_IDS.observer[2]) === false, 'the master observer badge is not');
+  assert.ok(cadet.notes.some(n => /^Master Observer Badge is in the report, but the builder does not authorize that badge for cadet members, so it is not offered\.$/.test(n)));
+  assert.ok(cadet.notes.some(n => /^Glider Pilot Badge is in the report, but the builder does not authorize that badge for cadet members/.test(n)));
+});
+
+test('an aircrew qualification is no badge, and the import says what it did with it (a qualification in training is not mentioned)', () => {
+  const held = parseAviation(SENIOR);
+  assert.deepEqual(aviationIn(held.authorized), [], 'Mission Scanner (MS) QUALIFIED earns no badge on its own');
+  assert.ok(held.notes.some(n => /^Aircrew qualification found \(Mission Scanner\), but the report names no aviation badge or rating, and a badge is worn only when it has been awarded \(CAPR 39-1, 10\.3\.1\): none was imported\./.test(n)));
+  const more = parseAviation(seniorWith('Qualification Status Expiration', ['Mission Observer (MO) QUALIFIED 01 Jan 2027', 'Airborne Photographer (AP) QUALIFIED 01 Jan 2027']));
+  assert.ok(more.notes.some(n => /found \(Mission Observer, Mission Scanner, Airborne Photographer\)/.test(n)));
+  assert.deepEqual(aviationIn(more.authorized), []);
+  const training = parseAviation(SENIOR.replace('Mission Scanner (MS) QUALIFIED 01 Jan 2027', 'Mission Observer (MO) TRAINING 01 Jan 2027'));
+  assert.ok(!training.notes.some(n => /^Aircrew qualification found/.test(n)));
+  // The member holds the badge: the qualification needs no note.
+  const rated = parseAviation(seniorWith('Qualification Status Expiration', ['Observer Wings 01 Jun 2023']));
+  assert.deepEqual(aviationIn(rated.authorized), [AVIATION_IDS.observer[0]]);
+  assert.ok(!rated.notes.some(n => /^Aircrew qualification found/.test(n)));
+});
+
+test('the aviation badges the import wears: the setup keeps one, the picker offers the rest, nothing else changes in the fixtures', () => {
+  // The three fixtures name no aviation badge: the import adds none.
+  for(const text of [FIXTURE, SENIOR, fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-cadet-live12.txt'), 'utf8')]){
+    assert.deepEqual(aviationIn(parseAviation(text).authorized), []);
+  }
+  // A senior with a pilot, an observer and an aircrew badge: all offered, the pilot worn.
+  const s = runImport(seniorWith('Decorations', ['Senior Pilot Wings 01 Jan 2020', 'Master Observer Wings 01 Jan 2021', 'Senior Air Crew Wings 01 Jan 2019']));
+  assert.deepEqual(aviationIn(s.parsed.authorizedBadges), [AVIATION_IDS.pilot[1], AVIATION_IDS.aircrew[1], AVIATION_IDS.observer[2]]);
+  assert.deepEqual(aviationIn(s.badges), [AVIATION_IDS.pilot[1]]);
+});

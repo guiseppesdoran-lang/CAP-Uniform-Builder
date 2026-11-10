@@ -56,8 +56,14 @@ test('all three badge tile builders use the plain-language line',()=>{
 test('the top pilot badge is named Command Pilot, and a member report may say Command or Master',()=>{
   const names=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
   assert.match(names,/CAPMasterPilot1_621A0E2ED15DA: 'Command Pilot Badge'/);
-  const importer=fs.readFileSync(path.join(__dirname,'..','js','member-report-import.js'),'utf8');
-  assert.match(importer,/\(\?:Master\|Command\)\\s\+Pilot\\s\+Badge/);
+  // The importer is run, not read: a Command or a Master Pilot Badge row is the top pilot badge.
+  const vm=require('node:vm');
+  const {loadPageScripts}=require('./helpers/page-scripts.cjs');
+  const {context}=loadPageScripts();
+  for(const row of ['Command Pilot Badge 01 Jan 2020','Master Pilot Badge 01 Jan 2020']){
+    const parsed=JSON.parse(vm.runInContext('(t)=>JSON.stringify(parseCapMemberReport(t).authorizedBadges)',context)('Printer Friendly View - Member Details General Information 654321 WILSON, DAVID MALE SENIOR Maj 01 Mar 2024 15 Jan 2016 Decorations '+row));
+    assert.ok(parsed.includes('CAPMasterPilot1_621A0E2ED15DA'),row);
+  }
   assert.match(names,/cdi_senior_badge: 'Character Development Instructor Senior Badge'/);
 });
 

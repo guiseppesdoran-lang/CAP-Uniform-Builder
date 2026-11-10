@@ -1275,6 +1275,87 @@ function labelCurrentDutyPositionsHeading(text){
     });
 }
 
+// The CAP aviation badges (CAPR 39-1 Figure A7-1) and the words a report row names them by. A row names the kind of badge
+// (Pilot, Observer, Air Crew, Glider Pilot, Balloon Pilot, sUAS Pilot, sUAS Technician, Solo, Pre-Solo), may name its level
+// (Senior; Master, which the pilot's top badge calls Command) and says what it is: Badge, Rating or Wings ("Master Observer
+// Badge", "CAP Senior Air Crew Rating", "Observer Wings"). A table of ratings prints the kind, the level and a date
+// ("OBSERVER SENIOR 10 Jan 2019"), which is read too; a `plain` kind is read with no level at all ("Solo 01 Jun 2023").
+// ids run basic, senior, master.
+//   not        the word that, just before the kind, makes the row another badge or no badge: a sUAS, glider or balloon pilot, a
+//              mission, check, instructor or orientation pilot, an FAA certificate; a Pre-Solo is not a Solo.
+//   capRating  a bare "Pilot Rating" may be an FAA one, so it is the CAP pilot's only with "CAP" or a level before it.
+//   datedWord  a table row must spell the kind in full ("Glider Pilot 01 Jan 2020", not "Glider 01 Jan 2020").
+// A qualification (Mission Scanner, Mission Observer, Airborne Photographer) is not a badge and is not read here.
+const IMPORTED_AVIATION_BADGES = [
+  { word:'Pilot', ids:['CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA'], capRating:true,
+    not:/^(?:s?uas|glider|balloon|mission|instructor|check|orientation|transport|solo|private|commercial|student|recreational|sport|airline|remote)$/ },
+  { word:'Glider(?:\\s+Pilot)?', ids:['GliderPilot1_7BFB287379918'], plain:true, datedWord:/Pilot/i },
+  { word:'Balloon(?:\\s+Pilot)?', ids:['BalloonPilot1_442D89C94185B'], plain:true, datedWord:/Pilot/i },
+  { word:'Solo(?:\\s+Pilot)?', ids:['solo_badge'], plain:true, not:/^(?:pre|s?uas)$/ },
+  { word:'Pre[\\s-]*Solo', ids:['pre_solo_badge'], plain:true, not:/^s?uas$/ },
+  { word:'Air[\\s-]?crew', ids:['AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310'], plain:true },
+  { word:'s?UAS\\s+Pilot', ids:['uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge'], plain:true },
+  { word:'s?UAS\\s+Technician', ids:['uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'], plain:true },
+  { word:'(?:Mission\\s+)?Observer', ids:['observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C'], plain:true }
+];
+const IMPORTED_AVIATION_LEVEL_WORDS = { basic:0, senior:1, master:2, command:2 };
+
+// The words of the row before `index`, nearest first, back to the previous row's date (or 60 characters), and the row's text.
+function importedWordsBefore(source, index){
+  const head = source.slice(Math.max(0, index - 60), index);
+  const lastDate = [...head.matchAll(/\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/g)].pop();
+  const row = lastDate ? head.slice(lastDate.index + lastDate[0].length) : head;
+  return { row, words:row.split(/[\s(]+/).map(w => w.replace(/[^A-Za-z]/g, '').toLowerCase()).filter(Boolean).reverse() };
+}
+
+// The aviation badge ids a report names, the highest level of each kind (CAPR 39-1 10.3.1: awarded under CAPR 35-6, so
+// a badge or rating row is the only evidence read; an Exam, Course or Training row is not the rating).
+function importedAviationBadgesFromReport(text){
+  const source = String(text || '');
+  const dateAhead = /^\s*\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/;
+  const out = [];
+  for(const kind of IMPORTED_AVIATION_BADGES){
+    let best = -1;
+    const re = new RegExp(`(?<![A-Za-z])(${kind.word})(?![A-Za-z])`, 'gi');
+    let m;
+    while((m = re.exec(source))){
+      const before = importedWordsBefore(source, m.index);
+      // The level and "CAP" just before the kind ("CAP Senior Pilot"); the first other word names another badge or none.
+      let level = -1, cap = false, i = 0;
+      for(; i < before.words.length; i++){
+        const w = before.words[i];
+        if(w in IMPORTED_AVIATION_LEVEL_WORDS) level = Math.max(level, IMPORTED_AVIATION_LEVEL_WORDS[w]);
+        else if(w === 'cap') cap = true;
+        else if(w !== 'cadet') break;
+      }
+      if(kind.not && kind.not.test(before.words[i] || '')) continue;
+      let rest = source.slice(m.index + m[0].length);
+      // A level between the kind and the word that says what it is ("Observer Senior Wings", "Observer (Senior) Badge").
+      const middle = /^\s*[-–:,(]?\s*(Basic|Senior|Master|Command)\b\)?/i.exec(rest);
+      if(middle){ level = Math.max(level, IMPORTED_AVIATION_LEVEL_WORDS[middle[1].toLowerCase()]); rest = rest.slice(middle[0].length); }
+      const named = /^\s*(Badge|Rating|Wings)\b(?!\s+(?:Exam|Test|Course|Class|Training|Trainee|Ceremony|Presentation))/i.exec(rest);
+      if(named){
+        if(kind.capRating && /^rating$/i.test(named[1]) && !cap && level < 0) continue;
+        const after = /^\s*[-–:(]\s*(Basic|Senior|Master|Command)\b/i.exec(rest.slice(named[0].length));
+        if(after) level = Math.max(level, IMPORTED_AVIATION_LEVEL_WORDS[after[1].toLowerCase()]);
+      }else if(dateAhead.test(rest)){
+        // A table row of the rating and its date: not a qualification ("Mission Observer"), not an award's, exam's or course's row ("... Ribbon Aircrew").
+        if(/^mission/i.test(m[1]) || (kind.datedWord && !kind.datedWord.test(m[1])) || /\b(?:Ribbon|Medal|Award|Exam|Test|Course|Training)\b/i.test(before.row)) continue;
+        if(level < 0 && !kind.plain) continue;
+      }else continue;
+      best = Math.max(best, level < 0 ? 0 : level);
+    }
+    if(best >= 0) out.push(kind.ids[Math.min(best, kind.ids.length - 1)]);
+  }
+  return out;
+}
+
+// The aircrew qualifications a report lists as held (not in training). A qualification is not an aviation badge.
+const IMPORTED_AIRCREW_QUALIFICATIONS = [
+  ['Mission Pilot', '\\bMission\\s+Pilot\\b'], ['Mission Observer', '\\bMission\\s+Observer\\b'],
+  ['Mission Scanner', '\\bMission\\s+Scanner\\b'], ['Airborne Photographer', '\\b(?:Airborne|Aerial)\\s+Photographer\\b']
+];
+
 function parseCapMemberReport(textRaw){
   const text = labelCurrentDutyPositionsHeading(normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw)));
   const result = {
@@ -1627,38 +1708,11 @@ function parseCapMemberReport(textRaw){
   if(/\bNational\s+Executive\s+Committee\s+Badge\b|\bNEC\s+Badge\b/i.test(text)) result.badges.push('national_executive_committee_badge');
   if(/\b(?:CAP\s+)?National\s+Command\s+Board\s+Badge\b/i.test(text)) result.badges.push('cap_national_command_board_badge');
 
-  // CAPR 39-1 Attachment 7 calls the top pilot rating Command Pilot; older text says Master.
-  if(/CAP\s+(?:Master|Command)\s+Pilot\s+Rating|(?:Master|Command)\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPMasterPilot1_621A0E2ED15DA');
-  else if(/CAP\s+Senior\s+Pilot\s+Rating|Senior\s+Pilot\s+Badge/i.test(text)) result.badges.push('CAPSeniorPilot1_D9725AE959752');
-  // A bare "Pilot Badge" is the CAP pilot's only when no other kind of pilot is named before it: "sUAS Pilot Badge",
-  // "Glider Pilot Badge" and "Balloon Pilot Badge" used to import the CAP Pilot Badge as well.
-  else if(/CAP\s+Pilot\s+Rating|Basic\s+Pilot\s+Badge/i.test(text) ||
-    countMemberReportAwardRows(text, /\bPilot\s+(?:Badge|Wings)\b/i, /(?:s?UAS|Glider|Balloon|Mission|Instructor|Check|Orientation|Senior|Master|Command)\s+$/i)) result.badges.push('CAPPilot1_FA9D33EA587D8');
-  if(/\bGlider\s+Pilot\s+(?:Rating|Badge)\b/i.test(text)) result.badges.push('GliderPilot1_7BFB287379918');
-  if(/\bBalloon\s+Pilot\s+(?:Rating|Badge)\b/i.test(text)) result.badges.push('BalloonPilot1_442D89C94185B');
-  if(countMemberReportAwardRows(text, /\bSolo\s+(?:Badge|Wings)\b/i, /Pre[\s-]*$/i)) result.badges.push('solo_badge');
-  if(/\bPre[\s-]*Solo\s+(?:Badge|Wings)\b/i.test(text)) result.badges.push('pre_solo_badge');
-
-  // The catalog's own name is "Air Crew Badge", two words.
-  if(/CAP\s+Master\s+Air\s*crew\s+Rating|Master\s+Air\s*crew\s+Badge/i.test(text)) result.badges.push('MasterAirCrew1_72AC4CAE7A310');
-  else if(/CAP\s+Senior\s+Air\s*crew\s+Rating|Senior\s+Air\s*crew\s+Badge/i.test(text)) result.badges.push('SeniorAirCrew1_B289BAE6E515C');
-  else if(/CAP\s+Air\s*crew\s+Rating|Air\s*crew\s+Badge/i.test(text)) result.badges.push('AirCrew1_DB3F0FCC3650F');
-
-  if(/CAP\s+(?:Command|Master)\s+sUAS\s+Pilot\s+(?:Rating|Badge)|(?:Command|Master)\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_master_badge');
-  else if(/CAP\s+Senior\s+sUAS\s+Pilot\s+(?:Rating|Badge)|Senior\s+sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_senior_badge');
-  else if(/CAP\s+sUAS\s+Pilot\s+(?:Rating|Badge)|sUAS\s+Pilot\s+Badge/i.test(text)) result.badges.push('uas_pilot_basic_badge');
-  if(/CAP\s+Master\s+sUAS\s+Technician\s+(?:Rating|Badge)|Master\s+sUAS\s+Technician\s+Badge/i.test(text)) result.badges.push('uas_technician_master_badge');
-  else if(/CAP\s+Senior\s+sUAS\s+Technician\s+(?:Rating|Badge)|Senior\s+sUAS\s+Technician\s+Badge/i.test(text)) result.badges.push('uas_technician_senior_badge');
-  else if(/CAP\s+sUAS\s+Technician\s+(?:Rating|Badge)|sUAS\s+Technician\s+Badge/i.test(text)) result.badges.push('uas_technician_basic_badge');
-  // Do not use MO/Mission Observer training qualification as badge authorization.
-  // Only import Observer when the report explicitly shows an observer rating/badge.
-  if(/CAP\s+Master\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Master\s+Observer\s+Badge/i.test(text)){
-    result.badges.push('MasterObserver1_1B88D5071FD5C');
-  }else if(/CAP\s+Senior\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Senior\s+Observer\s+Badge/i.test(text)){
-    result.badges.push('SeniorObserver1_0E35802A29801');
-  }else if(/CAP\s+(?:Mission\s+)?Observer\s+(?:Rating|Badge)|Observer\s+Badge/i.test(text)){
-    result.badges.push('observer_badge');
-  }
+  // The aviation badges by the words a row names them in (importedAviationBadgesFromReport). CAPR 39-1 Attachment 7 calls the
+  // top pilot rating Command Pilot; older text says Master. A mission qualification (Mission Observer, Mission Scanner) is not
+  // badge authorization: only a badge or rating row is read, and the qualification gets a note below.
+  const aviationBadges = importedAviationBadgesFromReport(text);
+  result.badges.push(...aviationBadges);
   // The badge by name, or the qualification by its code or its name when the row does not say TRAINING (an IC3
   // trainee used to import the Incident Commander badge).
   if(/Master Incident Commander Badge|Incident Commander 1 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC1|Incident\\s+Commander\\s+(?:Level\\s+)?1)\\b(?!\\s+Badge)')) result.badges.push('incident_commander_1_badge');
@@ -1694,6 +1748,23 @@ function parseCapMemberReport(textRaw){
   // reducing the automatically worn set to the highest four selections.
   result.authorizedBadges = [...new Set(result.badges)]
     .filter(id => isBadgeEligibleForMembership(id, result.membership));
+
+  // The aviation badges the member does not see on the uniform without being told why: one CAP aviation badge is worn
+  // (CAPR 39-1, 4.1.5.2.2.4.1), a badge the membership may not wear is not offered, and an aircrew qualification is no badge.
+  const nameList = ids => ids.map(id => getBadgeDisplayName(id)).join(', ').replace(/, ([^,]*)$/, ' and $1');
+  const heldAviation = aviationBadges.filter(id => result.authorizedBadges.includes(id));
+  for(const id of aviationBadges.filter(id => !heldAviation.includes(id))){
+    result.notes.push(`${getBadgeDisplayName(id)} is in the report, but the builder does not authorize that badge for ${result.membership || 'this'} members, so it is not offered.`);
+  }
+  if(heldAviation.length > 1){
+    result.notes.push(`The report names these aviation badges: ${nameList(heldAviation)}. One CAP aviation badge is worn at a time (CAPR 39-1, 4.1.5.2.2.4.1); the others are listed under Authorized by member report in the badge list.`);
+  }
+  if(!aviationBadges.length){
+    const held = IMPORTED_AIRCREW_QUALIFICATIONS.filter(([, label]) => hasNonTrainingQualification(text, label)).map(([name]) => name);
+    if(held.length){
+      result.notes.push(`Aircrew qualification found (${held.join(', ')}), but the report names no aviation badge or rating, and a badge is worn only when it has been awarded (CAPR 39-1, 10.3.1): none was imported. If you hold one, choose it in the badge list.`);
+    }
+  }
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
   result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
   result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership, text);
