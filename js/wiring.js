@@ -505,7 +505,8 @@ function openGalleryModal(kind){
       appendCategorizedBadges(modalHost, eligibleIds);
     }
 
-    // U.S. military badges are not worn on Corporate-style uniforms (CAPR 39-1 4.2.5.1.3).
+    // U.S. military badges are offered on the uniforms that wear U.S. military awards (data/uniform-rules.js usafAwards; the aviator shirt and the
+    // Corporate Semi-Formal among the Corporate-style ones, ICL 25-02).
     const militaryBadges=isMilitaryAwardWornOnUniform() ? getAllSelectableMilitaryBadges() : [];
     if(militaryBadges.length){
       const militaryRoot=document.createElement('details');
