@@ -6,8 +6,10 @@
 //   - the strip is the sleeve art (gray, or blue for cadet officers) squeezed across the strap to its thickness, along the strap's own axis;
 //   - its outer end is flush with the strap's outer end, its upper edge lies on the shoulder line (the strap's upper boundary) on average;
 //   - its thickness is the sheet's epaulet_axis.edge_thickness_in when the sheet states it (per side or for both; the art-round-10 sheets state 0.46 in on all ten), else 0.5 in, the Class A boards' strip;
-//   - it lies on the sheet's own strap band (the epaulet_<side> polygon, the 0.46 in edge-on band with its point and button at the collar end): its four corners are within 0.02 in of
-//     that polygon's outline, its outer end on the band's outer end and its inner end across the band short of the point and the button;
+//   - it lies on the sheet's own strap band (the epaulet_<side> polygon, the 0.46 in edge-on band with its point and button at the collar end), and covers it (B6, Ethan, 2026-11-10: "epaulets arent
+//     over the entire thing (theres a little bit of white on the top."): where the sheet states its sleeve overlay's strap polygon (`epaulet_sleeve_poly_<side>`: the strap cut short of its point and its
+//     button, its upper edge the shoulder line itself) the strip is cut to that polygon, so no strap shows along its top edge (where the shoulder bends), its lower edge, its outer end or between the
+//     strip and the button; a sheet without one (the overblouse) keeps the straight strip on the band's axis, its outer end on the band's outer end;
 //   - the grade is foreshortened along the strip as the Class A strip's is (squeezed across it to the thickness less 0.08 in, true size along it), 5/8 in from the outer end;
 //   - the CAP lettering of the sleeve is on the strip at its collar end (the art's cap group is not hidden, its place is the art's cap_center on the squeezed strip);
 //   - the strip covers neither the strap's point nor its button; the top view beside the figure is the sleeve at its true size, level, as before.
@@ -32,6 +34,8 @@ const svgOf = id => fs.readFileSync(path.join(ROOT, 'images', manifest.assets.fi
 // A store whose garment sheets state epaulet_axis.edge_thickness_in, the way the redrawn sheets do: `form` 'both' puts it on the landmark itself, 'side' on each side's entry.
 const storeStating = (thick, form) => core.createSpecStore(manifest, p => {
   const raw = loadRaw(p);
+  // The sleeve overlays' strap polygons are the cover the strip is cut to; a faked thickness is tested on the straight strip, so the overlays state none here.
+  if(/-epaulet-sleeve-/.test(p) && raw.landmarks) raw.landmarks = Object.fromEntries(Object.entries(raw.landmarks).filter(([k]) => !/^epaulet_sleeve_poly_/.test(k)));
   if(raw.landmarks && raw.landmarks.epaulet_right && !/-(epaulet|cord|tie|collar|nametag|sleeve|general)/.test(p)){
     const ax = Object.assign({}, raw.landmarks.epaulet_axis || {});
     if(form === 'both'){ ax.edge_thickness_in = thick; for(const side of ['right', 'left']) if(ax[side]){ ax[side] = Object.assign({}, ax[side]); delete ax[side].edge_thickness_in; } }
@@ -86,6 +90,8 @@ async function checkStrip(scene, sheet, side, tag, rank, cloth, thickWanted, st)
   if(thickWanted != null) assert.equal(thick, thickWanted, `${tag}: the sheet states ${stated}`);
   const strip = scene.layers.find(l => l.key === `epaulet:${side}`);
   assert.ok(strip && strip.type === 'asset', `${tag}: the edge-on strip is drawn`);
+  const covered = !!strip.clip;   // cut to the sheet's sleeve overlay strap polygon (B6)
+  if(thickWanted == null && !(sheet.landmarks.epaulet_right.points.length > 8)) assert.ok(covered, `${tag}: the strip is cut to the strap polygon, so the strap shows along no edge`);
   assert.ok(!scene.layers.some(l => /-epaulet-sleeve-(officer|cadet-officer)$/.test(l.id || '')), `${tag}: the sheet's own strip overlay is unused`);
   assert.ok(!scene.layers.some(l => l.key === `epaulet:${side}` && l.type === 'polygon'), `${tag}: no face-on polygon over the strap`);
   const sleeve = await st.load(strip.id);
@@ -108,12 +114,31 @@ async function checkStrip(scene, sheet, side, tag, rank, cloth, thickWanted, st)
   const box = corners(strip);
   const a = along, ends = box.map(a), lo = Math.min(...ends), hi = Math.max(...ends);
   const cs = box.map(across), thk = strip.w, len = strip.h;   // the layer's own size: the squeezed art (a curved band's strip is tilted to the band's own line, off the chord frame by a degree or two)
-  assert.ok(Math.abs(thk - thick) < 0.02, `${tag}: the strip is ${thk.toFixed(3)} in thick (want ${thick})`);
+  // Cut to the strap polygon the strip is as thick as the strap at its widest, where the shoulder line bends: the band's 0.46 in and the wedge the bend adds (0.08 in at most on the shirts).
+  if(covered) assert.ok(thk >= thick - 0.02 && thk <= thick + 0.12, `${tag}: the strip is ${thk.toFixed(3)} in thick (the band's ${thick} in and the bend's wedge)`);
+  else assert.ok(Math.abs(thk - thick) < 0.02, `${tag}: the strip is ${thk.toFixed(3)} in thick (want ${thick})`);
   assert.ok(Math.abs((hi - lo) - strip.h) < (curved ? 0.15 : 0.02), `${tag}: the strip runs along the strap axis (${(hi - lo).toFixed(3)} against its length ${strip.h.toFixed(3)})`);
-  // The sleeve's own length (3.84 in) over at most 82% of the strap's length.
-  assert.ok(Math.abs(len - Math.min(sleeve.h, fr.length * 0.82)) < 0.02, `${tag}: the strip is the sleeve's length, ${len.toFixed(3)} in, within 82% of the strap`);
-  // Outer end flush with the strap's outer end.
-  assert.ok(Math.abs(lo) < 0.02, `${tag}: the strip's outer end is ${lo.toFixed(3)} in from the strap's outer end (flush)`);
+  if(covered){
+    // The strip runs the length of the sleeve overlay's strap polygon, from the strap's outer end to the button's end, never less than the sleeve's own length, and never past the strap's point.
+    const cl = strip.clip.map(along);
+    assert.ok(Math.abs(len - (Math.max(...cl) - Math.min(...cl))) < 0.02, `${tag}: the strip is ${len.toFixed(3)} in long, the length of the strap it covers`);
+    assert.ok(len >= Math.min(sleeve.h, fr.length * 0.82) - 0.02, `${tag}: the strip is no shorter than before (${len.toFixed(3)} in)`);
+    // Everything of the sheet's strap band (its straight polygon) before the strip's collar end lies under the strip: the strap shows nowhere along its edges.
+    const clipEnd = Math.max(...cl), probes = [];
+    for(let i = 0; i <= 60; i++) for(let j = 0; j <= 12; j++){
+      const t = i / 60, w = j / 12, o = fr.outer;
+      const pt = { x: o.x + fr.axis.x * t * (fr.length - 0.6) + fr.normal.x * (w - 0.5) * (thick - 0.02), y: o.y + fr.axis.y * t * (fr.length - 0.6) + fr.normal.y * (w - 0.5) * (thick - 0.02) };
+      if(along(pt) <= clipEnd - 0.02 && along(pt) >= 0.05 && inside(strap, pt)) probes.push(pt);
+    }
+    assert.ok(probes.length > 100, `${tag}: probes on the strap`);
+    const bare = probes.filter(q => !inside(strip.clip, q) && outlineDist(strip.clip, q) > 0.01);
+    assert.equal(bare.length, 0, `${tag}: ${bare.length} of ${probes.length} points of the strap under the strip's length are not covered, e.g. (${bare[0] && bare[0].x.toFixed(2)}, ${bare[0] && bare[0].y.toFixed(2)})`);
+  }else{
+    // The sleeve's own length (3.84 in) over at most 82% of the strap's length.
+    assert.ok(Math.abs(len - Math.min(sleeve.h, fr.length * 0.82)) < 0.02, `${tag}: the strip is the sleeve's length, ${len.toFixed(3)} in, within 82% of the strap`);
+  }
+  // Outer end flush with the strap's outer end (cut to the strap polygon the strip's rectangle reaches the outer corner of the slanted end, a few hundredths past the axis).
+  assert.ok(Math.abs(lo) < (covered ? 0.1 : 0.02), `${tag}: the strip's outer end is ${lo.toFixed(3)} in from the strap's outer end (flush)`);
   // Upper edge on the shoulder line: the strap's top boundary at the strip's x, on average.
   const upperA = box.filter(q => across(q) > Math.min(...cs) + thick / 2);
   assert.equal(upperA.length, 2, `${tag}: two upper corners`);
@@ -127,15 +152,17 @@ async function checkStrip(scene, sheet, side, tag, rank, cloth, thickWanted, st)
     sum += top - y; n++;
   }
   assert.ok(n > 5, `${tag}: the strip overlaps the strap's top boundary`);
-  assert.ok(Math.abs(sum / n) < (thickWanted == null && curved ? 0.15 : thickWanted == null ? 0.03 : curved ? 0.25 : 0.12), `${tag}: the strip's upper edge lies ${(sum / n).toFixed(3)} in above the shoulder line on average (on it)`);
+  assert.ok(Math.abs(sum / n) < (covered ? 0.12 : thickWanted == null && curved ? 0.15 : thickWanted == null ? 0.03 : curved ? 0.25 : 0.12), `${tag}: the strip's upper edge lies ${(sum / n).toFixed(3)} in above the shoulder line on average (on it)`);
 
   // On the sheet's own band (not on a faked sheet whose stated thickness differs from the band it still draws): the strip's corners are on the epaulet_<side> polygon's outline (outer corners at its outer end, inner corners on its long edges), within 0.02 in.
   // The inner corners (on the band's long edges) within 0.02 in; the outer corners within 0.04 in (the sheet cuts the band's outer end 6.7 degrees off square, the sleeve's end is square); the
   // overblouse's band follows the curved shoulder, which a straight strip meets within 0.15 in.
   const tolIn = curved ? 0.15 : 0.02, tolOut = curved ? 0.15 : 0.04;
-  if(thickWanted == null) for(const q of box) assert.ok(outlineDist(strap, q) <= (along(q) < (lo + hi) / 2 ? tolOut : tolIn), `${tag}: the strip's corner (${q.x.toFixed(2)}, ${q.y.toFixed(2)}) is ${outlineDist(strap, q).toFixed(3)} in from the sheet's band`);
+  if(thickWanted == null && !covered) for(const q of box) assert.ok(outlineDist(strap, q) <= (along(q) < (lo + hi) / 2 ? tolOut : tolIn), `${tag}: the strip's corner (${q.x.toFixed(2)}, ${q.y.toFixed(2)}) is ${outlineDist(strap, q).toFixed(3)} in from the sheet's band`);
+  // Cut to the strap polygon, the visible shape's corners lie on the sheet's band: the shoulder line's knee is the one vertex off the straight band (0.1 in at most).
+  if(covered) for(const q of strip.clip) assert.ok(outlineDist(strap, q) <= 0.1, `${tag}: the strap polygon's corner (${q.x.toFixed(2)}, ${q.y.toFixed(2)}) is ${outlineDist(strap, q).toFixed(3)} in from the sheet's band`);
   // Over the strip's length the band shows neither above nor below it: the band's width across the axis at each point along the strip is the strip's (within 0.02 in).
-  if(thickWanted == null){
+  if(thickWanted == null && !covered){
     // Along the strip's own centre line (its layer's turn: the art's collar end up, turned), at eleven stations: how far the sheet's band reaches either side of that line.
     const r = (strip.rotate || 0) * Math.PI / 180, dirS = { x: Math.sin(r), y: -Math.cos(r) }, nrmS = { x: Math.cos(r), y: Math.sin(r) };
     for(let i = 0; i <= 10; i++){

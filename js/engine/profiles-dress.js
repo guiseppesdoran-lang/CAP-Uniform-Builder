@@ -1060,6 +1060,38 @@
     const v = ax && ((ax[side] && ax[side].edge_thickness_in) != null ? ax[side].edge_thickness_in : ax.edge_thickness_in);
     return Number.isFinite(v) && v > 0 ? v : EDGE_STRIP_THICK;
   }
+  // B6 (Ethan, 2026-11-10, on the aviator shirt: "epaulets arent over the entire thing (theres a little bit of white on the top."): the slide-on sleeve covers the whole strap. The
+  // strap the sheet draws is the band of its own sleeve overlay (`epaulet_sleeve_poly_<side>` of `<sheet>-epaulet-sleeve-officer`, the strap cut square short of its point and its
+  // button): its lower edge a straight line, its outer end on the armhole seam, and its upper edge the shoulder line itself, the silhouette's own vertices with the knee where the
+  // shoulder bends, which the straight strip of 0.46 in left a wedge of white strap above (up to 0.08 in at the knee, wider toward the neck). The strip is cut to that polygon, so it
+  // covers the strap to the shoulder line and to the button's end and shows no strap along any edge; its two shading bands follow the polygon's upper and lower edges.
+  const COVER_RAISE = 0.015;
+  async function sleeveCover(ctx, side){
+    const base = ctx.base && ctx.base.id;
+    if(!base) return null;
+    for(const cat of ['officer', 'cadet-officer']){
+      const id = `${base}-epaulet-sleeve-${cat}`;
+      if(!ctx.has(id)) continue;
+      const lm = core.landmark(await ctx.spec(id), `epaulet_sleeve_poly_${side}`);
+      if(lm && lm.points && lm.points.length >= 4) return lm.points.map(q => ({ x: q.x, y: q.y }));
+    }
+    return null;
+  }
+  // The polygon's upper boundary (outer end, along the shoulder line, to the collar end) and its lower boundary (collar end back to the outer end): the polygon runs outer-upper, up the
+  // shoulder line, across the collar end, back along the lower edge to outer-lower, so the collar end is the consecutive pair farthest along the strap axis.
+  function coverEdges(poly, f){
+    const along = q => (q.x - f.outer.x) * f.axis.x + (q.y - f.outer.y) * f.axis.y;
+    let k = 0, best = -Infinity;
+    for(let i = 0; i < poly.length - 1; i++){ const v = along(poly[i]) + along(poly[i + 1]); if(v > best){ best = v; k = i; } }
+    return { upper: poly.slice(0, k + 1), lower: poly.slice(k + 1) };
+  }
+  // A shading band along a polyline of the cover's edge, `depth` inches inward (along -normal for the upper edge, +normal for the lower), as a flat-tinted polygon cut to the cover.
+  function coverBand(ctx, side, name, edge, normal, sign, tone, cover, z){
+    const shifted = edge.map(q => ({ x: q.x + normal.x * sign * SHADE_BAND, y: q.y + normal.y * sign * SHADE_BAND }));
+    const pts = edge.concat(shifted.slice().reverse());
+    ctx.layers.push({ type: 'polygon', points: pts, fill: tone.fill, fillOpacity: tone.opacity, clip: cover, z, role: 'epaulet-shade', key: `epaulet-shade:${name}:${side}`,
+      title: `${side === 'right' ? 'Right' : 'Left'} epaulet, ${name} edge`, noBounds: true, ...core.polygonBounds(pts) });
+  }
   async function epauletStrips(ctx, g, sleeveId){
     const seats = {};
     if(!ctx.has(sleeveId)) return seats;
@@ -1070,27 +1102,48 @@
     for(const side of ['right', 'left']){
       const f = bandFrame(ctx, side, H.epauletFrame(ctx, side));
       if(!f) continue;
-      const T = edgeStripThickness(ctx, side);
-      // The strip is the sleeve's own length (the art's height) over at most EDGE_ON_COVER of the strap landmark's length, so a short strap never gets a strip past its neck end.
-      const len = Math.min(s.h, f.length * EDGE_ON_COVER);
-      const scale = len / s.h, half = len / 2;
-      // Centre on the strap axis, outer end flush with the strap's outer end; upper edge flush with the strap's upper side (a sheet that draws a strap as thin as the strip has no
-      // difference to make up), then lowered until it lies along the shoulder line on average.
-      const along = { x: f.outer.x + f.axis.x * half, y: f.outer.y + f.axis.y * half };
-      const lift = f.width / 2 - T / 2;
-      const c0 = { x: along.x + f.normal.x * lift, y: along.y + f.normal.y * lift };
-      const upper = bandEdge(f, c0, T / 2, half);
-      // A sheet that states the band's own axis and thickness (bandFrame) draws the strap as that band on the shoulder line: the strip lies exactly on it, nothing to lower (a straight band; the overblouse's band follows the curved shoulder, which a straight strip meets on average).
-      const clear = shoulderClearance(f, upper[0], upper[1]);
-      const dy = f.band ? 0 : (Number.isFinite(clear.mean) ? clear.mean : 0);
-      // The strip moves across the strap, not straight down, by the amount that lowers it dy: its outer end stays flush with the strap's along the axis.
-      const m = Math.abs(f.normal.y) > 0.2 ? dy / f.normal.y : 0;
-      const c = { x: c0.x + f.normal.x * m, y: c0.y + f.normal.y * m };
-      await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
-        title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
-      stripShading(ctx, side, c, f.axis, f.normal, len, T, 0, Z.epauletLayer + 0.6);
-      const end = { x: c.x - f.axis.x * half, y: c.y - f.axis.y * half };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, T - 0.08, { title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      let cover = f.band ? await sleeveCover(ctx, side) : null;
+      let c, half, T, len, scale, end;
+      if(cover){
+        // The upper edge is the silhouette's vertices simplified within 0.012 in (the sheet's own tolerance): raised by COVER_RAISE so a chord never leaves a hairline of strap under the outline's stroke.
+        const k = coverEdges(cover, f).upper.length;
+        cover = cover.map((q, i) => i < k ? { x: q.x + f.normal.x * COVER_RAISE, y: q.y + f.normal.y * COVER_RAISE } : q);
+        // The strip is the rectangle that holds the cover polygon, in the strap's frame (along the axis from the outer end, across it along the normal), cut to the polygon: the sleeve art squeezed across
+        // to the band's width at its widest, stretched along to the strap up to the button. The grade stays 5/8 in from the strap's outer end, on the strip's centre line.
+        const sv = cover.map(q => ({ s: (q.x - f.outer.x) * f.axis.x + (q.y - f.outer.y) * f.axis.y, v: (q.x - f.outer.x) * f.normal.x + (q.y - f.outer.y) * f.normal.y }));
+        const s0 = Math.min(...sv.map(q => q.s)), s1 = Math.max(...sv.map(q => q.s)), v0 = Math.min(...sv.map(q => q.v)), v1 = Math.max(...sv.map(q => q.v));
+        len = s1 - s0; T = v1 - v0; half = len / 2; scale = len / s.h;
+        c = { x: f.outer.x + f.axis.x * (s0 + half) + f.normal.x * (v0 + T / 2), y: f.outer.y + f.axis.y * (s0 + half) + f.normal.y * (v0 + T / 2) };
+        end = { x: f.outer.x + f.normal.x * (v0 + T / 2), y: f.outer.y + f.normal.y * (v0 + T / 2) };
+        await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, clip: cover, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
+          title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
+        const edges = coverEdges(cover, f);
+        coverBand(ctx, side, 'light', edges.upper, f.normal, -1, SHADE.light, cover, Z.epauletLayer + 0.6);
+        coverBand(ctx, side, 'dark', edges.lower, f.normal, 1, SHADE.dark, cover, Z.epauletLayer + 0.6);
+      }else{
+        T = edgeStripThickness(ctx, side);
+        // The strip is the sleeve's own length (the art's height) over at most EDGE_ON_COVER of the strap landmark's length, so a short strap never gets a strip past its neck end.
+        len = Math.min(s.h, f.length * EDGE_ON_COVER);
+        scale = len / s.h; half = len / 2;
+        // Centre on the strap axis, outer end flush with the strap's outer end; upper edge flush with the strap's upper side (a sheet that draws a strap as thin as the strip has no
+        // difference to make up), then lowered until it lies along the shoulder line on average.
+        const along = { x: f.outer.x + f.axis.x * half, y: f.outer.y + f.axis.y * half };
+        const lift = f.width / 2 - T / 2;
+        const c0 = { x: along.x + f.normal.x * lift, y: along.y + f.normal.y * lift };
+        const upper = bandEdge(f, c0, T / 2, half);
+        // A sheet that states the band's own axis and thickness (bandFrame) draws the strap as that band on the shoulder line: the strip lies exactly on it, nothing to lower (a straight band; the overblouse's band follows the curved shoulder, which a straight strip meets on average).
+        const clear = shoulderClearance(f, upper[0], upper[1]);
+        const dy = f.band ? 0 : (Number.isFinite(clear.mean) ? clear.mean : 0);
+        // The strip moves across the strap, not straight down, by the amount that lowers it dy: its outer end stays flush with the strap's along the axis.
+        const m = Math.abs(f.normal.y) > 0.2 ? dy / f.normal.y : 0;
+        c = { x: c0.x + f.normal.x * m, y: c0.y + f.normal.y * m };
+        await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
+          title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
+        stripShading(ctx, side, c, f.axis, f.normal, len, T, 0, Z.epauletLayer + 0.6);
+        end = { x: c.x - f.axis.x * half, y: c.y - f.axis.y * half };
+      }
+      // The grade is squeezed to the band's stated thickness less 0.08 in, as before the strip was cut to the strap (the strip may be a little thicker where the shoulder line bends).
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, (cover ? edgeStripThickness(ctx, side) : T) - 0.08, { title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
       if(gs) seats[side] = GRADE_FROM_END + (quarter ? gs.w : gs.h) / 2;
     }
     return seats;
