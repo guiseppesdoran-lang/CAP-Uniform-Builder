@@ -201,20 +201,15 @@
   /* ---------- the Items cards: a count and the rule for this uniform on each ---------- */
   const rules=()=>window.CAPUBUniformRules;
   const BADGE_RULE='Each badge is placed where the regulation puts it.';
-  // The paragraph that says a uniform wears no ribbons: 11.1.3 names the Corporate Service Dress, the Battle Dress Uniform (the ABU), the
-  // Corporate Field Uniform, the Flight Duty Uniforms and the Corporate Working Uniform; the OCP's basic configuration (7.1.1.1.2) lists no ribbons.
-  function noRibbonsRef(uniformId){
-    const rule=rules() && rules().getUniformRule(uniformId);
-    return (rule && rule.refs && rule.refs.ribbons) || '11.1.3';
-  }
-  function ribbonRule(uniformId,kept){
+  // What the Ribbons card says of the uniform: how the ribbons are worn on it. A uniform that wears none says nothing: its card is greyed out and keeps the
+  // member's choices without a word (the owner: "remove the kept and paragraph just gray it out").
+  function ribbonRule(uniformId){
     const r=rules(); if(!r) return 'Choose the ribbons you have earned.';
     const policy=r.ribbonPolicy(uniformId);
     if(policy==='required') return 'Required on this uniform.';
     if(policy==='optional') return 'Optional on this uniform.';
     if(r.allowsMiniMedals(uniformId)) return 'Worn as miniature medals on this uniform.';
-    const base=`Ribbons are not worn on this uniform (CAPR 39-1, ${noRibbonsRef(uniformId)}).`;
-    return kept ? `${base} Your ${kept} ribbon choice${kept===1?' is':'s are'} kept for the uniforms that wear them.` : `${base} Choices you make on another uniform are kept for the ones that wear them.`;
+    return '';
   }
   function chosenRibbonCount(){
     const ids=new Set((State.ribbons||[]).map(x=>x.id));
@@ -243,12 +238,14 @@
       const chip=card.querySelector('[data-count]');
       if(chip){ if(chip.textContent!==count) chip.textContent=count; chip.dataset.short=count.replace(/ selected$/,'').replace(/ of /,'/'); chip.classList.toggle('hasItems',n>0); }
       const line=card.querySelector('[data-rule]');
-      // Written only when it changed: the line may hold a reference mark, which a rewrite would draw again (js/citations.js).
-      if(line && line.textContent!==rule) line.textContent=rule;
+      // A card for something the uniform does not wear is greyed out and says nothing more. Written only when it changed: the line may hold a
+      // reference mark, which a rewrite would draw again (js/citations.js).
+      const said=usable ? rule : '';
+      if(line && line.textContent!==said) line.textContent=said;
       card.classList.toggle('unavailable',!usable);
     };
     const wearsRibbons=!r || r.allowsRibbons(u) || r.allowsMiniMedals(u);
-    set('ribbons',wearsRibbons ? `${ribbons} selected` : (ribbons ? `${ribbons} kept` : '0 selected'),ribbons,ribbonRule(u,ribbons),wearsRibbons);
+    set('ribbons',`${ribbons} selected`,ribbons,ribbonRule(u),wearsRibbons);
     // Remove ribbons: only where the regulation makes them optional, and the box follows the saved setup.
     const removeRow=safeBy('removeRibbonsRow'), removeBox=safeBy('removeRibbons');
     if(removeRow) removeRow.classList.toggle('hidden', !(r && r.ribbonPolicy(u)==='optional' && State.membership));
@@ -260,7 +257,7 @@
       (!planned && cap && officerTag) ? `The officer's cloth name tag may include one badge (CAPR 39-1 ${((r.getUniformRule(u)||{}).refs||{}).badges}).` :
       (!planned && cap) ? (dflt && dflt<cap ? `${dflt} by default, up to ${cap} on this uniform, each where the regulation puts it.` : `At most ${cap} on this uniform, each where the regulation puts it.`) : BADGE_RULE,
       !!auth.showBadges || !!planned);
-    set('patches',patchesNotShown ? `${patches} shown` : `${patches} selected`,patches,auth.showPatches ? 'Choose the patches you wear.' : 'Not worn on this uniform.',!!auth.showPatches);
+    set('patches',patchesNotShown ? `${patches} shown` : `${patches} selected`,patches,'Choose the patches you wear.',!!auth.showPatches);
     updateItemSummaries();
     syncCommandRow();
   }

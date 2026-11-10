@@ -234,7 +234,7 @@ test('the popover in the page: one element over the page, closed by a press else
   assert.match(css, /\.citePop\[data-side="below"\]::after/);
   // The list of chosen items is rebuilt only when a row changed, so a press (which the page answers with a redraw) leaves the marks in it alone.
   assert.match(ui, /if\(list\.dataset\.sig===sig\) return;/);
-  assert.match(ui, /if\(line && line\.textContent!==rule\) line\.textContent=rule;/);
+  assert.match(ui, /if\(line && line\.textContent!==said\) line\.textContent=said;/);
 });
 
 // ---- a greyed card's question mark (the owner: "i should be able to click on the question mark but i cannot") ----
@@ -263,7 +263,7 @@ test('a greyed, disabled or unavailable card keeps a question mark that takes pr
   assert.match(veil, /z-index:1(;|$)/);
   assert.match(decl('.disabledBlock .citeBtn'), /z-index:2(;|$)/, 'the mark sits above the veil');
   // No other greyed card is greyed by opacity or turns its presses off: a mark inside it would be dimmed or lost with it.
-  const GREYED = ['.disabledBlock', '.uniformOption.locked'];
+  const GREYED = ['.disabledBlock', '.uniformOption.locked', '.itemCard.unavailable'];
   for(const [sel, d] of rules){
     const subject = sel.split(',').map(x => x.trim()).filter(x => GREYED.some(g => x.startsWith(g)) && !/::(?:after|before)$/.test(x) && !/\.citeBtn/.test(x));
     for(const x of subject){

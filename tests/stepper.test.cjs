@@ -399,13 +399,42 @@ test('the Items cards carry a count and the uniform\'s rule',()=>{
   t.State.uniform='mess_dress'; t.refresh();
   assert.equal(rule('ribbons'),'Worn as miniature medals on this uniform.');
   t.State.uniform='ocp'; t.refresh();
-  // The card stays on a uniform that wears no ribbons and says so, with the paragraph (the OCP's basic configuration lists none, 7.1.1.1.2) and what happens to the choices.
-  assert.equal(rule('ribbons'),'Ribbons are not worn on this uniform (CAPR 39-1, 7.1.1.1.2). Your 2 ribbon choices are kept for the uniforms that wear them.');
-  assert.equal(chip('ribbons').textContent,'2 kept');
+  // The card stays on a uniform that wears no ribbons and is greyed out, with nothing said: no paragraph, no "kept" (the owner: "remove the kept and paragraph
+  // just gray it out"). The choices are still the member's, and the count says so as it does everywhere.
+  assert.equal(rule('ribbons'),'');
+  assert.equal(chip('ribbons').textContent,'2 selected');
   assert.equal(t.by('groupRibbons').classList.contains('unavailable'),true);
   t.State.ribbons=[]; t.refresh();
-  assert.equal(rule('ribbons'),'Ribbons are not worn on this uniform (CAPR 39-1, 7.1.1.1.2). Choices you make on another uniform are kept for the ones that wear them.');
+  assert.equal(rule('ribbons'),'');
   assert.equal(chip('ribbons').textContent,'0 selected');
+  // Back on a uniform that wears them the card is as it was.
+  t.State.uniform='blues_a'; t.refresh();
+  assert.equal(t.by('groupRibbons').classList.contains('unavailable'),false);
+  assert.equal(rule('ribbons'),'Required on this uniform.');
+});
+
+test('a card for what the uniform does not wear is greyed out and says nothing: no "kept", no line, grey by colour and not by opacity',()=>{
+  // The owner: "this is also redundant remove the kept and paragraph just gray it out."
+  assert.doesNotMatch(ui,/ kept`|kept for the|are not worn on this uniform \(CAPR/);
+  assert.doesNotMatch(ui,/function noRibbonsRef/);
+  assert.match(ui,/const said=usable \? rule : '';/);
+  const grey=css.slice(css.indexOf('.itemCard.unavailable{'));
+  assert.match(grey,/^\.itemCard\.unavailable\{background:var\(--panel-2\);border-style:dashed\}/);
+  assert.doesNotMatch(css.slice(css.indexOf('.itemCard.unavailable{'),css.indexOf('/* Secondary controls folded under a line')),/opacity/);
+  assert.match(css,/\.itemCard\.unavailable>:not\(\.cardRow\)\{display:none\}/,'only its name and its count are left');
+  // Behaviour: a uniform that wears ribbons says how; one that wears none is greyed and the line is empty whatever was chosen.
+  const t=boot();
+  Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'male',uniform:'blues_a',ribbons:[{id:'a'}],badges:[],patches:[]}); t.refresh();
+  const card=t.by('groupRibbons'), line=card.querySelector('[data-rule]'), chip=card.querySelector('[data-count]');
+  assert.equal(card.classList.contains('unavailable'),false);
+  for(const uniform of ['ocp','abu','flight_suit','corporate_flight_suit','corporate_field','polo']){
+    t.State.uniform=uniform; t.refresh();
+    if(rules.allowsRibbons(uniform)||rules.allowsMiniMedals(uniform)) continue;
+    assert.equal(card.classList.contains('unavailable'),true,uniform);
+    assert.equal(line.textContent,'',uniform);
+    assert.doesNotMatch(chip.textContent,/kept/,uniform);
+    assert.equal(chip.textContent,'1 selected',uniform);
+  }
 });
 
 test('the clear-import button shows once a report has been read',()=>{
