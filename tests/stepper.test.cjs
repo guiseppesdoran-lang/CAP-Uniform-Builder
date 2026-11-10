@@ -517,6 +517,37 @@ test('the fold in the page: one button for the name and count, the rest of the c
   assert.match(ui,/wireItemCards\(\); wireCommandRow\(\);/);
 });
 
+test('the line under the step bar and the line under the toolbar are one line: one height for both bars, a toolbar of one row, nothing changed on a phone',()=>{
+  // The owner: "make it even". The step bar over the panel was 57px and the toolbar over the preview 69px (12px of padding, and a second and third row
+  // whenever the preview was narrow: 51px apart at 1100, 107 at 1025, 163 at 768), so the two lines never met.
+  assert.match(css,/:root\{[^}]*--bar-h:57px;/);
+  const desktop=css.slice(css.indexOf('@media (min-width:701px){'),css.indexOf('@media (min-width:701px) and (max-width:1024px)'));
+  // The tabs and the bar share the token: the bar is the tab (56) and the border under it (1).
+  assert.match(css,/\.stepTab\{[^}]*min-height:calc\(var\(--bar-h\) - 1px\);/);
+  assert.match(css,/\.controlsHeader\{flex:0 0 auto;background:var\(--panel\);border-bottom:1px solid var\(--line\)\}/);
+  assert.match(desktop,/\.controlsHeader\{height:var\(--bar-h\)\}/);
+  // The toolbar is the same height with the same border under it, one row, no vertical padding to add to it.
+  assert.match(desktop,/\.previewToolbar\{height:var\(--bar-h\);flex-wrap:nowrap;padding:0 var\(--s4\);/);
+  assert.match(css,/\.previewToolbar\{[^}]*border-bottom:1px solid var\(--line\);/);
+  // What it gives up as the room shrinks, in order, each at a narrower width than the last, and the row scrolls only after all of them.
+  const steps=[...desktop.matchAll(/@container \(max-width:(\d+)px\)\{([^@]*?)\n  \}/g)].map(m=>[Number(m[1]),m[2]]);
+  assert.deepEqual(steps.map(x=>x[0]),[783,572,517,461,403]);
+  assert.match(steps[0][1],/\.capubTopBar\{display:none\}/,'first the Uniform and Items chips');
+  assert.match(steps[1][1],/#undoBtn,#redoBtn\{width:44px;padding:0;font-size:0\}/,'then Undo and Redo as icons');
+  assert.match(steps[2][1],/\.zoomReadout\{display:none\}/,'then the zoom reading');
+  assert.match(steps[3][1],/#zoomFitBtn\{display:none\}/,'then Fit');
+  assert.match(steps[4][1],/\.measureGroup #measureBtn\{/,'then the Measurements button gets smaller');
+  assert.match(desktop,/\.previewTools\{[^}]*overflow-x:auto;/);
+  // The toolbar is a container only above 700px: on a phone it is the overlay's bar, which wraps and holds a fixed sheet.
+  assert.equal((css.match(/container-type:inline-size/g)||[]).length,1);
+  const phone=css.slice(css.indexOf('@media (max-width:700px)'),css.indexOf('@media (max-width:360px)'));
+  assert.doesNotMatch(phone,/--bar-h|container-type|@container/);
+  assert.match(phone,/\.stepTab\{min-height:52px;/);
+  assert.match(phone,/body\.previewFull #previewWrapper \.previewToolbar\{display:flex;/);
+  // Undo and Redo keep their names when they are icons (the buttons carry aria-labels).
+  assert.match(ui,/id="undoBtn" aria-label="Undo">Undo<\/button><button type="button" class="ghost" id="redoBtn" aria-label="Redo">Redo/);
+});
+
 test('the clear-import button shows once a report has been read',()=>{
   const t=boot();
   assert.equal(t.by('clearImportedReportBtn').hidden,true);

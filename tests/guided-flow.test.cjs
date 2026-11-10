@@ -51,5 +51,7 @@ test('controls meet the 44px touch target',()=>{
     assert.ok(m,`${sel} is 44px`);
   }
   assert.match(css,/\.footerLink\{[^}]*min-height:44px/);
-  assert.match(css,/\.stepTab\{[^}]*min-height:56px/);
+  // The step tab is the bar's height less the border under it (--bar-h, which the toolbar over the preview shares): 57 - 1.
+  assert.match(css,/--bar-h:57px;/);
+  assert.match(css,/\.stepTab\{[^}]*min-height:calc\(var\(--bar-h\) - 1px\)/);
 });

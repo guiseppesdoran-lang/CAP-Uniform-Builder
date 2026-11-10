@@ -58,6 +58,8 @@
   --t-xs:.8125rem;--t-sm:.875rem;--t-md:.9375rem;--t-lg:1.25rem;--t-xl:1.75rem;
 
   --capub-header-h:64px;
+  /* The step bar over the panel and the toolbar over the preview are one bar: the same height, so the line under each is one line (above 700px). */
+  --bar-h:57px;
   --capub-footer-h:36px;
   --sidebar-w:400px;
 }
@@ -290,7 +292,7 @@ header h1::after{
   align-items:center;
   justify-content:center;
   gap:3px;
-  min-height:56px;
+  min-height:calc(var(--bar-h) - 1px);
   margin:0;
   padding:var(--s1) var(--s1) calc(var(--s1) - 3px);
   background:transparent;
@@ -1001,6 +1003,40 @@ header h1::after{
   .hamburgerBtn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.8)}
   .hamburgerBtn span{display:block;width:20px;height:2px;background:#fff;border-radius:1px}
   #layoutShell.sidebar-collapsed #previewWrapper{justify-content:center}
+  /* One line under the step bar and the toolbar (the owner: "make it even"): both are --bar-h tall at every width, the border in it, the toolbar one row.
+     The toolbar fits its room by giving up what it can spare, in this order: the Uniform and Items chips, the Undo and Redo words, the zoom reading, the Fit
+     button, the size of the Measurements button; and last, below that, its row scrolls sideways. It is a container so its own width decides, whether the
+     panel is open or hidden (a container query cannot style the container itself, so its padding does not change). */
+  .controlsHeader{height:var(--bar-h)}
+  .previewToolbar{height:var(--bar-h);flex-wrap:nowrap;padding:0 var(--s4);gap:var(--s3);container-type:inline-size}
+  .capubTopBar{flex:0 1 auto;flex-wrap:nowrap;overflow:hidden}
+  .capubPill{white-space:nowrap}
+  /* The row scrolls only as a last resort; its padding and the matching negative margin keep a focused button's ring from being cut off at its edges. */
+  .previewTools{flex:0 1 auto;min-width:0;flex-wrap:nowrap;align-items:center;align-self:stretch;gap:var(--s2);padding:0 6px;margin-right:-6px;overflow-x:auto;scrollbar-width:none}
+  .previewTools::-webkit-scrollbar{display:none}
+  .previewToolCard{flex:0 0 auto}
+  .previewToolCard[aria-label="Close the preview"]{display:none}
+  @container (max-width:783px){
+    .capubTopBar{display:none}
+  }
+  @container (max-width:572px){
+    #undoBtn,#redoBtn{width:44px;padding:0;font-size:0}
+    #undoBtn::before,#redoBtn::before{font-size:22px;line-height:1}
+    #undoBtn::before{content:"\21B6"}
+    #redoBtn::before{content:"\21B7"}
+  }
+  @container (max-width:517px){
+    .zoomReadout{display:none}
+  }
+  @container (max-width:461px){
+    #zoomFitBtn{display:none}
+  }
+  @container (max-width:403px){
+    .previewTools,.previewToolCard{gap:var(--s1)}
+    .previewToolCard button{min-width:40px}
+    #undoBtn,#redoBtn{width:40px}
+    .measureGroup #measureBtn{padding:0 6px;font-size:var(--t-sm)}
+  }
 }
 @media (min-width:701px) and (max-width:1024px){
   :root{--sidebar-w:340px}
