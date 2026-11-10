@@ -84,6 +84,7 @@
   const open = new Set();        // the texts whose reference is showing, so the same text drawn again stays open
   const dirty = new Set();       // the lists whose options were read in this pass
   const listOf = new WeakMap();  // a list's mark -> the list
+  let pressed = null;            // the text whose mark was just pressed: the page draws its cards again on a press, and the new mark takes the focus back
 
   function mark(isOpen){
     const m = document.createElement('span');
@@ -111,11 +112,16 @@
       ref.className = 'citeRef'; ref.textContent = x.text;
       host.append(ref);
     }
-    if(!parent.closest(PLAIN)){
+    const m = parent.closest(PLAIN) ? null : mark(open.has(value));
+    if(m){
       if(open.has(value)) host.classList.add('citeOpen');
-      host.append(mark(open.has(value)));
+      host.append(m);
     }
     parent.replaceChild(host, node);
+    if(m && pressed && pressed.key === value && Date.now() - pressed.at < 500 && (!document.activeElement || document.activeElement === document.body)){
+      pressed = null;
+      m.focus({ preventScroll: true });
+    }
   }
   // An option holds text only, so its reference is cut from the text (the whole text is kept on the option) and the list's label carries the mark.
   function visitOption(opt){
@@ -131,7 +137,7 @@
   // A tooltip holds text only as well: its reference is cut from it and the whole text is kept on the element.
   function visitTip(el){
     const text = el.getAttribute('title');
-    if(text === null || el.namespaceURI !== 'http://www.w3.org/1999/xhtml' || el.closest('#extraPanel-regulation')) return;
+    if(text === null || !(el instanceof HTMLElement) || el.closest('#extraPanel-regulation')) return;
     const s = split(text);
     if(s.refs.length){
       el.dataset.citeTitle = text;
@@ -164,7 +170,7 @@
 
   function visit(n){
     if(n.nodeType === 3){ visitText(n); return; }
-    if(n.nodeType !== 1 || n.namespaceURI !== 'http://www.w3.org/1999/xhtml' || n.closest(SKIP)) return;
+    if(!(n instanceof HTMLElement) || n.closest(SKIP)) return;
     const found = [], walker = document.createTreeWalker(n, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, { acceptNode(x){
       if(x.nodeType === 3) return x.nodeValue.indexOf('(') === -1 ? NodeFilter.FILTER_SKIP : NodeFilter.FILTER_ACCEPT;
       return x.matches(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
@@ -198,6 +204,7 @@
     host.classList.toggle('citeOpen', on);
     btn.setAttribute('aria-expanded', String(on));
     if(on) open.add(key); else open.delete(key);
+    pressed = { key, at: Date.now() };
   }
   const markOf = e => e.target && e.target.closest ? e.target.closest('.citeBtn') : null;
   function onClick(e){
