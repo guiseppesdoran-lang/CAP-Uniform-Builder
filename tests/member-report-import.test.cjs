@@ -1089,3 +1089,28 @@ test('the panel is built as text: a file name or a row with markup in it is show
   assert.deepEqual(panel.children.map(c => c.textContent), ['Imported <img src=x onerror=alert(1)>.txt.', '<b>Held</b>', '– <script>alert(1)</script> & more']);
   assert.equal(panel.style.color, 'var(--ok)');
 });
+
+// ---- Command pins by command (CAPR 39-1, 10.2.5) (I2) -----------------------------------------------------------------------------------
+test('a current commander of a group wears the group pin, a current commander of a unit the squadron pin, one pin only', () => {
+  const unit = runImport(SENIOR);
+  assert.deepEqual(unit.parsed.badges.filter(id => /_commander_badge$/.test(id)), ['squadron_commander_badge']);
+  const group = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025', 'Commander GLR-IL-001 GROUP No 01 Jan 2025'));
+  assert.deepEqual(group.parsed.badges.filter(id => /_commander_badge$/.test(id)), ['group_commander_badge']);
+  assert.deepEqual(group.badges.filter(id => /_commander_badge$/.test(id)), ['group_commander_badge'], 'the setup holds the group pin');
+  assert.equal(group.commandInsignia.graduatedCommander, false);
+  assert.ok(group.parsed.notes.some(n => /^Current commander duty found; the Group Commander Command Insignia Pin is imported as a current commander's \(CAPR 39-1, 10\.2\.5\)\.$/.test(n)));
+  assert.ok(group.ribbon('cap_command_service_ribbon'), 'the ribbon is still the Command Service Ribbon');
+  // Both at once: one pin, the group's.
+  const both = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025', 'Commander GLR-IL-049 UNIT No 01 Jan 2025\nCommander GLR-IL-001 GROUP No 01 Jan 2025'));
+  assert.deepEqual(both.parsed.badges.filter(id => /_commander_badge$/.test(id)), ['group_commander_badge']);
+  // A previous member's pin does not stay.
+  const after = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025\n', ''), "State.badges = ['group_commander_badge']; State.commandInsignia = { graduatedCommander: true };");
+  assert.deepEqual(after.badges.filter(id => /_commander_badge$/.test(id)), []);
+  assert.equal(after.commandInsignia.graduatedCommander, false);
+});
+
+test('a graduated group commander keeps the squadron pin: the regulation does not say which pin a graduated commander wears', () => {
+  const past = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025\n', '').replace('Deputy Commander for Cadets GLR-IL-049 UNIT No 01 Jan 2019 31 Dec 2022', 'Commander GLR-IL-001 GROUP No 01 Jan 2019 31 Dec 2022'));
+  assert.deepEqual(past.parsed.badges.filter(id => /_commander_badge$/.test(id)), ['squadron_commander_badge']);
+  assert.equal(past.commandInsignia.graduatedCommander, true);
+});

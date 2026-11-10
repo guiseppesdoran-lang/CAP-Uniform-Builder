@@ -1234,6 +1234,18 @@ function getCommandServiceRibbonFromDutyAssignments(text){
   };
 }
 
+// The pin a current commander wears is the one "appropriate to their current assignment" (CAPR 39-1, 10.2.5): the group pin for a commander
+// of a group, the squadron pin for any other unit. Only one pin is worn, so a member who commands both wears the group's. A graduated
+// commander's pin is not named by the regulation, and stays the squadron's.
+function getImportedCommandPinId(text, status){
+  if(status === 'current'){
+    const rows = typeof capubExtractCommanderDutyWindows === 'function' && typeof capubCurrentDutySection === 'function'
+      ? capubExtractCommanderDutyWindows(capubCurrentDutySection(text)).filter(row => !row.end) : [];
+    if(rows.some(row => row.echelon === 'GROUP')) return 'group_commander_badge';
+  }
+  return 'squadron_commander_badge';
+}
+
 function getCommandInsigniaStatusForMember(text, result){
   const currentCommander = hasCurrentCommanderDutyPosition(text);
   const graduatedCommander = hasGraduatedCommanderDutyPosition(text);
@@ -1805,12 +1817,15 @@ function parseCapMemberReport(textRaw){
   // graduated commanders if they served at least one year, and only Lt Col and below.
   const commandStatus = getCommandInsigniaStatusForMember(text, result);
   if(commandStatus){
-    result.badges.push('squadron_commander_badge');
+    const pin = getImportedCommandPinId(text, commandStatus);
+    result.badges.push(pin);
     // Applied by applyCapMemberReportImport, after it clears the previous member's status.
     result.commandStatus = commandStatus;
+    result.commandPin = pin;
+    const pinName = pin === 'group_commander_badge' ? 'Group Commander' : 'Squadron Commander';
     result.notes.push(commandStatus === 'current'
-      ? 'Current commander duty found; Command Insignia Pin imported as current commander.'
-      : 'Past commander duty of at least one year found; Command Insignia Pin imported as graduated commander.');
+      ? `Current commander duty found; the ${pinName} Command Insignia Pin is imported as a current commander's (CAPR 39-1, 10.2.5).`
+      : `Past commander duty of at least one year found; the ${pinName} Command Insignia Pin is imported as a graduated commander's (CAPR 39-1, 10.2.5).`);
   }
 
   const commandServiceRibbon = getCommandServiceRibbonFromDutyAssignments(text);
@@ -2050,9 +2065,10 @@ function applyCapMemberReportImport(parsed){
   // Reset command-insignia state on every member-report import so a previous
   // member's current/graduated commander status cannot carry over.
   if(State.commandInsignia) State.commandInsignia.graduatedCommander = false;
-  if(State.badgeSelections?.squadron_commander_badge) State.badgeSelections.squadron_commander_badge.checked = false;
+  const commandPins = ['squadron_commander_badge', 'group_commander_badge'];
+  for(const pin of commandPins) if(State.badgeSelections?.[pin]) State.badgeSelections[pin].checked = false;
   // A past commander (one year or more) is a graduated commander: the pin under the nameplate, not over it.
-  if(State.commandInsignia && (parsed.badges || []).includes('squadron_commander_badge')) State.commandInsignia.graduatedCommander = (parsed.commandStatus === 'graduated');
+  if(State.commandInsignia && (parsed.badges || []).some(id => commandPins.includes(id))) State.commandInsignia.graduatedCommander = (parsed.commandStatus === 'graduated');
   for(const id of parsed.badges || []){
     if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(!State.badges.includes(id)) State.badges.push(id);
