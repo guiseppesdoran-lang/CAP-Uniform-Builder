@@ -85,6 +85,83 @@
   },
   "hang_angle_removed_deg": 0,
   "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "shared_die": {
+   "source": "design/lib-b-hex-die.js (geometry of the Exceptional Service photograph, the clearest of the three struck from the same die)",
+   "fit_per_group": {
+    "wingL": {
+     "s": 1.0562,
+     "r": 0.84,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      -0.001,
+      0.0055
+     ]
+    },
+    "wingR": {
+     "s": 0.9587,
+     "r": -5.34,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      0.0081,
+      -0.0148
+     ]
+    },
+    "banL": {
+     "s": 1.0504,
+     "r": -1.03,
+     "t": [
+      0.0091,
+      0.009
+     ]
+    },
+    "banR": {
+     "s": 1.0575,
+     "r": -5.95,
+     "t": [
+      0.0084,
+      0.0037
+     ]
+    },
+    "tail": {
+     "s": 1.0075,
+     "r": -0.38,
+     "t": [
+      0.0058,
+      -0.0074
+     ]
+    },
+    "lawL": {
+     "s": 1.0645,
+     "r": -0.09,
+     "t": [
+      0,
+      -0.0003
+     ]
+    },
+    "lawR": {
+     "s": 0.985,
+     "r": 1.72,
+     "t": [
+      0.015,
+      -0.0083
+     ]
+    }
+   },
+   "fit_note": "s scale, a aspect, r turn in degrees clockwise, t shift of the group pivot in inches (hex frame); rows = feather rows inserted between the four nested rows of a wing, ext = feather rows continued along their end tangent",
+   "line_width_factors": {
+    "tail": 0.8
+   },
+   "lettering": {
+    "band": "DISTINGUISHED (13 letters, fitted to the measured text strip u -0.258 to 0.264, cap 0.050, stroke 0.011)",
+    "banners": {
+     "left": "SEMPER",
+     "right": "VIGILANS"
+    },
+    "status": "words from the award name and the shared die; lettering is present in the photograph, individual letters are not resolved"
+   }
+  },
   "suspension": {
    "bail": {
     "w": 0.093,
@@ -104,11 +181,11 @@
   },
   "tones_luminance": {
    "ground": 34,
-   "shadow": 27.3,
+   "shadow": 27.4,
    "base": 162,
    "hi": 216,
-   "rim": 144.7,
-   "rim_hi": 203,
+   "rim": 144.5,
+   "rim_hi": 202.8,
    "metal": 135,
    "metal_hi": 210,
    "bail": 145
@@ -119,11 +196,11 @@
   "ramp": "gold ramp fitted to the reference's metal (lib-b.js fitRamp)",
   "tone_colours": {
    "ground": "#302105",
-   "shadow": "#261a05",
+   "shadow": "#271a05",
    "base": "#c2a348",
    "hi": "#f1dc80",
    "rim": "#b19137",
-   "rim_hi": "#e6ce71",
+   "rim_hi": "#e6ce70",
    "metal": "#a8872f",
    "metal_hi": "#ecd679",
    "bail": "#b29138"
@@ -140,79 +217,79 @@
    "size": "miniature <= 25 KB, full <= 60 KB"
   },
   "silhouette_iou": 0.9619,
-  "light_class_iou": 0.398,
+  "light_class_iou": 0.411,
   "ink_coverage": [
    {
     "zone": "body",
-    "ref_px": 44817,
-    "mine_px": 45161,
-    "ratio": 1.008
+    "ref_px": 47441,
+    "mine_px": 48557,
+    "ratio": 1.024
    },
    {
     "zone": "emblem",
     "ref_px": 4117,
-    "mine_px": 4606,
-    "ratio": 1.119
+    "mine_px": 4621,
+    "ratio": 1.122
    },
    {
     "zone": "wings",
-    "ref_px": 12273,
-    "mine_px": 12387,
-    "ratio": 1.009
+    "ref_px": 13447,
+    "mine_px": 13910,
+    "ratio": 1.034
    },
    {
     "zone": "band",
     "ref_px": 4861,
-    "mine_px": 4367,
-    "ratio": 0.898
+    "mine_px": 4338,
+    "ratio": 0.892
    },
    {
     "zone": "laurel left",
     "ref_px": 6711,
-    "mine_px": 6922,
-    "ratio": 1.031
+    "mine_px": 6439,
+    "ratio": 0.959
    },
    {
     "zone": "laurel right",
     "ref_px": 5899,
-    "mine_px": 6670,
-    "ratio": 1.131
+    "mine_px": 6218,
+    "ratio": 1.054
    },
    {
     "zone": "tail",
     "ref_px": 7561,
-    "mine_px": 7459,
-    "ratio": 0.987
+    "mine_px": 7995,
+    "ratio": 1.057
    }
   ],
-  "landmarks_checked": 34,
-  "landmark_max_dist_in": 0.0074,
+  "landmarks_checked": 52,
+  "landmark_max_dist_in": 0.0149,
   "landmark_worst": [
+   [
+    "tail spray L cap",
+    0.0149
+   ],
+   [
+    "tail spray R cap",
+    0.0097
+   ],
    [
     "emblem ring top",
     0.0074
    ],
    [
-    "wing outline low right",
-    0.005
-   ],
-   [
-    "band bottom rail -0.18",
-    0.0047
-   ],
-   [
     "pennant",
-    0.0046
+    0.0067
    ],
    [
-    "propeller left blade",
-    0.0045
+    "VIGILANS banner lower edge",
+    0.0065
    ]
   ],
-  "edge_recall_0p006in": 0.774,
-  "edge_recall_0p012in": 0.922,
-  "edge_precision_0p012in": 0.922,
-  "tone_mae_luminance": 51.1,
+  "edge_recall_0p006in": 0.812,
+  "edge_recall_0p012in": 0.965,
+  "edge_precision_0p012in": 0.933,
+  "tone_mae_luminance": 50.9,
   "ribbon_attach_units": {
    "mine": 31.19,
    "spec_new": [
@@ -227,14 +304,14 @@
   "gate_pass": true,
   "pass": true,
   "not_measurable": [
-   "band lettering: the text strip across the middle is noise at 2800 px/in in the polished-gold photograph (letters cannot be told apart); the band is drawn as a plain framed plate with its end caps, bottom rail and top bead row, no letters invented; its interior is excluded from the gates (P.sel)",
-   "banner lettering (both banners): the ribbons carry lettering that is not legible in this photograph, so the ribbons are drawn plain (outline, upper edge bar, rounded inner end, hook and scroll curl at the outer end); the die is the same as the Exceptional and Meritorious Service Awards, so the words are very probably SEMPER (left) and VIGILANS (right): not drawn, a decision for the owner; the ribbon interiors are excluded from the gates (P.sel)",
-   "laurel leaves: individual leaf outlines, veins and serration are below the photograph resolution (leaves are about 0.06 in long, veins 0.005 in); each branch is a measured stem with seven leaf pairs placed by orientation and extent of the lit mass, the right branch mirrored to the left",
-   "wing feathers: the row pitch (0.0097 in) is 2.7 photograph pixels; both wings carry the same ten rows, placed by measured start, end and curvature (read on the better lit left wing; the right wing of the photograph shows fewer rows because of the light), not each barb",
+   "band lettering: DISTINGUISHED (13 letters), the award's name as the sister bands carry EXCEPTIONAL and MERITORIOUS, drawn with the Meritorious letter builder (font glyphs, centre-line strokes) and fitted to the bright text strip measured on the straightened band: the strip runs from u -0.258 to +0.264 (outer edges of the first and last strokes) and its top and bottom stroke rows lie at v -0.002 and 0.048, so the letters are laid between u -0.253 and 0.259 with equal gaps, cap height 0.050 (centre lines), stroke 0.011 in, glyphs drawn 14 percent narrower than the font because 13 cells share the strip that holds 11 on the Meritorious band. The photograph confirms that lettering is present (a strip of raised cells between two end bars, rows at those heights), but individual letters are not resolved in it: polished gold at 2800 px/in, 3 px strokes, 0.76 of the strip lit; a shuffle test of the same 13 letters cannot rank the word above shuffled orders (117 of 300 shuffles put as much letter ink on lit metal). The words come from the award name and the shared die, the letter widths and pitch from the font fitted to the measured strip. The band interior stays excluded from the gates (P.sel), as it was before the lettering, because its ground is unresolvable texture",
+   "banner lettering (both banners): SEMPER on the left and VIGILANS on the right, drawn on the banner centre lines of the shared die exactly as on the Meritorious (font glyphs, cap height 0.0175 in times this medal's die fit) because the die carries those words. The photograph shows lettering on both ribbons (dotted letter marks on the left one, a stippled comb of about nine bright strokes along the upper edge of the right one), but the letters are not resolved in it, so their forms, cell pitch and exact extent are the die's, not measured; the ribbon faces are included in the gates",
+   "laurel leaves: individual leaf outlines, veins and serration are below the photograph resolution (leaves are about 0.06 in long, veins 0.005 in); the two sprays are the die's stem and outlined leaves placed and scaled by measurement",
+   "wing feathers: the row pitch (0.0097 in) is 2.7 photograph pixels; the wings are the die's four nested rows with one inserted between each pair (7 rows each) continued down to the band (rows extended by 0.036 in, as the photograph shows them running on to the band), not each barb",
    "eagle head: about 0.045 in wide, 12 px in the photograph; drawn as a lump with one recessed spot, beak direction not resolved",
-   "tail: the three feather ovals of each fan are placed from the lit stripes (outer ovals reach the band, the middle one starts under the arched opening); barbs, the talons and the pennant are 10 to 15 px shapes drawn as a paddle and a fan with two recessed triangles",
-   "banner curls: drawn as a spiral of measured size and centre with the link to the ribbon end; the number of turns and the knobs under the curl are not resolved",
-   "left and right halves of the photograph are not exactly mirror images (wing outlines are centred at -0.004, banner ends at +0.0055, tail at +0.0025, laurel +0.003): each pair is mirrored about its own measured axis",
+   "tail: the two fans of three feather ovals, the shaft, the pennant with two recessed triangles and the talon paddles are the die's shapes at 10 to 15 px; barbs and vein structure are not resolved, the shaft is drawn in a recessed tone (the photograph shows it dark between the fans)",
+   "banner scroll curls: the die's scroll tail (one hook and curl per banner) placed by measurement; the knobs under the curl and the number of turns are not resolved",
+   "the left and right halves of the photograph are not exact mirror images: each group is fitted separately (the right wing and banner turn about 5 to 6 deg more than the left)",
    "specular glints on the bail, ring and band (polished gold) are lighting, not features; the ring is hidden above v=-0.49 by the ribbon in the photograph"
   ],
   "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
@@ -243,5 +320,5 @@
   "silhouette_iou": 0.9619,
   "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
  },
- "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from distinguished-service.jpeg (reference only, never shipped). Hang angle 0 deg of the photograph removed. The photograph hangs at 1.5 deg by the bail, but the hexagon flats, the band and the symmetry of the outline all level at about 0 deg (flats vertical to 0.5 deg, upper and lower corner heights equal to 0.006 in), so the body is levelled at 0 deg: P.frame.th = 0. The band tilts a further -1.4 deg in the photograph (right end higher); that tilt is kept as measured. The body is 0.619 in wide and 0.683 in high between vertices in the photograph; the spec box (0.625 x 0.6691 in, unchanged) is 0.0345 in shorter than the vertex to vertex height, so the model is drawn in the hex frame and shifted 0.0345 in up in the shipped frame: the bottom vertex sits on the bottom of the box (the top vertex is cut by 0.014 in by the box top, the bail is above it). The ribbon ring top is cut by the box. The die is the same as the Exceptional and Meritorious Service Awards (eagle with head, wings of nested feather curves, two banners, tail of two fans, pennant, two laurel branches, framed band): the banners are almost certainly SEMPER and VIGILANS but are unlettered here (illegible in the photograph); the band is unlettered."
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from distinguished-service.jpeg (reference only, never shipped). Hang angle 0 deg of the photograph removed. The photograph hangs at 1.5 deg by the bail, but the hexagon flats, the band and the symmetry of the outline all level at about 0 deg (flats vertical to 0.5 deg, upper and lower corner heights equal to 0.006 in), so the body is levelled at 0 deg: P.frame.th = 0. The band tilts a further -1.4 deg in the photograph (right end higher); that tilt is kept as measured. The body is 0.619 in wide and 0.683 in high between vertices in the photograph; the spec box (0.625 x 0.6691 in, unchanged) is 0.0345 in shorter than the vertex to vertex height, so the model is drawn in the hex frame and shifted 0.0345 in up in the shipped frame: the bottom vertex sits on the bottom of the box (the top vertex is cut by 0.014 in by the box top, the bail is above it). The ribbon ring top is cut by the box. The three Service Awards are struck from one die: the eagle (feathered wings, scrolled banners, tail fans with shaft, pennant and talons) and the laurel sprays are the shared die of lib-b-hex-die.js (geometry of the clearest photograph, the Exceptional one) refitted here by a scale, a turn and a shift per object group, found by correlating the group with the photograph's band-passed luminance in a bounded search around the landmark placement and checked on overlays; the wings carry the die's four nested rows plus one row between each pair, run on down to the band. The band (framed plate with end bars at u +-0.283 and +-0.270 (measured: left bars at -0.283 and -0.266, right at 0.282 and about 0.274, symmetrised), a bottom rail and a top bead row) carries DISTINGUISHED and the banners SEMPER and VIGILANS; the words come from the award name and the shared die, the photograph shows lettering in all three places but not its letters (see notMeasurable). The lower eagle uses the die's tail sprays (a rounded cap, a rachis and four nested barb chevrons per spray, measured on the Exceptional photograph), the leg and talon shapes and the pennant of the die."
 }

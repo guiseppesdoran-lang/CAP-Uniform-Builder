@@ -55,11 +55,11 @@
  },
  "palette": {
   "ground": "#302105",
-  "shadow": "#261a05",
+  "shadow": "#271a05",
   "base": "#c2a348",
   "hi": "#f1dc80",
   "rim": "#b19137",
-  "rim_hi": "#e6ce71",
+  "rim_hi": "#e6ce70",
   "metal": "#a8872f",
   "metal_hi": "#ecd679",
   "bail": "#b29138"
@@ -106,6 +106,83 @@
   },
   "hang_angle_removed_deg": 0,
   "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "shared_die": {
+   "source": "design/lib-b-hex-die.js (geometry of the Exceptional Service photograph, the clearest of the three struck from the same die)",
+   "fit_per_group": {
+    "wingL": {
+     "s": 1.0562,
+     "r": 0.84,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      -0.001,
+      0.0055
+     ]
+    },
+    "wingR": {
+     "s": 0.9587,
+     "r": -5.34,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      0.0081,
+      -0.0148
+     ]
+    },
+    "banL": {
+     "s": 1.0504,
+     "r": -1.03,
+     "t": [
+      0.0091,
+      0.009
+     ]
+    },
+    "banR": {
+     "s": 1.0575,
+     "r": -5.95,
+     "t": [
+      0.0084,
+      0.0037
+     ]
+    },
+    "tail": {
+     "s": 1.0075,
+     "r": -0.38,
+     "t": [
+      0.0058,
+      -0.0074
+     ]
+    },
+    "lawL": {
+     "s": 1.0645,
+     "r": -0.09,
+     "t": [
+      0,
+      -0.0003
+     ]
+    },
+    "lawR": {
+     "s": 0.985,
+     "r": 1.72,
+     "t": [
+      0.015,
+      -0.0083
+     ]
+    }
+   },
+   "fit_note": "s scale, a aspect, r turn in degrees clockwise, t shift of the group pivot in inches (hex frame); rows = feather rows inserted between the four nested rows of a wing, ext = feather rows continued along their end tangent",
+   "line_width_factors": {
+    "tail": 0.8
+   },
+   "lettering": {
+    "band": "DISTINGUISHED (13 letters, fitted to the measured text strip u -0.258 to 0.264, cap 0.050, stroke 0.011)",
+    "banners": {
+     "left": "SEMPER",
+     "right": "VIGILANS"
+    },
+    "status": "words from the award name and the shared die; lettering is present in the photograph, individual letters are not resolved"
+   }
+  },
   "suspension": {
    "bail": {
     "w": 0.093,
@@ -125,11 +202,11 @@
   },
   "tones_luminance": {
    "ground": 34,
-   "shadow": 27.3,
+   "shadow": 27.4,
    "base": 162,
    "hi": 216,
-   "rim": 144.7,
-   "rim_hi": 203,
+   "rim": 144.5,
+   "rim_hi": 202.8,
    "metal": 135,
    "metal_hi": 210,
    "bail": 145

@@ -122,6 +122,80 @@
   "hexagon_flats_frame": "top vertex (0.005,-0.343), upper corners (0.3125,-0.186) and (-0.3127,-0.179), lower corners (0.3125,0.1795) and (-0.3127,0.1835), bottom vertex (0,0.352); width across the flats 0.625 in, height 0.695 in; rim lip 0.003 in, bevel bands 0.005 to 0.020/0.026/0.030 in inside the outline (unequal per edge)",
   "emblem_flats_frame": "circle centre (0.0054,-0.172), centre-line radius 0.0755, width 0.0085; equilateral triangle apex (0.0033,-0.2345), base at v -0.1295; hub (0.0042,-0.172); 8 bars at pitch 0.0147",
   "band_flats_frame": "outer -0.2924..0.2941 x -0.0411..0.0711, bar width 0.01; capitals cap height 0.058 in, stroke 0.0085 in, centred at v 0.0165",
+  "shared_die": {
+   "source": "design/lib-b-hex-die.js (geometry of the Exceptional Service photograph, the clearest of the three struck from the same die)",
+   "fit_per_group": {
+    "wingL": {
+     "s": 1.0119,
+     "r": -0.25,
+     "rows": 1,
+     "t": [
+      0.0025,
+      -0.0065
+     ]
+    },
+    "wingR": {
+     "s": 0.9888,
+     "r": -0.66,
+     "rows": 1,
+     "t": [
+      0.0065,
+      -0.0057
+     ]
+    },
+    "banL": {
+     "s": 1.0688,
+     "r": 4.41,
+     "t": [
+      0.0035,
+      0.0022
+     ]
+    },
+    "banR": {
+     "s": 1.0662,
+     "r": -4.45,
+     "t": [
+      -0.0024,
+      0.0127
+     ]
+    },
+    "tail": {
+     "s": 0.975,
+     "r": -0.19,
+     "t": [
+      0.0066,
+      -0.0067
+     ]
+    },
+    "lawL": {
+     "s": 1.0281,
+     "r": 2.99,
+     "t": [
+      0.0037,
+      -0.0025
+     ]
+    },
+    "lawR": {
+     "s": 0.9756,
+     "r": -2.2,
+     "t": [
+      0.0087,
+      -0.002
+     ]
+    }
+   },
+   "fit_note": "s scale, r turn in degrees clockwise, t shift of the group pivot in inches (flats frame); rows = feather rows inserted between the four nested rows of a wing",
+   "line_width_factors": {
+    "wingL": 1.25,
+    "wingR": 1.25,
+    "banL": 1.2,
+    "banR": 1.2
+   },
+   "banner_lettering": {
+    "left": "SEMPER",
+    "right": "VIGILANS"
+   }
+  },
   "suspension": {
    "bail": {
     "w": 0.092,

@@ -100,6 +100,80 @@
   "hexagon_flats_frame": "top vertex (0.005,-0.343), upper corners (0.3125,-0.186) and (-0.3127,-0.179), lower corners (0.3125,0.1795) and (-0.3127,0.1835), bottom vertex (0,0.352); width across the flats 0.625 in, height 0.695 in; rim lip 0.003 in, bevel bands 0.005 to 0.020/0.026/0.030 in inside the outline (unequal per edge)",
   "emblem_flats_frame": "circle centre (0.0054,-0.172), centre-line radius 0.0755, width 0.0085; equilateral triangle apex (0.0033,-0.2345), base at v -0.1295; hub (0.0042,-0.172); 8 bars at pitch 0.0147",
   "band_flats_frame": "outer -0.2924..0.2941 x -0.0411..0.0711, bar width 0.01; capitals cap height 0.058 in, stroke 0.0085 in, centred at v 0.0165",
+  "shared_die": {
+   "source": "design/lib-b-hex-die.js (geometry of the Exceptional Service photograph, the clearest of the three struck from the same die)",
+   "fit_per_group": {
+    "wingL": {
+     "s": 1.0119,
+     "r": -0.25,
+     "rows": 1,
+     "t": [
+      0.0025,
+      -0.0065
+     ]
+    },
+    "wingR": {
+     "s": 0.9888,
+     "r": -0.66,
+     "rows": 1,
+     "t": [
+      0.0065,
+      -0.0057
+     ]
+    },
+    "banL": {
+     "s": 1.0688,
+     "r": 4.41,
+     "t": [
+      0.0035,
+      0.0022
+     ]
+    },
+    "banR": {
+     "s": 1.0662,
+     "r": -4.45,
+     "t": [
+      -0.0024,
+      0.0127
+     ]
+    },
+    "tail": {
+     "s": 0.975,
+     "r": -0.19,
+     "t": [
+      0.0066,
+      -0.0067
+     ]
+    },
+    "lawL": {
+     "s": 1.0281,
+     "r": 2.99,
+     "t": [
+      0.0037,
+      -0.0025
+     ]
+    },
+    "lawR": {
+     "s": 0.9756,
+     "r": -2.2,
+     "t": [
+      0.0087,
+      -0.002
+     ]
+    }
+   },
+   "fit_note": "s scale, r turn in degrees clockwise, t shift of the group pivot in inches (flats frame); rows = feather rows inserted between the four nested rows of a wing",
+   "line_width_factors": {
+    "wingL": 1.25,
+    "wingR": 1.25,
+    "banL": 1.2,
+    "banR": 1.2
+   },
+   "banner_lettering": {
+    "left": "SEMPER",
+    "right": "VIGILANS"
+   }
+  },
   "suspension": {
    "bail": {
     "w": 0.092,
@@ -157,67 +231,67 @@
    "size": "miniature <= 25 KB, full <= 60 KB"
   },
   "silhouette_iou": 0.9669,
-  "light_class_iou": 0.527,
+  "light_class_iou": 0.468,
   "ink_coverage": [
    {
     "zone": "body",
     "ref_px": 60610,
-    "mine_px": 52604,
-    "ratio": 0.868
+    "mine_px": 53646,
+    "ratio": 0.885
    },
    {
     "zone": "lettering band",
     "ref_px": 14082,
-    "mine_px": 15200,
-    "ratio": 1.079
+    "mine_px": 14993,
+    "ratio": 1.065
    },
    {
     "zone": "emblem circle",
     "ref_px": 6201,
-    "mine_px": 5785,
-    "ratio": 0.933
+    "mine_px": 5754,
+    "ratio": 0.928
    },
    {
     "zone": "wings, banners, head",
     "ref_px": 15320,
-    "mine_px": 13823,
-    "ratio": 0.902
+    "mine_px": 14293,
+    "ratio": 0.933
    },
    {
     "zone": "laurels and tail",
     "ref_px": 16466,
-    "mine_px": 16443,
-    "ratio": 0.999
+    "mine_px": 16776,
+    "ratio": 1.019
    }
   ],
-  "landmarks_checked": 54,
-  "landmark_max_dist_in": 0.0066,
+  "landmarks_checked": 61,
+  "landmark_max_dist_in": 0.0069,
   "landmark_worst": [
    [
-    "banner SEMPER",
-    0.0066
-   ],
-   [
-    "laurel L leaf 0",
-    0.0049
-   ],
-   [
-    "laurel R leaf 2",
-    0.0049
-   ],
-   [
     "laurel L leaf 3",
-    0.0047
+    0.0069
+   ],
+   [
+    "wing L feather 5",
+    0.0049
+   ],
+   [
+    "laurel L leaf 1",
+    0.0049
    ],
    [
     "laurel L leaf 5",
-    0.0044
+    0.0048
+   ],
+   [
+    "laurel L leaf 4",
+    0.0047
    ]
   ],
-  "edge_recall_0p006in": 0.819,
-  "edge_recall_0p012in": 0.899,
-  "edge_precision_0p012in": 0.99,
-  "tone_mae_luminance": 29.2,
+  "edge_recall_0p006in": 0.791,
+  "edge_recall_0p012in": 0.912,
+  "edge_precision_0p012in": 0.987,
+  "tone_mae_luminance": 31.7,
   "ribbon_attach_units": {
    "mine": 31.46,
    "spec_new": [
@@ -232,8 +306,8 @@
   "gate_pass": true,
   "pass": true,
   "not_measurable": [
-   "Letter forms of SEMPER and VIGILANS: the banner faces are about 0.025 in wide (6 px of the photograph) and the letters are textured blobs. The 14 letters are font glyphs spaced evenly along each banner centre line (cap height 0.019 in); their forms and spacing are not measured. The banner plates themselves (outline, ends, size) are placed by measurement.",
-   "Individual feathers of the tail below the two broad caps, and the bow ribbon under them (loops, knot): 2 to 4 px structure. The caps, spine, bow loops and knot are placed by measurement; the fine feather lines are ridge centre lines of the photograph (tail group).",
+   "Letter forms of SEMPER and VIGILANS: the banner faces are about 0.025 in wide (6 px of the photograph) and the letters are 4 to 5 px cells. The straightened banner strips show the six and the eight letters as separate lit cells and both words read on the photograph (the same on the Exceptional photograph), so they are drawn, as font glyphs along the die banner centre line (cap height 0.0175 in, extent as on the Exceptional die: 0.07 to 0.97 of the left banner, 0.02 to 0.98 of the right); the glyph forms and the exact cell pitch are not resolved, and an automatic template match along the strip could not separate the word from shuffled letters (too few pixels per letter), so the cell count rests on reading the strips.",
+   "Feather rows of the wings and the feathers of the tail: 2 to 4 px structure. The die gives four nested rows per wing (seven here with the inserted rows) and two tail sprays of a cap, a rachis and four barb chevrons each (read off the Exceptional photograph, the clearest); the individual barbs, the leg and talon detail and the pennant's edges are not resolved, the groups are placed and scaled by measurement only.",
    "The cast ground between and around the objects: the photograph shows it in brighter and darker patches (about 45 to 95 in luminance) that the lit-class threshold (77) turns into blobs. The gate region (P.sel) is limited to the design envelope; the plain field outside it (corners of the hexagon, the area under the laurels) is left out of the gates.",
    "The ring is drawn as a circle (centre -0.002, -0.568 in the flats frame, radius 0.1705 to the outer edge, 0.031 wide); the photograph shows it slightly tilted and its top is hidden by the ribbon. The bail is a plain rounded block: its specular streak (luminance up to 222) and the small cast pits are not drawn.",
    "A speck above the emblem circle (about u 0.003, v -0.265) and the small cast marks left of the circle are not drawn."
@@ -244,5 +318,5 @@
   "silhouette_iou": 0.9669,
   "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
  },
- "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from meritorious-service.jpeg (reference only, never shipped). Hang angle -0.7 deg of the photograph removed. Hexagon body, lower vertex on the bottom of the miniature box (see FRAME in the generator). Objects: shell with a per-edge bevel (lit upper edges and flats, faint lower edges); suspension (ring, bail); circle emblem (ring, 8 horizontal bars, recessed triangle plate with outline, three-blade propeller); framed band with 11 raised capitals (MERITORIOUS); two banner plates with the curled outer ends drawn as scroll-tail ridges and SEMPER / VIGILANS lettered along them; eagle head (profile plate, recessed eye); two wings of feather ridges; tail (two caps, spine, feather lines, bow); two laurel branches (7 almond leaves each, stem). Ridge-bearing relief (feather rows, scroll tails, tail lines) is drawn from ridge centre lines found by a Steger ridge detector (sigma 0.0013 to 0.0018 in) on the upright photograph, merged into continuous chains (gaps under 0.009 to 0.014 in), each drawn as a stroke of the measured ridge width; leaves are almonds fitted to the enclosed dark interiors; everything else is a modelled shape. The reference masks of ref.js are repaired for this photograph (bronze ring and bail were swallowed by the ribbon flood, the ring hole counted as medal); see the top of the generator."
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from meritorious-service.jpeg (reference only, never shipped). Hang angle -0.7 deg of the photograph removed. Hexagon body, lower vertex on the bottom of the miniature box (see FRAME in the generator). Objects: shell with a per-edge bevel (lit upper edges and flats, faint lower edges); suspension (ring, bail); circle emblem (ring, 8 horizontal bars, recessed triangle plate with outline, three-blade propeller); framed band with 11 raised capitals (MERITORIOUS); eagle head (profile plate, recessed eye); and the shared service-award die: two wings (nested feather rows, 7 rows each here, plus barbs), two scrolled banners (outlined ribbon with scroll end and hook; SEMPER and VIGILANS lettered along the centre line), the lower eagle (two tail sprays, each a rounded cap, a rachis and four nested barb chevrons, between which runs the shaft; the legs and talons; the pennant with two recessed triangles; scalloped wing tips under the band) and two laurel sprays (stem and outlined leaves). The die geometry is the Exceptional medal's (the clearest photograph of the three); each group (wing L/R, banner L/R, tail, laurel L/R) is refitted to this photograph by a scale, a turn and a shift found by correlating the group with the photograph's band-passed luminance (bounded search around the landmark placement, banners turned about 4.4 deg and scaled 1.07, the others within 3 percent and 3 deg) and checked on overlays; the wing rows are the die's four nested rows with one row inserted between each pair (7 counted on the photograph). Line widths are the die's times 1.2 to 1.25 for wings and banners. The reference masks of ref.js are repaired for this photograph (bronze ring and bail were swallowed by the ribbon flood, the ring hole counted as medal); see the top of the generator."
 }
