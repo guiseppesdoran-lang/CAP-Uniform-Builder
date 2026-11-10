@@ -31,6 +31,8 @@
     cap_achievment_award: { devices: 'clasps' },
     national_commander_unit_citation_award: { devices: 'clasps' },
     unit_citation_award: { devices: 'clasps' },
+    // 6b: a repeated Medal of Valor, Silver or Bronze, is the bronze clasp on the ribbon of the first award, not a ribbon for each award.
+    silver_medal_of_valor: { devices: 'clasps' },
     bronze_medal_of_valor: { devices: 'clasps' },
     encampment_ribbon: { devices: 'clasps', per: { encampment: 1 } },
     cap_counterdrug_ribbon: { devices: 'clasps', per: { sortie: 10 } },
@@ -59,7 +61,6 @@
     Air_Force_Organizational_Excellence_Award: { devices: 'olc' },
     air_force_aerial_achievement_medal: { devices: 'olc' },
     air_medal: { devices: 'olc' },
-    silver_medal_of_valor: { devices: 'separate' },
     red_service_ribbon: { devices: 'years' },
     cap_gill_robb_wilson_ribbon: { devices: 'pme' },
     cap_paul_e_garber_ribbon: { devices: 'pme' },
@@ -97,6 +98,8 @@
     if((m = /mcchord_level_(\d+)/.exec(value))) return num(m[1]);
     if((m = /^find_(\d+)$/.exec(value))) return num(m[1]);
     if((m = /^count_(\d+)$/.exec(value))) return num(m[1]);
+    // A setup saved when repeated Silver Medals of Valor were separate ribbons: "silver_valor_2" ("2 Silver Medals of Valor") is two awards, so one bronze clasp (6b).
+    if(id === 'silver_medal_of_valor' && ((m = /^silver_valor_(\d+)$/.exec(value)) || (m = /\b(\d+)\s+Silver\s+Medals?\b/i.exec(label)))) return Math.max(1, num(m[1]));
     if(fam.per){
       for(const key of Object.keys(fam.per)){
         const re = new RegExp('([\\d,]+)\\s+(?:orientation\\s+)?' + key, 'i');
@@ -265,11 +268,6 @@
     if(fam.once) return one([]);
 
     switch(fam.devices){
-      case 'separate': {
-        const m = /silver_valor_(\d)/.exec(value) || /(\d)\s+Silver Medals?/i.exec(label);
-        const n = Math.max(1, Number(m && m[1]) || readCount(id, value, label) || 1);
-        return Array.from({ length: n }, () => ({ devices: [], centered: false }));
-      }
       case 'years': {
         const m = /(\d+)\s*years?/i.exec(label) || /years_(\d+)/.exec(value);
         const years = m ? Number(m[1]) : 2;

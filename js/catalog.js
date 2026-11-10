@@ -748,8 +748,6 @@ const RIBBON_SPECIAL_IMAGE_OPTIONS = {
   ]
 };
 
-const SILVER_MEDAL_OF_VALOR_MAX_RIBBONS = 3;
-
 function ribbonImageOptionList(id){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[id] || null;
   if(!special) return null;
@@ -765,14 +763,6 @@ function getRibbonImagePath(ribbonOrId){
   if(isRotcRibbonId(id)) return (window.CAPUBAssetIndex && CAPUBAssetIndex[ROTC_RIBBONS.get(id).asset]) || '';
   // The measured ribbon artwork (images/ribbons); devices are drawn on it by the engine.
   return (window.CAPUBAssetIndex && CAPUBAssetIndex['ribbon-' + String(normalizeRibbonId(id)).replace(/_/g, '-')]) || '';
-}
-
-function getRibbonDuplicateCountForSelection(id, awardValue){
-  if(id === 'silver_medal_of_valor'){
-    if(awardValue === 'silver_valor_2') return 2;
-    if(awardValue === 'silver_valor_3') return 3;
-  }
-  return 1;
 }
 
 // Whether a ribbon has a miniature medal to show (the medal body's sheet, CAP medals; a medal of any kind that is not a ribbon-only award, U.S.

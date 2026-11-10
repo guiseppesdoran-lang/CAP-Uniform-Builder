@@ -486,7 +486,7 @@ test('a cadet report: Medals of Valor, DSA, the cadet-of-the-year awards, IACE, 
     'AFSA Award to Unit Cadet NCO of the Year 01 Jan 2022', 'VFW Outstanding Cadet Officer of the Year Award 01 Jan 2024', 'VFW Outstanding Cadet NCO of the Year Award 01 Jan 2022'])
     .replace('Activity/Service Ribbon', 'Activity/Service Ribbon\nNational Cadet Competition Ribbon 01 May 2024\nNational Color Guard Competition Ribbon 01 May 2023\nSearch "Find" Ribbon 01 Jan 2023\nSearch "Find" Ribbon 01 Jan 2024')
     .replace('NCSA Cyber Defense 12 Jul 2023', 'NCSA Cyber Defense 12 Jul 2023\nInternational Air Cadet Exchange (IACE) 20 Jul 2024'));
-  assert.deepEqual(r.devices('silver_medal_of_valor'), [{ devices: [], centered: false }, { devices: [], centered: false }], 'two awards, two ribbons');
+  assert.deepEqual(r.devices('silver_medal_of_valor'), [{ devices: ['clasp-bronze'], centered: false }], 'two awards: one ribbon with one bronze clasp, as the Bronze Medal of Valor (CAPR 39-3 6b)');
   assert.deepEqual(r.devices('bronze_medal_of_valor'), [{ devices: ['clasp-bronze'], centered: false }]);
   for(const id of ['distinguished_service_award', 'afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award', 'iace_ribbon',
     'national_cadet_competition_ribbon', 'national_color_guard_competition_ribbon']){
@@ -507,19 +507,38 @@ test('every value the importer returns for the newly read ribbons resolves to a 
     'air_force_aerial_achievement_medal', 'air_search_and_rescue_ribbon', 'cap_counterdrug_ribbon', 'homeland_security_ribbon', 'cap_cadet_orientation_pilot_ribbon', 'iace_ribbon'];
   for(let n = 1; n <= 7; n++){
     for(const id of counted) entries.push({ id, expr: `importedCountedAwardValue(${n})`, n, prop: false });
-    if(n <= 3) entries.push({ id: 'bronze_medal_of_valor', expr: `importedCountedAwardValue(${n})`, n, prop: false });
+    if(n <= 3) for(const id of ['silver_medal_of_valor', 'bronze_medal_of_valor']) entries.push({ id, expr: `importedCountedAwardValue(${n})`, n, prop: false });
     for(const id of ['air_search_and_rescue_ribbon', 'search_find_ribbon']) entries.push({ id, expr: `importedCountedAwardValue(${n}, true)`, n, prop: true });
   }
   for(const row of importValueResolutions(entries)) assertResolvesToCount(row, row.n, [['propeller-bronze', row.prop]]);
+  // Both Medals of Valor: one ribbon, a bronze clasp for each award after the first (39-3 6b), never a ribbon for each award.
   for(let n = 1; n <= 3; n++){
-    const [row] = importValueResolutions([{ id: 'silver_medal_of_valor', expr: `importedCountedAwardValue(${n})` }]);
-    assert.ok(row.real);
-    assert.equal(RA.resolve('silver_medal_of_valor', { awardValue: row.optionValue, awardLabel: row.optionLabel }).length, n, `${n} Silver Medals of Valor`);
+    for(const id of ['silver_medal_of_valor', 'bronze_medal_of_valor']){
+      const [row] = importValueResolutions([{ id, expr: `importedCountedAwardValue(${n})` }]);
+      assert.deepEqual(RA.resolve(id, { awardValue: row.optionValue, awardLabel: row.optionLabel }).map(p => p.devices), [Array(n - 1).fill('device-clasp-bronze')], `${n} ${id}`);
+    }
   }
   // A fourth Medal of Valor row: the picker offers three awards, so the third is imported and the import says so.
   const four = runImport(cadetWith('Decorations', [1, 2, 3, 4].map(y => `Bronze Medal of Valor 01 Jan 202${y}`)));
   assert.equal(four.selected.bronze_medal_of_valor.awardLabel, '3rd Award');
   assert.ok(four.parsed.notes.some(n => /^4 Bronze Medal of Valor records found; the ribbon picker offers at most 3/.test(n)));
+  // The Silver Medal of Valor the same: the third award is two bronze clasps on the one ribbon, a fourth row is the picker's limit.
+  const silver = runImport(cadetWith('Decorations', [1, 2, 3, 4].map(y => `Silver Medal of Valor 01 Jan 202${y}`)));
+  assert.equal(silver.selected.silver_medal_of_valor.awardLabel, '3rd Award');
+  assert.deepEqual(silver.devices('silver_medal_of_valor'), [{ devices: ['clasp-bronze', 'clasp-bronze'], centered: false }]);
+  assert.ok(silver.parsed.notes.some(n => /^4 Silver Medal of Valor records found; the ribbon picker offers at most 3/.test(n)));
+});
+
+// The Silver Medal of Valor was once drawn as a separate ribbon for each award ("silver_valor_2", "silver_valor_3"). A report parsed or a setup saved
+// then still names those values; each is the same number of awards on the one ribbon, a bronze clasp for each later award (CAPR 39-3 6b), as the Bronze.
+test('an import value of the old separate-ribbon Silver Medal of Valor lands on the option with that many awards, one ribbon with clasps (CAPR 39-3 6b)', () => {
+  const rows = importValueResolutions([1, 2, 3].map(n => ({ id: 'silver_medal_of_valor', expr: `'silver_valor_${n}'`, n })));
+  for(const row of rows){
+    assert.ok(row.real, `silver_valor_${row.n} lands on a real option`);
+    assert.equal(RA.readCount('silver_medal_of_valor', row.optionValue, row.optionLabel), row.n, `silver_valor_${row.n}: ${row.optionLabel}`);
+    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: row.optionValue, awardLabel: row.optionLabel }).map(p => p.devices), [Array(row.n - 1).fill('device-clasp-bronze')]);
+  }
+  assert.deepEqual(rows.map(row => row.optionLabel), ['Basic Award', '2nd Award', '3rd Award']);
 });
 
 // CAPR 39-1 11.1.4 (a senior may wear some or all earned medals on the mess dress and the corporate semi-formal; Ethan: "yes milestones as

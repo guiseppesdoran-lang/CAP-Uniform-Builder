@@ -185,6 +185,8 @@ function importedAwardCountFromValue(value){
   if((m = /^find_(\d+)$/i.exec(v))) return Number(m[1]);
   if((m = /^hours_(\d+)$/i.exec(v))) return Math.max(1, Math.round(Number(m[1]) / 60));
   if((m = /^capub_total_(\d+)$/i.exec(v))) return Number(m[1]);
+  // The Silver Medal of Valor's value from before its later awards were a clasp: "silver_valor_3" is three awards.
+  if((m = /^silver_valor_(\d+)$/i.exec(v))) return Math.max(1, Number(m[1]));
   let additional = 0;
   const re = /(silver|bronze)_(?:clasp|star)_(\d+)/gi;
   while((m = re.exec(v))) additional += (m[1].toLowerCase() === 'silver' ? 5 : 1) * Number(m[2]);
@@ -1175,8 +1177,8 @@ function memberReportAwardRowSays(text, pattern, says){
   return false;
 }
 
-// Count ribbons the report lists one row per award, the award with its CAPR 39-3 devices: clasps for the
-// later awards, or for the Silver Medal of Valor a separate ribbon each. Ribbons earned once (`once`) carry no clasp.
+// Count ribbons the report lists one row per award, the award with its CAPR 39-3 devices: a bronze clasp for each
+// later award (6b), the Medals of Valor included. Ribbons earned once (`once`) carry no clasp.
 // `aircrew` adds the propeller when a row says aircrew or propeller.
 const MEMBER_REPORT_COUNTED_AWARDS = [
   { id:'silver_medal_of_valor', name:'Silver Medal of Valor', re:/\bSilver\s+Medal\s+of\s+Valor\b/i },

@@ -511,6 +511,14 @@ function getRibbonSelectionOption(id, value){
     if(found) return found;
   }
 
+  // A setup saved when repeated Silver Medals of Valor were separate ribbons ("silver_valor_2", "silver_valor_3") takes the choice with
+  // that many awards: the later awards are the bronze clasp on the one ribbon now (CAPR 39-3, 6b).
+  const legacyValor = id === 'silver_medal_of_valor' && /^silver_valor_(\d+)$/.exec(String(value || ''));
+  if(legacyValor){
+    const found = awardOption(Number(legacyValor[1]));
+    if(found) return found;
+  }
+
   if(id === 'cadet_advisory_council_ribbon'){
     if(value === 'group') return labelMatch(/^Basic Award$/i) || usable[0];
     if(value === 'wing_bronze_star') return labelMatch(/^Bronze Star$/i) || usable[0];
@@ -782,6 +790,15 @@ function normalizeRibbonSelections(){
           }
         }
       }
+      // A setup saved when repeated Silver Medals of Valor were separate ribbons keeps its number of awards: it takes the choice for
+      // that many (one bronze clasp for the second, two for the third, CAPR 39-3, 6b).
+      if(id === 'silver_medal_of_valor' && /^silver_valor_\d+$/.test(String(State.ribbonSelections[id].awardValue || ''))){
+        const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
+        if(opt?.value){
+          State.ribbonSelections[id].awardValue = opt.value;
+          State.ribbonSelections[id].awardLabel = opt.label || '';
+        }
+      }
       if(State.ribbonSelections[id].awardLabel === undefined){
         const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
         State.ribbonSelections[id].awardLabel = opt?.label || '';
@@ -827,10 +844,8 @@ function rebuildRibbonsFromGallery(){
     if(CAPUB_SHARED_RIBBON_SLOTS.some(group => group.includes(id) && group.some(other => other !== id && State.ribbonSelections[other]?.checked && precedence(other) < precedence(id)))) continue;
 
     // compute stacks needed due to caps or special rules.
-    // Silver Medal of Valor has no device for multiple awards in this builder;
-    // it renders as multiple separate ribbons, capped at three.
     let militaryInstances=null;
-    let stacks = getRibbonDuplicateCountForSelection(id, sel.awardValue || '');
+    let stacks = 1;
     if(isMilitaryRibbonId(id)){
       militaryInstances=window.CAPUBMilitary?.splitRibbonAwardInstances?.({
         award:getMilitaryRibbonAward(id),service:getMilitarySelectionService(id,sel),awardCount:sel.awardCount || 1,
