@@ -87,6 +87,38 @@ test('order: federal awards (AAF Air Medal, then the Aerial Achievement Medal), 
   assert.deepEqual(order, ['air_medal', 'air_force_aerial_achievement_medal', 'Air_Force_Organizational_Excellence_Award', 'meritorious_service_award', 'cap_achievment_award']);
 });
 
+// The Air Medal and the Aerial Achievement Medal of the CAP list are federal awards: among the military-catalog ribbons they stand where the military order puts the same award, not
+// behind every one of them (39-1 11.2.1: federal awards first). The Air Medal follows the Legion of Merit, the Distinguished Flying Cross and the Bronze Star and comes before
+// the commendation medals; the Aerial Achievement Medal follows it, before the commendation and achievement medals.
+test('order: the CAP list\'s Air Medal and Aerial Achievement Medal take their place among the military ribbons, not behind them all (39-1 11.2.1)', () => {
+  const sort = ids => Array.from(ev(`sortRibbons(${JSON.stringify(ids.map(id => ({ id })))}).map(r => r.id)`));
+  const mil = id => 'military:' + id;
+  const expected = [mil('legion_of_merit'), mil('bronze_star_medal'), 'air_medal', 'air_force_aerial_achievement_medal', mil('air_and_space_commendation_medal'), mil('army_achievement'), 'Air_Force_Organizational_Excellence_Award', 'meritorious_service_award', 'cap_achievment_award'];
+  for(const id of expected) if(id.startsWith('military:')) assert.ok(ev(`getMilitaryRibbonAward(${JSON.stringify(id)})`), id + ' is in the military catalog');
+  // Every starting order gives the same line.
+  const rotate = (list, n) => list.slice(n).concat(list.slice(0, n));
+  for(let n = 0; n < expected.length; n++) assert.deepEqual(sort(rotate(expected, n)), expected, 'rotated by ' + n);
+  assert.deepEqual(sort([...expected].reverse()), expected, 'reversed');
+  // An Air Force Commendation Medal no longer comes ahead of the Air Medal; the two stand where the catalog's own Air Medal does.
+  assert.deepEqual(sort([mil('air_and_space_commendation_medal'), 'air_medal']), ['air_medal', mil('air_and_space_commendation_medal')]);
+  assert.deepEqual(sort([mil('air_and_space_commendation_medal'), 'air_force_aerial_achievement_medal']), ['air_force_aerial_achievement_medal', mil('air_and_space_commendation_medal')]);
+  assert.deepEqual(sort([mil('joint_service_commendation'), mil('air_medal'), 'air_medal']), [mil('air_medal'), 'air_medal', mil('joint_service_commendation')], 'level with the catalog\'s own Air Medal, the military ribbon first');
+  assert.deepEqual(sort([mil('meritorious_service'), 'air_medal']), [mil('meritorious_service'), 'air_medal'], 'a decoration above the Air Medal stays above it');
+});
+
+test('order: the military ribbons keep their own order and every military ribbon still comes before the AFOEA and the CAP ribbons (nothing else moves)', () => {
+  const sort = ids => Array.from(ev(`sortRibbons(${JSON.stringify(ids.map(id => ({ id })))}).map(r => r.id)`));
+  const ids = ev('getMilitaryRibbonIds()').slice(0, 60);
+  assert.ok(ids.length > 40);
+  const shuffled = [...ids].reverse();
+  assert.deepEqual(sort(shuffled), sort(ids), 'the military ribbons alone sort the same from any start');
+  const withCap = sort([...shuffled, 'cap_achievment_award', 'Air_Force_Organizational_Excellence_Award', 'meritorious_service_award']);
+  assert.deepEqual(withCap.slice(0, ids.length), sort(ids));
+  assert.deepEqual(withCap.slice(ids.length), ['Air_Force_Organizational_Excellence_Award', 'meritorious_service_award', 'cap_achievment_award']);
+  // The two CAP-list federal ribbons keep their order to each other, and the CAP ribbons keep theirs.
+  assert.deepEqual(sort(['air_force_aerial_achievement_medal', 'air_medal']), ['air_medal', 'air_force_aerial_achievement_medal']);
+});
+
 // ---- ribbons repeated by the bronze clasp -----------------------------------------------------------------------
 
 test('the IACE ribbon takes a bronze clasp for each later award, a silver clasp for five (39-3 6b)', () => {
