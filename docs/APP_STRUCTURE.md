@@ -1,132 +1,103 @@
 # App structure
 
-The builder is a static site: no bundler and no server-side code. Open `index.html` over any
-static server to run it from the repository. To publish it, `npm run build` produces `dist/`,
-the only directory that should be web-served (see `deploy/README.md`).
+The builder is a static site. There is no bundler and no transform: the files in the repository are the files the browser runs. `npm run build` copies the ones the page needs into `dist/`, which is the only directory to publish. Beside the static site runs one small Node service, `deploy/api`, for usage counts, feedback and an admin page.
 
-## What lives where
+## How a uniform is drawn
 
-| Path | Role |
+1. `js/state.js` holds the page state (`State`): membership, rank, gender, uniform, garment options, ribbons, badges, patches and shoulder cord.
+2. `js/uniform-view.js` turns the state into a `build`. The shape of a build is written at the top of `js/engine/profiles.js`.
+3. `composeUniform(build, store)` in `js/engine/profiles.js` finds the uniform's profile, which names its garment, its layers and its slots, and returns a scene: layers, bounds and notes, in inches, with the base garment's box as the origin. The shared placing helpers are in `js/engine/compose.js`. Nothing is placed by pixel coordinates.
+4. `js/engine/render-svg.js` draws the scene as one inline `<svg>` in `#uniformCanvas` and exports the same drawing as a PNG.
+5. `js/asset-packs.js` supplies the artwork specs. In the source tree it fetches `images/MANIFEST.json` and each `.spec.json`. In the built site it fetches a slim manifest and one pack per uniform and cut, so a uniform costs one request.
+
+## The engine (`js/engine/`)
+
+| File | Role |
 | --- | --- |
-| `index.html` | Markup only (~640 lines): header, sidebar panels grouped by step, preview, modals. No inline scripts. |
-| `styles/app.css` | The one stylesheet. Layers run base -> polish overrides -> utilities; later rules win. |
-| `js/*.js` | The application script, split along the section banners it always had. |
-| `config.js` | Per-deployment settings, loaded first. Only `submissionEndpoint` (empty = submissions off). Never put secrets here. |
-| `data/*.js` | Calibration corrections, the CAP unit list and `uniform-rules.js`, loaded before the app scripts. |
-| `data/uniform-rules.js` | One table of what each uniform allows (who may wear it, ribbons required/optional/none, miniature medals, rack columns, badge limit, U.S. military awards), each rule with its CAPR 39-1 paragraph. The sidebar, the renderer and the validator read from it; `tests/uniform-rules.test.cjs` states every value against its paragraph of CAPR 39-1 (and the ICL 26-14 OCP instructions) and pins it to the buttons in `index.html`. A cadet aged 18 or older who does not meet the USAF weight standard reaches the Corporate-style uniforms through the `adultCadet` rule (1.2.5.2); uniforms the regulation allows but the builder does not draw are listed in `NOT_MODELLED`. |
-| `military/*.js` | U.S. military award and badge catalog (`military-data.js`, generated, 189 awards and 127 badges), its rules (`military-core.js`) and device layout. CAP members who earned U.S. military awards can add them in the ribbon and badge galleries. There is no separate service builder. A ribbon award with no artwork is not offered (the Coast Guard Cross today; it appears on its own once `images.ribbon` exists for it). Military badges show on dress uniforms only, until there is artwork for field uniforms. |
-| `images/military-*`, `images/devices/military/` | Artwork for those awards and badges. |
-| `vendor/pdfjs/` | pdf.js 3.11.174 (Apache-2.0), loaded on first member-report PDF import. |
-| `purchase-feature*.js`, `calibration-submission.js`, `patch-submission.js`, `ocp-patch-variants.js` | Feature scripts loaded after the app. The two submission scripts do nothing unless `config.js` sets an endpoint. |
-| `google-apps-script/Code.gs` | Optional submission endpoint (patch images, calibration updates), deployed separately; see `PATCH_SUBMISSION_SETUP.md`. |
-| `deploy/` | nginx and Caddy examples with the security headers, and a short deployment guide. |
-| `scripts/` | Build, asset-stamping, image and test tooling (Node and Python). Not part of the page. |
-| `tests/` | `npm test` (Node's built-in runner). |
+| `core.js` | Asset specs and placement primitives. Every asset is an SVG sized in inches, with a viewBox of 0.01 in per user unit, and a `.spec.json` of anchors (points) and landmarks (rectangles or polygons). A piece is placed by putting one of its anchors on a point of the garment. |
+| `awards.js` | Ribbon devices, the ribbon rack and miniature medals (CAPR 39-3). |
+| `grades.js` | What a member's grade means for the insignia worn. |
+| `compose.js` | The shared placing helpers, so a rule such as a badge's distance above the ribbons is written once. |
+| `profiles.js` | The profile registry, `composeUniform`, the shape of a build and the helpers the profiles share. |
+| `profiles-field.js` | Field uniforms: OCP, ABU and Corporate Field Uniform. |
+| `profiles-dress.js` | Dress and service uniforms: the USAF-style blues, mess dress, semi-formal, aviator shirt, blazer and Corporate Semi-Formal. |
+| `profiles-polo.js` | The Corporate Working Uniform polo. |
+| `measure-layout.js` | The measurement overlay: the regulation distances drawn as dimension lines. |
+| `render-svg.js` | Draws a scene as SVG and exports a PNG. It needs a browser. |
 
-## Developer mode
+Every other engine file also loads in Node, which is how the tests compose scenes with no browser. Paragraph numbers in the engine are CAPR 39-1, with the ICLs through 26-04.
 
-The calibrator (the CAL tab) is a development tool. It is hidden unless the page is opened
-with `?dev=1`; there is no password in the page. Calibration data itself (`js/calibration.js`)
-is part of normal rendering and is not affected. If a deployment sets a submission endpoint,
-dev mode also shows "Submit Calibration Update", which asks for an admin key that the server
-checks.
+## Rule and catalog data
 
-## Privacy and data
+| Path | What |
+| --- | --- |
+| `data/uniform-rules.js` | One table of what each uniform allows: who may wear it, ribbons required, optional or none, miniature medals, rack columns, badge limit, U.S. military awards. Each rule carries its CAPR 39-1 paragraph. The sidebar, the engine and the validator read it. `tests/uniform-rules.test.cjs` states every value against its paragraph and checks the sidebar buttons in `index.html`. `NOT_MODELLED` is where uniforms the regulation allows but the builder does not draw are listed. It is empty today. |
+| `data/ribbon-awards.js` | Which devices a CAP ribbon carries, from what the member earned (CAPR 39-3). |
+| `data/badge-catalog.js` | Each badge the pickers offer, with its CAPR 39-1 Attachment 4 family and its artwork per kind of uniform. |
+| `data/unit-options.js` | The CAP unit list used by the unit patch picker. |
+| `data/rotc-ribbons.js`, `data/military-badge-sizes.js`, `data/military-medals.js` | Generated by scripts in `scripts/` from the artwork and the military catalog. |
+| `data/patch-art.js`, `data/unit-patch-art.js` | Generated: which picture each patch and unit emblem uses. |
+| `data/asset-index.js` | Generated: every artwork id with its path, and a version hash of `images/`. |
+| `military/` | The U.S. military award and badge catalog (`military-data.js`), its rules (`military-core.js`) and device layout. CAP members who earned U.S. military awards add them in the ribbon and badge pickers. |
+| `mcchord-ribbon-variants.js` | Ribbon option labels and values mirrored from McChord's senior rack builder. See `docs/MCCHORD_ASSET_STANDARD.md`. |
+| `purchase-catalog.js` | Vendor product links, item numbers and prices for the shopping list. `purchase-feature-core.js` builds the list from the drawn uniform and reads this file. |
+| `member-report-rules.js`, `js/member-report-import.js` | Reading a CAP member report (PDF or text). pdf.js loads from `vendor/pdfjs/` on the first PDF import. |
+| `config.js` | Per-deployment settings: `submissionEndpoint` (empty means patch submissions are off), `metrics` and `feedback`. It is served to every visitor, so it holds no secrets. |
 
-The page keeps everything in the browser. The setup is autosaved to localStorage a moment after
-every change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a
-Resume prompt on the next visit; it is never loaded silently. Named saves live in localStorage
-too (Save to Browser), and nothing is uploaded when a PNG is downloaded. The only outbound traffic is the optional
-submission endpoint, and only when someone sends a patch image or an administrator submits a
-calibration. Saved or imported setups are validated by `sanitizeProfile()` in `js/wiring.js`
-before they touch the page state; values that go into HTML pass through `escapeHtml()`.
+## Artwork (`images/`)
 
-## Building and serving
+The artwork is SVG made by this project. The exceptions are the official unit emblems (PNG) and the CAP seal, which are taken as given. `images/MANIFEST.json` lists every asset. A `.spec.json` beside most files records its size and where the size came from, its anchors and landmarks, and often its generator and reference. `images/ASSETS.md` states the conventions. `NOTICE.md` says where the artwork came from. The only raster files published are the unit emblems under `images/patches/<id>/<id>.png`, and `tests/no-raster.test.cjs` fails if a build publishes any other.
+
+## Page scripts and load order
+
+`index.html` loads every script with `defer`, so they run in document order after the page is parsed. They are classic scripts that share one global scope, and later ones read what earlier ones define. A new tag must keep `src` first and carry `defer` (`tests/script-tags.test.cjs`). The order is:
+
+1. `js/access-gate.js`, a plain script in `<head>`, so a returning member never sees the gate.
+2. `config.js`, `purchase-catalog.js`, `mcchord-ribbon-variants.js`, `member-report-rules.js`, `ribbon-layout.js`.
+3. `military/military-core.js`, `military-device-layout.js`, `military-data.js`.
+4. `data/*.js`: `unit-options`, `uniform-rules`, `military-badge-sizes`, `military-medals`, `patch-art`, `unit-patch-art`, `asset-index`, `ribbon-awards`, `rotc-ribbons`, `badge-catalog`.
+5. `js/engine/*.js`: `core`, `awards`, `grades`, `compose`, `profiles`, `profiles-field`, `profiles-dress`, `profiles-polo`, `measure-layout`, `render-svg`.
+6. `badge-captions.js`, `export-names.js`.
+7. The page code, in this order: `js/state.js`, `badge-rules.js`, `dom-assets.js`, `catalog.js`, `setup.js`, `render-core.js`, `galleries.js`, `placement.js`, `asset-packs.js`, `uniform-view.js`, `garment-options.js`, `wiring.js`, `placement-stl.js`, `placement-templates.js`, `workspace-ui.js`, `measure-panel.js`, `citations.js`, `planned-uniforms.js`, `guided-flow.js`, `member-report-import.js`.
+8. The feature scripts `js/telemetry.js` and `js/feedback.js`.
+9. `js/bootstrap.js`, which does the first render.
+10. `js/patches.js`, then `purchase-feature-core.js`, `purchase-feature.js`, `patch-submission.js`, `ocp-patch-variants.js`.
+
+`js/patches.js` holds dated patches that wrap functions defined in earlier files. Do not reorder it, and do not move code out of the earlier files into it without checking what it wraps. `js/guided-flow.js` is empty on purpose and stays so the page's script list does not change. `tests/helpers/page-scripts.cjs` loads the scripts in the order `index.html` lists them.
+
+## Server code (`deploy/api`)
+
+`uniform-api` is a Node service with no dependencies, so there is no `npm install`.
+
+| File | Role |
+| --- | --- |
+| `server.js` | The entry point. It reads its settings from the environment. |
+| `service.js` | The routes, the limits, sign-in and rate limiting. |
+| `store.js` | Storage: append-only JSON Lines files in `DATA_DIR`, one events file per month and one feedback file. There is no database. |
+| `metrics.js` | The numbers the admin page shows, as pure functions over the stored events. |
+| `pages.js`, `public/` | The admin page, its script and its style. |
+
+It answers `POST /api/events` (from `js/telemetry.js`), `POST /api/feedback` (from `js/feedback.js`), `GET /api/health`, and `/admin` behind a password. No IP address is stored. `deploy/README.md` lists the routes, the settings, the data files and how to deploy. `tests/api.test.cjs` starts the service on a temporary data directory. Never create `deploy/var` or `deploy/.env` in a checkout.
+
+`js/telemetry.js` sends events named `visit`, `build`, `png_download`, `import`, `remove_ribbons`, `templates`, `shopping_open`, `feedback_sent`, `uniform_switch`, `setup_file` and `error`. It never sends a name, CAPID, nameplate text, unit charter or member report contents or file names.
+
+The optional `google-apps-script/Code.gs` is a separate endpoint for patch image submissions. See `PATCH_SUBMISSION_SETUP.md`.
+
+## What the page stores
+
+The setup is autosaved to localStorage a moment after each change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a Resume prompt on the next visit. It is never loaded silently. "Save to browser" keeps one deliberate save under its own localStorage key, separate from the autosave, and a setup can be saved to and opened from a JSON file. Setups loaded from storage or a file pass through `sanitizeProfile()` in `js/wiring.js`, and values that go into HTML pass through `escapeHtml()` in `js/dom-assets.js`. A member report is read in the browser and not sent anywhere.
+
+## Building, stamps and caching
 
 ```bash
-npm run build        # dist/ = runtime files only, with a Content-Security-Policy <meta> fallback
-npm run serve:dist   # preview dist/ at http://127.0.0.1:8780 with the real security headers
+npm run build        # dist/: runtime files only, a Content-Security-Policy meta tag, artwork packs, .br and .gz copies
+npm run serve:dist   # preview dist/ on port 8780, this machine only, with the real security headers
 ```
 
-The policy lives in `scripts/csp.cjs` and is the single source for the build, the preview
-server, the deploy examples and `tests/security.test.cjs`.
+`scripts/csp.cjs` is the single source of the Content-Security-Policy for the build, the preview server, the deploy examples and `tests/security.test.cjs`. `scripts/cache-policy.cjs` does the same for cache lifetimes.
 
-## Load order (it matters)
+Every local `<script src>` and the stylesheet link in `index.html` carry `?v=<content hash>`. After editing any of those files, run `npm run stamp:assets`. `npm run check:assets` exits 1 if a stamp is stale, `tests/asset-stamps.test.cjs` makes the same check, and `npm run build` stops on it. Artwork URLs carry the version hash from `data/asset-index.js` (the `ASSET()` helper in `js/dom-assets.js` adds it). After changing anything under `images/`, run `node scripts/build-asset-index.cjs`.
 
-All `js/` files are classic scripts that share one global scope, exactly as the
-old single inline script did. They must stay in this order:
+## Tests
 
-1. `config.js` (root) - deployment settings; the `military/*.js` catalog scripts; `data/uniform-rules.js` - the uniform rule table; then `js/state.js` - global state, the ?dev switch, rank data, placement constants
-2. `js/calibration.js` - default and master calibration data
-3. `js/dom-assets.js` - DOM shortcuts, asset path helpers
-4. `js/catalog.js` - uniforms, ribbons, devices, badges, patches
-5. `js/setup.js` - selects, sidebar toggle, setup flow, authorization
-6. `js/render-core.js` - jacket and ribbon/medal rendering
-7. `js/galleries.js` - ribbon, badge and patch galleries
-8. `js/placement.js` - badge/patch placement and the render pipeline
-9. `js/wiring.js` - event wiring, calibrator UI, modal gallery, PNG export
-10. `js/workspace-ui.js` - step guide, preview toolbar/zoom, empty state, command bar
-10a. `js/guided-flow.js` - the one-step-at-a-time sidebar, only when the page is opened with `?ux=2`
-11. `js/member-report-import.js` - CAP member report parser and importer
-12. `js/bootstrap.js` - first render
-13. `js/patches.js` - dated patches that deliberately re-wrap earlier functions
-
-`js/patches.js` wraps functions defined earlier (for example `parseCapMemberReport`
-is wrapped four times). Do not reorder it, and do not move code out of the
-earlier files into it without checking what it wraps.
-
-## Cache-busting
-
-Every local `<script src>` and the stylesheet carry `?v=<content hash>`. After
-editing any of them run:
-
-```bash
-npm run stamp:assets
-```
-
-`npm test` fails (`tests/asset-stamps.test.cjs`) if a stamp is stale, so a changed
-file cannot ship under an old URL.
-
-## Images
-
-Artwork is WebP, sized to how large it is actually drawn. Source PNGs are not
-kept. `scripts/optimize-images.py` re-encodes new artwork (`--dry-run`, `--apply`,
-`--rewrite-code`; needs Pillow). Path literals in code may name `.png`; the
-loader probes `.webp` first and falls back, but a literal that names a file which
-no longer exists costs a 404 per image, so rewrite it to `.webp`.
-
-## Tests that read source
-
-Several tests assert on source text. They read the page plus every `js/` file
-through `tests/helpers/app-source.cjs`, so moving code between files does not
-break them.
-
-## Ribbon rack regression harness
-
-`scripts/visual-harness.html` drives the real builder in an iframe and records a
-structural manifest of every CAP ribbon family and award level (which image,
-where, how large, in what order). `scripts/baseline.tsv` is that manifest for
-the current code (244 families, 5,408 entries: the 1,712 CAP entries plus the
-U.S. military awards, regenerated 2026-10-09 when the military menus came back).
-
-To check a change, serve the repo, open `scripts/visual-harness.html` and run
-`compareToBaseline()` in the console. `clean: true` means every rack entry is
-structurally identical. If a layout change is intentional, review the reported
-differences, then regenerate the baseline: run `runHarness()`, serialise it with
-`toRows()` in the same TSV shape as the existing file, and replace
-`scripts/baseline.tsv`.
-
-For a before/after comparison of two commits, serve both checkouts under one
-origin (for example `/old/` and `/new/`), capture each, keep the rows in
-`localStorage`, and diff the two maps. On 2026-10-08 this showed the stylesheet,
-script split and UI work left all 5,408 entries (CAP and military) unchanged, and
-that removing the military builder left all 1,712 CAP entries unchanged.
-
-The default structural pass needs no visible pane; the optional pixel pass does.
-
-## Placement regression harness
-
-`scripts/placement-harness.html` does the same for badges, patches, shoulder cords and base
-jackets: 7,548 scenarios across every uniform, cut and membership type, compared with
-`scripts/placement-baseline.tsv` by `comparePlacement()`. See `docs/CALIBRATION.md` for how
-placement is decided and how to read a difference.
+`npm test` runs `tests/*.test.cjs` with Node's built-in runner. Tests that assert on source text read `index.html` and every file directly in `js/` through `tests/helpers/app-source.cjs`, so moving code between those files does not break them. `tests/*-browser.cjs` need headless Chrome and are not part of `npm test`.

@@ -1,38 +1,24 @@
-# McChord Asset Standard
+# McChord ribbon option data
 
-Measured on 2026-08 from the unmodified local McChord master assets. The measuring script and its per-file report were removed with the military builder, so the figures below are a snapshot.
+`mcchord-ribbon-variants.js` holds the option lists for 30 CAP ribbon families (634 options). Its first line says it is generated from McChord's senior rack builder. It holds labels, values and ribbon counts. It holds no images, and no McChord image is in this repository.
 
-## Scope and provenance
+Each option has:
 
-- Ribbon masters are the 409 unique image files referenced by `mcchord-ribbon-variants.js` and present in `images/ribbons/`.
-- Miniature-medal masters are the 433 local files in `images/mini_medals/mcchord/`.
-- The script measures geometry, alpha coverage, saturation, luminance contrast, and edge energy without modifying source artwork.
-- Commercial product images are **not** master artwork and are never used at runtime.
+- `label`, the text in the picker, such as "Basic Award" or "2nd Award".
+- `value`, which is `mcchord_` and the builder's option code.
+- `devices`, an empty object. Devices are drawn by the engine.
+- `duplicates`, only on an option that takes more than one ribbon. One entry is one additional ribbon.
 
-## Ribbon baseline
+## How it is made
 
-- Most common dimensions: `[{'width': 100, 'height': 30, 'count': 409}]`
-- Median aspect ratio: 3.3333
-- Median alpha coverage: 1.0
-- Median saturation: 171.82
-- Median luminance contrast: 62.27
-- Median edge energy (sharpness proxy): 84.67
+`scripts/sync_mcchord_ribbon_variants.py` writes the file whole. It reads the builder's senior ribbon form, collects the dropdown options for each ribbon, and asks the builder for each option's output to count how many ribbon images it produces. It reads the image addresses only and downloads no image. It uses only the Python standard library and needs network access. Do not edit the file by hand.
 
-Builder display geometry is normalized to a 100 × 30 pixel ribbon tile (the physical 1⅜ × ⅜ ratio is preserved by rack geometry). Newly composited output must retain the base stripe widths and ordering, then apply the same subtle vertical fabric modulation, edge shading, and highlight direction used by the current runtime compositor. Device artwork must be transparent, metallic, and rasterized into the same final 100 × 30 output; no separate browser glyph layer is acceptable.
+## How it is used
 
-## Miniature-medal baseline
+- `js/galleries.js` reads `MCCHORD_RIBBON_VARIANTS[ribbonId]` to build the picker's options for that ribbon. For the ribbons that repeat, it extends the list to 84 awards.
+- Saved setups and the member report importer (`js/member-report-import.js`) refer to the same `mcchord_*` values.
+- `scripts/verify-device-rule.js` compares the engine's device rule with McChord's ribbon file names. It reads those names from an earlier commit of this file, because the current file no longer carries them.
 
-- Most common dimensions: `[{'width': 50, 'height': 176, 'count': 433}]`
-- Median aspect ratio: 0.2841
-- Median alpha coverage: 0.8939
-- Median saturation: 116.7
-- Median luminance contrast: 84.61
-- Median edge energy (sharpness proxy): 88.34
+## The ribbons that are drawn
 
-Miniature medals are not ribbon bars with generic pendants. Every reviewed mapping must retain its actual suspension-ribbon geometry and award pendant. Device placement uses a dedicated `miniatureMedal` context and may not reuse ribbon-bar coordinates.
-
-## Acceptance gates
-
-1. Asset dimensions and content bounds must fall within the measured family or carry a documented exception.
-2. Transparent padding and pendant/suspension bounds must be reviewed visually on the contact sheet.
-3. Preview and PNG export must consume the same flattened representation.
+A ribbon is an SVG under `images/ribbons/`, with its devices drawn on it by `js/engine/awards.js`. All 351 ribbon sheets in `images/MANIFEST.json` are 1.375 x 0.375 in. The ribbons for U.S. military awards are under `images/ribbons/military/`. `NOTICE.md` says where the artwork and this data come from.
