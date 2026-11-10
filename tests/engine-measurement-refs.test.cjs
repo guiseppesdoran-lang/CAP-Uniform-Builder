@@ -44,7 +44,8 @@ const RULES = [
   ['blues_a men', 'Class A, captain, full rack', 'blues_a-male-senior-Capt', ['4.1.5.2', '4.1.5.2.2.4.1', '4.1.5.2.2.4.2', '4.1.5.2.2.1', '6.2.2.2.1-3', '4.1.5.2.2.3', '4.1.5.2.2.2.1-2']],
   ['blues_a women', 'Class A, senior master sergeant', 'blues_a-female-senior-SMSgt', ['4.1.9.3.3', '4.1.9.4.4.1', '4.1.9.4.4.2', '4.1.9.4.1', '4.1.9.4.3', '4.1.9.4.2.1-2']],
   ['blues_a men', 'Class A, cadet major, shoulder board and cord', 'blues_a-male-cadet-C-Maj', ['4.1.5.2.1.3', '9.3, 9.3.4']],
-  ['semi_formal_usaf', 'cadet semi-formal, cadet major, board', 'semi_formal_usaf-female-cadet-C-Maj', ['4.1.9.3.4', '4.1.4.2']],
+  ['semi_formal_usaf men', 'cadet semi-formal, cadet major: worn as for the service dress (4.1.3.2), badges in the service dress places (4.1.3.2.2)', 'semi_formal_usaf-male-cadet-C-Maj', ['4.1.3.2', '4.1.3.2.2']],
+  ['semi_formal_usaf women', 'cadet semi-formal, cadet major: worn as for the service dress (4.1.4), badges in the service dress places (4.1.4.2)', 'semi_formal_usaf-female-cadet-C-Maj', ['4.1.4', '4.1.4.2']],
   ['blues_b men', 'Class B, cadet staff sergeant', 'blues_b-male-cadet-C-SSgt', ['4.1.11.1.1.1.4', '4.1.11.1.1.2.1', '4.1.11.1.1.2.2', '4.1.11.1.1.2.3.1', '4.1.11.1.1.2.3.2']],
   ['blues_b women', 'Class B, senior master sergeant', 'blues_b-female-senior-SMSgt', ['4.1.12.2.3.3', '4.1.12.2.4.1', '4.1.12.2.4.2', '4.1.12.2.5.1', '4.1.12.2.5.2']],
   ['mess_dress', 'mess dress, colonel', 'mess_dress-male-senior-Col', ['4.1.1.1', '4.1.1.1.2.2', '4.1.1.1.2.3']],
@@ -84,6 +85,20 @@ for(const [uniform, what, name, refs] of RULES){
     }
   });
 }
+
+test('the cadet semi-formal quotes its own paragraphs (4.1.3.2 and 4.1.3.2.2 men, 4.1.4 and 4.1.4.2 women), never the Class A numbers it is worn as', async () => {
+  for(const [name, own, badges] of [['semi_formal_usaf-male-cadet-C-Maj', '4.1.3.2', '4.1.3.2.2'], ['semi_formal_usaf-female-cadet-C-Maj', '4.1.4', '4.1.4.2'], ['semi_formal_usaf-male-cadet-C-SSgt', '4.1.3.2', '4.1.3.2.2'], ['semi_formal_usaf-female-cadet-C-SSgt', '4.1.4', '4.1.4.2']]){
+    const ms = (await compose(named(name))).layers.filter(l => l.type === 'measure');
+    assert.ok(ms.length >= 5, `${name}: the callouts are drawn`);
+    for(const m of ms){
+      const caption = m.opts.caption;
+      const want = /badge/.test(caption) ? badges : own;
+      assert.equal(m.ref, want, `${name}: ${caption} cites ${want}`);
+      assert.doesNotMatch(m.ref, /^4\.1\.(5|9)\./, `${name}: ${caption} cites no Class A paragraph`);
+    }
+    assert.ok(ms.some(m => m.ref === own) && ms.some(m => m.ref === badges), `${name}: both the uniform's paragraph and the badge paragraph are quoted`);
+  }
+});
 
 test('the Class A shoulder cord and the aide cord carry the paragraph under the board; the cadet officer board carries the seam paragraph', async () => {
   for(const [sex, ref] of [['male', '4.1.5.2.1.3'], ['female', '4.1.9.3.4']]){
