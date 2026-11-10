@@ -76,6 +76,7 @@
   // ---- the page ----
   const prefs = createPrefs((() => { try{ return typeof document !== 'undefined' ? localStorage : null; }catch(e){ return null; } })());
   const by = id => document.getElementById(id);
+  const isHtml = n => typeof HTMLElement === 'function' && n instanceof HTMLElement;   // the page's own elements, not the drawing's
   // Left as they are: the drawing, code, what a member types, a text already done, and the Regulation tab, which is where references are read.
   const SKIP = 'svg, script, style, textarea, [contenteditable], .citeHost, #extraPanel-regulation';
   // No mark can sit inside these (a control inside a control, or a message nothing can be pressed on): the reference is hidden and the switch shows it.
@@ -137,7 +138,7 @@
   // A tooltip holds text only as well: its reference is cut from it and the whole text is kept on the element.
   function visitTip(el){
     const text = el.getAttribute('title');
-    if(text === null || !(el instanceof HTMLElement) || el.closest('#extraPanel-regulation')) return;
+    if(text === null || !isHtml(el) || el.closest('#extraPanel-regulation')) return;
     const s = split(text);
     if(s.refs.length){
       el.dataset.citeTitle = text;
@@ -170,7 +171,7 @@
 
   function visit(n){
     if(n.nodeType === 3){ visitText(n); return; }
-    if(!(n instanceof HTMLElement) || n.closest(SKIP)) return;
+    if(!isHtml(n) || n.closest(SKIP)) return;
     const found = [], walker = document.createTreeWalker(n, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, { acceptNode(x){
       if(x.nodeType === 3) return x.nodeValue.indexOf('(') === -1 ? NodeFilter.FILTER_SKIP : NodeFilter.FILTER_ACCEPT;
       return x.matches(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP;
