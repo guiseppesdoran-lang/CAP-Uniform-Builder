@@ -263,7 +263,7 @@ test('a greyed, disabled or unavailable card keeps a question mark that takes pr
   assert.match(veil, /z-index:1(;|$)/);
   assert.match(decl('.disabledBlock .citeBtn'), /z-index:2(;|$)/, 'the mark sits above the veil');
   // No other greyed card is greyed by opacity or turns its presses off: a mark inside it would be dimmed or lost with it.
-  const GREYED = ['.disabledBlock'];
+  const GREYED = ['.disabledBlock', '.uniformOption.locked'];
   for(const [sel, d] of rules){
     const subject = sel.split(',').map(x => x.trim()).filter(x => GREYED.some(g => x.startsWith(g)) && !/::(?:after|before)$/.test(x) && !/\.citeBtn/.test(x));
     for(const x of subject){
@@ -278,4 +278,53 @@ test('a greyed, disabled or unavailable card keeps a question mark that takes pr
     '.calib-selectable .measurementArrowLayer', '.segmentedSource', '.disabledBlock', '.disabledBlock::after',
     '#layoutShell[data-step="uniform"] #uniformCanvas,#layoutShell[data-step="items"] #uniformCanvas,#layoutShell[data-step="export"] #uniformCanvas'];
   for(const sel of OFF) assert.ok(KNOWN.includes(sel), `${sel} turns presses off: add it here only if nothing in it can hold a reference mark`);
+});
+
+// ---- no paragraph printed anywhere (the owner, on the cards of the uniforms a member may not wear: "question marks!") ----
+// The reason on those cards was drawn by the stylesheet from an attribute (content: attr(data-locked-reason)), which no script of the page can reach, so the
+// paragraph in it printed in the text. Every way text reaches a member now has a path through js/citations.js, and the tests below close the ones the page's
+// own strings cannot show: text from the stylesheet, from an attribute, from the drawing's titles.
+
+test('the stylesheet draws no text from an attribute and prints no reference', () => {
+  const css = read('styles/app.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  // Text a stylesheet draws cannot be reached by the citations script: only these attributes are drawn (a count's short form, a shopping list column's
+  // name on a phone), nothing that holds a sentence.
+  const drawn = [...css.matchAll(/content:\s*([^;}]+)/g)].map(m => m[1].trim());
+  const ATTRS = [...new Set(drawn.flatMap(d => [...d.matchAll(/attr\(\s*([\w-]+)\s*\)/g)].map(m => m[1])))].sort();
+  assert.deepEqual(ATTRS, ['data-label', 'data-short'], 'the stylesheet draws text from: ' + ATTRS.join(', '));
+  for(const m of read('purchase-feature-core.js').matchAll(/data-label="([^"]*)"/g)) assert.deepEqual(C.split(m[1]).refs, [], m[1]);
+  for(const d of drawn) assert.deepEqual(C.split(d.replace(/^["']|["']$/g, '')).refs, [], 'the stylesheet prints a reference: ' + d);
+});
+
+test('every reason a uniform card is locked carries its paragraph in the text the page cuts, and the card holds it as a line of its own', () => {
+  const rules = require('../data/uniform-rules.js');
+  const reasons = new Set();
+  for(const membership of ['cadet', 'senior']) for(const adultCadet of [false, true]) for(const id of Object.keys(rules.UNIFORM_RULES || rules.RULES || {})){
+    const why = rules.lockedReason(id, membership, { adultCadet });
+    if(why) reasons.add(why);
+  }
+  assert.ok(reasons.size >= 3, 'the locked reasons: ' + [...reasons].join(' | '));
+  for(const why of reasons){
+    const s = C.split(why);
+    assert.ok(s.refs.length >= 1, 'a locked reason without a paragraph: ' + why);
+    assert.doesNotMatch(s.text, /\(/, 'a bracket left in the reason once the paragraph is cut: ' + why);
+  }
+  const setup = read('js/setup.js'), js = read('js/citations.js');
+  assert.match(setup, /why\.className='uWhy'/);
+  // The card is a button that does nothing when pressed; its mark is allowed there, and only there.
+  assert.match(js, /const INERT = '\.uniformOption\.locked';/);
+  assert.match(js, /parent\.closest\(PLAIN\) && !parent\.closest\(INERT\) \? null : mark\(false\)/);
+});
+
+test('a tooltip, a field hint, an image text and the drawing\'s own titles lose their reference to the mark and get it back with the switch', () => {
+  const js = read('js/citations.js'), html = read('index.html');
+  assert.match(js, /const TEXT_ATTRS = \['title', 'placeholder', 'alt'\];/);
+  assert.match(js, /attributeFilter: \['title', 'hidden'\]|attributeFilter: \[/);
+  assert.match(js, /TEXT_ATTRS\.includes\(m\.attributeName\)/);
+  // The base art's parts carry a title (a tooltip) that cites a paragraph; the drawing is in the page as inline SVG, which the walk over the text skips.
+  assert.match(js, /function visitSvgTitle\(t\)/);
+  assert.match(js, /n\.querySelectorAll\('svg title'\)\.forEach\(visitSvgTitle\)/);
+  assert.match(js, /\[data-cite-svg-title\]/);
+  // index.html: no field hint or image text cites a paragraph in the markup itself.
+  for(const m of html.matchAll(/\b(placeholder|alt)="([^"]*)"/g)) assert.deepEqual(C.split(m[2]).refs, [], `${m[1]}="${m[2]}"`);
 });

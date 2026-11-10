@@ -310,12 +310,18 @@ function applyMemberTypeToUniformOptions(){
       ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank})
       : true;
 
+    // The reason a card is locked is a line of the card, not text the stylesheet draws from an attribute: js/citations.js cannot reach text that is not in
+    // the page, and the paragraph in it ("... (CAPR 39-1, 4.1.1)") belongs behind the question mark like every other.
+    let why=opt.querySelector('.uWhy');
     if(isAllowed){
       opt.classList.remove('locked');
-      opt.removeAttribute('data-locked-reason');
+      if(why) why.remove();
     }else{
       opt.classList.add('locked');
-      opt.setAttribute('data-locked-reason', CAPUBUniformRules.lockedReason(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank}) || 'This uniform is not authorized for this membership type.');
+      if(!why){ why=document.createElement('span'); why.className='uWhy'; opt.appendChild(why); }
+      const reason=CAPUBUniformRules.lockedReason(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank}) || 'This uniform is not authorized for this membership type.';
+      // Written only when it changed: the line holds a reference mark, which a rewrite would draw again.
+      if(why.textContent!==reason) why.textContent=reason;
     }
   });
 }

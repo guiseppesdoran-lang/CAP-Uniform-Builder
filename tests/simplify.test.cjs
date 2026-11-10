@@ -28,9 +28,13 @@ test('membership and cut are two buttons side by side, with the select kept as t
 test('a uniform the member may not wear is folded under one line at the end of the list, muted, with its reason',()=>{
   assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
   assert.match(html,/<details class="lockedFold" id="lockedUniforms" hidden>\s*<summary id="lockedUniformsSummary">/);
-  assert.match(css,/\.uniformOption\.locked\{\s*cursor:not-allowed;\s*opacity:\.7;/);
-  assert.match(css,/\.uniformOption\.locked::after\{\s*content:attr\(data-locked-reason\);\s*display:block;/);
-  assert.match(setup,/opt\.setAttribute\('data-locked-reason', CAPUBUniformRules\.lockedReason\(/);
+  // Greyed by colours and a dashed edge, not by opacity (it would grey the question mark with the card), and the reason is a line of the card, not text the
+  // stylesheet draws from an attribute (the paragraph in it waits behind the question mark: js/citations.js).
+  assert.match(css,/\.uniformOption\.locked\{\s*cursor:not-allowed;\s*background:var\(--panel-2\);\s*border-style:dashed;/);
+  assert.match(css,/\.uniformOption\.locked \.uWhy\{\s*display:block;/);
+  assert.doesNotMatch(css,/data-locked-reason/);
+  assert.match(setup,/why\.className='uWhy'; opt\.appendChild\(why\);/);
+  assert.match(setup,/CAPUBUniformRules\.lockedReason\(opt\.dataset\.uniformId/);
   const ui=read('js/workspace-ui.js');
   assert.match(ui,/if\(locked && card\.parentNode!==grid\) grid\.appendChild\(card\);/);
   assert.match(ui,/summary\.textContent=`Not for \$\{who\}: \$\{n\} uniform\$\{n===1\?'':'s'\}`;/);

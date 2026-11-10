@@ -477,22 +477,22 @@ header h1::after{
 .uniformOption .uName{font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.2;color:var(--ink)}
 .uniformOption .uDesc{margin-top:1px;font-size:.75rem;line-height:1.25;color:var(--muted)}
 .uniformOption.activeUniform{border:2px solid var(--select-line);background:var(--select-bg);padding:5px calc(var(--s3) - 1px)}
-/* A uniform this member may not wear (js/setup.js sets .locked and data-locked-reason from data/uniform-rules.js
-   lockedReason) is folded under one line at the end of the list, muted, its reason under its name. */
+/* A uniform this member may not wear (js/setup.js sets .locked and its .uWhy line from data/uniform-rules.js lockedReason) is folded under one line at
+   the end of the list, muted, its reason under its name. The reason is a line of the card so its paragraph can wait behind the question mark; the card is
+   greyed by its colours and its dashed edge, not by opacity, which would grey the mark with it. */
 .lockedFold{margin-top:var(--s1);border-top:1px solid var(--line);padding-top:2px}
 .lockedFold>summary{display:flex;align-items:center;min-height:36px;cursor:pointer;font-size:var(--t-xs);font-weight:700;color:var(--muted)}
 .lockedFold[open]>summary{margin-bottom:var(--s1)}
+.uniformOption .uWhy{display:none}
 .uniformOption.locked{
   cursor:not-allowed;
-  opacity:.7;
   background:var(--panel-2);
   border-style:dashed;
 }
-.uniformOption.locked:hover,.uniformOption.locked:focus{opacity:1;border-color:var(--line);background:var(--panel-2)}
+.uniformOption.locked:hover,.uniformOption.locked:focus{border-color:var(--line);background:var(--panel-2)}
 .uniformOption.locked .uName{color:var(--muted)}
 .uniformOption.locked .uDesc{display:none}
-.uniformOption.locked::after{
-  content:attr(data-locked-reason);
+.uniformOption.locked .uWhy{
   display:block;
   margin-top:2px;
   font-size:.75rem;
