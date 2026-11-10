@@ -35,7 +35,7 @@ function runImport(text, before=''){
     const selected = {};
     for(const [id, s] of Object.entries(State.ribbonSelections)) if(s.checked) selected[id] = { awardValue: s.awardValue, awardLabel: s.awardLabel };
     globalThis.document = realDocument;
-    return JSON.stringify({ parsed, selected, badges: State.badges, commandInsignia: State.commandInsignia, membership: State.membership, rank: State.rank, uniform: State.uniform, adultCadet: State.adultCadet, text: State.text, fields });
+    return JSON.stringify({ parsed, selected, badges: State.badges, badgeChoices: State.badgeChoices, commandInsignia: State.commandInsignia, membership: State.membership, rank: State.rank, uniform: State.uniform, adultCadet: State.adultCadet, text: State.text, fields });
   })`, context)(text);
   const data = JSON.parse(out);
   const devices = id => RA.resolve(id, { ...data.selected[id], membership: data.membership }).map(r => ({ devices: r.devices.map(short), centered: r.centered }));
@@ -1113,4 +1113,38 @@ test('a graduated group commander keeps the squadron pin: the regulation does no
   const past = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025\n', '').replace('Deputy Commander for Cadets GLR-IL-049 UNIT No 01 Jan 2019 31 Dec 2022', 'Commander GLR-IL-001 GROUP No 01 Jan 2019 31 Dec 2022'));
   assert.deepEqual(past.parsed.badges.filter(id => /_commander_badge$/.test(id)), ['squadron_commander_badge']);
   assert.equal(past.commandInsignia.graduatedCommander, true);
+});
+
+// ---- Privacy and safety (I2) ------------------------------------------------------------------------------------------------------------
+test('the importer makes no network request, stores nothing, and writes no markup', () => {
+  const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'member-report-import.js'), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  for(const sink of [/\bfetch\s*\(/, /XMLHttpRequest/, /sendBeacon/, /WebSocket/, /localStorage/, /sessionStorage/, /indexedDB/, /document\.cookie/, /postMessage/, /FormData/,
+    /\.innerHTML\b/, /insertAdjacentHTML/, /outerHTML/, /document\.write/, /\beval\s*\(/, /new Function/])
+    assert.doesNotMatch(src, sink, String(sink));
+  // The one script it adds is the vendored PDF reader, from the site's own folder.
+  assert.deepEqual([...src.matchAll(/const PDFJS_URL = '([^']+)'/g)].map(m => m[1]), ['vendor/pdfjs/pdf.min.js']);
+  assert.equal([...src.matchAll(/\.src = /g)].length, 1);
+});
+
+test('the report is not kept: after an import the setup holds the derived build, not the CAPID, the rows or the file', async () => {
+  const text = FIXTURE.replace('Decorations\n', 'Decorations\nDistinguished Flying Cross Plus 01 Jan 2024\n');
+  const { context } = await importFile(fileLike('private-member-file.txt', 'text/plain', text), { before: BUILD_BEFORE });
+  const held = vm.runInContext('JSON.stringify(State)', context);
+  for(const secret of ['123456', 'MITCHELL, GUISEPPE', 'Distinguished Flying Cross', 'Spaatz Award Presentation', 'private-member-file', 'Date Completed', 'Printer Friendly View', '24 Sep 2019', '30 Sep 2027'])
+    assert.ok(!held.includes(secret), `the setup holds "${secret}"`);
+  assert.ok(vm.runInContext('Array.isArray(State.reportAuthorizedBadgeIds) && State.reportAuthorizedBadgeIds.every(id => badgeList.includes(id))', context), 'only badge ids');
+  assert.ok(held.includes('Guiseppe') && held.includes('Mitchell'), 'the name the member put on the uniform is the one thing taken');
+});
+
+test('a name read from the report is letters, apostrophes, periods and hyphens only, whatever the report holds', () => {
+  const evil = FIXTURE.replace('C/Col Guiseppe Mitchell', 'C/Col <img src=x onerror=alert(1)> Guiseppe "Mitchell"').replace('123456 MITCHELL, GUISEPPE MALE', '<b>123456</b> <i>MITCHELL</i>, <u>GUISEPPE</u> MALE');
+  const r = runImport(evil);
+  const name = `${r.text.firstName}${r.text.lastName}`;
+  assert.match(name, /^[A-Za-z'’.\- ]*$/, JSON.stringify(r.text));
+});
+
+test('a stale choice of which badge a position shows does not outlive the badges it chose among', () => {
+  const r = runImport(FIXTURE, "State.badgeChoices = { blues_a: { aviation: 'solo_badge' } };");
+  assert.deepEqual(r.badgeChoices, {});
 });

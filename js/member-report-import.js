@@ -2060,6 +2060,8 @@ function applyCapMemberReportImport(parsed){
   }
 
   State.badges = [];
+  // Which of the competing badges a position shows was chosen among the badges the member had; the report sets the badges anew.
+  State.badgeChoices = {};
   State.reportAuthorizedBadgeIds = [...new Set(parsed.authorizedBadges || parsed.badges || [])]
     .filter(id => isBadgeEligibleForMembership(id, State.membership));
   // Reset command-insignia state on every member-report import so a previous
