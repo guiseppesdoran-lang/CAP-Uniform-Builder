@@ -1148,3 +1148,21 @@ test('a stale choice of which badge a position shows does not outlive the badges
   const r = runImport(FIXTURE, "State.badgeChoices = { blues_a: { aviation: 'solo_badge' } };");
   assert.deepEqual(r.badgeChoices, {});
 });
+
+// ---- Awards counted once, and the cadet awards a senior does not wear (I2) --------------------------------------------------------------
+test('an award earned once is one row however many of its names the row prints: no "2 records found" for one Falcon Award or Crossfield Award', () => {
+  const cadet = runImport(cadetWith('Decorations', ['Frank Borman Falcon Award 01 Jan 2024']));
+  assert.equal(cadet.ribbon('frank_borman_falcon_award').value, 'earned');
+  assert.ok(!cadet.parsed.notes.some(n => /records found; the ribbon picker offers at most/.test(n)), cadet.parsed.notes.join(' | '));
+  const senior = runImport(seniorWith('Decorations', ['A. Scott Crossfield Award 01 Jan 2024']));
+  assert.ok(senior.ribbon('cap_a_scott_crossfield_ribbon'));
+  assert.ok(!senior.parsed.notes.some(n => /records found; the ribbon picker offers at most/.test(n)));
+});
+
+test('the cadet award ribbons a senior member does not wear are counted in a note, not dropped silently (a milestone outranks the achievements)', () => {
+  const r = runImport(SENIOR);
+  assert.ok(r.parsed.notes.some(n => /^8 cadet award ribbons are left off: a senior member wears one cadet award ribbon, the highest, and may wear every milestone medal earned as a miniature \(CAPR 39-1, 11\.1\.4\)\.$/.test(n)), r.parsed.notes.join(' | '));
+  assert.ok(!runImport(FIXTURE).parsed.notes.some(n => /cadet award ribbons? (?:is|are) left off/.test(n)), 'a cadet loses nothing');
+  const falcon = runImport(seniorWith('Decorations', ['Frank Borman Falcon Award 01 Jan 2024']));
+  assert.ok(falcon.parsed.notes.some(n => /^9 cadet award ribbons are left off/.test(n)), 'the Falcon Award is counted with them');
+});

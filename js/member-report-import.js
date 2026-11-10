@@ -784,7 +784,7 @@ function importedCacLevelFromDutyPositions(text){
 // (Wright Brothers, Mitchell, Earhart, Eaker, Spaatz) they are all kept, each as the report gives it (the Cadet Officer School star stays
 // on the Mitchell; the rack moves it onto the highest ribbon, CAPR 39-3 14j, js/uniform-view.js buildRibbons); the eight achievement
 // ribbons stay out, since a milestone outranks them. A report with achievements only keeps the highest.
-function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership, text=''){
+function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership, text='', notes=null){
   if(membership !== 'senior') return ribbons;
   const cadetAwards = typeof SENIOR_HIGHEST_CADET_AWARD_RIBBONS !== 'undefined' ? SENIOR_HIGHEST_CADET_AWARD_RIBBONS
     : new Set(['wright_brothers_award','mitchell_award','earhart_award','eaker_award','spaatz_award']);
@@ -794,6 +794,10 @@ function keepOnlyHighestCadetMilestoneForSenior(ribbons, membership, text=''){
   if(held.length === 0) return ribbons;
   const milestones = held.filter(r => milestoneIds.has(r.id));
   const keep = new Set(milestones.length ? milestones : [held.slice().sort((a, b) => precedence(a.id) - precedence(b.id))[0]]);
+  const left = held.filter(r => !keep.has(r));
+  if(left.length && Array.isArray(notes)){
+    notes.push(`${left.length === 1 ? '1 cadet award ribbon is' : `${left.length} cadet award ribbons are`} left off: a senior member wears one cadet award ribbon, the highest, and may wear every milestone medal earned as a miniature (CAPR 39-1, 11.1.4).`);
+  }
   const cos = milestones.length && (ribbons.some(r => r?.id === 'mitchell_award' && r.value === 'earned_cos_star') || (text && hasCosGraduateCreditFromReport(text) && held.some(r => r.id === 'mitchell_award')));
   return ribbons.filter(r => !cadetAwards.has(r?.id) || keep.has(r)).map(r => cos && r.id === 'mitchell_award' && keep.has(r) && r.value !== 'earned_cos_star'
     ? { ...r, value:'earned_cos_star', reason:`${r.reason || r.id} + COS graduate star` } : r);
@@ -1702,8 +1706,9 @@ function parseCapMemberReport(textRaw){
   for(const award of MEMBER_REPORT_COUNTED_AWARDS){
     const rows = countMemberReportAwardRows(awardText, award.re, award.skipAfter || null);
     if(!rows) continue;
-    const count = Math.min(rows, importedMaxAwardCount(award.id));
-    if(count < rows) result.notes.push(`${rows} ${award.name} records found; the ribbon picker offers at most ${count}, so ${count} are imported.`);
+    // An award earned once is one row however many of the names in its pattern the row prints ("Frank Borman Falcon Award" is both).
+    const count = award.once ? 1 : Math.min(rows, importedMaxAwardCount(award.id));
+    if(count < rows && !award.once) result.notes.push(`${rows} ${award.name} records found; the ribbon picker offers at most ${count}, so ${count} are imported.`);
     const aircrew = !!award.aircrew && memberReportAwardRowSays(awardText, award.re, /Aircrew|Air\s+crew|Prop(?:eller)?\b/i);
     result.ribbons.push({
       id:award.id,
@@ -1964,7 +1969,7 @@ function parseCapMemberReport(textRaw){
   }
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
   result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
-  result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership, text);
+  result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership, text, result.notes);
   result.ribbons = normalizeRecruiterRibbonsForMembership(result.ribbons, result.membership);
   result.ribbons = dedupeImportedRibbons(result.ribbons);
 
