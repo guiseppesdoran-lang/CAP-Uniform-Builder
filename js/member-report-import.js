@@ -1160,13 +1160,13 @@ function getSpecialtyBadgesFromTracks(text){
   for(const row of rows){
     const key = normalizeSpecialtyTrackName(row.name);
     if(row.level === 'NONE'){
-      notes.push(`${key} Specialty Track is NONE; no specialty badge imported.`);
+      notes.push(`${key} is rated NONE, so it earns no specialty badge.`);
       continue;
     }
 
     const badgeId = badgeIdForSpecialtyTrack(row);
     if(!badgeId){
-      notes.push(`${key} ${row.level} appears in Specialty Tracks, but no badge mapping/image ID is configured for that specialty.`);
+      notes.push(`${key} ${row.level} is in Specialty Tracks, but the builder has no badge for that specialty.`);
       continue;
     }
 
@@ -1259,7 +1259,7 @@ function getCommandInsigniaStatusForMember(text, result){
   if(!isCommandInsigniaGradeEligible(result?.rank)){
     if(Array.isArray(result?.notes)){
       const status = currentCommander ? 'Current Commander duty' : 'Past Commander duty';
-      result.notes.push(`${status} found, but Command Insignia Pin was not imported because member is Colonel or above.`);
+      result.notes.push(`${status} found, but the command insignia pin is worn in the grade of lieutenant colonel and below, so it was not chosen (CAPR 39-1, 10.2.5).`);
     }
     return null;
   }
@@ -1350,9 +1350,9 @@ const MEMBER_REPORT_COUNTED_AWARDS = [
   { id:'homeland_security_ribbon', name:'Homeland Security Ribbon', re:/\bHomeland\s+Security\s+Ribbon\b/i },
   { id:'cap_cadet_orientation_pilot_ribbon', name:'Cadet Orientation Pilot Ribbon', re:/\b(?:Cadet\s+)?Orientation\s+Pilot\s+Ribbon\b/i },
   { id:'national_cadet_competition_ribbon', name:'National Cadet Competition Ribbon', re:/\bNational\s+Cadet\s+Competition\s+Ribbon\b/i, once:true,
-    note:'National Cadet Competition Ribbon imported as the basic ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star); add the star in the ribbon picker if it applies.' },
+    note:'National Cadet Competition Ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star), so no star is added; add it under Ribbons if it applies.' },
   { id:'national_color_guard_competition_ribbon', name:'National Color Guard Competition Ribbon', re:/\bNational\s+Color\s+Guard\s+Competition\s+Ribbon\b/i, once:true,
-    note:'National Color Guard Competition Ribbon imported as the basic ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star); add the star in the ribbon picker if it applies.' },
+    note:'National Color Guard Competition Ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star), so no star is added; add it under Ribbons if it applies.' },
   { id:'afa_award', name:'AFA Award to Unit Cadet of the Year', re:/\bAFA\s+Award\b|\bAir\s+Force\s+Association\s+Award\b/i, once:true },
   { id:'afsa_award', name:'AFSA Award to Unit Cadet NCO of the Year', re:/\bAFSA\s+Award\b|\bAir\s+Force\s+Sergeants\s+Association\s+Award\b/i, once:true },
   { id:'vfw_officer_award', name:'VFW Outstanding Cadet Officer of the Year Award', re:/\bVFW\b[^\d]{0,40}?\bCadet\s+Officer\b/i, once:true },
@@ -1590,9 +1590,9 @@ function parseCapMemberReport(textRaw){
   if(result.membership === 'cadet' && hasCurrentFirstSergeantDutyPosition(text)){
     result.cadetFirstSergeant = true;
     if(CADET_FIRST_SERGEANT_CLASSB_RANKS.has(result.rank)){
-      result.notes.push('Current First Sergeant duty assignment found; Cadet First Sergeant diamond auto-selected for Class B.');
+      result.notes.push('Current First Sergeant duty found, so the Cadet First Sergeant diamond is chosen for the Class B shirt (CAPR 39-1, 10.10.4).');
     }else{
-      result.notes.push('Current First Sergeant duty assignment found, but Cadet First Sergeant diamond was not auto-selected because the imported cadet rank is not C/MSgt, C/SMSgt, or C/CMSgt.');
+      result.notes.push('Current First Sergeant duty found, but only cadet master sergeants, senior master sergeants and chief master sergeants wear the diamond, so it was not chosen (CAPR 39-1, 10.10.4).');
     }
   }
 
@@ -1671,7 +1671,7 @@ function parseCapMemberReport(textRaw){
       value:chooseLifesavingValue(lifesavingCount),
       reason:`${lifesavingCount} Certificate of Recognition for Lifesaving record(s)`
     });
-    result.notes.push(`Certificate of Recognition for Lifesaving imported as the Lifesaving Award ribbon (CAPR 39-3, 9h)${lifesavingCount > 1 ? ` with ${lifesavingCount - 1} subsequent-award clasp(s)` : ''}. The report does not say whether the save was a blood or organ transport, so the silver star for a save of another kind is not added; add it in the ribbon picker if it applies.`);
+    result.notes.push(`The Certificate of Recognition for Lifesaving is the Lifesaving Award ribbon${lifesavingCount > 1 ? ` with ${lifesavingCount - 1} bronze clasp${lifesavingCount > 2 ? 's' : ''}` : ''}. The report does not say whether the save was a blood or organ transport, so the silver star for a save of another kind is not added; add it under Ribbons if it applies (CAPR 39-3, 9h).`);
   }
 
   if(/Air Force Organizational Excellence Award/i.test(text)){
@@ -1697,10 +1697,10 @@ function parseCapMemberReport(textRaw){
     result.ribbons.push({ id:'cap_bridgadier_general_charles_yaeger_ribbon', value:'earned', reason:'Yeager Award' });
   }
   if(result.ribbons.some(r => r.id === 'cap_leadership_ribbon') && parseMemberReportSpecialtyTracks(text).some(row => /^(?:SENIOR|MASTER)$/.test(row.level))){
-    result.notes.push('Leadership Award imported without stars: a senior or master specialty rating is on record, and the star it earns (bronze for senior, silver for master) is left to the ribbon picker.');
+    result.notes.push('Leadership Award: a senior or master specialty rating earns a star (bronze for senior, silver for master), which is not added; add it under Ribbons if it applies.');
   }
   if(result.ribbons.some(r => r.id === 'cap_gill_robb_wilson_ribbon' || r.id === 'cap_paul_e_garber_ribbon')){
-    result.notes.push('Garber and Gill Robb Wilson Awards imported without stars: the report does not show Squadron Officer School, Air Command and Staff College or Air War College completion; add the star in the ribbon picker if it applies.');
+    result.notes.push('Garber and Gill Robb Wilson Awards: the report does not show Squadron Officer School, Air Command and Staff College or Air War College, so no star is added; add it under Ribbons if it applies.');
   }
 
   for(const award of MEMBER_REPORT_COUNTED_AWARDS){
@@ -1708,7 +1708,7 @@ function parseCapMemberReport(textRaw){
     if(!rows) continue;
     // An award earned once is one row however many of the names in its pattern the row prints ("Frank Borman Falcon Award" is both).
     const count = award.once ? 1 : Math.min(rows, importedMaxAwardCount(award.id));
-    if(count < rows && !award.once) result.notes.push(`${rows} ${award.name} records found; the ribbon picker offers at most ${count}, so ${count} are imported.`);
+    if(count < rows && !award.once) result.notes.push(`${rows} ${award.name} records found; the ribbon picker offers at most ${count}, so ${count} are used.`);
     const aircrew = !!award.aircrew && memberReportAwardRowSays(awardText, award.re, /Aircrew|Air\s+crew|Prop(?:eller)?\b/i);
     result.ribbons.push({
       id:award.id,
@@ -1727,7 +1727,7 @@ function parseCapMemberReport(textRaw){
       result.ribbons.push({ id:'cap_senior_recruiter_ribbon', value:'earned', reason:'Senior Recruiter Ribbon' });
     }
     if(/\bCadet\s+Recruiter\s+Ribbon\b/i.test(text)){
-      result.notes.push('Prior Cadet Recruiter Ribbon record ignored for this senior member; only the Senior Recruiter Ribbon is authorized.');
+      result.notes.push('A Cadet Recruiter Ribbon row was not used: a senior member wears the Senior Recruiter Ribbon only.');
     }
   }else if(result.membership === 'cadet' && /\bCadet\s+Recruiter\s+Ribbon\b/i.test(text)){
     result.ribbons.push({ id:'cadet_recruiter_ribbon', value:'earned', reason:'Cadet Recruiter Ribbon' });
@@ -1829,14 +1829,14 @@ function parseCapMemberReport(textRaw){
     result.commandPin = pin;
     const pinName = pin === 'group_commander_badge' ? 'Group Commander' : 'Squadron Commander';
     result.notes.push(commandStatus === 'current'
-      ? `Current commander duty found; the ${pinName} Command Insignia Pin is imported as a current commander's (CAPR 39-1, 10.2.5).`
-      : `Past commander duty of at least one year found; the ${pinName} Command Insignia Pin is imported as a graduated commander's (CAPR 39-1, 10.2.5).`);
+      ? `Current commander duty found: the ${pinName} command insignia pin is worn over the name tag (CAPR 39-1, 10.2.5).`
+      : `Past commander duty of a year or more found: the ${pinName} command insignia pin is worn under the name tag, as a graduated commander's (CAPR 39-1, 10.2.5).`);
   }
 
   const commandServiceRibbon = getCommandServiceRibbonFromDutyAssignments(text);
   if(commandServiceRibbon){
     result.ribbons.push(commandServiceRibbon);
-    result.notes.push(`Command Service Ribbon imported as ${getCommandServiceRibbonLabelForValue(commandServiceRibbon.value)} based on commander duty assignments of at least 365 days.`);
+    result.notes.push(`Command Service Ribbon: ${getCommandServiceRibbonLabelForValue(commandServiceRibbon.value)}, from commander duty of 365 days or more.`);
   }
 
   // Specialty-track badges: the Specialty Tracks table is the ONLY authority.
@@ -1846,9 +1846,9 @@ function parseCapMemberReport(textRaw){
   for(const item of importedSpecialtyTracks.badges){
     result.badges.push(item.id);
     // A rated specialty the builder does not authorize for this membership is named, not dropped silently.
-    result.notes.push(isBadgeEligibleForMembership(item.id, result.membership)
-      ? `${item.specialty} ${item.level} specialty badge imported from Specialty Tracks table only.`
-      : `${item.specialty} ${item.level} is in the Specialty Tracks table, but the builder does not authorize that badge for ${result.membership || 'this'} members, so it is not offered.`);
+    if(!isBadgeEligibleForMembership(item.id, result.membership)){
+      result.notes.push(`${item.specialty} ${item.level} is in the Specialty Tracks table, but the builder does not authorize that badge for ${result.membership || 'this'} members, so it is not offered.`);
+    }
   }
   result.notes.push(...importedSpecialtyTracks.notes);
 
@@ -1857,36 +1857,36 @@ function parseCapMemberReport(textRaw){
   // It is intentionally not authorized on OCP and will be filtered by current uniform.
   if(importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id)) || memberReportHasCommunicationsTechnicianSpecialty(text)){
     result.patches.push('comms_patch');
-    result.notes.push('Communications specialty rating detected; Communications patch queued for ABU, flight suit, or corporate field uniform only.');
+    result.notes.push('A Communications specialty rating was found: the Communications patch is worn on the field and flight uniforms only.');
   }
 
   if(/ICUT|Introductory Communications User Training|Rating Exam:\s*Communications|Mission Radio Operator|\bMRO\b/i.test(text) &&
      !importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id))){
-    result.notes.push('Communications-related duty/training/exam found outside Specialty Tracks; Communications badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
+    result.notes.push('Communications training or an exam was found, but the Communications badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.');
   }
   if(/Technician Rating Exam:\s*IT|Information Technology Technician/i.test(text) &&
      !importedSpecialtyTracks.badges.some(item => /^information_technology_/.test(item.id))){
-    result.notes.push('IT-related training/exam found outside Specialty Tracks; IT badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
+    result.notes.push('Information Technology training or an exam was found, but the badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.');
   }
   if(/Technician Rating Exam:\s*Historian|Historian Technician/i.test(text) &&
      !importedSpecialtyTracks.badges.some(item => /^historian_/.test(item.id))){
-    result.notes.push('Historian-related training/exam found outside Specialty Tracks; Historian badge not imported unless the Specialty Tracks table shows TECHNICIAN, SENIOR, or MASTER.');
+    result.notes.push('Historian training or an exam was found, but the badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.');
   }
 
   // New rule: CDI status/duty/training alone does not authorize the CDI badge.
   // Only import a CDI badge if a future report explicitly lists a CDI badge/award item.
   if(/\bCDI\b|Character Development Instructor|Character Development Facilitator/i.test(text)){
-    result.notes.push('CDI duty/status/training found; CDI badge not imported because the badge itself is not awarded in this report.');
+    result.notes.push('Character Development Instructor duty, status or training was found, but the badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.');
   }
 
   // New rule: MRO and MSA are qualifications/roles; no MRO/MSA badge exists.
   if(/Mission Radio Operator|\bMRO\b|Mission Staff Assistant|\bMSA\b/i.test(text)){
-    result.notes.push('MRO/MSA qualification or training found; no MRO/MSA badge exists, so no badge was imported.');
+    result.notes.push('Mission Radio Operator or Mission Staff Assistant training was found; there is no badge for either, so none was imported.');
   }
 
   // UDF is a qualification only. There is no UDF badge to render.
   if(/Urban Direction Finding Team|\bUDF\b/i.test(text)){
-    result.notes.push('UDF qualification or training found; no UDF badge exists, so no badge was imported.');
+    result.notes.push('Urban Direction Finding training was found; there is no badge for it, so none was imported.');
   }
 
   // Badge / qualification mapping.
@@ -1900,12 +1900,12 @@ function parseCapMemberReport(textRaw){
   if(nationalStaffEligibility?.eligible){
     result.badges.push('national_staff_badge');
     if(nationalStaffEligibility.reason === 'CURRENT_APPOINTMENT'){
-      result.notes.push('Current National Staff appointment found; National Staff Badge authorized.');
+      result.notes.push('A current National Staff appointment was found: the National Staff Badge may be worn (CAPR 39-1, 10.2.3).');
     }else if(nationalStaffEligibility.reason === 'PAST_APPOINTMENT_ONE_CALENDAR_YEAR'){
-      result.notes.push('Past National Staff appointment of at least one full calendar year found; National Staff Badge retained.');
+      result.notes.push('A National Staff appointment of one full year or more was found: the National Staff Badge is worn permanently (CAPR 39-1, 10.2.3).');
     }
   }else if(nationalStaffEligibility?.reason === 'PAST_APPOINTMENT_TOO_SHORT'){
-    result.notes.push('Past National Staff appointment found, but it was shorter than one full calendar year; National Staff Badge not selected.');
+    result.notes.push('A past National Staff appointment was found, but it ran less than one year, so the badge is not worn permanently (CAPR 39-1, 10.2.3).');
   }
   if(/\bNational\s+Executive\s+Committee\s+Badge\b|\bNEC\s+Badge\b/i.test(text)) result.badges.push('national_executive_committee_badge');
   if(/\b(?:CAP\s+)?National\s+Command\s+Board\s+Badge\b/i.test(text)) result.badges.push('cap_national_command_board_badge');
@@ -1920,17 +1920,17 @@ function parseCapMemberReport(textRaw){
   if(/Master Incident Commander Badge|Incident Commander 1 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC1|Incident\\s+Commander\\s+(?:Level\\s+)?1)\\b(?!\\s+Badge)')) result.badges.push('incident_commander_1_badge');
   else if(/Senior Incident Commander Badge|Incident Commander 2 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC2|Incident\\s+Commander\\s+(?:Level\\s+)?2)\\b(?!\\s+Badge)')) result.badges.push('incident_commander_2_badge');
   else if(/Basic Incident Commander Badge|Incident Commander 3 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC3|Incident\\s+Commander\\s+(?:Level\\s+)?3)\\b(?!\\s+Badge)')) result.badges.push('basic_incident_commander_badge');
-  else if(/\bIC[123]\b|Incident\s+Commander\s+(?:Level\s+)?[123]\b/i.test(text)) result.notes.push('Incident Commander qualification found in training only; no Incident Commander badge imported.');
+  else if(/\bIC[123]\b|Incident\s+Commander\s+(?:Level\s+)?[123]\b/i.test(text)) result.notes.push('Incident Commander training was found with no qualification, so no Incident Commander badge was imported (CAPR 39-1, 10.4.6).');
   if(/CAP Master Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTL|GTM1|Ground\\s+Team\\s+Leader|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?1)\\b')) result.badges.push('master_ground_team_badge');
   else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTM2|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?2)\\b')) result.badges.push('senior_ground_team_badge');
   else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTM3|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?3)\\b')) result.badges.push('ground_team_basic_badge');
-  else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('GTM3 found, but it appears to be training status or not an awarded badge; no Ground Team badge imported.');
+  else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('Ground Team Member Level 3 was found as training or without an award, so no Ground Team badge was imported (CAPR 39-1, 10.4.5).');
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
   else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
   else if(/CAP Basic Emergency Services Qualification Badge/i.test(text)) result.badges.push('emergency_services_badge');
   else if(/Technician Rating Exam:\s*Emergency Services/i.test(text)) {
-    result.notes.push('Emergency Services rating exam found outside Specialty Tracks; ES specialty badge not imported from the exam alone.');
+    result.notes.push('An Emergency Services exam was found, but the badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.');
   }
 
   if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
@@ -2167,6 +2167,24 @@ function memberReportHeldOffLines(parsed){
   return held;
 }
 
+// The notes js/patches.js writes (the Cadet Advisory Council ribbon and cord, the unit and activity patches) in the member's words. They are
+// matched by their opening, so a note that changes there is shown as it is until it is added here.
+const MEMBER_REPORT_PLAIN_NOTES = [
+  [/^CAC ribbon imported as .*?: Cadet Advisory Council Ribbon listed in the report \(no level shown; basic ribbon\)\.?$/i, () => 'Cadet Advisory Council Ribbon: the basic ribbon, since the report shows no level.'],
+  [/^CAC ribbon imported as (.*?): Highest qualifying CAC level found in duty assignments: (\w+)\.?$/i, (m, ribbon, level) => `Cadet Advisory Council Ribbon: ${level.charAt(0).toUpperCase()}${level.slice(1).toLowerCase()} level, from the duty positions.`],
+  [/^CAC ribbon imported as (.*?): (.*?)\.?$/i, (m, ribbon, why) => `Cadet Advisory Council Ribbon: ${ribbon}.`],
+  [/^(.*?) shoulder cord - (\w+) imported from Current Duty Positions.*$/i, (m, cord) => `${cord} shoulder cord: the report shows a current primary representative.`],
+  [/^CAC text found, but no qualifying CAC .*$/i, () => 'Cadet Advisory Council service was found, but no chair, vice chair or representative duty, so no ribbon level was chosen.'],
+  [/^Member report charter (\S+) found, but no unit patch image is mapped yet\.?$/i, (m, charter) => `No unit patch is offered for ${charter} yet.`],
+  [/^Unit patch auto-selected from member report charter (\S+?)\.?$/i, (m, charter) => `The unit patch for ${charter} is chosen.`]
+];
+function memberReportPlainNoteLines(lines){
+  return (lines || []).map(line => {
+    for(const [re, fn] of MEMBER_REPORT_PLAIN_NOTES){ const m = re.exec(line); if(m) return fn(...m); }
+    return line;
+  });
+}
+
 // The lines the panel shows for a report that was applied: what was read, what is on the build, what was held off and why, what was not
 // understood, and the notes. `replaced` is true when the member had ribbons, badges or patches that the report replaced.
 function memberReportStatusLines(parsed, fileName, { replaced = false } = {}){
@@ -2185,7 +2203,7 @@ function memberReportStatusLines(parsed, fileName, { replaced = false } = {}){
   else if(!parsed.rank) unread.push('The grade was not found, so it was left as it was.');
   unread.push(...(parsed.unreadRows || []).map(row => `${row}: no ribbon or badge matches this row.`));
   if(unread.length) lines.push({ heading: 'Not understood' }, ...unread.map(item => ({ item })));
-  const notes = capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n)));
+  const notes = memberReportPlainNoteLines(capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n))));
   if(notes.length) lines.push({ heading: 'Notes' }, ...notes.map(item => ({ item })));
   if(replaced) lines.push('Your earlier ribbons, badges and patches were replaced by the report. Undo brings them back.');
   lines.push('Check the result against the member\'s record before relying on it.');

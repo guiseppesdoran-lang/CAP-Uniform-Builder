@@ -461,7 +461,7 @@ test('the professional development awards come from their names or the Level row
   assert.ok(r.selected.cap_leadership_ribbon, 'Level II');
   for(const id of ['cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon'])
     assert.equal(r.ribbon(id), undefined, `${id}: Level III and above not completed (the member is named Wilson; the ceremony is a Local Activity)`);
-  assert.ok(r.parsed.notes.some(n => /^Leadership Award imported without stars/.test(n)), 'the senior AE rating star is left to the member');
+  assert.ok(r.parsed.notes.some(n => /^Leadership Award: a senior or master specialty rating earns a star/.test(n)), 'the senior AE rating star is left to the member');
   // Level V completed: every level's award; a "Level 2" in a ground team title is not a level row.
   const five = runImport(SENIOR.replace('Level II 01 Jun 2018', 'Level II 01 Jun 2018\nLevel III 01 Jun 2019\nLevel IV 01 Jun 2020\nLevel V 01 Jun 2021'));
   for(const id of ['cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon']) assert.ok(five.selected[id], id);
@@ -493,7 +493,7 @@ test('a cadet report: Medals of Valor, DSA, the cadet-of-the-year awards, IACE, 
     assert.ok(r.selected[id], `${id} selected`);
     assert.deepEqual(r.devices(id), [{ devices: [], centered: false }], id);
   }
-  assert.ok(r.parsed.notes.some(n => /^National Cadet Competition Ribbon imported as the basic ribbon/.test(n)));
+  assert.ok(r.parsed.notes.some(n => /^National Cadet Competition Ribbon: the report does not say whether the team won its region/.test(n)));
   assert.deepEqual(r.devices('search_find_ribbon'), [{ devices: ['clasp-bronze'], centered: false }], 'two finds');
   assert.deepEqual(r.devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze'], centered: false }], 'IACE is not an NCSA credit');
   // The ribbon's own row when the Cadet Training table lists no activity.
@@ -580,7 +580,7 @@ test('a senior report: the qualification rows are read row by row, a slash spell
   const r = runImport(SENIOR);
   assert.ok(r.parsed.authorizedBadges.includes('master_ground_team_badge'), 'GTL QUALIFIED, the row before the Cadet Training heading');
   assert.ok(!r.parsed.authorizedBadges.includes('basic_incident_commander_badge'), 'IC3 in training is no badge');
-  assert.ok(r.parsed.notes.some(n => /^Incident Commander qualification found in training only/.test(n)));
+  assert.ok(r.parsed.notes.some(n => /^Incident Commander training was found with no qualification, so no Incident Commander badge was imported \(CAPR 39-1, 10\.4\.6\)\.$/.test(n)));
   assert.ok(r.parsed.authorizedBadges.includes('stan_eval_tech_badge'), 'STANDARDIZATION/EVALUATION TECHNICIAN');
   // A current duty table headed "Duty Positions": the Commander row is the current commander's.
   assert.ok(r.parsed.badges.includes('squadron_commander_badge'));
@@ -1098,7 +1098,7 @@ test('a current commander of a group wears the group pin, a current commander of
   assert.deepEqual(group.parsed.badges.filter(id => /_commander_badge$/.test(id)), ['group_commander_badge']);
   assert.deepEqual(group.badges.filter(id => /_commander_badge$/.test(id)), ['group_commander_badge'], 'the setup holds the group pin');
   assert.equal(group.commandInsignia.graduatedCommander, false);
-  assert.ok(group.parsed.notes.some(n => /^Current commander duty found; the Group Commander Command Insignia Pin is imported as a current commander's \(CAPR 39-1, 10\.2\.5\)\.$/.test(n)));
+  assert.ok(group.parsed.notes.some(n => /^Current commander duty found: the Group Commander command insignia pin is worn over the name tag \(CAPR 39-1, 10\.2\.5\)\.$/.test(n)));
   assert.ok(group.ribbon('cap_command_service_ribbon'), 'the ribbon is still the Command Service Ribbon');
   // Both at once: one pin, the group's.
   const both = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025', 'Commander GLR-IL-049 UNIT No 01 Jan 2025\nCommander GLR-IL-001 GROUP No 01 Jan 2025'));
@@ -1165,4 +1165,40 @@ test('the cadet award ribbons a senior member does not wear are counted in a not
   assert.ok(!runImport(FIXTURE).parsed.notes.some(n => /cadet award ribbons? (?:is|are) left off/.test(n)), 'a cadet loses nothing');
   const falcon = runImport(seniorWith('Decorations', ['Frank Borman Falcon Award 01 Jan 2024']));
   assert.ok(falcon.parsed.notes.some(n => /^9 cadet award ribbons are left off/.test(n)), 'the Falcon Award is counted with them');
+});
+
+// ---- The words of the panel (I2) -----------------------------------------------------------------------------------------------------------
+test('what the panel says in the four fixtures is plain: no developer word, no id, no abbreviation the member would not know, every paragraph in brackets', async () => {
+  const DEVELOPER = /\b(?:queued|auto-?selected|mapp(?:ed|ing)|image ID|configured|detected|table only|Level NONE|builder has no badge for that|ES specialty|MRO|MSA|UDF|GTM\d|CDI|IC\d|final check)\b|_[a-z]/;
+  const seen = new Set();
+  for(const file of FIXTURE_FILES){
+    const { result } = await importFile(fileLike(file, 'text/plain', fixtureText(file)));
+    for(const line of linesText(result.lines).slice(1)) seen.add(line);
+  }
+  const bad = [...seen].filter(l => DEVELOPER.test(l.replace(/GLR-IL-\d+/g, '')));
+  assert.deepEqual(bad.map(l => l.slice(0, 120)), []);
+  // A paragraph is in brackets at the end of its sentence, never named in the sentence ("CAPR 39-1" only inside them).
+  for(const line of seen) for(const m of line.matchAll(/CAPR 39-[13]/g)) assert.ok(line.slice(Math.max(0, m.index - 1), m.index) === '(', `CAPR outside brackets: ${line.slice(0, 100)}`);
+});
+
+test('the notes the dated patches write are said in the member\'s words, and anything else is shown as it is', () => {
+  const { context } = loadPageScripts();
+  const plain = lines => JSON.parse(vm.runInContext('(l) => JSON.stringify(memberReportPlainNoteLines(l))', context)(lines));
+  assert.deepEqual(plain([
+    'CAC ribbon imported as Group CAC / Basic Ribbon: Cadet Advisory Council Ribbon listed in the report (no level shown; basic ribbon).',
+    'CAC ribbon imported as Wing CAC / Bronze Star: Highest qualifying CAC level found in duty assignments: Wing.',
+    'Wing CAC shoulder cord - red imported from Current Duty Positions as a current primary representative.',
+    'CAC text found, but no qualifying CAC Chair, Vice Chair, Representative, or Primary Rep duty assignment was found for automatic CAC ribbon level import.',
+    'Member report charter GLR-IL-049 found, but no unit patch image is mapped yet.',
+    'Unit patch auto-selected from member report charter GLR-IL-049.',
+    'A line nothing rewrites.'
+  ]), [
+    'Cadet Advisory Council Ribbon: the basic ribbon, since the report shows no level.',
+    'Cadet Advisory Council Ribbon: Wing level, from the duty positions.',
+    'Wing CAC shoulder cord: the report shows a current primary representative.',
+    'Cadet Advisory Council service was found, but no chair, vice chair or representative duty, so no ribbon level was chosen.',
+    'No unit patch is offered for GLR-IL-049 yet.',
+    'The unit patch for GLR-IL-049 is chosen.',
+    'A line nothing rewrites.'
+  ]);
 });
