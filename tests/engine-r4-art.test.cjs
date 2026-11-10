@@ -87,14 +87,14 @@ test('the first badge on the overblouse is whole: no collar leaf polygon crosses
 const HARNESS = require('../scripts/render-builds.cjs');
 const SEVEN = [['distinguished_service_award', null], ['exceptional_service_award', null], ['meritorious_service_award', null], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon', null], ['cap_membership_ribbon', null], ['cap_command_service_ribbon', null]];
 
-test('a badge box that meets a collar leaf polygon is reported in the scene notes and is never cut (the overblouse pilot wings over seven ribbons, which has no collar layer); a badge clear of the leaves is not (Ethan 2026-10-22: never slice a badge; D8)', async () => {
+test('a badge box that meets a collar leaf polygon is reported in the scene notes, and the leaf lies over it (the overblouse pilot wings over seven ribbons, whose leaves are in its body, so the badge is drawn without the leaf polygon); a badge clear of the leaves is not (Ethan 2026-11-10, B1: the collar goes over the badges)', async () => {
   const under = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: SEVEN, badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
   const wings = under.layers.find(l => l.role === 'badge');
-  assert.ok(wings && !wings.clipOut, 'the wings are never cut by the leaf');
-  assert.ok(under.notes.some(n => /collar leaf reaches the Pilot Badge: it is shown whole, over the collar \(CAPR 39-1 4\.2\.5\.1\.3\.1/.test(n)), `notes: ${JSON.stringify(under.notes)}`);
+  assert.ok(wings && wings.clipOut && wings.clipOut.length, 'the wings are drawn without the leaf polygon, which shows the body\'s own leaf over them');
+  assert.ok(under.notes.some(n => /collar lies over part of the Pilot Badge: it keeps its place 1\/2 in above the ribbons or the badge below it, under the collar \(CAPR 39-1 4\.1\.11\.1\.1\.2\.3\.1/.test(n)), `notes: ${JSON.stringify(under.notes)}`);
   const clear = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: [], badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
   assert.ok(!clear.layers.find(l => l.role === 'badge').clipOut, 'no ribbons: the wings sit below the leaves');
-  assert.ok(!clear.notes.some(n => /collar leaf reaches/i.test(n)), `notes: ${JSON.stringify(clear.notes)}`);
+  assert.ok(!clear.notes.some(n => /collar lies over/i.test(n)), `notes: ${JSON.stringify(clear.notes)}`);
 });
 
 // ---- 6. overblouse sleeve chevron -----------------------------------------------------------------------------

@@ -188,7 +188,7 @@ const RAW_AWARDS = require('../data/ribbon-awards.js');
 // collar was rebuilt as a closed collar (LIVE9-ART 1), whose leaves hang 4.0 to 4.6 in below the sheet's top and so well above a rack of twelve.
 const FULL_RIB = Object.keys(RAW_AWARDS.FAMILIES).map(id => [id]);
 const TWELVE_RIB = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
-test('aviator and Class B shirts, the aviator beside the blazer included: a ribbon or device that reaches a collar leaf is cut out by the leaf polygons where the leaf really is, a badge never is (4.2.5.1.3.1, 4.1.11.1.1.2.3.1; Ethan 2026-10-22, D8)', async () => {
+test('aviator and Class B shirts, the aviator beside the blazer included: a badge, ribbon or device that reaches a collar leaf lies under the collar, drawn again above it, and is never cut (4.2.5.1.3.1, 4.1.11.1.1.2.3.1; Ethan 2026-10-22, D8; 2026-11-10, B1)', async () => {
   const builds = [];
   for(const gender of ['male', 'female']){
     for(const rank of ['Capt', 'Col']){
@@ -200,8 +200,7 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
     }
   }
   let reached = 0;
-  const cutAviator = new Set();   // `${uniform} ${gender}` of every build in which a ribbon or device reached a leaf and was cut
-  const coveredAviator = new Set();   // `${gender} ${sleeve}` of every aviator build whose collar foreground covers a ribbon or device that reaches a leaf
+  const covered = new Set();   // `${uniform} ${gender} ${sleeve}` of every build in which something reaches a leaf and the collar foreground covers it
   for(const [uniform, gender, rank, badgeIds, rib] of builds){
     for(const sleeve of ['short', 'long']){
       const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: rib, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
@@ -216,44 +215,35 @@ test('aviator and Class B shirts, the aviator beside the blazer included: a ribb
           if(!touches.length) continue;
           reached++;
           const id = `${uniform} ${gender} ${rank} ${sleeve} ${l.key}`;
-          if(l.role === 'badge'){ assert.ok(!l.clipOut, `${id}: a badge is never cut`); continue; }
-          if(uniform === 'blues_b'){ assert.ok(!l.clipOut, `${id}: the Class B collar foreground covers it by order`); continue; }
-          // The short aviator sheets draw both collar states (art 66518f14, LIVE12-ART 1): the leaves of the state shown are drawn again over the ribbons, as on the Class B.
-          if(spec.landmarks.collar_states){
-            assert.ok(!l.clipOut, `${id}: the short aviator's collar foreground covers it by order`);
-            assert.ok(scene.layers.some(f => f.role === 'garment-foreground' && (f.figure || 1) === (sheet.figure || 1) && f.z > l.z), `${id}: below the collar foreground`);
-            coveredAviator.add(`${gender} ${sleeve}`);
-            continue;
-          }
-          assert.ok(l.clipOut && l.clipOut.length, `${id}: reaches a collar leaf, so it is cut by it`);
-          // The cut-out polygons are on this figure, not on the first one.
-          assert.ok(l.clipOut.some(p => C.rectHitsPolygon(l, p)), `${id}: the cut-out polygon lies where the ribbon is (x ${l.x.toFixed(2)})`);
-          cutAviator.add(`${uniform} ${gender}`);
+          // Every shirt sheet draws its collar leaves again above the badges, ribbons and devices (collarOverBadges: the short sheets' state shown, the long aviator sheets' `collar` group, the
+          // Class B `collar-foreground`), so the collar lies over whatever reaches it by order alone: nothing is cut and nothing is lifted over the leaf (Ethan 2026-11-10, B1: "it needs to go over the badges").
+          assert.ok(!l.clipOut, `${id}: covered by the collar's foreground, not cut`);
+          assert.ok(scene.layers.some(f => f.role === 'garment-foreground' && (f.figure || 1) === (sheet.figure || 1) && f.z > l.z), `${id}: below the collar foreground`);
+          covered.add(`${uniform} ${gender} ${sleeve}`);
         }
       }
     }
   }
-  // The shirt sheets are drawn at true size (the pocket is 5.25 in wide); the long aviator sheets draw one pointed collar whose leaves hang near the centre line; the Class B collar is a closed one whose
-  // leaves end 4.5 in below the sheet's top (LIVE9-ART 1). Seven or twelve ribbons no longer reach a leaf anywhere; the rack of every CAP ribbon family does on the men's long aviator shirt (alone and
-  // beside the blazer), where the ribbons it reaches are cut by the leaf polygons (asserted above), and on the Class B shirt and blouse (covered by order, no cut). The women's long leaves (3.90 in)
-  // end above the tallest rack of CAP ribbons: nothing there is cut, which the loop asserts for whatever does reach. The short aviator sheets' open collar (the default without the tie; the pieces
-  // reach 7.0 / 7.4 in below the top) is reached on the men's and the women's shirt, and covered by order, never cut.
+  // The shirt sheets are drawn at true size (the pocket is 5.25 in wide). Seven or twelve ribbons no longer reach a leaf anywhere; the rack of every CAP ribbon family does on the men's long aviator
+  // shirt (alone and beside the blazer), on the Class B shirt and blouse and on the short aviator shirts' open collar. The women's long leaves (3.90 in) end above the tallest rack of CAP ribbons:
+  // nothing is under them there, which the loop asserts for whatever does reach.
   assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
-  assert.deepEqual([...cutAviator].sort(), ['aviator male', 'aviator_blazer male'], 'a ribbon is cut by the leaf on the men\'s long aviator shirt and on the shirt beside the blazer');
-  assert.deepEqual([...coveredAviator].sort(), ['female short', 'male short'], 'the short aviator shirts cover the ribbons that reach the open collar');
+  for(const want of ['aviator male short', 'aviator female short', 'aviator male long', 'aviator_blazer male long', 'blues_b male short', 'blues_b male long']) assert.ok(covered.has(want), `${want}: something reaches its collar and the collar covers it (${[...covered].sort().join('; ')})`);
 });
 
-test('aviator beside the blazer: the chaplain badge on the shirt figure is never cut by the collar (the polygon moves with the figure)', async () => {
+test('aviator beside the blazer: the chaplain badge on the shirt figure lies under the collar (the foreground is on this figure) and is never cut', async () => {
   const scene = await compose(hb('aviator_blazer', 'male', 'senior', 'Capt', { badgeIds: [PILOT, 'observer_badge', 'christian_chaplin'], ribbonSel: RIB }));
   const ch = scene.layers.find(l => l.key === 'badge:christian_chaplin' && l.figure === 2);
   assert.ok(ch, 'the shirt\'s chaplain badge is drawn');
-  // The shirt beside the blazer is the long sleeve, whose pointed collar leaves hang near the centre line (the tie is worn, 4.2.5.1.4): the badge is cut by a leaf exactly when its box reaches one, and the cut-out polygons are on this figure.
+  // The shirt beside the blazer is the long sleeve, whose pointed collar leaves hang near the centre line (the tie is worn, 4.2.5.1.4): the collar is drawn again above the badge on this figure whether or not
+  // its box reaches a leaf, and the badge is not cut.
   const sheet = scene.layers.find(l => l.role === 'garment' && l.figure === 2);
   const spec = await store.load(sheet.id);
   const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
   const reaches = polys.some(p => C.rectHitsPolygon(ch, p));
   assert.ok(!ch.clipOut, `never cut (it ${reaches ? 'reaches' : 'does not reach'} a leaf)`);
-  if(reaches) assert.ok(scene.notes.some(n => /collar leaf reaches the Christian Chaplain Badge/.test(n)), 'a leaf it reaches is reported');
+  assert.ok(scene.layers.some(f => f.role === 'garment-foreground' && f.figure === 2 && f.z > ch.z), 'the collar foreground of the shirt figure is above the badge');
+  if(reaches) assert.ok(scene.notes.some(n => /collar lies over part of the Christian Chaplain Badge/.test(n)), 'a leaf it reaches is reported');
 });
 
 // ---- 1. Insignia rest on the gorge seam by their ink, not their box ----------------------------------------------

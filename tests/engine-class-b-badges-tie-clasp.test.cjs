@@ -1,8 +1,8 @@
 'use strict';
 // LIVE13 E129 and E130 (Doran, on the Class B short-sleeve shirt, two screenshots: "It's cutting the wings off and it's missing the tie clip").
 //  - The tie clasp: CAPR 39-1 4.1.3.2.4, 4.1.11.1.1.3, 4.2.5.1.4: "The tie tack or clasp will be centered between the bottom edge of the knot and the bottom tip of the tie."
-//  - A badge is never cut by the collar: the first badge is 1/2 in above the highest row of ribbons, the second 1/2 in above the first (4.1.11.1.1.2.3.1); it keeps that
-//    place and is drawn whole over the collar leaf where the two meet.
+//  - The first badge is 1/2 in above the highest row of ribbons, the second 1/2 in above the first (4.1.11.1.1.2.3.1); it keeps that place and the collar lies over it where the two
+//    meet (E130 drew the badge whole over the leaf; Ethan, 2026-11-10, B1: "it needs to go over the badges").
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -79,7 +79,7 @@ test('no tie, no clasp: the short sleeves without the tie, the women\'s tab, the
   }
 });
 
-test('the Class B shirt and blouse, short and long: with up to 22 ribbons and two badges no badge is cut by the collar, whatever the rack (the first badge 1/2 in over the ribbons, the second 1/2 in over it)', async () => {
+test('the Class B shirt and blouse, short and long: with up to 22 ribbons and two badges the collar lies over any badge it reaches, whatever the rack (the first badge 1/2 in over the ribbons, the second 1/2 in over it)', async () => {
   let reached = 0;
   for(const gender of ['male', 'female']) for(const sleeve of ['short', 'long']) for(const tie of [false, true]) for(const n of [0, 4, 12, 22]){
     const scene = await P.composeUniform(mk('blues_b', gender, { opt: { sleeve, tie }, ribbonSel: RIBBONS.slice(0, n).map(i => [i]), badgeIds: ['observer_badge', 'emt_basic_badge'] }), store);
@@ -91,7 +91,8 @@ test('the Class B shirt and blouse, short and long: with up to 22 ribbons and tw
     for(const l of scene.layers.filter(x => x.role === 'badge')){
       const tag = `${gender} ${sleeve} tie ${tie} ${n} ribbons ${l.key}`;
       assert.ok(!l.clipOut, `${tag}: not cut`);
-      if(polys.some(poly => C.rectHitsPolygon(l, poly))){ reached++; assert.ok(fg.every(f => l.z > f.z), `${tag}: drawn whole above the collar`); assert.ok(scene.notes.some(t => /collar leaf reaches/.test(t)), `${tag}: said so`); }
+      assert.ok(fg.length && fg.every(f => l.z < f.z), `${tag}: under the collar foreground, which lies over it (Ethan 2026-11-10, B1)`);
+      if(polys.some(poly => C.rectHitsPolygon(l, poly))){ reached++; assert.ok(scene.notes.some(t => /collar lies over part of/.test(t)), `${tag}: said so`); }
     }
     // The regulation's distances still hold: the first badge's silver 1/2 in above the highest ribbon row.
     const rib = scene.layers.filter(l => l.role === 'ribbon'), badges = scene.layers.filter(l => l.role === 'badge').sort((a, b) => b.y - a.y);

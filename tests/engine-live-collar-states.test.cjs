@@ -131,24 +131,25 @@ test('short aviator sheets: the collar of the state shown lies over the badges a
       const polys = (tie ? ['collar_closed_right', 'collar_closed_left'] : ['collar_right', 'collar_left']).map(n => sp.landmarks[n].points);
       const reaches = placed.some(l => l.role === 'ribbon' && polys.some(poly => C.rectHitsPolygon(l, poly)));
       assert.equal(reaches, !(gender === 'female' && tie), `${gender} tie ${tie}: a ribbon reaches a collar leaf of the state shown`);
-      // E130 (Doran: "It's cutting the wings off"): a ribbon or device is tucked under the collar; a badge the leaf reaches keeps its place and is drawn whole above the foreground.
+      // B1 (Ethan, 2026-11-10: "aviator shirt collar doesnt have collission lol, it needs to go over the badges"): whatever is placed, a badge included, lies under the collar's foreground
+      // and keeps its place, uncut; a badge a leaf reaches is said so in the notes.
       for(const l of placed){
         assert.ok(!l.clipOut, `${l.key}: covered by the collar, not cut`);
-        const touches = l.role === 'badge' && polys.some(poly => C.rectHitsPolygon(l, poly));
-        if(touches) assert.ok(fg.every(f => l.z > f.z), `${l.key}: a badge on the collar leaf is above the foreground, whole`);
-        else assert.ok(fg.every(f => l.z < f.z), `${l.key}: below the foreground`);
+        assert.ok(fg.every(f => l.z < f.z), `${l.key}: below the foreground`);
+        if(l.role === 'badge' && polys.some(poly => C.rectHitsPolygon(l, poly))) assert.ok(scene.notes.some(n => /collar lies over part of/.test(n)), `${l.key}: the collar lies over part of it, and the notes say so`);
       }
     }
   }
 });
 
-test('short aviator sheets: the cadet NCO chevrons lie above the collar foreground (they are worn on the collar), on the long sheets at the insignia layer as before', async () => {
+test('the aviator sheets: the cadet NCO chevrons lie above the collar foreground (they are worn on the collar), short sheets and long', async () => {
   for(const gender of ['male', 'female']){
     for(const [sleeve, tie] of [['short', false], ['short', true], ['long', true]]){
       const scene = await P.composeUniform(build('aviator', gender, 'cadet', 'C/MSgt', { sleeve, tie }), store);
       const fg = scene.layers.filter(l => l.role === 'garment-foreground');
       assert.equal(chevrons(scene).length, 2);
-      if(sleeve === 'long'){ assert.equal(fg.length, 0, `${gender} long: no foreground`); continue; }
+      // the long sheets state no collar_states: their one `collar` group is the foreground (B1)
+      if(sleeve === 'long') assert.deepEqual(fg.map(l => l.onlyGroups), [['collar']], `${gender} long: the collar group is the foreground`);
       for(const c of chevrons(scene)) assert.ok(fg.every(f => c.z > f.z), `${gender} ${sleeve} tie ${tie}: the chevron (z ${c.z}) above the collar foreground (z ${fg.map(f => f.z)})`);
     }
   }

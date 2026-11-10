@@ -731,12 +731,13 @@
   }
 
   // The shirts' collar leaves lie over what reaches them (4.1.11.1.1.2.3.1, 4.1.12.2.5.1: the second badge 1/2 in above the
-  // first, 'under the collar'), but a badge is never cut: Ethan 2026-10-22, 'never slice a badge'. Where the sheet draws its
-  // leaves as a foreground group (the Class B shirt and blouse: `collar-foreground`), that group is drawn again above the badges,
-  // ribbons and devices (Z.badge + 0.5), so the collar covers them by order alone and the badge stays whole in the scene. A
-  // sheet without such a group (the aviator shirts, the overblouse) cannot draw the leaf over a badge: the scene says the badge
-  // reaches the leaf (FOLLOWUPS: art to give those sheets a collar foreground group). Ribbons and devices that reach a leaf
-  // there are still drawn without it (clipOut), as before; badges never are.
+  // first, 'under the collar'). Ethan 2026-10-22: 'the collar should be over the badges'; and again 2026-11-10 on the aviator shirt, over a badge that reached the
+  // collar point: "aviator shirt collar doesnt have collission lol, it needs to go over the badges." (This undoes LIVE13 E130, which lifted a badge over the
+  // leaf so the collar would not hide the wings: the badge keeps its regulation place and the collar lies over whatever part of it reaches.) The collar is drawn again
+  // as a foreground group above the badges, ribbons and devices (Z.badge + 0.5), so it covers them by order alone and nothing placed on the shirt is cut or lifted.
+  // Every sheet that draws its leaves as a group gives that group: the Class B shirt and blouse (`collar-foreground`, or the open and closed states), the aviator shirts' open
+  // and closed states and, on the long aviator sheets, the one `collar` group (`foregroundGroup`). Only the overblouse draws its leaves in the body: there a badge, a ribbon or a
+  // device the leaf reaches is drawn without the leaf's polygon (clipOut), which shows the body's own leaf over it.
   //
   // `underCollar`: groups redrawn over the badges but under the leaves (Z.badge + 0.45), whatever the sheet's own order. The women's tie tab
   // (LIVE12 E59, Ethan: the tab's "apex rises into the collar junction instead of sitting under the collar"; CAPR 39-1 4.1.12.4, 4.2.6.3: the tab
@@ -754,16 +755,8 @@
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
       if(!hit.length) continue;
-      if(l.role === 'badge'){
-        // LIVE13 E130 (Doran, on the Class B short-sleeve shirt with the Observer wings: "It's cutting the wings off"): a badge is never cut by the collar. The first badge
-        // is worn 1/2 in above the highest row of ribbons and the second 1/2 in above the first (4.1.11.1.1.2.3.1; 4.2.5.1.3.1, 4.2.6.2.7.1 on the aviator shirts), the ribbons rest
-        // on the pocket, so a tall rack or a second badge can bring one to the collar leaf in the flat drawing: it keeps its regulation place and is drawn whole over the
-        // leaf (above the collar foreground), with a note. Ribbons are still tucked under the collar.
-        l.z = Math.max(l.z || 0, Z.badge + 0.6);
-        ctx.note(foregroundGroup
-          ? `The collar leaf reaches the ${l.title || 'badge'}: it keeps its place 1/2 in above the ribbons or the badge below it and is shown whole, over the collar (CAPR 39-1 4.1.11.1.1.2.3.1, 4.2.5.1.3.1, 4.2.6.2.7.1)`
-          : `The collar leaf reaches the ${l.title || 'badge'}: it is shown whole, over the collar (CAPR 39-1 4.2.5.1.3.1, 4.2.6.2.7.1)`);
-      }else if(!foregroundGroup) l.clipOut = hit;
+      if(l.role === 'badge') ctx.note(`The collar lies over part of the ${l.title || 'badge'}: it keeps its place 1/2 in above the ribbons or the badge below it, under the collar (CAPR 39-1 4.1.11.1.1.2.3.1, 4.2.5.1.3.1, 4.2.6.2.7.1)`);
+      if(!foregroundGroup) l.clipOut = hit;
     }
   }
 
@@ -2261,9 +2254,9 @@
       await epauletEdgeGrades(ctx, g);
       await epauletViews(ctx, g);
     }else if(g.category === 'cadet-nco'){
-      // On the collar of the state shown (H.collarPolygons reads ctx.collarState: the open pieces without the tie, the closed leaves with it; 4.2.5.1.1.5, 4.2.6.2.5, Figure A5-5). A short sheet
-      // with both collar states has its collar drawn again over the badges and ribbons (collarOverBadges below, Z.badge + 0.5), so the chevron worn on it lies above that, as on the Class B.
-      await H.collarChevrons(ctx, g, ctx.collarGroups ? { z: Z.badge + 0.6 } : undefined);
+      // On the collar of the state shown (H.collarPolygons reads ctx.collarState: the open pieces without the tie, the closed leaves with it; 4.2.5.1.1.5, 4.2.6.2.5, Figure A5-5). Every shirt sheet
+      // has its collar drawn again over the badges and ribbons (collarOverBadges below, Z.badge + 0.5; the overblouse's leaves are in its body), so the chevron worn on it lies above that, as on the Class B.
+      await H.collarChevrons(ctx, g, V.overblouse ? undefined : { z: Z.badge + 0.6 });
     }else if(g.category === 'senior-nco'){
       // 3 1/2 in chevrons only (4.2.5.1.1.3, 4.2.6.2.3).
       const id = G.seniorChevron(g, { size: '3.5' });
@@ -2329,12 +2322,14 @@
     // The collar lies over what reaches it (4.2.5.1.3.1, 4.2.6.2.7.1). The short sheets draw both collar states (art 66518f14, LIVE12-ART 1): the leaves of the state shown are drawn again over the
     // badges and ribbons, as on the short Class B. Open: the group `collar` (the open pieces and the V). Closed: the tie and the closed group's named pieces (the back of the collar, the two leaves,
     // the women's neck edge), not the whole group, which also holds a shirt-coloured cover of the open collar that would paint over a ribbon lying where the open pieces would be. The long sheets
-    // state no collar_states and have no collar layer to draw over a badge: their ribbons and devices are cut by the leaf polygons, as before.
+    // state no collar_states: their one `collar` group (the leaves and the back of the neck) is the foreground, so the collar lies over a badge, a ribbon or a device on the long shirts too
+    // (Ethan, 2026-11-10: "aviator shirt collar doesnt have collission lol, it needs to go over the badges"). The overblouse draws its leaves in the body and has no group: what the leaf reaches
+    // is drawn without the leaf's polygon.
     // The women's tie tab lies under the closed leaves (4.2.6.3), redrawn on its own below them rather than relying on the sheet's order (LIVE12 E59); the men's tie keeps
     // the one foreground layer. The long sheets draw the tab in the base sheet before the `collar` group, which covers it.
     const states = ctx.collarGroups;
     const tabUnder = female && states && ctx.collarState === 'closed';
-    collarOverBadges(ctx, !states ? null : ctx.collarState === 'closed'
+    collarOverBadges(ctx, !states ? (V.overblouse ? null : ['collar']) : ctx.collarState === 'closed'
       ? (tabUnder ? [] : ['tie']).concat([`${states.closed}-back`, `${states.closed}-right`, `${states.closed}-left`]).concat(female ? ['neck-edge'] : [])
       : [states.open], tabUnder ? ['tie'] : null);
     // The tie, or a tie tab for women (4.2.5.1.4, 4.2.6.3), is the sheet's own group `tie` (hidden above when the member turns it off, tieOn): worn with long sleeves, optional with short ones.
