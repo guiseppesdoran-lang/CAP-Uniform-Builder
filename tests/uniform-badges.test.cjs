@@ -117,7 +117,7 @@ test('on the page: a badge selected on the Class B stays selected on the ABU, is
   assert.equal(ev("isBadgeWornOnCurrentUniform('emergency_services_badge')"), false);
   assert.equal(ev("isBadgeWornOnCurrentUniform('CAPPilot1_FA9D33EA587D8')"), true);
   assert.deepEqual(ev('getSelectedBadgesNotWornOnCurrentUniform()'), ['emergency_services_badge']);
-  assert.equal(ev('capubBadgesNotWornLine()'), '1 selected badge is not worn on this uniform (CAPR 39-1, 5.1.1.1.2.4, 5.1.1.1.2.5; genuine field artwork only).');
+  assert.equal(ev('capubBadgesNotWornLine()'), '1 selected badge is not worn on this uniform (CAPR 39-1, 5.1.1.1.2.4, 5.1.1.1.2.5).');
   assert.deepEqual(ev('State.badges'), ['emergency_services_badge', 'CAPPilot1_FA9D33EA587D8'], 'still selected');
   ev("State.badges.push('communications_technician_badge')");
   assert.match(ev('capubBadgesNotWornLine()'), /^2 selected badges are not worn on this uniform/);

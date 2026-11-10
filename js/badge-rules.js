@@ -62,8 +62,7 @@ const SPECIALTY_TRACK_BADGE_IDS = new Set([
   'communications_technician_badge','communications_senior_badge','communications_master_badge',
   'information_technology_technician_badge','historian_technicianIbadge',
   'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
-  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge','administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge',
-  'administration_technician_badge','administration_senior_badge','administration_master_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge','finance_senior_badge','finance_master_badge'
+  'cyber_badges','stem_badges','volunteer_university_instructor_badge','cadet_programs_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge'
 ]);
 const POCKET_SERVICE_BADGE_IDS = new Set([
   ...SPECIALTY_TRACK_BADGE_IDS
@@ -120,7 +119,7 @@ function capubBadgesNotWornLine(ids = State.badges){
   const n = getSelectedBadgesNotWornOnCurrentUniform(ids).length;
   if(!n) return '';
   const wear = window.CAPUBUniformRules?.badgeWear(State.uniform, capubBadgeWearOptions());
-  const where = wear ? ` (CAPR 39-1, ${wear.ref}${wear.fieldArt ? '; genuine field artwork only' : ''})` : '';
+  const where = wear ? ` (CAPR 39-1, ${wear.ref})` : '';
   return `${n} selected badge${n === 1 ? ' is' : 's are'} not worn on this uniform${where}.`;
 }
 
