@@ -262,7 +262,7 @@ function femaleClassASpecialtyRowIsFull(){
 }
 
 function hasCurrentCommanderBadgeSelected(){
-  return (State.badges || []).includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander;
+  return !!getSelectedCommandInsigniaId() && !State.commandInsignia?.graduatedCommander;
 }
 
 // Specialty-track/service badges, other than command insignia, are pocket badges.
@@ -332,16 +332,28 @@ const COMMAND_INSIGNIA_BADGE_IDS = new Set([
 function isCommandInsigniaBadge(id){
   return COMMAND_INSIGNIA_BADGE_IDS.has(id);
 }
+// The command pin chosen (squadron or group; only one is worn, 10.2.5), or '' when none is.
+function getSelectedCommandInsigniaId(){
+  return (State.badges || []).find(id => isCommandInsigniaBadge(id)) || '';
+}
+// Choosing one command pin takes the other off.
+function chooseOnlyCommandInsignia(id){
+  COMMAND_INSIGNIA_BADGE_IDS.forEach(other => {
+    if(other === id) return;
+    if(State.badgeSelections?.[other]) State.badgeSelections[other].checked = false;
+    State.badges = (State.badges || []).filter(b => b !== other);
+  });
+}
 function getCommandInsigniaSlot(){
   // Current commanders: ON (over nameplate). Graduated commanders: UN (under nameplate).
   return State.commandInsignia?.graduatedCommander ? 'UN' : 'ON';
 }
 function getBadgeSlotSpec(id){
-  if(id === 'squadron_commander_badge') return getCommandInsigniaSlot();
+  if(isCommandInsigniaBadge(id)) return getCommandInsigniaSlot();
   return badgeLocations[id] || 'UN';
 }
 function getBadgeSlotLabel(id){
-  if(id === 'squadron_commander_badge'){
+  if(isCommandInsigniaBadge(id)){
     return State.commandInsignia?.graduatedCommander ? 'UN — graduated commander' : 'ON — current commander';
   }
   if(id === 'model_rocketry_badge' || id === 'cyber_badges' || id === 'stem_badges'){

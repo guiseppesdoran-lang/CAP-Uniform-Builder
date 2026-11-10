@@ -1028,6 +1028,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
+        tile.dataset.badgeId = id;
         tile.innerHTML = `
           <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${escapeHtml(title)}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
           <div style="flex:1;min-width:0;">
@@ -1035,7 +1036,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
             ${utilityMode ? '<div class="sub">Silver-on-blue utility badge</div>' : ''}
             <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
             ${utilityMode ? '' : badgeLevelSelectHtml(id)}
-            ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
+            ${isCommandInsigniaBadge(id) && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             ${getBadgeTileMetaHtml(id, utilityMode ? 'In its set position on the field uniform' : '')}
           </div>`;
         wireBadgeLevelSelect(tile, id);
@@ -1043,7 +1044,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         const chk = tile.querySelector('.bdChk');
         const gradChk = tile.querySelector('.cmdGradChk');
         chk.checked = !!sel.checked;
-        if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
+        if(gradChk) gradChk.checked = !!sel.checked && !!State.commandInsignia?.graduatedCommander;
 
         chk.onchange = () => {
           if(isCommandInsigniaBadge(id) && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
@@ -1069,6 +1070,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
           }
           sel.checked = chk.checked;
           State.badgeSelections[id] = sel;
+          if(chk.checked && isCommandInsigniaBadge(id)) chooseOnlyCommandInsignia(id);
           rebuildBadgesFromGallery();
         };
         if(gradChk){
@@ -1083,7 +1085,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
             }
             if(!State.commandInsignia) State.commandInsignia = {};
             State.commandInsignia.graduatedCommander = gradChk.checked;
-            if(gradChk.checked){ sel.checked = true; chk.checked = true; State.badgeSelections[id] = sel; }
+            if(gradChk.checked){ sel.checked = true; chk.checked = true; State.badgeSelections[id] = sel; chooseOnlyCommandInsignia(id); }
             rebuildBadgesFromGallery();
           };
         }

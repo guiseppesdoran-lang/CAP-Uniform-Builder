@@ -294,9 +294,18 @@
   /* ---------- the command insignia pin, set on the Items step (CAPR 39-1, 10.2.5) ---------- */
   // Three choices instead of the chooser's tick and "Graduated commander" box: not worn, current commander (over the name tag), graduated
   // commander (under it). It sets the same two things the chooser sets (the badge chosen, State.commandInsignia.graduatedCommander).
-  const COMMAND_ID='squadron_commander_badge';
+  // Squadron and group commanders have a pin each and one pin is worn, so once a pin is on the row also asks which command is held.
+  const COMMAND_PINS={squadron:'squadron_commander_badge',group:'group_commander_badge'};
+  const COMMAND_ID=COMMAND_PINS.squadron;
+  function commandPinWorn(){ return (State.badges||[]).find(id=>Object.values(COMMAND_PINS).includes(id))||''; }
+  function commandLevel(){
+    const worn=commandPinWorn();
+    if(worn) return Object.keys(COMMAND_PINS).find(k=>COMMAND_PINS[k]===worn);
+    const pick=safeBy('commandInsigniaLevel');
+    return pick && COMMAND_PINS[pick.value] ? pick.value : 'squadron';
+  }
   function commandChoice(){
-    if(!(State.badges||[]).includes(COMMAND_ID)) return 'none';
+    if(!commandPinWorn()) return 'none';
     return State.commandInsignia && State.commandInsignia.graduatedCommander ? 'graduated' : 'current';
   }
   function syncCommandRow(){
@@ -305,14 +314,17 @@
     const eligible=!State.membership || typeof isBadgeEligibleForMembership!=='function' || isBadgeEligibleForMembership(COMMAND_ID,State.membership);
     row.classList.toggle('hidden',!(State.membership && State.uniform && wornHere && eligible));
     const gradeOk=typeof isCommandInsigniaGradeEligible==='function' ? isCommandInsigniaGradeEligible(State.rank) : true;
-    const choice=commandChoice();
+    const choice=commandChoice(), level=commandLevel();
     row.querySelectorAll('input[name="commandInsignia"]').forEach(i=>{
       i.checked=i.value===choice;
       i.disabled=!gradeOk && i.value!=='none';
     });
+    const pick=safeBy('commandInsigniaLevel'), pickWrap=safeBy('commandInsigniaLevelWrap');
+    if(pick && pick.value!==level) pick.value=level;
+    if(pickWrap) pickWrap.classList.toggle('hidden',choice==='none');
     const state=safeBy('commandInsigniaState');
     if(state){
-      const summary=typeof capubBadgeSummary==='function' ? capubBadgeSummary().find(r=>r.id===COMMAND_ID) : null;
+      const summary=typeof capubBadgeSummary==='function' ? capubBadgeSummary().find(r=>r.id===COMMAND_PINS[level]) : null;
       state.textContent=choice==='none' ? 'Not worn'
         : (choice==='graduated' ? 'Graduated commander' : 'Current commander')+(summary && summary.shown && summary.place ? `: ${summary.place}` : (summary && !summary.shown && !summary.pending ? ': not shown' : ''));
     }
@@ -321,17 +333,26 @@
     const row=safeBy('commandInsigniaRow');
     if(!row || row.dataset.wired) return;
     row.dataset.wired='1';
-    row.addEventListener('change',e=>{
-      const input=e.target.closest && e.target.closest('input[name="commandInsignia"]'); if(!input || !input.checked) return;
+    // The choice (none, current, graduated) and the command held (squadron, group) together: the one pin on, the other off.
+    const setCommand=(choice,level)=>{
       if(typeof normalizeBadgeSelections==='function') normalizeBadgeSelections();
-      const sel=State.badgeSelections[COMMAND_ID]=State.badgeSelections[COMMAND_ID]||{checked:false};
-      if(input.value!=='none' && typeof canSelectCommandInsigniaForCurrentRank==='function' && !canSelectCommandInsigniaForCurrentRank(true)){ syncCommandRow(); return; }
+      if(choice!=='none' && typeof canSelectCommandInsigniaForCurrentRank==='function' && !canSelectCommandInsigniaForCurrentRank(true)){ syncCommandRow(); return; }
       if(!State.commandInsignia) State.commandInsignia={};
-      State.commandInsignia.graduatedCommander=input.value==='graduated';
-      sel.checked=input.value!=='none';
-      if(input.value==='none') State.badges=(State.badges||[]).filter(id=>id!==COMMAND_ID);
+      State.commandInsignia.graduatedCommander=choice==='graduated';
+      const pin=COMMAND_PINS[level]||COMMAND_ID;
+      Object.values(COMMAND_PINS).forEach(id=>{
+        const sel=State.badgeSelections[id]=State.badgeSelections[id]||{checked:false};
+        sel.checked=choice!=='none' && id===pin;
+        if(!sel.checked) State.badges=(State.badges||[]).filter(b=>b!==id);
+      });
       rebuildBadgesFromGallery();
       syncCommandRow();
+    };
+    row.addEventListener('change',e=>{
+      const t=e.target; if(!t) return;
+      if(t.id==='commandInsigniaLevel'){ if(commandChoice()!=='none') setCommand(commandChoice(),t.value); return; }
+      const input=t.closest && t.closest('input[name="commandInsignia"]'); if(!input || !input.checked) return;
+      setCommand(input.value,commandLevel());
     });
   }
   // The member-report importer: one button at rest; once a report has been read, its result and the clear button.

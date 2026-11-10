@@ -566,7 +566,6 @@ function getRibbonSelectionOption(id, value){
 }
 
 const COMMAND_SERVICE_RIBBON_ID = 'cap_command_service_ribbon';
-const COMMAND_SERVICE_RIBBON_VALUES = new Set(['earned','group_bronze_star','wing_silver_star','region_gold_star','national_two_gold_stars']);
 
 function applyRibbonSelectionValue(id, value){
   const option = getRibbonSelectionOption(id, value || 'earned');
@@ -577,39 +576,25 @@ function applyRibbonSelectionValue(id, value){
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
 }
 
+// The command insignia pin and the Command Service Ribbon are separate: the pin is worn by current and graduated commanders in the grade
+// of lieutenant colonel and below (CAPR 39-1, 10.2.5), the ribbon is awarded after a year of continuous command with the star of the one
+// level it shows (CAPR 39-3, 21a). A commander in the first year wears the pin without the ribbon, so neither choice sets the other; the
+// member report adds the ribbon from the length of the tour. What is kept here is the grade rule and the one pin.
 function syncCommandBadgeAndRibbonSelections(){
   normalizeRibbonSelections();
   normalizeBadgeSelections();
-
-  State.badgeSelections['squadron_commander_badge'] = State.badgeSelections['squadron_commander_badge'] || { checked:false };
-  const badgeSel = State.badgeSelections['squadron_commander_badge'];
-  const commanderRankEligible = isCommandInsigniaGradeEligible(State.rank);
-
-  // Never allow the commander pin to render for Col and above.
-  // The Command Service Ribbon is handled separately and may still be awarded
-  // after one year of qualifying command service at the proper echelon.
-  if(!commanderRankEligible){
-    badgeSel.checked = false;
-    State.badges = (State.badges || []).filter(id => id !== 'squadron_commander_badge');
-    State.badgeSelections['squadron_commander_badge'] = badgeSel;
+  const commandIds = [...COMMAND_INSIGNIA_BADGE_IDS];
+  if(!isCommandInsigniaGradeEligible(State.rank)){
+    commandIds.forEach(id => { if(State.badgeSelections[id]) State.badgeSelections[id].checked = false; });
+    State.badges = (State.badges || []).filter(id => !isCommandInsigniaBadge(id));
+    return;
   }
-
-  const hasBadge = commanderRankEligible && (!!badgeSel.checked || (State.badges || []).includes('squadron_commander_badge'));
-
-  const ribbonSel = State.ribbonSelections[COMMAND_SERVICE_RIBBON_ID] || { checked:false, devices:{}, awardValue:'', awardLabel:'' };
-  const ribbonValue = ribbonSel.awardValue || '';
-  const ribbonImpliesCommand = !!ribbonSel.checked && COMMAND_SERVICE_RIBBON_VALUES.has(ribbonValue);
-
-  if(hasBadge && !ribbonImpliesCommand){
-    applyRibbonSelectionValue(COMMAND_SERVICE_RIBBON_ID, 'earned');
-  }
-
-  // Reverse-sync the ribbon to the badge only when the selected grade is allowed
-  // to wear command insignia. This prevents Cols from receiving a rendered badge
-  // simply because the Command Service Ribbon imported or was manually selected.
-  if(ribbonImpliesCommand && commanderRankEligible){
-    badgeSel.checked = true;
-    State.badgeSelections['squadron_commander_badge'] = badgeSel;
+  // Only one command pin is worn: the one already on the uniform stays, else the first chosen.
+  const chosen = commandIds.filter(id => State.badgeSelections[id]?.checked);
+  if(chosen.length > 1){
+    const keep = (State.badges || []).find(id => chosen.includes(id)) || chosen[0];
+    chosen.filter(id => id !== keep).forEach(id => { State.badgeSelections[id].checked = false; });
+    State.badges = (State.badges || []).filter(id => !isCommandInsigniaBadge(id) || id === keep);
   }
 }
 
@@ -1426,10 +1411,23 @@ function rebuildBadgesFromGallery(){
 
   syncGoddardRocketryStar();
 
-  // Badge changes can automatically add the Command Service Ribbon, so rebuild
-  // the ribbon state/rack too. That pass also re-renders badges afterward.
+  // The ribbon pass draws the rack and then the badges again.
   rebuildRibbonsFromGallery();
   if(typeof capubSyncBadgesNotWornNote === 'function') capubSyncBadgesNotWornNote();
+  syncCommandInsigniaTiles();
+}
+
+// One command pin is worn, so a change to one command card (or to the row on the Items step) shows on the other card of an open chooser.
+function syncCommandInsigniaTiles(){
+  if(typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
+  document.querySelectorAll('.galleryTile[data-badge-id]').forEach(tile => {
+    const id = tile.dataset.badgeId;
+    if(!isCommandInsigniaBadge(id)) return;
+    const on = !!State.badgeSelections[id]?.checked;
+    const chk = tile.querySelector('.bdChk'), gradChk = tile.querySelector('.cmdGradChk');
+    if(chk) chk.checked = on;
+    if(gradChk) gradChk.checked = on && !!State.commandInsignia?.graduatedCommander;
+  });
 }
 
 // A level picker on the tile of a badge earned in levels (STEM, Cyber, NRA).
@@ -1475,6 +1473,7 @@ function buildBadgeGallery(){
 
     const tile = document.createElement('div');
     tile.className = 'galleryTile';
+    tile.dataset.badgeId = id;
 
     const title = getBadgeDisplayName(id);
     tile.innerHTML = `
@@ -1485,7 +1484,7 @@ function buildBadgeGallery(){
           <label><input type="checkbox" class="bdChk"> Add</label>
         </div>
         ${badgeLevelSelectHtml(id)}
-        ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
+        ${isCommandInsigniaBadge(id) ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
         ${getBadgeTileMetaHtml(id)}
       </div>
     `;
@@ -1494,10 +1493,10 @@ function buildBadgeGallery(){
     const chk = tile.querySelector('.bdChk');
     const gradChk = tile.querySelector('.cmdGradChk');
     chk.checked = !!sel.checked;
-    if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
+    if(gradChk) gradChk.checked = !!sel.checked && !!State.commandInsignia?.graduatedCommander;
 
     chk.onchange = ()=>{
-      if(id === 'squadron_commander_badge' && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
+      if(isCommandInsigniaBadge(id) && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
         chk.checked = false;
         sel.checked = false;
         State.badgeSelections[id] = sel;
@@ -1525,6 +1524,7 @@ function buildBadgeGallery(){
           sel.checked = true;
           chk.checked = true;
           State.badgeSelections[id] = sel;
+          chooseOnlyCommandInsignia(id);
         }
         rebuildBadgesFromGallery();
       };

@@ -400,6 +400,7 @@ function openGalleryModal(kind){
 
         const tile = document.createElement('div');
         tile.className = 'galleryTile';
+        tile.dataset.badgeId = id;
         tile.innerHTML = `
           <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
           <div style="flex:1;min-width:0;">
@@ -408,7 +409,7 @@ function openGalleryModal(kind){
               <label><input type="checkbox" class="bdChk"> Add</label>
             </div>
             ${badgeLevelSelectHtml(id)}
-            ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
+            ${isCommandInsigniaBadge(id) ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
             ${getBadgeTileMetaHtml(id)}
           </div>
         `;
@@ -417,10 +418,11 @@ function openGalleryModal(kind){
         const chk = tile.querySelector('.bdChk');
         const gradChk = tile.querySelector('.cmdGradChk');
         chk.checked = !!sel.checked;
-        if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
+        if(gradChk) gradChk.checked = !!sel.checked && !!State.commandInsignia?.graduatedCommander;
         chk.onchange = ()=>{
           sel.checked = chk.checked;
           State.badgeSelections[id] = sel;
+          if(chk.checked && isCommandInsigniaBadge(id)) chooseOnlyCommandInsignia(id);
           rebuildBadgesFromGallery();
         };
         if(gradChk){
@@ -431,6 +433,7 @@ function openGalleryModal(kind){
               sel.checked = true;
               chk.checked = true;
               State.badgeSelections[id] = sel;
+              chooseOnlyCommandInsignia(id);
             }
             rebuildBadgesFromGallery();
           };
@@ -1063,8 +1066,12 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
           addNotice('ok','Female cadet Class A: with two specialty badges already above the nameplate, Model Rocketry is shown in the left-pocket place used on the male uniform.');
         }
       }
-      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and is shown under the nameplate (UN); command insignia remains outside the normal four-badge count.');
-      if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and is shown over the nameplate (ON); command insignia remains outside the normal four-badge count.');
+      const commandPin = getSelectedCommandInsigniaId();
+      if(commandPin){
+        addNotice('ok', State.commandInsignia?.graduatedCommander
+          ? `${getBadgeDisplayName(commandPin)}: worn as a graduated commander, below the name tag. It is not counted among the four badges (CAPR 39-1, 10.2.5).`
+          : `${getBadgeDisplayName(commandPin)}: worn as a current commander, above the name tag. It is not counted among the four badges (CAPR 39-1, 10.2.5).`);
+      }
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }

@@ -31,8 +31,8 @@ test('the row is in the Badges card on the Items step, a labelled group of three
 
 test('the row sets what the chooser sets, through the same rebuild, and asks the same grade rule', () => {
   assert.match(ui, /function wireCommandRow\(\)/);
-  assert.match(ui, /State\.commandInsignia\.graduatedCommander=input\.value==='graduated'/);
-  assert.match(ui, /sel\.checked=input\.value!=='none'/);
+  assert.match(ui, /State\.commandInsignia\.graduatedCommander=choice==='graduated'/);
+  assert.match(ui, /sel\.checked=choice!=='none' && id===pin/);
   assert.match(ui, /canSelectCommandInsigniaForCurrentRank\(true\)/);
   assert.match(ui, /rebuildBadgesFromGallery\(\)/);
   assert.match(ui, /wireCommandRow\(\); watchImporter\(\);/, 'wired with the rest of the page on load');

@@ -1060,11 +1060,7 @@ function getCommandServiceRibbonValueForCommanderEchelon(echelon){
 }
 
 function showCommandInsigniaRankWarning(){
-  alert(
-    'Commander pin blocked for this rank.\n\n' +
-    'CAPR 39-1 limits the Command Insignia Pin to current and graduated commanders in the grade of Lieutenant Colonel and below.\n\n' +
-    'Only colonels who are specifically authorized under the current command-insignia rules and who have not served, and are not currently serving, on Command Council may be eligible. This builder will not render the commander pin for Col and above.'
-  );
+  capubNotify('The command insignia pin is worn in the grade of lieutenant colonel and below (CAPR 39-1, 10.2.5).', 4500);
 }
 
 function canSelectCommandInsigniaForCurrentRank(showWarning=false){

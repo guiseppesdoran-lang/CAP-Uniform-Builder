@@ -354,7 +354,14 @@
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="current"><span class="badgeChooserName">Current commander</span></label>
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="graduated"><span class="badgeChooserName">Graduated commander</span></label>
             </div>
-            <div id="commandInsigniaRule" class="hintText">Worn by current and graduated commanders in the grade of lieutenant colonel and below: a current commander's over the name tag, a graduated commander's under it (CAPR 39-1, 10.2.5).</div>
+            <div id="commandInsigniaLevelWrap" class="commandRowLevel hidden">
+              <label class="fieldLabel" for="commandInsigniaLevel">Command held</label>
+              <select id="commandInsigniaLevel">
+                <option value="squadron">Squadron commander</option>
+                <option value="group">Group commander</option>
+              </select>
+            </div>
+            <div id="commandInsigniaRule" class="hintText">Worn by current and graduated commanders in the grade of lieutenant colonel and below, one pin only: a current commander's over the name tag, a graduated commander's under it (CAPR 39-1, 10.2.5). The Command Service Ribbon is a separate award, added under Ribbons.</div>
           </div>
 
           <div id="badgesPlannedNote" class="hintText hidden" role="note"></div>

@@ -1371,6 +1371,9 @@ html[data-access="guest"] #accessGate{display:none}
 .commandRowLabel{font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
 .commandRowState{font-size:var(--t-xs);color:var(--muted);text-align:right;min-width:0}
 .commandRow .hintText{margin-top:var(--s1)}
+.commandRowLevel{display:grid;gap:var(--s1);min-width:0}
+.commandRowLevel.hidden{display:none}
+.commandRowLevel select{width:100%;min-width:0}
 
 /* Regulation references (js/citations.js). A reference is taken out of its text and waits behind the small question mark that ends the text; a
    press shows it where it was. The Regulation tab's switch sets data-cites="shown" on the root: every reference is back in its text and the marks
