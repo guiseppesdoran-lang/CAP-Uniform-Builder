@@ -2381,7 +2381,8 @@
   // the tip is the `tie` landmark's apex plus its length. The Class A coat is not given one: its closed front hides everything of the tie below the lapels' V, the clasp
   // with it. The clasp is the accessory sheet's silver bar (2.0 x 0.3 in,
   // 'typical commercial tie bar', not dimensioned in the regulation: images/accessories/tie-clasp-silver), centred on the tie's axis at the midpoint and turned
-  // square to it. Women's sheets draw a tie tab, which takes none. `opt.tieClasp` (default on) takes it off.
+  // square to it. Women's sheets draw a tie tab, which takes none. It is drawn only when the member chose it (`opt.tieClasp` true; the page's "Tie clasp" box starts
+  // unticked): Ethan, on the live aviator shirt, "theres a random silver line in the middle of the tie that i think is a tie bar, but sicne its just floating idk what it is".
   // TIE_KNOT_DEPTH begin
   const TIE_KNOT_DEPTH = {
     'garment-blues-class-b-shirt-male': 1.643, 'garment-blues-class-b-shirt-male-long': 1.643,
@@ -2401,7 +2402,7 @@
     return { knot, tip, at, deg: Math.atan2(-(tip[0] - knot[0]), tip[1] - knot[1]) * 180 / Math.PI };
   }
   async function tieClasp(ctx, b){
-    if(b.opt.tieClasp === false || !ctx.base || !ctx.has('tie-clasp-silver')) return null;
+    if(b.opt.tieClasp !== true || !ctx.base || !ctx.has('tie-clasp-silver')) return null;
     const site = tieClaspSite(ctx.base);
     if(!site) return null;
     const layer = await ctx.place('tie-clasp-silver', { pieceAnchor: 'center', at: { x: site.at[0], y: site.at[1] }, rotate: site.deg, z: Z.badge + 0.7, role: 'tie', key: 'tie:clasp', title: 'Tie clasp' });

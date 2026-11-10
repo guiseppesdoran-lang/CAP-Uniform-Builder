@@ -45,9 +45,9 @@ const SITES = [
 ];
 for(const [uniform, gender, opt] of SITES){
   test(`${uniform} ${gender} ${JSON.stringify(opt)}: the tie clasp is centred on the tie between the knot's bottom edge and the tip (4.1.11.1.1.3)`, async () => {
-    const scene = await P.composeUniform(mk(uniform, gender, { opt }), store);
+    const scene = await P.composeUniform(mk(uniform, gender, { opt: Object.assign({}, opt, { tieClasp: true }) }), store);
     const clasp = scene.layers.find(l => l.key === 'tie:clasp');
-    assert.ok(clasp && clasp.id === 'tie-clasp-silver', 'the clasp is drawn');
+    assert.ok(clasp && clasp.id === 'tie-clasp-silver', 'the clasp is drawn when the member chose it');
     const spec = await store.load(clasp.id);
     near(clasp.w, spec.w, 1e-6, 'the clasp\'s own width, 2.0 in'); near(clasp.h, spec.h, 1e-6, 'its own height, 0.3 in');
     const garment = scene.layers.find(l => l.role === 'garment'), gs = await store.load(garment.id);
@@ -60,6 +60,17 @@ for(const [uniform, gender, opt] of SITES){
     assert.ok(knotY < c.y && c.y < tipY && tipY - knotY > 10, `knot ${knotY.toFixed(2)}, clasp ${c.y.toFixed(2)}, tip ${tipY.toFixed(2)}`);
   });
 }
+
+// B3 (Ethan, 2026-11-10: "theres a random silver line in the middle of the tie that i think is a tie bar, but sicne its just floating idk what it is"): the line was the tie clasp,
+// drawn on every men's tie by default. It is drawn only when the member ticks the page's "Tie clasp" box, and the box starts unticked.
+test('the tie clasp is drawn only when the member chose it: no clasp by default, on any men\'s tie', async () => {
+  for(const [uniform, opt] of [['blues_b', { sleeve: 'long' }], ['blues_b', { sleeve: 'short', tie: true }], ['aviator', { sleeve: 'long' }], ['aviator', { sleeve: 'short', tie: true }], ['aviator', { sleeve: 'long', tieClasp: false }]]){
+    const scene = await P.composeUniform(mk(uniform, 'male', { opt }), store);
+    assert.ok(!scene.layers.some(l => l.key === 'tie:clasp'), `${uniform} ${JSON.stringify(opt)}: no clasp unless chosen`);
+  }
+  const page = fs.readFileSync(path.join(root, 'js', 'garment-options.js'), 'utf8');
+  assert.match(/key: 'tieClasp'[^\n]*defaultValue: (\w+)/.exec(page)[0], /defaultValue: false/, 'the page\'s Tie clasp box starts unticked');
+});
 
 test('no tie, no clasp: the short sleeves without the tie, the women\'s tab, the Class A coat (its closed front hides the tie below the lapels) and opt.tieClasp false draw none', async () => {
   for(const [uniform, gender, opt] of [['blues_b', 'male', { sleeve: 'short' }], ['blues_b', 'female', { sleeve: 'long' }], ['aviator', 'female', { sleeve: 'long' }], ['blues_a', 'female', {}], ['blues_a', 'male', {}], ['blues_b', 'male', { sleeve: 'long', tieClasp: false }]]){
