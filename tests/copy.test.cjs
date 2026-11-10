@@ -33,6 +33,10 @@ test('what is and is not collected is said at the gate, under the import button 
   const about=visible.slice(visible.indexOf('<dialog id="aboutDialog"'),visible.indexOf('</dialog>'));
   assert.match(about,/<b>Privacy\.<\/b> Usage counts are collected only to improve this tool\./);
   assert.match(about,/ever leave your browser, member report searches are never stored, and with Do Not Track on/);
+  // The visitor number (js/telemetry.js, kept in this browser unless Do Not Track is on) is said too, and the grade that a build count carries.
+  assert.match(about,/which uniforms are built and for which grade,/);
+  assert.match(about,/A random number kept in this browser tells a returning visit from a first one; it is not linked to you\./);
+  assert.match(about,/only plain visit and build counts are sent and no number is kept\./);
   // The clear button shows once a report has been read, whichever idle line the status carries.
   const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
   assert.match(ui,/\/\^No report imported yet\\\.\?\$\/\.test\(t\)/);
