@@ -44,7 +44,13 @@ test('the callouts carry the paragraph only when the switch is on', async () => 
     const off = laidOut(scene, { refs: false }), on = laidOut(scene, { refs: true });
     assert.ok(off.length > 2, name + ' draws callouts');
     for(const d of off) assert.doesNotMatch(wordsOf(d), /CAPR|\d\.\d+\.\d/, `${name}: no paragraph on ${d.key} with the switch off`);
-    for(const d of on) assert.match(wordsOf(d), /CAPR 39-1, \d/, `${name}: the paragraph on ${d.key} with the switch on (${wordsOf(d)})`);
+    // A distance only the garment drawing sets (the OCP's shoulder seam to the flag or AUX) carries no paragraph, with the switch on too.
+    const uncited = new Set(scene.layers.filter(l => l.type === 'measure' && !l.ref).map(l => l.key));
+    assert.equal(uncited.size, name === 'ocp-male-senior-Capt' ? 2 : 0, `${name}: the callouts that quote no paragraph`);
+    for(const d of on){
+      if(uncited.has(d.key)) assert.doesNotMatch(wordsOf(d), /CAPR|\d\.\d+\.\d/, `${name}: no paragraph on ${d.key}, which no paragraph states`);
+      else assert.match(wordsOf(d), /CAPR 39-1, \d/, `${name}: the paragraph on ${d.key} with the switch on (${wordsOf(d)})`);
+    }
     // The value and the caption are on the pill either way.
     for(const d of off) assert.ok(d.callout || (d.label && d.label.text && d.label.caption.length), `${name}: ${d.key} keeps its value and caption`);
   }

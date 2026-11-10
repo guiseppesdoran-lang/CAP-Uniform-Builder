@@ -96,13 +96,23 @@ test('the Class A shoulder cord and the aide cord carry the paragraph under the 
   assert.ok(aide.layers.some(l => l.type === 'measure' && l.label === 'under the board'), 'the aide cord starts under the board');
 });
 
-test('every callout the engine draws on every build of the standard matrix names its paragraph', async () => {
+// A distance only the garment's drawing sets, which no paragraph states, carries no paragraph: on the OCP the seam to the top of the flag or of AUX (7.1.1.4.1.1 and 7.1.1.4.2 say
+// centered, at the top). Every other callout the engine draws names the paragraph it carries out.
+const garmentDrawn = (uniform, caption) => uniform === 'ocp' && /^shoulder seam to the (flag|AUX)$/.test(caption);
+test('every callout the engine draws on every build of the standard matrix names its paragraph, except the distances only the garment drawing sets', async () => {
   const bare = [];
+  let drawn = 0;
   for(const b of MATRIX){
     const scene = await compose(JSON.parse(JSON.stringify(b.build)));
-    for(const m of scene.layers.filter(l => l.type === 'measure')) if(!m.ref) bare.push(`${b.name}: ${m.label} ${(m.opts && (m.opts.caption || (m.opts.callout && m.opts.callout.caption))) || ''}`);
+    for(const m of scene.layers.filter(l => l.type === 'measure')){
+      if(m.ref) continue;
+      const caption = (m.opts && (m.opts.caption || (m.opts.callout && m.opts.callout.caption))) || '';
+      if(garmentDrawn(scene.uniform, caption)) drawn++;
+      else bare.push(`${b.name}: ${m.label} ${caption}`);
+    }
   }
   assert.deepEqual(bare, [], 'callouts with no paragraph:\n' + bare.join('\n'));
+  assert.ok(drawn > 0, 'the OCP builds draw the seam distances');
 });
 
 // The pill's text for a callout, as laid out.
@@ -110,7 +120,7 @@ const textOf = d => (d.callout ? (d.callout.caption && d.callout.caption.lines |
 // A label like '4.95 in' (an inch value the sheet draws that is not a whole eighth), as a number.
 const inches = label => Number(label.replace(/\s*in$/, ''));
 
-test('OCP: the flag and AUX each carry a centered line across the Velcro and the distance from the shoulder seam to their top, whether or not a patch is worn (7.1.1.4.1.1, 7.1.1.4.2)', async () => {
+test('OCP: the flag and AUX each carry a centered line across the Velcro with the paragraph, and the distance from the shoulder seam to their top without one, whether or not a patch is worn (7.1.1.4.1.1, 7.1.1.4.2)', async () => {
   for(const build of [named('ocp-male-senior-Capt'), variant('ocp-female-senior-Capt', { patchRefs: [UNIT, WING] })]){
     const scene = await compose(build);
     const sheet = await store.load('garment-ocp-coat-abu-cut');
@@ -122,14 +132,14 @@ test('OCP: the flag and AUX each carry a centered line across the Velcro and the
       assert.ok(centred, `${what}: a centered line`);
       assert.ok(Math.abs(centred.to.x - centred.from.x - v.w) < 1e-6, `${what}: the line spans the Velcro's width`);
       assert.ok(Math.abs(centred.opts.mid.x - (d.x + d.w / 2)) < 1e-6 && Math.abs((centred.from.x + centred.to.x) / 2 - centred.opts.mid.x) < 1e-6, `${what}: centred on the Velcro, its tick at the ${what}'s centre`);
-      const seam = ms.find(m => m.ref === ref && /seam/.test(m.opts.caption));
+      const seam = ms.find(m => m.opts.caption === `shoulder seam to the ${what}`);
       assert.ok(seam, `${what}: the shoulder seam to its top`);
+      assert.equal(seam.ref, '', `${what}: the seam distance is how the garment is drawn, so it quotes no paragraph`);
       assert.ok(Math.abs(seam.to.y - d.y) < 1e-6 && seam.from.y < d.y - 3, `${what}: from the sleeve's top edge (${seam.from.y.toFixed(3)}) to the ${what}'s top (${d.y.toFixed(3)})`);
       assert.ok(Math.abs(inches(seam.label) - (seam.to.y - seam.from.y)) < 0.006, `${what}: the label ${seam.label} is the drawn distance ${(seam.to.y - seam.from.y).toFixed(3)} in`);
-      for(const m of [centred, seam]){
-        const l = drawn.find(x => x.key === m.key);
-        assert.ok(l && /7\.1\.1\.4/.test(textOf(l)) && textOf(l).includes('CAPR 39-1'), `${what}: ${m.opts.caption} quotes ${ref} (${l && textOf(l)})`);
-      }
+      const l = drawn.find(x => x.key === centred.key), ls = drawn.find(x => x.key === seam.key);
+      assert.ok(l && /7\.1\.1\.4/.test(textOf(l)) && textOf(l).includes('CAPR 39-1'), `${what}: ${centred.opts.caption} quotes ${ref} (${l && textOf(l)})`);
+      assert.ok(ls && !/7\.1\.1|CAPR/.test(textOf(ls)), `${what}: ${seam.opts.caption} quotes no paragraph (${ls && textOf(ls)})`);
     }
   }
 });

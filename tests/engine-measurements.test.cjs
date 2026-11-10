@@ -54,9 +54,9 @@ const CITE = {
   esPatch: '½ in: ES patch above the name tape or command insignia (5.2.1.1.2.8)',
   // The flag and AUX the sheet draws (LIVE13, Ethan 3 November 2026: "aux and flag should have measurements"): the ICL states no inch, so a word and the drawn inches.
   ocpFlagCentered: "centered: the flag centered at the top of the sleeve's Velcro (7.1.1.4.1.1)",
-  ocpFlagSeam: '4.95 in: shoulder seam to the top of the flag, as drawn (7.1.1.4.1.1)',
+  ocpFlagSeam: '4.95 in: shoulder seam to the top of the flag, as the garment is drawn (no paragraph states it)',
   ocpAuxCentered: "centered: AUX centered in the top position of the left sleeve's Velcro (7.1.1.4.2)",
-  ocpAuxSeam: '4.95 in: shoulder seam to the top of AUX, as drawn (7.1.1.4.2)',
+  ocpAuxSeam: '4.95 in: shoulder seam to the top of AUX, as the garment is drawn (no paragraph states it)',
   ocpUnitGap: '0.47 in: flag to the top of the unit patch, as drawn (7.1.1.4.1.2)',
   ocpHhqGap: "0.47 in: AUX to the top of the HHQ patch, as drawn (this fixture's wing patch is a 1:1 image, so the gap equals the unit patch's; it follows the patch's height) (7.1.1.4.2.1)",
   ocpUnit: 'centered: unit patch in the middle of the Velcro under the flag (7.1.1.4.1.2)',
@@ -193,8 +193,13 @@ for(const [name, keys] of TABLE){
   });
 }
 
-test('every table entry names a cited paragraph', () => {
-  for(const [, keys] of TABLE) for(const k of keys) assert.ok(CITE[k] && /\(\d/.test(CITE[k]), k);
+// The two distances the garment's drawing sets and no paragraph states (7.1.1.4.1.1 and 7.1.1.4.2 say centered, at the top): they carry no paragraph.
+const UNCITED = new Set(['ocpFlagSeam', 'ocpAuxSeam']);
+test('every table entry names a cited paragraph, except the distances only the garment drawing sets', () => {
+  for(const [, keys] of TABLE) for(const k of keys){
+    assert.ok(CITE[k], k);
+    assert.equal(/\(\d/.test(CITE[k]), !UNCITED.has(k), k);
+  }
 });
 
 test('an inch label is the drawn distance (the sleeve braid, measured to the drawn braid, within 0.15 in), a word label marks a position', async () => {

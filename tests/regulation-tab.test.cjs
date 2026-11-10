@@ -45,7 +45,12 @@ test('the Regulation tab lists the same set the overlay draws, with each one\'s 
     const html = MP.regulationHtml(cat);
     for(const e of cat.entries){
       assert.ok(html.includes(MP.esc(e.name)), `${name}: ${e.name} is listed`);
-      assert.ok(e.ref, `${name}: ${e.name} has a paragraph`);
+      // A distance only the garment drawing sets (the OCP's shoulder seam to the flag or AUX) is not a rule: its row says None, with no paragraph.
+      if(!e.ref){
+        assert.ok(name === 'ocp-male-senior-Capt' && /^Shoulder seam to the (flag|AUX)$/.test(e.name), `${name}: ${e.name} has a paragraph`);
+        assert.match(html, new RegExp(`<th scope="row">${MP.esc(e.name)}</th><td class="regVal">[^<]*</td><td class="regRef"><span class="regNone">None</span></td>`), `${name}: ${e.name} says None`);
+        continue;
+      }
       const p = ML.refParts(e.ref);
       assert.ok(html.includes(MP.esc(p.capr)), `${name}: ${e.name} lists ${p.capr}`);
       if(p.icl) assert.ok(html.includes(MP.esc(p.icl)), `${name}: ${e.name} lists ${p.icl}`);
