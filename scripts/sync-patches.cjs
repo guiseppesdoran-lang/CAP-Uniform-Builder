@@ -6,10 +6,10 @@
 //   node scripts/sync-patches.cjs --dry-run    report what a sync would do; write nothing
 //   node scripts/sync-patches.cjs --check      exit 1 when data/patch-art.js or data/unit-patch-art.js is behind the art tree
 //
-// Source: <ARTWORK_SRC>/patches/<asset id>/<asset id>.svg + .spec.json. Art still being written (no spec, or no SVG) waits. A patch has its
+// Source: <ARTWORK_SRC>/patches/<asset id>/<asset id>.svg (or the official PNG the spec's `file` names) + .spec.json. Art still being written (no spec, or no file) waits. A patch has its
 // asset by name (ner_patch would be patch-ner) unless ASSET_FOR says otherwise.
 //
-// data/patch-art.js: patch id -> { asset, img, w, h } (the manifest id, the SVG under images/, the size in inches from the spec), or, while a
+// data/patch-art.js: patch id -> { asset, img, w, h } (the manifest id, the SVG or official PNG under images/, the size in inches from the spec), or, while a
 // patch has no vector, { img } with its picture from WAITING. js/catalog.js puts these on PATCH_META, so the art of a patch lands by running this
 // script: its row turns into the SVG and its raster goes off the list in tests/no-raster-allowlist.json.
 //
@@ -22,7 +22,7 @@
 // `kind: "activity"` and no charter (an NCSA activity patch) gets a row too, charter null, kind "activity", patchId <name>_patch.
 // The art is the SVG, or, for official digital artwork ingested as given, the PNG the spec's `file` names (copied byte for byte by
 // scripts/sync-artwork.cjs; tests/no-raster.test.cjs allows a PNG only where the spec's data_source says it is official artwork as given).
-// A spec's own charter beats the default list below. patch-pcr-ca-110 is left out (UNIT_SKIP).
+// A spec's own charter beats the default list below. patch-pcr-ca-110 and patch-hawk-mountain-ranger-school are left out (UNIT_SKIP).
 // A few emblems made before the specs carried a charter have theirs in UNIT_SPEC_DEFAULTS below; a spec's own value wins.
 // Idempotent. The master stamps index.html afterwards; this script never touches it.
 'use strict';
@@ -72,12 +72,13 @@ const assetFor = id => ASSET_FOR[id] || 'patch-' + id.replace(/_patch$/, '').rep
 
 function readArt(asset){
   const dir = path.join(artRoot(), 'patches', asset);
-  const specFile = path.join(dir, asset + '.spec.json'), svgFile = path.join(dir, asset + '.svg');
-  if(!fs.existsSync(specFile) || !fs.existsSync(svgFile)) return null;
+  const specFile = path.join(dir, asset + '.spec.json');
+  if(!fs.existsSync(specFile)) return null;
   try{
     const s = JSON.parse(fs.readFileSync(specFile, 'utf8'));
+    const file = artFileOf(dir, asset, s);
     const w = s.size_in ? s.size_in.w : s.width_in, h = s.size_in ? s.size_in.h : s.height_in;
-    return w > 0 && h > 0 ? { w, h } : null;
+    return file && w > 0 && h > 0 ? { w, h, file } : null;
   }catch(e){ return null; }
 }
 
@@ -101,7 +102,7 @@ function artFileOf(dir, asset, s){
 }
 
 // Specs the sync leaves out although they carry a charter, with the reason.
-const UNIT_SKIP = { 'patch-pcr-ca-110': 'its SVG fails the art validator' };
+const UNIT_SKIP = { 'patch-pcr-ca-110': 'its SVG fails the art validator', 'patch-hawk-mountain-ranger-school': 'the design is turned down, a different patch is wanted' };
 
 // Rows for every spec of the art tree that has a charter, or is an activity patch (`kind: "activity"`, no charter) that no catalog id maps to,
 // charter rows sorted by charter, then the activity rows by id. A spec's own charter beats the default list, so the New York Wing's official
@@ -162,9 +163,17 @@ function plan(){
   const rows = {}, copy = new Set(), pending = [], none = [];
   for(const id of patchIds()){
     const asset = assetFor(id), art = readArt(asset);
-    if(art){ rows[id] = { asset, img: `patches/${asset}/${asset}.svg`, w: art.w, h: art.h }; copy.add(asset); }
+    if(art){ rows[id] = { asset, img: `patches/${asset}/${art.file}`, w: art.w, h: art.h }; copy.add(asset); }
     else if(WAITING[id]){ rows[id] = { img: WAITING[id] }; pending.push(id); }
     else none.push(id);
+  }
+  // The CAP Ranger tabs (js/patches.js adds them to the patch list) have no catalog id of their own: a tab whose art is the school's official PNG
+  // gets a row under its asset id, which js/patches.js reads; a tab that is still an SVG is an engine asset as before.
+  const base = path.join(artRoot(), 'patches');
+  if(fs.existsSync(base)) for(const asset of fs.readdirSync(base).sort()){
+    if(!/^patch-ranger-tab-/.test(asset)) continue;
+    const art = readArt(asset);
+    if(art && /\.png$/.test(art.file)){ rows[asset] = { asset, img: `patches/${asset}/${art.file}`, w: art.w, h: art.h }; copy.add(asset); }
   }
   const units = unitRows(new Set(patchIds().map(assetFor)));
   for(const r of units.rows) copy.add(r.asset);

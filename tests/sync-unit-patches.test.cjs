@@ -80,20 +80,37 @@ test('official artwork: a spec whose file is a PNG gives a row on the PNG; a spe
   assert.deepEqual(warnings, [], 'no warning: the default was not a claim');
 });
 
-test('activity patches (kind activity, no charter) get rows with charter null, after the charter rows; a catalog patch is not one, and a spec on the skip list is left out', () => {
+test('official artwork as a catalog patch: a spec whose file is a PNG gives a data/patch-art.js row on the PNG; a Ranger tab PNG gets a row under its asset id, a tab still an SVG none', () => {
+  const root = fixture({
+    'patch-national-blue-beret': { file: 'patch-national-blue-beret.png', width_in: 3, height_in: 3.201 },
+    'patch-nesa': size,
+    'patch-ranger-tab-ranger': { file: 'patch-ranger-tab-ranger.png', width_in: 2.7, height_in: 0.425 },
+    'patch-ranger-tab-expert-ranger-red': { width_in: 2.7, height_in: 0.44 }
+  });
+  const p = withArt(root, () => sync.plan());
+  assert.deepEqual(p.rows.nbb_patch, { asset: 'patch-national-blue-beret', img: 'patches/patch-national-blue-beret/patch-national-blue-beret.png', w: 3, h: 3.201 });
+  assert.deepEqual(p.rows.nesa_patch, { asset: 'patch-nesa', img: 'patches/patch-nesa/patch-nesa.svg', w: 3, h: 3.2 }, 'an SVG patch keeps its SVG');
+  assert.deepEqual(p.rows['patch-ranger-tab-ranger'], { asset: 'patch-ranger-tab-ranger', img: 'patches/patch-ranger-tab-ranger/patch-ranger-tab-ranger.png', w: 2.7, h: 0.425 });
+  assert.equal(p.rows['patch-ranger-tab-expert-ranger-red'], undefined, 'a tab that is an SVG is an engine asset, not a row');
+  assert.ok(p.copy.includes('patch-ranger-tab-ranger') && p.copy.includes('patch-national-blue-beret'), 'the PNG assets are copied');
+});
+
+test('activity patches (kind activity, no charter) get rows with charter null, after the charter rows; a catalog patch is not one, and a spec on the skip list (the Hawk Mountain Ranger School patch, which is not offered) is left out', () => {
   const root = fixture({
     'patch-ncsa-mots': Object.assign({ label: 'Medical Orientation & Training School', kind: 'activity', echelon: 'activity', file: 'patch-ncsa-mots.png' }, size),
     'patch-ncsa-geo': Object.assign({ label: 'Geospatial Academy', kind: 'activity', echelon: 'activity', file: 'patch-ncsa-geo.png' }, size),
     'patch-nesa': Object.assign({ label: 'NESA', kind: 'activity', file: 'patch-nesa.png' }, size),
     'patch-mar-dc-026': Object.assign({ charter: 'MAR-DC-026', file: 'patch-mar-dc-026.png' }, size),
-    'patch-pcr-ca-110': Object.assign({ charter: 'PCR-CA-110', echelon: 'squadron' }, size)
+    'patch-pcr-ca-110': Object.assign({ charter: 'PCR-CA-110', echelon: 'squadron' }, size),
+    'patch-hawk-mountain-ranger-school': Object.assign({ label: 'Hawk Mountain Ranger School', kind: 'activity', echelon: 'activity', file: 'patch-hawk-mountain-ranger-school.png' }, size)
   });
   const p = withArt(root, () => sync.plan());
   assert.deepEqual(p.units.map(r => r.patchId), ['unit_mar_dc_026', 'ncsa_geo_patch', 'ncsa_mots_patch']);
   const mots = p.units.find(r => r.patchId === 'ncsa_mots_patch');
   assert.deepEqual(mots, { charter: null, patchId: 'ncsa_mots_patch', label: 'Medical Orientation & Training School', echelon: 'activity', kind: 'activity', w: 3, h: 3.2, asset: 'patch-ncsa-mots', img: 'patches/patch-ncsa-mots/patch-ncsa-mots.png' });
   assert.match(p.warnings.join('\n'), /patch-pcr-ca-110: left out/);
-  assert.ok(p.copy.includes('patch-ncsa-mots') && !p.copy.includes('patch-pcr-ca-110'));
+  assert.match(p.warnings.join('\n'), /patch-hawk-mountain-ranger-school: left out/);
+  assert.ok(p.copy.includes('patch-ncsa-mots') && !p.copy.includes('patch-pcr-ca-110') && !p.copy.includes('patch-hawk-mountain-ranger-school'));
   const m = { exports: {} };
   new Function('module', 'self', sync.unitText(p.units))(m, undefined);
   assert.deepEqual(m.exports, p.units);

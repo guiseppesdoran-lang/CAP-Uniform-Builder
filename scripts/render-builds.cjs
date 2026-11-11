@@ -155,7 +155,8 @@ function patchesFrom(refs){
         slot: ref.kind === 'hhq' ? 'L_SHOULDER' : ref.kind === 'unit' || !ref.slot ? 'R_SHOULDER' : ref.slot, kind: ref.kind || 'unit', echelon: ref.echelon || (['wing', 'region', 'national'].includes(unit.echelon) ? unit.echelon : null) });
       continue;
     }
-    patches.push({ id: ref.id, title: label, asset: row.asset || null, href: row.asset ? null : '/images/' + row.img, aspect: 1,
+    const raster = /\.png$/i.test(row.img);
+    patches.push({ id: ref.id, title: label, asset: raster ? null : (row.asset || null), href: raster || !row.asset ? '/images/' + row.img : null, aspect: raster ? row.w / row.h : 1, size: raster ? { w: row.w, h: row.h } : null,
       slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general',
       echelon: ref.echelon || (meta[ref.id] && meta[ref.id].echelon) || null });
   }
