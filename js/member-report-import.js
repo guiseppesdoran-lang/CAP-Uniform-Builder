@@ -38,6 +38,7 @@ function setMemberReportImportStatus(lines, type='info'){
   if(!el) return;
   const arr = Array.isArray(lines) ? lines : [lines];
   el.style.color = type === 'error' ? 'var(--danger)' : type === 'ok' ? 'var(--ok)' : 'var(--muted)';
+  el.style.overflowWrap = 'anywhere';
   el.textContent = '';
   for(const line of arr){
     const row = document.createElement('div');
@@ -53,6 +54,24 @@ function setMemberReportImportStatus(lines, type='info'){
     }
     el.appendChild(row);
   }
+}
+
+// The panel describes the build the import left. When the build changes afterwards (Undo, Redo, a ribbon ticked, the member type changed) the
+// panel says so at its top, once, instead of going on describing a build that is no longer there.
+let memberReportShownBuild = null;
+function memberReportBuildSignature(){
+  const ribbons = Object.entries(State.ribbonSelections || {}).filter(([, sel]) => sel && sel.checked).map(([id, sel]) => `${id}=${sel.awardValue || ''}`).sort();
+  return JSON.stringify([State.membership, State.rank, State.gender, ribbons, [...(State.badges || [])].sort(), [...(State.patches || [])].sort()]);
+}
+function markMemberReportPanelStale(){
+  if(memberReportShownBuild === null || memberReportBuildSignature() === memberReportShownBuild) return;
+  memberReportShownBuild = null;
+  const el = by('memberReportImportStatus');
+  if(!el) return;
+  const row = document.createElement('div');
+  row.textContent = 'The build has changed since this import, so the lines below may no longer match it.';
+  row.style.fontWeight = '700';
+  el.insertBefore(row, el.firstChild);
 }
 
 // The notes an import leaves, as the member reads them: one per line, no note twice, no internal id, no eServices capitals.
@@ -325,7 +344,7 @@ function normalizeImportedRank(raw){
 function importedRankPattern(){
   return [...RANKS.cadet, ...RANKS.senior, '2nd Lt', 'C/2nd Lt']
     .sort((a, b) => b.length - a.length)
-    .map(rank => rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*'))
+    .map(rank => rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*').replace(/\//g, '/\\s*'))
     .join('|');
 }
 
@@ -576,6 +595,18 @@ function parseCapReportDate(dateText){
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+// The dates of the General Information row: from the first CAPID (five to seven digits) after the heading, up to the status word or the third date.
+function memberReportGeneralRowDates(t){
+  const info = t.search(/General\s+Information/i);
+  if(info < 0) return [];
+  const row = /\b\d{5,7}\b/.exec(t.slice(info));
+  if(!row) return [];
+  const rest = t.slice(info + row.index + row[0].length, info + row.index + row[0].length + 220);
+  const status = rest.search(/\b(?:ACTIVE|EXPIRED|SUSPENDED|TERMINATED|INACTIVE|PENDING|LAPSED|DROPPED)\b/i);
+  const dates = [...(status >= 0 ? rest.slice(0, status) : rest).matchAll(new RegExp(MEMBER_REPORT_DATE, 'gi'))].slice(0, 3).map(m => parseCapReportDate(m[0]));
+  return dates;
+}
+
 function extractJoinDateFromMemberReport(text){
   const t = normalizeMemberReportText(text);
 
@@ -585,6 +616,11 @@ function extractJoinDateFromMemberReport(text){
   // It used to require a letter first in the grade, so a 1st Lt or 2d Lt had no join date and no Red Service Ribbon.
   const profile = getCurrentProfileFromMemberReport(t);
   if(profile?.joined) return profile.joined;
+
+  // The grade row did not parse (a part of it is missing or not a word this reads): its dates are still the Date of Rank, Joined and Expires
+  // after the CAPID, so the join date is read from them.
+  const rowDates = memberReportGeneralRowDates(t);
+  if(rowDates.length >= 2) return rowDates.length >= 3 ? rowDates[1] : (rowDates[0] && rowDates[1] && rowDates[0] > rowDates[1] ? rowDates[1] : rowDates[0]);
 
   // Fallbacks for copied or alternate report text.
   const explicitMatch = t.match(/\b(?:Joined|Join Date|Date Joined)\s*:?\s*(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})\b/i);
@@ -690,7 +726,7 @@ function extractMemberNameFromReport(text){
     const ranks = (typeof RANKS === 'object' ? [...(RANKS.cadet || []), ...(RANKS.senior || [])] : [])
       .sort((a, b) => b.length - a.length);
     for(const rank of ranks){
-      const re = new RegExp('^' + rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*') + '\\s+', 'i');
+      const re = new RegExp('^' + rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*').replace(/\//g, '/\\s*') + '\\s+', 'i');
       if(re.test(rest)){ rest = rest.replace(re, ''); break; }
     }
     const words = rest.split(' ').filter(w => /^\p{L}[\p{L}'’.\-]*$/u.test(w));
@@ -1560,26 +1596,37 @@ const MEMBER_REPORT_KNOWN_ROWS = [
   /Encampment\s+Ribbon|Piney\s+Creek\s+Camp/i, /Cadet\s+Special\s+Activit(?:y|ies)\s+Ribbon/i, /\bMedal\s+of\s+Valor\b/i, /\bModel\s+Rocketry\b/i,
   /\b(?:Cadet\s+)?(?:STEM|Cyber)\s+Badge\b/i, /\bNRA\s+Marksman/i
 ];
+// The Cadet Training rows that are read (the national activities, Cadet Officers School, the IACE) or are left out on purpose (the region
+// schools and Required Staff Training, which earn no ribbon of their own, the encampments and orientation flights, which have their own tables).
+const MEMBER_REPORT_TRAINING_KNOWN_ROWS = [
+  ...IMPORTED_NCSA_ACTIVITY_PATTERNS.map(([, re]) => re), /Hawk\s+Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i, /Civic\s+Leadership\s+Academy|\bCLA\b/i,
+  /Air Force Civil Engineering Academy|\bAFCEA\b/i, /Cadet\s+Officers?\s+School|\bCOS\b/i, /Military\s+Operations\s+Training\s+School|\bMOTS\b/i,
+  /\bNCSA\b|National\s+Cadet\s+Special\s+Activit/i, /\bRCLS\b|Required\s+Staff\s+Training|\bRST\b|Region(?:al)?\s+Cadet\s+Leadership\s+School/i,
+  /\bIACE\b|International\s+Air\s+Cadet\s+Exchange/i, /Encampment/i, /Orientation\s+Flights?/i, /Cadet\s+Special\s+Activit(?:y|ies)/i
+];
 function memberReportUnreadRows(text){
   const source = normalizeMemberReportText(text);
-  const section = getReportSectionUntilAny(source, 'Decorations', ['Local\\s+Activities']);
-  if(!section) return [];
   const rows = [];
-  const check = (segment, date) => {
-    const from = (MEMBER_REPORT_TABLE_HEADINGS.exec(segment) || [''])[0].length;
-    const words = segment.slice(from).trim();
-    if(words.length < 8 || !/[A-Za-z]{4}/.test(words) || MEMBER_REPORT_KNOWN_ROWS.some(re => re.test(words))) return;
-    const row = `${words.slice(0, 90)}${date ? ` ${date}` : ''}`;
-    if(!rows.includes(row)) rows.push(row);
+  const scan = (section, known) => {
+    if(!section) return;
+    const check = (segment, date) => {
+      const from = (MEMBER_REPORT_TABLE_HEADINGS.exec(segment) || [''])[0].length;
+      const words = segment.slice(from).trim();
+      if(words.length < 8 || !/[A-Za-z]{4}/.test(words) || known.some(re => re.test(words))) return;
+      const row = `${words.slice(0, 90)}${date ? ` ${date}` : ''}`;
+      if(!rows.includes(row)) rows.push(row);
+    };
+    const re = new RegExp(MEMBER_REPORT_DATE, 'gi');
+    let previousEnd = 0, m;
+    while((m = re.exec(section))){
+      check(section.slice(previousEnd, m.index), m[0]);
+      previousEnd = m.index + m[0].length;
+    }
+    check(section.slice(previousEnd), '');
   };
-  const re = new RegExp(MEMBER_REPORT_DATE, 'gi');
-  let previousEnd = 0, m;
-  while((m = re.exec(section))){
-    check(section.slice(previousEnd, m.index), m[0]);
-    previousEnd = m.index + m[0].length;
-  }
-  check(section.slice(previousEnd), '');
-  return rows.slice(0, 15);
+  scan(getReportSectionUntilAny(source, 'Decorations', ['Local\\s+Activities']), MEMBER_REPORT_KNOWN_ROWS);
+  scan(getCadetTrainingSection(source), MEMBER_REPORT_TRAINING_KNOWN_ROWS);
+  return rows.slice(0, 200);
 }
 
 function parseCapMemberReport(textRaw){
@@ -1608,6 +1655,7 @@ function parseCapMemberReport(textRaw){
 
   const currentProfile = getCurrentProfileFromMemberReport(text);
   result.profileFound = !!currentProfile;
+  result.joinDateFound = !!extractJoinDateFromMemberReport(text);
   result.unreadRows = memberReportUnreadRows(text);
   if(currentProfile){
     result.membership = currentProfile.membership;
@@ -2207,7 +2255,7 @@ const MEMBER_REPORT_PLAIN_NOTES = [
   [/^CAC ribbon imported as .*?: Cadet Advisory Council Ribbon listed in the report \(no level shown; basic ribbon\)\.?$/i, () => 'Cadet Advisory Council Ribbon: the basic ribbon, since the report shows no level.'],
   [/^CAC ribbon imported as (.*?): Highest qualifying CAC level found in duty assignments: (\w+)\.?$/i, (m, ribbon, level) => `Cadet Advisory Council Ribbon: ${level.charAt(0).toUpperCase()}${level.slice(1).toLowerCase()} level, from the duty positions.`],
   [/^CAC ribbon imported as (.*?): (.*?)\.?$/i, (m, ribbon, why) => `Cadet Advisory Council Ribbon: ${ribbon}.`],
-  [/^(.*?) shoulder cord - (\w+) imported from Current Duty Positions.*$/i, (m, cord) => `${cord} shoulder cord: the report shows a current primary representative.`],
+  [/^(.*?) shoulder cord - (\w+) imported from Current Duty Positions.*$/i, (m, cord) => `${cord.replace(/\bCAC\b/g, 'Cadet Advisory Council')} shoulder cord: the report shows the member is a current primary representative of the council.`],
   [/^CAC text found, but no qualifying CAC .*$/i, () => 'Cadet Advisory Council service was found, but no chair, vice chair or representative duty, so no ribbon level was chosen.'],
   [/^Member report charter (\S+) found, but no unit patch image is mapped yet\.?$/i, (m, charter) => `No unit patch is offered for ${charter} yet.`],
   [/^Unit patch auto-selected from member report charter (\S+?)\.?$/i, (m, charter) => `The unit patch for ${charter} is chosen.`]
@@ -2233,9 +2281,14 @@ function memberReportStatusLines(parsed, fileName, { replaced = false } = {}){
   const held = memberReportHeldOffLines(parsed);
   if(held.length) lines.push({ heading: 'Held off the uniform' }, ...held.map(item => ({ item })));
   const unread = [];
-  if(!parsed.profileFound) unread.push('The grade row was not found, so the member type and gender come from words in the report and the grade may be missing. Check them.');
-  else if(!parsed.rank) unread.push('The grade was not found, so it was left as it was.');
-  unread.push(...(parsed.unreadRows || []).map(row => `${row}: no ribbon or badge matches this row.`));
+  if(!parsed.rank) unread.push('The grade was not found, so it was left as it was.');
+  if(!parsed.gender) unread.push('The gender was not found, so the cut was left as it was.');
+  if(!parsed.membership) unread.push('The member type was not found, so it was left as it was.');
+  else if(!parsed.profileFound && parsed.gender) unread.push('The member type and gender come from words in the report, not from its first row. Check them.');
+  if(!parsed.joinDateFound) unread.push('The join date was not found, so the Red Service Ribbon is not added.');
+  const rows = parsed.unreadRows || [];
+  unread.push(...rows.slice(0, 12).map(row => `${row}: no ribbon or badge matches this row.`));
+  if(rows.length > 12) unread.push(`${rows.length - 12} more rows were not understood.`);
   if(unread.length) lines.push({ heading: 'Not understood' }, ...unread.map(item => ({ item })));
   const notes = memberReportPlainNoteLines(capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n))));
   if(notes.length) lines.push({ heading: 'Notes' }, ...notes.map(item => ({ item })));
@@ -2296,7 +2349,9 @@ function wireMemberReportImporter(){
     if(confirmBeforeMemberReportUpload()) input.click();
   });
 
+  document.addEventListener('capub:rendered', markMemberReportPanelStale);
   clearBtn?.addEventListener('click', () => {
+    memberReportShownBuild = null;
     State.reportAuthorizedBadgeIds = null;
     input.value = '';
     buildBadgeGallery();
@@ -2311,6 +2366,7 @@ function wireMemberReportImporter(){
       setMemberReportImportStatus(`Reading ${file.name}...`);
       const result = await importMemberReportFile(file);
       setMemberReportImportStatus(result.lines, result.ok ? 'ok' : 'error');
+      if(result.ok) memberReportShownBuild = memberReportBuildSignature();
       // Counts only: never the name, the file name or anything read from the report.
       const parsed = result.parsed;
       if(result.ok) window.CAPUB_TELEMETRY?.track('import', { ok: true, kind: result.kind, membership: !!parsed.membership, rank: !!parsed.rank, gender: !!parsed.gender, ribbons: parsed.ribbons.length, badges: parsed.badges.length, patches: (parsed.patches || []).length, notes: (parsed.notes || []).length });

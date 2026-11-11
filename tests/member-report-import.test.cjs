@@ -1050,10 +1050,42 @@ test('a row of the awards tables that no ribbon matches is listed, in the report
   }
 });
 
-test('a report without its grade row says the member type and gender are guesses, and a grade it cannot read is left as it was', async () => {
+test('a report without its grade row says the member type and gender are guesses, and what it could not read is told, not left silent', async () => {
   const noRow = FIXTURE.replace(/123456 MITCHELL, GUISEPPE MALE CADET C\/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049\n/, '').replace('C/Col Guiseppe Mitchell', 'Guiseppe Mitchell');
   const { result } = await importFile(fileLike('member.txt', 'text/plain', noRow));
-  assert.match(groupOf(result.lines, 'Not understood')[0], /^The grade row was not found, so the member type and gender come from words in the report and the grade may be missing\. Check them\.$/);
+  const unread = groupOf(result.lines, 'Not understood');
+  assert.ok(unread.includes('The grade was not found, so it was left as it was.'), unread.join(' | '));
+  assert.ok(unread.includes('The gender was not found, so the cut was left as it was.') || unread.includes('The member type and gender come from words in the report, not from its first row. Check them.'), unread.join(' | '));
+  assert.ok(unread.includes('The join date was not found, so the Red Service Ribbon is not added.'));
+  assert.ok(!unread.some(line => /grade row/.test(line)), 'the panel never says "grade row"');
+});
+
+test('a grade written "C/ Col" is read, and a row that does not parse still gives the join date and the Red Service Ribbon', async () => {
+  const spaced = runImport(FIXTURE.replace(/C\/Col/g, 'C/ Col'));
+  assert.equal(spaced.parsed.rank, 'C/Col');
+  assert.equal(spaced.rank, 'C/Col');
+  assert.deepEqual([spaced.text.firstName, spaced.text.lastName], ['Guiseppe', 'Mitchell']);
+  const lt = runImport(FIXTURE.replace(/C\/Col/g, 'C/ Lt Col'));
+  assert.equal(lt.parsed.rank, 'C/Lt Col');
+  const base = signature(FIXTURE).ribbons;
+  for(const [what, row] of [['no gender word', '123456 MITCHELL, GUISEPPE CADET C/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049'],
+    ['UNKNOWN gender', '123456 MITCHELL, GUISEPPE UNKNOWN CADET C/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049'],
+    ['no type word', '123456 MITCHELL, GUISEPPE MALE C/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049'],
+    ['a grade nobody knows', '123456 MITCHELL, GUISEPPE MALE CADET C/Colonel 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049'],
+    ['no grade', '123456 MITCHELL, GUISEPPE MALE CADET 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049']]){
+    const got = signature(FIXTURE.replace('123456 MITCHELL, GUISEPPE MALE CADET C/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049', row)).ribbons;
+    assert.deepEqual(got.filter(r => /^red_service_ribbon/.test(r)), base.filter(r => /^red_service_ribbon/.test(r)), what);
+  }
+  // No join date at all: no Red Service Ribbon, and the panel says why.
+  const none = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('18 Dec 2025 24 Sep 2019 30 Sep 2027', '').replace(/C\/Col 18/, 'C/Col 18')));
+  assert.ok(none.result.lines.some(l => l && l.item === 'The join date was not found, so the Red Service Ribbon is not added.'));
+});
+
+test('a gender, grade or member type the report does not give is told, whatever the member had before', async () => {
+  const noGender = FIXTURE.replace('GUISEPPE MALE CADET', 'GUISEPPE CADET');
+  const { result, state } = await importFile(fileLike('member.txt', 'text/plain', noGender), { before: BUILD_BEFORE });
+  assert.ok(groupOf(result.lines, 'Not understood').includes('The gender was not found, so the cut was left as it was.'));
+  assert.equal(state.gender, 'female', 'the cut the member had');
 });
 
 test('what the member had is replaced, and the panel says Undo brings it back; a first import says nothing of the kind', async () => {
@@ -1195,7 +1227,7 @@ test('the notes the dated patches write are said in the member\'s words, and any
   ]), [
     'Cadet Advisory Council Ribbon: the basic ribbon, since the report shows no level.',
     'Cadet Advisory Council Ribbon: Wing level, from the duty positions.',
-    'Wing CAC shoulder cord: the report shows a current primary representative.',
+    'Wing Cadet Advisory Council shoulder cord: the report shows the member is a current primary representative of the council.',
     'Cadet Advisory Council service was found, but no chair, vice chair or representative duty, so no ribbon level was chosen.',
     'No unit patch is offered for GLR-IL-049 yet.',
     'The unit patch for GLR-IL-049 is chosen.',
@@ -1255,4 +1287,31 @@ test('a qualification whose date has passed or whose status is Expired still ear
   const read = status => parseAviation(SENIOR.replace('Ground Team Leader (GTL) QUALIFIED 01 Jan 2027', `Ground Team Leader (GTL) ${status} 01 Jan 2020`)).authorized;
   for(const status of ['QUALIFIED', 'EXPIRED', 'Expired', 'LAPSED']) assert.ok(read(status).includes('master_ground_team_badge'), status);
   assert.ok(!read('TRAINING').includes('master_ground_team_badge'), 'a trainee has no badge');
+});
+
+test('the rows not understood are counted past twelve, a Cadet Training row nothing reads is listed, and a long file name wraps', async () => {
+  const many = cadetWith('Decorations', Array.from({ length: 16 }, (_, i) => `Mystery Award Number ${i} ${String(i + 1).padStart(2, '0')} Jan 2024`));
+  const { result } = await importFile(fileLike('member.txt', 'text/plain', many));
+  const unread = groupOf(result.lines, 'Not understood');
+  assert.equal(unread.filter(l => /no ribbon or badge matches this row\.$/.test(l)).length, 12);
+  assert.equal(unread[unread.length - 1], '4 more rows were not understood.');
+  const training = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('Cadet Training\nActivity Date Completed\n', 'Cadet Training\nActivity Date Completed\nCadet Competition Team 05 May 2024\nRegion Cadet Leadership School 06 May 2024\n')));
+  assert.deepEqual(groupOf(training.result.lines, 'Not understood'), ['Cadet Competition Team 05 May 2024: no ribbon or badge matches this row.']);
+  // A long unbroken file name wraps inside the panel.
+  const { context } = loadPageScripts();
+  const panel = { style: {}, children: [], appendChild(c){ this.children.push(c); }, textContent: '' };
+  context.document = { createElement: () => ({ style: {}, textContent: '' }), querySelectorAll: () => [], getElementById: id => id === 'memberReportImportStatus' ? panel : null };
+  vm.runInContext(`setMemberReportImportStatus(['Imported ${'Member_Details_'.repeat(8)}.txt.'], 'ok')`, context);
+  assert.equal(panel.style.overflowWrap, 'anywhere');
+});
+
+test('the panel says when the build has changed since the import, once, at its top', async () => {
+  const { context } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE));
+  const rows = [];
+  const panel = { style: {}, children: rows, appendChild(c){ rows.push(c); }, insertBefore(c){ rows.unshift(c); }, get firstChild(){ return rows[0] || null; }, textContent: '' };
+  context.document = { createElement: () => ({ style: {}, textContent: '' }), querySelectorAll: () => [], getElementById: id => id === 'memberReportImportStatus' ? panel : null, addEventListener(){} };
+  vm.runInContext('memberReportShownBuild = memberReportBuildSignature(); markMemberReportPanelStale();', context);
+  assert.equal(rows.length, 0, 'an unchanged build leaves the panel as it is');
+  vm.runInContext(`State.ribbonSelections.cap_membership_ribbon.checked = true; markMemberReportPanelStale(); markMemberReportPanelStale();`, context);
+  assert.deepEqual(rows.map(r => r.textContent), ['The build has changed since this import, so the lines below may no longer match it.']);
 });
