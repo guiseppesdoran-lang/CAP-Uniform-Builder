@@ -240,16 +240,14 @@ function distToPolygon(pt, poly){
 // triangle cut from it; no current sheet is (LIVE9-ART 1 rebuilt the Class B collar like the Class A coat's:
 // the polygon is the leaf alone, so every sheet's leaf is the whole polygon and the chevron lies on it).
 const COLLAR_CASES = [
-  // The Class B shirt and blouse (art 34f2770b, LIVE9-ART 1): top end 0, shoulder vertex 1, collar point 2, the junction at the knot 3 (the roll end: the leading edge is collar point -> junction, 3.08 in), then
-  // the neck edge back up to the top end. Men's 7 vertices, women's 8.
-  // The short sheets' open leaves (art 76963a86, LIVE10-MASTER-1; the default, tie off) keep that order: the level bottom edge runs from the collar point (vertex 2) to the junction (3), then the neck
-  // edge back up. With the tie on the closed leaves (collar_closed_<side>) have the long sheets' order: top end, shoulder vertex, collar point 2, the junction at the knot 3, the neck edge back up.
-  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 2, 3, false],
-  ['blues_b', 'male', { sleeve: 'short', tie: true }, 'garment-blues-class-b-shirt-male', 2, 3, false],
-  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 2, 3, false],
-  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 2, 3, false],
-  ['blues_b', 'female', { sleeve: 'short', tie: true }, 'garment-blues-class-b-blouse-female', 2, 3, false],
-  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 2, 3, false],
+  // The Class B shirt and blouse have the aviator's collar, in the Class B shirt's colours (art b9ad5319, B2): the sheets' polygons are the aviator's, vertex for vertex, so the cases are the aviator's:
+  // the long sheets' leaf and the short sheets' closed leaves (collar_closed_<side>, tie on) are the leaf alone, the short sheets' open collar (tie off) is the collar and the revers below it.
+  ['blues_b', 'male', { sleeve: 'short' }, 'garment-blues-class-b-shirt-male', 1, 2, true],
+  ['blues_b', 'male', { sleeve: 'short', tie: true }, 'garment-blues-class-b-shirt-male', 1, 2, false],
+  ['blues_b', 'male', { sleeve: 'long' }, 'garment-blues-class-b-shirt-male-long', 1, 2, false],
+  ['blues_b', 'female', { sleeve: 'short' }, 'garment-blues-class-b-blouse-female', 1, 2, true],
+  ['blues_b', 'female', { sleeve: 'short', tie: true }, 'garment-blues-class-b-blouse-female', 1, 2, false],
+  ['blues_b', 'female', { sleeve: 'long' }, 'garment-blues-class-b-blouse-female-long', 1, 2, false],
   // The aviator sheets' pointed collar (art bb1b47a0, LIVE8-1): the polygon is the leaf alone, vertices top end 0, collar point 1, the leading edge's other end 2 (the knot's shoulder on the men's, the front of
   // the neck on the women's), then the neck edge as a curve back to the top end. No roll line lies inside it, so the whole polygon is the leaf: the long sheets, and the short sheets' closed leaves
   // (collar_closed_<side>, with the tie on).
@@ -330,9 +328,9 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
           const [apexA, apexB, wingA, wingB] = corners;
           const apexTip = { x: (apexA.x + apexB.x) / 2, y: (apexA.y + apexB.y) / 2 };
           assert.ok(inPolygon(apexTip, leaf) || distToPolygon(apexTip, leaf) < 0.02, `${side}: apex tip ${apexTip.x.toFixed(2)},${apexTip.y.toFixed(2)} off the leaf (${distToPolygon(apexTip, leaf).toFixed(3)} in)`);
-          // Measured on the true-size leaves: C/CMSgt's wing ends pass the narrowing point of the leaf by 0.10 in on the men's Class B shirts,
-          // 0.24 on the aviator shirts and 0.27 on the blouses (0.04 to 0.22 for C/SMSgt, 0 to 0.17 for C/MSgt); C/Amn to C/TSgt lie wholly on it.
-          const wingLimit = garment.includes('class-b-shirt-male') ? 0.1 : 0.28;
+          // Measured on the true-size leaves: C/CMSgt's wing ends pass the narrowing point of the leaf by 0.24 in on the men's shirts
+          // and 0.27 on the aviator blouses, 0.30 on the Class B blouse (0.04 to 0.22 for C/SMSgt, 0 to 0.17 for C/MSgt); C/Amn to C/TSgt lie wholly on it.
+          const wingLimit = garment.includes('class-b-blouse-female') ? 0.32 : 0.28;   // the Class B blouse's open collar: 0.30 in for C/CMSgt
           for(const pt of [wingA, wingB]) assert.ok(inPolygon(pt, leaf) || distToPolygon(pt, leaf) < wingLimit, `${side}: wing end ${pt.x.toFixed(2)},${pt.y.toFixed(2)} off the leaf (${distToPolygon(pt, leaf).toFixed(3)} in)`);
           // any box corner (the two beside the apex included): the same bounds
           const reach = Math.max(...corners.map(pt => inPolygon(pt, leaf) ? 0 : distToPolygon(pt, leaf)));
@@ -357,7 +355,7 @@ for(const [uniform, gender, opt, garment, iPoint, iRoll, roll] of COLLAR_CASES){
             // than the 1.5 to 1.75 in chevrons are long and than the old leaf's 1.9 in, so at the regulation size (4.2.5.1.1.5, 4.2.6.2.5) the chevron's ends pass the leaf. Measured on the four sheets, both
             // leaves: apex tip up to 0.28 in (women's C/TSgt) and wing ends up to 0.48 in for C/Amn to C/TSgt; apex 0.59 in and wing ends 0.80 in for C/MSgt to C/CMSgt (women's C/CMSgt); the men's
             // are 0.1 to 0.15 in less. The bounds are those maxima plus 0.02 in (art follow-up: a wider leaf; the engine keeps the rule and the size).
-            const pointed = /aviator-shirt-(male|female)(-long)?$/.test(garment);
+            const pointed = /(aviator-shirt-(male|female)|blues-class-b-(shirt-male|blouse-female))(-long)?$/.test(garment);
             const limit = pointed ? (OVERHANGING.includes(rank) ? (along2 < 0 ? 0.82 : 0.62) : (along2 < 0 ? 0.5 : 0.3))
               : !garment.includes('overblouse') ? 0.02 : along2 < 0 ? 0.32 : 0.15;
             if(pointed) assert.ok(inPolygon({ x: cx, y: cy }, poly), `${side}: the chevron's centre lies on the leaf`);

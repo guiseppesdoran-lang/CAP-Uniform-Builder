@@ -88,16 +88,16 @@
    2420.1
   ],
   "collar_insignia_right": [
-   1471.76,
-   273.26
+   1145.89,
+   176.78
   ],
   "collar_insignia_left": [
-   1114.5,
-   273.26
+   1440.37,
+   176.78
   ],
   "tie_mount_center": [
    1293.13,
-   230
+   266.07
   ],
   "button_1_center": [
    1293.13,
@@ -181,32 +181,56 @@
   ],
   "collar_right": [
    [
-    1592.83,
-    13
+    998.13,
+    46.1
    ],
    [
-    1705.83,
-    162
+    973.13,
+    396.1
    ],
    [
-    1505.13,
-    454
+    1203.13,
+    344.1
    ],
    [
     1293.13,
-    230
+    266.1
    ],
    [
-    1386.03,
-    164.8
+    1270.13,
+    235.4
    ],
    [
-    1561.43,
-    18.3
+    1245.63,
+    206.7
    ],
    [
-    1573.93,
-    12.1
+    1219.73,
+    179.9
+   ],
+   [
+    1192.33,
+    155
+   ],
+   [
+    1163.53,
+    132
+   ],
+   [
+    1133.33,
+    111
+   ],
+   [
+    1101.73,
+    91.9
+   ],
+   [
+    1068.63,
+    74.7
+   ],
+   [
+    1034.13,
+    59.4
    ]
   ],
   "epaulet_left": [
@@ -233,32 +257,56 @@
   ],
   "collar_left": [
    [
-    993.43,
-    13
+    1588.13,
+    46.1
    ],
    [
-    880.43,
-    162
+    1613.13,
+    396.1
    ],
    [
-    1081.13,
-    454
+    1383.13,
+    344.1
    ],
    [
     1293.13,
-    230
+    266.1
    ],
    [
-    1200.23,
-    164.8
+    1316.13,
+    235.4
    ],
    [
-    1024.83,
-    18.3
+    1340.63,
+    206.7
    ],
    [
-    1012.33,
-    12.1
+    1366.53,
+    179.9
+   ],
+   [
+    1393.93,
+    155
+   ],
+   [
+    1422.73,
+    132
+   ],
+   [
+    1452.93,
+    111
+   ],
+   [
+    1484.53,
+    91.9
+   ],
+   [
+    1517.63,
+    74.7
+   ],
+   [
+    1552.13,
+    59.4
    ]
   ],
   "epaulet_axis": {
@@ -323,10 +371,10 @@
    "kind": "tie",
    "knot": {
     "x": 1293.13,
-    "y": 230
+    "y": 266.07
    },
    "w_in": 3,
-   "length_in": 22.39
+   "length_in": 22.03
   },
   "armpit_apex": {
    "right": [
@@ -347,10 +395,6 @@
     "x": -475.78,
     "y": 387.42
    }
-  },
-  "collar_insignia_angle_deg": {
-   "right": -133.4,
-   "left": -46.6
   },
   "ribbon_slot": {
    "x": 1548.38,
@@ -400,22 +444,26 @@
    "size_source": "estimated",
    "kind": "tie",
    "w_in": 3,
-   "length_in": 22.39,
+   "length_in": 22.03,
    "knot_w_in": 1.81,
    "source": "LIVE9-ART 1: the numbers of the Class A coat sheet's own tie (make-blues-a.js, tie.js): knot 1.81 in wide, its shoulder 0.784 in below the apex, neck 1.00 in wide at 1.643 in and 1.13 in at 2.004 in, blade 2.24 in wide at 4.577 in; below that the blade widens to 3.0 in across (Fig 4.8 at the belt) over the rest of its length; the tip at 80 % of the buckle height (4.1.8.3). The apex is the collar junction J."
   },
   "collar": {
    "size_source": "estimated",
+   "kind": "the aviator shirt's collar (B2)",
    "junction_in": [
     0,
-    2.2
+    2.561
    ],
-   "point_from_junction_in": [
-    2.12,
-    2.24
+   "collar_point_in": [
+    3.2,
+    3.861
    ],
-   "leading_edge_in": 3.08,
-   "source": "LIVE9-ART 1: the two leaves close on the knot at the junction J (the lowest point of the neck opening, the long-sleeve outline's neck bowl on all four sheets); each leaf is top end, shoulder vertex, collar point, junction and the neck-opening vertices back up; the leading edge J to P is 3.08 in long (points about 3 in; Fig 4.8 measured 3.9 in at 48 px/in on the figure's own pocket scale, the Class A coat leaf 2.65 in); direction 43 deg from vertical (Class A coat leaf edge 37 to 40 deg men, 50 deg women; Fig 4.8 30 deg). No regulation dimension."
+   "top_end_in": [
+    2.95,
+    0.361
+   ],
+   "source": "B2 (Ethan, 2026-11-10: \"the collar between the aviator shirt and class b should be the same. transfer the shape of the aviator to the class b, just changing the color\"): the same drawing as the aviator shirt's (base-art/shirt-collar.js, the code make-aviator.js builds it with: AVIATOR-ART, LIVE8-ART 1, LIVE12-ART 1), in this shirt's colours: the leaf cloth is the shirt's, the leaf edge the outline's navy at half strength, the inside of the collar band the aviator's two shades taken from the shirt cloth. The collar's top (the apex of the back of the collar) is where this sheet's own neck began; the junction (the aviator's Q, 2.60 in below the collar's top on the men's, 2.45 in on the women's) is where the knot's / tab's apex sits. Same estimate as the aviator's: no regulation dimension."
   },
   "finishing": {
    "note": "shoulder line straightened between the neck vertex and the shoulder point, armhole seam from the shoulder point to the armpit apex, hem hook / gap bulge removed (finishShoulderArmpit)",

@@ -94,12 +94,12 @@ test('on a short sheet the collar still lies over the badges: the foreground is 
   for(const [uniform, gender] of [['blues_b', 'male'], ['blues_b', 'female']]){
     for(const tie of [false, true]){
       const scene = await P.composeUniform(build(uniform, gender, 'senior', 'Capt', { tie }, { badgeIds: ['emergency_services_badge', 'communications_technician_badge', 'christian_chaplin'] }), store);
-      // The women's tie tab is drawn over the badges below the closed group's leaves, the group's cover and placket left to the base sheet under it (LIVE12 E60b, 4.1.12.4); the men's
-      // tie with the closed group, in the sheet's order.
+      // The Class B collar is the aviator's (B2), so the foreground is the aviator's: the open group, or the tie and the closed group's named pieces (the back of the collar and the two leaves), not the
+      // shirt-coloured cover of the open collar that the closed group also holds. The women's tie tab is drawn over the badges below the closed leaves (LIVE12 E60b, 4.1.12.4); the men's tie with them.
       const fg = scene.layers.filter(l => l.role === 'garment-foreground');
       const want = !tie ? [[['collar'], null]] : gender === 'female'
-        ? [[['tie'], null], [['collar-closed'], ['collar-closed-cover', 'collar-closed-placket']]]
-        : [[['collar-closed', 'tie'], null]];
+        ? [[['tie'], null], [['collar-closed-back', 'collar-closed-right', 'collar-closed-left'], null]]
+        : [[['tie', 'collar-closed-back', 'collar-closed-right', 'collar-closed-left'], null]];
       assert.deepEqual(fg.map(l => [l.onlyGroups, l.hideGroups || null]), want, `${gender} tie ${tie}: the groups of the state shown`);
       for(let i = 1; i < fg.length; i++) assert.ok(fg[i - 1].z < fg[i].z, 'in that order');
       for(const l of scene.layers.filter(x => x.role === 'badge')){ assert.ok(!l.clipOut, `${l.key}: a badge is never cut`); assert.ok(fg.every(f => l.z < f.z), `${l.key}: below the foreground`); }

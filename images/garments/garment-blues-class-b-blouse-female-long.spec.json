@@ -88,16 +88,16 @@
    2234.7
   ],
   "collar_insignia_right": [
-   1407.76,
-   283.07
+   1088.63,
+   170.81
   ],
   "collar_insignia_left": [
-   1043.98,
-   283.07
+   1363.11,
+   170.81
   ],
   "tie_mount_center": [
    1225.87,
-   262
+   253.02
   ],
   "button_1_center": [
    1225.87,
@@ -157,36 +157,56 @@
   ],
   "collar_right": [
    [
-    1500.47,
-    14
+    950.87,
+    48
    ],
    [
-    1629.37,
-    162
+    905.87,
+    386
    ],
    [
-    1461.87,
-    458
+    1155.87,
+    337.5
    ],
    [
     1225.87,
-    262
+    253
    ],
    [
-    1315.37,
-    234.7
+    1204.87,
+    223.9
    ],
    [
-    1393.57,
-    173.9
+    1182.37,
+    196.6
    ],
    [
-    1443.67,
-    103
+    1158.47,
+    171.3
    ],
    [
-    1491.07,
-    20
+    1133.07,
+    147.9
+   ],
+   [
+    1106.27,
+    126.5
+   ],
+   [
+    1078.07,
+    106.9
+   ],
+   [
+    1048.47,
+    89.3
+   ],
+   [
+    1017.37,
+    73.6
+   ],
+   [
+    984.87,
+    59.9
    ]
   ],
   "epaulet_left": [
@@ -213,36 +233,56 @@
   ],
   "collar_left": [
    [
-    951.27,
-    14
+    1500.87,
+    48
    ],
    [
-    822.37,
-    162
+    1545.87,
+    386
    ],
    [
-    989.87,
-    458
+    1295.87,
+    337.5
    ],
    [
     1225.87,
-    262
+    253
    ],
    [
-    1136.37,
-    234.7
+    1246.87,
+    223.9
    ],
    [
-    1058.17,
-    173.9
+    1269.37,
+    196.6
    ],
    [
-    1008.07,
-    103
+    1293.27,
+    171.3
    ],
    [
-    960.67,
-    20
+    1318.67,
+    147.9
+   ],
+   [
+    1345.47,
+    126.5
+   ],
+   [
+    1373.67,
+    106.9
+   ],
+   [
+    1403.27,
+    89.3
+   ],
+   [
+    1434.37,
+    73.6
+   ],
+   [
+    1466.87,
+    59.9
    ]
   ],
   "epaulet_axis": {
@@ -307,7 +347,7 @@
    "kind": "tab",
    "knot": {
     "x": 1225.87,
-    "y": 262
+    "y": 253.02
    },
    "w_in": 3.92,
    "length_in": 3.62
@@ -331,10 +371,6 @@
     "x": -463.8,
     "y": 311.96
    }
-  },
-  "collar_insignia_angle_deg": {
-   "right": -140.3,
-   "left": -39.7
   },
   "ribbon_slot": {
    "x": 1390.87,
@@ -386,16 +422,20 @@
   },
   "collar": {
    "size_source": "estimated",
+   "kind": "the aviator shirt's collar (B2)",
    "junction_in": [
     0,
-    2.52
+    2.43
    ],
-   "point_from_junction_in": [
-    2.36,
-    1.96
+   "collar_point_in": [
+    3.2,
+    3.76
    ],
-   "leading_edge_in": 3.07,
-   "source": "LIVE9-ART 1: the two leaves close on the knot at the junction J (the lowest point of the neck opening, the long-sleeve outline's neck bowl on all four sheets); each leaf is top end, shoulder vertex, collar point, junction and the neck-opening vertices back up; the leading edge J to P is 3.07 in long (points about 3 in; Fig 4.8 measured 3.9 in at 48 px/in on the figure's own pocket scale, the Class A coat leaf 2.65 in); direction 50 deg from vertical (Class A coat leaf edge 37 to 40 deg men, 50 deg women; Fig 4.8 30 deg). No regulation dimension."
+   "top_end_in": [
+    2.75,
+    0.38
+   ],
+   "source": "B2 (Ethan, 2026-11-10: \"the collar between the aviator shirt and class b should be the same. transfer the shape of the aviator to the class b, just changing the color\"): the same drawing as the aviator shirt's (base-art/shirt-collar.js, the code make-aviator.js builds it with: AVIATOR-ART, LIVE8-ART 1, LIVE12-ART 1), in this shirt's colours: the leaf cloth is the shirt's, the leaf edge the outline's navy at half strength, the inside of the collar band the aviator's two shades taken from the shirt cloth. The collar's top (the apex of the back of the collar) is where this sheet's own neck began; the junction (the aviator's Q, 2.60 in below the collar's top on the men's, 2.45 in on the women's) is where the knot's / tab's apex sits. Same estimate as the aviator's: no regulation dimension."
   },
   "finishing": {
    "note": "shoulder line straightened between the neck vertex and the shoulder point, armhole seam from the shoulder point to the armpit apex, hem hook / gap bulge removed (finishShoulderArmpit)",

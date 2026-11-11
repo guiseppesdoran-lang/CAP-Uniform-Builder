@@ -200,7 +200,9 @@ test('Class B, women, cadet: rack and badge on the left, nameplate on the right,
     assert.match(l.id, /metal/);
     const it = s.items[0];
     samePins(it.pins, expectedPins(l), `${side} collar grade`);
-    near(it.pins[0].x, it.pins[1].x, 1e-9, `${side}: the chevron turned a quarter, its two pins one above the other`);
+    // The chevron lies along the aviator-shaped collar's leading edge (B2), a few degrees off a quarter turn: its two pins are one above the other to within 0.1 in.
+    near(it.pins[0].x, it.pins[1].x, 0.1, `${side}: the chevron turned about a quarter, its two pins one above the other`);
+    assert.ok(Math.abs(it.pins[0].y - it.pins[1].y) > 0.3, `${side}: the pins are apart along the chevron`);
     assert.ok(s.refs.some(r => r.kind === 'collar-edge'), `${side}: collar edge`);
   }
 });

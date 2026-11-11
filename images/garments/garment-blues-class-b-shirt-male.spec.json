@@ -80,24 +80,24 @@
    2420.1
   ],
   "collar_insignia_right": [
-   1556.93,
-   397.64
+   1114.53,
+   484.06
   ],
   "collar_insignia_left": [
-   1129.01,
-   397.64
+   1571.4,
+   484.06
   ],
   "collar_closed_insignia_right": [
-   1521.6,
-   273.26
+   1195.73,
+   180.07
   ],
   "collar_closed_insignia_left": [
-   1164.34,
-   273.26
+   1490.21,
+   180.07
   ],
   "tie_mount_center": [
    1342.97,
-   230
+   269.36
   ],
   "button_1_center": [
    1342.97,
@@ -181,32 +181,28 @@
   ],
   "collar_right": [
    [
-    1633.87,
-    15.4
+    1047.97,
+    49.4
    ],
    [
-    1769.97,
-    173.6
+    774.97,
+    508.3
    ],
    [
-    1711.17,
-    497.6
+    1066.97,
+    487.8
    ],
    [
-    1402.67,
-    497.6
+    1070.97,
+    548.4
    ],
    [
-    1497.07,
-    341.7
+    1383.37,
+    694.1
    ],
    [
-    1555.57,
-    209
-   ],
-   [
-    1618.97,
-    25.2
+    1342.97,
+    616.5
    ]
   ],
   "epaulet_left": [
@@ -233,100 +229,250 @@
   ],
   "collar_left": [
    [
-    1052.07,
-    15.4
+    1637.97,
+    49.4
    ],
    [
-    915.97,
-    173.6
+    1910.97,
+    508.3
    ],
    [
-    974.77,
-    497.6
+    1618.97,
+    487.8
    ],
    [
-    1283.27,
-    497.6
+    1614.97,
+    548.4
    ],
    [
-    1188.87,
-    341.7
+    1302.57,
+    694.1
    ],
    [
-    1130.37,
-    209
-   ],
-   [
-    1066.97,
-    25.2
+    1342.97,
+    616.5
    ]
   ],
   "collar_closed_right": [
    [
-    1642.67,
-    13
+    1047.97,
+    49.4
    ],
    [
-    1769.97,
-    173.6
+    1022.97,
+    399.4
    ],
    [
-    1554.97,
-    454
+    1252.97,
+    347.4
    ],
    [
     1342.97,
-    230
+    269.4
    ],
    [
-    1435.87,
-    164.8
+    1319.97,
+    238.7
    ],
    [
-    1611.27,
-    18.3
+    1295.47,
+    210
    ],
    [
-    1623.77,
-    12.1
+    1269.57,
+    183.2
+   ],
+   [
+    1242.17,
+    158.3
+   ],
+   [
+    1213.37,
+    135.3
+   ],
+   [
+    1183.17,
+    114.3
+   ],
+   [
+    1151.57,
+    95.2
+   ],
+   [
+    1118.47,
+    78
+   ],
+   [
+    1083.97,
+    62.7
    ]
   ],
   "collar_closed_left": [
    [
-    1043.27,
-    13
+    1637.97,
+    49.4
    ],
    [
-    915.97,
-    173.6
+    1662.97,
+    399.4
    ],
    [
-    1130.97,
-    454
+    1432.97,
+    347.4
    ],
    [
     1342.97,
-    230
+    269.4
    ],
    [
-    1250.07,
-    164.8
+    1365.97,
+    238.7
    ],
    [
-    1074.67,
-    18.3
+    1390.47,
+    210
    ],
    [
-    1062.17,
-    12.1
+    1416.37,
+    183.2
+   ],
+   [
+    1443.77,
+    158.3
+   ],
+   [
+    1472.57,
+    135.3
+   ],
+   [
+    1502.77,
+    114.3
+   ],
+   [
+    1534.37,
+    95.2
+   ],
+   [
+    1567.47,
+    78
+   ],
+   [
+    1601.97,
+    62.7
    ]
   ],
   "collar_states": {
    "open": "collar",
    "closed": "collar-closed",
    "default": "open",
-   "note": "short sleeve: the open collar (top button undone) is the default, the closed one (with the tie) lies over it and covers it; hide group collar-closed for the open state, group collar for the closed state"
+   "note": "short sleeve: the open collar (top button undone; the aviator shirt's open collar, B2) is the default, the closed one (with the tie) lies over it and covers it; hide group collar-closed (and tie) for the open state, group collar for the closed state"
   },
+  "collar_open_neck": [
+   [
+    1047.97,
+    49.36
+   ],
+   [
+    1072.55,
+    35.77
+   ],
+   [
+    1097.13,
+    30.57
+   ],
+   [
+    1121.72,
+    26.87
+   ],
+   [
+    1146.3,
+    24.02
+   ],
+   [
+    1170.88,
+    21.74
+   ],
+   [
+    1195.47,
+    19.92
+   ],
+   [
+    1220.05,
+    18.45
+   ],
+   [
+    1244.63,
+    17.3
+   ],
+   [
+    1269.22,
+    16.44
+   ],
+   [
+    1293.8,
+    15.84
+   ],
+   [
+    1318.38,
+    15.48
+   ],
+   [
+    1342.97,
+    15.36
+   ],
+   [
+    1367.55,
+    15.48
+   ],
+   [
+    1392.13,
+    15.84
+   ],
+   [
+    1416.72,
+    16.44
+   ],
+   [
+    1441.3,
+    17.3
+   ],
+   [
+    1465.88,
+    18.45
+   ],
+   [
+    1490.47,
+    19.92
+   ],
+   [
+    1515.05,
+    21.74
+   ],
+   [
+    1539.63,
+    24.02
+   ],
+   [
+    1564.22,
+    26.87
+   ],
+   [
+    1588.8,
+    30.57
+   ],
+   [
+    1613.38,
+    35.77
+   ],
+   [
+    1637.97,
+    49.36
+   ],
+   [
+    1342.97,
+    616.46
+   ]
+  ],
   "epaulet_axis": {
    "right": {
     "p1": [
@@ -389,10 +535,10 @@
    "kind": "tie",
    "knot": {
     "x": 1342.97,
-    "y": 230
+    "y": 269.36
    },
    "w_in": 3,
-   "length_in": 22.39
+   "length_in": 22
   },
   "armpit_apex": {
    "right": [
@@ -413,14 +559,6 @@
     "x": -523.45,
     "y": 387.42
    }
-  },
-  "collar_insignia_angle_deg": {
-   "right": 180,
-   "left": 0
-  },
-  "collar_closed_insignia_angle_deg": {
-   "right": -133.4,
-   "left": -46.6
   },
   "ribbon_slot": {
    "x": 1598.22,
@@ -470,18 +608,18 @@
    "size_source": "estimated",
    "kind": "tie",
    "w_in": 3,
-   "length_in": 22.39,
+   "length_in": 22,
    "knot_w_in": 1.81,
    "source": "LIVE9-ART 1: the numbers of the Class A coat sheet's own tie (make-blues-a.js, tie.js): knot 1.81 in wide, its shoulder 0.784 in below the apex, neck 1.00 in wide at 1.643 in and 1.13 in at 2.004 in, blade 2.24 in wide at 4.577 in; below that the blade widens to 3.0 in across (Fig 4.8 at the belt) over the rest of its length; the tip at 80 % of the buckle height (4.1.8.3). The apex is the collar junction J."
   },
   "undershirt": {
    "size_source": "estimated",
-   "point_y_in": 4.864,
+   "point_y_in": 5.065,
    "point_above_apex_in": 1,
-   "v_apex_y_in": 5.864,
+   "v_apex_y_in": 6.065,
    "v_top_y_in": 0.054,
-   "v_top_half_width_in": 2.909,
-   "neckline_top_half_width_in": 2.007,
+   "v_top_half_width_in": 2.95,
+   "neckline_top_half_width_in": 2.036,
    "band_in": 0.3,
    "colours": {
     "front": "#f4f3ef",
@@ -492,16 +630,82 @@
   },
   "collar": {
    "size_source": "estimated",
+   "kind": "the aviator shirt's collar (B2)",
    "junction_in": [
     0,
-    2.2
+    2.594
    ],
-   "point_from_junction_in": [
-    2.12,
-    2.24
+   "collar_point_in": [
+    3.2,
+    3.894
    ],
-   "leading_edge_in": 3.08,
-   "source": "LIVE9-ART 1: the two leaves close on the knot at the junction J (the lowest point of the neck opening, the long-sleeve outline's neck bowl on all four sheets); each leaf is top end, shoulder vertex, collar point, junction and the neck-opening vertices back up; the leading edge J to P is 3.08 in long (points about 3 in; Fig 4.8 measured 3.9 in at 48 px/in on the figure's own pocket scale, the Class A coat leaf 2.65 in); direction 43 deg from vertical (Class A coat leaf edge 37 to 40 deg men, 50 deg women; Fig 4.8 30 deg). No regulation dimension."
+   "top_end_in": [
+    2.95,
+    0.394
+   ],
+   "source": "B2 (Ethan, 2026-11-10: \"the collar between the aviator shirt and class b should be the same. transfer the shape of the aviator to the class b, just changing the color\"): the same drawing as the aviator shirt's (base-art/shirt-collar.js, the code make-aviator.js builds it with: AVIATOR-ART, LIVE8-ART 1, LIVE12-ART 1), in this shirt's colours: the leaf cloth is the shirt's, the leaf edge the outline's navy at half strength, the inside of the collar band the aviator's two shades taken from the shirt cloth. The collar's top (the apex of the back of the collar) is where this sheet's own neck began; the junction (the aviator's Q, 2.60 in below the collar's top on the men's, 2.45 in on the women's) is where the knot's / tab's apex sits. Same estimate as the aviator's: no regulation dimension."
+  },
+  "collar_open": {
+   "kind": "open camp collar: each front turned back from its roll line (top end to the break), the collar (top end, P, N1) and the revers (N1, N2, B) with the fold line between them; the V between the roll lines shows the inside of the collar band; no wearer is drawn (LIVE13-ART E109) and no undershirt (CAPR 39-1 4.2.5.1.9 / 4.2.6.9)",
+   "size_source": "measured",
+   "source": "CAPR 39-1 Fig 4.16 (PDF page 92) at 8x, pocket 5.25 in = 354 px (67.4 px/in), both sides averaged; LIVE12-ART 1",
+   "figure_in": {
+    "P": [
+     5.68,
+     4.92
+    ],
+    "N1": [
+     2.76,
+     4.7
+    ],
+    "N2": [
+     2.72,
+     5.35
+    ],
+    "slope": 0.5,
+    "btn": 7,
+    "X": 6.12
+   },
+   "vertical_scale": 0.933,
+   "vertical_scale_note": "y on the sheet = figure y x vertical_scale: the sheet's top end to its button-1 over the figure's top end to its first button, so the figure's break lands at the sheet's button; x as the figure reads",
+   "top_end": [
+    2.95,
+    0
+   ],
+   "collar_point": [
+    5.68,
+    4.59
+   ],
+   "collar_inner_end": [
+    2.76,
+    4.38
+   ],
+   "revers_top": [
+    2.72,
+    4.99
+   ],
+   "break": [
+    0.4,
+    6.45
+   ],
+   "roll_lines_cross": [
+    0,
+    5.67
+   ],
+   "over_front": "wearer's left (shirt)",
+   "break_note": "B lies on the sheet's own front edge (the placket line) where the revers' lower edge from N2 (the figure's slope x vertical_scale) meets it; X is where the over front's roll line crosses the centre front (derived)",
+   "neck": {
+    "drawn": false,
+    "colours": {
+     "band_inside": "#d3d7e0 to #eef0f4 (the closed collar's band, across the whole V)",
+     "roll_shadow": "#000a24 at .16"
+    },
+    "note": "no wearer is drawn (LIVE13-ART, E109 \"remove the skin colored necks\"): the V shows the inside of the collar band; the flesh-tone neck column of LIVE12-ART 1 / 6 and its side lines are gone, no geometry moved"
+   },
+   "estimated": [
+    "the top ends are the sheet's own (the closed collar's band, 2.95 in men's / 2.75 in women's; the figures read 3.0 / 3.04 in)",
+    "the fronts' overlap (the sheet's placket line)"
+   ]
   },
   "finishing": {
    "note": "shoulder line straightened between the neck vertex and the shoulder point, armhole seam from the shoulder point to the armpit apex, hem hook / gap bulge removed (finishShoulderArmpit)",

@@ -15080,16 +15080,16 @@
      2234.7
     ],
     "collar_insignia_right": [
-     1407.76,
-     283.07
+     1088.63,
+     170.81
     ],
     "collar_insignia_left": [
-     1043.98,
-     283.07
+     1363.11,
+     170.81
     ],
     "tie_mount_center": [
      1225.87,
-     262
+     253.02
     ],
     "button_1_center": [
      1225.87,
@@ -15123,7 +15123,6 @@
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "collar_insignia_angle_deg",
     "ribbon_slot"
    ],
    "has_spec": true,
@@ -15283,24 +15282,24 @@
      2234.7
     ],
     "collar_insignia_right": [
-     1508.83,
-     268.45
+     1038.01,
+     452.41
     ],
     "collar_insignia_left": [
-     1009.99,
-     268.45
+     1480.81,
+     452.41
     ],
     "collar_closed_insignia_right": [
-     1441.3,
-     283.07
+     1122.17,
+     171.17
     ],
     "collar_closed_insignia_left": [
-     1077.52,
-     283.07
+     1396.65,
+     171.17
     ],
     "tie_mount_center": [
      1259.41,
-     262
+     253.38
     ],
     "button_1_center": [
      1259.41,
@@ -15333,12 +15332,11 @@
     "collar_closed_right",
     "collar_closed_left",
     "collar_states",
+    "collar_open_neck",
     "epaulet_axis",
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "collar_insignia_angle_deg",
-    "collar_closed_insignia_angle_deg",
     "ribbon_slot"
    ],
    "has_spec": true,
@@ -15814,16 +15812,16 @@
      2420.1
     ],
     "collar_insignia_right": [
-     1471.76,
-     273.26
+     1145.89,
+     176.78
     ],
     "collar_insignia_left": [
-     1114.5,
-     273.26
+     1440.37,
+     176.78
     ],
     "tie_mount_center": [
      1293.13,
-     230
+     266.07
     ],
     "button_1_center": [
      1293.13,
@@ -15871,7 +15869,6 @@
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "collar_insignia_angle_deg",
     "ribbon_slot"
    ],
    "has_spec": true,
@@ -16031,24 +16028,24 @@
      2420.1
     ],
     "collar_insignia_right": [
-     1556.93,
-     397.64
+     1114.53,
+     484.06
     ],
     "collar_insignia_left": [
-     1129.01,
-     397.64
+     1571.4,
+     484.06
     ],
     "collar_closed_insignia_right": [
-     1521.6,
-     273.26
+     1195.73,
+     180.07
     ],
     "collar_closed_insignia_left": [
-     1164.34,
-     273.26
+     1490.21,
+     180.07
     ],
     "tie_mount_center": [
      1342.97,
-     230
+     269.36
     ],
     "button_1_center": [
      1342.97,
@@ -16095,12 +16092,11 @@
     "collar_closed_right",
     "collar_closed_left",
     "collar_states",
+    "collar_open_neck",
     "epaulet_axis",
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "collar_insignia_angle_deg",
-    "collar_closed_insignia_angle_deg",
     "ribbon_slot"
    ],
    "has_spec": true,
