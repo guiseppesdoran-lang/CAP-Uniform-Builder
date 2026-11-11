@@ -1675,11 +1675,15 @@
   // product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board is drawn. Neither sheet
   // has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
   const BOARD_STRIP_THICK = 0.5;
-  // The strip lies along the shoulder seam with its UPPER edge on the seam (the shoulder line the sheet's outline draws), so the whole board is on the coat. Ethan, 2 November 2026: "the
-  // shoulder boards on class a's should always match the shoulder seam"; that put the strip's axis ON the seam, its thickness half on each side, and the upper half stood over the page above
-  // the shoulder, the outer end hanging over the corner of the sleeve. Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating" (a strip of background between the board and
-  // the coat). The strip is dropped by half its thickness: its upper edge is the seam, its outer end at the shoulder point, and nothing of it is outside the coat (the cord still starts on the seam, under it).
-  const BOARD_STRIP_DROP = BOARD_STRIP_THICK / 2;
+  // The strip lies along the shoulder seam with its UPPER edge on the coat's own upper outline, the outer edge of its stroke, so the whole board is on the coat and no coat shows above it.
+  // Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder seam"; that put the strip's axis ON the seam, its thickness half on each side, and the upper half stood over
+  // the page above the shoulder, the outer end hanging over the corner of the sleeve. Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating" (a strip of background between the board
+  // and the coat): the strip was dropped by half its thickness so its upper edge was the seam (the outline's path). Ethan, 2026-11-10, looking at that: "theres some coat blue above the board": the outline is
+  // drawn with a stroke 0.06 in wide (the coat sheets' silhouette), half of it outside the path, which showed above the board's upper edge, and on the women's coats the shoulder line bends 0.1 in
+  // above the straight seam about 1.4 in from the shoulder point. The strip's upper edge is the seam moved out by the half stroke (COAT_STROKE_HALF), so it covers the stroke; the seam is the outline's
+  // own straight run on the men's coats, so there the edge lies on the drawn outline the whole length (tests/engine-live-board-outline.test.cjs).
+  const COAT_STROKE_HALF = 0.03;
+  const BOARD_STRIP_DROP = BOARD_STRIP_THICK / 2 - COAT_STROKE_HALF;
   // Depth of the board's pointed neck end (the board sheets' size basis: 0.74 in peak).
   const BOARD_PEAK = 0.74;
   // The board's neck end runs on past the strap's, toward the neck, where the coat's collar leaf (the lapel foreground, Z.badge + 0.5)

@@ -24,10 +24,11 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.
 const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
 const hb = (uniform, gender, rank, membership) => HARNESS.makeBuild({ uniform, gender, membership: membership || 'cadet', rank, name: { first: 'Pat', last: 'Doe', show: true }, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } });
 const rad = d => d * Math.PI / 180;
-// The strip is 0.5 in across and its UPPER edge is the shoulder seam (Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder seam" put its centre
-// line on the seam; 2026-11-10, B5: "she class a blue shouldet boards are slightly levetating", the upper half stood over the page above the shoulder): its centre line lies half
-// a strip, 0.25 in, below the seam, so the whole board is on the coat.
-const DROP = { thick: 0.5, drop: 0.25 };
+// The strip is 0.5 in across and its UPPER edge is the shoulder seam moved out by the half stroke of the coat's outline, 0.03 in (Ethan, 2 November 2026: "the shoulder boards on class a's should
+// always match the shoulder seam" put its centre line on the seam; 2026-11-10, B5: "she class a blue shouldet boards are slightly levetating", the upper half stood over the page above the
+// shoulder; then "theres some coat blue above the board", the outline's stroke showed above it): its centre line lies half a strip less that, 0.22 in, below the seam, so the whole board is on the
+// coat and the stroke is covered.
+const DROP = { thick: 0.5, drop: 0.25 - 0.03 };
 // The coat sheets' shoulder seam on each side, neck end then shoulder point, sheet inches, measured from the sheets' own silhouettes.
 const SHEET = require('./helpers/class-a-sheet.cjs');
 const COATS = { blues_a: { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' }, semi_formal_usaf: { male: 'garment-semiformal-class-a-coat-male', female: 'garment-semiformal-class-a-coat-female' } };

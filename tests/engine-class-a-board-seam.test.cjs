@@ -41,9 +41,10 @@ test('the engine reads the shoulder seam off the sheet\'s outline: the same coll
   }
 });
 
-// B5 (Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating"): the strip's UPPER edge is the seam, so its axis lies half the strip's thickness (0.25 in) below the seam, its outer end that
-// far square down from the shoulder point, and its direction is still the seam's angle.
-const HALF_STRIP = 0.25;
+// B5 (Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating"; then "theres some coat blue above the board"): the strip's UPPER edge is the seam moved out by the half stroke of the coat's
+// outline (COVER, 0.03 in), so its axis lies half the strip's thickness less that (0.22 in) below the seam, its outer end that far square down from the shoulder point, and its direction is still the seam's angle.
+const COVER = 0.03;
+const HALF_STRIP = 0.25 - COVER;
 test('cadet officer boards, every cut and both coats: the strip\'s upper edge lies on the seam (0.01 in), its outer end half a strip below the shoulder point and its direction on the seam\'s angle', async () => {
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
     const scene = await P.composeUniform(hb(uniform, sex, 'cadet', rank), store);
@@ -98,14 +99,14 @@ test('shoulder cord and aide cord: the cord comes out from under the board\'s lo
     assert.ok(cl.z < strip.z, `${tag}: drawn below the strip (z ${cl.z} against ${strip.z})`);
     assert.ok(Array.isArray(cl.clip) && cl.clip.length === 4, `${tag}: the cord is cut to the garment side of the epaulet's lower edge`);
     // The cut line is the strip's lower long edge, a hair above it: its two end points lie within 0.02 in of the line through that edge.
-    // The cut line is the epaulet's lower edge, parallel to the seam: half a board (0.25 in) plus half the strip's thickness below the seam for a cadet board (its upper edge is the seam, B5), the strap's
+    // The cut line is the epaulet's lower edge, parallel to the seam: the strip's thickness (0.5 in) less the half stroke the board covers (0.03 in) below the seam for a cadet board (B5), the strap's
     // or sleeve's half thickness (0.20 to 0.25 in) for an officer's strip, whose centre line is the seam.
     const sm = SHEET.seam(COATS.blues_a[sex], 'left'), c0 = cl.clip[0], c1 = cl.clip[1];
     const angCut = Math.atan2(c1.y - c0.y, c1.x - c0.x), angSeam = Math.atan2(sm.neck.y - sm.outer.y, sm.neck.x - sm.outer.x);
     let dAng = Math.abs(angCut - angSeam) % Math.PI; dAng = Math.min(dAng, Math.PI - dAng);
     assert.ok(dAng * 180 / Math.PI < 1, `${tag}: the cut line runs along the seam (${(dAng * 180 / Math.PI).toFixed(2)} degrees off)`);
     const drop = Math.abs(across(c0, sm.outer, sm.neck));
-    if(membership === 'cadet') assert.ok(Math.abs(drop - 2 * HALF_STRIP) <= 0.03, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the board's lower edge (0.5 in)`);
+    if(membership === 'cadet') assert.ok(Math.abs(drop - (0.5 - COVER)) <= 0.03, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the board's lower edge (0.5 in)`);
     else assert.ok(drop >= 0.19 && drop <= 0.26, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the strap's lower edge`);
     // Nothing of the cord shows above the cut line: its top end lies on the strip's side (or on the line).
     const top = { x: cl.cordPath.top[0], y: cl.cordPath.top[1] };
