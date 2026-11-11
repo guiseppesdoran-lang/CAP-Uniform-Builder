@@ -1235,8 +1235,12 @@ const PATCH_META = {
   'plane_patch':{label:'Emergency Services Patch (style 1)', slotHint:'CHEST_LEFT', w:70,h:70, authorizedUniforms:['ocp','flight_suit','corporate_field']},
 };
 
-// Each patch's picture: its SVG, from data/patch-art.js (scripts/sync-patches.cjs). A patch not listed has no picture yet.
-for(const [id, art] of Object.entries(window.CAPUBPatchArt || {})) if(PATCH_META[id]) Object.assign(PATCH_META[id], { img: art.img, asset: art.asset || null });
+// Each patch's picture: its SVG, from data/patch-art.js (scripts/sync-patches.cjs); official digital artwork taken as given is a picture (a PNG), drawn as a
+// picture at the size its spec gives (`sizeIn`, inches; w and h carry the proportions), as a unit emblem is (unitPatchPicture). A patch not listed
+// has no picture yet.
+for(const [id, art] of Object.entries(window.CAPUBPatchArt || {})) if(PATCH_META[id]){
+  Object.assign(PATCH_META[id], /\.svg$/i.test(art.img) ? { img: art.img, asset: art.asset || null } : { img: art.img, asset: null, w: art.w, h: art.h, sizeIn: { w: art.w, h: art.h } });
+}
 
 // The unit names as eServices prints them are capitals and abbreviations ("NATL HQS UNIT", "MUSIC CITY COMPOSITE SQDN"). The member reads them in
 // title case with the abbreviations spelled out ("National Headquarters Unit", "Music City Composite Squadron"); CAP, HQ, NHQ, USAF, the state codes, the

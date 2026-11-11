@@ -752,7 +752,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const CAPUB_RANGER_TAB_GROUP = 'Hawk Mountain Ranger tabs';
     const CAPUB_RANGER_TAB_LABELS = {
       'ranger-3rd-class': 'Ranger 3rd Class', 'ranger-2nd-class': 'Ranger 2nd Class', 'ranger': 'Ranger', 'advanced-ranger': 'Advanced Ranger',
-      'expert-ranger-black': 'Expert Ranger (black)', 'expert-ranger-red': 'Expert Ranger (red)', 'medic-gray': 'Medic (gray)', 'medic-red': 'Medic (red)',
+      'expert-ranger-black': 'Expert Ranger (black)', 'expert-ranger-red': 'Expert Ranger (red)', 'medic-gray': 'Medic (green)', 'medic-red': 'Medic (red)',
       'senior-medic': 'Senior Medic', 'instructor': 'Instructor'
     };
     const CAPUB_RANGER_TABS = Object.keys(CAPUB_RANGER_TAB_LABELS).map(grade => 'patch-ranger-tab-' + grade);
@@ -764,6 +764,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         PATCH_META[id] = PATCH_META[id] || { label: `CAP Ranger tab: ${CAPUB_RANGER_TAB_LABELS[grade]}`, slotHint: 'L_SHOULDER', w: 70, h: 11,
           img: `patches/${id}/${id}.svg`, authorizedUniforms: ['ocp'], kind: 'ranger-tab', group: CAPUB_RANGER_TAB_GROUP, oneOnly: true,
           note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the HHQ patch, in its place on the left sleeve under AUX (CAPR 39-1, 7.1.1.4.2)' };
+        // A tab whose art is the school's own tab graphic (a PNG taken as given, data/patch-art.js) is a picture at the size its spec gives.
+        const official = window.CAPUBPatchArt && window.CAPUBPatchArt[id];
+        if(official && !/\.svg$/i.test(official.img)) Object.assign(PATCH_META[id], { img: official.img, asset: null, w: official.w, h: official.h, sizeIn: { w: official.w, h: official.h } });
         if(!patchList.includes(id)) patchList.push(id);
       }
     }

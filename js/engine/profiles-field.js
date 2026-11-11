@@ -720,17 +720,25 @@
   async function rangerTabInHhqSlot(ctx, tabs, replaced){
     if(tabs.length > 1) ctx.note('Only one CAP Ranger tab is worn; the first selected is shown');
     const t = tabs[0];
-    if(!ctx.has(t.id)){ ctx.note(`${t.title || 'The CAP Ranger tab'} cannot be shown on this uniform`); return null; }
+    // The school's own tab graphic (a PNG taken as given) is a picture at the size its spec gives; the others are the sheet's SVG.
+    const picture = !t.asset && t.size && t.size.w > 0 && t.size.h > 0;
+    if(!picture && !ctx.has(t.id)){ ctx.note(`${t.title || 'The CAP Ranger tab'} cannot be shown on this uniform`); return null; }
     const zone = belowOnVelcro(ctx, 'sleeve_flap_velcro_left', 'patch_aux_left');
     if(!zone) return null;
-    const flat = await ctx.place(t.id, { pieceAnchor: 'center', at: ctx.point('hhq_patch_left_center') || core.rectCenter(zone), z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:0`, title: t.title || t.id, className: 'patch' });
+    const at = ctx.point('hhq_patch_left_center') || core.rectCenter(zone);
+    const opts = { z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:0`, title: t.title || t.id, className: 'patch' };
+    const flat = picture
+      ? C.fitRaster(ctx, t.href, { x: at.x - t.size.w / 2, y: at.y - t.size.h / 2, w: t.size.w, h: t.size.h }, t.size.w / t.size.h, opts, t.size)
+      : await ctx.place(t.id, Object.assign({ pieceAnchor: 'center', at }, opts));
     if(!flat) return null;
     // Seen edge-on where the sleeve meets the coat, cut only to what of the sleeve shows there.
     const f = edgeFrame(ctx, 'left'), clip = f && f.shows(flat);
     if(f && clip){
       const e = f.map(flat);
-      ctx.layers.push({ type: 'asset', id: t.id, x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, clip,
-        z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:edge`, title: t.title || t.id, className: 'patch' });
+      const edge = { x: e.center.x - e.w / 2, y: e.center.y - e.h / 2, w: e.w, h: e.h, rotate: f.tilt, origin: e.center, clip,
+        z: Z.patch, role: 'patch', key: `patch:${t.id}:L_SHOULDER:edge`, title: t.title || t.id, className: 'patch' };
+      if(picture) ctx.raster(Object.assign({ href: t.href, fit: 'stretch' }, edge));
+      else ctx.layers.push(Object.assign({ type: 'asset', id: t.id }, edge));
     }
     measureSleevePatch(ctx, flat, 'sleeve_flap_velcro_left', 'patch_aux_left', false);
     ctx.note(`The CAP Ranger tab is worn by Hawk Mountain Ranger School graduates on the OCP only, in lieu of the higher headquarters patch, in its place under the AUX identifier (CAPR 39-1, 7.1.1.4.2, 7.1.1.4.2.1)${replaced ? `; ${replaced.title || 'the higher headquarters patch'} is not shown while the tab is worn` : ''}`);
