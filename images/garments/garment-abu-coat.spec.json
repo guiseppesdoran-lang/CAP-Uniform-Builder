@@ -651,7 +651,13 @@
   "tape_in": [
    5,
    0.9
-  ]
+  ],
+  "print_vector": {
+   "polygons": 378,
+   "vertices": 8290,
+   "pattern_bytes": 39503,
+   "drawn": "straight-edged regions in four flat tones, no raster, no filter"
+  }
  },
  "documented": [
   "Desert Tan short or long-sleeved t-shirt worn under the ABU coat, its crew neck shown in the open V (5.1.1.2)",
@@ -663,7 +669,7 @@
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
   "lower pocket size",
-  "tiger-stripe print: a tile TRACED from two flat pieces of a 6000 px photograph of ABU fabric (Wikimedia Commons, Qirille, CC BY-SA 4.0; a reference only, not shipped; base-art/abu-trace.js), the draped swatch rectified onto its own cell lattice (cell 14.89 px = 0.0625 in, 238.2 px per in; abu-ref-measure.json; the cloth's weave, abu-weave-measure.json, and the Vanguard autocorrelation, abu-scale-check.json, suggest a cell nearer 1/16 to 3/32 in than the 1/8 in taken from the garment), colours matched to the Vanguard shirt photograph, snapped to 1/8 in cells and joined into a seamless periodic tile by minimum-error cuts (no mirroring, nothing generated); the cell is 1/16 in from the weave pitch of the cloth (abu-weave-measure.json) and the autocorrelation of the Vanguard coat front (abu-scale-check.json), NOT from the CAP tape or the pocket size; band-row density along the chest matches the Vanguard shirt (abu-density-check.json); the band length, thickness and stripe angle of the tile agree with those of the photograph within one cell (abu-trace-report.json), the tile is 19 x 14.25 in",
+  "tiger-stripe print: our own vector regions (abu-print.js, 2026-11-10), the print's four flat tones as straight-edged polygons: 378 polygons, 8290 vertices, 39503 bytes (the cell outlines it replaces: 1303 loops, 13694 vertices, 39236 bytes), no raster and no filter, one 19 x 14.25 in tile that repeats without a seam (the outlines are traced on a lattice padded by the tile's own wrap). The regions are drawn from the measured design: the tone grid abu-tile.json (abu-trace.js: 304 x 228 cells of 1/16 in read off a 6000 px photograph of original-issue ABU twill, Wikimedia Commons, Qirille, CC BY-SA 4.0, assets/refs/abu, a reference only, never embedded or shipped; cell 14.89 px = 1/16 in, 238.2 px per in, abu-ref-measure.json; the cloth's weave, abu-weave-measure.json, and the Vanguard autocorrelation, abu-scale-check.json, agree), each tone layer blurred 0.65 cell, traced at the level that keeps its area, simplified to 0.5 cell with specks under 5 cells dropped (abu-vector-check.js: tone shares dark / ground / base / tan 0.112 / 0.507 / 0.173 / 0.209 in the grid, 0.112 / 0.505 / 0.176 / 0.207 drawn; 87 percent of cells keep their tone, the rest are edge cells; dark slashes 16.3 per 100 sq in, median 1.31 in long, 0.25 in thick in the grid, 13.7, 1.38, 0.30 drawn); colours matched to the Vanguard shirt photograph (#31332f #51564f #6f746d #9c9888); band length, thickness and stripe angle of the photograph agree with the grid within one cell (abu-trace-report.json); the cell is 1/16 in from the weave pitch of the cloth and the autocorrelation of the Vanguard coat front, NOT from the CAP tape or the pocket size; band-row density along the chest matches the Vanguard shirt (abu-density-check.json)",
   "T-shirt colours in the neck (Desert Tan, estimated; the regulation names the colour, not a value)",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
  ],

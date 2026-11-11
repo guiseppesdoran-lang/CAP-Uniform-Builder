@@ -69,13 +69,13 @@
   DRAWN_PIECES['garment-cfdu-flight-suit'] = DRAWN_3;
   DRAWN_PIECES['garment-fdu-flight-suit'] = DRAWN_3;
   const DRAWN_4 = [
-    ['name-tape', 3240, 870, 400, 200],
-    ['patch-command', 1990, 825.5, 300, 289],
-    ['sleeve-front-loop-right', 1405.04, 496.86, 330.32, 394.27],
-    ['sleeve-front-flag-left', 3835.31, 508.29, 259.39, 265.43],
-    ['sleeve-front-pocket-left', 4137.86, 1048.38, 535.88, 658.25],
-    ['patch-flag-left', 4965, 140, 350, 200],
-    ['sleeve-pocket-left', 4977.5, 765, 325, 575]
+    ['name-tape', 2762.67, 873.7, 400, 200],
+    ['patch-command', 1656.67, 829.2, 300, 289],
+    ['sleeve-front-loop-right', 1028.09, 447.21, 238.16, 375.58],
+    ['sleeve-front-flag-left', 3469.53, 438.63, 230.46, 242.74],
+    ['sleeve-front-pocket-left', 3505.32, 1073.96, 385.88, 607.07],
+    ['patch-flag-left', 4170.66, 140, 350, 200],
+    ['sleeve-pocket-left', 4183.16, 765, 325, 575]
   ];
   DRAWN_PIECES['garment-flight-jacket-blue'] = DRAWN_4;
   DRAWN_PIECES['garment-flight-jacket-green'] = DRAWN_4;

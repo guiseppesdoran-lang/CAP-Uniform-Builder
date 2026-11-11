@@ -160,20 +160,56 @@
   },
   "chest_pocket_right": [
    [
-    1452.59,
-    1222.6
+    1537.32,
+    1392.06
    ],
    [
-    2160.73,
-    1755.21
+    2124.65,
+    1731.24
    ],
    [
-    2160.73,
+    2124.65,
     2051.78
    ],
    [
-    1498.59,
+    1493.5,
     2051.78
+   ],
+   [
+    1493.14,
+    2021.52
+   ],
+   [
+    1492.66,
+    1960.99
+   ],
+   [
+    1492.29,
+    1900.47
+   ],
+   [
+    1491.81,
+    1839.95
+   ],
+   [
+    1491.2,
+    1779.42
+   ],
+   [
+    1490.6,
+    1718.9
+   ],
+   [
+    1489.87,
+    1658.37
+   ],
+   [
+    1488.9,
+    1597.85
+   ],
+   [
+    1488.66,
+    1585.74
    ]
   ],
   "waist_tab_right": [
@@ -214,20 +250,56 @@
   ],
   "chest_pocket_left": [
    [
-    3316.74,
-    1222.6
+    3232.01,
+    1392.06
    ],
    [
-    2608.61,
-    1755.21
+    2644.68,
+    1731.24
    ],
    [
-    2608.61,
+    2644.68,
     2051.78
    ],
    [
-    3270.75,
+    3275.83,
     2051.78
+   ],
+   [
+    3276.19,
+    2021.52
+   ],
+   [
+    3276.68,
+    1960.99
+   ],
+   [
+    3277.04,
+    1900.47
+   ],
+   [
+    3277.52,
+    1839.95
+   ],
+   [
+    3278.13,
+    1779.42
+   ],
+   [
+    3278.74,
+    1718.9
+   ],
+   [
+    3279.46,
+    1658.37
+   ],
+   [
+    3280.43,
+    1597.85
+   ],
+   [
+    3280.67,
+    1585.74
    ]
   ],
   "waist_tab_left": [
@@ -339,7 +411,7 @@
  ],
  "assumed": [
   "overall scale from ONE constraint (front opening 28 in, size 40R); widths and lengths otherwise follow the stylised figure",
-  "pocket panel sizes and positions (from Figure 8.1); only their zipper lengths are specified (6 1/2 in breast, 4 3/4 in sleeve)",
+  "chest pocket (measured on Figures 8.1 and 8.4, see POCKET in make-fdu.js): a zip welt slanted 30 degrees toward the front zipper, 1.3 figure in high with vertical ends, the zipper tape 6 1/2 in long (spec) in its middle, the bag below it ending 14.75 figure in below the collar tips (the figure draws it 2 in deeper; the ES patch zone is below it), its outer edge joining the sleeve seam; the pocket is drawn symmetric about the nametag centre; sleeve pocket size (the spec gives only the 4 3/4 in zipper)",
   "command patch size and simplified art",
   "ES patch zone size",
   "scarf is optional: its own asset (garment-cap-command-scarf), anchored bottom_center to this suit's collar_apex",

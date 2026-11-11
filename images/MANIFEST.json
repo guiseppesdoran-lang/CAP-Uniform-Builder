@@ -16642,65 +16642,65 @@
    "id": "garment-flight-jacket-blue",
    "path": "garments/garment-flight-jacket-blue.svg",
    "category": "garments",
-   "w_in": 55.8,
-   "h_in": 32.975,
+   "w_in": 47.6933,
+   "h_in": 37.9121,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 6.1.7 says the blue flight jacket is \"similar to the MA-1 or CWU-45/P or -36/P flight jackets in design and construction\" (Figure 6.6 shows it: navy, orange lining, gold zipper, knit collar/waist/cuffs, left sleeve pocket). The MIL-J-8279G size Medium dimensions of the MA-1 are carried over: an ASSUMPTION that the blue jacket is cut to the same finished measurements.",
+   "basis": "THE BODY IS THE CFDU'S (owner, 2026-11-10: \"jacket should be same size as the fdu\"): shoulder points, sleeves, cuff line and chest patch positions are the suit's (flight-body.js: CAPR 39-1 Figure 8.1 scaled so the front zipper is 28 in), so the same body is the same size in both; the jacket is the suit's upper body cut off at the waist with knit collar, waistband and cuffs. CAPR 39-1 6.1.7 says the blue flight jacket is \"similar to the MA-1 or CWU-45/P or -36/P flight jackets in design and construction\" (Figure 6.6: navy, orange lining, gold zipper, knit collar/waist/cuffs, left sleeve pocket); the MA-1 details are carried over: back length 22 1/2 in, flap 7 1/2 x 2 3/8 in, sleeve pocket 5 3/4 x 3 1/4 in (MIL-J-8279G size Medium, an ASSUMPTION for the blue jacket). The MIL-J chest 26, bottom 23 1/2 and sleeve inseam 16 3/8 in are not used. Collar and knit heights are estimates.",
    "anchors": {
     "top_center": [
-     2790,
+     2384.67,
      0
     ],
     "bottom_center": [
-     2790,
-     3297.5
+     2384.67,
+     3791.21
     ],
     "center": [
-     2790,
-     1648.75
+     2384.67,
+     1895.6
     ],
     "left_edge": [
      0,
-     1648.75
+     1895.6
     ],
     "right_edge": [
-     5580,
-     1648.75
+     4769.33,
+     1895.6
     ],
     "zipper_min_closed": [
-     2790,
+     2384.67,
      1645
     ],
     "centerline_top": [
-     2790,
+     2384.67,
      90
     ],
     "zip_top": [
-     2790,
+     2384.67,
      550
     ],
     "hem_center": [
-     2790,
+     2384.67,
      2740
     ],
     "name_tape_center": [
-     3440,
-     970
+     2962.67,
+     973.7
     ],
     "command_patch_center": [
-     2140,
-     970
+     1806.67,
+     973.7
     ],
     "es_patch_center": [
-     2140,
-     1304.5
+     1806.67,
+     1308.2
     ],
     "flag_left_center": [
-     5140,
+     4345.67,
      240
     ],
     "loop_square_right_center": [
-     440,
+     423.67,
      315
     ]
    },
@@ -16731,65 +16731,65 @@
    "id": "garment-flight-jacket-green",
    "path": "garments/garment-flight-jacket-green.svg",
    "category": "garments",
-   "w_in": 55.8,
-   "h_in": 32.975,
-   "size_source": "regulation",
-   "basis": "Medium: back length 22 1/2, 1/2 chest 26, 1/2 bottom 23 1/2, sleeve inseam 16 3/8 in; flap 7 1/2 x 2 3/8 in; cigarette pocket 5 3/4 x 3 1/4 in. Not given by the spec and therefore ESTIMATED: collar and knit heights, armhole depth, shoulder width, sleeve girth, flap lean, patch positions on the chest. Shape follows CAPR 39-1 Figure 8.3.",
+   "w_in": 47.6933,
+   "h_in": 37.9121,
+   "size_source": "estimated",
+   "basis": "THE BODY IS THE FDU'S (owner, 2026-11-10: \"jacket should be same size as the fdu\"): shoulder points, sleeves, cuff line and chest patch positions are the suit's (flight-body.js: CAPR 39-1 Figure 8.1 scaled so the front zipper is 28 in), so the same body is the same size in both; the jacket is the suit's upper body cut off at the waist with knit collar, waistband and cuffs. From MIL-J-8279G size Medium: back length 22 1/2 in, flap 7 1/2 x 2 3/8 in, cigarette pocket 5 3/4 x 3 1/4 in. Not used: 1/2 chest 26, 1/2 bottom 23 1/2, sleeve inseam 16 3/8 in (the suit's body is 21 in across the chest; the table drew the jacket a third wider with sleeves 5 in shorter). Estimated: collar and knit heights, flap lean and position. Shape follows CAPR 39-1 Figure 8.3.",
    "anchors": {
     "top_center": [
-     2790,
+     2384.67,
      0
     ],
     "bottom_center": [
-     2790,
-     3297.5
+     2384.67,
+     3791.21
     ],
     "center": [
-     2790,
-     1648.75
+     2384.67,
+     1895.6
     ],
     "left_edge": [
      0,
-     1648.75
+     1895.6
     ],
     "right_edge": [
-     5580,
-     1648.75
+     4769.33,
+     1895.6
     ],
     "zipper_min_closed": [
-     2790,
+     2384.67,
      1645
     ],
     "centerline_top": [
-     2790,
+     2384.67,
      90
     ],
     "zip_top": [
-     2790,
+     2384.67,
      550
     ],
     "hem_center": [
-     2790,
+     2384.67,
      2740
     ],
     "name_tape_center": [
-     3440,
-     970
+     2962.67,
+     973.7
     ],
     "command_patch_center": [
-     2140,
-     970
+     1806.67,
+     973.7
     ],
     "es_patch_center": [
-     2140,
-     1304.5
+     1806.67,
+     1308.2
     ],
     "flag_left_center": [
-     5140,
+     4345.67,
      240
     ],
     "loop_square_right_center": [
-     440,
+     423.67,
      315
     ]
    },
