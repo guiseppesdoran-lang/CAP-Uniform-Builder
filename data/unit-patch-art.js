@@ -45,6 +45,7 @@
     {"charter":"SWR-TX-154","patchId":"unit_swr_tx_154","label":"SWR-TX-154","echelon":"squadron","kind":"unit","w":3,"h":3.205,"asset":"patch-swr-tx-154","img":"patches/patch-swr-tx-154/patch-swr-tx-154.png"},
     {"charter":"SWR-TX-376","patchId":"unit_swr_tx_376","label":"SWR-TX-376","echelon":"squadron","kind":"unit","w":3,"h":3.912,"asset":"patch-swr-tx-376","img":"patches/patch-swr-tx-376/patch-swr-tx-376.png"},
     {"charter":"SWR-TX-388","patchId":"unit_swr_tx_388","label":"SWR-TX-388","echelon":"squadron","kind":"unit","w":3,"h":3.361,"asset":"patch-swr-tx-388","img":"patches/patch-swr-tx-388/patch-swr-tx-388.png"},
+    {"charter":null,"patchId":"hawk_mountain_ranger_school_patch","label":"Hawk Mountain Ranger School","echelon":"activity","kind":"activity","w":3,"h":3.176,"asset":"patch-hawk-mountain-ranger-school","img":"patches/patch-hawk-mountain-ranger-school/patch-hawk-mountain-ranger-school.png"},
     {"charter":null,"patchId":"ncsa_mots_patch","label":"Medical Orientation & Training School","echelon":"activity","kind":"activity","w":3,"h":3.05,"asset":"patch-ncsa-mots","img":"patches/patch-ncsa-mots/patch-ncsa-mots.png"},
     {"charter":null,"patchId":"ncsa_national_geospatial_academy_patch","label":"National Geospatial Academy","echelon":"activity","kind":"activity","w":3,"h":3.384,"asset":"patch-ncsa-national-geospatial-academy","img":"patches/patch-ncsa-national-geospatial-academy/patch-ncsa-national-geospatial-academy.png"}
   ];

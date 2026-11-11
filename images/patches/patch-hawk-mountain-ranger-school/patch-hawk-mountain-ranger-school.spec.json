@@ -1,0 +1,60 @@
+{
+ "asset_id": "patch-hawk-mountain-ranger-school",
+ "label": "Hawk Mountain Ranger School",
+ "kind": "activity",
+ "echelon": "activity",
+ "file": "patch-hawk-mountain-ranger-school.png",
+ "width_in": 3,
+ "height_in": 3.176,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   317.611
+  ],
+  "center": [
+   150,
+   158.805
+  ],
+  "left_edge": [
+   0,
+   158.805
+  ],
+  "right_edge": [
+   300,
+   158.805
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/hmrs_activity_patch/67cca1_6ac559beb6f54e759272bfa85a311d35~mv2.gif",
+ "artwork": {
+  "format": "gif -> png via sips (palette decoded to RGBA, pixels unchanged)",
+  "source_px": [
+   494,
+   523
+  ],
+  "trimmed": false,
+  "px": [
+   494,
+   523
+  ],
+  "bytes": 23156,
+  "source_bytes": 9731,
+  "source_sha256": "2b06c3203ba5169268f4b6629f3259e338ff084e67ae08b0014138454925d8cf",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Hawk Mountain Ranger School, published by Hawk Mountain Ranger School, the Pennsylvania Wing activity site (capranger.org; footer: Pennsylvania Wing Civil Air Patrol) (page https://www.capranger.org/; file address https://static.wixstatic.com/media/67cca1_6ac559beb6f54e759272bfa85a311d35~mv2.gif); fetched 2026-11-10 and kept in assets/refs/patches-official/hmrs_activity_patch/. Shipped as given: palette GIF converted to PNG with sips, pixels unchanged; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

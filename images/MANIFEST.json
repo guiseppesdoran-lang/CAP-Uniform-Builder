@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1741,
+ "count": 1742,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -77103,6 +77103,40 @@
     "right_edge": [
      325,
      165.32
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-hawk-mountain-ranger-school",
+   "path": "patches/patch-hawk-mountain-ranger-school/patch-hawk-mountain-ranger-school.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.176,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     317.611
+    ],
+    "center": [
+     150,
+     158.805
+    ],
+    "left_edge": [
+     0,
+     158.805
+    ],
+    "right_edge": [
+     300,
+     158.805
     ]
    },
    "landmarks": []

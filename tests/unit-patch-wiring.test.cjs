@@ -212,7 +212,7 @@ test('the member report import maps the report\'s charter to the patch through t
   ev(`State.unitPatchCharter = ''`);
 });
 
-test('the seven other Northeast Region wings and Georgia Group I are offered like the other official emblems, and the Hawk Mountain Ranger School patch is not offered anywhere', () => {
+test('the seven other Northeast Region wings, Georgia Group I and the Hawk Mountain Ranger School are offered like the other official emblems', () => {
   for(const st of ['ME', 'MA', 'NH', 'NJ', 'PA', 'RI', 'VT']){
     const id = `unit_ner_${st.toLowerCase()}_001`;
     assert.equal(real(`getUnitPatchIdForCharter('NER-${st}-001')`), id);
@@ -225,13 +225,13 @@ test('the seven other Northeast Region wings and Georgia Group I are offered lik
   assert.equal(real(`PATCH_META.unit_ser_ga_118.unitEchelon`), 'group');
   assert.equal(real(`PATCH_META.unit_ser_ga_118.echelon`), undefined);
   assert.equal(real(`PATCH_META.unit_ser_ga_118.sizeIn.w`), 3);
-  // The school's own patch design is turned down: no catalog entry, no unit row, no picture in the tree (the nine Ranger tabs are separate and stay).
-  assert.equal(real(`PATCH_META.hawk_mountain_ranger_school_patch`), undefined);
-  assert.equal(real(`NCSA_PATCH_IDS.has('hawk_mountain_ranger_school_patch')`), false);
-  assert.equal(real(`patchList.includes('hawk_mountain_ranger_school_patch')`), false);
-  assert.ok(!real(`CAPUBUnitPatchArt`).some(r => /hawk/i.test(`${r.asset} ${r.patchId} ${r.label}`)), 'no row of the unit patch data');
-  assert.ok(!Object.keys(real(`CAPUBPatchArt`)).concat(Object.values(real(`CAPUBPatchArt`)).map(r => r.asset || '')).some(k => /^patch-hawk-mountain-ranger-school$|hawk_mountain_ranger_school/.test(k)), 'no row of the patch art data');
-  assert.ok(!fs.existsSync(path.join(__dirname, '..', 'images', 'patches', 'patch-hawk-mountain-ranger-school')), 'no picture under images/');
+  // The school's patch is an activity patch like the NCSA schools': its own PNG as given, in the patch list, not a unit emblem.
+  assert.equal(real(`PATCH_META.hawk_mountain_ranger_school_patch.kind`), 'activity');
+  assert.match(real(`PATCH_META.hawk_mountain_ranger_school_patch.img`), /^patches\/patch-hawk-mountain-ranger-school\/patch-hawk-mountain-ranger-school\.png$/);
+  assert.deepEqual(real(`PATCH_META.hawk_mountain_ranger_school_patch.sizeIn`), { w: 3, h: 3.176 });
+  assert.equal(real(`NCSA_PATCH_IDS.has('hawk_mountain_ranger_school_patch')`), true);
+  assert.equal(real(`patchList.includes('hawk_mountain_ranger_school_patch')`), true);
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'patches', 'patch-hawk-mountain-ranger-school', 'patch-hawk-mountain-ranger-school.png')), 'its picture is under images/');
 });
 
 test('the patches present today: the New York Wing and Northeast Region emblems are rows, TN-185 behaves as before', () => {

@@ -1377,6 +1377,7 @@
     "patch-georgia-wing": "patches/patch-georgia-wing/patch-georgia-wing.png",
     "patch-glr-il-189": "patches/patch-glr-il-189/patch-glr-il-189.png",
     "patch-glr-in-002": "patches/patch-glr-in-002/patch-glr-in-002.png",
+    "patch-hawk-mountain-ranger-school": "patches/patch-hawk-mountain-ranger-school/patch-hawk-mountain-ranger-school.png",
     "patch-honor-guard": "patches/patch-honor-guard/patch-honor-guard.svg",
     "patch-honor-guard-academy": "patches/patch-honor-guard-academy/patch-honor-guard-academy.svg",
     "patch-iowa-wing": "patches/patch-iowa-wing/patch-iowa-wing.png",
@@ -1743,7 +1744,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "29e5fbaf22", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "6f5d4d2f4e", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "29e5fbaf22"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "6f5d4d2f4e"; }
 })(typeof self !== 'undefined' ? self : this);
