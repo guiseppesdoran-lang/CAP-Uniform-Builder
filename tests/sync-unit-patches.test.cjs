@@ -95,22 +95,20 @@ test('official artwork as a catalog patch: a spec whose file is a PNG gives a da
   assert.ok(p.copy.includes('patch-ranger-tab-ranger') && p.copy.includes('patch-national-blue-beret'), 'the PNG assets are copied');
 });
 
-test('activity patches (kind activity, no charter) get rows with charter null, after the charter rows; a catalog patch is not one, and a spec on the skip list (the Hawk Mountain Ranger School patch, which is not offered) is left out', () => {
+test('activity patches (kind activity, no charter) get rows with charter null, after the charter rows; a catalog patch is not one, and a spec on the skip list is left out', () => {
   const root = fixture({
     'patch-ncsa-mots': Object.assign({ label: 'Medical Orientation & Training School', kind: 'activity', echelon: 'activity', file: 'patch-ncsa-mots.png' }, size),
     'patch-ncsa-geo': Object.assign({ label: 'Geospatial Academy', kind: 'activity', echelon: 'activity', file: 'patch-ncsa-geo.png' }, size),
     'patch-nesa': Object.assign({ label: 'NESA', kind: 'activity', file: 'patch-nesa.png' }, size),
     'patch-mar-dc-026': Object.assign({ charter: 'MAR-DC-026', file: 'patch-mar-dc-026.png' }, size),
-    'patch-pcr-ca-110': Object.assign({ charter: 'PCR-CA-110', echelon: 'squadron' }, size),
-    'patch-hawk-mountain-ranger-school': Object.assign({ label: 'Hawk Mountain Ranger School', kind: 'activity', echelon: 'activity', file: 'patch-hawk-mountain-ranger-school.png' }, size)
+    'patch-pcr-ca-110': Object.assign({ charter: 'PCR-CA-110', echelon: 'squadron' }, size)
   });
   const p = withArt(root, () => sync.plan());
   assert.deepEqual(p.units.map(r => r.patchId), ['unit_mar_dc_026', 'ncsa_geo_patch', 'ncsa_mots_patch']);
   const mots = p.units.find(r => r.patchId === 'ncsa_mots_patch');
   assert.deepEqual(mots, { charter: null, patchId: 'ncsa_mots_patch', label: 'Medical Orientation & Training School', echelon: 'activity', kind: 'activity', w: 3, h: 3.2, asset: 'patch-ncsa-mots', img: 'patches/patch-ncsa-mots/patch-ncsa-mots.png' });
   assert.match(p.warnings.join('\n'), /patch-pcr-ca-110: left out/);
-  assert.match(p.warnings.join('\n'), /patch-hawk-mountain-ranger-school: left out/);
-  assert.ok(p.copy.includes('patch-ncsa-mots') && !p.copy.includes('patch-pcr-ca-110') && !p.copy.includes('patch-hawk-mountain-ranger-school'));
+  assert.ok(p.copy.includes('patch-ncsa-mots') && !p.copy.includes('patch-pcr-ca-110'));
   const m = { exports: {} };
   new Function('module', 'self', sync.unitText(p.units))(m, undefined);
   assert.deepEqual(m.exports, p.units);

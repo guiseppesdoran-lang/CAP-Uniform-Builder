@@ -22,7 +22,7 @@
 // `kind: "activity"` and no charter (an NCSA activity patch) gets a row too, charter null, kind "activity", patchId <name>_patch.
 // The art is the SVG, or, for official digital artwork ingested as given, the PNG the spec's `file` names (copied byte for byte by
 // scripts/sync-artwork.cjs; tests/no-raster.test.cjs allows a PNG only where the spec's data_source says it is official artwork as given).
-// A spec's own charter beats the default list below. patch-pcr-ca-110 and patch-hawk-mountain-ranger-school are left out (UNIT_SKIP).
+// A spec's own charter beats the default list below. patch-pcr-ca-110 is left out (UNIT_SKIP).
 // A few emblems made before the specs carried a charter have theirs in UNIT_SPEC_DEFAULTS below; a spec's own value wins.
 // Idempotent. The master stamps index.html afterwards; this script never touches it.
 'use strict';
@@ -102,7 +102,7 @@ function artFileOf(dir, asset, s){
 }
 
 // Specs the sync leaves out although they carry a charter, with the reason.
-const UNIT_SKIP = { 'patch-pcr-ca-110': 'its SVG fails the art validator', 'patch-hawk-mountain-ranger-school': 'the design is turned down, a different patch is wanted' };
+const UNIT_SKIP = { 'patch-pcr-ca-110': 'its SVG fails the art validator' };
 
 // Rows for every spec of the art tree that has a charter, or is an activity patch (`kind: "activity"`, no charter) that no catalog id maps to,
 // charter rows sorted by charter, then the activity rows by id. A spec's own charter beats the default list, so the New York Wing's official
