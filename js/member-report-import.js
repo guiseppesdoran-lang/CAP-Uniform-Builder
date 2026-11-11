@@ -1314,7 +1314,7 @@ function getCommandServiceRibbonFromDutyAssignments(text){
 function getImportedCommandPinId(text, status){
   if(status === 'current'){
     const rows = typeof capubExtractCommanderDutyWindows === 'function' && typeof capubCurrentDutySection === 'function'
-      ? capubExtractCommanderDutyWindows(capubCurrentDutySection(text)).filter(row => !row.end) : [];
+      ? capubExtractCommanderDutyWindows(capubCurrentDutySection(text)).filter(row => !row.end || row.end > new Date()) : [];
     if(rows.some(row => row.echelon === 'GROUP')) return 'group_commander_badge';
   }
   return 'squadron_commander_badge';
