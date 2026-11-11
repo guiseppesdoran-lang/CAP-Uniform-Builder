@@ -42,8 +42,8 @@
   233.5
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.971,
-  "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
+  "silhouette_iou_approx": 0.915,
+  "note": "bbox-normalised 96x96 mask IoU vs the product photo (check-asset.js); the shield outline is the shared Fig A7-4 outline (the Emergency Services badge's), so an IoU below the old photo-averaged shape is expected"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.25 x 1.351 in to 1 x 1.081 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.25 (A4b) from 1 x 1.081 in to 1.25 x 1.351 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. The shield outline is the one shared outline of every shield-shaped specialty-track badge (enamel/shield.js, CAPR 39-1 Figure A7-4, the Emergency Services badge's), fitted to this badge's own box; the emblem and level device are drawn from the product photo. Rescaled uniformly x1.25 (A4b) from 1 x 1.081 in to 1.25 x 1.351 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

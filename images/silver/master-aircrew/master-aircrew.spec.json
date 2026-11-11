@@ -79,7 +79,7 @@
   68
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.883,
+  "silhouette_iou_approx": 0.891,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
  "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
