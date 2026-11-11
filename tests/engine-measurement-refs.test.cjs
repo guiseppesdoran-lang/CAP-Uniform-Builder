@@ -133,7 +133,12 @@ test('every callout the engine draws on every build of the standard matrix names
 // The pill's text for a callout, as laid out.
 const textOf = d => (d.callout ? (d.callout.caption && d.callout.caption.lines || []) : (d.label && d.label.caption || [])).join(' ').replace(/\s+/g, ' ');
 // A label like '4.95 in' (an inch value the sheet draws that is not a whole eighth), as a number.
-const inches = label => Number(label.replace(/\s*in$/, ''));
+// A length reads as a decimal, or as eighths when it is within 0.01 in of one (compose.js inchesLabel): "0.64 in", "⅝ in", "1½ in".
+const EIGHTHS = { '⅛': 0.125, '¼': 0.25, '⅜': 0.375, '½': 0.5, '⅝': 0.625, '¾': 0.75, '⅞': 0.875 };
+const inches = label => {
+  const t = label.replace(/\s*in$/, ''), m = /^(\d*)([⅛¼⅜½⅝¾⅞])?$/.exec(t);
+  return m ? Number(m[1] || 0) + (m[2] ? EIGHTHS[m[2]] : 0) : Number(t);
+};
 
 test('OCP: the flag and AUX each carry a centered line across the Velcro with the paragraph, and the distance from the shoulder seam to their top without one, whether or not a patch is worn (7.1.1.4.1.1, 7.1.1.4.2)', async () => {
   for(const build of [named('ocp-male-senior-Capt'), variant('ocp-female-senior-Capt', { patchRefs: [UNIT, WING] })]){
@@ -169,7 +174,7 @@ test('OCP: the gap from the flag to the unit patch and from AUX to the HHQ patch
     const m = ms.find(x => x.ref === ref && x.opts.caption.startsWith(key));
     assert.ok(patch && m, `${key}: the gap measure`);
     assert.ok(Math.abs(m.from.y - (d.y + d.h)) < 1e-6 && Math.abs(m.to.y - patch.y) < 1e-6, `${key}: from the ${key}'s bottom to the patch's top`);
-    assert.ok(Math.abs(inches(m.label) - (patch.y - d.y - d.h)) < 0.006, `${key}: ${m.label}`);
+    assert.ok(Math.abs(inches(m.label) - (patch.y - d.y - d.h)) < 0.01, `${key}: ${m.label}`);   // the label is the gap to the nearest 1/8 in when it is within 0.01 of it
   }
   // The unit patch also keeps its centered line (7.1.1.4.1.2).
   assert.ok(ms.some(m => m.ref === '7.1.1.4.1.2' && m.label === 'centered'), 'the unit patch is centered under the flag');

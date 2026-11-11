@@ -50,13 +50,26 @@ test('the name mapping of the patches that do not follow their id', () => {
 });
 
 test('the engine draws a vector patch as an asset at its spec\'s size, centred in the Velcro, in the flat and the edge view', async () => {
+  // Whichever patch is still an SVG (the official artwork taken as given is a picture, the next test); none left is fine.
+  const vec = Object.entries(art).find(([id, r]) => /\.svg$/.test(r.img) && /_patch$/.test(id) && !/^(national_staff|tn)/.test(id));
+  if(!vec) return;
+  const [id, row] = vec, ocpId = id.replace(/_patch$/, '_ocp_patch');
+  const s = await P.composeUniform(hb('ocp', [{ id: ocpId, kind: 'general', slot: 'L_SHOULDER', label: id }]), store);
+  const layer = flat(s, ocpId);
+  assert.equal(layer.type, 'asset');
+  assert.equal(layer.id, row.asset);
+  assert.ok(Math.abs(layer.w - row.w) < 1e-6 && Math.abs(layer.h - row.h) < 1e-6);
+  assert.ok(s.layers.some(l => l.key === `patch:${ocpId}:L_SHOULDER:edge` && l.type === 'asset'));
+  assert.ok(!s.layers.some(l => l.type === 'raster'));
+});
+
+test('official artwork taken as given (a PNG) is drawn as a picture at its spec\'s size, centred in the Velcro, in the flat and the edge view', async () => {
   const s = await P.composeUniform(hb('ocp', [{ id: 'cos_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'COS' }]), store);
   const layer = flat(s, 'cos_ocp_patch');
-  assert.equal(layer.type, 'asset');
-  assert.equal(layer.id, 'patch-cadet-officer-school');
+  assert.equal(layer.type, 'raster');
+  assert.match(layer.href, /patches\/patch-cadet-officer-school\/patch-cadet-officer-school\.png$/);
   assert.ok(Math.abs(layer.w - art.cos_patch.w) < 1e-6 && Math.abs(layer.h - art.cos_patch.h) < 1e-6);
-  assert.ok(s.layers.some(l => l.key === 'patch:cos_ocp_patch:L_SHOULDER:edge' && l.type === 'asset'));
-  assert.ok(!s.layers.some(l => l.type === 'raster'));
+  assert.ok(s.layers.some(l => l.key === 'patch:cos_ocp_patch:L_SHOULDER:edge' && l.type === 'raster'));
 });
 
 test('a tall patch is held to the 3 1/2 in the Velcro allows, keeping its proportions', async () => {

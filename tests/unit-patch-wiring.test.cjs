@@ -7,6 +7,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const vm = require('node:vm');
+const fs = require('node:fs');
+const path = require('node:path');
 const { loadPageScripts } = require('./helpers/page-scripts.cjs');
 const sync = require('../scripts/sync-patches.cjs');
 
@@ -210,14 +212,37 @@ test('the member report import maps the report\'s charter to the patch through t
   ev(`State.unitPatchCharter = ''`);
 });
 
+test('the seven other Northeast Region wings and Georgia Group I are offered like the other official emblems, and the Hawk Mountain Ranger School patch is not offered anywhere', () => {
+  for(const st of ['ME', 'MA', 'NH', 'NJ', 'PA', 'RI', 'VT']){
+    const id = `unit_ner_${st.toLowerCase()}_001`;
+    assert.equal(real(`getUnitPatchIdForCharter('NER-${st}-001')`), id);
+    assert.equal(real(`PATCH_META.${id}.echelon`), 'wing', id);
+    assert.match(real(`PATCH_META.${id}.img`), /\.png$/, id);
+    assert.ok(real(`PATCH_META.${id}.sizeIn.w`) === 3.25, `${id}: 3.25 in wide`);
+  }
+  // The unit data's GROUP 1 of the Georgia Wing is SER-GA-118; the emblem is a group's: the ABU, the OCP and the CFU, not a wing's sleeve place.
+  assert.equal(real(`getUnitPatchIdForCharter('SER-GA-118')`), 'unit_ser_ga_118');
+  assert.equal(real(`PATCH_META.unit_ser_ga_118.unitEchelon`), 'group');
+  assert.equal(real(`PATCH_META.unit_ser_ga_118.echelon`), undefined);
+  assert.equal(real(`PATCH_META.unit_ser_ga_118.sizeIn.w`), 3);
+  // The school's own patch design is turned down: no catalog entry, no unit row, no picture in the tree (the nine Ranger tabs are separate and stay).
+  assert.equal(real(`PATCH_META.hawk_mountain_ranger_school_patch`), undefined);
+  assert.equal(real(`NCSA_PATCH_IDS.has('hawk_mountain_ranger_school_patch')`), false);
+  assert.equal(real(`patchList.includes('hawk_mountain_ranger_school_patch')`), false);
+  assert.ok(!real(`CAPUBUnitPatchArt`).some(r => /hawk/i.test(`${r.asset} ${r.patchId} ${r.label}`)), 'no row of the unit patch data');
+  assert.ok(!Object.keys(real(`CAPUBPatchArt`)).concat(Object.values(real(`CAPUBPatchArt`)).map(r => r.asset || '')).some(k => /^patch-hawk-mountain-ranger-school$|hawk_mountain_ranger_school/.test(k)), 'no row of the patch art data');
+  assert.ok(!fs.existsSync(path.join(__dirname, '..', 'images', 'patches', 'patch-hawk-mountain-ranger-school')), 'no picture under images/');
+});
+
 test('the patches present today: the New York Wing and Northeast Region emblems are rows, TN-185 behaves as before', () => {
   assert.equal(real(`getUnitPatchIdForCharter('NER-NY-001')`), 'unit_ner_ny_001');
   assert.equal(real(`getUnitPatchIdForCharter('NER-NER-001')`), 'unit_ner_ner_001');
   assert.equal(real(`getUnitHhqPatchId('NER-NY-001')`), 'unit_ner_ner_001');
   assert.equal(real(`getUnitHhqPatchId('NER-NY-390')`), 'unit_ner_ny_001');
   assert.equal(real(`PATCH_META.unit_ner_ny_001.img`), 'patches/patch-new-york-wing-brand-tools/patch-new-york-wing-brand-tools.png', 'the official artwork wins the charter over the older geometric patch');
-  assert.equal(real(`PATCH_META.unit_ner_ner_001.img`), 'patches/patch-northeast-region/patch-northeast-region.svg');
-  assert.equal(real(`PATCH_META.nywg_patch.img`), 'patches/patch-new-york-wing/patch-new-york-wing.svg', 'the general patch list keeps the geometric wing patch');
+  assert.equal(real(`PATCH_META.unit_ner_ner_001.img`), 'patches/patch-northeast-region/patch-northeast-region.png');
+  assert.equal(real(`PATCH_META.nywg_patch.img`), 'patches/patch-new-york-wing/patch-new-york-wing.png', 'the general patch list has the official wing artwork too');
+  assert.deepEqual(real(`PATCH_META.nywg_patch.sizeIn`), { w: 3.25, h: 3.182 });
   assert.equal(real(`getUnitPatchIdForCharter('SER-TN-185')`), 'tn185_ocp_patch');
   assert.equal(real(`getUnitPatchIdForCharter('TN-185')`), 'tn185_ocp_patch');
   assert.equal(real(`getUnitPatchIdForCharter('SER-TN-330')`), 'tn330_ocp_patch');
@@ -226,7 +251,7 @@ test('the patches present today: the New York Wing and Northeast Region emblems 
     State.unitPatchCharter = 'NER-NY-001'; const a = CAPUBUniformView.buildFromState().patches.map(p => [p.id, p.kind, p.slot, p.asset]);
     State.unitPatchCharter = 'SER-TN-185'; const b = CAPUBUniformView.buildFromState().patches.map(p => [p.id, p.kind, p.slot, p.asset]);
     State.unitPatchCharter = ''; return { a, b }; })()`);
-  assert.deepEqual(p.a, [['unit_ner_ny_001', 'unit', 'R_SHOULDER', null], ['unit_ner_ner_001', 'hhq', 'L_SHOULDER', 'patch-northeast-region']]);
+  assert.deepEqual(p.a, [['unit_ner_ny_001', 'unit', 'R_SHOULDER', null], ['unit_ner_ner_001', 'hhq', 'L_SHOULDER', null]]);
   assert.deepEqual(p.b, [['tn185_ocp_patch', 'unit', 'R_SHOULDER', 'patch-music-city-composite-squadron']]);
 });
 

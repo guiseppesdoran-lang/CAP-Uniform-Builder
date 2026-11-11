@@ -28,13 +28,13 @@ const patch = (charter, kind, slot) => {
 const build = (uniform, patches) => HARNESS.makeBuild({ uniform, gender: 'male', membership: 'senior', rank: 'Lt Col', name: { first: 'Pat', last: 'Doe', show: true }, patches });
 const flat = (scene, id) => scene.layers.filter(l => l.role === 'patch' && l.key.startsWith(`patch:${id}:`) && !/:edge$/.test(l.key));
 
-test('the OCP draws the unit patch on the right sleeve and the higher headquarters patch on the left, each its own vector', async () => {
+test('the OCP draws the unit patch on the right sleeve and the higher headquarters patch on the left, the wing and the region each its own picture', async () => {
   const s = await P.composeUniform(build('ocp', [patch('NER-NY-001', 'unit', 'R_SHOULDER'), patch('NER-NER-001', 'hhq', 'L_SHOULDER')]), store);
   const [wing] = flat(s, 'unit_ner_ny_001'), [region] = flat(s, 'unit_ner_ner_001');
   assert.equal(wing.type, 'raster', 'the official New York Wing artwork is a picture');
   assert.match(wing.href, /patch-new-york-wing-brand-tools\.png$/);
-  assert.equal(region.type, 'asset');
-  assert.equal(region.id, 'patch-northeast-region');
+  assert.equal(region.type, 'raster', 'the official Northeast Region artwork is a picture too');
+  assert.match(region.href, /patch-northeast-region\.png$/);
   const ny = byCharter('NER-NY-001');
   assert.ok(Math.abs(wing.w - ny.w) < 1e-6 && Math.abs(wing.h - ny.h) < 1e-6, `drawn at the spec's ${ny.w} x ${ny.h} in, not stretched to the Velcro: ${wing.w} x ${wing.h}`);
   assert.ok(wing.x !== region.x, 'two sleeves');

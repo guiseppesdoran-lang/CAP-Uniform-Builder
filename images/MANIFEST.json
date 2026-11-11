@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1733,
+ "count": 1741,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -48185,14 +48185,14 @@
   },
   {
    "id": "patch-ranger-tab-expert-ranger-black",
-   "path": "patches/patch-ranger-tab-expert-ranger-black/patch-ranger-tab-expert-ranger-black.svg",
+   "path": "patches/patch-ranger-tab-expert-ranger-black/patch-ranger-tab-expert-ranger-black.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48200,19 +48200,19 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
@@ -48253,14 +48253,14 @@
   },
   {
    "id": "patch-ranger-tab-instructor",
-   "path": "patches/patch-ranger-tab-instructor/patch-ranger-tab-instructor.svg",
+   "path": "patches/patch-ranger-tab-instructor/patch-ranger-tab-instructor.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48268,33 +48268,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-advanced-ranger",
-   "path": "patches/patch-ranger-tab-advanced-ranger/patch-ranger-tab-advanced-ranger.svg",
+   "path": "patches/patch-ranger-tab-advanced-ranger/patch-ranger-tab-advanced-ranger.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48302,33 +48302,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-senior-medic",
-   "path": "patches/patch-ranger-tab-senior-medic/patch-ranger-tab-senior-medic.svg",
+   "path": "patches/patch-ranger-tab-senior-medic/patch-ranger-tab-senior-medic.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48336,33 +48336,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-ranger",
-   "path": "patches/patch-ranger-tab-ranger/patch-ranger-tab-ranger.svg",
+   "path": "patches/patch-ranger-tab-ranger/patch-ranger-tab-ranger.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48370,33 +48370,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-medic-red",
-   "path": "patches/patch-ranger-tab-medic-red/patch-ranger-tab-medic-red.svg",
+   "path": "patches/patch-ranger-tab-medic-red/patch-ranger-tab-medic-red.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48404,33 +48404,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-medic-gray",
-   "path": "patches/patch-ranger-tab-medic-gray/patch-ranger-tab-medic-gray.svg",
+   "path": "patches/patch-ranger-tab-medic-gray/patch-ranger-tab-medic-gray.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48438,33 +48438,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-ranger-2nd-class",
-   "path": "patches/patch-ranger-tab-ranger-2nd-class/patch-ranger-tab-ranger-2nd-class.svg",
+   "path": "patches/patch-ranger-tab-ranger-2nd-class/patch-ranger-tab-ranger-2nd-class.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48472,33 +48472,33 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-ranger-tab-ranger-3rd-class",
-   "path": "patches/patch-ranger-tab-ranger-3rd-class/patch-ranger-tab-ranger-3rd-class.svg",
+   "path": "patches/patch-ranger-tab-ranger-3rd-class/patch-ranger-tab-ranger-3rd-class.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 2.7,
-   "h_in": 0.44,
+   "h_in": 0.425,
    "size_source": "measured",
-   "basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+   "basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
    "anchors": {
     "top_center": [
      135,
@@ -48506,19 +48506,19 @@
     ],
     "bottom_center": [
      135,
-     44
+     42.504
     ],
     "center": [
      135,
-     22
+     21.252
     ],
     "left_edge": [
      0,
-     22
+     21.252
     ],
     "right_edge": [
      270,
-     22
+     21.252
     ]
    },
    "landmarks": []
@@ -54269,14 +54269,14 @@
   },
   {
    "id": "patch-cadet-officer-school",
-   "path": "patches/patch-cadet-officer-school/patch-cadet-officer-school.svg",
+   "path": "patches/patch-cadet-officer-school/patch-cadet-officer-school.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 2.573,
+   "h_in": 3,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      150,
@@ -54284,19 +54284,19 @@
     ],
     "bottom_center": [
      150,
-     257.297
+     300
     ],
     "center": [
      150,
-     128.649
+     150
     ],
     "left_edge": [
      0,
-     128.649
+     150
     ],
     "right_edge": [
      300,
-     128.649
+     150
     ]
    },
    "landmarks": []
@@ -54337,14 +54337,14 @@
   },
   {
    "id": "patch-check-pilot",
-   "path": "patches/patch-check-pilot/patch-check-pilot.svg",
+   "path": "patches/patch-check-pilot/patch-check-pilot.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 2.997,
+   "h_in": 2.94,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      150,
@@ -54352,19 +54352,19 @@
     ],
     "bottom_center": [
      150,
-     299.666
+     293.97
     ],
     "center": [
      150,
-     149.833
+     146.985
     ],
     "left_edge": [
      0,
-     149.833
+     146.985
     ],
     "right_edge": [
      300,
-     149.833
+     146.985
     ]
    },
    "landmarks": []
@@ -54473,14 +54473,14 @@
   },
   {
    "id": "patch-communications",
-   "path": "patches/patch-communications/patch-communications.svg",
+   "path": "patches/patch-communications/patch-communications.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.427,
+   "h_in": 3.156,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      150,
@@ -54488,19 +54488,19 @@
     ],
     "bottom_center": [
      150,
-     342.692
+     315.633
     ],
     "center": [
      150,
-     171.346
+     157.816
     ],
     "left_edge": [
      0,
-     171.346
+     157.816
     ],
     "right_edge": [
      300,
-     171.346
+     157.816
     ]
    },
    "landmarks": []
@@ -54643,14 +54643,14 @@
   },
   {
    "id": "patch-national-blue-beret",
-   "path": "patches/patch-national-blue-beret/patch-national-blue-beret.svg",
+   "path": "patches/patch-national-blue-beret/patch-national-blue-beret.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.242,
+   "h_in": 3.201,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      150,
@@ -54658,19 +54658,19 @@
     ],
     "bottom_center": [
      150,
-     324.231
+     320.095
     ],
     "center": [
      150,
-     162.115
+     160.048
     ],
     "left_edge": [
      0,
-     162.115
+     160.048
     ],
     "right_edge": [
      300,
-     162.115
+     160.048
     ]
    },
    "landmarks": []
@@ -54711,14 +54711,14 @@
   },
   {
    "id": "patch-nesa",
-   "path": "patches/patch-nesa/patch-nesa.svg",
+   "path": "patches/patch-nesa/patch-nesa.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 3.856,
+   "h_in": 3.646,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3.5 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      175,
@@ -54726,33 +54726,33 @@
     ],
     "bottom_center": [
      175,
-     385.631
+     364.583
     ],
     "center": [
      175,
-     192.815
+     182.292
     ],
     "left_edge": [
      0,
-     192.815
+     182.292
     ],
     "right_edge": [
      350,
-     192.815
+     182.292
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-new-york-wing",
-   "path": "patches/patch-new-york-wing/patch-new-york-wing.svg",
+   "path": "patches/patch-new-york-wing/patch-new-york-wing.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.25,
-   "h_in": 3.095,
+   "h_in": 3.182,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3.25 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3.25 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      162.5,
@@ -54760,33 +54760,33 @@
     ],
     "bottom_center": [
      162.5,
-     309.465
+     318.172
     ],
     "center": [
      162.5,
-     154.732
+     159.086
     ],
     "left_edge": [
      0,
-     154.732
+     159.086
     ],
     "right_edge": [
      325,
-     154.732
+     159.086
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-northeast-region",
-   "path": "patches/patch-northeast-region/patch-northeast-region.svg",
+   "path": "patches/patch-northeast-region/patch-northeast-region.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.178,
+   "h_in": 3.083,
    "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+   "basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
    "anchors": {
     "top_center": [
      150,
@@ -54794,19 +54794,19 @@
     ],
     "bottom_center": [
      150,
-     317.768
+     308.333
     ],
     "center": [
      150,
-     158.884
+     154.167
     ],
     "left_edge": [
      0,
-     158.884
+     154.167
     ],
     "right_edge": [
      300,
-     158.884
+     154.167
     ]
    },
    "landmarks": []
@@ -76831,6 +76831,278 @@
     "right_edge": [
      300,
      172.911
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-maine-wing",
+   "path": "patches/patch-maine-wing/patch-maine-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.25,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     325
+    ],
+    "center": [
+     162.5,
+     162.5
+    ],
+    "left_edge": [
+     0,
+     162.5
+    ],
+    "right_edge": [
+     325,
+     162.5
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-massachusetts-wing",
+   "path": "patches/patch-massachusetts-wing/patch-massachusetts-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.299,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     329.949
+    ],
+    "center": [
+     162.5,
+     164.975
+    ],
+    "left_edge": [
+     0,
+     164.975
+    ],
+    "right_edge": [
+     325,
+     164.975
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-new-hampshire-wing",
+   "path": "patches/patch-new-hampshire-wing/patch-new-hampshire-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.193,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     319.312
+    ],
+    "center": [
+     162.5,
+     159.656
+    ],
+    "left_edge": [
+     0,
+     159.656
+    ],
+    "right_edge": [
+     325,
+     159.656
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-new-jersey-wing",
+   "path": "patches/patch-new-jersey-wing/patch-new-jersey-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.203,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     320.298
+    ],
+    "center": [
+     162.5,
+     160.149
+    ],
+    "left_edge": [
+     0,
+     160.149
+    ],
+    "right_edge": [
+     325,
+     160.149
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-pennsylvania-wing",
+   "path": "patches/patch-pennsylvania-wing/patch-pennsylvania-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.25,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     325
+    ],
+    "center": [
+     162.5,
+     162.5
+    ],
+    "left_edge": [
+     0,
+     162.5
+    ],
+    "right_edge": [
+     325,
+     162.5
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-rhode-island-wing",
+   "path": "patches/patch-rhode-island-wing/patch-rhode-island-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.25,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     325
+    ],
+    "center": [
+     162.5,
+     162.5
+    ],
+    "left_edge": [
+     0,
+     162.5
+    ],
+    "right_edge": [
+     325,
+     162.5
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-ser-ga-118-group",
+   "path": "patches/patch-ser-ga-118-group/patch-ser-ga-118-group.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.035,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     303.529
+    ],
+    "center": [
+     150,
+     151.764
+    ],
+    "left_edge": [
+     0,
+     151.764
+    ],
+    "right_edge": [
+     300,
+     151.764
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-vermont-wing",
+   "path": "patches/patch-vermont-wing/patch-vermont-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.306,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     330.64
+    ],
+    "center": [
+     162.5,
+     165.32
+    ],
+    "left_edge": [
+     0,
+     165.32
+    ],
+    "right_edge": [
+     325,
+     165.32
     ]
    },
    "landmarks": []

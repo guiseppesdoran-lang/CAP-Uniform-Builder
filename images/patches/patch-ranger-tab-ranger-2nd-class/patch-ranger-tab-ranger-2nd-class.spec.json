@@ -1,21 +1,12 @@
 {
  "asset_id": "patch-ranger-tab-ranger-2nd-class",
- "name": "Hawk Mountain Ranger qualification tab: Ranger 2nd Class",
- "size_in": {
-  "w": 2.7,
-  "h": 0.44
- },
+ "label": "Hawk Mountain Ranger tab: Ranger 2nd Class",
+ "file": "patch-ranger-tab-ranger-2nd-class.png",
  "width_in": 2.7,
- "height_in": 0.44,
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  270,
-  44
- ],
+ "height_in": 0.425,
+ "unit": "1 user unit = 0.01 in",
  "size_source": "measured",
- "size_basis": "width 2.7 in: the tab as worn above the CAP tape on the HMRS 2021 uniform poster (assets/refs/capranger/hmrs-uniform-poster-2021.png), the tape taken as 5 x 1 in (417 x 83 px, 83.2 px/in; base-art/ranger-tab-poster-measure.js): red field 230 x 28 px = 2.76 x 0.34 in, light frame 240 px = 2.89 in wide (0.06 in ends and top; the bottom frame is hidden against the tape); 2.7 in is the master's reading of the same poster (field 226 x 26 px over a 418 x 82 px tape), kept as this pass reads within 7% of it; height 0.44 in = 2.7 / 6.134, the mean width / height of the ten tabs in CAPR 39-1 Figure A8-2 (6.00-6.27; capranger.org's tab graphic: 6.43), and the poster's field height 0.337 in over the figure's field share of the height (0.769) gives 0.438 in. The drawing is the LIVE13-ART 2 one (proportions and lettering measured on Figure A8-2 at a 5 in design width) scaled uniformly by 0.54",
+ "size_basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
  "citation": "CAPR 39-1 Figure A8-2 (Hawk Mountain Ranger Qualification Tabs); 7.1.1.4.2.1 (OCP: in lieu of the higher-headquarters patch on the left sleeve pocket, whose loop field is 4 x 6.5 in); 9.2.4 (HMRS graduates, one tab). Ethan, LIVE13-ART 3: \"the ranger tabs arent authorized on ABUs!!! only on OCPs unfortunately in lieu of an hhq patch\"",
  "anchors": {
   "top_center": [
@@ -24,19 +15,19 @@
   ],
   "bottom_center": [
    135,
-   44
+   42.504
   ],
   "center": [
    135,
-   22
+   21.252
   ],
   "left_edge": [
    0,
-   22
+   21.252
   ],
   "right_edge": [
    270,
-   22
+   21.252
   ]
  },
  "anchors_note": "the five anchors the NCSA patches carry: the engine centres the tab (center) on garment-ocp-coat-abu-cut's hhq_patch_left_center, the left sleeve pocket's loop field, as it does those patches; OCP only, one tab, in lieu of the HHQ patch (7.1.1.4.2.1). LIVE13-ART 2's placement above_cap_tape and anchor seat_on_cap_tape (ABU / CFU wear above the CAP tape) are withdrawn",
@@ -46,49 +37,27 @@
   "group": "Hawk Mountain Ranger tabs",
   "grade": "ranger-2nd-class",
   "colour": "full",
-  "one_only": true,
-  "frame_in": {
-   "top_bottom": 0.051,
-   "ends": 0.065,
-   "outline": 0.011
-  },
-  "corner_radius_in": 0.032,
-  "cap_height_in": 0.233,
-  "lettering_width_in": 2.367,
-  "lettering_condense": 0.953,
-  "lettering": "RANGER 2ND CLASS",
-  "colours": {
-   "field": "#6e6e6e",
-   "frame": "#fbfcfb",
-   "letters": "#faf9f9",
-   "outline": "#8f8f8e"
-  }
+  "one_only": true
  },
- "source": {
-  "figure": "assets/refs/capranger/fig-a8-2-ranger-tabs-crop.png (CAPR 39-1 Fig A8-2, PDF p.184 at 2x)",
-  "graphics": "assets/refs/capranger/tab-1..4.png (capranger.org)",
-  "poster": "assets/refs/capranger/hmrs-uniform-poster-2021.png (capranger.org, 2021 HMRS uniform poster: the tab worn)",
-  "measure": "artwork-samples/assets/ranger-tabs-measure.js (proportions, figure); artwork-samples/base-art/ranger-tab-poster-measure.js (size, poster)",
-  "measured": [
-   "width (poster, against the CAP tape)",
-   "width / height (figure)",
-   "frame widths",
-   "cap height",
-   "lettering width per tab",
-   "field, frame, lettering and outline colours (figure)"
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/patch-ranger-tab-ranger-2nd-class/67cca1_9a9cd5baf5b34712aa52bed0c7a9f224~mv2.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   559,
+   88
   ],
-  "estimated": [
-   "the poster's CAP tape as 5 x 1 in (the inch scale; the coat sheets' tape width is itself estimated)",
-   "corner radius 0.06 in",
-   "word space 0.3 cap",
-   "superscript size 0.55 cap, its gap, its rule and the double space after it",
-   "typeface: Helvetica Neue Condensed Bold, the condensed sans the figure draws, scaled across to its width"
-  ]
+  "trimmed": false,
+  "px": [
+   559,
+   88
+  ],
+  "bytes": 6470,
+  "source_bytes": 6470,
+  "source_sha256": "69c7ed56404c123e73b62d48e15e594978a8cb5f708f4791da64912710973f95",
+  "ground": "transparent"
  },
- "generator": "artwork-samples/assets/build-ranger-tabs.js",
- "grade_note": "LIVE13-ART 2; resized to the OCP sleeve pocket, LIVE13-ART 3",
- "fit": {
-  "method": "n/a",
-  "score": null
- }
+ "provenance": "Official digital artwork of Hawk Mountain Ranger tab: Ranger 2nd Class, published by Hawk Mountain Ranger School, the Pennsylvania Wing activity site (capranger.org; footer: Pennsylvania Wing Civil Air Patrol) (page https://www.capranger.org/cap-ranger-grades; file address https://static.wixstatic.com/media/67cca1_9a9cd5baf5b34712aa52bed0c7a9f224~mv2.png); fetched 2026-11-10 and kept in assets/refs/patches-official/patch-ranger-tab-ranger-2nd-class/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
 }

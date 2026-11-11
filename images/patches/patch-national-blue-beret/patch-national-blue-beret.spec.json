@@ -1,10 +1,12 @@
 {
  "asset_id": "patch-national-blue-beret",
+ "label": "National Blue Beret",
+ "file": "patch-national-blue-beret.png",
  "width_in": 3,
- "height_in": 3.242,
+ "height_in": 3.201,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "size_basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
  "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
  "anchors": {
   "top_center": [
@@ -13,34 +15,44 @@
   ],
   "bottom_center": [
    150,
-   324.231
+   320.095
   ],
   "center": [
    150,
-   162.115
+   160.048
   ],
   "left_edge": [
    0,
-   162.115
+   160.048
   ],
   "right_edge": [
    300,
-   162.115
+   160.048
   ]
  },
  "dimensions": {
   "family": "patch",
   "colour": "full"
  },
- "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches (out) + national-blue-beret",
- "reference": "refs-png/national-blue-beret.png",
- "source_bbox_user_units": [
-  41,
-  18,
-  561,
-  580
- ],
- "fit_score": null,
- "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/nbb_patch/8_BALL_WORKtrans_552301A132975.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   2105,
+   2246
+  ],
+  "trimmed": false,
+  "px": [
+   2105,
+   2246
+  ],
+  "bytes": 882428,
+  "source_bytes": 882428,
+  "source_sha256": "0a416c458e40e361951566ebf0ed7cfe32ef2abf08c67d8665fea1c6a6a42578",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of National Blue Beret, published by National Blue Beret activity site, hosted by CAP (nbb.cap.gov); the home-page artwork (page https://nbb.cap.gov/; file address https://nbb.cap.gov/media/websites/8_BALL_WORKtrans_552301A132975.png); fetched 2026-11-10 and kept in assets/refs/patches-official/nbb_patch/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
 }

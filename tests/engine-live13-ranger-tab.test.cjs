@@ -25,7 +25,8 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.
 const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a.toFixed(4)} vs ${b.toFixed(4)}`);
 const SHEET = { ocp: 'garment-ocp-coat-abu-cut', abu: 'garment-abu-coat', corporate_field: 'garment-cfu-coat' };
 const TAB = id => ({ id, title: id, href: '', aspect: 6.13, slot: 'CAP_TAPE', kind: 'general' });
-const EXPERT = 'patch-ranger-tab-expert-ranger-black', MEDIC = 'patch-ranger-tab-medic-red';
+// The red Expert Ranger tab is still the sheet's SVG (the school's own graphics have no such tab); the others are the school's PNG pictures.
+const EXPERT = 'patch-ranger-tab-expert-ranger-red', MEDIC = 'patch-ranger-tab-medic-red', PICTURE = 'patch-ranger-tab-ranger';
 const GRADES = ['ranger-3rd-class', 'ranger-2nd-class', 'ranger', 'advanced-ranger', 'expert-ranger-black', 'expert-ranger-red', 'medic-gray', 'medic-red', 'senior-medic', 'instructor'];
 
 const base = name => JSON.parse(JSON.stringify(R.matrix().builds.find(x => x.name === name).build));
@@ -81,6 +82,25 @@ test('one tab only: with two selected the first is drawn and a note says so', as
   assert.ok(scene.notes.some(n => /Only one CAP Ranger tab is worn/.test(n)));
 });
 
+test('a tab that is the school\'s own picture is drawn as a picture at its spec\'s size on the HHQ place, flat and edge-on, and the page hands it over so', async () => {
+  const { context } = loadPageScripts();
+  const meta = JSON.parse(JSON.stringify(vm.runInContext(`PATCH_META[${JSON.stringify(PICTURE)}]`, context)));
+  assert.match(meta.img, /^patches\/patch-ranger-tab-ranger\/patch-ranger-tab-ranger\.png$/);
+  assert.equal(meta.asset, null);
+  assert.deepEqual(meta.sizeIn, { w: 2.7, h: 0.425 });
+  const b = base('ocp-male-cadet-C-Maj');
+  b.patches = [WING, Object.assign(TAB(PICTURE), { href: '/images/' + meta.img, size: meta.sizeIn, aspect: meta.sizeIn.w / meta.sizeIn.h })];
+  const scene = await compose(b);
+  const tab = scene.layers.find(l => l.key === `patch:${PICTURE}:L_SHOULDER:0`);
+  assert.ok(tab && tab.type === 'raster', 'a picture on the sleeve');
+  near(tab.w, 2.7, 1e-6, 'drawn at its spec width'); near(tab.h, 0.425, 1e-6, 'height');
+  const sheet = await store.load(SHEET.ocp);
+  const hhqc = core.anchor(sheet, 'hhq_patch_left_center');
+  if(hhqc){ near(tab.x + tab.w / 2, hhqc.x, 1e-6, 'on the sheet\'s HHQ centre'); near(tab.y + tab.h / 2, hhqc.y, 1e-6, 'on the sheet\'s HHQ centre'); }
+  assert.ok(scene.layers.some(l => l.key === `patch:${PICTURE}:L_SHOULDER:edge` && l.type === 'raster'), 'seen edge-on on the coat too');
+  assert.ok(!scene.layers.some(l => /nywg_patch/.test(l.key || '')), 'the HHQ patch is not drawn');
+});
+
 test('the patch picker: the ten tabs are a group "Hawk Mountain Ranger tabs", offered on the OCP only, one at a time, dropped from an ABU or CFU selection; the shopping list prices them by order form', () => {
   const { context } = loadPageScripts();
   const ev = src => { const v = vm.runInContext(src, context); return v && typeof v === 'object' ? JSON.parse(JSON.stringify(v)) : v; };
@@ -95,6 +115,9 @@ test('the patch picker: the ten tabs are a group "Hawk Mountain Ranger tabs", of
     assert.equal(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)}, 'ocp', 'cadet')`), true, `${id} on the OCP`);
     for(const u of ['abu', 'corporate_field', 'blues_a', 'blues_b', 'flight_suit', 'cfdu']) assert.equal(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)}, ${JSON.stringify(u)}, 'cadet')`), false, `${id} not on ${u}`);
   }
+  // The school's own file of the tab with id patch-ranger-tab-medic-gray is green: it is called so, and no tab is called gray.
+  assert.equal(ev(`PATCH_META['patch-ranger-tab-medic-gray'].label`), 'CAP Ranger tab: Medic (green)');
+  assert.ok(!GRADES.some(g => /gray/i.test(ev(`PATCH_META[${JSON.stringify('patch-ranger-tab-' + g)}].label`))), 'no tab is labelled gray');
   ev(`State.patchSelections = { ${JSON.stringify(EXPERT)}: { checked: true }, ${JSON.stringify(MEDIC)}: { checked: true }, nesa_patch: { checked: true } }; State.patches = [${JSON.stringify(EXPERT)}, 'nesa_patch', ${JSON.stringify(MEDIC)}]; capubKeepOneRangerTab(${JSON.stringify(MEDIC)})`);
   assert.deepEqual(ev('State.patches'), ['nesa_patch', MEDIC]);
   assert.equal(ev(`State.patchSelections[${JSON.stringify(EXPERT)}].checked`), false);

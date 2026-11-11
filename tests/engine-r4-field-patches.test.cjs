@@ -67,7 +67,7 @@ test('one patch is one size on every uniform: the size its spec states, on the O
     const unit = flat(cfu, 'TN-330_ocp_patch');
     assert.ok(unit && Math.abs(unit.h - 3.5) < 0.005, `${gender} CFU: the unit patch is held to 3 1/2 in`);
     const wing = flat(cfu, 'nywg_patch');
-    assert.ok(wing && Math.abs(wing.w - 3.25) < 0.005 && Math.abs(wing.h - 3.095) < 0.005, `${gender} CFU: the wing patch at its spec's size`);
+    assert.ok(wing && Math.abs(wing.w - 3.25) < 0.005 && Math.abs(wing.h - 3.182) < 0.005, `${gender} CFU: the wing patch at its spec's size`);
     const abu = await compose(hb('abu', gender, 'senior', 'Capt', { patchRefs: [UNIT, WING] }));
     assert.ok(Math.abs(flat(abu, 'nywg_patch').w - wing.w) < 0.005, `${gender} ABU: the wing patch is the same size`);
     // Hung from the 1/2 in line, as before: the top edge is 1/2 in below the shoulder seam (the unchanged rule).

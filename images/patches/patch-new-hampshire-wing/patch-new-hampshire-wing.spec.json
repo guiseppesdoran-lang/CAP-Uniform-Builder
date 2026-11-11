@@ -1,0 +1,62 @@
+{
+ "asset_id": "patch-new-hampshire-wing",
+ "label": "New Hampshire Wing",
+ "charter": "NER-NH-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-new-hampshire-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.193,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   319.312
+  ],
+  "center": [
+   162.5,
+   159.656
+  ],
+  "left_edge": [
+   0,
+   159.656
+  ],
+  "right_edge": [
+   325,
+   159.656
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/ner_wing_nh/NHWGNextGenFinalfloat_9FBBB490339EA.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   800,
+   786
+  ],
+  "trimmed": false,
+  "px": [
+   800,
+   786
+  ],
+  "bytes": 73929,
+  "source_bytes": 73929,
+  "source_sha256": "8b2ff2ceee1d326232a5c955a4b63f3a465322da81c9c5d46074f49ce429c28a",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of New Hampshire Wing, published by New Hampshire Wing (nhwg.cap.gov), home-page emblem (page https://nhwg.cap.gov/; file address https://nhwg.cap.gov/media/websites/NHWGNextGenFinalfloat_9FBBB490339EA.png); fetched 2026-11-10 and kept in assets/refs/patches-official/ner_wing_nh/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured.",
+ "unit_name": "New Hampshire Wing"
+}
