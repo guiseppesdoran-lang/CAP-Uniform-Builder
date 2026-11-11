@@ -22065,7 +22065,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157). Flight Officer sleeves, measured on the vendor pictures (sleeve length = 100 %): CAP capitals FO 18.4-31.6 %, TFO 15.7-26.9 %, SFO 20.0-30.9 % from the top edge, word 0.90 / 1.01 / 0.98 in wide; white lace stripes 5.3 % (0.20 in) thick, the lowest one ending 10.7 % (FO), 8.1 % (TFO), 8.7 % (SFO) above the hem, stripes every 12.0 % (TFO) / 11.0 % (SFO); in the three pictures the lace and the lettering are the same white (the family CAP tone is used for both).",
    "anchors": {
     "top_center": [
      98.3,
@@ -22089,7 +22089,7 @@
     ],
     "cap_center": [
      98.3,
-     88.0943820224719
+     96.08
     ]
    },
    "landmarks": [],
@@ -22271,7 +22271,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157). Flight Officer sleeves, measured on the vendor pictures (sleeve length = 100 %): CAP capitals FO 18.4-31.6 %, TFO 15.7-26.9 %, SFO 20.0-30.9 % from the top edge, word 0.90 / 1.01 / 0.98 in wide; white lace stripes 5.3 % (0.20 in) thick, the lowest one ending 10.7 % (FO), 8.1 % (TFO), 8.7 % (SFO) above the hem, stripes every 12.0 % (TFO) / 11.0 % (SFO); in the three pictures the lace and the lettering are the same white (the family CAP tone is used for both).",
    "anchors": {
     "top_center": [
      98.3,
@@ -22295,7 +22295,7 @@
     ],
     "cap_center": [
      98.3,
-     88.0943820224719
+     97.8
     ]
    },
    "landmarks": [],
@@ -22309,7 +22309,7 @@
    "w_in": 1.966,
    "h_in": 3.843,
    "size_source": "estimated",
-   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157).",
+   "basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157). Flight Officer sleeves, measured on the vendor pictures (sleeve length = 100 %): CAP capitals FO 18.4-31.6 %, TFO 15.7-26.9 %, SFO 20.0-30.9 % from the top edge, word 0.90 / 1.01 / 0.98 in wide; white lace stripes 5.3 % (0.20 in) thick, the lowest one ending 10.7 % (FO), 8.1 % (TFO), 8.7 % (SFO) above the hem, stripes every 12.0 % (TFO) / 11.0 % (SFO); in the three pictures the lace and the lettering are the same white (the family CAP tone is used for both).",
    "anchors": {
     "top_center": [
      98.3,
@@ -22333,7 +22333,7 @@
     ],
     "cap_center": [
      98.3,
-     88.0943820224719
+     81.86
     ]
    },
    "landmarks": [],
@@ -34010,7 +34010,7 @@
    "w_in": 4.75,
    "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
    "anchors": {
     "top_center": [
      237.5,
@@ -34072,7 +34072,7 @@
    "w_in": 4.75,
    "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
    "anchors": {
     "top_center": [
      237.5,
@@ -36140,7 +36140,7 @@
    "w_in": 4.75,
    "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
    "anchors": {
     "top_center": [
      237.5,
@@ -36202,7 +36202,7 @@
    "w_in": 4.75,
    "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
    "anchors": {
     "top_center": [
      237.5,
@@ -36264,7 +36264,7 @@
    "w_in": 4.75,
    "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
    "anchors": {
     "top_center": [
      237.5,
@@ -36326,7 +36326,7 @@
    "w_in": 4.75,
    "h_in": 2.5,
    "size_source": "measured",
-   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+   "basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
    "anchors": {
     "top_center": [
      237.5,

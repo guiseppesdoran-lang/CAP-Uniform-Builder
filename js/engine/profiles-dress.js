@@ -889,14 +889,17 @@
   // Brigadier and Major General sleeves draw their stars as `star1` (and `star2`) with no `grade` group. A sleeve placed with its grade hidden (the strips on the shoulder, the
   // mirrored view from above, where the grade is drawn separately) hides all of them, so no star of the art's own shows beside the drawn one (LIVE11-1, Ethan on the
   // aviator shirt with a Major General: "theres 4 stars here"). Everything else a sleeve draws is cloth, the lace edge and the CAP lettering.
-  // The flight officers' gray sleeves draw their own stripes (`stripe1` to `stripe3` and their outline `lace__edge`, Fig A5-1) near the outer end; the grade is drawn separately, a bar where the lieutenants'
-  // is (Doran: "supposed to be placed the same as Lieutenant insignia"; LIVE13 E125), so the stripes are left off with it, or a small vertical rectangle shows at the board's outer end.
+  // The flight officers' gray sleeves draw their own white lace stripes (`stripe1` to `stripe3` and their outline `lace__edge`, Fig A5-1) near the outer end: one, two or three stripes
+  // are the grade (the vendor's sleeves; S1), so on them nothing of the art is left off and no bar is drawn (epauletGradeId). The bar a flight officer wears (LIVE13 E125) belongs on the
+  // collar, the cap and the 2 x 2 in square.
   const SLEEVE_GRADE_GROUPS = ['grade', 'star1', 'star2', 'star3', 'stripe1', 'stripe2', 'stripe3', 'lace__edge'];
+  const sleeveHide = g => g && g.category === 'flight-officer' ? SLEEVE_GRADE_GROUPS.filter(n => !/^(stripe\d|lace__edge)$/.test(n)) : SLEEVE_GRADE_GROUPS;
 
   // The grade a member wears on an epaulet sleeve as its own asset (miniature metal for cadet
   // officers, embroidered thread for officers), or null.
   function epauletGradeId(g){
     if(!g.key) return null;
+    if(g.category === 'flight-officer') return null;
     if(g.category === 'cadet-officer') return G.cadetOfficerInsignia(g, 'metal-miniature');
     if(isOfficerLike(g)) return G.seniorOfficerInsignia(g, 'thread');
     return null;
@@ -1115,7 +1118,7 @@
         len = s1 - s0; T = v1 - v0; half = len / 2; scale = len / s.h;
         c = { x: f.outer.x + f.axis.x * (s0 + half) + f.normal.x * (v0 + T / 2), y: f.outer.y + f.axis.y * (s0 + half) + f.normal.y * (v0 + T / 2) };
         end = { x: f.outer.x + f.normal.x * (v0 + T / 2), y: f.outer.y + f.normal.y * (v0 + T / 2) };
-        await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, clip: cover, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
+        await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: sleeveHide(g), clip: cover, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
           title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
         const edges = coverEdges(cover, f);
         // the strap's lower edge, outer end first: the shoulder cord comes out from under it (B7)
@@ -1140,7 +1143,7 @@
         // The strip moves across the strap, not straight down, by the amount that lowers it dy: its outer end stays flush with the strap's along the axis.
         const m = Math.abs(f.normal.y) > 0.2 ? dy / f.normal.y : 0;
         c = { x: c0.x + f.normal.x * m, y: c0.y + f.normal.y * m };
-        await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
+        await ctx.place(sleeveId, { pieceAnchor: 'center', at: c, rotate: f.deg, scale, scaleX: T / (s.w * scale), hideGroups: sleeveHide(g), z: Z.epauletLayer, role: 'epaulet', key: 'epaulet:' + side,
           title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
         stripShading(ctx, side, c, f.axis, f.normal, len, T, 0, Z.epauletLayer + 0.6);
         end = { x: c.x - f.axis.x * half, y: c.y - f.axis.y * half };
@@ -1198,7 +1201,7 @@
         c = { x: c.x + f.axis.x * shift, y: c.y };
       }
       const mirror = mirrorsEagle(g, side) && eagle && ins && ctx.has(eagle);
-      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror || !ins ? { hideGroups: SLEEVE_GRADE_GROUPS } : {}));
+      await ctx.place(sleeveId, Object.assign({ pieceAnchor: 'center', at: c, rotate: f.deg, z: Z.epauletTop, role: 'epaulet-top', key: `epaulet-top:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} epaulet, seen from above` }, mirror || !ins ? { hideGroups: sleeveHide(g) } : {}));
       // A sleeve whose art draws no grade of its own (the flight officers': cloth, lace edge and CAP only) gets the grade drawn on its top view too, at the seat the strip's grade has
       // (5/8 in from the outer end, centred across the strap), so the view above the shoulder carries what the strip on it does (LIVE11-3).
       if(!ins && gradeId0 && ctx.has(gradeId0)){
@@ -1752,7 +1755,7 @@
       markBandEdge(ctx, side, f, Math.max(EDGE_ON_THICK, thick));   // the strap (0.4 in) or the sleeve over it, whichever hangs lower; the cord comes out from under it (B7)
       if(sleeve){
         const k = length / sleeve.h;
-        await ctx.place(sleeveId, { pieceAnchor: 'center', at: mid, rotate: f.deg, scale: k, scaleX: thick / (sleeve.w * k), hideGroups: SLEEVE_GRADE_GROUPS, z: Z.epauletLayer + 0.3, role: 'epaulet', key: 'epaulet:' + side,
+        await ctx.place(sleeveId, { pieceAnchor: 'center', at: mid, rotate: f.deg, scale: k, scaleX: thick / (sleeve.w * k), hideGroups: sleeveHide(g), z: Z.epauletLayer + 0.3, role: 'epaulet', key: 'epaulet:' + side,
           title: `${side === 'right' ? 'Right' : 'Left'} epaulet, edge-on` });
       }
       const along = sleeve ? Math.min(1, length / sleeve.h) : 1;

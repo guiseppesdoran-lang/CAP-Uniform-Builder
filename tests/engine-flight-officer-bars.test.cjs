@@ -18,7 +18,8 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.
 const UNIFORMS = ['blues_a', 'blues_b', 'mess_dress', 'semi_formal_usaf', 'aviator', 'abu', 'ocp', 'corporate_field', 'flight_suit', 'corporate_flight_suit'];
 const FO = ['FO', 'TFO', 'SFO'];
 const mk = (uniform, gender, rank) => HARNESS.makeBuild({ uniform, gender, membership: 'senior', rank, name: { first: 'Pat', last: 'Doran', show: true }, opt: { headgear: 'auto' } });
-const gradeLayers = scene => scene.layers.filter(l => l.role === 'grade' && !/^grade:top-/.test(l.key || ''));
+// The epaulet sleeve carries a flight officer's grade as its own white lace stripes (the vendor's sleeves), so no bar is drawn on a sleeve (grade:edge-*, grade:top-*): the bar stays on the collar, the cap and the 2 x 2 in square.
+const gradeLayers = scene => scene.layers.filter(l => l.role === 'grade' && !/^grade:(top|edge)-/.test(l.key || ''));
 
 test('a flight officer grade has the 2d Lt bar\'s turn, centre and across-the-strap size on every uniform and both cuts (E125)', async () => {
   let n = 0;
@@ -37,15 +38,16 @@ test('a flight officer grade has the 2d Lt bar\'s turn, centre and across-the-st
       });
     }
   }
-  assert.ok(n > 100, `${n} pieces compared`);
+  assert.ok(n > 60, `${n} pieces compared`);
 });
 
-test('the flight officers\' sleeve is drawn without its own stripes on the shoulder views, since the grade is drawn separately where the lieutenant\'s is (no rectangle at the board\'s outer end)', async () => {
+test('the flight officers\' sleeve is drawn with its own white lace stripes on the shoulder views and no bar beside them (the grade of a flight officer\'s epaulet sleeve)', async () => {
   for(const uniform of ['blues_a', 'blues_b', 'aviator']) for(const rank of FO){
     const scene = await P.composeUniform(mk(uniform, 'male', rank), store);
     const sleeves = scene.layers.filter(l => /^rank-epaulet-sleeve-gray-/.test(l.id || ''));
     assert.ok(sleeves.length >= 4, `${uniform} ${rank}: the sleeve is drawn edge-on and from above on both shoulders`);
-    for(const l of sleeves) assert.ok((l.hideGroups || []).includes('stripe1'), `${uniform} ${rank} ${l.key}: the art's own stripes are left off`);
+    for(const l of sleeves) for(const g of ['stripe1', 'stripe2', 'stripe3', 'lace__edge']) assert.ok(!(l.hideGroups || []).includes(g), `${uniform} ${rank} ${l.key}: the art's own stripes are drawn (${g})`);
+    assert.equal(scene.layers.filter(l => /^grade:(top|edge)-/.test(l.key || '')).length, 0, `${uniform} ${rank}: no bar is drawn on the sleeve`);
   }
 });
 

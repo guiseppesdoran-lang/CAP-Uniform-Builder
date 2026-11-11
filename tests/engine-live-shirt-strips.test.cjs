@@ -324,13 +324,16 @@ test('Major and Brigadier General on the shirts: the strip hides the art\'s own 
   }
 });
 
-test('flight officers: the view from above carries the grade the strip carries (the sleeve art draws none) (LIVE11-3)', async () => {
+test('flight officers: the sleeve art draws the grade (its white lace stripes) on the strip and on the view from above, and no bar is drawn (LIVE11-3, S1)', async () => {
   for(const c of [CASES[0], CASES[1], OVERBLOUSE[0]]){
     for(const rank of ['FO', 'TFO', 'SFO']){
       const scene = await compose(c, 'senior', rank);
       for(const side of ['right', 'left']){
-        const top = scene.layers.find(l => l.key === `grade:top-${side}`), edge = scene.layers.find(l => l.key === `grade:edge-${side}`);
-        assert.ok(top && edge && top.id === edge.id, `${c.name} ${rank} ${side}: the grade is on the view from above and on the strip`);
+        assert.ok(!scene.layers.some(l => l.key === `grade:top-${side}` || l.key === `grade:edge-${side}`), `${c.name} ${rank} ${side}: no separate grade is drawn`);
+        for(const key of [`epaulet:${side}`, `epaulet-top:${side}`]){
+          const l = scene.layers.find(x => x.key === key);
+          assert.ok(l && !(l.hideGroups || []).some(g => /^(stripe\d|lace__edge)$/.test(g)), `${c.name} ${rank} ${key}: the stripes of the art are shown`);
+        }
       }
     }
   }

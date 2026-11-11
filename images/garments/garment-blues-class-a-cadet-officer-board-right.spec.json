@@ -13,7 +13,8 @@
   250
  ],
  "size_source": "measured",
- "size_basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, emblem and stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo.",
+ "size_basis": "Redrawn to the CAPR 39-1 Fig A5-6 proportions: 2.3 in wide (just over the 2 1/4 in three-diamond row), 4.55 in long (builder reference), 0.74 in peak, stripe colours from the Vanguard CAP0647V photo measurements; follows the figure over the photo. The emblem is 1.35 in across (59 % of the width of the board, as in the figure), centred between the stripe band and the peak.",
+ "provenance": "emblem: our own vector drawing (board/emblem-art.js) of the eagle, eight stars, CAP shield and laurel wreath, built from primitives whose places and sizes were measured on the six emblems of CAPR 39-1 Fig A5-6 (aligned and averaged); no traced outline, no raster. Board outline, stripe bands and colours measured on the Vanguard CAP0647V photo.",
  "anchors": {
   "top_center": [
    237.5,
@@ -94,6 +95,16 @@
   "grade_form_max_in": [
    2.25,
    1.25
+  ],
+  "emblem_in": [
+   1.35,
+   1.419
+  ],
+  "emblem_parts": [
+   "8 stars (4-3-1)",
+   "eagle: 11 feathers a wing, shoulder, head, chest, 3 toe slits",
+   "CAP shield: outline, triangle, 3-blade prop",
+   "laurel wreath: stem and 12 leaf pairs a branch"
   ]
  },
  "documented": [
