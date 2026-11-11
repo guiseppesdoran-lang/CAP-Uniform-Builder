@@ -56,22 +56,38 @@ function setMemberReportImportStatus(lines, type='info'){
   }
 }
 
-// The panel describes the build the import left. When the build changes afterwards (Undo, Redo, a ribbon ticked, the member type changed) the
-// panel says so at its top, once, instead of going on describing a build that is no longer there.
-let memberReportShownBuild = null;
+// The panel describes the build the import left, and the badge picker lists the badges the report authorized. When the build changes afterwards the
+// panel says so at its top, once; when Undo takes the import back (the build is the one it replaced) the panel says that and the picker drops the
+// report's list; when Redo brings it back the panel and the list return. A tick or a rank changed by hand keeps the list.
+let memberReportShown = null;   // { pre, post, authorized, row } of the last import
 function memberReportBuildSignature(){
   const ribbons = Object.entries(State.ribbonSelections || {}).filter(([, sel]) => sel && sel.checked).map(([id, sel]) => `${id}=${sel.awardValue || ''}`).sort();
   return JSON.stringify([State.membership, State.rank, State.gender, ribbons, [...(State.badges || [])].sort(), [...(State.patches || [])].sort()]);
 }
+function memberReportRememberImport(result){
+  if(memberReportShown && memberReportShown.row && memberReportShown.row.parentNode) memberReportShown.row.parentNode.removeChild(memberReportShown.row);
+  memberReportShown = { pre:result.preImport, post:memberReportBuildSignature(), authorized:result.authorized || [], row:null, state:'current' };
+}
 function markMemberReportPanelStale(){
-  if(memberReportShownBuild === null || memberReportBuildSignature() === memberReportShownBuild) return;
-  memberReportShownBuild = null;
+  if(!memberReportShown) return;
+  const shown = memberReportShown, now = memberReportBuildSignature();
+  const state = now === shown.post ? 'current' : now === shown.pre ? 'undone' : 'changed';
+  if(state === shown.state) return;
+  shown.state = state;
   const el = by('memberReportImportStatus');
-  if(!el) return;
+  if(el && shown.row && shown.row.parentNode) el.removeChild(shown.row);
+  shown.row = null;
+  const authorized = state === 'undone' ? null : shown.authorized;
+  if(State.reportAuthorizedBadgeIds !== authorized){
+    State.reportAuthorizedBadgeIds = authorized && authorized.length ? [...authorized] : (authorized ? [] : null);
+    if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
+  }
+  if(!el || state === 'current') return;
   const row = document.createElement('div');
-  row.textContent = 'The build has changed since this import, so the lines below may no longer match it.';
+  row.textContent = state === 'undone' ? 'This import has been undone; the lines below describe the report that was imported.' : 'The build has changed since this import, so the lines below may no longer match it.';
   row.style.fontWeight = '700';
   el.insertBefore(row, el.firstChild);
+  shown.row = row;
 }
 
 // The notes an import leaves, as the member reads them: one per line, no note twice, no internal id, no eServices capitals.
@@ -395,8 +411,11 @@ function importedAwardCountFromValue(value){
 
 // The clasps (or stars) that mark `count` awards, as a value suffix: '' for one award, "bronze_clasp_3"
 // for four, "silver_clasp_1_bronze_clasp_1" for seven (CAPR 39-3 6b: five bronze become one silver).
+// The picker offers at most 84 awards of a clasp or star ribbon: a longer list (15 000 rows is no member's record) is 84, which is also what the
+// engine can draw without freezing the page.
+const IMPORTED_MOST_AWARDS = 84;
 function importedAdditionalAwardValue(count, kind='clasp'){
-  const additional = Math.max(0, Math.floor(Number(count) || 1) - 1);
+  const additional = Math.max(0, Math.min(IMPORTED_MOST_AWARDS, Math.floor(Number(count) || 1)) - 1);
   const silver = Math.floor(additional / 5), bronze = additional % 5;
   return [silver ? `silver_${kind}_${silver}` : '', bronze ? `bronze_${kind}_${bronze}` : ''].filter(Boolean).join('_');
 }
@@ -1656,6 +1675,16 @@ const MEMBER_REPORT_TRAINING_KNOWN_ROWS = [
   /\bNCSA\b|National\s+Cadet\s+Special\s+Activit/i, /\bRCLS\b|Required\s+Staff\s+Training|\bRST\b|Region(?:al)?\s+Cadet\s+Leadership\s+School/i,
   /\bIACE\b|International\s+Air\s+Cadet\s+Exchange/i, /Encampment/i, /Orientation\s+Flights?/i, /Cadet\s+Special\s+Activit(?:y|ies)/i
 ];
+// Rows that belong to a table whose heading is not in the report (a heading lost in the copy): the rows are not counted without it, so the report says so.
+function memberReportMissingHeadingLines(text){
+  const t = normalizeMemberReportText(text);
+  const date = MEMBER_REPORT_DATE;
+  const lines = [];
+  if(!/\bEncampments\b/i.test(t) && new RegExp(`\\bEncampment\\b(?!\\s+Ribbon)[^\\d]{0,60}${date}`, 'i').test(t)) lines.push('Rows that look like encampments were found with no Encampments heading, so they were not counted.');
+  if(!/Specialty\s+Tracks/i.test(t) && new RegExp(`\\b[A-Z][A-Z/&-]+(?: [A-Z/&-]+)* (?:TECHNICIAN|SENIOR|MASTER) ${date}`).test(t)) lines.push('Rows that look like specialty track ratings were found with no Specialty Tracks heading, so no badge was imported from them.');
+  if(!/Cadet\s+Training/i.test(t) && new RegExp(`\\b(?:NCSA|National\\s+Cadet\\s+Special|Cadet\\s+Officers?\\s+School|Pararescue|Hawk\\s+Mountain|Civic\\s+Leadership)\\b[^\\d]{0,60}${date}`, 'i').test(t)) lines.push('Rows that look like cadet activities were found with no Cadet Training heading, so they were not counted.');
+  return lines;
+}
 function memberReportUnreadRows(text){
   const source = normalizeMemberReportText(text);
   const rows = [];
@@ -1733,7 +1762,14 @@ function parseCapMemberReport(textRaw){
   // Cadet milestone ribbons must come only from the Cadet Achievements table.
   // A milestone name elsewhere in the report (for example, attendance at a
   // "Spaatz Award Presentation") is not evidence that the member earned it.
-  const cadetAchievements = getReportSection(text, 'Cadet\\s+Achievements', 'Awards');
+  let cadetAchievements = getReportSection(text, 'Cadet\\s+Achievements', 'Awards');
+  // The heading is missing but the rows are there ("Achievement 4 - Wright Brothers 12 Jun 2021"): they are read, and the report says so.
+  const achievementRowStart = text.search(/Achievement\s+\d+\s*[-–]/i);
+  if(!cadetAchievements && achievementRowStart >= 0){
+    cadetAchievements = getReportSectionUntilAny(text.slice(achievementRowStart), 'Achievement', ['Awards', 'Promotions', 'Decorations', 'Activity\\s*\\/\\s*Service']);
+    result.notes.push('The Cadet Achievements heading was not found; its Achievement rows were read without it.');
+  }
+  result.missingHeadings = memberReportMissingHeadingLines(text);
   const achievementRows = readCadetAchievementRows(cadetAchievements);
   const maxAchievement = achievementRows.length ? Math.max(...achievementRows.map(row => row.index)) : 0;
   const achievementMap = [
@@ -1907,7 +1943,7 @@ function parseCapMemberReport(textRaw){
     const aircrew = memberReportAwardRowSays(text, searchFindRe, /Aircrew|Air\s+crew|Prop(?:eller)?\b/i);
     result.ribbons.push({
       id:'search_find_ribbon',
-      value:aircrew ? importedCountedAwardValue(searchFindCount, true) : `find_${searchFindCount}`,
+      value:aircrew ? importedCountedAwardValue(searchFindCount, true) : `find_${Math.min(searchFindCount, importedMaxAwardCount('search_find_ribbon'))}`,
       reason:`${searchFindCount} Search Find Ribbon record(s)${aircrew ? ' (aircrew)' : ''}`
     });
   }
@@ -1975,7 +2011,8 @@ function parseCapMemberReport(textRaw){
   const commandServiceRibbon = getCommandServiceRibbonFromDutyAssignments(text);
   if(commandServiceRibbon){
     result.ribbons.push(commandServiceRibbon);
-    result.notes.push(`Command Service Ribbon: ${getCommandServiceRibbonLabelForValue(commandServiceRibbon.value)}, from commander duty of 365 days or more.`);
+    const level = { earned:'Squadron level', group_bronze_star:'Group level, bronze star', wing_silver_star:'Wing level, silver star', region_gold_star:'Region level, gold star', national_two_gold_stars:'National level, two gold stars' }[commandServiceRibbon.value] || 'the level of the command';
+    result.notes.push(`Command Service Ribbon: ${level}, from commander duty of 365 days or more.`);
   }
 
   // Specialty-track badges: the Specialty Tracks table is the ONLY authority.
@@ -2116,6 +2153,11 @@ function parseCapMemberReport(textRaw){
     }
   }
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
+  for(const r of result.ribbons){
+    if(r && r.id && importedAwardCountFromValue(r.value) >= IMPORTED_MOST_AWARDS && /^(?:[a-z]+_)?(?:silver|bronze)_(?:clasp|star)|^wing_|^region_|^national_/.test(String(r.value))){
+      result.notes.push(`${getRibbonDisplayName(r.id)}: the picker offers at most ${IMPORTED_MOST_AWARDS} awards, so ${IMPORTED_MOST_AWARDS} are used.`);
+    }
+  }
   result.ribbons = applyCosStarToHighestCadetMilestone(result.ribbons, text);
   result.ribbons = keepOnlyHighestCadetMilestoneForSenior(result.ribbons, result.membership, text, result.notes);
   result.ribbons = normalizeRecruiterRibbonsForMembership(result.ribbons, result.membership);
@@ -2174,6 +2216,10 @@ function applyCapMemberReportImport(parsed){
   // capubV2LastName, "Show my name on the uniform" capubV2ShowText): the nameplates, name tapes and the polo
   // read it from State.text. An import with a name shows it.
   if(parsed.firstName || parsed.lastName){
+    if(String(parsed.firstName || '').length > 40 || String(parsed.lastName || '').length > 40){
+      parsed.notes = parsed.notes || [];
+      parsed.notes.push('The name is longer than 40 letters, so the uniform shows the first 40 of each part.');
+    }
     State.text = { ...(State.text || {}), firstName:String(parsed.firstName || '').slice(0, 40), lastName:String(parsed.lastName || '').slice(0, 40), show:true };
     const firstNameEl = by('capubV2FirstName'), lastNameEl = by('capubV2LastName'), showNameEl = by('capubV2ShowText');
     if(firstNameEl) firstNameEl.value = State.text.firstName;
@@ -2267,16 +2313,24 @@ function confirmBeforeMemberReportUpload(){
   );
 }
 
-// The headings of a member report (eServices Member Search, Printer Friendly View - Member Details). A file that has the grade row, two of
-// these headings, or one with a few dated rows is a report; anything else is not, and is not allowed to clear the member's build.
-const MEMBER_REPORT_HEADINGS = [/General\s+Information/i, /Member\s+Details/i, /Duty\s+Positions/i, /Professional\s+Development/i, /Specialty\s+Tracks/i,
-  /Cadet\s+Training/i, /Cadet\s+Achievements/i, /Encampments/i, /Decorations/i, /Activity\s*\/\s*Service\s+Ribbon/i, /Promotions/i, /Local\s+Activities/i];
+// The headings of a member report (eServices Member Search, Printer Friendly View - Member Details), in the order the report prints them. A file is
+// a report when it has the General Information row with a CAPID (five to seven digits) or at least four of these headings in that order; a memo or a
+// newsletter that happens to name two or three of them is not, and is not allowed to clear the member's build.
+const MEMBER_REPORT_HEADINGS = [/General\s+Information/i, /Duty\s+Positions/i, /Professional\s+Development/i, /Specialty\s+Tracks/i,
+  /Cadet\s+Training/i, /Encampments/i, /Orientation\s+Flights/i, /Cadet\s+Achievements/i, /\bAwards\b/i, /Promotions/i, /Decorations/i,
+  /Activity\s*\/\s*Service\s+Ribbon/i, /Local\s+Activities/i];
 function looksLikeMemberReport(text){
   const t = String(text || '').replace(/\s+/g, ' ');
   if(getCurrentProfileFromMemberReport(t)) return true;
-  const headings = MEMBER_REPORT_HEADINGS.filter(re => re.test(t)).length;
-  if(headings >= 2) return true;
-  return headings >= 1 && (t.match(/\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/g) || []).length >= 3;
+  const info = t.search(/General\s+Information/i);
+  if(info >= 0 && /\b\d{5,7}\b/.test(t.slice(info, info + 400))) return true;
+  // Headings in order: each is looked for after the one before.
+  let at = 0, inOrder = 0;
+  for(const heading of MEMBER_REPORT_HEADINGS){
+    const hit = heading.exec(t.slice(at));
+    if(hit){ inOrder++; at += hit.index + hit[0].length; }
+  }
+  return inOrder >= 4;
 }
 
 function memberReportReadAnything(parsed){
@@ -2301,7 +2355,16 @@ function memberReportHeldOffLines(parsed){
   const held = [];
   const uniform = memberReportUniformName(State.uniform);
   const patches = (parsed.patches || []).filter(id => !(State.patches || []).includes(id));
-  if(patches.length) held.push(`${memberReportNameList(patches.map(id => PATCH_META[id]?.label || id.replace(/_/g, ' ')))}: not worn on ${uniform}. Patches are worn on the field and flight uniforms; add ${patches.length > 1 ? 'them' : 'it'} under Patches there.`);
+  const rule = (window.CAPUBUniformRules && CAPUBUniformRules.getUniformRule(State.uniform)) || {};
+  if(patches.length){
+    const names = memberReportNameList(patches.map(id => PATCH_META[id]?.label || id.replace(/_/g, ' ')));
+    // Off a field or flight uniform the patches are for another uniform; on one, this uniform does not take them.
+    held.push(rule.group === 'field' ? `${names}: not worn on ${uniform}.` : `${names}: not worn on ${uniform}. Patches are worn on the field and flight uniforms; add ${patches.length > 1 ? 'them' : 'it'} under Patches there.`);
+  }
+  const ribbonsChosen = Object.values(State.ribbonSelections || {}).filter(sel => sel && sel.checked).length;
+  if(ribbonsChosen && rule.ribbons === 'none' && !rule.mini){
+    held.push(`Ribbons: not worn on ${uniform}; the ${ribbonsChosen} are kept for the uniforms that wear them${rule.refs && rule.refs.ribbons ? ` (CAPR 39-1, ${rule.refs.ribbons})` : ''}.`);
+  }
   const aviation = new Set(IMPORTED_AVIATION_BADGES.flatMap(kind => kind.ids));
   const beyond = (parsed.authorizedBadges || []).filter(id => !(parsed.badges || []).includes(id) && !aviation.has(id));
   if(beyond.length) held.push(`${memberReportNameList(beyond.map(id => getBadgeDisplayName(id)))}: only four badges are worn at a time (CAPR 39-1, 4.1.5.2.2.4); the others are listed under Authorized by member report in the badge list.`);
@@ -2335,23 +2398,35 @@ function memberReportPlainNoteLines(lines){
 
 // The lines the panel shows for a report that was applied: what was read, what is on the build, what was held off and why, what was not
 // understood, and the notes. `replaced` is true when the member had ribbons, badges or patches that the report replaced.
-function memberReportStatusLines(parsed, fileName, { replaced = false } = {}){
-  const read = [parsed.membership, parsed.gender, parsed.rank, [parsed.firstName, parsed.lastName].filter(Boolean).join(' ')].filter(Boolean);
+function memberReportStatusLines(parsed, fileName, { replaced = false, before = {} } = {}){
+  // What was read is what the build took: a grade, a name or a cut the report gave and the build did not take is not shown as read.
+  const name = [State.text && State.text.firstName, State.text && State.text.lastName].filter(Boolean).join(' ');
+  const tookName = !!(parsed.firstName || parsed.lastName) && State.text && State.text.firstName === String(parsed.firstName || '').slice(0, 40) && State.text.lastName === String(parsed.lastName || '').slice(0, 40);
+  const read = [parsed.membership && State.membership === parsed.membership ? parsed.membership : '', parsed.gender && State.gender === parsed.gender ? parsed.gender : '',
+    parsed.rank && State.rank === parsed.rank ? parsed.rank : '', tookName ? name : ''].filter(Boolean);
   const onBuild = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const ribbons = Object.values(State.ribbonSelections || {}).filter(s => s && s.checked).length;
   const lines = [
-    `Imported ${fileName}.`,
+    'Imported the report.',
     `Read: ${read.length ? read.join(', ') : 'no grade, name or member type'}.`,
     `On the build: ${onBuild(ribbons, 'ribbon', 'ribbons')}, ${onBuild((State.badges || []).length, 'badge', 'badges')}, ${onBuild((State.patches || []).length, 'patch', 'patches')}.`
   ];
   const held = memberReportHeldOffLines(parsed);
   if(held.length) lines.push({ heading: 'Held off the uniform' }, ...held.map(item => ({ item })));
   const unread = [];
-  if(!parsed.rank) unread.push('The grade was not found, so it was left as it was.');
-  if(!parsed.gender) unread.push('The gender was not found, so the cut was left as it was.');
-  if(!parsed.membership) unread.push('The member type was not found, so it was left as it was.');
+  const cut = g => g === 'female' ? "women's" : g === 'male' ? "men's" : '';
+  // Each field the report did not give, or gave in a way the build did not take, says what the build has instead.
+  if(!parsed.rank){
+    unread.push(State.rank ? `The grade was not found, so the grade on the build (${State.rank}) was kept.` : 'The grade was not found, so none is chosen.');
+  }else if(State.rank !== parsed.rank){
+    unread.push(`The grade ${parsed.rank} was read but is not one a ${State.membership || 'this'} member holds, so ${State.rank ? `the grade on the build (${State.rank}) was kept` : 'none is chosen'}.`);
+  }
+  if(!parsed.gender) unread.push(cut(State.gender) ? `The gender was not found, so the ${cut(State.gender)} cut on the build was kept.` : 'The gender was not found, so no cut is chosen.');
+  if(!parsed.membership) unread.push(State.membership ? `The member type was not found, so ${State.membership} was kept.` : 'The member type was not found, so none is chosen.');
   else if(!parsed.profileFound && parsed.gender) unread.push('The member type and gender come from words in the report, not from its first row. Check them.');
+  if(!(parsed.firstName || parsed.lastName)) unread.push(name ? 'The name was not found, so the name on the uniform was kept.' : 'The name was not found, so the uniform has no name.');
   if(!parsed.joinDateFound) unread.push('The join date was not found, so the Red Service Ribbon is not added.');
+  unread.push(...(parsed.missingHeadings || []));
   const rows = parsed.unreadRows || [];
   unread.push(...rows.slice(0, 12).map(row => `${row}: no ribbon or badge matches this row.`));
   if(rows.length > 12) unread.push(`${rows.length - 12} more rows were not understood.`);
@@ -2365,7 +2440,7 @@ function memberReportStatusLines(parsed, fileName, { replaced = false } = {}){
 
 // A report file in, the build changed and the lines to show out. A file that is not a report, has no text or cannot be opened ends in one
 // plain sentence and leaves the build exactly as it was: nothing is cleared before the file is known to be a report with something in it.
-async function importMemberReportFile(file){
+async function importMemberReportFile(file, { isCurrent = () => true } = {}){
   const kind = memberReportFileKind(file);
   const fail = (message, code) => ({ ok:false, kind:kind || 'text', code, lines:[message] });
   let text;
@@ -2381,7 +2456,7 @@ async function importMemberReportFile(file){
       : 'That file is empty.', 'empty');
   }
   if(!looksLikeMemberReport(text)){
-    return fail('That does not look like a CAP member report: none of its sections are in the file. Use Printer Friendly View - Member Details from the member search.', 'notReport');
+    return fail('That does not look like a CAP member report: it has neither the General Information row nor the sections of a report in order. Use Printer Friendly View - Member Details from the member search.', 'notReport');
   }
   let parsed;
   try{
@@ -2393,16 +2468,20 @@ async function importMemberReportFile(file){
   if(!memberReportReadAnything(parsed)){
     return fail('The sections of a report are in the file, but nothing in them could be read, so nothing was changed.', 'nothing');
   }
+  // A file chosen after this one has been read is the one the member wants: a slower PDF must not overwrite it.
+  if(!isCurrent()) return { ok:false, kind:kind || 'text', code:'superseded', lines:[], superseded:true };
   const replaced = Object.values(State.ribbonSelections || {}).some(sel => sel && sel.checked) || (State.badges || []).length > 0 || (State.patches || []).length > 0;
+  const preImport = memberReportBuildSignature();
   try{
     applyCapMemberReportImport(parsed);
   }catch(err){
     console.error(err);
     return fail('The report was read but could not be applied. Use Undo to go back to the build you had.', 'apply');
   }
-  return { ok:true, kind:kind || 'text', parsed, lines:memberReportStatusLines(parsed, file.name, { replaced }) };
+  return { ok:true, kind:kind || 'text', parsed, preImport, authorized:[...(State.reportAuthorizedBadgeIds || [])], lines:memberReportStatusLines(parsed, file.name, { replaced }) };
 }
 
+let memberReportImportTurn = 0;
 function wireMemberReportImporter(){
   const btn = by('importMemberReportBtn');
   const input = by('memberReportUpload');
@@ -2417,22 +2496,25 @@ function wireMemberReportImporter(){
 
   document.addEventListener('capub:rendered', markMemberReportPanelStale);
   clearBtn?.addEventListener('click', () => {
-    memberReportShownBuild = null;
+    memberReportShown = null;
     State.reportAuthorizedBadgeIds = null;
     input.value = '';
     buildBadgeGallery();
-    setMemberReportImportStatus('No report imported yet.');
+    setMemberReportImportStatus('The import notes are cleared and your build is as it was. A report is read on your device and is not kept or sent.');
   });
 
   input.addEventListener('change', async () => {
     const file = input.files?.[0];
     if(!file) return;
 
+    // The change event of a file chosen later makes this one stale: whichever was chosen last is the one imported.
+    const turn = ++memberReportImportTurn;
     try{
-      setMemberReportImportStatus(`Reading ${file.name}...`);
-      const result = await importMemberReportFile(file);
+      setMemberReportImportStatus('Reading the file...');
+      const result = await importMemberReportFile(file, { isCurrent: () => turn === memberReportImportTurn });
+      if(result.superseded) return;
       setMemberReportImportStatus(result.lines, result.ok ? 'ok' : 'error');
-      if(result.ok) memberReportShownBuild = memberReportBuildSignature();
+      if(result.ok) memberReportRememberImport(result);
       // Counts only: never the name, the file name or anything read from the report.
       const parsed = result.parsed;
       if(result.ok) window.CAPUB_TELEMETRY?.track('import', { ok: true, kind: result.kind, membership: !!parsed.membership, rank: !!parsed.rank, gender: !!parsed.gender, ribbons: parsed.ribbons.length, badges: parsed.badges.length, patches: (parsed.patches || []).length, notes: (parsed.notes || []).length });

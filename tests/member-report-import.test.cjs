@@ -869,7 +869,7 @@ test('a file that is not a PDF or text, too large, empty, or not a member report
 });
 
 test('a report with its sections but nothing readable in it changes nothing, and says so', async () => {
-  const { result, state } = await importFile(fileLike('empty-report.txt', 'text/plain', 'Printer Friendly View - Member Details\nGeneral Information\nCAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit\nCadet Training\nActivity Date Completed\nLocal Activities\nActivity Date\n'), { before: BUILD_BEFORE });
+  const { result, state } = await importFile(fileLike('empty-report.txt', 'text/plain', 'Printer Friendly View - Member Details\nGeneral Information\nCAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit\nDuty Positions\nProfessional Development\nSpecialty Tracks\nCadet Training\nActivity Date Completed\nLocal Activities\nActivity Date\n'), { before: BUILD_BEFORE });
   assert.equal(result.ok, false);
   assert.equal(result.code, 'nothing');
   assert.match(result.lines[0], /^The sections of a report are in the file, but nothing in them could be read, so nothing was changed\.$/);
@@ -882,7 +882,7 @@ test('a real report file is imported through the same path, as a text file or as
   assert.equal(result.kind, 'text');
   assert.equal(state.membership, 'cadet');
   assert.equal(state.rank, 'C/Col');
-  assert.ok(result.lines[0] === 'Imported member.txt.');
+  assert.ok(result.lines[0] === 'Imported the report.');
   assert.ok(!state.ribbons.includes('cap_membership_ribbon'), 'the earlier build is replaced by the report');
 });
 
@@ -1019,7 +1019,7 @@ const groupOf = (lines, heading) => { const i = lines.findIndex(l => l && l.head
 
 test('the panel says what was read and what is on the build, then what was held off the uniform, with the reason', async () => {
   const { result } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE));
-  assert.equal(result.lines[0], 'Imported member.txt.');
+  assert.equal(result.lines[0], 'Imported the report.');
   assert.equal(result.lines[1], 'Read: cadet, male, C/Col, Guiseppe Mitchell.');
   assert.match(result.lines[2], /^On the build: 20 ribbons, 0 badges, 0 patches\.$/);
   const held = groupOf(result.lines, 'Held off the uniform');
@@ -1050,14 +1050,24 @@ test('a row of the awards tables that no ribbon matches is listed, in the report
   }
 });
 
-test('a report without its grade row says the member type and gender are guesses, and what it could not read is told, not left silent', async () => {
+test('a report without its grade row says what it could not read and what the build has instead', async () => {
   const noRow = FIXTURE.replace(/123456 MITCHELL, GUISEPPE MALE CADET C\/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE GLR-IL-049\n/, '').replace('C/Col Guiseppe Mitchell', 'Guiseppe Mitchell');
-  const { result } = await importFile(fileLike('member.txt', 'text/plain', noRow));
-  const unread = groupOf(result.lines, 'Not understood');
-  assert.ok(unread.includes('The grade was not found, so it was left as it was.'), unread.join(' | '));
-  assert.ok(unread.includes('The gender was not found, so the cut was left as it was.') || unread.includes('The member type and gender come from words in the report, not from its first row. Check them.'), unread.join(' | '));
+  const fresh = (await importFile(fileLike('member.txt', 'text/plain', noRow.replace('Guiseppe Mitchell\n', '')))).result;
+  const unread = groupOf(fresh.lines, 'Not understood');
+  assert.ok(unread.includes('The grade was not found, so none is chosen.'), unread.join(' | '));
+  assert.ok(unread.includes('The gender was not found, so no cut is chosen.'));
+  assert.ok(unread.includes('The name was not found, so the uniform has no name.'));
   assert.ok(unread.includes('The join date was not found, so the Red Service Ribbon is not added.'));
   assert.ok(!unread.some(line => /grade row/.test(line)), 'the panel never says "grade row"');
+  // Over a build with a name, a grade and a cut: they are kept, and the panel names them.
+  const kept = (await importFile(fileLike('member.txt', 'text/plain', noRow.replace('Guiseppe Mitchell\n', '')), { before: BUILD_BEFORE + " State.membership = 'cadet'; State.rank = 'C/Maj'; State.text = { firstName: 'Ann', lastName: 'Lee', show: true };" }));
+  const keptLines = groupOf(kept.result.lines, 'Not understood');
+  assert.ok(keptLines.includes('The grade was not found, so the grade on the build (C/Maj) was kept.'), keptLines.join(' | '));
+  assert.ok(keptLines.includes("The gender was not found, so the women's cut on the build was kept."));
+  assert.ok(keptLines.includes('The name was not found, so the name on the uniform was kept.'));
+  assert.equal(kept.state.rank, 'C/Maj');
+  assert.ok(kept.result.lines[1] === 'Read: cadet.' || /^Read: /.test(kept.result.lines[1]));
+  assert.ok(!/C\/Maj|Ann|Lee/.test(kept.result.lines[1]), 'what was kept is not shown as read: ' + kept.result.lines[1]);
 });
 
 test('a grade written "C/ Col" is read, and a row that does not parse still gives the join date and the Red Service Ribbon', async () => {
@@ -1084,7 +1094,7 @@ test('a grade written "C/ Col" is read, and a row that does not parse still give
 test('a gender, grade or member type the report does not give is told, whatever the member had before', async () => {
   const noGender = FIXTURE.replace('GUISEPPE MALE CADET', 'GUISEPPE CADET');
   const { result, state } = await importFile(fileLike('member.txt', 'text/plain', noGender), { before: BUILD_BEFORE });
-  assert.ok(groupOf(result.lines, 'Not understood').includes('The gender was not found, so the cut was left as it was.'));
+  assert.ok(groupOf(result.lines, 'Not understood').includes("The gender was not found, so the women's cut on the build was kept."));
   assert.equal(state.gender, 'female', 'the cut the member had');
 });
 
@@ -1265,7 +1275,8 @@ test('a PDF drawn row by row is read as drawn, one drawn column by column is rea
   const wrapped = await read([...head, at('Commander’s', 40, 720), at('Commendation Award', 40, 708), at('01 Feb 2022', 400, 720)]);
   assert.ok(wrapped.includes('Commander’s Commendation Award'), wrapped);
   // The same text through the whole import: the rows count as the report says.
-  const { result } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf: { GlobalWorkerOptions: {}, getDocument: () => ({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [...head, ...rows.map(([n], i) => at(n, 40, 720 - 14 * i)), ...rows.map(([, d], i) => at(d, 400, 720 - 14 * i))] }) }), destroy: async () => {} }) }) } });
+  const sections = ['Duty Positions', 'Professional Development', 'Specialty Tracks'].map((t, i) => at(t, 40, 750 - i));
+  const { result } = await importFile(fileLike('m.pdf', 'application/pdf', '%PDF-1.4'), { pdf: { GlobalWorkerOptions: {}, getDocument: () => ({ promise: Promise.resolve({ numPages: 1, getPage: async () => ({ getTextContent: async () => ({ items: [head[0], head[1], ...sections, head[2], ...rows.map(([n], i) => at(n, 40, 720 - 14 * i)), ...rows.map(([, d], i) => at(d, 400, 720 - 14 * i))] }) }), destroy: async () => {} }) }) } });
   assert.equal(result.ok, true);
 });
 
@@ -1305,15 +1316,28 @@ test('the rows not understood are counted past twelve, a Cadet Training row noth
   assert.equal(panel.style.overflowWrap, 'anywhere');
 });
 
-test('the panel says when the build has changed since the import, once, at its top', async () => {
+test('the panel follows the build: changed, undone (and the picker drops the report\'s badges), done again', async () => {
   const { context } = await importFile(fileLike('member.txt', 'text/plain', FIXTURE));
   const rows = [];
-  const panel = { style: {}, children: rows, appendChild(c){ rows.push(c); }, insertBefore(c){ rows.unshift(c); }, get firstChild(){ return rows[0] || null; }, textContent: '' };
-  context.document = { createElement: () => ({ style: {}, textContent: '' }), querySelectorAll: () => [], getElementById: id => id === 'memberReportImportStatus' ? panel : null, addEventListener(){} };
-  vm.runInContext('memberReportShownBuild = memberReportBuildSignature(); markMemberReportPanelStale();', context);
+  const panel = { style: {}, children: rows, appendChild(c){ rows.push(c); c.parentNode = panel; }, insertBefore(c){ rows.unshift(c); c.parentNode = panel; }, removeChild(c){ rows.splice(rows.indexOf(c), 1); c.parentNode = null; }, get firstChild(){ return rows[0] || null; }, textContent: '' };
+  context.document = { createElement: () => ({ style: {}, textContent: '', parentNode: null }), querySelectorAll: () => [], getElementById: id => id === 'memberReportImportStatus' ? panel : null, addEventListener(){} };
+  const run = code => vm.runInContext(code, context);
+  run(`globalThis.buildBadgeGallery = () => { globalThis.__gallery = (globalThis.__gallery || 0) + 1; }; State.reportAuthorizedBadgeIds = ['solo_badge'];
+    const pre = JSON.stringify(['senior', 'Maj', 'female', [], [], []]);
+    memberReportShown = { pre, post: memberReportBuildSignature(), authorized: ['solo_badge'], row: null, state: 'current' }; markMemberReportPanelStale();`);
   assert.equal(rows.length, 0, 'an unchanged build leaves the panel as it is');
-  vm.runInContext(`State.ribbonSelections.cap_membership_ribbon.checked = true; markMemberReportPanelStale(); markMemberReportPanelStale();`, context);
+  run(`State.ribbonSelections.cap_membership_ribbon.checked = true; markMemberReportPanelStale(); markMemberReportPanelStale();`);
   assert.deepEqual(rows.map(r => r.textContent), ['The build has changed since this import, so the lines below may no longer match it.']);
+  assert.deepEqual(JSON.parse(run('JSON.stringify(State.reportAuthorizedBadgeIds)')), ['solo_badge'], 'a tick by hand keeps the list');
+  // Undo: the build is the one the import replaced.
+  run(`State.membership = 'senior'; State.rank = 'Maj'; State.gender = 'female'; for(const sel of Object.values(State.ribbonSelections)) sel.checked = false; State.badges = []; State.patches = []; markMemberReportPanelStale();`);
+  assert.deepEqual(rows.map(r => r.textContent), ['This import has been undone; the lines below describe the report that was imported.']);
+  assert.equal(run('State.reportAuthorizedBadgeIds'), null, 'the picker no longer lists the undone report\'s badges');
+  assert.ok(run('__gallery') >= 1, 'and is rebuilt');
+  // Redo: the build is the import's again.
+  run(`memberReportShown.post = memberReportBuildSignature(); memberReportShown.state = 'undone'; memberReportShown.pre = 'x'; markMemberReportPanelStale();`);
+  assert.equal(rows.length, 0);
+  assert.deepEqual(JSON.parse(run('JSON.stringify(State.reportAuthorizedBadgeIds)')), ['solo_badge'], 'the list returns');
 });
 
 // ---- The independent tester's second round (I2): rows that are not the thing, counts, dates -------------------------------------------------
@@ -1396,4 +1420,79 @@ test('a table heading with nothing under it is not an unread row', async () => {
   assert.equal(groupOf(result.lines, 'Not understood'), null);
   const twice = FIXTURE.replace('Local Activities', 'Decorations\nLocal Activities');
   assert.equal(groupOf((await importFile(fileLike('m.txt', 'text/plain', twice))).result.lines, 'Not understood'), null);
+});
+
+// ---- The independent tester's second round, the panel and the checks (I2) ---------------------------------------------------------------------
+test('a memo or a newsletter that names a few of the report\'s headings is not a report; the General Information row with a CAPID, or four headings in order, is', async () => {
+  const memo = 'Cadet Training weekend plan\nEncampments run 05 Jun 2027, 12 Jun 2027 and 19 Jun 2027\nPlease bring boots. Local Activities will follow.';
+  const newsletter = 'Squadron Newsletter\nGeneral Information about dues\nDecorations for the banquet 01 Jun 2027\nLocal Activities this month: 05 Jun 2027';
+  for(const text of [memo, newsletter]){
+    const { result, state } = await importFile(fileLike('x.txt', 'text/plain', text), { before: BUILD_BEFORE });
+    assert.equal(result.ok, false);
+    assert.equal(result.code, 'notReport');
+    assert.match(result.lines[0], /^That does not look like a CAP member report: it has neither the General Information row nor the sections of a report in order\./);
+    assertKept(state);
+  }
+  for(const file of FIXTURE_FILES) assert.equal((await importFile(fileLike(file, 'text/plain', fixtureText(file)))).result.ok, true, file);
+  // The row alone with its CAPID is a report; four headings in their order are a report without the row.
+  assert.equal((await importFile(fileLike('x.txt', 'text/plain', 'General Information\n654321 WILSON, DAVID MALE SENIOR 1st Lt 01 Mar 2024 15 Jan 2016 31 Jan 2027 ACTIVE GLR-IL-049'))).result.ok, true);
+  const headings = 'Duty Positions\nProfessional Development\nSpecialty Tracks\nCadet Training\nDecorations\nDecoration Row One 01 Jan 2024\n';
+  assert.equal((await importFile(fileLike('x.txt', 'text/plain', headings))).result.code, 'nothing', 'four headings in order pass the check; nothing in them is readable');
+  assert.equal((await importFile(fileLike('x.txt', 'text/plain', 'Decorations\nProfessional Development\nSpecialty Tracks\nDuty Positions\n'))).result.code, 'notReport', 'the same headings out of order are not');
+});
+
+test('a heading lost from the report does not silently drop the rows under it', async () => {
+  const noAchievements = FIXTURE.replace('Cadet Achievements\n', '');
+  const base = signature(FIXTURE).ribbons, got = signature(noAchievements).ribbons;
+  assert.deepEqual(got, base, 'the Achievement rows are read without their heading');
+  assert.ok(runImport(noAchievements).parsed.notes.includes('The Cadet Achievements heading was not found; its Achievement rows were read without it.'));
+  const lines = async text => groupOf((await importFile(fileLike('m.txt', 'text/plain', text))).result.lines, 'Not understood') || [];
+  assert.ok((await lines(FIXTURE.replace('Encampments\n', ''))).includes('Rows that look like encampments were found with no Encampments heading, so they were not counted.'));
+  assert.ok((await lines(fixtureText('eservices-member-details-cadet-live12.txt').replace('Specialty Tracks\n', ''))).includes('Rows that look like specialty track ratings were found with no Specialty Tracks heading, so no badge was imported from them.'));
+  assert.ok((await lines(FIXTURE.replace('Cadet Training\n', ''))).includes('Rows that look like cadet activities were found with no Cadet Training heading, so they were not counted.'));
+  assert.equal((await lines(FIXTURE)).some(l => /heading/.test(l)), false, 'a report with its headings says nothing of the kind');
+});
+
+test('the Command Service Ribbon note names the level, never the picker\'s placeholder', () => {
+  const r = runImport(SENIOR.replace('Commander GLR-IL-049 UNIT No 01 Jan 2025', 'Wing Commander GLR-IL-001 WING No 01 Jan 2024'));
+  const note = r.parsed.notes.find(n => /^Command Service Ribbon:/.test(n));
+  assert.equal(note, 'Command Service Ribbon: Wing level, silver star, from commander duty of 365 days or more.');
+  assert.ok(!r.parsed.notes.some(n => /- Select -/.test(n)));
+});
+
+test('on a field uniform the held off lines do not tell the member to go to a field uniform, and name the ribbons it does not wear', async () => {
+  const text = fixtureText('eservices-member-details-cadet-live12.txt');
+  const ocp = (await importFile(fileLike('m.txt', 'text/plain', text), { before: "State.uniform = 'ocp';" })).result;
+  const held = groupOf(ocp.lines, 'Held off the uniform') || [];
+  assert.ok(held.some(l => /: not worn on Ocp\.$/.test(l)), held.join(' | '));
+  assert.ok(!held.some(l => /add (?:them|it) under Patches there/.test(l)), 'already on a field uniform');
+  assert.ok(held.some(l => /^Ribbons: not worn on Ocp; the \d+ are kept for the uniforms that wear them/.test(l)), held.join(' | '));
+  const blues = (await importFile(fileLike('m.txt', 'text/plain', text), { before: "State.uniform = 'blues_a';" })).result;
+  const bluesHeld = groupOf(blues.lines, 'Held off the uniform') || [];
+  assert.ok(bluesHeld.some(l => /add them under Patches there\.$/.test(l)));
+  assert.ok(!bluesHeld.some(l => /^Ribbons:/.test(l)), 'the Blues wear the ribbons');
+});
+
+test('a file chosen after this one is read is the one imported: a slower file does not overwrite it', async () => {
+  const { context } = await importFile(fileLike('a.txt', 'text/plain', SENIOR));
+  const before = vm.runInContext('JSON.stringify([State.membership, State.rank, State.text])', context);
+  const late = await vm.runInContext('(f) => importMemberReportFile(f, { isCurrent: () => false })', context)(fileLike('b.txt', 'text/plain', FIXTURE));
+  assert.equal(late.superseded, true);
+  assert.equal(vm.runInContext('JSON.stringify([State.membership, State.rank, State.text])', context), before);
+});
+
+test('a name over 40 letters is cut on the uniform and the report says so; a ribbon beyond what the picker offers is held at the most, and says so', () => {
+  const long = 'A'.repeat(45);
+  const r = runImport(FIXTURE.replace('MITCHELL, GUISEPPE', `MITCHELL, ${long}`).replace('C/Col Guiseppe Mitchell', `C/Col ${long} Mitchell`));
+  assert.equal(r.text.firstName.length, 40);
+  assert.ok(r.parsed.notes.includes('The name is longer than 40 letters, so the uniform shows the first 40 of each part.'));
+  const many = runImport(FIXTURE.replace('Decorations\n', 'Decorations\n' + 'Disaster Relief Ribbon 01 Jan 2020\n'.repeat(1)).replace('Local Activities', Array.from({ length: 120 }, (_, i) => `Disaster Relief Ribbon ${String(1 + i % 28).padStart(2, '0')} ${MONTHS[i % 12]} ${2000 + (i % 24)}`).join('\n') + '\nLocal Activities'));
+  assert.ok(many.parsed.notes.some(n => /^Disaster Relief Ribbon: the picker offers at most 84 awards, so 84 are used\.$/.test(n)), many.parsed.notes.join(' | '));
+  assert.ok(many.selected.disaster_relief_ribbon);
+});
+
+test('Clear import notes says the build is as it was and keeps the privacy line', () => {
+  const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'member-report-import.js'), 'utf8');
+  assert.match(src, /'The import notes are cleared and your build is as it was\. A report is read on your device and is not kept or sent\.'/);
+  assert.doesNotMatch(src, /No report imported yet/);
 });
