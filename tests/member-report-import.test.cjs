@@ -1315,3 +1315,85 @@ test('the panel says when the build has changed since the import, once, at its t
   vm.runInContext(`State.ribbonSelections.cap_membership_ribbon.checked = true; markMemberReportPanelStale(); markMemberReportPanelStale();`, context);
   assert.deepEqual(rows.map(r => r.textContent), ['The build has changed since this import, so the lines below may no longer match it.']);
 });
+
+// ---- The independent tester's second round (I2): rows that are not the thing, counts, dates -------------------------------------------------
+const SENIOR_GTL = 'Ground Team Leader (GTL) QUALIFIED 01 Jan 2027';
+test('a course, class, workshop or academy row is not the badge it names', () => {
+  const read = (base, row) => parseAviation(base.replace('Decorations\n', `Decorations\n${row}\n`)).authorized;
+  for(const row of ['EMT Basic Course 01 Jan 2024', 'EMT-Intermediate Refresher Course 01 Jan 2024', 'Paramedic Class 01 Jan 2024', 'Volunteer University Instructor Workshop 01 Jan 2024'])
+    assert.ok(!read(SENIOR, row).some(id => /^emt_|volunteer/.test(id)), row);
+  for(const row of ['Model Rocketry Academy 01 Jan 2024', 'NRA Marksmanship Course 01 Jan 2024', 'Cyber Badge Class 01 Jan 2024', 'Cadet STEM Badge Workshop 01 Jan 2024', 'Cadet STEM Badge TRAINING 01 Jan 2024'])
+    assert.ok(!read(FIXTURE, row).some(id => /rocketry|nra_|cyber|stem/.test(id)), row);
+  // The same rows without the word are the badges.
+  assert.ok(read(SENIOR, 'EMT-Basic 01 Jan 2024').includes('emt_basic_badge'));
+  for(const [row, id] of [['Model Rocketry 01 Jan 2024', 'model_rocketry_badge'], ['NRA Marksmanship Qualification 01 Jan 2024', 'nra_marksman_badge'], ['Cadet Cyber Badge 01 Jan 2024', 'cyber_badges'], ['Cadet STEM Badge 01 Jan 2024', 'stem_badges']])
+    assert.ok(read(FIXTURE, row).includes(id), row);
+  // And the Goddard rocketry star follows the badge, not a rocketry course.
+  const star = runImport(FIXTURE.replace('Cadet Training\n', 'Cadet Training\nModel Rocketry Academy 01 Jan 2023\n'));
+  assert.notEqual(star.selected.goddard_achievement.awardValue, 'rocketry_star');
+});
+
+test('a qualification whose status says the member never held it earns nothing and the report says so; Expired still earns', () => {
+  for(const status of ['NOT QUALIFIED', 'UNQUALIFIED', 'DENIED', 'FAILED', 'PENDING', 'IN PROGRESS', 'Not Qualified']){
+    const r = parseAviation(SENIOR.replace(SENIOR_GTL, `Ground Team Leader (GTL) ${status} 01 Jan 2027`));
+    assert.ok(!r.authorized.includes('master_ground_team_badge'), status);
+    assert.ok(r.notes.some(n => n === `A Ground Team qualification is listed as ${status.toLowerCase()}, so no badge was imported (CAPR 39-1, 10.4.5).`), `${status}: ${r.notes.join(' | ')}`);
+  }
+  const ic = parseAviation(SENIOR.replace('Incident Commander 3 (IC3) TRAINING 01 Jan 2027', 'Incident Commander 3 (IC3) NOT QUALIFIED 01 Jan 2027'));
+  assert.ok(!ic.authorized.includes('basic_incident_commander_badge'));
+  assert.ok(ic.notes.some(n => /^An Incident Commander qualification is listed as not qualified, so no badge was imported \(CAPR 39-1, 10\.4\.6\)\.$/.test(n)));
+  assert.ok(parseAviation(SENIOR.replace(SENIOR_GTL, 'Ground Team Leader (GTL) EXPIRED 01 Jan 2020')).authorized.includes('master_ground_team_badge'));
+});
+
+test('a Cadet First Sergeant row that has ended is a past tour, in whichever table it is printed', () => {
+  const diamond = text => signature(text).firstSergeant;
+  const base = FIXTURE.replace('MALE CADET C/Col', 'MALE CADET C/MSgt').replace('C/Col Guiseppe Mitchell', 'C/MSgt Guiseppe Mitchell');
+  const row = end => base.replace('Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026', `Cadet First Sergeant GLR-IL-049 UNIT No 01 Jan 2026${end}`);
+  assert.equal(diamond(row('')), true);
+  assert.equal(diamond(row(' 31 Dec 2099')), true, 'an End Date still to come is a tour in progress');
+  assert.equal(diamond(row(' 31 Mar 2026')), false);
+});
+
+test('a repeated Recruiter, Counterdrug, Homeland Security or Air Search and Rescue row is counted as before and the report says it does not know what the repeat stands for', () => {
+  const note = (name, n) => `The report lists the ${name} ${n} times and does not say what a repeated row stands for: check its device under Ribbons.`;
+  const rows = (name, n) => Array.from({ length: n }, (_, i) => `${name} ${String(i + 1).padStart(2, '0')} Jan 202${i}`);
+  const senior = runImport(seniorWith('Decorations', rows('Senior Recruiter Ribbon', 3).concat(rows('Counterdrug Ribbon', 3))));
+  assert.ok(senior.parsed.notes.includes(note('Senior Recruiter Ribbon', 3)), senior.parsed.notes.join(' | '));
+  assert.ok(senior.parsed.notes.includes(note('Counterdrug Ribbon', 4)), 'the fixture has one and three are added');
+  assert.match(senior.selected.cap_counterdrug_ribbon.awardLabel, /40 Sorties/, 'counted as before: ten sorties a row');
+  assert.match(senior.selected.cap_senior_recruiter_ribbon.awardLabel, /7 members/, 'the recruiter ribbon is the basic ribbon as before');
+  const cadet = runImport(cadetWith('Decorations', rows('Cadet Recruiter Ribbon', 3)));
+  assert.ok(cadet.parsed.notes.includes(note('Cadet Recruiter Ribbon', 3)));
+  // One row is one award and needs no note.
+  assert.ok(!runImport(cadetWith('Decorations', rows('Cadet Recruiter Ribbon', 1))).parsed.notes.some(n => /does not say what a repeated row stands for/.test(n)));
+});
+
+test('the Red Service Ribbon goes on past 35 years, to the 65 years the picker offers', () => {
+  const years = n => { const d = new Date(); d.setFullYear(d.getFullYear() - n); d.setDate(d.getDate() - 2); return `${String(d.getDate()).padStart(2, '0')} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
+  for(const [n, label] of [[36, '35 Years'], [41, '40 Years'], [45, '45 Years'], [57, '55 Years'], [66, '65 Years']]){
+    const r = runImport(FIXTURE.replace('24 Sep 2019', years(n)));
+    assert.equal(r.selected.red_service_ribbon.awardLabel, label, `${n} years`);
+  }
+});
+
+test('a ligature and a two-digit year are read: "Certificate" with the fi joined, 12/18/25, 18-Dec-25, 18 Dec 25', () => {
+  assert.ok(runImport(FIXTURE.replace('Certificate of Recognition', 'Certiﬁcate of Recognition')).ribbon('lifesaving_award'));
+  const base = signature(FIXTURE);
+  for(const [what, change] of Object.entries({
+    '12/18/25': redate((d, m, y) => `${two(m)}/${d}/${y.slice(2)}`),
+    '18-Dec-25': redate((d, m, y) => `${d}-${MONTHS[m]}-${y.slice(2)}`),
+    '18 Dec 25': redate((d, m, y) => `${d} ${MONTHS[m]} ${y.slice(2)}`)
+  })) assert.deepEqual(signature(change(FIXTURE)), base, what);
+  const { context } = loadPageScripts();
+  const clean = t => vm.runInContext('(t) => normalizeMemberReportText(t)', context)(t);
+  assert.equal(clean('Activity/Service Ribbon'), 'Activity/Service Ribbon');
+  assert.equal(clean('Date Rank 01 Jan 20 Jul 2021'), 'Date Rank 01 Jan 20 Jul 2021', 'a day after a month is not a year');
+});
+
+test('a table heading with nothing under it is not an unread row', async () => {
+  const empty = FIXTURE.replace(/Decorations\n[\s\S]*\nLocal Activities/, 'Decorations\nActivity/Service Ribbon\nLocal Activities');
+  const { result } = await importFile(fileLike('m.txt', 'text/plain', empty));
+  assert.equal(groupOf(result.lines, 'Not understood'), null);
+  const twice = FIXTURE.replace('Local Activities', 'Decorations\nLocal Activities');
+  assert.equal(groupOf((await importFile(fileLike('m.txt', 'text/plain', twice))).result.lines, 'Not understood'), null);
+});

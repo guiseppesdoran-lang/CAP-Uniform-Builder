@@ -248,7 +248,13 @@ function normalizeMemberReportDates(text){
       return valid(d, mo) ? date(d, MEMBER_REPORT_MONTHS[mo - 1], y) : m;
     })
     .replace(new RegExp(`\\b${MEMBER_REPORT_MONTH_WORD}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(\\d{4})\\b`, 'gi'), (m, word, d, y) => valid(Number(d), 1) ? date(d, abbreviation(word), y) : m)
-    .replace(new RegExp(`\\b(\\d{1,2})-${MEMBER_REPORT_MONTH_WORD}\\.?-(\\d{4})\\b`, 'gi'), (m, d, word, y) => date(d, abbreviation(word), y));
+    .replace(new RegExp(`\\b(\\d{1,2})-${MEMBER_REPORT_MONTH_WORD}\\.?-(\\d{4})\\b`, 'gi'), (m, d, word, y) => date(d, abbreviation(word), y))
+    // Two-digit years: 12/18/25, 18-Dec-25, 18 Dec 25 (a year up to 50 is 20xx, above it 19xx).
+    .replace(/\b(\d{1,2})\/(\d{1,2})\/(\d{2})(?!\d)/g, (m, a, b, y) => {
+      const [mo, d] = Number(a) > 12 ? [Number(b), Number(a)] : [Number(a), Number(b)];
+      return valid(d, mo) ? date(d, MEMBER_REPORT_MONTHS[mo - 1], `${Number(y) <= 50 ? 20 : 19}${y}`) : m;
+    })
+    .replace(new RegExp(`\\b(\\d{1,2})[- ]${MEMBER_REPORT_MONTH_WORD}\\.?[- ](\\d{2})(?![\\d:])(?!\\s+${MEMBER_REPORT_MONTH_WORD}\\b)`, 'gi'), (m, d, word, y) => valid(Number(d), 1) ? date(d, abbreviation(word), `${Number(y) <= 50 ? 20 : 19}${y}`) : m);
 }
 
 // What a browser prints around the pages of a report and the report never says: the address with its page count, the time stamp
@@ -272,7 +278,7 @@ const MEMBER_REPORT_TABLE_HEADINGS = new RegExp('^(?:.*\\b(?:' + [
   'Course Date Completed', 'Specialty Tracks?', 'Specialty Track Level Completed', 'Cadet Training', 'Activity Date Completed', 'Encampments',
   'Encampment Date Completed', 'Orientation Flights', 'Cadet Achievements', 'Achievement Date Completed Test Score', 'Awards', 'Promotions', 'Date Rank',
   'Decorations', 'Activity\\s*\\/\\s*Service Ribbon', 'Emergency Services Qualifications', 'Qualification Status Expiration', 'Transfer History', 'Current Committees'
-].join('|') + '))\\s+', 'i');
+].join('|') + '))(?:\\s+|$)', 'i');
 function memberReportDuplicateCuts(source){
   const re = new RegExp(`(${MEMBER_REPORT_DATE})(?:\\s+(${MEMBER_REPORT_DATE}))?`, 'gi');
   const seen = new Set(), cuts = [];
@@ -303,7 +309,8 @@ function dedupeMemberReportRows(text){
 
 // Everything but the removal of repeated rows, so the rows removed can be counted and said.
 function memberReportCleanBeforeDedupe(text){
-  const cleaned = String(text || '')
+  // NFKC writes a ligature ("Certificate" with the fi joined, U+FB01) as its letters and joins a letter with its accent.
+  const cleaned = String(text || '').normalize('NFKC')
     .replace(/[\u00ad\u200b-\u200f\u202a-\u202e\u2060\u2066-\u2069\ufeff]/g, '')
     .replace(/[\u2010-\u2012\u2212]/g, '-')
     .replace(/\uFFFE|\uFFFD|\uF0BE/g, ' ')
@@ -640,6 +647,8 @@ function getFullYearsBetween(startDate, endDate = new Date()){
 }
 
 function chooseRedServiceValueFromYears(years){
+  // The picker offers 2, 5 and every five years to 65.
+  if(years >= 40) return `years_${Math.min(65, Math.floor(years / 5) * 5)}`;
   if(years >= 35) return 'years_35';
   if(years >= 30) return 'years_30';
   if(years >= 25) return 'years_25';
@@ -932,6 +941,39 @@ function applyCosStarToHighestCadetMilestone(ribbons, text){
 // 220 after the first mention, so on the one-line text every report becomes, a "Cadet Training" or "Required
 // Staff Training" heading or a neighbouring row's TRAINING status nearby hid a qualified GTM3 or GTL; and only
 // the first mention was read.
+// A row that names a badge or a qualification without being it: a course, a class, a workshop, an academy, a camp, an exam; or a status that
+// says the member is in training or never held it. (EXPIRED is not here: the Ground Team, Incident Commander and EMT badges are for current
+// or previous holders, CAPR 39-1 10.4.5 to 10.4.7.)
+const MEMBER_REPORT_NOT_HELD = /\b(?:Course|Class|Workshop|Academy|Seminar|Camp|Exam|Refresher|Briefing|Clinic|Symposium|School|TRAIN(?:ING|EE)|NOT\s+QUALIFIED|UNQUALIFIED|DISQUALIFIED|NOT\s+ELIGIBLE|DENIED|DECLINED|FAILED|INCOMPLETE|PENDING|IN\s+PROGRESS)\b/i;
+// Whether the report names the badge in a row that is the badge: a match whose row (up to the next date) is no course and no status of never held.
+function memberReportNamesBadge(text, pattern){
+  const source = String(text || '');
+  const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`);
+  let m;
+  while((m = re.exec(source))){
+    if(m[0].length === 0){ re.lastIndex++; continue; }
+    const after = source.slice(m.index + m[0].length, m.index + m[0].length + 80);
+    const date = after.search(/\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/);
+    if(!MEMBER_REPORT_NOT_HELD.test(date >= 0 ? after.slice(0, date) : after.slice(0, 40))) return true;
+  }
+  return false;
+}
+
+// The status of a qualification row that says the member never held it (not qualified, denied, failed, pending), as a sentence; '' when no row does.
+function memberReportNeverHeldNote(text, labelPattern, name){
+  const source = String(text || '');
+  const re = new RegExp(labelPattern, 'gi');
+  let m;
+  while((m = re.exec(source))){
+    if(m[0].length === 0){ re.lastIndex++; continue; }
+    const after = source.slice(m.index + m[0].length, m.index + m[0].length + 80);
+    const date = after.search(/\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/);
+    const status = /\b(?:NOT\s+QUALIFIED|UNQUALIFIED|DISQUALIFIED|NOT\s+ELIGIBLE|DENIED|DECLINED|FAILED|INCOMPLETE|PENDING|IN\s+PROGRESS)\b/i.exec(date >= 0 ? after.slice(0, date) : after.slice(0, 40));
+    if(status) return `${name} is listed as ${status[0].toLowerCase().replace(/\s+/g, ' ')}, so no badge was imported.`;
+  }
+  return '';
+}
+
 function hasNonTrainingQualification(text, labelPattern){
   const source = String(text || '');
   const re = new RegExp(labelPattern, 'gi');
@@ -945,7 +987,7 @@ function hasNonTrainingQualification(text, labelPattern){
     const afterLabel = m.index + m[0].length;
     const ownDate = /\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/.exec(source.slice(afterLabel, afterLabel + 120));
     const end = ownDate ? afterLabel + ownDate.index + ownDate[0].length : Math.min(source.length, afterLabel + 60);
-    if(!/\bTRAIN(?:ING|EE)\b/i.test(source.slice(start, end))) return true;
+    if(!MEMBER_REPORT_NOT_HELD.test(source.slice(start, end))) return true;
   }
   return false;
 }
@@ -1360,8 +1402,14 @@ function hasCurrentFirstSergeantDutyPosition(text){
 
   // Exact current-duty match only. This intentionally does NOT match
   // "Cadet Flight Sergeant", "Safety NCO", or other cadet NCO duty titles.
-  const firstSergeantTitleRe = /\b(?:Cadet\s+)?(?:First|1st)\s+(?:Sergeant|Sgt)\b/i;
-  return firstSergeantTitleRe.test(current);
+  // A row with an End Date that has passed is a past tour, whichever table prints it.
+  const firstSergeantRowRe = new RegExp(`\\b(?:Cadet\\s+)?(?:First|1st)\\s+(?:Sergeant|Sgt)\\b(?:\\s+\\S+\\s+(?:UNIT|GROUP|WING|REGION|NATIONAL)\\s+(?:Yes|No)\\s+(${MEMBER_REPORT_DATE})(?:\\s+(${MEMBER_REPORT_DATE}))?)?`, 'gi');
+  let m, found = false;
+  while((m = firstSergeantRowRe.exec(current))){
+    const end = m[2] ? parseCapReportDate(m[2]) : null;
+    if(!end || end > new Date()) found = true;
+  }
+  return found;
 }
 
 // The report less its heading and General Information row, for the awards named by a person ("Wilson", "Davis",
@@ -1407,6 +1455,10 @@ function memberReportAwardRowSays(text, pattern, says){
 // Count ribbons the report lists one row per award, the award with its CAPR 39-3 devices: a bronze clasp for each
 // later award (6b), the Medals of Valor included. Ribbons earned once (`once`) carry no clasp.
 // `aircrew` adds the propeller when a row says aircrew or propeller.
+// The ribbons earned for a number of sorties or recruits. A row of the report may stand for one award or for one sortie or recruit, and CAPR
+// 39-3 (21e, 21k, 21l) does not say; the build counts a repeated row as it always did, and the report says it is not sure.
+const MEMBER_REPORT_ROW_MEANING_UNSURE = new Set(['cap_counterdrug_ribbon', 'homeland_security_ribbon', 'air_search_and_rescue_ribbon']);
+const memberReportRepeatedRowNote = (name, rows) => `The report lists the ${name} ${rows} times and does not say what a repeated row stands for: check its device under Ribbons.`;
 const MEMBER_REPORT_COUNTED_AWARDS = [
   { id:'silver_medal_of_valor', name:'Silver Medal of Valor', re:/\bSilver\s+Medal\s+of\s+Valor\b/i },
   { id:'bronze_medal_of_valor', name:'Bronze Medal of Valor', re:/\bBronze\s+Medal\s+of\s+Valor\b/i },
@@ -1703,7 +1755,7 @@ function parseCapMemberReport(textRaw){
     // Goddard uses the same one-star ribbon for either Honor Credit or Model
     // Rocketry, and the supplied two-star ribbon when both were earned.
     if(i === 7){
-      const modelRocketry = /Model\s+Rocketry/i.test(text);
+      const modelRocketry = memberReportNamesBadge(text, /Model\s+Rocketry/i);
       const hasMitchell = /\bMitchell\b/i.test(cadetAchievements);
       const rocketryCredit = modelRocketry && hasMitchell;
       if(honorCredit && rocketryCredit) value = 'honor_credit_and_rocketry';
@@ -1798,6 +1850,7 @@ function parseCapMemberReport(textRaw){
       reason:`${count} ${award.name} record(s)${aircrew ? ' (aircrew)' : ''}`
     });
     if(award.note) result.notes.push(award.note);
+    if(rows > 1 && MEMBER_REPORT_ROW_MEANING_UNSURE.has(award.id)) result.notes.push(memberReportRepeatedRowNote(award.name, rows));
   }
 
   // Recruiter ribbons are membership-specific. Senior reports often retain a
@@ -1807,12 +1860,16 @@ function parseCapMemberReport(textRaw){
   if(result.membership === 'senior'){
     if(/\b(?:CAP\s+)?Senior\s+Recruiter\s+Ribbon\b/i.test(text)){
       result.ribbons.push({ id:'cap_senior_recruiter_ribbon', value:'earned', reason:'Senior Recruiter Ribbon' });
+      const rows = countMemberReportAwardRows(text, /\bSenior\s+Recruiter\s+Ribbon\b/i);
+      if(rows > 1) result.notes.push(memberReportRepeatedRowNote('Senior Recruiter Ribbon', rows));
     }
     if(/\bCadet\s+Recruiter\s+Ribbon\b/i.test(text)){
       result.notes.push('A Cadet Recruiter Ribbon row was not used: a senior member wears the Senior Recruiter Ribbon only.');
     }
   }else if(result.membership === 'cadet' && /\bCadet\s+Recruiter\s+Ribbon\b/i.test(text)){
     result.ribbons.push({ id:'cadet_recruiter_ribbon', value:'earned', reason:'Cadet Recruiter Ribbon' });
+    const rows = countMemberReportAwardRows(text, /\bCadet\s+Recruiter\s+Ribbon\b/i);
+    if(rows > 1) result.notes.push(memberReportRepeatedRowNote('Cadet Recruiter Ribbon', rows));
   }
 
   // In the CAP Member Search Report this appears as "Crisis Service Award";
@@ -2007,6 +2064,15 @@ function parseCapMemberReport(textRaw){
   else if(/CAP Senior Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTM2|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?2)\\b')) result.badges.push('senior_ground_team_badge');
   else if(/CAP Basic Ground Team Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:GTM3|Ground\\s+Team\\s+Member\\s+(?:Level\\s+)?3)\\b')) result.badges.push('ground_team_basic_badge');
   else if(/\bGTM3\b|Ground Team Member Level 3/i.test(text)) result.notes.push('Ground Team Member Level 3 was found as training or without an award, so no Ground Team badge was imported (CAPR 39-1, 10.4.5).');
+  // A qualification the status says the member never held earns nothing, and the report says so.
+  if(!result.badges.some(id => id.includes('ground_team'))){
+    const note = memberReportNeverHeldNote(text, '\\b(?:GTL|GTM[123]|Ground\\s+Team\\s+Leader|Ground\\s+Team\\s+Member)\\b', 'A Ground Team qualification');
+    if(note) result.notes.push(`${note.slice(0, -1)} (CAPR 39-1, 10.4.5).`);
+  }
+  if(!result.badges.some(id => id.includes('incident_commander'))){
+    const note = memberReportNeverHeldNote(text, '\\b(?:IC[123]|Incident\\s+Commander\\s+(?:Level\\s+)?[123])\\b', 'An Incident Commander qualification');
+    if(note) result.notes.push(`${note.slice(0, -1)} (CAPR 39-1, 10.4.6).`);
+  }
 
   if(/CAP Master Emergency Services Qualification Badge/i.test(text)) result.badges.push('master_emergency_services_badge');
   else if(/CAP Senior Emergency Services Qualification Badge/i.test(text)) result.badges.push('senior_emergency_services_badge');
@@ -2015,18 +2081,18 @@ function parseCapMemberReport(textRaw){
     result.notes.push('An Emergency Services exam was found, but the badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.');
   }
 
-  if(/Model Rocketry/i.test(text)) result.badges.push('model_rocketry_badge');
+  if(memberReportNamesBadge(text, /Model\s+Rocketry/i)) result.badges.push('model_rocketry_badge');
 
   // CAPR 39-1 10.4.7: the EMT badges for a certified EMT-Basic, EMT-Intermediate (star) or EMT-Paramedic (star
   // and wreath), the highest certification named.
-  if(/\bEMT[\s-]*P(?:aramedic)?\b|\bParamedic\b/i.test(text)) result.badges.push('emt_paramedic');
-  else if(/\bEMT[\s-]*I(?:ntermediate)?\b/i.test(text)) result.badges.push('emt_intermediate');
-  else if(/\bEMT[\s-]*B(?:asic)?\b/i.test(text)) result.badges.push('emt_basic_badge');
+  if(memberReportNamesBadge(text, /\bEMT[\s-]*P(?:aramedic)?\b|\bParamedic\b/i)) result.badges.push('emt_paramedic');
+  else if(memberReportNamesBadge(text, /\bEMT[\s-]*I(?:ntermediate)?\b/i)) result.badges.push('emt_intermediate');
+  else if(memberReportNamesBadge(text, /\bEMT[\s-]*B(?:asic)?\b/i)) result.badges.push('emt_basic_badge');
   // CAPR 39-1 10.6-10.8 and 10.2.4: the badges awarded by name.
-  if(/\b(?:Cadet\s+)?STEM\s+Badge\b/i.test(text)) result.badges.push('stem_badges');
-  if(/\b(?:Cadet\s+)?Cyber\s+Badge\b/i.test(text)) result.badges.push('cyber_badges');
-  if(/\bNRA\s+Marksman(?:ship)?\b/i.test(text)) result.badges.push('nra_marksman_badge');
-  if(/\bVolunteer\s+University\s+Instructor\b/i.test(text)) result.badges.push('volunteer_university_instructor_badge');
+  if(memberReportNamesBadge(text, /\b(?:Cadet\s+)?STEM\s+Badge\b/i)) result.badges.push('stem_badges');
+  if(memberReportNamesBadge(text, /\b(?:Cadet\s+)?Cyber\s+Badge\b/i)) result.badges.push('cyber_badges');
+  if(memberReportNamesBadge(text, /\bNRA\s+Marksman(?:ship)?\b/i)) result.badges.push('nra_marksman_badge');
+  if(memberReportNamesBadge(text, /\bVolunteer\s+University\s+Instructor\b/i)) result.badges.push('volunteer_university_instructor_badge');
 
   // Preserve every report-authorized badge for the grouped badge picker before
   // reducing the automatically worn set to the highest four selections.
