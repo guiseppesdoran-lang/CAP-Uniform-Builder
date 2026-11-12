@@ -217,6 +217,10 @@
   // is about 3/8 in and "a tad" is a quarter, not double: 0.40 x 1.25 = 0.50, the body 0.36 x 1.25 = 0.45). The renderer scales the sheet's three
   // strokes to it (render-svg: CORD_WIDTH over the sheet's outline stroke) so the width is set here once.
   const CORD_WIDTH = 0.5;
+  // LIVE13 (Ethan, 2026-11-12, on the sliver of cloth under the braid's square lower end: "the cord, goes all the way around the inner part of the sleve, under the wearers armpid. literally all you
+  // need to do is extend the cord a little bit so you dont see any blue under it"): the run is continued straight on past the armpit, in its own direction at its lower end, by half the braid's
+  // width, and the braid is drawn to that end (whole links, the flat cap, opaque), over the gap between arm and body as well (profiles-dress fitCordLayer opens the clip for that stretch).
+  const CORD_END_EXTEND = CORD_WIDTH / 2;
   const CORD_ROUND = 0.25;     // longest stretch of a segment a corner's curve may take (in): a 15 degree bend rounded this far lies 0.03 in off the drawn line
   const CORD_REACH = 3;        // how far along its own line the run is searched for the shoulder outline (in)
 
@@ -234,8 +238,9 @@
     return best;
   }
 
-  // Rounded polyline: pieces [{ type: 'L', a, b } | { type: 'Q', a, c, b }] and their path data (sheet inches).
-  function roundPolyline(pts, reach){
+  // Rounded polyline: pieces [{ type: 'L', a, b } | { type: 'Q', a, c, b }] and their path data (sheet inches). `extend` (inches, default 0) runs the last straight piece on, in its own
+  // direction, past the polyline's last point; the corners are rounded as for the polyline without it.
+  function roundPolyline(pts, reach, extend){
     const n = pts.length, pieces = [];
     let cur = pts[0];
     for(let i = 1; i < n - 1; i++){
@@ -247,7 +252,8 @@
       pieces.push({ type: 'Q', a: s, c: v, b: e });
       cur = e;
     }
-    pieces.push({ type: 'L', a: cur, b: pts[n - 1] });
+    const last = pts[n - 1], ext = extend > 0 ? extend : 0, ll = Math.hypot(last[0] - cur[0], last[1] - cur[1]) || 1;
+    pieces.push({ type: 'L', a: cur, b: ext ? [last[0] + (last[0] - cur[0]) / ll * ext, last[1] + (last[1] - cur[1]) / ll * ext] : last });
     const f = v => String(Math.round(v * 10000) / 10000);
     let d = `M${f(pts[0][0])},${f(pts[0][1])}`;
     for(const p of pieces) d += p.type === 'L' ? `L${f(p.b[0])},${f(p.b[1])}` : `Q${f(p.c[0])},${f(p.c[1])} ${f(p.b[0])},${f(p.b[1])}`;
@@ -259,7 +265,9 @@
   // `opts.exact`: the run is a drawn seam and is followed as drawn, its first segment extended to the outline and its last point kept; without it (a
   // landmark polyline) the top end is put on the outline and the bottom end on the armpit, the vertices between moved by their share of the two end
   // shifts (only the straight run is stretched).
-  // Returns { points, pieces, d, top, bottom, end (the braid's last point: the armpit end of the run), stretch, width, exact }.
+  // Returns { points, pieces, d, top, bottom (the run's lower end: the armpit end), end (the braid's last point: the run continued CORD_END_EXTEND in on past `bottom`, straight, in the
+  // direction the run has there), runEnd (the point the run itself ended at, before that stretch), reach (the stretch, CORD_END_EXTEND), stretch, width, exact }. `points` and
+  // `stretch` are the run itself, without the stretch.
   function fitCord(points, outline, armpit, opts){
     const o = opts || {};
     const orig = points.map(p => [p[0], p[1]]);
@@ -292,11 +300,13 @@
     // The braid is a closed loop round the sleeve head along the armhole seam; the front shows one arc of it, from under the shoulder board down the
     // drawn seam, and at the armpit the loop passes behind the arm, where the sleeve and the body hide it. Ethan, LIVE13 E122: "they go along the seam.
     // they shouldnt conflict with the ribbons ever ... im not sure why you have them fading out. they go around the seam in a circle, but we cant
-    // see that because we are only looking at the front." So the braid ENDS where the seam meets the armpit, squarely (the sheet's strokes have
-    // butt caps): no opacity fade, no run along the body's side under the arm, nothing on the chest, so it cannot touch the ribbon rack.
+    // see that because we are only looking at the front." So the braid ENDS at the armpit, squarely (the sheet's strokes have butt caps): no opacity
+    // fade, no run along the body's side under the arm, nothing on the chest, so it cannot touch the ribbon rack. It ends CORD_END_EXTEND past the armpit, on the
+    // straight line the run has there, so no cloth shows between its end and the gap (see CORD_END_EXTEND).
     const drawn = fitted;
-    const r = roundPolyline(drawn, CORD_ROUND);
-    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, end: drawn[drawn.length - 1], width: CORD_WIDTH, exact: !!o.exact, stretch: { from: len(orig), to: len(fitted), dTop: [top[0] - orig[0][0], top[1] - orig[0][1]], dBottom: [bottom[0] - orig[n - 1][0], bottom[1] - orig[n - 1][1]] } };
+    const r = roundPolyline(drawn, CORD_ROUND, CORD_END_EXTEND);
+    const lastPiece = r.pieces[r.pieces.length - 1];
+    return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, end: lastPiece.b, runEnd: drawn[drawn.length - 1], reach: CORD_END_EXTEND, width: CORD_WIDTH, exact: !!o.exact, stretch: { from: len(orig), to: len(fitted), dTop: [top[0] - orig[0][0], top[1] - orig[0][1]], dBottom: [bottom[0] - orig[n - 1][0], bottom[1] - orig[n - 1][1]] } };
   }
 
   // The centre line of a fitted cord path as points: its pieces ({ type: 'L', a, b } and { type: 'Q', a, c, b }, as fitCord and roundPolyline make them) walked
@@ -323,6 +333,7 @@
   return {
     UNITS_PER_INCH,
     CORD_WIDTH,
+    CORD_END_EXTEND,
     ANCHOR_ALIASES,
     normalizeSpec,
     createSpecStore,

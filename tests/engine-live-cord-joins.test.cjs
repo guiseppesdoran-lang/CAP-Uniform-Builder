@@ -305,8 +305,11 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     // circle, but we cant see that because we are only looking at the front"): the braid is the one arc from under the board down the drawn seam, and at the armpit it is
     // simply hidden: a square end, full opacity, no run along the body's side under the arm, nothing on the chest.
     for(const gone of ['fade', 'tail', 'visible', 'under']) assert.ok(!(gone in cl.cordPath), `${tag}: no ${gone} on the fitted path`);
+    // LIVE13 (Ethan, 2026-11-12): the pieces run from the top to the braid's end, which is the run's bottom (the armpit end) continued straight on by core.CORD_END_EXTEND
+    // (tests/engine-cord-end.test.cjs measures that stretch).
     const end = cl.cordPath.end;
-    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - end[0], pieces[pieces.length - 1].b[1] - end[1]) < 1e-6 && Math.hypot(end[0] - bottom[0], end[1] - bottom[1]) < 1e-6, `${tag}: the pieces run from the top to the run's bottom, which is the braid's end`);
+    assert.ok(Math.hypot(pieces[0].a[0] - top[0], pieces[0].a[1] - top[1]) < 1e-6 && Math.hypot(pieces[pieces.length - 1].b[0] - end[0], pieces[pieces.length - 1].b[1] - end[1]) < 1e-6 && Math.abs(Math.hypot(end[0] - bottom[0], end[1] - bottom[1]) - core.CORD_END_EXTEND) < 1e-6, `${tag}: the pieces run from the top to the braid's end, ${core.CORD_END_EXTEND} in past the run's bottom`);
+    assert.ok(Math.hypot(cl.cordPath.runEnd[0] - bottom[0], cl.cordPath.runEnd[1] - bottom[1]) < 1e-6, `${tag}: the run ends at its bottom`);
     // The top end is on the shoulder's outline as the sheet draws it; the bottom end is the armpit as the sheet draws it.
     const ring = outerRing(gid);
     assert.ok(ringDist(top, ring) <= 0.15, `${tag}: the run's top end is ${ringDist(top, ring).toFixed(3)} in from the shoulder outline`);   // continued up its first segment to the height it had before the drop (B4)
@@ -321,11 +324,11 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     assert.equal(cl.cordPath.width, core.CORD_WIDTH, `${tag}: the braid's width is the engine's`);
     assert.ok(Math.abs(core.CORD_WIDTH - 0.5) < 1e-9, 'the braid is 0.5 in across with its outline (the sheets drew 0.40; E120 "a tad bit thicker", a quarter)');
     const BRAID = core.CORD_WIDTH / 2;
-    // Where the seam meets the armpit: the braid's square end (its end cap, a line across the braid at the last point) reaches the armpit to 0.1 in.
+    // Where the seam meets the armpit: the braid's square end (its end cap, a line across the braid at the last point) lies past the armpit, by the stretch the run is continued
+    // (CORD_END_EXTEND) to 0.1 in: the armpit is never left below the end.
     const lastP = pieces[pieces.length - 1], dirE = [lastP.b[0] - (lastP.type === 'Q' ? lastP.c[0] : lastP.a[0]), lastP.b[1] - (lastP.type === 'Q' ? lastP.c[1] : lastP.a[1])], lE = Math.hypot(dirE[0], dirE[1]) || 1;
-    const nE = [-dirE[1] / lE, dirE[0] / lE], capA = [end[0] + nE[0] * BRAID, end[1] + nE[1] * BRAID], capB = [end[0] - nE[0] * BRAID, end[1] - nE[1] * BRAID];
-    const capToArmpit = segDist(ap, capA, capB);
-    assert.ok(capToArmpit <= 0.1, `${tag}: the braid's end cap is ${capToArmpit.toFixed(3)} in from the armpit`);
+    const pastArmpit = ((end[0] - ap[0]) * dirE[0] + (end[1] - ap[1]) * dirE[1]) / lE;
+    assert.ok(pastArmpit >= core.CORD_END_EXTEND - 0.1, `${tag}: the braid's end cap is ${pastArmpit.toFixed(3)} in past the armpit`);
     // The braid is drawn on the seam: its centre line is on the run to 0.04 in everywhere (the rounding of a bend), so it is never inboard of the seam by more than half its width,
     // and it never runs on past the armpit: no point of it lies below the end.
     const runPts = cl.cordPath.exact ? cl.cordPath.seam.map(dn) : cl.cordPath.points, drawnLine = [];
@@ -335,6 +338,7 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
     let maxDev = 0;
     for(const q of drawnLine){
       if(Math.hypot(q[0] - top[0], q[1] - top[1]) < 0.3 + Math.hypot(top[0] - runPts[0][0], top[1] - runPts[0][1])) continue;       // the first segment is extended to the shoulder outline past the run's first vertex (and, after the drop, up to the height it had)
+      if((q[0] - bottom[0]) * dirE[0] + (q[1] - bottom[1]) * dirE[1] > 1e-6) continue;       // the stretch past the run's end is the run's last segment continued, not the seam
       maxDev = Math.max(maxDev, runDist(q));
       assert.ok(q[1] <= end[1] + 1e-6, `${tag}: the braid runs ${(q[1] - end[1]).toFixed(3)} in below its end`);
     }

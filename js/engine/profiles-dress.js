@@ -1336,7 +1336,9 @@
   // im not sure why you have them fading out. they go around the seam in a circle, but we cant see that because we are only looking at the front."): the
   // cord is a closed loop round the sleeve head; the front shows the one arc from under the board down the seam, and at the armpit it passes behind
   // the arm. The braid ends there, squarely and fully opaque (no fade, no run down the body's side, never on the chest); the earlier turn under the arm
-  // and its fade (LIVE10-4) are gone. The layer is cut to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
+  // and its fade (LIVE10-4) are gone. LIVE13 (Ethan, 2026-11-12: "literally all you need to do is extend the cord a little bit so you dont see any blue under it"): the end is
+  // core.CORD_END_EXTEND (0.25 in) past the armpit, the run continued straight in its own direction there (core.fitCord), and that last stretch is drawn over the gap between arm and body
+  // as well (cordEndWindow: layer.clipPlus); the braid's top, its path along the seam, its width and its look are as they were. The layer is cut to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
   // arm and body as a cord does.
   // The run starts at the board's outer end on the shoulder seam (shoulderSeamOf's shoulder point), under the board (the cord is drawn below it), and
   // continues down the armhole seam as the sheet draws it, or the cord overlay's own landmark where the sheet draws no seam (Ethan, 2 November 2026: "cord should
@@ -1383,6 +1385,19 @@
     const e = ctx.epauletEdge && ctx.epauletEdge.left;
     if(layer && e) layer.clip = belowEpauletEdge(e);
   }
+  // The window the braid's last stretch is drawn through, in addition to the garment's outline (layer.clipPlus; js/engine/render-svg.js): the box of the braid from CORD_CLIP_LEAD above the
+  // armpit's level on the run (the sheet's armpit point, not the one moved down with the cord) to the braid's end, CORD_CLIP_MARGIN wider each way, so the braid is drawn over the gap between
+  // arm and body there and is neither notched nor cut by it where the gap lies outside the outline (a short sleeve's hem). The lead lies on the cloth, where the outline cuts nothing, so the
+  // window's top edge, which is square to the run, leaves no sliver between itself and a hem line that is level. Everywhere else the braid is cut by the garment's outline as it always was.
+  // Scene inches, as a polygon; null when the run's end is not a stretch.
+  const CORD_CLIP_MARGIN = 0.03, CORD_CLIP_LEAD = 0.1;
+  function cordEndWindow(fit, armpit, width){
+    const a = fit.runEnd, b = fit.end, len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    if(!(len > 1e-9)) return null;
+    const u = [(b[0] - a[0]) / len, (b[1] - a[1]) / len], n = [-u[1], u[0]], half = width / 2 + CORD_CLIP_MARGIN;
+    const t0 = (armpit ? Math.min(0, (armpit[0] - a[0]) * u[0] + (armpit[1] - a[1]) * u[1]) : 0) - CORD_CLIP_LEAD, t1 = len + CORD_CLIP_MARGIN;
+    return [[t0, -half], [t0, half], [t1, half], [t1, -half]].map(([t, w]) => ({ x: a[0] + u[0] * t + n[0] * w, y: a[1] + u[1] * t + n[1] * w }));
+  }
   function fitCordLayer(ctx, spec, look){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
     const run = cordRun(id, lm);
@@ -1402,11 +1417,12 @@
       else pts.unshift(top);
     }
     const fit = core.fitCord(pts, outline, ARMPIT[id] ? down(ARMPIT[id]) : null, { exact: run.exact, topAt });
-    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, end: fit.end, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
+    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, end: fit.end, runEnd: fit.runEnd, reach: fit.reach, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
     layer.cordLook = look || null;   // which cord the renderer draws along this path (CordBraid; js/engine/render-svg.js)
     // The Aide de Camp cord's run is drawn as wide as the aiguillette's braids it hangs beside, the sheet's own braid thickness (dimensions.braid_thickness_in), not the 0.5 in of the other cords.
     const aideThick = look && look.id === 'aide_de_camp' && spec.raw && spec.raw.dimensions && spec.raw.dimensions.braid_thickness_in;
     if(aideThick > 0) layer.cordPath.width = aideThick;
+    layer.clipPlus = cordEndWindow(fit, ARMPIT[id], layer.cordPath.width);
     layer.clipSil = id;
     layer.clipOuter = true;
     tuckCordUnderEpaulet(ctx, layer);

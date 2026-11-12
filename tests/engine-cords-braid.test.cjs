@@ -148,10 +148,12 @@ test('the renderer draws every cord with CordBraid: the cord\'s colours are in t
     assert.equal(b.extras.length > 0, !!(entry.strand || entry.knot), `${id}: extras only where the list says`);
     assert.ok(/id="test-braid"/.test(b.run), `${id}: ids carry the prefix the renderer gives`);
     // the braid is laid along the fitted path: every point of it within half the braid's width (and the bow of a lobe's edge) of the path's own points, which are in sheet inches
+    // (to the path's segments: samplePath gives a straight piece its two ends only, and the last piece runs on straight for CORD_END_EXTEND past the armpit)
     const sheet = core.samplePath(cl.cordPath.pieces, 0.02).map(p => [p[0] - ART.tx / 100, p[1] - ART.ty / 100]);
     const half = cl.cordPath.width / 2 + 0.1;
+    const segDist = (q, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], t = Math.max(0, Math.min(1, ((q[0] - a[0]) * dx + (q[1] - a[1]) * dy) / (dx * dx + dy * dy || 1))); return Math.hypot(q[0] - a[0] - t * dx, q[1] - a[1] - t * dy); };
     for(const q of coordsOf(b.run)){
-      const dist = Math.min(...sheet.map(p => Math.hypot(p[0] - q[0], p[1] - q[1])));
+      const dist = Math.min(...sheet.slice(1).map((p, i) => segDist(q, sheet[i], p)));
       assert.ok(dist <= half, `${id}: a point of the braid is ${dist.toFixed(3)} in from the path`);
     }
   }
