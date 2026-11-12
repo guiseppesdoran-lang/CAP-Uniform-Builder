@@ -15126,6 +15126,18 @@
     "collar_honor_guard_patch_center": [
      1225.87,
      398
+    ],
+    "slacks_waist_center": [
+     1225.87,
+     2135.1
+    ],
+    "slacks_hip_center": [
+     1225.87,
+     2337.8
+    ],
+    "slacks_hem_center": [
+     1225.87,
+     3139.9
     ]
    },
    "landmarks": [
@@ -15145,7 +15157,13 @@
     "collar_honor_guard_open_neck",
     "collar_honor_guard_roll_right",
     "collar_honor_guard_roll_left",
-    "collar_honor_guard"
+    "collar_honor_guard",
+    "lower_skirt",
+    "lower_slacks",
+    "lower_slacks_cloth",
+    "lower_slacks_outline",
+    "lower_slacks_hip_line",
+    "lower_slacks_join_line"
    ],
    "has_spec": true,
    "issues": []
@@ -15358,6 +15376,18 @@
     "collar_honor_guard_patch_center": [
      1259.41,
      398.38
+    ],
+    "slacks_waist_center": [
+     1259.41,
+     2135.1
+    ],
+    "slacks_hip_center": [
+     1259.41,
+     2337.8
+    ],
+    "slacks_hem_center": [
+     1259.41,
+     2922.1
     ]
    },
    "landmarks": [
@@ -15381,7 +15411,13 @@
     "collar_honor_guard_open_neck",
     "collar_honor_guard_roll_right",
     "collar_honor_guard_roll_left",
-    "collar_honor_guard"
+    "collar_honor_guard",
+    "lower_skirt",
+    "lower_slacks",
+    "lower_slacks_cloth",
+    "lower_slacks_outline",
+    "lower_slacks_hip_line",
+    "lower_slacks_join_line"
    ],
    "has_spec": true,
    "issues": []
