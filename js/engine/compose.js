@@ -163,6 +163,9 @@
       // the pocket badges): the scene says which compete and which are shown, so the page can ask the member (scene.conflicts, see
       // reportBadgeConflict).
       conflicts: [],
+      // The stacks of badges of equal standing (js/engine/profiles-dress.js, profiles-field.js): where the member may put either badge higher
+      // (scene.badgeOrders, see reportBadgeOrder).
+      badgeOrders: [],
       // A regulation distance shown on the measurement overlay, from `from` to `to` (points on the
       // edges it measures, in scene inches), labelled with its length or with `label`. `opts`:
       //   center: 'to' | 'from' | 'both'   that end is a centre (drawn with a centre mark)
@@ -619,7 +622,7 @@
   function finish(ctx, title){
     settleConflicts(ctx);
     const bounds = shownBounds(ctx);
-    const scene = { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
+    const scene = { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], badgeOrders: settleBadgeOrders(ctx), garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
     // Every callout quotes the regulation paragraph it carries out (measure-layout.js refFor).
     const ML = measureLayoutModule();
     if(ML && ML.refFor) for(const l of ctx.layers) if(l.type === 'measure') l.ref = ML.refFor(scene, l);
@@ -685,6 +688,31 @@
     chooseBadges(ctx, position, label, list, slots);
   }
 
+  // ---- Badges of equal standing -----------------------------------------------------------------------------------------------
+
+  // A stack whose badges the regulation leaves in the wearer's order (data/badge-catalog.js arrangeEqual) is reported so the page can offer the swap:
+  // { group, label, place, ref, badges: [{ id, title }] highest first as drawn, swap: true | false, why }. `swap` is false, with the reason in
+  // `why`, where the other order would not fit the garment; the page then offers no swap and says why. `ref` is the paragraph that sets the stack.
+  function reportBadgeOrder(ctx, group, label, place, items, opts){
+    const o = opts || {};
+    ctx.badgeOrders = ctx.badgeOrders || [];
+    ctx.badgeOrders.push({
+      group, label, place, ref: o.ref || '',
+      badges: items.map(x => ({ id: x.id, title: x.title || x.id })),
+      swap: o.swap !== false, why: o.swap === false ? (o.why || '') : ''
+    });
+  }
+
+  // Only a badge the drawing placed is in the stack the member sees (a badge the layout had no place for is not), and a stack of fewer than two has
+  // nothing to swap.
+  function settleBadgeOrders(ctx){
+    const drawn = new Set();
+    for(const l of ctx.layers) if(l.role === 'badge' && /^badge:/.test(l.key || '')) drawn.add(l.key.split(':')[1]);
+    return (ctx.badgeOrders || [])
+      .map(e => Object.assign({}, e, { badges: e.badges.filter(x => drawn.has(x.id)) }))
+      .filter(e => e.badges.length >= 2);
+  }
+
   // What the drawing shows of each reported position: a badge counts as shown when a badge layer for it was drawn (a badge the layout had no
   // place for, or whose art is missing, is not shown). Left as planned when the scene drew no badge at all.
   function settleConflicts(ctx){
@@ -697,5 +725,5 @@
     }
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict };
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict, reportBadgeOrder };
 });

@@ -4,10 +4,10 @@
 (function(root, factory){
   const node = typeof module === 'object' && module.exports;
   const deps = node
-    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js') }
-    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles };
-  factory(deps.core, deps.C, deps.G, deps.P);
-})(typeof self !== 'undefined' ? self : this, function(core, C, G, P){
+    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js') }
+    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog };
+  factory(deps.core, deps.C, deps.G, deps.P, deps.B);
+})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B){
   'use strict';
   const Z = C.Z;
   const H = P.helpers;
@@ -387,15 +387,21 @@
     // ABU and CFU: aviation and occupational badges only (5.1.1.1.2.4, 5.2.1.1.2.6).
     // ICL 26-14 7.1.1.2.1: the OCP's chaplain badge is on the chest square, not above the CAP tape, so it is not among the four (7.1.1.3.1); the old
     // 7.1.1.3.1.6 that put it highest in the stack is deleted. The ABU and CFU rules are unchanged.
+    // The regulation puts no order between two CAP occupational badges (7.1.1.3.1.5.2 makes them one group; 5.1.1.1.2.4 and 5.2.1.1.2.6 say nothing of one),
+    // so the member's own order (build.badgeOrder, data/badge-catalog.js arrangeEqual) is theirs to set; with none they stay as they were chosen.
+    const occupational = B.arrangeEqual(set.occupational, b.badgeOrder);
     const ordered = b.uniform === 'ocp'
-      ? [...set.aviation, ...set.occupational, ...set.specialty, ...set.service, ...set.nationalStaff]
-      : [...set.chaplain, ...set.aviation, ...set.occupational];
+      ? [...set.aviation, ...occupational, ...set.specialty, ...set.service, ...set.nationalStaff]
+      : [...set.chaplain, ...set.aviation, ...occupational];
     const skipped = set.all.length - ordered.length - (b.uniform === 'ocp' ? set.chaplain.length : 0);
     if(skipped > 0) ctx.note('Only aviation and occupational badges are worn above the CAP tape on this uniform; the others are not shown');
     const max = MAX_BADGES[b.uniform];
     const list = ordered.slice(0, max);
     if(ordered.length > max) ctx.note(`At most ${max} badges are worn above the CAP tape on this uniform; the rest are not shown`);
     if(!list.length) return;
+    // The occupational badges that are drawn, highest first, so the page can offer to swap them.
+    const free = list.filter(it => B.equalGroup(it.id) === 'occupational');
+    if(free.length >= 2) C.reportBadgeOrder(ctx, 'occupational', B.EQUAL_STANDING.occupational, 'above the CAP tape', free, { ref: b.uniform === 'ocp' ? '7.1.1.3.1.5.2' : b.uniform === 'abu' ? '5.1.1.1.2.4' : '5.2.1.1.2.6' });
     const T = ctx.point('cap_tape_top_center');
     const specs = [];
     for(const it of list) specs.push(await ctx.spec(it.art));

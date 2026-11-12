@@ -164,6 +164,78 @@
     const i = OCCUPATIONAL_PRECEDENCE.findIndex(tier => tier.includes(id));
     return i < 0 ? OCCUPATIONAL_PRECEDENCE.length : i;
   }
+  // ---- badges of equal standing -----------------------------------------------------------------------------------------------------
+  // Where the regulation leaves the order of two badges to the wearer, the member may wear either one higher. That is true of CAP occupational
+  // badges only: the stack paragraphs (4.1.5.2.2.4.1 and its twins for each uniform and cut, 5.1.1.1.2.4, 5.2.1.1.2.6, 7.1.1.3.1.5.2) fix the chaplain
+  // badge highest, the CAP aviation badge above the occupational ones and a military aviation badge below the CAP aviation badge, and state no order
+  // between two occupational badges; OCCUPATIONAL_PRECEDENCE above is the order the drawing starts from, not the regulation's. The pocket and nametag
+  // places have no stack: the member already picks the badge for each of those (State.badgeChoices).
+  // The group a badge is of equal standing in, or null when its place in a stack is fixed.
+  const EQUAL_STANDING = { occupational: 'Occupational badges' };
+  function equalGroup(id){
+    const f = family(id);
+    return f && Object.prototype.hasOwnProperty.call(EQUAL_STANDING, f) ? f : null;
+  }
+  const idOf = x => (x && typeof x === 'object') ? x.id : x;
+  // The member's order of equal badges is { [group]: [badge id, highest first] }; a group not named has no choice.
+  function savedOf(saved, group){
+    const list = saved && typeof saved === 'object' && !Array.isArray(saved) && Array.isArray(saved[group]) ? saved[group] : null;
+    return list ? list.filter((id, i) => typeof id === 'string' && list.indexOf(id) === i) : [];
+  }
+  // `items` (badge ids or objects with an `id`), highest first as the drawing would have them: the badges of each group of equal standing take the
+  // member's order in the places the group already holds in the list, and every other item stays where it is. A badge the member has no order
+  // for keeps its place; with nothing saved the list comes back as it was, so the order of a build with no choice is the drawing's own.
+  function arrangeEqual(items, saved){
+    const list = Array.isArray(items) ? [...items] : [];
+    if(!saved) return list;
+    for(const group of Object.keys(EQUAL_STANDING)){
+      const mine = savedOf(saved, group);
+      if(mine.length < 2) continue;
+      const at = [];
+      list.forEach((x, i) => { if(equalGroup(idOf(x)) === group && mine.includes(idOf(x))) at.push(i); });
+      if(at.length < 2) continue;
+      const held = at.map(i => list[i]);
+      held.sort((a, b) => mine.indexOf(idOf(a)) - mine.indexOf(idOf(b)));
+      at.forEach((i, k) => { list[i] = held[k]; });
+    }
+    return list;
+  }
+  // The groups of equal standing with two or more badges in `ids` (highest first as drawn): [{ group, label, ids }], so the page knows where a
+  // swap can be offered.
+  function equalStacks(ids){
+    const out = [];
+    for(const group of Object.keys(EQUAL_STANDING)){
+      const held = (ids || []).map(idOf).filter(id => equalGroup(id) === group);
+      if(held.length >= 2) out.push({ group, label: EQUAL_STANDING[group], ids: held });
+    }
+    return out;
+  }
+  // The member's order after `id` moves one place up (dir -1) or down (dir +1) among `shown`, the badges of its group as drawn, highest first. The
+  // saved list for the group becomes that order; the saved list of another group is untouched. Nothing moves past an end.
+  function moveEqual(saved, group, shown, id, dir){
+    const own = (shown || []).filter(x => equalGroup(x) === group);
+    const from = own.indexOf(id), to = from + (dir < 0 ? -1 : 1);
+    const out = {};
+    for(const g of Object.keys(EQUAL_STANDING)){ const list = savedOf(saved, g); if(list.length) out[g] = list; }
+    if(from < 0 || to < 0 || to >= own.length || equalGroup(id) !== group) return out;
+    const next = [...own];
+    next.splice(from, 1);
+    next.splice(to, 0, id);
+    out[group] = next;
+    return out;
+  }
+  // What `saved` keeps once only the badges in `selected` are held: the ids still held, in the member's order; a group left with fewer than two
+  // badges has no order to keep and is dropped, so a badge taken off never leaves a choice behind for a later build. Anything that is not a group
+  // of equal standing, a list of badge ids of that group, is dropped as well. Returns a new object ({} for none).
+  function pruneEqual(saved, selected){
+    const held = new Set(selected || []);
+    const out = {};
+    for(const group of Object.keys(EQUAL_STANDING)){
+      const list = savedOf(saved, group).filter(id => held.has(id) && equalGroup(id) === group);
+      if(list.length >= 2) out[group] = list;
+    }
+    return out;
+  }
   function get(id){ return BADGES[id] || null; }
   function family(id){ const b = BADGES[id]; return b ? b.family : null; }
   // A badge earned in levels (STEM, Cyber, NRA): [key, label, dress art], lowest first.
@@ -201,5 +273,5 @@
     if(membership === 'senior') return !cadetOnlySet.has(id);
     return true;
   }
-  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
+  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
 });
