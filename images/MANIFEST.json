@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1748,
+ "count": 1806,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -2420,21 +2420,21 @@
    "id": "cord-aide-de-camp",
    "path": "cords/cord-aide-de-camp.svg",
    "category": "cords",
-   "w_in": 5.11,
+   "w_in": 5.17,
    "h_in": 5.54,
    "size_source": "estimated",
-   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. B8: two existing pieces in one asset. (1) The honor guard shoulder cord as drawn by this file for cord-honor-guard (the shared SHOULDER braid: 4.1 in long, 0.40 in across, 0.25 in bow toward the body, 0.15 in weave pitch), standing on the arm side (right) with its neck end level with the tops of the aiguillette's braids. (2) The aiguillette as worn (LIVE9-ART 2), unchanged: drawn from a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a silver pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin. The asset grew from 5.0 in wide (the aiguillette alone) by the shoulder cord beside it; its height is the aiguillette's.",
+   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Two existing pieces in one asset. (1) The shoulder cord as drawn by this file for cord-honor-guard (the shared spine: 4.1 in long, 0.25 in bow toward the body; 0.48 in across here, 0.5 in on the plain pictures, so that its right edge stays inside the box), the braid of the CAP honor guard uniform guidance figures (base-art/cord-braid.js), standing on the arm side (right) with its neck end level with the tops of the aiguillette's braids. (2) The aiguillette as worn (LIVE9-ART 2), unchanged in shape: drawn from a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin. The aiguillette's braids are drawn with the same braid function as the shoulder cord (they were a dashed-groove stroke).",
    "anchors": {
     "top_center": [
-     255.50000000000003,
+     258.5,
      0
     ],
     "bottom_center": [
-     255.50000000000003,
+     258.5,
      554
     ],
     "center": [
-     255.50000000000003,
+     258.5,
      277
     ],
     "left_edge": [
@@ -2442,23 +2442,23 @@
      277
     ],
     "right_edge": [
-     511.00000000000006,
+     517,
      277
     ],
     "shoulder_seam_attach": [
-     485,
+     487,
      35
     ],
     "shoulder_seam_attach_neck_end": [
-     485,
+     487,
      35
     ],
     "shoulder_seam_attach_arm_end": [
-     485,
+     487,
      445
     ],
     "cord_mid": [
-     460,
+     462,
      240
     ],
     "aiguillette_attach": [
@@ -2493,7 +2493,7 @@
    "w_in": 0.77,
    "h_in": 4.22,
    "size_source": "estimated",
-   "basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
    "anchors": {
     "top_center": [
      38.5,
@@ -2525,7 +2525,7 @@
     ],
     "shoulder_seam_attach_arm_end": [
      51,
-     415.99999999999994
+     416
     ],
     "cord_mid": [
      26,
@@ -2543,7 +2543,7 @@
    "w_in": 0.77,
    "h_in": 4.22,
    "size_source": "estimated",
-   "basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp. Colour set from the regulation name 2026-10-25 (ESTIMATED: the photos disagree with the name): CAPR 39-1 9.3.1.4 names the cord Kelly Green; sRGB standard kelly green #4CBB17 is the lit face (main), groove #2f740e = main x 0.62 per channel, 0.62 being the mean groove-to-main luminance ratio of the national, region and wing cords (0.69, 0.43, 0.74). The photos are deep greens, not kelly (app photo images/cords/group.webp lit face #0b7d39, Vanguard Kelly Green 3738651.jpeg lit face #27553c). Was #066e2d/#015317, then #0b7d39/#00470e. Ethan: \"NCAC cord is a bit too dark\", the green (group) cord\"",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
    "anchors": {
     "top_center": [
      38.5,
@@ -2575,7 +2575,7 @@
     ],
     "shoulder_seam_attach_arm_end": [
      51,
-     415.99999999999994
+     416
     ],
     "cord_mid": [
      26,
@@ -2593,7 +2593,7 @@
    "w_in": 0.77,
    "h_in": 4.22,
    "size_source": "estimated",
-   "basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
    "anchors": {
     "top_center": [
      38.5,
@@ -2625,7 +2625,7 @@
     ],
     "shoulder_seam_attach_arm_end": [
      51,
-     415.99999999999994
+     416
     ],
     "cord_mid": [
      26,
@@ -2643,7 +2643,7 @@
    "w_in": 0.77,
    "h_in": 4.22,
    "size_source": "estimated",
-   "basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp. Colour re-measured 2026-10-25: Vanguard 2723 Interwoven Gold cord photo https://www.vanguardmil.com/cdn/shop/products/3738705.jpeg (600x600 JPEG, all non-white pixels n=99592 sorted by luminance): main #f1be16 = mean of the p60-p90 lit face, groove #cf7009 = mean of p5-p15 shadow (was #c48f1a/#8e5f03, from the app photo images/cords/national.webp p50 #c58f1b, p5 #8e5600, which is the darker, duller of the two photos). Ethan: \"NCAC cord is a bit too dark\"",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
    "anchors": {
     "top_center": [
      38.5,
@@ -2675,7 +2675,7 @@
     ],
     "shoulder_seam_attach_arm_end": [
      51,
-     415.99999999999994
+     416
     ],
     "cord_mid": [
      26,
@@ -2693,7 +2693,7 @@
    "w_in": 0.77,
    "h_in": 4.22,
    "size_source": "estimated",
-   "basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp. Colour re-measured 2026-10-25: images/cords/region.webp (283x374-class product photo, alpha>200 non-white n=4536, sorted by luminance; Vanguard Royal Blue photo https://www.vanguardmil.com/cdn/shop/products/3738900.jpeg is darker, lit face #223081, so the lighter app photo is kept): main #0527a5 = mean of the p60-p90 lit face, groove #000b68 = shadow p5 (was #0a2ba8/#011077, p50 and p5). Ethan: \"NCAC cord is a bit too dark\"",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
    "anchors": {
     "top_center": [
      38.5,
@@ -2725,7 +2725,7 @@
     ],
     "shoulder_seam_attach_arm_end": [
      51,
-     415.99999999999994
+     416
     ],
     "cord_mid": [
      26,
@@ -2743,7 +2743,7 @@
    "w_in": 0.77,
    "h_in": 4.22,
    "size_source": "estimated",
-   "basis": "No cord dimensions in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette (composed against garment-blues-class-a-coat, -female, class-b shirt/blouse in a throwaway preview 2026-10-13; was 4.5 in); thickness 0.40 in from the cord/length ratio of the app's cord images; colours and braid read from images/cords/*.webp. Colour re-measured 2026-10-25: images/cords/wing.webp (alpha>200 non-white n=5558, sorted by luminance; Vanguard Scarlet Red photo https://www.vanguardmil.com/cdn/shop/products/3738950_930d3b69-321a-4125-969d-2928eafa1c4b.jpeg is darker, lit face #7b0f11, so the lighter app photo is kept): main #e01215 = mean of the p60-p90 lit face, groove #c00303 = shadow p5 (was #d70d10/#a80506, p50 and p5). Ethan: \"NCAC cord is a bit too dark\"",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
    "anchors": {
     "top_center": [
      38.5,
@@ -2775,7 +2775,7 @@
     ],
     "shoulder_seam_attach_arm_end": [
      51,
-     415.99999999999994
+     416
     ],
     "cord_mid": [
      26,
@@ -36992,7 +36992,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37047,7 +37047,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37091,7 +37091,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37135,7 +37135,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37179,7 +37179,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37223,7 +37223,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37267,7 +37267,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-a-coat; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -37311,7 +37311,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37366,7 +37366,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37410,7 +37410,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37454,7 +37454,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37498,7 +37498,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37542,7 +37542,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37586,7 +37586,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-blues-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -37630,7 +37630,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37685,7 +37685,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37729,7 +37729,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37773,7 +37773,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37817,7 +37817,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37861,7 +37861,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37905,7 +37905,7 @@
    "w_in": 25.1882,
    "h_in": 32.9532,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1259.4099999999999,
@@ -37949,7 +37949,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38004,7 +38004,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38048,7 +38048,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38092,7 +38092,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38136,7 +38136,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38180,7 +38180,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38224,7 +38224,7 @@
    "w_in": 24.5174,
    "h_in": 36.3441,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-blouse-female-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1225.8712042116981,
@@ -38268,7 +38268,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38323,7 +38323,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38367,7 +38367,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38411,7 +38411,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38455,7 +38455,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38499,7 +38499,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38543,7 +38543,7 @@
    "w_in": 26.8594,
    "h_in": 29.5087,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1342.9676342368648,
@@ -38587,7 +38587,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38642,7 +38642,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38686,7 +38686,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38730,7 +38730,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38774,7 +38774,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38818,7 +38818,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38862,7 +38862,7 @@
    "w_in": 25.8626,
    "h_in": 32.9106,
    "size_source": "estimated",
-   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1293.1299999999999,
@@ -38906,7 +38906,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -38961,7 +38961,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -39005,7 +39005,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -39049,7 +39049,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -39093,7 +39093,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -39137,7 +39137,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -39181,7 +39181,7 @@
    "w_in": 24.3883,
    "h_in": 29.4756,
    "size_source": "estimated",
-   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.36 in braid (true size) following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box and scale as garment-semiformal-class-a-coat-female; 0.5 in braid (true size) following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1219.42,
@@ -39225,7 +39225,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as the garment sheet; colours from assets/cords/cord-aide-de-camp.spec.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
+   "basis": "Same box as the garment sheet; colours from assets/cords/cords.json. The regulation gives no cord dimension. LIVE11-ART 1 (Ethan: \"theres only supposed to be one thing not 2\"): the aide de camp cord is ONE aiguillette, drawn as worn on a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.36 in): two braids leave the epaulet at the front of the shoulder side by side, 0.9 B apart; the outer one is the group `cord`, the run down the armhole seam to the armpit that the engine fits and carries under the arm along the body edge, and it is the right leg of the long loop; the inner one makes the short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge); the long loop's chest-side leg hangs 4.14 B from the run, parallel to it, and bends in to meet the run under the arm (where the engine fades the braid out behind the arm); each loop turns up on the chest side into a free end 3.9 B below the epaulet edge, from which a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B) and on to a silver pencil tip 3.2 B long (1.15 in), the two tips 0.8 B apart, ending 14.7 B below the epaulet edge. There is no separate braid along the seam: the run is the aiguillette. B is the braid thickness read on the photo (about 50 px at x4 of the 314 x 236 px preview); the leg offsets, loop depths and widths are read in B from the same picture; the long loop's depth to the armpit and the under-arm closing are not in the photo (it is cropped there) and are estimated from the sheet's armpit and body edge. The drape is measured along the run (its legs follow the armhole seam), the free ends and tips hang parallel to it. How the real cord hangs on a person varies; the photograph is one mannequin.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -39280,7 +39280,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-color-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -39324,7 +39324,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-group.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -39368,7 +39368,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-honor-guard.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -39412,7 +39412,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-national.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -39456,7 +39456,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-region.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -39500,7 +39500,7 @@
    "w_in": 25.7745,
    "h_in": 32.5595,
    "size_source": "estimated",
-   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+   "basis": "Same box as garment-semiformal-class-a-coat-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
    "anchors": {
     "top_center": [
      1288.72666,
@@ -77343,6 +77343,2994 @@
     "right_edge": [
      300,
      154.859
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-de-unit-award",
+   "path": "cords/cord-de-unit-award.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-de-wing-cadet-of-the-year",
+   "path": "cords/cord-de-wing-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-fl-executive-leadership",
+   "path": "cords/cord-fl-executive-leadership.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-fl-honor-society-distinction",
+   "path": "cords/cord-fl-honor-society-distinction.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-fl-honor-society-high-distinction",
+   "path": "cords/cord-fl-honor-society-high-distinction.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 5.17,
+   "h_in": 5.54,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Two existing pieces in one asset. (1) The shoulder cord as drawn by this file for the other cords (the shared spine: 4.1 in long, 0.25 in bow toward the body; 0.48 in across here, 0.5 in on the plain pictures, so that its right edge stays inside the box), the braid of the CAP honor guard uniform guidance figures (base-art/cord-braid.js), standing on the arm side (right) with its neck end level with the tops of the aiguillette's braids. (2) The aiguillette as worn (LIVE9-ART 2), unchanged in shape: drawn from a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin. The aiguillette's braids are drawn with the same braid function as the shoulder cord (they were a dashed-groove stroke).",
+   "anchors": {
+    "top_center": [
+     258.5,
+     0
+    ],
+    "bottom_center": [
+     258.5,
+     554
+    ],
+    "center": [
+     258.5,
+     277
+    ],
+    "left_edge": [
+     0,
+     277
+    ],
+    "right_edge": [
+     517,
+     277
+    ],
+    "shoulder_seam_attach": [
+     487,
+     35
+    ],
+    "shoulder_seam_attach_neck_end": [
+     487,
+     35
+    ],
+    "shoulder_seam_attach_arm_end": [
+     487,
+     445
+    ],
+    "cord_mid": [
+     462,
+     240
+    ],
+    "aiguillette_attach": [
+     420,
+     72.50000000000001
+    ],
+    "loop_bottom": [
+     357.9,
+     521.6
+    ],
+    "tip_end": [
+     270,
+     513.5
+    ],
+    "aiguillette_tip": [
+     270,
+     513.5
+    ]
+   },
+   "landmarks": [
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
+   ]
+  },
+  {
+   "id": "cord-fl-leadership-academy-instructor",
+   "path": "cords/cord-fl-leadership-academy-instructor.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 5.17,
+   "h_in": 5.54,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1 or DAFI 36-2903. Two existing pieces in one asset. (1) The shoulder cord as drawn by this file for the other cords (the shared spine: 4.1 in long, 0.25 in bow toward the body; 0.48 in across here, 0.5 in on the plain pictures, so that its right edge stays inside the box), the braid of the CAP honor guard uniform guidance figures (base-art/cord-braid.js), standing on the arm side (right) with its neck end level with the tops of the aiguillette's braids. (2) The aiguillette as worn (LIVE9-ART 2), unchanged in shape: drawn from a USAF service dress coat (assets/cords/ref/aiguillette-worn-usaf-service-dress-screenshot.jpg, README), in braid thicknesses B (0.30 in here): two braids leaving the epaulet at the top (cut square here: the ends go under it) side by side, 0.9 B apart: the inner one makes a short loop (legs 2.24 B apart, bottom 10.0 B below the epaulet edge), the outer one a long loop (legs 4.14 B apart, bottom 15.2 B as photographed), each turning up on the chest side into a free end 3.9 B below the epaulet edge; from each free end a thin cord (0.14 B) runs to a whipping (0.7 x 1.8 B at 6.7 B) and on to a pencil tip 3.2 B long (0.96 in at B 0.30), the two tips 0.8 B apart ending 14.7 B below the epaulet edge. B was read on the photo (about 50 px at x4 of the 314 x 236 px preview); every depth and width is read in B from the same picture. How the loops hang is as photographed, a mannequin. The aiguillette's braids are drawn with the same braid function as the shoulder cord (they were a dashed-groove stroke).",
+   "anchors": {
+    "top_center": [
+     258.5,
+     0
+    ],
+    "bottom_center": [
+     258.5,
+     554
+    ],
+    "center": [
+     258.5,
+     277
+    ],
+    "left_edge": [
+     0,
+     277
+    ],
+    "right_edge": [
+     517,
+     277
+    ],
+    "shoulder_seam_attach": [
+     487,
+     35
+    ],
+    "shoulder_seam_attach_neck_end": [
+     487,
+     35
+    ],
+    "shoulder_seam_attach_arm_end": [
+     487,
+     445
+    ],
+    "cord_mid": [
+     462,
+     240
+    ],
+    "aiguillette_attach": [
+     420,
+     72.50000000000001
+    ],
+    "loop_bottom": [
+     357.9,
+     521.6
+    ],
+    "tip_end": [
+     270,
+     513.5
+    ],
+    "aiguillette_tip": [
+     270,
+     513.5
+    ]
+   },
+   "landmarks": [
+    "aiguillette_loop",
+    "aiguillette_pendant",
+    "aiguillette_tip"
+   ]
+  },
+  {
+   "id": "cord-fl-leadership-academy",
+   "path": "cords/cord-fl-leadership-academy.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-fl-phase-cadet-of-the-year",
+   "path": "cords/cord-fl-phase-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-fl-squadron-cadet-of-the-year",
+   "path": "cords/cord-fl-squadron-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ga-cadet-of-the-quarter-month",
+   "path": "cords/cord-ga-cadet-of-the-quarter-month.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ga-cadet-of-the-year",
+   "path": "cords/cord-ga-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.37,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strands hang from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in.",
+   "anchors": {
+    "top_center": [
+     68.5,
+     0
+    ],
+    "bottom_center": [
+     68.5,
+     422
+    ],
+    "center": [
+     68.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     137,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ],
+    "strand_attach": [
+     105.5,
+     6
+    ],
+    "strand_tip": [
+     105.5,
+     346
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ga-honor-society",
+   "path": "cords/cord-ga-honor-society.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.1,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strand hangs from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in.",
+   "anchors": {
+    "top_center": [
+     55.00000000000001,
+     0
+    ],
+    "bottom_center": [
+     55.00000000000001,
+     422
+    ],
+    "center": [
+     55.00000000000001,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     110.00000000000001,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ],
+    "strand_attach": [
+     96,
+     6
+    ],
+    "strand_tip": [
+     96,
+     346
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ga-phase-cadet-of-the-year",
+   "path": "cords/cord-ga-phase-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ga-squadron-cadet-of-the-year",
+   "path": "cords/cord-ga-squadron-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ks-academic-high",
+   "path": "cords/cord-ks-academic-high.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ks-academic",
+   "path": "cords/cord-ks-academic.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ks-cadet-of-the-quarter",
+   "path": "cords/cord-ks-cadet-of-the-quarter.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ks-competition-first",
+   "path": "cords/cord-ks-competition-first.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.1,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strand hangs from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in.",
+   "anchors": {
+    "top_center": [
+     55.00000000000001,
+     0
+    ],
+    "bottom_center": [
+     55.00000000000001,
+     422
+    ],
+    "center": [
+     55.00000000000001,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     110.00000000000001,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ],
+    "strand_attach": [
+     96,
+     6
+    ],
+    "strand_tip": [
+     96,
+     346
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ks-competition-second",
+   "path": "cords/cord-ks-competition-second.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mar-cadet-of-the-year",
+   "path": "cords/cord-mar-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mar-competition-team",
+   "path": "cords/cord-mar-competition-team.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mar-event-marshal",
+   "path": "cords/cord-mar-event-marshal.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mar-operations-assistant",
+   "path": "cords/cord-mar-operations-assistant.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-md-cadet-commander",
+   "path": "cords/cord-md-cadet-commander.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-afa-nco-of-the-year",
+   "path": "cords/cord-me-afa-nco-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-cadet-commander",
+   "path": "cords/cord-me-cadet-commander.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-honor-society-distinction",
+   "path": "cords/cord-me-honor-society-distinction.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.1,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strand hangs from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in. The strand carries the wrapped knot of the 9 inch single strand with silver tip that Vanguard sells (CAP0650J), the knot a little under a quarter of the way down from the pinned end.",
+   "anchors": {
+    "top_center": [
+     55.00000000000001,
+     0
+    ],
+    "bottom_center": [
+     55.00000000000001,
+     422
+    ],
+    "center": [
+     55.00000000000001,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     110.00000000000001,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ],
+    "strand_attach": [
+     96,
+     6
+    ],
+    "strand_tip": [
+     96,
+     346
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-honor-society",
+   "path": "cords/cord-me-honor-society.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-squadron-cadet-of-the-month",
+   "path": "cords/cord-me-squadron-cadet-of-the-month.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-squadron-cadet-of-the-quarter",
+   "path": "cords/cord-me-squadron-cadet-of-the-quarter.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-squadron-cadet-of-the-year",
+   "path": "cords/cord-me-squadron-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-me-wing-cadet-of-the-year",
+   "path": "cords/cord-me-wing-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-cadet-of-the-quarter",
+   "path": "cords/cord-mn-cadet-of-the-quarter.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-drill-down-cadet-of-the-month",
+   "path": "cords/cord-mn-drill-down-cadet-of-the-month.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-encampment-executive-staff",
+   "path": "cords/cord-mn-encampment-executive-staff.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-encampment-flight-commander",
+   "path": "cords/cord-mn-encampment-flight-commander.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-encampment-flight-sergeant",
+   "path": "cords/cord-mn-encampment-flight-sergeant.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-encampment-squadron-staff",
+   "path": "cords/cord-mn-encampment-squadron-staff.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mn-encampment-support-staff",
+   "path": "cords/cord-mn-encampment-support-staff.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mo-medical-orientation",
+   "path": "cords/cord-mo-medical-orientation.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-mo-pathfinders",
+   "path": "cords/cord-mo-pathfinders.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-nc-cadet-commander",
+   "path": "cords/cord-nc-cadet-commander.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-nc-unit-award",
+   "path": "cords/cord-nc-unit-award.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-nc-wing-cadet-of-the-year",
+   "path": "cords/cord-nc-wing-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ne-academic-excellence",
+   "path": "cords/cord-ne-academic-excellence.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ne-cadet-of-the-year",
+   "path": "cords/cord-ne-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ne-unit-award",
+   "path": "cords/cord-ne-unit-award.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ner-ncols",
+   "path": "cords/cord-ner-ncols.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-ner-rcls",
+   "path": "cords/cord-ner-rcls.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-nh-cadet-of-the-month-quarter",
+   "path": "cords/cord-nh-cadet-of-the-month-quarter.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-nh-ncols",
+   "path": "cords/cord-nh-ncols.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-va-cadet-of-the-month-quarter",
+   "path": "cords/cord-va-cadet-of-the-month-quarter.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-va-government-relations-intern",
+   "path": "cords/cord-va-government-relations-intern.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-va-honor-guard-college",
+   "path": "cords/cord-va-honor-guard-college.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-va-wing-cadet-of-the-year",
+   "path": "cords/cord-va-wing-cadet-of-the-year.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-wv-honor-society-after-mitchell",
+   "path": "cords/cord-wv-honor-society-after-mitchell.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.1,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strand hangs from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in.",
+   "anchors": {
+    "top_center": [
+     55.00000000000001,
+     0
+    ],
+    "bottom_center": [
+     55.00000000000001,
+     422
+    ],
+    "center": [
+     55.00000000000001,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     110.00000000000001,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ],
+    "strand_attach": [
+     96,
+     6
+    ],
+    "strand_tip": [
+     96,
+     346
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-wv-honor-society-twice",
+   "path": "cords/cord-wv-honor-society-twice.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.1,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strand hangs from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in. The strand carries the wrapped knot of the 9 inch single strand with silver tip that Vanguard sells (CAP0650J), the knot a little under a quarter of the way down from the pinned end.",
+   "anchors": {
+    "top_center": [
+     55.00000000000001,
+     0
+    ],
+    "bottom_center": [
+     55.00000000000001,
+     422
+    ],
+    "center": [
+     55.00000000000001,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     110.00000000000001,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
+    ],
+    "strand_attach": [
+     96,
+     6
+    ],
+    "strand_tip": [
+     96,
+     346
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "cord-wv-honor-society",
+   "path": "cords/cord-wv-honor-society.svg",
+   "category": "cords",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 0.77,
+   "h_in": 4.22,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json.",
+   "anchors": {
+    "top_center": [
+     38.5,
+     0
+    ],
+    "bottom_center": [
+     38.5,
+     422
+    ],
+    "center": [
+     38.5,
+     211
+    ],
+    "left_edge": [
+     0,
+     211
+    ],
+    "right_edge": [
+     77,
+     211
+    ],
+    "shoulder_seam_attach": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_neck_end": [
+     51,
+     6
+    ],
+    "shoulder_seam_attach_arm_end": [
+     51,
+     416
+    ],
+    "cord_mid": [
+     26,
+     211
     ]
    },
    "landmarks": []

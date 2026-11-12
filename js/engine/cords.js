@@ -62,9 +62,32 @@
     return e && e.aiguillette ? { id: e.id, name: e.name, style: 'solid', colours: [e.aiguillette] } : null;
   }
 
+  // The metal of the tip an aiguillette ends in, as the list gives it for the aiguillette's colour (silver for a silver one, gold for a gold one): { main, dark }, or null.
+  function tipMetal(value){
+    const l = getList(), e = entry(value);
+    return l && e && e.aiguillette && l.metals && l.metals[e.aiguillette] ? { main: l.metals[e.aiguillette].main, dark: l.metals[e.aiguillette].dark } : null;
+  }
+
+  // A short piece of a cord as a picture for a chooser, drawn by CordBraid: the braid running down and across the frame (cap and all), the strand and tip it hangs from the
+  // shoulder end, and for a cord that hangs an aiguillette the pendant's braid beside it. A frame in inches, 4 to 3; a cord with a strand takes a taller one, whole, so its tip
+  // is not cut. SVG markup, or '' when the drawing function is not loaded or the cord cannot be drawn (a chosen cord with no colour of the list's).
+  function sampleSvg(value, colour){
+    const braid = getBraid(), cord = resolve(value, colour);
+    if(!braid || !cord) return '';
+    const tall = !!(cord.strand || cord.knot), W = tall ? 0.5 : 0.62, H = tall ? 3.9 : 2.7, wide = +(H * 4 / 3).toFixed(3);
+    const x0 = +(wide * (tall ? 0.46 : 0.42)).toFixed(3), x1 = +(x0 + (tall ? 1 : 0.9)).toFixed(3), y0 = 0.15, y1 = +(H - 0.15).toFixed(3);
+    const id = 'cs-' + cord.id + '-';
+    let body = '';
+    const pend = cord.aiguillette ? pendantCord(value, colour) : null;
+    if(pend) body += braid.draw([[+(x0 - 0.55).toFixed(3), y0], [+(x0 - 0.55).toFixed(3), +(y1 - 0.5).toFixed(3)]], pend, { unit: 1, width: 0.36, idPrefix: id + 'pendant-' }).run;
+    const d = braid.draw([[x0, y0], [x1, y1]], cord, { unit: 1, width: W, idPrefix: id, cap: true });
+    body += d.run + d.extras;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${wide} ${H}" focusable="false" aria-hidden="true">${body}</svg>`;
+  }
+
   // The regulation cord whose sheet carries a cord's geometry on every cut that takes one: each of the seven is its own carrier, a supplement cord has no sheet and
   // rides the honor guard cord's.
   const carrierOf = value => REGULATION.includes(listId(value).replace(/-/g, '_')) ? listId(value) : 'honor-guard';
 
-  return { REGULATION, listId, entry, supplementIds, isRegulation, isSupplement, isKnown, needsColour, chosenColours, isChosenColour, hasAiguillette, resolve, pendantCord, carrierOf };
+  return { REGULATION, listId, entry, supplementIds, isRegulation, isSupplement, isKnown, needsColour, chosenColours, isChosenColour, hasAiguillette, resolve, pendantCord, tipMetal, sampleSvg, carrierOf };
 });

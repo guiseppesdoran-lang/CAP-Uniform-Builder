@@ -2,8 +2,9 @@
 // LIVE-CORDS (Ethan, post-sync: "the cords don't line up"): the shoulder cord is a sheet overlay registered to its garment, drawn
 // along the wearer's left armhole seam and under the epaulet (CAPR 39-1 9.3). The engine places it at the garment's origin from the
 // sheet's own box and keeps no literal point for it, so what has to hold is the art and the registration:
-//   - every segment of the cord's path starts where the one before it ends (one continuous subpath), and the body, the outline and the
-//     dashed twist are three strokes of the very same path, so the three layers cannot slip against each other;
+//   - every segment of the cord's path starts where the one before it ends (one continuous subpath), and the sheet states it once, as an
+//     unstroked polyline (the cord's centre line: the engine fits it, CordBraid draws the braid along the fitted line) beside the braid group the sheet
+//     itself draws along it;
 //   - the path is the landmark 'cord' and its two ends are the anchors cord_start / cord_end, to 0.02 in;
 //   - the overlay has the garment's own box, and the engine puts it on the garment at 0,0 at that size, so a rescale of the garment
 //     without its cords (or the other way round) fails here;
@@ -76,17 +77,18 @@ function startCap(pts, width, sil){
   return [[a[0] + nx, a[1] + ny], [a[0] - nx, a[1] - ny], a];
 }
 
-test('every cord overlay is one continuous path drawn three times, and it is the sheet\'s cord landmark and anchors (0.02 in)', () => {
+test('every cord overlay states its centre line once, as one continuous unstroked polyline with the braid drawn along it, and it is the sheet\'s cord landmark and anchors (0.02 in)', () => {
   let checked = 0;
   for(const [gid] of GARMENTS) for(const k of KINDS){
     const id = `${gid}-cord-${k}`;
-    const strokes = cordStrokes(id), sp = spec(id);
-    assert.equal(strokes.length, 3, `${id}: outline, body and dashed twist`);
+    const strokes = cordStrokes(id), sp = spec(id), svg = read(id);
+    assert.equal(strokes.length, 1, `${id}: the centre line, one path`);
     for(const s of strokes){
-      assert.equal(s.d, strokes[0].d, `${id}: the three strokes share one path`);
       assert.ok(/^M/.test(s.d) && !/M.*M/.test(s.d), `${id}: one subpath, so each segment starts where the one before it ends`);
       assert.ok(s.pts.length >= 4, `${id}: ${s.pts.length} points`);
     }
+    assert.match(svg, new RegExp(`<path id="${id}__cord-path" d="[^"]+" fill="none" stroke="none"/>`), `${id}: the polyline is unstroked: it is the line, not a drawing`);
+    assert.match(svg, new RegExp(`<g id="${id}__braid">(?:<path [^>]*>)+</g>`), `${id}: the sheet's own braid is shapes in a braid group`);
     const pts = strokes[0].pts, lm = sp.landmarks.cord.map(([x, y]) => [x / 100, y / 100]);
     assert.equal(lm.length, pts.length, `${id}: landmark and path have the same vertices`);
     pts.forEach((p, i) => assert.ok(Math.hypot(p[0] - lm[i][0], p[1] - lm[i][1]) <= TOL, `${id}: vertex ${i} is ${Math.hypot(p[0] - lm[i][0], p[1] - lm[i][1]).toFixed(3)} in from the landmark`));
@@ -360,20 +362,28 @@ test('every cord kind on every garment and both sexes: one smooth run from the t
   assert.equal(checked, FIT_GARMENTS.length * KINDS.length);
 });
 
-test('the fitted path is the sheet\'s braid: the renderer maps it back to the sheet\'s drawing units, and a path of the sheet\'s own points comes out as the sheet\'s own path', () => {
+test('the fitted path is the sheet\'s centre line: the renderer maps it back to the sheet\'s drawing units, and a path of the sheet\'s own points comes out as the sheet\'s own polyline', () => {
   global.self = global.self || global;
   require('../js/engine/render-svg.js');
   const RS = global.self.CAPUBEngine.renderSvg;
-  for(const [gid] of FIT_GARMENTS){
-    const id = `${gid}-cord-wing`, svg = read(id);
-    const t = svg.match(/__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/);
-    const own = /<path id="[^"]*__cord-path" d="([^"]+)"/.exec(svg)[1];
-    const inches = cordStrokes(id)[0].pts;
-    const d = 'M' + inches.map(p => `${p[0]},${p[1]}`).join('L');
-    const back = RS.cordPathToArt(d, Number(t[1]), Number(t[2]), Number(t[3])).match(/-?[\d.]+/g).map(Number), ref = own.match(/-?[\d.]+/g).map(Number);
-    assert.equal(back.length, ref.length);
-    back.forEach((v, i) => assert.ok(Math.abs(v - ref[i]) < 0.002, `${id}: coordinate ${i} ${v} against ${ref[i]}`));
-  }
+  global.self.CAPUBEngine.core = core;
+  global.self.CAPUBEngine.cords = require('../js/engine/cords.js');
+  const real = require('../js/engine/cord-braid.js');
+  const seen = [];
+  global.CordBraid = Object.assign({}, real, { draw: (points, cord, opts) => { seen.push(points); return { run: '', extras: '' }; } });
+  try{
+    for(const [gid] of FIT_GARMENTS){
+      const id = `${gid}-cord-wing`, svg = read(id);
+      const t = svg.match(/__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/);
+      const own = /<path id="[^"]*__cord-path" d="([^"]+)"/.exec(svg)[1];
+      const inches = cordStrokes(id)[0].pts;
+      const pieces = inches.slice(1).map((b, i) => ({ type: 'L', a: inches[i], b }));
+      RS.cordBraid({ cordLook: { id: 'wing', colour: null }, cordPath: { pieces, width: 0.5 } }, Number(t[1]), Number(t[2]), Number(t[3]), 'x-');
+      const back = seen.pop().flat(), ref = own.match(/-?[\d.]+/g).map(Number);
+      assert.equal(back.length, ref.length);
+      back.forEach((v, i) => assert.ok(Math.abs(v - ref[i]) < 0.002, `${id}: coordinate ${i} ${v} against ${ref[i]}`));
+    }
+  }finally{ delete global.CordBraid; }
 });
 
 // LIVE13 E122: "they shouldnt conflict with the ribbons ever": the arc of braid down the seam never reaches a ribbon of the rack, with a rack of any size.

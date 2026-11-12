@@ -152,10 +152,19 @@
     return h.toString(36);
   }
 
-  // A path in sheet inches (M, L and Q with x,y pairs) in the sheet's drawing units: an art group `translate(tx ty) scale(s)` in 0.01 in
-  // units draws its own coordinate c at (tx + s * c) / 100 inches.
-  function cordPathToArt(d, tx, ty, s){
-    return String(d).replace(/(-?[\d.]+),(-?[\d.]+)/g, (m, x, y) => `${fmt((Number(x) * 100 - tx) / s)},${fmt((Number(y) * 100 - ty) / s)}`);
+  // The braid of a cord layer: CordBraid (js/engine/cord-braid.js) lays the cord's look, from the cord list (layer.cordLook: which cord, the member's colour for a cord
+  // whose colour the unit commander picks, and `pendant` for the aiguillette's braid in place of the cord itself), along the fitted path the engine gave the layer
+  // (layer.cordPath.pieces, sheet inches). tx, ty and s are the sheet's art transform (translate(tx ty) scale(s), 0.01 in units): the markup comes out in the art
+  // group's own units, `unit` of them to the inch. Returns { run, extras } or null when the drawing function or the cord is not there, and the sheet's own strokes are
+  // drawn instead.
+  function cordBraid(layer, tx, ty, s, idPrefix){
+    const look = layer.cordLook, E = root.CAPUBEngine || {}, CB = root.CordBraid, CS = E.cords;
+    if(!look || !CB || !CS || !E.core || !layer.cordPath || !layer.cordPath.pieces) return null;
+    const cord = look.pendant ? CS.pendantCord(look.id, look.colour) : CS.resolve(look.id, look.colour);
+    if(!cord) return null;
+    const points = E.core.samplePath(layer.cordPath.pieces, 0.02).map(p => [(p[0] * 100 - tx) / s, (p[1] * 100 - ty) / s]);
+    const out = CB.draw(points, cord, { unit: 100 / s, width: layer.cordPath.width, idPrefix, cap: !look.pendant });
+    return out && out.run ? { run: out.run, extras: look.pendant ? '' : out.extras } : null;
   }
 
   function transformFor(layer){
@@ -343,8 +352,18 @@
     const AW = root.CAPUBEngine && root.CAPUBEngine.awards;
     const deviceSyms = new Set();
     // Variants of a symbol with named groups hidden, or with only named groups shown.
-    function variantKey(layer){
-      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d);
+    // The metal an aiguillette's tip is drawn in (js/engine/cords.js tipMetal): the sheet draws the silver one, a gold aiguillette's tip takes the list's gold. The variant is keyed by it.
+    const tipMetalOf = layer => {
+      const CS = root.CAPUBEngine && root.CAPUBEngine.cords;
+      return layer.cordLook && layer.cordLook.tip && CS ? CS.tipMetal(layer.cordLook.id) : null;
+    };
+    const SHEET_TIP = { main: '#c9ccd2', dark: '#2e3036' };   // the metal the aide de camp sheets draw their tips in
+    const variantKey = layer => {
+      const m = tipMetalOf(layer);
+      return baseVariantKey(layer) + (m && (m.main.toLowerCase() !== SHEET_TIP.main || m.dark.toLowerCase() !== SHEET_TIP.dark) ? '--tip-' + hashText(m.main + m.dark) : '');
+    };
+    function baseVariantKey(layer){
+      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : ''));
       // Both: the named groups only, less the hidden ones inside them (a collar group redrawn without its cover).
       if(layer.onlyGroups && layer.onlyGroups.length && layer.hideGroups && layer.hideGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '') + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
@@ -404,24 +423,16 @@
       sym.innerHTML = lean.inner.replace(/\bid="([^"]+)"/g, (m, v) => `id="${v}${suffix}"`).replace(/url\(#([^)]+)\)/g, (m, v) => lean.shared.has(v) ? m : `url(#${v}${suffix})`).replace(/href="#([^"]+)"/g, (m, v) => lean.shared.has(v) ? m : `href="#${v}${suffix}"`);
       const byId = name => sym.querySelector(`[id="${layer.id}__${name}${suffix}"]`);
       if(layer.cordPath && layer.cordPath.d){
-        // The fitted cord path (engine: core.fitCord) replaces the sheet's polyline in every stroke of the braid; the art group's own
-        // translate and scale take the path from sheet inches back to the sheet's drawing units.
+        // The fitted cord path (engine: core.fitCord); the art group's own translate and scale take it from sheet inches to the sheet's drawing units.
         const art = byId('art'), cord = byId('cord'), t = art && /translate\(([-\d.]+)[ ,]+([-\d.]+)\)\s*scale\(([-\d.]+)\)/.exec(art.getAttribute('transform') || '');
-        if(cord && t){
-          const d = cordPathToArt(layer.cordPath.d, Number(t[1]), Number(t[2]), Number(t[3]));
-          const strokes = [...cord.querySelectorAll('path')].filter(pn => /^M/.test(pn.getAttribute('d') || ''));
-          strokes.forEach(pn => pn.setAttribute('d', d));
-          // The braid's width (engine: core.CORD_WIDTH, LIVE13 E120 "a tad bit thicker"): the sheet's widest stroke (the outline) is scaled to it in
-          // sheet inches, and its body, its dashed twist and the twist's pitch by the same factor, so the braid keeps its drawing at the new width.
-          const sIn = Number(t[3]) / 100, widths = strokes.map(pn => Number(pn.getAttribute('stroke-width')) || 0), widest = Math.max(...widths);
-          if(layer.cordPath.width > 0 && widest > 0 && sIn > 0){
-            const k = layer.cordPath.width / (widest * sIn);
-            strokes.forEach((pn, i) => {
-              if(widths[i]) pn.setAttribute('stroke-width', fmt(widths[i] * k));
-              const dash = pn.getAttribute('stroke-dasharray');
-              if(dash) pn.setAttribute('stroke-dasharray', dash.trim().split(/[\s,]+/).map(v => fmt(Number(v) * k)).join(' '));
-            });
-          }
+        // Every cord is the one braid, drawn by CordBraid along the fitted path: the braid the sheet draws along its own polyline gives way to it, whatever the cord. A sheet whose braid
+        // cannot be drawn (no drawing function loaded, a cord the list does not know) keeps the braid it draws.
+        const braid = cord && t ? cordBraid(layer, Number(t[1]), Number(t[2]), Number(t[3]), 'cb' + hashText(key) + '-') : null;
+        if(braid){
+          for(const n of [...cord.childNodes]) if(n.nodeName !== 'title') cord.removeChild(n);
+          const holder = el('g');
+          holder.innerHTML = braid.run + braid.extras;
+          while(holder.firstChild) cord.appendChild(holder.firstChild);
         }
         // A cord sheet that draws more than the braid (the Aide de Camp aiguillette's loops and thin cords) has those groups left off here.
         if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
@@ -440,6 +451,14 @@
         wrap.querySelectorAll('clipPath, mask, pattern, marker').forEach(n => n.setAttribute('visibility', 'visible'));
         layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); } });
         (layer.hideGroups || []).forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
+        // The tip of a gold aiguillette is the sheet's tip in the list's gold metal: its fill and its edge, the two values the sheet draws the silver tip with.
+        const metal = tipMetalOf(layer);
+        if(metal) for(const n of sym.querySelectorAll('[fill], [stroke]')){
+          for(const attr of ['fill', 'stroke']){
+            const v = (n.getAttribute(attr) || '').toLowerCase();
+            if(v === SHEET_TIP.main) n.setAttribute(attr, metal.main); else if(v === SHEET_TIP.dark) n.setAttribute(attr, metal.dark);
+          }
+        }
       }
       s.variants.set(key, sym.cloneNode(true));
       defs.appendChild(sym);
@@ -654,5 +673,5 @@
   }
 
   root.CAPUBEngine = root.CAPUBEngine || {};
-  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, embedFonts, ENGRAVED_FONT, loadSymbol, measureNodes, cordPathToArt, hashText, scopeIds };
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, embedFonts, ENGRAVED_FONT, loadSymbol, measureNodes, cordBraid, hashText, scopeIds };
 })(typeof self !== 'undefined' ? self : this);

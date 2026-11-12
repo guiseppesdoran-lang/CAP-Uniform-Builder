@@ -13,7 +13,7 @@
   3291.06
  ],
  "size_source": "estimated",
- "size_basis": "Same box as garment-blues-class-b-shirt-male-long; 0.36 in braid following the wearer's left armhole seam; colours from assets/cords/cord-wing.spec.json. The regulation gives no cord dimension.",
+ "size_basis": "Same box as garment-blues-class-b-shirt-male-long; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
  "anchors": {
   "top_center": [
    1293.1299999999999,
@@ -210,7 +210,7 @@
   "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
  ],
  "assumed": [
-  "cord thickness 0.36 in",
+  "cord thickness 0.5 in (the engine draws the shoulder cord 0.5 in across)",
   "path along the armhole seam"
  ],
  "fit": {

@@ -59,14 +59,14 @@ for(const [uniform, gender, opt, sheetId] of SHEETS){
     assert.ok(braid && tip && run, 'the aide cord is drawn as the shoulder cord, a braid and a tip');
     assert.ok(braid.z < 10 && tip.z < 10 && run.z < 10, 'the cord stays under the epaulet strip');
     assert.deepEqual(run.hideGroups, ['aiguillette-loop', 'aiguillette-hang'], 'the shoulder cord is the overlay\'s run alone: its loops and hanging parts are the aiguillette\'s, drawn by the braid and the tip');
-    assert.equal(run.cordPath.width, core.CORD_WIDTH, 'the shoulder cord is the honor guard cord\'s braid, as wide as every shoulder cord');
+    assert.equal(run.cordPath.width, dims.braid_thickness_in, 'the shoulder cord is drawn as wide as the aiguillette\'s braids it hangs beside (the sheet\'s braid thickness), not as wide as the other cords');
     assert.ok(run.cordPath.exact || sheetId === 'garment-blues-class-a-coat', 'the shoulder cord follows the drawn armhole seam where the sheet draws one');
     assert.ok(run.z >= braid.z, 'the shoulder cord lies over the aiguillette\'s braid at its top');
     // One vertical braid of the sheet's thickness, drop and tip.
     const cp = braid.cordPath, [A, E] = [cp.top, cp.end];
     assert.equal(cp.pieces.length, 1, 'one straight piece');
     assert.ok(Math.abs(A[0] - E[0]) < 1e-9 && E[1] > A[1], 'straight down with gravity');
-    assert.ok(Math.abs(cp.width - (dims.braid_thickness_in + 0.04)) < 1e-9, `the braid is the sheet's ${dims.braid_thickness_in} in with its outline`);
+    assert.ok(Math.abs(cp.width - dims.braid_thickness_in) < 1e-9, `the braid is the sheet's ${dims.braid_thickness_in} in across, outline included`);
     assert.ok(Math.abs((E[1] - A[1]) + tipLm.len_in - dims.pendant_drop_in) < 1e-9, `the braid and the tip make the sheet's ${dims.pendant_drop_in} in drop`);
     assert.deepEqual(braid.hideGroups, ['aiguillette-loop', 'aiguillette-hang'], 'no loop or second strand');
     assert.deepEqual(tip.onlyGroups, ['aiguillette-tip-long'], 'only the chrome tip of the sheet');
@@ -79,7 +79,7 @@ for(const [uniform, gender, opt, sheetId] of SHEETS){
     const clear = scene.layers.filter(l => l.key === 'clear:aiguillette_pendant');
     assert.equal(clear.length, 1, 'the pendant box is in the keep-clear set, once');
     const want = clear[0];
-    assert.ok(Math.abs(want.h - dims.pendant_drop_in) < 1e-9 && Math.abs(want.w - (dims.braid_thickness_in + 0.04 + 0.2)) < 1e-9, `box ${want.w} x ${want.h}`);
+    assert.ok(Math.abs(want.h - dims.pendant_drop_in) < 1e-9 && Math.abs(want.w - (dims.braid_thickness_in + 0.2)) < 1e-9, `box ${want.w} x ${want.h}`);
     assert.equal(want.role, 'clear');
     for(const r of scene.layers.filter(l => l.role === 'ribbon')) assert.equal(overlap(core.layerBounds(r), want), 0, `ribbon ${r.key} is clear of the hanging braid`);
     const B = scene.bounds;

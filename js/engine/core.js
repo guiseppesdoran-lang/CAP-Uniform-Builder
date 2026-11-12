@@ -297,6 +297,27 @@
     return { points: fitted, pieces: r.pieces, d: r.d, top, bottom, end: drawn[drawn.length - 1], width: CORD_WIDTH, exact: !!o.exact, stretch: { from: len(orig), to: len(fitted), dTop: [top[0] - orig[0][0], top[1] - orig[0][1]], dBottom: [bottom[0] - orig[n - 1][0], bottom[1] - orig[n - 1][1]] } };
   }
 
+  // The centre line of a fitted cord path as points: its pieces ({ type: 'L', a, b } and { type: 'Q', a, c, b }, as fitCord and roundPolyline make them) walked
+  // from the first piece's start, a curve in steps of about `step` inches (at least 4 and at most 48 to a curve), a point where two pieces meet once. This is
+  // what CordBraid.draw lays the braid along.
+  function samplePath(pieces, step){
+    const h = step > 0 ? step : 0.02, out = [];
+    const put = p => { const q = out[out.length - 1]; if(!q || Math.hypot(p[0] - q[0], p[1] - q[1]) > 1e-9) out.push([p[0], p[1]]); };
+    for(const pc of pieces || []){
+      put(pc.a);
+      if(pc.type === 'Q'){
+        const chord = Math.hypot(pc.c[0] - pc.a[0], pc.c[1] - pc.a[1]) + Math.hypot(pc.b[0] - pc.c[0], pc.b[1] - pc.c[1]);
+        const n = Math.max(4, Math.min(48, Math.ceil(chord / h)));
+        for(let i = 1; i < n; i++){
+          const t = i / n, u = 1 - t;
+          put([u * u * pc.a[0] + 2 * u * t * pc.c[0] + t * t * pc.b[0], u * u * pc.a[1] + 2 * u * t * pc.c[1] + t * t * pc.b[1]]);
+        }
+      }
+      put(pc.b);
+    }
+    return out;
+  }
+
   return {
     UNITS_PER_INCH,
     CORD_WIDTH,
@@ -316,6 +337,7 @@
     rotatePoint,
     fitCord,
     roundPolyline,
+    samplePath,
     round
   };
 });

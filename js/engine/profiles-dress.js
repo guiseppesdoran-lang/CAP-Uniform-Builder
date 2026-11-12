@@ -5,10 +5,10 @@
 (function(root, factory){
   const node = typeof module === 'object' && module.exports;
   const deps = node
-    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js'), R: require('../../data/uniform-rules.js'), M: require('../../data/military-badge-sizes.js') }
-    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog, R: root.CAPUBUniformRules, M: root.CAPUBMilitaryBadgeSizes };
-  factory(deps.core, deps.C, deps.G, deps.P, deps.B, deps.M, deps.R);
-})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B, MIL_SIZES, RULES){
+    ? { core: require('./core.js'), C: require('./compose.js'), G: require('./grades.js'), P: require('./profiles.js'), B: require('../../data/badge-catalog.js'), R: require('../../data/uniform-rules.js'), M: require('../../data/military-badge-sizes.js'), K: require('./cords.js') }
+    : { core: root.CAPUBEngine.core, C: root.CAPUBEngine.compose, G: root.CAPUBEngine.grades, P: root.CAPUBEngine.profiles, B: root.CAPUBBadgeCatalog, R: root.CAPUBUniformRules, M: root.CAPUBMilitaryBadgeSizes, K: root.CAPUBEngine.cords };
+  factory(deps.core, deps.C, deps.G, deps.P, deps.B, deps.M, deps.R, deps.K);
+})(typeof self !== 'undefined' ? self : this, function(core, C, G, P, B, MIL_SIZES, RULES, CORDS){
   'use strict';
   const Z = C.Z;
   const H = P.helpers;
@@ -1379,7 +1379,7 @@
     const e = ctx.epauletEdge && ctx.epauletEdge.left;
     if(layer && e) layer.clip = belowEpauletEdge(e);
   }
-  function fitCordLayer(ctx, spec){
+  function fitCordLayer(ctx, spec, look){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
     const run = cordRun(id, lm);
     if(!layer || !run) return;
@@ -1399,6 +1399,10 @@
     }
     const fit = core.fitCord(pts, outline, ARMPIT[id] ? down(ARMPIT[id]) : null, { exact: run.exact, topAt });
     layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, end: fit.end, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
+    layer.cordLook = look || null;   // which cord the renderer draws along this path (CordBraid; js/engine/render-svg.js)
+    // The Aide de Camp cord's run is drawn as wide as the aiguillette's braids it hangs beside, the sheet's own braid thickness (dimensions.braid_thickness_in), not the 0.5 in of the other cords.
+    const aideThick = look && look.id === 'aide_de_camp' && spec.raw && spec.raw.dimensions && spec.raw.dimensions.braid_thickness_in;
+    if(aideThick > 0) layer.cordPath.width = aideThick;
     layer.clipSil = id;
     layer.clipOuter = true;
     tuckCordUnderEpaulet(ctx, layer);
@@ -1408,10 +1412,10 @@
   // thing, not 2. it should go straight down. not following the seam like the cord, but straight down." Doran's screenshot of the Class A with a full rack: "It's
   // putting the cord behind the ribbons". So the drawing is ONE braid, hung from its attachment under the board at the top of the armhole seam, straight down with
   // gravity, ending in its chrome tip: no loop on the chest, no second strand, and never over or behind the ribbon rack. The sizes are the sheet's own, measured on
-  // the aiguillette it draws (images/garments/*-cord-aide-de-camp): the braid is `dimensions.braid_thickness_in` (0.36 in, its outline 0.04 in wider, the strokes the
-  // renderer already draws for the shoulder cords), the pendant's drop is `dimensions.pendant_drop_in` (the aiguillette_pendant box's height, 5.9 to 6.2 in, from the
+  // the aiguillette it draws (images/garments/*-cord-aide-de-camp): the braid is `dimensions.braid_thickness_in` (0.36 in across, its outline included: the width
+  // CordBraid draws it at, as it draws the cord's run beside it), the pendant's drop is `dimensions.pendant_drop_in` (the aiguillette_pendant box's height, 5.9 to 6.2 in, from the
   // attachment to the tip's end) and the tip is `aiguillette_tip` (1.15 in, the chrome tip group of the sheet turned from its 3.6 to 11.7 degree hang to the plumb
-  // line and set at the braid's end). The braid is the sheet's `cord` group on a vertical path; the sheet's loops, thin cords and whippings are left off.
+  // line and set at the braid's end). The braid is the sheet's `cord` group on a vertical path, drawn by CordBraid; the sheet's loops, thin cords and whippings are left off.
   // Fit guard: the braid's box (its width and the 0.1 in margin, from the attachment to the tip's end) must not meet any ribbon or miniature of the rack; where it
   // would, the attachment moves outboard along the shoulder in 0.05 in steps, never the rack; where no place within 2 in clears it, a note says so.
   const AIDE_MARGIN = 0.1, AIDE_SLIDE_MAX = 2;
@@ -1431,11 +1435,11 @@
     const sm = shoulderSeamOf(id, 'left');
     let top = core.fitCord(run.points, outline, ARMPIT[id] || null, { exact: run.exact, topAt: run.topAt }).top;
     if(sm){
-      const L = Math.hypot(sm.neck.x - sm.outer.x, sm.neck.y - sm.outer.y), k = (thick + 0.04) / 2 / L;
+      const L = Math.hypot(sm.neck.x - sm.outer.x, sm.neck.y - sm.outer.y), k = thick / 2 / L;
       top = [sm.outer.x + (sm.neck.x - sm.outer.x) * k, sm.outer.y + (sm.neck.y - sm.outer.y) * k];
     }
     top = [top[0], top[1] + CORD_DROP];   // B4: the whole cord, the aiguillette's attachment with it, is drawn CORD_DROP lower
-    const tipLen = tipLm.len_in, braidLen = drop - tipLen, width = thick + 0.04;
+    const tipLen = tipLm.len_in, braidLen = drop - tipLen, width = thick;
     const racks = ctx.layers.filter(l => l.role === 'ribbon' || /^mini/.test(l.role || '')).map(l => core.layerBounds(l));
     const centreX = ctx.base.w / 2, sign = top[0] >= centreX ? 1 : -1;
     let ax = top[0], clear = false;
@@ -1481,50 +1485,55 @@
     ctx.measure({ x: sm.outer.x, y: sm.outer.y }, { x: top[0], y: top[1] }, 'under the board', { mid: { x: top[0], y: top[1] }, side: { x: 1, y: 0 }, offsetOnly: true, reference: true, caption: what + ' under the board' });
   }
 
-  // Shoulder cord on the wearer's left shoulder (9.3): the cord's neck end on the strap axis, the
-  // cord turned to follow it and moved 1/8 in toward the neck.
+  // Shoulder cord on the wearer's left shoulder (9.3), one at a time. Every cord is the one braid (owner, 2026-11-11: "i like how their cords look much better in this doc. can you update
+  // all cords to look like that"), drawn by CordBraid in the cord's colours along the path the engine fits to the garment's armhole seam, wholly under the epaulet. The regulation cords
+  // keep their per-garment sheets as carriers of that geometry; a supplement cord has no sheet and rides the honor guard cord's. The cord list (data/cords.js) says how each is drawn: its
+  // style, its colours, a thin strand with a knot and a metal tip hung from the shoulder end, an aiguillette; a cord whose colour the unit commander picks takes the member's (b.cordColour).
+  // b.cordOnTop: the cord lies over the epaulet instead of under it (the Honor Guard uniform, 9.6.7.5); off for every other uniform.
   async function shoulderCord(ctx, b, axis){
     if(!b.cord) return;
     // The cadet cords are for cadets (9.3); the Aide de Camp cord is also worn by senior members (9.3.4).
     if(!b.grade.cadet && b.cord !== 'aide_de_camp') return;
-    const id = String(b.cord).startsWith('cord-') ? b.cord : 'cord-' + String(b.cord).replace(/_/g, '-');
-    // The garment's own cord, drawn along its left armhole seam and passing under the epaulet.
-    const own = ctx.base && `${ctx.base.id}-${id}`;
-    if(own && ctx.has(own)){
-      const s = await ctx.overlay(own, Z.epauletLayer - 0.5);
+    if(!CORDS.isKnown(b.cord)){ ctx.note('The selected shoulder cord cannot be shown'); return; }
+    if(CORDS.needsColour(b.cord) && !CORDS.isChosenColour(b.cordColour)){ ctx.note('The unit commander chooses the colour of this cord: pick one to show it'); return; }
+    const look = { id: b.cord, colour: CORDS.needsColour(b.cord) ? b.cordColour : null };
+    const base = ctx.base && ctx.base.id, carrier = base && `${base}-cord-${CORDS.carrierOf(b.cord)}`, aideSheet = base && `${base}-cord-aide-de-camp`;
+    if(!carrier || !ctx.has(carrier)){ ctx.note('The selected shoulder cord cannot be shown'); return; }
+    // B8 (Ethan, 2026-11-10: "aide de camp cord is just the agiulete at the moment. merge that with the existing honor guard cord and you have the aide de camp cord"): the Aide de Camp cord is
+    // the shoulder cord, braided as the honor guard cord and drawn along the armhole seam like every shoulder cord, with the aiguillette hung from it: the one braid straight down from the
+    // attachment under the epaulet and its chrome tip (E128). A cord that names an aiguillette (the Aide de Camp cord, two Florida cords) hangs it in the cord's own colour. Two layers of the
+    // aide sheet: the pendant, and under it the run (the aide sheet is the aide cord's carrier).
+    let hung = false;
+    if(CORDS.hasAiguillette(b.cord)){
+      const s = ctx.has(aideSheet) ? await ctx.overlay(aideSheet, Z.epauletLayer - 0.5) : null;
       if(s){
-        // B8 (Ethan, 2026-11-10: "aide de camp cord is just the agiulete at the moment. merge that with the existing honor guard cord and you have the aide de camp cord"): the Aide de Camp cord is
-        // the shoulder cord, braided as the honor guard cord and drawn along the armhole seam like every shoulder cord (the overlay's `cord` group, fitted by fitCordLayer), with the aiguillette
-        // hung from it: the one braid straight down from the attachment under the epaulet and its chrome tip (E128). Two layers of the one asset: the run, and under it the aiguillette.
-        if(b.cord === 'aide_de_camp'){
-          const pendantLayer = ctx.layers[ctx.layers.length - 1];
-          if(await aiguillettePendant(ctx, s)){
-            pendantLayer.z = Z.epauletLayer - 0.51;
-            cordUnderBoard(ctx, pendantLayer, 'Aide de Camp cord');
-            const run = await ctx.overlay(own, Z.epauletLayer - 0.5);
-            if(run){
-              fitCordLayer(ctx, run);
-              const runLayer = ctx.layers[ctx.layers.length - 1];
-              runLayer.hideGroups = ['aiguillette-loop', 'aiguillette-hang'];
-              runLayer.key = 'layer:' + own + ':run';
-              cordUnderBoard(ctx, runLayer, 'shoulder cord');
-            }
-            return;
-          }
+        const pendantLayer = ctx.layers[ctx.layers.length - 1];
+        hung = await aiguillettePendant(ctx, s);
+        if(hung){
+          pendantLayer.z = Z.epauletLayer - 0.51;
+          pendantLayer.cordLook = Object.assign({ pendant: true }, look);
+          const tipLayer = ctx.layers.find(l => l.key === aideSheet + ':tip');
+          if(tipLayer) tipLayer.cordLook = Object.assign({ tip: true }, look);   // the chrome tip, in the aiguillette's metal
+          cordUnderBoard(ctx, pendantLayer, 'Aide de Camp cord');
+        }else{
+          ctx.layers.splice(ctx.layers.indexOf(pendantLayer), 1);
+          ctx.note('The aiguillette cannot be shown');
         }
-        fitCordLayer(ctx, s);
-        cordUnderBoard(ctx, ctx.layers.find(l => l.cordPath && !l.cordPath.pendant), 'shoulder cord');
       }
-      return;
     }
-    if(!axis) return;
-    if(!ctx.has(id)){ ctx.note('The selected shoulder cord cannot be shown'); return; }
-    const [n, a] = axis;
-    const dx = a[0] - n[0], dy = a[1] - n[1];
-    const len = Math.hypot(dx, dy);
-    const at = { x: n[0] - dx / len * 0.125, y: n[1] - dy / len * 0.125 };
-    const rotate = Math.atan2(-dx, dy) * 180 / Math.PI;
-    await ctx.place(id, { pieceAnchor: 'shoulder_seam_attach_neck_end', at, rotate, z: Z.cord, role: 'cord', key: 'cord:' + id, title: 'Shoulder cord' });
+    const s = await ctx.overlay(carrier, Z.epauletLayer - 0.5);
+    if(!s) return;
+    fitCordLayer(ctx, s, look);
+    const runLayer = ctx.layers[ctx.layers.length - 1];
+    if(carrier === aideSheet){
+      runLayer.hideGroups = ['aiguillette-loop', 'aiguillette-hang'];
+      if(hung) runLayer.key = 'layer:' + carrier + ':run';
+    }
+    cordUnderBoard(ctx, runLayer, 'shoulder cord');
+    if(b.cordOnTop){
+      runLayer.z = Z.epauletLayer + 0.5;
+      delete runLayer.clip;
+    }
   }
 
   // Ribbons resting on a line, with an optional lapel that may cover part of them (11.1.8).
