@@ -595,6 +595,9 @@
     "garment-blues-class-a-coat-female-cord-region": "garments/garment-blues-class-a-coat-female-cord-region.svg",
     "garment-blues-class-a-coat-female-cord-wing": "garments/garment-blues-class-a-coat-female-cord-wing.svg",
     "garment-blues-class-a-coat-female-general-officer": "garments/garment-blues-class-a-coat-female-general-officer.svg",
+    "garment-blues-class-a-coat-female-honor-guard-ascot": "garments/garment-blues-class-a-coat-female-honor-guard-ascot.svg",
+    "garment-blues-class-a-coat-female-honor-guard-belt": "garments/garment-blues-class-a-coat-female-honor-guard-belt.svg",
+    "garment-blues-class-a-coat-female-honor-guard-flag-sling": "garments/garment-blues-class-a-coat-female-honor-guard-flag-sling.svg",
     "garment-blues-class-a-coat-female-lapel-cap": "garments/garment-blues-class-a-coat-female-lapel-cap.svg",
     "garment-blues-class-a-coat-female-lapel-foreground": "garments/garment-blues-class-a-coat-female-lapel-foreground.svg",
     "garment-blues-class-a-coat-female-lapel-us": "garments/garment-blues-class-a-coat-female-lapel-us.svg",
@@ -606,6 +609,9 @@
     "garment-blues-class-a-coat-female-sleeve-flat-left": "garments/garment-blues-class-a-coat-female-sleeve-flat-left.svg",
     "garment-blues-class-a-coat-female-sleeve-flat-right": "garments/garment-blues-class-a-coat-female-sleeve-flat-right.svg",
     "garment-blues-class-a-coat-general-officer": "garments/garment-blues-class-a-coat-general-officer.svg",
+    "garment-blues-class-a-coat-honor-guard-ascot": "garments/garment-blues-class-a-coat-honor-guard-ascot.svg",
+    "garment-blues-class-a-coat-honor-guard-belt": "garments/garment-blues-class-a-coat-honor-guard-belt.svg",
+    "garment-blues-class-a-coat-honor-guard-flag-sling": "garments/garment-blues-class-a-coat-honor-guard-flag-sling.svg",
     "garment-blues-class-a-coat-lapel-cap": "garments/garment-blues-class-a-coat-lapel-cap.svg",
     "garment-blues-class-a-coat-lapel-foreground": "garments/garment-blues-class-a-coat-lapel-foreground.svg",
     "garment-blues-class-a-coat-lapel-us": "garments/garment-blues-class-a-coat-lapel-us.svg",
@@ -632,6 +638,9 @@
     "garment-blues-class-b-blouse-female-epaulet-sleeve-cadet-officer": "garments/garment-blues-class-b-blouse-female-epaulet-sleeve-cadet-officer.svg",
     "garment-blues-class-b-blouse-female-epaulet-sleeve-officer": "garments/garment-blues-class-b-blouse-female-epaulet-sleeve-officer.svg",
     "garment-blues-class-b-blouse-female-general-officer-buckle": "garments/garment-blues-class-b-blouse-female-general-officer-buckle.svg",
+    "garment-blues-class-b-blouse-female-honor-guard-ascot": "garments/garment-blues-class-b-blouse-female-honor-guard-ascot.svg",
+    "garment-blues-class-b-blouse-female-honor-guard-belt": "garments/garment-blues-class-b-blouse-female-honor-guard-belt.svg",
+    "garment-blues-class-b-blouse-female-honor-guard-flag-sling": "garments/garment-blues-class-b-blouse-female-honor-guard-flag-sling.svg",
     "garment-blues-class-b-blouse-female-long": "garments/garment-blues-class-b-blouse-female-long.svg",
     "garment-blues-class-b-blouse-female-long-cord-aide-de-camp": "garments/garment-blues-class-b-blouse-female-long-cord-aide-de-camp.svg",
     "garment-blues-class-b-blouse-female-long-cord-color-guard": "garments/garment-blues-class-b-blouse-female-long-cord-color-guard.svg",
@@ -644,6 +653,9 @@
     "garment-blues-class-b-blouse-female-long-epaulet-sleeve-cadet-officer": "garments/garment-blues-class-b-blouse-female-long-epaulet-sleeve-cadet-officer.svg",
     "garment-blues-class-b-blouse-female-long-epaulet-sleeve-officer": "garments/garment-blues-class-b-blouse-female-long-epaulet-sleeve-officer.svg",
     "garment-blues-class-b-blouse-female-long-general-officer-buckle": "garments/garment-blues-class-b-blouse-female-long-general-officer-buckle.svg",
+    "garment-blues-class-b-blouse-female-long-honor-guard-ascot": "garments/garment-blues-class-b-blouse-female-long-honor-guard-ascot.svg",
+    "garment-blues-class-b-blouse-female-long-honor-guard-belt": "garments/garment-blues-class-b-blouse-female-long-honor-guard-belt.svg",
+    "garment-blues-class-b-blouse-female-long-honor-guard-flag-sling": "garments/garment-blues-class-b-blouse-female-long-honor-guard-flag-sling.svg",
     "garment-blues-class-b-blouse-female-long-nametag-adult": "garments/garment-blues-class-b-blouse-female-long-nametag-adult.svg",
     "garment-blues-class-b-blouse-female-long-nametag-cadet": "garments/garment-blues-class-b-blouse-female-long-nametag-cadet.svg",
     "garment-blues-class-b-blouse-female-long-sleeve-flat-left": "garments/garment-blues-class-b-blouse-female-long-sleeve-flat-left.svg",
@@ -672,6 +684,9 @@
     "garment-blues-class-b-shirt-male-epaulet-sleeve-cadet-officer": "garments/garment-blues-class-b-shirt-male-epaulet-sleeve-cadet-officer.svg",
     "garment-blues-class-b-shirt-male-epaulet-sleeve-officer": "garments/garment-blues-class-b-shirt-male-epaulet-sleeve-officer.svg",
     "garment-blues-class-b-shirt-male-general-officer-buckle": "garments/garment-blues-class-b-shirt-male-general-officer-buckle.svg",
+    "garment-blues-class-b-shirt-male-honor-guard-ascot": "garments/garment-blues-class-b-shirt-male-honor-guard-ascot.svg",
+    "garment-blues-class-b-shirt-male-honor-guard-belt": "garments/garment-blues-class-b-shirt-male-honor-guard-belt.svg",
+    "garment-blues-class-b-shirt-male-honor-guard-flag-sling": "garments/garment-blues-class-b-shirt-male-honor-guard-flag-sling.svg",
     "garment-blues-class-b-shirt-male-long": "garments/garment-blues-class-b-shirt-male-long.svg",
     "garment-blues-class-b-shirt-male-long-cord-aide-de-camp": "garments/garment-blues-class-b-shirt-male-long-cord-aide-de-camp.svg",
     "garment-blues-class-b-shirt-male-long-cord-color-guard": "garments/garment-blues-class-b-shirt-male-long-cord-color-guard.svg",
@@ -684,6 +699,9 @@
     "garment-blues-class-b-shirt-male-long-epaulet-sleeve-cadet-officer": "garments/garment-blues-class-b-shirt-male-long-epaulet-sleeve-cadet-officer.svg",
     "garment-blues-class-b-shirt-male-long-epaulet-sleeve-officer": "garments/garment-blues-class-b-shirt-male-long-epaulet-sleeve-officer.svg",
     "garment-blues-class-b-shirt-male-long-general-officer-buckle": "garments/garment-blues-class-b-shirt-male-long-general-officer-buckle.svg",
+    "garment-blues-class-b-shirt-male-long-honor-guard-ascot": "garments/garment-blues-class-b-shirt-male-long-honor-guard-ascot.svg",
+    "garment-blues-class-b-shirt-male-long-honor-guard-belt": "garments/garment-blues-class-b-shirt-male-long-honor-guard-belt.svg",
+    "garment-blues-class-b-shirt-male-long-honor-guard-flag-sling": "garments/garment-blues-class-b-shirt-male-long-honor-guard-flag-sling.svg",
     "garment-blues-class-b-shirt-male-long-nametag-adult": "garments/garment-blues-class-b-shirt-male-long-nametag-adult.svg",
     "garment-blues-class-b-shirt-male-long-nametag-cadet": "garments/garment-blues-class-b-shirt-male-long-nametag-cadet.svg",
     "garment-blues-class-b-shirt-male-long-sleeve-flat-left": "garments/garment-blues-class-b-shirt-male-long-sleeve-flat-left.svg",
@@ -777,6 +795,8 @@
     "hat-flight-cap-women-cadet": "accessories/hat-flight-cap-women-cadet.svg",
     "hat-flight-cap-women-general": "accessories/hat-flight-cap-women-general.svg",
     "hat-flight-cap-women-officer": "accessories/hat-flight-cap-women-officer.svg",
+    "hat-service-cap-honor-guard": "accessories/hat-service-cap-honor-guard.svg",
+    "hat-service-cap-honor-guard-chinstrap-down": "accessories/hat-service-cap-honor-guard-chinstrap-down.svg",
     "hat-service-cap-men-cadet-officer": "accessories/hat-service-cap-men-cadet-officer.svg",
     "hat-service-cap-men-field-grade": "accessories/hat-service-cap-men-field-grade.svg",
     "hat-service-cap-men-general": "accessories/hat-service-cap-men-general.svg",
@@ -1808,7 +1828,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "82f8b42a0e", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "b4c6842dba", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "82f8b42a0e"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "b4c6842dba"; }
 })(typeof self !== 'undefined' ? self : this);

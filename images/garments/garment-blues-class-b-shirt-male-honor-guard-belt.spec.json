@@ -1,0 +1,132 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-honor-guard-belt",
+ "name": "Men's Class B blue shirt, short sleeve: Honor Guard white pistol belt (overlay, registered to garment-blues-class-b-shirt-male)",
+ "size_in": {
+  "w": 26.8594,
+  "h": 29.5087
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2685.94,
+  2950.87
+ ],
+ "size_source": "measured",
+ "size_basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-b-shirt-male at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-b-shirt-male.",
+ "provenance": "in-house vector. Measured on the four figures of \"CAP Honor Guard Uniform Guidance\" (page 4 rendered at 6x, flat colours so each part is a mask): belt outline height 96.1 px (Class A guard) and 95.6 px (Class B long) = 2 1/16 in; buckle plate 128 x 94 px, keepers 19 x 93 px, keeper centres 104 px (2.22 in) either side of the buckle's centre, eyelets 10 x 11 px in two columns (86 px apart at 312/398 px and 654/735 px) and two rows 52 px apart. Height: the belt's centre is the centre of the sheet's own blue belt (y 24.20 in): the waist where the shirt meets the trousers; the figure puts the belt just under the fourth button, the sheet draws a longer shirt, and 9.6.7.2 says the belt is worn as with the Service Dress coat. The buckle is on the button column (figure: 3 px, 0.08 in, from it). Colour: white web, the figures' grey outline, nickel shaded like the sheets' own buckles.",
+ "anchors": {
+  "top_center": [
+   1342.97,
+   0
+  ],
+  "bottom_center": [
+   1342.97,
+   2950.87
+  ],
+  "center": [
+   1342.97,
+   1475.43
+  ],
+  "left_edge": [
+   0,
+   1475.43
+  ],
+  "right_edge": [
+   2685.94,
+   1475.43
+  ],
+  "belt_center": [
+   1343.2,
+   2420.1
+  ],
+  "buckle_center": [
+   1342.97,
+   2420.1
+  ],
+  "keeper_left_center": [
+   1120.97,
+   2420.1
+  ],
+  "keeper_right_center": [
+   1564.97,
+   2420.1
+  ],
+  "belt_left_end": [
+   590.51,
+   2420.1
+  ],
+  "belt_right_end": [
+   2095.89,
+   2420.1
+  ]
+ },
+ "landmarks": {
+  "belt": {
+   "x": 590.51,
+   "y": 2316.97,
+   "w_in": 15.054,
+   "h_in": 2.063
+  },
+  "buckle": {
+   "x": 1202.97,
+   "y": 2316.97,
+   "w_in": 2.8,
+   "h_in": 2.063
+  },
+  "keeper_left": {
+   "x": 1097.97,
+   "y": 2316.97,
+   "w_in": 0.46,
+   "h_in": 2.063
+  },
+  "keeper_right": {
+   "x": 1541.97,
+   "y": 2316.97,
+   "w_in": 0.46,
+   "h_in": 2.063
+  }
+ },
+ "landmarks_note": "rects are {x,y,w_in,h_in}: x,y top-left in user units (0.01 in), w_in/h_in in inches",
+ "overlay_of": "garment-blues-class-b-shirt-male",
+ "dimensions": {
+  "form": "web pistol belt with a nickel buckle, two keepers and eight eyelets",
+  "belt_width_in": 2.0625,
+  "buckle_in": [
+   2.8,
+   2.0625
+  ],
+  "keeper_in": [
+   0.46,
+   2.0625
+  ],
+  "keeper_offset_in": 2.22,
+  "eyelet_d_in": 0.21,
+  "belt_length_in": 15.054,
+  "belt_y_in": 24.201,
+  "height_rule": "centre on the sheet's blue belt (group belt-strap): the waist",
+  "layering": "draw over the sheet; it covers the sheet's blue belt and buckle completely (the white belt is taller and as long)",
+  "base_groups_to_hide": [
+   "belt",
+   "belt-buckle"
+  ],
+  "gloves": "9.6.7.7 folds the white gloves over the top of this belt when they are not worn: not drawn (no sheet draws hands)"
+ },
+ "documented": [
+  "white pistol belt, 2 1/16 in wide, nickel-plated buckles and keepers, worn tight, keepers two finger widths from the buckle on each side (CAPR 39-1 9.6.7.6)",
+  "the web belt rests between the second and third button of the coat, parallel to the ground; the keepers sit two finger widths from the buckle on both sides (9.6.7.1.2)",
+  "all members except flag bearers wear the belt (9.6.1.2, 9.6.7.6)",
+  "the pistol belt and shoulder cord are worn on the shirt as on the coat (9.6.7.2)"
+ ],
+ "assumed": [
+  "\"two finger widths\" is not a length: the keepers are placed as the figures draw them, 0.59 in clear of the buckle",
+  "eyelet count, spacing and size are the figures' (the regulation names none)",
+  "the belt is drawn flat and level; the figures tilt it 0.5 degree",
+  "weave and edge lines are decoration"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

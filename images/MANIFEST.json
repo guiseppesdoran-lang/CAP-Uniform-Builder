@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1806,
+ "count": 1826,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -15110,6 +15110,22 @@
     "ribbon_row_bottom_center": [
      1597.12,
      851.2
+    ],
+    "collar_insignia_honor_guard_right": [
+     1021.94,
+     475.45
+    ],
+    "collar_insignia_honor_guard_left": [
+     1429.8,
+     475.45
+    ],
+    "collar_honor_guard_apex": [
+     1225.87,
+     612.89
+    ],
+    "collar_honor_guard_patch_center": [
+     1225.87,
+     398
     ]
    },
    "landmarks": [
@@ -15123,7 +15139,13 @@
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "ribbon_slot"
+    "ribbon_slot",
+    "collar_honor_guard_right",
+    "collar_honor_guard_left",
+    "collar_honor_guard_open_neck",
+    "collar_honor_guard_roll_right",
+    "collar_honor_guard_roll_left",
+    "collar_honor_guard"
    ],
    "has_spec": true,
    "issues": []
@@ -15320,6 +15342,22 @@
     "ribbon_row_bottom_center": [
      1630.66,
      851.2
+    ],
+    "collar_insignia_honor_guard_right": [
+     1055.48,
+     475.84
+    ],
+    "collar_insignia_honor_guard_left": [
+     1463.34,
+     475.84
+    ],
+    "collar_honor_guard_apex": [
+     1259.41,
+     613.27
+    ],
+    "collar_honor_guard_patch_center": [
+     1259.41,
+     398.38
     ]
    },
    "landmarks": [
@@ -15337,7 +15375,13 @@
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "ribbon_slot"
+    "ribbon_slot",
+    "collar_honor_guard_right",
+    "collar_honor_guard_left",
+    "collar_honor_guard_open_neck",
+    "collar_honor_guard_roll_right",
+    "collar_honor_guard_roll_left",
+    "collar_honor_guard"
    ],
    "has_spec": true,
    "issues": []
@@ -15854,6 +15898,22 @@
     "nameplate_rest_center": [
      831.63,
      947.5
+    ],
+    "collar_insignia_honor_guard_right": [
+     1069.38,
+     504.14
+    ],
+    "collar_insignia_honor_guard_left": [
+     1516.89,
+     504.14
+    ],
+    "collar_honor_guard_apex": [
+     1293.13,
+     652.07
+    ],
+    "collar_honor_guard_patch_center": [
+     1293.13,
+     396.1
     ]
    },
    "landmarks": [
@@ -15869,7 +15929,13 @@
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "ribbon_slot"
+    "ribbon_slot",
+    "collar_honor_guard_right",
+    "collar_honor_guard_left",
+    "collar_honor_guard_open_neck",
+    "collar_honor_guard_roll_right",
+    "collar_honor_guard_roll_left",
+    "collar_honor_guard"
    ],
    "has_spec": true,
    "issues": []
@@ -16078,6 +16144,22 @@
     "nameplate_rest_center": [
      881.47,
      947.5
+    ],
+    "collar_insignia_honor_guard_right": [
+     1119.21,
+     507.4
+    ],
+    "collar_insignia_honor_guard_left": [
+     1566.72,
+     507.4
+    ],
+    "collar_honor_guard_apex": [
+     1342.97,
+     655.33
+    ],
+    "collar_honor_guard_patch_center": [
+     1342.97,
+     399.36
     ]
    },
    "landmarks": [
@@ -16097,7 +16179,13 @@
     "tie",
     "armpit_apex",
     "sleeve_flat_view",
-    "ribbon_slot"
+    "ribbon_slot",
+    "collar_honor_guard_right",
+    "collar_honor_guard_left",
+    "collar_honor_guard_open_neck",
+    "collar_honor_guard_roll_right",
+    "collar_honor_guard_roll_left",
+    "collar_honor_guard"
    ],
    "has_spec": true,
    "issues": []
@@ -80334,6 +80422,1287 @@
     ]
    },
    "landmarks": []
+  },
+  {
+   "id": "garment-blues-class-a-coat-honor-guard-belt",
+   "path": "garments/garment-blues-class-a-coat-honor-guard-belt.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.7745,
+   "h_in": 32.5595,
+   "size_source": "measured",
+   "basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-a-coat at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-a-coat.",
+   "anchors": {
+    "top_center": [
+     1288.73,
+     0
+    ],
+    "bottom_center": [
+     1288.73,
+     3255.95
+    ],
+    "center": [
+     1288.73,
+     1627.97
+    ],
+    "left_edge": [
+     0,
+     1627.97
+    ],
+    "right_edge": [
+     2577.45,
+     1627.97
+    ],
+    "belt_center": [
+     1288.73,
+     1932.5
+    ],
+    "buckle_center": [
+     1328.78,
+     1932.5
+    ],
+    "keeper_left_center": [
+     1106.78,
+     1932.5
+    ],
+    "keeper_right_center": [
+     1550.78,
+     1932.5
+    ],
+    "belt_left_end": [
+     543.12,
+     1932.5
+    ],
+    "belt_right_end": [
+     2034.33,
+     1932.5
+    ]
+   },
+   "landmarks": [
+    "belt",
+    "buckle",
+    "keeper_left",
+    "keeper_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-honor-guard-belt",
+   "path": "garments/garment-blues-class-a-coat-female-honor-guard-belt.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "measured",
+   "basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-a-coat-female at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-a-coat-female.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "belt_center": [
+     1219.42,
+     1833.13
+    ],
+    "buckle_center": [
+     1167.72,
+     1833.13
+    ],
+    "keeper_left_center": [
+     945.72,
+     1833.13
+    ],
+    "keeper_right_center": [
+     1389.72,
+     1833.13
+    ],
+    "belt_left_end": [
+     514.06,
+     1833.13
+    ],
+    "belt_right_end": [
+     1924.77,
+     1833.13
+    ]
+   },
+   "landmarks": [
+    "belt",
+    "buckle",
+    "keeper_left",
+    "keeper_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-honor-guard-belt",
+   "path": "garments/garment-blues-class-b-shirt-male-honor-guard-belt.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 26.8594,
+   "h_in": 29.5087,
+   "size_source": "measured",
+   "basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-b-shirt-male at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-b-shirt-male.",
+   "anchors": {
+    "top_center": [
+     1342.97,
+     0
+    ],
+    "bottom_center": [
+     1342.97,
+     2950.87
+    ],
+    "center": [
+     1342.97,
+     1475.43
+    ],
+    "left_edge": [
+     0,
+     1475.43
+    ],
+    "right_edge": [
+     2685.94,
+     1475.43
+    ],
+    "belt_center": [
+     1343.2,
+     2420.1
+    ],
+    "buckle_center": [
+     1342.97,
+     2420.1
+    ],
+    "keeper_left_center": [
+     1120.97,
+     2420.1
+    ],
+    "keeper_right_center": [
+     1564.97,
+     2420.1
+    ],
+    "belt_left_end": [
+     590.51,
+     2420.1
+    ],
+    "belt_right_end": [
+     2095.89,
+     2420.1
+    ]
+   },
+   "landmarks": [
+    "belt",
+    "buckle",
+    "keeper_left",
+    "keeper_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-honor-guard-belt",
+   "path": "garments/garment-blues-class-b-shirt-male-long-honor-guard-belt.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.8626,
+   "h_in": 32.9106,
+   "size_source": "measured",
+   "basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-b-shirt-male-long at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-b-shirt-male-long.",
+   "anchors": {
+    "top_center": [
+     1293.13,
+     0
+    ],
+    "bottom_center": [
+     1293.13,
+     3291.06
+    ],
+    "center": [
+     1293.13,
+     1645.53
+    ],
+    "left_edge": [
+     0,
+     1645.53
+    ],
+    "right_edge": [
+     2586.26,
+     1645.53
+    ],
+    "belt_center": [
+     1293.13,
+     2420.1
+    ],
+    "buckle_center": [
+     1293.13,
+     2420.1
+    ],
+    "keeper_left_center": [
+     1071.13,
+     2420.1
+    ],
+    "keeper_right_center": [
+     1515.13,
+     2420.1
+    ],
+    "belt_left_end": [
+     489.82,
+     2420.1
+    ],
+    "belt_right_end": [
+     2096.44,
+     2420.1
+    ]
+   },
+   "landmarks": [
+    "belt",
+    "buckle",
+    "keeper_left",
+    "keeper_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-honor-guard-belt",
+   "path": "garments/garment-blues-class-b-blouse-female-honor-guard-belt.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.1882,
+   "h_in": 32.9532,
+   "size_source": "measured",
+   "basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-b-blouse-female at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-b-blouse-female.",
+   "anchors": {
+    "top_center": [
+     1259.41,
+     0
+    ],
+    "bottom_center": [
+     1259.41,
+     3295.32
+    ],
+    "center": [
+     1259.41,
+     1647.66
+    ],
+    "left_edge": [
+     0,
+     1647.66
+    ],
+    "right_edge": [
+     2518.82,
+     1647.66
+    ],
+    "belt_center": [
+     1259.41,
+     2234.7
+    ],
+    "buckle_center": [
+     1259.41,
+     2234.7
+    ],
+    "keeper_left_center": [
+     1037.41,
+     2234.7
+    ],
+    "keeper_right_center": [
+     1481.41,
+     2234.7
+    ],
+    "belt_left_end": [
+     630.67,
+     2234.7
+    ],
+    "belt_right_end": [
+     1888.15,
+     2234.7
+    ]
+   },
+   "landmarks": [
+    "belt",
+    "buckle",
+    "keeper_left",
+    "keeper_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-honor-guard-belt",
+   "path": "garments/garment-blues-class-b-blouse-female-long-honor-guard-belt.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.5174,
+   "h_in": 36.3441,
+   "size_source": "measured",
+   "basis": "Belt 2 1/16 in wide (CAPR 39-1 9.6.7.6). Buckle 2.8 x 2.0625 in, keepers 0.46 x 2.0625 in 2.22 in either side of the buckle's centre, eight eyelets 0.21 in across (columns 2.75 and 4.53 in from the buckle's centre, rows 1.12 in apart) are measured on the Class A guard figure and the Class B long-sleeve figure of the Honor Guard guidance at the figures' hardware scale (the belt's own 2 1/16 in = 96 px, 46.5 px/in; the 7/8 in coat button is 41 px, the same scale). The belt runs from torso edge to torso edge of garment-blues-class-b-blouse-female-long at the belt line (the figures' belt ends at the torso edge on both). Same box as garment-blues-class-b-blouse-female-long.",
+   "anchors": {
+    "top_center": [
+     1225.87,
+     0
+    ],
+    "bottom_center": [
+     1225.87,
+     3634.41
+    ],
+    "center": [
+     1225.87,
+     1817.2
+    ],
+    "left_edge": [
+     0,
+     1817.2
+    ],
+    "right_edge": [
+     2451.74,
+     1817.2
+    ],
+    "belt_center": [
+     1225.87,
+     2234.7
+    ],
+    "buckle_center": [
+     1225.87,
+     2234.7
+    ],
+    "keeper_left_center": [
+     1003.87,
+     2234.7
+    ],
+    "keeper_right_center": [
+     1447.87,
+     2234.7
+    ],
+    "belt_left_end": [
+     573.54,
+     2234.7
+    ],
+    "belt_right_end": [
+     1878.2,
+     2234.7
+    ]
+   },
+   "landmarks": [
+    "belt",
+    "buckle",
+    "keeper_left",
+    "keeper_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-honor-guard-flag-sling",
+   "path": "garments/garment-blues-class-a-coat-honor-guard-flag-sling.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.7745,
+   "h_in": 32.5595,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-a-coat.",
+   "anchors": {
+    "top_center": [
+     1288.73,
+     0
+    ],
+    "bottom_center": [
+     1288.73,
+     3255.95
+    ],
+    "center": [
+     1288.73,
+     1627.97
+    ],
+    "left_edge": [
+     0,
+     1627.97
+    ],
+    "right_edge": [
+     2577.45,
+     1627.97
+    ],
+    "cup_center": [
+     1288.73,
+     2005.81
+    ],
+    "cup_top_center": [
+     1288.73,
+     1788.31
+    ],
+    "band_center": [
+     1288.73,
+     1855.31
+    ],
+    "strap_left_top": [
+     650.48,
+     280.73
+    ],
+    "strap_right_top": [
+     1926.98,
+     281.58
+    ],
+    "strap_left_foot": [
+     1097.73,
+     1788.31
+    ],
+    "strap_right_foot": [
+     1479.73,
+     1788.31
+    ]
+   },
+   "landmarks": [
+    "band",
+    "cup",
+    "cup_plate",
+    "strap_left",
+    "strap_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-honor-guard-flag-sling",
+   "path": "garments/garment-blues-class-a-coat-female-honor-guard-flag-sling.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-a-coat-female.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "cup_center": [
+     1219.42,
+     1920.39
+    ],
+    "cup_top_center": [
+     1219.42,
+     1702.89
+    ],
+    "band_center": [
+     1219.42,
+     1769.89
+    ],
+    "strap_left_top": [
+     645.8,
+     202.81
+    ],
+    "strap_right_top": [
+     1793.04,
+     202.82
+    ],
+    "strap_left_foot": [
+     1028.42,
+     1702.89
+    ],
+    "strap_right_foot": [
+     1410.42,
+     1702.89
+    ]
+   },
+   "landmarks": [
+    "band",
+    "cup",
+    "cup_plate",
+    "strap_left",
+    "strap_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-honor-guard-flag-sling",
+   "path": "garments/garment-blues-class-b-shirt-male-honor-guard-flag-sling.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 26.8594,
+   "h_in": 29.5087,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-b-shirt-male.",
+   "anchors": {
+    "top_center": [
+     1342.97,
+     0
+    ],
+    "bottom_center": [
+     1342.97,
+     2950.87
+    ],
+    "center": [
+     1342.97,
+     1475.43
+    ],
+    "left_edge": [
+     0,
+     1475.43
+    ],
+    "right_edge": [
+     2685.94,
+     1475.43
+    ],
+    "cup_center": [
+     1342.97,
+     2570.6
+    ],
+    "cup_top_center": [
+     1342.97,
+     2353.1
+    ],
+    "band_center": [
+     1342.97,
+     2420.1
+    ],
+    "strap_left_top": [
+     678.16,
+     315.58
+    ],
+    "strap_right_top": [
+     2007.78,
+     315.58
+    ],
+    "strap_left_foot": [
+     1151.97,
+     2353.1
+    ],
+    "strap_right_foot": [
+     1533.97,
+     2353.1
+    ]
+   },
+   "landmarks": [
+    "band",
+    "cup",
+    "cup_plate",
+    "strap_left",
+    "strap_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-honor-guard-flag-sling",
+   "path": "garments/garment-blues-class-b-shirt-male-long-honor-guard-flag-sling.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.8626,
+   "h_in": 32.9106,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-b-shirt-male-long.",
+   "anchors": {
+    "top_center": [
+     1293.13,
+     0
+    ],
+    "bottom_center": [
+     1293.13,
+     3291.06
+    ],
+    "center": [
+     1293.13,
+     1645.53
+    ],
+    "left_edge": [
+     0,
+     1645.53
+    ],
+    "right_edge": [
+     2586.26,
+     1645.53
+    ],
+    "cup_center": [
+     1293.13,
+     2570.6
+    ],
+    "cup_top_center": [
+     1293.13,
+     2353.1
+    ],
+    "band_center": [
+     1293.13,
+     2420.1
+    ],
+    "strap_left_top": [
+     628.32,
+     298.07
+    ],
+    "strap_right_top": [
+     1957.95,
+     298.07
+    ],
+    "strap_left_foot": [
+     1102.13,
+     2353.1
+    ],
+    "strap_right_foot": [
+     1484.13,
+     2353.1
+    ]
+   },
+   "landmarks": [
+    "band",
+    "cup",
+    "cup_plate",
+    "strap_left",
+    "strap_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-honor-guard-flag-sling",
+   "path": "garments/garment-blues-class-b-blouse-female-honor-guard-flag-sling.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.1882,
+   "h_in": 32.9532,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-b-blouse-female.",
+   "anchors": {
+    "top_center": [
+     1259.41,
+     0
+    ],
+    "bottom_center": [
+     1259.41,
+     3295.32
+    ],
+    "center": [
+     1259.41,
+     1647.66
+    ],
+    "left_edge": [
+     0,
+     1647.66
+    ],
+    "right_edge": [
+     2518.82,
+     1647.66
+    ],
+    "cup_center": [
+     1259.41,
+     2385.2
+    ],
+    "cup_top_center": [
+     1259.41,
+     2167.7
+    ],
+    "band_center": [
+     1259.41,
+     2234.7
+    ],
+    "strap_left_top": [
+     615.99,
+     304.87
+    ],
+    "strap_right_top": [
+     1902.84,
+     304.07
+    ],
+    "strap_left_foot": [
+     1068.41,
+     2167.7
+    ],
+    "strap_right_foot": [
+     1450.41,
+     2167.7
+    ]
+   },
+   "landmarks": [
+    "band",
+    "cup",
+    "cup_plate",
+    "strap_left",
+    "strap_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-honor-guard-flag-sling",
+   "path": "garments/garment-blues-class-b-blouse-female-long-honor-guard-flag-sling.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.5174,
+   "h_in": 36.3441,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-b-blouse-female-long.",
+   "anchors": {
+    "top_center": [
+     1225.87,
+     0
+    ],
+    "bottom_center": [
+     1225.87,
+     3634.41
+    ],
+    "center": [
+     1225.87,
+     1817.2
+    ],
+    "left_edge": [
+     0,
+     1817.2
+    ],
+    "right_edge": [
+     2451.74,
+     1817.2
+    ],
+    "cup_center": [
+     1225.87,
+     2385.2
+    ],
+    "cup_top_center": [
+     1225.87,
+     2167.7
+    ],
+    "band_center": [
+     1225.87,
+     2234.7
+    ],
+    "strap_left_top": [
+     582.45,
+     281.02
+    ],
+    "strap_right_top": [
+     1869.29,
+     280.71
+    ],
+    "strap_left_foot": [
+     1034.87,
+     2167.7
+    ],
+    "strap_right_foot": [
+     1416.87,
+     2167.7
+    ]
+   },
+   "landmarks": [
+    "band",
+    "cup",
+    "cup_plate",
+    "strap_left",
+    "strap_right"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-honor-guard-ascot",
+   "path": "garments/garment-blues-class-a-coat-honor-guard-ascot.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.7745,
+   "h_in": 32.5595,
+   "size_source": "measured",
+   "basis": "Not dimensioned beyond \"3 1/2 inches below neckband\" (CAPR 39-1 9.6.7.8). The cloth fills the open V of garment-blues-class-a-coat from the front edge of the neckband to the V's lower point; the front edge dips 1.33 in below the line through the V's top corners with the profile depth = dip x (1 - |u|^2.6), u = -1..1 across the corners, both measured on the four figures (Class A guard, Class A flag bearer, Class B long, Class B short): dip 49.5 / 50 px at 37.4 px/in = 1.32 / 1.34 in, 47.5 / 41 px at 33.4 px/in = 1.42 / 1.23 in. The patch (assets/patches/patch-honor-guard, 3 x 2.938 in, not drawn in this sheet) centres 3.5 in below the corner line. Same box as garment-blues-class-a-coat.",
+   "anchors": {
+    "top_center": [
+     1288.73,
+     0
+    ],
+    "bottom_center": [
+     1288.73,
+     3255.95
+    ],
+    "center": [
+     1288.73,
+     1627.97
+    ],
+    "left_edge": [
+     0,
+     1627.97
+    ],
+    "right_edge": [
+     2577.45,
+     1627.97
+    ],
+    "patch_center": [
+     1288.73,
+     455.3
+    ],
+    "neckband_center": [
+     1288.73,
+     238.3
+    ],
+    "v_apex": [
+     1263.93,
+     1214.3
+    ],
+    "neckband_left": [
+     1057.63,
+     105.3
+    ],
+    "neckband_right": [
+     1519.83,
+     105.3
+    ]
+   },
+   "landmarks": [
+    "ascot",
+    "neckband_arc",
+    "v_left",
+    "v_right",
+    "patch_slot"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-honor-guard-ascot",
+   "path": "garments/garment-blues-class-a-coat-female-honor-guard-ascot.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 29.4756,
+   "size_source": "measured",
+   "basis": "Not dimensioned beyond \"3 1/2 inches below neckband\" (CAPR 39-1 9.6.7.8). The cloth fills the open V of garment-blues-class-a-coat-female from the front edge of the neckband to the V's lower point; the front edge dips 1.33 in below the line through the V's top corners with the profile depth = dip x (1 - |u|^2.6), u = -1..1 across the corners, both measured on the four figures (Class A guard, Class A flag bearer, Class B long, Class B short): dip 49.5 / 50 px at 37.4 px/in = 1.32 / 1.34 in, 47.5 / 41 px at 33.4 px/in = 1.42 / 1.23 in. The patch (assets/patches/patch-honor-guard, 3 x 2.938 in, not drawn in this sheet) centres 3.5 in below the corner line. Same box as garment-blues-class-a-coat-female.",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     2947.56
+    ],
+    "center": [
+     1219.42,
+     1473.78
+    ],
+    "left_edge": [
+     0,
+     1473.78
+    ],
+    "right_edge": [
+     2438.83,
+     1473.78
+    ],
+    "patch_center": [
+     1219.42,
+     381.86
+    ],
+    "neckband_center": [
+     1219.42,
+     164.86
+    ],
+    "v_apex": [
+     1215.28,
+     1144.53
+    ],
+    "neckband_left": [
+     981.55,
+     31.86
+    ],
+    "neckband_right": [
+     1457.28,
+     31.86
+    ]
+   },
+   "landmarks": [
+    "ascot",
+    "neckband_arc",
+    "v_left",
+    "v_right",
+    "patch_slot"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-honor-guard-ascot",
+   "path": "garments/garment-blues-class-b-shirt-male-honor-guard-ascot.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 26.8594,
+   "h_in": 29.5087,
+   "size_source": "measured",
+   "basis": "Not dimensioned beyond \"3 1/2 inches below neckband\" (CAPR 39-1 9.6.7.8). The cloth fills the open V of garment-blues-class-b-shirt-male from the front edge of the neckband to the V's lower point; the front edge dips 1.33 in below the line through the V's top corners with the profile depth = dip x (1 - |u|^2.6), u = -1..1 across the corners, both measured on the four figures (Class A guard, Class A flag bearer, Class B long, Class B short): dip 49.5 / 50 px at 37.4 px/in = 1.32 / 1.34 in, 47.5 / 41 px at 33.4 px/in = 1.42 / 1.23 in. The patch (assets/patches/patch-honor-guard, 3 x 2.938 in, not drawn in this sheet) centres 3.5 in below the corner line. Same box as garment-blues-class-b-shirt-male.",
+   "anchors": {
+    "top_center": [
+     1342.97,
+     0
+    ],
+    "bottom_center": [
+     1342.97,
+     2950.87
+    ],
+    "center": [
+     1342.97,
+     1475.43
+    ],
+    "left_edge": [
+     0,
+     1475.43
+    ],
+    "right_edge": [
+     2685.94,
+     1475.43
+    ],
+    "patch_center": [
+     1342.97,
+     399.36
+    ],
+    "neckband_center": [
+     1342.97,
+     182.36
+    ],
+    "v_apex": [
+     1342.97,
+     655.33
+    ],
+    "neckband_left": [
+     1047.97,
+     49.36
+    ],
+    "neckband_right": [
+     1637.97,
+     49.36
+    ]
+   },
+   "landmarks": [
+    "ascot",
+    "neckband_arc",
+    "v_left",
+    "v_right",
+    "patch_slot"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-honor-guard-ascot",
+   "path": "garments/garment-blues-class-b-shirt-male-long-honor-guard-ascot.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.8626,
+   "h_in": 32.9106,
+   "size_source": "measured",
+   "basis": "Not dimensioned beyond \"3 1/2 inches below neckband\" (CAPR 39-1 9.6.7.8). The cloth fills the open V of garment-blues-class-b-shirt-male-long from the front edge of the neckband to the V's lower point; the front edge dips 1.33 in below the line through the V's top corners with the profile depth = dip x (1 - |u|^2.6), u = -1..1 across the corners, both measured on the four figures (Class A guard, Class A flag bearer, Class B long, Class B short): dip 49.5 / 50 px at 37.4 px/in = 1.32 / 1.34 in, 47.5 / 41 px at 33.4 px/in = 1.42 / 1.23 in. The patch (assets/patches/patch-honor-guard, 3 x 2.938 in, not drawn in this sheet) centres 3.5 in below the corner line. Same box as garment-blues-class-b-shirt-male-long.",
+   "anchors": {
+    "top_center": [
+     1293.13,
+     0
+    ],
+    "bottom_center": [
+     1293.13,
+     3291.06
+    ],
+    "center": [
+     1293.13,
+     1645.53
+    ],
+    "left_edge": [
+     0,
+     1645.53
+    ],
+    "right_edge": [
+     2586.26,
+     1645.53
+    ],
+    "patch_center": [
+     1293.13,
+     396.1
+    ],
+    "neckband_center": [
+     1293.13,
+     179.1
+    ],
+    "v_apex": [
+     1293.13,
+     652.07
+    ],
+    "neckband_left": [
+     998.13,
+     46.1
+    ],
+    "neckband_right": [
+     1588.13,
+     46.1
+    ]
+   },
+   "landmarks": [
+    "ascot",
+    "neckband_arc",
+    "v_left",
+    "v_right",
+    "patch_slot"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-honor-guard-ascot",
+   "path": "garments/garment-blues-class-b-blouse-female-honor-guard-ascot.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.1882,
+   "h_in": 32.9532,
+   "size_source": "measured",
+   "basis": "Not dimensioned beyond \"3 1/2 inches below neckband\" (CAPR 39-1 9.6.7.8). The cloth fills the open V of garment-blues-class-b-blouse-female from the front edge of the neckband to the V's lower point; the front edge dips 1.33 in below the line through the V's top corners with the profile depth = dip x (1 - |u|^2.6), u = -1..1 across the corners, both measured on the four figures (Class A guard, Class A flag bearer, Class B long, Class B short): dip 49.5 / 50 px at 37.4 px/in = 1.32 / 1.34 in, 47.5 / 41 px at 33.4 px/in = 1.42 / 1.23 in. The patch (assets/patches/patch-honor-guard, 3 x 2.938 in, not drawn in this sheet) centres 3.5 in below the corner line. Same box as garment-blues-class-b-blouse-female.",
+   "anchors": {
+    "top_center": [
+     1259.41,
+     0
+    ],
+    "bottom_center": [
+     1259.41,
+     3295.32
+    ],
+    "center": [
+     1259.41,
+     1647.66
+    ],
+    "left_edge": [
+     0,
+     1647.66
+    ],
+    "right_edge": [
+     2518.82,
+     1647.66
+    ],
+    "patch_center": [
+     1259.41,
+     398.38
+    ],
+    "neckband_center": [
+     1259.41,
+     181.38
+    ],
+    "v_apex": [
+     1259.41,
+     613.27
+    ],
+    "neckband_left": [
+     984.41,
+     48.38
+    ],
+    "neckband_right": [
+     1534.41,
+     48.38
+    ]
+   },
+   "landmarks": [
+    "ascot",
+    "neckband_arc",
+    "v_left",
+    "v_right",
+    "patch_slot"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-honor-guard-ascot",
+   "path": "garments/garment-blues-class-b-blouse-female-long-honor-guard-ascot.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.5174,
+   "h_in": 36.3441,
+   "size_source": "measured",
+   "basis": "Not dimensioned beyond \"3 1/2 inches below neckband\" (CAPR 39-1 9.6.7.8). The cloth fills the open V of garment-blues-class-b-blouse-female-long from the front edge of the neckband to the V's lower point; the front edge dips 1.33 in below the line through the V's top corners with the profile depth = dip x (1 - |u|^2.6), u = -1..1 across the corners, both measured on the four figures (Class A guard, Class A flag bearer, Class B long, Class B short): dip 49.5 / 50 px at 37.4 px/in = 1.32 / 1.34 in, 47.5 / 41 px at 33.4 px/in = 1.42 / 1.23 in. The patch (assets/patches/patch-honor-guard, 3 x 2.938 in, not drawn in this sheet) centres 3.5 in below the corner line. Same box as garment-blues-class-b-blouse-female-long.",
+   "anchors": {
+    "top_center": [
+     1225.87,
+     0
+    ],
+    "bottom_center": [
+     1225.87,
+     3634.41
+    ],
+    "center": [
+     1225.87,
+     1817.2
+    ],
+    "left_edge": [
+     0,
+     1817.2
+    ],
+    "right_edge": [
+     2451.74,
+     1817.2
+    ],
+    "patch_center": [
+     1225.87,
+     398
+    ],
+    "neckband_center": [
+     1225.87,
+     181
+    ],
+    "v_apex": [
+     1225.87,
+     612.89
+    ],
+    "neckband_left": [
+     950.87,
+     48
+    ],
+    "neckband_right": [
+     1500.87,
+     48
+    ]
+   },
+   "landmarks": [
+    "ascot",
+    "neckband_arc",
+    "v_left",
+    "v_right",
+    "patch_slot"
+   ]
+  },
+  {
+   "id": "hat-service-cap-honor-guard",
+   "path": "accessories/hat-service-cap-honor-guard.svg",
+   "category": "accessories",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 11.5,
+   "h_in": 6.9,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1 beyond the 1 3/4 in band braid (6.2.1.1.1). Scaled so the band is 7.4 in across (head ~22.5 in, as in base-art/hats.js); proportions read from CAPR 39-1 Fig A5-8 / A5-9 front views.",
+   "anchors": {
+    "top_center": [
+     575,
+     0
+    ],
+    "bottom_center": [
+     575,
+     690
+    ],
+    "center": [
+     575,
+     345
+    ],
+    "left_edge": [
+     0,
+     345
+    ],
+    "right_edge": [
+     1150,
+     345
+    ],
+    "device_slot_center": [
+     575,
+     156.29999999999998
+    ],
+    "garment_attach_center": [
+     575,
+     459.99999999999994
+    ],
+    "band_top_center": [
+     575,
+     285
+    ],
+    "visor_center": [
+     575,
+     569.9999999999999
+    ],
+    "front_center": [
+     575,
+     345
+    ],
+    "chin_strap_left_button": [
+     230,
+     481
+    ],
+    "chin_strap_right_button": [
+     920,
+     481
+    ]
+   },
+   "landmarks": [
+    "device_slot",
+    "band"
+   ]
+  },
+  {
+   "id": "hat-service-cap-honor-guard-chinstrap-down",
+   "path": "accessories/hat-service-cap-honor-guard-chinstrap-down.svg",
+   "category": "accessories",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 11.5,
+   "h_in": 7.4,
+   "size_source": "estimated",
+   "basis": "Not dimensioned in CAPR 39-1 beyond the 1 3/4 in band braid (6.2.1.1.1). Scaled so the band is 7.4 in across (head ~22.5 in, as in base-art/hats.js); proportions read from CAPR 39-1 Fig A5-8 / A5-9 front views. The chinstrap loop is 0.42 in across (the figure: 18 px at the figure's 43.6 px/in cap scale, 0.41 in at the bottom; 22 px, 0.50 in, down the sides), centre line from the buttons 6.9 in apart (the figure: 309 px = 7.1 in) round the outside of the visor, its centre line 0.28 in below the visor's lowest point (outer edge 0.49 in).",
+   "anchors": {
+    "top_center": [
+     575,
+     0
+    ],
+    "bottom_center": [
+     575,
+     740
+    ],
+    "center": [
+     575,
+     370
+    ],
+    "left_edge": [
+     0,
+     370
+    ],
+    "right_edge": [
+     1150,
+     370
+    ],
+    "device_slot_center": [
+     575,
+     156.29999999999998
+    ],
+    "garment_attach_center": [
+     575,
+     459.99999999999994
+    ],
+    "band_top_center": [
+     575,
+     285
+    ],
+    "visor_center": [
+     575,
+     569.9999999999999
+    ],
+    "front_center": [
+     575,
+     345
+    ],
+    "chin_strap_bottom_center": [
+     575,
+     713
+    ],
+    "chin_strap_left_button": [
+     230,
+     481
+    ],
+    "chin_strap_right_button": [
+     920,
+     481
+    ]
+   },
+   "landmarks": [
+    "device_slot",
+    "band",
+    "chinstrap_loop"
+   ]
   }
  ],
  "scope": "Non-military set only. Military ribbons, medals, badges and ROTC/JROTC ribbons are imported later."
