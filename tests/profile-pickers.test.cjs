@@ -478,6 +478,22 @@ test('index.html: the cut and the diamond stand behind their hosts, the selects 
   assert.match(read('js/setup.js'), /cadetFirstSergeantCheckbox\.addEventListener\('change'/, 'the page\'s own handler still listens to the box');
 });
 
+// ---- the unit field's shadow text -------------------------------------------------------------------------------------------------------
+
+test('the unit field shows REG-WG-UN while it is empty, and keeps its accessible name; no other input of the page is where a unit charter is typed or searched', () => {
+  const html = read('index.html');
+  const input = /<input id="unitPatchSearch"[^>]*>/.exec(html)[0];
+  assert.match(input, /placeholder="REG-WG-UN"/, 'the shadow text: region, wing, unit');
+  assert.match(input, /aria-label="Search your unit"/, 'the label a screen reader reads is as it was');
+  assert.match(input, /type="search"/);
+  assert.doesNotMatch(html, /Search charter number/, 'the old placeholder is gone');
+  // The only other place a unit is typed is the patch submission form, which asks for a unit or an activity by name, not a charter.
+  const submit = read('patch-submission.js');
+  assert.match(submit, /<label for="capubPatchUnit">Unit \/ activity<\/label>/);
+  assert.equal([...html.matchAll(/placeholder="REG-WG-UN"/g)].length, 1, 'one input of the page takes a unit charter');
+  assert.equal([...html.matchAll(/placeholder="[^"]*charter[^"]*"/gi)].length, 0);
+});
+
 test('the grade tiles\' pictures are outlined so silver and white devices read on the tile\'s white, on either theme', () => {
   const css = read('styles/app.css');
   assert.match(css, /\.vp\[data-name="rank"\] \.vpPicture>img\{filter:drop-shadow\(0 0 \.6px var\(--cap-blue\)\) drop-shadow\(0 0 \.6px var\(--cap-blue\)\)\}/, 'a halo of a colour the themes share (the stylesheet holds no hex outside its tokens)');
