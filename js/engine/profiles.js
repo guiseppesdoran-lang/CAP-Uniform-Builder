@@ -921,6 +921,7 @@
     if(l.clip) l.clip = l.clip.map(p => ({ x: p.x + dx, y: p.y + dy }));
     if(l.strip) l.strip = Object.assign({}, l.strip, { x: l.strip.x + dx, y: l.strip.y + dy, origin: { x: l.strip.origin.x + dx, y: l.strip.origin.y + dy } });
     if(l.squeeze) l.squeeze = Object.assign({}, l.squeeze, { at: { x: l.squeeze.at.x + dx, y: l.squeeze.at.y + dy } });
+    if(l.shear) l.shear = Object.assign({}, l.shear, { at: { x: l.shear.at.x + dx, y: l.shear.at.y + dy } });
     if(l.points) l.points = l.points.map(p => ({ x: p.x + dx, y: p.y + dy }));
     // The collar leaves cut out of a badge (clipOut) and the box the overlay keeps clear (obstacle) are scene inches too:
     // the second figure's badges lay over the collar they were cut by because the polygons stayed on the first figure.

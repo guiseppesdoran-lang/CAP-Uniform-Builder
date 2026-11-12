@@ -945,8 +945,9 @@
   // `strip` ({ thick, drop }): the strip's thickness and how far its centre line lies below the strap axis (the boards, drawn
   // thicker than the strap with their upper edge kept on the strap's); the grade is squeezed to that thickness and kept on its centre.
   async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd, strip){
-    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, drop = (strip && strip.drop) || 0, z = strip && strip.z;
+    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, dropOf = (strip && strip.drop) || 0, z = strip && strip.z;
     for(const side of ['right', 'left']){
+      const drop = typeof dropOf === 'function' ? dropOf(side) : dropOf;
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
       if(!f || !mid) continue;
@@ -964,10 +965,12 @@
   // the bands are cut to the strip's outline, so the point keeps both.
   const SHADE_BAND = 0.06;
   const SHADE = { light: { fill: '#ffffff', opacity: 0.16 }, dark: { fill: '#000000', opacity: 0.3 } };
-  function stripShading(ctx, side, c, axis, normal, length, thick, peak, z){
+  function stripShading(ctx, side, c, axis, normal, length, thick, peak, z, boundary){
     const p = (s, t) => ({ x: c.x + axis.x * s + normal.x * t, y: c.y + axis.y * s + normal.y * t });
     const L = length / 2, h = thick / 2;
-    const outline = peak > 0 ? [p(-L, h), p(L - peak, h), p(L, 0), p(L - peak, -h), p(-L, -h)] : null;
+    // A pointed end: the tip lies on the upper edge (the strip is a board seen over the ridge of the shoulder, boardStrips), so the point narrows from the lower edge only. `boundary`: a polygon the bands are also cut to.
+    const pointed = peak > 0 ? [p(-L, h), p(L - peak, h), p(L, h), p(L - peak, -h), p(-L, -h)] : null;
+    const outline = pointed && boundary ? clipToConvex(boundary, pointed) : pointed;
     // Local frame of a rect layer: x along ex, y down (= -normal); the turn is ex's angle.
     const ex = { x: -normal.y, y: normal.x };
     const sMin = axis.x * ex.x + axis.y * ex.y > 0 ? -L : L;
@@ -1681,9 +1684,73 @@
   // and the coat): the strip was dropped by half its thickness so its upper edge was the seam (the outline's path). Ethan, 2026-11-10, looking at that: "theres some coat blue above the board": the outline is
   // drawn with a stroke 0.06 in wide (the coat sheets' silhouette), half of it outside the path, which showed above the board's upper edge, and on the women's coats the shoulder line bends 0.1 in
   // above the straight seam about 1.4 in from the shoulder point. The strip's upper edge is the seam moved out by the half stroke (COAT_STROKE_HALF), so it covers the stroke; the seam is the outline's
-  // own straight run on the men's coats, so there the edge lies on the drawn outline the whole length (tests/engine-live-board-outline.test.cjs).
+  // own straight run on the men's coats, so there the edge lies on the drawn outline the whole length. On the women's coats the edge stands high enough to clear the bend (boardEdgeShift) and the board is cut to
+  // the drawn outline, so its upper edge follows the shoulder line (the owner's choice, B5). Seen from the front the board lies over the ridge of the shoulder, so its upper edge is the shoulder line all the way
+  // to the tip: the pointed end is drawn sheared and the point narrows from the lower edge only (tests/engine-live-board-outline.test.cjs measures the whole length).
   const COAT_STROKE_HALF = 0.03;
-  const BOARD_STRIP_DROP = BOARD_STRIP_THICK / 2 - COAT_STROKE_HALF;
+  // The board sheets' body is a straight upper edge of 3.81 in, then the pointed neck end out to 4.55 in (a symmetric point seen from above). Seen from the front the board lies over the ridge of the shoulder,
+  // so its upper edge is the shoulder line all the way to the tip and the point narrows from the lower edge only: the end beyond 3.81 in is drawn sheared (BOARD_STRAIGHT, boardStrips).
+  const BOARD_STRAIGHT = 3.81;
+  // How far the drawn outline (grown by the half stroke) stands above the board's straight edge on the seam line, the farthest over its 3.81 in, in inches along the seam's up normal. On the men's coats the
+  // seam is one straight run of the outline, so this is the half stroke (COAT_STROKE_HALF); on the women's coats the shoulder line bends above it about 1.4 in from the shoulder point and the edge must
+  // stand that much higher to clear the bend (`bends`), where the board is then cut to the drawn outline (boardOutlineClip). Null when the sheet has no outline table.
+  const BOARD_BEND_MIN = 0.012;
+  function boardEdgeShift(coatId, side){
+    const ring = GARMENT_TOP[coatId], sm = shoulderSeamOf(coatId, side);
+    if(!ring || !sm) return null;
+    const len = Math.hypot(sm.neck.x - sm.outer.x, sm.neck.y - sm.outer.y), a = { x: (sm.neck.x - sm.outer.x) / len, y: (sm.neck.y - sm.outer.y) / len };
+    let n = { x: a.y, y: -a.x }; if(n.y > 0) n = { x: -n.x, y: -n.y };
+    // the drawn outline: the table's ring grown by the half stroke
+    const drawn = growRing(ring, COAT_STROKE_HALF);
+    const stations = [];
+    for(let s = 0; s <= BOARD_STRAIGHT + 1e-9; s += 0.02) stations.push(s);
+    for(const [x, y] of ring){ const s = (x - sm.outer.x) * a.x + (y - sm.outer.y) * a.y; if(s > 0 && s < BOARD_STRAIGHT) stations.push(s); }
+    let shift = COAT_STROKE_HALF;
+    for(const s of stations){
+      const q = { x: sm.outer.x + a.x * s, y: sm.outer.y + a.y * s };
+      // the farthest crossing of the drawn outline up the normal from the seam line (within an inch)
+      for(let i = 0; i < drawn.length; i++){
+        const p0 = drawn[i], p1 = drawn[(i + 1) % drawn.length], ex = p1.x - p0.x, ey = p1.y - p0.y, den = n.x * ey - n.y * ex;
+        if(Math.abs(den) < 1e-9) continue;
+        const t = ((p0.x - q.x) * ey - (p0.y - q.y) * ex) / den, u = ((p0.x - q.x) * n.y - (p0.y - q.y) * n.x) / den;
+        if(u < -1e-9 || u > 1 + 1e-9 || t < -0.2 || t > 1) continue;
+        shift = Math.max(shift, t);
+      }
+    }
+    return { shift: Math.round(shift * 1000) / 1000, bends: shift - COAT_STROKE_HALF > BOARD_BEND_MIN };
+  }
+  H.boardEdgeShift = boardEdgeShift;
+  // How far the strip's centre line lies below the seam: half its thickness less the shift of its upper edge.
+  const boardDrop = (coatId, side) => { const e = boardEdgeShift(coatId, side); return BOARD_STRIP_THICK / 2 - (e ? e.shift : COAT_STROKE_HALF); };
+  // The coat's drawn outline as a polygon in sheet inches: the table's ring grown by the half stroke (and a hair, so the cover is not shaved), each vertex moved out along the bisector of its two edges' normals.
+  function growRing(ring, grow){
+    const pts = ring.map(([x, y]) => ({ x, y })), n = pts.length;
+    let area = 0; for(let i = 0; i < n; i++){ const a = pts[i], b = pts[(i + 1) % n]; area += a.x * b.y - b.x * a.y; }
+    const sg = area > 0 ? 1 : -1;
+    return pts.map((p, i) => {
+      const a = pts[(i + n - 1) % n], b = pts[(i + 1) % n], e1 = { x: p.x - a.x, y: p.y - a.y }, e2 = { x: b.x - p.x, y: b.y - p.y };
+      const l1 = Math.hypot(e1.x, e1.y) || 1, l2 = Math.hypot(e2.x, e2.y) || 1;
+      const n1 = { x: sg * e1.y / l1, y: -sg * e1.x / l1 }, n2 = { x: sg * e2.y / l2, y: -sg * e2.x / l2 };
+      const m = { x: n1.x + n2.x, y: n1.y + n2.y }, ml = Math.hypot(m.x, m.y) || 1, c = Math.max(0.35, (m.x * n1.x + m.y * n1.y) / ml);
+      return { x: p.x + m.x / ml * grow / c, y: p.y + m.y / ml * grow / c };
+    });
+  }
+  // A polygon cut to a convex one (Sutherland-Hodgman; the convex polygon may run either way round).
+  function clipToConvex(subject, convex){
+    let area = 0; for(let i = 0; i < convex.length; i++){ const a = convex[i], b = convex[(i + 1) % convex.length]; area += a.x * b.y - b.x * a.y; }
+    const sg = area >= 0 ? 1 : -1;
+    let out = subject;
+    for(let i = 0; i < convex.length && out.length; i++){
+      const a = convex[i], b = convex[(i + 1) % convex.length], side = p => sg * ((b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x));
+      const input = out; out = [];
+      for(let j = 0; j < input.length; j++){
+        const p = input[j], q = input[(j + 1) % input.length], dp = side(p), dq = side(q);
+        if(dp >= 0) out.push(p);
+        if((dp >= 0) !== (dq >= 0)){ const t = dp / (dp - dq); out.push({ x: p.x + t * (q.x - p.x), y: p.y + t * (q.y - p.y) }); }
+      }
+    }
+    return out;
+  }
   // Depth of the board's pointed neck end (the board sheets' size basis: 0.74 in peak).
   const BOARD_PEAK = 0.74;
   // The board's neck end runs on past the strap's, toward the neck, where the coat's collar leaf (the lapel foreground, Z.badge + 0.5)
@@ -1699,10 +1766,27 @@
       if(!board || !outer || !button) continue;
       const rot = Math.round((Math.atan2(f.axis.y, f.axis.x) - Math.atan2(button.y - outer.y, button.x - outer.x)) * 18000 / Math.PI) / 100;
       const k = BOARD_STRIP_THICK / board.h;
-      const at = { x: f.outer.x - f.normal.x * BOARD_STRIP_DROP, y: f.outer.y - f.normal.y * BOARD_STRIP_DROP };
-      await ctx.place(id, { pieceAnchor: 'board_outer_end', at, rotate: rot, scale: k, scaleX: 1 / k, z: BOARD_STRIP_Z, role: 'epaulet', key: 'epaulet:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on` });
+      const coatId = ctx.base.id, edge = boardEdgeShift(coatId, side), drop = boardDrop(coatId, side);
+      const at = { x: f.outer.x - f.normal.x * drop, y: f.outer.y - f.normal.y * drop };
+      // The drawn outline the board is cut to where the shoulder line bends under its edge (the women's coats): the outline grown by the half stroke, so the stroke is covered and nothing of the board stands over the page.
+      const boundary = edge && edge.bends ? growRing(GARMENT_TOP[coatId], COAT_STROKE_HALF + 0.002) : null;
+      // Two copies of the board sheet: the straight part (to 3.81 in from the outer end) as it is, and the pointed end (beyond it) sheared along the strip so the tip lies on the upper edge, narrowing from the lower edge only.
+      const dn = { x: -f.normal.x, y: -f.normal.y }, edgeAt = (u, v) => ({ x: f.outer.x + f.normal.x * (edge ? edge.shift : COAT_STROKE_HALF) + f.axis.x * u + dn.x * v, y: f.outer.y + f.normal.y * (edge ? edge.shift : COAT_STROKE_HALF) + f.axis.y * u + dn.y * v });
+      const region = (u0, u1) => [edgeAt(u0, -2), edgeAt(u1, -2), edgeAt(u1, 2), edgeAt(u0, 2)];
+      const cutTo = reg => boundary ? clipToConvex(boundary, reg) : reg;
+      const title = `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on`;
+      const place = { pieceAnchor: 'board_outer_end', at, rotate: rot, scale: k, scaleX: 1 / k, z: BOARD_STRIP_Z, role: 'epaulet', title };
+      const straight = await ctx.place(id, Object.assign({ key: 'epaulet:' + side }, place));
+      const tip = await ctx.place(id, Object.assign({ key: 'epaulet-tip:' + side }, place));
+      if(straight) straight.clip = cutTo(region(-1, BOARD_STRAIGHT + 0.01));
+      if(tip){
+        // In the frame along the strip (x toward the tip), y down: y moves up by (half the thickness / the point's depth) per inch beyond the point's start.
+        const e = f.axis.x > 0 ? f.axis : { x: -f.axis.x, y: -f.axis.y }, sigma = e.x * f.axis.x + e.y * f.axis.y;
+        tip.clip = cutTo(region(BOARD_STRAIGHT, BOARD_STRAIGHT + 3));
+        tip.shear = { at: edgeAt(BOARD_STRAIGHT, 0), deg: Math.round(Math.atan2(e.y, e.x) * 18000 / Math.PI) / 100, b: -sigma * (BOARD_STRIP_THICK / 2) / BOARD_PEAK };
+      }
       const c = { x: at.x + f.axis.x * board.w / 2, y: at.y + f.axis.y * board.w / 2 };
-      stripShading(ctx, side, c, f.axis, f.normal, board.w, BOARD_STRIP_THICK, BOARD_PEAK, BOARD_STRIP_Z + 0.1);
+      stripShading(ctx, side, c, f.axis, f.normal, board.w, BOARD_STRIP_THICK, BOARD_PEAK, BOARD_STRIP_Z + 0.1, boundary);
       markBandEdge(ctx, side, Object.assign({}, f, { outer: at }), BOARD_STRIP_THICK);   // the cord comes out from under the board's lower edge (B7)
       // The board lies on the shoulder seam, from the collar seam to the shoulder point (4.1.5.2.1.3, 4.1.9.3.4; Class A), drawn once, on the wearer's right shoulder.
       if(side === 'right') ctx.measure(f.outer, f.neck, 'on the seam', { mid: c, side: { x: 0, y: -1 }, offsetOnly: true, reference: true, caption: 'shoulder board on the seam' });
@@ -1859,7 +1943,7 @@
         const slot = bs && core.anchor(bs, 'rank_slot_center'), outer = bs && core.anchor(bs, 'board_outer_end');
         if(slot && outer) fromEnd[side] = Math.hypot(slot.x - outer.x, slot.y - outer.y);
       }
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: BOARD_STRIP_DROP, z: BOARD_STRIP_Z + 0.2 });
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: side => boardDrop(ctx.base.id, side), z: BOARD_STRIP_Z + 0.2 });
     }
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);

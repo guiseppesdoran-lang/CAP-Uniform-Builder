@@ -165,6 +165,12 @@
       const q = layer.squeeze;
       parts.push(`translate(${fmt(q.at.x)} ${fmt(q.at.y)}) rotate(${fmt(q.deg)}) scale(${fmt(q.kx)} ${fmt(q.ky)}) rotate(${fmt(-q.deg)}) translate(${fmt(-q.at.x)} ${fmt(-q.at.y)})`);
     }
+    // `shear` { at, deg, b }: in the frame whose x axis runs along the direction deg through `at` (y down), every point moves along y by b times its x, in scene inches, after everything else (the end of
+    // the Class A boards seen from the front, whose point narrows from the lower edge only).
+    if(layer.shear){
+      const q = layer.shear;
+      parts.push(`translate(${fmt(q.at.x)} ${fmt(q.at.y)}) rotate(${fmt(q.deg)}) matrix(1 ${fmt(q.b)} 0 1 0 0) rotate(${fmt(-q.deg)}) translate(${fmt(-q.at.x)} ${fmt(-q.at.y)})`);
+    }
     if(layer.rotate) parts.push(`rotate(${fmt(layer.rotate)} ${fmt(layer.origin.x)} ${fmt(layer.origin.y)})`);
     if(layer.flipX){
       const cx = layer.x + layer.w / 2;
