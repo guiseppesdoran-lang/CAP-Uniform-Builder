@@ -598,6 +598,7 @@
     "garment-blues-class-a-coat-female-honor-guard-ascot": "garments/garment-blues-class-a-coat-female-honor-guard-ascot.svg",
     "garment-blues-class-a-coat-female-honor-guard-belt": "garments/garment-blues-class-a-coat-female-honor-guard-belt.svg",
     "garment-blues-class-a-coat-female-honor-guard-flag-sling": "garments/garment-blues-class-a-coat-female-honor-guard-flag-sling.svg",
+    "garment-blues-class-a-coat-female-honor-guard-gloves": "garments/garment-blues-class-a-coat-female-honor-guard-gloves.svg",
     "garment-blues-class-a-coat-female-lapel-cap": "garments/garment-blues-class-a-coat-female-lapel-cap.svg",
     "garment-blues-class-a-coat-female-lapel-foreground": "garments/garment-blues-class-a-coat-female-lapel-foreground.svg",
     "garment-blues-class-a-coat-female-lapel-us": "garments/garment-blues-class-a-coat-female-lapel-us.svg",
@@ -612,6 +613,7 @@
     "garment-blues-class-a-coat-honor-guard-ascot": "garments/garment-blues-class-a-coat-honor-guard-ascot.svg",
     "garment-blues-class-a-coat-honor-guard-belt": "garments/garment-blues-class-a-coat-honor-guard-belt.svg",
     "garment-blues-class-a-coat-honor-guard-flag-sling": "garments/garment-blues-class-a-coat-honor-guard-flag-sling.svg",
+    "garment-blues-class-a-coat-honor-guard-gloves": "garments/garment-blues-class-a-coat-honor-guard-gloves.svg",
     "garment-blues-class-a-coat-lapel-cap": "garments/garment-blues-class-a-coat-lapel-cap.svg",
     "garment-blues-class-a-coat-lapel-foreground": "garments/garment-blues-class-a-coat-lapel-foreground.svg",
     "garment-blues-class-a-coat-lapel-us": "garments/garment-blues-class-a-coat-lapel-us.svg",
@@ -641,6 +643,7 @@
     "garment-blues-class-b-blouse-female-honor-guard-ascot": "garments/garment-blues-class-b-blouse-female-honor-guard-ascot.svg",
     "garment-blues-class-b-blouse-female-honor-guard-belt": "garments/garment-blues-class-b-blouse-female-honor-guard-belt.svg",
     "garment-blues-class-b-blouse-female-honor-guard-flag-sling": "garments/garment-blues-class-b-blouse-female-honor-guard-flag-sling.svg",
+    "garment-blues-class-b-blouse-female-honor-guard-gloves": "garments/garment-blues-class-b-blouse-female-honor-guard-gloves.svg",
     "garment-blues-class-b-blouse-female-long": "garments/garment-blues-class-b-blouse-female-long.svg",
     "garment-blues-class-b-blouse-female-long-cord-aide-de-camp": "garments/garment-blues-class-b-blouse-female-long-cord-aide-de-camp.svg",
     "garment-blues-class-b-blouse-female-long-cord-color-guard": "garments/garment-blues-class-b-blouse-female-long-cord-color-guard.svg",
@@ -656,6 +659,7 @@
     "garment-blues-class-b-blouse-female-long-honor-guard-ascot": "garments/garment-blues-class-b-blouse-female-long-honor-guard-ascot.svg",
     "garment-blues-class-b-blouse-female-long-honor-guard-belt": "garments/garment-blues-class-b-blouse-female-long-honor-guard-belt.svg",
     "garment-blues-class-b-blouse-female-long-honor-guard-flag-sling": "garments/garment-blues-class-b-blouse-female-long-honor-guard-flag-sling.svg",
+    "garment-blues-class-b-blouse-female-long-honor-guard-gloves": "garments/garment-blues-class-b-blouse-female-long-honor-guard-gloves.svg",
     "garment-blues-class-b-blouse-female-long-nametag-adult": "garments/garment-blues-class-b-blouse-female-long-nametag-adult.svg",
     "garment-blues-class-b-blouse-female-long-nametag-cadet": "garments/garment-blues-class-b-blouse-female-long-nametag-cadet.svg",
     "garment-blues-class-b-blouse-female-long-sleeve-flat-left": "garments/garment-blues-class-b-blouse-female-long-sleeve-flat-left.svg",
@@ -687,6 +691,7 @@
     "garment-blues-class-b-shirt-male-honor-guard-ascot": "garments/garment-blues-class-b-shirt-male-honor-guard-ascot.svg",
     "garment-blues-class-b-shirt-male-honor-guard-belt": "garments/garment-blues-class-b-shirt-male-honor-guard-belt.svg",
     "garment-blues-class-b-shirt-male-honor-guard-flag-sling": "garments/garment-blues-class-b-shirt-male-honor-guard-flag-sling.svg",
+    "garment-blues-class-b-shirt-male-honor-guard-gloves": "garments/garment-blues-class-b-shirt-male-honor-guard-gloves.svg",
     "garment-blues-class-b-shirt-male-long": "garments/garment-blues-class-b-shirt-male-long.svg",
     "garment-blues-class-b-shirt-male-long-cord-aide-de-camp": "garments/garment-blues-class-b-shirt-male-long-cord-aide-de-camp.svg",
     "garment-blues-class-b-shirt-male-long-cord-color-guard": "garments/garment-blues-class-b-shirt-male-long-cord-color-guard.svg",
@@ -702,6 +707,7 @@
     "garment-blues-class-b-shirt-male-long-honor-guard-ascot": "garments/garment-blues-class-b-shirt-male-long-honor-guard-ascot.svg",
     "garment-blues-class-b-shirt-male-long-honor-guard-belt": "garments/garment-blues-class-b-shirt-male-long-honor-guard-belt.svg",
     "garment-blues-class-b-shirt-male-long-honor-guard-flag-sling": "garments/garment-blues-class-b-shirt-male-long-honor-guard-flag-sling.svg",
+    "garment-blues-class-b-shirt-male-long-honor-guard-gloves": "garments/garment-blues-class-b-shirt-male-long-honor-guard-gloves.svg",
     "garment-blues-class-b-shirt-male-long-nametag-adult": "garments/garment-blues-class-b-shirt-male-long-nametag-adult.svg",
     "garment-blues-class-b-shirt-male-long-nametag-cadet": "garments/garment-blues-class-b-shirt-male-long-nametag-cadet.svg",
     "garment-blues-class-b-shirt-male-long-sleeve-flat-left": "garments/garment-blues-class-b-shirt-male-long-sleeve-flat-left.svg",
@@ -1828,7 +1834,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "c761427b01", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "aaab43ca10", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "c761427b01"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "aaab43ca10"; }
 })(typeof self !== 'undefined' ? self : this);

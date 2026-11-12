@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1826,
+ "count": 1832,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -81738,6 +81738,384 @@
     "device_slot",
     "band",
     "chinstrap_loop"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-honor-guard-gloves",
+   "path": "garments/garment-blues-class-a-coat-honor-guard-gloves.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.7745,
+   "h_in": 32.8095,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. The hand is the guidance figure's glove (one drawing, 130 x 126 px as the coat figures show it under a 144.6 px cuff; the figure used for this sheet has a 144.6 px cuff) scaled to this sheet's cuff, each hand by its own cuff: right hand 37.9 px/in, cuff 3.82 in, left hand 38.0 px/in, cuff 3.81 in; at the figures' belt scale (46.4 px/in) the same glove would be 2.80 in wide. The top of the glove lies on the sheet's own cuff line (the outline's lower sleeve edge) and goes under the sleeve, so the cuff covers the wrist. Box: the sheet's box with 0.25 in more below (the fingers hang past the sheet's lower edge); the sheet's box lies at 0,0 inside it (landmark sheet_box).",
+   "anchors": {
+    "top_center": [
+     1288.73,
+     0
+    ],
+    "bottom_center": [
+     1288.73,
+     3280.95
+    ],
+    "center": [
+     1288.73,
+     1640.47
+    ],
+    "left_edge": [
+     0,
+     1640.47
+    ],
+    "right_edge": [
+     2577.45,
+     1640.47
+    ],
+    "glove_right_wrist_center": [
+     310.2,
+     2950.95
+    ],
+    "glove_right_fingertip": [
+     351.04,
+     3269.02
+    ],
+    "glove_right_cuff_outer_corner": [
+     107.38,
+     2967.05
+    ],
+    "glove_left_wrist_center": [
+     2266.63,
+     2952.95
+    ],
+    "glove_left_fingertip": [
+     2225.33,
+     3270.43
+    ],
+    "glove_left_cuff_outer_corner": [
+     2468.93,
+     2966.74
+    ],
+    "sheet_bottom_center": [
+     1288.73,
+     3255.95
+    ]
+   },
+   "landmarks": [
+    "glove_right",
+    "glove_left",
+    "groups",
+    "sheet_box"
+   ]
+  },
+  {
+   "id": "garment-blues-class-a-coat-female-honor-guard-gloves",
+   "path": "garments/garment-blues-class-a-coat-female-honor-guard-gloves.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.3883,
+   "h_in": 31.3256,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. The hand is the guidance figure's glove (one drawing, 130 x 126 px as the coat figures show it under a 144.6 px cuff; the figure used for this sheet has a 144.6 px cuff) scaled to this sheet's cuff, each hand by its own cuff: right hand 48.6 px/in, cuff 2.97 in, left hand 49.0 px/in, cuff 2.95 in; at the figures' belt scale (46.4 px/in) the same glove would be 2.80 in wide. The top of the glove lies on the sheet's own cuff line (the outline's lower sleeve edge) and goes under the sleeve, so the cuff covers the wrist. Box: the sheet's box with 1.85 in more below (the fingers hang past the sheet's lower edge); the sheet's box lies at 0,0 inside it (landmark sheet_box).",
+   "anchors": {
+    "top_center": [
+     1219.42,
+     0
+    ],
+    "bottom_center": [
+     1219.42,
+     3132.56
+    ],
+    "center": [
+     1219.42,
+     1566.28
+    ],
+    "left_edge": [
+     0,
+     1566.28
+    ],
+    "right_edge": [
+     2438.83,
+     1566.28
+    ],
+    "glove_right_wrist_center": [
+     260.51,
+     2875.74
+    ],
+    "glove_right_fingertip": [
+     293.61,
+     3123.17
+    ],
+    "glove_right_cuff_outer_corner": [
+     102.7,
+     2889.12
+    ],
+    "glove_left_wrist_center": [
+     2178.5,
+     2875.76
+    ],
+    "glove_left_fingertip": [
+     2145.63,
+     3121.44
+    ],
+    "glove_left_cuff_outer_corner": [
+     2335.2,
+     2889.04
+    ],
+    "sheet_bottom_center": [
+     1219.42,
+     2947.56
+    ]
+   },
+   "landmarks": [
+    "glove_right",
+    "glove_left",
+    "groups",
+    "sheet_box"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-honor-guard-gloves",
+   "path": "garments/garment-blues-class-b-shirt-male-honor-guard-gloves.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 26.8594,
+   "h_in": 29.5087,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. The folded pair is the guidance figure's, measured against the figure's own pistol belt (96.1, 95.6 and 95.4 px = 2 1/16 in, 46.4 px/in): 3.45 x 5.77 in, 1.99 to 5.44 in from the buckle's centre line, 0.41 in above the belt's upper edge. Same box as garment-blues-class-b-shirt-male.",
+   "anchors": {
+    "top_center": [
+     1342.97,
+     0
+    ],
+    "bottom_center": [
+     1342.97,
+     2950.87
+    ],
+    "center": [
+     1342.97,
+     1475.43
+    ],
+    "left_edge": [
+     0,
+     1475.43
+    ],
+    "right_edge": [
+     2685.94,
+     1475.43
+    ],
+    "gloves_under_belt_center": [
+     1714.2,
+     2564.71
+    ],
+    "gloves_under_sling_center": [
+     1714.2,
+     2584.84
+    ],
+    "gloves_under_belt_fingertip": [
+     1765.29,
+     2852.83
+    ],
+    "sheet_bottom_center": [
+     1342.97,
+     2950.87
+    ]
+   },
+   "landmarks": [
+    "gloves_under_belt",
+    "gloves_under_sling",
+    "groups",
+    "sheet_box"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-shirt-male-long-honor-guard-gloves",
+   "path": "garments/garment-blues-class-b-shirt-male-long-honor-guard-gloves.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.8626,
+   "h_in": 34.4106,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. The hand is the guidance figure's glove (one drawing, 130 x 126 px as the coat figures show it under a 144.6 px cuff; the figure used for this sheet has a 128 px cuff) scaled to this sheet's cuff, each hand by its own cuff: right hand 50.8 px/in, cuff 2.52 in, left hand 50.8 px/in, cuff 2.52 in; at the figures' belt scale (46.4 px/in) the same glove would be 2.80 in wide. The top of the glove lies on the sheet's own cuff line (the outline's lower sleeve edge) and goes under the sleeve, so the cuff covers the wrist. Box: the sheet's box with 1.50 in more below (the fingers hang past the sheet's lower edge); the sheet's box lies at 0,0 inside it (landmark sheet_box).",
+   "anchors": {
+    "top_center": [
+     1293.13,
+     0
+    ],
+    "bottom_center": [
+     1293.13,
+     3441.06
+    ],
+    "center": [
+     1293.13,
+     1720.53
+    ],
+    "left_edge": [
+     0,
+     1720.53
+    ],
+    "right_edge": [
+     2586.26,
+     1720.53
+    ],
+    "glove_right_wrist_center": [
+     303.24,
+     3144.71
+    ],
+    "glove_right_fingertip": [
+     351.46,
+     3430.18
+    ],
+    "glove_right_cuff_outer_corner": [
+     172.19,
+     3158.6
+    ],
+    "glove_left_wrist_center": [
+     2283.02,
+     3144.71
+    ],
+    "glove_left_fingertip": [
+     2234.8,
+     3430.18
+    ],
+    "glove_left_cuff_outer_corner": [
+     2414.07,
+     3158.6
+    ],
+    "sheet_bottom_center": [
+     1293.13,
+     3291.06
+    ]
+   },
+   "landmarks": [
+    "glove_right",
+    "glove_left",
+    "groups",
+    "sheet_box"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-honor-guard-gloves",
+   "path": "garments/garment-blues-class-b-blouse-female-honor-guard-gloves.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 25.1882,
+   "h_in": 32.9532,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. The folded pair is the guidance figure's, measured against the figure's own pistol belt (96.1, 95.6 and 95.4 px = 2 1/16 in, 46.4 px/in): 3.45 x 5.77 in, 1.99 to 5.44 in from the buckle's centre line, 0.41 in above the belt's upper edge. Same box as garment-blues-class-b-blouse-female.",
+   "anchors": {
+    "top_center": [
+     1259.41,
+     0
+    ],
+    "bottom_center": [
+     1259.41,
+     3295.32
+    ],
+    "center": [
+     1259.41,
+     1647.66
+    ],
+    "left_edge": [
+     0,
+     1647.66
+    ],
+    "right_edge": [
+     2518.82,
+     1647.66
+    ],
+    "gloves_under_belt_center": [
+     1630.64,
+     2379.31
+    ],
+    "gloves_under_sling_center": [
+     1630.64,
+     2399.44
+    ],
+    "gloves_under_belt_fingertip": [
+     1681.73,
+     2667.43
+    ],
+    "sheet_bottom_center": [
+     1259.41,
+     3295.32
+    ]
+   },
+   "landmarks": [
+    "gloves_under_belt",
+    "gloves_under_sling",
+    "groups",
+    "sheet_box"
+   ]
+  },
+  {
+   "id": "garment-blues-class-b-blouse-female-long-honor-guard-gloves",
+   "path": "garments/garment-blues-class-b-blouse-female-long-honor-guard-gloves.svg",
+   "category": "garments",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 24.5174,
+   "h_in": 36.3441,
+   "size_source": "measured",
+   "basis": "Not dimensioned in CAPR 39-1. The hand is the guidance figure's glove (one drawing, 130 x 126 px as the coat figures show it under a 144.6 px cuff; the figure used for this sheet has a 128 px cuff) scaled to this sheet's cuff, each hand by its own cuff: right hand 47.6 px/in, cuff 2.69 in, left hand 48.1 px/in, cuff 2.66 in; at the figures' belt scale (46.4 px/in) the same glove would be 2.80 in wide. The top of the glove lies on the sheet's own cuff line (the outline's lower sleeve edge) and goes under the sleeve, so the cuff covers the wrist. Box: the sheet's own box.",
+   "anchors": {
+    "top_center": [
+     1225.87,
+     0
+    ],
+    "bottom_center": [
+     1225.87,
+     3634.41
+    ],
+    "center": [
+     1225.87,
+     1817.2
+    ],
+    "left_edge": [
+     0,
+     1817.2
+    ],
+    "right_edge": [
+     2451.74,
+     1817.2
+    ],
+    "glove_right_wrist_center": [
+     284.33,
+     2907.01
+    ],
+    "glove_right_fingertip": [
+     335.45,
+     3211.2
+    ],
+    "glove_right_cuff_outer_corner": [
+     144.7,
+     2921.7
+    ],
+    "glove_left_wrist_center": [
+     2168.77,
+     2908.08
+    ],
+    "glove_left_fingertip": [
+     2120.32,
+     3209.45
+    ],
+    "glove_left_cuff_outer_corner": [
+     2307.05,
+     2921.63
+    ],
+    "sheet_bottom_center": [
+     1225.87,
+     3634.41
+    ]
+   },
+   "landmarks": [
+    "glove_right",
+    "glove_left",
+    "groups",
+    "sheet_box"
    ]
   }
  ],
