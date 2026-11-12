@@ -2,9 +2,10 @@
 // engine follows, never a second drawing of them.
 //
 //   const p = CAPUBOptionPictures.pictures('headgear', ['auto', 'tactical', 'none']);
-//   p.now    { value: picture | null | undefined }   what is known already: a picture (an image address or SVG markup, what js/visual-picker.js takes), null
-//            for a choice that has no art to show (it is shown by its name alone), undefined while it is still being made; while the pictures for a changed
-//            member (another grade, another cut) are being made, the last ones made for these choices
+//   p.now    { value: picture | null | false | undefined }   what is known already: a picture (an image address or SVG markup, what js/visual-picker.js takes), null
+//            for a choice that has no art to show (it is shown by its name alone), false for a choice that does not apply to this member (it is not offered, as the
+//            chest badge layout is not offered without three badges: the engine's own drawing is the same for every choice), undefined while it is still being made;
+//            while the pictures for a changed member (another grade, another cut) are being made, the last ones made for these choices
 //   p.ready  a promise of the pictures for the member as they are now, complete
 //   p.settled  true when `now` is already those pictures
 //
@@ -137,6 +138,62 @@
   }
   const badgeLayoutKey = build => [build.uniform, build.gender, (build.badges || []).map(b => b.id)];
 
+  // ---- the ribbon rack: the member's own ribbons as blank rectangles, in the rows the engine lays for each choice -------------------------------
+
+  // The build the page would hand the engine if the member's state held `over` (a map of State fields: { ribbonRackLayout: '4-left' }). The page's own path from state to build, so
+  // a picture of a choice is the build of that choice and never a second copy of what a choice means. Without it (a test that gives none) every choice is the member's own.
+  const buildWith = (env, build, over) => typeof env.buildWith === 'function' ? env.buildWith(over) : build;
+
+  // The member's ribbons and miniature medals on the coat, and nothing else: no cap, badges, name or patches, so a picture changes with the rack and not with what is chosen elsewhere.
+  function rackOnly(build){
+    return Object.assign({}, build, {
+      badges: [], patches: [], militaryBadges: [], command: null, cord: null, cordColour: null,
+      name: { first: '', last: '', state: '', show: false }, opt: Object.assign({}, build.opt, { headgear: 'none' })
+    });
+  }
+  // The rack the engine laid in a scene, where the garment sheet is registered at the origin (its landmarks are scene inches): the ribbons' boxes (top row first, as the layers are),
+  // the welt pocket they rest on and the lapel that may cover them. null when no ribbon is worn.
+  async function rackOf(env, build){
+    const scene = await env.compose(rackOnly(build));
+    const ribbons = scene.layers.filter(l => l.type === 'asset' && l.role === 'ribbon');
+    if(!ribbons.length) return null;
+    const coat = scene.layers.find(l => l.role === 'garment');
+    const spec = coat && await env.spec(coat.id);
+    const origin = !!spec && coat.x === 0 && coat.y === 0 && Math.abs(coat.w - spec.w) < 1e-6;
+    const lapel = origin && spec.landmarks.lapel_left && spec.landmarks.lapel_left.points;
+    return { layers: ribbons, ribbons: ribbons.map(l => env.core.layerBounds(l)), welt: origin ? env.core.landmarkBounds(spec, 'welt_pocket') : null, lapel: lapel || null };
+  }
+  const rackSignature = r => r && JSON.stringify(r.ribbons.map(b => [b.x, b.y, b.w, b.h].map(n => Math.round(n * 1000))));
+  // The frame every choice of one rack shares (so the choices can be compared at a glance): the ribbons and the welt of all of them.
+  function rackFrame(racks, env){
+    const all = racks.flatMap(r => [...r.ribbons, ...(r.welt ? [r.welt] : [])]);
+    const f = env.core.unionBounds(all), m = 0.3;
+    return { x: f.x - m, y: f.y - m, w: f.w + 2 * m, h: f.h + 2 * m };
+  }
+  function rackMarkup(r, f){
+    const lapel = r.lapel ? `<polygon points="${r.lapel.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' ')}" fill="#001871" fill-opacity="0.14" stroke="#001871" stroke-width="0.05" stroke-linejoin="round"/>` : '';
+    const welt = r.welt ? `<rect x="${fmt(r.welt.x)}" y="${fmt(r.welt.y)}" width="${fmt(r.welt.w)}" height="${fmt(r.welt.h)}" rx="0.06" fill="#001871" fill-opacity="0.55"/>` : '';
+    const rects = r.ribbons.map(b => `<rect x="${fmt(b.x)}" y="${fmt(b.y)}" width="${fmt(b.w)}" height="${fmt(b.h)}" rx="0.04" fill="#FFFFFF" stroke="#001871" stroke-width="0.04"/>`).join('');
+    return `<svg xmlns="${SVG_NS}" viewBox="${fmt(f.x)} ${fmt(f.y)} ${fmt(f.w)} ${fmt(f.h)}" focusable="false" aria-hidden="true">${lapel}${welt}${rects}</svg>`;
+  }
+  // The pictures of one choice among `values`, each the member's rack with `overFor(value)` in their state. The choice does not apply (false for every value) when the member wears
+  // no ribbon, when their own rows are in force (the rack is theirs, not the engine's), or when every choice lays the same rack: nothing to pick between.
+  async function rackChoices(env, build, values, overFor){
+    const out = {};
+    const none = () => { values.forEach(v => { out[v] = false; }); return out; };
+    if(build.opt && build.opt.rackCounts) return none();
+    const racks = await Promise.all(values.map(v => rackOf(env, buildWith(env, build, overFor(v)))));
+    if(racks.some(r => !r) || new Set(racks.map(rackSignature)).size < 2) return none();
+    const frame = rackFrame(racks, env);
+    values.forEach((v, i) => { out[v] = { markup: rackMarkup(racks[i], frame) }; });
+    return out;
+  }
+  // Ribbons are laid the way the choice says; what else the member has chosen about the rack (the other of the two) is theirs.
+  const rackColumns = (env, build, values) => rackChoices(env, build, values, v => ({ ribbonRackLayout: v }));
+  const rackArrangement = (env, build, values) => rackChoices(env, build, values, v => ({ ribbonRackArrangement: v }));
+  // What the pictures are made from: the cut, the ribbons, the member's rows if they set their own, and the one of the two choices the picture is not of.
+  const rackKey = (...fields) => build => [build.uniform, build.gender, (build.ribbons || []).map(r => r.key), build.opt && [build.opt.rackCounts, ...fields.map(f => build.opt[f])]];
+
   // ---- the pieces a choice changes: sleeves, the women's top, the polo, what is under the blazer --------------------------------
 
   // The uniform as the engine draws it for the choice and nothing else (no cap, ribbons or name), framed on the figure; `crop(frame, figure)` narrows the frame.
@@ -251,6 +308,8 @@
     headgear: { make: headgear, key: headgearKey },
     capGrade: { make: capGrade, key: capGradeKey },
     badgeLayout: { make: badgeLayout, key: badgeLayoutKey },
+    rackColumns: { make: rackColumns, key: rackKey('rackArrangement') },
+    rackArrangement: { make: rackArrangement, key: rackKey('rackColumns', 'rackAlign') },
     chevron: { make: chevron, key: chevronKey },
     esPatch: { make: esPatch, key: esPatchKey },
     skirt: { make: skirt, key: figureKey([]) },
@@ -300,7 +359,7 @@
             const done = {};
             for(const v of list){
               const s = specs[v];
-              done[v] = !s ? null : s.markup != null ? s.markup : await env.draw(s.scene, s.pad);
+              done[v] = s === false ? false : !s ? null : s.markup != null ? s.markup : await env.draw(s.scene, s.pad);
             }
             return done;
           })
@@ -329,6 +388,12 @@
     return {
       core: E.core,
       build: () => window.CAPUBUniformView.buildFromState(),
+      // The build for the page's state with some of its fields changed (the choice a picture shows), the state put back as it was.
+      buildWith(over){
+        const saved = Object.keys(over).map(k => [k, State[k]]);
+        try{ Object.assign(State, over); return window.CAPUBUniformView.buildFromState(); }
+        finally{ saved.forEach(([k, v]) => { State[k] = v; }); }
+      },
       async compose(build){
         const [store] = await Promise.all([getStore(), assets.prepare(build.uniform, build.gender)]);
         return E.profiles.composeUniform(build, store);

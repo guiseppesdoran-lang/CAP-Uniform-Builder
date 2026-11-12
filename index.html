@@ -299,9 +299,10 @@
           <details class="moreDetails" id="rackLayoutMore" open>
             <summary>Advanced: rack layout</summary>
             <div id="ribbonRackPanel">
-              <label class="fieldNote">
+              <div id="ribbonRackColumnsPicker" hidden></div>
+              <label class="fieldNote segmentedSource" aria-hidden="true">
                 Ribbon rack layout
-                <select id="ribbonRackColumns">
+                <select id="ribbonRackColumns" tabindex="-1">
                   <option value="3">3 across - centered</option>
                   <option value="4-left">4 across - left edge aligned with welt/pocket (Class A)</option>
                   <option value="4-center">4 across - centered above welt/pocket (Class A)</option>
@@ -311,9 +312,10 @@
                 CAPR 39-1 permits four-across racks only on Blues: Class A.
               </div>
 
-              <label class="fieldNote mt-8">
+              <div id="ribbonRackArrangementPicker" class="mt-8" hidden></div>
+              <label class="fieldNote segmentedSource" aria-hidden="true">
                 Upper-row arrangement
-                <select id="ribbonRackArrangement">
+                <select id="ribbonRackArrangement" tabindex="-1">
                   <option value="standard">Standard - centered partial top row</option>
                   <option value="lapel">Automatic - clear of the lapel</option>
                 </select>
@@ -607,6 +609,7 @@
 <script src="js/visual-picker.js?v=810209b60e" defer></script>
 <script src="js/option-pictures.js?v=1f51d8fa67" defer></script>
 <script src="js/garment-options.js?v=c4135466fa" defer></script>
+<script src="js/item-pickers.js?v=0000000000" defer></script>
 <script src="js/wiring.js?v=d3de300f98" defer></script>
 <script src="js/placement-stl.js?v=ae4f6aee13" defer></script>
 <script src="js/placement-templates.js?v=df17c2dfb8" defer></script>
