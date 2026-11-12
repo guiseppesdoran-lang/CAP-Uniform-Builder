@@ -1,7 +1,7 @@
 'use strict';
 // Ethan, 2 November 2026, after talking with Doran: "for FDUs you can only wear wing and higher patches." CAPR 39-1 8.2.4.5 (flight duty uniform) and 8.3.4.5
 // (Corporate Flight Duty Uniform): "An authorized patch contained as outlined in Attachment 4 may be worn, except organizational patches for groups, squadrons
-// or flights are not approved for wear." b8db6c62 limited the Unit patch list; this audits every other way a patch reaches the two flight suits (the patch
+// or flights are not approved for wear." b8db6c62 limited the Unit patch list (the list now holds every unit, the unit being the member's whatever the uniform, and the status says what the flight suit wears); this audits every other way a patch reaches the two flight suits (the patch
 // catalog the Patches chooser and the placement picker read, the unit patches filed by charter number, the saved unit choice) and proves nothing organizational
 // below a wing is offered, while the activity, course and qualification patches of Attachment 4 stay allowed.
 
@@ -54,7 +54,7 @@ test('the wing and region patches and the National Staff patch stay offered on b
   }
 });
 
-test('the Unit patch chooser lists wing, region and national units only on both flight suits; every unit it lists is worn there, and none of the 1,300 group, squadron and flight charters is', () => {
+test('on both flight suits only a wing, region or national unit has its patch worn; none of the 1,300 group, squadron and flight charters has', () => {
   const total = ev('CAP_UNIT_OPTIONS.length');
   for(const u of FLIGHT){
     const shown = ev(`CAP_UNIT_OPTIONS.filter(x => isUnitCharterWornOnUniform(x.code, ${j(u)}))`);

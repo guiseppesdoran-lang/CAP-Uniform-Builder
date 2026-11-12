@@ -1,9 +1,9 @@
 'use strict';
 // Doran: "only wing and above unit patches can be worn on the flight suit. But it's allowing me to select general units." CAPR 39-1
 // 8.2.4.5 (flight duty uniform) and 8.3.4.5 (Corporate Flight Duty Uniform): an authorized patch may be worn on the right sleeve, "except
-// organizational patches for groups, squadrons or flights are not approved for wear". The Unit patch list (js/catalog.js
-// buildUnitPatchSelector) therefore offers only a wing's, a region's or National Headquarters' units there, one line says so, and a unit
-// patch of a squadron or group is not authorized on the flight suits. The other field uniforms list every unit.
+// organizational patches for groups, squadrons or flights are not approved for wear". A unit patch of a squadron or group is therefore not authorized on the flight
+// suits and the unit patch's status says so in one line. The unit is the member's whatever the uniform (the Profile step), so the list of units (js/catalog.js
+// buildUnitPatchSelector) holds every unit on every uniform.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -56,7 +56,7 @@ test('a squadron\'s patch is not authorized on the flight suits, with the paragr
 
 test('the Unit patch status says it in one line on the flight suits only; a saved squadron choice is named as not worn', () => {
   ev(`State.uniform = 'flight_suit'; State.unitPatchCharter = ''`);
-  assert.equal(ev('getUnitPatchFloorNote()'), 'Only wing, region and national units are listed: the flight suit takes no group or squadron patch (CAPR 39-1, 8.2.4.5).');
+  assert.equal(ev('getUnitPatchFloorNote()'), 'The flight suit takes no group or squadron patch (CAPR 39-1, 8.2.4.5).');
   ev(`State.uniform = 'corporate_flight_suit'`);
   assert.match(ev('getUnitPatchFloorNote()'), /Corporate Flight Duty Uniform takes no group or squadron patch \(CAPR 39-1, 8\.3\.4\.5\)/);
   ev(`State.uniform = 'ocp'`);

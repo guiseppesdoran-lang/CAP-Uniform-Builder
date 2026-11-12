@@ -124,13 +124,14 @@ test('the Unit patch list marks a charter whose artwork exists with "artwork ava
   assert.equal(line, 'MAR-DC-026 - Arlington Composite Squadron  ✓ artwork available');
   assert.doesNotMatch(all.find(o => o.code === 'MAR-DC-033').text, /artwork/);
   assert.doesNotMatch(line, /unit_|patch-|\.svg|_/, 'no id or file name');
-  // A search narrows it, and the flight suits list wings and above only.
+  // A search narrows it.
   assert.deepEqual(ev(`getUnitPatchOptions('mar-dc-026')`).map(o => o.code), ['MAR-DC-026']);
   // The eServices string stays searchable: SQDN finds Squadron units, and so does Squadron.
   assert.ok(ev(`getUnitPatchOptions('andrews composite sqdn')`).some(o => o.code === 'MAR-DC-033'), 'the raw string finds the unit');
   assert.ok(ev(`getUnitPatchOptions('andrews composite squadron')`).some(o => o.code === 'MAR-DC-033'), 'so does the name as read');
+  // The unit is the member's whatever the uniform: the flight suits list every unit too (a squadron's patch is not worn there, which the status says).
   ev(`State.uniform = 'flight_suit'`);
-  assert.ok(ev('getUnitPatchOptions()').every(o => !/^(MAR-DC-026|SWR-TX-030)$/.test(o.code)));
+  assert.ok(['MAR-DC-026', 'SWR-TX-030'].every(code => ev('getUnitPatchOptions()').some(o => o.code === code)));
   ev(`State.uniform = 'ocp'`);
 });
 

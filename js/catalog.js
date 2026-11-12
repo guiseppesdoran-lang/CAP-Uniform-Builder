@@ -1438,10 +1438,10 @@ function getUnitPatchSpokenName(code){
   return unit && unit.name ? unit.name : String(code || '');
 }
 
-// The one line the Unit patch list carries on a uniform that takes no patch below wing level.
+// The one line the unit patch's status carries on a uniform that takes no patch below wing level (the unit is the member's whatever the uniform, so the list holds every unit).
 function getUnitPatchFloorNote(uniformId = State.uniform){
   const floor = getUnitPatchFloor(uniformId);
-  return floor ? `Only wing, region and national units are listed: ${floor.words} takes no group or squadron patch (CAPR 39-1, ${floor.ref}).` : '';
+  return floor ? `${floor.words.charAt(0).toUpperCase()}${floor.words.slice(1)} takes no group or squadron patch (CAPR 39-1, ${floor.ref}).` : '';
 }
 
 function renderUnitPatchStatus(){
@@ -1485,7 +1485,6 @@ function renderUnitPatchStatus(){
 function getUnitPatchOptions(filterText=''){
   const normalized = String(filterText || '').trim().toLowerCase();
   const found = CAP_UNIT_OPTIONS.filter(unit => {
-    if(!isUnitCharterWornOnUniform(unit.code)) return false;
     if(!normalized) return true;
     return `${unit.code} ${unit.name} ${unit.raw}`.toLowerCase().includes(normalized);
   });
@@ -1507,7 +1506,7 @@ function buildUnitPatchSelector(filterText=''){
   sel.innerHTML = '';
   const none = document.createElement('option');
   none.value = '';
-  none.textContent = 'No unit patch';
+  none.textContent = 'No unit chosen';
   sel.appendChild(none);
 
   matches.slice(0, 350).forEach(unit => {
