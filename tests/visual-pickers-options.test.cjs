@@ -124,6 +124,20 @@ test('the layout choice is not there unless the drawing wears more than two ches
   assert.equal(groups(panel({ badges: [PILOT, GT, EMT] }, { CAPUBUniformView: { scene: { uniform: 'abu', layers: [] } } }).host).includes('garmentOpt-badgeLayout'), true, 'the last scene is another uniform\'s');
 });
 
+test('the pictures follow the member: the panel is drawn again when the grade or the badges change, not when nothing did', () => {
+  const p = panel({ rank: 'Capt', badges: [PILOT, GT] });
+  const first = p.host.children[0];
+  p.O.render();
+  assert.equal(p.host.children[0], first, 'nothing changed: the same panel');
+  p.sandbox.State.rank = 'Col';
+  p.O.render();
+  assert.notEqual(p.host.children[0], first, 'a colonel wears another grade on the cap, in the same category as a captain');
+  const second = p.host.children[0];
+  p.sandbox.State.badges = [PILOT, EMT];
+  p.O.render();
+  assert.notEqual(p.host.children[0], second, 'other badges, as many: the squares are theirs');
+});
+
 test('the other options chosen by look are pickers too; the yes or no options and the text field are not', () => {
   const picked = (state, extra) => groups(panel(state, extra).host).map(n => n.replace('garmentOpt-', ''));
   assert.deepEqual(picked({ uniform: 'abu', rank: 'SMSgt' }), ['headgear', 'chevron']);
@@ -387,7 +401,35 @@ test('the pictures are cached per member and choice, and a choice no recipe draw
   assert.equal(composed, n, 'nothing composed again');
   const none = api.pictures('notAnOption', ['a', 'b']);
   assert.deepEqual(none.now, { a: null, b: null });
+  assert.equal(none.settled, true);
+  assert.equal(first.settled, false);
+  assert.equal(again.settled, true);
   // A recipe that fails leaves the choices as names alone.
   const failing = OP.create(Object.assign({}, counting, { compose: async () => { throw new Error('no art'); } }));
   assert.deepEqual(await failing.pictures('headgear', ['auto']).ready, { auto: null });
+});
+
+test('a member whose grade changes keeps the last pictures on the page until the new ones are made, and the pictures dropped from the cache are let go', async () => {
+  let current = build('ocp', 'senior', 'Capt');
+  const released = [];
+  const api = OP.create(Object.assign({}, env, { build: () => current, draw: async scene => 'blob:' + scene.layers.map(l => l.id + l.key).join(), release: u => released.push(u), warn(){} }));
+  const first = await api.pictures('headgear', ['auto', 'none']).ready;
+  current = build('ocp', 'senior', 'Col');
+  const next = api.pictures('headgear', ['auto', 'none']);
+  assert.equal(next.settled, false, 'not made yet');
+  assert.deepEqual(next.now, first, 'the last ones until then');
+  const made = await next.ready;
+  assert.notEqual(made.auto, first.auto, 'the colonel\'s grade is on the cap');
+  assert.equal(api.pictures('headgear', ['auto', 'none']).settled, true);
+  // Thirty-one members later the first has gone, and its pictures are let go.
+  for(let i = 0; i < 31; i++){
+    current = build('abu', 'senior', 'Capt', { gender: i % 2 ? 'female' : 'male', badges: badges(['x' + i]) });
+    await api.pictures('badgeLayout', ['column', 'pair']).ready;
+    current = build('ocp', 'senior', 'Capt', { badges: badges(['b' + i]) });
+    await api.pictures('badgeLayout', ['column', 'pair']).ready;
+  }
+  const again = api.pictures('headgear', ['auto', 'none']);
+  assert.equal(again.settled, false, 'the oldest set was dropped');
+  assert.ok(released.includes(first.auto), 'and its picture address is let go');
+  assert.ok(!released.includes(made.auto) || released.indexOf(made.auto) > released.indexOf(first.auto), 'the oldest first');
 });

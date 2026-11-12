@@ -247,7 +247,7 @@
   // each choice holds its place with a blank box, and a choice with no art to show is its name alone. The choices and their values are the select's: what is saved
   // and shared does not change, only how it is shown.
   const BLANK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3" aria-hidden="true"></svg>';
-  const picturesOf = (key, values) => window.CAPUBOptionPictures ? CAPUBOptionPictures.pictures(key, values) : { now: Object.fromEntries(values.map(v => [v, null])), ready: Promise.resolve({}) };
+  const picturesOf = (key, values) => window.CAPUBOptionPictures ? CAPUBOptionPictures.pictures(key, values) : { now: Object.fromEntries(values.map(v => [v, null])), ready: Promise.resolve({}), settled: true };
   function pickerFor(o, c, g){
     const choices = typeof o.choices === 'function' ? o.choices(c) : o.choices;
     const values = choices.map(([v]) => v);
@@ -257,7 +257,7 @@
     const current = choices.some(([v]) => v === g[o.key]) ? g[o.key] : choices[0][0];
     const host = document.createElement('div');
     const picker = VisualPicker.render(host, { name: 'garmentOpt-' + o.key, legend: labelOf(o, c), options: options(made.now), value: current, size: o.picker.size, shape: o.picker.shape, onChange: v => set(o.key, v) });
-    if(!values.every(v => v in made.now)) made.ready.then(done => { if(host.isConnected !== false) picker.setOptions(options(done)); });
+    if(!made.settled) made.ready.then(done => { if(host.isConnected !== false) picker.setOptions(options(done)); });
     return host;
   }
   // The panel is drawn again on every change, so the option the keyboard was on is found again and takes the focus back.
@@ -283,7 +283,8 @@
     const active = OPTIONS.filter(o => o.when(c));
     const g = State.garment || {};
     // The text in a text field is not part of the signature: typing must not rebuild the field being typed in.
-    const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, c.chaplain, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
+    // The grade and the badges are in it too: the caps carry the member's grade and the layouts stand on their badges, so their pictures are drawn again when either changes.
+    const signature = JSON.stringify([c.u, c.female, c.g.category, c.g.key || c.g.rank, c.chestBadges, State.badges || [], c.chaplain, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
     const refocus = focusedPick(host);

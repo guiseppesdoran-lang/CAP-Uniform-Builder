@@ -3,8 +3,10 @@
 //
 //   const p = CAPUBOptionPictures.pictures('headgear', ['auto', 'tactical', 'none']);
 //   p.now    { value: picture | null | undefined }   what is known already: a picture (an image address or SVG markup, what js/visual-picker.js takes), null
-//            for a choice that has no art to show (it is shown by its name alone), undefined while it is still being made
-//   p.ready  a promise of the same, complete
+//            for a choice that has no art to show (it is shown by its name alone), undefined while it is still being made; while the pictures for a changed
+//            member (another grade, another cut) are being made, the last ones made for these choices
+//   p.ready  a promise of the pictures for the member as they are now, complete
+//   p.settled  true when `now` is already those pictures
 //
 // A picture is made by composing the uniform for the member as they are with one option changed, the way the page composes it (js/uniform-view.js
 // buildFromState, E.profiles.composeUniform), and keeping the layers that make the picture: the cap and what is on it; the blank squares the badges
@@ -228,19 +230,32 @@
 
   // ---- the page's side: what composing and drawing need, and the cache of what was made ------------------------------------------
 
+  // What a picture needs from its surroundings (`env`): the engine's pieces (core), the build the page would draw (build), composing and drawing, the spec
+  // store (spec, entry, url), the empty mark and, optionally, warn and release (called with a picture address that is dropped from the cache).
+  const KEEP = 30;   // member-and-choice sets kept: the newest; a member who changes grade or cut a few times has the earlier ones back at once
   function create(env){
-    const cache = new Map();
+    const cache = new Map();    // key -> { value, promise }; the newest last
+    const latest = new Map();   // option and choices -> the last pictures made for them, shown while the pictures for a changed member are being made
+    function drop(){
+      while(cache.size > KEEP){
+        const [key, old] = cache.entries().next().value;
+        cache.delete(key);
+        if(env.release && old.value) Object.values(old.value).forEach(p => { if(typeof p === 'string' && /^blob:/.test(p)) env.release(p); });
+      }
+    }
     function pictures(optionKey, values){
       const recipe = RECIPES[optionKey];
       const list = Array.isArray(values) ? values : [];
       const none = Object.fromEntries(list.map(v => [v, null]));
       // A choice no recipe makes a picture of, or no member to compose for, has no art to show.
-      if(!recipe || !list.length) return { now: none, ready: Promise.resolve(none) };
+      if(!recipe || !list.length) return { now: none, ready: Promise.resolve(none), settled: true };
       let build;
-      try{ build = env.build(); }catch(e){ return { now: none, ready: Promise.resolve(none) }; }
+      try{ build = env.build(); }catch(e){ return { now: none, ready: Promise.resolve(none), settled: true }; }
       const key = JSON.stringify([optionKey, recipe.key(build), list]);
+      const kind = JSON.stringify([optionKey, list]);
       let hit = cache.get(key);
-      if(!hit){
+      if(hit){ cache.delete(key); cache.set(key, hit); }
+      else{
         hit = { value: null };
         hit.promise = Promise.resolve()
           .then(() => recipe.make(env, build, list))
@@ -256,10 +271,11 @@
             if(env.warn) env.warn(`The pictures of ${optionKey} could not be made`, error);
             return none;
           })
-          .then(done => { hit.value = done; return done; });
+          .then(done => { hit.value = done; latest.set(kind, done); return done; });
         cache.set(key, hit);
+        drop();
       }
-      return { now: hit.value || {}, ready: hit.promise };
+      return { now: hit.value || latest.get(kind) || {}, ready: hit.promise, settled: !!hit.value };
     }
     return { pictures };
   }
@@ -289,6 +305,7 @@
         return URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml;charset=utf-8' }));
       },
       empty: () => window.VisualPicker.emptyMark(),
+      release: url => URL.revokeObjectURL(url),
       warn: (...a) => console.warn('[option pictures]', ...a)
     };
   }
