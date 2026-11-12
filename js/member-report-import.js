@@ -735,11 +735,29 @@ function titleCaseImportedName(raw){
     .replace(/\bMc(\p{L})/gu, (m, ch) => 'Mc' + ch.toUpperCase());
 }
 
-// The member's name. The General Information row is authoritative: "CAPID Name Gender ..." then
-// "123456 MITCHELL, GUISEPPE MALE CADET ...". The last name is everything before the comma (so "SMITH JR"
-// and "VAN DYKE" stay whole); the first name is the first given name (a middle name or initial is not worn on
-// the nameplate). Without that row, the report heading "C/Col Guiseppe Mitchell" is read: the grade removed,
-// the last word is the last name.
+// The member's name, in the three places a report prints it. The General Information row is authoritative: "CAPID Name Gender ..." then
+// "123456 MITCHELL, GUISEPPE MALE CADET ...". The last name is everything before the comma (so "SMITH JR" and "VAN DYKE" stay whole); the first
+// name is the first given name (a middle name or initial is not worn on the nameplate). A report without that row prints the name in a
+// heading, with no comma: "Personnel Information For: C/Col Guiseppe Mitchell 123456" (the print of the member search today, whose first
+// table is headed "General Info") or "Member Details C/Col Guiseppe Mitchell General Information". There the grade is removed, the first
+// word is the first name and the last word is the last name; a suffix (Jr, Sr, II, III, IV) stays with the last name, as in the row.
+function memberReportNameFromHeading(raw){
+  let rest = String(raw || '').trim();
+  const ranks = (typeof RANKS === 'object' ? [...(RANKS.cadet || []), ...(RANKS.senior || [])] : [])
+    .sort((a, b) => b.length - a.length);
+  for(const rank of ranks){
+    const re = new RegExp('^' + rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*').replace(/\//g, '/\\s*') + '\\s+', 'i');
+    if(re.test(rest)){ rest = rest.replace(re, ''); break; }
+  }
+  const comma = rest.match(/^(\p{L}[\p{L}'’.\- ]*?)\s*,\s*(\p{L}[\p{L}'’.\-]*)/u);
+  if(comma) return { firstName:titleCaseImportedName(comma[2]), lastName:titleCaseImportedName(comma[1]) };
+  const words = rest.split(' ').filter(w => /^\p{L}[\p{L}'’.\-]*$/u.test(w));
+  if(words.length < 2) return null;
+  const suffix = words.length > 2 && /^(?:Jr|Sr|II|III|IV)\.?$/i.test(words[words.length - 1]);
+  const last = titleCaseImportedName(words.slice(suffix ? -2 : -1).join(' ')).replace(/\b(?:Ii|Iii|Iv)\b/g, roman => roman.toUpperCase());
+  return { firstName:titleCaseImportedName(words[0]), lastName:last };
+}
+
 function extractMemberNameFromReport(text){
   const t = normalizeMemberReportText(text);
   const row = t.match(/\b\d{5,7}\s+(\p{L}[\p{L}'’.\- ]*?)\s*,\s*(\p{L}[\p{L}'’.\-]*)(?:\s+\p{L}[\p{L}'’.\-]*)*?\s+(?:MALE|FEMALE)\b/iu);
@@ -748,19 +766,8 @@ function extractMemberNameFromReport(text){
     const firstName = titleCaseImportedName(row[2]);
     if(firstName && lastName) return { firstName, lastName };
   }
-  const heading = t.match(/Member\s+Details\s+(.+?)\s+General\s+Information/i);
-  if(heading){
-    let rest = heading[1].trim();
-    const ranks = (typeof RANKS === 'object' ? [...(RANKS.cadet || []), ...(RANKS.senior || [])] : [])
-      .sort((a, b) => b.length - a.length);
-    for(const rank of ranks){
-      const re = new RegExp('^' + rank.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*').replace(/\//g, '/\\s*') + '\\s+', 'i');
-      if(re.test(rest)){ rest = rest.replace(re, ''); break; }
-    }
-    const words = rest.split(' ').filter(w => /^\p{L}[\p{L}'’.\-]*$/u.test(w));
-    if(words.length >= 2) return { firstName:titleCaseImportedName(words[0]), lastName:titleCaseImportedName(words[words.length - 1]) };
-  }
-  return null;
+  const heading = t.match(/Personnel\s+Information\s+For\s*:?\s+([^:]{1,80}?)\s+\d{5,7}\b/i) || t.match(/Member\s+Details\s+(.+?)\s+General\s+Information/i);
+  return heading ? memberReportNameFromHeading(heading[1]) : null;
 }
 
 // The General Information row: "... MALE CADET C/Col 18 Dec 2025 24 Sep 2019 30 Sep 2027 ACTIVE ...", columns

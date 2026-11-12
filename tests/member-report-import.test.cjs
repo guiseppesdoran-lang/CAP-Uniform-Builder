@@ -1496,3 +1496,44 @@ test('Clear import notes says the build is as it was and keeps the privacy line'
   assert.match(src, /'The import notes are cleared and your build is as it was\. A report is read on your device and is not kept or sent\.'/);
   assert.doesNotMatch(src, /No report imported yet/);
 });
+
+// ---- The print of the member search today (the owner's own report) --------------------------------------------------------------------
+// The print has no "General Information" heading and no row of CAPID, name and gender: it opens with "Personnel Information For: <grade> <name>
+// <CAPID>" and a table headed "General Info", lists the member's qualifications under "Achievements", and prints Cadet Training as Type, Location,
+// Date Completed. tests/fixtures/eservices-member-details-cadet-personnel.txt is a report in that shape: its rows are written here, with a made-up
+// member, unit and dates, and the print header and footer of every page in between.
+const PERSONNEL_FILE = 'eservices-member-details-cadet-personnel.txt';
+const PERSONNEL = fixtureText(PERSONNEL_FILE);
+
+test('the name is read from the "Personnel Information For" heading of the member search print, a middle name left out', () => {
+  const r = runImport(PERSONNEL);
+  assert.deepEqual([r.text.firstName, r.text.lastName, r.text.show], ['Alex', 'Rivera', true]);
+  assert.equal(r.parsed.firstName, 'Alex');
+  assert.equal(r.parsed.lastName, 'Rivera');
+  // The same text as a PDF delivers it: one line, the print header and footer of each page left in.
+  assert.deepEqual(signature(PERSONNEL.replace(/\n/g, ' ')).name, ['Alex', 'Rivera']);
+});
+
+test('a heading name is the first word and the last word, with or without the grade, and a suffix stays with the last name', () => {
+  const read = heading => { const { context } = loadPageScripts(); return JSON.parse(vm.runInContext('(h) => JSON.stringify(extractMemberNameFromReport(h))', context)(`Printer Friendly View - Member Details Personnel Information For: ${heading} 123456 LSCode: General Info Organization GLR-IL-049`)); };
+  assert.deepEqual(read('C/Capt Alex Quinn Rivera'), { firstName: 'Alex', lastName: 'Rivera' });
+  assert.deepEqual(read('Alex Rivera'), { firstName: 'Alex', lastName: 'Rivera' }, 'no grade');
+  assert.deepEqual(read('C/Lt Col Alex Rivera'), { firstName: 'Alex', lastName: 'Rivera' }, 'a grade of two words');
+  assert.deepEqual(read('Maj Gen Alex Quinn Rivera'), { firstName: 'Alex', lastName: 'Rivera' }, 'a senior grade');
+  assert.deepEqual(read('C/CMSgt José Peña'), { firstName: 'José', lastName: 'Peña' }, 'accents');
+  assert.deepEqual(read("C/Capt Sean O'Brien-Lewis"), { firstName: 'Sean', lastName: "O'Brien-Lewis" });
+  assert.deepEqual(read('C/Capt Alex Rivera Jr'), { firstName: 'Alex', lastName: 'Rivera Jr' });
+  assert.deepEqual(read('Capt Alex Rivera III'), { firstName: 'Alex', lastName: 'Rivera III' });
+  assert.deepEqual(read('C/Capt RIVERA, ALEX QUINN'), { firstName: 'Alex', lastName: 'Rivera' }, 'a comma says which part is the last name');
+  assert.equal(read('C/Capt Alex'), null, 'one word is no name');
+  assert.equal(read(''), null);
+});
+
+test('the General Information row still wins over a heading, and a report with no name at all still says so', async () => {
+  const both = PERSONNEL.replace('Personnel Information For:   C/Capt Alex Quinn Rivera 123456   LSCode: General Info', 'Personnel Information For:   C/Capt Alex Quinn Rivera 123456   LSCode: General Information CAPID Name Gender Type Rank 123456 PEÑA, JOSÉ MALE CADET C/Capt 14 Mar 2024 02 Sep 2021 30 Sep 2027 ACTIVE GLR-IL-049 General Info');
+  assert.deepEqual(signature(both).name, ['José', 'Peña']);
+  const none = PERSONNEL.replace('C/Capt Alex Quinn Rivera 123456', '');
+  assert.deepEqual(signature(none).name, [null, null], 'no heading name');
+  const { result } = await importFile(fileLike('m.txt', 'text/plain', none));
+  assert.ok(groupOf(result.lines, 'Not understood').includes('The name was not found, so the uniform has no name.'));
+});

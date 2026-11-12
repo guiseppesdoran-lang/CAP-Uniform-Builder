@@ -1,0 +1,67 @@
+03/05/25, 9 : 41   AM Printer Friendly View - Member Details Page 1 of 9 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456
+Personnel Information For:   C/Capt Alex Quinn Rivera 123456   LSCode: General Info Organization GLR-IL-049 Gender   Type   Rank   Date of Rank   Joined   Expires   Profession MALE   CADET   C/Capt   14 Mar 2024   02 Sep 2021   29 Sep 2028 Branch of Service   Military Dependant False Achievements Achievements   Functional Area   Completed   Expires
+Achievement 1 (Curry)   Cadet_Programs   12 Mar 2022 Does not Expire
+ICUT - Introductory Communications User Training   Communications   26 Feb 2022 Does not Expire
+CAP Drivers License   OPS-DriversLicense   22 Jan 2025 19 Dec 2027
+GTL - Ground Team Leader (TRAINING)   OPS- Emergency_Services 17 Mar 2025 18 Apr 2027
+PIO - Public Information Officer (TRAINING)   OPS- Emergency_Services 09 Mar 2025 18 Apr 2027
+03/05/25, 9 : 41   AM Printer Friendly View - Member Details Page 2 of 9 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456
+MSA - Mission Staff Assistant   OPS- Emergency_Services 12 Jun 2024 14 Jun 2027
+MS - Mission Scanner   OPS- Emergency_Services 04 Jun 2024 06 Jun 2027
+MO - Mission Observer   OPS- Emergency_Services 04 Jun 2024 06 Jun 2027
+MRO - Mission Radio Operator   OPS- Emergency_Services   10 Jul 2024   23 Jul 2027
+PSC - Planning Section Chief (TRAINING)   OPS- Emergency_Services 27 Aug 2025 03 Nov 2027
+IS230 - Fundamentals of Emergency Management   OPS- Emergency_Services 19 Feb 2021 Does not Expire
+Cadet Duty Positions Duty Position   Wing-Unit   Scope   Assistant   Assign Date
+Cadet Logistics Officer   IL-049   UNIT   No   25 Jun 2025
+Cadet NCAC Alternate   NHQ-000   NATIONAL   No   29 Oct 2025
+Cadet NCAC Representative   MAR-001   REGION   No   12 Nov 2025
+Cadet Past Duty Positions Duty Position   Wing-Unit   Scope   Assistant   Assign Date   End Date
+Cadet Commander   IL-049   UNIT   No   18 Jan 2023   28 Jun 2024
+Cadet GCAC Assistant   IL-049   UNIT   No   12 Nov 2022   27 Sep 2023
+Cadet GCAC Chair   IL-049   GROUP   No   09 Oct 2023   11 Oct 2024
+Cadet RCAC Assistant   IL-001   WING   No   16 Oct 2024   17 Oct 2025
+03/05/25, 9 : 41   AM Printer Friendly View - Member Details Page 3 of 9 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456
+Cadet RCAC Chair   MAR-001   REGION   No   16 Oct 2024   17 Oct 2025
+Cadet WCAC Chair   IL-001   WING   No   09 Oct 2023   11 Oct 2024
+Transfer History From   To   Date Transferred GLR-IL-087   GLR-IL-049   4/17/2024 12:00:00 AM
+Professional Development Training   How Completed   Completed Cadet Programs RST Online Modules   LMS   09 Dec 2024
+Character Development Facilitator Training   LMS   05 Mar 2023
+Technician Rating Exam: Communications   LMS   27 Sep 2023
+Cadet Training Type   Location   Date Completed
+RCLS   GLR   08 Jan 2022
+NESA   Fort Pickett, VA   11 Jun 2022
+HMRS Full Week Dist. Graduate   Reading PA   25 Jun 2022
+RCLS   GLR Virtual Staff   14 Jan 2023
+COS   Scott AFB IL   17 Jun 2023
+MKSABA   Lewis University, Romeoville, IL   09 Sep 2023
+RCLS Cadet Cadre   Camp Grayling, MI   21 Oct 2023
+NBB   Rantoul, IL   22 Jun 2024
+RCLS   Fort Custer, MI   17 Aug 2024
+NFAP Student Graduate   Lancaster, TX   14 Jun 2025
+RCLS Dist. Graduate Senior Staff   Grissom ARB, IN   19 Jul 2025
+Encampments Location   Date Completed
+Camp Ripley, MN   27 May 2022
+Fort McCoy, WI   05 Jun 2023
+In-Person Required Staff Training Location   Date Completed
+IL Encampment   13 Jul 2025
+Orientation Flights Type   Flight Date 1   09 Jun 2021 2   09 Jun 2021 3   08 Jul 2023
+Cadet Achievements Acheivement/Award   Award Number   Completed
+Achievement 1 -   ! Honor Credit Awarded !   0   09 Jul 2021
+Achievement 2 -   ! Honor Credit Awarded !   0   18 Sep 2021
+Achievement 3 -   ! Honor Credit Awarded !   0   05 Jan 2022
+Wright Brothers   38172   02 Mar 2022
+Achievement 4 -   ! Honor Credit Awarded !   0   16 Jul 2022
+Promotions Rank   Date of Rank   Criteria C/Capt   14 Mar 2024   C/1stLt   12 Nov 2023   CADET   02 Sep 2021
+Decorations Decoration   Date of Decoration   Approval Date Achievement Award   09 Jun 2024   to 16 Jun 2024   02 Oct 2024
+Commander's Commendation Award (Wing)   11 May 2024   to 18 May 2024   23 May 2024
+Ribbons Activity/Service Ribbon   Type   Date Earned AFA Award to Unit Cadet of the Year   Cadet   3/9/2023 12:00:00 AM
+Encampment Ribbon   Cadet   5/27/2022 12:00:00 AM
+Cadet Advisory Council Ribbon   Cadet   4/9/2023 12:00:00 AM
+Cadet Special Activity Ribbon   Cadet   6/11/2022 12:00:00 AM
+Cadet Special Activity Ribbon   Cadet   6/25/2022 12:00:00 AM
+Cadet Special Activity Ribbon   Cadet   6/17/2023 12:00:00 AM
+Cadet Special Activity Ribbon   Cadet   9/9/2023 12:00:00 AM
+Cadet Special Activity Ribbon   Cadet   6/22/2024 12:00:00 AM
+Local Activities Date   Topic(s)   Present   Excused   CAP Forms   Uniform 20 Nov 2023 Drill and Ceremony, Cadet Program   Yes   No   Yes   No
+27 Feb 2025 Other - Powered National Flight Academy (NCSA/CSA/NFA) | 27 Feb 2025   | 7312   Yes   No   No   No
