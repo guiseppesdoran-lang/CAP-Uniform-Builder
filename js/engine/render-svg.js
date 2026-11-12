@@ -137,6 +137,14 @@
     return p;
   }
 
+  // An asset whose file is not an SVG is a flat picture shipped as given (the two Emergency Services patches): the engine places it by id like any
+  // piece, at the size and place its profile works out, and it is drawn as the picture it is by the loader every other picture uses (loadRaster).
+  // The layer in the scene is left as the engine made it; only the drawing sees it as a raster layer.
+  function pictureLayer(layer, manifestPath){
+    if(layer.type !== 'asset' || /\.svg$/i.test(manifestPath(layer.id))) return layer;
+    return Object.assign({}, layer, { type: 'raster', href: assetUrl(manifestPath(layer.id)) });
+  }
+
   function el(name, attrs){
     const node = document.createElementNS(SVG_NS, name);
     if(attrs) for(const k of Object.keys(attrs)) if(attrs[k] !== undefined && attrs[k] !== null) node.setAttribute(k, String(attrs[k]));
@@ -370,7 +378,8 @@
       if(layer.onlyGroups && layer.onlyGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       return layer.id;
     }
-    const assetIds = [...new Set(scene.layers.filter(l => l.type === 'asset').map(l => l.id))];
+    const drawing = scene.layers.map(l => pictureLayer(l, manifestPath));
+    const assetIds = [...new Set(drawing.filter(l => l.type === 'asset').map(l => l.id))];
     const symbols = await Promise.all(assetIds.map(id => loadSymbol(id, manifestPath(id)).then(s => [id, s]).catch(err => {
       console.warn('[uniform] could not load', id, err);
       return [id, null];
@@ -400,7 +409,7 @@
       }
     }
     // Variant symbols. Their own ids get a suffix so they cannot clash with the original's.
-    for(const layer of scene.layers){
+    for(const layer of drawing){
       if(layer.type !== 'asset') continue;
       const key = variantKey(layer);
       if(key === layer.id || loaded.get(key) || !symbolData.get(layer.id)) continue;
@@ -465,11 +474,11 @@
       loaded.set(key, true);
     }
 
-    const rasterUrls = [...new Set(scene.layers.filter(l => l.type === 'raster').map(l => l.href))];
+    const rasterUrls = [...new Set(drawing.filter(l => l.type === 'raster').map(l => l.href))];
     const rasters = new Map();
     await Promise.all(rasterUrls.map(u => loadRaster(u).then(d => rasters.set(u, d)).catch(err => console.warn('[uniform] could not load', u, err))));
 
-    const layers = [...scene.layers].sort((a, b2) => (a.z || 0) - (b2.z || 0));
+    const layers = [...drawing].sort((a, b2) => (a.z || 0) - (b2.z || 0));
     const clipIds = new Map();
     const silIds = new Map();
     // The sheet's silhouette path with only its largest subpath (by the area of its M/L vertices): the garment's outer outline without the holes
@@ -673,5 +682,5 @@
   }
 
   root.CAPUBEngine = root.CAPUBEngine || {};
-  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, embedFonts, ENGRAVED_FONT, loadSymbol, measureNodes, cordBraid, hashText, scopeIds };
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, embedFonts, ENGRAVED_FONT, loadSymbol, pictureLayer, measureNodes, cordBraid, hashText, scopeIds };
 })(typeof self !== 'undefined' ? self : this);
