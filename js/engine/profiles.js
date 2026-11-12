@@ -1031,6 +1031,7 @@
     scene.layers.push(...other.layers);
     other.notes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
     (other.conflicts || []).forEach(c => { if(!(scene.conflicts || []).some(x => x.position === c.position && JSON.stringify(x.candidates) === JSON.stringify(c.candidates))) scene.conflicts.push(c); });
+    (other.badgeOrders || []).forEach(e => { if(!(scene.badgeOrders || []).some(x => x.group === e.group && x.place === e.place)) scene.badgeOrders.push(e); });
     scene.bounds = core.unionBounds([scene.bounds, { x: other.bounds.x + dx, y: other.bounds.y + dy, w: other.bounds.w, h: other.bounds.h }]);
     return scene;
   }

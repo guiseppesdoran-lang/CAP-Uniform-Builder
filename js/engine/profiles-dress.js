@@ -63,9 +63,10 @@
   function planBadges(ctx, b, opts){
     const set = H.badgeSet(ctx, b, 'dress');
     const o = opts || {};
-    // Two occupational badges: the higher one by the order of data/badge-catalog.js (the regulation gives none), first in `occ`. The stack below is
-    // listed bottom first, so the lower badge comes first there and the higher one is worn highest of the two.
-    const occ = [...set.occupational].sort((a, b) => B.occupationalRank(a.id) - B.occupationalRank(b.id));
+    // Two occupational badges: the regulation gives no order between them, so the member's own (build.badgeOrder, data/badge-catalog.js arrangeEqual) goes
+    // first; with none, the higher one is by the order of data/badge-catalog.js. The higher badge is first in `occ`. The stack below is listed bottom first,
+    // so the lower badge comes first there and the higher one is worn highest of the two.
+    const occ = B.arrangeEqual([...set.occupational].sort((a, b) => B.occupationalRank(a.id) - B.occupationalRank(b.id)), b.badgeOrder);
     // Over the left pocket, bottom first: occupational under aviation, chaplain always on top.
     const olpAll = [...occ].reverse().concat(set.aviation, set.chaplain);
     const military = (b.militaryBadges || []).map(m => ({ id: m.id, variant: m.variant, href: m.href, title: m.title, family: 'military', military: true }));
@@ -255,6 +256,19 @@
     return s ? { w: s.w, h: s.h } : null;
   }
 
+  // The boxes a stack of badges takes, first item lowest, each `gap` above the one below.
+  async function stackBoxes(ctx, items, x, bottomY, gap){
+    const boxes = [];
+    let yy = bottomY;
+    for(const it of items){
+      const sz = await badgeSize(ctx, it);
+      if(!sz) continue;
+      boxes.push({ x: x - sz.w / 2, y: yy - gap - sz.h, w: sz.w, h: sz.h });
+      yy -= gap + sz.h;
+    }
+    return boxes;
+  }
+
   // Stack badges upward, each `gap` above the one below. The first item is the lowest; `below` names what it stands over (the pill's caption).
   // With `limit` ({ limits, cite }) the stack is kept on the garment (see above): it comes down by the least that keeps it there.
   async function stackBadges(ctx, items, x, bottomY, gap, below, limit){
@@ -263,14 +277,7 @@
     let under = below || 'ribbons';
     let moved = 0;
     if(limit && limit.limits){
-      const boxes = [];
-      let yy = bottomY;
-      for(const it of items){
-        const sz = await badgeSize(ctx, it);
-        if(!sz) continue;
-        boxes.push({ x: x - sz.w / 2, y: yy - gap - sz.h, w: sz.w, h: sz.h });
-        yy -= gap + sz.h;
-      }
+      const boxes = await stackBoxes(ctx, items, x, bottomY, gap);
       const why = boxes.length ? badgeBlocker(boxes, limit.limits, 0) : null;
       if(why){
         let dy = 0;
@@ -289,6 +296,26 @@
     }
     return top;
   }
+
+  // The two occupational badges over the left pocket are the member's to put in either order (CAPR 39-1 sets none between them; the badge catalog's
+  // arrangeEqual), so the scene reports the stack and the page offers the swap (scene.badgeOrders). `stack` says where the stack is laid ({ x, bottom,
+  // gap, limit }) when the garment's edge limits it: the swap is not offered when the other order would not stay on the garment.
+  const SWAP_WORDS = { collar: 'reach the shoulder and the top of the garment', board: 'reach the shoulder board', seam: 'reach the shoulder seam, the top edge of the garment' };
+  async function reportOlpOrder(ctx, b, olp, place, stack){
+    const free = olp.filter(x => B.equalGroup(x.id) === 'occupational');
+    if(free.length < 2) return;
+    let swap = true, why = '';
+    if(stack && stack.limit && stack.limit.limits){
+      const now = badgeBlocker(await stackBoxes(ctx, olp, stack.x, stack.bottom, stack.gap), stack.limit.limits, 0);
+      const other = badgeBlocker(await stackBoxes(ctx, [...olp].reverse(), stack.x, stack.bottom, stack.gap), stack.limit.limits, 0);
+      if(other && !now){
+        swap = false;
+        why = `Swapped, the two badges would ${SWAP_WORDS[other]}, so they stay in this order (CAPR 39-1, ${stack.limit.cite})`;
+      }
+    }
+    C.reportBadgeOrder(ctx, 'occupational', B.EQUAL_STANDING.occupational, place, [...free].reverse(), { ref: H.oneAviationBadgeParagraph(b) || '', swap, why });
+  }
+  H.olpOrderReport = reportOlpOrder;
 
   // The first badge is centred over the highest row of ribbons or medals (the row `topRow` of a rack box), over the rack's own line when nothing is worn.
   const olpCenterX = (box, fallback) => box && box.topRow ? box.topRow.x + box.topRow.w / 2 : fallback;
@@ -331,11 +358,13 @@
     }
     // Over the left pocket.
     if(plan.olp.length){
+      const olpGap = geo.olp && geo.olp.gap != null ? geo.olp.gap : 0.5, olpLimit = geo.olp && geo.olp.limits ? { limits: geo.olp.limits, cite: geo.olp.cite } : null;
+      await reportOlpOrder(ctx, b, plan.olp, 'over the left pocket', geo.olpCenter ? null : { x: geo.olp.x, bottom: geo.olp.baseY, gap: olpGap, limit: olpLimit });
       if(geo.olpCenter){
         const first = await putBadge(ctx, plan.olp[0], geo.olpCenter, 'center', undefined, "on the wearer's left, level with the name tag");
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], geo.olp.x, first.y, 0.5, 'badge');
       }else{
-        await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, geo.olp.gap == null ? 0.5 : geo.olp.gap, geo.olp.below, geo.olp.limits ? { limits: geo.olp.limits, cite: geo.olp.cite } : null);
+        await stackBadges(ctx, plan.olp, geo.olp.x, geo.olp.baseY, olpGap, geo.olp.below, olpLimit);
       }
     }
     const tag = geo.nametag;
@@ -2368,7 +2397,9 @@
     }
     // Aviation / occupational: 1/2 in above the medals; none worn: centred on the medal spot.
     if(plan.olp.length){
-      if(box) await stackBadges(ctx, plan.olp, olpCenterX(box, center.x), box.y, 0.5, 'medals', { what: 'medals', limits: badgeLimits(ctx, { strips: layerStrips(ctx) }), cite: female ? '4.1.2.1.2.5' : '4.1.1.1.3.1' });
+      const messLimit = { what: 'medals', limits: badgeLimits(ctx, { strips: layerStrips(ctx) }), cite: female ? '4.1.2.1.2.5' : '4.1.1.1.3.1' };
+      await reportOlpOrder(ctx, b, plan.olp, 'above the medals', box ? { x: olpCenterX(box, center.x), bottom: box.y, gap: 0.5, limit: messLimit } : null);
+      if(box) await stackBadges(ctx, plan.olp, olpCenterX(box, center.x), box.y, 0.5, 'medals', messLimit);
       else{
         const first = await putBadge(ctx, plan.olp[0], center, 'center', undefined, 'where the medals would be');
         if(plan.olp[1] && first) await stackBadges(ctx, [plan.olp[1]], center.x, first.y, 0.5, 'badge');
