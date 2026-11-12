@@ -1077,7 +1077,8 @@ test('Local Activities hold nothing the import uses: not a patch, not a badge, n
 });
 
 // ---- What the import tells the member (I2) ----------------------------------------------------------------------------------------------
-const linesText = lines => lines.map(l => typeof l === 'string' ? l : l.heading ? `# ${l.heading}` : `- ${l.item}`);
+const linesText = lines => lines.flatMap(l => typeof l === 'string' ? [l] : l.heading ? [`# ${l.heading}`] : l.fold ? [`> ${l.fold}`, ...l.items.map(i => `- ${i}`)] : [`- ${l.item}`]);
+const foldOf = lines => { const f = lines.find(l => l && typeof l === 'object' && 'fold' in l); return f ? f.items : null; };
 const groupOf = (lines, heading) => { const i = lines.findIndex(l => l && l.heading === heading); if(i < 0) return null; const out = []; for(let j = i + 1; j < lines.length && lines[j] && typeof lines[j] === 'object' && 'item' in lines[j]; j++) out.push(lines[j].item); return out; };
 
 test('the panel says what was read and what is on the build, then what was held off the uniform, with the reason', async () => {
@@ -1170,7 +1171,8 @@ test('what the member had is replaced, and the panel says Undo brings it back; a
 
 test('a row printed twice, and the badges beyond four, are told in the panel', async () => {
   const twice = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('Achievement Award 01 Feb 2022\n', 'Achievement Award 01 Feb 2022\nAchievement Award 01 Feb 2022\n')));
-  assert.ok(groupOf(twice.result.lines, 'Notes').includes('1 row listed twice in the report was counted once.'));
+  assert.ok(foldOf(twice.result.lines).includes('1 row listed twice in the report was counted once.'), 'a row counted once changes nothing for the member: it is in the fold');
+  assert.ok(!(groupOf(twice.result.lines, 'Notes') || []).some(n => /listed twice/.test(n)));
   const tracks = SENIOR.replace('STANDARDIZATION/EVALUATION TECHNICIAN 01 Jun 2022', 'STANDARDIZATION/EVALUATION TECHNICIAN 01 Jun 2022\nOPERATIONS MASTER 01 Jun 2023\nPERSONNEL MASTER 01 Jun 2023\nFINANCE MASTER 01 Jun 2023\nLOGISTICS MASTER 01 Jun 2023');
   const many = await importFile(fileLike('member.txt', 'text/plain', tracks));
   const held = groupOf(many.result.lines, 'Held off the uniform');
@@ -1722,4 +1724,125 @@ test('a page break inside the Cadet Training table, as a PDF prints it (the time
   assert.deepEqual(rows.filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['NESA', 'HMRS', 'COS', 'MKSABA', 'NBB', 'NFAP']);
   assert.ok(rows.every(r => !/CAPID|AM\b|\d : \d/.test(r.title)), JSON.stringify(rows.map(r => r.title)));
   assert.equal(runImport(broken).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
+});
+
+// ---- The panel says less: what stays in sight and what goes into the closed fold ---------------------------------------------------------
+// "most of the info is useless" (the owner, 2026-11-12, of his own report: sixteen notes, perhaps four he needed). A note stays in sight when the import made
+// a choice the member may want to change or must check; every other note is in the closed fold "More about this import", in the words it always had.
+const NOTE_KINDS = [
+  // [the kind, where it goes, a sample of it as the panel words it]
+  [/^Cadet Advisory Council Ribbon: .+ level, from your past duty positions\.$/, 'sight', 'Cadet Advisory Council Ribbon: Region level, from your past duty positions.'],
+  [/^Cadet Advisory Council Ribbon: the basic ribbon/, 'sight', 'Cadet Advisory Council Ribbon: the basic ribbon, since no past council position shows a level.'],
+  [/^Cadet Advisory Council Ribbon: none chosen/, 'sight', "Cadet Advisory Council Ribbon: none chosen, since no past duty position as chair, vice chair or representative of a council was found. A position held now gives the shoulder cord, not the ribbon's star (CAPR 39-3, 21j)."],
+  [/^Command Service Ribbon: /, 'sight', 'Command Service Ribbon: Wing level, silver star, from commander duty of 365 days or more.'],
+  [/^The report lists the .+ \d+ times and does not say what a repeated row stands for/, 'sight', 'The report lists the Air Search and Rescue Ribbon 3 times and does not say what a repeated row stands for: check its device under Ribbons.'],
+  [/^National Cadet Competition Ribbon: .+ add it under Ribbons if it applies\.$/, 'sight', 'National Cadet Competition Ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star), so no star is added; add it under Ribbons if it applies.'],
+  [/^The Certificate of Recognition for Lifesaving is the Lifesaving Award ribbon/, 'sight', 'The Certificate of Recognition for Lifesaving is the Lifesaving Award ribbon. The report does not say whether the save was a blood or organ transport, so the silver star for a save of another kind is not added; add it under Ribbons if it applies (CAPR 39-3, 9h).'],
+  [/^Leadership Award: a senior or master specialty rating earns a star/, 'sight', 'Leadership Award: a senior or master specialty rating earns a star (bronze for senior, silver for master), which is not added; add it under Ribbons if it applies.'],
+  [/^Garber and Gill Robb Wilson Awards: /, 'sight', 'Garber and Gill Robb Wilson Awards: the report does not show Squadron Officer School, Air Command and Staff College or Air War College, so no star is added; add it under Ribbons if it applies.'],
+  [/^.+: taken from the .+ qualifications?, since the report names no /, 'sight', 'Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.'],
+  [/^The report names these aviation badges: /, 'sight', 'The report names these aviation badges: Solo Badge and Observer Badge. One CAP aviation badge is worn at a time (CAPR 39-1, 4.1.5.2.2.4.1); the others are listed under Authorized by member report in the badge list.'],
+  [/^A (?:current )?National Staff appointment/, 'sight', 'A current National Staff appointment was found: the National Staff Badge may be worn (CAPR 39-1, 10.2.3).'],
+  [/^(?:Current commander duty found|Past commander duty of a year or more found): the .+ command insignia pin/, 'sight', 'Current commander duty found: the Group Commander command insignia pin is worn over the name tag (CAPR 39-1, 10.2.5).'],
+  [/^Shoulder cords: (?:more than one|the .+ cord from the report is chosen|the .+ cord is worn only at|the .+ cord \(.+\) is chosen)/, 'sight', 'Shoulder cords: the Cadet Advisory Council cord from the report is chosen, so the Region Cadet Leadership School cord is marked and not chosen.'],
+  [/^The .+ patch, which a supplement requires on this uniform, is chosen\./, 'sight', 'The Wing patch, which a supplement requires on this uniform, is chosen. You can take it off under Supplements.'],
+  [/^The name is longer than 40 letters/, 'sight', 'The name is longer than 40 letters, so the uniform shows the first 40 of each part.'],
+  [/^The Cadet Achievements heading was not found/, 'sight', 'The Cadet Achievements heading was not found; its Achievement rows were read without it.'],
+  // The fold.
+  [/^\d+ rows? listed twice in the report/, 'more', '1 row listed twice in the report was counted once.'],
+  [/^Current First Sergeant duty found/, 'more', 'Current First Sergeant duty found, so the Cadet First Sergeant diamond is chosen for the Class B shirt (CAPR 39-1, 10.10.4).'],
+  [/records found; the ribbon picker offers at most|: the picker offers at most \d+ awards/, 'more', 'Disaster Relief Ribbon: the picker offers at most 84 awards, so 84 are used.'],
+  [/^A Cadet Recruiter Ribbon row was not used/, 'more', 'A Cadet Recruiter Ribbon row was not used: a senior member wears the Senior Recruiter Ribbon only.'],
+  [/^(?:Current|Past) Commander duty found, but the command insignia pin/, 'more', 'Current Commander duty found, but the command insignia pin is worn in the grade of lieutenant colonel and below, so it was not chosen (CAPR 39-1, 10.2.5).'],
+  [/is rated NONE|is in Specialty Tracks, but the builder has no badge|is in the Specialty Tracks table, but the builder does not authorize/, 'more', 'CADET PROGRAMS TECHNICIAN is in the Specialty Tracks table, but the builder does not authorize that badge for cadet members, so it is not offered.'],
+  [/^A Communications specialty rating was found/, 'more', 'A Communications specialty rating was found: the Communications patch is worn on the field and flight uniforms only.'],
+  [/training or an exam was found, but the (?:Communications )?badge comes from a rating in Specialty Tracks|^Character Development Instructor duty|^An Emergency Services exam was found/, 'more', 'Historian training or an exam was found, but the badge comes from a rating in Specialty Tracks (CAPR 39-1, 10.5), so none was imported.'],
+  [/^Mission Radio Operator or Mission Staff Assistant training|^Urban Direction Finding training/, 'more', 'Urban Direction Finding training was found; there is no badge for it, so none was imported.'],
+  [/^A past National Staff appointment was found, but it ran less than one year/, 'more', 'A past National Staff appointment was found, but it ran less than one year, so the badge is not worn permanently (CAPR 39-1, 10.2.3).'],
+  [/^Incident Commander training was found with no qualification|^Ground Team Member Level 3 was found as training|^An? (?:Ground Team|Incident Commander) qualification is listed as/, 'more', 'Incident Commander training was found with no qualification, so no Incident Commander badge was imported (CAPR 39-1, 10.4.6).'],
+  [/is in the report, but the builder does not authorize that badge for|qualification brings it, but the builder does not authorize|^Mission Pilot qualification found/, 'more', 'Mission Pilot qualification found, but the report names no pilot badge or rating, and a badge is worn only when it has been awarded (CAPR 39-1, 10.3.1): none was imported. If you hold one, choose it in the badge list.'],
+  [/cadet award ribbons? (?:is|are) left off/, 'more', '8 cadet award ribbons are left off: a senior member wears one cadet award ribbon, the highest, and may wear every milestone medal earned as a miniature (CAPR 39-1, 11.1.4).'],
+  [/shoulder cord: the report shows a position on the council held now/, 'more', "National Cadet Advisory Council shoulder cord: the report shows a position on the council held now, which gives the cord and not the ribbon's star (CAPR 39-3, 21j)."],
+  [/^No unit patch is offered for |^The unit patch for .+ is chosen/, 'more', 'No unit patch is offered for GLR-IL-049 yet.'],
+  [/^Supplements: |^Shoulder cords: the report shows |^Shoulder cords: the other cords of these supplements/, 'more', 'Supplements: Finger Lakes Group brings in Northeast Region Supplement 1.']
+];
+const notesOf = lines => [...(groupOf(lines, 'Notes') || []), ...(foldOf(lines) || [])];
+
+test('each kind of note goes where the table says: the choices a member may want to change stay in sight, the rest are in the fold', () => {
+  const { context } = loadPageScripts();
+  const inSight = vm.runInContext('memberReportNoteInSight', context);
+  for(const [kind, where, sample] of NOTE_KINDS){
+    assert.match(sample, kind, `the sample is its kind: ${sample.slice(0, 60)}`);
+    assert.equal(inSight(sample), where === 'sight', `${where}: ${sample.slice(0, 80)}`);
+    // No kind catches another's note.
+    for(const [other, otherWhere, otherSample] of NOTE_KINDS) if(other !== kind && otherSample !== sample) assert.ok(!(kind.test(otherSample) && otherWhere !== where), `${kind} also takes ${otherSample.slice(0, 60)}`);
+  }
+  assert.equal(inSight('A note no list has heard of.'), false, 'a note nothing names goes into the fold');
+});
+
+test('every note the import writes for the fixtures is of a kind in the table, so a new note cannot slip into the fold unnoticed', async () => {
+  const kinds = NOTE_KINDS.map(k => k[0]);
+  const extra = [
+    cadetWith('Decorations', ['National Cadet Competition Ribbon 03 Jan 2024', 'Lifesaving Award 03 Jan 2024', 'Search and Rescue Ribbon 03 Jan 2024', 'Search and Rescue Ribbon 03 Jan 2024']),
+    seniorWith('Decorations', ['Cadet Recruiter Ribbon 03 Jan 2024', 'Senior Pilot Wings 01 Jan 2020', 'Solo Wings 01 Jan 2019', 'Master Observer Wings 01 Jan 2021', 'Glider Pilot Badge 01 Jan 2020']),
+    SENIOR.replace('Commander GLR-IL-049 UNIT No 02 Jan 2025', 'Commander GLR-IL-001 GROUP No 02 Jan 2025').replace('1st Lt', 'Col'),
+    seniorWith('Qualification Status Expiration', ['Mission Pilot (MP) QUALIFIED 01 Jan 2027', 'Urban Direction Finding Team (UDF) QUALIFIED 01 Jan 2027', 'Mission Radio Operator (MRO) QUALIFIED 01 Jan 2027', 'Incident Commander 2 (IC2) TRAINING 01 Jan 2027']),
+    FIXTURE.replace('Cadet Achievements\n', '')
+  ];
+  const seen = new Set();
+  for(const text of [...FIXTURE_FILES.map(fixtureText), ...extra]){
+    const { result } = await importFile(fileLike('m.txt', 'text/plain', text));
+    for(const note of notesOf(result.lines)) seen.add(note);
+  }
+  assert.ok(seen.size > 25, `the texts write ${seen.size} different notes`);
+  const unnamed = [...seen].filter(note => !kinds.some(kind => kind.test(note)));
+  assert.deepEqual(unnamed, [], 'a note of no kind in the table: add its kind to the table and say where it goes');
+});
+
+test('the panel for the member search print: the counts, what was held off, four notes in sight, the rest closed under it; nothing said twice', async () => {
+  const { result } = await importFile(fileLike('m.txt', 'text/plain', PERSONNEL));
+  const text = linesText(result.lines);
+  assert.deepEqual([...text.slice(0, 2)], ['Imported the report.', 'Read: cadet, male, C/Capt, Alex Rivera.']);
+  assert.match(text[2], /^On the build: \d+ ribbons?, \d+ badges?, \d+ patch(?:es)?\.$/);
+  assert.equal(groupOf(result.lines, 'Not understood'), null, 'the name, the six activities and the rest are understood');
+  assert.deepEqual(groupOf(result.lines, 'Notes'), [
+    'Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.',
+    'Cadet Advisory Council Ribbon: Region level, from your past duty positions.'
+  ]);
+  // The order: the heading lines, Held off, Not understood, Notes, the check line, then the fold, last.
+  const order = result.lines.map(l => typeof l === 'string' ? 's' : l.heading ? 'h:' + l.heading : l.fold ? 'fold' : 'i');
+  assert.equal(order[order.length - 1], 'fold');
+  assert.equal(order[order.length - 2], 's', 'the check line is the last line before the fold');
+  assert.ok(order.indexOf('h:Held off the uniform') < order.indexOf('h:Notes'));
+  const fold = result.lines[result.lines.length - 1];
+  assert.equal(fold.fold, 'More about this import');
+  assert.ok(fold.items.length > 0);
+  // Nothing is said twice: no line twice, the Communications patch only under Held off.
+  const all = text.filter(l => !/^[#>]/.test(l));
+  assert.equal(new Set(all).size, all.length, 'no line twice');
+});
+
+test('the Communications patch is said once: under Held off the uniform when the uniform does not wear it, in the fold when it does', async () => {
+  const comms = PERSONNEL.replace('Technician Rating Exam: Communications', 'Technician Rating Exam: Communications').replace('Specialty Tracks', 'Specialty Tracks').replace('Cadet Training Type', 'Specialty Tracks Specialty Track Level Completed COMMUNICATIONS TECHNICIAN 05 May 2024 Cadet Training Type');
+  const blues = (await importFile(fileLike('m.txt', 'text/plain', comms), { before: "State.uniform = 'blues_a';" })).result;
+  assert.ok((groupOf(blues.lines, 'Held off the uniform') || []).some(l => /Communications Patch/.test(l)), JSON.stringify(groupOf(blues.lines, 'Held off the uniform')));
+  assert.ok(!notesOf(blues.lines).some(n => /^A Communications specialty rating was found/.test(n)), 'not said again');
+  const flight = (await importFile(fileLike('m.txt', 'text/plain', comms), { before: "State.uniform = 'flight_suit';" })).result;
+  if(!(groupOf(flight.lines, 'Held off the uniform') || []).some(l => /Communications Patch/.test(l))){
+    assert.ok((foldOf(flight.lines) || []).some(n => /^A Communications specialty rating was found/.test(n)), 'worn: said once, in the fold');
+  }
+});
+
+test('the fold is a closed details element built from text: its summary and its rows are text nodes, nothing is set as markup', () => {
+  const { context } = loadPageScripts();
+  const made = [];
+  const node = tag => ({ tag, style: {}, children: [], appendChild(c){ this.children.push(c); }, set innerHTML(v){ made.push(`innerHTML set: ${v}`); }, textContent: '' });
+  const panel = node('div');
+  context.document = { createElement: tag => node(tag), querySelectorAll: () => [], getElementById: id => id === 'memberReportImportStatus' ? panel : null };
+  vm.runInContext(`setMemberReportImportStatus(['Imported.', { heading: 'Notes' }, { item: 'One' }, { fold: '<b>More about this import</b>', items: ['<script>alert(1)</script> & more', 'Two'] }, 'After the fold'], 'ok')`, context);
+  assert.deepEqual(made, []);
+  assert.deepEqual(panel.children.map(c => c.tag), ['div', 'div', 'div', 'details', 'div']);
+  const details = panel.children[3];
+  assert.deepEqual(details.children.map(c => [c.tag, c.textContent]), [['summary', '<b>More about this import</b>'], ['div', '– <script>alert(1)</script> & more'], ['div', '– Two']]);
+  assert.ok(!('open' in details) && details.open !== true, 'closed');
 });

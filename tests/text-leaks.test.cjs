@@ -48,7 +48,8 @@ test('import notes: one per line, none twice, no restating check, no id, no eSer
 
 test('the import shows its notes as a heading and one line each, not one run-on line', () => {
   const src = read('js/member-report-import.js');
-  assert.match(src, /\{ heading: 'Notes' \}, \.\.\.notes\.map\(item => \(\{ item \}\)\)/);
+  assert.match(src, /\{ heading: 'Notes' \}, \.\.\.shown\.map\(item => \(\{ item \}\)\)/);
+  assert.match(src, /\{ fold: 'More about this import', items: more \}/);
   assert.match(src, /const notes = memberReportPlainNoteLines\(capubImportNoteLines\(/);
   assert.doesNotMatch(src, /Notes: \$\{parsed\.notes\.join\('; '\)\}/);
   assert.doesNotMatch(src, /not rendered because/);

@@ -31,8 +31,9 @@ const MEMBER_REPORT_IMPORT_BADGE_PRIORITY = [
   'nra_marksman_badge'
 ];
 
-// The panel's lines. A line is a sentence, or { heading } for a group's title, or { item } for a row of a group. Everything reaches the page as
-// text: a file name or a row of the report with markup in it is shown as it is written and never run.
+// The panel's lines. A line is a sentence, or { heading } for a group's title, or { item } for a row of a group, or { fold, items } for a closed
+// fold under the panel (a details element: the summary is `fold`, the rows are `items`). Everything reaches the page as text: a file name or a
+// row of the report with markup in it is shown as it is written and never run.
 function setMemberReportImportStatus(lines, type='info'){
   const el = by('memberReportImportStatus');
   if(!el) return;
@@ -49,6 +50,21 @@ function setMemberReportImportStatus(lines, type='info'){
     }else if(line && typeof line === 'object' && 'item' in line){
       row.textContent = `– ${line.item}`;
       row.style.paddingLeft = '10px';
+    }else if(line && typeof line === 'object' && 'fold' in line){
+      const fold = document.createElement('details'), summary = document.createElement('summary');
+      summary.textContent = String(line.fold);
+      summary.style.cursor = 'pointer';
+      summary.style.fontWeight = '700';
+      fold.style.marginTop = '8px';
+      fold.appendChild(summary);
+      for(const item of line.items || []){
+        const note = document.createElement('div');
+        note.textContent = `– ${item}`;
+        note.style.paddingLeft = '10px';
+        fold.appendChild(note);
+      }
+      el.appendChild(fold);
+      continue;
     }else{
       row.textContent = String(line);
     }
@@ -2470,6 +2486,26 @@ function memberReportPlainNoteLines(lines){
   }))];
 }
 
+// Which notes stay in sight under the panel's counts and which go into the closed fold "More about this import". A note stays in sight when the import
+// made a choice the member may want to change or must check: the level it gave a ribbon, a device it could not decide, a badge it took from a
+// qualification or an appointment, the pin or the cord it chose, a patch a supplement requires, a name it cut. Would the member do anything differently
+// after reading it? If not, it is in the fold: training that earns no badge, rows counted once, supplements brought in, a unit patch not offered yet and
+// the like. A note this list does not name goes into the fold as well.
+const MEMBER_REPORT_NOTES_IN_SIGHT = [
+  /^(?:Cadet Advisory Council Ribbon|Command Service Ribbon): /,
+  /^The report lists the .+ \d+ times and does not say what a repeated row stands for/,
+  /add it under Ribbons if it applies/,
+  /^.+: taken from the .+ qualifications?, since the report names no /,
+  /^The report names these aviation badges: /,
+  /^A (?:current )?National Staff appointment(?: of one full year or more)? was found: /,
+  /^(?:Current commander duty found: the|Past commander duty of a year or more found: the) .+ command insignia pin/,
+  /^Shoulder cords: (?:more than one supplement cord|the .+ cord from the report is chosen|the .+ cord is worn only at|the .+ cord \(.+\) is chosen)/,
+  /^The .+ patch, which a supplement requires on this uniform, is chosen\./,
+  /^The name is longer than 40 letters/,
+  /^The Cadet Achievements heading was not found/
+];
+const memberReportNoteInSight = note => MEMBER_REPORT_NOTES_IN_SIGHT.some(re => re.test(note));
+
 // The lines the panel shows for a report that was applied: what was read, what is on the build, what was held off and why, what was not
 // understood, and the notes. `replaced` is true when the member had ribbons, badges or patches that the report replaced.
 function memberReportStatusLines(parsed, fileName, { replaced = false, before = {} } = {}){
@@ -2505,10 +2541,16 @@ function memberReportStatusLines(parsed, fileName, { replaced = false, before = 
   unread.push(...rows.slice(0, 12).map(row => `${row}: no ribbon or badge matches this row.`));
   if(rows.length > 12) unread.push(`${rows.length - 12} more rows were not understood.`);
   if(unread.length) lines.push({ heading: 'Not understood' }, ...unread.map(item => ({ item })));
-  const notes = memberReportPlainNoteLines(capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n))));
-  if(notes.length) lines.push({ heading: 'Notes' }, ...notes.map(item => ({ item })));
+  // A Communications patch the uniform does not wear is told under Held off the uniform: its note would say it twice.
+  const commsHeldOff = (parsed.patches || []).includes('comms_patch') && !(State.patches || []).includes('comms_patch');
+  const notes = memberReportPlainNoteLines(capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n))))
+    .filter(n => !(commsHeldOff && /^A Communications specialty rating was found/.test(n)));
+  const shown = notes.filter(memberReportNoteInSight);
+  if(shown.length) lines.push({ heading: 'Notes' }, ...shown.map(item => ({ item })));
   if(replaced) lines.push('Your earlier ribbons, badges and patches were replaced by the report. Undo brings them back.');
   lines.push('Check the result against the member\'s record before relying on it.');
+  const more = notes.filter(note => !memberReportNoteInSight(note));
+  if(more.length) lines.push({ fold: 'More about this import', items: more });
   return lines;
 }
 
