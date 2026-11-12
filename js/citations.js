@@ -23,9 +23,12 @@
   // decimal such as "(1.5 in)" is never one. A two-part paragraph ("10.2, ...") counts only beside a publication or a longer paragraph.
   const SOURCE = '(?:CAPR|CAPP|CAPM|ICL|DAFI|AFI)\\s?\\d';
   const LONG = '\\d+(?:\\.\\d+){2,}';
-  const OPENS = new RegExp(`^(?:${SOURCE}|${LONG})`);
+  // A wing's or region's supplement named first, "Northeast Region Supplement 1, 9.4.1" (the page writes it after the publication, "CAPR 39-1 Northeast Region
+  // Supplement 1, 9.4.1", which the SOURCE already takes): a name, Region or Wing, Supplement and its number, then a comma and a paragraph.
+  const SUPPLEMENT = '[A-Z][\\w-]*(?:\\s[A-Z][\\w-]*){0,3}\\s(?:Region|Wing)\\sSupplement\\s\\d+';
+  const OPENS = new RegExp(`^(?:${SOURCE}|${LONG}|${SUPPLEMENT}\\s?[,;]\\s?\\d)`);
   const SHORT = /^\d+\.\d+[a-z]?\s?[,;]/;
-  const NAMES = new RegExp(`\\b(?:${SOURCE}|${LONG})`);
+  const NAMES = new RegExp(`\\b(?:${SOURCE}|${LONG}|${SUPPLEMENT}\\s?[,;]\\s?\\d)`);
   const isCitation = inner => OPENS.test(inner) || (SHORT.test(inner) && NAMES.test(inner));
 
   // A text as its runs, in order: plain ones and references. A reference takes the space before it, so the sentence closes up around it, and may
@@ -68,7 +71,7 @@
     return { text: cut.trim(), refs };
   }
   // A reference as the list names it: a paragraph given by its number alone is CAPR 39-1's.
-  const refLabel = ref => /^\d/.test(ref) ? 'CAPR 39-1, ' + ref : ref;
+  const refLabel = ref => /^\d/.test(ref) ? 'CAPR 39-1, ' + ref : new RegExp(`^${SUPPLEMENT}`).test(ref) ? 'CAPR 39-1 ' + ref : ref;
 
   // The references a mark opens: those in the text it ends, else (a chip that is only the reference) the chip's own text without brackets.
   function refsOfText(full, chips){
