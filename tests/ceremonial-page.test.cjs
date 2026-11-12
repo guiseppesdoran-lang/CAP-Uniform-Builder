@@ -305,12 +305,34 @@ test('a setup that names it for a senior member, on another uniform, or with a v
   for(const junk of ['true', 1, 'yes', {}, [], null]) assert.equal(load(profile({ ceremonial: junk })), false, JSON.stringify(junk));
 });
 
-test('the Check list says the white gloves are worn and not drawn, with the paragraph; and says nothing of them outside Honor Guard', () => {
-  member('State.ceremonial = true;');
-  const lines = ev('return CAPUB_V2.validateBuild().map(n => n.msg);');
-  assert.ok(lines.some(l => /gloves/i.test(l) && /not shown on the drawing/.test(l) && /\(CAPR 39-1, 9\.6\.7\.7\)\.$/.test(l)), lines.join(' | '));
+test('the Check list says how the white gloves are drawn, as the rule and with the paragraph: worn at the wrist on the coat and with long sleeves, folded under the belt (the flag sling\'s band for a flag bearer) with short ones; and says nothing of them outside Honor Guard', () => {
+  const gloves = () => ev('return CAPUB_V2.validateBuild().map(n => n.msg);').filter(l => /gloves/i.test(l));
+  const worn = 'White parade gloves are worn, the top of the glove just above the wrist (CAPR 39-1, 9.6.7.7).';
+  const belt = 'White parade gloves are shown folded under the belt, palm out, the tops over the belt, because no sleeve covers the wrists here (CAPR 39-1, 9.6.7.7).';
+  const sling = 'White parade gloves are shown folded under the flag sling\'s waist band, palm out, the tops over its upper edge, because no sleeve covers the wrists here (CAPR 39-1, 9.6.7.7).';
+  const state = (uniform, garment) => member(`State.ceremonial = true; State.uniform = "${uniform}"; State.garment = ${JSON.stringify(garment)};`);
+  state('blues_a', {});
+  assert.deepEqual(gloves(), [worn], 'the coat');
+  state('blues_a', { cerRole: 'flag' });
+  assert.deepEqual(gloves(), [worn], 'the coat, flag bearer: the same hands');
+  state('blues_b', { sleeve: 'long' });
+  assert.deepEqual(gloves(), [worn], 'long sleeves');
+  state('blues_b', { sleeve: 'long', cerRole: 'flag' });
+  assert.deepEqual(gloves(), [worn], 'long sleeves, flag bearer');
+  state('blues_b', {});
+  assert.deepEqual(gloves(), [belt], 'short sleeves are the Class B\'s own until the member chooses');
+  state('blues_b', { sleeve: 'short', cerRole: 'guard' });
+  assert.deepEqual(gloves(), [belt], 'short sleeves, guard: under the belt');
+  state('blues_b', { sleeve: 'short', cerRole: 'flag' });
+  assert.deepEqual(gloves(), [sling], 'short sleeves, flag bearer: under the sling\'s band');
+  for(const line of [worn, belt, sling]){
+    assert.doesNotMatch(line, /not shown|drawing|guidance|ruling/i, 'the rule only');
+    assert.match(line, /\(CAPR 39-1, 9\.6\.7\.7\)\.$/, 'the paragraph closes the sentence, for the question mark to hide');
+  }
+  member('State.ceremonial = true; State.membership = "senior"; State.rank = "Capt";');
+  assert.deepEqual(gloves(), [], 'a senior member is not offered the uniform');
   member('');
-  assert.ok(!ev('return CAPUB_V2.validateBuild().map(n => n.msg);').some(l => /gloves/i.test(l)));
+  assert.deepEqual(gloves(), [], 'nobody outside Honor Guard');
 });
 
 test('the Check list tells a woman in Honor Guard, on the coat and on the blouse, that only slacks are worn with this uniform, with the paragraph, and tells nobody else', () => {

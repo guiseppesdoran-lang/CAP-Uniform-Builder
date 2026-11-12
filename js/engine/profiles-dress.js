@@ -2038,8 +2038,9 @@
   //   the metallic silver shoulder cord on top of the epaulet (9.6.7.5): build.cord and build.cordOnTop, which the page sets with this build and nothing else sets.
   //   the male service cap with the Cadet Officer cap device and the rear chinstrap (9.6.7.9), lifted until its lowest ink clears the patch.
   //   on the shirt and blouse the collar worn open and laid back (the sheet's group collar-honor-guard) in place of the collar and the tie or tab the sheet draws.
-  // The art lies on the garment's own box like the cord sheets (`<sheet id>-honor-guard-belt | -flag-sling | -ascot`); the white gloves are worn and not drawn (no sheet draws hands).
-  const HG_Z = { belt: Z.garmentLayer + 0.1, sling: Z.garmentLayer + 0.1, ascot: Z.garmentLayer + 0.2, patch: Z.garmentLayer + 0.3 };
+  //   the white parade gloves (9.6.7.7): a gloved hand at each cuff on the coats and the long sleeves, the pair folded under the belt (or the sling's band) on the short sleeves, where no sleeve covers the wrists.
+  // The art lies on the garment's own box like the cord sheets (`<sheet id>-honor-guard-belt | -flag-sling | -gloves | -ascot`).
+  const HG_Z = { belt: Z.garmentLayer + 0.1, sling: Z.garmentLayer + 0.1, gloves: Z.garmentLayer + 0.15, ascot: Z.garmentLayer + 0.2, patch: Z.garmentLayer + 0.3 };
   const HG_PATCH = 'patch-honor-guard';
   const HG_CAP = { up: 'hat-service-cap-honor-guard', down: 'hat-service-cap-honor-guard-chinstrap-down' };
   const HG_CAP_DEVICE = 'cap-device-cadet-officer-service';
@@ -2053,19 +2054,36 @@
     return { role: c.role === 'flag' ? 'flag' : 'guard', chinstrap: RULES.CEREMONIAL.chinstraps.includes(c.chinstrap) ? c.chinstrap : RULES.ceremonialChinstrap(b.uniform, b.opt && b.opt.sleeve) };
   }
 
-  // A piece of the honor guard art on the garment's box: the spec, or null (with the note) when the sheet is not there.
-  async function honorGuardLayer(ctx, id, z, role, title){
+  // A piece of the honor guard art on the garment's box: the spec, or null (with the note) when the sheet is not there. `groups` ({ show, hide }) are the sheet's groups to draw or leave off.
+  async function honorGuardLayer(ctx, id, z, role, title, groups){
     if(!ctx.has(id)){ ctx.note(`${title} cannot be shown on this uniform`); return null; }
     const s = await ctx.spec(id);
-    ctx.layers.push(Object.assign(core.registerAtOrigin(s, z, role), { key: 'honor-guard:' + role, title }));
+    const layer = Object.assign(core.registerAtOrigin(s, z, role), { key: 'honor-guard:' + role, title });
+    if(groups && groups.show && groups.show.length) layer.showGroups = groups.show;
+    if(groups && groups.hide && groups.hide.length) layer.hideGroups = groups.hide;
+    ctx.layers.push(layer);
     return s;
   }
 
-  // The belt or the sling, then the ascot with the patch on it. Called where the sheet's own groups have been set (the Class B collar state first); sets ctx.honorGuardPatchTop, the line the cap is kept above.
+  // The white parade gloves (9.6.7.7), the sheet's own overlay `<sheet id>-honor-guard-gloves`, over the belt or the sling. Worn (a hand at each cuff: group gloves-worn, shown in the file, with a mask of
+  // its own that takes back what the sleeve and the body cover) on the coats and the long sleeves, for the guard and the flag bearer alike; folded under the belt (group gloves-under-belt, shown in
+  // the file) or, for the flag bearer, under the sling's band (group gloves-under-sling, hidden in the file, the belt's pair left off: the two overlap) on the short sleeves, where no sleeve covers the
+  // wrists. The groups are the ones the overlay's landmark `groups` names. Three of the overlays are taller than their sheet (the fingers hang past its lower edge: dimensions.extra_height_in), registered at
+  // the sheet's origin at their own size, so the scene's bounds make room below for them and nowhere else.
+  async function honorGuardGloves(ctx, hg){
+    const id = `${ctx.base.id}-honor-guard-gloves`;
+    if(!ctx.has(id)){ ctx.note('The white parade gloves cannot be shown on this uniform'); return null; }
+    const lm = (await ctx.spec(id)).raw.landmarks.groups;
+    const sling = hg.role === 'flag' && lm.under_belt && lm.under_sling;
+    return honorGuardLayer(ctx, id, HG_Z.gloves, 'honor-guard-gloves', 'The white parade gloves', sling ? { show: [lm.under_sling.group], hide: [lm.under_belt.group] } : null);
+  }
+
+  // The belt or the sling, then the gloves over it, then the ascot with the patch on it. Called where the sheet's own groups have been set (the Class B collar state first); sets ctx.honorGuardPatchTop, the line the cap is kept above.
   async function honorGuardBody(ctx, hg){
     const sheet = ctx.base.id;
     if(hg.role === 'flag') await honorGuardLayer(ctx, `${sheet}-honor-guard-flag-sling`, HG_Z.sling, 'honor-guard-sling', 'The white flag sling');
     else await honorGuardLayer(ctx, `${sheet}-honor-guard-belt`, HG_Z.belt, 'honor-guard-belt', 'The white pistol belt');
+    await honorGuardGloves(ctx, hg);
     const ascot = await honorGuardLayer(ctx, `${sheet}-honor-guard-ascot`, HG_Z.ascot, 'honor-guard-ascot', 'The white ascot');
     const at = ascot && core.anchor(ascot, 'patch_center');
     if(!at) return;

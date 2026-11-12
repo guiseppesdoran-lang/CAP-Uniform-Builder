@@ -1094,8 +1094,16 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
-    // What the Honor Guard Uniform wears and the drawing does not show: no sheet draws hands.
-    if(State.ceremonial && State.membership === 'cadet') addNotice('ok',`White parade gloves are worn with this uniform and are not shown on the drawing (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`);
+    // The white parade gloves as the drawing shows them (9.6.7.7): on the hands, the top of the glove just above the wrist, on the coat and with long sleeves; folded under the belt, or under the flag
+    // sling's waist band for a flag bearer, with short sleeves, where no sleeve covers the wrists.
+    if(State.ceremonial && State.membership === 'cadet'){
+      const gm = State.garment || {};
+      const folded = State.uniform === 'blues_b' && gm.sleeve !== 'long';
+      const place = gm.cerRole === 'flag' ? 'the flag sling\'s waist band, palm out, the tops over its upper edge' : 'the belt, palm out, the tops over the belt';
+      addNotice('ok', folded
+        ? `White parade gloves are shown folded under ${place}, because no sleeve covers the wrists here (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`
+        : `White parade gloves are worn, the top of the glove just above the wrist (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`);
+    }
     // What a woman wears with it, on the coat and on the blouse alike (9.6.7.3): only slacks.
     if(State.ceremonial && State.membership === 'cadet' && State.gender === 'female') addNotice('ok',`Female members wear only slacks with this uniform (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.slacks}).`);
     if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
