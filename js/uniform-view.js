@@ -254,6 +254,8 @@
     const allRibbons = mini ? buildRibbons({ allMilestones: true }) : ribbons;
     ribbonNotes = CAPUBUniformRules.allowsRibbons(State.uniform) || mini ? rotcNotes(mini) : [];
     const { badges, command } = buildBadges();
+    // The member's order of badges the regulation leaves in the wearer's order (engine: scene.badgeOrders); a choice whose badges are no longer all held goes here.
+    State.badgeOrder = window.CAPUBBadgeCatalog.pruneEqual(State.badgeOrder, State.badges);
     const text = State.text || {};
     const cord = cordFromState();
     const fullNames = window.CAPUBGarmentOptions && window.CAPUBGarmentOptions.FULL_NAME;
@@ -273,6 +275,8 @@
       badges,
       // Which badge the member wants shown where more are selected than a position takes (the Badges panel; engine: scene.conflicts).
       badgeChoices: Object.assign({}, (State.badgeChoices || {})[State.uniform] || {}),
+      // Which of two badges of equal standing is worn higher ({ occupational: [ids, highest first] }); on every uniform that stacks them.
+      badgeOrder: State.badgeOrder,
       command,
       militaryBadges: buildMilitaryBadges(),
       patches: buildPatches(),

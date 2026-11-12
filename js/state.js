@@ -106,6 +106,10 @@ const State = {
   // keeps one badge id per place; an id alone, as saved before the places, is the first place. The engine reports the positions
   // (scene.conflicts); the Badges panel asks. Saved with the setup.
   badgeChoices:{},
+  // Which badge is worn higher where the regulation leaves two badges of equal standing in the wearer's order (two occupational badges over the left pocket or
+  // above the CAP tape): { [group]: [badge ids, highest first] }, the same on every uniform. Empty is the drawing's own order. Only badges still selected
+  // stay in it (data/badge-catalog.js pruneEqual). The engine reports the stacks (scene.badgeOrders); the Badges card offers the swap. Saved with the setup.
+  badgeOrder:{},
   badgeGalleryExpanded:false,
   // Null until a member report is imported. Once populated, the badge picker
   // separates report-authorized badges from the remaining eligible catalog.

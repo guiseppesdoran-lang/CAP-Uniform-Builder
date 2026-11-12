@@ -792,6 +792,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       ribbonSelections: State.ribbonSelections,
       badgeSelections: State.badgeSelections,
       badgeChoices: State.badgeChoices || {},
+      badgeOrder: window.CAPUBBadgeCatalog.pruneEqual(State.badgeOrder, State.badges),
       militaryBadges: State.militaryBadges || {},
       patchSelections: State.patchSelections,
       cadetHighestOnly: State.cadetHighestOnly,
@@ -898,6 +899,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         }
       }
     }
+    // The order of badges of equal standing: the groups the catalog knows, badge ids of the group that this setup also holds, two or more.
+    out.badgeOrder = window.CAPUBBadgeCatalog.pruneEqual(p.badgeOrder, out.badges);
     // U.S. military badges: known ids only, with a token-safe variant.
     out.militaryBadges = {};
     const milBadgeIds = new Set((window.CAPUBMilitaryData?.badges || []).map(b => b.id));
@@ -964,6 +967,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.ribbonSelections = p.ribbonSelections;
     State.badgeSelections = p.badgeSelections;
     State.badgeChoices = p.badgeChoices || {};
+    State.badgeOrder = p.badgeOrder || {};
     State.militaryBadges = p.militaryBadges || {};
     State.patchSelections = p.patchSelections;
     State.cadetHighestOnly = p.cadetHighestOnly;
