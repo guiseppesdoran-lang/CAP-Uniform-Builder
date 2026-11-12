@@ -1677,11 +1677,38 @@ function importedAviationBadgesFromReport(text){
   return out;
 }
 
-// The aircrew qualifications a report lists as held (not in training). A qualification is not an aviation badge.
+// The aircrew qualifications a report lists as held (not in training), and the basic aviation badge each brings when the report names no aviation
+// badge of that family (the owner, 2026-11-12: "it didnt give me any air crew wings"). A Mission Observer brings the Observer badge; a Mission
+// Scanner or an Airborne Photographer who is not also a Mission Observer, the Air Crew badge. A Mission Pilot brings none: pilot wings are the
+// pilot rating's, as the report names it. Basic level only: the report shows neither the years nor the hours a senior or master level needs.
+// `ids` are a family's three levels (basic, senior, master), `word` how the panel names it.
+const IMPORTED_AVIATION_FAMILIES = {
+  pilot: { word:'pilot', ids:['CAPPilot1_FA9D33EA587D8', 'CAPSeniorPilot1_D9725AE959752', 'CAPMasterPilot1_621A0E2ED15DA'] },
+  observer: { word:'observer', ids:['observer_badge', 'SeniorObserver1_0E35802A29801', 'MasterObserver1_1B88D5071FD5C'] },
+  aircrew: { word:'air crew', ids:['AirCrew1_DB3F0FCC3650F', 'SeniorAirCrew1_B289BAE6E515C', 'MasterAirCrew1_72AC4CAE7A310'] }
+};
 const IMPORTED_AIRCREW_QUALIFICATIONS = [
-  ['Mission Pilot', '\\bMission\\s+Pilot\\b'], ['Mission Observer', '\\bMission\\s+Observer\\b'],
-  ['Mission Scanner', '\\bMission\\s+Scanner\\b'], ['Airborne Photographer', '\\b(?:Airborne|Aerial)\\s+Photographer\\b']
+  { name:'Mission Pilot', label:'\\bMission\\s+Pilot\\b', family:'pilot', badge:null },
+  { name:'Mission Observer', label:'\\bMission\\s+Observer\\b', family:'observer', badge:'observer_badge' },
+  { name:'Mission Scanner', label:'\\bMission\\s+Scanner\\b', family:'aircrew', badge:'AirCrew1_DB3F0FCC3650F' },
+  { name:'Airborne Photographer', label:'\\b(?:Airborne|Aerial)\\s+Photographer\\b', family:'aircrew', badge:'AirCrew1_DB3F0FCC3650F' }
 ];
+
+// The aircrew qualifications held, and the badges they bring: [{ id, family, qualifications: [names] }], one per badge, for each family the report names
+// no badge of (`named`, the aviation badge ids the report names).
+function importedAviationBadgesFromQualifications(text, named){
+  const held = IMPORTED_AIRCREW_QUALIFICATIONS.filter(q => hasNonTrainingQualification(text, q.label));
+  const brought = [];
+  for(const q of held){
+    if(!q.badge || named.some(id => IMPORTED_AVIATION_FAMILIES[q.family].ids.includes(id))) continue;
+    // The observer's badge is the one that outranks the Air Crew badge: a scanner who is also an observer is worn as the observer.
+    if(q.family === 'aircrew' && held.some(h => h.family === 'observer')) continue;
+    const have = brought.find(b => b.id === q.badge);
+    if(have) have.qualifications.push(q.name);
+    else brought.push({ id:q.badge, family:q.family, qualifications:[q.name] });
+  }
+  return { held:held.map(q => q.name), brought };
+}
 
 // The rows of the Decorations and Activity/Service Ribbon tables that no reader above recognizes, as "name date". A row the report prints that
 // earns nothing here is told to the member, not dropped. A row is the words since the previous date, less a table heading; the words of the
@@ -2120,10 +2147,12 @@ function parseCapMemberReport(textRaw){
   if(/\b(?:CAP\s+)?National\s+Command\s+Board\s+Badge\b/i.test(text)) result.badges.push('cap_national_command_board_badge');
 
   // The aviation badges by the words a row names them in (importedAviationBadgesFromReport). CAPR 39-1 Attachment 7 calls the
-  // top pilot rating Command Pilot; older text says Master. A mission qualification (Mission Observer, Mission Scanner) is not
-  // badge authorization: only a badge or rating row is read, and the qualification gets a note below.
+  // top pilot rating Command Pilot; older text says Master. Where the report names no badge of a family, a held qualification of it brings
+  // the family's basic badge (importedAviationBadgesFromQualifications): the Observer badge for a Mission Observer, the Air Crew badge for a
+  // Mission Scanner or an Airborne Photographer. The member is told which badge came from which qualification, below.
   const aviationBadges = importedAviationBadgesFromReport(text);
-  result.badges.push(...aviationBadges);
+  const qualifications = importedAviationBadgesFromQualifications(text, aviationBadges);
+  result.badges.push(...aviationBadges, ...qualifications.brought.map(b => b.id));
   // The badge by name, or the qualification by its code or its name when the row does not say TRAINING (an IC3
   // trainee used to import the Incident Commander badge).
   if(/Master Incident Commander Badge|Incident Commander 1 Badge/i.test(text) || hasNonTrainingQualification(text, '\\b(?:IC1|Incident\\s+Commander\\s+(?:Level\\s+)?1)\\b(?!\\s+Badge)')) result.badges.push('incident_commander_1_badge');
@@ -2170,7 +2199,7 @@ function parseCapMemberReport(textRaw){
     .filter(id => isBadgeEligibleForMembership(id, result.membership));
 
   // The aviation badges the member does not see on the uniform without being told why: one CAP aviation badge is worn
-  // (CAPR 39-1, 4.1.5.2.2.4.1), a badge the membership may not wear is not offered, and an aircrew qualification is no badge.
+  // (CAPR 39-1, 4.1.5.2.2.4.1), and a badge the membership may not wear is not offered.
   const nameList = ids => ids.map(id => getBadgeDisplayName(id)).join(', ').replace(/, ([^,]*)$/, ' and $1');
   const heldAviation = aviationBadges.filter(id => result.authorizedBadges.includes(id));
   for(const id of aviationBadges.filter(id => !heldAviation.includes(id))){
@@ -2179,13 +2208,19 @@ function parseCapMemberReport(textRaw){
   if(heldAviation.length > 1){
     result.notes.push(`The report names these aviation badges: ${nameList(heldAviation)}. One CAP aviation badge is worn at a time (CAPR 39-1, 4.1.5.2.2.4.1); the others are listed under Authorized by member report in the badge list.`);
   }
-  if(!aviationBadges.length){
-    const held = IMPORTED_AIRCREW_QUALIFICATIONS.filter(([, label]) => hasNonTrainingQualification(text, label)).map(([name]) => name);
-    if(held.length){
-      result.notes.push(`Aircrew qualification found (${held.join(', ')}), but the report names no aviation badge or rating, and a badge is worn only when it has been awarded (CAPR 39-1, 10.3.1): none was imported. If you hold one, choose it in the badge list.`);
-    }
+  // A Mission Pilot brings no badge: pilot wings are the pilot rating's, and the report names none.
+  if(qualifications.held.includes('Mission Pilot') && !aviationBadges.some(id => IMPORTED_AVIATION_FAMILIES.pilot.ids.includes(id))){
+    result.notes.push('Mission Pilot qualification found, but the report names no pilot badge or rating, and a badge is worn only when it has been awarded (CAPR 39-1, 10.3.1): none was imported. If you hold one, choose it in the badge list.');
   }
   result.badges = selectHighestWearableImportedBadges(result.badges, result.membership);
+  // One line for each badge a qualification brought: which badge, from which qualification, so the member can change it. A badge the membership may
+  // not wear is not offered; one that another aviation badge outranks is on the list under Authorized by member report, not worn.
+  for(const b of qualifications.brought){
+    const name = getBadgeDisplayName(b.id), from = memberReportNameList(b.qualifications);
+    if(!result.authorizedBadges.includes(b.id)) result.notes.push(`${name}: the ${from} qualification brings it, but the builder does not authorize that badge for ${result.membership || 'this'} members, so it is not offered.`);
+    else if(result.badges.includes(b.id)) result.notes.push(`${name}: taken from the ${from} qualification${b.qualifications.length > 1 ? 's' : ''}, since the report names no ${IMPORTED_AVIATION_FAMILIES[b.family].word} badge. Change it in the badge list.`);
+    else result.notes.push(`${name}: taken from the ${from} qualification${b.qualifications.length > 1 ? 's' : ''}, since the report names no ${IMPORTED_AVIATION_FAMILIES[b.family].word} badge, and listed under Authorized by member report; another aviation badge is worn, as only one is at a time (CAPR 39-1, 4.1.5.2.2.4.1).`);
+  }
   for(const r of result.ribbons){
     if(r && r.id && importedAwardCountFromValue(r.value) >= IMPORTED_MOST_AWARDS && /^(?:[a-z]+_)?(?:silver|bronze)_(?:clasp|star)|^wing_|^region_|^national_/.test(String(r.value))){
       result.notes.push(`${getRibbonDisplayName(r.id)}: the picker offers at most ${IMPORTED_MOST_AWARDS} awards, so ${IMPORTED_MOST_AWARDS} are used.`);

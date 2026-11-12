@@ -706,7 +706,10 @@ function parseAviation(text){
   }
   return aviationParser(text);
 }
-const seniorWith = (after, rows) => SENIOR.replace(after, after + '\n' + rows.join('\n'));
+// The senior fixture holds a Mission Scanner qualification, which brings the Air Crew badge (the owner, 2026-11-12); the tests of the badges a report
+// NAMES are on the fixture without it, so that the badge a row names is the only aviation badge there is.
+const SENIOR_NO_AIRCREW = SENIOR.replace('Mission Scanner (MS) QUALIFIED 01 Jan 2027\n', '');
+const seniorWith = (after, rows) => SENIOR_NO_AIRCREW.replace(after, after + '\n' + rows.join('\n'));
 const aviationIn = ids => ids.filter(id => ALL_AVIATION.includes(id));
 
 test('every CAP aviation badge is read from a row that names it, as a Badge, a Rating or Wings, at its level (Figure A7-1)', () => {
@@ -725,7 +728,7 @@ test('every CAP aviation badge is read from a row that names it, as a Badge, a R
       const row = word === 'Rating' && name === 'Pilot' ? `CAP ${name} ${word}` : `${name} ${word}`;
       for(const [heading, text] of [['Decorations', seniorWith('Decorations', [`${row} 01 Jun 2023`])],
         ['Emergency Services Qualifications', seniorWith('Qualification Status Expiration', [`${row} 01 Jun 2023`])],
-        ['the last row before Local Activities', SENIOR.replace('Local Activities', `${row.toUpperCase()} 01 Jun 2023 Local Activities`)],
+        ['the last row before Local Activities', SENIOR_NO_AIRCREW.replace('Local Activities', `${row.toUpperCase()} 01 Jun 2023 Local Activities`)],
         ['one line, as a PDF is read', seniorWith('Decorations', [`${row} 01 Jun 2023`]).replace(/\n/g, ' ')]]){
         const got = parseAviation(text).authorized;
         if(!got.includes(id)) missed.push(`${row} (${heading}): wanted ${id}, got ${aviationIn(got).join(', ') || 'no aviation badge'}`);
@@ -759,18 +762,18 @@ test('the highest level of a kind is the one offered, not each level named', () 
   assert.deepEqual(read(['sUAS Pilot Badge 01 Jan 2023', 'Senior sUAS Technician Badge 01 Jan 2024']), [AVIATION_IDS.suasPilot[0], AVIATION_IDS.suasTech[1]]);
 });
 
-test('a row that is not the rating is not read: another pilot, an FAA rating, an exam, a course, an award, a qualification, a ceremony, the Local Activities', () => {
+test('a row that is not the rating is not read: another pilot, an FAA rating, an exam, a course, an award, a ceremony, the Local Activities (a Mission Pilot qualification is none, and a Mission Observer or Scanner brings a basic badge by its own rule)', () => {
   const no = [
     'Cadet Orientation Pilot Ribbon 01 Jun 2023', 'Air Search and Rescue Ribbon (Aircrew) 10 Oct 2020', 'Search Find Ribbon Aircrew 12 Dec 2021',
     'Lt Col T. Keith Riddle Aircrew Member of the Year Award 01 Jan 2024', 'Instructor Pilot Rating 01 Jan 2020', 'Check Pilot Badge 01 Jan 2020',
     'Mission Pilot Rating 01 Jan 2020', 'Orientation Pilot Wings 01 Jan 2020', 'Private Pilot Rating 01 Jan 2020', 'Pilot Rating 01 Jan 2020',
     'Observer Rating Exam 01 Jan 2020', 'Technician Rating Exam: Aircrew 01 Jan 2020', 'Aircrew Training Course 01 Jan 2020', 'Observer Training 01 Jan 2020',
-    'Mission Observer 01 Jan 2020', 'Pilot Wings Ceremony 01 Jan 2020', 'Solo Flight 01 Jan 2020', 'Glider 01 Jan 2020', 'Illinois Wing Encampment 20 Jul 2020',
+    'Pilot Wings Ceremony 01 Jan 2020', 'Solo Flight 01 Jan 2020', 'Glider 01 Jan 2020', 'Illinois Wing Encampment 20 Jul 2020',
     'sUAS Pre-Solo Badge 01 Jan 2024'
   ];
   for(const row of no) assert.deepEqual(aviationIn(parseAviation(seniorWith('Decorations', [row])).authorized), [], row);
   // A row in Local Activities, the last section, never earns a badge.
-  assert.deepEqual(aviationIn(parseAviation(SENIOR.replace('Gill Robb Wilson Award Ceremony 01 May 2025', 'Observer Wings 01 May 2025')).authorized), []);
+  assert.deepEqual(aviationIn(parseAviation(SENIOR_NO_AIRCREW.replace(/Gill Robb Wilson Award Ceremony \d{2} \w{3} \d{4}/, 'Observer Wings 07 May 2025')).authorized), []);
   // A sUAS or glider pilot is not the CAP pilot, and a sUAS "Pre-Solo" is not the CAP Pre-Solo badge.
   assert.deepEqual(aviationIn(parseAviation(seniorWith('Decorations', ['sUAS Pilot Wings 01 Jan 2024', 'Glider Pilot Badge 01 Jan 2024'])).authorized).sort(), [AVIATION_IDS.suasPilot[0], 'GliderPilot1_7BFB287379918'].sort());
 });
@@ -797,24 +800,74 @@ test('a badge the membership may not wear is named, not dropped silently; a cade
   assert.ok(cadet.notes.some(n => /^Glider Pilot Badge is in the report, but the builder does not authorize that badge for cadet members/.test(n)));
 });
 
-test('an aircrew qualification is no badge, and the import says what it did with it (a qualification in training is not mentioned)', () => {
-  const held = parseAviation(SENIOR);
-  assert.deepEqual(aviationIn(held.authorized), [], 'Mission Scanner (MS) QUALIFIED earns no badge on its own');
-  assert.ok(held.notes.some(n => /^Aircrew qualification found \(Mission Scanner\), but the report names no aviation badge or rating, and a badge is worn only when it has been awarded \(CAPR 39-1, 10\.3\.1\): none was imported\./.test(n)));
-  const more = parseAviation(seniorWith('Qualification Status Expiration', ['Mission Observer (MO) QUALIFIED 01 Jan 2027', 'Airborne Photographer (AP) QUALIFIED 01 Jan 2027']));
-  assert.ok(more.notes.some(n => /found \(Mission Observer, Mission Scanner, Airborne Photographer\)/.test(n)));
-  assert.deepEqual(aviationIn(more.authorized), []);
-  const training = parseAviation(SENIOR.replace('Mission Scanner (MS) QUALIFIED 01 Jan 2027', 'Mission Observer (MO) TRAINING 01 Jan 2027'));
-  assert.ok(!training.notes.some(n => /^Aircrew qualification found/.test(n)));
-  // The member holds the badge: the qualification needs no note.
-  const rated = parseAviation(seniorWith('Qualification Status Expiration', ['Observer Wings 01 Jun 2023']));
-  assert.deepEqual(aviationIn(rated.authorized), [AVIATION_IDS.observer[0]]);
-  assert.ok(!rated.notes.some(n => /^Aircrew qualification found/.test(n)));
+// The owner, 2026-11-12: "it didnt give me any air crew wings". A held aircrew qualification brings the basic badge of its family when the report names
+// none of that family; the senior and master levels need years and hours the report does not show.
+const qualifies = (rows, text = SENIOR_NO_AIRCREW) => parseAviation(text.replace('Qualification Status Expiration', 'Qualification Status Expiration\n' + rows.join('\n')));
+const noteOf = (r, re) => r.notes.find(n => re.test(n));
+test('a held Mission Observer brings the Observer badge, a held Mission Scanner or Airborne Photographer without it the Air Crew badge, and the panel says which came from which', () => {
+  const observer = qualifies(['Mission Observer (MO) QUALIFIED 01 Jan 2027']);
+  assert.deepEqual(aviationIn(observer.authorized), [AVIATION_IDS.observer[0]]);
+  assert.ok(aviationIn(observer.badges).includes(AVIATION_IDS.observer[0]), 'and it is the one worn');
+  assert.ok(observer.notes.includes('Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.'), observer.notes.join(' | '));
+  // The fixture's own Mission Scanner (the senior fixture of the other tests): the Air Crew badge.
+  const scanner = parseAviation(SENIOR);
+  assert.deepEqual(aviationIn(scanner.authorized), [AVIATION_IDS.aircrew[0]]);
+  assert.ok(scanner.notes.includes('Air Crew Badge: taken from the Mission Scanner qualification, since the report names no air crew badge. Change it in the badge list.'), scanner.notes.join(' | '));
+  // A scanner and a photographer: one badge, from both.
+  const both = qualifies(['Mission Scanner (MS) QUALIFIED 01 Jan 2027', 'Airborne Photographer (AP) QUALIFIED 01 Jan 2027']);
+  assert.deepEqual(aviationIn(both.authorized), [AVIATION_IDS.aircrew[0]]);
+  assert.ok(both.notes.includes('Air Crew Badge: taken from the Mission Scanner and Airborne Photographer qualifications, since the report names no air crew badge. Change it in the badge list.'), both.notes.join(' | '));
+  assert.deepEqual(aviationIn(qualifies(['Airborne Photographer (AP) QUALIFIED 01 Jan 2027']).authorized), [AVIATION_IDS.aircrew[0]], 'a photographer alone');
+  // An observer who is also a scanner and a photographer is worn as the observer: only the Observer badge comes.
+  const all = qualifies(['Mission Observer (MO) QUALIFIED 01 Jan 2027', 'Mission Scanner (MS) QUALIFIED 01 Jan 2027', 'Airborne Photographer (AP) QUALIFIED 01 Jan 2027']);
+  assert.deepEqual(aviationIn(all.authorized), [AVIATION_IDS.observer[0]]);
+  assert.equal(all.notes.filter(n => /taken from the/.test(n)).length, 1, 'one line, for the one badge');
+});
+
+test('a qualification brings its badge only where the report names no badge of its family, and never a trainee\'s, never a Mission Pilot\'s', () => {
+  // The report names the observer badge at a higher level: the basic one is not added, and no line says so.
+  const named = qualifies(['Mission Observer (MO) QUALIFIED 01 Jan 2027', 'Senior Observer Wings 01 Jun 2023']);
+  assert.deepEqual(aviationIn(named.authorized), [AVIATION_IDS.observer[1]]);
+  assert.ok(!named.notes.some(n => /taken from the/.test(n)));
+  // An aircrew badge named: a Mission Scanner adds nothing.
+  assert.deepEqual(aviationIn(qualifies(['Mission Scanner (MS) QUALIFIED 01 Jan 2027', 'Master Air Crew Badge 01 Jun 2023']).authorized), [AVIATION_IDS.aircrew[2]]);
+  // A pilot badge named and a Mission Observer: both are offered, the pilot is worn, and the line says the Observer badge is not.
+  const pilot = qualifies(['Mission Observer (MO) QUALIFIED 01 Jan 2027', 'Senior Pilot Wings 01 Jun 2023']);
+  assert.deepEqual(aviationIn(pilot.authorized).sort(), [AVIATION_IDS.observer[0], AVIATION_IDS.pilot[1]].sort());
+  assert.deepEqual(aviationIn(pilot.badges), [AVIATION_IDS.pilot[1]]);
+  assert.ok(noteOf(pilot, /^Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge, and listed under Authorized by member report; another aviation badge is worn, as only one is at a time \(CAPR 39-1, 4\.1\.5\.2\.2\.4\.1\)\.$/), pilot.notes.join(' | '));
+  // An observer badge named and a Mission Scanner: the scanner's badge is another family's, and is offered under the observer's.
+  const mixed = qualifies(['Mission Scanner (MS) QUALIFIED 01 Jan 2027', 'Observer Wings 01 Jun 2023']);
+  assert.deepEqual(aviationIn(mixed.authorized).sort(), [AVIATION_IDS.aircrew[0], AVIATION_IDS.observer[0]].sort());
+  // In training, not qualified, or never held: nothing.
+  for(const status of ['TRAINING', 'Training', 'NOT QUALIFIED', 'DENIED', 'FAILED', 'PENDING']){
+    const r = qualifies([`Mission Observer (MO) ${status} 01 Jan 2027`, `Mission Scanner (MS) ${status} 01 Jan 2027`]);
+    assert.deepEqual(aviationIn(r.authorized), [], status);
+    assert.ok(!r.notes.some(n => /taken from the|Mission Pilot qualification/.test(n)), status);
+  }
+  // A Mission Pilot brings no badge (pilot wings are the pilot rating's, and the report names none): it is told, as before, and told no more when a pilot badge is named.
+  const missionPilot = qualifies(['Mission Pilot (MP) QUALIFIED 01 Jan 2027']);
+  assert.deepEqual(aviationIn(missionPilot.authorized), []);
+  assert.ok(missionPilot.notes.includes('Mission Pilot qualification found, but the report names no pilot badge or rating, and a badge is worn only when it has been awarded (CAPR 39-1, 10.3.1): none was imported. If you hold one, choose it in the badge list.'));
+  const ratedPilot = qualifies(['Mission Pilot (MP) QUALIFIED 01 Jan 2027', 'CAP Pilot Rating 01 Jun 2023']);
+  assert.deepEqual(aviationIn(ratedPilot.authorized), [AVIATION_IDS.pilot[0]]);
+  assert.ok(!ratedPilot.notes.some(n => /Mission Pilot qualification/.test(n)));
+});
+
+test('the qualification\'s badge is a badge the membership may wear, and is worn: a cadet and a senior member both get it, on the list the report authorizes', () => {
+  const { context } = loadPageScripts();
+  for(const id of [AVIATION_IDS.observer[0], AVIATION_IDS.aircrew[0]]) for(const membership of ['cadet', 'senior']) assert.equal(vm.runInContext('isBadgeEligibleForMembership', context)(id, membership), true, `${id} for ${membership}`);
+  // A cadet with a Mission Observer and a Mission Scanner (the member search print): the Observer badge, in the setup and on the list.
+  const r = runImport(PERSONNEL);
+  assert.ok(r.parsed.authorizedBadges.includes(AVIATION_IDS.observer[0]));
+  assert.ok(!r.parsed.authorizedBadges.includes(AVIATION_IDS.aircrew[0]), 'the observer is worn as the observer');
+  assert.ok(r.badges.includes(AVIATION_IDS.observer[0]), 'the setup holds it');
+  assert.ok(r.parsed.notes.includes('Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.'));
 });
 
 test('the aviation badges the import wears: the setup keeps one, the picker offers the rest, nothing else changes in the fixtures', () => {
-  // The three fixtures name no aviation badge: the import adds none.
-  for(const text of [FIXTURE, SENIOR, fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-cadet-live12.txt'), 'utf8')]){
+  // The three fixtures name no aviation badge and hold no aircrew qualification: the import adds none (the senior fixture's Mission Scanner brings the Air Crew badge, tested above).
+  for(const text of [FIXTURE, SENIOR_NO_AIRCREW, fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-cadet-live12.txt'), 'utf8')]){
     assert.deepEqual(aviationIn(parseAviation(text).authorized), []);
   }
   // A senior with a pilot, an observer and an aircrew badge: all offered, the pilot worn.
