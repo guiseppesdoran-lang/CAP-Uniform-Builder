@@ -137,7 +137,7 @@
   ],
   "slacks_waist_center": [
    1225.87,
-   2135.1
+   2200
   ],
   "slacks_hip_center": [
    1225.87,
@@ -932,35 +932,123 @@
    ],
    "hides_note": "the skirt (group lower-skirt) and the clip element lower-skirt-clip that keeps the skirt's part of the sheet's fill and outline strokes; hidden together, nothing of the skirt's flare is drawn under the join line; nothing else is hidden",
    "sizes": "user units 0.01 in; right and left are the wearer's (right = the viewer's left), as in the other landmarks",
-   "shapes": "lower_slacks_cloth is the cloth's outline [[x,y]...] (the skirt block's top corners, down to the hip line, the slacks' sides and cut line); lower_slacks_outline the stroked line [[x,y]...] from the left end at the join line, down the left side, along the cut line and up the right side; lower_slacks_hip_line and lower_slacks_join_line two-point lines [[x,y],[x,y]]; anchors slacks_waist_center (the top edge at the centre front), slacks_hip_center (the hip line) and slacks_hem_center (the cut line)"
+   "shapes": "lower_slacks_cloth is the cloth's outline [[x,y]...] (from the right end of the top edge on the join line, down the right side, along the cut line and up the left side); lower_slacks_outline the stroked line [[x,y]...] from the left end at the join line, down the left side, along the cut line and up the right side; lower_slacks_hip_line and lower_slacks_join_line two-point lines [[x,y],[x,y]]; anchors slacks_waist_center (the top edge at the centre front), slacks_hip_center (the hip line) and slacks_hem_center (the cut line)"
   },
   "lower_slacks_cloth": [
    [
-    641.17,
-    2104.6
+    1831.46,
+    2200
    ],
    [
-    1810.57,
-    2104.6
+    1833.11,
+    2205
    ],
    [
-    1810.57,
-    2157.8
+    1833.55,
+    2210
    ],
    [
-    1827.07,
-    2203.3
+    1833.94,
+    2215
    ],
    [
-    1837.97,
-    2248.8
+    1834.34,
+    2220
    ],
    [
-    1858.07,
-    2294.3
+    1834.96,
+    2225
    ],
    [
-    1872.03,
+    1836.74,
+    2230
+   ],
+   [
+    1838.52,
+    2235
+   ],
+   [
+    1840.31,
+    2240
+   ],
+   [
+    1842.09,
+    2245
+   ],
+   [
+    1843.87,
+    2250
+   ],
+   [
+    1845.66,
+    2255
+   ],
+   [
+    1847.44,
+    2260
+   ],
+   [
+    1849.22,
+    2265
+   ],
+   [
+    1851.01,
+    2270
+   ],
+   [
+    1852.79,
+    2275
+   ],
+   [
+    1854.57,
+    2280
+   ],
+   [
+    1856.36,
+    2285
+   ],
+   [
+    1858.14,
+    2290
+   ],
+   [
+    1859.92,
+    2295
+   ],
+   [
+    1861.71,
+    2300
+   ],
+   [
+    1863.49,
+    2305
+   ],
+   [
+    1865.27,
+    2310
+   ],
+   [
+    1867.06,
+    2315
+   ],
+   [
+    1868.84,
+    2320
+   ],
+   [
+    1870.62,
+    2325
+   ],
+   [
+    1872.41,
+    2330
+   ],
+   [
+    1874.19,
+    2335
+   ],
+   [
+    1875.19,
     2337.8
    ],
    [
@@ -1572,24 +1660,120 @@
     2337.8
    ],
    [
-    579.71,
+    576.55,
     2337.8
    ],
    [
-    593.67,
-    2294.3
+    577.55,
+    2335
    ],
    [
-    613.77,
-    2248.8
+    579.33,
+    2330
    ],
    [
-    624.67,
-    2203.3
+    581.12,
+    2325
    ],
    [
-    641.17,
-    2157.8
+    582.9,
+    2320
+   ],
+   [
+    584.68,
+    2315
+   ],
+   [
+    586.47,
+    2310
+   ],
+   [
+    588.25,
+    2305
+   ],
+   [
+    590.03,
+    2300
+   ],
+   [
+    591.82,
+    2295
+   ],
+   [
+    593.6,
+    2290
+   ],
+   [
+    595.38,
+    2285
+   ],
+   [
+    597.17,
+    2280
+   ],
+   [
+    598.95,
+    2275
+   ],
+   [
+    600.73,
+    2270
+   ],
+   [
+    602.52,
+    2265
+   ],
+   [
+    604.3,
+    2260
+   ],
+   [
+    606.09,
+    2255
+   ],
+   [
+    607.87,
+    2250
+   ],
+   [
+    609.65,
+    2245
+   ],
+   [
+    611.44,
+    2240
+   ],
+   [
+    613.22,
+    2235
+   ],
+   [
+    615,
+    2230
+   ],
+   [
+    616.79,
+    2225
+   ],
+   [
+    617.4,
+    2220
+   ],
+   [
+    617.8,
+    2215
+   ],
+   [
+    618.19,
+    2210
+   ],
+   [
+    618.64,
+    2205
+   ],
+   [
+    620.28,
+    2200
    ]
   ],
   "lower_slacks_outline": [
@@ -2799,7 +2983,35 @@
    },
    "cloth": "#001c52",
    "cloth_source": "this sheet's own skirt navy, read from the skirt path (the aviator sheet's slacks are grey, #736f6c)",
-   "top_edge": "the skirt's own: the quadratic from the outline on one side to the other, its middle at y 21.351 in from the box's top; the blouse meets the lower garment on the same line in both states",
+   "top_edge": {
+    "y_in": 22,
+    "shape": "straight and level, on the join line, so the slacks begin under the belt: above it the blouse's cloth shows down to the top edge of the belt or the sling band, with the sheet's outline running on into them (no trouser colour above a band)",
+    "band_edges_in": {
+     "pistol_belt": [
+      21.316,
+      23.378
+     ],
+     "flag_sling_band": [
+      21.517,
+      23.177
+     ],
+     "sheet_belt_strap": [
+      21.522,
+      23.172
+     ],
+     "note": "top and bottom edges of what is drawn over this line as the builder places it (every overlay lies on the sheet's own box, offset 0, centred on the belt strap)"
+    },
+    "admissible_in": [
+     21.522,
+     23.172
+    ],
+    "admissible_rule": "a line under the top edge of every band (the lowest top, the sling band's) and above the bottom edge of every band (the highest bottom, the sling band's): the two bands overlap over the sling band's own height",
+    "placket": {
+     "note": "the sheet's placket line, which ends at y 21.301 in, is carried on to the top edge in its own style (element slacks-placket)",
+     "x_in": 0.656
+    },
+    "first_pass": "in the first pass the top edge was the skirt's own curve (its middle at y 21.351 in), which rises toward the sides and showed as a navy wedge above the pistol belt on the long sheet and above the sling band on both sheets"
+   },
    "clip": {
     "shapes": [
      "lower-clip-edge",

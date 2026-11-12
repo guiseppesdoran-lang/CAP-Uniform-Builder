@@ -137,7 +137,7 @@
   ],
   "slacks_waist_center": [
    1259.41,
-   2135.1
+   2200
   ],
   "slacks_hip_center": [
    1259.41,
@@ -1097,19 +1097,123 @@
    ],
    "hides_note": "the skirt (group lower-skirt) and the clip element lower-skirt-clip that keeps the skirt's part of the sheet's fill and outline strokes; hidden together, nothing of the skirt's flare is drawn under the join line; nothing else is hidden",
    "sizes": "user units 0.01 in; right and left are the wearer's (right = the viewer's left), as in the other landmarks",
-   "shapes": "lower_slacks_cloth is the cloth's outline [[x,y]...] (the skirt block's top corners, down to the hip line, the slacks' sides and cut line); lower_slacks_outline the stroked line [[x,y]...] from the left end at the join line, down the left side, along the cut line and up the right side; lower_slacks_hip_line and lower_slacks_join_line two-point lines [[x,y],[x,y]]; anchors slacks_waist_center (the top edge at the centre front), slacks_hip_center (the hip line) and slacks_hem_center (the cut line)"
+   "shapes": "lower_slacks_cloth is the cloth's outline [[x,y]...] (from the right end of the top edge on the join line, down the right side, along the cut line and up the left side); lower_slacks_outline the stroked line [[x,y]...] from the left end at the join line, down the left side, along the cut line and up the right side; lower_slacks_hip_line and lower_slacks_join_line two-point lines [[x,y],[x,y]]; anchors slacks_waist_center (the top edge at the centre front), slacks_hip_center (the hip line) and slacks_hem_center (the cut line)"
   },
   "lower_slacks_cloth": [
    [
-    -79.99,
-    2104.6
+    1834.38,
+    2200
    ],
    [
-    2598.81,
-    2104.6
+    1835.86,
+    2205
    ],
    [
-    2598.81,
+    1837.34,
+    2210
+   ],
+   [
+    1838.88,
+    2215
+   ],
+   [
+    1840.56,
+    2220
+   ],
+   [
+    1842.24,
+    2225
+   ],
+   [
+    1843.91,
+    2230
+   ],
+   [
+    1845.59,
+    2235
+   ],
+   [
+    1847.27,
+    2240
+   ],
+   [
+    1849.01,
+    2245
+   ],
+   [
+    1850.86,
+    2250
+   ],
+   [
+    1852.7,
+    2255
+   ],
+   [
+    1854.55,
+    2260
+   ],
+   [
+    1856.39,
+    2265
+   ],
+   [
+    1858.24,
+    2270
+   ],
+   [
+    1860.13,
+    2275
+   ],
+   [
+    1862.1,
+    2280
+   ],
+   [
+    1864.06,
+    2285
+   ],
+   [
+    1866.02,
+    2290
+   ],
+   [
+    1867.99,
+    2295
+   ],
+   [
+    1869.95,
+    2300
+   ],
+   [
+    1871.94,
+    2305
+   ],
+   [
+    1873.95,
+    2310
+   ],
+   [
+    1875.96,
+    2315
+   ],
+   [
+    1877.98,
+    2320
+   ],
+   [
+    1879.99,
+    2325
+   ],
+   [
+    1882,
+    2330
+   ],
+   [
+    1884.01,
+    2335
+   ],
+   [
+    1885.14,
     2337.8
    ],
    [
@@ -1577,8 +1681,120 @@
     2337.8
    ],
    [
-    -79.99,
+    633.68,
     2337.8
+   ],
+   [
+    634.81,
+    2335
+   ],
+   [
+    636.82,
+    2330
+   ],
+   [
+    638.83,
+    2325
+   ],
+   [
+    640.84,
+    2320
+   ],
+   [
+    642.86,
+    2315
+   ],
+   [
+    644.87,
+    2310
+   ],
+   [
+    646.88,
+    2305
+   ],
+   [
+    648.87,
+    2300
+   ],
+   [
+    650.83,
+    2295
+   ],
+   [
+    652.8,
+    2290
+   ],
+   [
+    654.76,
+    2285
+   ],
+   [
+    656.72,
+    2280
+   ],
+   [
+    658.69,
+    2275
+   ],
+   [
+    660.58,
+    2270
+   ],
+   [
+    662.43,
+    2265
+   ],
+   [
+    664.27,
+    2260
+   ],
+   [
+    666.12,
+    2255
+   ],
+   [
+    667.96,
+    2250
+   ],
+   [
+    669.81,
+    2245
+   ],
+   [
+    671.55,
+    2240
+   ],
+   [
+    673.23,
+    2235
+   ],
+   [
+    674.91,
+    2230
+   ],
+   [
+    676.58,
+    2225
+   ],
+   [
+    678.26,
+    2220
+   ],
+   [
+    679.94,
+    2215
+   ],
+   [
+    681.48,
+    2210
+   ],
+   [
+    682.96,
+    2205
+   ],
+   [
+    684.44,
+    2200
    ]
   ],
   "lower_slacks_outline": [
@@ -2714,7 +2930,35 @@
    },
    "cloth": "#001c52",
    "cloth_source": "this sheet's own skirt navy, read from the skirt path (the aviator sheet's slacks are grey, #736f6c)",
-   "top_edge": "the skirt's own: the quadratic from the outline on one side to the other, its middle at y 21.351 in from the box's top; the blouse meets the lower garment on the same line in both states",
+   "top_edge": {
+    "y_in": 22,
+    "shape": "straight and level, on the join line, so the slacks begin under the belt: above it the blouse's cloth shows down to the top edge of the belt or the sling band, with the sheet's outline running on into them (no trouser colour above a band)",
+    "band_edges_in": {
+     "pistol_belt": [
+      21.316,
+      23.378
+     ],
+     "flag_sling_band": [
+      21.517,
+      23.177
+     ],
+     "sheet_belt_strap": [
+      21.522,
+      23.172
+     ],
+     "note": "top and bottom edges of what is drawn over this line as the builder places it (every overlay lies on the sheet's own box, offset 0, centred on the belt strap)"
+    },
+    "admissible_in": [
+     21.522,
+     23.172
+    ],
+    "admissible_rule": "a line under the top edge of every band (the lowest top, the sling band's) and above the bottom edge of every band (the highest bottom, the sling band's): the two bands overlap over the sling band's own height",
+    "placket": {
+     "note": "the sheet's placket line, which ends at y 21.301 in, is carried on to the top edge in its own style (element slacks-placket)",
+     "x_in": 0.656
+    },
+    "first_pass": "in the first pass the top edge was the skirt's own curve (its middle at y 21.351 in), which rises toward the sides and showed as a navy wedge above the pistol belt on the long sheet and above the sling band on both sheets"
+   },
    "clip": {
     "shapes": [
      "lower-clip-edge",
