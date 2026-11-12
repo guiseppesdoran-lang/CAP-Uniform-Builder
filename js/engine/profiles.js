@@ -202,6 +202,11 @@
   // The two collar leaf polygons of the sheet: the landmarks collar_left/collar_right when it states
   // them, else the table above. Each is { points } in sheet inches.
   function collarPolygons(ctx){
+    // The Class B collar worn open and laid back for the Honor Guard Uniform (the sheet's group collar-honor-guard, ctx.collarState 'honor-guard'): its leaves are collar_honor_guard_<side>.
+    if(ctx.collarState === 'honor-guard'){
+      const guard = ['left', 'right'].map(n => ctx.landmark('collar_honor_guard_' + n)).filter(l => l && l.points);
+      if(guard.length === 2) return guard;
+    }
     // A shirt sheet that draws an open and a closed collar (landmark collar_states) states the closed leaves as collar_closed_<side>: with the tie on (ctx.collarState 'closed') the leaves are those.
     if(ctx.collarState === 'closed'){
       const closed = ['left', 'right'].map(n => ctx.landmark('collar_closed_' + n)).filter(l => l && l.points);
@@ -551,7 +556,9 @@
   // Hats sit on the uniform: the hat's garment_attach_center goes on the garment's hat_attach landmark
   // when the sheet has one, else on its top_center lowered by HAT_SEAT_IN; the device's mount_center
   // goes on the hat's device_slot_center (MANIFEST conventions).
-  async function hat(ctx, hatId, device){
+  // `opts.inkBottomMax` (the Honor Guard Uniform, profiles-dress.js honorGuardHat): the cap is lifted, if it must be, until its lowest ink (the hull of HAT_INK) is no lower than that
+  // line, before its device and the views from above are placed on it. Every other caller leaves it out and the cap sits where it always did.
+  async function hat(ctx, hatId, device, opts){
     // Flight caps are drawn per cut: the men's caps from the men's figure, the plain ids are the
     // women's (Figure A5-9).
     const men = hatId && hatId.replace(/^hat-flight-cap-/, 'hat-flight-cap-men-');
@@ -565,6 +572,11 @@
       at = { x: top.x, y: top.y + (seated ? 0 : HAT_SEAT_IN) };
     }
     const layer = await ctx.place(hatId, { pieceAnchor: 'garment_attach_center', at, z: Z.hat, role: 'hat', key: 'hat:' + hatId, className: 'hat' });
+    const ink = layer && opts && opts.inkBottomMax != null ? HAT_INK[hatId] : null;
+    if(ink){
+      const bottom = layer.y + Math.max(...ink.map(p => p[1])) * layer.w / hs.w;
+      if(bottom > opts.inkBottomMax) shiftLayer(layer, 0, opts.inkBottomMax - bottom);
+    }
     let devLayer = null;
     if(device && ctx.has(device)){
       const slot = piecePoint(layer, hs, 'device_slot_center');

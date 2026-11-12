@@ -221,6 +221,7 @@
   // whose rule says adultCadet.
   // rank: the member's grade ('SM' is a senior member without grade), for uniforms that need one.
   function isUniformAllowedFor(uniformId,membership,{adultCadet=false,rank=null}={}){
+    if(uniformId===CEREMONIAL.id) return allowsCeremonial(membership);
     const rule=getUniformRule(uniformId);
     if(!rule) return false;
     if(!membership) return true;
@@ -323,12 +324,45 @@
   // keeps it (men 4.2.3.4 "mandatory with this uniform combination unless wearing the turtleneck", women 4.2.4.3 "worn with the aviator shirt"). The
   // overblouse takes none. Returns { offered, defaultOn, para }: whether the page offers the choice, what is drawn until the member chooses, the paragraph.
   const TIE_PARAS={blues_b:{male:'4.1.11.1.1.3',female:'4.1.12.4'},aviator:{male:'4.2.5.1.4',female:'4.2.6.3'}};
-  function tieRule(uniformId,{gender='male',sleeve='short',overblouse=false,withBlazer=false}={}){
+  function tieRule(uniformId,{gender='male',sleeve='short',overblouse=false,withBlazer=false,ceremonial=false}={}){
     const sex=gender==='female' ? 'female' : 'male';
+    // The Honor Guard Uniform's white ascot takes the place of the tie or tab, long sleeves included (9.6.7.8).
+    if(ceremonial) return {offered:false,defaultOn:false,para:'9.6.7.8'};
     if(withBlazer) return {offered:false,defaultOn:true,para:sex==='female' ? '4.2.4.3' : '4.2.3.4'};
     const paras=TIE_PARAS[uniformId];
     if(!paras || overblouse) return {offered:false,defaultOn:false,para:null};
     return {offered:true,defaultOn:sleeve==='long',para:paras[sex]};
+  }
+  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6): the Service Dress (9.6.5) or the Blue Service uniform (9.6.6) with the honor guard items put on, so it is not a
+  // uniform of its own to the rules above: whatever the member's Class A or Class B wears it wears, by the same rows and the same drawing. Only these facts are its own.
+  //   membership: who is offered it: cadets (a senior member is not offered it; the Honor Guard cord is a cadet cord, 9.3.3).
+  //   wornOn:     the garment it is worn on, by the uniform it rides on: the Service Dress coat ('coat', Class A) or the blue shirt or blouse ('shirt', Class B,
+  //               short or long sleeves, the sleeve choice the Class B already has).
+  //   roles:      every member wears the white pistol belt except flag bearers, who wear the white flag sling instead (9.6.1.2, 9.6.3, 9.6.7.6): the two never together.
+  //   cord:       the metallic silver shoulder cord, worn on top of the epaulet (9.6.7.5).
+  //   cap:        the male service cap with the Cadet Officer cap device and the rear chinstrap, for every member, men and women (9.6.7.9).
+  //   ascot:      the white ascot with the Honor Guard patch, in place of the tie or tab (9.6.7.8); the white gloves are worn and not drawn (9.6.7.7).
+  const CEREMONIAL=Object.freeze({
+    id:'ceremonial',
+    membership:Object.freeze(['cadet']),
+    bases:Object.freeze({coat:'blues_a',shirt:'blues_b'}),
+    roles:Object.freeze(['guard','flag']),
+    chinstraps:Object.freeze(['up','down']),
+    cord:'honor_guard',
+    refs:Object.freeze({coat:'9.6.5',shirt:'9.6.6, 9.6.7.2',belt:'9.6.7.6',sling:'9.6.3',cord:'9.6.7.5',cap:'9.6.7.9',chinstrap:'9.6.7.9.2',ascot:'9.6.7.8',gloves:'9.6.7.7'})
+  });
+  // Whether the member is offered the uniform; with no membership chosen yet the card is not hidden.
+  function allowsCeremonial(membership){
+    return !membership || CEREMONIAL.membership.includes(membership);
+  }
+  // The uniform the Honor Guard Uniform rides on: the coat's Class A, the shirt's Class B.
+  function ceremonialBase(wornOn){
+    return wornOn==='shirt' ? CEREMONIAL.bases.shirt : CEREMONIAL.bases.coat;
+  }
+  // The rear chinstrap the guidance's figure shows for the combination (9.6.7.9.2: carried up on the cap, worn down under the chin during a performance): down on the coat and with
+  // long sleeves, up with short sleeves. It is where the picker starts; the member's own pick then holds.
+  function ceremonialChinstrap(uniformId,sleeve){
+    return uniformId==='blues_b' && sleeve!=='long' ? 'up' : 'down';
   }
   function uniformIdsInGroup(group){
     return Object.keys(RULES).filter(id=>RULES[id].group===group);
@@ -339,6 +373,7 @@
     getUniformRule,ribbonPolicy,allowsRibbons,allowsMiniMedals,allowsRackColumns,
     allowedMemberships,isUniformAllowedFor,isAwardAllowedOnUniform,drawsMilitaryBadges,MILITARY_BADGES_NOT_DRAWN,uniformIdsInGroup,
     BADGE_WEAR,ALL_BADGE_FAMILIES,badgeWear,isBadgeWornOn,
+    CEREMONIAL,allowsCeremonial,ceremonialBase,ceremonialChinstrap,
     lockedReason,allowsOnlyChaplainBadge,allowsBadgeFamily,allowsGrade,allowsShoulderCord,allowsAideCord,allowsCord,tieRule,badgeLimit,plannedUniformsFor,plannedBadge
   };
 });

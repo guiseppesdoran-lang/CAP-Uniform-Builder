@@ -137,10 +137,10 @@ test('every picture in the manifest is a PNG that exists, with a spec and a size
   }
 });
 
-test('the only pictures a profile names by id are the two Emergency Services styles; any other the engine would have to place is drawn through the same route', () => {
+test('the only pictures a profile names by id are the two Emergency Services styles and the Honor Guard patch on the ascot; any other the engine would have to place is drawn through the same route', () => {
   const sources = fs.readdirSync(path.join(root, 'js', 'engine')).filter(f => f.endsWith('.js')).map(f => [f, fs.readFileSync(path.join(root, 'js', 'engine', f), 'utf8')]);
   const named = NON_SVG.filter(a => sources.some(([, text]) => text.includes(`'${a.id}'`) || text.includes(`"${a.id}"`))).map(a => a.id).sort();
-  assert.deepEqual(named, STYLES.map(s => s[1]).sort());
+  assert.deepEqual(named, [...STYLES.map(s => s[1]), 'patch-honor-guard'].sort());
 });
 
 // Every build the standard matrix, the critique set and the Emergency Services and patch choices make: each asset layer the engine puts in a scene is either

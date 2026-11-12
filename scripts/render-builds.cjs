@@ -197,6 +197,8 @@ function makeBuild(spec){
   };
   // The member's order of badges of equal standing, as the page hands it over (State.badgeOrder, { occupational: [badge ids, highest first] }): a build that states none has no such field.
   if(spec.badgeOrder) b.badgeOrder = spec.badgeOrder;
+  // The Honor Guard Uniform (js/engine/profiles-dress.js honorGuard): { role: 'guard' | 'flag', chinstrap: 'up' | 'down' }; a build without it has no such field.
+  if(spec.ceremonial) b.ceremonial = Object.assign({}, spec.ceremonial);
   if(spec.patchRefs){ const r = patchesFrom(spec.patchRefs); b.patches = [...b.patches, ...r.patches]; b.harnessNotes = r.notes; }
   if(spec.medalSel){ b.medals = medalsFrom(b.ribbons); b.ribbons = []; }
   return b;

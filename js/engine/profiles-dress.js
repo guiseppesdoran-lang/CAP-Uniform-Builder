@@ -779,7 +779,11 @@
     if(!polys.length) return;
     const o = opts || {};
     if(underCollar && underCollar.length) ctx.foreground(underCollar, UNDER_COLLAR_Z);
-    if(foregroundGroup) ctx.foreground(Array.isArray(foregroundGroup) ? foregroundGroup : [foregroundGroup], Z.badge + 0.5, o.except);
+    if(foregroundGroup){
+      ctx.foreground(Array.isArray(foregroundGroup) ? foregroundGroup : [foregroundGroup], Z.badge + 0.5, o.except);
+      // `show`: groups the sheet carries hidden that this redrawing shows (the honor guard collar).
+      if(o.show && o.show.length) ctx.layers[ctx.layers.length - 1].showGroups = o.show;
+    }
     for(const l of ctx.layers){
       if(!['badge', 'ribbon', 'device'].includes(l.role) || (l.rotate || 0) || (l.type !== 'asset' && l.type !== 'raster')) continue;
       const hit = polys.filter(p => boxTouchesPolygon(l, p));
@@ -1611,8 +1615,10 @@
     blues_b: { male: '4.1.11.1.1.7', female: '4.1.12.9' }
   };
   async function blueHat(ctx, b){
-    const h = H.chooseHat(b);
-    if(h) await H.hat(ctx, h.hat, h.device);
+    const hg = honorGuard(b);
+    const h = hg && b.opt.headgear !== 'none' ? null : H.chooseHat(b);
+    if(hg && b.opt.headgear !== 'none') await honorGuardHat(ctx, hg);
+    else if(h) await H.hat(ctx, h.hat, h.device);
     else if(b.opt.headgear === 'none'){
       const para = HEADGEAR_MANDATORY[b.uniform] && HEADGEAR_MANDATORY[b.uniform][b.gender === 'female' ? 'female' : 'male'];
       if(para) ctx.note(`Headgear is mandatory with this uniform; it is shown without a cap here (CAPR 39-1, ${para})`);
@@ -1957,6 +1963,62 @@
     return { y, seamX, lapelX, centre: (seamX + lapelX) / 2 };
   }
 
+  // ---- The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6) ---------------------------------------------------------------------------------------
+
+  // The Service Dress (9.6.5) or the Blue Service uniform (9.6.6) with the honor guard items put on. It is not a second drawing: composeClassA and composeClassB draw the uniform as they
+  // always do and call these where an item goes, so whatever a member's Class A or Class B shows (grade, ribbons, nameplate, badges, the shirt under the coat) it shows by the same code.
+  // build.ceremonial ({ role: 'guard' | 'flag', chinstrap: 'up' | 'down' }) turns it on, for cadets only (data/uniform-rules.js CEREMONIAL); a build without it draws exactly as before.
+  //   the white pistol belt (9.6.7.6) or the white flag sling (9.6.3), never both: over the garment body, under the shoulder boards, the nameplate, the ribbons and the badges, so they
+  //     stay readable, and under the cord.
+  //   the white ascot (9.6.7.8) in place of the tie or tab, over the body and under the lapel foreground, and the Honor Guard patch centred on it.
+  //   the metallic silver shoulder cord on top of the epaulet (9.6.7.5): build.cord and build.cordOnTop, which the page sets with this build and nothing else sets.
+  //   the male service cap with the Cadet Officer cap device and the rear chinstrap (9.6.7.9), lifted until its lowest ink clears the patch.
+  //   on the shirt and blouse the collar worn open and laid back (the sheet's group collar-honor-guard) in place of the collar and the tie or tab the sheet draws.
+  // The art lies on the garment's own box like the cord sheets (`<sheet id>-honor-guard-belt | -flag-sling | -ascot`); the white gloves are worn and not drawn (no sheet draws hands).
+  const HG_Z = { belt: Z.garmentLayer + 0.1, sling: Z.garmentLayer + 0.1, ascot: Z.garmentLayer + 0.2, patch: Z.garmentLayer + 0.3 };
+  const HG_PATCH = 'patch-honor-guard';
+  const HG_CAP = { up: 'hat-service-cap-honor-guard', down: 'hat-service-cap-honor-guard-chinstrap-down' };
+  const HG_CAP_DEVICE = 'cap-device-cadet-officer-service';
+  // The cap's lowest ink stays at least this far above the top of the ascot's patch (the sheets draw no head, so the cap seated as every service cap is seated may cover the patch).
+  const HG_CAP_CLEAR = 0.25;
+
+  // What the build asks of the uniform, or null: cadets only, and only on the Class A coat or Class B shirt (never the cadet semi-formal, which shares the coat's drawing).
+  function honorGuard(b){
+    const c = b.ceremonial;
+    if(!c || !b.grade || !b.grade.cadet || b.uniform === 'semi_formal_usaf' || !(b.uniform === 'blues_a' || b.uniform === 'blues_b')) return null;
+    return { role: c.role === 'flag' ? 'flag' : 'guard', chinstrap: RULES.CEREMONIAL.chinstraps.includes(c.chinstrap) ? c.chinstrap : RULES.ceremonialChinstrap(b.uniform, b.opt && b.opt.sleeve) };
+  }
+
+  // A piece of the honor guard art on the garment's box: the spec, or null (with the note) when the sheet is not there.
+  async function honorGuardLayer(ctx, id, z, role, title){
+    if(!ctx.has(id)){ ctx.note(`${title} cannot be shown on this uniform`); return null; }
+    const s = await ctx.spec(id);
+    ctx.layers.push(Object.assign(core.registerAtOrigin(s, z, role), { key: 'honor-guard:' + role, title }));
+    return s;
+  }
+
+  // The belt or the sling, then the ascot with the patch on it. Called where the sheet's own groups have been set (the Class B collar state first); sets ctx.honorGuardPatchTop, the line the cap is kept above.
+  async function honorGuardBody(ctx, hg){
+    const sheet = ctx.base.id;
+    if(hg.role === 'flag') await honorGuardLayer(ctx, `${sheet}-honor-guard-flag-sling`, HG_Z.sling, 'honor-guard-sling', 'The white flag sling');
+    else await honorGuardLayer(ctx, `${sheet}-honor-guard-belt`, HG_Z.belt, 'honor-guard-belt', 'The white pistol belt');
+    const ascot = await honorGuardLayer(ctx, `${sheet}-honor-guard-ascot`, HG_Z.ascot, 'honor-guard-ascot', 'The white ascot');
+    const at = ascot && core.anchor(ascot, 'patch_center');
+    if(!at) return;
+    // The patch lies centred on the ascot's place for it (anchor patch_center, 3 1/2 in below the neckband); the landmark patch_slot is its box, in the sheet's units of 0.01 in.
+    if(!ctx.has(HG_PATCH)){ ctx.note('The Honor Guard patch cannot be shown on this uniform'); return; }
+    await ctx.place(HG_PATCH, { at, z: HG_Z.patch, role: 'patch', key: 'ascot:' + HG_PATCH, title: 'Honor Guard patch' });
+    const slot = ascot.raw && ascot.raw.landmarks && ascot.raw.landmarks.patch_slot;
+    ctx.honorGuardPatchTop = slot && Number.isFinite(slot.y) ? slot.y / 100 : at.y - (await ctx.spec(HG_PATCH)).h / 2;
+  }
+
+  // The cap: the male service cap with the Cadet Officer device and the rear chinstrap, up or down, lifted if it must be until its lowest ink is HG_CAP_CLEAR above the patch's top.
+  // Worn by every member, men and women (9.6.7.9); the member who asks for no headgear is shown without one, as on every dress uniform.
+  async function honorGuardHat(ctx, hg){
+    const limit = ctx.honorGuardPatchTop == null ? null : ctx.honorGuardPatchTop - HG_CAP_CLEAR;
+    return H.hat(ctx, HG_CAP[hg.chinstrap], HG_CAP_DEVICE, limit == null ? null : { inkBottomMax: limit });
+  }
+
   async function composeClassA(ctx, b){
     const semi = b.uniform === 'semi_formal_usaf';
     const g = b.grade;
@@ -1966,6 +2028,9 @@
     if(!A.cord && !shoulderSeamOf(semi ? A.semi : A.coat, 'left')) ctx.note('The shoulder boards cannot be placed on this coat');
     await ctx.garment(semi ? A.semi : A.coat);
     if(semi && !g.cadet) ctx.note('The USAF-style semi-formal uniform is worn by cadets only (CAPR 39-1, 4.1.3 and 4.1.4)');
+    // The Honor Guard Uniform (9.6.5): the belt or sling and the ascot with its patch go on the coat, which they cover without hiding any of the sheet.
+    const guard = semi ? null : honorGuard(b);
+    if(guard) await honorGuardBody(ctx, guard);
 
     // Layers: boards, epaulets and lapel insignia drawn to the coat (4.1.5.2.1, 4.1.5.2.2.1).
     // The thickness of the officers' edge-on strap strip the sheet draws (measured from its epaulet_sleeve box), which the grade on it is sized from (LIVE8-4).
@@ -2144,8 +2209,11 @@
     const V = CLASS_B[(female ? 'female' : 'male') + (long ? '-long' : '-short')];
     const base = V.garment;
     const tie = tieOn(b, 'blues_b', long, false);
-    await dressGarment(ctx, base, tie);
+    // The Honor Guard Uniform (9.6.6): the collar open and laid back as the guidance draws it, the ascot in the V in place of the tie or tab (tieOn is false for it, long sleeves included).
+    const guard = honorGuard(b);
+    await dressGarment(ctx, base, tie, guard);
     if(tie) await tieClasp(ctx, b);
+    if(guard) await honorGuardBody(ctx, guard);
 
     // The officers' and cadet officers' slide-on sleeves lie on top of the shoulder: seen edge-on from the front (epauletStrips), with the top view above.
     const sleeveId = epauletSleeveId(g);
@@ -2218,7 +2286,10 @@
     // the collar and the two leaves), not the whole group, which also holds the shirt-coloured cover of the open collar that would paint over a ribbon lying where the open pieces would be. The women's tie tab lies under the closed
     // leaves (4.1.12.4; LIVE12 E59, E60b), redrawn on its own below them. The long sheets' `collar-foreground` group is the one drawing.
     const tabUnder = female && states && ctx.collarState === 'closed';
-    collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? (tabUnder ? [] : ['tie']).concat([`${states.closed}-back`, `${states.closed}-right`, `${states.closed}-left`]) : [states.open]) : 'collar-foreground',
+    // Worn open and laid back for the Honor Guard Uniform, the collar over the badges is the sheet's group collar-honor-guard, which the file carries hidden: this drawing shows it.
+    // The neck piece inside it (the band the ascot lies on) is left out of the redrawing: it would lie over the ascot and its patch.
+    if(ctx.collarState === 'honor-guard') collarOverBadges(ctx, [HG_COLLAR_GROUP], null, { show: [HG_COLLAR_GROUP], except: [`${HG_COLLAR_GROUP}-neck`] });
+    else collarOverBadges(ctx, states ? (ctx.collarState === 'closed' ? (tabUnder ? [] : ['tie']).concat([`${states.closed}-back`, `${states.closed}-right`, `${states.closed}-left`]) : [states.open]) : 'collar-foreground',
       tabUnder ? ['tie'] : null);
     // The strap's lower edge, whether the sleeve is slipped over it or the plain strap shows: the cord is worn underneath the epaulet and comes out from under that edge (9.3, 9.4.1).
     { const bf = bandFrame(ctx, 'left', H.epauletFrame(ctx, 'left')); if(bf && bf.band) markBandEdge(ctx, 'left', bf, edgeStripThickness(ctx, 'left')); }
@@ -2600,8 +2671,23 @@
     const st = spec && spec.landmarks && spec.landmarks.collar_states;
     return st && typeof st.open === 'string' && typeof st.closed === 'string' ? st : null;
   }
-  async function dressGarment(ctx, id, tie){
-    const st = collarStates(await ctx.spec(id));
+  // The honor guard collar state of a Class B sheet (the art's landmark collar_honor_guard): the group that draws the collar worn open and laid back for the Honor Guard Uniform,
+  // which the file carries hidden, and the groups it replaces (the everyday collar, the closed collar, the tie or tab; nothing else).
+  const HG_COLLAR_GROUP = 'collar-honor-guard';
+  function honorCollar(spec){
+    const lm = spec && spec.raw && spec.raw.landmarks && spec.raw.landmarks.collar_honor_guard;
+    return lm && lm.group === HG_COLLAR_GROUP && Array.isArray(lm.hides) ? lm : null;
+  }
+  async function dressGarment(ctx, id, tie, honor){
+    const spec = await ctx.spec(id);
+    const hgCollar = honor ? honorCollar(spec) : null;
+    if(honor && !hgCollar) ctx.note('The collar worn open for the Honor Guard Uniform cannot be shown on this uniform');
+    if(hgCollar){
+      ctx.collarState = 'honor-guard';
+      ctx.collarGroups = collarStates(spec);
+      return ctx.garment(id, { hideGroups: hgCollar.hides.slice(), showGroups: [hgCollar.group] });
+    }
+    const st = collarStates(spec);
     const hide = [];
     if(!tie) hide.push('tie');
     ctx.collarState = st ? (tie ? 'closed' : 'open') : null;
@@ -2617,7 +2703,7 @@
   // 4.2.6.3). The shirt beside the blazer (opt.withBlazer, set by the blazer's companion) keeps it (4.2.3.4, 4.2.4.3). Drawn by the sheet's group
   // `tie` (the group is hidden when off); every Class B and aviator sheet states it, and no separate overlay is placed.
   function tieOn(b, uniform, long, overblouse){
-    const r = RULES.tieRule(uniform, { gender: b.gender, sleeve: long ? 'long' : 'short', overblouse, withBlazer: !!b.opt.withBlazer });
+    const r = RULES.tieRule(uniform, { gender: b.gender, sleeve: long ? 'long' : 'short', overblouse, withBlazer: !!b.opt.withBlazer, ceremonial: !!honorGuard(b) });
     if(!r.offered) return r.defaultOn;
     return typeof b.opt.tie === 'boolean' ? b.opt.tie : r.defaultOn;
   }
