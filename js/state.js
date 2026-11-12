@@ -66,6 +66,7 @@ const State = {
   badges:[],  // array of badge ids
   patches:[], // array of patch ids
   shoulderCord:null,
+  shoulderCordColour:null, // the colour of a cord the unit commander chooses (js/engine/cords.js chosenColours); null for every other cord
   unitPatchCharter:'',
 
   rank:null,

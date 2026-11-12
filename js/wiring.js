@@ -783,6 +783,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       rank: State.rank,
       cadetFirstSergeant: State.cadetFirstSergeant,
       shoulderCord: State.shoulderCord || '',
+      shoulderCordColour: State.shoulderCordColour || '',
       unitPatchCharter: State.unitPatchCharter || '',
       assetBase: State.assetBase,
       ribbons: State.ribbons,
@@ -831,7 +832,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.uniform = typeof p.uniform === 'string' && has(UNIFORMS, p.uniform) ? p.uniform : 'blues_a';
     out.rank = out.membership && RANKS[out.membership].includes(p.rank) ? p.rank : null;
     out.cadetFirstSergeant = !!p.cadetFirstSergeant;
-    out.shoulderCord = typeof p.shoulderCord === 'string' && has(SHOULDER_CORD_META, p.shoulderCord) ? p.shoulderCord : null;
+    // A cord the page offers: one of the seven by its key, or a supplement cord by its id (js/engine/cords.js); the colour only for a cord whose colour the unit commander picks.
+    out.shoulderCord = CAPUBEngine.cords.isKnown(p.shoulderCord) ? p.shoulderCord : null;
+    out.shoulderCordColour = out.shoulderCord && CAPUBEngine.cords.needsColour(out.shoulderCord) && CAPUBEngine.cords.isChosenColour(p.shoulderCordColour) ? p.shoulderCordColour : null;
     out.unitPatchCharter = typeof p.unitPatchCharter === 'string' && /^[A-Za-z0-9-]{0,24}$/.test(p.unitPatchCharter) ? p.unitPatchCharter : '';
 
     const ribbons = p.ribbonSelections && typeof p.ribbonSelections === 'object' ? p.ribbonSelections : {};
@@ -952,6 +955,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.cadetFirstSergeant = p.cadetFirstSergeant;
     if(!isCadetFirstSergeantEligible(State.rank)) State.cadetFirstSergeant = false;
     State.shoulderCord = p.shoulderCord;
+    State.shoulderCordColour = p.shoulderCordColour;
     State.unitPatchCharter = p.unitPatchCharter;
     State.assetBase = 'images';
     State.ribbons = [];

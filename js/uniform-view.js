@@ -236,6 +236,16 @@
     return notes;
   }
 
+  // The cord the drawing is asked for: the one the member chose where the uniform allows it, a supplement cord only while that supplement is in force for the member's
+  // unit (Supplements.cords), and the member's colour for a cord whose colour the unit commander picks.
+  function cordFromState(){
+    const none = { cord: null, cordColour: null };
+    if(!CAPUBUniformRules.allowsCord(State.uniform, State.membership, State.shoulderCord)) return none;
+    const cords = E.cords;
+    if(cords.isSupplement(State.shoulderCord) && !(window.Supplements && Supplements.cords(State).some(c => c.id === State.shoulderCord))) return none;
+    return { cord: State.shoulderCord, cordColour: cords.needsColour(State.shoulderCord) ? State.shoulderCordColour || null : null };
+  }
+
   function buildFromState(){
     const opt = garmentOptions();
     const g = E.grades.gradeInfo(State.membership, State.rank, { firstSergeant: !!State.cadetFirstSergeant, track: opt.noGradeTrack, commandChief: !!opt.commandChief });
@@ -245,6 +255,7 @@
     ribbonNotes = CAPUBUniformRules.allowsRibbons(State.uniform) || mini ? rotcNotes(mini) : [];
     const { badges, command } = buildBadges();
     const text = State.text || {};
+    const cord = cordFromState();
     const fullNames = window.CAPUBGarmentOptions && window.CAPUBGarmentOptions.FULL_NAME;
     const nameWorn = { first: !fullNames || fullNames.includes(State.uniform) };
     return {
@@ -265,7 +276,8 @@
       command,
       militaryBadges: buildMilitaryBadges(),
       patches: buildPatches(),
-      cord: CAPUBUniformRules.allowsCord(State.uniform, State.membership, State.shoulderCord) ? State.shoulderCord : null
+      cord: cord.cord,
+      cordColour: cord.cordColour
     };
   }
 
