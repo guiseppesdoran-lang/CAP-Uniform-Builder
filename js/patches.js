@@ -377,6 +377,7 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
       echelon:String(echelon || '').toUpperCase(),
       start: parseCapReportDate(m[4]),
       end: parseCapReportDate(m[5]) || (isCurrent ? new Date() : null),
+      endGiven: !!m[5],
       raw
     });
   }
@@ -421,8 +422,15 @@ function capubGetCurrentCACDutyAssignments(text){
   });
 }
 
+// A row of a current table whose End Date has passed is a term served, as a row of the past table is (a row that carries an end date is a past
+// assignment whichever table prints it).
+function capubEndedCurrentCACDutyAssignments(text){
+  const now = new Date();
+  return capubGetCurrentCACDutyAssignments(text).filter(row => row.endGiven && row.end < now).map(row => ({ ...row, current:false }));
+}
+
 function capubGetPastCACDutyAssignments(text){
-  return capubExtractCACDutyAssignmentsFromSection(capubPastDutySection(text), false);
+  return [...capubExtractCACDutyAssignmentsFromSection(capubPastDutySection(text), false), ...capubEndedCurrentCACDutyAssignments(text)];
 }
 
 function capubChooseHighestCACLevel(rows){
@@ -530,6 +538,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
    - CAC ribbon level now imports from the highest qualifying CAC service found
      in Current or Past Duty Positions, so current RCAC Chair imports Region
      CAC ribbon/cord and current WCAC Vice Chair imports Wing CAC ribbon/cord.
+     (Since 2026-11-12 the ribbon and its star come from past positions only: a
+     position held now gives the cord and not the star.)
    - Assistant, Alternate, Recorder, and Member are still not treated as cord/ribbon
      level-authorizing roles unless you manually select the item.
    ========================================================== */
@@ -554,17 +564,13 @@ function capubIsPrimaryCACRepresentativeSegment(segment){
   return capubIsEligibleCACLevelDutySegment(segment);
 }
 
+// The ribbon and its star are for a term that has been served (CAPR 39-3, 21j: the ribbon is a permanent award, the shoulder cord marks a current
+// member): only a past position counts here. A position held now gives the shoulder cord and never the ribbon's star.
 function capubGetQualifyingCACRibbonRows(text){
-  const currentRows = capubGetCurrentCACDutyAssignments(text)
-    .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''))
-    .map(row => ({ ...row, source:'current CAC duty' }));
-
-  const pastRows = capubGetPastCACDutyAssignments(text)
+  return capubGetPastCACDutyAssignments(text)
     .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''))
     .filter(capubIsCompletedCACRibbonTerm)
     .map(row => ({ ...row, source:'completed past CAC duty' }));
-
-  return [...currentRows, ...pastRows];
 }
 
 function capubGetCACRibbonFromDutyAssignments(text){
@@ -696,10 +702,11 @@ function capubGetBestExplicitCurrentCACLevelFinal(text){
 }
 
 function capubGetBestExplicitAnyCACLevelFinal(text){
+  // The past tables, and the rows of a current table that have ended: the ribbon's star is for a term served, a position held now is the cord's.
   const sections = [
-    capubGetCurrentCACSectionFinal(text),
     getReportSectionUntilAny(text, 'Cadet Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons']),
-    getReportSectionUntilAny(text, 'Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons'])
+    getReportSectionUntilAny(text, 'Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons']),
+    ...capubEndedCurrentCACDutyAssignments(text).map(row => row.raw)
   ].filter(Boolean).join(' ');
   const levels = capubFindExplicitEligibleCACLevelsInSectionFinal(sections);
   return capubChooseHighestCACLevel(levels) || null;

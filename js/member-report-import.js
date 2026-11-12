@@ -881,12 +881,15 @@ function extractCadetSpecialActivityCountFromReport(text){
   return new Set(memberReportCadetTrainingRows(text).filter(row => row.credit).map(row => `${row.activity}:${row.year}`)).size;
 }
 
-// The highest CAC echelon in the duty position tables (current and past): the council named in the title
-// ("Cadet WCAC Representative", "Region CAC Chair", "National Cadet Advisory Council ...") or the row's
-// Echelon column after a CAC title. CAPR 39-3 21j: wing bronze star, region silver, national gold.
+// The highest CAC echelon among the PAST duty positions: the council named in the title ("Cadet WCAC Representative", "Region CAC Chair",
+// "National Cadet Advisory Council ...") or the row's Echelon column after a CAC title. CAPR 39-3 21j: wing bronze star, region silver, national
+// gold. The ribbon and its star are for a term that has been served, so a position held now (the current table) is not read here: it gives the
+// shoulder cord and never the ribbon's star. (js/patches.js re-derives the ribbon from the same past rows, and the current table's rows whose End
+// Date has passed.)
 function importedCacLevelFromDutyPositions(text){
-  const duty = getReportSectionUntilAny(text, 'Duty\\s+Positions', [
-    'Professional Development', 'Specialty Tracks', 'Cadet Training', 'Encampments', 'Cadet Achievements', 'Decorations'
+  const duty = getReportSectionUntilAny(text, 'Past\\s+Duty\\s+Positions', [
+    'Professional Development', 'Specialty Tracks', 'Cadet Training', 'Encampments', 'Cadet Achievements', 'Decorations', 'Transfer History',
+    'Current\\s+Duty\\s+Positions', 'Cadet\\s+Duty\\s+Positions', 'Current\\s+Committees'
   ]);
   if(!duty) return null;
   const levels = [];
@@ -2411,21 +2414,23 @@ function memberReportHeldOffLines(parsed){
 }
 
 // The notes js/patches.js writes (the Cadet Advisory Council ribbon and cord, the unit and activity patches) in the member's words. They are
-// matched by their opening, so a note that changes there is shown as it is until it is added here.
+// matched by their opening, so a note that changes there is shown as it is until it is added here. The ribbon and its star come from a council
+// term that has been served, a past duty position; the shoulder cord is for a position held now (CAPR 39-3, 21j).
+const MEMBER_REPORT_NO_CAC_RIBBON = 'Cadet Advisory Council Ribbon: none chosen, since no past duty position as chair, vice chair or representative of a council was found. A position held now gives the shoulder cord, not the ribbon\'s star (CAPR 39-3, 21j).';
 const MEMBER_REPORT_PLAIN_NOTES = [
-  [/^CAC ribbon imported as .*?: Cadet Advisory Council Ribbon listed in the report \(no level shown; basic ribbon\)\.?$/i, () => 'Cadet Advisory Council Ribbon: the basic ribbon, since the report shows no level.'],
-  [/^CAC ribbon imported as (.*?): Highest qualifying CAC level found in duty assignments: (\w+)\.?$/i, (m, ribbon, level) => `Cadet Advisory Council Ribbon: ${level.charAt(0).toUpperCase()}${level.slice(1).toLowerCase()} level, from the duty positions.`],
+  [/^CAC ribbon imported as .*?: Cadet Advisory Council Ribbon listed in the report \(no level shown; basic ribbon\)\.?$/i, () => 'Cadet Advisory Council Ribbon: the basic ribbon, since no past council position shows a level.'],
+  [/^CAC ribbon imported as (.*?): Highest qualifying CAC level found in duty assignments: (\w+)\.?$/i, (m, ribbon, level) => `Cadet Advisory Council Ribbon: ${level.charAt(0).toUpperCase()}${level.slice(1).toLowerCase()} level, from your past duty positions.`],
   [/^CAC ribbon imported as (.*?): (.*?)\.?$/i, (m, ribbon, why) => `Cadet Advisory Council Ribbon: ${ribbon}.`],
-  [/^(.*?) shoulder cord - (\w+) imported from Current Duty Positions.*$/i, (m, cord) => `${cord.replace(/\bCAC\b/g, 'Cadet Advisory Council')} shoulder cord: the report shows the member is a current primary representative of the council.`],
-  [/^CAC text found, but no qualifying CAC .*$/i, () => 'Cadet Advisory Council service was found, but no chair, vice chair or representative duty, so no ribbon level was chosen.'],
+  [/^(.*?) shoulder cord - (\w+) imported from Current Duty Positions.*$/i, (m, cord) => `${cord.replace(/\bCAC\b/g, 'Cadet Advisory Council')} shoulder cord: the report shows a position on the council held now, which gives the cord and not the ribbon's star (CAPR 39-3, 21j).`],
+  [/^CAC text found, but .*$/i, () => MEMBER_REPORT_NO_CAC_RIBBON],
   [/^Member report charter (\S+) found, but no unit patch image is mapped yet\.?$/i, (m, charter) => `No unit patch is offered for ${charter} yet.`],
   [/^Unit patch auto-selected from member report charter (\S+?)\.?$/i, (m, charter) => `The unit patch for ${charter} is chosen.`]
 ];
 function memberReportPlainNoteLines(lines){
-  return (lines || []).map(line => {
+  return [...new Set((lines || []).map(line => {
     for(const [re, fn] of MEMBER_REPORT_PLAIN_NOTES){ const m = re.exec(line); if(m) return fn(...m); }
     return line;
-  });
+  }))];
 }
 
 // The lines the panel shows for a report that was applied: what was read, what is on the build, what was held off and why, what was not

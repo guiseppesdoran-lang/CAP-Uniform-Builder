@@ -243,28 +243,36 @@ test('every Disaster Relief value the importer returns resolves to a real option
   for(const row of importValueResolutions(entries)) assertResolvesToCount(row, row.n, [['v', row.v]]);
 });
 
-// CAPR 39-3 21j: the CAC ribbon shows the highest level served, wing bronze star, region silver, national gold.
-test('a Wing, Region or National CAC duty position imports the CAC ribbon with its star; "Wing" elsewhere does not (E45)', () => {
-  const duty = row => FIXTURE.replace('Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026',
-    'Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026\n' + row);
+// CAPR 39-3 21j: the CAC ribbon shows the highest level served, wing bronze star, region silver, national gold. A level is served when its term is
+// past: a position held now gives the shoulder cord and never the star (the owner, 2026-11-12).
+test('a past Wing, Region or National CAC duty position imports the CAC ribbon with its star; the same position held now gives the cord and no star; "Wing" elsewhere does not (E45)', () => {
+  const past = row => FIXTURE.replace('Cadet Flight Sergeant GLR-IL-049 UNIT No 01 Jan 2021 31 Dec 2021', 'Cadet Flight Sergeant GLR-IL-049 UNIT No 01 Jan 2021 31 Dec 2021\n' + row + ' 31 May 2024');
+  const now = row => FIXTURE.replace('Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026', 'Cadet Deputy Commander for Operations GLR-IL-049 UNIT No 01 Jan 2026\n' + row);
   const cases = [
-    ['Cadet Advisory Council Primary Representative GLR-IL-001 WING No 01 Jun 2025', 'cac_wing', ['star-bronze']],
-    ['Cadet WCAC Representative GLR-IL-001 WING No 01 Jun 2025', 'cac_wing', ['star-bronze']],
-    ['Wing CAC Chair GLR-IL-001 WING No 01 Jun 2025', 'cac_wing', ['star-bronze']],
-    ['Region CAC Primary Representative GLR-001 REGION No 01 Jun 2025', 'cac_region', ['star-silver']],
-    ['Cadet NCAC Representative NHQ-000 NATIONAL No 01 Jun 2025', 'cac_national', ['star-gold']]
+    ['Cadet Advisory Council Primary Representative GLR-IL-001 WING No 01 Jun 2023', 'cac_wing', ['star-bronze'], 'wing'],
+    ['Cadet WCAC Representative GLR-IL-001 WING No 01 Jun 2023', 'cac_wing', ['star-bronze'], 'wing'],
+    ['Wing CAC Chair GLR-IL-001 WING No 01 Jun 2023', 'cac_wing', ['star-bronze'], 'wing'],
+    ['Region CAC Primary Representative GLR-001 REGION No 01 Jun 2023', 'cac_region', ['star-silver'], 'region'],
+    ['Cadet NCAC Representative NHQ-000 NATIONAL No 01 Jun 2023', 'cac_national', ['star-gold'], 'national']
   ];
-  for(const [row, value, devices] of cases){
-    const r = runImport(duty(row));
+  for(const [row, value, devices, level] of cases){
+    const r = runImport(past(row));
     assert.equal(r.selected.cadet_advisory_council_ribbon?.awardValue, value, row);
     assert.deepEqual(r.devices('cadet_advisory_council_ribbon'), [{ devices, centered: false }], row);
+    assert.equal(r.parsed.shoulderCord, null, `${row}: a past term gives no cord`);
+    // The same row with no End Date is a position held now: the cord, and the ribbon the fixture's own row names, the basic one.
+    const held = runImport(now(row.replace(' 01 Jun 2023', ' 04 Jun 2025')));
+    assert.equal(held.parsed.shoulderCord, level, row);
+    assert.equal(held.selected.cadet_advisory_council_ribbon?.awardValue, 'cac_group', `${row}: held now, no star`);
+    assert.deepEqual(held.devices('cadet_advisory_council_ribbon'), [{ devices: [], centered: false }], row);
   }
   // The fixture's "Illinois Wing Encampment" rows and a CAC ribbon row with no level: the basic ribbon.
   assert.equal(runImport(FIXTURE).selected.cadet_advisory_council_ribbon.awardValue, 'cac_group');
-  // The importer's own reading (before the duty-row rules in js/patches.js) also ignores "Wing" outside a CAC row.
+  // The importer's own reading (before the duty-row rules in js/patches.js) reads the past table only, and "Wing" outside a CAC row not at all.
   const { context } = loadPageScripts();
   assert.equal(vm.runInContext('importedCacLevelFromDutyPositions', context)(FIXTURE.replace(/\n/g, ' ')), null);
-  assert.equal(vm.runInContext('importedCacLevelFromDutyPositions', context)(duty(cases[1][0]).replace(/\n/g, ' ')), 'wing');
+  assert.equal(vm.runInContext('importedCacLevelFromDutyPositions', context)(past(cases[1][0]).replace(/\n/g, ' ')), 'wing');
+  assert.equal(vm.runInContext('importedCacLevelFromDutyPositions', context)(now(cases[4][0]).replace(/\n/g, ' ')), null, 'a position held now is not read');
 });
 
 test('every CAC level value resolves to its own option, not Group (E45)', () => {
@@ -362,13 +370,15 @@ test('every rated specialty in the Specialty Tracks table is read, the first row
 });
 
 // One report with the cases Ducky raised (LIVE12, Discord 2026-10-27): four wing Commander's Commendation Awards, a
-// Disaster Relief Ribbon with V, a current Wing CAC representative, two NCSAs and COS, the Eaker, a CP rating.
+// Disaster Relief Ribbon with V, a current Wing CAC representative (the cord), two NCSAs and COS, the Eaker, a CP rating.
 test('the LIVE12 fixture imports every case Ducky raised', () => {
   const r = runImport(fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-cadet-live12.txt'), 'utf8'));
   assert.deepEqual([r.text.firstName, r.text.lastName, r.text.show], ['Guiseppe', 'Mitchell', true]);
   assert.deepEqual(r.devices('commander_commendation_award'), [{ devices: ['clasp-bronze', 'clasp-bronze', 'clasp-bronze'], centered: false }]);
   assert.deepEqual(r.devices('disaster_relief_ribbon'), [{ devices: ['v'], centered: false }]);
-  assert.deepEqual(r.devices('cadet_advisory_council_ribbon'), [{ devices: ['star-bronze'], centered: false }]);
+  // A current Wing CAC representative wears the wing cord; the ribbon's star is for a term served, and this report lists none (the owner, 2026-11-12).
+  assert.equal(r.parsed.shoulderCord, 'wing');
+  assert.deepEqual(r.devices('cadet_advisory_council_ribbon'), [{ devices: [], centered: false }]);
   assert.deepEqual(r.devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze'], centered: false }]);
   assert.deepEqual(r.devices('mitchell_award'), [{ devices: ['star-silver'], centered: false }]);
   assert.deepEqual(r.devices('eaker_award'), [{ devices: [], centered: false }]);
@@ -1230,15 +1240,16 @@ test('the notes the dated patches write are said in the member\'s words, and any
     'CAC ribbon imported as Group CAC / Basic Ribbon: Cadet Advisory Council Ribbon listed in the report (no level shown; basic ribbon).',
     'CAC ribbon imported as Wing CAC / Bronze Star: Highest qualifying CAC level found in duty assignments: Wing.',
     'Wing CAC shoulder cord - red imported from Current Duty Positions as a current primary representative.',
+    'CAC text found, but CAC ribbon was not imported because no completed CAC term of at least 365 days was found in Past Duty Positions. Current CAC primary representative duty only controls the shoulder cord.',
     'CAC text found, but no qualifying CAC Chair, Vice Chair, Representative, or Primary Rep duty assignment was found for automatic CAC ribbon level import.',
     'Member report charter GLR-IL-049 found, but no unit patch image is mapped yet.',
     'Unit patch auto-selected from member report charter GLR-IL-049.',
     'A line nothing rewrites.'
   ]), [
-    'Cadet Advisory Council Ribbon: the basic ribbon, since the report shows no level.',
-    'Cadet Advisory Council Ribbon: Wing level, from the duty positions.',
-    'Wing Cadet Advisory Council shoulder cord: the report shows the member is a current primary representative of the council.',
-    'Cadet Advisory Council service was found, but no chair, vice chair or representative duty, so no ribbon level was chosen.',
+    'Cadet Advisory Council Ribbon: the basic ribbon, since no past council position shows a level.',
+    'Cadet Advisory Council Ribbon: Wing level, from your past duty positions.',
+    "Wing Cadet Advisory Council shoulder cord: the report shows a position on the council held now, which gives the cord and not the ribbon's star (CAPR 39-3, 21j).",
+    "Cadet Advisory Council Ribbon: none chosen, since no past duty position as chair, vice chair or representative of a council was found. A position held now gives the shoulder cord, not the ribbon's star (CAPR 39-3, 21j).",
     'No unit patch is offered for GLR-IL-049 yet.',
     'The unit patch for GLR-IL-049 is chosen.',
     'A line nothing rewrites.'
@@ -1605,4 +1616,48 @@ test('the table reads the same on the line a PDF makes, with its column headings
   // Neither of the two rows is listed as not understood any more, and nothing else is in the table's way.
   const { result } = await importFile(fileLike('member.txt', 'text/plain', PERSONNEL));
   assert.ok(!(groupOf(result.lines, 'Not understood') || []).some(l => /MKSABA|NFAP/.test(l)), JSON.stringify(groupOf(result.lines, 'Not understood')));
+});
+
+// ---- The council ribbon's star is for a term served; the cord is for the position held now -----------------------------------------------
+const PERSONNEL_RCAC_CHAIR = 'Cadet RCAC Chair   MAR-001   REGION   No   16 Oct 2024   17 Oct 2025\n';
+const PERSONNEL_WCAC_CHAIR = 'Cadet WCAC Chair   IL-001   WING   No   09 Oct 2023   11 Oct 2024\n';
+const PERSONNEL_GCAC_CHAIR = 'Cadet GCAC Chair   IL-049   GROUP   No   09 Oct 2023   11 Oct 2024\n';
+const PERSONNEL_CURRENT_NCAC = 'Cadet NCAC Alternate   NHQ-000   NATIONAL   No   29 Oct 2025\nCadet NCAC Representative   MAR-001   REGION   No   12 Nov 2025\n';
+const cacOf = r => ({ ribbon: r.selected.cadet_advisory_council_ribbon && r.selected.cadet_advisory_council_ribbon.awardValue, cord: r.parsed.shoulderCord });
+for(const row of [PERSONNEL_RCAC_CHAIR, PERSONNEL_WCAC_CHAIR, PERSONNEL_GCAC_CHAIR, PERSONNEL_CURRENT_NCAC]) assert.ok(PERSONNEL.includes(row), `the fixture holds ${row}`);
+
+test('a member on the National council now and a regional chair before: the ribbon is the region level (silver star), the cord the national one, never the gold star', () => {
+  assert.deepEqual(cacOf(runImport(PERSONNEL)), { ribbon: 'cac_region', cord: 'national' });
+  assert.deepEqual(runImport(PERSONNEL).devices('cadet_advisory_council_ribbon'), [{ devices: ['star-silver'], centered: false }]);
+  // The star is the highest council among the past positions: each one taken away in turn.
+  const without = (...rows) => rows.reduce((t, row) => t.replace(row, ''), PERSONNEL);
+  assert.equal(cacOf(runImport(without(PERSONNEL_RCAC_CHAIR))).ribbon, 'cac_wing');
+  assert.equal(cacOf(runImport(without(PERSONNEL_RCAC_CHAIR, PERSONNEL_WCAC_CHAIR))).ribbon, 'cac_group');
+  // A past position at the National council is the gold star.
+  assert.equal(cacOf(runImport(PERSONNEL.replace(PERSONNEL_WCAC_CHAIR, 'Cadet NCAC Chair   NHQ-000   NATIONAL   No   09 Oct 2023   11 Oct 2024\n'))).ribbon, 'cac_national');
+  // An assistant, an alternate or a recorder is not a primary member: the past RCAC Alternate and assistants of the fixture do not count.
+  assert.equal(cacOf(runImport(without(PERSONNEL_RCAC_CHAIR).replace(PERSONNEL_WCAC_CHAIR, 'Cadet RCAC Alternate   MAR-001   REGION   No   09 Oct 2023   11 Oct 2024\n'))).ribbon, 'cac_group');
+});
+
+test('with no past position the ribbon is the basic one if the awards table lists it and none if it does not; the cord of the position held now is chosen either way', async () => {
+  const noPast = PERSONNEL.replace(PERSONNEL_RCAC_CHAIR, '').replace(PERSONNEL_WCAC_CHAIR, '').replace(PERSONNEL_GCAC_CHAIR, '');
+  assert.deepEqual(cacOf(runImport(noPast)), { ribbon: 'cac_group', cord: 'national' }, 'the table row names the ribbon and no level');
+  const noRow = noPast.replace('Cadet Advisory Council Ribbon   Cadet   4/9/2023 12:00:00 AM\n', '');
+  assert.deepEqual(cacOf(runImport(noRow)), { ribbon: undefined, cord: 'national' }, 'no ribbon comes from a position held now');
+  // The panel says so, with the paragraph in brackets and no abbreviation the member would not know.
+  const { result } = await importFile(fileLike('m.txt', 'text/plain', noRow));
+  const notes = linesText(result.lines).filter(l => /Cadet Advisory Council/.test(l));
+  assert.ok(notes.includes("- Cadet Advisory Council Ribbon: none chosen, since no past duty position as chair, vice chair or representative of a council was found. A position held now gives the shoulder cord, not the ribbon's star (CAPR 39-3, 21j)."), notes.join(' | '));
+  // A member with no council row at all is told nothing of the kind.
+  const none = noRow.replace(PERSONNEL_CURRENT_NCAC, '').replace(/Cadet [GR]CAC Assistant .*\n/g, '');
+  assert.deepEqual(cacOf(runImport(none)), { ribbon: undefined, cord: null });
+  assert.ok(!linesText((await importFile(fileLike('m.txt', 'text/plain', none))).result.lines).some(l => /Cadet Advisory Council/.test(l)));
+});
+
+test('a row of the current table whose End Date has passed is a term served, one with an End Date still to come is a position held now', () => {
+  const held = PERSONNEL_CURRENT_NCAC.replace('12 Nov 2025\n', '12 Nov 2025   30 Sep 2099\n');
+  const noPast = PERSONNEL.replace(PERSONNEL_RCAC_CHAIR, '').replace(PERSONNEL_WCAC_CHAIR, '').replace(PERSONNEL_GCAC_CHAIR, '');
+  assert.equal(cacOf(runImport(noPast.replace(PERSONNEL_CURRENT_NCAC, held))).ribbon, 'cac_group', 'an End Date in 2099: held now, no star');
+  const ended = PERSONNEL_CURRENT_NCAC.replace('12 Nov 2025\n', '09 Oct 2023   11 Oct 2024\n');
+  assert.equal(cacOf(runImport(noPast.replace(PERSONNEL_CURRENT_NCAC, ended))).ribbon, 'cac_national', 'an End Date in 2024: a term served, the gold star');
 });
