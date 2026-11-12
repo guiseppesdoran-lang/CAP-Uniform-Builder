@@ -96,6 +96,8 @@ function capubSyncSegments(){
       btn.classList.toggle('isOn', on);
     });
   });
+  // The pictures that stand in front of the other choices (js/profile-pickers.js) follow their selects the same way.
+  if(window.CAPUBProfilePickers) window.CAPUBProfilePickers.sync();
 }
 document.querySelectorAll('.segmented[data-segments-for]').forEach(group=>{
   group.addEventListener('click', e=>{

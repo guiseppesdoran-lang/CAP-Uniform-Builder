@@ -519,6 +519,15 @@ header h1::after{
   line-height:1.25;
   color:var(--muted);
 }
+/* A card the member may pick holds a picture of the uniform, drawn by the engine for the member (js/profile-pickers.js), the name beneath it, the card picked
+   marked by its heavier edge and a tick as the visual pickers are. The box is the picker's own (.vpPicture) in a square, so a coat and a field uniform with its
+   sleeves both fill it. A card the member may not wear stays its words. */
+.uniformOption:not(.locked){padding:6px;text-align:center}
+.uniformOption.activeUniform:not(.locked){padding:5px}
+.uniformOption .uPicture{aspect-ratio:1 / 1;margin-bottom:var(--s1)}
+.uniformOption .uPicture[hidden]{display:none}
+.uniformOption.activeUniform .vpTick{display:flex}
+.uniformOption.locked .uPicture,.uniformOption.locked .vpTick{display:none}
 
 #deviceTool,#ribbonRowOverridePanel{
   margin-top:var(--s3);
@@ -1135,7 +1144,7 @@ header h1::after{
   .mpSwitch{min-height:44px}
 
   /* The steps. */
-  .uniformGrid{grid-template-columns:minmax(0,1fr)}
+  .uniformGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .uniformOption{min-height:56px}
   .uniformOption .uName{font-size:var(--t-md)}
   .statusGrid{grid-template-columns:repeat(2,minmax(0,1fr))}

@@ -133,7 +133,7 @@ test('phone CSS: a stack with a sticky step strip, a fixed 48px action bar over 
   assert.match(phone,/\.controlsFooter::before,\.stepMoreBtn\{display:none\}/,'no scroll cue on a phone: the page scrolls');
   assert.match(phone,/select,input:not\(\[type="checkbox"\]\):not\(\[type="radio"\]\):not\(\[type="range"\]\)\{font-size:16px\}/);
   assert.match(phone,/\.modal\{width:100vw;height:100vh;height:100dvh;border-radius:0;border:0\}/);
-  assert.match(phone,/\.uniformGrid\{grid-template-columns:minmax\(0,1fr\)\}/);
+  assert.match(phone,/\.uniformGrid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/,'two cards to a row on a phone: each holds a picture of its uniform');
   assert.match(phone,/\.uniformOption\{min-height:56px\}/);
   // The peek and the overlay.
   assert.match(phone,/#layoutShell\[data-step="uniform"\] #previewWrapper,#layoutShell\[data-step="items"\] #previewWrapper,#layoutShell\[data-step="export"\] #previewWrapper\{\s*display:flex;\s*position:relative;\s*height:var\(--peek-h\);/);

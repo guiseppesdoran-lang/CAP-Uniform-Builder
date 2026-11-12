@@ -288,9 +288,10 @@
 
           <div id="ribbonGallery" class="galleryGrid"></div>
 
-          <label class="fieldNote mt-8">
+          <div id="miniMountStylePicker" class="mt-8" hidden></div>
+          <label class="fieldNote segmentedSource" aria-hidden="true">
             Miniature medal mounting method
-            <select id="miniMountStyle">
+            <select id="miniMountStyle" tabindex="-1">
               <option value="mounting">Mounting bars, 4 per row (up to 24)</option>
               <option value="holding">Holding bars, custom overlap (up to 28)</option>
             </select>
@@ -370,14 +371,16 @@
               <span id="commandInsigniaLabel" class="commandRowLabel">Command insignia pin</span>
               <span id="commandInsigniaState" class="commandRowState" aria-live="polite"></span>
             </div>
-            <div class="badgeChooserList" role="radiogroup" aria-labelledby="commandInsigniaLabel">
+            <div id="commandInsigniaChoicePicker" hidden></div>
+            <div class="badgeChooserList segmentedSource" role="radiogroup" aria-labelledby="commandInsigniaLabel" aria-hidden="true">
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="none"><span class="badgeChooserName">Not worn</span></label>
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="current"><span class="badgeChooserName">Current commander</span></label>
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="graduated"><span class="badgeChooserName">Graduated commander</span></label>
             </div>
             <div id="commandInsigniaLevelWrap" class="commandRowLevel hidden">
-              <label class="fieldLabel" for="commandInsigniaLevel">Command held</label>
-              <select id="commandInsigniaLevel">
+              <div id="commandInsigniaLevelPicker" hidden></div>
+              <label class="fieldLabel segmentedSource" for="commandInsigniaLevel" aria-hidden="true">Command held</label>
+              <select id="commandInsigniaLevel" class="segmentedSource" tabindex="-1" aria-hidden="true">
                 <option value="squadron">Squadron commander</option>
                 <option value="group">Group commander</option>
               </select>
@@ -609,6 +612,8 @@
 <script src="js/visual-picker.js?v=810209b60e" defer></script>
 <script src="js/option-pictures.js?v=1f51d8fa67" defer></script>
 <script src="js/garment-options.js?v=c4135466fa" defer></script>
+<script src="js/profile-pictures.js?v=0000000000" defer></script>
+<script src="js/profile-pickers.js?v=0000000000" defer></script>
 <script src="js/item-pickers.js?v=0000000000" defer></script>
 <script src="js/wiring.js?v=d3de300f98" defer></script>
 <script src="js/placement-stl.js?v=ae4f6aee13" defer></script>

@@ -1,0 +1,212 @@
+'use strict';
+// The pictures of the Uniform step (js/profile-pictures.js; the owner, 2026-11-12: "make the uniform selection, and the grade selection visual. mostly everything should be
+// visual atp"). A card's picture is the engine's composition of the uniform for the member as they are, bare: their cut, their grade and their garment choices, and nothing they
+// chose elsewhere (ribbons, badges, patches, name, cord, cap). Ceremonials is the coat or the shirt with the honor guard items on. The composition here is the real engine on the
+// real art; only the drawing (an SVG in a browser) is replaced by a record of the scene it was asked to draw.
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.join(__dirname, '..');
+const read = p => fs.readFileSync(path.join(root, p), 'utf8');
+const core = require('../js/engine/core.js');
+const P = require('../js/engine/profiles.js');
+require('../js/engine/profiles-field.js');
+require('../js/engine/profiles-dress.js');
+require('../js/engine/profiles-polo.js');
+const HARNESS = require('../scripts/render-builds.cjs');
+const RULES = require('../data/uniform-rules.js');
+const PP = require('../js/profile-pictures.js');
+
+const manifest = JSON.parse(read('images/MANIFEST.json'));
+const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(read('images/' + p))));
+
+// The uniform cards, as index.html lists them, with who is offered each.
+const CARDS = [...read('index.html').matchAll(/<button class="uniformOption" data-uniform-id="([a-z_]+)" data-allowed-for="([a-z,]+)">/g)].map(m => ({ id: m[1], for: m[2].split(',') }));
+const IDS = (membership, adult) => CARDS.filter(c => c.for.includes(membership) || (adult && membership === 'cadet' && RULES.isUniformAllowedFor(c.id, 'cadet', { adultCadet: true }))).map(c => c.id);
+
+// What the page would hand the engine for a member who has chosen everything (ribbons, badges, patches, name, a cord, a cap) on the uniform they are on.
+function member(spec){
+  const m = Object.assign({ uniform: 'blues_a', gender: 'male', membership: 'cadet', rank: 'C/Maj', ribbonSel: [['wright_brothers_award'], ['curry_achievement']], badgeIds: ['observer_badge'],
+    name: { first: 'Pat', last: 'Doe', show: true }, cord: 'honor_guard', opt: {} }, spec || {});
+  return () => {
+    const b = HARNESS.makeBuild(Object.assign({}, m, { opt: Object.assign({ headgear: 'auto' }, m.opt) }));
+    b.opt = Object.assign({ rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, b.opt);
+    return b;
+  };
+}
+function envOf(build, record){
+  const log = record || { composed: [], drawn: [], released: [] };
+  return {
+    log,
+    rules: RULES,
+    build,
+    compose: async b => { log.composed.push(b); return P.composeUniform(b, store); },
+    draw: async (scene, pad) => { log.drawn.push({ scene, pad }); return 'picture:' + log.drawn.length; },
+    release: url => log.released.push(url)
+  };
+}
+const idsOf = scene => scene.layers.filter(l => l.type === 'asset').map(l => l.id);
+const rolesOf = scene => new Set(scene.layers.map(l => l.role));
+
+test('a picture is the member bare: their cut, grade and garment choices stay, what they chose elsewhere goes', () => {
+  const base = member({ gender: 'female', rank: 'C/Capt', opt: { sleeve: 'long' }, ribbonSel: [['curry_achievement']], badgeIds: ['observer_badge'], patches: [], command: null })();
+  base.badgeChoices = { x: 1 }; base.badgeOrder = { occupational: ['a', 'b'] }; base.ceremonial = { role: 'flag', chinstrap: 'up' }; base.cordOnTop = true; base.cord = 'honor_guard';
+  assert.ok(base.ribbons.length && base.badges.length && base.name.show, 'the member has chosen items');
+  const b = PP.bare(RULES, base, { uniform: 'blues_b' });
+  assert.equal(b.uniform, 'blues_b', 'the card\'s uniform');
+  assert.equal(b.gender, 'female');
+  assert.equal(b.membership, 'cadet');
+  assert.equal(b.grade.rank, 'C/Capt');
+  assert.equal(b.opt.sleeve, 'long', 'the garment choices are the member\'s');
+  for(const k of ['ribbons', 'medals', 'badges', 'patches', 'militaryBadges']) assert.deepEqual(b[k], [], k);
+  assert.equal(b.command, null);
+  assert.equal(b.cord, null, 'no cord');
+  assert.equal(b.cordColour, null);
+  assert.equal(b.name.show, false, 'no name');
+  assert.equal(b.name.last, '');
+  assert.equal(b.opt.headgear, 'none', 'no cap, so the garment fills the picture');
+  assert.deepEqual(b.badgeChoices, {});
+  assert.deepEqual(b.badgeOrder, {});
+  assert.equal('ceremonial' in b, false, 'the member\'s honor guard items are not on the other uniforms\' pictures');
+  assert.equal('cordOnTop' in b, false);
+  for(const k of ['rackColumns', 'rackAlign', 'rackArrangement', 'rackCounts', 'miniStyle']) assert.equal(k in b.opt, false, `the ribbon rack's ${k} does not change a bare garment`);
+  assert.equal(base.opt.headgear, 'auto', 'the member\'s own build is not changed');
+  assert.equal(base.ribbons.length > 0, true);
+});
+
+test('Ceremonials is the coat or the shirt with the honor guard items: the guard role and the silver cord, the member\'s own role, chinstrap and shirt kept', () => {
+  const coat = PP.bare(RULES, member({ uniform: 'ocp' })(), { ceremonial: true });
+  assert.equal(coat.uniform, 'blues_a', 'the coat when the member is not on the shirt');
+  assert.deepEqual(coat.ceremonial, { role: 'guard', chinstrap: 'down' });
+  assert.equal(coat.cord, 'honor_guard');
+  assert.equal(coat.cordOnTop, true);
+  const shirt = PP.bare(RULES, member({ uniform: 'blues_b', opt: { sleeve: 'short' } })(), { ceremonial: true });
+  assert.equal(shirt.uniform, 'blues_b', 'the shirt when that is where the member is');
+  assert.deepEqual(shirt.ceremonial, { role: 'guard', chinstrap: 'up' }, 'the chinstrap the guidance figure has with short sleeves');
+  const own = PP.bare(RULES, member({ uniform: 'blues_b', opt: { sleeve: 'long', cerRole: 'flag', chinstrap: 'up' } })(), { ceremonial: true });
+  assert.deepEqual(own.ceremonial, { role: 'flag', chinstrap: 'up' }, 'the role and the chinstrap the member picked');
+});
+
+for(const membership of ['cadet', 'senior']) for(const gender of ['male', 'female']){
+  test(`${membership}, ${gender} cut: every card the member may pick is the engine's picture of that uniform, bare`, async () => {
+    const rank = membership === 'cadet' ? 'C/Maj' : 'Capt';
+    const env = envOf(member({ membership, rank, gender }));
+    const ids = IDS(membership);
+    assert.ok(ids.length >= 7, `the cards ${ids}`);
+    const made = PP.create(env).uniforms(ids);
+    assert.equal(made.settled, false, 'nothing is made yet');
+    assert.deepEqual(Object.keys(made.now), ids, 'a picture for each card, in the page\'s order');
+    assert.ok(ids.every(id => made.now[id] === undefined), 'still being made');
+    const done = await made.ready;
+    assert.ok(ids.every(id => /^picture:\d+$/.test(done[id])), `a picture each: ${JSON.stringify(done)}`);
+    assert.equal(env.log.drawn.length, ids.length);
+    ids.forEach((id, i) => {
+      const scene = env.log.drawn.find(d => d.scene.uniform === (id === 'ceremonial' ? 'blues_a' : id)).scene;
+      const roles = rolesOf(scene);
+      assert.ok(scene.layers.some(l => l.role === 'garment'), `${id}: the garment`);
+      for(const gone of ['ribbon', 'mini', 'mini-medal', 'badge', 'hat', 'hat-device', 'text']) assert.equal(roles.has(gone), false, `${id}: no ${gone}`);
+      if(id !== 'ceremonial') assert.equal(idsOf(scene).some(a => /-cord-/.test(a)), false, `${id}: no cord`);
+      assert.equal(scene.layers.some(l => l.type === 'clear' || l.type === 'measure'), false, `${id}: nothing laid for an overlay that is not drawn`);
+      assert.ok(env.log.drawn[i].pad > 0, 'a margin of white');
+    });
+    for(const d of env.log.composed) assert.equal(d.gender, gender, 'the member\'s cut');
+  });
+}
+
+test('the grade is the member\'s own on the picture: a cadet colonel\'s Class A carries the colonel\'s insignia, a C/AB\'s none', async () => {
+  const gradeIds = async rank => {
+    const env = envOf(member({ rank }));
+    const done = await PP.create(env).uniforms(['blues_a']).ready;
+    assert.ok(done.blues_a);
+    return idsOf(env.log.drawn[0].scene).filter(id => /^rank-/.test(id));
+  };
+  const colonel = await gradeIds('C/Col'), basic = await gradeIds('C/AB');
+  assert.ok(colonel.some(id => /colonel/.test(id)), `the colonel's insignia: ${colonel}`);
+  assert.notDeepEqual(colonel, basic);
+});
+
+test('Ceremonials shows what makes it Ceremonials: the white pistol belt and the white ascot on the coat, the cord, and no cap', async () => {
+  for(const gender of ['male', 'female']){
+    const env = envOf(member({ gender }));
+    const done = await PP.create(env).uniforms(['blues_a', 'ceremonial']).ready;
+    const plain = env.log.drawn.find(d => d.scene.uniform === 'blues_a' && !idsOf(d.scene).some(id => /honor-guard/.test(id)));
+    const guard = env.log.drawn.find(d => idsOf(d.scene).some(id => /honor-guard-belt$/.test(id)));
+    assert.ok(plain && guard, `${gender}: the coat and the coat with the honor guard items`);
+    assert.ok(idsOf(guard.scene).some(id => /honor-guard-ascot$/.test(id)), 'the ascot');
+    assert.ok(idsOf(guard.scene).some(id => /-cord-/.test(id)), 'the silver cord');
+    assert.equal(idsOf(guard.scene).some(id => /honor-guard-flag-sling$/.test(id)), false, 'the belt, not the sling');
+    assert.equal(rolesOf(guard.scene).has('hat'), false, 'no cap');
+    assert.ok(done.ceremonial && done.blues_a);
+    assert.notEqual(done.ceremonial, done.blues_a, 'a picture of its own');
+  }
+});
+
+test('a picture is made once for the member and the choices it shows, and again when one of them changes', async () => {
+  let build = member({ rank: 'C/Maj' });
+  const env = envOf(() => build());
+  const made = PP.create(env);
+  const ids = ['blues_a', 'ocp'];
+  const first = await made.uniforms(ids).ready;
+  assert.equal(env.log.composed.length, 2);
+  const again = made.uniforms(ids);
+  assert.equal(again.settled, true, 'known at once');
+  assert.deepEqual(again.now, first);
+  assert.equal(env.log.composed.length, 2, 'not composed again');
+  // What is chosen on other steps does not change a picture: the ribbons, the badges, the name, the rack's layout, the cord.
+  build = member({ rank: 'C/Maj', ribbonSel: [], badgeIds: [], name: { first: '', last: '', show: false }, cord: null, opt: { rackColumns: 4, rackArrangement: 'standard' } });
+  assert.equal(made.uniforms(ids).settled, true, 'the same pictures');
+  // The grade, the cut and the garment choices do.
+  build = member({ rank: 'C/Lt Col' });
+  assert.equal(made.uniforms(ids).settled, false, 'another grade');
+  await made.uniforms(ids).ready;
+  assert.equal(env.log.composed.length, 4);
+  build = member({ rank: 'C/Lt Col', gender: 'female' });
+  await made.uniforms(ids).ready;
+  assert.equal(env.log.composed.length, 6, 'another cut');
+  build = member({ rank: 'C/Lt Col', gender: 'female', opt: { sleeve: 'long' } });
+  await made.uniforms(['blues_b']).ready;
+  assert.equal(env.log.composed.length, 7, 'another garment choice');
+});
+
+test('the newest pictures are kept and the picture address of the rest is let go', async () => {
+  const log = { composed: [], drawn: [], released: [] };
+  let n = 0;
+  const env = {
+    rules: RULES, build: () => ({ uniform: 'blues_a', gender: 'male', membership: 'cadet', grade: { rank: 'C/AB' }, opt: { sleeve: 'n' + n }, name: {} }),
+    compose: async b => ({ layers: [], bounds: { x: 0, y: 0, w: 1, h: 1 }, tag: b.opt.sleeve }), draw: async scene => 'pic-' + scene.tag, release: url => log.released.push(url)
+  };
+  const made = PP.create(env);
+  for(n = 0; n < 90; n++) await made.uniforms(['blues_a']).ready;
+  assert.equal(log.released.length, 10, 'the oldest ten of ninety are let go (eighty are kept)');
+  assert.deepEqual(log.released.slice(0, 2), ['pic-n0', 'pic-n1']);
+  n = 89;
+  assert.equal(made.uniforms(['blues_a']).settled, true, 'the newest is still there');
+});
+
+test('a picture that cannot be made is null, so the card is its name alone, and the other pictures are made', async () => {
+  const warned = [];
+  const env = {
+    rules: RULES, build: member({}), warn: (...a) => warned.push(a[0]),
+    compose: async b => { if(b.uniform === 'abu') throw new Error('sheet missing'); return { layers: [], bounds: { x: 0, y: 0, w: 1, h: 1 } }; },
+    draw: async () => 'ok'
+  };
+  const done = await PP.create(env).uniforms(['blues_a', 'abu']).ready;
+  assert.deepEqual(done, { blues_a: 'ok', abu: null });
+  assert.equal(warned.length, 1);
+  // No member to draw (the page cannot build one yet): no pictures, and nothing asked of the engine.
+  const none = PP.create({ rules: RULES, build: () => { throw new Error('no member'); }, compose: () => { throw new Error('not asked'); } }).uniforms(['blues_a']);
+  assert.deepEqual(none.now, { blues_a: null });
+  assert.equal(none.settled, true);
+});
+
+test('the script is on the page after the engine and the pictures\' own script before the page script, and is a classic script like its neighbours', () => {
+  const html = read('index.html');
+  const at = s => html.indexOf(`<script src="${s}`);
+  for(const s of ['js/engine/profiles-dress.js', 'js/uniform-view.js', 'js/setup.js']) assert.ok(at(s) > 0 && at(s) < at('js/profile-pictures.js'), `after ${s}`);
+  assert.ok(at('js/profile-pictures.js') < at('js/profile-pickers.js'));
+  assert.match(html, /<script src="js\/profile-pictures\.js\?v=[0-9a-f]{10}" defer><\/script>/);
+  assert.match(html, /<script src="js\/profile-pickers\.js\?v=[0-9a-f]{10}" defer><\/script>/);
+});
