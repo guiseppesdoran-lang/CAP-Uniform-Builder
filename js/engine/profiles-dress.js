@@ -2685,7 +2685,11 @@
     if(hgCollar){
       ctx.collarState = 'honor-guard';
       ctx.collarGroups = collarStates(spec);
-      return ctx.garment(id, { hideGroups: hgCollar.hides.slice(), showGroups: [hgCollar.group] });
+      // The women's blouse sheets also carry the slacks of 9.6.7.3 (the art's landmark lower_slacks): the groups that draw them, hidden in the file, in place of the skirt and the clip that keeps its flare.
+      const slacks = spec.raw && spec.raw.landmarks && spec.raw.landmarks.lower_slacks;
+      const hide = hgCollar.hides.slice(), show = [hgCollar.group];
+      if(slacks && Array.isArray(slacks.hides) && Array.isArray(slacks.shows)){ hide.push(...slacks.hides); show.push(...slacks.shows); }
+      return ctx.garment(id, { hideGroups: hide, showGroups: show });
     }
     const st = collarStates(spec);
     const hide = [];

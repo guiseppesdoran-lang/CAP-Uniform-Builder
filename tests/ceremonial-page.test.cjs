@@ -304,16 +304,16 @@ test('the Check list says the white gloves are worn and not drawn, with the para
   assert.ok(!ev('return CAPUB_V2.validateBuild().map(n => n.msg);').some(l => /gloves/i.test(l)));
 });
 
-test('the Check list tells a woman on the Blue Service that slacks are worn and not drawn (the blouse sheets draw a skirt), and tells nobody else', () => {
+test('the Check list tells a woman on the Blue Service that only slacks are worn with this uniform, with the paragraph, and tells nobody else', () => {
   const slacks = lines => lines.filter(l => /slacks/i.test(l));
   member('State.ceremonial = true; State.uniform = "blues_b";');
   const women = slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);'));
   assert.equal(women.length, 1, women.join(' | '));
-  assert.match(women[0], /^Female members wear only slacks with this uniform; the blouse is drawn over its skirt, and slacks are not drawn yet \(CAPR 39-1, 9\.6\.7\.3\)\.$/);
+  assert.match(women[0], /^Female members wear only slacks with this uniform \(CAPR 39-1, 9\.6\.7\.3\)\.$/);
   member('State.ceremonial = true; State.uniform = "blues_a";');
-  assert.deepEqual(slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);')), [], 'the coat sheet draws no skirt');
+  assert.deepEqual(slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);')), [], 'not on the coat');
   member('State.ceremonial = true; State.uniform = "blues_b"; State.gender = "male";');
-  assert.deepEqual(slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);')), [], 'the men\'s shirt is drawn over trousers');
+  assert.deepEqual(slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);')), [], 'not for a man');
   member('State.uniform = "blues_b";');
   assert.deepEqual(slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);')), [], 'and outside Ceremonials');
 });

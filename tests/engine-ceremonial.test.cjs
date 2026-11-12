@@ -174,8 +174,11 @@ test('Class B: the honor guard collar is shown and what it replaces is hidden, e
     const scene = await compose(guard(cut, role, cut.chinstrap));
     const spec = await store.load(cut.sheet), lm = spec.raw.landmarks.collar_honor_guard;
     const base = scene.layers.find(l => l.role === 'garment');
-    assert.deepEqual(base.showGroups, ['collar-honor-guard'], `${cut.name}: shown`);
-    assert.deepEqual([...base.hideGroups].sort(), [...lm.hides].sort(), `${cut.name}: hides exactly what the spec lists`);
+    // the women's blouse sheets also draw the slacks female team members wear (9.6.7.3) in place of the skirt: the sheet's landmark lower_slacks names both groups
+    const slacks = spec.raw.landmarks.lower_slacks;
+    assert.equal(!!slacks, cut.gender === 'female', `${cut.name}: only the women's blouse sheets carry slacks`);
+    assert.deepEqual(base.showGroups, ['collar-honor-guard'].concat(slacks ? slacks.shows : []), `${cut.name}: shown`);
+    assert.deepEqual([...base.hideGroups].sort(), [...lm.hides, ...(slacks ? slacks.hides : [])].sort(), `${cut.name}: hides exactly what the spec lists`);
     const fg = scene.layers.find(l => l.role === 'garment-foreground');
     assert.deepEqual(fg.onlyGroups, ['collar-honor-guard'], `${cut.name}: the collar redrawn over the badges is the honor guard collar`);
     assert.deepEqual(fg.showGroups, ['collar-honor-guard']);
