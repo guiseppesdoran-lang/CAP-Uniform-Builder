@@ -27,6 +27,7 @@
     return node;
   };
   const ready = () => !!(window.CAPUBProfilePictures && typeof State !== 'undefined');
+  const BLANK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3" aria-hidden="true"></svg>';
   const BLANK_TALL = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 4" aria-hidden="true"></svg>';
   const TICK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" focusable="false" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -63,6 +64,7 @@
         const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad });
         return URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml;charset=utf-8' }));
       },
+      async spec(id){ return (await getStore()).load(id); },
       release: url => URL.revokeObjectURL(url),
       warn: (...a) => console.warn('[profile pictures]', ...a)
     });
@@ -71,17 +73,24 @@
 
   // ---- the grade ----------------------------------------------------------------------------------------------------------------
 
-  let grade = null;   // { picker, signature }
-  function gradeOptions(membership, ranks){
+  let grade = null;   // { picker, signature, token, last, shownSignature }
+  // The devices of the grades the select offers, for the pictures to be made: { key, id, hide } for a grade that wears insignia.
+  function gradeItems(membership, ranks){
     const P = window.CAPUBProfilePictures;
     const G = window.CAPUBEngine && window.CAPUBEngine.grades;
+    return G ? ranks.map(rank => { const d = P.gradeDevice(G, membership, rank); return d ? { key: rank, id: d.id, hide: d.hide } : null; }).filter(Boolean) : [];
+  }
+  // `urls`: the picture of each grade that wears insignia, once made (undefined while it is being made, null if it could not be).
+  function gradeOptions(membership, ranks, items, urls){
+    const P = window.CAPUBProfilePictures;
+    const wears = new Set(items.map(i => i.key));
     const options = [];
     for(const { group, ranks: members } of P.gradeGroups(membership, ranks)){
       for(const rank of members){
-        const id = G ? P.gradeArt(G, membership, rank) : null;
-        const url = id ? artUrl(id) : null;
-        // A grade that wears no insignia (C/AB, a senior member without grade) is the plain empty mark: nothing is worn.
-        options.push({ value: rank, label: rank, group, picture: url || window.VisualPicker.emptyMark(), note: P.gradeName(membership, rank) });
+        // A grade that wears no insignia (C/AB, a senior member without grade) is the plain empty mark: nothing is worn. One whose picture is still being made holds its
+        // place with a blank box; one that could not be made is its name alone.
+        const picture = !wears.has(rank) ? window.VisualPicker.emptyMark() : urls[rank] ? urls[rank] : urls[rank] === null ? undefined : BLANK;
+        options.push({ value: rank, label: rank, group, picture, note: P.gradeName(membership, rank) });
       }
     }
     return options;
@@ -97,17 +106,33 @@
         // No kind of membership yet, so no grades to show.
         host.textContent = '';
         host.append(make('div', 'fieldLabel', 'Rank'), make('div', 'hintText', 'Choose a membership type first.'));
-        grade = { picker: null, signature };
+        grade = { picker: null, signature, token: 0, last: {}, shownSignature: '' };
       }else{
+        const items = gradeItems(membership, ranks);
         const picker = window.VisualPicker.render(host, {
-          name: 'rank', legend: 'Rank', options: gradeOptions(membership, ranks), value: source.value, size: 'small',
+          name: 'rank', legend: 'Rank', options: gradeOptions(membership, ranks, items, {}), value: source.value, size: 'small',
           onChange: value => write(source, value)
         });
         picker.el.dataset.pickerFor = 'rankSetupSelect';
-        grade = { picker, signature };
+        grade = { picker, signature, token: 0, last: {}, shownSignature: '{}', items, membership, ranks };
       }
     }
-    if(grade.picker) grade.picker.setValue(source.value);
+    if(!grade.picker) return;
+    grade.picker.setValue(source.value);
+    // The devices are drawn once the Profile step is the one shown. While another set is made (another kind of membership) the picture group holds blank boxes.
+    if(!shown('stepGroup-profile')) return;
+    const made = maker().grades(grade.items);
+    const paint = urls => {
+      const known = {};
+      for(const i of grade.items){ if(urls[i.key] !== undefined) grade.last[i.key] = urls[i.key]; known[i.key] = grade.last[i.key]; }
+      const sig = JSON.stringify(known);
+      if(sig === grade.shownSignature) return;
+      grade.shownSignature = sig;
+      grade.picker.setOptions(gradeOptions(grade.membership, grade.ranks, grade.items, known));
+    };
+    const token = ++grade.token;
+    paint(made.now);
+    if(!made.settled) made.ready.then(done => { if(token === grade.token) paint(done); });
   }
 
   // ---- the cut ------------------------------------------------------------------------------------------------------------------

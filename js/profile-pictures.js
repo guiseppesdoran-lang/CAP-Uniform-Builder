@@ -2,11 +2,14 @@
 // draws for the member and never a second drawing of it.
 //
 //   gradeGroups(membership, ranks)    the headings the grades are shown under, in the order of rank: [{ group, ranks }]
-//   gradeArt(G, membership, rank, o)  the insignia the engine draws for a grade, as an asset id (null for a grade that wears none: C/AB, SM)
+//   gradeDevice(G, membership, rank, o)  the insignia the engine draws for a grade as worn on the blues, without cloth: { id, hide }, or null for a grade that
+//                                     wears none (C/AB, SM); `hide` are the groups of the asset left off (its backing)
+//   gradeArt(G, membership, rank, o)  the asset id of that device
 //   gradeName(membership, rank)       the grade's name in words ("Cadet Major")
 //   const made = create(env);
 //   made.uniforms(ids)                { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
 //   made.cuts()                       { now: { male, female }, ready, settled }: the uniform the member is on, in each cut
+//   made.grades(items)                { now: { key: picture | null | undefined }, ready, settled }: the devices of the grades, items [{ key, id, hide }]
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
 // they made) with nothing else on it: no ribbons, badges, patches, name or cord, and no cap, so the garment fills the picture. The coat and the shirt, the
@@ -66,16 +69,21 @@
     return out;
   }
 
-  // The insignia the engine draws for a grade, in the one form each kind of grade has of its own that stands out on the picture's white: the cadet
-  // chevrons and the cadet officers' discs and diamonds on their cloth, the senior NCO chevron, the senior officers', flight officers' and generals'
-  // insignia on theirs (the forms the Class B shirt and blouse wear). `firstSergeant` puts the first sergeant's diamond on a cadet chevron that takes it.
-  function gradeArt(G, membership, rank, options){
+  // The insignia the engine draws for a grade on the blues, as the device alone, with no cloth backing: the cadet chevrons and the cadet officers' discs and diamonds
+  // in the metal the Class A coat's lapels and boards wear them in (profiles-dress.js composeClassA), the senior officers', flight officers' and generals' insignia in
+  // the embroidered thread of the epaulet sleeve (epauletGradeId), and the senior NCO chevron without the navy field it is sewn on (the asset's `field` group, left off
+  // as the engine leaves groups off a sheet). `firstSergeant` puts the first sergeant's diamond on a cadet chevron that takes it.
+  function gradeDevice(G, membership, rank, options){
     const g = G.gradeInfo(membership, rank, { firstSergeant: !!(options && options.firstSergeant) });
     if(!g.key) return null;
-    if(g.category === 'cadet-nco') return G.cadetNcoChevron(g, 'cloth-bordered');
-    if(g.category === 'cadet-officer') return G.cadetOfficerInsignia(g, 'cloth-bordered-regular');
-    if(g.category === 'senior-nco') return G.seniorChevron(g, {});
-    return G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
+    if(g.category === 'cadet-nco') return { id: G.cadetNcoChevron(g, 'metal'), hide: [] };
+    if(g.category === 'cadet-officer') return { id: G.cadetOfficerInsignia(g, 'metal-regular'), hide: [] };
+    if(g.category === 'senior-nco') return { id: G.seniorChevron(g, {}), hide: ['field'] };
+    return { id: G.seniorOfficerInsignia(g, 'thread', { horizontal: false }), hide: [] };
+  }
+  function gradeArt(G, membership, rank, options){
+    const d = gradeDevice(G, membership, rank, options);
+    return d ? d.id : null;
   }
 
   // ---- the uniforms -----------------------------------------------------------------------------------------------------------------
@@ -164,7 +172,49 @@
       const ready = Promise.all(hits.map(([, h]) => h.promise)).then(urls => Object.fromEntries(keys.map((k, i) => [k, urls[i]])));
       return { now, ready, settled };
     }
+    // The devices of grades: each is its asset (with the groups of its backing left off) centred in a square frame that its larger side fills, so a chevron and a single
+    // pip are the same size class on the tiles, whichever way each is longer. { now, ready, settled } as for the uniforms.
+    const sizes = new Map();   // asset id -> { w, h } in inches
+    const sets = new Map();    // the items asked for -> { value, promise }; the newest last
+    const KEEP_SETS = 6, MARGIN = 1.08;
+    function dropSets(){
+      while(sets.size > KEEP_SETS){
+        const [key, old] = sets.entries().next().value;
+        sets.delete(key);
+        if(env.release && old.value) Object.values(old.value).forEach(u => { if(typeof u === 'string') env.release(u); });
+      }
+    }
+    async function drawGrades(list){
+      await Promise.all(list.map(async i => { if(!sizes.has(i.id)){ const spec = await env.spec(i.id); sizes.set(i.id, { w: spec.w, h: spec.h }); } }));
+      const out = {};
+      await Promise.all(list.map(async i => {
+        const s = sizes.get(i.id), frame = Math.max(s.w, s.h) * MARGIN;
+        const layer = { type: 'asset', id: i.id, x: -s.w / 2, y: -s.h / 2, w: s.w, h: s.h, rotate: 0, origin: { x: 0, y: 0 }, z: 1, role: 'grade', key: 'grade:' + i.id };
+        if(i.hide && i.hide.length) layer.hideGroups = [...i.hide];
+        const scene = { title: 'Grade', layers: [layer], bounds: { x: -frame / 2, y: -frame / 2, w: frame, h: frame }, notes: [], conflicts: [] };
+        out[i.key] = await env.draw(scene, 0).catch(error => { if(env.warn) env.warn(`The picture of ${i.key} could not be made`, error); return null; });
+      }));
+      return out;
+    }
+    function grades(items){
+      const list = (Array.isArray(items) ? items : []).filter(i => i && i.id);
+      const keys = list.map(i => i.key);
+      const none = Object.fromEntries(keys.map(k => [k, null]));
+      if(!list.length || !env.spec) return { now: none, ready: Promise.resolve(none), settled: true };
+      const signature = JSON.stringify(list.map(i => [i.key, i.id, i.hide || []]));
+      let set = sets.get(signature);
+      if(set){ sets.delete(signature); sets.set(signature, set); }
+      else{
+        set = { value: undefined };
+        set.promise = Promise.resolve().then(() => drawGrades(list)).catch(error => { if(env.warn) env.warn('The pictures of the grades could not be made', error); return none; })
+          .then(done => { set.value = done; return done; });
+        sets.set(signature, set);
+        dropSets();
+      }
+      return { now: set.value || Object.fromEntries(keys.map(k => [k, undefined])), ready: set.promise, settled: !!set.value };
+    }
     return {
+      grades,
       // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Honor Guard the honor guard items on the coat or the shirt.
       uniforms: ids => pictures(ids, id => id === env.rules.CEREMONIAL.id ? { ceremonial: true } : { uniform: id }),
       // The uniform the member is on (Honor Guard rides on the coat or the shirt, and is pictured as it), in each cut: the same pictures as its card's where the cut is the member's.
@@ -172,5 +222,5 @@
     };
   }
 
-  return { create, bare, gradeGroups, gradeArt, gradeName, GROUPS, PAD };
+  return { create, bare, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD };
 });

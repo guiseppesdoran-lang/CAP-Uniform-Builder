@@ -233,25 +233,34 @@ test('the grades are shown under plain headings in the order of rank, each rank 
   assert.deepEqual(PP.gradeGroups('', []), []);
 });
 
-test('each grade is shown by the insignia the engine draws for it, an asset the page has: cadet chevrons and discs and diamonds, senior chevrons and officers\' insignia', () => {
+test('each grade is shown by the insignia the engine draws for it on the blues, the device alone: metal chevrons and discs, thread, the senior chevron without its field', () => {
   const assetIds = new Set(manifest.assets.map(a => a.id));
   for(const membership of ['cadet', 'senior']) for(const rank of RANKS[membership]){
-    const id = PP.gradeArt(G, membership, rank);
+    const d = PP.gradeDevice(G, membership, rank);
     const g = G.gradeInfo(membership, rank, {});
-    if(!g.key){ assert.equal(id, null, `${rank} wears none`); continue; }
-    assert.ok(/^rank-/.test(id), `${rank}: ${id}`);
-    assert.ok(assetIds.has(id), `${rank}: ${id} is in the artwork manifest`);
-    assert.ok(INDEX[id], `${rank}: ${id} has a file the page can address`);
-    assert.ok(fs.existsSync(path.join(root, 'images', INDEX[id])), `${rank}: the file`);
+    if(!g.key){ assert.equal(d, null, `${rank} wears none`); assert.equal(PP.gradeArt(G, membership, rank), null); continue; }
+    assert.ok(/^rank-/.test(d.id), `${rank}: ${d.id}`);
+    assert.equal(PP.gradeArt(G, membership, rank), d.id);
+    assert.ok(assetIds.has(d.id), `${rank}: ${d.id} is in the artwork manifest`);
+    assert.ok(INDEX[d.id], `${rank}: ${d.id} has a file the page can address`);
+    const svg = read('images/' + INDEX[d.id]);
+    const groups = [...svg.matchAll(/<g id="[^"]*?__([^"]*)"/g)].map(m => m[1]);
+    // No backing: no cloth group in the file, and the one field a sheet has that is its backing (the senior chevron's) is left off by name.
+    assert.equal(groups.includes('cloth'), false, `${rank}: ${d.id} has no cloth`);
+    for(const name of d.hide) assert.ok(groups.includes(name), `${rank}: the group ${name} is in the file`);
+    assert.equal(groups.filter(n => !d.hide.includes(n)).includes('cloth'), false);
+    if(g.category === 'senior-nco') assert.deepEqual(plain(d.hide), ['field'], `${rank}: the navy field the chevron is sewn on`);
+    else assert.deepEqual(plain(d.hide), [], `${rank}: nothing to leave off`);
   }
   assert.deepEqual(RANKS.cadet.filter(r => !PP.gradeArt(G, 'cadet', r)), ['C/AB'], 'only a cadet airman basic has no insignia');
   assert.deepEqual(RANKS.senior.filter(r => !PP.gradeArt(G, 'senior', r)), ['SM'], 'only a senior member without grade has none');
-  assert.equal(PP.gradeArt(G, 'cadet', 'C/TSgt'), G.cadetNcoChevron(G.gradeInfo('cadet', 'C/TSgt', {}), 'cloth-bordered'));
-  assert.equal(PP.gradeArt(G, 'cadet', 'C/Lt Col'), G.cadetOfficerInsignia(G.gradeInfo('cadet', 'C/Lt Col', {}), 'cloth-bordered-regular'));
+  // The forms the Class A coat and its epaulet sleeves wear (js/engine/profiles-dress.js).
+  assert.equal(PP.gradeArt(G, 'cadet', 'C/TSgt'), G.cadetNcoChevron(G.gradeInfo('cadet', 'C/TSgt', {}), 'metal'));
+  assert.equal(PP.gradeArt(G, 'cadet', 'C/Lt Col'), G.cadetOfficerInsignia(G.gradeInfo('cadet', 'C/Lt Col', {}), 'metal-regular'));
   assert.equal(PP.gradeArt(G, 'senior', 'MSgt'), G.seniorChevron(G.gradeInfo('senior', 'MSgt', {}), {}));
-  assert.equal(PP.gradeArt(G, 'senior', 'Maj'), 'rank-senior-major-cloth-bordered');
-  assert.equal(PP.gradeArt(G, 'senior', 'Maj Gen'), 'rank-senior-major-general-1in-vertical-cloth-bordered');
-  assert.equal(PP.gradeArt(G, 'senior', 'TFO'), 'rank-senior-technical-flight-officer-cloth-bordered');
+  assert.equal(PP.gradeArt(G, 'senior', 'Maj'), 'rank-senior-major-thread');
+  assert.equal(PP.gradeArt(G, 'senior', 'Maj Gen'), 'rank-senior-major-general-1in-vertical-thread');
+  assert.equal(PP.gradeArt(G, 'senior', 'TFO'), 'rank-senior-technical-flight-officer-thread');
   assert.equal(new Set(RANKS.cadet.map(r => PP.gradeArt(G, 'cadet', r))).size, RANKS.cadet.length, 'no two cadet grades share a picture (the one without insignia counts once)');
   assert.equal(new Set(RANKS.senior.map(r => PP.gradeArt(G, 'senior', r))).size, RANKS.senior.length, 'no two senior grades share a picture');
 });
@@ -259,10 +268,63 @@ test('each grade is shown by the insignia the engine draws for it, an asset the 
 test('the first sergeant\'s diamond is the cadet chevron the engine draws for it, for the three grades that take it', () => {
   for(const rank of ['C/MSgt', 'C/SMSgt', 'C/CMSgt']){
     const plainId = PP.gradeArt(G, 'cadet', rank), diamond = PP.gradeArt(G, 'cadet', rank, { firstSergeant: true });
-    assert.equal(diamond, plainId.replace(/-cloth-bordered$/, '-first-sergeant-cloth-bordered'));
+    assert.equal(diamond, plainId.replace(/-metal$/, '-first-sergeant-metal'));
     assert.ok(manifest.assets.some(a => a.id === diamond), `${rank}: ${diamond}`);
   }
   assert.equal(PP.gradeArt(G, 'cadet', 'C/SSgt', { firstSergeant: true }), PP.gradeArt(G, 'cadet', 'C/SSgt'), 'a grade that does not take it is as it was');
+});
+
+test('the devices are drawn one to a picture, centred in a square its larger side fills, the field of a senior chevron left off, none made twice', async () => {
+  const drawn = [], released = [];
+  const sizesOf = id => JSON.parse(read('images/' + INDEX[id].replace(/\.svg$/, '.spec.json'))).size_in;
+  const env = { rules: RULES, build: member({}), compose: async () => { throw new Error('no composition for a device'); },
+    spec: async id => sizesOf(id), draw: async (scene, pad) => { drawn.push({ scene, pad }); return 'pic-' + drawn.length; }, release: u => released.push(u) };
+  const made = PP.create(env);
+  const items = ['C/SSgt', 'C/Capt', 'C/Maj'].map(r => ({ key: r, ...PP.gradeDevice(G, 'cadet', r) })).concat(['SSgt', 'Col'].map(r => ({ key: r, ...PP.gradeDevice(G, 'senior', r) })));
+  const first = made.grades(items);
+  assert.equal(first.settled, false);
+  assert.deepEqual(Object.keys(first.now), ['C/SSgt', 'C/Capt', 'C/Maj', 'SSgt', 'Col']);
+  assert.ok(Object.values(first.now).every(v => v === undefined), 'still being made');
+  const done = await first.ready;
+  assert.deepEqual(Object.keys(done), ['C/SSgt', 'C/Capt', 'C/Maj', 'SSgt', 'Col']);
+  assert.ok(Object.values(done).every(u => /^pic-\d+$/.test(u)));
+  assert.equal(drawn.length, 5);
+  for(const d of drawn){
+    const [layer] = d.scene.layers;
+    assert.equal(d.scene.layers.length, 1, 'the device alone: no other layer, no ground');
+    assert.equal(layer.type, 'asset');
+    assert.equal(d.pad, 0);
+    const b = d.scene.bounds, size = sizesOf(layer.id);
+    assert.equal(b.w, b.h, 'a square frame');
+    assert.ok(Math.abs(b.w - Math.max(size.w, size.h) * 1.08) < 1e-9, 'the larger side of the device fills it');
+    assert.ok(Math.abs((layer.x + layer.w / 2) - (b.x + b.w / 2)) < 1e-9 && Math.abs((layer.y + layer.h / 2) - (b.y + b.h / 2)) < 1e-9, 'centred');
+    assert.equal(layer.w, size.w); assert.equal(layer.h, size.h, 'at its real size in the frame: a device is not stretched');
+  }
+  assert.deepEqual(plain(drawn.find(d => /staff-sergeant-chevron-4in$/.test(d.scene.layers[0].id)).scene.layers[0].hideGroups), ['field'], 'the senior chevron without its field');
+  assert.equal(drawn.filter(d => d.scene.layers[0].hideGroups).length, 1);
+  // The same items again: known at once, nothing drawn again.
+  const again = made.grades(items);
+  assert.equal(again.settled, true);
+  assert.deepEqual(plain(again.now), plain(done));
+  assert.equal(drawn.length, 5);
+  // A grade that wears none, no items, or nothing to size by: no pictures asked of the engine.
+  assert.deepEqual(plain(made.grades([]).now), {});
+  const noSpec = PP.create(Object.assign({}, env, { spec: undefined }));
+  assert.deepEqual(plain(noSpec.grades(items).now), { 'C/SSgt': null, 'C/Capt': null, 'C/Maj': null, SSgt: null, Col: null });
+});
+
+test('a device that cannot be drawn is null and the others are made; the oldest sets are let go', async () => {
+  const warned = [], released = [];
+  let n = 0;
+  const env = { rules: RULES, build: member({}), spec: async () => ({ w: 1, h: 1 }), warn: m => warned.push(m), release: u => released.push(u),
+    draw: async scene => { if(scene.layers[0].id === 'rank-cadet-nco-airman-metal') throw new Error('sheet missing'); return 'pic-' + (++n); } };
+  const made = PP.create(env);
+  const done = await made.grades([{ key: 'C/Amn', id: 'rank-cadet-nco-airman-metal', hide: [] }, { key: 'C/SrA', id: 'rank-cadet-nco-senior-airman-metal', hide: [] }]).ready;
+  assert.deepEqual(plain(done), { 'C/Amn': null, 'C/SrA': 'pic-1' });
+  assert.equal(warned.length, 1);
+  for(let i = 0; i < 7; i++) await made.grades([{ key: 'k', id: 'rank-x' + i, hide: [] }]).ready;
+  assert.ok(released.length >= 2, 'sets beyond the newest six are let go, their picture addresses with them');
+  assert.ok(released.includes('pic-1'));
 });
 
 test('every grade has its name in words', () => {

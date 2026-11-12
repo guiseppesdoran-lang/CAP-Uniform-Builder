@@ -182,27 +182,35 @@ const INDEX = require('../data/asset-index.js');
 const RANKS = JSON.parse(JSON.stringify(vm.runInNewContext('(' + /const RANKS = (\{[\s\S]*?\n\});/.exec(read('js/state.js'))[1] + ')')));
 const keydown = (key) => ({ type: 'keydown', key, bubbles: true });
 
-// The Profile step's grade: the hidden select (as populateRankSetup fills it for the membership), the host of the picture group, the real picker and the real pictures' module.
-function gradePage(state){
+// The Profile step's grade: the hidden select (as populateRankSetup fills it for the membership), the host of the picture group, the Profile step, the real picker, the real
+// grades' module for the headings and the devices, and a stand-in for drawing them (`devices(items)` answers for the pictures; the default makes 'pic-<grade>' at once).
+const madeNow = items => { const now = Object.fromEntries(items.map(i => [i.key, 'pic-' + i.key])); return { now, ready: Promise.resolve(now), settled: true }; };
+function gradePage(state, devices){
   const doc = createDocument();
   doc.querySelectorAll = sel => doc.body.querySelectorAll(sel);
   const shell = doc.createElement('main'); shell.id = 'layoutShell'; doc.body.append(shell);
-  const host = doc.createElement('div'); host.id = 'rankSetupPicker'; doc.body.append(host);
-  const select = doc.createElement('select'); select.id = 'rankSetupSelect'; select.value = ''; select.options = []; doc.body.append(select);
-  const changes = [];
+  const step = doc.createElement('div'); step.id = 'stepGroup-profile'; step.hidden = false; doc.body.append(step);
+  const host = doc.createElement('div'); host.id = 'rankSetupPicker'; step.append(host);
+  const select = doc.createElement('select'); select.id = 'rankSetupSelect'; select.value = ''; select.options = []; step.append(select);
+  const changes = [], asked = [];
   select.addEventListener('change', e => changes.push(select.value));
   const sandbox = {
     document: doc, console, setTimeout: () => 0, Event: function(type, init){ this.type = type; Object.assign(this, init || {}); },
     State: Object.assign({ membership: '', rank: null, gender: '', uniform: 'blues_a' }, state),
-    CAPUBEngine: { grades: G }, CAPUBAssetIndex: INDEX, ASSET: p => 'images/' + p
+    CAPUBEngine: { grades: G, core: { createSpecStore: () => ({}) }, profiles: {}, renderSvg: {} }, CAPUBAssetIndex: INDEX, ASSET: p => 'images/' + p,
+    CAPUBUniformRules: {}, CAPUBUniformView: { buildFromState: () => ({}) },
+    CAPUBAssetPacks: { createLoader: () => ({ manifest: () => Promise.resolve({}), prepare: () => Promise.resolve(), spec: () => Promise.resolve({}) }) },
+    fetch: () => Promise.reject(new Error('offline')), URL, Blob: function(){}, XMLSerializer: function(){}
   };
   sandbox.window = sandbox; sandbox.self = sandbox;
   vm.runInNewContext(read('js/visual-picker.js'), sandbox);
-  vm.runInNewContext(read('js/profile-pictures.js'), sandbox);
+  const real = (() => { const m = {}; vm.runInNewContext(read('js/profile-pictures.js'), Object.assign(m, { window: m, self: m })); return m.CAPUBProfilePictures; })();
+  const none = { now: {}, ready: Promise.resolve({}), settled: true };
+  sandbox.CAPUBProfilePictures = Object.assign({}, real, { create: () => ({ uniforms: () => none, cuts: () => none, grades: items => { asked.push(JSON.parse(JSON.stringify(items))); return (devices || madeNow)(items); } }) });
   vm.runInNewContext(read('js/profile-pickers.js'), sandbox);
   // What js/setup.js populateRankSetup does for a membership.
   const offer = membership => { sandbox.State.membership = membership; select.options = [{ value: '' }, ...(RANKS[membership] || []).map(value => ({ value }))]; };
-  return { sandbox, doc, host, select, changes, offer, sync: () => sandbox.CAPUBProfilePickers.sync() };
+  return { sandbox, doc, host, step, select, changes, asked, offer, sync: () => sandbox.CAPUBProfilePickers.sync() };
 }
 const radios = host => host.querySelectorAll('[role="radio"]');
 const headings = host => host.querySelectorAll('.vpGroupHead').map(h => h.textContent);
@@ -214,21 +222,60 @@ test('no grade is offered before a membership is chosen: the word Rank and a lin
   assert.equal(p.host.textContent, 'RankChoose a membership type first.');
 });
 
-test('a cadet is shown the cadet grades under their headings, each by its insignia with its name beneath; a senior member the senior grades', () => {
+test('a cadet is shown the cadet grades under their headings, each by its insignia with its name beneath; a senior member the senior grades', async () => {
   const p = gradePage({});
   p.offer('cadet'); p.sync();
+  await settle();
   assert.deepEqual(headings(p.host), ['Airmen', 'Non-commissioned officers', 'Officers']);
   assert.deepEqual(radios(p.host).map(r => r.dataset.value), RANKS.cadet);
   assert.deepEqual(radios(p.host).map(r => r.querySelector('.vpLabel').textContent), RANKS.cadet, 'the name as the select has it');
   const art = rank => { const r = radios(p.host).find(x => x.dataset.value === rank); return r.querySelector('.vpPicture'); };
-  assert.equal(art('C/Maj').children[0].getAttribute('src'), 'images/' + INDEX['rank-cadet-officer-major-cloth-bordered-regular'], 'the insignia the engine draws for a cadet major');
-  assert.equal(art('C/TSgt').children[0].getAttribute('src'), 'images/' + INDEX['rank-cadet-nco-technical-sergeant-cloth-bordered']);
+  assert.equal(art('C/Maj').children[0].getAttribute('src'), 'pic-C/Maj', 'the picture made for a cadet major');
+  assert.equal(art('C/TSgt').children[0].getAttribute('src'), 'pic-C/TSgt');
   assert.match(art('C/AB').innerHTML, /stroke-dasharray/, 'a grade without insignia is the empty mark');
   p.offer('senior'); p.sync();
+  await settle();
   assert.deepEqual(headings(p.host), ['No grade', 'Non-commissioned officers', 'Flight officers', 'Officers', 'General officers']);
   assert.deepEqual(radios(p.host).map(r => r.dataset.value), RANKS.senior);
-  assert.equal(art('Col').children[0].getAttribute('src'), 'images/' + INDEX['rank-senior-colonel-cloth-bordered']);
+  assert.equal(art('Col').children[0].getAttribute('src'), 'pic-Col');
   assert.match(art('SM').innerHTML, /stroke-dasharray/);
+});
+
+test('the pictures are the devices alone, as worn on the blues: metal chevrons and discs for the cadets, thread for the officers, the chevron without its field for the senior NCOs, never the cloth', () => {
+  const ids = membership => { const p = gradePage({}); p.offer(membership); p.sync(); return p.asked[0]; };
+  const cadet = ids('cadet'), senior = ids('senior');
+  assert.deepEqual(cadet.map(i => i.key), RANKS.cadet.filter(r => r !== 'C/AB'), 'every grade that wears insignia, not C/AB');
+  assert.deepEqual(senior.map(i => i.key), RANKS.senior.filter(r => r !== 'SM'), 'and not SM');
+  for(const i of [...cadet, ...senior]){
+    assert.doesNotMatch(i.id, /cloth|ocp-square|bullion/, `${i.key}: ${i.id} is not a cloth patch`);
+    assert.ok(INDEX[i.id], `${i.key}: ${i.id} is an asset the page has`);
+  }
+  assert.equal(cadet.find(i => i.key === 'C/SSgt').id, 'rank-cadet-nco-staff-sergeant-metal');
+  assert.equal(cadet.find(i => i.key === 'C/Maj').id, 'rank-cadet-officer-major-metal-regular');
+  assert.equal(senior.find(i => i.key === 'Capt').id, 'rank-senior-captain-thread');
+  assert.deepEqual(senior.filter(i => i.hide.length).map(i => [i.key, i.hide]), ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt'].map(k => [k, ['field']]), 'the senior chevron\'s navy field is the one thing left off');
+  assert.deepEqual(cadet.filter(i => i.hide.length), []);
+});
+
+test('the devices are made while the Profile step is shown, and a tile whose picture is still being made holds its place; one that could not be made is its name alone', async () => {
+  let release;
+  const p = gradePage({}, items => ({ now: Object.fromEntries(items.map(i => [i.key, i.key === 'C/Amn' ? 'pic-known' : undefined])), settled: false,
+    ready: new Promise(r => { release = () => r(Object.fromEntries(items.map(i => [i.key, i.key === 'C/Col' ? null : 'pic-' + i.key]))); }) }));
+  p.step.hidden = true;
+  p.offer('cadet'); p.sync();
+  assert.equal(p.asked.length, 0, 'the Profile step is not shown: nothing is made');
+  assert.ok(radios(p.host).every(r => !r.querySelector('.vpPicture') || !r.querySelector('.vpPicture').children.some(n => n.nodeName === 'IMG')), 'the boxes are blank');
+  p.step.hidden = false; p.sync();
+  assert.equal(p.asked.length, 1);
+  const tile = rank => radios(p.host).find(r => r.dataset.value === rank);
+  const src = rank => { const b = tile(rank).querySelector('.vpPicture'); return b && b.children[0] && b.children[0].getAttribute ? b.children[0].getAttribute('src') : null; };
+  assert.equal(src('C/Amn'), 'pic-known', 'the picture known is there');
+  assert.equal(src('C/Maj'), null, 'the others wait in blank boxes');
+  assert.ok(tile('C/Maj').querySelector('.vpPicture'));
+  release(); await settle();
+  assert.equal(src('C/Maj'), 'pic-C/Maj');
+  assert.equal(tile('C/Col').classList.contains('noPicture'), true, 'a grade whose picture could not be made is its name alone');
+  assert.match(tile('C/AB').querySelector('.vpPicture').innerHTML, /stroke-dasharray/);
 });
 
 test('it is a radio group named Rank, with a note of the grade picked in words, and the grade picked is the select\'s', () => {
@@ -409,7 +456,7 @@ test('the first sergeant\'s diamond is two pictures of the member\'s chevron, pl
   assert.equal(picker.dataset.pickerFor, 'cadetFirstSergeantCheckbox');
   assert.deepEqual(radios(p.fsHost).map(r => r.querySelector('.vpLabel').textContent), ['Plain chevron', 'With diamond']);
   assert.deepEqual(radios(p.fsHost).map(r => r.querySelector('.vpPicture').children[0].getAttribute('src')),
-    ['images/' + INDEX['rank-cadet-nco-senior-master-sergeant-cloth-bordered'], 'images/' + INDEX['rank-cadet-nco-senior-master-sergeant-first-sergeant-cloth-bordered']]);
+    ['images/' + INDEX['rank-cadet-nco-senior-master-sergeant-metal'], 'images/' + INDEX['rank-cadet-nco-senior-master-sergeant-first-sergeant-metal']]);
   assert.deepEqual(picked(p.fsHost), ['plain']);
   radios(p.fsHost)[1].click();
   assert.equal(p.box.checked, true);
@@ -420,7 +467,7 @@ test('the first sergeant\'s diamond is two pictures of the member\'s chevron, pl
   assert.deepEqual(picked(p.fsHost), ['diamond'], 'the page sets the box (a saved setup, Undo): the picture shows it');
   // Another grade that takes it: its own chevron.
   p.sandbox.State.rank = 'C/CMSgt'; p.sync();
-  assert.match(radios(p.fsHost)[0].querySelector('.vpPicture').children[0].getAttribute('src'), /rank-cadet-nco-chief-master-sergeant-cloth-bordered\.svg/);
+  assert.match(radios(p.fsHost)[0].querySelector('.vpPicture').children[0].getAttribute('src'), /rank-cadet-nco-chief-master-sergeant-metal\.svg/);
 });
 
 test('index.html: the cut and the diamond stand behind their hosts, the selects and the box kept hidden as the source of truth; the stylesheet has no leftover buttons for them', () => {
@@ -429,4 +476,12 @@ test('index.html: the cut and the diamond stand behind their hosts, the selects 
   assert.doesNotMatch(html, /id="cutLabel"/);
   assert.match(html, /<div id="cadetFirstSergeantBlock" class="hidden mt-10">\s*<input type="checkbox" id="cadetFirstSergeantCheckbox" class="segmentedSource" tabindex="-1" aria-hidden="true">\s*<div id="firstSergeantPicker"><\/div>\s*<div class="hintText">For C\/MSgt, C\/SMSgt and C\/CMSgt appointed first sergeant \(CAPR 39-1, 10\.10\.4\)\.<\/div>/);
   assert.match(read('js/setup.js'), /cadetFirstSergeantCheckbox\.addEventListener\('change'/, 'the page\'s own handler still listens to the box');
+});
+
+test('the grade tiles\' pictures are outlined so silver and white devices read on the tile\'s white, on either theme', () => {
+  const css = read('styles/app.css');
+  assert.match(css, /\.vp\[data-name="rank"\] \.vpPicture>img\{filter:drop-shadow\(0 0 \.6px var\(--cap-blue\)\) drop-shadow\(0 0 \.6px var\(--cap-blue\)\)\}/, 'a halo of a colour the themes share (the stylesheet holds no hex outside its tokens)');
+  assert.match(css, /--cap-blue:#001871;/);
+  assert.match(css, /--paper:#FFFFFF;/, 'the tile\'s ground is white');
+  assert.doesNotMatch(css.slice(css.indexOf('@media (prefers-color-scheme:dark)'), css.indexOf('@media (prefers-reduced-motion')), /--paper:/, 'and stays white in the dark theme');
 });
