@@ -935,7 +935,7 @@ test('a PDF with no text, too many pages, a password or a broken structure ends 
 });
 
 // ---- Reports as a PDF or a copy delivers them (I2) -----------------------------------------------------------------------------------
-// The four fixtures, each changed the way a PDF, a browser print or another notation would change it. What the importer reads from the changed
+// The fixtures, each changed the way a PDF, a browser print or another notation would change it. What the importer reads from the changed
 // text is what it reads from the fixture: the same grade, name, ribbons with their clasps and stars, badges, patches and cord.
 let signatureParser = null;
 function signature(text){
@@ -945,7 +945,7 @@ function signature(text){
   }
   return signatureParser(text);
 }
-const FIXTURE_FILES = ['eservices-member-details-cadet.txt', 'eservices-member-details-cadet-live12.txt', 'eservices-member-details-senior-live13.txt', 'eservices-member-details-senior-past-commander.txt'];
+const FIXTURE_FILES = ['eservices-member-details-cadet.txt', 'eservices-member-details-cadet-live12.txt', 'eservices-member-details-senior-live13.txt', 'eservices-member-details-senior-past-commander.txt', 'eservices-member-details-cadet-personnel.txt'];
 const fixtureText = name => fs.readFileSync(path.join(__dirname, 'fixtures', name), 'utf8');
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -973,7 +973,7 @@ const REPORT_VARIANTS = {
   'a Transfer History and a Committees table before Local Activities': t => t.replace('Local Activities', 'Transfer History\nUnit Date\nGLR-IL-001 01 Jan 2019\nCurrent Committees\nCommittee Date\nCadet Advisory Council 01 Jan 2020\nLocal Activities'),
   'the headings in capitals': t => t.replace(/^(Duty Positions|Professional Development|Specialty Tracks|Cadet Training|Encampments|Decorations|Awards)$/gm, h => h.toUpperCase())
 };
-test('the four fixtures read the same however a PDF, a browser print or another notation delivers them', () => {
+test('the fixtures read the same however a PDF, a browser print or another notation delivers them', () => {
   const different = [];
   for(const file of FIXTURE_FILES){
     const text = fixtureText(file), base = signature(text);
@@ -1043,7 +1043,7 @@ test('a row of the awards tables that no ribbon matches is listed, in the report
   assert.deepEqual(groupOf(oneLine.result.lines, 'Not understood'), unread);
   const twice = await importFile(fileLike('member.txt', 'text/plain', cadetWith('Decorations', ['Distinguished Flying Cross Plus 01 Jan 2024', 'Distinguished Flying Cross Plus 01 Jan 2024'])));
   assert.deepEqual(groupOf(twice.result.lines, 'Not understood'), ['Distinguished Flying Cross Plus 01 Jan 2024: no ribbon or badge matches this row.']);
-  // None of the four fixtures lists a row it does not read.
+  // None of the fixtures lists a row it does not read.
   for(const file of FIXTURE_FILES){
     const r = await importFile(fileLike(file, 'text/plain', fixtureText(file)));
     assert.equal(groupOf(r.result.lines, 'Not understood'), null, file);
@@ -1210,7 +1210,7 @@ test('the cadet award ribbons a senior member does not wear are counted in a not
 });
 
 // ---- The words of the panel (I2) -----------------------------------------------------------------------------------------------------------
-test('what the panel says in the four fixtures is plain: no developer word, no id, no abbreviation the member would not know, every paragraph in brackets', async () => {
+test('what the panel says in the fixtures is plain: no developer word, no id, no abbreviation the member would not know, every paragraph in brackets', async () => {
   const DEVELOPER = /\b(?:queued|auto-?selected|mapp(?:ed|ing)|image ID|configured|detected|table only|Level NONE|builder has no badge for that|ES specialty|MRO|MSA|UDF|GTM\d|CDI|IC\d|final check)\b|_[a-z]/;
   const seen = new Set();
   for(const file of FIXTURE_FILES){
@@ -1300,14 +1300,16 @@ test('a qualification whose date has passed or whose status is Expired still ear
   assert.ok(!read('TRAINING').includes('master_ground_team_badge'), 'a trainee has no badge');
 });
 
-test('the rows not understood are counted past twelve, a Cadet Training row nothing reads is listed, and a long file name wraps', async () => {
+test('the rows not understood are counted past twelve, a Cadet Training row is counted and not listed, and a long file name wraps', async () => {
   const many = cadetWith('Decorations', Array.from({ length: 16 }, (_, i) => `Mystery Award Number ${i} ${String(i + 1).padStart(2, '0')} Jan 2024`));
   const { result } = await importFile(fileLike('member.txt', 'text/plain', many));
   const unread = groupOf(result.lines, 'Not understood');
   assert.equal(unread.filter(l => /no ribbon or badge matches this row\.$/.test(l)).length, 12);
   assert.equal(unread[unread.length - 1], '4 more rows were not understood.');
+  // A Cadet Training row is read by the table it is in: an activity the importer has never heard of is a credit, a region school is not, and neither is listed.
   const training = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('Cadet Training\nActivity Date Completed\n', 'Cadet Training\nActivity Date Completed\nCadet Competition Team 05 May 2024\nRegion Cadet Leadership School 06 May 2024\n')));
-  assert.deepEqual(groupOf(training.result.lines, 'Not understood'), ['Cadet Competition Team 05 May 2024: no ribbon or badge matches this row.']);
+  assert.equal(groupOf(training.result.lines, 'Not understood'), null);
+  assert.deepEqual(runImport(FIXTURE.replace('Cadet Training\nActivity Date Completed\n', 'Cadet Training\nActivity Date Completed\nCadet Competition Team 05 May 2024\nRegion Cadet Leadership School 06 May 2024\n')).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze', 'star-bronze'], centered: false }], 'COS, PJOC, a cyber NCSA and the competition team: four activities, the school none');
   // A long unbroken file name wraps inside the panel.
   const { context } = loadPageScripts();
   const panel = { style: {}, children: [], appendChild(c){ this.children.push(c); }, textContent: '' };
@@ -1536,4 +1538,71 @@ test('the General Information row still wins over a heading, and a report with n
   assert.deepEqual(signature(none).name, [null, null], 'no heading name');
   const { result } = await importFile(fileLike('m.txt', 'text/plain', none));
   assert.ok(groupOf(result.lines, 'Not understood').includes('The name was not found, so the uniform has no name.'));
+});
+
+// ---- National Cadet Special Activities: the Cadet Training table is followed, not a list of names -------------------------------------------
+let trainingReader = null;
+function trainingRows(text){
+  if(!trainingReader){
+    const { context } = loadPageScripts();
+    trainingReader = t => JSON.parse(vm.runInContext('(t) => JSON.stringify(memberReportCadetTrainingRows(normalizeMemberReportText(t)))', context)(t));
+  }
+  return trainingReader(text);
+}
+const withTraining = (text, rows) => text.replace('Encampments Location', rows.join('\n') + '\nEncampments Location');
+
+test('every row of the Cadet Training table is a credit for its activity and year unless it is a kind that earns none: six in the member search print, whatever their names', () => {
+  const rows = trainingRows(PERSONNEL);
+  assert.deepEqual(rows.map(r => [r.title.split(/\s+/)[0], r.year, r.credit]), [
+    ['RCLS', '2022', false], ['NESA', '2022', true], ['HMRS', '2022', true], ['RCLS', '2023', false], ['COS', '2023', true], ['MKSABA', '2023', true],
+    ['RCLS', '2023', false], ['NBB', '2024', true], ['RCLS', '2024', false], ['NFAP', '2025', true], ['RCLS', '2025', false]
+  ]);
+  assert.deepEqual([...new Set(rows.filter(r => !r.credit).map(r => r.why))], ['a region or wing school: no credit']);
+  // The two activities the importer did not know by name (the old reading counted five of the six): each is its own credit, under the code the row leads with.
+  assert.deepEqual(rows.filter(r => /^(?:MKSABA|NFAP)\b/.test(r.title)).map(r => [r.activity, r.year]), [['MKSABA', '2023'], ['NFAP', '2025']]);
+  const r = runImport(PERSONNEL);
+  assert.equal(r.ribbon('cadet_special_activity_ribbon').value, 'silver_star_1', 'six activities: five additional ones are one silver star');
+  assert.deepEqual(r.devices('cadet_special_activity_ribbon'), [{ devices: ['star-silver'], centered: false }]);
+  // The ribbons table of the same report lists five ribbons (the sixth is not yet awarded): the table's six are the count.
+  assert.equal((PERSONNEL.match(/Cadet Special Activity Ribbon/g) || []).length, 5);
+});
+
+test('an activity and a year is one credit however many of its rows; the same activity in another year, or another activity in the year, is another', () => {
+  const read = rows => runImport(withTraining(PERSONNEL, rows)).ribbon('cadet_special_activity_ribbon').value;
+  assert.equal(read(['NFAP   Staff, Tulsa, OK   05 Jul 2025']), 'silver_star_1', 'a staff row beside the student row of the year: still six');
+  assert.equal(read(['NESA   Fort Pickett, VA   08 Jul 2022', 'NESA Cadre   Fort Pickett, VA   09 Jul 2022']), 'silver_star_1', 'three rows of one activity in one year: still six');
+  assert.equal(read(['NESA   Fort Pickett, VA   01 Jul 2024']), 'silver_star_1_bronze_star_1', 'the same activity a year later: a seventh');
+  assert.equal(read(['QZLK Leadership Academy   Dayton, OH   01 Jul 2024']), 'silver_star_1_bronze_star_1', 'a new activity in a year of its own: a seventh');
+  assert.equal(read(['QZLK Leadership Academy   Dayton, OH   02 Jul 2025']), 'silver_star_1_bronze_star_1', 'a new activity in the year of another: a seventh');
+  assert.equal(read(['QZLK Leadership Academy   Dayton, OH   02 Jul 2025', 'QZLK Staff   Dayton, OH   03 Jul 2025']), 'silver_star_1_bronze_star_1', 'and its staff row the same year: one');
+});
+
+test('what the table lists that earns no credit: region and wing schools, Required Staff Training, an encampment, an orientation flight, the exchange with its own ribbon', () => {
+  const none = [
+    'RCLS   GLR   04 Jan 2026', 'RCLS Cadet Cadre   Virtual, GLR   04 Jan 2026', 'Region Cadet Leadership School   GLR   04 Jan 2026', 'NCOLS   Albany, NY   04 Jan 2026',
+    'Non-Commissioned Officer Leadership School   Albany, NY   04 Jan 2026', 'Wing NCOLS   Albany, NY   04 Jan 2026', 'Required Staff Training   Online   04 Jan 2026', 'RST Online Modules   LMS   04 Jan 2026',
+    'IL Encampment   Fort McCoy, WI   04 Jan 2026', 'Orientation Flight   Airport   04 Jan 2026', 'International Air Cadet Exchange   Abroad   04 Jan 2026', 'IACE   Abroad   04 Jan 2026',
+    // The schools the supplements name (data/supplements.js): the wing and region activities their cords are earned at.
+    'Pathfinders Technical School   Jefferson City, MO   04 Jan 2026', 'Medical Orientation Training School   Jefferson City, MO   04 Jan 2026', 'Honor Guard College   Richmond, VA   04 Jan 2026',
+    'NCO Leadership Academy   Orlando, FL   04 Jan 2026', 'SNCO Leadership Academy   Orlando, FL   04 Jan 2026', 'CCC Leadership Academy   Orlando, FL   04 Jan 2026'
+  ];
+  for(const row of none){
+    assert.equal(runImport(withTraining(PERSONNEL, [row])).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1', `${row}: still six`);
+    assert.equal(trainingRows(withTraining(PERSONNEL, [row])).filter(r => r.credit).length, 6, row);
+  }
+  // Every cord of the supplements that is earned at an activity names a school this list leaves out.
+  const { SUPPLEMENTS } = require('../data/supplements.js');
+  const cords = SUPPLEMENTS.flatMap(sp => sp.items).filter(it => it.kind === 'cord' && it.earned && it.earned.source === 'activity').map(it => it.id).sort();
+  assert.deepEqual(cords, ['fl-leadership-academy', 'mo-medical-orientation', 'mo-pathfinders', 'ner-ncols', 'ner-rcls', 'nh-ncols', 'va-honor-guard-college'],
+    'a supplement cord earned at an activity is a school the importer must not count as a special activity: add it to IMPORTED_TRAINING_NO_CREDIT');
+});
+
+test('the table reads the same on the line a PDF makes, with its column headings repeated by a page break, and the old print (Activity, Date Completed) is read as before', async () => {
+  assert.equal(runImport(PERSONNEL.replace(/\n/g, ' ')).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
+  const broken = PERSONNEL.replace('MKSABA   Vaughn', 'Type   Location   Date Completed MKSABA   Vaughn');
+  assert.deepEqual(trainingRows(broken).filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['NESA', 'HMRS', 'COS', 'MKSABA', 'NBB', 'NFAP']);
+  assert.equal(runImport(FIXTURE).ribbon('cadet_special_activity_ribbon').value, 'bronze_star_2', 'COS, PJOC and the cyber NCSA of the old print');
+  // Neither of the two rows is listed as not understood any more, and nothing else is in the table's way.
+  const { result } = await importFile(fileLike('member.txt', 'text/plain', PERSONNEL));
+  assert.ok(!(groupOf(result.lines, 'Not understood') || []).some(l => /MKSABA|NFAP/.test(l)), JSON.stringify(groupOf(result.lines, 'Not understood')));
 });

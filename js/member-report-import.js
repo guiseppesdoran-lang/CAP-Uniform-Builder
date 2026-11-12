@@ -827,39 +827,58 @@ const IMPORTED_NCSA_ACTIVITY_PATTERNS = [
   ['ENGINEERING ACADEMY', /\bEngineering\s+Academy\b/i]
 ];
 
-function extractCadetSpecialActivityCountFromReport(text){
-  const cadetTraining = getCadetTrainingSection(text);
-  if(!cadetTraining) return 0;
-  const activityRe = /(.{0,120}?)\s+(\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+(\d{4}))/gi;
-  const credits = new Set();
-  let match;
-  while((match = activityRe.exec(cadetTraining))){
-    const title = String(match[1] || '').replace(/\s+/g, ' ').trim();
-    const year = match[3];
-    let parent = null;
-    if(/Hawk Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i.test(title)) parent = 'HMRS';
-    else if(/Civic Leadership Academy|\bCLA\b/i.test(title)) parent = 'CLA';
-    else if(/Air Force Civil Engineering Academy|\bAFCEA\b/i.test(title)) parent = 'AFCEA';
-    else if(/Cadet Officers? School|\bCOS\b/i.test(title)) parent = 'COS';
-    else if(/Military Operations Training School|\bMOTS\b/i.test(title)) parent = 'MOTS';
-    else{
-      const known = IMPORTED_NCSA_ACTIVITY_PATTERNS.find(([, re]) => re.test(title));
-      if(known) parent = known[0];
-      else if(/\bNCSA\b|National Cadet Special Activit/i.test(title)){
-        // Key on the text from the NCSA word on, so table headings run into the first row do not split one
-        // activity into two credits.
-        parent = title.slice(title.search(/\bNCSA\b|National Cadet Special Activit/i))
-          .replace(/\b(?:Cadet|Student|Staff|Cadre|Air Staff)\b/gi, ' ')
-          .replace(/\s+/g, ' ').trim().toUpperCase();
-      }
-    }
-    // RCLS and RST are not standalone NCSA credits. Staff/cadre records for
-    // the same parent event and year collapse into one activity credit.
-    if(parent && !/\bRCLS\b|Required Staff Training|\bRST\b/i.test(title)){
-      credits.add(`${parent}:${year}`);
-    }
+// The Cadet Training table lists what a cadet has completed: its Type, Location and Date Completed (an older print: Activity and Date Completed).
+// A row of it is one National Cadet Special Activity credit, for that activity in that year, unless it is a kind of row that earns none. The
+// table is followed, not a list of the activities known: an activity this importer has never heard of (a new academy, a college program) is a
+// credit all the same. The kinds that earn none are the region and wing schools (RCLS and NCOLS, and the schools the supplements name:
+// data/supplements.js), Required Staff Training, an encampment, an orientation flight, and the International Air Cadet Exchange, which has
+// its own ribbon.
+const IMPORTED_TRAINING_NO_CREDIT = [
+  ['a region or wing school', /\bRCLS\b|Region(?:al)?\s+Cadet\s+Leadership\s+School|\bNCOLS\b|Non-?\s?commissioned\s+Officer\s+Leadership\s+(?:School|Academy)|(?<![A-Za-z])NCO\s+Leadership\s+Academy|\bSNCO\s+Leadership\s+Academy|\bCCC\s+Leadership\s+Academy|Cadet\s+Command(?:er)?(?:'?s)?\s+(?:Course|Leadership\s+Academy)|Pathfinders?\s+Technical\s+School|Medical\s+Orientation\s+Training|Honor\s+Guard\s+College/i],
+  ['Required Staff Training', /Required\s+Staff\s+Training|\bRST\b/i],
+  ['an encampment', /Encampment/i],
+  ['an orientation flight', /Orientation\s+Flights?/i],
+  ['the exchange, which has its own ribbon', /\bIACE\b|International\s+Air\s+Cadet\s+Exchange/i]
+];
+const IMPORTED_TRAINING_DESCRIPTORS = /\b(?:Cadet|Student|Staff|Cadre|Air Staff|Graduate|Distinguished|Dist\.?|Senior|Participant)\b/gi;
+
+// The activity a credit is of, so that a student row and a staff row, or two sessions, of one activity in one year are one credit.
+function importedTrainingActivity(title){
+  if(/Hawk Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i.test(title)) return 'HMRS';
+  if(/Civic Leadership Academy|\bCLA\b/i.test(title)) return 'CLA';
+  if(/Air Force Civil Engineering Academy|\bAFCEA\b/i.test(title)) return 'AFCEA';
+  if(/Cadet Officers? School|\bCOS\b/i.test(title)) return 'COS';
+  if(/Military Operations Training School|\bMOTS\b/i.test(title)) return 'MOTS';
+  const known = IMPORTED_NCSA_ACTIVITY_PATTERNS.find(([, re]) => re.test(title));
+  if(known) return known[0];
+  const ncsa = title.search(/\bNCSA\b|National Cadet Special Activit/i);
+  // Keyed on the text from the NCSA word on, so table headings run into the first row do not split one activity into two credits.
+  if(ncsa >= 0) return title.slice(ncsa).replace(IMPORTED_TRAINING_DESCRIPTORS, ' ').replace(/\s+/g, ' ').trim().toUpperCase();
+  // An activity not named above: by the code the row leads with ("MKSABA Lewis University, Romeoville, IL"), else by its words up to the place.
+  const code = /^[A-Z][A-Z0-9]{1,9}\b/.exec(title);
+  return (code ? code[0] : title.split(',')[0].replace(IMPORTED_TRAINING_DESCRIPTORS, ' ').replace(/\s+/g, ' ').trim()).toUpperCase();
+}
+
+// The rows of the Cadet Training table as read: the words of the row, its year, whether it is a credit and why, and the activity it is a credit of.
+function memberReportCadetTrainingRows(text){
+  const section = getCadetTrainingSection(text).replace(/^\s*Cadet\s+Training\b(?:\s+(?:Type|Activity|Location|Description|Date(?:\s+Completed)?|Completed))*\s*/i, '');
+  const re = new RegExp(MEMBER_REPORT_DATE, 'gi');
+  const rows = [];
+  let previousEnd = 0, m;
+  while((m = re.exec(section))){
+    // A page break may repeat the column headings in front of the next row.
+    const title = section.slice(previousEnd, m.index).replace(/^\s*(?:(?:Type|Activity|Location|Description)\s+)*Date\s+Completed\b/i, '').replace(/\s+/g, ' ').trim();
+    previousEnd = m.index + m[0].length;
+    if(!/[A-Za-z]{2}/.test(title)) continue;
+    const year = /\d{4}$/.exec(m[0])[0];
+    const none = IMPORTED_TRAINING_NO_CREDIT.find(([, kind]) => kind.test(title));
+    rows.push(none ? { title, year, credit:false, why:`${none[0]}: no credit` } : { title, year, credit:true, activity:importedTrainingActivity(title), why:'a row of the table that is not one of the kinds that earn none' });
   }
-  return credits.size;
+  return rows;
+}
+
+function extractCadetSpecialActivityCountFromReport(text){
+  return new Set(memberReportCadetTrainingRows(text).filter(row => row.credit).map(row => `${row.activity}:${row.year}`)).size;
 }
 
 // The highest CAC echelon in the duty position tables (current and past): the council named in the title
@@ -1674,8 +1693,9 @@ const MEMBER_REPORT_KNOWN_ROWS = [
   /Encampment\s+Ribbon|Piney\s+Creek\s+Camp/i, /Cadet\s+Special\s+Activit(?:y|ies)\s+Ribbon/i, /\bMedal\s+of\s+Valor\b/i, /\bModel\s+Rocketry\b/i,
   /\b(?:Cadet\s+)?(?:STEM|Cyber)\s+Badge\b/i, /\bNRA\s+Marksman/i
 ];
-// The Cadet Training rows that are read (the national activities, Cadet Officers School, the IACE) or are left out on purpose (the region
-// schools and Required Staff Training, which earn no ribbon of their own, the encampments and orientation flights, which have their own tables).
+// The Cadet Training words that need no telling when they have no date after them (a row is read by memberReportCadetTrainingRows when it has one):
+// the national activities, Cadet Officers School, the IACE, and what is left out on purpose (the region schools and Required Staff Training, which
+// earn no ribbon of their own, the encampments and orientation flights, which have their own tables).
 const MEMBER_REPORT_TRAINING_KNOWN_ROWS = [
   ...IMPORTED_NCSA_ACTIVITY_PATTERNS.map(([, re]) => re), /Hawk\s+Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i, /Civic\s+Leadership\s+Academy|\bCLA\b/i,
   /Air Force Civil Engineering Academy|\bAFCEA\b/i, /Cadet\s+Officers?\s+School|\bCOS\b/i, /Military\s+Operations\s+Training\s+School|\bMOTS\b/i,
@@ -1695,9 +1715,12 @@ function memberReportMissingHeadingLines(text){
 function memberReportUnreadRows(text){
   const source = normalizeMemberReportText(text);
   const rows = [];
-  const scan = (section, known) => {
+  // `datedRowsRead`: every dated row of the section is read by its own reader (the Cadet Training table: memberReportCadetTrainingRows), so only the
+  // words with no date after them are left to be listed.
+  const scan = (section, known, datedRowsRead = false) => {
     if(!section) return;
     const check = (segment, date) => {
+      if(datedRowsRead && date) return;
       const from = (MEMBER_REPORT_TABLE_HEADINGS.exec(segment) || [''])[0].length;
       const words = segment.slice(from).trim();
       if(words.length < 8 || !/[A-Za-z]{4}/.test(words) || known.some(re => re.test(words))) return;
@@ -1713,7 +1736,7 @@ function memberReportUnreadRows(text){
     check(section.slice(previousEnd), '');
   };
   scan(getReportSectionUntilAny(source, 'Decorations', ['Local\\s+Activities']), MEMBER_REPORT_KNOWN_ROWS);
-  scan(getCadetTrainingSection(source), MEMBER_REPORT_TRAINING_KNOWN_ROWS);
+  scan(getCadetTrainingSection(source), MEMBER_REPORT_TRAINING_KNOWN_ROWS, true);
   return rows.slice(0, 200);
 }
 
