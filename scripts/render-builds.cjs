@@ -191,7 +191,9 @@ function makeBuild(spec){
     command: spec.command || null,
     militaryBadges: spec.militaryBadges || [],
     patches: spec.patches || [],
-    cord: spec.cord || null
+    cord: spec.cord || null,
+    cordColour: spec.cordColour || null,
+    cordOnTop: !!spec.cordOnTop
   };
   if(spec.patchRefs){ const r = patchesFrom(spec.patchRefs); b.patches = [...b.patches, ...r.patches]; b.harnessNotes = r.notes; }
   if(spec.medalSel){ b.medals = medalsFrom(b.ribbons); b.ribbons = []; }
@@ -322,8 +324,8 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; cha
 const HARNESS = `<!doctype html><meta charset="utf-8"><title>render</title>
 <style>html,body{margin:0;padding:0;background:#fff}svg{display:block}</style>
 <div id="out"></div>
-${['core', 'awards', 'grades', 'compose'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
-<script src="/data/uniform-rules.js"></script><script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script><script src="/data/military-badge-sizes.js"></script>
+${['core', 'cord-braid', 'cords', 'awards', 'grades', 'compose'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
+<script src="/data/cords.js"></script><script src="/data/uniform-rules.js"></script><script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script><script src="/data/military-badge-sizes.js"></script>
 ${['profiles', 'profiles-field', 'profiles-dress', 'profiles-polo', 'measure-layout', 'render-svg'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
 <script>
 window.__warnings = [];
