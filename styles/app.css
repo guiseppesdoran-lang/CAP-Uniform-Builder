@@ -1515,3 +1515,18 @@ html[data-access="guest"] #accessGate{display:none}
 /* The Uniform options panel: the options are groups of their own. A group chosen by picture is set off from the rows around it by a line. */
 .garmentOption+.garmentOption{margin-top:var(--s3)}
 .garmentOption+.garmentOption:has(.vp),.garmentOption:has(.vp)+.garmentOption{padding-top:var(--s3);border-top:1px solid var(--line)}
+
+/* ---- Badge order (Badges card): which of two badges of equal standing is worn higher ---- */
+.badgeOrder{display:grid;gap:var(--s3);margin-top:var(--s3)}
+.badgeOrder.hidden{display:none}
+.badgeOrderGroup{margin:0;padding:var(--s3) 0 0;display:grid;gap:var(--s2);min-width:0;border-top:1px solid var(--line)}
+.badgeOrderNote,.badgeOrderWhy{margin:0}
+.badgeOrderList{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);min-width:0}
+.badgeOrderRow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);min-width:0;font-size:var(--t-sm);line-height:1.35}
+.badgeOrderName{flex:1 1 12rem;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere}
+.badgeOrderPosition{flex:none;font-size:var(--t-xs);color:var(--muted)}
+.badgeOrderActions{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.badgeOrderButton{width:auto;margin:0;padding:0 var(--s3);font-size:var(--t-md)}
+.badgeOrderButton:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.badgeOrderGroup>.badgeOrderButton{justify-self:start}
+.badgeOrderStatus{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
