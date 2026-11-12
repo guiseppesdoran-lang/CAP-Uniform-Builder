@@ -384,6 +384,8 @@
       arrangement: o.arrangement,
       countsBottomFirst: o.countsBottomFirst
     });
+    if(rack.customDeclined) ctx.note('The rows you set are not a layout the regulation allows (rows of three, or of four on the Service Dress, all full but the top row), so the regular rows are shown (CAPR 39-1, 11.2.7)');
+    if(rack.lapelDeclined) ctx.note('The lapel covers the bottom row, so no row is shortened to keep it clear; the lapel may cover a portion of the ribbons (CAPR 39-1, 11.1.8)');
     for(const p of rack.placements){
       const r = p.item;
       if(r.asset && ctx.has(r.asset)){

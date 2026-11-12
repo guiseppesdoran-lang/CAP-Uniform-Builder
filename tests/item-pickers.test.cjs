@@ -122,6 +122,12 @@ test('upper-row arrangement: the standard and the automatic arrangement as the e
     const ribbons = rects(pics[arrangement]).slice(1);
     for(const d of drawn) assert.ok(ribbons.some(r => near(r.x, d.x) && near(r.y, d.y)), `${arrangement}: a rectangle at ${JSON.stringify(d)}`);
   }
+  // A woman's four across: the lapel covers even the bottom row, which 11.2.7 does not let be shortened, so the automatic arrangement is the regular rack there and there is
+  // nothing to pick between (tests/ribbon-rack-rule.test.cjs); her three across has the choice.
+  member({ gender: 'female', layout: '4-left' });
+  assert.deepEqual(await picturesOf('rackArrangement', ['standard', 'lapel']), { standard: false, lapel: false });
+  member({ gender: 'female', layout: '3' });
+  assert.ok((await picturesOf('rackArrangement', ['standard', 'lapel'])).lapel);
   // A man's nine ribbons clear the lapel either way: the two are one rack, and there is nothing to pick between.
   member({ gender: 'male' });
   assert.deepEqual(await picturesOf('rackArrangement', ['standard', 'lapel']), { standard: false, lapel: false });
@@ -133,10 +139,13 @@ test('the rack\'s choices are not offered with no ribbon worn, and not while the
   // Fewer than four ribbons lay the same single row of three whatever the width.
   member({ ribbons: 3 });
   assert.deepEqual(await picturesOf('rackColumns', ['3', '4-left', '4-center']), { '3': false, '4-left': false, '4-center': false });
-  // Rows the member set themselves are theirs: the engine lays none of its own.
+  // Rows the member set themselves, where they are a layout 11.2.7 allows, are theirs: the engine lays none of its own. Any other rows are not in force (the page falls back to the
+  // width and arrangement picked), so the choices are offered.
   member({ gender: 'female' });
-  run('State.ribbonRowOverrideEnabled = true; State.ribbonRowOverride = [1, 2, 3, 3]; return 1;');
+  run('State.ribbonRowOverrideEnabled = true; State.ribbonRowOverride = [1, 4, 4]; return 1;');
   assert.deepEqual(await picturesOf('rackColumns', ['3', '4-left', '4-center']), { '3': false, '4-left': false, '4-center': false });
+  run('State.ribbonRowOverrideEnabled = true; State.ribbonRowOverride = [1, 2, 3, 3]; return 1;');
+  assert.ok((await picturesOf('rackColumns', ['3', '4-left', '4-center']))['4-left']);
   run('State.ribbonRowOverrideEnabled = false; State.ribbonRowOverride = []; return 1;');
   const semi = member({ membership: 'cadet', uniform: 'semi_formal_usaf', rank: 'C/Capt', gender: 'female', ribbons: 12 });
   assert.ok(semi >= 5, 'the cadet semi-formal coat with a rack of its own');

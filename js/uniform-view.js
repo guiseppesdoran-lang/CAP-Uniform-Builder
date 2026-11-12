@@ -198,11 +198,14 @@
   // Class A rack options (11.2.7): automatic (rows of three, upper rows kept clear of the lapel
   // as Figure 11-1 allows), or a fixed width: three across, four aligned with the wearer's left
   // edge, or four centred; or the member's own row counts.
-  function rackOptions(){
+  // `worn` is the number of ribbons on the rack: the member's own rows count only where they are a layout 11.2.7 allows for that many (rows of three, or of four, all full but the top
+  // row, E.awards.plainRowsWidth); any other and the rack is laid by the width and arrangement the member picked.
+  function rackOptions(worn){
     // Four across only where 11.2.7 allows it; every other uniform keeps rows of three.
     const layout = CAPUBUniformRules.allowsRackColumns(State.uniform, 4) ? String(State.ribbonRackLayout || '3') : '3';
     const automatic = State.ribbonRackArrangement !== 'standard';
-    const custom = State.uniform === 'blues_a' && State.ribbonRowOverrideEnabled && Array.isArray(State.ribbonRowOverride) && State.ribbonRowOverride.length;
+    const rows = Array.isArray(State.ribbonRowOverride) ? [...State.ribbonRowOverride].reverse() : [];
+    const custom = State.uniform === 'blues_a' && State.ribbonRowOverrideEnabled && rows.length && E.awards.plainRowsWidth(rows, worn, 4);
     if(custom) return { rackColumns: 4, rackArrangement: 'standard', rackCounts: [...State.ribbonRowOverride].reverse() };
     // Automatic still honours the chosen width; it only shortens rows the lapel would cover.
     if(automatic) return { rackColumns: layout === '3' ? 3 : 4, rackAlign: layout === '4-left' ? 'outboard' : undefined, rackArrangement: 'lapel', rackCounts: null };
@@ -279,7 +282,7 @@
       gender: State.gender === 'female' ? 'female' : 'male',
       membership: State.membership,
       grade: g,
-      opt: Object.assign(opt, rackOptions(), {
+      opt: Object.assign(opt, rackOptions(ribbons.length), {
         miniStyle: State.miniMountStyle === 'holding' ? 'holding' : 'mounting'
       }),
       // The page asks for every part of the name; the first name goes to the engine only where a regulation prints it (js/garment-options.js FULL_NAME).

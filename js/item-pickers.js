@@ -102,7 +102,26 @@
     }
   }
 
-  function syncAll(){ PICKERS.forEach(sync); }
+  // The Class A coat's custom row grid (State.ribbonRowOverrideEnabled and ribbonRowOverride, the rows top first) is no longer offered: CAPR 39-1 11.2.7 allows rows of three, or of four,
+  // all full but the top row, and the width choice above lays exactly those, so a grid of the member's own rows can give no allowed layout that the width does not. What a saved setup
+  // carries is settled once the rack is drawn: rows that are such a layout become the width choice that lays them (three across, or four across centered, the standard arrangement);
+  // any other rows are dropped and the rack is the member's width and arrangement. Rows that do not add up to the ribbons worn are not in force and are left as they are.
+  function settleOverride(){
+    if(typeof State === 'undefined' || !State.ribbonRowOverrideEnabled || State.uniform !== 'blues_a') return;
+    if(typeof CAPUBEngine === 'undefined' || !CAPUBEngine.awards || typeof CAPUBUniformView === 'undefined') return;
+    let worn;
+    try{ worn = CAPUBUniformView.buildFromState().ribbons.length; }catch(e){ return; }
+    const rows = (Array.isArray(State.ribbonRowOverride) ? State.ribbonRowOverride : []).map(Number);
+    if(rows.reduce((a, c) => a + c, 0) !== worn) return;
+    const width = CAPUBEngine.awards.plainRowsWidth([...rows].reverse(), worn, 4);
+    State.ribbonRowOverrideEnabled = false;
+    State.ribbonRowOverride = [];
+    if(width){ State.ribbonRackLayout = width === 3 ? '3' : '4-center'; State.ribbonRackArrangement = 'standard'; }
+    if(typeof refreshUI === 'function') refreshUI();
+    if(typeof fullRender === 'function') fullRender();
+  }
+
+  function syncAll(){ settleOverride(); PICKERS.forEach(sync); }
   // After the drawing, and after every other listener of it has set the controls it sets (js/workspace-ui.js writes the command row then): a control is read when all have.
   const later = () => Promise.resolve().then(syncAll);
 

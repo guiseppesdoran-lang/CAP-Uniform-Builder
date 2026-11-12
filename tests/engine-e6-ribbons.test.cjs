@@ -276,9 +276,12 @@ test('rows of three stay centred and untouched when the lapel is clear of them; 
   const counts = rowCounts(layersBy(fauto, l => l.role === 'ribbon'));
   assert.deepEqual(counts, [1, 2, 2, 2, 3, 3]);
   assert.ok(layersBy(fauto, l => l.role === 'ribbon').every(t => awards.coverage(t, flapel.points) <= awards.LAPEL_COVER_TOLERANCE));
-  // Custom row counts are the member's own choice and are not shortened.
-  const custom = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackArrangement: 'standard', rackCounts: [4, 3, 3, 3] } }), store());
-  assert.deepEqual(rowCounts(layersBy(custom, l => l.role === 'ribbon')), [3, 3, 3, 4]);
+  // Custom row counts are the member's own choice and are not shortened, where they are a layout 11.2.7 allows (rows of four, all full but the top row, bottom row first here);
+  // rows that are not (a short row under a longer one) are declined and the regular rows are drawn (tests/ribbon-rack-rule.test.cjs).
+  const custom = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackColumns: 4, rackArrangement: 'standard', rackCounts: [4, 4, 4, 1] } }), store());
+  assert.deepEqual(rowCounts(layersBy(custom, l => l.role === 'ribbon')), [1, 4, 4, 4]);
+  const declined = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackColumns: 3, rackArrangement: 'standard', rackCounts: [4, 3, 3, 3] } }), store());
+  assert.deepEqual(rowCounts(layersBy(declined, l => l.role === 'ribbon')), [1, 3, 3, 3, 3]);
   void lapel;
 });
 
@@ -294,14 +297,28 @@ test('layoutRack: rows the lapel reaches shrink to the wearer\'s left edge; a ri
   assert.ok(r.placements.every(p => awards.coverage(p, lapel) <= awards.LAPEL_COVER_TOLERANCE), 'no ribbon under the lapel');
   const upper = r.placements.filter(p => p.y < -0.38);
   assert.ok(upper.every(p => p.x + p.w <= slot.outboardX + 1e-9 && p.x >= 7.5 - 1e-9), 'upper rows sit between the lapel and the wearer\'s left edge');
-  // A lapel over every position leaves nothing clear: the ribbon is still shown, and reported.
-  const wall = [{ x: 0, y: -50 }, { x: 99, y: -50 }, { x: 99, y: 50 }, { x: 0, y: 50 }];
-  const b = awards.layoutRack(items(3), Object.assign({ lapel: wall }, slot));
+  // A lapel over every position above the bottom row leaves nothing clear there: the ribbon is still shown, and reported.
+  const ceiling = [{ x: 0, y: -50 }, { x: 99, y: -50 }, { x: 99, y: -0.4 }, { x: 0, y: -0.4 }];
+  const b = awards.layoutRack(items(7), Object.assign({ lapel: ceiling }, slot));
   assert.ok(b.lapelBlocked > 0);
-  assert.equal(b.placements.length, 3);
-  // The explicit standard arrangement and custom row counts are the member's own choice.
+  assert.equal(b.placements.length, 7);
+  // A lapel over the bottom row itself cannot be kept clear: 11.2.7 shortens only rows added above the bottom one, so the rack is the regular one (11.1.8), and says so.
+  const wall = [{ x: 0, y: -50 }, { x: 99, y: -50 }, { x: 99, y: 50 }, { x: 0, y: 50 }];
+  const w = awards.layoutRack(items(3), Object.assign({ lapel: wall }, slot));
+  assert.equal(w.lapelDeclined, true);
+  assert.equal(w.mode, 'center');
+  assert.equal(w.placements.length, 3);
+  // The explicit standard arrangement and custom row counts are the member's own choice, where the rows are a layout 11.2.7 allows ([3, 3, 1] bottom first); [3, 2, 2] is not.
   assert.equal(awards.layoutRack(items(7), Object.assign({ lapel, arrangement: 'standard' }, slot)).mode, 'center');
-  assert.equal(awards.layoutRack(items(7), Object.assign({ lapel, countsBottomFirst: [3, 2, 2] }, slot)).mode, 'center');
+  const own = awards.layoutRack(items(7), Object.assign({ lapel, countsBottomFirst: [3, 3, 1] }, slot));
+  assert.equal(own.mode, 'center');
+  assert.equal(own.customDeclined, false);
+  assert.deepEqual(own.rows.map(r => r.length), [1, 3, 3]);
+  const notOwn = awards.layoutRack(items(7), Object.assign({ lapel, countsBottomFirst: [3, 2, 2] }, slot));
+  assert.equal(notOwn.customDeclined, true);
+  assert.equal(notOwn.mode, 'outboard', 'declined: the arrangement the member picked lays the rows (here the lapel keeps the upper rows clear)');
+  assert.equal(awards.layoutRack(items(7), Object.assign({ lapel, arrangement: 'standard', countsBottomFirst: [3, 2, 2] }, slot)).customDeclined, true);
+  assert.deepEqual(awards.layoutRack(items(7), Object.assign({ lapel, arrangement: 'standard', countsBottomFirst: [3, 2, 2] }, slot)).rows.map(r => r.length), [1, 3, 3], 'the regular rows');
 });
 
 // ---- 3c. shortened rows align with the full rows' edge; the top row centres over the row below (11.2.7) ----

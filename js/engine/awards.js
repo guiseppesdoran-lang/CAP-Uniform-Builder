@@ -196,6 +196,17 @@
     return rows;
   }
 
+  // The rows CAPR 39-1 11.2.7 lays for `n` ribbons in rows of `perRow` (three, or four on the Class A coat), top row first: full rows, the incomplete one on top.
+  function plainRowCounts(n, perRow){ return rackRows(Array.from({ length: Math.max(0, n | 0) }, () => 0), perRow).map(r => r.length); }
+  // The width (3 or 4) whose plain rows are the rows given (bottom row first) for `n` ribbons, 0 when they are no layout 11.2.7 lays. Rows the member sets themselves are allowed only
+  // as such: rows of three or four, every one full but the top row, and nothing wider than `maxPerRow`; a row short in the middle, a wider row above a narrower one, a pyramid of
+  // rows that do not reach the width, is not a layout the paragraph allows (rows shorter than the width are allowed only above the full rows, or aligned to keep the lapel clear).
+  function plainRowsWidth(countsBottomFirst, n, maxPerRow){
+    const list = Array.isArray(countsBottomFirst) ? countsBottomFirst.map(Number) : [];
+    if(list.length === 0 || list.reduce((a, c) => a + c, 0) !== n) return 0;
+    return [3, 4].filter(w => w <= (maxPerRow || 4)).find(w => JSON.stringify(plainRowCounts(n, w).reverse()) === JSON.stringify(list)) || 0;
+  }
+
   // Point-in-polygon and a sampled coverage ratio: how much of a ribbon a lapel polygon hides.
   function pointInPolygon(p, poly){
     let inside = false;
@@ -284,12 +295,15 @@
       return out;
     }
 
-    const custom = opts.countsBottomFirst && opts.countsBottomFirst.reduce((a, b) => a + b, 0) === items.length ? opts.countsBottomFirst : null;
+    // The member's own rows count only where they are a layout 11.2.7 allows (plainRowsWidth); any other is declined and the rows are the regular ones.
+    const asked = opts.countsBottomFirst && opts.countsBottomFirst.reduce((a, b) => a + b, 0) === items.length ? opts.countsBottomFirst : null;
+    const custom = asked && plainRowsWidth(asked, items.length, 4) ? asked : null;
+    const customDeclined = !!(opts.countsBottomFirst && opts.countsBottomFirst.length && !custom);
     const standardRows = rackRows(items, perRow, custom);
     const standard = place(standardRows, 'center');
     const worst = lapel ? Math.max(0, ...standard.map(p => coverage(p, lapel))) : 0;
     if(custom || !lapel || worst <= maxCover || opts.arrangement === 'standard'){
-      return { placements: standard, rows: standardRows, mode: 'center', lapelCover: worst, lapelBlocked: 0 };
+      return { placements: standard, rows: standardRows, mode: 'center', lapelCover: worst, lapelBlocked: 0, customDeclined };
     }
 
     // Lapel avoidance: from the bottom up, each row holds as many ribbons as stay clear of the lapel when
@@ -310,6 +324,9 @@
       }
       if(!fit){ fit = 1; blocked++; fitLeft = candidates(1, fromBottom, belowCenter, false)[0]; }
       if(fit > left){ fit = left; }
+      // 11.2.7 lets only the rows ADDED above the bottom one be shortened to keep the lapel clear: the bottom row rests on the welt in the full width (three, or four on the Class A coat).
+      // Where the lapel covers even that, it cannot be kept clear by the paragraph's means and the rack is the regular one, the lapel covering a portion of the ribbons (11.1.8).
+      if(fromBottom === 0 && fit < Math.min(perRow, left)) return { placements: standard, rows: standardRows, mode: 'center', lapelCover: worst, lapelBlocked: 0, customDeclined, lapelDeclined: true };
       counts.push(fit);
       lefts.push(fitLeft);
       belowCenter = fitLeft + fit * w / 2;
@@ -317,7 +334,7 @@
       left -= fit;
     }
     const rows = rackRows(items, perRow, counts);
-    return { placements: place(rows, 'outboard', lefts), rows, mode: 'outboard', lapelCover: worst, lapelBlocked: blocked };
+    return { placements: place(rows, 'outboard', lefts), rows, mode: 'outboard', lapelCover: worst, lapelBlocked: blocked, customDeclined };
   }
 
   // Miniature medals (CAPR 39-1 11.2.8 and Table 11-1): up to four in a row fully exposed; more in a
@@ -475,7 +492,7 @@
     xAtY, miniRackCenterX,
     deviceInner, deviceMetal, DEVICE_EDGE_IN, DEVICE_EDGE_COLOR, DEVICE_EDGE_OPACITY, DEVICE_TONE, DEVICE_PALETTE,
     claspsFor, splitAwardCount, layoutDevices, layoutDevicesAlong, DEVICE_END_MARGIN, sortRun,
-    rackRows, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
+    rackRows, plainRowCounts, plainRowsWidth, layoutRack, coverage, pointInPolygon, LAPEL_COVER_TOLERANCE,
     miniMedalRows, layoutMiniMedals
   };
 });
