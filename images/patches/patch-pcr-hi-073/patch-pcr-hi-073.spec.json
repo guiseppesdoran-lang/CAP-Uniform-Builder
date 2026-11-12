@@ -1,0 +1,82 @@
+{
+ "asset_id": "patch-pcr-hi-073",
+ "label": "Kauai Composite Squadron",
+ "charter": "PCR-HI-073",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-pcr-hi-073.png",
+ "width_in": 3,
+ "height_in": 3.435,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   343.511
+  ],
+  "center": [
+   150,
+   171.756
+  ],
+  "left_edge": [
+   0,
+   171.756
+  ],
+  "right_edge": [
+   300,
+   171.756
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/pcr-hi-073-kauai-composite-squadron.webp",
+ "unit_name": "Kauai Composite Squadron",
+ "artwork": {
+  "format": "webp (VP8L lossless) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   1516,
+   1736
+  ],
+  "source_bytes": 314258,
+  "source_sha256": "299b6d2d53fc41949693797e6e8cd723957def06b675a94d56305571c6a59b5f",
+  "trim_bbox_px": [
+   0,
+   0,
+   1516,
+   1736
+  ],
+  "trimmed": false,
+  "px": [
+   1048,
+   1200
+  ],
+  "bytes": 328245,
+  "chunks_kept": [],
+  "resampled": {
+   "from_px": [
+    1516,
+    1736
+   ],
+   "to_px": [
+    1048,
+    1200
+   ],
+   "method": "area average, alpha premultiplied",
+   "long_edge_cap": 1200
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Kauai Composite Squadron (PCR-HI-073), digital artwork supplied by Ethan Hillard on 2026-11-11. Official digital artwork shipped as given: webp (VP8L lossless) -> png via dwebp; reduced in size from 1516 x 1736 to 1048 x 1200 px (area average, alpha premultiplied; the long edge is held to 1200 px as the other digital patches are); no redrawing, no tracing, no colour change. Charter: PCR-HI-073 is Kauai Composite Squadron in the builder's unit list; Hawaii Wing's heraldry page (https://hiwg.cap.gov/about/heraldry-of-our-units) shows the same emblem under Kauai Composite Squadron, PCR-HI-073, and the unit's own site (kauai.cap.gov) carries the same charter.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the size, held to 1200 px on the long edge."
+}

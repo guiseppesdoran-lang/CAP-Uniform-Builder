@@ -1377,6 +1377,7 @@
     "patch-georgia-wing": "patches/patch-georgia-wing/patch-georgia-wing.png",
     "patch-glr-il-189": "patches/patch-glr-il-189/patch-glr-il-189.png",
     "patch-glr-in-002": "patches/patch-glr-in-002/patch-glr-in-002.png",
+    "patch-hawaii-wing": "patches/patch-hawaii-wing/patch-hawaii-wing.png",
     "patch-hawk-mountain-ranger-school": "patches/patch-hawk-mountain-ranger-school/patch-hawk-mountain-ranger-school.png",
     "patch-honor-guard": "patches/patch-honor-guard/patch-honor-guard.png",
     "patch-honor-guard-academy": "patches/patch-honor-guard-academy/patch-honor-guard-academy.png",
@@ -1412,6 +1413,11 @@
     "patch-pacific-region": "patches/patch-pacific-region/patch-pacific-region.png",
     "patch-pararescue-orientation": "patches/patch-pararescue-orientation/patch-pararescue-orientation.png",
     "patch-pcr-ca-345": "patches/patch-pcr-ca-345/patch-pcr-ca-345.png",
+    "patch-pcr-hi-030": "patches/patch-pcr-hi-030/patch-pcr-hi-030.png",
+    "patch-pcr-hi-060": "patches/patch-pcr-hi-060/patch-pcr-hi-060.png",
+    "patch-pcr-hi-066": "patches/patch-pcr-hi-066/patch-pcr-hi-066.png",
+    "patch-pcr-hi-073": "patches/patch-pcr-hi-073/patch-pcr-hi-073.png",
+    "patch-pcr-hi-075": "patches/patch-pcr-hi-075/patch-pcr-hi-075.png",
     "patch-pennsylvania-wing": "patches/patch-pennsylvania-wing/patch-pennsylvania-wing.png",
     "patch-proficient-pilot": "patches/patch-proficient-pilot/patch-proficient-pilot.png",
     "patch-ranger-tab-advanced-ranger": "patches/patch-ranger-tab-advanced-ranger/patch-ranger-tab-advanced-ranger.png",
@@ -1744,7 +1750,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "705f1f14ea", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "7502aea40f", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "705f1f14ea"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "7502aea40f"; }
 })(typeof self !== 'undefined' ? self : this);

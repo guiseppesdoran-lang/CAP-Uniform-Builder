@@ -1,12 +1,12 @@
 {
  "asset_id": "patch-mar-dc-026",
- "label": "MAR-DC-026",
+ "label": "Arlington Composite Squadron",
  "charter": "MAR-DC-026",
  "kind": "unit",
  "echelon": "squadron",
  "file": "patch-mar-dc-026.png",
  "width_in": 3,
- "height_in": 2.968,
+ "height_in": 3.095,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
@@ -18,19 +18,19 @@
   ],
   "bottom_center": [
    150,
-   296.791
+   309.544
   ],
   "center": [
    150,
-   148.396
+   154.772
   ],
   "left_edge": [
    0,
-   148.396
+   154.772
   ],
   "right_edge": [
    300,
-   148.396
+   154.772
   ]
  },
  "dimensions": {
@@ -39,35 +39,50 @@
  },
  "data_source": "official-digital-artwork-as-given",
  "generator": "none: artwork as given",
- "reference": "assets/refs/unit-emblems-vitanza/squadron/dc026emblem.png",
- "emblemoptions": {
-  "label": "MAR-DC-026",
-  "type": "Squadron",
-  "path": "squadron/dc026emblem.png"
- },
+ "reference": "assets/refs/unit-emblems-supplied/mar-dc-026-arlington-composite-squadron.webp",
+ "unit_name": "Arlington Composite Squadron",
  "artwork": {
-  "format": "png",
-  "source_color_type": 6,
+  "format": "webp (VP8 lossy) -> png via dwebp",
+  "source_color_type": 2,
   "source_px": [
-   199,
-   196
+   1632,
+   1684
   ],
+  "source_bytes": 125708,
+  "source_sha256": "767d2bad32d21249579142f3a46e2681f41eff13f403730fc7e401fd6bea7d6a",
   "trim_bbox_px": [
-   6,
-   7,
-   187,
-   185
+   0,
+   0,
+   1632,
+   1684
   ],
-  "trimmed": true,
+  "trimmed": false,
   "px": [
-   187,
-   185
+   1163,
+   1200
   ],
-  "bytes": 29218,
-  "chunks_kept": [
-   "sBIT"
-  ]
+  "bytes": 777242,
+  "chunks_kept": [],
+  "white_ground_removed": {
+   "threshold": 250,
+   "spread_to": 215,
+   "px": 649802,
+   "edge_px": 13588
+  },
+  "resampled": {
+   "from_px": [
+    1632,
+    1684
+   ],
+   "to_px": [
+    1163,
+    1200
+   ],
+   "method": "area average, alpha premultiplied",
+   "long_edge_cap": 1200
+  },
+  "ground": "transparent"
  },
- "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"MAR-DC-026\" (Squadron), path squadron/dc026emblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (199 x 196 px to 187 x 185 px), no resampling, no colour change.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "provenance": "Unit emblem of Arlington Composite Squadron (MAR-DC-026), digital artwork supplied by Ethan Hillard on 2026-11-11. Official digital artwork shipped as given: webp (VP8 lossy) -> png via dwebp; the file came without transparency on a plain white ground: the white outside the emblem's own outline was made transparent (connected from the image border, white at 250 or more of 255, spreading through whitish pixels down to 215; 649802 px) and the 13588 edge pixels blended with that white were given their coverage as alpha; then reduced in size from 1632 x 1684 to 1163 x 1200 px (area average, alpha premultiplied; the long edge is held to 1200 px as the other digital patches are); no redrawing, no tracing, no colour change. It replaces the Brand Tools squadron emblem (a shield with a columned building under DC-026) that stood under this asset id. Charter: MAR-DC-026 is Arlington Composite Squadron in the builder's unit list.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the white ground outside the outline, made transparent so the emblem sits on the garment; the size, held to 1200 px on the long edge."
 }

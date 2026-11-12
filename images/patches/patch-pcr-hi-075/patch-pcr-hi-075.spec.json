@@ -1,0 +1,75 @@
+{
+ "asset_id": "patch-pcr-hi-075",
+ "label": "West Oahu Composite Squadron",
+ "charter": "PCR-HI-075",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-pcr-hi-075.png",
+ "width_in": 3,
+ "height_in": 3.097,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   309.717
+  ],
+  "center": [
+   150,
+   154.859
+  ],
+  "left_edge": [
+   0,
+   154.859
+  ],
+  "right_edge": [
+   300,
+   154.859
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/pcr_hi_075/WOCS_Logo_2025_0A7DD7FB7A1AD.png",
+ "unit_name": "West Oahu Composite Squadron",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   504,
+   518
+  ],
+  "source_bytes": 233867,
+  "source_sha256": "364ae6e19f35d37655b80c5e2c99859f1838e3601f1a0da7c83c22eb0f60b430",
+  "trim_bbox_px": [
+   4,
+   1,
+   498,
+   511
+  ],
+  "trimmed": true,
+  "px": [
+   494,
+   510
+  ],
+  "bytes": 191679,
+  "white_ground_removed": {
+   "threshold": 250,
+   "spread_to": 215,
+   "px": 68581,
+   "edge_px": 2501
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of West Oahu Composite Squadron (PCR-HI-075), published by Hawaii Wing (hiwg.cap.gov), heraldry page (page https://hiwg.cap.gov/about/heraldry-of-our-units; file address https://hiwg.cap.gov/media/cms/WOCS_Logo_2025_0A7DD7FB7A1AD.png); fetched 2026-11-11 and kept unchanged in assets/refs/patches-official/pcr_hi_075/. Shipped as given: the PNG; the file came without transparency on a plain white ground: the white outside the emblem's own outline was made transparent (connected from the image border, white at 250 or more of 255, spreading through whitish pixels down to 215; 68581 px) and the 2501 edge pixels blended with that white were given their coverage as alpha; then trimmed to its alpha bounding box (504 x 518 px to 494 x 510 px); no redrawing, no tracing, no colour change. Charter: the page lists it under West-Oahu Composite Squadron, PCR-HI-075; the unit's own site (westoahu.cap.gov) carries the same charter; the emblem's banner reads WEST OAHU COMPOSITE SQUADRON; PCR-HI-075 is West Oahu Comp Sqdn in the builder's unit list.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the white ground outside the outline, made transparent so the emblem sits on the garment; the empty margin, trimmed."
+}

@@ -1,0 +1,81 @@
+{
+ "asset_id": "patch-pcr-hi-060",
+ "label": "Kona Composite Squadron",
+ "charter": "PCR-HI-060",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-pcr-hi-060.png",
+ "width_in": 3,
+ "height_in": 3.025,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   302.521
+  ],
+  "center": [
+   150,
+   151.261
+  ],
+  "left_edge": [
+   0,
+   151.261
+  ],
+  "right_edge": [
+   300,
+   151.261
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/pcr_hi_060/060_F10032B762EB2.png",
+ "unit_name": "Kona Composite Squadron",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   6487,
+   6544
+  ],
+  "source_bytes": 2001048,
+  "source_sha256": "5956be4018f19374d35440f64bcd7ef14ade13f6ce65fb8480d9b5df03c35bc7",
+  "trim_bbox_px": [
+   0,
+   0,
+   6487,
+   6544
+  ],
+  "trimmed": false,
+  "px": [
+   1190,
+   1200
+  ],
+  "bytes": 319221,
+  "resampled": {
+   "from_px": [
+    6487,
+    6544
+   ],
+   "to_px": [
+    1190,
+    1200
+   ],
+   "method": "area average, alpha premultiplied",
+   "long_edge_cap": 1200
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Kona Composite Squadron (PCR-HI-060), published by Hawaii Wing (hiwg.cap.gov), heraldry page (page https://hiwg.cap.gov/about/heraldry-of-our-units; file address https://hiwg.cap.gov/media/cms/060_F10032B762EB2.png); fetched 2026-11-11 and kept unchanged in assets/refs/patches-official/pcr_hi_060/. Shipped as given: the PNG; reduced in size from 6487 x 6544 to 1190 x 1200 px (area average, alpha premultiplied; the long edge is held to 1200 px as the other digital patches are); no redrawing, no tracing, no colour change. Charter: the page lists it under Kona Composite Squadron, PCR-HI-060; the unit's own site (kona.cap.gov) carries the same charter; the emblem's banner reads KONA COMPOSITE SQDN; PCR-HI-060 is Kona Composite Sqdn in the builder's unit list.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the size, held to 1200 px on the long edge. The file carries a thin white band outside the gold ring along the top, as published; it is kept."
+}
