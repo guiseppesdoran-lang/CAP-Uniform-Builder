@@ -174,3 +174,138 @@ test('the stylesheet: the picture box is the picker\'s own, in a square, the car
   const phone = css.slice(start, css.indexOf('@media (max-width:360px)', start));
   assert.match(phone, /\.uniformGrid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
 });
+
+// ---- the grade ------------------------------------------------------------------------------------------------------------------------
+
+const G = require('../js/engine/grades.js');
+const INDEX = require('../data/asset-index.js');
+const RANKS = JSON.parse(JSON.stringify(vm.runInNewContext('(' + /const RANKS = (\{[\s\S]*?\n\});/.exec(read('js/state.js'))[1] + ')')));
+const keydown = (key) => ({ type: 'keydown', key, bubbles: true });
+
+// The Profile step's grade: the hidden select (as populateRankSetup fills it for the membership), the host of the picture group, the real picker and the real pictures' module.
+function gradePage(state){
+  const doc = createDocument();
+  doc.querySelectorAll = sel => doc.body.querySelectorAll(sel);
+  const shell = doc.createElement('main'); shell.id = 'layoutShell'; doc.body.append(shell);
+  const host = doc.createElement('div'); host.id = 'rankSetupPicker'; doc.body.append(host);
+  const select = doc.createElement('select'); select.id = 'rankSetupSelect'; select.value = ''; select.options = []; doc.body.append(select);
+  const changes = [];
+  select.addEventListener('change', e => changes.push(select.value));
+  const sandbox = {
+    document: doc, console, setTimeout: () => 0, Event: function(type, init){ this.type = type; Object.assign(this, init || {}); },
+    State: Object.assign({ membership: '', rank: null, gender: '', uniform: 'blues_a' }, state),
+    CAPUBEngine: { grades: G }, CAPUBAssetIndex: INDEX, ASSET: p => 'images/' + p
+  };
+  sandbox.window = sandbox; sandbox.self = sandbox;
+  vm.runInNewContext(read('js/visual-picker.js'), sandbox);
+  vm.runInNewContext(read('js/profile-pictures.js'), sandbox);
+  vm.runInNewContext(read('js/profile-pickers.js'), sandbox);
+  // What js/setup.js populateRankSetup does for a membership.
+  const offer = membership => { sandbox.State.membership = membership; select.options = [{ value: '' }, ...(RANKS[membership] || []).map(value => ({ value }))]; };
+  return { sandbox, doc, host, select, changes, offer, sync: () => sandbox.CAPUBProfilePickers.sync() };
+}
+const radios = host => host.querySelectorAll('[role="radio"]');
+const headings = host => host.querySelectorAll('.vpGroupHead').map(h => h.textContent);
+
+test('no grade is offered before a membership is chosen: the word Rank and a line saying why, no pictures', () => {
+  const p = gradePage({});
+  p.sync();
+  assert.equal(radios(p.host).length, 0);
+  assert.equal(p.host.textContent, 'RankChoose a membership type first.');
+});
+
+test('a cadet is shown the cadet grades under their headings, each by its insignia with its name beneath; a senior member the senior grades', () => {
+  const p = gradePage({});
+  p.offer('cadet'); p.sync();
+  assert.deepEqual(headings(p.host), ['Airmen', 'Non-commissioned officers', 'Officers']);
+  assert.deepEqual(radios(p.host).map(r => r.dataset.value), RANKS.cadet);
+  assert.deepEqual(radios(p.host).map(r => r.querySelector('.vpLabel').textContent), RANKS.cadet, 'the name as the select has it');
+  const art = rank => { const r = radios(p.host).find(x => x.dataset.value === rank); return r.querySelector('.vpPicture'); };
+  assert.equal(art('C/Maj').children[0].getAttribute('src'), 'images/' + INDEX['rank-cadet-officer-major-cloth-bordered-regular'], 'the insignia the engine draws for a cadet major');
+  assert.equal(art('C/TSgt').children[0].getAttribute('src'), 'images/' + INDEX['rank-cadet-nco-technical-sergeant-cloth-bordered']);
+  assert.match(art('C/AB').innerHTML, /stroke-dasharray/, 'a grade without insignia is the empty mark');
+  p.offer('senior'); p.sync();
+  assert.deepEqual(headings(p.host), ['No grade', 'Non-commissioned officers', 'Flight officers', 'Officers', 'General officers']);
+  assert.deepEqual(radios(p.host).map(r => r.dataset.value), RANKS.senior);
+  assert.equal(art('Col').children[0].getAttribute('src'), 'images/' + INDEX['rank-senior-colonel-cloth-bordered']);
+  assert.match(art('SM').innerHTML, /stroke-dasharray/);
+});
+
+test('it is a radio group named Rank, with a note of the grade picked in words, and the grade picked is the select\'s', () => {
+  const p = gradePage({ rank: 'C/Maj' });
+  p.offer('cadet'); p.select.value = 'C/Maj'; p.sync();
+  const picker = p.host.querySelector('.vp');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'Rank');
+  assert.equal(picker.querySelector('[role="radiogroup"]').getAttribute('aria-labelledby'), picker.querySelector('.vpLegend').id);
+  assert.equal(picker.dataset.size, 'small', 'small pictures: the grades are many');
+  assert.equal(picker.dataset.pickerFor, 'rankSetupSelect', 'the page finds the picture group that stands for the hidden select');
+  assert.deepEqual(radios(p.host).filter(r => r.getAttribute('aria-checked') === 'true').map(r => r.dataset.value), ['C/Maj']);
+  assert.equal(picker.querySelector('.vpNote').textContent, 'Cadet Major');
+  // The page sets the select (a saved setup, the report import, Undo): the next sync shows it.
+  p.select.value = 'C/Capt'; p.sync();
+  assert.deepEqual(radios(p.host).filter(r => r.getAttribute('aria-checked') === 'true').map(r => r.dataset.value), ['C/Capt']);
+  assert.equal(picker.querySelector('.vpNote').textContent, 'Cadet Captain');
+  p.select.value = ''; p.sync();
+  assert.equal(radios(p.host).filter(r => r.getAttribute('aria-checked') === 'true').length, 0);
+});
+
+test('a pick writes the grade to the select and fires its change, which is what the page\'s own handler listens for', () => {
+  const p = gradePage({});
+  p.offer('cadet'); p.sync();
+  radios(p.host).find(r => r.dataset.value === 'C/SSgt').click();
+  assert.equal(p.select.value, 'C/SSgt');
+  assert.deepEqual(p.changes, ['C/SSgt']);
+  radios(p.host).find(r => r.dataset.value === 'C/Col').click();
+  assert.deepEqual(p.changes, ['C/SSgt', 'C/Col']);
+  p.select.value = 'C/Col'; p.sync();
+  p.sync();
+  assert.deepEqual(p.changes, ['C/SSgt', 'C/Col'], 'following the select does not write to it');
+});
+
+test('the keyboard: one stop of the Tab key, the arrow keys move through the grades across the headings, Enter picks', () => {
+  const p = gradePage({});
+  p.offer('senior'); p.select.value = 'Capt'; p.sync();
+  const all = radios(p.host);
+  assert.deepEqual(all.filter(r => r.tabIndex === 0).map(r => r.dataset.value), ['Capt'], 'the Tab key lands on the grade picked');
+  all.find(r => r.dataset.value === 'Capt').focus();
+  all.find(r => r.dataset.value === 'Capt').dispatchEvent(keydown('ArrowRight'));
+  assert.equal(p.doc.activeElement.dataset.value, 'Maj');
+  p.doc.activeElement.dispatchEvent(keydown('End'));
+  assert.equal(p.doc.activeElement.dataset.value, 'Maj Gen');
+  p.doc.activeElement.dispatchEvent(keydown('Home'));
+  assert.equal(p.doc.activeElement.dataset.value, 'SM');
+  p.doc.activeElement.dispatchEvent(keydown('Enter'));
+  assert.equal(p.select.value, 'SM');
+  assert.deepEqual(p.changes, ['SM']);
+});
+
+test('the grades are drawn again only when the membership changes the list, so the focus stays on the grade being picked', () => {
+  const p = gradePage({});
+  p.offer('cadet'); p.sync();
+  const first = radios(p.host)[0];
+  p.sync(); p.sync();
+  assert.equal(radios(p.host)[0], first, 'the same buttons while nothing changes');
+  p.offer('senior'); p.sync();
+  assert.notEqual(radios(p.host)[0], first);
+  p.offer(''); p.select.options = [{ value: '' }]; p.sync();
+  assert.equal(radios(p.host).length, 0, 'no membership: no grades again');
+  assert.match(p.host.textContent, /Choose a membership type first/);
+});
+
+test('index.html: the grade select stays as the hidden source of truth, the way the membership select does, with the host of the pictures before it', () => {
+  const html = read('index.html');
+  assert.match(html, /<div id="rankSetupPicker" class="mt-10"><\/div>\s*<select id="rankSetupSelect" class="segmentedSource" tabindex="-1" aria-hidden="true" disabled>\s*<option value="">Select rank<\/option>\s*<\/select>/);
+  assert.doesNotMatch(html, /for="rankSetupSelect"/, 'no label for a control that cannot be seen or reached');
+  assert.match(read('styles/app.css'), /\.segmentedSource\{position:absolute;width:1px;height:1px;margin:-1px;opacity:0;pointer-events:none;overflow:hidden\}/);
+});
+
+test('the stylesheet: small tiles wrap to four or five to a row with a square box, for the grades', () => {
+  const css = read('styles/app.css');
+  assert.match(css, /\.vp\[data-size="small"\] \.vpGrid\{grid-template-columns:repeat\(auto-fill,minmax\(60px,1fr\)\)/);
+  assert.match(css, /\.vp\[data-size="small"\] \.vpPicture\{aspect-ratio:1 \/ 1/);
+});
+
+test('a notice\'s Choose button for the grade lands the focus on the picture the Tab key stops at', () => {
+  const ui = read('js/workspace-ui.js');
+  assert.match(ui, /document\.querySelector\(`\.segmented\[data-segments-for="\$\{id\}"\] button, \[data-picker-for="\$\{id\}"\] \[role="radio"\]\[tabindex="0"\]`\)/);
+});

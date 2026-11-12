@@ -1537,6 +1537,14 @@ html[data-access="guest"] #accessGate{display:none}
 .vpTick svg{display:block;width:14px;height:14px}
 .vpNote{margin-top:var(--s2)}
 .vpOption.noPicture{justify-content:center;min-height:56px}
+/* Small tiles (data-size="small"): a group of many choices whose pictures are small, such as the grades' insignia, wrap to four or five to a row at the sidebar's width. */
+.vp[data-size="small"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:4px}
+.vp[data-size="small"] .vpOption{padding:4px;gap:2px}
+.vp[data-size="small"] .vpOption[aria-checked="true"]{padding:3px}
+.vp[data-size="small"] .vpPicture{aspect-ratio:1 / 1;padding:2px}
+.vp[data-size="small"] .vpLabel{font-size:var(--t-xs)}
+.vp[data-size="small"] .vpTick{top:2px;right:2px;width:16px;height:16px}
+.vp[data-size="small"] .vpTick svg{width:11px;height:11px}
 
 /* The Uniform options panel: the options are groups of their own. A group chosen by picture is set off from the rows around it by a line. */
 .garmentOption+.garmentOption{margin-top:var(--s3)}

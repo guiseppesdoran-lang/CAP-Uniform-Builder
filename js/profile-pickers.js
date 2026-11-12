@@ -1,11 +1,15 @@
-// The Uniform step's choices by picture (owner, 2026-11-12: "make the uniform selection, and the grade selection visual. mostly everything should be visual atp"; and
-// on the first pickers: "this logic (visual rather than words) should be broadly applied"). What is drawn for each choice comes from js/profile-pictures.js.
+// The Profile and Uniform steps' choices by picture (owner, 2026-11-12: "make the uniform selection, and the grade selection visual. mostly everything should be
+// visual atp"; and on the first pickers: "this logic (visual rather than words) should be broadly applied"). What is drawn for each choice comes from
+// js/profile-pictures.js; the groups of pictures are the page's picture picker (js/visual-picker.js), the look of the Uniform options panel.
 //
+//   Grade     a group of insignia under plain headings, in the order of rank, for the grades of the member's kind of membership. The select #rankSetupSelect stays
+//             in the page, hidden, as the source of truth (as #membershipType stays behind its two buttons): saved setups, the report import and Undo write to it,
+//             and a pick writes to it and fires its change.
 //   Uniform   each uniform card (button.uniformOption, which every handler and test of the page knows) holds a picture of that uniform for the member, drawn by the
 //             engine, above its name; the card's behaviour, its hiding and its folding when the member may not wear it are js/setup.js's and js/workspace-ui.js's.
 //
-// The pictures are made when the Uniform step is shown, and kept for the member they were made for. If one cannot be made the card is its name alone. js/setup.js
-// capubSyncSegments calls sync(), which every change of the page's state reaches.
+// The pictures of the uniforms are made when the Uniform step is shown, and kept for the member they were made for. If one cannot be made the card is its name alone.
+// js/setup.js capubSyncSegments calls sync(), which every change of the page's state reaches.
 //
 // Loads as a classic script (window.CAPUBProfilePickers).
 (function(){
@@ -23,6 +27,16 @@
   const TICK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" focusable="false" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   const shown = id => { const n = by(id); return !!n && !n.hidden; };
+  // A choice made in a picture is written to the select (or the box) behind it, and its own change handler does the rest.
+  function write(source, value){
+    source.value = value;
+    source.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  // The art of an asset: the address of its file (the page's own index of the artwork).
+  function artUrl(id){
+    const path = window.CAPUBAssetIndex && window.CAPUBAssetIndex[id];
+    return path && typeof ASSET === 'function' ? ASSET(path) : null;
+  }
 
   // ---- what the engine needs, made when a picture is first asked for ------------------------------------------------------------
 
@@ -49,6 +63,47 @@
       warn: (...a) => console.warn('[profile pictures]', ...a)
     });
     return pictures;
+  }
+
+  // ---- the grade ----------------------------------------------------------------------------------------------------------------
+
+  let grade = null;   // { picker, signature }
+  function gradeOptions(membership, ranks){
+    const P = window.CAPUBProfilePictures;
+    const G = window.CAPUBEngine && window.CAPUBEngine.grades;
+    const options = [];
+    for(const { group, ranks: members } of P.gradeGroups(membership, ranks)){
+      for(const rank of members){
+        const id = G ? P.gradeArt(G, membership, rank) : null;
+        const url = id ? artUrl(id) : null;
+        // A grade that wears no insignia (C/AB, a senior member without grade) is the plain empty mark: nothing is worn.
+        options.push({ value: rank, label: rank, group, picture: url || window.VisualPicker.emptyMark(), note: P.gradeName(membership, rank) });
+      }
+    }
+    return options;
+  }
+  function syncGrade(){
+    const source = by('rankSetupSelect'), host = by('rankSetupPicker');
+    if(!source || !host || !window.VisualPicker) return;
+    const membership = State.membership || '';
+    const ranks = Array.from(source.options || []).map(o => o.value).filter(Boolean);
+    const signature = JSON.stringify([membership, ranks]);
+    if(!grade || grade.signature !== signature){
+      if(!ranks.length){
+        // No kind of membership yet, so no grades to show.
+        host.textContent = '';
+        host.append(make('div', 'fieldLabel', 'Rank'), make('div', 'hintText', 'Choose a membership type first.'));
+        grade = { picker: null, signature };
+      }else{
+        const picker = window.VisualPicker.render(host, {
+          name: 'rank', legend: 'Rank', options: gradeOptions(membership, ranks), value: source.value, size: 'small',
+          onChange: value => write(source, value)
+        });
+        picker.el.dataset.pickerFor = 'rankSetupSelect';
+        grade = { picker, signature };
+      }
+    }
+    if(grade.picker) grade.picker.setValue(source.value);
   }
 
   // ---- the uniforms -------------------------------------------------------------------------------------------------------------
@@ -103,7 +158,7 @@
 
   function sync(){
     if(!ready()) return;
-    for(const part of [syncUniforms]){
+    for(const part of [syncGrade, syncUniforms]){
       try{ part(); }catch(error){ console.warn('[profile pickers]', error); }
     }
   }
@@ -114,5 +169,5 @@
   if(shell && typeof MutationObserver === 'function') new MutationObserver(() => sync()).observe(shell, { attributes: true, attributeFilter: ['data-step'] });
   setTimeout(sync, 0);
 
-  window.CAPUBProfilePickers = { sync, syncUniforms };
+  window.CAPUBProfilePickers = { sync, syncGrade, syncUniforms };
 })();

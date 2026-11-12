@@ -96,12 +96,13 @@
     if(step && step!==activeStep) showStep(step,{focus:false});
     openCardOf(el);
   }
-  // Open the step a control is in, scroll to it and focus it. The membership and cut selects stand behind two
-  // buttons (js/setup.js), so the first button takes the focus for them.
+  // Open the step a control is in, scroll to it and focus it. The membership select stands behind two buttons
+  // (js/setup.js), and the grade and the cut behind a group of pictures (js/profile-pickers.js, marked data-picker-for), so
+  // the first button, or the picture the Tab key lands on, takes the focus for them.
   function focusControl(id){
     const el=safeBy(id); if(!el) return;
     showStepFor(el);
-    const target=(el.classList.contains('segmentedSource') && document.querySelector(`.segmented[data-segments-for="${id}"] button`)) || el;
+    const target=(el.classList.contains('segmentedSource') && document.querySelector(`.segmented[data-segments-for="${id}"] button, [data-picker-for="${id}"] [role="radio"][tabindex="0"]`)) || el;
     setTimeout(()=>{ target.scrollIntoView({behavior:'smooth',block:'center'}); target.focus({preventScroll:true}); },60);
   }
 

@@ -1,8 +1,11 @@
-// The pictures of the Uniform step's choices (js/profile-pickers.js shows them), made from the engine's own art, so a picture is what the builder draws for
-// the member and never a second drawing of it.
+// The pictures of the Profile and Uniform steps' choices (js/profile-pickers.js shows them), made from the engine's own art, so a picture is what the builder
+// draws for the member and never a second drawing of it.
 //
+//   gradeGroups(membership, ranks)    the headings the grades are shown under, in the order of rank: [{ group, ranks }]
+//   gradeArt(G, membership, rank, o)  the insignia the engine draws for a grade, as an asset id (null for a grade that wears none: C/AB, SM)
+//   gradeName(membership, rank)       the grade's name in words ("Cadet Major")
 //   const made = create(env);
-//   made.uniforms(ids)    { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
+//   made.uniforms(ids)                { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
 // they made) with nothing else on it: no ribbons, badges, patches, name or cord, and no cap, so the garment fills the picture. The coat and the shirt, the
@@ -18,6 +21,61 @@
   else root.CAPUBProfilePictures = api;
 })(typeof self !== 'undefined' ? self : this, function(){
   'use strict';
+
+  // ---- grades ---------------------------------------------------------------------------------------------------------------------
+
+  // The grades under plain headings, in the order of rank (the order of js/state.js RANKS, which a test compares).
+  const GROUPS = {
+    cadet: [
+      ['Airmen', ['C/AB', 'C/Amn', 'C/A1C', 'C/SrA']],
+      ['Non-commissioned officers', ['C/SSgt', 'C/TSgt', 'C/MSgt', 'C/SMSgt', 'C/CMSgt']],
+      ['Officers', ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col']]
+    ],
+    senior: [
+      ['No grade', ['SM']],
+      ['Non-commissioned officers', ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']],
+      ['Flight officers', ['FO', 'TFO', 'SFO']],
+      ['Officers', ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col']],
+      ['General officers', ['Brig Gen', 'Maj Gen']]
+    ]
+  };
+  const NAMES = {
+    'C/AB': 'Cadet Airman Basic', 'C/Amn': 'Cadet Airman', 'C/A1C': 'Cadet Airman First Class', 'C/SrA': 'Cadet Senior Airman', 'C/SSgt': 'Cadet Staff Sergeant',
+    'C/TSgt': 'Cadet Technical Sergeant', 'C/MSgt': 'Cadet Master Sergeant', 'C/SMSgt': 'Cadet Senior Master Sergeant', 'C/CMSgt': 'Cadet Chief Master Sergeant',
+    'C/2d Lt': 'Cadet Second Lieutenant', 'C/1st Lt': 'Cadet First Lieutenant', 'C/Capt': 'Cadet Captain', 'C/Maj': 'Cadet Major', 'C/Lt Col': 'Cadet Lieutenant Colonel',
+    'C/Col': 'Cadet Colonel',
+    'SM': 'Senior Member without a grade', 'SSgt': 'Staff Sergeant', 'TSgt': 'Technical Sergeant', 'MSgt': 'Master Sergeant', 'SMSgt': 'Senior Master Sergeant',
+    'CMSgt': 'Chief Master Sergeant', 'FO': 'Flight Officer', 'TFO': 'Technical Flight Officer', 'SFO': 'Senior Flight Officer', '2d Lt': 'Second Lieutenant',
+    '1st Lt': 'First Lieutenant', 'Capt': 'Captain', 'Maj': 'Major', 'Lt Col': 'Lieutenant Colonel', 'Col': 'Colonel', 'Brig Gen': 'Brigadier General', 'Maj Gen': 'Major General'
+  };
+  const gradeName = (membership, rank) => NAMES[rank] || String(rank || '');
+
+  // The ranks the select offers, each with its heading; a rank no heading names is shown without one.
+  function gradeGroups(membership, ranks){
+    const table = GROUPS[membership] || [];
+    const list = Array.isArray(ranks) ? ranks : [];
+    const out = [];
+    for(const [group, members] of table){
+      const here = members.filter(r => list.includes(r));
+      if(here.length) out.push({ group, ranks: here });
+    }
+    const named = new Set(table.flatMap(([, members]) => members));
+    const rest = list.filter(r => !named.has(r));
+    if(rest.length) out.push({ group: '', ranks: rest });
+    return out;
+  }
+
+  // The insignia the engine draws for a grade, in the one form each kind of grade has of its own that stands out on the picture's white: the cadet
+  // chevrons and the cadet officers' discs and diamonds on their cloth, the senior NCO chevron, the senior officers', flight officers' and generals'
+  // insignia on theirs (the forms the Class B shirt and blouse wear). `firstSergeant` puts the first sergeant's diamond on a cadet chevron that takes it.
+  function gradeArt(G, membership, rank, options){
+    const g = G.gradeInfo(membership, rank, { firstSergeant: !!(options && options.firstSergeant) });
+    if(!g.key) return null;
+    if(g.category === 'cadet-nco') return G.cadetNcoChevron(g, 'cloth-bordered');
+    if(g.category === 'cadet-officer') return G.cadetOfficerInsignia(g, 'cloth-bordered-regular');
+    if(g.category === 'senior-nco') return G.seniorChevron(g, {});
+    return G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
+  }
 
   // ---- the uniforms -----------------------------------------------------------------------------------------------------------------
 
@@ -111,5 +169,5 @@
     };
   }
 
-  return { create, bare, PAD };
+  return { create, bare, gradeGroups, gradeArt, gradeName, GROUPS, PAD };
 });
