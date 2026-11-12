@@ -371,6 +371,9 @@
       return baseVariantKey(layer) + (m && (m.main.toLowerCase() !== SHEET_TIP.main || m.dark.toLowerCase() !== SHEET_TIP.dark) ? '--tip-' + hashText(m.main + m.dark) : '');
     };
     function baseVariantKey(layer){
+      return baseKey(layer) + (layer.showGroups && layer.showGroups.length ? '--show-' + layer.showGroups.join('-').replace(/[^a-z0-9-]/gi, '') : '');
+    }
+    function baseKey(layer){
       if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : ''));
       // Both: the named groups only, less the hidden ones inside them (a collar group redrawn without its cover).
       if(layer.onlyGroups && layer.onlyGroups.length && layer.hideGroups && layer.hideGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '') + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
@@ -445,8 +448,9 @@
         }
         // A cord sheet that draws more than the braid (the Aide de Camp aiguillette's loops and thin cords) has those groups left off here.
         if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
-      }else if(layer.hideGroups && !(layer.onlyGroups && layer.onlyGroups.length)){
-        layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
+      }else if(!(layer.onlyGroups && layer.onlyGroups.length)){
+        if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
+        if(layer.showGroups) layer.showGroups.forEach(g => { const n = byId(g); if(n) n.removeAttribute('display'); });
       }else{
         // Draw nothing but the named groups: the rest of the sheet is dropped (pruneToGroups keeps what they need), then what is left
         // is hidden and those groups shown.
@@ -458,7 +462,7 @@
         // which makes it empty, so everything it clips would vanish (the blazer's lapel foreground was
         // clipped to the silhouette and drew nothing): they stay visible.
         wrap.querySelectorAll('clipPath, mask, pattern, marker').forEach(n => n.setAttribute('visibility', 'visible'));
-        layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); } });
+        layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); if(layer.showGroups && layer.showGroups.includes(g)) n.removeAttribute('display'); } });
         (layer.hideGroups || []).forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
         // The tip of a gold aiguillette is the sheet's tip in the list's gold metal: its fill and its edge, the two values the sheet draws the silver tip with.
         const metal = tipMetalOf(layer);

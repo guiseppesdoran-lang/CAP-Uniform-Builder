@@ -158,6 +158,8 @@
     if(opts.place) layer.place = opts.place;
     if(opts.className) layer.className = opts.className;
     if(opts.hideGroups) layer.hideGroups = opts.hideGroups;
+    // `showGroups`: groups a sheet carries hidden by default (display="none" in the file, e.g. the Class B sheets' collar-honor-guard) that this layer draws.
+    if(opts.showGroups) layer.showGroups = opts.showGroups;
     if(opts.onlyGroups) layer.onlyGroups = opts.onlyGroups;
     if(opts.clip) layer.clip = opts.clip;
     // Draw only what lies inside the silhouette (the `clipSil` clip path) of the named garment sheet.
