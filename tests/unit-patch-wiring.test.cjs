@@ -259,21 +259,21 @@ test('the patches present today: the New York Wing and Northeast Region emblems 
 const png = (charter, label, echelon, asset, w, h) => Object.assign(row(charter, label, echelon, asset), { kind: 'unit', w, h, img: `patches/${asset}/${asset}.png` });
 const ACTIVITY = { charter: null, patchId: 'ncsa_mots_patch', label: 'Medical Orientation & Training School', echelon: 'activity', kind: 'activity', w: 3, h: 3.05, asset: 'patch-ncsa-mots', img: 'patches/patch-ncsa-mots/patch-ncsa-mots.png' };
 const ACTIVITY2 = Object.assign({}, ACTIVITY, { patchId: 'ncsa_national_geospatial_academy_patch', label: 'National Geospatial Academy', h: 3.384, asset: 'patch-ncsa-national-geospatial-academy', img: 'patches/patch-ncsa-national-geospatial-academy/patch-ncsa-national-geospatial-academy.png' });
-const RASTER_ROWS = [png('MAR-DC-026', 'Arlington Composite Squadron', 'squadron', 'patch-mar-dc-026', 3, 2.968), png('MAR-DC-001', 'National Capital Wing', 'wing', 'patch-national-capital-wing', 3.25, 4.317), ACTIVITY, ACTIVITY2];
+const RASTER_ROWS = [png('MAR-DC-026', 'Arlington Composite Squadron', 'squadron', 'patch-mar-dc-026', 3, 3.095), png('MAR-DC-001', 'National Capital Wing', 'wing', 'patch-national-capital-wing', 3.25, 4.317), ACTIVITY, ACTIVITY2];
 const evp = load(RASTER_ROWS);
 
 test('a unit row on a PNG is a picture at its spec\'s size, not an engine asset; the page hands the engine href, aspect and size', () => {
   const meta = evp(`PATCH_META.unit_mar_dc_026`);
   assert.equal(meta.img, 'patches/patch-mar-dc-026/patch-mar-dc-026.png');
   assert.equal(meta.asset, null);
-  assert.deepEqual(meta.sizeIn, { w: 3, h: 2.968 });
-  assert.deepEqual([meta.w, meta.h], [3, 2.968]);
+  assert.deepEqual(meta.sizeIn, { w: 3, h: 3.095 });
+  assert.deepEqual([meta.w, meta.h], [3, 3.095]);
   const p = evp(`(function(){ State.uniform = 'ocp'; State.membership = 'senior'; State.gender = 'male'; State.rank = 'Capt'; State.patches = []; State.unitPatchCharter = 'MAR-DC-026';
     return CAPUBUniformView.buildFromState().patches.map(p => ({ id: p.id, kind: p.kind, slot: p.slot, asset: p.asset, href: p.href, aspect: p.aspect, size: p.size })); })()`);
   assert.equal(p.length, 2);
-  assert.deepEqual([p[0].id, p[0].asset, p[0].size], ['unit_mar_dc_026', null, { w: 3, h: 2.968 }]);
+  assert.deepEqual([p[0].id, p[0].asset, p[0].size], ['unit_mar_dc_026', null, { w: 3, h: 3.095 }]);
   assert.match(p[0].href, /patches\/patch-mar-dc-026\/patch-mar-dc-026\.png/);
-  assert.ok(Math.abs(p[0].aspect - 3 / 2.968) < 1e-9);
+  assert.ok(Math.abs(p[0].aspect - 3 / 3.095) < 1e-9);
   assert.deepEqual([p[1].id, p[1].kind, p[1].slot, p[1].size], ['unit_mar_dc_001', 'hhq', 'L_SHOULDER', { w: 3.25, h: 4.317 }]);
   evp(`State.unitPatchCharter = ''`);
 });
