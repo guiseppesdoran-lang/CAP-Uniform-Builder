@@ -17,8 +17,11 @@
   }
   // The uniforms that are known by their initials: ABU, OCP, and the USAF in Semi-Formal-USAF.
   const INITIALS=new Set(['abu','ocp','usaf']);
+  // A name a uniform was saved under before it was renamed reads as its present name.
+  const RENAMED={ceremonials:'honor_guard',ceremonial:'honor_guard'};
   function uniformWords(uniformId){
-    return String(uniformId || '')
+    const id=String(uniformId || '');
+    return (RENAMED[id.toLowerCase()] || id)
       .split('_')
       .filter(Boolean)
       .map(word=>word.length<=1 || INITIALS.has(word.toLowerCase()) ? word.toUpperCase() : word[0].toUpperCase()+word.slice(1))

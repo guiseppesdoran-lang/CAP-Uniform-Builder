@@ -131,7 +131,7 @@ test('the cap is lifted until its lowest ink is 0.25 in or more above the top of
   assert.ok(lifted.length > 0, 'at least one cut needs the lift (the women\'s coat\'s patch is under the cap seated as every service cap is)');
 });
 
-test('outside Ceremonials the cap sits where it always did: no lift, no honor guard cap, the hat of the uniform', async () => {
+test('outside Honor Guard the cap sits where it always did: no lift, no honor guard cap, the hat of the uniform', async () => {
   for(const cut of CUTS){
     const scene = await compose(HARNESS.makeBuild({ uniform: cut.uniform, gender: cut.gender, membership: 'cadet', rank: 'C/Maj', opt: Object.assign({ headgear: 'service' }, cut.opt) }));
     const hat = scene.layers.find(l => l.role === 'hat');
@@ -187,7 +187,7 @@ test('Class B: the honor guard collar is shown and what it replaces is hidden, e
   for(const cut of CUTS.filter(c => c.uniform === 'blues_b')){
     const plain = await compose(build(cut, {}));
     const base = plain.layers.find(l => l.role === 'garment');
-    assert.ok(!base.showGroups, `${cut.name}: outside Ceremonials the sheet shows no such group`);
+    assert.ok(!base.showGroups, `${cut.name}: outside Honor Guard the sheet shows no such group`);
   }
 });
 

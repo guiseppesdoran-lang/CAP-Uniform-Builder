@@ -866,7 +866,7 @@
   function baseName(){
     const S = root().State || {};
     const N = root().CAPUBExportNames;
-    const n = N && N.exportFileName ? N.exportFileName({ rank: S.rank, uniform: S.ceremonial ? 'ceremonials' : S.uniform }, 'x').replace(/\.x$/, '') : 'CAP-Uniform';
+    const n = N && N.exportFileName ? N.exportFileName({ rank: S.rank, uniform: S.ceremonial ? 'honor_guard' : S.uniform }, 'x').replace(/\.x$/, '') : 'CAP-Uniform';
     return n.replace(/^CAP-Uniform/, 'CAP-Placement');
   }
   function save(name, bytes, type){

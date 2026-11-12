@@ -88,11 +88,11 @@ test('the uniform cards are one flat two-column grid in the regulation\'s order,
   const list=aside.slice(aside.indexOf('id="uniformList"'),aside.indexOf('id="lockedUniforms"'));
   const ids=[...list.matchAll(/data-uniform-id="([a-z_]+)"/g)].map(m=>m[1]);
   assert.deepEqual(ids,['blues_a','blues_b','ceremonial','mess_dress','semi_formal','semi_formal_usaf','aviator','aviator_blazer','polo','corporate_field','abu','ocp','flight_suit','corporate_flight_suit']);
-  // Ceremonials (the Honor Guard Uniform) is the Service Dress or the Blue Service uniform with the honor guard items put on: its card has no rule row of its own.
+  // The Honor Guard Uniform is the Service Dress or the Blue Service uniform with the honor guard items put on: its card has no rule row of its own.
   assert.deepEqual(ids.filter(id=>id!=='ceremonial').sort(),Object.keys(rules.RULES).sort(),'every uniform the rules know, once');
   assert.doesNotMatch(aside,/uniformGroup|uniformGroupTitle|Field and flight|>Formal<|>Everyday</,'no occasion headings');
   assert.equal([...list.matchAll(/<div class="uniformGrid">/g)].length,1,'one grid');
-  assert.equal([...aside.matchAll(/class="uniformOption"/g)].length,Object.keys(rules.RULES).length+1,'every uniform the rules know and Ceremonials');
+  assert.equal([...aside.matchAll(/class="uniformOption"/g)].length,Object.keys(rules.RULES).length+1,'every uniform the rules know and Honor Guard');
   assert.match(css,/\.uniformGrid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
   assert.match(aside,/<details class="lockedFold" id="lockedUniforms" hidden>/);

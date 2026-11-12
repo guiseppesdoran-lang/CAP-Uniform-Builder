@@ -612,7 +612,7 @@
     const name=card && card.querySelector('.uName');
     return name ? name.textContent.trim() : String(id||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
   }
-  // The card of the uniform on show: Ceremonials rides on Class A or Class B (State.ceremonial), so its card, not the uniform under it, is the one named and lit.
+  // The card of the uniform on show: the Honor Guard Uniform rides on Class A or Class B (State.ceremonial), so its card, not the uniform under it, is the one named and lit.
   function shownUniform(){ return State.ceremonial ? 'ceremonial' : State.uniform; }
   function updateTopBar(){
     if(typeof State==='undefined') return;

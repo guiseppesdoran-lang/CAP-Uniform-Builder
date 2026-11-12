@@ -26,15 +26,24 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(rea
 
 // ---- the card ---------------------------------------------------------------------------------------------------------------------
 
-test('the Uniform step has one card for it, called Ceremonials, for cadets, right after Class B', () => {
+test('the Uniform step has one card for it, called Honor Guard, for cadets, right after Class B', () => {
   const html = read('index.html');
   const card = /<button class="uniformOption" data-uniform-id="ceremonial" data-allowed-for="cadet">\s*<div class="uName">([^<]*)<\/div>\s*<div class="uDesc smallText">([^<]*)<\/div>/.exec(html);
   assert.ok(card, 'the card');
-  assert.equal(card[1], 'Ceremonials');
+  assert.equal(card[1], 'Honor Guard');
   assert.doesNotMatch(card[2], /CAPR|guidance|ruling/i, 'a description, not a rule sentence');
   const ids = [...html.matchAll(/data-uniform-id="([a-z_]+)"/g)].map(m => m[1]);
   assert.equal(ids[ids.indexOf('blues_b') + 1], 'ceremonial');
   assert.equal(ids.filter(id => id === 'ceremonial').length, 1);
+});
+
+test('no word a member reads says Ceremonials: the page, its scripts and its data call the uniform Honor Guard', () => {
+  const files = ['index.html'];
+  for(const dir of ['js', 'js/engine', 'data']) for(const f of fs.readdirSync(path.join(ROOT, dir))) if(/\.(js|html)$/.test(f) && f !== 'asset-index.js') files.push(dir + '/' + f);
+  const found = files.filter(f => /ceremonials/i.test(read(f)));
+  assert.deepEqual(found, [], 'the old name is gone from every file the page loads');
+  // The identifiers stay (the setup a member saved before the rename names State.ceremonial and loads as it did).
+  assert.match(read('js/state.js'), /\bceremonial:false,/);
 });
 
 // The page's own functions for the cards, in a context with fake cards.
@@ -79,7 +88,7 @@ test('a senior member who has it on (a saved build, a link, a change of membersh
   assert.equal(c.context.State.ceremonial, true, 'a cadet keeps it');
 });
 
-test('Ceremonials is never the uniform a member falls back to, and its card is the one lit while it is on', () => {
+test('Honor Guard is never the uniform a member falls back to, and its card is the one lit while it is on', () => {
   const s = cards('cadet');
   assert.equal(s.context.findFirstAllowedUniform('cadet'), 'blues_a');
   const lit = (ceremonial, uniform) => {
@@ -132,7 +141,7 @@ test('the choices are four pictures: what it is worn on, the role, the cap (the 
     assert.deepEqual(groups(s.host), ['garmentOpt-wornOn', 'garmentOpt-cerRole', 'garmentOpt-headgear', 'garmentOpt-chinstrap'], `${gender} ${sleeve}: no sleeve picker`);
     assert.equal(s.host.querySelectorAll('input').filter(i => /garmentOpt-(tie|tieClasp)$/.test(i.id)).length, 0, `${gender} ${sleeve}: no tie box`);
   }
-  // the same shirt outside Ceremonials has its sleeve choice and no honor guard choice
+  // the same shirt outside Honor Guard has its sleeve choice and no honor guard choice
   const plain = panel({ uniform: 'blues_b', ceremonial: false });
   assert.ok(groups(plain.host).includes('garmentOpt-sleeve') && !groups(plain.host).some(g => /wornOn|cerRole|chinstrap/.test(g)));
 });
@@ -149,7 +158,7 @@ test('what it is worn on is read from, and written to, State.uniform and the sle
   assert.equal(p.sandbox.State.garment.sleeve, 'long');
   assert.deepEqual(p.calls.find(c => c[0] === 'fullRender'), ['fullRender', 'blues_a'], 'drawn again as a change of uniform, so what follows the uniform follows');
   assert.ok(p.calls.some(c => c[0] === 'refreshUI'));
-  assert.equal(p.sandbox.State.ceremonial, true, 'still Ceremonials');
+  assert.equal(p.sandbox.State.ceremonial, true, 'still Honor Guard');
   tiles(p.host, 'garmentOpt-wornOn')[0].click();
   assert.equal(p.sandbox.State.uniform, 'blues_a');
   assert.equal(p.sandbox.State.garment.sleeve, 'long', 'the shirt\'s sleeve choice is kept for the next time');
@@ -183,7 +192,7 @@ test('the chinstrap is not offered when no cap is worn', () => {
   assert.deepEqual(groups(p.host), ['garmentOpt-wornOn', 'garmentOpt-cerRole', 'garmentOpt-headgear']);
 });
 
-test('a senior member sees none of it, and a member off Ceremonials sees the options of the uniform as they were', () => {
+test('a senior member sees none of it, and a member off Honor Guard sees the options of the uniform as they were', () => {
   const senior = panel({ membership: 'senior', rank: 'Capt', uniform: 'blues_b', garment: { sleeve: 'long' } });
   assert.deepEqual(groups(senior.host), ['garmentOpt-sleeve', 'garmentOpt-headgear'], 'a senior member on Class B: the sleeve and the headgear, as ever');
   assert.ok(senior.host.querySelectorAll('input').some(i => i.id === 'garmentOpt-tie'), 'and the tie box');
@@ -219,7 +228,7 @@ const built = () => ev('const b = CAPUBUniformView.buildFromState(); return { un
 
 test('the page loads', () => assert.deepEqual(referenceErrors, []));
 
-test('Ceremonials hands the engine the role, the chinstrap, the silver cord and the switch that lays it over the epaulet; no other uniform does', () => {
+test('Honor Guard hands the engine the role, the chinstrap, the silver cord and the switch that lays it over the epaulet; no other uniform does', () => {
   member('State.ceremonial = true;');
   let b = built();
   assert.equal(b.uniform, 'blues_a', 'the uniform it rides on');
@@ -237,7 +246,7 @@ test('Ceremonials hands the engine the role, the chinstrap, the silver cord and 
   assert.equal(ev('return State.shoulderCord;'), 'wing', 'kept');
   member('State.shoulderCord = "wing";');
   b = built();
-  assert.equal(b.cord, 'wing', 'the cord of the member outside Ceremonials');
+  assert.equal(b.cord, 'wing', 'the cord of the member outside Honor Guard');
   assert.ok(!b.keys.includes('ceremonial') && !b.keys.includes('cordOnTop'), 'no honor guard field, no switch');
   // every other uniform, cadet or senior: never the switch
   for(const uniform of ['blues_a', 'blues_b', 'semi_formal_usaf', 'abu', 'ocp', 'flight_suit']){
@@ -253,7 +262,7 @@ test('Ceremonials hands the engine the role, the chinstrap, the silver cord and 
   assert.match(view, /ceremonial \? \{\s*\/\/[^\n]*\n\s*ceremonial,\s*cordOnTop: true\s*\} : \{\}/, 'and only beside the ceremonial build');
 });
 
-test('a senior member, a uniform that is not Class A or B, or no Ceremonials: the engine is asked for none of it', () => {
+test('a senior member, a uniform that is not Class A or B, or no Honor Guard: the engine is asked for none of it', () => {
   member('State.ceremonial = true; State.membership = "senior"; State.rank = "Capt";');
   assert.equal(built().ceremonial, undefined);
   member('State.ceremonial = true; State.uniform = "ocp";');
@@ -266,7 +275,7 @@ test('a senior member, a uniform that is not Class A or B, or no Ceremonials: th
 
 // ---- saved, shared, loaded ------------------------------------------------------------------------------------------------------------
 
-test('Ceremonials is saved with the setup, comes back as it was, and a setup from before it existed loads without it', () => {
+test('Honor Guard is saved with the setup, comes back as it was, and a setup from before it existed loads without it', () => {
   member('State.ceremonial = true; State.uniform = "blues_b"; State.garment = { sleeve: "long", cerRole: "flag", chinstrap: "up" };');
   const saved = ev('return CAPUB_V2.collectProfile();');
   assert.equal(saved.ceremonial, true);
@@ -296,7 +305,7 @@ test('a setup that names it for a senior member, on another uniform, or with a v
   for(const junk of ['true', 1, 'yes', {}, [], null]) assert.equal(load(profile({ ceremonial: junk })), false, JSON.stringify(junk));
 });
 
-test('the Check list says the white gloves are worn and not drawn, with the paragraph; and says nothing of them outside Ceremonials', () => {
+test('the Check list says the white gloves are worn and not drawn, with the paragraph; and says nothing of them outside Honor Guard', () => {
   member('State.ceremonial = true;');
   const lines = ev('return CAPUB_V2.validateBuild().map(n => n.msg);');
   assert.ok(lines.some(l => /gloves/i.test(l) && /not shown on the drawing/.test(l) && /\(CAPR 39-1, 9\.6\.7\.7\)\.$/.test(l)), lines.join(' | '));
@@ -304,7 +313,7 @@ test('the Check list says the white gloves are worn and not drawn, with the para
   assert.ok(!ev('return CAPUB_V2.validateBuild().map(n => n.msg);').some(l => /gloves/i.test(l)));
 });
 
-test('the Check list tells a woman in Ceremonials, on the coat and on the blouse, that only slacks are worn with this uniform, with the paragraph, and tells nobody else', () => {
+test('the Check list tells a woman in Honor Guard, on the coat and on the blouse, that only slacks are worn with this uniform, with the paragraph, and tells nobody else', () => {
   const slacks = lines => lines.filter(l => /slacks/i.test(l));
   const lines = () => slacks(ev('return CAPUB_V2.validateBuild().map(n => n.msg);'));
   for(const uniform of ['blues_a', 'blues_b']){
@@ -315,7 +324,7 @@ test('the Check list tells a woman in Ceremonials, on the coat and on the blouse
     member(`State.ceremonial = true; State.uniform = "${uniform}"; State.gender = "male";`);
     assert.deepEqual(lines(), [], `${uniform}: not for a man`);
     member(`State.uniform = "${uniform}";`);
-    assert.deepEqual(lines(), [], `${uniform}: and outside Ceremonials`);
+    assert.deepEqual(lines(), [], `${uniform}: and outside Honor Guard`);
   }
 });
 
@@ -333,7 +342,7 @@ test('the cord picker shows the silver cord as worn and offers no other, and the
   assert.equal(ev('return State.shoulderCord;'), 'wing', 'a pick does not change the member\'s cord');
   member('State.shoulderCord = "wing";');
   const normal = ev('return capubShoulderCordOptions();');
-  assert.ok(normal.length > 7 && normal.some(o => o.value === 'wing') && normal[0].value === '', 'outside Ceremonials the choices are as they were');
+  assert.ok(normal.length > 7 && normal.some(o => o.value === 'wing') && normal[0].value === '', 'outside Honor Guard the choices are as they were');
   member('State.ceremonial = true; State.membership = "senior"; State.rank = "Capt";');
   assert.equal(ev('return capubCordIsFixed();'), false, 'a senior member is offered it not');
 });

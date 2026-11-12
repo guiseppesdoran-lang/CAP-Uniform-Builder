@@ -72,7 +72,7 @@
   }
   const capGradeKey = build => [build.uniform, build.gender, build.grade && (build.grade.key || build.grade.rank), build.opt && build.opt.headgear];
 
-  // ---- the Honor Guard Uniform (Ceremonials): the chinstrap, the role and what it is worn on -----------------------------------------------------------------
+  // ---- the Honor Guard Uniform: the chinstrap, the role and what it is worn on -----------------------------------------------------------------
 
   // The cap with its rear chinstrap up or down, as the engine seats it for the Honor Guard Uniform.
   async function chinstrap(env, build, values){
@@ -92,7 +92,7 @@
         const scene = await env.compose(Object.assign(bare(build, { opt: Object.assign({ headgear: 'none' }, c.opt) }), c.top));
         const layers = scene.layers.filter(l => (!l.figure || l.figure === 1) && l.type !== 'clear' && l.type !== 'measure');
         const frame = figureBox(env.core, scene);
-        out[value] = { scene: sceneOf(layers, crop ? crop(frame) : frame, 'Ceremonials'), pad: 0.1 };
+        out[value] = { scene: sceneOf(layers, crop ? crop(frame) : frame, 'Honor Guard'), pad: 0.1 };
       }));
       return out;
     };

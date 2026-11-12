@@ -13,7 +13,7 @@ uniformListEl.addEventListener('click', e=>{
   const newUniform=btn.dataset.uniformId;
   const prevU=State.uniform;
   const prevCard=State.ceremonial ? CAPUBUniformRules.CEREMONIAL.id : prevU;
-  // Ceremonials is the Service Dress or the Blue Service uniform with the honor guard items put on: State.uniform stays the uniform it rides on (the coat's Class A
+  // The Honor Guard Uniform is the Service Dress or the Blue Service uniform with the honor guard items put on: State.uniform stays the uniform it rides on (the coat's Class A
   // unless the member is already on the shirt's Class B), so every rule and drawing of that uniform applies to it unchanged.
   State.ceremonial=newUniform===CAPUBUniformRules.CEREMONIAL.id;
   if(State.ceremonial){
@@ -835,7 +835,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.membership = ['senior','cadet'].includes(p.membership) ? p.membership : '';
     out.gender = ['male','female'].includes(p.gender) ? p.gender : '';
     out.uniform = typeof p.uniform === 'string' && has(UNIFORMS, p.uniform) ? p.uniform : 'blues_a';
-    // Ceremonials (the Honor Guard Uniform) is Class A or Class B with the honor guard items, for cadets: a setup that names it for a senior member, or on any other uniform, loads without it.
+    // The Honor Guard Uniform is Class A or Class B with the honor guard items, for cadets: a setup that names it for a senior member, or on any other uniform, loads without it.
     out.ceremonial = p.ceremonial === true && ['blues_a','blues_b'].includes(out.uniform) && CAPUBUniformRules.CEREMONIAL.membership.includes(out.membership);
     out.rank = out.membership && RANKS[out.membership].includes(p.rank) ? p.rank : null;
     out.cadetFirstSergeant = !!p.cadetFirstSergeant;
@@ -1094,7 +1094,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
-    // What Ceremonials wears and the drawing does not show: no sheet draws hands.
+    // What the Honor Guard Uniform wears and the drawing does not show: no sheet draws hands.
     if(State.ceremonial && State.membership === 'cadet') addNotice('ok',`White parade gloves are worn with this uniform and are not shown on the drawing (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`);
     // What a woman wears with it, on the coat and on the blouse alike (9.6.7.3): only slacks.
     if(State.ceremonial && State.membership === 'cadet' && State.gender === 'female') addNotice('ok',`Female members wear only slacks with this uniform (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.slacks}).`);
@@ -1266,7 +1266,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const fn = by('capubV2FirstName'), ln = by('capubV2LastName'), pl = by('capubV2PlateLine'), sh = by('capubV2ShowText');
     if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
     if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
-    if(exp) exp.onclick = ()=>(window.CAPUB_TELEMETRY?.track('setup_file', { action: 'save' }), downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.ceremonial ? 'ceremonials' : State.uniform},'json'), JSON.stringify(collectProfile(), null, 2)));
+    if(exp) exp.onclick = ()=>(window.CAPUB_TELEMETRY?.track('setup_file', { action: 'save' }), downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.ceremonial ? 'honor_guard' : State.uniform},'json'), JSON.stringify(collectProfile(), null, 2)));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
     if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; window.CAPUB_TELEMETRY?.track('setup_file', { action: 'open' }); };
     if(reset) reset.onclick = async ()=>{ if(!await capubConfirm({ title: 'Reset the builder?', message: 'This clears your uniform, ribbons, badges, patches and name from this browser and starts again. A setup you saved to a file is not affected.', confirmLabel: 'Reset', cancelLabel: 'Keep my setup' })) return; try{ localStorage.removeItem(CAPUB_V2.storageKey); localStorage.removeItem('cap_uniform_builder_autosave_v1'); }catch(_){} location.reload(); };

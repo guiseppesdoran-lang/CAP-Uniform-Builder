@@ -238,7 +238,7 @@
 
   // The cord the drawing is asked for: the one the member chose where the uniform allows it, a supplement cord only while that supplement is in force for the member's
   // unit (Supplements.cords), and the member's colour for a cord whose colour the unit commander picks.
-  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6), as the engine is asked for it: null unless the member is a cadet on the Service Dress or the Blue Service uniform with it on. The
+  // The Honor Guard Uniform (CAPR 39-1 9.6), as the engine is asked for it: null unless the member is a cadet on the Service Dress or the Blue Service uniform with it on. The
   // role and the chinstrap are the member's choices; the chinstrap starts at the guidance figure's for the combination until the member picks one.
   function ceremonialFromState(opt){
     const rules = CAPUBUniformRules.CEREMONIAL;

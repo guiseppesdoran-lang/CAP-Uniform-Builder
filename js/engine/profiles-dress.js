@@ -1979,7 +1979,7 @@
     return { y, seamX, lapelX, centre: (seamX + lapelX) / 2 };
   }
 
-  // ---- The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6) ---------------------------------------------------------------------------------------
+  // ---- The Honor Guard Uniform (CAPR 39-1 9.6) ---------------------------------------------------------------------------------------
 
   // The Service Dress (9.6.5) or the Blue Service uniform (9.6.6) with the honor guard items put on. It is not a second drawing: composeClassA and composeClassB draw the uniform as they
   // always do and call these where an item goes, so whatever a member's Class A or Class B shows (grade, ribbons, nameplate, badges, the shirt under the coat) it shows by the same code.

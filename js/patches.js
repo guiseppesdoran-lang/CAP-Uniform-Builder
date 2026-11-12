@@ -198,7 +198,7 @@ function capubCordPicture(id){
   return shoulderCordPictures.get(key);
 }
 
-// The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6), wears the metallic silver shoulder cord and no other (9.6.7.5): the picker shows it as worn and offers nothing else, and the
+// The Honor Guard Uniform (CAPR 39-1 9.6), wears the metallic silver shoulder cord and no other (9.6.7.5): the picker shows it as worn and offers nothing else, and the
 // member's own choice of cord is kept, unchanged, for the uniforms that take one.
 const capubCordIsFixed = () => !!State.ceremonial && State.membership === 'cadet' && CAPUBUniformRules.allowsCeremonial(State.membership);
 

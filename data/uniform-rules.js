@@ -333,7 +333,7 @@
     if(!paras || overblouse) return {offered:false,defaultOn:false,para:null};
     return {offered:true,defaultOn:sleeve==='long',para:paras[sex]};
   }
-  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6): the Service Dress (9.6.5) or the Blue Service uniform (9.6.6) with the honor guard items put on, so it is not a
+  // The Honor Guard Uniform (CAPR 39-1 9.6): the Service Dress (9.6.5) or the Blue Service uniform (9.6.6) with the honor guard items put on, so it is not a
   // uniform of its own to the rules above: whatever the member's Class A or Class B wears it wears, by the same rows and the same drawing. Only these facts are its own.
   //   membership: who is offered it: cadets (a senior member is not offered it; the Honor Guard cord is a cadet cord, 9.3.3).
   //   wornOn:     the garment it is worn on, by the uniform it rides on: the Service Dress coat ('coat', Class A) or the blue shirt or blouse ('shirt', Class B,

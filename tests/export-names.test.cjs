@@ -30,8 +30,17 @@ test('the name is safe for any file system',()=>{
 test('PNG and setup-file exports both use it',()=>{
   const boot=fs.readFileSync(path.join(__dirname,'..','js','bootstrap.js'),'utf8');
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  // Ceremonials (the Honor Guard Uniform) rides on Class A or Class B: its downloads are named for it, not for the uniform under it.
-  assert.match(boot,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'ceremonials' : State\.uniform\},'png'\)/);
-  assert.match(wiring,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'ceremonials' : State\.uniform\},'json'\)/);
-  assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonials'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Ceremonials_2026-10-10.png');
+  // The Honor Guard Uniform rides on Class A or Class B: its downloads are named for it, not for the uniform under it.
+  assert.match(boot,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'honor_guard' : State\.uniform\},'png'\)/);
+  assert.match(wiring,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'honor_guard' : State\.uniform\},'json'\)/);
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'honor_guard'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.png');
+  // The page-side callers of the file name (the placement template) say the same.
+  const templates=fs.readFileSync(path.join(__dirname,'..','js','placement-templates.js'),'utf8');
+  assert.match(templates,/S\.ceremonial \? 'honor_guard' : S\.uniform/);
+  assert.doesNotMatch(boot+wiring+templates,/'ceremonials'/,'no download is named for the old word');
+});
+
+test('a uniform saved under the name it had before it was renamed still names the file, with the present name',()=>{
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonials'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonial'},'json',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.json');
 });

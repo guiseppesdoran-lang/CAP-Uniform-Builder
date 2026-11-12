@@ -297,7 +297,7 @@ function isUniformAllowedFor(uniformId, membership){
   return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank});
 }
 function findFirstAllowedUniform(membership){
-  // Ceremonials rides on Class A or Class B (State.ceremonial), so it is never the uniform a member falls back to.
+  // The Honor Guard Uniform rides on Class A or Class B (State.ceremonial), so it is never the uniform a member falls back to.
   const opts=[...uniformListEl.querySelectorAll('.uniformOption')].filter(opt=>opt.dataset.uniformId!==CAPUBUniformRules.CEREMONIAL.id);
   for(const opt of opts){
     if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank})){
@@ -307,7 +307,7 @@ function findFirstAllowedUniform(membership){
   return null;
 }
 function applyMemberTypeToUniformOptions(){
-  // A member who is not offered Ceremonials (a senior member, whoever chose it or saved it) wears the uniform it rides on, without the honor guard items.
+  // A member who is not offered the Honor Guard Uniform (a senior member, whoever chose it or saved it) wears the uniform it rides on, without the honor guard items.
   if(State.ceremonial && State.membership && !CAPUBUniformRules.allowsCeremonial(State.membership)) State.ceremonial=false;
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
@@ -315,7 +315,7 @@ function applyMemberTypeToUniformOptions(){
       ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank})
       : true;
 
-    // Ceremonials is not offered to a senior member at all: its card is hidden, not greyed out and not moved to the fold of what the member may not wear.
+    // The Honor Guard Uniform is not offered to a senior member at all: its card is hidden, not greyed out and not moved to the fold of what the member may not wear.
     if(opt.dataset.uniformId===CAPUBUniformRules.CEREMONIAL.id){
       opt.classList.remove('locked');
       opt.classList.toggle('hidden', !isAllowed);

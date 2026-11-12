@@ -43,7 +43,7 @@
     return CAPUBUniformRules.tieRule(c.u, { gender: c.female ? 'female' : 'male', sleeve: (c.o && c.o.sleeve) || 'short', overblouse: c.u === 'aviator' && c.female && (c.o && c.o.femaleTop) === 'overblouse', ceremonial: !!c.cer });
   }
 
-  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6): the Service Dress or the Blue Service uniform with the honor guard items put on. State.uniform stays the uniform it rides on, so the
+  // The Honor Guard Uniform (CAPR 39-1 9.6): the Service Dress or the Blue Service uniform with the honor guard items put on. State.uniform stays the uniform it rides on, so the
   // options the member has there (the shirt's sleeve length, the headgear) are these same options; only what is the uniform's own is added here: what it is worn on, the role, the chinstrap.
   // `wornOn` has no value of its own: it is read from, and written to, State.uniform (the coat's Class A or the shirt's Class B) and the sleeve choice the Class B already has.
   const ceremonialOn = () => typeof CAPUBUniformRules !== 'undefined' && !!State.ceremonial && State.membership === 'cadet' && CAPUBUniformRules.allowsCeremonial(State.membership);
@@ -148,7 +148,7 @@
       when: c => c.u === 'mess_dress' },
     { key: 'headgear', label: 'Headgear', type: 'select',
       choices: c => {
-        // Ceremonials: the male service cap with the Cadet Officer device and the rear chinstrap, for every member (9.6.7.9); no other cap applies, and its two forms are the chinstrap choice.
+        // Honor Guard Uniform: the male service cap with the Cadet Officer device and the rear chinstrap, for every member (9.6.7.9); no other cap applies, and its two forms are the chinstrap choice.
         if(c.cer) return [['auto', 'Honor Guard cap'], ['none', 'No headgear']];
         if(FLIGHT.includes(c.u)) return [['auto', 'Flight cap'], ['none', 'No headgear']];
         // The field uniforms draw the cap worn, front and back: the patrol cap (the ABU cap, the OCP patrol cap, the Blue
