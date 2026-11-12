@@ -1325,6 +1325,21 @@
   };
   // ARM_SEAM end
 
+  // The body's side edge below the armpit on each of those sheets, sheet inches, the armpit first, about 1.6 in of its vertices (scripts/measure-armpit.cjs computeSide; the test compares this table with
+  // the sheets): the body's outline below a short sleeve's hem, the body-side edge of the gap between arm and body, a long sleeve's crease then the gap's body-side edge. The cord is not drawn on the
+  // body side of it below the armpit: it goes behind the body there (cordHidden).
+  // BODY_SIDE begin
+  const BODY_SIDE = {
+    'garment-blues-class-a-coat': [[20.686, 15.409], [20.036, 18.049]],
+    'garment-blues-class-a-coat-female': [[19.08, 12.884], [18.667, 14.753]],
+    'garment-blues-class-b-shirt-male': [[21.093, 15.629], [20.584, 19.802]],
+    'garment-blues-class-b-shirt-male-long': [[21.046, 16.044], [20.936, 17.239], [20.863, 17.536], [20.827, 18.097]],
+    'garment-blues-class-b-blouse-female': [[19.6, 16.35], [19.444, 16.769], [19.302, 17.067], [19.16, 17.365], [19.021, 17.663], [18.892, 17.961]],
+    'garment-blues-class-b-blouse-female-long': [[19.434, 15.442], [18.558, 17.65]]
+  };
+  // BODY_SIDE end
+
+
 
   // The cord overlay is one braided run drawn along the armhole seam, and the sheet's polyline stops short of the top of the shoulder. Ethan, live:
   // 'cords are still fucked up. they arent going to the top of the shoulder nor the bottom of the thing', and 'shoulder cords dont line up'. The run is
@@ -1355,7 +1370,7 @@
     const pts = seam ? seam.map(p => [p[0], p[1]]) : (lm && lm.points && lm.points.length >= 2 ? lm.points.map(p => [p.x, p.y]) : null);
     if(!pts) return null;
     const near = start && Math.hypot(pts[0][0] - start[0], pts[0][1] - start[1]) < 0.01;
-    return { points: start && !near ? [start, ...pts] : pts, exact: !!seam, topAt: start };
+    return { points: start && !near ? [start, ...pts] : pts, exact: !!seam, topAt: start, seam: pts };
   }
   // B4 (Ethan, 2026-11-10: "i think ive said this atleat 20 times, the cords still arent right. put them down like an extra 10 pixels so it looks like it should. nothing else has to change
   // except it needs to go down."): every shoulder cord is drawn CORD_DROP lower, the whole braid moved down with its shape, length, width and colour as they were. His picture of the Class A
@@ -1368,6 +1383,9 @@
   // to the half plane below that line (COVER_TUCK above it, so no hairline of page shows between the two): its square top end, which lay on the shoulder line, and the outer half of the braid beside the
   // epaulet's end are no longer drawn. The braid's path, and the cord below the epaulet, are as they were. The epaulet is drawn over the cord (z) on every garment.
   const COVER_TUCK = 0.012;
+  // The shoulder cord runs up under the epaulet and is cut to the garment side of the line the epaulet's lower edge is marked at, CORD_TUCK above it (the epaulet is drawn over it), so no strip of cloth
+  // lies between the epaulet's drawn lower edge and the cord where the two differ by a few hundredths of an inch (the strip's shading, the cover's raised upper edge).
+  const CORD_TUCK = 0.2;
   function markEpauletEdge(ctx, side, at, dir){
     const l = Math.hypot(dir.x, dir.y) || 1;
     ctx.epauletEdge = ctx.epauletEdge || {};
@@ -1376,55 +1394,79 @@
   // The lower edge of a strap band `f` (bandFrame: axis toward the neck, normal up, centre line from the outer end) `thick` inches across.
   function markBandEdge(ctx, side, f, thick){ markEpauletEdge(ctx, side, { x: f.outer.x - f.normal.x * thick / 2, y: f.outer.y - f.normal.y * thick / 2 }, f.axis); }
   // The scene-inch polygon of everything on the garment side of that edge, which the cord layer is cut to.
-  function belowEpauletEdge(e){
-    const n = { x: e.dir.y, y: -e.dir.x }, up = n.y > 0 ? { x: -n.x, y: -n.y } : n, B = 60;
-    const P = { x: e.at.x + up.x * COVER_TUCK, y: e.at.y + up.y * COVER_TUCK };
+  function belowEpauletEdge(e, tuck){
+    const n = { x: e.dir.y, y: -e.dir.x }, up = n.y > 0 ? { x: -n.x, y: -n.y } : n, B = 60, t = tuck == null ? COVER_TUCK : tuck;
+    const P = { x: e.at.x + up.x * t, y: e.at.y + up.y * t };
     return [{ x: P.x - e.dir.x * B, y: P.y - e.dir.y * B }, { x: P.x + e.dir.x * B, y: P.y + e.dir.y * B }, { x: P.x + e.dir.x * B - up.x * B, y: P.y + e.dir.y * B - up.y * B }, { x: P.x - e.dir.x * B - up.x * B, y: P.y - e.dir.y * B - up.y * B }];
+  }
+  // The shoulder cord comes out flush with the epaulet's outside end edge: above the epaulet's lower edge it is drawn only on the neck side of the line of that edge (through the lower edge's outer end,
+  // square to the strap), and only down to `tuck` above the lower edge; below the lower edge it is not cut. (In the frame of the strap: u along it toward the neck, v down from the lower edge, the
+  // outer end at the origin: the polygon is the half plane v >= 0 and the strip of v from -tuck to 0 with u >= 0.) Under the epaulet the tuck is CORD_TUCK (the epaulet is drawn over what is left);
+  // worn over it (the Honor Guard uniform), a tuck as long as the shoulder, so the cord runs up over the epaulet to the outline but not past its outside end. Scene inches, a polygon.
+  function cordEndClip(e, tuck){
+    const n = { x: e.dir.y, y: -e.dir.x }, down = n.y > 0 ? n : { x: -n.x, y: -n.y }, B = 60, d = e.dir;
+    const at = (u, v) => ({ x: e.at.x + d.x * u + down.x * v, y: e.at.y + d.y * u + down.y * v });
+    return [at(0, -tuck), at(B, -tuck), at(B, B), at(-B, B), at(-B, 0), at(0, 0)];
   }
   function tuckCordUnderEpaulet(ctx, layer){
     const e = ctx.epauletEdge && ctx.epauletEdge.left;
-    if(layer && e) layer.clip = belowEpauletEdge(e);
+    if(!layer || !e) return;
+    const cp = layer.cordPath, run = cp && !cp.pendant;
+    // (through the same corner the cord's edge is laid on: the epaulet's outer lower corner, snapped to the drawn slide's, cordTopEdge)
+    layer.clip = run ? cordEndClip(cp.edge ? { at: { x: cp.edge[0], y: cp.edge[1] }, dir: e.dir } : e, CORD_TUCK) : belowEpauletEdge(e);
   }
-  // The window the braid's last stretch is drawn through, in addition to the garment's outline (layer.clipPlus; js/engine/render-svg.js): the box of the braid from CORD_CLIP_LEAD above the
-  // armpit's level on the run (the sheet's armpit point, not the one moved down with the cord) to the braid's end, CORD_CLIP_MARGIN wider each way, so the braid is drawn over the gap between
-  // arm and body there and is neither notched nor cut by it where the gap lies outside the outline (a short sleeve's hem). The lead lies on the cloth, where the outline cuts nothing, so the
-  // window's top edge, which is square to the run, leaves no sliver between itself and a hem line that is level. Everywhere else the braid is cut by the garment's outline as it always was.
-  // Scene inches, as a polygon; null when the run's end is not a stretch.
-  const CORD_CLIP_MARGIN = 0.03, CORD_CLIP_LEAD = 0.1;
-  function cordEndWindow(fit, armpit, width){
-    const a = fit.runEnd, b = fit.end, len = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    if(!(len > 1e-9)) return null;
-    const u = [(b[0] - a[0]) / len, (b[1] - a[1]) / len], n = [-u[1], u[0]], half = width / 2 + CORD_CLIP_MARGIN;
-    const t0 = (armpit ? Math.min(0, (armpit[0] - a[0]) * u[0] + (armpit[1] - a[1]) * u[1]) : 0) - CORD_CLIP_LEAD, t1 = len + CORD_CLIP_MARGIN;
-    return [[t0, -half], [t0, half], [t1, half], [t1, -half]].map(([t, w]) => ({ x: a[0] + u[0] * t + n[0] * w, y: a[1] + u[1] * t + n[1] * w }));
+  // Below the armpit the cord goes behind the body: it is not drawn on the body side of the body's side edge (BODY_SIDE), from the armpit down the edge's whole length and 8 in out. The region as a
+  // polygon in scene inches (layer.clipOut, js/engine/render-svg.js); null where the sheet states no edge.
+  const CORD_HIDE_OUT = 8;
+  function cordHidden(id){
+    const side = BODY_SIDE[id];
+    if(!side || side.length < 2) return null;
+    const first = side[0], last = side[side.length - 1];
+    return [{ x: first[0] - CORD_HIDE_OUT, y: first[1] }].concat(side.map(p => ({ x: p[0], y: p[1] })), [{ x: last[0] - CORD_HIDE_OUT, y: last[1] }]);
+  }
+  // The window the cord's turn is drawn through, in addition to the garment's outline (layer.clipPlus): the box round the armpit from CORD_WINDOW_LEAD above it to CORD_WINDOW_DOWN below and CORD_WINDOW_SIDE
+  // either side, so below the armpit the cord is drawn over the gap between arm and body (and the empty space under a short sleeve) and is neither notched nor cut by it. Everywhere else the cord is cut
+  // by the garment's outline as it always was. Scene inches, as a polygon.
+  const CORD_WINDOW_LEAD = 0.1, CORD_WINDOW_DOWN = 2, CORD_WINDOW_SIDE = 1.5;
+  function cordWindow(armpit){
+    const x0 = armpit[0] - CORD_WINDOW_SIDE, x1 = armpit[0] + CORD_WINDOW_SIDE, y0 = armpit[1] - CORD_WINDOW_LEAD, y1 = armpit[1] + CORD_WINDOW_DOWN;
+    return [{ x: x0, y: y0 }, { x: x1, y: y0 }, { x: x1, y: y1 }, { x: x0, y: y1 }];
+  }
+  // The point the cord's sleeve-side edge passes through at the top: the epaulet's outer lower corner. It is where ctx.epauletEdge puts it (markEpauletEdge: the lower edge's outer end), snapped to the
+  // corner of the slide the engine draws on a shirt or blouse (the epaulet layer's cover polygon) when a vertex of that lies within CORD_CORNER_SNAP of it, so the cord is flush with what is drawn;
+  // where the garment wears no epaulet (the cadet NCOs' Class A), the shoulder point.
+  const CORD_CORNER_SNAP = 0.1;
+  function cordTopEdge(ctx, id){
+    const e = ctx.epauletEdge && ctx.epauletEdge.left;
+    if(e){
+      const l = ctx.layers.find(x => x.key === 'epaulet:left');
+      let best = [e.at.x, e.at.y], bd = CORD_CORNER_SNAP;
+      if(l && Array.isArray(l.clip)) for(const q of l.clip){ const d = Math.hypot(q.x - e.at.x, q.y - e.at.y); if(d < bd){ bd = d; best = [q.x, q.y]; } }
+      return best;
+    }
+    const sm = shoulderSeamOf(id, 'left');
+    return sm ? [sm.outer.x, sm.outer.y] : null;
   }
   function fitCordLayer(ctx, spec, look){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
-    const run = cordRun(id, lm);
-    if(!layer || !run) return;
+    const run = cordRun(id, lm), apex = ARMPIT[id];
+    if(!layer || !run || !apex) return;
     const ring = GARMENT_TOP[id];
-    const down = p => [p[0], p[1] + CORD_DROP];
-    const outline = ring ? ring.slice(1).concat([ring[0]]).map(down) : null;
-    // The braid moves down whole; its top end, which lay on the shoulder line, is carried on up along the braid's first segment to the height it had, so a coat that wears no epaulet
-    // (the cadet NCOs' Class A) still has the cord run up to the shoulder line, where the silhouette cuts it: the same braid, moved down, its hidden top continued, not shortened.
-    const pts = run.points.map(down);
-    let topAt = run.topAt ? down(run.topAt) : null;
-    {
-      const a = topAt || pts[0], b = pts[1], len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, ux = (b[0] - a[0]) / len, uy = (b[1] - a[1]) / len;
-      const t = uy > 0.05 ? Math.min(CORD_DROP / uy, 0.6) : 0;
-      const top = [a[0] - ux * t, a[1] - uy * t];
-      if(topAt){ topAt = top; pts[0] = top; }
-      else pts.unshift(top);
-    }
-    const fit = core.fitCord(pts, outline, ARMPIT[id] ? down(ARMPIT[id]) : null, { exact: run.exact, topAt });
-    layer.cordPath = { d: fit.d, pieces: fit.pieces, points: fit.points, top: fit.top, bottom: fit.bottom, end: fit.end, runEnd: fit.runEnd, reach: fit.reach, stretch: fit.stretch, width: fit.width, exact: fit.exact, seam: run.exact ? run.points : null };
-    layer.cordLook = look || null;   // which cord the renderer draws along this path (CordBraid; js/engine/render-svg.js)
-    // The Aide de Camp cord's run is drawn as wide as the aiguillette's braids it hangs beside, the sheet's own braid thickness (dimensions.braid_thickness_in), not the 0.5 in of the other cords.
+    const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
+    // The Aide de Camp cord's run is drawn as wide as the aiguillette's braids it hangs beside, the sheet's own braid thickness (dimensions.braid_thickness_in), not the cord's width.
     const aideThick = look && look.id === 'aide_de_camp' && spec.raw && spec.raw.dimensions && spec.raw.dimensions.braid_thickness_in;
-    if(aideThick > 0) layer.cordPath.width = aideThick;
-    layer.clipPlus = cordEndWindow(fit, ARMPIT[id], layer.cordPath.width);
+    const width = aideThick > 0 ? aideThick : core.CORD_WIDTH;
+    // The seam the cord follows (the sheet's drawn seam, or the overlay's landmark fitted to the armpit), then wrapped: out from under the epaulet flush with its outside end, down to the armpit
+    // on the sleeve side, and round under the arm (core.wrapCord).
+    const fit = core.fitCord(run.seam, outline, apex, { exact: run.exact, topAt: run.seam[0] });
+    const wrap = core.wrapCord(fit.points, { width, edge: cordTopEdge(ctx, id), apex });
+    layer.cordPath = { d: wrap.d, pieces: wrap.pieces, points: wrap.points, start: wrap.start, top: wrap.top, bottom: wrap.bottom, end: wrap.end, arc: wrap.arc, offsets: wrap.offsets, topIndex: wrap.topIndex, bottomIndex: wrap.bottomIndex, apex: wrap.apex, edge: wrap.edge, width, exact: fit.exact, seam: fit.points };
+    layer.cordLook = look || null;   // which cord the renderer draws along this path (CordBraid; js/engine/render-svg.js)
     layer.clipSil = id;
     layer.clipOuter = true;
+    layer.clipPlus = cordWindow(apex);
+    const hidden = cordHidden(id);
+    if(hidden) layer.clipOut = [hidden];
     tuckCordUnderEpaulet(ctx, layer);
   }
 
@@ -1551,8 +1593,11 @@
     }
     cordUnderBoard(ctx, runLayer, 'shoulder cord');
     if(b.cordOnTop){
-      runLayer.z = Z.epauletLayer + 0.5;
+      // over the epaulet whatever it is drawn at (a Class A board's strip and its shading lie higher than a shirt's slide): above every left epaulet layer
+      runLayer.z = Math.max(Z.epauletLayer + 0.5, ...ctx.layers.filter(l => /^epaulet(-shade:[a-z]+|-tip)?:left$/.test(l.key || '')).map(l => l.z + 0.1));
       delete runLayer.clip;
+      const e = ctx.epauletEdge && ctx.epauletEdge.left, cp = runLayer.cordPath;
+      if(e) runLayer.clip = cordEndClip(cp && cp.edge ? { at: { x: cp.edge[0], y: cp.edge[1] }, dir: e.dir } : e, 60);   // over the epaulet, still not past its outside end edge
     }
   }
 

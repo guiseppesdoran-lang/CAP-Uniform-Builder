@@ -40,14 +40,16 @@ test('every cord of the list is drawn on every cut that takes one, on the carrie
     const base = await compose(cut, 'honor_guard'), ref = runOf(base);
     assert.ok(ref && ref.cordPath, `${cut[0]}: the honor guard cord is drawn`);
     assert.equal(ref.id, `${cut[0]}-cord-honor-guard`);
-    assert.ok(Array.isArray(ref.clip) && ref.clip.length === 4, `${cut[0]}: cut to the garment side of the epaulet's lower edge`);
+    assert.ok(Array.isArray(ref.clip) && ref.clip.length === 6, `${cut[0]}: cut to the garment side of the epaulet's lower edge (and, above it, to the neck side of its outside end edge)`);
     for(const id of ALL){
       const scene = await compose(cut, id), cl = runOf(scene);
       const tag = `${cut[0]} ${id}`;
       assert.ok(cl && cl.cordPath, `${tag}: drawn`);
       assert.equal(cl.id, `${cut[0]}-cord-${CORDS.carrierOf(id)}`, `${tag}: on its carrier sheet`);
       assert.deepEqual(cl.cordLook, { id, colour: colourFor(id) }, `${tag}: the look the renderer draws`);
-      assert.equal(cl.cordPath.d, ref.cordPath.d, `${tag}: the path is the one it always was`);
+      // the path is the same for every cord: it is laid by the braid's width (flush with the epaulet's end edge, on the sleeve side at the armpit), so the Aide de Camp cord's narrower run takes its own, on the same seam
+      if(id === 'aide_de_camp') assert.deepEqual(cl.cordPath.seam, ref.cordPath.seam, `${tag}: the same seam`);
+      else assert.equal(cl.cordPath.d, ref.cordPath.d, `${tag}: the path is the one it always was`);
       // every cord is as wide as the engine's cord, but the Aide de Camp cord's run, which is drawn as wide as the aiguillette's braids beside it
       const sheetThick = id === 'aide_de_camp' ? (await store.load(`${cut[0]}-cord-aide-de-camp`)).raw.dimensions.braid_thickness_in : core.CORD_WIDTH;
       assert.equal(cl.cordPath.width, sheetThick, `${tag}: the braid's width`);
@@ -115,11 +117,11 @@ test('a cord the list does not know is not drawn, and says so; senior members we
   assert.ok(runOf(aide) && pendantOf(aide), 'the aide cord is worn by senior members too');
 });
 
-test('the cord lies under the epaulet unless the cord layer\'s switch says on top: off by default, on puts it over the epaulet layer with nothing cut from it', async () => {
+test('the cord lies under the epaulet unless the cord layer\'s switch says on top: off by default, on puts it over the epaulet layer, cut only at the line of the epaulet\'s outside end edge', async () => {
   for(const cut of CUTS){
     const off = runOf(await compose(cut, 'honor_guard')), on = runOf(await compose(cut, 'honor_guard', { cordOnTop: true }));
     assert.ok(off.z < 8 && Array.isArray(off.clip), `${cut[0]}: under by default`);
-    assert.ok(on.z > 8 && !('clip' in on), `${cut[0]}: on top when asked (z ${on.z})`);
+    assert.ok(on.z > 8 && Array.isArray(on.clip) && Math.hypot(on.clip[0].x - on.clip[5].x, on.clip[0].y - on.clip[5].y) > 59, `${cut[0]}: on top when asked (z ${on.z}), cut only at the epaulet's outside end edge`);
     assert.equal(on.cordPath.d, off.cordPath.d, `${cut[0]}: the same path either way`);
     assert.deepEqual(on.cordLook, off.cordLook);
   }
@@ -192,8 +194,8 @@ test('the aiguillette\'s braid is a plain cord in the aiguillette\'s colour with
   const bare = CB.draw([[0, 0], [0, 3]], CORDS.resolve('wing'), { unit: 1, width: 0.5, idPrefix: 'a-', cap: false }).run;
   assert.notEqual(capped, bare, 'the cap is part of the drawing');
   const plain = core.samplePath(runOf(scene).cordPath.pieces, 0.02).map(p => [p[0] - ART.tx / 100, p[1] - ART.ty / 100]);
-  assert.equal(run.run, CB.draw(plain, CORDS.resolve('fl-leadership-academy-instructor'), { unit: 1, width: 0.5, idPrefix: 'test-', cap: true }).run, 'the run is the capped braid');
-  assert.notEqual(run.run, CB.draw(plain, CORDS.resolve('fl-leadership-academy-instructor'), { unit: 1, width: 0.5, idPrefix: 'test-', cap: false }).run);
+  assert.equal(run.run, CB.draw(plain, CORDS.resolve('fl-leadership-academy-instructor'), { unit: 1, width: runOf(scene).cordPath.width, idPrefix: 'test-', cap: true }).run, 'the run is the capped braid');
+  assert.notEqual(run.run, CB.draw(plain, CORDS.resolve('fl-leadership-academy-instructor'), { unit: 1, width: runOf(scene).cordPath.width, idPrefix: 'test-', cap: false }).run);
   // the knotted cord: two strands, hung from the shoulder end
   const knotLayer = runOf(await compose(cut, 'ga-cadet-of-the-year'));
   const knot = braidOf(knotLayer);

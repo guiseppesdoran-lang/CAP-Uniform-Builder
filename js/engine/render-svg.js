@@ -171,8 +171,13 @@
     const cord = look.pendant ? CS.pendantCord(look.id, look.colour) : CS.resolve(look.id, look.colour);
     if(!cord) return null;
     const points = E.core.samplePath(layer.cordPath.pieces, 0.02).map(p => [(p[0] * 100 - tx) / s, (p[1] * 100 - ty) / s]);
-    const out = CB.draw(points, cord, { unit: 100 / s, width: layer.cordPath.width, idPrefix, cap: !look.pendant });
-    return out && out.run ? { run: out.run, extras: look.pendant ? '' : out.extras } : null;
+    const opts = { unit: 100 / s, width: layer.cordPath.width, idPrefix, cap: !look.pendant };
+    const out = CB.draw(points, cord, opts);
+    // The strand, knot and tip a cord may hang from its shoulder end hang from the point the cord comes out from under the epaulet at (cordPath.top), not from the far end of the run's carried-up path.
+    let extras = look.pendant ? '' : out && out.extras;
+    const top = layer.cordPath.top;
+    if(extras && top) extras = CB.draw([[(top[0] * 100 - tx) / s, (top[1] * 100 - ty) / s]], cord, opts).extras;
+    return out && out.run ? { run: out.run, extras } : null;
   }
 
   function transformFor(layer){
@@ -445,20 +450,10 @@
           const holder = el('g');
           holder.innerHTML = braid.run + braid.extras;
           while(holder.firstChild) cord.appendChild(holder.firstChild);
-          // The window of the braid's last stretch (layer.clipPlus) is open through the sheet's own cut to its silhouette as well: the braid is drawn a second time, cut to the window alone (in the art
-          // group's units), so over the gap there it is neither notched nor cut by the sheet's outline, which has the gap as a hole. (Not one clip path of both: the sheet's has holes and
-          // is filled even-odd.) The second copy is the same opaque drawing, so where the two overlap nothing shows.
-          const own = layer.clipPlus && byId('cordClip');
-          if(own && own.parentNode && cord.parentNode && cord.parentNode.parentNode){
-            const wid = `${layer.id}__cordWindow${suffix}`, win = el('clipPath', { id: wid, clipPathUnits: 'userSpaceOnUse' });
-            win.appendChild(el('polygon', { points: layer.clipPlus.map(p => fmt((p.x * 100 - Number(t[1])) / Number(t[3])) + ',' + fmt((p.y * 100 - Number(t[2])) / Number(t[3]))).join(' ') }));
-            own.parentNode.appendChild(win);
-            const copy = cord.cloneNode(true), second = el('g', { 'clip-path': `url(#${wid})` });
-            copy.removeAttribute('id');
-            copy.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
-            second.appendChild(copy);
-            cord.parentNode.parentNode.appendChild(second);
-          }
+          // The sheet cuts its braid to its own silhouette, the gap between arm and body a hole in it; the engine cuts the cord (clipSil, clipOuter, and layer.clipPlus's window below the armpit,
+          // where the cord is drawn over that gap), so the sheet's own cut is taken off: it would notch the cord there.
+          const own = layer.clipPlus && cord.parentNode;
+          if(own && /cordClip/.test(own.getAttribute('clip-path') || '')) own.removeAttribute('clip-path');
         }
         // A cord sheet that draws more than the braid (the Aide de Camp aiguillette's loops and thin cords) has those groups left off here.
         if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });

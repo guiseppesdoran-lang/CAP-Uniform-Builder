@@ -151,8 +151,10 @@ test('the silver cord lies on top of the epaulet in this uniform and under it ev
     const run = scene => scene.layers.find(l => l.cordLook && !l.cordLook.pendant && !l.cordLook.tip);
     assert.equal(run(on).id, `${cut.sheet}-cord-honor-guard`);
     assert.deepEqual(run(on).cordLook, { id: 'honor_guard', colour: null }, `${cut.name}: the silver cord`);
-    assert.equal(run(on).z, 8.5, `${cut.name}: above the epaulet (8)`);
-    assert.ok(!run(on).clip, `${cut.name}: not cut away under the epaulet`);
+    const over = Math.max(8, ...on.layers.filter(l => /^epaulet(-shade:[a-z]+|-tip)?:left$/.test(l.key || '')).map(l => l.z));
+    assert.ok(run(on).z >= 8.5 && run(on).z > over, `${cut.name}: above the epaulet and its shading (${over}): ${run(on).z}`);
+    // over the epaulet the cord is cut only at the line of the epaulet's outside end edge (tuck as long as the shoulder), not at its lower edge: its cut line lies 60 in above the edge
+    assert.ok(Array.isArray(run(on).clip) && Math.hypot(run(on).clip[0].x - run(on).clip[5].x, run(on).clip[0].y - run(on).clip[5].y) > 59, `${cut.name}: not cut away under the epaulet`);
     assert.equal(run(off).z, 7.5, `${cut.name}: under it when the switch is off`);
     assert.ok(run(off).clip, `${cut.name}: cut away under the epaulet when the switch is off`);
     assert.equal(run(on).cordPath.d, run(off).cordPath.d, `${cut.name}: the path is the same`);
