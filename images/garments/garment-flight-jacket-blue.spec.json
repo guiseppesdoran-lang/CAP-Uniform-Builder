@@ -23,7 +23,8 @@
   "flag_in": "regulation CAPR 39-1 8.2.4.4",
   "loop_square_in": "regulation CAPR 39-1 8.2.5.5",
   "knit_heights_and_collar": "estimated",
-  "command_patch_width": "estimated"
+  "command_patch_width": "estimated",
+  "cloth_colour": "measured: shell #182641 (24,38,65), knit collar, waistband and cuffs #0a1732 (10,23,50), from the product photograph of Vanguard's own listing of this jacket (vanguardmil.com, Civil Air Patrol Uniform: Reversible Nylon Flight Jacket - Blue, CAP1019F to CAP1019J): median of the medians of 7 evenly lit shell regions and of 5 knit regions (owner, 2026-11-12: pull the flight jacket color from vanguard); the regulation says only blue"
  },
  "flag": {
   "side": "wearer's left sleeve (image right)",
@@ -387,7 +388,7 @@
  ],
  "assumed": [
   "finished measurements of the blue jacket are not given (6.1.7 only says similar design and construction): the body is the CFDU's and the MA-1 Medium back length, flap and sleeve pocket are used",
-  "navy shade sampled from the Figure 6.6 illustration (the owner doubts it, 2026-11-10: candidates are on the colour sheet; not changed)",
+  "lightness of the cloth colour: it is measured from one studio product photograph (Vanguard CAP1019F) whose hue and chroma are steady from region to region but whose lightness follows its lighting and the nylon's sheen (region medians L* 8.6 to 16.8); the Figure 6.6 navy (#0c2152) is no longer used",
   "collar and knit band heights",
   "ES patch zone position (jacket has no breast pocket)",
   "command patch width"
