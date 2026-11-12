@@ -379,7 +379,7 @@
       return baseKey(layer) + (layer.showGroups && layer.showGroups.length ? '--show-' + layer.showGroups.join('-').replace(/[^a-z0-9-]/gi, '') : '');
     }
     function baseKey(layer){
-      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : '') + (layer.clipPlus ? '|' + JSON.stringify(layer.clipPlus) : ''));
+      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : ''));
       // Both: the named groups only, less the hidden ones inside them (a collar group redrawn without its cover).
       if(layer.onlyGroups && layer.onlyGroups.length && layer.hideGroups && layer.hideGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '') + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
@@ -450,10 +450,6 @@
           const holder = el('g');
           holder.innerHTML = braid.run + braid.extras;
           while(holder.firstChild) cord.appendChild(holder.firstChild);
-          // The sheet cuts its braid to its own silhouette, the gap between arm and body a hole in it; the engine cuts the cord (clipSil, clipOuter, and layer.clipPlus's window below the armpit,
-          // where the cord is drawn over that gap), so the sheet's own cut is taken off: it would notch the cord there.
-          const own = layer.clipPlus && cord.parentNode;
-          if(own && /cordClip/.test(own.getAttribute('clip-path') || '')) own.removeAttribute('clip-path');
         }
         // A cord sheet that draws more than the braid (the Aide de Camp aiguillette's loops and thin cords) has those groups left off here.
         if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
@@ -502,11 +498,8 @@
       const area = sub => { const pts = [...sub.matchAll(/[ML]\s*(-?[\d.]+)[ ,](-?[\d.]+)/g)].map(m => [Number(m[1]), Number(m[2])]); let a = 0; for(let i = 0; i < pts.length; i++){ const q = pts[(i + 1) % pts.length]; a += pts[i][0] * q[1] - q[0] * pts[i][1]; } return Math.abs(a); };
       return subs.reduce((b, sub) => area(sub) > area(b) ? sub : b, subs[0]);
     }
-    // `plus`: polygons in scene inches (points { x, y }) drawn through as well as the outline, the clip being their union (the last stretch of a shoulder cord's braid, over the gap between
-    // arm and body: layer.clipPlus).
-    function silhouetteClip(garmentId, outer, plus){
-      const extra = plus && plus.length ? plus.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' ') : '';
-      const key = garmentId + (outer ? ':outer' : '') + (extra ? ':plus ' + extra : '');
+    function silhouetteClip(garmentId, outer){
+      const key = garmentId + (outer ? ':outer' : '');
       if(silIds.has(key)) return silIds.get(key);
       let cid = null;
       const base = scene.layers.find(l => l.type === 'asset' && l.id === garmentId && l.role === 'garment');
@@ -518,7 +511,6 @@
         const copy = el('path', { d: outer ? outerSubpath(path.getAttribute('d')) : path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null,
           transform: `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}` });
         cp.appendChild(copy);
-        if(extra) cp.appendChild(el('polygon', { points: extra }));
         defs.appendChild(cp);
         cid = cp.getAttribute('id');
       }
@@ -592,25 +584,27 @@
         node = g;
       }
       if(layer.clipOut && layer.clipOut.length){
-        // Everything except the polygons in scene inches (a collar leaf lying over a badge pinned under it):
-        // one clip path of a rectangle larger than the scene and the polygons, filled even-odd.
-        const d = 'M-1000 -1000H2000V2000H-1000Z ' + layer.clipOut.map(poly => 'M' + poly.map(p => fmt(p.x) + ' ' + fmt(p.y)).join('L') + 'Z').join(' ');
-        let cid = clipIds.get('out:' + d);
-        if(!cid){
-          cid = 'clip-' + clipIds.size;
-          const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
-          cp.appendChild(el('path', { d, 'clip-rule': 'evenodd' }));
-          defs.appendChild(cp);
-          clipIds.set('out:' + d, cid);
+        // Everything except the polygons in scene inches (a collar leaf lying over a badge pinned under it, the armpit's cut of a shoulder cord): each polygon is cut away by its own clip path of a
+        // rectangle larger than the scene and the polygon, filled even-odd, one group inside the other, so polygons that overlap are cut once, not twice.
+        for(const poly of layer.clipOut){
+          const d = 'M-1000 -1000H2000V2000H-1000Z M' + poly.map(p => fmt(p.x) + ' ' + fmt(p.y)).join('L') + 'Z';
+          let cid = clipIds.get('out:' + d);
+          if(!cid){
+            cid = 'clip-' + clipIds.size;
+            const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
+            cp.appendChild(el('path', { d, 'clip-rule': 'evenodd' }));
+            defs.appendChild(cp);
+            clipIds.set('out:' + d, cid);
+          }
+          const g = el('g', { 'clip-path': `url(#${cid})` });
+          g.appendChild(node);
+          node = g;
         }
-        const g = el('g', { 'clip-path': `url(#${cid})` });
-        g.appendChild(node);
-        node = g;
       }
       if(layer.clipSil){
         // Clipped to the garment sheet's own silhouette (its `clipSil` path, in the sheet's art frame): a
         // copy of the path carried into the scene by the same transform the sheet's symbol is drawn with.
-        const sil = silhouetteClip(layer.clipSil, !!layer.clipOuter, layer.clipPlus);
+        const sil = silhouetteClip(layer.clipSil, !!layer.clipOuter);
         if(sil){
           const g = el('g', { 'clip-path': `url(#${sil})` });
           g.appendChild(node);

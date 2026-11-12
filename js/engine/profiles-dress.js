@@ -1325,20 +1325,6 @@
   };
   // ARM_SEAM end
 
-  // The body's side edge below the armpit on each of those sheets, sheet inches, the armpit first, about 1.6 in of its vertices (scripts/measure-armpit.cjs computeSide; the test compares this table with
-  // the sheets): the body's outline below a short sleeve's hem, the body-side edge of the gap between arm and body, a long sleeve's crease then the gap's body-side edge. The cord is not drawn on the
-  // body side of it below the armpit: it goes behind the body there (cordHidden).
-  // BODY_SIDE begin
-  const BODY_SIDE = {
-    'garment-blues-class-a-coat': [[20.686, 15.409], [20.036, 18.049]],
-    'garment-blues-class-a-coat-female': [[19.08, 12.884], [18.667, 14.753]],
-    'garment-blues-class-b-shirt-male': [[21.093, 15.629], [20.584, 19.802]],
-    'garment-blues-class-b-shirt-male-long': [[21.046, 16.044], [20.936, 17.239], [20.863, 17.536], [20.827, 18.097]],
-    'garment-blues-class-b-blouse-female': [[19.6, 16.35], [19.444, 16.769], [19.302, 17.067], [19.16, 17.365], [19.021, 17.663], [18.892, 17.961]],
-    'garment-blues-class-b-blouse-female-long': [[19.434, 15.442], [18.558, 17.65]]
-  };
-  // BODY_SIDE end
-
 
 
   // The cord overlay is one braided run drawn along the armhole seam, and the sheet's polyline stops short of the top of the shoulder. Ethan, live:
@@ -1350,10 +1336,10 @@
   // LIVE13 E122 (Ethan: "i genuinely dont think you understand how cords work. they go along the seam. they shouldnt conflict with the ribbons ever ...
   // im not sure why you have them fading out. they go around the seam in a circle, but we cant see that because we are only looking at the front."): the
   // cord is a closed loop round the sleeve head; the front shows the one arc from under the board down the seam, and at the armpit it passes behind
-  // the arm. The braid ends there, squarely and fully opaque (no fade, no run down the body's side, never on the chest); the earlier turn under the arm
-  // and its fade (LIVE10-4) are gone. LIVE13 (Ethan, 2026-11-12: "literally all you need to do is extend the cord a little bit so you dont see any blue under it"): the end is
-  // core.CORD_END_EXTEND (0.25 in) past the armpit, the run continued straight in its own direction there (core.fitCord), and that last stretch is drawn over the gap between arm and body
-  // as well (cordEndWindow: layer.clipPlus); the braid's top, its path along the seam, its width and its look are as they were. The layer is cut to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
+  // the arm. The braid is fully opaque (no fade, no run down the body's side, never on the chest). LIVE13 (Ethan, 2026-11-12), in three passes: the braid went on past the armpit so no cloth showed under
+  // its square end, then "it should go under the eppaulet flush with the outside edge" and "the cord, goes all the way around the inner part of the sleve, under the wearers armpid", then "you have them
+  // kind of going to the left, which is not realistic": it comes out flush from under the epaulet (core.wrapCord), comes straight down and ends in the point of the armpit, its two edges closing in on
+  // the apex over the last cord width (core.cordTipCut) with nothing below it. The layer is cut to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
   // arm and body as a cord does.
   // The run starts at the board's outer end on the shoulder seam (shoulderSeamOf's shoulder point), under the board (the cord is drawn below it), and
   // continues down the armhole seam as the sheet draws it, or the cord overlay's own landmark where the sheet draws no seam (Ethan, 2 November 2026: "cord should
@@ -1415,23 +1401,6 @@
     // (through the same corner the cord's edge is laid on: the epaulet's outer lower corner, snapped to the drawn slide's, cordTopEdge)
     layer.clip = run ? cordEndClip(cp.edge ? { at: { x: cp.edge[0], y: cp.edge[1] }, dir: e.dir } : e, CORD_TUCK) : belowEpauletEdge(e);
   }
-  // Below the armpit the cord goes behind the body: it is not drawn on the body side of the body's side edge (BODY_SIDE), from the armpit down the edge's whole length and 8 in out. The region as a
-  // polygon in scene inches (layer.clipOut, js/engine/render-svg.js); null where the sheet states no edge.
-  const CORD_HIDE_OUT = 8;
-  function cordHidden(id){
-    const side = BODY_SIDE[id];
-    if(!side || side.length < 2) return null;
-    const first = side[0], last = side[side.length - 1];
-    return [{ x: first[0] - CORD_HIDE_OUT, y: first[1] }].concat(side.map(p => ({ x: p[0], y: p[1] })), [{ x: last[0] - CORD_HIDE_OUT, y: last[1] }]);
-  }
-  // The window the cord's turn is drawn through, in addition to the garment's outline (layer.clipPlus): the box round the armpit from CORD_WINDOW_LEAD above it to CORD_WINDOW_DOWN below and CORD_WINDOW_SIDE
-  // either side, so below the armpit the cord is drawn over the gap between arm and body (and the empty space under a short sleeve) and is neither notched nor cut by it. Everywhere else the cord is cut
-  // by the garment's outline as it always was. Scene inches, as a polygon.
-  const CORD_WINDOW_LEAD = 0.1, CORD_WINDOW_DOWN = 2, CORD_WINDOW_SIDE = 1.5;
-  function cordWindow(armpit){
-    const x0 = armpit[0] - CORD_WINDOW_SIDE, x1 = armpit[0] + CORD_WINDOW_SIDE, y0 = armpit[1] - CORD_WINDOW_LEAD, y1 = armpit[1] + CORD_WINDOW_DOWN;
-    return [{ x: x0, y: y0 }, { x: x1, y: y0 }, { x: x1, y: y1 }, { x: x0, y: y1 }];
-  }
   // The point the cord's sleeve-side edge passes through at the top: the epaulet's outer lower corner. It is where ctx.epauletEdge puts it (markEpauletEdge: the lower edge's outer end), snapped to the
   // corner of the slide the engine draws on a shirt or blouse (the epaulet layer's cover polygon) when a vertex of that lies within CORD_CORNER_SNAP of it, so the cord is flush with what is drawn;
   // where the garment wears no epaulet (the cadet NCOs' Class A), the shoulder point.
@@ -1456,17 +1425,15 @@
     // The Aide de Camp cord's run is drawn as wide as the aiguillette's braids it hangs beside, the sheet's own braid thickness (dimensions.braid_thickness_in), not the cord's width.
     const aideThick = look && look.id === 'aide_de_camp' && spec.raw && spec.raw.dimensions && spec.raw.dimensions.braid_thickness_in;
     const width = aideThick > 0 ? aideThick : core.CORD_WIDTH;
-    // The seam the cord follows (the sheet's drawn seam, or the overlay's landmark fitted to the armpit), then wrapped: out from under the epaulet flush with its outside end, down to the armpit
-    // on the sleeve side, and round under the arm (core.wrapCord).
+    // The seam the cord follows (the sheet's drawn seam, or the overlay's landmark fitted to the armpit), laid by core.wrapCord: out from under the epaulet flush with its outside end, straight down
+    // to the apex of the gap, where its two edges close in on the apex (core.cordTipCut, the layer's clipOut) so it ends in the point of the armpit with nothing below it.
     const fit = core.fitCord(run.seam, outline, apex, { exact: run.exact, topAt: run.seam[0] });
     const wrap = core.wrapCord(fit.points, { width, edge: cordTopEdge(ctx, id), apex });
-    layer.cordPath = { d: wrap.d, pieces: wrap.pieces, points: wrap.points, start: wrap.start, top: wrap.top, bottom: wrap.bottom, end: wrap.end, arc: wrap.arc, offsets: wrap.offsets, topIndex: wrap.topIndex, bottomIndex: wrap.bottomIndex, apex: wrap.apex, edge: wrap.edge, width, exact: fit.exact, seam: fit.points };
+    layer.cordPath = { d: wrap.d, pieces: wrap.pieces, points: wrap.points, start: wrap.start, top: wrap.top, bottom: wrap.bottom, end: wrap.end, heading: wrap.heading, offsets: wrap.offsets, topIndex: wrap.topIndex, bottomIndex: wrap.bottomIndex, apex: wrap.apex, edge: wrap.edge, width, exact: fit.exact, seam: fit.points };
     layer.cordLook = look || null;   // which cord the renderer draws along this path (CordBraid; js/engine/render-svg.js)
     layer.clipSil = id;
     layer.clipOuter = true;
-    layer.clipPlus = cordWindow(apex);
-    const hidden = cordHidden(id);
-    if(hidden) layer.clipOut = [hidden];
+    layer.clipOut = [core.cordTipCut(wrap.bottom, wrap.heading, width)];
     tuckCordUnderEpaulet(ctx, layer);
   }
 

@@ -273,7 +273,7 @@ test('the engine\'s ARM_SEAM table is the drawn armhole seam of the current cord
   }
 });
 
-// LIVE13 (Ethan, 2026-11-12): the cord is laid from the epaulet's corner and the armpit, the seam giving it its shape (tests/engine-cord-end.test.cjs pins both ends and the turn); this test holds the run
+// LIVE13 (Ethan, 2026-11-12): the cord is laid from the epaulet's corner and the armpit, the seam giving it its shape (tests/engine-cord-end.test.cjs pins both ends: flush under the epaulet, ending in the point of the armpit); this test holds the run
 // to the seam in between, one smooth line with no end of its own in sight.
 test('every cord kind on every garment and both sexes: one smooth run from under the epaulet to the armpit, on the drawn seam to within half the braid\'s width (9.3)', async () => {
   const armpits = MEASURE_ARMPIT.compute();
@@ -286,7 +286,7 @@ test('every cord kind on every garment and both sexes: one smooth run from under
     if(k === 'aide-de-camp'){
       // E128: the aide cord's hanging pendant is one braid straight down from the attachment (tests/engine-live-aiguillette); its run is the shoulder cord's, wrapped like every cord.
       const pend = scene.layers.find(l => l.cordPath && l.cordPath.pendant), run = scene.layers.find(l => l.cordPath && !l.cordPath.pendant && l.id === `${gid}-cord-aide-de-camp`);
-      assert.ok(pend && run && run.cordPath.arc, `${tag}: the aide cord's run is a wrapped run, beside its pendant`);
+      assert.ok(pend && run && run.cordPath.heading && run.clipOut.length === 1, `${tag}: the aide cord's run is laid like every cord, beside its pendant`);
       checked++;
       continue;
     }
