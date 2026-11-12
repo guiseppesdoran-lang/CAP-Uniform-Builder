@@ -43,6 +43,19 @@
     return CAPUBUniformRules.tieRule(c.u, { gender: c.female ? 'female' : 'male', sleeve: (c.o && c.o.sleeve) || 'short', overblouse: c.u === 'aviator' && c.female && (c.o && c.o.femaleTop) === 'overblouse' });
   }
 
+  // The choices a supplement of the member's unit does not allow, by option: { headgear: ['beret'] } (js/supplements.js hiddenOptions). They are not offered, and a build that
+  // had one chosen falls back to the default, as it does when a chosen value is no longer in the list.
+  function hiddenChoices(){
+    return (typeof Supplements !== 'undefined' && Supplements && Supplements.hiddenOptions && Supplements.hiddenOptions(State)) || {};
+  }
+  function dropHidden(){
+    const hidden = hiddenChoices(), g = State.garment || {};
+    const stale = Object.keys(hidden).filter(k => k in g && hidden[k].includes(g[k]));
+    if(!stale.length) return false;
+    State.garment = Object.fromEntries(Object.entries(g).filter(([k]) => !stale.includes(k)));
+    return true;
+  }
+
   // The paragraph that allows each chevron size, by uniform: the field uniforms' NCO grade, the women's Class A, Class B and mess dress (the men's Class B has one size).
   const CHEVRON_PARA = { abu: '5.1.1.1.1.2', corporate_field: '5.2.1.1.1.3', blues_a: '4.1.9.3.3', blues_b: '4.1.12.2.3.3', mess_dress: '4.1.2.1.1.4' };
 
@@ -110,7 +123,8 @@
           const list = [['auto', 'Patrol cap'], ['tactical', 'Tactical cap']];
           if(c.u === 'corporate_field') list.push(['boonie', 'Boonie hat']);
           // The National Blue Beret (ICL 25-02 9.2.3: NBB graduates, with the ABU/OCP and the corporate field uniform at the unit level; LIVE13 E83).
-          list.push(['beret', 'National Blue Beret, graduates']);
+          // A supplement of the member's unit may not allow it (Minnesota Wing: no blue berets, Supplements.hiddenOptions): then it is not offered at all.
+          if(!(hiddenChoices().headgear || []).includes('beret')) list.push(['beret', 'National Blue Beret, graduates']);
           list.push(['none', 'No headgear']);
           return list;
         }
@@ -279,12 +293,13 @@
     const host = document.getElementById('garmentOptions');
     const panel = document.getElementById('garmentOptionsPanel');
     if(!host || !panel || typeof CAPUBEngine === 'undefined') return;
+    if(dropHidden() && typeof fullRender === 'function') fullRender();
     const c = context();
     const active = OPTIONS.filter(o => o.when(c));
     const g = State.garment || {};
     // The text in a text field is not part of the signature: typing must not rebuild the field being typed in.
     // The grade and the badges are in it too: the caps carry the member's grade and the layouts stand on their badges, so their pictures are drawn again when either changes.
-    const signature = JSON.stringify([c.u, c.female, c.g.category, c.g.key || c.g.rank, c.chestBadges, State.badges || [], c.chaplain, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
+    const signature = JSON.stringify([c.u, c.female, c.g.category, c.g.key || c.g.rank, c.chestBadges, State.badges || [], c.chaplain, hiddenChoices(), active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
     const refocus = focusedPick(host);
@@ -368,5 +383,7 @@
   }
 
   document.addEventListener('capub:rendered', () => render());
+  // The member's unit changed: what its supplements allow is drawn again, pictures and all.
+  document.addEventListener('capub:supplements-changed', () => render(true));
   window.CAPUBGarmentOptions = { OPTIONS, sanitize, render, nameHint, FULL_NAME };
 })();
