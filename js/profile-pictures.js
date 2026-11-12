@@ -6,6 +6,7 @@
 //   gradeName(membership, rank)       the grade's name in words ("Cadet Major")
 //   const made = create(env);
 //   made.uniforms(ids)                { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
+//   made.cuts()                       { now: { male, female }, ready, settled }: the uniform the member is on, in each cut
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
 // they made) with nothing else on it: no ribbons, badges, patches, name or cord, and no cap, so the garment fills the picture. The coat and the shirt, the
@@ -165,7 +166,9 @@
     }
     return {
       // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Ceremonials the honor guard items on the coat or the shirt.
-      uniforms: ids => pictures(ids, id => id === env.rules.CEREMONIAL.id ? { ceremonial: true } : { uniform: id })
+      uniforms: ids => pictures(ids, id => id === env.rules.CEREMONIAL.id ? { ceremonial: true } : { uniform: id }),
+      // The uniform the member is on (Ceremonials rides on the coat or the shirt, and is pictured as it), in each cut: the same pictures as its card's where the cut is the member's.
+      cuts: () => pictures(['male', 'female'], gender => ({ gender }))
     };
   }
 

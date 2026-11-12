@@ -15,9 +15,11 @@ const profile=html.slice(html.indexOf('id="stepGroup-profile"'),html.indexOf('id
 const ribbons=html.slice(html.indexOf('id="groupRibbons"'),html.indexOf('id="groupBadges"'));
 const rack=html.slice(html.indexOf('id="rackLayoutMore"'),html.indexOf('</details>',html.indexOf('id="rackLayoutMore"')));
 
-test('membership and cut are two buttons side by side, with the select kept as the source of truth',()=>{
+test('membership is two buttons side by side, the cut and the grade are chosen by picture, each with its select kept as the source of truth',()=>{
   assert.match(html,/data-segments-for="membershipType"/);
-  assert.match(html,/data-segments-for="jacketSelect"/);
+  assert.doesNotMatch(html,/data-segments-for="jacketSelect"/,'the cut is two pictures of the uniform (js/profile-pickers.js), not two buttons');
+  assert.match(html,/<div id="cutPicker"><\/div>\s*<select id="jacketSelect" class="segmentedSource"/);
+  assert.match(html,/<div id="rankSetupPicker" class="mt-10"><\/div>\s*<select id="rankSetupSelect" class="segmentedSource"/);
   assert.match(html,/<select id="membershipType" class="segmentedSource"/);
   assert.match(html,/<select id="jacketSelect" class="segmentedSource"/);
   assert.match(css,/\.segmented\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);

@@ -5,11 +5,14 @@
 //   Grade     a group of insignia under plain headings, in the order of rank, for the grades of the member's kind of membership. The select #rankSetupSelect stays
 //             in the page, hidden, as the source of truth (as #membershipType stays behind its two buttons): saved setups, the report import and Undo write to it,
 //             and a pick writes to it and fires its change.
+//   Cut       two pictures of the member's own uniform, in the male and the female cut, over #jacketSelect the same way.
+//   Diamond   the cadet first sergeant's chevron with and without the diamond, over #cadetFirstSergeantCheckbox the same way.
 //   Uniform   each uniform card (button.uniformOption, which every handler and test of the page knows) holds a picture of that uniform for the member, drawn by the
 //             engine, above its name; the card's behaviour, its hiding and its folding when the member may not wear it are js/setup.js's and js/workspace-ui.js's.
 //
-// The pictures of the uniforms are made when the Uniform step is shown, and kept for the member they were made for. If one cannot be made the card is its name alone.
-// js/setup.js capubSyncSegments calls sync(), which every change of the page's state reaches.
+// The pictures of the uniforms are made when the Uniform step is shown (those of the cut, when the Profile step is shown to a member with a membership and a grade),
+// and kept for the member they were made for. If one cannot be made the choice is its name alone. js/setup.js capubSyncSegments calls sync(), which every change of
+// the page's state reaches.
 //
 // Loads as a classic script (window.CAPUBProfilePickers).
 (function(){
@@ -24,6 +27,7 @@
     return node;
   };
   const ready = () => !!(window.CAPUBProfilePictures && typeof State !== 'undefined');
+  const BLANK_TALL = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 4" aria-hidden="true"></svg>';
   const TICK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" focusable="false" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   const shown = id => { const n = by(id); return !!n && !n.hidden; };
@@ -106,6 +110,70 @@
     if(grade.picker) grade.picker.setValue(source.value);
   }
 
+  // ---- the cut ------------------------------------------------------------------------------------------------------------------
+
+  let cut = null;   // { picker, signature, token, last }
+  function cutOptions(urls){
+    const known = urls || {};
+    // A picture still being made holds its place with a blank box; one that could not be made is the name alone.
+    const picture = v => known[v] ? known[v] : known[v] === null ? undefined : BLANK_TALL;
+    return [['male', 'Male cut'], ['female', 'Female cut']].map(([value, label]) => ({ value, label, picture: picture(value) }));
+  }
+  function syncCut(){
+    const source = by('jacketSelect'), host = by('cutPicker');
+    if(!source || !host || !window.VisualPicker) return;
+    if(!cut){
+      const picker = window.VisualPicker.render(host, {
+        name: 'cut', legend: 'Cut', options: cutOptions(), value: source.value, size: 'large', shape: 'tall',
+        onChange: value => write(source, value)
+      });
+      picker.el.dataset.pickerFor = 'jacketSelect';
+      cut = { picker, signature: '', token: 0, last: {} };
+    }
+    cut.picker.setValue(source.value);
+    // The pictures are of the member's own uniform: made once there is a member, while the Profile step is the one shown.
+    if(!shown('stepGroup-profile') || !State.membership || !State.rank) return;
+    const made = maker().cuts();
+    // While the pictures for a changed member (another grade) are made, the last ones stay, so a change does not blink.
+    const paint = urls => {
+      const shownNow = {};
+      for(const v of ['male', 'female']){
+        if(urls[v] !== undefined) cut.last[v] = urls[v];
+        shownNow[v] = urls[v] !== undefined ? urls[v] : cut.last[v];
+      }
+      const signature = JSON.stringify(shownNow);
+      if(signature === cut.signature) return;
+      cut.signature = signature;
+      cut.picker.setOptions(cutOptions(shownNow));
+    };
+    const token = ++cut.token;
+    paint(made.now);
+    if(!made.settled) made.ready.then(done => { if(token === cut.token) paint(done); });
+  }
+
+  // ---- the first sergeant's diamond -----------------------------------------------------------------------------------------------
+
+  let diamond = null;   // { picker, signature }
+  function syncDiamond(){
+    const source = by('cadetFirstSergeantCheckbox'), host = by('firstSergeantPicker'), block = by('cadetFirstSergeantBlock');
+    if(!source || !host || !block || !window.CAPUBEngine || !window.VisualPicker) return;
+    // The block is shown by js/catalog.js syncCadetFirstSergeantControl for the three grades that take the diamond.
+    if(block.classList.contains('hidden') || !State.rank) return;
+    const G = window.CAPUBEngine.grades, P = window.CAPUBProfilePictures;
+    const art = on => artUrl(P.gradeArt(G, State.membership, State.rank, { firstSergeant: on }));
+    const signature = JSON.stringify([State.membership, State.rank]);
+    if(!diamond || diamond.signature !== signature){
+      const options = [['plain', 'Plain chevron', false], ['diamond', 'With diamond', true]].map(([value, label, on]) => ({ value, label, picture: art(on) || undefined }));
+      const picker = window.VisualPicker.render(host, {
+        name: 'firstSergeant', legend: 'Cadet First Sergeant diamond', options, value: source.checked ? 'diamond' : 'plain',
+        onChange: value => { source.checked = value === 'diamond'; source.dispatchEvent(new Event('change', { bubbles: true })); }
+      });
+      picker.el.dataset.pickerFor = 'cadetFirstSergeantCheckbox';
+      diamond = { picker, signature };
+    }
+    diamond.picker.setValue(source.checked ? 'diamond' : 'plain');
+  }
+
   // ---- the uniforms -------------------------------------------------------------------------------------------------------------
 
   const cards = () => Array.from(doc.querySelectorAll('.uniformOption'));
@@ -158,7 +226,7 @@
 
   function sync(){
     if(!ready()) return;
-    for(const part of [syncGrade, syncUniforms]){
+    for(const part of [syncGrade, syncCut, syncDiamond, syncUniforms]){
       try{ part(); }catch(error){ console.warn('[profile pickers]', error); }
     }
   }
@@ -169,5 +237,5 @@
   if(shell && typeof MutationObserver === 'function') new MutationObserver(() => sync()).observe(shell, { attributes: true, attributeFilter: ['data-step'] });
   setTimeout(sync, 0);
 
-  window.CAPUBProfilePickers = { sync, syncGrade, syncUniforms };
+  window.CAPUBProfilePickers = { sync, syncGrade, syncCut, syncDiamond, syncUniforms };
 })();

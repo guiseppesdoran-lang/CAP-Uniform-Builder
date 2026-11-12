@@ -274,3 +274,34 @@ test('every grade has its name in words', () => {
     assert.equal(/^Cadet /.test(name), membership === 'cadet' && rank !== 'SM', `${rank}: cadet names say Cadet`);
   }
 });
+
+// ---- the cut ------------------------------------------------------------------------------------------------------------------------
+
+test('the cut is shown by the member\'s own uniform in each cut: the engine\'s pictures of it, the member\'s grade on both, the one in the member\'s own cut shared with its card', async () => {
+  const env = envOf(member({ uniform: 'blues_b', gender: 'male', opt: { sleeve: 'long' } }));
+  const made = PP.create(env);
+  const cards = await made.uniforms(['blues_b']).ready;
+  assert.equal(env.log.composed.length, 1);
+  const cuts = made.cuts();
+  assert.deepEqual(Object.keys(cuts.now), ['male', 'female']);
+  assert.equal(cuts.now.male, cards.blues_b, 'the male cut of the uniform the member is on is its card\'s picture, not made again');
+  assert.equal(cuts.now.female, undefined, 'the female cut is still to be made');
+  const done = await cuts.ready;
+  assert.match(done.female, /^picture:\d+$/);
+  assert.equal(env.log.composed.length, 2, 'one more composition');
+  const female = env.log.composed[1];
+  assert.equal(female.gender, 'female');
+  assert.equal(female.uniform, 'blues_b', 'the uniform the member is on');
+  assert.equal(female.opt.sleeve, 'long', 'with the member\'s own garment choices');
+  assert.equal(female.grade.rank, 'C/Maj');
+  const scene = env.log.drawn[1].scene;
+  assert.ok(idsOf(scene).some(id => /blouse/.test(id)), 'the women\'s blouse sheet, not the men\'s shirt');
+});
+
+test('Ceremonials is pictured for the cut as the uniform it rides on, without its items: the cut is the garment\'s', async () => {
+  const env = envOf(member({ uniform: 'blues_a' }));
+  const base = env.build();
+  env.build = () => Object.assign(base, { ceremonial: { role: 'flag', chinstrap: 'up' }, cordOnTop: true, cord: 'honor_guard' });
+  await PP.create(env).cuts().ready;
+  for(const d of env.log.drawn) assert.equal(idsOf(d.scene).some(id => /honor-guard/.test(id)), false, 'no belt, sling or ascot');
+});

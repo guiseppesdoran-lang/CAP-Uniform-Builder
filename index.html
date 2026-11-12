@@ -99,20 +99,14 @@
           </select>
 
           <div id="cadetFirstSergeantBlock" class="hidden mt-10">
-            <label class="fieldNote">
-              <input type="checkbox" id="cadetFirstSergeantCheckbox">
-              Cadet First Sergeant diamond
-            </label>
+            <input type="checkbox" id="cadetFirstSergeantCheckbox" class="segmentedSource" tabindex="-1" aria-hidden="true">
+            <div id="firstSergeantPicker"></div>
             <div class="hintText">For C/MSgt, C/SMSgt and C/CMSgt appointed first sergeant (CAPR 39-1, 10.10.4).</div>
           </div>
         </section>
 
         <section id="genderBlock" class="panelBlock disabledBlock">
-          <label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut</label>
-          <div class="segmented" role="radiogroup" aria-labelledby="cutLabel" data-segments-for="jacketSelect">
-            <button type="button" role="radio" aria-checked="false" data-value="male">Male cut</button>
-            <button type="button" role="radio" aria-checked="false" data-value="female">Female cut</button>
-          </div>
+          <div id="cutPicker"></div>
           <select id="jacketSelect" class="segmentedSource" tabindex="-1" aria-hidden="true">
             <option value="">Select cut</option>
             <option value="male">Male cut</option>

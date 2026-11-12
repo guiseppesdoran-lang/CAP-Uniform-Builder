@@ -43,7 +43,9 @@ test('what is and is not collected is said at the gate, under the import button 
 });
 
 test('controls name the thing, not the implementation',()=>{
-  assert.match(visible,/<label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut<\/label>/);
+  // The cut is two pictures of the member's uniform under the word Cut (js/profile-pickers.js), over the hidden select.
+  assert.match(fs.readFileSync(path.join(__dirname,'..','js','profile-pickers.js'),'utf8'),/name: 'cut', legend: 'Cut'/);
+  assert.match(visible,/<div id="cutPicker"><\/div>/);
   assert.match(visible,/Miniature medal mounting method/);
   assert.match(visible,/Saved setups/);
 });

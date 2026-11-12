@@ -28,7 +28,7 @@ const stepOf=id=>{
 // Every control id the old one-column sidebar had, each still present exactly once (the wiring looks controls up by id).
 // stepGroup-tools, the "More tools" fold, went (its contents live in steps 3 and 4), and the Quick strip panel went with its
 // feature (LIVE13: a Remove ribbons box on the ribbons card instead).
-const OLD_IDS=['controls','stepGroup-profile','memberReportImportPanel','importMemberReportBtn','clearImportedReportBtn','memberReportUpload','memberReportImportStatus','capMembershipPanel','membershipLabel','membershipType','adultCadetRow','adultCadetCheckbox','rankSetupSelect','cadetFirstSergeantBlock','cadetFirstSergeantCheckbox','optionalName','capubV2TextPanel','firstNameRow','capubV2FirstName','capubV2LastName','plateLineRow','capubV2PlateLine','capubV2ShowText','stepGroup-uniform','genderBlock','cutLabel','jacketSelect','uniformBlock','uniformList','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordPicker','shoulderCordColour','shoulderCordNote','stepGroup-items','groupRibbons','clearRibbons','expandRibbons','cadetHighestOnlyRow','cadetHighestOnly','ribbonGallery','miniMountStyle','groupBadges','badgesPlannedNote','clearBadges','expandBadges','badgeGallery','groupPatches','clearPatches','expandPatches','unitPatchSearch','unitPatchSelect','unitPatchStatus','patchGallery','stepGroup-export','capubV2StatusPanel','capubV2RibbonCount','capubV2BadgeCount','capubV2PatchCount','capubV2WarningCount','capubV2Notices','finishPanel','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile','ribbonRackPanel','ribbonRackColumns','ribbonRackColumnsHint','ribbonRackArrangement','ribbonRackArrangementHint','ribbonRowOverridePanel','ribbonRowOverrideEnabled','ribbonRowOverrideControls','ribbonRowOverrideGrid','addRibbonOverrideRow','removeRibbonOverrideRow','ribbonRowOverrideStatus','capubV2QuickPanel','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset'];
+const OLD_IDS=['controls','stepGroup-profile','memberReportImportPanel','importMemberReportBtn','clearImportedReportBtn','memberReportUpload','memberReportImportStatus','capMembershipPanel','membershipLabel','membershipType','adultCadetRow','adultCadetCheckbox','rankSetupSelect','cadetFirstSergeantBlock','cadetFirstSergeantCheckbox','optionalName','capubV2TextPanel','firstNameRow','capubV2FirstName','capubV2LastName','plateLineRow','capubV2PlateLine','capubV2ShowText','stepGroup-uniform','genderBlock','jacketSelect','uniformBlock','uniformList','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordPicker','shoulderCordColour','shoulderCordNote','stepGroup-items','groupRibbons','clearRibbons','expandRibbons','cadetHighestOnlyRow','cadetHighestOnly','ribbonGallery','miniMountStyle','groupBadges','badgesPlannedNote','clearBadges','expandBadges','badgeGallery','groupPatches','clearPatches','expandPatches','unitPatchSearch','unitPatchSelect','unitPatchStatus','patchGallery','stepGroup-export','capubV2StatusPanel','capubV2RibbonCount','capubV2BadgeCount','capubV2PatchCount','capubV2WarningCount','capubV2Notices','finishPanel','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile','ribbonRackPanel','ribbonRackColumns','ribbonRackColumnsHint','ribbonRackArrangement','ribbonRackArrangementHint','ribbonRowOverridePanel','ribbonRowOverrideEnabled','ribbonRowOverrideControls','ribbonRowOverrideGrid','addRibbonOverrideRow','removeRibbonOverrideRow','ribbonRowOverrideStatus','capubV2QuickPanel','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset'];
 
 test('every control id of the old sidebar is still on the page exactly once',()=>{
   const ids=[...html.matchAll(/(?<![-\w])id="([^"]+)"/g)].map(m=>m[1]);
@@ -240,10 +240,12 @@ function makeDom(){
     g.hidden=k!=='profile'; groups[k]=g; stepBody.appendChild(g);
   }
   const seg=(id,...values)=>{ const s=el('div',{class:'segmented','data-segments-for':id}); values.forEach(v=>s.appendChild(el('button',{'data-value':v}))); return s; };
+  // The grade and the cut are groups of pictures (js/profile-pickers.js) over their hidden selects; the one the Tab key stops at has tabindex 0.
+  const pictures=(id,...values)=>{ const g=el('div',{'data-picker-for':id}); values.forEach((v,i)=>g.appendChild(el('button',{role:'radio','data-value':v,tabindex:i?'-1':'0'}))); return g; };
   groups.profile.append(
     el('section',{id:'memberReportImportPanel',class:'panelBlock'},el('button',{id:'importMemberReportBtn'}),Object.assign(el('div',{id:'memberReportImportStatus',class:'hintText'}),{textContent:'No report imported yet.'}),el('button',{id:'clearImportedReportBtn'})),
-    el('section',{id:'capMembershipPanel',class:'panelBlock'},seg('membershipType','cadet','senior'),el('select',{id:'membershipType',class:'segmentedSource'}),el('select',{id:'rankSetupSelect'})),
-    el('section',{id:'genderBlock',class:'panelBlock'},seg('jacketSelect','male','female'),el('select',{id:'jacketSelect',class:'segmentedSource'}))
+    el('section',{id:'capMembershipPanel',class:'panelBlock'},seg('membershipType','cadet','senior'),el('select',{id:'membershipType',class:'segmentedSource'}),pictures('rankSetupSelect','C/AB','C/Maj'),el('select',{id:'rankSetupSelect',class:'segmentedSource'})),
+    el('section',{id:'genderBlock',class:'panelBlock'},pictures('jacketSelect','male','female'),el('select',{id:'jacketSelect',class:'segmentedSource'}))
   );
   groups.uniform.append(el('section',{id:'uniformBlock',class:'panelBlock'},el('div',{id:'uniformList',class:'uniformList'})));
   for(const key of ['ribbons','badges','patches']){
@@ -377,8 +379,16 @@ test('a notice Fix (and anything else that focuses a control) opens the step tha
   t.V3.showStep('export');
   t.V3.focusControl('jacketSelect');
   assert.deepEqual(t.shown(),['profile']);
-  const firstCutButton=t.by('jacketSelect').parentNode.querySelector('.segmented[data-segments-for="jacketSelect"] button');
-  assert.equal(firstCutButton.focused,1,'the first segmented button takes the focus for the hidden select');
+  const cutStop=t.by('jacketSelect').parentNode.querySelector('[data-picker-for="jacketSelect"] [role="radio"][tabindex="0"]');
+  assert.equal(cutStop.focused,1,'the picture the Tab key stops at takes the focus for the hidden select');
+  t.V3.showStep('export');
+  t.V3.focusControl('rankSetupSelect');
+  assert.deepEqual(t.shown(),['profile']);
+  const rankStop=t.by('rankSetupSelect').parentNode.querySelector('[data-picker-for="rankSetupSelect"] [role="radio"][tabindex="0"]');
+  assert.equal(rankStop.focused,1,'and for the grade');
+  t.V3.focusControl('membershipType');
+  const firstButton=t.by('membershipType').parentNode.querySelector('.segmented[data-segments-for="membershipType"] button');
+  assert.equal(firstButton.focused,1,'the membership select still stands behind two buttons: the first takes the focus');
   t.V3.showStep('profile');
   t.V3.showStepFor(t.by('expandBadges'));
   assert.deepEqual(t.shown(),['items']);

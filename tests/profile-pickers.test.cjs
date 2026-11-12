@@ -309,3 +309,124 @@ test('a notice\'s Choose button for the grade lands the focus on the picture the
   const ui = read('js/workspace-ui.js');
   assert.match(ui, /document\.querySelector\(`\.segmented\[data-segments-for="\$\{id\}"\] button, \[data-picker-for="\$\{id\}"\] \[role="radio"\]\[tabindex="0"\]`\)/);
 });
+
+// ---- the cut and the first sergeant's diamond -----------------------------------------------------------------------------------------
+
+// The Profile step's cut and diamond: the hidden select and box, their hosts, the step, the real picker, and stand-ins for the pictures.
+function cutPage(state, pictures){
+  const doc = createDocument();
+  doc.querySelectorAll = sel => doc.body.querySelectorAll(sel);
+  const shell = doc.createElement('main'); shell.id = 'layoutShell'; doc.body.append(shell);
+  const step = doc.createElement('div'); step.id = 'stepGroup-profile'; step.hidden = false; doc.body.append(step);
+  const cutHost = doc.createElement('div'); cutHost.id = 'cutPicker'; step.append(cutHost);
+  const select = doc.createElement('select'); select.id = 'jacketSelect'; select.value = ''; step.append(select);
+  const block = doc.createElement('div'); block.id = 'cadetFirstSergeantBlock'; block.className = 'hidden'; step.append(block);
+  const box = doc.createElement('input'); box.id = 'cadetFirstSergeantCheckbox'; box.checked = false; block.append(box);
+  const fsHost = doc.createElement('div'); fsHost.id = 'firstSergeantPicker'; block.append(fsHost);
+  const changes = [], boxChanges = [], asked = [];
+  select.addEventListener('change', () => changes.push(select.value));
+  box.addEventListener('change', () => boxChanges.push(box.checked));
+  const sandbox = {
+    document: doc, console, setTimeout: () => 0, Event: function(type, init){ this.type = type; Object.assign(this, init || {}); },
+    State: Object.assign({ membership: 'cadet', rank: 'C/MSgt', gender: '', uniform: 'blues_a' }, state),
+    CAPUBEngine: { grades: G, core: { createSpecStore: () => ({}) }, profiles: {}, renderSvg: {} }, CAPUBAssetIndex: INDEX, ASSET: p => 'images/' + p,
+    CAPUBUniformRules: {}, CAPUBUniformView: { buildFromState: () => ({}) },
+    CAPUBAssetPacks: { createLoader: () => ({ manifest: () => Promise.resolve({}), prepare: () => Promise.resolve(), spec: () => Promise.resolve({}) }) },
+    fetch: () => Promise.reject(new Error('offline')), URL, Blob: function(){}, XMLSerializer: function(){}
+  };
+  sandbox.window = sandbox; sandbox.self = sandbox;
+  vm.runInNewContext(read('js/visual-picker.js'), sandbox);
+  const real = (() => { const m = {}; vm.runInNewContext(read('js/profile-pictures.js'), Object.assign(m, { window: m, self: m })); return m.CAPUBProfilePictures; })();
+  sandbox.CAPUBProfilePictures = Object.assign({}, real, { create: env => ({ uniforms: () => ({ now: {}, ready: Promise.resolve({}), settled: true }), cuts: () => { asked.push(1); return pictures(env); } }) });
+  vm.runInNewContext(read('js/profile-pickers.js'), sandbox);
+  return { sandbox, doc, step, cutHost, select, box, block, fsHost, changes, boxChanges, asked, sync: () => sandbox.CAPUBProfilePickers.sync() };
+}
+const knownCuts = map => () => ({ now: map, ready: Promise.resolve(map), settled: !Object.values(map).includes(undefined) });
+const picked = host => radios(host).filter(r => r.getAttribute('aria-checked') === 'true').map(r => r.dataset.value);
+
+test('the cut is two pictures, male and female, under the word Cut, large tall boxes, with the select behind them as the source of truth', async () => {
+  const p = cutPage({}, knownCuts({ male: 'pic-male', female: 'pic-female' }));
+  p.sync();
+  const picker = p.cutHost.querySelector('.vp');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'Cut');
+  assert.equal(picker.dataset.size, 'large');
+  assert.equal(picker.dataset.shape, 'tall');
+  assert.equal(picker.dataset.pickerFor, 'jacketSelect');
+  assert.deepEqual(radios(p.cutHost).map(r => r.dataset.value), ['male', 'female']);
+  assert.deepEqual(radios(p.cutHost).map(r => r.querySelector('.vpLabel').textContent), ['Male cut', 'Female cut']);
+  await settle();
+  assert.deepEqual(radios(p.cutHost).map(r => r.querySelector('.vpPicture').children[0].getAttribute('src')), ['pic-male', 'pic-female']);
+  assert.deepEqual(picked(p.cutHost), [], 'no cut chosen yet');
+  radios(p.cutHost)[1].click();
+  assert.equal(p.select.value, 'female');
+  assert.deepEqual(p.changes, ['female']);
+  p.select.value = 'male'; p.sync();
+  assert.deepEqual(picked(p.cutHost), ['male'], 'the page sets the select (a saved setup, Undo): the picture shows it');
+  assert.deepEqual(p.changes, ['female'], 'and does not write to it');
+});
+
+test('the cut\'s pictures are made once the member has a membership and a grade and the Profile step is shown; before that the boxes hold their places', () => {
+  const p = cutPage({ membership: '', rank: null }, knownCuts({ male: 'm', female: 'f' }));
+  p.sync();
+  assert.equal(p.asked.length, 0, 'no member yet');
+  assert.ok(radios(p.cutHost).every(r => r.querySelector('.vpPicture') && !r.querySelector('.vpPicture').querySelector('img')), 'blank boxes, not pictures');
+  p.sandbox.State.membership = 'cadet';
+  p.sync();
+  assert.equal(p.asked.length, 0, 'no grade yet');
+  p.sandbox.State.rank = 'C/Maj'; p.step.hidden = true;
+  p.sync();
+  assert.equal(p.asked.length, 0, 'the Profile step is not the one shown');
+  p.step.hidden = false;
+  p.sync();
+  assert.equal(p.asked.length, 1);
+});
+
+test('a change of grade keeps the last pictures until the new ones are made, so the cut does not blink; a picture that cannot be made is the name alone', async () => {
+  let phase = 0, release;
+  const p = cutPage({}, () => phase === 0 ? { now: { male: 'm1', female: 'f1' }, ready: Promise.resolve({ male: 'm1', female: 'f1' }), settled: true }
+    : phase === 1 ? { now: { male: undefined, female: undefined }, ready: new Promise(r => { release = () => r({ male: 'm2', female: 'f2' }); }), settled: false }
+      : { now: { male: 'm2', female: null }, ready: Promise.resolve({ male: 'm2', female: null }), settled: true });
+  p.sync();
+  const srcs = () => radios(p.cutHost).map(r => { const b = r.querySelector('.vpPicture'); return b && b.children[0] && b.children[0].getAttribute ? b.children[0].getAttribute('src') : null; });
+  assert.deepEqual(srcs(), ['m1', 'f1']);
+  phase = 1; p.sandbox.State.rank = 'C/Col'; p.sync();
+  assert.deepEqual(srcs(), ['m1', 'f1'], 'the last pictures stay while the new ones are made');
+  release(); await settle();
+  assert.deepEqual(srcs(), ['m2', 'f2']);
+  phase = 2; p.sandbox.State.rank = 'C/Lt Col'; p.sync();
+  assert.deepEqual(srcs(), ['m2', null]);
+  assert.equal(radios(p.cutHost)[1].classList.contains('noPicture'), true, 'the cut without a picture is its name alone');
+});
+
+test('the first sergeant\'s diamond is two pictures of the member\'s chevron, plain and with the diamond, over the checkbox that stays as the source of truth', () => {
+  const p = cutPage({ rank: 'C/SMSgt' }, knownCuts({ male: 'm', female: 'f' }));
+  p.sync();
+  assert.equal(radios(p.fsHost).length, 0, 'nothing while the block is hidden (a grade that does not take it)');
+  p.block.className = '';   // js/catalog.js syncCadetFirstSergeantControl shows the block for C/MSgt, C/SMSgt and C/CMSgt
+  p.sync();
+  const picker = p.fsHost.querySelector('.vp');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'Cadet First Sergeant diamond');
+  assert.equal(picker.dataset.pickerFor, 'cadetFirstSergeantCheckbox');
+  assert.deepEqual(radios(p.fsHost).map(r => r.querySelector('.vpLabel').textContent), ['Plain chevron', 'With diamond']);
+  assert.deepEqual(radios(p.fsHost).map(r => r.querySelector('.vpPicture').children[0].getAttribute('src')),
+    ['images/' + INDEX['rank-cadet-nco-senior-master-sergeant-cloth-bordered'], 'images/' + INDEX['rank-cadet-nco-senior-master-sergeant-first-sergeant-cloth-bordered']]);
+  assert.deepEqual(picked(p.fsHost), ['plain']);
+  radios(p.fsHost)[1].click();
+  assert.equal(p.box.checked, true);
+  assert.deepEqual(p.boxChanges, [true]);
+  radios(p.fsHost)[0].click();
+  assert.deepEqual(p.boxChanges, [true, false]);
+  p.box.checked = true; p.sync();
+  assert.deepEqual(picked(p.fsHost), ['diamond'], 'the page sets the box (a saved setup, Undo): the picture shows it');
+  // Another grade that takes it: its own chevron.
+  p.sandbox.State.rank = 'C/CMSgt'; p.sync();
+  assert.match(radios(p.fsHost)[0].querySelector('.vpPicture').children[0].getAttribute('src'), /rank-cadet-nco-chief-master-sergeant-cloth-bordered\.svg/);
+});
+
+test('index.html: the cut and the diamond stand behind their hosts, the selects and the box kept hidden as the source of truth; the stylesheet has no leftover buttons for them', () => {
+  const html = read('index.html');
+  assert.match(html, /<section id="genderBlock" class="panelBlock disabledBlock">\s*<div id="cutPicker"><\/div>\s*<select id="jacketSelect" class="segmentedSource" tabindex="-1" aria-hidden="true">/);
+  assert.doesNotMatch(html, /id="cutLabel"/);
+  assert.match(html, /<div id="cadetFirstSergeantBlock" class="hidden mt-10">\s*<input type="checkbox" id="cadetFirstSergeantCheckbox" class="segmentedSource" tabindex="-1" aria-hidden="true">\s*<div id="firstSergeantPicker"><\/div>\s*<div class="hintText">For C\/MSgt, C\/SMSgt and C\/CMSgt appointed first sergeant \(CAPR 39-1, 10\.10\.4\)\.<\/div>/);
+  assert.match(read('js/setup.js'), /cadetFirstSergeantCheckbox\.addEventListener\('change'/, 'the page\'s own handler still listens to the box');
+});
