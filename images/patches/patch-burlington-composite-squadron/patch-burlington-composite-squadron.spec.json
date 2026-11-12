@@ -1,0 +1,85 @@
+{
+ "asset_id": "patch-burlington-composite-squadron",
+ "label": "Burlington Composite Squadron",
+ "charter": "MAR-NC-022",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-burlington-composite-squadron.png",
+ "width_in": 3,
+ "height_in": 3.454,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   345.378
+  ],
+  "center": [
+   150,
+   172.689
+  ],
+  "left_edge": [
+   0,
+   172.689
+  ],
+  "right_edge": [
+   300,
+   172.689
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied-2026-11-12/burlington-composite-squadron.webp",
+ "artwork": {
+  "format": "webp (lossy, with alpha) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   1632,
+   1062
+  ],
+  "source_bytes": 98922,
+  "source_sha256": "4d6c637f3e7307f6f44b688fa85ad077c49b83bdf406857b9de6ea1f8e717b80",
+  "trim_bbox_px": [
+   459,
+   120,
+   1173,
+   942
+  ],
+  "trimmed": true,
+  "px": [
+   714,
+   822
+  ],
+  "bytes": 490101,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear (alpha 3 or less, white or black colour under it)",
+   "alpha": 0,
+   "flood": "4-neighbour flood from the picture's edge over pixels with alpha 3 or less",
+   "px": 1261458,
+   "band": {
+    "depth_px": 3,
+    "px": 18549,
+    "outline_colours": [
+     "#f9ba01"
+    ],
+    "rule": "alpha from the pixel colour's place between white and the outline's solid colour, colour taken from the outline",
+    "feather_px": 12
+   },
+   "px_made_clear": 7697
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Burlington Composite Squadron (MAR-NC-022), digital artwork supplied by Ethan Hillard on 2026-11-12. Official digital artwork shipped as given: webp (lossy, with alpha, 1632 x 1062 px) -> png via dwebp; the file came with its ground already clear (1261458 px of alpha 3 or less, reached by a flood from the picture's edge) but with a feathered edge: the alpha rose over about 12 px from the ground to the gold outline while the colours there were pale (white mixed into the gold), a glow round the outline on a dark garment. On 2026-11-12 the 18549 px of that edge were given their alpha from where their colour lies between white and the outline's own solid colour (#f9ba01) and took that colour, so the outline's outer edge is a few pixels wide and no pale fringe is left (7697 of them, nearly clear before, are clear), and the picture was trimmed to the emblem's box (1632 x 1062 px to 714 x 822 px; the result is 8-bit RGBA); the white triangle behind the propeller and the white stripe of the diagonal band are untouched (6187 and 7124 px of near-white before and after); no resampling, no redrawing, no tracing, no other colour change. Charter: MAR-NC-022 is the only unit named Burlington Composite Squadron in the builder's unit list (the other Burlington unit, NCR-IA-005, is a flight); the motto DOUBLE DEUCES names its number, 22.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the feathered edge, made a clean outline so the emblem sits on the garment, and the trim to the emblem's box."
+}

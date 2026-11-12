@@ -11,6 +11,7 @@
     {"charter":"MAR-DC-051","patchId":"unit_mar_dc_051","label":"MAR-DC-051","echelon":"squadron","kind":"unit","w":3,"h":3.093,"asset":"patch-mar-dc-051","img":"patches/patch-mar-dc-051/patch-mar-dc-051.png"},
     {"charter":"MAR-DC-053","patchId":"unit_mar_dc_053","label":"MAR-DC-053","echelon":"squadron","kind":"unit","w":3,"h":2.871,"asset":"patch-mar-dc-053","img":"patches/patch-mar-dc-053/patch-mar-dc-053.png"},
     {"charter":"MAR-DC-060","patchId":"unit_mar_dc_060","label":"MAR-DC-060","echelon":"squadron","kind":"unit","w":3,"h":2.77,"asset":"patch-mar-dc-060","img":"patches/patch-mar-dc-060/patch-mar-dc-060.png"},
+    {"charter":"MAR-NC-022","patchId":"unit_mar_nc_022","label":"Burlington Composite Squadron","echelon":"squadron","kind":"unit","w":3,"h":3.454,"asset":"patch-burlington-composite-squadron","img":"patches/patch-burlington-composite-squadron/patch-burlington-composite-squadron.png"},
     {"charter":"NCR-IA-001","patchId":"unit_ncr_ia_001","label":"Iowa Wing","echelon":"wing","kind":"unit","w":3.25,"h":3.14,"asset":"patch-iowa-wing","img":"patches/patch-iowa-wing/patch-iowa-wing.png"},
     {"charter":"NER-CT-001","patchId":"unit_ner_ct_001","label":"Connecticut Wing","echelon":"wing","kind":"unit","w":3.25,"h":3.192,"asset":"patch-connecticut-wing","img":"patches/patch-connecticut-wing/patch-connecticut-wing.png"},
     {"charter":"NER-CT-004","patchId":"unit_ner_ct_004","label":"NER-CT-004","echelon":"squadron","kind":"unit","w":3,"h":3.458,"asset":"patch-ner-ct-004","img":"patches/patch-ner-ct-004/patch-ner-ct-004.png"},

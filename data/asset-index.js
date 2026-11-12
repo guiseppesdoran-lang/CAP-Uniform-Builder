@@ -1445,6 +1445,7 @@
     "patch-archer": "patches/patch-archer/patch-archer.png",
     "patch-arizona-wing": "patches/patch-arizona-wing/patch-arizona-wing.png",
     "patch-arkansas-wing": "patches/patch-arkansas-wing/patch-arkansas-wing.png",
+    "patch-burlington-composite-squadron": "patches/patch-burlington-composite-squadron/patch-burlington-composite-squadron.png",
     "patch-cadet-officer-school": "patches/patch-cadet-officer-school/patch-cadet-officer-school.png",
     "patch-cadet-orientation-pilot": "patches/patch-cadet-orientation-pilot/patch-cadet-orientation-pilot.png",
     "patch-california-wing": "patches/patch-california-wing/patch-california-wing.png",
@@ -1835,7 +1836,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "fb4c6ee0a2", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "0667003237", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "fb4c6ee0a2"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "0667003237"; }
 })(typeof self !== 'undefined' ? self : this);
