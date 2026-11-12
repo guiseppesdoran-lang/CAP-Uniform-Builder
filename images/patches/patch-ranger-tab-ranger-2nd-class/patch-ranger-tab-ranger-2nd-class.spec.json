@@ -56,8 +56,10 @@
   "bytes": 6470,
   "source_bytes": 6470,
   "source_sha256": "69c7ed56404c123e73b62d48e15e594978a8cb5f708f4791da64912710973f95",
-  "ground": "transparent"
+  "ground": "transparent",
+  "fills_box": true,
+  "fills_box_share": 0.989
  },
  "provenance": "Official digital artwork of Hawk Mountain Ranger tab: Ranger 2nd Class, published by Hawk Mountain Ranger School, the Pennsylvania Wing activity site (capranger.org; footer: Pennsylvania Wing Civil Air Patrol) (page https://www.capranger.org/cap-ranger-grades; file address https://static.wixstatic.com/media/67cca1_9a9cd5baf5b34712aa52bed0c7a9f224~mv2.png); fetched 2026-11-10 and kept in assets/refs/patches-official/patch-ranger-tab-ranger-2nd-class/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The picture is a rectangle with its own white or gold border that fills its box (measured: 98.9 percent of the box is not clear, the rest being the rounded corners and one clear row), so it has no ground to remove."
 }

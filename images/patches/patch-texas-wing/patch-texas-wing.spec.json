@@ -6,7 +6,7 @@
  "echelon": "wing",
  "file": "patch-texas-wing.png",
  "width_in": 3.25,
- "height_in": 3.283,
+ "height_in": 3.922,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
@@ -18,19 +18,19 @@
   ],
   "bottom_center": [
    162.5,
-   328.27
+   392.188
   ],
   "center": [
    162.5,
-   164.135
+   196.094
   ],
   "left_edge": [
    0,
-   164.135
+   196.094
   ],
   "right_edge": [
    325,
-   164.135
+   196.094
   ]
  },
  "dimensions": {
@@ -53,19 +53,35 @@
    502
   ],
   "trim_bbox_px": [
+   36,
    0,
-   0,
-   497,
+   452,
    502
   ],
-  "trimmed": false,
+  "trimmed": true,
   "px": [
-   497,
+   416,
    502
   ],
-  "bytes": 275295,
-  "chunks_kept": []
+  "bytes": 254618,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "#ffffff",
+   "alpha": 128,
+   "flood": "4-neighbour flood from the picture's edge over pixels within 10 levels of the ground colour and the ground alpha",
+   "px": 87340,
+   "band": {
+    "depth_px": 3,
+    "px": 3426,
+    "outline_colours": [
+     "#2a5ba8"
+    ],
+    "rule": "alpha from the pixel colour's place between the ground colour and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 87448
+  },
+  "ground": "transparent"
  },
- "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Texas\" (Wing), path wing/txemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (497 x 502 px to 497 x 502 px), no resampling, no colour change.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Texas\" (Wing), path wing/txemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (497 x 502 px to 497 x 502 px), no resampling, no colour change. On 2026-11-12, at the owner's request, the ground that came around the emblem (white at half opacity; 87340 px, found by a flood from the picture's edge) was made clear, and the 3426 px where the outline had been blended into it (up to 3 px deep) were given their alpha from where their colour lies between the ground colour and the outline's own solid colour (#2a5ba8) and took that colour, and the picture was trimmed again to the emblem's box (497 x 502 px to 416 x 502 px); no resampling, no redrawing, no other colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The ground around the emblem was made clear on 2026-11-12 (the owner: background removed from the patches), nothing else was changed."
 }

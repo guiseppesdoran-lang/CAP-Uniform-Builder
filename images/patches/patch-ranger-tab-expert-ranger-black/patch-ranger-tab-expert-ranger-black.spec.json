@@ -56,8 +56,10 @@
   "bytes": 3789,
   "source_bytes": 3789,
   "source_sha256": "85568c7fca03b5c634d135d53627e538a9d78929fe2c1dadde99cc3cfb35848d",
-  "ground": "transparent"
+  "ground": "transparent",
+  "fills_box": true,
+  "fills_box_share": 0.989
  },
  "provenance": "Official digital artwork of Hawk Mountain Ranger tab: Expert Ranger (black), published by Hawk Mountain Ranger School (Pennsylvania Wing; capranger.org/cap-ranger-grades), the tab graphic already on disk in assets/refs/capranger/tab-1.png (fetched 2026-10-29); kept in assets/refs/capranger/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The picture is a rectangle with its own white or gold border that fills its box (measured: 98.9 percent of the box is not clear, the rest being the rounded corners and one clear row), so it has no ground to remove."
 }

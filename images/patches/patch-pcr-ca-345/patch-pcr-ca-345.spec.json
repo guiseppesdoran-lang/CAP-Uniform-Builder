@@ -6,7 +6,7 @@
  "echelon": "squadron",
  "file": "patch-pcr-ca-345.png",
  "width_in": 3,
- "height_in": 3.141,
+ "height_in": 3.453,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
@@ -18,19 +18,19 @@
   ],
   "bottom_center": [
    150,
-   314.139
+   345.324
   ],
   "center": [
    150,
-   157.07
+   172.662
   ],
   "left_edge": [
    0,
-   157.07
+   172.662
   ],
   "right_edge": [
    300,
-   157.07
+   172.662
   ]
  },
  "dimensions": {
@@ -53,19 +53,35 @@
    511
   ],
   "trim_bbox_px": [
-   0,
-   0,
-   488,
-   511
+   35,
+   16,
+   452,
+   496
   ],
-  "trimmed": false,
+  "trimmed": true,
   "px": [
-   488,
-   511
+   417,
+   480
   ],
-  "bytes": 294165,
-  "chunks_kept": []
+  "bytes": 282034,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "#ffffff",
+   "alpha": 128,
+   "flood": "4-neighbour flood from the picture's edge over pixels within 10 levels of the ground colour and the ground alpha",
+   "px": 89677,
+   "band": {
+    "depth_px": 3,
+    "px": 2968,
+    "outline_colours": [
+     "#f9cc04"
+    ],
+    "rule": "alpha from the pixel colour's place between the ground colour and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 89677
+  },
+  "ground": "transparent"
  },
- "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"PCR-CA-345\" (Squadron), path squadron/ca345emblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (488 x 511 px to 488 x 511 px), no resampling, no colour change.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"PCR-CA-345\" (Squadron), path squadron/ca345emblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (488 x 511 px to 488 x 511 px), no resampling, no colour change. On 2026-11-12, at the owner's request, the ground that came around the emblem (white at half opacity; 89677 px, found by a flood from the picture's edge) was made clear, and the 2968 px where the outline had been blended into it (up to 3 px deep) were given their alpha from where their colour lies between the ground colour and the outline's own solid colour (#f9cc04) and took that colour, and the picture was trimmed again to the emblem's box (488 x 511 px to 417 x 480 px); no resampling, no redrawing, no other colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The ground around the emblem was made clear on 2026-11-12 (the owner: background removed from the patches), nothing else was changed."
 }

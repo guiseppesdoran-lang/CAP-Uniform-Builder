@@ -56,8 +56,10 @@
   "bytes": 4655,
   "source_bytes": 4655,
   "source_sha256": "2594a0997431629991c1f7cfe5d91db6cf048ba6c9aa718e8569d3320972dbc1",
-  "ground": "transparent"
+  "ground": "transparent",
+  "fills_box": true,
+  "fills_box_share": 0.989
  },
  "provenance": "Official digital artwork of Hawk Mountain Ranger tab: Instructor, published by Hawk Mountain Ranger School (Pennsylvania Wing; capranger.org/cap-ranger-grades), the tab graphic already on disk in assets/refs/capranger/tab-2.png (fetched 2026-10-29); kept in assets/refs/capranger/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The picture is a rectangle with its own white or gold border that fills its box (measured: 98.9 percent of the box is not clear, the rest being the rounded corners and one clear row), so it has no ground to remove."
 }

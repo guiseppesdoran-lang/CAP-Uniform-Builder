@@ -56,8 +56,10 @@
   "bytes": 2189,
   "source_bytes": 2189,
   "source_sha256": "5f1d4c05dc6fa9646c0ce96de90dcedc308a2a4aa0709d52283b71b97bc04ac5",
-  "ground": "transparent"
+  "ground": "transparent",
+  "fills_box": true,
+  "fills_box_share": 0.989
  },
  "provenance": "Official digital artwork of Hawk Mountain Ranger tab: Medic (red), published by Hawk Mountain Ranger School, the Pennsylvania Wing activity site (capranger.org; footer: Pennsylvania Wing Civil Air Patrol) (page https://www.capranger.org/cap-ranger-grades; file address https://static.wixstatic.com/media/67cca1_f42cb64caafc48528c8f25014ac0b0e3~mv2.png); fetched 2026-11-10 and kept in assets/refs/patches-official/patch-ranger-tab-medic-red/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
- "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The picture is a rectangle with its own white or gold border that fills its box (measured: 98.9 percent of the box is not clear, the rest being the rounded corners and one clear row), so it has no ground to remove."
 }
