@@ -238,8 +238,21 @@
 
   // The cord the drawing is asked for: the one the member chose where the uniform allows it, a supplement cord only while that supplement is in force for the member's
   // unit (Supplements.cords), and the member's colour for a cord whose colour the unit commander picks.
-  function cordFromState(){
+  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6), as the engine is asked for it: null unless the member is a cadet on the Service Dress or the Blue Service uniform with it on. The
+  // role and the chinstrap are the member's choices; the chinstrap starts at the guidance figure's for the combination until the member picks one.
+  function ceremonialFromState(opt){
+    const rules = CAPUBUniformRules.CEREMONIAL;
+    if(!State.ceremonial || !CAPUBUniformRules.allowsCeremonial(State.membership) || State.membership !== 'cadet' || !Object.values(rules.bases).includes(State.uniform)) return null;
+    return {
+      role: rules.roles.includes(opt.cerRole) ? opt.cerRole : rules.roles[0],
+      chinstrap: rules.chinstraps.includes(opt.chinstrap) ? opt.chinstrap : CAPUBUniformRules.ceremonialChinstrap(State.uniform, opt.sleeve)
+    };
+  }
+
+  function cordFromState(ceremonial){
     const none = { cord: null, cordColour: null };
+    // The Honor Guard Uniform wears the metallic silver shoulder cord, and no other (9.6.7.5): the member's own choice stays kept for the uniforms that take it.
+    if(ceremonial) return { cord: CAPUBUniformRules.CEREMONIAL.cord, cordColour: null };
     if(!CAPUBUniformRules.allowsCord(State.uniform, State.membership, State.shoulderCord)) return none;
     const cords = E.cords;
     if(cords.isSupplement(State.shoulderCord) && !(window.Supplements && Supplements.cords(State).some(c => c.id === State.shoulderCord))) return none;
@@ -257,10 +270,11 @@
     // The member's order of badges the regulation leaves in the wearer's order (engine: scene.badgeOrders); a choice whose badges are no longer all held goes here.
     State.badgeOrder = window.CAPUBBadgeCatalog.pruneEqual(State.badgeOrder, State.badges);
     const text = State.text || {};
-    const cord = cordFromState();
+    const ceremonial = ceremonialFromState(opt);
+    const cord = cordFromState(ceremonial);
     const fullNames = window.CAPUBGarmentOptions && window.CAPUBGarmentOptions.FULL_NAME;
     const nameWorn = { first: !fullNames || fullNames.includes(State.uniform) };
-    return {
+    return Object.assign({
       uniform: State.uniform,
       gender: State.gender === 'female' ? 'female' : 'male',
       membership: State.membership,
@@ -282,7 +296,11 @@
       patches: buildPatches(),
       cord: cord.cord,
       cordColour: cord.cordColour
-    };
+    }, ceremonial ? {
+      // The honor guard items, and the cord lying on top of the epaulet (9.6.7.5); no other uniform sets either.
+      ceremonial,
+      cordOnTop: true
+    } : {});
   }
 
   // ---- render ---------------------------------------------------------------------------------

@@ -45,8 +45,8 @@
   // The engine seats the cap it is told to wear (opt.headgear) on the figure: a view of the coat sheet on the field uniforms (role 'hat', with a
   // 'hat-view-bounds' rectangle for the view), a cap sheet of its own on the others (role 'hat'), each with the device or grade on it (roles 'hat-device'
   // and 'grade'). A picture is those layers framed on the cap.
-  async function capPicture(env, build, change){
-    const scene = await env.compose(bare(build, { opt: change }));
+  async function capPicture(env, build, change, top){
+    const scene = await env.compose(Object.assign(bare(build, { opt: change }), top || {}));
     const hat = scene.layers.find(l => l.role === 'hat');
     if(!hat) return null;
     const view = scene.layers.find(l => l.role === 'hat-view-bounds' && l.key === 'hat-view-bounds:' + String(hat.key).replace(/^hat:/, ''));
@@ -62,7 +62,7 @@
     return out;
   }
   const headgearKey = build => [build.uniform, build.gender, build.grade && (build.grade.key || build.grade.rank), build.grade && build.grade.category, !!(build.grade && build.grade.cadet),
-    (build.badges || []).some(b => /chaplain/i.test(b.id)), build.opt && build.opt.capGrade];
+    (build.badges || []).some(b => /chaplain/i.test(b.id)), build.opt && build.opt.capGrade, !!build.ceremonial];
   // The OCP cap's grade, sewn or on the hook-and-loop square, as it is on the cap the member wears.
   async function capGrade(env, build, values){
     const out = {};
@@ -70,6 +70,40 @@
     return out;
   }
   const capGradeKey = build => [build.uniform, build.gender, build.grade && (build.grade.key || build.grade.rank), build.opt && build.opt.headgear];
+
+  // ---- the Honor Guard Uniform (Ceremonials): the chinstrap, the role and what it is worn on -----------------------------------------------------------------
+
+  // The cap with its rear chinstrap up or down, as the engine seats it for the Honor Guard Uniform.
+  async function chinstrap(env, build, values){
+    const out = {};
+    const ceremonial = Object.assign({ role: 'guard' }, build.ceremonial);
+    await Promise.all(values.map(async value => { out[value] = await capPicture(env, build, { headgear: 'auto' }, { ceremonial: Object.assign({}, ceremonial, { chinstrap: value }) }); }));
+    return out;
+  }
+  const chinstrapKey = build => [build.gender, !!build.ceremonial];
+
+  // The figure as the engine draws the Honor Guard Uniform for a choice and nothing else: `change(value)` is what the choice changes, { uniform, opt, ceremonial }. No cap, ribbons or name.
+  function ceremonialFigure(change, crop){
+    return async function(env, build, values){
+      const out = {};
+      await Promise.all(values.map(async value => {
+        const c = change(value, build);
+        const scene = await env.compose(Object.assign(bare(build, { opt: Object.assign({ headgear: 'none' }, c.opt) }), c.top));
+        const layers = scene.layers.filter(l => (!l.figure || l.figure === 1) && l.type !== 'clear' && l.type !== 'measure');
+        const frame = figureBox(env.core, scene);
+        out[value] = { scene: sceneOf(layers, crop ? crop(frame) : frame, 'Ceremonials'), pad: 0.1 };
+      }));
+      return out;
+    };
+  }
+  // What it is worn on: the coat's Class A, or the shirt's Class B with short or with long sleeves, each with the member's role.
+  const wornOn = ceremonialFigure((value, build) => ({
+    opt: value === 'coat' ? {} : { sleeve: value },
+    top: { uniform: value === 'coat' ? 'blues_a' : 'blues_b', ceremonial: build.ceremonial }
+  }), f => ({ x: f.x, y: f.y, w: f.w, h: f.h * 0.8 }));
+  // The role: the belt or the flag sling, on the garment the member wears it on.
+  const role = ceremonialFigure((value, build) => ({ opt: {}, top: { ceremonial: Object.assign({}, build.ceremonial, { role: value }) } }), f => ({ x: f.x, y: f.y, w: f.w, h: f.h * 0.8 }));
+  const ceremonialKey = build => [build.uniform, build.gender, build.grade && (build.grade.key || build.grade.rank), build.opt && build.opt.sleeve, build.ceremonial && build.ceremonial.role];
 
   // ---- chest badge layout: blank squares where the badges stand, by the engine's own rule -----------------------------------------
 
@@ -221,6 +255,9 @@
     esPatch: { make: esPatch, key: esPatchKey },
     skirt: { make: skirt, key: figureKey([]) },
     buttons: { make: buttons, key: buttonsKey },
+    chinstrap: { make: chinstrap, key: chinstrapKey },
+    wornOn: { make: wornOn, key: ceremonialKey },
+    cerRole: { make: role, key: ceremonialKey },
     sleeve: { make: figure('sleeve'), key: figureKey(['poloShirt', 'poloCut', 'femaleTop', 'tie']) },
     femaleTop: { make: figure('femaleTop'), key: figureKey(['sleeve', 'tie']) },
     poloShirt: { make: figure('poloShirt', upperBody), key: figureKey(['sleeve', 'poloCut']) },

@@ -106,6 +106,7 @@
     }
     if(S.uniform === 'mess_dress' || S.uniform === 'semi_formal') options.miniMount = S.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     if(S.cadetHighestOnly) options.cadetHighestOnly = true;
+    if(S.ceremonial) options.ceremonial = true;
     if(S.hideRibbons) options.hideRibbons = true;
     const ribbons = new Set((S.ribbons || []).map(r => r && r.id).filter(Boolean));
     const military = typeof window.isMilitaryRibbonId === 'function' ? [...ribbons].filter(id => window.isMilitaryRibbonId(id)).length : 0;

@@ -12,10 +12,15 @@ test('every sidebar uniform has a rule and agrees with it on who may wear it',()
   const buttons=[...html.matchAll(/data-uniform-id="([^"]+)"\s+data-allowed-for="([^"]+)"/g)];
   assert.ok(buttons.length>=10,'found the uniform buttons');
   for(const [,id,allowed] of buttons){
+    // Ceremonials is Class A or Class B with the honor guard items put on: who is offered it is rules.CEREMONIAL's.
+    if(id===rules.CEREMONIAL.id){
+      assert.deepEqual(rules.CEREMONIAL.membership,allowed.split(',').map(s=>s.trim()),`${id} membership`);
+      continue;
+    }
     assert.ok(rules.getUniformRule(id),`${id} has a rule`);
     assert.deepEqual(rules.allowedMemberships(id),allowed.split(',').map(s=>s.trim()),`${id} membership`);
   }
-  assert.equal(buttons.length,Object.keys(rules.RULES).length,'no rule without a button');
+  assert.equal(buttons.length,Object.keys(rules.RULES).length+1,'no rule without a button, and the one card of Ceremonials');
 });
 
 test('ribbons: required on Class A, optional on Class B and Aviator, none elsewhere (39-1 11.1.2, 11.1.3)',()=>{

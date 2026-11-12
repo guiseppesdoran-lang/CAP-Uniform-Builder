@@ -60,6 +60,10 @@ const State = {
   membership:'',
   gender:'',
   uniform:'blues_a',
+  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6): the Service Dress or the Blue Service uniform with the honor guard items put on, so State.uniform stays the
+  // uniform it rides on ('blues_a' or 'blues_b') and every rule and drawing of that uniform applies to it unchanged. Cadets only (data/uniform-rules.js CEREMONIAL); its own
+  // choices (guard or flag bearer, the chinstrap) are State.garment.cerRole and State.garment.chinstrap. Saved with the setup; false for every setup saved before it existed.
+  ceremonial:false,
   assetBase:'images',
 
   ribbons:[], // array of {id, devices:{}}

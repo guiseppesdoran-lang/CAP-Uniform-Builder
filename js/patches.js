@@ -198,8 +198,17 @@ function capubCordPicture(id){
   return shoulderCordPictures.get(key);
 }
 
+// The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6), wears the metallic silver shoulder cord and no other (9.6.7.5): the picker shows it as worn and offers nothing else, and the
+// member's own choice of cord is kept, unchanged, for the uniforms that take one.
+const capubCordIsFixed = () => !!State.ceremonial && State.membership === 'cadet' && CAPUBUniformRules.allowsCeremonial(State.membership);
+
 // The options of the cord picker for this member on this uniform: none when no cord may be worn (the control is then hidden).
 function capubShoulderCordOptions(){
+  if(capubCordIsFixed()){
+    const id = CAPUBUniformRules.CEREMONIAL.cord;
+    return [{ value: id, label: SHOULDER_CORD_META[id].tile, picture: capubCordPicture(id), mark: 'Worn with this uniform', group: SHOULDER_CORD_GROUP,
+      note: `Metallic silver, Army-style, worn on the left shoulder at the seam on top of the epaulet (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.cord}).` }];
+  }
   const allowed = id => CAPUBUniformRules.allowsCord(State.uniform, State.membership, id);
   const regulation = SHOULDER_CORD_IDS.filter(allowed);
   if(!regulation.length) return [];
@@ -213,6 +222,7 @@ function capubShoulderCordOptions(){
 const capubCordSwatch = c => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 36" focusable="false" aria-hidden="true"><rect x="7" y="5" width="34" height="26" rx="6" fill="${c.main}" stroke="${c.dark}" stroke-width="3"/></svg>`;
 
 function capubPickShoulderCord(value){
+  if(capubCordIsFixed()) return;   // the Honor Guard Uniform's cord is not a choice
   State.shoulderCord = value || null;
   State.shoulderCordColour = CAPUBEngine.cords.needsColour(State.shoulderCord) ? capubCordColour(State.shoulderCord) : null;
   renderCACShoulderCord();
@@ -230,7 +240,7 @@ function syncShoulderCordControl(){
   if(!host || typeof VisualPicker === 'undefined') return;
   const options = capubShoulderCordOptions();
   // The cord the member chose, when it is on offer (a supplement cord the unit does not offer is not shown as chosen).
-  const value = State.shoulderCord && options.some(o => o.value === State.shoulderCord) ? State.shoulderCord : '';
+  const value = capubCordIsFixed() ? CAPUBUniformRules.CEREMONIAL.cord : State.shoulderCord && options.some(o => o.value === State.shoulderCord) ? State.shoulderCord : '';
   const key = JSON.stringify(options.map(o => [o.value, o.label, o.note, o.mark, o.group, o.picture ? o.picture.length : 0]));
   if(!shoulderCordPicker){
     shoulderCordPicker = VisualPicker.render(host, { name: 'shoulderCord', legend: 'Shoulder cord', options, value, size: 'large', onChange: capubPickShoulderCord });

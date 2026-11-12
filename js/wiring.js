@@ -12,8 +12,14 @@ uniformListEl.addEventListener('click', e=>{
 
   const newUniform=btn.dataset.uniformId;
   const prevU=State.uniform;
-  State.uniform=newUniform;
-  if(prevU!==newUniform) window.CAPUB_TELEMETRY?.track('uniform_switch', { from: prevU, to: newUniform });
+  const prevCard=State.ceremonial ? CAPUBUniformRules.CEREMONIAL.id : prevU;
+  // Ceremonials is the Service Dress or the Blue Service uniform with the honor guard items put on: State.uniform stays the uniform it rides on (the coat's Class A
+  // unless the member is already on the shirt's Class B), so every rule and drawing of that uniform applies to it unchanged.
+  State.ceremonial=newUniform===CAPUBUniformRules.CEREMONIAL.id;
+  if(State.ceremonial){
+    if(!['blues_a','blues_b'].includes(State.uniform)) State.uniform=CAPUBUniformRules.ceremonialBase('coat');
+  }else State.uniform=newUniform;
+  if(prevCard!==newUniform) window.CAPUB_TELEMETRY?.track('uniform_switch', { from: prevCard, to: newUniform });
 
   fullRender(prevU);
   refreshUI();
@@ -777,6 +783,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       membership: State.membership,
       gender: State.gender,
       uniform: State.uniform,
+      ceremonial: !!State.ceremonial,
       rank: State.rank,
       cadetFirstSergeant: State.cadetFirstSergeant,
       shoulderCord: State.shoulderCord || '',
@@ -828,6 +835,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.membership = ['senior','cadet'].includes(p.membership) ? p.membership : '';
     out.gender = ['male','female'].includes(p.gender) ? p.gender : '';
     out.uniform = typeof p.uniform === 'string' && has(UNIFORMS, p.uniform) ? p.uniform : 'blues_a';
+    // Ceremonials (the Honor Guard Uniform) is Class A or Class B with the honor guard items, for cadets: a setup that names it for a senior member, or on any other uniform, loads without it.
+    out.ceremonial = p.ceremonial === true && ['blues_a','blues_b'].includes(out.uniform) && CAPUBUniformRules.CEREMONIAL.membership.includes(out.membership);
     out.rank = out.membership && RANKS[out.membership].includes(p.rank) ? p.rank : null;
     out.cadetFirstSergeant = !!p.cadetFirstSergeant;
     // A cord the page offers: one of the seven by its key, or a supplement cord by its id (js/engine/cords.js); the colour only for a cord whose colour the unit commander picks.
@@ -951,6 +960,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.membership = p.membership;
     State.gender = p.gender;
     State.uniform = p.uniform;
+    State.ceremonial = p.ceremonial;
     State.rank = p.rank;
     State.cadetFirstSergeant = p.cadetFirstSergeant;
     if(!isCadetFirstSergeantEligible(State.rank)) State.cadetFirstSergeant = false;
@@ -1084,6 +1094,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
+    // What Ceremonials wears and the drawing does not show: no sheet draws hands.
+    if(State.ceremonial && State.membership === 'cadet') addNotice('ok',`White parade gloves are worn with this uniform and are not shown on the drawing (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`);
     if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
     return CAPUB_V2.notices;
   }

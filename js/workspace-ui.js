@@ -611,12 +611,14 @@
     const name=card && card.querySelector('.uName');
     return name ? name.textContent.trim() : String(id||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
   }
+  // The card of the uniform on show: Ceremonials rides on Class A or Class B (State.ceremonial), so its card, not the uniform under it, is the one named and lit.
+  function shownUniform(){ return State.ceremonial ? 'ceremonial' : State.uniform; }
   function updateTopBar(){
     if(typeof State==='undefined') return;
     const uniform=safeBy('topUniformText'), items=safeBy('topItemsText');
     // Until membership, rank and cut are chosen the default would read as a real selection ("BLUES A") over an empty preview.
     const setupNeeded = !(State.membership && State.rank && State.gender);
-    if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? uniformName(State.uniform) : '—';
+    if(uniform) uniform.textContent = (State.uniform && !setupNeeded) ? uniformName(shownUniform()) : '—';
     // Items are the ribbons, badges and patches on the uniform as drawn; what it does not wear stays chosen and is not counted.
     const shown = typeof countRibbonsShown==='function' ? { ribbons:countRibbonsShown(), badges:countBadgesShown(), patches:countPatchesShown() } : { ribbons:(State.ribbons||[]).length, badges:(State.badges||[]).length, patches:(State.patches||[]).length };
     const chosenRibbons = chosenRibbonCount();
@@ -637,12 +639,12 @@
       area.setAttribute('role','group');
       area.setAttribute('aria-label', setupNeeded
         ? 'Uniform preview. Choose a membership type, rank and cut to begin.'
-        : `Uniform preview: ${State.rank || ''} ${State.uniform ? uniformName(State.uniform) : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
+        : `Uniform preview: ${State.rank || ''} ${State.uniform ? uniformName(shownUniform()) : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
     }
   }
   function markActiveUniform(){
     if(typeof State==='undefined') return;
-    document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===State.uniform));
+    document.querySelectorAll('.uniformOption').forEach(btn=>btn.classList.toggle('activeUniform',btn.dataset.uniformId===shownUniform()));
   }
   // The Uniform options card at the top of the Items step (headgear, sleeves, skirt, the cord and the rest): shown while one of its two panels
   // has something for the uniform chosen, hidden when neither has. The panels follow the uniform themselves (js/garment-options.js render,
@@ -912,7 +914,7 @@
   function describe(profile){
     const bits=[];
     if(profile.rank) bits.push(profile.rank);
-    if(profile.uniform) bits.push(window.CAPUB_V3.uniformName(profile.uniform)); // the Resume banner is a separate module from the name's
+    if(profile.uniform) bits.push(window.CAPUB_V3.uniformName(profile.ceremonial ? 'ceremonial' : profile.uniform)); // the Resume banner is a separate module from the name's
     const items=(Array.isArray(profile.ribbons)?profile.ribbons.length:0)
       +(Array.isArray(profile.badges)?profile.badges.length:0)
       +(Array.isArray(profile.patches)?profile.patches.length:0);

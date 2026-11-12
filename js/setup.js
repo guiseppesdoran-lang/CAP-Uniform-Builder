@@ -295,7 +295,8 @@ function isUniformAllowedFor(uniformId, membership){
   return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank});
 }
 function findFirstAllowedUniform(membership){
-  const opts=[...uniformListEl.querySelectorAll('.uniformOption')];
+  // Ceremonials rides on Class A or Class B (State.ceremonial), so it is never the uniform a member falls back to.
+  const opts=[...uniformListEl.querySelectorAll('.uniformOption')].filter(opt=>opt.dataset.uniformId!==CAPUBUniformRules.CEREMONIAL.id);
   for(const opt of opts){
     if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank})){
       return opt.dataset.uniformId;
@@ -304,12 +305,23 @@ function findFirstAllowedUniform(membership){
   return null;
 }
 function applyMemberTypeToUniformOptions(){
+  // A member who is not offered Ceremonials (a senior member, whoever chose it or saved it) wears the uniform it rides on, without the honor guard items.
+  if(State.ceremonial && State.membership && !CAPUBUniformRules.allowsCeremonial(State.membership)) State.ceremonial=false;
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
     const isAllowed = State.membership
       ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank})
       : true;
 
+    // Ceremonials is not offered to a senior member at all: its card is hidden, not greyed out and not moved to the fold of what the member may not wear.
+    if(opt.dataset.uniformId===CAPUBUniformRules.CEREMONIAL.id){
+      opt.classList.remove('locked');
+      opt.classList.toggle('hidden', !isAllowed);
+      opt.hidden = !isAllowed;
+      const gone=opt.querySelector('.uWhy');
+      if(gone) gone.remove();
+      return;
+    }
     // The reason a card is locked is a line of the card, not text the stylesheet draws from an attribute: js/citations.js cannot reach text that is not in
     // the page, and the paragraph in it ("... (CAPR 39-1, 4.1.1)") belongs behind the question mark like every other.
     let why=opt.querySelector('.uWhy');
@@ -328,6 +340,6 @@ function applyMemberTypeToUniformOptions(){
 function highlightActiveUniformButton(){
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
-    opt.classList.toggle('activeUniform', opt.dataset.uniformId===State.uniform);
+    opt.classList.toggle('activeUniform', opt.dataset.uniformId===(State.ceremonial ? CAPUBUniformRules.CEREMONIAL.id : State.uniform));
   });
 }

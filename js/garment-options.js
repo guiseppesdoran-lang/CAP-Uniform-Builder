@@ -40,8 +40,27 @@
   // The tie rule for the uniform on the page (data/uniform-rules.js): { offered, defaultOn, para }.
   function tieOf(c){
     if(!['blues_b', 'aviator'].includes(c.u) || typeof CAPUBUniformRules === 'undefined') return { offered: false, defaultOn: false, para: null };
-    return CAPUBUniformRules.tieRule(c.u, { gender: c.female ? 'female' : 'male', sleeve: (c.o && c.o.sleeve) || 'short', overblouse: c.u === 'aviator' && c.female && (c.o && c.o.femaleTop) === 'overblouse' });
+    return CAPUBUniformRules.tieRule(c.u, { gender: c.female ? 'female' : 'male', sleeve: (c.o && c.o.sleeve) || 'short', overblouse: c.u === 'aviator' && c.female && (c.o && c.o.femaleTop) === 'overblouse', ceremonial: !!c.cer });
   }
+
+  // The Honor Guard Uniform, "Ceremonials" (CAPR 39-1 9.6): the Service Dress or the Blue Service uniform with the honor guard items put on. State.uniform stays the uniform it rides on, so the
+  // options the member has there (the shirt's sleeve length, the headgear) are these same options; only what is the uniform's own is added here: what it is worn on, the role, the chinstrap.
+  // `wornOn` has no value of its own: it is read from, and written to, State.uniform (the coat's Class A or the shirt's Class B) and the sleeve choice the Class B already has.
+  const ceremonialOn = () => typeof CAPUBUniformRules !== 'undefined' && !!State.ceremonial && State.membership === 'cadet' && CAPUBUniformRules.allowsCeremonial(State.membership);
+  const wornOnOf = c => c.u === 'blues_a' ? 'coat' : ((c.o && c.o.sleeve) === 'long' ? 'long' : 'short');
+  function wearOn(value){
+    const prev = State.uniform;
+    if(value === 'coat') State.uniform = CAPUBUniformRules.ceremonialBase('coat');
+    else{
+      State.uniform = CAPUBUniformRules.ceremonialBase('shirt');
+      State.garment = Object.assign({}, State.garment || {}, { sleeve: value });
+    }
+    if(typeof fullRender === 'function') fullRender(prev);
+    if(typeof refreshUI === 'function') refreshUI();
+    render();
+  }
+  // The chinstrap where the picker starts: the guidance figure's, for the combination (up with short sleeves, down on the coat and with long sleeves); the member's own pick then holds.
+  const chinstrapOf = c => (c.o && c.o.chinstrap) || CAPUBUniformRules.ceremonialChinstrap(c.u, c.o && c.o.sleeve);
 
   // The choices a supplement of the member's unit does not allow, by option: { headgear: ['beret'] } (js/supplements.js hiddenOptions). They are not offered, and a build that
   // had one chosen falls back to the default, as it does when a chosen value is no longer in the list.
@@ -62,6 +81,20 @@
   // { key, label, type: 'select' | 'check' | 'text', choices: [[value, label]] | fn, when(ctx), off(ctx) -> note | '' (shown, switched off) }
   // `picker` (selects only): the option is chosen by picture (js/visual-picker.js, pictures from js/option-pictures.js): { size, shape, notes(ctx) -> { value: sentence } }.
   const OPTIONS = [
+    { key: 'wornOn', label: 'Worn on', type: 'select', derived: true,
+      choices: c => [['coat', 'Service Dress coat'], ['short', c.female ? 'Blue blouse, short sleeves' : 'Blue shirt, short sleeves'], ['long', c.female ? 'Blue blouse, long sleeves' : 'Blue shirt, long sleeves']],
+      read: wornOnOf, write: wearOn,
+      picker: { shape: 'tall', notes: () => ({
+        coat: 'Worn as the Service Dress, with or without epaulets, with the Honor Guard items added (CAPR 39-1, 9.6.5, 9.6.7.1).',
+        short: 'Worn as the Blue Service uniform, with the pistol belt and shoulder cord worn as on the coat (CAPR 39-1, 9.6.6, 9.6.7.2).',
+        long: 'Worn as the Blue Service uniform, with the pistol belt and shoulder cord worn as on the coat (CAPR 39-1, 9.6.6, 9.6.7.2).' }) },
+      when: c => c.cer },
+    { key: 'cerRole', label: 'Role', type: 'select',
+      choices: [['guard', 'Guard, white pistol belt'], ['flag', 'Flag bearer, white flag sling']],
+      picker: { shape: 'tall', notes: () => ({
+        guard: 'All members wear the white pistol belt except flag bearers (CAPR 39-1, 9.6.7.6).',
+        flag: 'Flag bearers wear the white flag sling instead of the pistol belt, its shoulder straps under the epaulets (CAPR 39-1, 9.6.3).' }) },
+      when: c => c.cer },
     { key: 'poloShirt', label: 'Shirt', type: 'select',
       choices: [['embroidered', 'Embroidered seal'], ['print', 'Screen-printed seal'], ['tactical', 'Tactical polo']],
       picker: { size: 'large', notes: () => ({
@@ -88,7 +121,7 @@
     { key: 'sleeve', label: 'Sleeves', type: 'select',
       choices: [['short', 'Short sleeves'], ['long', 'Long sleeves']],
       picker: { shape: 'tall' },
-      when: c => ['blues_b', 'aviator', 'polo'].includes(c.u) },
+      when: c => ['blues_b', 'aviator', 'polo'].includes(c.u) && !c.cer },
     { key: 'femaleTop', label: 'Top', type: 'select',
       choices: [['shirt', 'Aviator shirt'], ['overblouse', 'White overblouse']],
       picker: { shape: 'tall' },
@@ -115,6 +148,8 @@
       when: c => c.u === 'mess_dress' },
     { key: 'headgear', label: 'Headgear', type: 'select',
       choices: c => {
+        // Ceremonials: the male service cap with the Cadet Officer device and the rear chinstrap, for every member (9.6.7.9); no other cap applies, and its two forms are the chinstrap choice.
+        if(c.cer) return [['auto', 'Honor Guard cap'], ['none', 'No headgear']];
         if(FLIGHT.includes(c.u)) return [['auto', 'Flight cap'], ['none', 'No headgear']];
         // The field uniforms draw the cap worn, front and back: the patrol cap (the ABU cap, the OCP patrol cap, the Blue
         // Field Cap), the tactical cap (the navy tactical cap of the ABU and CFU, ICL 25-02 6.2.11; the OCP ball cap), and
@@ -134,8 +169,18 @@
         list.push(['none', 'No headgear']);
         return list;
       },
-      picker: { notes: () => ({ beret: 'Worn by graduates of the National Blue Beret program, at the unit level and not at wing, region or national activities other than that program (CAPR 39-1, 9.2.3).' }) },
+      picker: { notes: c => c.cer
+        ? { auto: 'The male service cap with the Cadet Officer cap device and the rear chinstrap, worn by all Honor Guard members, men and women (CAPR 39-1, 9.6.7.9).' }
+        : { beret: 'Worn by graduates of the National Blue Beret program, at the unit level and not at wing, region or national activities other than that program (CAPR 39-1, 9.2.3).' } },
       when: c => ['blues_a', 'blues_b', 'flight_suit', ...FIELD].includes(c.u) },
+    // The rear chinstrap of the Honor Guard cap, up or down (9.6.7.9.2): offered while the cap is worn.
+    { key: 'chinstrap', label: 'Chinstrap', type: 'select',
+      choices: [['up', 'Chinstrap up'], ['down', 'Chinstrap down']],
+      read: chinstrapOf,
+      picker: { notes: () => ({
+        up: 'The black leather rear chinstrap is secured up on the cap, its buckle to the right of center seen from the rear (CAPR 39-1, 9.6.7.9.2).',
+        down: 'During a performance the rear chinstrap is worn down under the chin (CAPR 39-1, 9.6.7.9.2).' }) },
+      when: c => c.cer && (c.o.headgear || 'auto') !== 'none' },
     // The OCP patrol and tactical caps: officers' and cadet officers' grade "sewn or Velcro" centred 1/2 in from the visor (CAPR 39-1, 7.1.1.8). Sewn, with
     // 1/8 in of blue past the insignia, is the default; the hook-and-loop form is drawn as the 2 x 2 in square of the chest (LIVE13 E82).
     { key: 'capGrade', label: 'Cap grade', type: 'select',
@@ -159,7 +204,7 @@
     // Drawn only when the member ticks it: unticked it is not on the tie.
     { key: 'tieClasp', label: 'Tie clasp', type: 'check', defaultValue: false,
       note: () => 'A tie tack or clasp may be worn with the tie, centered between the bottom of the knot and the tie\'s tip (CAPR 39-1 4.1.11.1.1.3).',
-      when: c => !c.female && ['blues_b', 'aviator'].includes(c.u) && (typeof c.o.tie === 'boolean' ? c.o.tie : tieOf(c).defaultOn) },
+      when: c => !c.female && ['blues_b', 'aviator'].includes(c.u) && !c.cer && (typeof c.o.tie === 'boolean' ? c.o.tie : tieOf(c).defaultOn) },
     { key: 'chevron', label: 'Chevron size', type: 'select',
       choices: c => {
         // The default each uniform's paragraph names comes first.
@@ -203,8 +248,10 @@
       when: c => c.u === 'aviator_blazer' && !c.g.cadet && !!c.g.key }
   ];
 
-  const KEYS = new Set(OPTIONS.map(o => o.key));
+  // `derived` options have no value of their own to save (wornOn is State.uniform and the sleeve choice).
+  const KEYS = new Set(OPTIONS.filter(o => !o.derived).map(o => o.key));
   const ALLOWED = {
+    cerRole: ['guard', 'flag'], chinstrap: ['up', 'down'],
     noGradeTrack: ['officer', 'nco'], sleeve: ['short', 'long'], femaleTop: ['shirt', 'overblouse'],
     underlayer: ['shirt', 'turtleneck', 'shell'], skirt: ['a-line', 'straight-split'], buttons: ['wing-star', 'cap-crest'],
     headgear: ['auto', 'service', 'tactical', 'boonie', 'beret', 'none'], chevron: ['', '3.5', '4'], badgeLayout: ['column', 'pair'], esPatch: ['none', 'style-1', 'style-2'],
@@ -226,7 +273,7 @@
   }
 
   function context(){
-    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount(), chaplain: hasChaplainBadge(), o: State.garment || {} };
+    return { u: State.uniform, female: State.gender === 'female', g: gradeOf(), chestBadges: chestBadgeCount(), chaplain: hasChaplainBadge(), o: State.garment || {}, cer: ceremonialOn() };
   }
 
   // The name block (Profile step) asks for every part up front, for every member: first name, last name and wing (the state or region line). This rule decides only
@@ -268,9 +315,10 @@
     const notes = o.picker.notes ? o.picker.notes(c) : {};
     const made = picturesOf(o.key, values);
     const options = known => choices.map(([value, label]) => ({ value, label, note: notes[value], picture: value in known ? (known[value] == null ? undefined : known[value]) : BLANK }));
-    const current = choices.some(([v]) => v === g[o.key]) ? g[o.key] : choices[0][0];
+    const own = o.read ? o.read(c) : g[o.key];
+    const current = choices.some(([v]) => v === own) ? own : choices[0][0];
     const host = document.createElement('div');
-    const picker = VisualPicker.render(host, { name: 'garmentOpt-' + o.key, legend: labelOf(o, c), options: options(made.now), value: current, size: o.picker.size, shape: o.picker.shape, onChange: v => set(o.key, v) });
+    const picker = VisualPicker.render(host, { name: 'garmentOpt-' + o.key, legend: labelOf(o, c), options: options(made.now), value: current, size: o.picker.size, shape: o.picker.shape, onChange: v => o.write ? o.write(v) : set(o.key, v) });
     if(!made.settled) made.ready.then(done => { if(host.isConnected !== false) picker.setOptions(options(done)); });
     return host;
   }
@@ -299,7 +347,7 @@
     const g = State.garment || {};
     // The text in a text field is not part of the signature: typing must not rebuild the field being typed in.
     // The grade and the badges are in it too: the caps carry the member's grade and the layouts stand on their badges, so their pictures are drawn again when either changes.
-    const signature = JSON.stringify([c.u, c.female, c.g.category, c.g.key || c.g.rank, c.chestBadges, State.badges || [], c.chaplain, hiddenChoices(), active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
+    const signature = JSON.stringify([c.u, c.female, c.cer, c.g.category, c.g.key || c.g.rank, c.chestBadges, State.badges || [], c.chaplain, hiddenChoices(), active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
     const refocus = focusedPick(host);

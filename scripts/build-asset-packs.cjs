@@ -75,6 +75,19 @@ async function build({ imagesDir = path.join(ROOT, 'images') } = {}){
           };
           try { await P.composeUniform(build, store); } catch (err) { /* a combination the page would not offer */ }
         }
+        // The Honor Guard Uniform rides on Class A and Class B for cadets (rules.CEREMONIAL): its belt, flag sling, ascot, patch and two caps are in the pack of the uniform it is worn on.
+        if(membership === 'cadet' && Object.values(rules.CEREMONIAL.bases).includes(uniform)){
+          for(const [role, chinstrap] of [['guard', 'up'], ['flag', 'down']]){
+            const build = {
+              uniform, gender, membership, grade: G.gradeInfo(membership, rank, { track: defaults.noGradeTrack }),
+              opt: Object.assign({}, defaults, { rackColumns: 3, rackArrangement: 'lapel', rackCounts: null, miniStyle: 'mounting' }),
+              name: { first: '', last: '', state: '', show: true },
+              ribbons: [], medals: [], badges: [], badgeChoices: {}, command: null, militaryBadges: [], patches: [], cord: rules.CEREMONIAL.cord, cordOnTop: true,
+              ceremonial: { role, chinstrap }
+            };
+            try { await P.composeUniform(build, store); } catch (err) { /* a combination the page would not offer */ }
+          }
+        }
       }
     }
     const specs = {};
