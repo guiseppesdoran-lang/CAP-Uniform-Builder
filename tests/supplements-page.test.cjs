@@ -118,8 +118,8 @@ test('the section of supplements: a name in words, the date, the items; hidden w
   assert.deepEqual(shown("State.unitPatchCharter = 'GLR-IL-049'"), { hidden: true, line: 'No wing or region supplement is loaded for this unit.' });
   assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'"), { hidden: false, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1.' });
   // A senior member's Northeast and Maine supplements have cords only, which are for cadets: nothing to show.
-  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'; State.membership = 'senior'"), { hidden: true, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1. Nothing in it is for this membership type.' });
-  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'; State.membership = ''"), { hidden: true, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1. Choose your membership type to see what it allows.' });
+  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'; State.membership = 'senior'"), { hidden: true, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1. Nothing in them is for senior members.' });
+  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'; State.membership = ''"), { hidden: true, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1. Choose your membership type to see what they allow.' });
   // The Hawaii supplement has a wing patch and a hat, which a senior member keeps.
   assert.equal(shown("State.unitPatchCharter = 'PCR-HI-073'; State.membership = 'senior'; State.uniform = 'abu'").hidden, false);
   reset();

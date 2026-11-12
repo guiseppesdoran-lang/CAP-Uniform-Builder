@@ -313,7 +313,7 @@
       const text = !state.unitPatchCharter ? 'Choose your unit to load the supplements of its wing and region.'
         : !entries.length ? 'No wing or region supplement is loaded for this unit.'
         : blocks.length ? loaded
-        : `${loaded} ${state.membership ? 'Nothing in it is for this membership type.' : 'Choose your membership type to see what it allows.'}`;
+        : `${loaded} ${state.membership ? `Nothing in ${entries.length > 1 ? 'them' : 'it'} is for ${state.membership === 'senior' ? 'senior members' : 'cadets'}.` : 'Choose your membership type to see what they allow.'}`;
       if(line.textContent !== text) line.textContent = text;
     }
     if(!host || !body) return;
