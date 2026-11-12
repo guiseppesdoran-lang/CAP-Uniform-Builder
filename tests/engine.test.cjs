@@ -141,7 +141,7 @@ test('the corporate blazer nameplate sits straight across from the left breast p
   const scene = await P.composeUniform(build('aviator_blazer', 'senior', 'Col', { badges: [{ id: 'christian_chaplin' }] }), store());
   const plate = layersBy(scene, l => l.key === 'nametag')[0];
   // Figure 4.14: on the wearer's left (the picture's right), over the crest on the left breast pocket (LIVE12 E52).
-  assert.ok(plate.x + plate.w / 2 > 12.761, 'wearer\'s left (viewer\'s right) of the centre line');
+  assert.ok(plate.x + plate.w / 2 > 13.083, 'wearer\'s left (viewer\'s right) of the centre line');
   assert.ok(Math.abs(plate.x + plate.w / 2 - 18.5694) < 0.01, 'centred over the crest and the pocket');
   assert.ok(Math.abs(plate.y - 12.377) < 0.01, 'top even with the pocket top');
   assert.equal(layersBy(scene, l => l.key === 'text:name')[0].text, 'PAT DOE');
@@ -157,6 +157,16 @@ test('the semi-formal blazer swaps the necktie for a bow tie and shows no nameta
   assert.deepEqual(base.hideGroups, ['tie']);
   assert.ok(scene.layers.some(l => l.id === 'tie-bow-black'));
   assert.ok(!scene.layers.some(l => l.key === 'nametag'));
+});
+
+test('the semi-formal bow tie lies on the sheet\'s centre line where the collar leaves meet: its centre is the mount the sheet states (the aviator shirt\'s collar, C1)', async () => {
+  const sheet = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', 'garment-corporate-service-dress-blazer-male.spec.json'), 'utf8'));
+  const mount = sheet.dimensions.bow_tie_mount_in;
+  const scene = await P.composeUniform(build('semi_formal', 'senior', 'Col'), store());
+  const base = scene.layers.find(l => l.role === 'garment'), bow = scene.layers.find(l => l.id === 'tie-bow-black');
+  assert.ok(Math.abs(mount.x - sheet.size_in.w / 2) < 0.001, 'the mount is on the centre line, half the box across');
+  assert.ok(Math.abs(bow.x + bow.w / 2 - base.x - mount.x) < 0.001, `the bow tie's centre is ${mount.x} in across the sheet`);
+  assert.ok(Math.abs(bow.y + bow.h / 2 - base.y - mount.y) < 0.001, `the bow tie's centre is ${mount.y} in down the sheet`);
 });
 
 test('badges earned in levels draw the chosen level (STEM, Cyber, NRA)', async () => {
