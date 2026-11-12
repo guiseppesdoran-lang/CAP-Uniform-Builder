@@ -94,7 +94,7 @@ for(const cut of CUTS) for(const role of ['guard', 'flag']){
     assert.ok(at(strap) < scene.layers.indexOf(l) && scene.layers.indexOf(l) < at(ascot), 'drawn after the belt or sling, before the ascot');
     const z = id => scene.layers[at(id)].z;
     assert.ok(z(strap) < l.z && l.z < z(ascot), `over the ${role === 'flag' ? 'sling' : 'belt'} (${z(strap)}), under the ascot (${z(ascot)}): ${l.z}`);
-    assert.equal(scene.layers.filter(x => x.id === `${cut.sheet}-honor-guard-belt` || x.id === `${cut.sheet}-honor-guard-flag-sling`).length, 1, 'still the belt or the sling, never both');
+    assert.equal(scene.layers.filter(x => x.role === 'honor-guard-belt' || x.role === 'honor-guard-sling').length, 1, 'still the belt or the sling, never both');
     if(cut.form === 'folded' && role === 'flag'){
       assert.deepEqual(l.showGroups, ['gloves-under-sling'], 'the pair under the sling\'s band');
       assert.deepEqual(l.hideGroups, ['gloves-under-belt'], 'and the belt\'s pair left off: the two overlap');

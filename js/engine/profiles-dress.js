@@ -2040,7 +2040,12 @@
   //   on the shirt and blouse the collar worn open and laid back (the sheet's group collar-honor-guard) in place of the collar and the tie or tab the sheet draws.
   //   the white parade gloves (9.6.7.7): a gloved hand at each cuff on the coats and the long sleeves, the pair folded under the belt (or the sling's band) on the short sleeves, where no sleeve covers the wrists.
   // The art lies on the garment's own box like the cord sheets (`<sheet id>-honor-guard-belt | -flag-sling | -gloves | -ascot`).
-  const HG_Z = { belt: Z.garmentLayer + 0.1, sling: Z.garmentLayer + 0.1, gloves: Z.garmentLayer + 0.15, ascot: Z.garmentLayer + 0.2, patch: Z.garmentLayer + 0.3 };
+  //   the flag bearer's sling lies over what is pinned to the breast (the owner, 2026-11-12: ribbons "have to be under" it): see honorGuardSlingOver.
+  const HG_Z = { belt: Z.garmentLayer + 0.1, sling: Z.garmentLayer + 0.1, gloves: Z.garmentLayer + 0.15, ascot: Z.garmentLayer + 0.2, patch: Z.garmentLayer + 0.3, slingOver: Z.badge + 0.25 };
+  // What is pinned to the breast, which a strap of the sling crosses over: the ribbons and their devices, the miniature medals, the badges (the nameplate and its name are found by their keys).
+  const HG_BREAST = new Set(['ribbon', 'device', 'mini', 'mini-drape', 'mini-medal', 'badge']);
+  // The box the strap is drawn again over is the items' box grown by this much, so the hairline of an item's edge or of the plate's border that lies half outside the box is covered too.
+  const HG_SLING_PAD = 0.06;
   const HG_PATCH = 'patch-honor-guard';
   const HG_CAP = { up: 'hat-service-cap-honor-guard', down: 'hat-service-cap-honor-guard-chinstrap-down' };
   const HG_CAP_DEVICE = 'cap-device-cadet-officer-service';
@@ -2092,6 +2097,22 @@
     await ctx.place(HG_PATCH, { at, z: HG_Z.patch, role: 'patch', key: 'ascot:' + HG_PATCH, title: 'Honor Guard patch' });
     const slot = ascot.raw && ascot.raw.landmarks && ascot.raw.landmarks.patch_slot;
     ctx.honorGuardPatchTop = slot && Number.isFinite(slot.y) ? slot.y / 100 : at.y - (await ctx.spec(HG_PATCH)).h / 2;
+  }
+
+  // The flag bearer's sling is worn over the coat or the shirt, so its straps cover whatever is pinned to the breast where they cross: the ribbons and their devices, the badges and the nameplate
+  // with the name on it. The sling is drawn once at its own place, low (honorGuardBody: over the body, under the shoulder boards and epaulets, the cord and the collar and lapels, as the guidance
+  // figure draws it, with the gloves and the ascot over it), and, once the breast is dressed, again over the box those items lie in, above them (HG_Z.slingOver, between the badges at Z.badge and the
+  // collar and lapel foreground at Z.badge + 0.5): the same art at the same place, cut to that box, so nothing moves and the strap shows over an item only where it crosses it. The name's letters
+  // go under it with their plate. A guard's pistol belt crosses no part of the breast, so a guard has none of this.
+  async function honorGuardSlingOver(ctx, hg){
+    if(hg.role !== 'flag') return;
+    const sling = ctx.layers.find(l => l.role === 'honor-guard-sling');
+    const items = ctx.layers.filter(l => (l.type === 'asset' && HG_BREAST.has(l.role)) || l.key === 'text:name' || (l.type === 'clear' && /^clear:name(tag|plate)$/.test(l.key)));
+    if(!sling || !items.length) return;
+    const u = core.unionBounds(items.map(core.layerBounds)), box = { x: u.x - HG_SLING_PAD, y: u.y - HG_SLING_PAD, w: u.w + 2 * HG_SLING_PAD, h: u.h + 2 * HG_SLING_PAD };
+    for(const l of items) if(l.key === 'text:name') l.z = HG_Z.slingOver - 0.05;
+    const clip = [{ x: box.x, y: box.y }, { x: box.x + box.w, y: box.y }, { x: box.x + box.w, y: box.y + box.h }, { x: box.x, y: box.y + box.h }];
+    ctx.layers.push(Object.assign({}, sling, { z: HG_Z.slingOver, role: 'honor-guard-sling-over', key: 'honor-guard:honor-guard-sling-over', clip, noBounds: true }));
   }
 
   // The cap: the male service cap with the Cadet Officer device and the rear chinstrap, up or down, lifted if it must be until its lowest ink is HG_CAP_CLEAR above the patch's top.
@@ -2268,6 +2289,8 @@
       // Dress). Cadets only, so the lapel U.S. never applies.
       await lapelForeground(ctx, A, g);
     }
+    // The flag bearer's sling over what is pinned to the breast, once the breast is dressed.
+    if(guard) await honorGuardSlingOver(ctx, guard);
   }
 
   // ---- USAF-style Class B (4.1.11 men, 4.1.12 women) -----------------------------------------------
@@ -2377,6 +2400,8 @@
     { const bf = bandFrame(ctx, 'left', H.epauletFrame(ctx, 'left')); if(bf && bf.band) markBandEdge(ctx, 'left', bf, edgeStripThickness(ctx, 'left')); }
     await shoulderCord(ctx, b, strapAxis(ctx, 'left'));
     await blueHat(ctx, b);
+    // The flag bearer's sling over what is pinned to the breast, once the breast is dressed.
+    if(guard) await honorGuardSlingOver(ctx, guard);
   }
 
   // ---- Mess dress (4.1.1 men, 4.1.2 women) ------------------------------------------------------------

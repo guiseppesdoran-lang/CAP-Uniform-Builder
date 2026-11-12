@@ -74,7 +74,7 @@ for(const cut of CUTS) for(const role of ['guard', 'flag']){
     const belt = `${cut.sheet}-honor-guard-belt`, sling = `${cut.sheet}-honor-guard-flag-sling`, ascot = `${cut.sheet}-honor-guard-ascot`;
     assert.equal(ids.includes(belt), role === 'guard', 'the white pistol belt is worn by every member except flag bearers');
     assert.equal(ids.includes(sling), role === 'flag', 'the white flag sling is worn by flag bearers instead of the belt');
-    assert.equal(ids.filter(id => id === belt || id === sling).length, 1, 'never both');
+    assert.equal(scene.layers.filter(l => l.role === 'honor-guard-belt' || l.role === 'honor-guard-sling').length, 1, 'never both (the flag bearer\'s sling is drawn a second time over the breast, role honor-guard-sling-over)');
     assert.equal(ids.filter(id => id === ascot).length, 1, 'the ascot');
     const patch = scene.layers.find(l => l.id === 'patch-honor-guard');
     assert.ok(patch, 'the Honor Guard patch');
@@ -207,16 +207,23 @@ test('Class A: nothing of the coat is hidden, the shirt, collar flaps and tie be
   }
 });
 
-test('the members\' insignia lie over the belt or sling: ribbons, nameplate and badges are above it, and the collar insignia sit on the honor guard leaves', async () => {
+// A full rack of ten ribbons with a badge over it and one below, and the nameplate: every breast item the sling's straps can cross.
+const RACK = [['mitchell_award', 'earned_cos_star'], ['armstrong_achievement'], ['rickenbacker_achievement'], ['wright_brothers_award'], ['curry_achievement'], ['hap_arnold_achievement'], ['cap_achievment_award', 'capub_total_7'], ['community_service_ribbon'], ['cadet_special_activity_ribbon'], ['encampment_ribbon']];
+const breastBuild = (cut, role) => guard(cut, role, cut.chinstrap, { rank: 'C/Maj', ribbonSel: RACK, badgeIds: ['AirCrew1_DB3F0FCC3650F', 'emergency_services_badge'] });
+const BREAST = l => (l.type === 'asset' && ['ribbon', 'device', 'badge'].includes(l.role)) || l.key === 'text:name' || (l.type === 'asset' && l.role === 'garment-layer' && /-nametag-(cadet|adult)$/.test(l.id));
+const meets = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+test('the members\' insignia lie over the guard\'s pistol belt: ribbons, nameplate and badges are above it, and a guard has nothing drawn over the breast; the collar insignia sit on the honor guard leaves', async () => {
   for(const cut of CUTS){
-    const b = guard(cut, 'flag', cut.chinstrap, { rank: cut.uniform === 'blues_b' ? 'C/MSgt' : 'C/SSgt', ribbonSel: [['wright_brothers_award'], ['curry_achievement']], badgeIds: ['AirCrew1_DB3F0FCC3650F'] });
+    const b = guard(cut, 'guard', cut.chinstrap, { rank: cut.uniform === 'blues_b' ? 'C/MSgt' : 'C/SSgt', ribbonSel: [['wright_brothers_award'], ['curry_achievement']], badgeIds: ['AirCrew1_DB3F0FCC3650F'] });
     const scene = await compose(b);
-    const sling = layerOf(scene, 'honor-guard-sling')[0];
+    const belt = layerOf(scene, 'honor-guard-belt')[0];
     for(const role of ['ribbon', 'badge', 'nametag']){
       const rows = scene.layers.filter(l => l.role === role);
-      for(const l of rows) assert.ok(l.z > sling.z, `${cut.name}: ${role} over the sling`);
+      for(const l of rows) assert.ok(l.z > belt.z, `${cut.name}: ${role} over the belt`);
     }
     assert.ok(scene.layers.some(l => l.role === 'ribbon'), `${cut.name}: ribbons are drawn`);
+    assert.equal(layerOf(scene, 'honor-guard-sling-over').length, 0, `${cut.name}: nothing drawn over the breast`);
   }
   // cadet NCO chevrons on the shirt: on the leaves of the honor guard collar, not the everyday ones
   for(const cut of CUTS.filter(c => c.uniform === 'blues_b')){
@@ -229,6 +236,74 @@ test('the members\' insignia lie over the belt or sling: ribbons, nameplate and 
       const centres = chevrons.map(l => ({ x: l.x + l.w / 2, y: l.y + l.h / 2 }));
       assert.ok(centres.some(c => inside(c, poly)), `${cut.name}: a chevron is centred on the ${side} honor guard leaf`);
     }
+  }
+});
+
+test('the flag bearer\'s sling lies over the ribbons, their devices, the badges and the nameplate with its name, under the collar, the lapels, the boards and the cord, on a coat and on every Class B sheet; nothing else is moved', async () => {
+  for(const cut of CUTS){
+    const scene = await compose(breastBuild(cut, 'flag'));
+    const [low, over] = [layerOf(scene, 'honor-guard-sling'), layerOf(scene, 'honor-guard-sling-over')];
+    assert.equal(low.length, 1, `${cut.name}: the sling at its own place`);
+    assert.equal(over.length, 1, `${cut.name}: and once more over the breast`);
+    const [s, o] = [low[0], over[0]];
+    assert.equal(o.id, s.id, 'the same art');
+    assert.deepEqual([o.x, o.y, o.w, o.h, o.rotate], [s.x, s.y, s.w, s.h, s.rotate], 'at the same place: nothing moves');
+    assert.ok(o.z > s.z, 'above the first');
+    assert.ok(o.noBounds, 'and does not change the drawing\'s frame');
+    // after every breast item
+    const items = scene.layers.filter(BREAST);
+    for(const role of ['ribbon', 'device', 'badge']) assert.ok(items.some(l => l.role === role), `${cut.name}: a ${role} is worn`);
+    assert.ok(items.some(l => l.key === 'text:name') && items.some(l => l.role === 'garment-layer'), `${cut.name}: the nameplate and the name`);
+    assert.equal(items.filter(l => l.role === 'ribbon').length, 10, 'a rack of ten');
+    for(const l of items) assert.ok(l.z < o.z, `${cut.name}: ${l.key} is drawn before the strap over the breast (${l.z} against ${o.z})`);
+    // the box the strap is drawn over holds every item whole
+    const clip = o.clip, box = { x: Math.min(...clip.map(p => p.x)), y: Math.min(...clip.map(p => p.y)) };
+    box.w = Math.max(...clip.map(p => p.x)) - box.x; box.h = Math.max(...clip.map(p => p.y)) - box.y;
+    for(const l of items.filter(l => l.role !== 'garment-layer')){
+      const bb = core.layerBounds(l);
+      assert.ok(bb.x >= box.x && bb.y >= box.y && bb.x + bb.w <= box.x + box.w && bb.y + bb.h <= box.y + box.h, `${cut.name}: ${l.key} lies inside the box`);
+    }
+    // before the collar and the lapels, the boards and their grade
+    // (the coat's own `lapel-left` piece at 13.5 lies over the rack where the sling's art is cut away by the lapel: the strap has no pixel there to draw)
+    const collar = scene.layers.filter(l => (l.role === 'garment-foreground' && (l.onlyGroups || []).includes('collar-honor-guard')) || /-lapel-(foreground|cap|us)$/.test(l.id || ''));
+    assert.ok(collar.length, `${cut.name}: a collar or lapel is drawn over the breast`);
+    for(const l of collar) assert.ok(l.z > o.z, `${cut.name}: ${l.key} over the strap`);
+    // the boards and their grade (the coat's are over the strap; the shirt's epaulets are low, under the breast items, and lie clear of the box), the board seen from above, the cap
+    for(const l of scene.layers.filter(l => l.role === 'epaulet-top' || l.role === 'hat' || (cut.uniform === 'blues_a' && (/^epaulet/.test(l.role) || l.role === 'grade')))) assert.ok(l.z > o.z, `${cut.name}: ${l.key} over the strap`);
+    // what stays over the low strap and does not lie in the box: the boards, the grades, the patch, the cord's whole run, the gloves
+    for(const l of scene.layers.filter(l => /^epaulet/.test(l.role) || l.role === 'patch' || (l.role === 'grade' && !/chest/.test(l.key)))) assert.ok(!meets(core.layerBounds(l), box), `${cut.name}: ${l.key} is clear of the box`);
+    const cord = scene.layers.find(l => l.cordPath), room = box;
+    // the coats' cord is drawn over the strap; the shirts' is low, under the badges, and its whole run lies outside the box
+    if(cord.z > o.z) assert.ok(cut.uniform === 'blues_a', `${cut.name}: only the coats' cord is over the strap`);
+    else assert.ok(cord.cordPath.points.every(p => !meets({ x: p[0] - cord.cordPath.width / 2, y: p[1] - cord.cordPath.width / 2, w: cord.cordPath.width, h: cord.cordPath.width }, room)), `${cut.name}: the cord's run is clear of the box`);
+    const gloves = (await store.load(`${cut.sheet}-honor-guard-gloves`)).raw.landmarks;
+    for(const name of ['glove_right', 'glove_left', 'gloves_under_sling']){
+      const e = gloves[name] && gloves[name].extent;
+      if(e) assert.ok(!meets({ x: e.x, y: e.y, w: e.w_in, h: e.h_in }, box), `${cut.name}: ${name} is clear of the box`);
+    }
+    // nothing else is moved: but for the strap, the gloves and the name's z, the flag bearer's drawing is the guard's
+    const plain = await compose(breastBuild(cut, 'guard'));
+    const rest = sc => JSON.stringify(sc.layers.filter(l => !/^honor-guard-(belt|sling|sling-over|gloves)$/.test(l.role) && l.role !== 'measure').map(l => (l.key === 'text:name' ? Object.assign({}, l, { z: 0 }) : l)));
+    assert.ok(rest(scene) === rest(plain), `${cut.name}: every other piece is where the guard's is`);
+  }
+});
+
+test('the sling over the breast is the flag bearer\'s alone, and the drawing is otherwise the one without it: a guard, every other uniform and a flag bearer with nothing on the breast', async () => {
+  for(const cut of CUTS){
+    // a flag bearer with no ribbon, badge or name still wears the nameplate: the strap is drawn over it alone
+    const bare = await compose(guard(cut, 'flag', cut.chinstrap, { name: { first: '', last: '', show: false } }));
+    const [bo] = layerOf(bare, 'honor-guard-sling-over'), plate = bare.layers.find(l => l.key === 'clear:nametag');
+    assert.ok(bo && plate, `${cut.name}: the plate`);
+    assert.ok(bo.clip[0].x < plate.x && bo.clip[0].y < plate.y && bo.clip[2].x > plate.x + plate.w && bo.clip[2].y > plate.y + plate.h && bo.clip[2].x - bo.clip[0].x < plate.w + 0.5, `${cut.name}: the box is the plate's, a hair larger`);
+    // the order of a guard's breast is what it was: the same layers in the same z
+    const g = await compose(breastBuild(cut, 'guard'));
+    assert.equal(layerOf(g, 'honor-guard-sling-over').length, 0);
+    assert.equal(g.layers.find(l => l.key === 'text:name').z, 20, `${cut.name}: a guard's name is drawn where it always was`);
+    const f = await compose(breastBuild(cut, 'flag'));
+    assert.ok(f.layers.find(l => l.key === 'text:name').z < layerOf(f, 'honor-guard-sling-over')[0].z, `${cut.name}: a flag bearer's name goes under the strap with its plate`);
+    // out of Honor Guard, the sling is not in the drawing
+    const plain = await compose(build(cut, { rank: 'C/Maj', ribbonSel: RACK }));
+    assert.equal(plain.layers.filter(l => /^honor-guard/.test(l.role)).length, 0, `${cut.name}: no sling outside Honor Guard`);
   }
 });
 
