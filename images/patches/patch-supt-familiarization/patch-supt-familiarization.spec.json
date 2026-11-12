@@ -1,7 +1,8 @@
 {
  "asset_id": "patch-supt-familiarization",
+ "file": "patch-supt-familiarization.png",
  "width_in": 3,
- "height_in": 3.104,
+ "height_in": 3.085,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
@@ -13,34 +14,52 @@
   ],
   "bottom_center": [
    150,
-   310.44
+   308.5
   ],
   "center": [
    150,
-   155.22
+   154.25
   ],
   "left_edge": [
    0,
-   155.22
+   154.25
   ],
   "right_edge": [
    300,
-   155.22
+   154.25
   ]
  },
  "dimensions": {
   "family": "patch",
   "colour": "full"
  },
- "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches/g8 + supt-familiarization",
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
  "reference": "refs-png/supt-familiarization.png",
- "source_bbox_user_units": [
-  24,
-  22,
-  570,
-  587
- ],
- "fit_score": null,
- "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   600,
+   600
+  ],
+  "px": [
+   1167,
+   1200
+  ],
+  "bytes": 64601,
+  "colours": 8,
+  "palette": [
+   "#363f8a",
+   "#e7ca71",
+   "#e8e8ed",
+   "#a85435",
+   "#764434",
+   "#ee3b39",
+   "#45afe7",
+   "#28282d"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph supt-familiarization.png (600 x 600 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
 }

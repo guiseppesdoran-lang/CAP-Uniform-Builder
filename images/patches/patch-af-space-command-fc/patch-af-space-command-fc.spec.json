@@ -1,7 +1,8 @@
 {
  "asset_id": "patch-af-space-command-fc",
+ "file": "patch-af-space-command-fc.png",
  "width_in": 3,
- "height_in": 2.953,
+ "height_in": 2.945,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
@@ -13,34 +14,52 @@
   ],
   "bottom_center": [
    150,
-   295.329
+   294.5
   ],
   "center": [
    150,
-   147.665
+   147.25
   ],
   "left_edge": [
    0,
-   147.665
+   147.25
   ],
   "right_edge": [
    300,
-   147.665
+   147.25
   ]
  },
  "dimensions": {
   "family": "patch",
   "colour": "full"
  },
- "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches/g8 + af-space-command-fc",
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
  "reference": "refs-png/af-space-command-fc.png",
- "source_bbox_user_units": [
-  10,
-  21,
-  588,
-  590
- ],
- "fit_score": null,
- "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   600,
+   600
+  ],
+  "px": [
+   1200,
+   1178
+  ],
+  "bytes": 77194,
+  "colours": 8,
+  "palette": [
+   "#352e5f",
+   "#8b715e",
+   "#4584b3",
+   "#aab3be",
+   "#eeeef2",
+   "#1f2025",
+   "#685349",
+   "#706f6c"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph af-space-command-fc.png (600 x 600 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
 }

@@ -29841,10 +29841,10 @@
   },
   {
    "id": "patch-cap-command-patch",
-   "path": "patches/patch-cap-command-patch/patch-cap-command-patch.svg",
+   "path": "patches/patch-cap-command-patch/patch-cap-command-patch.png",
    "category": "patches",
    "w_in": 3,
-   "h_in": 3.142,
+   "h_in": 3.15,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -29854,19 +29854,19 @@
     ],
     "bottom_center": [
      150,
-     314.185
+     315
     ],
     "center": [
      150,
-     157.093
+     157.5
     ],
     "left_edge": [
      0,
-     157.093
+     157.5
     ],
     "right_edge": [
      300,
-     157.093
+     157.5
     ]
    },
    "landmarks": [],
@@ -29875,10 +29875,10 @@
   },
   {
    "id": "patch-es-style-1",
-   "path": "patches/patch-es-style-1/patch-es-style-1.svg",
+   "path": "patches/patch-es-style-1/patch-es-style-1.png",
    "category": "patches",
    "w_in": 3.5,
-   "h_in": 1.788,
+   "h_in": 1.858,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -29888,19 +29888,19 @@
     ],
     "bottom_center": [
      175,
-     178.807
+     185.8
     ],
     "center": [
      175,
-     89.403
+     92.9
     ],
     "left_edge": [
      0,
-     89.403
+     92.9
     ],
     "right_edge": [
      350,
-     89.403
+     92.9
     ]
    },
    "landmarks": [],
@@ -29909,10 +29909,10 @@
   },
   {
    "id": "patch-es-style-2",
-   "path": "patches/patch-es-style-2/patch-es-style-2.svg",
+   "path": "patches/patch-es-style-2/patch-es-style-2.png",
    "category": "patches",
    "w_in": 3.5,
-   "h_in": 3.5,
+   "h_in": 3.553,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -29922,19 +29922,19 @@
     ],
     "bottom_center": [
      175,
-     350
+     355.3
     ],
     "center": [
      175,
-     175
+     177.65
     ],
     "left_edge": [
      0,
-     175
+     177.65
     ],
     "right_edge": [
      350,
-     175
+     177.65
     ]
    },
    "landmarks": [],
@@ -54201,12 +54201,12 @@
   },
   {
    "id": "patch-af-space-command-fc",
-   "path": "patches/patch-af-space-command-fc/patch-af-space-command-fc.svg",
+   "path": "patches/patch-af-space-command-fc/patch-af-space-command-fc.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 2.953,
+   "h_in": 2.945,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54216,31 +54216,31 @@
     ],
     "bottom_center": [
      150,
-     295.329
+     294.5
     ],
     "center": [
      150,
-     147.665
+     147.25
     ],
     "left_edge": [
      0,
-     147.665
+     147.25
     ],
     "right_edge": [
      300,
-     147.665
+     147.25
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-archer",
-   "path": "patches/patch-archer/patch-archer.svg",
+   "path": "patches/patch-archer/patch-archer.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 3.502,
+   "h_in": 3.477,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -54250,19 +54250,19 @@
     ],
     "bottom_center": [
      175,
-     350.196
+     347.7
     ],
     "center": [
      175,
-     175.098
+     173.85
     ],
     "left_edge": [
      0,
-     175.098
+     173.85
     ],
     "right_edge": [
      350,
-     175.098
+     173.85
     ]
    },
    "landmarks": []
@@ -54303,12 +54303,12 @@
   },
   {
    "id": "patch-cadet-orientation-pilot",
-   "path": "patches/patch-cadet-orientation-pilot/patch-cadet-orientation-pilot.svg",
+   "path": "patches/patch-cadet-orientation-pilot/patch-cadet-orientation-pilot.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 2.631,
+   "h_in": 2.637,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -54318,19 +54318,19 @@
     ],
     "bottom_center": [
      175,
-     263.112
+     263.7
     ],
     "center": [
      175,
-     131.556
+     131.85
     ],
     "left_edge": [
      0,
-     131.556
+     131.85
     ],
     "right_edge": [
      350,
-     131.556
+     131.85
     ]
    },
    "landmarks": []
@@ -54371,12 +54371,12 @@
   },
   {
    "id": "patch-cism",
-   "path": "patches/patch-cism/patch-cism.svg",
+   "path": "patches/patch-cism/patch-cism.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.216,
+   "h_in": 3.194,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54386,19 +54386,19 @@
     ],
     "bottom_center": [
      150,
-     321.583
+     319.4
     ],
     "center": [
      150,
-     160.792
+     159.7
     ],
     "left_edge": [
      0,
-     160.792
+     159.7
     ],
     "right_edge": [
      300,
-     160.792
+     159.7
     ]
    },
    "landmarks": []
@@ -54439,12 +54439,12 @@
   },
   {
    "id": "patch-civil-engineering-academy",
-   "path": "patches/patch-civil-engineering-academy/patch-civil-engineering-academy.svg",
+   "path": "patches/patch-civil-engineering-academy/patch-civil-engineering-academy.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.072,
+   "h_in": 3.041,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54454,19 +54454,19 @@
     ],
     "bottom_center": [
      150,
-     307.241
+     304.1
     ],
     "center": [
      150,
-     153.62
+     152.05
     ],
     "left_edge": [
      0,
-     153.62
+     152.05
     ],
     "right_edge": [
      300,
-     153.62
+     152.05
     ]
    },
    "landmarks": []
@@ -54507,12 +54507,12 @@
   },
   {
    "id": "patch-engineering-academy",
-   "path": "patches/patch-engineering-academy/patch-engineering-academy.svg",
+   "path": "patches/patch-engineering-academy/patch-engineering-academy.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 3.528,
+   "h_in": 3.474,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -54522,31 +54522,31 @@
     ],
     "bottom_center": [
      175,
-     352.767
+     347.4
     ],
     "center": [
      175,
-     176.383
+     173.7
     ],
     "left_edge": [
      0,
-     176.383
+     173.7
     ],
     "right_edge": [
      350,
-     176.383
+     173.7
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-honor-guard",
-   "path": "patches/patch-honor-guard/patch-honor-guard.svg",
+   "path": "patches/patch-honor-guard/patch-honor-guard.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 2.958,
+   "h_in": 2.938,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54556,31 +54556,31 @@
     ],
     "bottom_center": [
      150,
-     295.833
+     293.8
     ],
     "center": [
      150,
-     147.917
+     146.9
     ],
     "left_edge": [
      0,
-     147.917
+     146.9
     ],
     "right_edge": [
      300,
-     147.917
+     146.9
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-honor-guard-academy",
-   "path": "patches/patch-honor-guard-academy/patch-honor-guard-academy.svg",
+   "path": "patches/patch-honor-guard-academy/patch-honor-guard-academy.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 3.5,
+   "h_in": 3.494,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -54590,31 +54590,31 @@
     ],
     "bottom_center": [
      175,
-     350
+     349.4
     ],
     "center": [
      175,
-     175
+     174.7
     ],
     "left_edge": [
      0,
-     175
+     174.7
     ],
     "right_edge": [
      350,
-     175
+     174.7
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-model-rocketry",
-   "path": "patches/patch-model-rocketry/patch-model-rocketry.svg",
+   "path": "patches/patch-model-rocketry/patch-model-rocketry.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.526,
+   "h_in": 3.568,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54624,19 +54624,19 @@
     ],
     "bottom_center": [
      150,
-     352.621
+     356.8
     ],
     "center": [
      150,
-     176.31
+     178.4
     ],
     "left_edge": [
      0,
-     176.31
+     178.4
     ],
     "right_edge": [
      300,
-     176.31
+     178.4
     ]
    },
    "landmarks": []
@@ -54677,7 +54677,7 @@
   },
   {
    "id": "patch-national-flight-academy",
-   "path": "patches/patch-national-flight-academy/patch-national-flight-academy.svg",
+   "path": "patches/patch-national-flight-academy/patch-national-flight-academy.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
@@ -54813,12 +54813,12 @@
   },
   {
    "id": "patch-pararescue-orientation",
-   "path": "patches/patch-pararescue-orientation/patch-pararescue-orientation.svg",
+   "path": "patches/patch-pararescue-orientation/patch-pararescue-orientation.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 3.747,
+   "h_in": 3.675,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -54828,31 +54828,31 @@
     ],
     "bottom_center": [
      175,
-     374.663
+     367.5
     ],
     "center": [
      175,
-     187.332
+     183.75
     ],
     "left_edge": [
      0,
-     187.332
+     183.75
     ],
     "right_edge": [
      350,
-     187.332
+     183.75
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-proficient-pilot",
-   "path": "patches/patch-proficient-pilot/patch-proficient-pilot.svg",
+   "path": "patches/patch-proficient-pilot/patch-proficient-pilot.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3.5,
-   "h_in": 3.318,
+   "h_in": 3.299,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
    "anchors": {
@@ -54862,31 +54862,31 @@
     ],
     "bottom_center": [
      175,
-     331.771
+     329.9
     ],
     "center": [
      175,
-     165.886
+     164.95
     ],
     "left_edge": [
      0,
-     165.886
+     164.95
     ],
     "right_edge": [
      350,
-     165.886
+     164.95
     ]
    },
    "landmarks": []
   },
   {
    "id": "patch-safety",
-   "path": "patches/patch-safety/patch-safety.svg",
+   "path": "patches/patch-safety/patch-safety.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.092,
+   "h_in": 3.041,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54896,19 +54896,19 @@
     ],
     "bottom_center": [
      150,
-     309.214
+     304.1
     ],
     "center": [
      150,
-     154.607
+     152.05
     ],
     "left_edge": [
      0,
-     154.607
+     152.05
     ],
     "right_edge": [
      300,
-     154.607
+     152.05
     ]
    },
    "landmarks": []
@@ -54949,12 +54949,12 @@
   },
   {
    "id": "patch-supt-familiarization",
-   "path": "patches/patch-supt-familiarization/patch-supt-familiarization.svg",
+   "path": "patches/patch-supt-familiarization/patch-supt-familiarization.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3.104,
+   "h_in": 3.085,
    "size_source": "estimated",
    "basis": "estimated typical embroidered patch width 3 in; not in the regulation",
    "anchors": {
@@ -54964,19 +54964,19 @@
     ],
     "bottom_center": [
      150,
-     310.44
+     308.5
     ],
     "center": [
      150,
-     155.22
+     154.25
     ],
     "left_edge": [
      0,
-     155.22
+     154.25
     ],
     "right_edge": [
      300,
-     155.22
+     154.25
     ]
    },
    "landmarks": []
@@ -55017,12 +55017,12 @@
   },
   {
    "id": "patch-national-staff",
-   "path": "patches/patch-national-staff/patch-national-staff.svg",
+   "path": "patches/patch-national-staff/patch-national-staff.png",
    "category": "patches",
    "has_spec": true,
    "issues": [],
    "w_in": 3,
-   "h_in": 3,
+   "h_in": 3.056,
    "size_source": "estimated",
    "basis": "estimated: drawn at the 3 in of the round sleeve patches because PATCH_META gives national_staff_ocp_patch the same 70 x 70 slot; not in the regulation",
    "anchors": {
@@ -55032,19 +55032,19 @@
     ],
     "bottom_center": [
      150,
-     300
+     305.6
     ],
     "center": [
      150,
-     150
+     152.8
     ],
     "left_edge": [
      0,
-     150
+     152.8
     ],
     "right_edge": [
      300,
-     150
+     152.8
     ]
    },
    "landmarks": []

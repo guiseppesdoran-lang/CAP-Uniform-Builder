@@ -1,7 +1,8 @@
 {
  "asset_id": "patch-honor-guard",
+ "file": "patch-honor-guard.png",
  "width_in": 3,
- "height_in": 2.958,
+ "height_in": 2.938,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
@@ -13,34 +14,53 @@
   ],
   "bottom_center": [
    150,
-   295.833
+   293.8
   ],
   "center": [
    150,
-   147.917
+   146.9
   ],
   "left_edge": [
    0,
-   147.917
+   146.9
   ],
   "right_edge": [
    300,
-   147.917
+   146.9
   ]
  },
  "dimensions": {
   "family": "patch",
   "colour": "full"
  },
- "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches/g8 + honor-guard",
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
  "reference": "refs-png/honor-guard.png",
- "source_bbox_user_units": [
-  9,
-  20,
-  585,
-  588
- ],
- "fit_score": null,
- "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   600,
+   600
+  ],
+  "px": [
+   1200,
+   1175
+  ],
+  "bytes": 106060,
+  "colours": 9,
+  "palette": [
+   "#969299",
+   "#2d346d",
+   "#1c1b1e",
+   "#452b20",
+   "#775f50",
+   "#8e2926",
+   "#ecebe8",
+   "#d2b060",
+   "#1f2457"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph honor-guard.png (600 x 600 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
 }

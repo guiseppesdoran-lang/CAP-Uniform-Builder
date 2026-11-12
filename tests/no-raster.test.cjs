@@ -43,9 +43,10 @@ test('every allowlist entry has a one-line reason and still names something', ()
   }
 });
 
-// Official digital artwork taken as given (unit and activity patch emblems): the PNG beside a spec whose data_source says so, read from the spec.
-test('every patch PNG the build publishes is official artwork as given: its spec says so, and the allowlist names none of it', () => {
-  const { isOfficialRaster, PROVENANCE } = require('../scripts/lib-official-art.cjs');
+// Official digital artwork taken as given (unit and activity patch emblems), and flat digital pictures made from a photograph of a patch: the PNG beside
+// a spec whose data_source says so, read from the spec.
+test('every patch PNG the build publishes is official artwork as given or a digital picture made from a photograph: its spec says so, and the allowlist names none of it', () => {
+  const { isOfficialRaster, PROVENANCES } = require('../scripts/lib-official-art.cjs');
   const list = Object.keys(allowlist());
   const pngs = published().filter(f => /^images\/patches\/.*\.png$/.test(f));
   assert.ok(pngs.length >= 30, `${pngs.length} patch PNGs`);
@@ -53,7 +54,7 @@ test('every patch PNG the build publishes is official artwork as given: its spec
     const m = /^images\/patches\/([^/]+)\/\1\.png$/.exec(rel);
     assert.ok(m, `${rel}: a patch PNG is <id>/<id>.png`);
     const spec = JSON.parse(fs.readFileSync(path.join(ROOT, 'images', 'patches', m[1], m[1] + '.spec.json'), 'utf8'));
-    assert.equal(spec.data_source, PROVENANCE, rel);
+    assert.ok(PROVENANCES.includes(spec.data_source), `${rel}: ${spec.data_source}`);
     assert.equal(spec.file, m[1] + '.png', rel);
     assert.ok(isOfficialRaster(ROOT, rel));
     assert.ok(!list.some(e => rel.startsWith(e) || e === rel), `${rel} is allowed by its spec, not the list`);
@@ -70,9 +71,11 @@ test('a patch PNG whose spec does not say official artwork as given, or has no s
     if(spec) fs.writeFileSync(path.join(dir, id + '.spec.json'), JSON.stringify(spec));
   };
   put('patch-a', { data_source: 'official-digital-artwork-as-given' });
+  put('patch-d', { data_source: 'digital-image-from-reference-photograph' });
   put('patch-b', { data_source: 'reference-art-measured' });
   put('patch-c', null);
   assert.equal(isOfficialRaster(root, 'images/patches/patch-a/patch-a.png'), true);
+  assert.equal(isOfficialRaster(root, 'images/patches/patch-d/patch-d.png'), true, 'a picture made from a photograph is allowed too');
   assert.equal(isOfficialRaster(root, 'images/patches/patch-b/patch-b.png'), false);
   assert.equal(isOfficialRaster(root, 'images/patches/patch-c/patch-c.png'), false);
   assert.equal(isOfficialRaster(root, 'images/patches/patch-a/other.png'), false, 'only <id>/<id>.png');

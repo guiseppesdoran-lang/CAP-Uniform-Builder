@@ -81,7 +81,7 @@
       if(pending.has(id)) return pending.get(id);
       const e = byId.get(id);
       if(!e) return Promise.reject(new Error('Unknown asset ' + id));
-      const specPath = e.path.replace(/\.svg$/, '.spec.json');
+      const specPath = e.path.replace(/\.(svg|png)$/, '.spec.json');
       const p = Promise.resolve(e.has_spec ? loader(specPath) : null)
         .catch(() => null)
         .then(raw => { const s = normalizeSpec(e, raw); specs.set(id, s); pending.delete(id); return s; });

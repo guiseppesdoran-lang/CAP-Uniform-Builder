@@ -58,7 +58,9 @@ test('ABU and CFU: a special activity patch such as ARCHER never lands on the le
 test('one patch is one size on every uniform: the size its spec states, on the OCP Velcro, the CFU sleeve and the pockets (R1, D2)', async () => {
   const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [UNIT, ARCHER] }));
   const ocpArcher = flat(ocp, 'archer_ocp_patch');
-  assert.ok(ocpArcher && Math.abs(ocpArcher.h - 3.5) < 0.005, `OCP ARCHER ${ocpArcher && ocpArcher.h}`);
+  // ARCHER is a picture of 3.5 x 3.477 in (its spec's own size); it is capped at the 3.5 in the Velcro allows, which it does not reach.
+  const archerArt = require('../data/patch-art.js').archer_patch;
+  assert.ok(ocpArcher && Math.abs(ocpArcher.h - Math.min(3.5, archerArt.h)) < 0.005, `OCP ARCHER ${ocpArcher && ocpArcher.h}`);
   for(const gender of ['male', 'female']){
     const cfu = await compose(hb('corporate_field', gender, 'senior', 'Capt', { patchRefs: [UNIT, WING, ARCHER] }));
     const archer = flat(cfu, 'archer_ocp_patch');

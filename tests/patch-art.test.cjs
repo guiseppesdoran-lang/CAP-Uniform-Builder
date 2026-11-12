@@ -34,6 +34,34 @@ test('each patch with a vector names an asset of the manifest, with the spec\'s 
   }
 });
 
+test('a patch whose art is a PNG reaches the page as a picture at its spec\'s size, not as an engine asset', async () => {
+  const pngs = Object.entries(art).filter(([, r]) => /\.png$/.test(r.img));
+  assert.ok(pngs.length >= 15, `${pngs.length} patches drawn from a PNG`);
+  const { loadPageScripts } = require('./helpers/page-scripts.cjs');
+  const { context } = loadPageScripts();
+  const vm = require('node:vm');
+  for(const [id, r] of pngs){
+    const meta = JSON.parse(JSON.stringify(vm.runInContext(`PATCH_META[${JSON.stringify(id)}]`, context)));
+    assert.equal(meta.img, r.img, id);
+    assert.equal(meta.asset, null, `${id}: a picture, not an asset`);
+    assert.deepEqual(meta.sizeIn, { w: r.w, h: r.h }, id);
+  }
+  const s = await P.composeUniform(hb('ocp', [{ id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'ARCHER' }]), store);
+  const layer = flat(s, 'archer_ocp_patch');
+  assert.equal(layer.type, 'raster');
+  assert.match(layer.href, /patch-archer\.png$/);
+  assert.ok(Math.abs(layer.w - art.archer_patch.w) < 1e-6 && Math.abs(layer.h - art.archer_patch.h) < 1e-6, `${layer.w} x ${layer.h}`);
+});
+
+test('a patch folder holds one picture, the PNG or the SVG, and every row of the patch data points at a file that is there', () => {
+  const dir = path.join(ROOT, 'images', 'patches');
+  for(const id of fs.readdirSync(dir).filter(n => fs.statSync(path.join(dir, n)).isDirectory())){
+    const files = fs.readdirSync(path.join(dir, id));
+    assert.ok(!(files.includes(id + '.svg') && files.includes(id + '.png')), `${id} holds both an SVG and a PNG`);
+  }
+  for(const [id, r] of Object.entries(art)) assert.ok(fs.existsSync(path.join(ROOT, 'images', r.img)), `${id}: ${r.img}`);
+});
+
 test('a patch with no vector waits on a whole picture the allowlist names, and nothing draws an OCP crop', () => {
   const allow = JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'no-raster-allowlist.json'), 'utf8'));
   for(const [id, r] of Object.entries(art)) if(!r.asset) assert.ok(`images/${r.img}` in allow, id);
@@ -49,27 +77,15 @@ test('the name mapping of the patches that do not follow their id', () => {
   for(const [id, asset] of Object.entries({ af_space_command_patch: 'patch-af-space-command-fc', comms_patch: 'patch-communications', cos_patch: 'patch-cadet-officer-school', nbb_patch: 'patch-national-blue-beret', nfa_patch: 'patch-national-flight-academy', orientation_pilot_patch: 'patch-cadet-orientation-pilot', pjoc_patch: 'patch-pararescue-orientation', undergrad_pilot_training_patch: 'patch-supt-familiarization' })) assert.equal(art[id].asset, asset);
 });
 
-test('the engine draws a vector patch as an asset at its spec\'s size, centred in the Velcro, in the flat and the edge view', async () => {
-  // Whichever patch is still an SVG (the official artwork taken as given is a picture, the next test); none left is fine.
-  const vec = Object.entries(art).find(([id, r]) => /\.svg$/.test(r.img) && /_patch$/.test(id) && !/^(national_staff|tn)/.test(id));
-  if(!vec) return;
-  const [id, row] = vec, ocpId = id.replace(/_patch$/, '_ocp_patch');
-  const s = await P.composeUniform(hb('ocp', [{ id: ocpId, kind: 'general', slot: 'L_SHOULDER', label: id }]), store);
-  const layer = flat(s, ocpId);
-  assert.equal(layer.type, 'asset');
-  assert.equal(layer.id, row.asset);
-  assert.ok(Math.abs(layer.w - row.w) < 1e-6 && Math.abs(layer.h - row.h) < 1e-6);
-  assert.ok(s.layers.some(l => l.key === `patch:${ocpId}:L_SHOULDER:edge` && l.type === 'asset'));
-  assert.ok(!s.layers.some(l => l.type === 'raster'));
-});
-
-test('official artwork taken as given (a PNG) is drawn as a picture at its spec\'s size, centred in the Velcro, in the flat and the edge view', async () => {
+test('the engine draws a patch at its spec\'s size, centred in the Velcro, in the flat and the edge view: an SVG as an asset, a PNG as a picture', async () => {
   const s = await P.composeUniform(hb('ocp', [{ id: 'cos_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'COS' }]), store);
   const layer = flat(s, 'cos_ocp_patch');
-  assert.equal(layer.type, 'raster');
-  assert.match(layer.href, /patches\/patch-cadet-officer-school\/patch-cadet-officer-school\.png$/);
+  const raster = /\.png$/.test(art.cos_patch.img), kind = raster ? 'raster' : 'asset';
+  assert.equal(layer.type, kind);
+  if(raster) assert.match(layer.href, /patch-cadet-officer-school\.png$/); else assert.equal(layer.id, 'patch-cadet-officer-school');
   assert.ok(Math.abs(layer.w - art.cos_patch.w) < 1e-6 && Math.abs(layer.h - art.cos_patch.h) < 1e-6);
-  assert.ok(s.layers.some(l => l.key === 'patch:cos_ocp_patch:L_SHOULDER:edge' && l.type === 'raster'));
+  assert.ok(s.layers.some(l => l.key === 'patch:cos_ocp_patch:L_SHOULDER:edge' && l.type === kind));
+  if(!raster) assert.ok(!s.layers.some(l => l.type === 'raster'));
 });
 
 test('a tall patch is held to the 3 1/2 in the Velcro allows, keeping its proportions', async () => {
@@ -86,14 +102,14 @@ test('the ABU and CFU sleeves hang a vector patch from the 1/2 in line, and the 
   assert.ok(Math.abs(layer.y - core.anchor(spec, 'seam_top_center_left').y - 0.5) < 0.005);
   assert.equal(layer.w, art.nywg_patch.w);
   const f = await P.composeUniform(hb('flight_suit', [{ id: 'archer_patch', kind: 'general', slot: 'L_SHOULDER', label: 'ARCHER' }]), store);
-  assert.equal(f.layers.find(l => l.key === 'patch:archer_patch:RS:0').type, 'asset');
+  assert.equal(f.layers.find(l => l.key === 'patch:archer_patch:RS:0').type, /\.png$/.test(art.archer_patch.img) ? 'raster' : 'asset');
 });
 
-test('no patch is left on a picture: the last ones draw their vector', async () => {
+test('no patch is left on a crop of the OCP sleeve: the last ones draw their whole artwork', async () => {
   const s = await P.composeUniform(hb('ocp', [{ id: 'dog_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'DOG' }]), store);
   const layer = flat(s, 'dog_ocp_patch');
-  assert.notEqual(layer.type, 'raster');
-  assert.match(String(layer.asset || layer.id || layer.key || ''), /patch-es-style-2|dog_ocp_patch/);
+  assert.doesNotMatch(String(layer.href || ''), /\/ocp\//, 'not a crop of the OCP sleeve');
+  assert.match(String(layer.asset || layer.href || layer.id || layer.key || ''), /patch-es-style-2|dog_ocp_patch/);
 });
 
 test('member uploads stay as they were', () => {

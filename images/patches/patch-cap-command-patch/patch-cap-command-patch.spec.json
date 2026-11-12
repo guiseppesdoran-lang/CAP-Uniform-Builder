@@ -1,7 +1,8 @@
 {
  "asset_id": "patch-cap-command-patch",
+ "file": "patch-cap-command-patch.png",
  "width_in": 3,
- "height_in": 3.142,
+ "height_in": 3.15,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
@@ -13,34 +14,49 @@
   ],
   "bottom_center": [
    150,
-   314.185
+   315
   ],
   "center": [
    150,
-   157.093
+   157.5
   ],
   "left_edge": [
    0,
-   157.093
+   157.5
   ],
   "right_edge": [
    300,
-   157.093
+   157.5
   ]
  },
  "dimensions": {
   "family": "patch",
   "colour": "full"
  },
- "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches (out) + cap-command-patch",
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
  "reference": "refs-png/cap-command-patch.png",
- "source_bbox_user_units": [
-  3.061,
-  6.112,
-  549.163,
-  578.035
- ],
- "fit_score": null,
- "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   551,
+   579
+  ],
+  "px": [
+   1143,
+   1200
+  ],
+  "bytes": 47690,
+  "colours": 5,
+  "palette": [
+   "#21328a",
+   "#efece8",
+   "#db0911",
+   "#9d0d13",
+   "#eed45c"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph cap-command-patch.png (551 x 579 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
 }

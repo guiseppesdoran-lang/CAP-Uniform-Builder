@@ -247,7 +247,8 @@ test('the engine does not draw a patches/ocp crop; the harness resolves patches 
   assert.ok(scene.notes.some(n => /TN-185 cannot be shown on this uniform/.test(n)), scene.notes.join(' | '));
   // The harness maps a crop to the whole patch (TN-330 has full art, archer_ocp_patch resolves through its base id) or leaves it off.
   const r = HARNESS.patchesFrom([{ id: 'TN-330_ocp_patch', kind: 'unit' }, { id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER' }, { id: 'TN-185_ocp_patch', kind: 'unit' }]);
-  assert.deepEqual(r.patches.map(p => p.asset), ['patch-sequoyah-cadet-squadron', 'patch-archer']);
+  // an SVG patch names its asset; a PNG patch (a picture, spec size) names its file
+  assert.deepEqual(r.patches.map(p => p.asset || String(p.href).replace(/^.*\/(patch-[^/]+)\.png$/, '$1')), ['patch-sequoyah-cadet-squadron', 'patch-archer']);
   assert.ok(r.notes.some(n => /TN-185.*has no full patch artwork yet/.test(n)));
   const ok = await compose(HARNESS.makeBuild({ uniform: 'ocp', gender: 'male', membership: 'senior', rank: 'Lt Col', patchRefs: [{ id: 'TN-330_ocp_patch', kind: 'unit' }] }));
   const unit = ok.layers.find(l => l.role === 'patch' && /TN-330/.test(l.key));

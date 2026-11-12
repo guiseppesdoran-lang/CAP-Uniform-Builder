@@ -173,7 +173,7 @@ test('the committed data/unit-patch-art.js is in the form the script writes, and
     assert.ok(r.charter || r.kind === 'activity');
     if(/\.png$/.test(r.img)){
       const spec = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'images', 'patches', r.asset, r.asset + '.spec.json'), 'utf8'));
-      assert.equal(spec.data_source, 'official-digital-artwork-as-given', r.asset);
+      assert.ok(['official-digital-artwork-as-given', 'digital-image-from-reference-photograph'].includes(spec.data_source), r.asset);
     }
   }
 });
