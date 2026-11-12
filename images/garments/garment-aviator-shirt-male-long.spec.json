@@ -433,6 +433,16 @@
    "body_edge_abs_x_in": 7.58,
    "size_source": "estimated",
    "note": "outward warp of the traced sleeve (outline and every stroke in it) so the 3 1/2 in regulation chevron (4.2.5.1.1.3 / 4.2.6.2.3) lies inside the sleeve outline instead of 0.27 in (men) / 0.31 in (women) off the garment; the pre-widening flat sleeve was 2.95 in (men) / 3.5 in (women) at the chevron line"
+  },
+  "belt_strap": {
+   "size_source": "measured",
+   "note": "LIVE13-ART 49 (Ethan, 2026-11-12: \"both the belt and pants must go all the way around\"): the strap runs from one side edge of the body to the other on every one of its rows. Its top and bottom edges are the two curves the sheet always had (read off the base image: top (132,556) (288,567) (441,556) px, bottom (443,590) (288,607) (133,590) px), carried on along the same quadratics past their old ends until they lie outside the body (parameter run from -0.12 to 1 + 0.12); the body's outline clips the group, so the strap ends on the outline. The old ends stopped 0.07 to 0.37 in short of the outline (measured at 60 px per in, rows 23.1 to 24.5 in from the top of the box). Everything else, the trousers (which already filled the body to the outline), the loops, the buckle and the seams, is as before.",
+   "old_ends_half_width_in": [
+    7.082,
+    6.902
+   ],
+   "curve_param_run": 0.12,
+   "clip": "clipSil (the shirt body's outline)"
   }
  },
  "documented": [

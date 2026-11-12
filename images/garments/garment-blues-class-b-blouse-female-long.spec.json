@@ -2748,6 +2748,41 @@
    },
    "chevron_fit_note": "clearance in inches from every row of the 3 1/2 in chevron, placed as the engine does (visual centre on chevron_halfway, turned along shoulder_seam to elbow), to the outer edge and to the armhole seam; positive = on the sleeve. The women's 4 in option (4.1.12.2.3.3, the 3 1/2 in art scaled to 4.00 x 6.54 in) is listed under 4 and still overhangs, clipped to the silhouette by the engine"
   },
+  "lower_body": {
+   "size_source": "measured",
+   "kind": "skirt fills the body from the waist line to the cut line, and the belt strap runs from one side edge of the body to the other",
+   "note": "LIVE13-ART 49 (Ethan, 2026-11-12: \"both the belt and pants must go all the way around ... theres light blue all the way around\"): a tucked-in shirt ends at the belt, so from the belt down the whole body is the lower garment. It was cut by the colour profile of the regulation figure (bottoms), which is narrower than the body: shirt cloth showed beside the belt and beside the skirt down to the hem and under the skirt's curved hem. Now the cloth's edge is the body's side edge, read from the sheet's own outline (the central span of every 0.04 in row of the outline with its armpit gaps), and the outline clips it; the arm stays on top because the cloth stops at the arm's edge. The waist line, the belt rows, the cut line, the buckle and everything above the waist line are as before.",
+   "waist_line_y_in": 21.046,
+   "top_edge": {
+    "note": "the same parabola as before (through the old half width and the centre line's sag), carried out to the body's edge; the middle of the edge renders pixel for pixel as before",
+    "old_half_width_in": 5.847,
+    "sag_in": 0.305
+   },
+   "belt_strap": {
+    "half_width_in": 7.318,
+    "old_half_width_in": 5.847,
+    "rows_y_in": [
+     21.522,
+     23.172
+    ],
+    "body_edge_half_width_max_in": 6.402,
+    "arm_side_of_gap_min_in": 7.358,
+    "note": "a rectangle whose half width reaches the body's edge on every one of its rows and stops inside the armpit gap, short of the arm; the sheet's outline clips it at the body's edge, so the strap, its edge lines and its stitching run from one edge to the other (it was the figure's trouser width, short of the edge)"
+   },
+   "sides": {
+    "row_step_in": 0.04,
+    "half_width_in_at_waist": [
+     5.595,
+     5.595
+    ],
+    "half_width_in_at_hem": [
+     2.6,
+     1.768
+    ],
+    "clip": "clipSil (the sheet's outline, even-odd: the gaps beside the body are holes); the cloth runs at most 0.03 in into a gap so that the clip makes the edge"
+   },
+   "source": "the sheet's own outline (measured from CAPR 39-1 Fig 4.11, make-long-outlines.js), as the sheet has it; no new measurement of the garment"
+  },
   "collar_honor_guard": {
    "kind": "the sheet's own collar worn open and laid back as the Honor Guard guidance draws its Class B figures (CAPR 39-1 9.6, the guidance's page 4); one drawing for the short and the long sheet of the cut (computed from the short sheet's collar, registered at each sheet's top ends and centre front)",
    "group": "collar-honor-guard",
