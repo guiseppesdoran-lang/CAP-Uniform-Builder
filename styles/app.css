@@ -1486,7 +1486,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpSection+.vpSection{margin-top:var(--s3)}
 .vpGroupHead{margin:0 0 var(--s1);font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.2;color:var(--muted)}
 .vpGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
-.vp[data-size="large"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(136px,1fr))}
+.vp[data-size="large"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
 .vpOption{
   position:relative;
   display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:var(--s1);
@@ -1502,6 +1502,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpOption[aria-checked="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
 .vpPicture{display:flex;align-items:center;justify-content:center;aspect-ratio:4 / 3;min-width:0;overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:4px;color:var(--line-strong)}
 .vp[data-size="large"] .vpPicture{aspect-ratio:3 / 2}
+.vp[data-shape="tall"] .vpPicture,.vp[data-size="large"][data-shape="tall"] .vpPicture{aspect-ratio:3 / 4}
 .vpPicture>svg,.vpPicture>img{display:block;width:100%;height:100%;object-fit:contain}
 .vpLabel{display:block;min-width:0;font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.15;overflow-wrap:anywhere}
 .vpMark{display:block;align-self:center;max-width:100%;padding:0 6px;border:1px solid var(--line-strong);border-radius:999px;font-size:.6875rem;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
@@ -1510,3 +1511,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpTick svg{display:block;width:14px;height:14px}
 .vpNote{margin-top:var(--s2)}
 .vpOption.noPicture{justify-content:center;min-height:56px}
+
+/* The Uniform options panel: the options are groups of their own. A group chosen by picture is set off from the rows around it by a line. */
+.garmentOption+.garmentOption{margin-top:var(--s3)}
+.garmentOption+.garmentOption:has(.vp),.garmentOption:has(.vp)+.garmentOption{padding-top:var(--s3);border-top:1px solid var(--line)}

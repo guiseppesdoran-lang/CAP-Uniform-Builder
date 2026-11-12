@@ -45,6 +45,20 @@ test('it is a radio group with a radio for each option, the picked one checked, 
   assert.ok(radios().every(r => r.nodeName === 'BUTTON' && r.getAttribute('type') === 'button'), 'real buttons, so they are reached by the keyboard');
 });
 
+test('each option carries its value, the picker its size and shape, so the page can find an option again and the styles can shape the boxes', () => {
+  const { radios, p } = make({ size: 'large', shape: 'tall' });
+  assert.deepEqual(radios().map(r => r.dataset.value), ['a', 'b', '']);
+  assert.equal(p.el.dataset.size, 'large');
+  assert.equal(p.el.dataset.shape, 'tall');
+  assert.equal(p.el.dataset.name, 'headgear');
+  const css = read('styles/app.css');
+  assert.match(css, /\.vp\[data-shape="tall"\] \.vpPicture[^{]*\{[^}]*aspect-ratio:\s*3 \/ 4/, 'a taller box');
+  assert.match(css, /\.vp\[data-size="large"\] \.vpGrid\{[^}]*minmax\(1\d\dpx/, 'two to a row at the sidebar\'s width');
+  const plain = make({});
+  assert.equal(plain.p.el.dataset.size, undefined);
+  assert.equal(plain.p.el.dataset.shape, undefined);
+});
+
 test('the host is given the picker, replacing what it held; the ids are made from the name', () => {
   const host = doc.createElement('div');
   host.append('old');
@@ -247,7 +261,10 @@ test('the script is on the page before the scripts that use it, and the picker n
   const at = src => html.indexOf(`<script src="${src}`);
   assert.ok(at('js/visual-picker.js') > 0, 'a script tag');
   for(const later of ['js/garment-options.js', 'js/patches.js', 'js/workspace-ui.js']) assert.ok(at('js/visual-picker.js') < at(later), `before ${later}`);
-  assert.match(html, /<script src="js\/visual-picker\.js\?v=\d+[^"]*" defer><\/script>/);
+  assert.match(html, /<script src="js\/visual-picker\.js\?v=[0-9a-f]+" defer><\/script>/);
+  // The pictures of the garment options are made by their own script, loaded before the panel that asks for them and after the picker it hands them to.
+  assert.ok(at('js/visual-picker.js') < at('js/option-pictures.js') && at('js/option-pictures.js') < at('js/garment-options.js'), 'option-pictures between the picker and the panel');
+  assert.match(html, /<script src="js\/option-pictures\.js\?v=[0-9a-f]+" defer><\/script>/);
   const src = read('js/visual-picker.js');
   assert.doesNotMatch(src, /\bState\b|CAPUB|localStorage|fetch\(/, 'a component, not page logic');
 });
