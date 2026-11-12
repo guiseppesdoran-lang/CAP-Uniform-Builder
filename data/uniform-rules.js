@@ -349,7 +349,7 @@
     roles:Object.freeze(['guard','flag']),
     chinstraps:Object.freeze(['up','down']),
     cord:'honor_guard',
-    refs:Object.freeze({coat:'9.6.5',shirt:'9.6.6, 9.6.7.2',belt:'9.6.7.6',sling:'9.6.3',cord:'9.6.7.5',cap:'9.6.7.9',chinstrap:'9.6.7.9.2',ascot:'9.6.7.8',gloves:'9.6.7.7'})
+    refs:Object.freeze({coat:'9.6.5',shirt:'9.6.6, 9.6.7.2',belt:'9.6.7.6',sling:'9.6.3',cord:'9.6.7.5',cap:'9.6.7.9',chinstrap:'9.6.7.9.2',ascot:'9.6.7.8',gloves:'9.6.7.7',slacks:'9.6.7.3'})
   });
   // Whether the member is offered the uniform; with no membership chosen yet the card is not hidden.
   function allowsCeremonial(membership){

@@ -67,7 +67,7 @@ function capubRepairCriticalButtons(){
       if(!canvas) throw new Error('No uniform preview was found.');
 
       const link = document.createElement('a');
-      link.download = CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'png');
+      link.download = CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.ceremonial ? 'ceremonials' : State.uniform},'png');
       link.href = canvas.toDataURL('image/png');
       document.body.appendChild(link);
       link.click();

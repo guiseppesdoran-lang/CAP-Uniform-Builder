@@ -30,6 +30,8 @@ test('the name is safe for any file system',()=>{
 test('PNG and setup-file exports both use it',()=>{
   const boot=fs.readFileSync(path.join(__dirname,'..','js','bootstrap.js'),'utf8');
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  assert.match(boot,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.uniform\},'png'\)/);
-  assert.match(wiring,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.uniform\},'json'\)/);
+  // Ceremonials (the Honor Guard Uniform) rides on Class A or Class B: its downloads are named for it, not for the uniform under it.
+  assert.match(boot,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'ceremonials' : State\.uniform\},'png'\)/);
+  assert.match(wiring,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'ceremonials' : State\.uniform\},'json'\)/);
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonials'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Ceremonials_2026-10-10.png');
 });
