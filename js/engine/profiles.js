@@ -700,6 +700,7 @@
         if(m !== l && !(m.key === 'grade:top-' + side)) continue;
         m.x += u.x * slide; m.y += u.y * slide;
         if(m.origin) m.origin = { x: m.origin.x + u.x * slide, y: m.origin.y + u.y * slide };
+        if(m.clip) m.clip = m.clip.map(q => ({ x: q.x + u.x * slide, y: q.y + u.y * slide }));   // the cadet board's top view is cut to its rounded outline
       }
       l.slid = Math.round(slide * 100) / 100;
       l.slideDir = { x: Math.round(u.x * 1e4) / 1e4, y: Math.round(u.y * 1e4) / 1e4 };

@@ -67,13 +67,13 @@ test('edge-on epaulet grades keep their true length along the strap and are sque
 
 // ---- 5b. LIVE8-4: the grade on an edge-on strip is sized from that strip's thickness, on every uniform that draws one ----------------------------------
 
-test('the edge-on grade is squeezed to its strip\'s thickness less 0.08 in on the shirts (the 0.46 in the sheets state, LIVE10-9), the Class A boards (0.5 in) and the Class A officers\' strap strip (the thickness its sheet states, about 0.46 in), not to a fixed 0.32 in (DAFI 36-2903 4.5.1.1.1; CAPR 39-1 4.1.5.2.1, 4.1.11.1.1, 4.2.5.1.1.1)', async () => {
-  // the shirts (the strip is as thick as the sheet's band, epaulet_axis.edge_thickness_in, 0.46 in on all ten sheets) and the Class A cadet boards (the strip the engine draws is 0.5 in thick)
+test('the edge-on grade is squeezed to its strip\'s thickness less 0.08 in on the shirts (the 0.46 in the sheets state, LIVE10-9), the Class A boards (BOARD_STRIP_THICK) and the Class A officers\' strap strip (the thickness its sheet states, about 0.46 in), not to a fixed 0.32 in (DAFI 36-2903 4.5.1.1.1; CAPR 39-1 4.1.5.2.1, 4.1.11.1.1, 4.2.5.1.1.1)', async () => {
+  // the shirts (the strip is as thick as the sheet's band, epaulet_axis.edge_thickness_in, 0.46 in on all ten sheets) and the Class A cadet boards (the strip the engine draws, BOARD_STRIP_THICK thick)
   const garmentOf = { 'blues_b male': 'garment-blues-class-b-shirt-male', 'blues_b female': 'garment-blues-class-b-blouse-female', 'aviator male': 'garment-aviator-shirt-male', 'aviator female': 'garment-aviator-shirt-female' };
   for(const [u, gender, m, rank] of [['blues_b', 'male', 'senior', 'Col'], ['blues_b', 'female', 'cadet', 'C/Col'], ['aviator', 'male', 'senior', 'Maj'], ['aviator', 'female', 'senior', 'Col'], ['blues_a', 'male', 'cadet', 'C/Col'], ['blues_a', 'female', 'cadet', 'C/Col']]){
     const scene = await compose(hb(u, gender, m, rank));
     const g = garmentOf[`${u} ${gender}`];
-    let thick = 0.5;
+    let thick = P.helpers.BOARD_STRIP_THICK;
     if(g){
       const raw = JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', `${g}.spec.json`), 'utf8')).landmarks.epaulet_axis;
       thick = raw.right.edge_thickness_in;

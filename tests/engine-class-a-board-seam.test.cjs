@@ -26,6 +26,7 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.
 const hb = (uniform, gender, membership, rank, cord, opt) => HARNESS.makeBuild({ uniform, gender, membership, rank, cord, name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, opt || {}) });
 const COATS = { blues_a: { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' }, semi_formal_usaf: { male: 'garment-semiformal-class-a-coat-male', female: 'garment-semiformal-class-a-coat-female' } };
 const TOL = 0.01;   // inches
+const THICK = P.helpers.BOARD_STRIP_THICK;   // how thick the edge-on board shows across the strap
 
 // Signed distance of p from the line a to b.
 const across = (p, a, b) => { const L = Math.hypot(b.x - a.x, b.y - a.y); return ((p.x - a.x) * (b.y - a.y) - (p.y - a.y) * (b.x - a.x)) / L; };
@@ -49,7 +50,7 @@ test('cadet officer boards, every cut and both coats: the strip\'s upper edge li
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
     const scene = await P.composeUniform(hb(uniform, sex, 'cadet', rank), store);
     for(const side of ['right', 'left']){
-      const tag = `${uniform} ${sex} ${rank} ${side}`, HALF_STRIP = 0.25 - shiftOf(uniform, sex, side);
+      const tag = `${uniform} ${sex} ${rank} ${side}`, HALF_STRIP = THICK / 2 - shiftOf(uniform, sex, side);
       const sm = SHEET.seam(COATS[uniform][sex], side), strip = scene.layers.find(l => l.key === 'epaulet:' + side);
       const spec = await store.load(strip.id), outer = core.anchor(spec, 'board_outer_end'), button = core.anchor(spec, 'button_end_center');
       assert.ok(Math.abs(Math.hypot(strip.origin.x - sm.outer.x, strip.origin.y - sm.outer.y) - HALF_STRIP) <= TOL && Math.abs(Math.abs(across(strip.origin, sm.outer, sm.neck)) - HALF_STRIP) <= TOL, `${tag}: the outer end is half a strip below the shoulder point (${across(strip.origin, sm.outer, sm.neck).toFixed(4)} off the seam)`);
@@ -101,14 +102,14 @@ test('shoulder cord and aide cord: the cord comes out from under the board\'s lo
     const tuck = cl.cordPath.pendant ? 0.012 : Number(/const CORD_TUCK = ([\d.]+);/.exec(fs.readFileSync(path.join(__dirname, '..', 'js', 'engine', 'profiles-dress.js'), 'utf8'))[1]);
     assert.ok(Array.isArray(cl.clip) && cl.clip.length === (cl.cordPath.pendant ? 4 : 6), `${tag}: the cord is cut to the garment side of the epaulet's lower edge`);
     // The cut line is the strip's lower long edge, a hair above it: its two end points lie within 0.02 in of the line through that edge.
-    // The cut line is the epaulet's lower edge, parallel to the seam: the strip's thickness (0.5 in) less the shift of its upper edge (0.03 in on the men's coats) below the seam for a cadet board (B5), the strap's
+    // The cut line is the epaulet's lower edge, parallel to the seam: the strip's thickness (THICK) less the shift of its upper edge (0.03 in on the men's coats) below the seam for a cadet board (B5), the strap's
     // or sleeve's half thickness (0.20 to 0.25 in) for an officer's strip, whose centre line is the seam.
     const sm = SHEET.seam(COATS.blues_a[sex], 'left'), c0 = cl.clip[0], c1 = cl.clip[1];
     const angCut = Math.atan2(c1.y - c0.y, c1.x - c0.x), angSeam = Math.atan2(sm.neck.y - sm.outer.y, sm.neck.x - sm.outer.x);
     let dAng = Math.abs(angCut - angSeam) % Math.PI; dAng = Math.min(dAng, Math.PI - dAng);
     assert.ok(dAng * 180 / Math.PI < 1, `${tag}: the cut line runs along the seam (${(dAng * 180 / Math.PI).toFixed(2)} degrees off)`);
     const drop = Math.abs(across(c0, sm.outer, sm.neck)) + (cl.cordPath.pendant ? 0 : tuck - 0.012);
-    if(membership === 'cadet') assert.ok(Math.abs(drop - (0.5 - shiftOf('blues_a', sex, 'left'))) <= 0.03, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the board's lower edge (0.5 in)`);
+    if(membership === 'cadet') assert.ok(Math.abs(drop - (THICK - shiftOf('blues_a', sex, 'left'))) <= 0.03, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the board's lower edge (${THICK} in)`);
     else assert.ok(drop >= 0.19 && drop <= 0.26, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the strap's lower edge`);
     // Nothing of the cord shows above the cut line: its top end lies on the strip's side (or on the line); the run's path goes on up under the strip, so its start does.
     const top = cl.cordPath.pendant ? { x: cl.cordPath.top[0], y: cl.cordPath.top[1] } : { x: cl.cordPath.start[0], y: cl.cordPath.start[1] };

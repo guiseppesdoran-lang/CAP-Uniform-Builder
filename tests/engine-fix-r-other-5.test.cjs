@@ -46,7 +46,7 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
       // The top view is level (DORAN5-ENG-3): its board's long axis is horizontal, so the grade's length along the board is measured horizontally.
       const level = { x: 1, y: 0 };
       assert.ok(Math.abs(along(edge, axis) - along(top, level)) <= 0.05, `${label}: along the strap ${along(edge, axis).toFixed(3)} edge-on vs ${along(top, level).toFixed(3)} from above`);
-      assert.ok(along(edge, cross) <= 0.425, `${label}: squeezed to the 0.5 in board strip (${along(edge, cross).toFixed(3)} across)`);
+      assert.ok(along(edge, cross) <= P.helpers.BOARD_STRIP_THICK - 0.08 + 0.005, `${label}: squeezed to the ${P.helpers.BOARD_STRIP_THICK} in board strip (${along(edge, cross).toFixed(3)} across)`);
       n++;
     }
   }
