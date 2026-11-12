@@ -1096,8 +1096,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
     // What Ceremonials wears and the drawing does not show: no sheet draws hands.
     if(State.ceremonial && State.membership === 'cadet') addNotice('ok',`White parade gloves are worn with this uniform and are not shown on the drawing (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`);
-    // A woman wears only slacks with this uniform (9.6.7.3); the women's Class B sheets draw them in place of the skirt.
-    if(State.ceremonial && State.membership === 'cadet' && State.gender === 'female' && State.uniform === 'blues_b') addNotice('ok',`Female members wear only slacks with this uniform (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.slacks}).`);
+    // What a woman wears with it, on the coat and on the blouse alike (9.6.7.3): only slacks.
+    if(State.ceremonial && State.membership === 'cadet' && State.gender === 'female') addNotice('ok',`Female members wear only slacks with this uniform (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.slacks}).`);
     if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
     return CAPUB_V2.notices;
   }
