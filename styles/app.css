@@ -471,6 +471,13 @@ header h1::after{
 .optionsCard .plainPanel .fieldLabel:first-child{margin-top:0}
 .importCard>button{margin-top:0}
 .importCard .hintText{margin-top:var(--s2)}
+/* The import button and the question mark that holds the steps (js/citations.js: a help mark carries its words in data-cite-help, and stays when the
+   Regulation tab's switch prints the references in their text, since its words are no reference). The status line takes no room until a report is read. */
+.importRow{display:flex;align-items:center;gap:var(--s2)}
+.importRow>button{flex:1 1 auto;min-width:0;margin-top:0}
+.importRow>.citeBtn{flex:0 0 auto;margin-left:0}
+:root[data-cites="shown"] .citeBtn.citeHelp{display:inline-flex}
+#memberReportImportStatus:empty{margin-top:0}
 /* The patch submission button (patch-submission.js adds it under Choose patches) reads as secondary. */
 #capubSubmitPatchButton{grid-column:1 / -1;margin-top:0;background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-md)}
 #capubSubmitPatchButton:hover{background:var(--panel-2);border-color:var(--ink)}
@@ -665,14 +672,17 @@ header h1::after{
 .mpHead strong{flex:1 1 auto;font-family:var(--font-head);font-size:var(--t-md)}
 .mpCount{font-size:var(--t-sm);color:var(--muted)}
 .mpHead .mpDone{width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
-.mpSwitch,.mpRow{display:flex;align-items:center;gap:var(--s2);margin:0;font-size:var(--t-sm);font-weight:400;color:var(--ink);cursor:pointer}
-.mpSwitch input,.mpRow input{flex:0 0 auto;width:18px;height:18px;margin:0}
+.mpSwitch,.mpPick{display:flex;align-items:center;gap:var(--s2);margin:0;font-size:var(--t-sm);font-weight:400;color:var(--ink);cursor:pointer}
+.mpSwitch input,.mpPick input{flex:0 0 auto;width:18px;height:18px;margin:0}
 .mpBulk{display:flex;gap:var(--s2)}
 .mpBulk button{width:auto;min-height:34px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
 .mpList{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:var(--s1)}
 .mpGroup{margin:0 0 var(--s2);padding:0;border:0;min-width:0}
 .mpGroup legend{padding:0;margin:0 0 2px;font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
-.mpRow{min-height:32px;padding:2px 0;border-bottom:1px solid var(--line)}
+/* A row of the list: the checkbox's label, which takes the room, and the question mark that opens the distance's paragraph (js/citations.js) beside it, not inside it. */
+.mpRow{display:flex;align-items:center;gap:var(--s2);min-height:32px;padding:2px 0;border-bottom:1px solid var(--line)}
+.mpPick{flex:1 1 auto;min-width:0;align-self:stretch}
+.mpRow .citeBtn,.mpNoMark{flex:0 0 16px;width:16px;height:16px;margin-left:var(--s2)}
 .mpName{flex:1 1 auto;min-width:0;line-height:1.2}
 .mpTimes{color:var(--muted)}
 .mpVal{flex:0 0 auto;font-weight:700;white-space:nowrap}
@@ -1495,11 +1505,21 @@ html[data-access="guest"] #accessGate{display:none}
   text-align:left;text-transform:none;white-space:normal;overflow-wrap:anywhere;
 }
 .citePopRef{display:block}
+/* A measurement's popover: its distance, then the paragraph under it, lighter. */
+.citePopRule{display:block}
+.citePopRule ~ .citePopRef{margin-top:2px;font-weight:400;color:var(--muted)}
 .citePop::after{content:"";position:absolute;left:calc(var(--arrow,50%) - 4px);width:8px;height:8px;background:var(--panel);border:1px solid var(--line-strong);transform:rotate(45deg)}
 .citePop[data-side="above"]::after{bottom:-5px;border-top:0;border-left:0}
 .citePop[data-side="below"]::after{top:-5px;border-bottom:0;border-right:0}
 .citeOfSelect>.citeRef{font-weight:400;color:var(--muted)}
 :root[data-cites="shown"] .citeBtn,:root[data-cites="shown"] .citeOfSelect{display:none}
+/* The list's marks stay when the Regulation tab's switch prints the references in the notes: there is no text in a row for a paragraph to go in. */
+:root[data-cites="shown"] .citeBtn.citeMeasure{display:inline-flex}
+/* A distance in the drawing that has a paragraph: its lines and label take a press, and the label shows a ring when the keyboard reaches it. Lengths in the drawing are
+   its own units (inches), so the ring is the label's edge drawn 3px wide on the screen whatever the zoom, not an outline. */
+.uniformSvg g.measure{cursor:pointer}
+.uniformSvg [data-cite-measure]:focus{outline:none}
+.uniformSvg rect[data-cite-measure]:focus-visible{stroke:var(--cap-red);stroke-width:3px;vector-effect:non-scaling-stroke}
 #citationsPanel .mpSwitch{min-height:44px}
 #citationsPanel .hintText{margin-top:0}
 .citeTable{margin-top:var(--s3)}

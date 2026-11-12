@@ -253,11 +253,16 @@
     return nodes;
   }
 
-  function measureNodes(drawings, px, fontPx, defs, copies){
+  // A tap on a distance opens its paragraph (js/citations.js): the distances that have one (`cites`: measure key -> { id, label }, built from the catalogue) get a
+  // transparent band of this many preview pixels over their lines and a press-sensitive label (and circle); the rest take no press and stay out of the tab order.
+  const CITE_HIT = 16;
+  function measureNodes(drawings, px, fontPx, defs, copies, cites){
     const out = [];
     const seg = (g, [a, b], stroke, width, extra) => g.appendChild(el('line', Object.assign({ x1: fmt(a.x), y1: fmt(a.y), x2: fmt(b.x), y2: fmt(b.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }, extra || {})));
     for(const d of drawings){
       const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
+      const cite = cites && cites.get(d.key);
+      const hit = cite ? { 'data-cite-measure': cite.id, 'pointer-events': 'all' } : null;
       if(d.callout && copies) calloutNodes(d, px, defs, copies, fontPx).forEach(n => g.appendChild(n));
       const marks = d.centres || [], arrows = d.arrows || [], ext = d.ext || [];
       const main = [d.dim, ...(d.bars || []), ...(d.ticks || []), ...(d.tails || [])];
@@ -285,9 +290,10 @@
         seg(g, d.leader, MEASURE.color, MEASURE.leader * px);
         g.appendChild(el('circle', { cx: fmt(d.leader[1].x), cy: fmt(d.leader[1].y), r: fmt(MEASURE.leaderDot * px), fill: MEASURE.color, stroke: MEASURE.halo, 'stroke-width': fmt(0.8 * px) }));
       }
-      // The pill: the length, and under it the caption of what is measured.
+      // The pill: the length, and under it the caption of what is measured. With a paragraph it is the one stop of the drawing's measure for the keyboard.
       const L = d.label, size = L.size || fontPx * px, capSize = L.captionSize || size * 0.8, caption = L.caption || [], padY = (L.h - size * 1.25 - caption.length * capSize * 1.2) / 2;
-      g.appendChild(el('rect', { x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(Math.min(L.h / 2, 5 * px)), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) }));
+      g.appendChild(el('rect', Object.assign({ x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(Math.min(L.h / 2, 5 * px)), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) },
+        hit ? Object.assign({ role: 'button', tabindex: 0, 'aria-expanded': 'false', 'aria-label': 'Regulation reference: ' + cite.label }, hit) : null)));
       const text = el('text', {
         x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 / 2 + ENGRAVED_FONT.capHeight * size / 2), 'text-anchor': 'middle',
         'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(size), fill: MEASURE.color
@@ -302,6 +308,15 @@
         c.textContent = t;
         g.appendChild(c);
       });
+      if(hit){
+        // Over everything else of this distance: its lines (witness lines, dimension line, leader), the magnified circle and its caption.
+        for(const s of [...main, ...ext, ...(d.leader ? [d.leader] : [])]) seg(g, s, 'transparent', CITE_HIT * px, hit);
+        if(d.callout){
+          const co = d.callout;
+          g.appendChild(el('circle', Object.assign({ cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'transparent', stroke: 'none' }, hit)));
+          if(co.caption) g.appendChild(el('rect', Object.assign({ x: fmt(co.caption.x), y: fmt(co.caption.y), width: fmt(co.caption.w), height: fmt(co.caption.h), fill: 'transparent', stroke: 'none' }, hit)));
+        }
+      }
       out.push(g);
     }
     return out;
@@ -658,7 +673,10 @@
         c.querySelectorAll('title').forEach(t => t.remove());
         return c;
       });
-      measureNodes(drawings, px, ML.PX.font, defs, copies).forEach(n => svg.appendChild(n));
+      // The distances that have a paragraph can be tapped (js/citations.js): the catalogue of the whole scene says which, by measure key.
+      const cites = new Map();
+      for(const e of ML.catalogue(scene).entries) if(e.ref) for(const k of e.keys) cites.set(k, { id: e.id, label: e.name + ', ' + e.value });
+      measureNodes(drawings, px, ML.PX.font, defs, copies, cites).forEach(n => svg.appendChild(n));
     }
     scopeIds(svg);
     return svg;

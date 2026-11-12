@@ -26,7 +26,7 @@ const buttonText=id=>{
 
 // [id, step it lives in, visible label for a button (or null)]
 const ON_THE_PAGE=[
-  ['importMemberReportBtn','profile','Import member report…'],
+  ['importMemberReportBtn','profile','Import member report'],
   ['memberReportUpload','profile',null],
   ['memberReportImportStatus','profile',null],
   ['clearImportedReportBtn','profile','Clear import notes'],

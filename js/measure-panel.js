@@ -4,7 +4,9 @@
 // on in a session); the list names every distance the build draws, by area, each with a checkbox; one that is unchecked is left
 // off the drawing and the rest are laid out again over the room it frees (measure-layout.js filterScene). The choice is kept per uniform in this browser,
 // with the switch that puts each callout's paragraph back on its pill (off by default). The Regulation tab in the Extra step lists the same distances
-// with their paragraphs, for a member who asks for them. Everything here is plain functions over measure-layout.js's catalogue; the page's glue is at the end.
+// with their paragraphs, for a member who asks for them. A tap on a distance (its question mark in the list, or its line or label in the drawing) opens its paragraph in
+// the popover the page's other question marks use (js/citations.js asks noteFor for what to show). Everything here is plain functions over measure-layout.js's catalogue;
+// the page's glue is at the end.
 (function(root, factory){
   const node = typeof module === 'object' && module.exports;
   const ML = node ? require('./engine/measure-layout.js') : (root.CAPUBEngine && root.CAPUBEngine.measureLayout);
@@ -43,6 +45,15 @@
     };
   }
 
+  // What a tap on a distance opens: the distance as a line and the paragraph(s) the catalogue holds for it, the CAPR 39-1 ones by number and the ICL's by its own name.
+  // A distance no paragraph states (the OCP's shoulder seam to the flag or AUX is how the garment is drawn, not a rule) has none, and opens nothing.
+  function noteOf(entry){
+    if(!entry || !entry.ref) return null;
+    const p = ML.refParts(entry.ref);
+    const refs = [p.capr ? ML.refText(p.capr) : '', p.icl].filter(Boolean);
+    return refs.length ? { rule: `${entry.name}: ${entry.value}.`, refs } : null;
+  }
+
   // ---- markup, as strings (the page sets them as innerHTML; the tests read them) ----
   // The panel: the references switch, All and None, then each area's distances with a checkbox and the value.
   function panelHtml(cat, hidden, refs){
@@ -52,8 +63,11 @@
     const sw = `<label class="mpSwitch"><input type="checkbox" data-mp="refs"${refs ? ' checked' : ''}><span>Show regulation references</span></label>`;
     const bulk = `<div class="mpBulk" role="group" aria-label="Show or hide all"><button type="button" class="ghost" data-mp="all">All</button><button type="button" class="ghost" data-mp="none">None</button></div>`;
     if(!total) return head + sw + '<p class="mpEmpty hintText">This uniform draws no measurements.</p>';
+    // A row is the checkbox's label, and beside it (not inside it) the question mark that opens the distance's paragraph, for a distance that has one.
+    // A row with no paragraph keeps the mark's room empty, so the values of all the rows line up.
+    const mark = e => noteOf(e) ? `<span class="citeBtn citeMeasure" role="button" tabindex="0" aria-expanded="false" aria-label="Regulation reference: ${esc(e.name)}, ${esc(e.value)}" data-cite-measure="${esc(e.id)}"></span>` : '<span class="mpNoMark" aria-hidden="true"></span>';
     const groups = cat.groups.map(g => `<fieldset class="mpGroup"><legend>${esc(g.area)}</legend>` + g.entries.map(e =>
-      `<label class="mpRow"><input type="checkbox" data-id="${esc(e.id)}"${off.has(e.id) ? '' : ' checked'}><span class="mpName">${esc(e.name)}${e.count > 1 ? ` <span class="mpTimes">(${e.count})</span>` : ''}</span><span class="mpVal">${esc(e.value)}</span></label>`).join('') + '</fieldset>').join('');
+      `<div class="mpRow"><label class="mpPick"><input type="checkbox" data-id="${esc(e.id)}"${off.has(e.id) ? '' : ' checked'}><span class="mpName">${esc(e.name)}${e.count > 1 ? ` <span class="mpTimes">(${e.count})</span>` : ''}</span><span class="mpVal">${esc(e.value)}</span></label>${mark(e)}</div>`).join('') + '</fieldset>').join('');
     return head + sw + bulk + `<div class="mpList">${groups}</div>`;
   }
 
@@ -78,6 +92,8 @@
   const uniformId = () => (typeof State !== 'undefined' && State.uniform) || '';
   const currentCatalogue = () => { const v = window.CAPUBUniformView; return v && v.scene ? ML.catalogue(v.scene) : null; };
   const rerender = () => { const v = window.CAPUBUniformView; if(v && v.scheduleRender) v.scheduleRender(); };
+  // The note of the distance with this id on the build now drawn (null when there is none or no paragraph states it).
+  const noteFor = id => { const cat = currentCatalogue(); return cat ? noteOf(cat.entries.find(e => e.id === id)) : null; };
 
   function fillPanel(){
     const panel = by('measurePanel'); if(!panel) return;
@@ -130,7 +146,8 @@
         if(cat) panel.dataset.shown = panelHtml(cat, hidden, prefs.refs());
         rerender();
       });
-      document.addEventListener('click', e => { const p = by('measurePanel'); if(p && !p.hidden && !p.contains(e.target) && !(e.target.closest && e.target.closest('.measureGroup'))) setOpen(false); });
+      // A press inside the paragraph's popover (it sits on the page, not in the panel) leaves the panel as it is.
+      document.addEventListener('click', e => { const p = by('measurePanel'); if(p && !p.hidden && !p.contains(e.target) && !(e.target.closest && e.target.closest('.measureGroup, .citePop'))) setOpen(false); });
       document.addEventListener('keydown', e => { const p = by('measurePanel'); if(e.key === 'Escape' && p && !p.hidden){ setOpen(false); btn.focus(); } });
     }
     return true;
@@ -177,5 +194,5 @@
   }
 
   const renderOptions = uniform => renderOptionsFor(prefs, uniform);
-  return { createPrefs, panelHtml, regulationHtml, renderOptions, renderOptionsFor, esc, sync, start, firstTimeOn, KEY_HIDDEN, KEY_REFS, KEY_INTRO };
+  return { createPrefs, panelHtml, regulationHtml, noteOf, noteFor, renderOptions, renderOptionsFor, esc, sync, start, firstTimeOn, KEY_HIDDEN, KEY_REFS, KEY_INTRO };
 });

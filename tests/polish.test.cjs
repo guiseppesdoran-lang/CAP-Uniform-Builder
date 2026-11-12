@@ -33,11 +33,13 @@ test('the scaled uniform is centered in the room beside the panel, on a phone an
   assert.match(ui,/area\.style\.marginLeft=free>0 \? Math\.round\(free\/2\)\+'px' : ''/);
 });
 
-test('the member-report importer is one button with its explanation in plain words, and the clear button appears with a result',()=>{
+test('the member-report importer is one button, one hint line and a question mark that holds the steps, and the clear button appears with a result',()=>{
   const card=html.slice(html.indexOf('id="memberReportImportPanel"'),html.indexOf('id="capMembershipPanel"'));
-  assert.match(card,/<button id="importMemberReportBtn" class="ghost" type="button">Import member report…<\/button>/);
+  assert.match(card,/<button id="importMemberReportBtn" class="ghost" type="button">Import member report<\/button>/);
   assert.doesNotMatch(card,/<details/,'nothing in the import card is folded away');
-  assert.match(card,/<div class="hintText mt-8" id="memberReportImportMore">\s*Upload a CAP Member Search/);
+  assert.doesNotMatch(card,/<label/,'no label above a button that it would only repeat');
+  assert.match(card,/<div class="hintText" id="memberReportImportHint">Your Member Search report, saved as a PDF\. It stays on this device\.<\/div>/);
+  assert.doesNotMatch(card,/memberReportImportMore|Upload a CAP Member Search/);
   assert.ok(card.indexOf('id="memberReportImportStatus"')<card.indexOf('id="clearImportedReportBtn"'),'the clear button follows the status line');
   assert.match(ui,/const sync=\(\)=>\{ clear\.hidden=idle\(\); \};/);
   assert.match(ui,/new MutationObserver\(sync\)\.observe\(status,\{childList:true,characterData:true,subtree:true\}\)/);

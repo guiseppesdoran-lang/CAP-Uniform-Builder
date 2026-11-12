@@ -61,15 +61,13 @@
         <h3 class="stepGroupTitle" tabindex="-1">Profile</h3>
 
         <section id="memberReportImportPanel" class="panelBlock importCard">
-          <label class="fieldLabel" for="importMemberReportBtn">Import a CAP member report</label>
-          <button id="importMemberReportBtn" class="ghost" type="button">Import member report…</button>
-          <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
-          <div id="memberReportImportStatus" class="hintText" aria-live="polite">Nothing is imported yet. A report is read on your device and is not kept or sent.</div>
-          <div class="hintText mt-8" id="memberReportImportMore">
-            Upload a CAP Member Search “Printer Friendly View - Member Details” PDF, or its text in a .txt file.
-            The builder reads grade, name, ribbons, achievements, qualifications and the badges it can match, and lists what it could not use.
-            It replaces your ribbons, badges and patches; Undo brings them back.
+          <div class="importRow">
+            <button id="importMemberReportBtn" class="ghost" type="button">Import member report</button>
+            <span class="citeBtn citeHelp" role="button" tabindex="0" aria-expanded="false" aria-label="How to import a member report" data-cite-help="In eServices open Member Search, open your record, choose Printer Friendly View and save the page as a PDF. A text file of the same page also works. Importing replaces your ribbons, badges and patches. Undo brings them back."></span>
           </div>
+          <input id="memberReportUpload" type="file" accept="application/pdf,.pdf,text/plain,.txt" hidden/>
+          <div class="hintText" id="memberReportImportHint">Your Member Search report, saved as a PDF. It stays on this device.</div>
+          <div id="memberReportImportStatus" class="hintText" aria-live="polite"></div>
           <button id="clearImportedReportBtn" class="ghost mt-8" type="button">Clear import notes</button>
         </section>
 

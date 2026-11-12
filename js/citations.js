@@ -6,7 +6,9 @@
 // it, and only one is open at a time. Which mark is open is kept by the mark, not by its text, so two rows that say the same sentence open one at a
 // time. The Extra step's Regulation tab has a switch that puts every reference back in its text (kept in this browser) and a list of each text on the
 // page with its reference. The strings are not changed, here or where they are written, and an element's textContent reads as it did, so nothing that
-// reads a note sees a difference. The first part is plain functions; the page's glue is at the end.
+// reads a note sees a difference. A measurement of the uniform opens the same popover (a tap on its mark in the Measurements list, or on its line or label in
+// the drawing): the distance as a line and the paragraph it carries out, from the list js/measure-panel.js keeps; one that no paragraph states opens nothing.
+// The first part is plain functions; the page's glue is at the end.
 (function(root, factory){
   const node = typeof module === 'object' && module.exports;
   const api = factory();
@@ -80,6 +82,8 @@
   }
   // The popover's content: each reference on a line of its own, as the list names it.
   const popHtml = refs => (refs || []).map(r => `<span class="citePopRef">${esc(refLabel(r))}</span>`).join('');
+  // The popover of a measurement: its distance as a line, then the paragraph(s) it carries out, each on a line of its own (note: { rule, refs }, from js/measure-panel.js).
+  const measurePopHtml = note => (note && note.refs && note.refs.length ? `<span class="citePopRule">${esc(note.rule)}</span>` + note.refs.map(r => `<span class="citePopRef">${esc(r)}</span>`).join('') : '');
   // Where the popover goes, as fixed coordinates: centred on the mark, just above it (below it where there is no room above), kept inside the
   // window by a margin; `arrow` is how far from the popover's left edge the mark's centre is, for the pointer. anchor, size and view are in pixels.
   function placePop(anchor, size, view, gap = 8, margin = 8){
@@ -158,7 +162,10 @@
   }
   // A mark is told apart from its twins (the same sentence on another row) by its text and its place among the marks that carry that text.
   const keyOf = host => host.dataset.citeKey || host.dataset.citeFull || host.textContent;
-  const marksOf = key => [...document.querySelectorAll('.citeBtn')].filter(b => b.parentNode && keyOf(b.parentNode) === key);
+  // A measurement's anchors (its mark in the list, its lines and label in the drawing) are told apart by the measurement's id, which is their key after 'measure:'.
+  const MEASURE_KEY = 'measure:';
+  const measureAnchors = id => [...document.querySelectorAll('[data-cite-measure]')].filter(a => a.getAttribute('data-cite-measure') === id);
+  const marksOf = key => key.startsWith(MEASURE_KEY) ? measureAnchors(key.slice(MEASURE_KEY.length)) : [...document.querySelectorAll('.citeBtn')].filter(b => b.parentNode && keyOf(b.parentNode) === key);
 
   // A text node that cites: replaced by a span holding the same text, the references in spans of their own, and the mark.
   function visitText(node){
@@ -314,7 +321,41 @@
     was.btn.setAttribute('aria-expanded', 'false'); was.btn.removeAttribute('aria-describedby');
     if(pop){ pop.hidden = true; pop.textContent = ''; }
   }
+  // A measurement: the note comes from the Measurements list's own data, by the id the anchor carries; with no paragraph there is nothing to open.
+  function showMeasure(btn, id){
+    const source = window.CAPUBMeasure && window.CAPUBMeasure.noteFor;
+    const html = measurePopHtml(source ? source(id) : null);
+    if(!html) return;
+    close();
+    const key = MEASURE_KEY + id, p = popover();
+    open.open(btn, key, marksOf(key).indexOf(btn));
+    btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-describedby', POP_ID);
+    p.innerHTML = html;
+    const root = btn.closest('dialog[open]') || document.body;
+    if(p.parentNode !== root) root.appendChild(p);
+    p.hidden = false;
+    reposition();
+  }
+  // A help mark: a `.citeBtn.citeHelp` that carries plain words in data-cite-help (no paragraph in them), opened in the same popover as one line of text.
+  const HELP_KEY = 'help:';
+  function showHelp(btn){
+    const text = btn.getAttribute('data-cite-help');
+    if(!text) return;
+    close();
+    const line = document.createElement('span'), p = popover();
+    line.className = 'citePopRef'; line.textContent = text;
+    p.replaceChildren(line);
+    open.open(btn, HELP_KEY + (btn.id || text.slice(0, 40)), 0);
+    btn.setAttribute('aria-expanded', 'true'); btn.setAttribute('aria-describedby', POP_ID);
+    const root = btn.closest('dialog[open]') || document.body;
+    if(p.parentNode !== root) root.appendChild(p);
+    p.hidden = false;
+    reposition();
+  }
   function show(btn){
+    const measure = btn.getAttribute('data-cite-measure');
+    if(measure !== null){ showMeasure(btn, measure); return; }
+    if(btn.hasAttribute('data-cite-help')){ showHelp(btn); return; }
     const host = btn.parentNode, sel = listOf.get(host);
     if(sel && sel.isConnected) syncSelect(sel);
     const refs = refsOfText(host.dataset.citeFull || host.textContent, [...host.querySelectorAll('.citeRef')].map(x => x.textContent));
@@ -335,7 +376,7 @@
     const cur = open.get();
     if(!cur || cur.btn.isConnected) return;
     const again = open.again(marksOf(cur.key));
-    if(!again){ close(); return; }
+    if(!again){ if(pop){ pop.hidden = true; pop.textContent = ''; } return; }   // the model let go of it: the box goes with it
     const focused = !document.activeElement || document.activeElement === document.body;
     again.setAttribute('aria-expanded', 'true'); again.setAttribute('aria-describedby', POP_ID);
     if(focused) again.focus({ preventScroll: true });
@@ -347,7 +388,12 @@
   function toggle(btn){
     if(open.is(btn)) close(); else show(btn);
   }
-  const markOf = e => e.target && e.target.closest ? e.target.closest('.citeBtn') : null;
+  // A mark, or a measurement's line or label in the drawing; the drawing's are live only where it takes presses (on a phone's peek it does not: a press there expands the preview).
+  const live = a => { const c = a.closest('#uniformCanvas'); return !c || getComputedStyle(c).pointerEvents !== 'none'; };
+  const markOf = e => {
+    const a = e.target && e.target.closest ? e.target.closest('.citeBtn, [data-cite-measure]') : null;
+    return a && live(a) ? a : null;
+  };
   const inPop = e => !!pop && !!e.target && pop.contains(e.target);
   function onClick(e){
     const btn = markOf(e);
@@ -450,5 +496,5 @@
     document.addEventListener('capub:rendered', queueList);
   }
 
-  return { isCitation, parts, split, splitLoose, refLabel, refsOfText, popHtml, placePop, markAgain, notesHtml, createPrefs, createOpenMark, esc, start, KEY_SHOWN };
+  return { isCitation, parts, split, splitLoose, refLabel, refsOfText, popHtml, measurePopHtml, placePop, markAgain, notesHtml, createPrefs, createOpenMark, esc, start, KEY_SHOWN };
 });

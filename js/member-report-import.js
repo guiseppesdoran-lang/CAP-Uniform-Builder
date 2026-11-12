@@ -2616,7 +2616,7 @@ function wireMemberReportImporter(){
     State.reportAuthorizedBadgeIds = null;
     input.value = '';
     buildBadgeGallery();
-    setMemberReportImportStatus('The import notes are cleared and your build is as it was. A report is read on your device and is not kept or sent.');
+    setMemberReportImportStatus('The import notes are cleared and your build is as it was.');
   });
 
   input.addEventListener('change', async () => {

@@ -1559,9 +1559,9 @@ test('a name over 40 letters is cut on the uniform and the report says so; a rib
   assert.ok(many.selected.disaster_relief_ribbon);
 });
 
-test('Clear import notes says the build is as it was and keeps the privacy line', () => {
+test('Clear import notes says the build is as it was (the privacy line is the import card\'s hint now)', () => {
   const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'member-report-import.js'), 'utf8');
-  assert.match(src, /'The import notes are cleared and your build is as it was\. A report is read on your device and is not kept or sent\.'/);
+  assert.match(src, /'The import notes are cleared and your build is as it was\.'/);
   assert.doesNotMatch(src, /No report imported yet/);
 });
 
