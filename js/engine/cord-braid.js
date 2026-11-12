@@ -62,7 +62,8 @@
       innerHalfGap: +R(fig.innerHalfGap).toFixed(4), cap: +R(fig.capLength).toFixed(4), capWidth: +R(fig.capWidth).toFixed(4)
     },
     fig,
-    // Strand, tip and knot: only the guidance's Georgia figure (photographs, first and fifth pictures) shows them. All in braid widths.
+    // Strand, tip and knot: the guidance's Georgia figure (photographs, first and fifth pictures) shows them. All in braid widths. Vanguard's 9 inch single gold strand
+    // with silver tip (CAP0650J) was measured against them; see assets/ASSET_NOTES.md (cords-vanguard) for what it settled and what it left.
     extras: {
       strand: 0.16,          // thickness of the thin cord: 4.7 px in a braid 27 px across in the first picture (0.17); the aiguillette art uses 0.14
       drop: 6.8,             // from the shoulder end down to the tip's end: 187 px of 27 in the first picture (6.9)
@@ -100,7 +101,7 @@
       out.edge = pair(pal, e.edge, id); out.centre = pair(pal, e.centre, id);
       out.colours = [out.edge, out.centre];
     } else out.colours = (e.colours || []).map(n => pair(pal, n, id));
-    if(e.strand) out.strand = { colour: pair(pal, e.strand.colour, id), tip: pair(metals, e.strand.tip, id) };
+    if(e.strand) out.strand = { colour: pair(pal, e.strand.colour, id), tip: pair(metals, e.strand.tip, id), knot: !!e.strand.knot };
     if(e.aiguillette) out.aiguillette = pair(pal, e.aiguillette, id);
     return out;
   }
@@ -163,11 +164,14 @@
     const Pt = (u, s) => { const f = frame(s); return fmt(f.x + u * f.nx) + ',' + fmt(f.y + u * f.ny); };
     const barrel = ph => fmin + (1 - fmin) * 4 * ph * (1 - ph);   // 1 in the middle of a link, fmin at its boundary lines
 
-    // which colour the lobes and the centre cells of link k are; the outline of a link is the dark of its lobes
+    // which colour the lobes and the centre cells are; the outline of a link is the dark of its lobes. Two colours go as the vendor's two-colour 2723 interwoven cords
+    // are made (Vanguard: Royal Blue/Gold CAP0650H, Orange & Black CAP3740591, Scarlet Red and White 3740500 and seven more): the first colour is on the lobes, both
+    // outside edges, the whole length, the second in the centre strip, never one colour then the other link by link. interwoven and edge-centre are the same drawing.
     const cols = cord.colours || [], style = cord.style || 'solid';
     const c0 = cols[0] || { main: '#cdd2d7', dark: '#7f8790' }, c1 = cols[1] || c0;
-    const lobeCol = k => style === 'interwoven' && k % 2 ? c1 : c0;
-    const centreCol = k => style === 'edge-centre' ? c1 : style === 'interwoven' ? (k % 2 ? c0 : c1) : c0;
+    const twoColour = style === 'edge-centre' || style === 'interwoven';
+    const lobeCol = () => c0;
+    const centreCol = () => twoColour ? c1 : c0;
     const groups = [];                                       // one per colour, in first-use order
     const grp = col => groups.find(g => g.col.main === col.main && g.col.dark === col.dark) || (groups[groups.push({ col, fill: [], ground: [], capFill: [], capGround: [], capR: 0 }) - 1]);
 
@@ -225,7 +229,7 @@
       // the Georgia figure's overall cadet of the year cord has two strands, each knotted and tipped: the strand colour and the braid's other colour
       const other = cols.find(c => c.main !== main.colour.main) || cols[0] || main.colour;
       strands.push({ dx: -E.strandGap * W, col: other, tip: main.tip, knotAt: 0.5 }, { dx: E.strandGap * W, col: main.colour, tip: main.tip, knotAt: 0.64 });
-    } else strands.push({ dx: 0, col: main.colour, tip: main.tip, knotAt: null });
+    } else strands.push({ dx: 0, col: main.colour, tip: main.tip, knotAt: main.knot ? 0.5 : null });   // strand.knot: the wrapped knot of the 9 inch single strand (Vanguard CAP0650J: centre 23 percent of the way down from the pinned end, ours 28)
     const tipLen = E.tipLength * W, thick = E.strand * W, yHead = y0 + (E.drop - E.tipLength) * W, line = 0.03 * W;
     let out = '';
     strands.forEach((s, i) => {

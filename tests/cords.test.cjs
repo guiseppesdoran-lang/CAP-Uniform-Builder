@@ -77,3 +77,33 @@ test('resolve gives the list\'s entry with colour names turned into hex pairs, a
   assert.deepEqual(cords.resolve('de-unit-award', 'orange').colours.map(c => c.main), [list.palette.orange.main]);
   assert.equal(cords.resolve('color_guard').colours[0].main, list.palette.white.main);
 });
+
+// The cords as the vendor makes them (the art tree's check against Vanguard's listings, committed there as 2f580562).
+test('the group cord\'s green is the vendor\'s kelly green (#1f8951, outline #0d4a29), and the other green cords take it', () => {
+  assert.deepEqual(list.palette.green, { main: '#1f8951', dark: '#0d4a29' });
+  assert.deepEqual(list.regulation.find(c => c.id === 'group').colours, ['green']);
+  for(const id of ['mar-competition-team', 'mn-drill-down-cadet-of-the-month']){
+    assert.ok([].concat(list.supplement.find(c => c.id === id).colours || [], list.supplement.find(c => c.id === id).centre || []).includes('green'), `${id} is a green cord`);
+  }
+});
+
+test('a single strand has its wrapped knot where the list says: the honor society cords\' strands that are knotted, the others plain; the two knotted strands of Georgia\'s cord are the cord\'s own', () => {
+  const knotted = list.supplement.filter(c => c.strand && c.strand.knot).map(c => c.id);
+  assert.deepEqual(knotted, ['me-honor-society-distinction', 'wv-honor-society-twice']);
+  assert.ok(list.supplement.filter(c => c.strand && !c.strand.knot).length >= 3, 'the other single strands are plain');
+  assert.equal(list.supplement.find(c => c.id === 'ga-cadet-of-the-year').knot, true, 'two knotted strands: a knot of the cord, not of a strand');
+});
+
+test('resolve gives the knot of a single strand on to the drawing, and an interwoven cord is drawn first colour on both outside edges and second down the inside, whole length', { skip: !fs.existsSync(path.join(__dirname, '..', 'js', 'engine', 'cord-braid.js')) && 'the drawing function is not in the tree yet' }, () => {
+  const braid = require('../js/engine/cord-braid.js');
+  assert.equal(cords.resolve('me-honor-society-distinction').strand.knot, true);
+  assert.equal(cords.resolve('wv-honor-society-after-mitchell').strand.knot, false);
+  const along = [[0, 0], [0.4, 3], [1.1, 6]];
+  const draw = (cord, o) => braid.draw(along, cord, Object.assign({ unit: 1, width: 0.5, idPrefix: 't-', cap: true }, o));
+  const knotted = draw(cords.resolve('me-honor-society-distinction')), plain = draw(cords.resolve('wv-honor-society-after-mitchell'));
+  assert.ok(/<rect /.test(knotted.extras) && !/<rect /.test(plain.extras), 'the single strand is wrapped with a knot where the list says');
+  for(const id of cords.supplementIds().filter(i => cords.entry(i).style === 'interwoven')){
+    const e = cords.resolve(id), twin = Object.assign({}, e, { style: 'edge-centre', edge: e.colours[0], centre: e.colours[1] });
+    assert.equal(draw(e).run, draw(twin).run, `${id}: colours[0] on both edges, colours[1] in the strip, the whole length: the drawing of the same cord as edge and centre`);
+  }
+});

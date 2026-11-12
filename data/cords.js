@@ -7,17 +7,17 @@
   const cords = {
     "styles": {
       "solid": "one colour",
-      "interwoven": "two colours alternating along the braid: colours[0] then colours[1]",
+      "interwoven": "two colours as the two-colour 2723 interwoven cord is made: colours[0] on both outside edges of the braid, colours[1] in the strip down the inside (the same drawing as edge-centre with edge = colours[0], centre = colours[1])",
       "edge-centre": "box braid whose outside (edge, exterior) is one colour and whose inside (centre, interior) is the other",
       "chosen": "colour picked by the unit commander: the member picks one colour from our palette (never a colour of the seven regulation cords)"
     },
     "extras": {
-      "strand": "one thin plain strand of the given colour hanging from the shoulder beside the braid, ending in a metal tip of the given metal",
+      "strand": "one thin plain strand of the given colour hanging from the shoulder beside the braid, ending in a metal tip of the given metal; \"knot\": true on the strand puts the wrapped knot on it, as on the 9 inch single gold strand sold with the honor society cord",
       "knot": "a knot in the strand(s), as in the Georgia figure",
       "aiguillette": "the aiguillette we already draw for the Aide de Camp cord, in the given colour"
     },
     "palette": {
-      "green": {"main":"#4CBB17","dark":"#2f740e"},
+      "green": {"main":"#1f8951","dark":"#0d4a29"},
       "red": {"main":"#e01215","dark":"#c00303"},
       "blue": {"main":"#0527a5","dark":"#000b68"},
       "gold": {"main":"#f1be16","dark":"#cf7009"},
@@ -75,14 +75,14 @@
       {"id":"me-afa-nco-of-the-year","name":"Outstanding Cadet Noncommissioned Officer of the Year","style":"interwoven","colours":["navy blue","gray"]},
       {"id":"me-wing-cadet-of-the-year","name":"Wing Cadet of the Year","style":"edge-centre","edge":"gold","centre":"gray"},
       {"id":"me-honor-society","name":"Cadet Honor Society","style":"interwoven","colours":["blue","gold"]},
-      {"id":"me-honor-society-distinction","name":"Cadet Honor Society with Distinction","style":"interwoven","colours":["blue","gold"],"strand":{"colour":"gold","tip":"silver"}},
+      {"id":"me-honor-society-distinction","name":"Cadet Honor Society with Distinction","style":"interwoven","colours":["blue","gold"],"strand":{"colour":"gold","tip":"silver","knot":true}},
       {"id":"nh-ncols","name":"Wing Noncommissioned Officer Leadership School","style":"interwoven","colours":["red","white"]},
       {"id":"nh-cadet-of-the-month-quarter","name":"Squadron Cadet of the Month or Quarter","style":"solid","colours":["gray"]},
       {"id":"mo-pathfinders","name":"Pathfinders Technical School","style":"solid","colours":["orange"]},
       {"id":"mo-medical-orientation","name":"Medical Orientation Training School","style":"interwoven","colours":["maroon","black"]},
       {"id":"wv-honor-society","name":"Wing Honor Society","style":"interwoven","colours":["blue","gold"]},
       {"id":"wv-honor-society-after-mitchell","name":"Wing Honor Society, inducted after the Mitchell Award","style":"interwoven","colours":["blue","gold"],"strand":{"colour":"blue","tip":"silver"}},
-      {"id":"wv-honor-society-twice","name":"Wing Honor Society, inducted before and again after the Mitchell Award","style":"interwoven","colours":["blue","gold"],"strand":{"colour":"gold","tip":"silver"}},
+      {"id":"wv-honor-society-twice","name":"Wing Honor Society, inducted before and again after the Mitchell Award","style":"interwoven","colours":["blue","gold"],"strand":{"colour":"gold","tip":"silver","knot":true}},
       {"id":"ga-honor-society","name":"Cadet Honor Society","style":"interwoven","colours":["maroon","dark gold"],"strand":{"colour":"maroon","tip":"nickel"}},
       {"id":"ga-cadet-of-the-quarter-month","name":"Cadet of the Quarter or Month","style":"solid","colours":["orange"]},
       {"id":"ga-squadron-cadet-of-the-year","name":"Squadron Cadet of the Year","style":"solid","colours":["gray"]},
