@@ -484,31 +484,27 @@
     return root;
   }
 
-  // The radio rows of one place: a radio per competing badge, the badge's name, and a tag saying whether that badge is shown. One radio
-  // group (one input name) per place, so the arrow keys move within the place. A position with one place writes the badge id; a position with
-  // several writes the picks of all its places (the badge picked here swaps with the one the place held, nextBadgePicks).
+  // The tiles of one place: a picture tile per competing badge (its own drawing, its name under it), one group per place so the arrow keys move within the place; the picked tile is the
+  // one the place holds, and a tile carries "not shown" where that badge is drawn nowhere in the position (updateBadgeChooser). A position with one place writes the badge id; a
+  // position with several writes the picks of all its places (the badge picked here swaps with the one the place held, nextBadgePicks). The picture picker of js/visual-picker.js.
+  const chooserPickers = new Map();   // "position|place" -> the picker of that place
+  const badgeArt = id => typeof getBadgeAssetPath === 'function' ? ASSET(getBadgeAssetPath(id)) : undefined;
   function buildChooserOptions(group, slot, labelledBy){
-    const list = el('div', 'badgeChooserList');
-    list.setAttribute('role', 'radiogroup');
-    list.setAttribute('aria-labelledby', labelledBy);
+    const host = el('div', 'badgeChooserList');
+    host.dataset.place = slot.key;
     const single = group.slots.length === 1;
-    for(const cand of group.options){
-      const label = el('label', 'badgeChooserOption');
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = single ? `badgeChoice:${group.position}` : `badgeSlot:${group.position}:${slot.key}`;
-      input.value = cand.id;
-      input.addEventListener('change', () => {
-        if(!input.checked) return;
-        if(single){ setBadgeChoice(group.position, cand.id); return; }
+    const picker = VisualPicker.render(host, {
+      name: `badgeChooser-${group.position}-${slot.key}`, labelledBy, size: 'large', value: slot.value,
+      options: group.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id) })),
+      onChange: id => {
+        if(single){ setBadgeChoice(group.position, id); return; }
         const live = (lastScene && lastScene.conflicts || []).find(c => c.position === group.position);
         const current = live ? chooserModel([live])[0] : group;
-        setBadgeChoice(group.position, nextBadgePicks(current, slot.key, cand.id));
-      });
-      label.append(input, el('span', 'badgeChooserName', cand.title), el('span', 'badgeChooserTag'));
-      list.append(label);
-    }
-    return list;
+        setBadgeChoice(group.position, nextBadgePicks(current, slot.key, id));
+      }
+    });
+    chooserPickers.set(`${group.position}|${slot.key}`, picker);
+    return host;
   }
 
   function updateBadgeChooser(scene){
@@ -523,12 +519,13 @@
       // Rebuilt only when the competing badges or the places change, so a pick never loses keyboard focus.
       chooserSignature = signature;
       const focused = document.activeElement && host.contains(document.activeElement) ? document.activeElement : null;
-      const keep = focused ? { id: focused.id, name: focused.name, value: focused.value } : null;
+      const keep = focused && focused.closest && focused.closest('.badgeChooserList') ? { place: focused.closest('.badgeChooserList').dataset.place, value: focused.dataset.value } : null;
       host.replaceChildren();
+      chooserPickers.clear();
       host.append(el('p', 'hintText badgeChooserLead', 'Where a uniform has more than one place for badges, pick the badge for each place.'));
       for(const g of model) host.append(buildChooserGroup(g));
       if(keep){
-        const again = [...host.querySelectorAll('input')].find(n => n.name === keep.name && n.value === keep.value);
+        const again = [...host.querySelectorAll('[role="radio"]')].find(n => n.closest('.badgeChooserList') && n.closest('.badgeChooserList').dataset.place === keep.place && n.dataset.value === keep.value);
         if(again) again.focus();
       }
     }
@@ -542,13 +539,14 @@
       for(const sl of g.slots){
         const row = g.slots.length === 1 ? root : root.querySelector(`.badgeChooserSlot[data-slot="${CSS.escape(sl.key)}"]`);
         if(!row) continue;
-        const slotTag = row.querySelector('.badgeChooserSlotHead .badgeChooserTag');
+        const slotHead = row.querySelector('.badgeChooserSlotHead');
+        const slotTag = slotHead && slotHead.querySelector('.badgeChooserTag');
         if(slotTag) slotTag.textContent = sl.shown ? 'shown' : 'not shown';
-        for(const label of row.querySelectorAll('label.badgeChooserOption')){
-          const input = label.querySelector('input');
-          input.checked = input.value === sl.value;
-          const here = input.checked && sl.shown;
-          label.querySelector('.badgeChooserTag').textContent = here ? 'shown' : (shown.has(input.value) ? '' : 'not shown');
+        const picker = chooserPickers.get(`${g.position}|${sl.key}`);
+        if(picker){
+          // The tile of the badge the place holds is the picked one ("shown" where it is drawn there); a badge drawn nowhere in the position says "not shown".
+          picker.setOptions(g.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id), mark: cand.id === sl.value && sl.shown ? 'shown' : (shown.has(cand.id) ? undefined : 'not shown') })));
+          picker.setValue(sl.value);
         }
       }
     }

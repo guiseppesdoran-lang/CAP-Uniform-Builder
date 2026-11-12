@@ -127,14 +127,12 @@ test('State.badgeChoices exists, is saved with the setup and comes back through 
   assert.deepEqual(JSON.parse(ev('JSON.stringify(State.badgeChoices)')), { blues_a: { aviation: OBSERVER, 'over-pocket': EMT }, mess_dress: { aviation: PILOT } });
 });
 
-test('the page hands the engine the choices of the uniform being drawn, and the chooser is wired to the radios of every place (LIVE7-1, LIVE13 E75: no select)', () => {
+test('the page hands the engine the choices of the uniform being drawn, and the chooser is wired to the picture tiles of every place (LIVE7-1, LIVE13 E75: no select; 2026-11-12: tiles, no radio button)', () => {
   const src = read('js/uniform-view.js');
   assert.match(src, /badgeChoices: Object\.assign\(\{\}, \(State\.badgeChoices \|\| \{\}\)\[State\.uniform\] \|\| \{\}\)/);
-  assert.match(src, /type = 'radio'/);
   const chooser = src.slice(src.indexOf("const CHOOSER_ID = 'badgeChooser'"), src.indexOf('function updateBadgeChooser'));
-  assert.doesNotMatch(chooser, /createElement\('select'\)|'option'|badgeChooserSelect/, 'every place is picked with radios, none with a select');
-  assert.match(chooser, /setAttribute\('role', 'radiogroup'\)/);
-  assert.match(chooser, /`badgeSlot:\$\{group\.position\}:\$\{slot\.key\}`/, 'one radio group (input name) per place');
+  assert.doesNotMatch(chooser, /createElement\('select'\)|'option'|badgeChooserSelect|type = 'radio'|createElement\('input'\)/, 'every place is picked from tiles, none with a select or a radio button');
+  assert.match(chooser, /name: `badgeChooser-\$\{group\.position\}-\$\{slot\.key\}`/, 'one group of tiles per place');
   assert.match(src, /el\('h4', 'badgeChooserTitle'/, 'a plain heading row, not a fieldset legend');
   assert.doesNotMatch(src, /createElement\('(fieldset|legend)'\)/);
   assert.match(src, /updateBadgeChooser\(scene\)/);

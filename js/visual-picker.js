@@ -18,6 +18,9 @@
 //   value     the option picked; onChange(value) is called when the member picks another (not by setValue or setOptions).
 //   size      'large' for bigger pictures (two to a row at the sidebar's width); the default fits three to a row.
 //   shape     'tall' for pictures taller than wide (a whole shirt, a skirt); the default box is wider than tall.
+//   labelledBy  the id of a heading of the page's own that names the group, when it has no legend of its own.
+//
+// A picture that is an image URL is loaded lazily, so a long list loads the pictures that come into view.
 //
 // To assistive technology it is a radio group (role="radiogroup"; each option role="radio" with aria-checked). It is one stop of the Tab key: the
 // arrow keys move from option to option (the left and up keys back, the right and down keys on, Home and End to the ends), Enter or the space bar picks
@@ -87,7 +90,9 @@
     }
     const list = make('div', 'vpList');
     list.setAttribute('role', 'radiogroup');
-    if(cfg.legend) list.setAttribute('aria-labelledby', legendId); else list.setAttribute('aria-label', name);
+    if(cfg.legend) list.setAttribute('aria-labelledby', legendId);
+    else if(cfg.labelledBy) list.setAttribute('aria-labelledby', String(cfg.labelledBy));   // a heading of the page's own names the group
+    else list.setAttribute('aria-label', name);
     const note = make('div', 'fieldNote vpNote');
     note.setAttribute('aria-live', 'polite');
     note.hidden = true;
@@ -143,6 +148,8 @@
           const img = make('img');
           img.setAttribute('src', String(o.picture));
           img.setAttribute('alt', '');
+          img.setAttribute('loading', 'lazy');
+          img.setAttribute('decoding', 'async');
           img.setAttribute('draggable', 'false');
           box.append(img);
         }
