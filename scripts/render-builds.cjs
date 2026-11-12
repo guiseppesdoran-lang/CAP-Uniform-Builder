@@ -195,6 +195,8 @@ function makeBuild(spec){
     cordColour: spec.cordColour || null,
     cordOnTop: !!spec.cordOnTop
   };
+  // The member's order of badges of equal standing, as the page hands it over (State.badgeOrder, { occupational: [badge ids, highest first] }): a build that states none has no such field.
+  if(spec.badgeOrder) b.badgeOrder = spec.badgeOrder;
   if(spec.patchRefs){ const r = patchesFrom(spec.patchRefs); b.patches = [...b.patches, ...r.patches]; b.harnessNotes = r.notes; }
   if(spec.medalSel){ b.medals = medalsFrom(b.ribbons); b.ribbons = []; }
   return b;

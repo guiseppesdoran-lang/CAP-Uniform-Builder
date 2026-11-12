@@ -70,3 +70,20 @@ test('the harness puts military ribbons before the CAP ribbons, keeping their gi
   assert.deepEqual(order.slice(0, 2), ['military:b', 'military:a']);
   assert.ok(order.indexOf('mitchell_award') < order.indexOf('curry_achievement'));
 });
+
+test('a harness build carries the member\'s badge order when the spec states one, as the page hands it over, and has none otherwise', async () => {
+  const spec = { uniform: 'blues_a', gender: 'male', membership: 'senior', rank: 'Capt', badgeIds: ['nurse_officer', 'ground_team_basic_badge'] };
+  const plain = H.makeBuild(spec);
+  assert.ok(!('badgeOrder' in plain), 'no field without a choice');
+  const order = { occupational: ['nurse_officer', 'ground_team_basic_badge'] };
+  assert.deepEqual(H.makeBuild(Object.assign({}, spec, { badgeOrder: order })).badgeOrder, order);
+  // And the engine reads it: the nurse badge is worn above the Ground Team badge, which the catalog's own order would put above it.
+  const core = require('../js/engine/core.js'), P = require('../js/engine/profiles.js');
+  require('../js/engine/profiles-field.js'); require('../js/engine/profiles-dress.js');
+  const fs = require('node:fs'), path = require('node:path');
+  const root = path.join(__dirname, '..');
+  const store = core.createSpecStore(JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8')), p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
+  const highest = async b => (await P.composeUniform(b, store)).layers.filter(l => l.role === 'badge').sort((a, c) => a.y - c.y)[0].key;
+  assert.equal(await highest(plain), 'badge:ground_team_basic_badge');
+  assert.equal(await highest(H.makeBuild(Object.assign({}, spec, { badgeOrder: order }))), 'badge:nurse_officer');
+});
