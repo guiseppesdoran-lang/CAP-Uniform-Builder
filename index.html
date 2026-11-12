@@ -288,10 +288,9 @@
 
           <div id="ribbonGallery" class="galleryGrid"></div>
 
-          <div id="miniMountStylePicker" class="mt-8" hidden></div>
-          <label class="fieldNote segmentedSource" aria-hidden="true">
+          <label class="fieldNote mt-8">
             Miniature medal mounting method
-            <select id="miniMountStyle" tabindex="-1">
+            <select id="miniMountStyle">
               <option value="mounting">Mounting bars, 4 per row (up to 24)</option>
               <option value="holding">Holding bars, custom overlap (up to 28)</option>
             </select>
@@ -371,16 +370,14 @@
               <span id="commandInsigniaLabel" class="commandRowLabel">Command insignia pin</span>
               <span id="commandInsigniaState" class="commandRowState" aria-live="polite"></span>
             </div>
-            <div id="commandInsigniaChoicePicker" hidden></div>
-            <div class="badgeChooserList segmentedSource" role="radiogroup" aria-labelledby="commandInsigniaLabel" aria-hidden="true">
+            <div class="badgeChooserList" role="radiogroup" aria-labelledby="commandInsigniaLabel">
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="none"><span class="badgeChooserName">Not worn</span></label>
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="current"><span class="badgeChooserName">Current commander</span></label>
               <label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="graduated"><span class="badgeChooserName">Graduated commander</span></label>
             </div>
             <div id="commandInsigniaLevelWrap" class="commandRowLevel hidden">
-              <div id="commandInsigniaLevelPicker" hidden></div>
-              <label class="fieldLabel segmentedSource" for="commandInsigniaLevel" aria-hidden="true">Command held</label>
-              <select id="commandInsigniaLevel" class="segmentedSource" tabindex="-1" aria-hidden="true">
+              <label class="fieldLabel" for="commandInsigniaLevel">Command held</label>
+              <select id="commandInsigniaLevel">
                 <option value="squadron">Squadron commander</option>
                 <option value="group">Group commander</option>
               </select>
