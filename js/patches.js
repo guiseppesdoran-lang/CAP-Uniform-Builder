@@ -64,6 +64,12 @@ function capubExtractCommanderDutyWindows(section){
     const title = m[1] || '';
     if(!capubIsExactCommanderDutyTitle(title)) continue;
     if(capubHasDisqualifyingCommanderPrefix(source, m.index)) continue;
+    // Only the unit commander's own title qualifies: "Commander", or Squadron, Group, Wing, Region or National Commander, as a cell of its own
+    // (the text before it is the previous row's date or the table's heading). A Flight, Encampment, Honor Guard, Ground Team, Drill Team or
+    // Acting Commander is another position.
+    if(!/(?:\b\d{4}|End\s+Date|Duty\s+(?:Positions|Assignments))\s*$/i.test(source.slice(0, m.index))) continue;
+    // The Asst column: Yes is an assistant's row, never the commander's.
+    if(/^yes$/i.test(m[4])) continue;
 
     rows.push({
       title,
@@ -103,7 +109,9 @@ function capubPastDutySection(text){
 function hasCurrentCommanderDutyPosition(text){
   const current = capubCurrentDutySection(text);
   if(!current) return false;
-  return capubExtractCommanderDutyWindows(current).some(row => capubIsExactCommanderDutyTitle(row.title) && !row.end);
+  // An End Date still to come is a term's end: the member commands today (CAPR 39-1, 10.2.5: "graduated" is no longer in a command position).
+  const today = new Date();
+  return capubExtractCommanderDutyWindows(current).some(row => capubIsExactCommanderDutyTitle(row.title) && (!row.end || row.end > today));
 }
 
 function hasGraduatedCommanderDutyPosition(text){
@@ -113,7 +121,7 @@ function hasGraduatedCommanderDutyPosition(text){
 
   return capubExtractCommanderDutyWindows(past).some(row => {
     if(!capubIsExactCommanderDutyTitle(row.title)) return false;
-    if(!row.start || !row.end) return false;
+    if(!row.start || !row.end || row.end > new Date()) return false;
     const days = (row.end - row.start) / (1000 * 60 * 60 * 24);
     return days >= 365;
   });
@@ -135,7 +143,8 @@ function extractCommandServiceCommanderAssignments(text){
   for(const section of sections){
     for(const row of capubExtractCommanderDutyWindows(section.text)){
       if(!row.start) continue;
-      const end = row.end || (section.current ? new Date() : null);
+      const now = new Date();
+      const end = row.end ? new Date(Math.min(row.end, now)) : (section.current ? now : null);
       if(!end) continue;
       const days = Math.floor((end - row.start) / (1000 * 60 * 60 * 24));
       rows.push({
@@ -261,6 +270,12 @@ function capubCACLevelFromText(segment, rowEchelon=''){
   return null;
 }
 
+// The token's own row, from the token to its first date, ends in "Yes <date>" when the Asst column says assistant.
+function capubCACRowIsAssistant(source, index){
+  const ownRow = /^[\s\S]{0,160}?\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/.exec(String(source || '').slice(index));
+  return !!ownRow && /\bYes\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}$/i.test(ownRow[0]);
+}
+
 function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
   const source = capubNormalizeCACSource(section);
   const rows = [];
@@ -283,6 +298,8 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
     const echelon = m[3] || '';
     const raw = m[0] || title;
     if(!capubLooksLikeCACDutySegment(raw)) continue;
+    // The Asst column: Yes is an assistant's row.
+    if(/\bYes\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/i.test(raw)) continue;
     const level = capubCACLevelFromText(raw, echelon);
     if(!level) continue;
     rows.push({
@@ -304,6 +321,7 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
   while((m = tokenRe.exec(source))){
     const ctx = source.slice(Math.max(0, m.index - 90), Math.min(source.length, m.index + 180));
     if(!capubLooksLikeCACDutySegment(ctx)) continue;
+    if(capubCACRowIsAssistant(source, m.index)) continue;
     const echelonMatch = ctx.match(/\b(UNIT|GROUP|WING|REGION|NATIONAL)\b/i);
     const level = capubCACLevelFromText(ctx, echelonMatch ? echelonMatch[1] : '');
     if(!level) continue;
@@ -580,6 +598,7 @@ function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
     let m;
     while((m = spec.re.exec(s))){
       const ctx = s.slice(Math.max(0, m.index - 45), Math.min(s.length, m.index + 95));
+      if(capubCACRowIsAssistant(s, m.index)) continue;
       if(capubCACWindowLooksEligibleFinal(ctx)) found.push({ level:spec.level, raw:ctx });
     }
   }
@@ -587,6 +606,7 @@ function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
   let gm;
   while((gm = genericRe.exec(s))){
     const ctx = s.slice(Math.max(0, gm.index - 45), Math.min(s.length, gm.index + 130));
+    if(capubCACRowIsAssistant(s, gm.index)) continue;
     if(!capubCACWindowLooksEligibleFinal(ctx)) continue;
     const level = capubCACLevelFromText(ctx, (ctx.match(/\b(NATIONAL|REGION|WING|GROUP|UNIT)\b/i)||[])[1] || '');
     if(level) found.push({ level, raw:ctx });
@@ -1166,7 +1186,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       { id:'nbb_patch', terms:[/\bNBB\b/i,/National\s+Blue\s+Beret/i] },
       { id:'undergrad_pilot_training_patch', terms:[/Undergraduate\s+Pilot\s+Training/i] },
       { id:'model_rocketry_patch', terms:[/Model\s+Rocketry/i] },
-      { id:'orientation_pilot_patch', terms:[/Orientation\s+Pilot/i,/Cadet\s+Orientation\s+Pilot/i] }
+      { id:'orientation_pilot_patch', terms:[/Orientation\s+Pilot(?!\s+Ribbon)/i] }
     ];
 
     function capubPatchIdForUniform(matcher, uniformId = State.uniform){
@@ -1189,19 +1209,22 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     function capubDetectUnitCharterFromReport(text){
       const t = String(text || '').replace(/\s+/g, ' ');
-      const explicit = t.match(/\b([A-Z]{2,3}-[A-Z]{2,3}-\d{3})\b/);
-      if(explicit && CAP_UNIT_OPTIONS?.some?.(u => u.code === explicit[1])) return explicit[1];
+      // The member's own unit is the Unit column of the General Information row, the first charter in the report. A charter in a duty,
+      // transfer or committee row is another unit (the wing's, the group's) and is never the member's: with the member's unit missing
+      // from the list, the old scan of the whole report chose the wing's patch. The report may be in lower case.
+      const info = t.search(/General\s+Information/i);
+      const head = t.slice(Math.max(0, info), Math.max(0, info) + 400);
+      const explicit = head.match(/\b([A-Za-z]{2,3}-[A-Za-z]{2,3}-\d{3})\b/);
+      if(explicit && CAP_UNIT_OPTIONS?.some?.(u => u.code === explicit[1].toUpperCase())) return explicit[1].toUpperCase();
 
-      const short = t.match(/\b([A-Z]{2}-\d{3})\b/);
+      const short = head.match(/\b([A-Za-z]{2}-\d{3})\b/);
       if(short){
-        const hit = CAP_UNIT_OPTIONS?.find?.(u => String(u.code || '').endsWith(`-${short[1]}`));
+        const code = short[1].toUpperCase();
+        const hit = CAP_UNIT_OPTIONS?.find?.(u => String(u.code || '').endsWith(`-${code}`));
         if(hit) return hit.code;
-        if(short[1] === 'TN-185') return 'SER-TN-185';
+        if(code === 'TN-185') return 'SER-TN-185';
       }
-
-      // Slower but very reliable fallback: scan known charters that appear in the report.
-      const hit = CAP_UNIT_OPTIONS?.find?.(u => new RegExp(`\\b${String(u.code).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`).test(t));
-      return hit?.code || null;
+      return null;
     }
 
     const capubPreviousParseCapMemberReport = parseCapMemberReport;
