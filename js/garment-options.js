@@ -18,10 +18,16 @@
   function hasChaplainBadge(){
     return typeof CAPUBBadgeCatalog !== 'undefined' && (State.badges || []).some(id => CAPUBBadgeCatalog.family(id) === 'chaplain');
   }
+  // The chest badges the uniform wears above the CAP tape. Once the page has drawn this uniform it is what the drawing wears, by the engine's own rule (one CAP
+  // aviation badge, only the badges the member may wear, none with no art, at most the uniform's limit): three selected aviation badges are one worn. Before the
+  // first drawing, the badges selected, up to the limit.
   function chestBadgeCount(){
     const max = FIELD_CHEST_MAX[State.uniform];
+    if(!max) return 0;
+    const scene = typeof CAPUBUniformView !== 'undefined' ? CAPUBUniformView.scene : null;
+    if(scene && scene.uniform === State.uniform && Array.isArray(scene.layers)) return scene.layers.filter(l => l.role === 'badge' && l.place === 'above the CAP tape').length;
     const own = State.uniform === 'ocp' && hasChaplainBadge() ? (State.badges || []).filter(id => CAPUBBadgeCatalog.family(id) !== 'chaplain') : (State.badges || []);
-    return max ? Math.min(own.length, max) : 0;
+    return Math.min(own.length, max);
   }
 
   // The polo (Corporate Working Uniform, 5.3). The screen-printed shirt has no accoutrements (5.3.2.1.2): its name and badge options
@@ -37,13 +43,22 @@
     return CAPUBUniformRules.tieRule(c.u, { gender: c.female ? 'female' : 'male', sleeve: (c.o && c.o.sleeve) || 'short', overblouse: c.u === 'aviator' && c.female && (c.o && c.o.femaleTop) === 'overblouse' });
   }
 
+  // The paragraph that allows each chevron size, by uniform: the field uniforms' NCO grade, the women's Class A, Class B and mess dress (the men's Class B has one size).
+  const CHEVRON_PARA = { abu: '5.1.1.1.1.2', corporate_field: '5.2.1.1.1.3', blues_a: '4.1.9.3.3', blues_b: '4.1.12.2.3.3', mess_dress: '4.1.2.1.1.4' };
+
   // { key, label, type: 'select' | 'check' | 'text', choices: [[value, label]] | fn, when(ctx), off(ctx) -> note | '' (shown, switched off) }
+  // `picker` (selects only): the option is chosen by picture (js/visual-picker.js, pictures from js/option-pictures.js): { size, shape, notes(ctx) -> { value: sentence } }.
   const OPTIONS = [
     { key: 'poloShirt', label: 'Shirt', type: 'select',
-      choices: [['embroidered', 'Knit polo, seal embroidered (5.3.1.1)'], ['print', 'Knit polo, seal screen-printed (5.3.1.2)'], ['tactical', 'Tactical polo, pen pocket on the left sleeve (5.3.1.3)']],
+      choices: [['embroidered', 'Embroidered seal'], ['print', 'Screen-printed seal'], ['tactical', 'Tactical polo']],
+      picker: { size: 'large', notes: () => ({
+        embroidered: 'Dark blue knit polo with the CAP seal embroidered on the right breast (CAPR 39-1, 5.3.1.1).',
+        print: 'Dark blue knit polo with the CAP seal screen-printed in white on the left breast (CAPR 39-1, 5.3.1.2).',
+        tactical: 'Dark blue tactical polo with the CAP seal embroidered on the right breast and a pen pocket on the left sleeve (CAPR 39-1, 5.3.1.3).' }) },
       when: isPolo },
     { key: 'poloCut', label: 'Cut', type: 'select',
       choices: [['', "Women's polo, no pocket"], ['male', "Men's polo, left chest pocket"]],
+      picker: { shape: 'tall' },
       when: c => isPolo(c) && c.female },
     { key: 'poloName', label: 'Name embroidered in white thread', type: 'check', defaultValue: true,
       when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
@@ -59,9 +74,11 @@
       when: c => c.g.category === 'senior-none' },
     { key: 'sleeve', label: 'Sleeves', type: 'select',
       choices: [['short', 'Short sleeves'], ['long', 'Long sleeves']],
+      picker: { shape: 'tall' },
       when: c => ['blues_b', 'aviator', 'polo'].includes(c.u) },
     { key: 'femaleTop', label: 'Top', type: 'select',
       choices: [['shirt', 'Aviator shirt'], ['overblouse', 'White overblouse']],
+      picker: { shape: 'tall' },
       when: c => c.u === 'aviator' && c.female },
     { key: 'underlayer', label: 'Under the blazer', type: 'select',
       choices: c => {
@@ -70,15 +87,18 @@
         if(c.female) list.push(['shell', 'White shell']);
         return list;
       },
+      picker: {},
       when: c => ['aviator_blazer', 'semi_formal'].includes(c.u) },
     { key: 'skirt', label: 'Skirt', type: 'select',
       choices: [['a-line', 'A-line skirt'], ['straight-split', 'Straight skirt with split']],
+      picker: { shape: 'tall' },
       when: c => c.u === 'mess_dress' && c.female },
     // The mess dress buttons (Ducky: "I use cap crest buttons, why no option for cap crest buttons"): 4.1.1.1 and 4.1.2.1 allow 'wing and star', CAP coat of arms or USAF coat of arms buttons;
     // the men's chain closure and shoulder-board buttons match the coat's (4.1.1.1, 4.1.1.1.1.1). The USAF coat of arms button is not drawn yet, so two designs are offered.
     { key: 'buttons', label: 'Buttons', type: 'select',
       choices: [['wing-star', 'Wing and star'], ['cap-crest', 'CAP coat of arms']],
       note: c => c.female ? 'Three on each side of the coat (CAPR 39-1, 4.1.2.1).' : 'The coat, the chain closure and the shoulder boards carry the same design (CAPR 39-1, 4.1.1.1, 4.1.1.1.1.1).',
+      picker: {},
       when: c => c.u === 'mess_dress' },
     { key: 'headgear', label: 'Headgear', type: 'select',
       choices: c => {
@@ -90,7 +110,7 @@
           const list = [['auto', 'Patrol cap'], ['tactical', 'Tactical cap']];
           if(c.u === 'corporate_field') list.push(['boonie', 'Boonie hat']);
           // The National Blue Beret (ICL 25-02 9.2.3: NBB graduates, with the ABU/OCP and the corporate field uniform at the unit level; LIVE13 E83).
-          list.push(['beret', 'National Blue Beret, graduates (9.2.3)']);
+          list.push(['beret', 'National Blue Beret, graduates']);
           list.push(['none', 'No headgear']);
           return list;
         }
@@ -100,11 +120,15 @@
         list.push(['none', 'No headgear']);
         return list;
       },
+      picker: { notes: () => ({ beret: 'Worn by graduates of the National Blue Beret program, at the unit level and not at wing, region or national activities other than that program (CAPR 39-1, 9.2.3).' }) },
       when: c => ['blues_a', 'blues_b', 'flight_suit', ...FIELD].includes(c.u) },
     // The OCP patrol and tactical caps: officers' and cadet officers' grade "sewn or Velcro" centred 1/2 in from the visor (CAPR 39-1, 7.1.1.8). Sewn, with
     // 1/8 in of blue past the insignia, is the default; the hook-and-loop form is drawn as the 2 x 2 in square of the chest (LIVE13 E82).
     { key: 'capGrade', label: 'Cap grade', type: 'select',
-      choices: [['sewn', 'Sewn, 1/8 in of blue showing (7.1.1.8)'], ['square', '2 x 2 in hook-and-loop square (7.1.1.8)']],
+      choices: [['sewn', 'Sewn on'], ['square', 'Hook-and-loop square']],
+      picker: { notes: () => ({
+        sewn: 'Sewn on the cap, centered 1/2 in from the visor, with 1/8 in of blue showing past the insignia (CAPR 39-1, 7.1.1.8).',
+        square: 'On a 2 x 2 in hook-and-loop square, centered 1/2 in from the visor (CAPR 39-1, 7.1.1.8).' }) },
       when: c => c.u === 'ocp' && !!c.g.officer && !c.chaplain && !['none', 'beret'].includes(c.o.headgear || 'auto') },
     // The meme (Ethan: "i know it says that its 2 foot by 2 foot, but its wrong. its 2 inches. however just for the meme, we should add it"): ICL 26-14 7.1.1.2.1
     // reads "2' x 2'". Off by default; on draws the chest square 24 in across with the badge scaled to it. Not a regulation placement.
@@ -130,6 +154,11 @@
       },
       // Men's Class B: 3 1/2 in only (4.1.11.1.1.1.3). Women's Class B, Class A and mess dress:
       // 3 1/2 or 4 in (4.1.12.2.3.3, 4.1.9.3.3).
+      picker: { notes: c => {
+        const para = CHEVRON_PARA[c.u];
+        const note = `NCOs wear a 3 1/2 or 4 inch chevron centered on the outer arm halfway between the shoulder seam and the elbow${para ? ` (CAPR 39-1, ${para})` : ''}.`;
+        return { '': note, '3.5': note, '4': note };
+      } },
       when: c => c.g.category === 'senior-nco' && (
         (c.female && ['blues_a', 'blues_b', 'mess_dress'].includes(c.u)) ||
         ['abu', 'corporate_field'].includes(c.u)) },
@@ -137,12 +166,24 @@
     // the tape with the rest centred above it. The first form is the default (opt.badgeLayout 'pair' is the second).
     { key: 'badgeLayout', label: 'Chest badge layout', type: 'select',
       choices: c => [['column', c.chestBadges >= 4 ? 'Two columns of two' : 'Column'], ['pair', 'Two side by side']],
+      picker: {
+        size: 'large',
+        notes: c => c.chestBadges >= 4
+          ? { column: 'Two columns of two, 1/4 in between the badges up and down and 1/2 in between the columns, the highest badges on top (CAPR 39-1, 7.1.1.3.1.4).',
+              pair: 'Two badges side by side on the tape, 1/2 in apart, and the other two stacked on the center line 1/4 in above them, 1/4 in apart (CAPR 39-1, 7.1.1.3.1.4).' }
+          : { column: 'A single column, 1/4 in between the badges, the highest on top (CAPR 39-1, 7.1.1.3.1.3).',
+              pair: 'Two badges side by side on the tape, 1/2 in apart, and the third centered on the tape 1/4 in above them (CAPR 39-1, 7.1.1.3.1.3).' }
+      },
       when: c => FIELD.includes(c.u) && c.chestBadges >= 3 },
     // An optional add-on like the Class A headgear: off until the member adds the jacket (8.2.7, 8.3.7); opt.jacket reaches the build.
     { key: 'jacket', label: 'Flight jacket', type: 'check', defaultValue: false, when: c => FLIGHT.includes(c.u) },
     { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) },
     { key: 'esPatch', label: 'Emergency Services patch', type: 'select',
-      choices: [['none', 'None'], ['style-1', 'ES patch'], ['style-2', 'ES patch (second style)']],
+      choices: [['none', 'No patch'], ['style-1', 'Style 1'], ['style-2', 'Style 2']],
+      picker: { notes: c => {
+        const note = c.u === 'corporate_field' ? 'Worn 1/2 in above the name tape, or above the command insignia when one is worn (CAPR 39-1, 5.2.1.1.2.8).' : 'Worn centered on the right breast pocket (CAPR 39-1, 8.2.4.3, 8.3.4.3).';
+        return { 'style-1': note, 'style-2': note };
+      } },
       when: c => FLIGHT.includes(c.u) || c.u === 'corporate_field' },
     { key: 'plateGrade', label: 'Grade on the nameplate', type: 'check', defaultValue: true,
       when: c => c.u === 'aviator_blazer' && !c.g.cadet && !!c.g.key }
@@ -201,6 +242,37 @@
     if(hint) hint.textContent = nameHint(u);
   }
 
+  // An option the member chooses by look (the table's `picker`) is drawn with js/visual-picker.js: a picture of each choice, its name beneath, the sentence of the
+  // one picked (`picker.notes`). The pictures are made from what the engine draws (js/option-pictures.js) and arrive a moment after the options do; until then
+  // each choice holds its place with a blank box, and a choice with no art to show is its name alone. The choices and their values are the select's: what is saved
+  // and shared does not change, only how it is shown.
+  const BLANK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3" aria-hidden="true"></svg>';
+  const picturesOf = (key, values) => window.CAPUBOptionPictures ? CAPUBOptionPictures.pictures(key, values) : { now: Object.fromEntries(values.map(v => [v, null])), ready: Promise.resolve({}) };
+  function pickerFor(o, c, g){
+    const choices = typeof o.choices === 'function' ? o.choices(c) : o.choices;
+    const values = choices.map(([v]) => v);
+    const notes = o.picker.notes ? o.picker.notes(c) : {};
+    const made = picturesOf(o.key, values);
+    const options = known => choices.map(([value, label]) => ({ value, label, note: notes[value], picture: value in known ? (known[value] == null ? undefined : known[value]) : BLANK }));
+    const current = choices.some(([v]) => v === g[o.key]) ? g[o.key] : choices[0][0];
+    const host = document.createElement('div');
+    const picker = VisualPicker.render(host, { name: 'garmentOpt-' + o.key, legend: labelOf(o, c), options: options(made.now), value: current, size: o.picker.size, shape: o.picker.shape, onChange: v => set(o.key, v) });
+    if(!values.every(v => v in made.now)) made.ready.then(done => { if(host.isConnected !== false) picker.setOptions(options(done)); });
+    return host;
+  }
+  // The panel is drawn again on every change, so the option the keyboard was on is found again and takes the focus back.
+  function focusedPick(host){
+    const active = document.activeElement;
+    const radio = active && active.closest ? active.closest('[role="radio"]') : null;
+    const picker = radio && host.contains(radio) ? radio.closest('.vp') : null;
+    return picker ? { name: picker.dataset.name, value: radio.dataset.value } : null;
+  }
+  function restoreFocus(was, host){
+    if(!was) return;
+    const radio = [...host.querySelectorAll('.vp')].filter(p => p.dataset.name === was.name).flatMap(p => [...p.querySelectorAll('[role="radio"]')]).find(r => r.dataset.value === was.value);
+    if(radio) radio.focus({ preventScroll: true });
+  }
+
   let lastSignature = null;
   function render(force){
     syncNameFields();
@@ -214,6 +286,7 @@
     const signature = JSON.stringify([c.u, c.female, c.g.category, c.chestBadges, c.chaplain, active.map(o => o.key), g, ], (k, v) => TEXT_MAX[k] ? undefined : v);
     if(!force && signature === lastSignature) return;
     lastSignature = signature;
+    const refocus = focusedPick(host);
     host.textContent = '';
     panel.hidden = !active.length;
     for(const o of active){
@@ -246,6 +319,8 @@
         if(offNote) box.disabled = true;
         label.append(box, ' ' + labelOf(o, c));
         row.append(label);
+      }else if(o.picker && window.VisualPicker){
+        row.append(pickerFor(o, c, g));
       }else{
         const label = document.createElement('label');
         label.className = 'fieldLabel';
@@ -280,6 +355,7 @@
       }
       host.append(row);
     }
+    restoreFocus(refocus, host);
   }
 
   const labelOf = (o, c) => typeof o.label === 'function' ? o.label(c) : o.label;

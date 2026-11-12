@@ -16,7 +16,8 @@
 //               group    a heading: the options that share one are shown together under it, in the order given, the groups in the order each is
 //                        first met; options with no group come as they are met, without a heading.
 //   value     the option picked; onChange(value) is called when the member picks another (not by setValue or setOptions).
-//   size      'large' for bigger pictures (two or three to a row at the sidebar's width); the default fits three to a row.
+//   size      'large' for bigger pictures (two to a row at the sidebar's width); the default fits three to a row.
+//   shape     'tall' for pictures taller than wide (a whole shirt, a skirt); the default box is wider than tall.
 //
 // To assistive technology it is a radio group (role="radiogroup"; each option role="radio" with aria-checked). It is one stop of the Tab key: the
 // arrow keys move from option to option (the left and up keys back, the right and down keys on, Home and End to the ends), Enter or the space bar picks
@@ -77,6 +78,7 @@
     const rootEl = make('div', 'vp');
     rootEl.dataset.name = name;
     if(cfg.size) rootEl.dataset.size = String(cfg.size);
+    if(cfg.shape) rootEl.dataset.shape = String(cfg.shape);
     const legendId = `vp-${id}-legend`;
     if(cfg.legend){
       const legend = make('div', 'fieldLabel vpLegend', cfg.legend);
@@ -131,6 +133,7 @@
       b.setAttribute('role', 'radio');
       b.setAttribute('aria-checked', 'false');
       b.id = `vp-${id}-${i}`;
+      b.dataset.value = String(o.value);
       if(describedBy) b.setAttribute('aria-describedby', describedBy);
       if(o.picture){
         const box = make('span', 'vpPicture');
