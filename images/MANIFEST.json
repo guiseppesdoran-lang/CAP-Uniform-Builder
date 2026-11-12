@@ -16228,7 +16228,8 @@
     "chest_pocket_left",
     "waist_tab_left",
     "cuff_left",
-    "front_zipper"
+    "front_zipper",
+    "shoulder_line"
    ],
    "has_spec": true,
    "issues": []
@@ -16633,7 +16634,8 @@
     "chest_pocket_left",
     "waist_tab_left",
     "cuff_left",
-    "front_zipper"
+    "front_zipper",
+    "shoulder_line"
    ],
    "has_spec": true,
    "issues": []

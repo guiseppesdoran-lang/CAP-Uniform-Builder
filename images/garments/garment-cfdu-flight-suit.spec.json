@@ -355,7 +355,31 @@
     2371.35,
     3744.18
    ]
-  ]
+  ],
+  "shoulder_line": {
+   "right": {
+    "p1": [
+     1379.96,
+     550.77
+    ],
+    "p2": [
+     1839.95,
+     411.57
+    ],
+    "edge_thickness_in": 0.46
+   },
+   "left": {
+    "p1": [
+     3389.37,
+     550.77
+    ],
+    "p2": [
+     2929.39,
+     411.57
+    ],
+    "edge_thickness_in": 0.46
+   }
+  }
  },
  "optional_landmarks": {
   "pen_pocket_left": "pen/pencil pocket cover may be removed (8.1.2.5)",
@@ -367,7 +391,7 @@
  },
  "zipper_note": "8.1.2.4: the centerline zipper is closed to no lower than the middle of the nametag; anchors.zipper_min_closed is that height. The artwork shows it fully closed.",
  "views_note": "Front view plus a flat view of each sleeve: the figures (8.1, 8.3) foreshorten the sleeve patches, and 8.2.4.4 / 8.2.5.5 fix their sizes on the sleeve, so the flat views carry the true-size flag, pocket and loop-tape slot for placement. Decision, not a regulation requirement.",
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks.",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks. shoulder_line {right,left: {p1,p2,edge_thickness_in}} is the shoulder seen edge-on: p1 the shoulder point (where the armhole seam begins), p2 the neck end, both vertices of the silhouette, edge_thickness_in the thickness the grade is squeezed to (less 0.08 in) when it is drawn along it.",
  "dimensions": {
   "collar_to_hem_in": 37.53,
   "max_width_in": 29.9,
@@ -417,6 +441,7 @@
   "scarf is optional: its own asset (garment-cap-command-scarf), anchored bottom_center to this suit's collar_apex",
   "legs and thigh pockets omitted (nothing is sewn on them); hem cut just below the cuffs",
   "sleeve inner edge from y 15 (figure in) down, the torso waist seen through the gap beside it, the hip below the cuffs and the cuff tab chevron (point to the outer edge) measured on Figure 8.1 at 51.1 px/in, left and right sides averaged (the figure is 0.2-0.6 in asymmetric); the hip emerges 0.85 in outboard of the cuff's inner corner as in the figure; the figure's cuff band is 1.85 in high (drawn 2.15, kept); the sleeve seam above y 11 keeps its earlier estimate (the figure's runs 1-2 in further out, see make-fdu.js)",
+  "shoulder grade seen edge-on is squeezed to the 0.46 in the other sheets state (epaulet_axis.edge_thickness_in): an estimate, no figure draws the shoulder from the side",
   "navy shade (Figure 8.4 is a small low-contrast figure)"
  ],
  "fit": {
