@@ -222,7 +222,7 @@
     // Field uniforms
     [/^abu$|^corporate_field$/, /tape to the embroidery/, /./, { abu: '5.1.1.1.2.4', corporate_field: '5.2.1.1.2.6' }],
     [/^ocp$/, /tape to the embroidery/, /^½ in$/, '7.1.1.3.1.1-2'],
-    [/^ocp$/, /tape to the embroidery/, /^⅛ in$/, '7.1.1.3.1.3-4'],
+    [/^ocp$/, /tape to the blue edge/, /^⅛ in$/, '7.1.1.3.1.3-4'],
     [/^ocp$/, /blue around/, /./, '7.1.1.3.1, 7.1.1.8'],
     [/^abu$/, /blue around/, /./, '5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.2.4'],
     [/^corporate_field$/, /blue around/, /./, '5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.2.6'],

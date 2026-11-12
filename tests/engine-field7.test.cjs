@@ -196,7 +196,7 @@ test('FIELD7-1: the lowest chest badge\'s embroidery is 1/2 in above the top of 
   }
 });
 
-test('FIELD7-1: three and four OCP badges: the lowest embroidery is 1/8 in above the tape\'s top edge (7.1.1.3.1.3-4), the backing on the tape, in both layouts and both sexes', async () => {
+test('FIELD7-1: three and four OCP badges: the lowest badges\' blue edge is 1/8 in above the tape\'s top edge (7.1.1.3.1.3-4), the embroidery 1/4 in, no badge on the tape, in both layouts and both sexes', async () => {
   for(const gender of ['male', 'female']){
     for(const n of [3, 4]){
       for(const badgeLayout of ['column', 'pair']){
@@ -204,12 +204,14 @@ test('FIELD7-1: three and four OCP badges: the lowest embroidery is 1/8 in above
         const { tapeTop, badges } = await tapeAndBadges(scene, 'ocp');
         assert.equal(badges.length, n);
         const lowest = badges.reduce((a, x) => (x.artBottom > a.artBottom ? x : a));
-        assert.ok(Math.abs(tapeTop - lowest.artBottom - 0.125) < 0.005, `${gender} ${n} ${badgeLayout}: tape top to embroidery bottom ${(tapeTop - lowest.artBottom).toFixed(4)} in`);
-        assert.ok(Math.abs(tapeTop - lowest.blueBottom) < 0.005, `${gender} ${n} ${badgeLayout}: the blue backing lies on the tape`);
-        const cs = calloutsOf(scene);
-        assert.equal(cs.length, 1);
+        assert.ok(Math.abs(tapeTop - lowest.blueBottom - 0.125) < 0.005, `${gender} ${n} ${badgeLayout}: tape top to the blue edge ${(tapeTop - lowest.blueBottom).toFixed(4)} in`);
+        assert.ok(Math.abs(tapeTop - lowest.artBottom - 0.25) < 0.005, `${gender} ${n} ${badgeLayout}: the embroidery ${(tapeTop - lowest.artBottom).toFixed(4)} in from the tape`);
+        for(const x of badges) assert.ok(x.blueBottom < tapeTop - 0.12, `${gender} ${n} ${badgeLayout}: ${x.l.key} does not lie on the tape`);
+        const cs = scene.layers.filter(l => l.type === 'measure' && l.opts && l.opts.callout && l.opts.callout.caption === 'from the tape to the blue edge');
+        assert.equal(cs.length, 1, `${gender} ${n} ${badgeLayout}: one inset`);
         assert.equal(cs[0].label, '⅛ in');
-        assert.equal(cs[0].opts.callout.caption, 'from the tape to the embroidery');
+        assert.ok(!calloutsOf(scene).length, 'no inset runs to the embroidery with three or four badges');
+        assert.ok(Math.abs(cs[0].from.y - tapeTop) < 0.005 && Math.abs(cs[0].to.y - (tapeTop - 0.125)) < 0.005, `${gender} ${n} ${badgeLayout}: measured from the tape's top edge to the badges' blue edge`);
       }
     }
   }

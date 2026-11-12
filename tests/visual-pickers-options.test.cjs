@@ -286,9 +286,10 @@ test('chest badge layout: a blank square for each badge at the place the engine 
       assert.equal(drawn.length, ids.length);
       for(const d of drawn) assert.ok(rects.slice(1).some(r => near(r.x, d.x) && near(r.y, d.y) && near(r.w, d.w) && near(r.h, d.h)), `${layout}: a square at ${JSON.stringify(d)}`);
     }
-    // The regulation's two forms: three badges in a column have one on the tape and the pair form has two side by side on it (7.1.1.3.1.3).
+    // The regulation's two forms: three badges in a column have one on the tape and the pair form has two side by side on it (7.1.1.3.1.3); the lowest row
+    // stands 1/8 in above the tape's top edge, measured to the badges' blue edge.
     const rowOnTape = layout => [...pics[layout].markup.matchAll(/<rect x="([-\d.]+)" y="([-\d.]+)" width="([-\d.]+)" height="([-\d.]+)"/g)].slice(1)
-      .filter(m => Math.abs(+m[2] + +m[4] - tape.y) < 0.05).length;
+      .filter(m => Math.abs(+m[2] + +m[4] + 0.125 - tape.y) < 0.05).length;
     if(ids.length === 3){ assert.equal(rowOnTape('column'), 1); assert.equal(rowOnTape('pair'), 2); }
     else assert.equal(rowOnTape('pair'), 2);
   }
