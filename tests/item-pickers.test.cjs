@@ -67,8 +67,8 @@ const env = {
   core, compose: b => P.composeUniform(b, store), spec: id => store.load(id), entry: id => store.entry(id), url: p => 'images/' + p, empty: () => '<svg id="empty"></svg>',
   draw: async scene => 'drawn:' + scene.title,
   build: () => run('return CAPUBUniformView.buildFromState();'),
-  buildWith: over => run(`const over = ${JSON.stringify(over)}; const saved = Object.keys(over).map(k => [k, State[k]]);
-    try{ Object.assign(State, over); return CAPUBUniformView.buildFromState(); } finally { saved.forEach(([k, v]) => { State[k] = v; }); }`)
+  // The page's own function, run in the page's context (State and the engine's build are its free names), so the pictures are made from the state as the page makes it.
+  buildWith: change => JSON.parse(JSON.stringify(vm.runInContext('(' + OP.stateBuildWith.toString() + ')', context)(change)))
 };
 const rects = markup => [...markup.matchAll(/<rect x="([-\d.]+)" y="([-\d.]+)" width="([-\d.]+)" height="([-\d.]+)"[^>]*fill="([^"]+)"/g)].map(m => ({ x: +m[1], y: +m[2], w: +m[3], h: +m[4], fill: m[5] }));
 const viewBox = markup => /viewBox="([^"]+)"/.exec(markup)[1];
@@ -321,6 +321,14 @@ function page(state, pictures, before){
   const wrap = mk('div', 'commandInsigniaLevelWrap', row); wrap.className = 'commandRowLevel';
   select('commandInsigniaLevel', ['squadron', 'group'], 'squadron', wrap);
   sources.commandInsigniaChoice = { host, row, radios, list };
+  // Two boxes, each in a row the page hides by a class, with the host before the box.
+  for(const id of ['cadetHighestOnly', 'removeRibbons']){
+    const rowEl = mk('div', id + 'Row');
+    const host = mk('div', id + 'Picker', rowEl); host.hidden = true;
+    const box = mk('input', id, rowEl); box.setAttribute('type', 'checkbox'); box.checked = false; box.changes = [];
+    box.addEventListener('change', () => box.changes.push(box.checked));
+    sources[id] = { host, box, row: rowEl };
+  }
   if(before) before(sources);
   const asked = [];
   const sandbox = {
@@ -483,4 +491,80 @@ test('the pictures of the Items step are made by recipes of js/option-pictures.j
     assert.ok(Object.keys(def.labels).length >= 2, `${def.id}: the words of each choice`);
     assert.ok(def.deps.length, `${def.id}: what it depends on`);
   }
+});
+
+test('a box is a pair of pictures, without and with: a press checks or unchecks the box and gives the change the page listens to; the notes are those of the choice picked', async () => {
+  const p = page({ membership: 'cadet' }, shownAll);
+  await p.rendered();
+  for(const [id, labels] of [['cadetHighestOnly', ['All achievement ribbons', 'Highest only']], ['removeRibbons', ['Ribbons worn', 'No ribbons']]]){
+    const { host, box } = p.sources[id];
+    assert.equal(host.hidden, false, id);
+    assert.deepEqual(p.tiles(id).map(t => t.querySelector('.vpLabel').textContent), labels);
+    assert.deepEqual(p.tiles(id).map(t => t.getAttribute('aria-checked')), ['true', 'false'], 'unchecked: without');
+    p.tiles(id)[1].click();
+    assert.equal(box.checked, true, `${id}: checked`);
+    assert.deepEqual(box.changes, [true], `${id}: one change`);
+    assert.match(host.querySelector('.vpNote').textContent, /^(Only the highest cadet achievement ribbon is worn|Ribbons are optional on this shirt)/);
+    p.tiles(id)[0].click();
+    assert.equal(box.checked, false);
+    assert.deepEqual(box.changes, [true, false]);
+  }
+  // The page sets the box (a saved setup, undo): the picker follows after the next drawing.
+  p.sources.removeRibbons.box.checked = true;
+  await p.rendered();
+  assert.deepEqual(p.tiles('removeRibbons').map(t => t.getAttribute('aria-checked')), ['false', 'true']);
+  // Nothing to pick between (the same rack with and without): hidden with it, not greyed.
+  const same = page({ membership: 'cadet' }, (name, values) => settled(Object.fromEntries(values.map(v => [v, name === 'shortStack' ? false : SQUARE]))));
+  await same.rendered();
+  assert.equal(same.sources.cadetHighestOnly.host.hidden, true);
+  assert.equal(same.sources.removeRibbons.host.hidden, false);
+});
+
+test('the boxes\' rows stay the page\'s to show and hide: the hosts are inside them', () => {
+  const html = read('index.html');
+  assert.match(html, /<div id="cadetHighestOnlyRow" class="hidden">\s*<div id="cadetHighestOnlyPicker" class="mt-8" hidden><\/div>\s*<label class="fieldNote optionWithHint segmentedSource" aria-hidden="true">\s*<input type="checkbox" id="cadetHighestOnly" tabindex="-1">/);
+  assert.match(html, /<div id="removeRibbonsRow" class="hidden">\s*<div id="removeRibbonsPicker" class="mt-8" hidden><\/div>\s*<label class="fieldNote optionWithHint segmentedSource" aria-hidden="true">\s*<input type="checkbox" id="removeRibbons" tabindex="-1">/);
+});
+
+test('Short Stack: the member\'s own ribbons with every cadet achievement ribbon and with only the highest, the page listing them again with the box as each picture shows it', async () => {
+  const set = (on, ids) => run(`
+    State.membership = 'cadet'; State.uniform = 'blues_a'; State.gender = 'male'; State.rank = 'C/Capt'; State.badges = []; State.garment = {}; State.hideRibbons = false; State.cadetHighestOnly = ${on};
+    normalizeRibbonSelections(); for(const id of Object.keys(State.ribbonSelections)) clearRibbonSelection(id);
+    for(const id of ${JSON.stringify(ids)}) setRibbonSelectionFromDropdown(id, 'earned', { deferRender: true });
+    rebuildRibbonsFromGallery(); return State.ribbons.map(r => r.id);`);
+  const achievements = ['armstrong_achievement', 'goddard_achievement', 'doolittle_achievement', 'mitchell_award', 'earhart_award'];
+  // The box is off: the state lists every ribbon. The picture "with" lists them as the box on lists them, and the state is as it was afterwards.
+  assert.equal(set(false, achievements).length, 5);
+  let pics = await OP.RECIPES.shortStack.make(env, env.build(), ['off', 'on']);
+  assert.equal(pics.off.scene.layers.filter(l => l.role === 'ribbon').length, 5);
+  assert.equal(pics.on.scene.layers.filter(l => l.role === 'ribbon').length, 1, 'only the highest');
+  assert.deepEqual(pics.off.scene.bounds, pics.on.scene.bounds, 'one frame');
+  assert.equal(run('return [State.cadetHighestOnly, State.ribbons.length];').join(), 'false,5', 'the state is put back');
+  // The box is on: the state lists one ribbon; the picture "without" still shows all five.
+  assert.equal(set(true, achievements).length, 1);
+  pics = await OP.RECIPES.shortStack.make(env, env.build(), ['off', 'on']);
+  assert.equal(pics.off.scene.layers.filter(l => l.role === 'ribbon').length, 5, 'the ribbons the box leaves out are shown without it');
+  assert.equal(pics.on.scene.layers.filter(l => l.role === 'ribbon').length, 1);
+  assert.equal(run('return [State.cadetHighestOnly, State.ribbons.length];').join(), 'true,1');
+  // One achievement ribbon only: the box changes nothing, so it is not offered.
+  set(false, ['earhart_award']);
+  assert.deepEqual(await OP.create(env).pictures('shortStack', ['off', 'on']).ready, { off: false, on: false });
+});
+
+test('removing the ribbons from a shirt: the shirt with the rack and without it, shown from the state with the box unchecked and checked; not offered with no ribbon', async () => {
+  const set = (hide, n, uniform) => run(`
+    State.membership = 'senior'; State.uniform = ${JSON.stringify(uniform || 'blues_b')}; State.gender = 'male'; State.rank = 'Maj'; State.badges = []; State.garment = {}; State.hideRibbons = ${hide}; State.cadetHighestOnly = false;
+    normalizeRibbonSelections(); for(const id of Object.keys(State.ribbonSelections)) clearRibbonSelection(id);
+    for(const id of ${JSON.stringify(CHOICES.slice(0, n))}) setRibbonSelectionFromDropdown(id, 'earned', { deferRender: true });
+    rebuildRibbonsFromGallery(); return CAPUBUniformView.buildFromState().ribbons.length;`);
+  for(const hide of [false, true]){
+    assert.equal(set(hide, 6), hide ? 0 : 6, 'the build has no ribbon when they are removed');
+    const pics = await OP.RECIPES.removeRibbons.make(env, env.build(), ['off', 'on']);
+    assert.equal(pics.off.scene.layers.filter(l => l.role === 'ribbon').length, 6, `box ${hide}: the rack worn`);
+    assert.equal(pics.on.scene.layers.filter(l => l.role === 'ribbon').length, 0, `box ${hide}: none`);
+    assert.deepEqual(pics.off.scene.bounds, pics.on.scene.bounds);
+    assert.ok(pics.on.scene.layers.some(l => l.role === 'garment'), 'the shirt');
+  }
+  set(false, 0);
+  assert.deepEqual(await OP.create(env).pictures('removeRibbons', ['off', 'on']).ready, { off: false, on: false });
 });

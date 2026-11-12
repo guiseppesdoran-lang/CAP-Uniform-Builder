@@ -79,7 +79,8 @@
   const CHEVRON_PARA = { abu: '5.1.1.1.1.2', corporate_field: '5.2.1.1.1.3', blues_a: '4.1.9.3.3', blues_b: '4.1.12.2.3.3', mess_dress: '4.1.2.1.1.4' };
 
   // { key, label, type: 'select' | 'check' | 'text', choices: [[value, label]] | fn, when(ctx), off(ctx) -> note | '' (shown, switched off) }
-  // `picker` (selects only): the option is chosen by picture (js/visual-picker.js, pictures from js/option-pictures.js): { size, shape, notes(ctx) -> { value: sentence } }.
+  // `picker`: the option is chosen by picture (js/visual-picker.js, pictures from js/option-pictures.js): { size, shape, notes(ctx) -> { value: sentence } } for a select; a yes or no
+  // option (a check) is a pair of pictures, without and with the item, `labels: { off, on }` (or a function of the context): the box it replaces is saved as it always was (true or false).
   const OPTIONS = [
     { key: 'wornOn', label: 'Worn on', type: 'select', derived: true,
       choices: c => [['coat', 'Service Dress coat'], ['short', c.female ? 'Blue blouse, short sleeves' : 'Blue shirt, short sleeves'], ['long', c.female ? 'Blue blouse, long sleeves' : 'Blue shirt, long sleeves']],
@@ -107,16 +108,20 @@
       picker: { shape: 'tall' },
       when: c => isPolo(c) && c.female },
     { key: 'poloName', label: 'Name embroidered in white thread', type: 'check', defaultValue: true,
+      picker: { labels: { off: 'No name', on: 'Name' }, size: 'large' },
       when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
     { key: 'poloMark', label: 'Over the name', type: 'select',
       choices: [['badge', 'One badge (chosen under Badges)'], ['title', 'A duty title']],
+      picker: { size: 'large' },
       when: isPolo, off: c => poloPrint(c) ? POLO_PRINT : '' },
     { key: 'dutyTitle', label: 'Duty title', type: 'text',
       when: c => isPolo(c) && c.o.poloMark === 'title', off: c => poloPrint(c) ? POLO_PRINT : '' },
     { key: 'commandChief', label: 'Appointed Command Chief (ICL 25-02)', type: 'check',
+      picker: { labels: { off: 'Chief Master Sergeant', on: 'Command Chief Master Sergeant' }, shape: 'tall' },
       when: c => !c.g.cadet && State.rank === 'CMSgt' },
     { key: 'noGradeTrack', label: 'Working toward', type: 'select',
       choices: [['officer', 'Officer grade (1.4.1)'], ['nco', 'NCO grade (1.4.2)']],
+      picker: { size: 'large' },
       when: c => c.g.category === 'senior-none' },
     { key: 'sleeve', label: 'Sleeves', type: 'select',
       choices: [['short', 'Short sleeves'], ['long', 'Long sleeves']],
@@ -192,17 +197,20 @@
     // The meme (Ethan: "i know it says that its 2 foot by 2 foot, but its wrong. its 2 inches. however just for the meme, we should add it"): ICL 26-14 7.1.1.2.1
     // reads "2' x 2'". Off by default; on draws the chest square 24 in across with the badge scaled to it. Not a regulation placement.
     { key: 'chaplainAsWritten', label: 'As written in ICL 26-14 (2 ft x 2 ft chaplain patch)', type: 'check', defaultValue: false,
+      picker: { labels: { off: 'Two inches, as worn', on: 'Two feet, as written' }, size: 'large' },
       note: () => 'For the joke only: the letter says 2 feet, the regulation means 2 inches.',
       when: c => c.u === 'ocp' && !!c.chaplain },
     // The tie (men) or tie tab (women): worn with long sleeves, optional with short ones (data/uniform-rules.js tieRule, CAPR 39-1 4.1.11.1.1.3,
     // 4.1.12.4, 4.2.5.1.4, 4.2.6.3). The box starts at what the regulation requires for the sleeve length the member picked.
     { key: 'tie', label: c => c.female ? 'Tie tab' : 'Tie', type: 'check', defaultValue: c => tieOf(c).defaultOn,
+      picker: { labels: c => c.female ? { off: 'No tie tab', on: 'Tie tab' } : { off: 'No tie', on: 'Tie' }, size: 'large' },
       note: c => { const r = tieOf(c); return `Worn with long sleeves and optional with short sleeves (CAPR 39-1, ${r.para}).`; },
       when: c => tieOf(c).offered },
     // The tie clasp (CAPR 39-1 4.1.3.2.4, 4.1.11.1.1.3, 4.2.5.1.4): "may be worn with the tie", centred between the bottom of the knot and the tie's tip. Men's tie only
     // (the women's tab takes none), on the shirts when the member wears the tie; the Class A coat's closed front hides the tie below the lapels, so it has none.
     // Drawn only when the member ticks it: unticked it is not on the tie.
     { key: 'tieClasp', label: 'Tie clasp', type: 'check', defaultValue: false,
+      picker: { labels: { off: 'No clasp', on: 'Clasp' }, size: 'large' },
       note: () => 'A tie tack or clasp may be worn with the tie, centered between the bottom of the knot and the tie\'s tip (CAPR 39-1 4.1.11.1.1.3).',
       when: c => !c.female && ['blues_b', 'aviator'].includes(c.u) && !c.cer && (typeof c.o.tie === 'boolean' ? c.o.tie : tieOf(c).defaultOn) },
     { key: 'chevron', label: 'Chevron size', type: 'select',
@@ -235,8 +243,8 @@
       },
       when: c => FIELD.includes(c.u) && c.chestBadges >= 3 },
     // An optional add-on like the Class A headgear: off until the member adds the jacket (8.2.7, 8.3.7); opt.jacket reaches the build.
-    { key: 'jacket', label: 'Flight jacket', type: 'check', defaultValue: false, when: c => FLIGHT.includes(c.u) },
-    { key: 'scarf', label: 'Command scarf', type: 'check', when: c => FLIGHT.includes(c.u) },
+    { key: 'jacket', label: 'Flight jacket', type: 'check', defaultValue: false, picker: { labels: { off: 'Without the jacket', on: 'With the jacket' }, size: 'large' }, when: c => FLIGHT.includes(c.u) },
+    { key: 'scarf', label: 'Command scarf', type: 'check', picker: { labels: { off: 'No scarf', on: 'Command scarf' }, size: 'large' }, when: c => FLIGHT.includes(c.u) },
     { key: 'esPatch', label: 'Emergency Services patch', type: 'select',
       choices: [['none', 'No patch'], ['style-1', 'Style 1'], ['style-2', 'Style 2']],
       picker: { notes: c => {
@@ -245,6 +253,7 @@
       } },
       when: c => FLIGHT.includes(c.u) || c.u === 'corporate_field' },
     { key: 'plateGrade', label: 'Grade on the nameplate', type: 'check', defaultValue: true,
+      picker: { labels: { off: 'No grade', on: 'Grade' }, size: 'large' },
       when: c => c.u === 'aviator_blazer' && !c.g.cadet && !!c.g.key }
   ];
 
@@ -314,12 +323,28 @@
     const values = choices.map(([v]) => v);
     const notes = o.picker.notes ? o.picker.notes(c) : {};
     const made = picturesOf(o.key, values);
-    const options = known => choices.map(([value, label]) => ({ value, label, note: notes[value], picture: value in known ? (known[value] == null ? undefined : known[value]) : BLANK }));
     const own = o.read ? o.read(c) : g[o.key];
     const current = choices.some(([v]) => v === own) ? own : choices[0][0];
+    // A choice the engine's drawing does not tell from the others (false) is not offered, unless it is the one held; with fewer than two left the group is hidden.
+    const options = known => choices.filter(([value]) => known[value] !== false || value === current).map(([value, label]) => ({ value, label, note: notes[value], picture: value in known ? (known[value] == null ? undefined : known[value]) : BLANK }));
     const host = document.createElement('div');
     const picker = VisualPicker.render(host, { name: 'garmentOpt-' + o.key, legend: labelOf(o, c), options: options(made.now), value: current, size: o.picker.size, shape: o.picker.shape, onChange: v => o.write ? o.write(v) : set(o.key, v) });
-    if(!made.settled) made.ready.then(done => { if(host.isConnected !== false) picker.setOptions(options(done)); });
+    host.hidden = options(made.now).length < 2;
+    if(!made.settled) made.ready.then(done => { if(host.isConnected !== false){ const list = options(done); host.hidden = list.length < 2; picker.setOptions(list); } });
+    return host;
+  }
+  // A yes or no option chosen by picture: the figure without the item and with it, the words under each. The box it replaces held true or false and so does this: a press on
+  // "with" saves true. Not offered (the group is hidden) where the engine draws the same with and without.
+  function pairFor(o, c, g){
+    const labels = typeof o.picker.labels === 'function' ? o.picker.labels(c) : o.picker.labels;
+    const values = ['off', 'on'];
+    const made = picturesOf(o.key, values);
+    const options = known => values.filter(v => known[v] !== false).map(value => ({ value, label: labels[value], picture: value in known ? (known[value] == null ? undefined : known[value]) : BLANK }));
+    const on = g[o.key] == null ? !!(typeof o.defaultValue === 'function' ? o.defaultValue(c) : o.defaultValue) : !!g[o.key];
+    const host = document.createElement('div');
+    const picker = VisualPicker.render(host, { name: 'garmentOpt-' + o.key, legend: labelOf(o, c), options: options(made.now), value: on ? 'on' : 'off', size: o.picker.size, shape: o.picker.shape, onChange: v => set(o.key, v === 'on') });
+    host.hidden = options(made.now).length < 2;
+    if(!made.settled) made.ready.then(done => { if(host.isConnected !== false){ const list = options(done); host.hidden = list.length < 2; picker.setOptions(list); } });
     return host;
   }
   // The panel is drawn again on every change, so the option the keyboard was on is found again and takes the focus back.
@@ -353,11 +378,24 @@
     const refocus = focusedPick(host);
     host.textContent = '';
     panel.hidden = !active.length;
+    const saidOff = new Set();
     for(const o of active){
       const id = 'garmentOpt-' + o.key;
       const row = document.createElement('div');
       row.className = 'garmentOption';
       const offNote = o.off ? o.off(c) : '';
+      // An option the uniform's own rule switches off (the polo's screen-printed shirt takes no name, badge or title) is not offered, not greyed; its paragraph is said once.
+      if(offNote){
+        if(!saidOff.has(offNote)){
+          saidOff.add(offNote);
+          const note = document.createElement('div');
+          note.className = 'fieldNote';
+          note.textContent = offNote;
+          row.append(note);
+          host.append(row);
+        }
+        continue;
+      }
       if(o.type === 'text'){
         const label = document.createElement('label');
         label.className = 'fieldLabel';
@@ -371,7 +409,8 @@
         input.value = g[o.key] || '';
         input.addEventListener('input', () => set(o.key, input.value, true));
         row.append(label, input);
-        if(offNote) input.disabled = true;
+      }else if(o.type === 'check' && o.picker && window.VisualPicker){
+        row.append(pairFor(o, c, g));
       }else if(o.type === 'check'){
         const label = document.createElement('label');
         label.className = 'fieldNote';
@@ -380,7 +419,6 @@
         box.id = id;
         box.checked = g[o.key] == null ? !!(typeof o.defaultValue === 'function' ? o.defaultValue(c) : o.defaultValue) : !!g[o.key];
         box.addEventListener('change', () => set(o.key, box.checked));
-        if(offNote) box.disabled = true;
         label.append(box, ' ' + labelOf(o, c));
         row.append(label);
       }else if(o.picker && window.VisualPicker){
@@ -402,7 +440,6 @@
         const current = g[o.key];
         sel.value = choices.some(([v]) => v === current) ? current : choices[0][0];
         sel.addEventListener('change', () => set(o.key, sel.value));
-        if(offNote) sel.disabled = true;
         row.append(label, sel);
       }
       if(o.note){
@@ -410,12 +447,6 @@
         hint.className = 'fieldNote';
         hint.textContent = o.note(c);
         row.append(hint);
-      }
-      if(offNote){
-        const note = document.createElement('div');
-        note.className = 'fieldNote';
-        note.textContent = offNote;
-        row.append(note);
       }
       host.append(row);
     }

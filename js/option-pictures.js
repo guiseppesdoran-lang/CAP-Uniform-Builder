@@ -140,9 +140,12 @@
 
   // ---- the ribbon rack: the member's own ribbons as blank rectangles, in the rows the engine lays for each choice -------------------------------
 
-  // The build the page would hand the engine if the member's state held `over` (a map of State fields: { ribbonRackLayout: '4-left' }). The page's own path from state to build, so
-  // a picture of a choice is the build of that choice and never a second copy of what a choice means. Without it (a test that gives none) every choice is the member's own.
+  // The build the page would hand the engine if the member's state held `over` (a map of State fields: { ribbonRackLayout: '4-left' }, or a function of the state that returns one,
+  // for a field made from another: S => ({ garment: { ...S.garment, commandChief: true } })). The page's own path from state to build, so a picture of a choice is the build of that
+  // choice and never a second copy of what a choice means. Without it (a test that gives none) every choice is the member's own.
   const buildWith = (env, build, over) => typeof env.buildWith === 'function' ? env.buildWith(over) : build;
+  // The member's garment options with one changed, as a state field for buildWith.
+  const garmentWith = patch => S => ({ garment: Object.assign({}, S.garment, patch) });
 
   // The member's ribbons and miniature medals on the coat, and nothing else: no cap, badges, name or patches, so a picture changes with the rack and not with what is chosen elsewhere.
   function rackOnly(build){
@@ -278,6 +281,150 @@
   }
   const commandLevelKey = build => [build.uniform, build.gender];
 
+
+  // ---- yes or no options: the figure without the item and with it, in one window --------------------------------------------------------------------
+
+  // The layers of the first figure that make a picture of a uniform: everything but the measurements and the clear zones.
+  const picturedLayers = scene => scene.layers.filter(l => (!l.figure || l.figure === 1) && l.type !== 'clear' && l.type !== 'measure');
+  // A window of w by h inches centred on a box.
+  const windowOn = (box, w, h) => ({ x: box.x + box.w / 2 - w / 2, y: box.y + box.h / 2 - h / 2, w, h });
+  // The member as they are, with one garment option changed and nothing else (no cap, ribbons, badges, patches or name unless `keep` says so).
+  const withOpt = (build, patch, keep) => bare(build, { keep: !!(keep && keep.badges), opt: Object.assign({ headgear: 'none' }, patch) });
+
+  // A yes or no option as two pictures (values 'off' and 'on'): `scene(env, build, on)` composes the figure without or with the item, `frameOf(env, scenes)` is the window both are
+  // drawn in (it may look at the item in the scene with it) or null when the engine draws the same without it, and `layers(scene)` picks what is drawn (the figure by default).
+  function yesNo(scene, frameOf, layers){
+    return async function(env, build, values){
+      const out = {};
+      const scenes = {};
+      await Promise.all(values.map(async v => { scenes[v] = await scene(env, build, v === 'on'); }));
+      const frame = await frameOf(env, scenes, build);
+      if(!frame){ values.forEach(v => { out[v] = false; }); return out; }
+      values.forEach(v => { out[v] = { scene: sceneOf((layers || picturedLayers)(scenes[v]), frame, 'Option'), pad: 0 }; });
+      return out;
+    };
+  }
+  // The sheet of the garment the scene is of, and its tie landmark's knot (inches).
+  const sheetOf = async (env, scene) => { const g = scene.layers.find(l => l.role === 'garment'); return g ? { layer: g, spec: await env.spec(g.id) } : null; };
+  // The pictures differ only where the drawing does: the same picture without and with the item means the engine draws nothing for it here.
+  const sameLayers = scenes => JSON.stringify(picturedLayers(scenes.off).map(l => [l.id, l.key, l.x, l.y, l.w, l.h, l.onlyGroups, l.hideGroups])) === JSON.stringify(picturedLayers(scenes.on).map(l => [l.id, l.key, l.x, l.y, l.w, l.h, l.onlyGroups, l.hideGroups]));
+
+  // The tie (men) or tie tab (women): the sheet's own group, shown or hidden; the window is the neck and chest down the tie from the knot (the sheet's tie landmark).
+  const tieScene = (env, build, on) => env.compose(withOpt(build, { tie: on }));
+  async function tieFrame(env, scenes){
+    const sheet = await sheetOf(env, scenes.on);
+    const lm = sheet && sheet.spec.raw && sheet.spec.raw.landmarks && sheet.spec.raw.landmarks.tie;
+    if(!lm || !lm.knot) return null;
+    const k = { x: sheet.layer.x + lm.knot.x / 100, y: sheet.layer.y + lm.knot.y / 100 };
+    const w = lm.kind === 'tab' ? 5 : 6;
+    return { x: k.x - w / 2, y: k.y - 1.8, w, h: w * 0.75 };
+  }
+  // The tie clasp, on the tie: the clasp layer the engine places, the window centred on it.
+  const clasp = scene => scene.layers.find(l => l.role === 'tie' && l.key === 'tie:clasp');
+  const tieClaspScene = (env, build, on) => env.compose(withOpt(build, { tie: true, tieClasp: on }));
+  const tieClaspFrame = async (env, scenes) => { const l = clasp(scenes.on); return l ? windowOn(env.core.layerBounds(l), 4.8, 3.6) : null; };
+  // The command scarf and the flight jacket on the flight suit; the chaplain's chest square on the OCP.
+  const scarfScene = (env, build, on) => env.compose(withOpt(build, { scarf: on }));
+  const scarfFrame = async (env, scenes) => { const l = scenes.on.layers.find(x => x.role === 'scarf'); return l ? windowOn(env.core.layerBounds(l), 8, 6) : null; };
+  // The jacket is a second figure drawn beside the suit: both are the picture, the suit alone without it, in the frame of both.
+  const allLayers = scene => scene.layers.filter(l => l.type !== 'clear' && l.type !== 'measure');
+  const jacketScene = (env, build, on) => env.compose(withOpt(build, { jacket: on }));
+  const jacketFrame = async (env, scenes) => allLayers(scenes.on).length === allLayers(scenes.off).length ? null : env.core.unionBounds(allLayers(scenes.on).map(l => env.core.layerBounds(l)));
+  // The grade on the blazer's nameplate: the plate and the grade it carries.
+  const plateScene = (env, build, on) => env.compose(withOpt(build, { plateGrade: on }, { badges: false }));
+  const plateFrame = async (env, scenes) => { const l = scenes.on.layers.find(x => x.role === 'nametag'); return l && scenes.on.layers.some(x => x.key === 'grade:plate') ? windowOn(env.core.layerBounds(l), 4.2, 3.15) : null; };
+  const chaplainScene = (env, build, on) => env.compose(bare(build, { keep: true, opt: { headgear: 'none', chaplainAsWritten: on } }));
+  const chaplainFrame = async (env, scenes) => { const f = figureBox(env.core, scenes.on); return sameLayers(scenes) ? null : { x: f.x, y: f.y, w: f.w, h: f.h * 0.62 }; };
+
+  // The polo's embroidered name: the member's own, or the word NAME where none is entered, in white thread on the left breast (the engine draws the text).
+  const poloName = build => build.name && (build.name.first || build.name.last) ? Object.assign({}, build.name, { show: true }) : { first: '', last: 'NAME', state: '', show: true };
+  const poloNameScene = (env, build, on) => env.compose(Object.assign(withOpt(build, { poloName: on }), { name: poloName(build) }));
+  const poloNameFrame = async (env, scenes) => { const l = scenes.on.layers.find(x => x.role === 'text' && x.key === 'text:polo-name'); return l ? windowOn(env.core.layerBounds(l), 5, 3.75) : null; };
+
+
+  // What is worn over the name on the polo: one badge (the member's own, chosen under Badges) or a duty title (the member's own words, or the word TITLE where none is typed), each
+  // where the engine puts it, 1/2 in over the name. With no badge chosen the badge's place is a blank square of the badge's size (1 in) on the title's line.
+  async function poloMark(env, build, values){
+    const out = {};
+    const name = poloName(build);
+    const title = String(build.opt && build.opt.dutyTitle || '').trim() || 'TITLE';
+    const scenes = {};
+    scenes.title = await env.compose(Object.assign(withOpt(build, { poloMark: 'title', dutyTitle: title }), { name }));
+    scenes.badge = await env.compose(Object.assign(withOpt(build, { poloMark: 'badge' }, { badges: true }), { name }));
+    const text = scenes.title.layers.find(l => l.role === 'text' && l.key === 'text:polo-title');
+    const nameText = scenes.title.layers.find(l => l.role === 'text' && l.key === 'text:polo-name');
+    if(!text || !nameText){ values.forEach(v => { out[v] = null; }); return out; }
+    const box = env.core.layerBounds(text), plate = env.core.layerBounds(nameText);
+    const frame = windowOn(env.core.unionBounds([box, plate]), 5.2, 3.9);
+    for(const v of values){
+      const layers = picturedLayers(scenes[v]);
+      const badge = v === 'badge' && layers.some(l => l.role === 'badge');
+      const blank = v === 'badge' && !badge ? [{ type: 'rect', x: box.x + box.w / 2 - 0.5, y: box.y + box.h - 1, w: 1, h: 1, rx: 0.08, fill: '#E6E9F3', stroke: '#001871', strokeWidth: 0.05, rotate: 0, origin: { x: 0, y: 0 }, z: 90, role: 'blank', key: 'blank:badge' }] : [];
+      out[v] = { scene: sceneOf([...layers, ...blank], frame, 'Polo'), pad: 0 };
+    }
+    return out;
+  }
+
+  // The senior grade's insignia: the command chief's chevron or the chief master sergeant's, as the engine draws the grade on the sleeve (the chevron alone, in one frame).
+  async function commandChief(env, build, values){
+    const out = {};
+    const chevrons = await Promise.all(values.map(async v => {
+      const b = buildWith(env, build, garmentWith({ commandChief: v === 'on' }));
+      const scene = await env.compose(bare(b, { opt: { headgear: 'none' } }));
+      return scene.layers.filter(l => l.type === 'asset' && l.role === 'grade' && /-chevron-/.test(l.id)).sort((a, c) => c.w - a.w)[0] || null;
+    }));
+    if(chevrons.some(l => !l) || chevrons[0].id === chevrons[1].id){ values.forEach(v => { out[v] = false; }); return out; }
+    const w = Math.max(...chevrons.map(l => l.w)), h = Math.max(...chevrons.map(l => l.h)), m = 0.35;
+    const frame = { x: -w / 2 - m, y: -h / 2 - m, w: w + 2 * m, h: h + 2 * m };
+    values.forEach((v, i) => {
+      const l = chevrons[i];
+      const chevron = Object.assign({}, l, { x: -l.w / 2, y: -l.h / 2, rotate: 0, origin: { x: 0, y: 0 }, z: 2 });
+      const ground = /-chevron-white-/.test(l.id) ? [{ type: 'rect', x: frame.x, y: frame.y, w: frame.w, h: frame.h, rx: 0.2, fill: '#001871', rotate: 0, origin: { x: 0, y: 0 }, z: 1, role: 'swatch', key: 'swatch' }] : [];
+      out[v] = { scene: sceneOf([...ground, chevron], frame, 'Chevron'), pad: 0 };
+    });
+    return out;
+  }
+
+  // The track of a senior member with no grade yet (officer or NCO, CAPR 39-1 1.4.1, 1.4.2): what the engine draws for it, the cap and its device and, on the coat, the collar insignia.
+  async function noGradeTrack(env, build, values){
+    const out = {};
+    const caps = await Promise.all(values.map(async v => capPicture(env, buildWith(env, build, garmentWith({ noGradeTrack: v })), { headgear: 'auto' })));
+    const same = caps.every(c => c) && JSON.stringify(caps.map(c => c.scene.layers.map(l => [l.id, l.onlyGroups]))) === JSON.stringify(caps.map(() => caps[0].scene.layers.map(l => [l.id, l.onlyGroups])));
+    if(caps.some(c => !c) || same){ values.forEach(v => { out[v] = false; }); return out; }
+    values.forEach((v, i) => { out[v] = caps[i]; });
+    return out;
+  }
+
+  // Short Stack: the member's own ribbons as the engine lays them with every cadet achievement ribbon and with only the highest (the rack alone, in one frame); removing ribbons from
+  // the shirt: the shirt's chest with the rack and without it.
+  async function rackPair(env, build, values, over){
+    const out = {};
+    const scenes = await Promise.all(values.map(v => env.compose(rackOnly(buildWith(env, build, over(v === 'on'))))));
+    const racks = scenes.map(sc => sc.layers.filter(l => (l.role === 'ribbon' || l.role === 'device') && l.type === 'asset'));
+    const sig = i => JSON.stringify(racks[i].map(l => [l.id, l.key, l.x, l.y]));
+    if(!racks[0].length && !racks[1].length || sig(0) === sig(1)){ values.forEach(v => { out[v] = false; }); return out; }
+    const f = env.core.unionBounds(racks.flat().map(l => env.core.layerBounds(l))), m = 0.3;
+    const frame = { x: f.x - m, y: f.y - m, w: f.w + 2 * m, h: f.h + 2 * m };
+    // A ribbon's own colours can be white at its edges, so each is outlined (on the picture's white).
+    const outline = l => ({ type: 'rect', x: l.x, y: l.y, w: l.w, h: l.h, fill: 'none', stroke: '#001871', strokeWidth: 0.03, rotate: 0, origin: { x: l.x, y: l.y }, z: 90, role: 'outline', key: 'outline:' + l.key });
+    values.forEach((v, i) => { out[v] = { scene: sceneOf([...racks[i], ...racks[i].filter(l => l.role === 'ribbon').map(outline)], frame, 'Ribbons'), pad: 0 }; });
+    return out;
+  }
+  const shortStack = (env, build, values) => rackPair(env, build, values, on => ({ cadetHighestOnly: on }));
+  async function removeRibbons(env, build, values){
+    const out = {};
+    // values: 'off' (the ribbons are worn) and 'on' (removed): the member's build with the box unchecked and checked, so the ribbons are there to show though the box is checked now.
+    const scenes = await Promise.all(values.map(v => { const b = buildWith(env, build, { hideRibbons: v === 'on' }); return env.compose(Object.assign(bare(b, { opt: { headgear: 'none' } }), { ribbons: b.ribbons })); }));
+    const worn = scenes[values.indexOf('off')];
+    const racks = worn.layers.filter(l => l.role === 'ribbon');
+    if(!racks.length){ values.forEach(v => { out[v] = false; }); return out; }
+    const at = env.core.unionBounds(racks.map(l => env.core.layerBounds(l)));
+    const frame = windowOn(at, 8, 6);
+    values.forEach((v, i) => { out[v] = { scene: sceneOf(picturedLayers(scenes[i]), frame, 'Shirt'), pad: 0 }; });
+    return out;
+  }
+  const rackPairKey = build => [build.uniform, build.gender, (build.ribbons || []).map(r => r.key)];
+
   // ---- the pieces a choice changes: sleeves, the women's top, the polo, what is under the blazer --------------------------------
 
   // The uniform as the engine draws it for the choice and nothing else (no cap, ribbons or name), framed on the figure; `crop(frame, figure)` narrows the frame.
@@ -394,6 +541,18 @@
     badgeLayout: { make: badgeLayout, key: badgeLayoutKey },
     rackColumns: { make: rackColumns, key: rackKey('rackArrangement') },
     rackArrangement: { make: rackArrangement, key: rackKey('rackColumns', 'rackAlign') },
+    tie: { make: yesNo(tieScene, tieFrame), key: figureKey(['sleeve', 'femaleTop']) },
+    tieClasp: { make: yesNo(tieClaspScene, tieClaspFrame), key: figureKey(['sleeve']) },
+    scarf: { make: yesNo(scarfScene, scarfFrame), key: figureKey([]) },
+    jacket: { make: yesNo(jacketScene, jacketFrame, allLayers), key: figureKey([]) },
+    plateGrade: { make: yesNo(plateScene, plateFrame), key: figureKey([]) },
+    chaplainAsWritten: { make: yesNo(chaplainScene, chaplainFrame), key: build => [build.uniform, build.gender, (build.badges || []).map(b => b.id)] },
+    poloName: { make: yesNo(poloNameScene, poloNameFrame), key: build => [build.gender, build.name && build.name.first, build.name && build.name.last, build.opt && [build.opt.poloShirt, build.opt.poloCut, build.opt.sleeve]] },
+    poloMark: { make: poloMark, key: build => [build.gender, build.name && build.name.first, build.name && build.name.last, build.opt && [build.opt.poloShirt, build.opt.poloCut, build.opt.dutyTitle], (build.badges || []).map(b => b.id)] },
+    commandChief: { make: commandChief, key: figureKey([]) },
+    noGradeTrack: { make: noGradeTrack, key: headgearKey },
+    shortStack: { make: shortStack, key: rackPairKey },
+    removeRibbons: { make: removeRibbons, key: rackPairKey },
     miniMount: { make: miniMount, key: miniKey },
     commandWorn: { make: commandWorn, key: commandWornKey },
     commandLevel: { make: commandLevel, key: commandLevelKey },
@@ -465,6 +624,26 @@
 
   // ---- the page ----
 
+  // The build for the page's state with some of its fields changed (the choice a picture shows), the state put back as it was. `change` is a map of State fields or a function of the
+  // state that returns one. It runs in the page, where State, window.CAPUBUniformView and the page's own functions are the free names it reads.
+  function stateBuildWith(change){
+    const over = typeof change === 'function' ? change(State) : change;
+    const saved = Object.keys(over).map(k => [k, State[k]]);
+    // Short Stack is applied when the ribbons are listed (rebuildRibbonsFromGallery fills State.ribbons from the selections), not when the build is made: for it the ribbons are
+    // listed again with the box as the picture shows it, the page's own function, with the two drawings it asks for held back; State.ribbons is put back with the rest.
+    const relist = 'cadetHighestOnly' in over && typeof rebuildRibbonsFromGallery === 'function';
+    const ribbons = State.ribbons, held = relist ? [window.renderRack, window.renderAllBadges] : null;
+    try{
+      Object.assign(State, over);
+      if(relist){ window.renderRack = window.renderAllBadges = () => {}; rebuildRibbonsFromGallery(); }
+      return window.CAPUBUniformView.buildFromState();
+    }
+    finally{
+      saved.forEach(([k, v]) => { State[k] = v; });
+      if(relist){ State.ribbons = ribbons; [window.renderRack, window.renderAllBadges] = held; }
+    }
+  }
+
   function pageEnv(){
     const E = window.CAPUBEngine;
     const assets = window.CAPUBAssetPacks.createLoader((path, cache) => fetch(ASSET(path), cache ? { cache } : undefined).then(r => r.ok ? r.json() : null));
@@ -475,12 +654,7 @@
     return {
       core: E.core,
       build: () => window.CAPUBUniformView.buildFromState(),
-      // The build for the page's state with some of its fields changed (the choice a picture shows), the state put back as it was.
-      buildWith(over){
-        const saved = Object.keys(over).map(k => [k, State[k]]);
-        try{ Object.assign(State, over); return window.CAPUBUniformView.buildFromState(); }
-        finally{ saved.forEach(([k, v]) => { State[k] = v; }); }
-      },
+      buildWith: stateBuildWith,
       async compose(build){
         const [store] = await Promise.all([getStore(), assets.prepare(build.uniform, build.gender)]);
         return E.profiles.composeUniform(build, store);
@@ -505,5 +679,5 @@
     return page.pictures(optionKey, values);
   }
 
-  return { create, pictures, bare, RECIPES, layoutMarkup };
+  return { create, pictures, bare, RECIPES, layoutMarkup, stateBuildWith };
 });

@@ -9,9 +9,9 @@ const path = require('node:path');
 const read = f => fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
 const RULES = require('../data/uniform-rules.js');
 
-test('the box sits on the ribbons card under Short Stack, hidden until a shirt it applies to is drawn', () => {
+test('the box (a pair of pictures, the box itself kept as the source) sits on the ribbons card under Short Stack, hidden until a shirt it applies to is drawn', () => {
   const card = read('index.html').split('id="groupRibbons"')[1].split('id="groupBadges"')[0];
-  assert.match(card, /<div id="removeRibbonsRow" class="hidden">\s*<label class="fieldNote mt-8 optionWithHint">\s*<input type="checkbox" id="removeRibbons">\s*Remove ribbons\s*<span class="hintText optionHint">Ribbons are optional on this shirt; it is drawn without them and your selections stay\.<\/span>/);
+  assert.match(card, /<div id="removeRibbonsRow" class="hidden">\s*<div id="removeRibbonsPicker" class="mt-8" hidden><\/div>\s*<label class="fieldNote optionWithHint segmentedSource" aria-hidden="true">\s*<input type="checkbox" id="removeRibbons" tabindex="-1">\s*Remove ribbons\s*<span class="hintText optionHint">Ribbons are optional on this shirt; it is drawn without them and your selections stay\.<\/span>/);
   assert.ok(card.indexOf('id="cadetHighestOnlyRow"') < card.indexOf('id="removeRibbonsRow"'));
   assert.doesNotMatch(read('index.html'), /quickStrip|Quick strip/);
 });

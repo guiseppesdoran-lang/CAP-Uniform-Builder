@@ -27,6 +27,13 @@
       read: el => el.value,
       write(el, v){ el.value = v; fire(el); }
     },
+    // A box: two choices, without ('off') and with ('on'), the box unchecked or checked.
+    check: {
+      values: () => ['off', 'on'],
+      offered: el => el.disabled ? [] : ['off', 'on'],
+      read: el => el.checked ? 'on' : 'off',
+      write(el, v){ el.checked = v === 'on'; fire(el); }
+    },
     // A group of radio buttons (the element is the one that holds them): one of them is checked; a disabled one is not offered unless it is the one checked.
     radios: {
       inputs: el => [...el.querySelectorAll('input[type="radio"]')],
@@ -51,6 +58,15 @@
     { id: 'miniMountStyle', kind: 'select', recipe: 'miniMount', legend: 'Miniature medal mounting method', size: 'large', shape: 'tall',
       labels: { mounting: 'Mounting bars, 4 per row (up to 24)', holding: 'Holding bars, custom overlap (up to 28)' },
       mirror: el => el.closest('label'), deps: ['uniform', 'gender', 'membership', 'ribbons'] },
+    // Short Stack (cadets, CAPR 39-1 11.1.2.2) and removing the ribbons from a shirt where they are optional (11.1.2): the member's own ribbons without and with.
+    { id: 'cadetHighestOnly', kind: 'check', recipe: 'shortStack', legend: 'Short Stack', size: 'large',
+      labels: { off: 'All achievement ribbons', on: 'Highest only' },
+      notes: { on: 'Only the highest cadet achievement ribbon is worn; the others stay selected (CAPR 39-1, 11.1.2.2).' },
+      deps: ['uniform', 'gender', 'membership', 'ribbons', 'cadetHighestOnly'] },
+    { id: 'removeRibbons', kind: 'check', recipe: 'removeRibbons', legend: 'Ribbons on this shirt', size: 'large',
+      labels: { off: 'Ribbons worn', on: 'No ribbons' },
+      notes: { on: 'Ribbons are optional on this shirt; it is drawn without them and your selections stay (CAPR 39-1, 11.1.2).' },
+      deps: ['uniform', 'gender', 'membership', 'ribbons', 'hideRibbons'] },
     { id: 'commandInsigniaChoice', source: 'commandInsigniaRow', kind: 'radios', recipe: 'commandWorn', size: 'large', labelledBy: 'commandInsigniaLabel',
       labels: { none: 'Not worn', current: 'Current commander', graduated: 'Graduated commander' },
       deps: ['uniform', 'gender', 'rank', 'badges', 'membership', 'ribbons'] },
@@ -83,7 +99,7 @@
         // A choice the engine's own drawing does not tell from the others (or one the uniform does not draw) is not offered unless it is the one the control holds; with fewer than
         // two left there is nothing to pick between and the host is hidden.
         const now = kind.read(el);
-        const options = values.filter(v => offered.includes(v) && (known[v] !== false || v === now)).map(v => ({ value: v, label: def.labels[v] || v, picture: known[v] == null ? undefined : known[v] }));
+        const options = values.filter(v => offered.includes(v) && (known[v] !== false || v === now)).map(v => ({ value: v, label: def.labels[v] || v, note: def.notes && def.notes[v], picture: known[v] == null ? undefined : known[v] }));
         own.shown = options.length >= 2;
         if(!own.shown){ hideHost(host, true); return; }
         if(!own.picker){

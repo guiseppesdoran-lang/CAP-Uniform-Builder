@@ -138,7 +138,7 @@ test('the pictures follow the member: the panel is drawn again when the grade or
   assert.notEqual(p.host.children[0], second, 'other badges, as many: the squares are theirs');
 });
 
-test('the other options chosen by look are pickers too; the yes or no options and the text field are not', () => {
+test('the other options chosen by look are pickers too, and so are the yes or no options; the duty title is the one field', () => {
   const picked = (state, extra) => groups(panel(state, extra).host).map(n => n.replace('garmentOpt-', ''));
   assert.deepEqual(picked({ uniform: 'abu', rank: 'SMSgt' }), ['headgear', 'chevron']);
   assert.deepEqual(picked({ uniform: 'corporate_field', rank: 'TSgt' }), ['headgear', 'chevron', 'esPatch']);
@@ -146,15 +146,16 @@ test('the other options chosen by look are pickers too; the yes or no options an
   assert.deepEqual(picked({ uniform: 'mess_dress', gender: 'female', rank: 'SMSgt' }), ['skirt', 'buttons', 'chevron']);
   assert.deepEqual(picked({ uniform: 'blues_b', rank: 'Capt' }), ['sleeve', 'headgear']);
   assert.deepEqual(picked({ uniform: 'aviator', gender: 'female', rank: 'Capt' }), ['sleeve', 'femaleTop']);
-  assert.deepEqual(picked({ uniform: 'aviator_blazer', rank: 'Capt' }), ['underlayer']);
-  assert.deepEqual(picked({ uniform: 'polo', gender: 'female', rank: 'Capt' }), ['poloShirt', 'poloCut', 'sleeve']);
-  assert.deepEqual(picked({ uniform: 'flight_suit', rank: 'Capt' }), ['headgear', 'esPatch']);
-  // The flight jacket, the scarf, the tie, the clasp and the other yes or no options stay boxes; "Over the name" and the duty title keep their own controls.
+  assert.deepEqual(picked({ uniform: 'aviator_blazer', rank: 'Capt' }), ['underlayer', 'plateGrade']);
+  assert.deepEqual(picked({ uniform: 'polo', gender: 'female', rank: 'Capt' }), ['poloShirt', 'poloCut', 'poloName', 'poloMark', 'sleeve']);
+  assert.deepEqual(picked({ uniform: 'flight_suit', rank: 'Capt' }), ['headgear', 'jacket', 'scarf', 'esPatch']);
+  // The yes or no options are pairs of pictures too (without, with: tests/garment-yes-no-pickers.test.cjs); the one field of free text, the duty title, is a field, and no list or box
+  // that changes what is drawn is left.
   const flight = panel({ uniform: 'flight_suit', rank: 'Capt' }).host;
-  assert.equal(flight.querySelectorAll('input').filter(i => /^garmentOpt-(jacket|scarf)$/.test(i.id)).length, 2);
+  assert.equal(flight.querySelectorAll('input').filter(i => /^garmentOpt-/.test(i.id)).length, 0, 'no box');
   const polo = panel({ uniform: 'polo', rank: 'Capt', garment: { poloMark: 'title' } }).host;
-  assert.ok(polo.querySelector('select'), '"Over the name" is still a list');
-  assert.ok(polo.querySelector('input[type="text"]') || polo.querySelectorAll('input').some(i => i.id === 'garmentOpt-dutyTitle'));
+  assert.equal(polo.querySelector('select'), null, '"Over the name" is a picker, not a list');
+  assert.ok(polo.querySelectorAll('input').some(i => i.id === 'garmentOpt-dutyTitle'), 'the duty title is the one field');
 });
 
 test('without the picker script the panel falls back to the lists it always had (the choices are the same)', () => {

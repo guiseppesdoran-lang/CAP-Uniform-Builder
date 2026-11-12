@@ -194,8 +194,8 @@ test('the chinstrap is not offered when no cap is worn', () => {
 
 test('a senior member sees none of it, and a member off Honor Guard sees the options of the uniform as they were', () => {
   const senior = panel({ membership: 'senior', rank: 'Capt', uniform: 'blues_b', garment: { sleeve: 'long' } });
-  assert.deepEqual(groups(senior.host), ['garmentOpt-sleeve', 'garmentOpt-headgear'], 'a senior member on Class B: the sleeve and the headgear, as ever');
-  assert.ok(senior.host.querySelectorAll('input').some(i => i.id === 'garmentOpt-tie'), 'and the tie box');
+  assert.deepEqual(groups(senior.host), ['garmentOpt-sleeve', 'garmentOpt-headgear', 'garmentOpt-tie', 'garmentOpt-tieClasp'], 'a senior member on Class B: the sleeve, the headgear, the tie and its clasp, as ever (the two yes or no options by picture)');
+  assert.deepEqual(labelsOf(senior.host, 'garmentOpt-tie'), ['No tie', 'Tie']);
   assert.deepEqual(labelsOf(senior.host, 'garmentOpt-headgear'), ['Flight cap', 'Service cap', 'No headgear']);
   const off = panel({ ceremonial: false, uniform: 'blues_a' });
   assert.deepEqual(groups(off.host), ['garmentOpt-headgear']);
