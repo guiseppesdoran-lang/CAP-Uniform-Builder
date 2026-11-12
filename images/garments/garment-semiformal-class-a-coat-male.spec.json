@@ -14,6 +14,9 @@
  ],
  "size_source": "estimated",
  "size_basis": "Same coat, scale and artwork box as garment-blues-class-a-coat (Traced from images/base/jacket_male.webp, then scaled x1.0882 (shoulder seam to seam 17.00 -> 18.50 in, the width of a men's 40R service dress coat; neck seam to hem 28.68 -> 31.21 in, a 40R is about 31 in; CAPR 39-1 Fig 4.6 scaled by its 3 3/8 in nameplate gives a 25.20 x 31.99 in coat, the sheet is 25.27 x 32.09 in). Hardware is true size: buttons 7/8 in, nameplate 3 3/8 x 3/4 in, boards 4.55 in, letters.), so overlays register.",
+ "dimension_sources": {
+  "lapel_notch": "measured: the V of the owner's own service coat (photograph, a reference only, four points per lapel on both lapels) and the Honor Guard guidance figure, as ratios (base-art/lapel-notch.js); the vertex, peak and seam are this sheet's own, the collar's tip is new"
+ },
  "anchors": {
   "top_center": [
    1288.73,
@@ -171,6 +174,10 @@
     217.3
    ],
    [
+    780.93,
+    433.6
+   ],
+   [
     859.53,
     543.8
    ],
@@ -183,6 +190,20 @@
     1214.3
    ]
   ],
+  "notch_right": [
+   [
+    780.89,
+    433.61
+   ],
+   [
+    859.58,
+    543.78
+   ],
+   [
+    704.83,
+    595.36
+   ]
+  ],
   "lapel_left": [
    [
     1519.83,
@@ -191,6 +212,10 @@
    [
     1674.53,
     217.3
+   ],
+   [
+    1796.53,
+    433.6
    ],
    [
     1717.93,
@@ -203,6 +228,20 @@
    [
     1263.93,
     1214.3
+   ]
+  ],
+  "notch_left": [
+   [
+    1796.56,
+    433.61
+   ],
+   [
+    1717.88,
+    543.78
+   ],
+   [
+    1872.62,
+    595.36
    ]
   ],
   "shirt": [
@@ -297,7 +336,17 @@
    0.95
   ],
   "buttons": 3,
-  "button_dia_in": 0.875
+  "button_dia_in": 0.875,
+  "lapel_notch": {
+   "opening_deg": 72.9,
+   "depth_in": 1.181,
+   "mouth_in": 1.787,
+   "collar_arm_in": 1.354,
+   "lapel_arm_in": 1.631,
+   "depth_over_mouth": 0.661,
+   "mouth_over_lapel_width": 0.419,
+   "depth_over_lapel_width": 0.277
+  }
  },
  "documented": [
   "worn as for Service Dress (Class A) new style with the adjustments of CAPR 39-1 4.1.3.2: nametag not worn (4.1.3.2.1)",
@@ -309,7 +358,8 @@
   "white shirt tone",
   "welt size (as the Class A coat)",
   "button diameter",
-  "shirt and lapel geometry read off the base image"
+  "shirt and lapel geometry read off the base image",
+  "notch as the Class A coat (see garment-blues-class-a-coat)"
  ],
  "fit": {
   "method": "traced from the raster",

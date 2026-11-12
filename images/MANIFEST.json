@@ -14155,6 +14155,8 @@
     "lapel_left",
     "shirt",
     "tie_tab",
+    "notch_right",
+    "notch_left",
     "sleeve_flat_view",
     "ribbon_slot"
    ],
@@ -14601,7 +14603,9 @@
     "button_2",
     "button_3",
     "lapel_right",
+    "notch_right",
     "lapel_left",
+    "notch_left",
     "shirt",
     "tie",
     "ribbon_slot",
@@ -16661,9 +16665,11 @@
     "medal_slot",
     "tie",
     "lapel_left",
+    "notch_left",
     "arm_seam_left",
     "shoulder_left",
     "lapel_right",
+    "notch_right",
     "arm_seam_right",
     "shoulder_right"
    ],
@@ -18048,6 +18054,8 @@
     "lapel_left",
     "shirt",
     "tie_tab",
+    "notch_right",
+    "notch_left",
     "sleeve_flat_view",
     "ribbon_slot"
    ],
@@ -18190,7 +18198,9 @@
     "button_2",
     "button_3",
     "lapel_right",
+    "notch_right",
     "lapel_left",
+    "notch_left",
     "shirt",
     "tie",
     "sleeve_flat_view"
@@ -34285,7 +34295,9 @@
    },
    "landmarks": [
     "lapel_face_right",
-    "lapel_face_left"
+    "notch_right",
+    "lapel_face_left",
+    "notch_left"
    ],
    "has_spec": true,
    "issues": []
@@ -34322,7 +34334,9 @@
    },
    "landmarks": [
     "lapel_face_right",
-    "lapel_face_left"
+    "notch_right",
+    "lapel_face_left",
+    "notch_left"
    ],
    "has_spec": true,
    "issues": []

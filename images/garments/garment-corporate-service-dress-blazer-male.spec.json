@@ -14,6 +14,9 @@
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette traced from images/base/male_semi_formal.webp (581x719 px) at 0.0474 in/px, which makes the sleeve-to-sleeve 25.77 in (a men's 40R; the Class A coat at its true scale, make-blues-a.js, is 25.27 in). Trousers are added below the base image's cropped hem. No real garment was measured. Checked against CAPR 39-1 Fig 4.14 (PDF page 87 at 8x) with the figure's 1398 px sleeve-to-sleeve taken as the sheet's 25.12 in (55.6 px/in): the figure's crest centre is 5.53 in from the centre line (Fig 4.12, page 84: 5.37 in), the sheet's pocket and crest centre are 5.49 in from it; the sheet's silhouette, pocket top (12.38 in), crest and lapel overlaid on Fig 4.14 agree within 0.1 in. The lapel is the figure's: its peak is 5.58 in from the centre line at y 6.1 in, the lapel 3.9 in wide, its outer edge 5.35 / 4.44 / 3.97 / 2.84 in from the centre line at y 7.3 / 9.4 / 10.4 / 12.4 in. A rack of 4 miniatures at 11/16 in (2.75 in wide) centred on the pocket has its inner edge 4.12 in from the centre line, so the lapel edge crosses its top rows (1.23 in over the rack at y 7.3, 0.32 in at y 9.4) and clears it from y 10.4 down; Fig 4.12 draws the rack the same way, its top rows against the lapel edge. Moving the pocket out or narrowing the lapel enough to clear the top rows would leave Figs 4.12 and 4.14 (see DECISIONS.md DORAN5-ART-2). C1 (the blazer is the aviator shirt with the coat over it): the shirt, collar and tie in the opening are the aviator shirt's own art at the aviator's scale and in its colours, and the traced outline is pushed out (coat-fit.js) at the shoulder and down the sleeve, from 3 in to the shirt's short cuff 15.7 in down, wherever that shirt, placed with its neck arc through the V's top corners, would show beyond it, with 0.1 in of ease: the sleeve-to-sleeve is 25.77 in (was 25.12), the torso, the V, the lapels, the body below the sleeves and the hem are the traced ones.",
+ "dimension_sources": {
+  "lapel_notch": "measured: the V of the owner's own service coat (photograph, a reference only, four points per lapel on both lapels) and the Honor Guard guidance figure, as ratios (base-art/lapel-notch.js); the vertex, peak and seam are this sheet's own, the collar's tip is new"
+ },
  "anchors": {
   "top_center": [
    1308.29,
@@ -221,6 +224,24 @@
    [
     1765.69,
     569.3
+   ],
+   [
+    1857.69,
+    457.7
+   ]
+  ],
+  "notch_left": [
+   [
+    1857.67,
+    457.67
+   ],
+   [
+    1765.7,
+    569.32
+   ],
+   [
+    1926.86,
+    635.68
    ]
   ],
   "arm_seam_left": [
@@ -343,6 +364,24 @@
    [
     850.89,
     569.3
+   ],
+   [
+    758.89,
+    457.7
+   ]
+  ],
+  "notch_right": [
+   [
+    758.9,
+    457.67
+   ],
+   [
+    850.88,
+    569.32
+   ],
+   [
+    689.72,
+    635.68
    ]
   ],
   "arm_seam_right": [
@@ -420,6 +459,16 @@
    0.9
   ],
   "buttons": 2,
+  "lapel_notch": {
+   "opening_deg": 72.9,
+   "depth_in": 1.262,
+   "mouth_in": 1.91,
+   "collar_arm_in": 1.447,
+   "lapel_arm_in": 1.743,
+   "depth_over_mouth": 0.661,
+   "mouth_over_lapel_width": 0.412,
+   "depth_over_lapel_width": 0.272
+  },
   "coat_fit": {
    "rule": "the coat lies over the aviator shirt at the same scale: the traced outline is pushed out (base-art/coat-fit.js) at the shoulder and down the sleeve wherever the shirt, placed as shirt_in_opening says, would show beyond it",
    "ease_in": 0.1,
@@ -467,6 +516,7 @@
   "medium gray trousers (4.2.3.3)"
  ],
  "assumed": [
+  "the notch is the owner's coat photograph's V (opening 72.9 deg, depth 0.66 of its mouth, collar arm 0.83 of the lapel arm) laid on this sheet's own lapel peak, vertex and seam, so against the lapel's width it is smaller than the photograph's (mouth 0.41 against 0.57, depth 0.27 against 0.37)",
   "the shirt, collar, tie, placket and buttons seen in the opening are the aviator shirt's own art (base-art/shirt-front.js, the code make-aviator.js draws them with), at the aviator's scale and in its colours (tie #001a4c, shirt #f7f7f4); CAPR 39-1 4.2.3.4 allows the CAP regimental or the AF blue tie, one tie is worn, and the aviator shirt beside the blazer wears the AF blue one (C1, Ethan: the blazer is the aviator shirt with a coat); the collar's neck arc is placed through the V's top corners, the frame's offset is dimensions.shirt_in_opening",
   "trouser gray #736f6c: the same medium gray as the aviator-shirt sheets (CAPR 39-1 4.2.3.3 and 4.2.5.1.5 name one medium gray, solid colour); the blazer photo sampled #8a8d95, a bluer and lighter tone that read as a different trouser beside the aviator companion (review FIX-ART-r1 item 8)",
   "px-to-inch scale",

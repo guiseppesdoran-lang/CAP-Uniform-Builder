@@ -14,6 +14,9 @@
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette traced from images/base/jacket_female.webp (612x753 px) at 0.047 in/px, then scaled by 0.88 so the coat is as wide as the men's coat plus the women's cut (CAPR 39-1 Figures 4.6 and 4.7a show the two coats at about the same width); before this factor the box was 27.71 x 33.49 in. No real garment was measured. Coat 29.00 in long. Buttons, nametag and other hardware keep their true size.",
+ "dimension_sources": {
+  "lapel_notch": "measured: the V of the owner's own service coat (photograph, a reference only, four points per lapel on both lapels) and the Honor Guard guidance figure, as ratios (base-art/lapel-notch.js); the peak, throat and collar's outer edge are this sheet's own, the vertex moves out along the seam and the collar's tip is new"
+ },
  "anchors": {
   "top_center": [
    1219.42,
@@ -173,8 +176,8 @@
   },
   "lapel_right": [
    [
-    905.7,
-    422.84
+    846.47,
+    414.13
    ],
    [
     770.7,
@@ -199,8 +202,8 @@
   ],
   "lapel_left": [
    [
-    1533.14,
-    422.84
+    1592.36,
+    414.13
    ],
    [
     1668.13,
@@ -283,6 +286,34 @@
     508.38
    ]
   ],
+  "notch_right": [
+   [
+    745.68,
+    379.28
+   ],
+   [
+    846.5,
+    414.12
+   ],
+   [
+    770.66,
+    517.88
+   ]
+  ],
+  "notch_left": [
+   [
+    1693.16,
+    379.28
+   ],
+   [
+    1592.33,
+    414.12
+   ],
+   [
+    1668.17,
+    517.88
+   ]
+  ],
   "sleeve_flat_view": {
    "left": {
     "x": 2889.92,
@@ -313,7 +344,17 @@
   "nameplate_in": [
    3.375,
    0.75
-  ]
+  ],
+  "lapel_notch": {
+   "opening_deg": 72.9,
+   "depth_in": 0.93,
+   "mouth_in": 1.408,
+   "collar_arm_in": 1.067,
+   "lapel_arm_in": 1.285,
+   "depth_over_mouth": 0.661,
+   "mouth_over_lapel_width": 0.524,
+   "depth_over_lapel_width": 0.346
+  }
  },
  "documented": [
   "single breasted, three buttons (Wing and Star or CAP Crest), one welt pocket upper left, two lower pocket flaps (CAPR 39-1 4.1.9.2)",
@@ -327,6 +368,7 @@
   "px-to-inch scale",
   "button diameter 7/8 in",
   "notch, lapel peak, blouse and tie-tab geometry read off the base image",
+  "the notch is the owner's coat photograph's V (opening 72.9 deg, depth 0.66 of its mouth, collar arm 0.83 of the lapel arm) laid on this sheet's own lapel peak, throat and collar edge: it matches the photograph against the lapel's width (mouth 0.52 against 0.57, depth 0.35 against 0.37), but the seam falls 8 deg toward the throat here where every reference's rises, and the vertex sits at 0.71 of the way from the collar's top to the peak where the photograph's is 0.82",
   "lower pocket flaps are not drawn (barely visible in the base image)",
   "colours sampled from the base image",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate)"
