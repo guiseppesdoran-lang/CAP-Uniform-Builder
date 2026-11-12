@@ -290,12 +290,14 @@ function normalizeMemberReportDates(text){
 }
 
 // What a browser prints around the pages of a report and the report never says: the address with its page count, the time stamp
-// ("11/10/26, 4:02 PM"), "Page 2 of 3", and the report's title again on every page after the first.
+// ("11/10/26, 4:02 PM"; a PDF may set the colon apart, "11 : 09 AM"), "Page 2 of 3", and the report's title again on every page after the first.
+// A PDF cuts the address at its first space and leaves the end of it, "? CAPID=123456", behind.
 function stripMemberReportPageFurniture(text){
   let titles = 0;
   return String(text || '')
     .replace(/\bhttps?:\/\/\S+(?:\s+\d{1,3}\s*\/\s*\d{1,3}(?=\s|$))?/gi, ' ')
-    .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4},?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s*[AP]\.?M\.?)?/gi, ' ')
+    .replace(/\?\s*CAPID\s*=\s*\d+/gi, ' ')
+    .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4},?\s+\d{1,2}\s*:\s*\d{2}(?:\s*:\s*\d{2})?(?:\s*[AP]\.?M\.?)?/gi, ' ')
     .replace(/\bPage\s+\d{1,3}\s+of\s+\d{1,3}\b/gi, ' ')
     .replace(/Printer\s+Friendly\s+View\s*[-–]\s*Member\s+Details/gi, title => ++titles > 1 ? ' ' : title)
     .replace(/\s+/g, ' ')
@@ -312,7 +314,9 @@ const MEMBER_REPORT_TABLE_HEADINGS = new RegExp('^(?:.*\\b(?:' + [
   'Decorations', 'Activity\\s*\\/\\s*Service Ribbon', 'Emergency Services Qualifications', 'Qualification Status Expiration', 'Transfer History', 'Current Committees'
 ].join('|') + '))(?:\\s+|$)', 'i');
 function memberReportDuplicateCuts(source){
-  const re = new RegExp(`(${MEMBER_REPORT_DATE})(?:\\s+(${MEMBER_REPORT_DATE}))?`, 'gi');
+  // A row's dates are up to three that follow its words: a decoration prints "from to to" and then the date it was approved, so that two awards of one
+  // name that began on one day, and were approved on two, are two rows.
+  const re = new RegExp(`(${MEMBER_REPORT_DATE})(?:\\s+(?:to\\s+)?(${MEMBER_REPORT_DATE}))?(?:\\s+(${MEMBER_REPORT_DATE}))?`, 'gi');
   const seen = new Set(), cuts = [];
   let previousEnd = 0, m;
   while((m = re.exec(source))){
@@ -323,7 +327,7 @@ function memberReportDuplicateCuts(source){
     const rest = segment.slice(from);
     const words = rest.trim();
     if(words.length < 8 || !/[A-Za-z]{3}/.test(words)) continue;
-    const key = `${words.toLowerCase()}|${m[1].toLowerCase()}|${(m[2] || '').toLowerCase()}`;
+    const key = `${words.toLowerCase()}|${m[1].toLowerCase()}|${(m[2] || '').toLowerCase()}|${(m[3] || '').toLowerCase()}`;
     if(seen.has(key)) cuts.push([segmentStart + from + (rest.length - rest.trimStart().length), previousEnd]);
     else seen.add(key);
   }
@@ -1788,6 +1792,9 @@ function memberReportUnreadRows(text){
   return rows.slice(0, 200);
 }
 
+// The text without its rating exam rows ("Technician Rating Exam: Communications LMS 19 Aug 2023": the words up to the row's date).
+const memberReportWithoutExamRows = text => String(text || '').replace(/\b(?:(?:Technician|Senior|Master)\s+)?Rating\s+Exam\b[^\d]{0,100}/gi, ' ');
+
 function parseCapMemberReport(textRaw){
   const text = labelCurrentDutyPositionsHeading(normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw)));
   const result = {
@@ -1816,6 +1823,8 @@ function parseCapMemberReport(textRaw){
   result.profileFound = !!currentProfile;
   result.joinDateFound = !!extractJoinDateFromMemberReport(text);
   result.unreadRows = memberReportUnreadRows(text);
+  // The activities the Cadet Training table credits, for the panel to say which have no patch (the patches are js/patches.js's).
+  result.activities = memberReportCadetTrainingRows(text).filter(row => row.credit).map(row => ({ title:row.title, year:row.year, activity:row.activity }));
   if(currentProfile){
     result.membership = currentProfile.membership;
     result.gender = currentProfile.gender;
@@ -2109,7 +2118,9 @@ function parseCapMemberReport(textRaw){
   // Field-uniform patch auto-import:
   // Communications patch renders from the Communications specialty rating only.
   // It is intentionally not authorized on OCP and will be filtered by current uniform.
-  if(importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id)) || memberReportHasCommunicationsTechnicianSpecialty(text)){
+  // The rating is a row of the Specialty Tracks table; a row of an exam ("Technician Rating Exam: Communications") is no rating (js/catalog.js reads the
+  // words Communications and Technician near each other where the table is missing, so the exam rows are taken out of what it reads).
+  if(importedSpecialtyTracks.badges.some(item => /^communications_/.test(item.id)) || memberReportHasCommunicationsTechnicianSpecialty(memberReportWithoutExamRows(text))){
     result.patches.push('comms_patch');
     result.notes.push('A Communications specialty rating was found: the Communications patch is worn on the field and flight uniforms only.');
   }
@@ -2506,6 +2517,21 @@ const MEMBER_REPORT_NOTES_IN_SIGHT = [
 ];
 const memberReportNoteInSight = note => MEMBER_REPORT_NOTES_IN_SIGHT.some(re => re.test(note));
 
+// The activities the report credits that no patch stands for, by the code each row leads with ("MKSABA"), each once: asked of js/patches.js, which holds
+// the patches an activity's name matches. Nothing is said where that script is not loaded.
+function memberReportActivitiesWithoutPatch(parsed){
+  const detect = typeof window !== 'undefined' && window.CAPUBDetectNcsaPatches;
+  if(typeof detect !== 'function') return [];
+  const out = [];
+  for(const row of parsed.activities || []){
+    if(detect(row.title).length) continue;
+    const lead = /^[A-Z][A-Z0-9]{1,9}\b/.exec(row.title);
+    const name = lead && lead[0] !== 'NCSA' ? lead[0] : titleCaseImportedName(row.activity);
+    if(!out.includes(name)) out.push(name);
+  }
+  return out;
+}
+
 // The lines the panel shows for a report that was applied: what was read, what is on the build, what was held off and why, what was not
 // understood, and the notes. `replaced` is true when the member had ribbons, badges or patches that the report replaced.
 function memberReportStatusLines(parsed, fileName, { replaced = false, before = {} } = {}){
@@ -2545,6 +2571,8 @@ function memberReportStatusLines(parsed, fileName, { replaced = false, before = 
   const commsHeldOff = (parsed.patches || []).includes('comms_patch') && !(State.patches || []).includes('comms_patch');
   const notes = memberReportPlainNoteLines(capubImportNoteLines((parsed.notes || []).filter(n => !/^(?:Communications patch not shown|NCSA\/activity patch match)/.test(n))))
     .filter(n => !(commsHeldOff && /^A Communications specialty rating was found/.test(n)));
+  const noPatch = memberReportActivitiesWithoutPatch(parsed);
+  if(noPatch.length) notes.push(`No patch is offered yet for ${memberReportNameList(noPatch)}.`);
   const shown = notes.filter(memberReportNoteInSight);
   if(shown.length) lines.push({ heading: 'Notes' }, ...shown.map(item => ({ item })));
   if(replaced) lines.push('Your earlier ribbons, badges and patches were replaced by the report. Undo brings them back.');

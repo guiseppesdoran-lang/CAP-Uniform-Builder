@@ -1764,7 +1764,8 @@ const NOTE_KINDS = [
   [/cadet award ribbons? (?:is|are) left off/, 'more', '8 cadet award ribbons are left off: a senior member wears one cadet award ribbon, the highest, and may wear every milestone medal earned as a miniature (CAPR 39-1, 11.1.4).'],
   [/shoulder cord: the report shows a position on the council held now/, 'more', "National Cadet Advisory Council shoulder cord: the report shows a position on the council held now, which gives the cord and not the ribbon's star (CAPR 39-3, 21j)."],
   [/^No unit patch is offered for |^The unit patch for .+ is chosen/, 'more', 'No unit patch is offered for GLR-IL-049 yet.'],
-  [/^Supplements: |^Shoulder cords: the report shows |^Shoulder cords: the other cords of these supplements/, 'more', 'Supplements: Finger Lakes Group brings in Northeast Region Supplement 1.']
+  [/^Supplements: |^Shoulder cords: the report shows |^Shoulder cords: the other cords of these supplements/, 'more', 'Supplements: Finger Lakes Group brings in Northeast Region Supplement 1.'],
+  [/^No patch is offered yet for /, 'more', 'No patch is offered yet for HMRS, MKSABA and NFAP.']
 ];
 const notesOf = lines => [...(groupOf(lines, 'Notes') || []), ...(foldOf(lines) || [])];
 
@@ -1845,4 +1846,62 @@ test('the fold is a closed details element built from text: its summary and its 
   const details = panel.children[3];
   assert.deepEqual(details.children.map(c => [c.tag, c.textContent]), [['summary', '<b>More about this import</b>'], ['div', '– <script>alert(1)</script> & more'], ['div', '– Two']]);
   assert.ok(!('open' in details) && details.open !== true, 'closed');
+});
+
+// ---- Three misreads of the owner's own report: the page header's time stamp, an exam read as a rating, an activity no patch stands for -----------------
+const PDF_HEADER = '03/05/25, 9 : 41   AM Printer Friendly View - Member Details Page 8 of 9 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456\n';
+
+test('the page header a PDF prints is taken out whole: the time stamp with its colon set apart, and the end of the address it leaves behind', () => {
+  const { context } = loadPageScripts();
+  const strip = t => vm.runInContext('(t) => stripMemberReportPageFurniture(t)', context)(t);
+  assert.equal(strip('Fort Dix 14 Aug 2023 03/06/25, 2 : 17   PM Printer Friendly View - Member Details Page 5 of 11 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456 Lake Placid 22 Aug 2025'),
+    'Fort Dix 14 Aug 2023 Printer Friendly View - Member Details Lake Placid 22 Aug 2025', 'the title is kept once, the rest of the header goes');
+  // The browser's own print, with no space round the colon, is read as before.
+  assert.equal(strip('A 14 Aug 2023 11/10/26, 4:02 PM B'), 'A 14 Aug 2023 B');
+  assert.equal(strip('A 14 Aug 2023 3/5/25, 9 : 41 : 07 PM B'), 'A 14 Aug 2023 B');
+  // A date that is no time stamp, and a number that is no member number, stay.
+  assert.equal(strip('Awarded 03/05/2025 for 9 : 41 reasons'), 'Awarded 03/05/2025 for 9 : 41 reasons');
+});
+
+test('a page break right under the Encampments heading adds no encampment: the time stamp it leaves is no date of the table', () => {
+  const two = runImport(PERSONNEL).ribbon('encampment_ribbon').value;
+  const broken = PERSONNEL.replace('Encampments Location   Date Completed\n', 'Encampments Location   Date Completed\n' + PDF_HEADER);
+  assert.equal(runImport(broken).ribbon('encampment_ribbon').value, two, 'two encampments still');
+  const { context } = loadPageScripts();
+  assert.equal(vm.runInContext('(t) => extractEncampmentCountFromReport(normalizeMemberReportText(t))', context)(broken), 2);
+  assert.equal(vm.runInContext('(t) => extractEncampmentCountFromReport(normalizeMemberReportText(t))', context)(broken.replace(/\n/g, ' ')), 2, 'on the line a PDF makes');
+});
+
+test('two awards of one name that began on one day and were approved on two are two awards; a row printed twice, with its approval, is one', () => {
+  const count = rows => runImport(cadetWith('Decorations', rows)).parsed.ribbons.find(r => r.id === 'cap_achievment_award').reason;
+  const base = ['Achievement Award   12 Jul 2024   to 20 Jul 2024   04 Oct 2024', 'Achievement Award   14 Aug 2025   to 22 Aug 2025   26 Sep 2025'];
+  assert.match(count(base), /^6 Achievement Award/);   // the fixture's own four, and these two
+  assert.match(count([...base, 'Achievement Award   14 Aug 2025   to 22 Aug 2025   03 Sep 2025']), /^7 Achievement Award/, 'the same days, approved on another day: another award');
+  assert.match(count([...base, 'Achievement Award   14 Aug 2025   to 22 Aug 2025   26 Sep 2025']), /^6 Achievement Award/, 'the row again, as it was printed: one');
+});
+
+test('an exam is not a rating: no Communications patch comes from a Rating Exam row, and a Specialty Tracks rating still gives it', () => {
+  const exams = PERSONNEL.replace('Technician Rating Exam: Communications   LMS   27 Sep 2023\n', 'Technician Rating Exam: Communications   LMS   27 Sep 2023\nSenior Rating Exam: Communications   LMS   11 Apr 2024\nTechnician Rating Exam: Finance   LMS   08 Aug 2024\n');
+  assert.ok(exams.includes('Senior Rating Exam: Communications'));
+  const r = runImport(exams);
+  assert.ok(!(r.parsed.patches || []).includes('comms_patch'), 'no patch from an exam');
+  assert.ok(!r.parsed.notes.some(n => /^A Communications specialty rating was found/.test(n)));
+  const rated = runImport(exams.replace('Cadet Training Type', 'Specialty Tracks Specialty Track Level Completed COMMUNICATIONS TECHNICIAN 05 May 2024 Cadet Training Type'));
+  assert.ok(rated.parsed.patches.includes('comms_patch'), 'a rating in the table gives it');
+  // The words Communications and Technician near each other where no table is, as before, still give it outside an exam row.
+  assert.ok(runImport(PERSONNEL.replace('Cadet Training Type', 'Communications Technician 05 May 2024 Cadet Training Type')).parsed.patches.includes('comms_patch'));
+});
+
+test('an activity the table credits that no patch stands for is said once, in the fold: NFAP matches no patch (the catalog has the plain National Flight Academy patch only)', async () => {
+  const { result } = await importFile(fileLike('m.txt', 'text/plain', PERSONNEL));
+  const fold = foldOf(result.lines);
+  assert.ok(fold.includes('No patch is offered yet for HMRS, MKSABA and NFAP.'), JSON.stringify(fold));
+  assert.ok(!(groupOf(result.lines, 'Notes') || []).some(n => /No patch is offered yet/.test(n)), 'not in sight');
+  // The patches of the activities that have one are chosen from the same rows: NESA, Cadet Officer School and National Blue Beret.
+  const { context } = loadPageScripts();
+  const detect = vm.runInContext('window.CAPUBDetectNcsaPatches', context);
+  assert.deepEqual([...detect('NFAP Student Graduate Lancaster, TX')], []);
+  assert.deepEqual([...detect('NESA Fort Pickett, VA')], ['nesa_patch']);
+  assert.deepEqual([...detect('National Flight Academy Powered')], ['nfa_patch'], 'the plain academy has its patch');
+  assert.deepEqual([...runImport(PERSONNEL).parsed.patches].sort(), ['cos_patch', 'nbb_patch', 'nesa_patch']);
 });
