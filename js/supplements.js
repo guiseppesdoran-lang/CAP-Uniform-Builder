@@ -284,20 +284,11 @@
     const d = doc(), state = stateNow(), host = by('supplementsSection'), body = by('supplementsBody');
     if(!d || !state) return;
     const entries = entriesFor(state.unitPatchCharter);
-    const line = by('unitSupplementsLine');
-    if(line){
-      const text = !state.unitPatchCharter ? 'Choose your unit to load the supplements of its wing and region.'
-        : entries.length ? `Loaded: ${listOf(entries.map(e => e.name))}.` : 'No wing or region supplement is loaded for this unit.';
-      if(line.textContent !== text) line.textContent = text;
-    }
-    if(!host || !body) return;
     const sig = signature(state);
     if(!force && sig === lastDrawn) return;
     lastDrawn = sig;
-    host.hidden = !entries.length;
-    host.classList.toggle('hidden', !entries.length);
-    body.textContent = '';
-    if(!entries.length) return;
+    // What the member's unit and membership give: a supplement with nothing in it for this member (a senior member's, where it has cords only) has no block.
+    const blocks = [];
     boxPlaced = false;
     const plan = wingPatch(state);
     let words = false, anyCords = false;
@@ -312,9 +303,24 @@
       for(const item of rows.filter(i => i.kind === 'wing-patch')) list.append(itemRow(entry, item, state, plan));
       if(cordsRow){ list.append(cordsRow); anyCords = true; }
       for(const item of rows.filter(i => i.kind !== 'wing-patch')){ list.append(itemRow(entry, item, state, plan)); if(item.kind === 'headgear' || item.kind === 'accessory') words = true; }
+      if(!rows.length && !cordsRow) continue;
       block.append(list);
-      body.append(block);
+      blocks.push(block);
     }
+    const line = by('unitSupplementsLine');
+    if(line){
+      const loaded = `Loaded: ${listOf(entries.map(e => e.name))}.`;
+      const text = !state.unitPatchCharter ? 'Choose your unit to load the supplements of its wing and region.'
+        : !entries.length ? 'No wing or region supplement is loaded for this unit.'
+        : blocks.length ? loaded
+        : `${loaded} ${state.membership ? 'Nothing in it is for this membership type.' : 'Choose your membership type to see what it allows.'}`;
+      if(line.textContent !== text) line.textContent = text;
+    }
+    if(!host || !body) return;
+    host.hidden = !blocks.length;
+    host.classList.toggle('hidden', !blocks.length);
+    body.textContent = '';
+    for(const block of blocks) body.append(block);
     if(anyCords) body.append(cordPointer());
     if(words) body.append(make('p', 'hintText', 'Caps and other items listed here are described in words; the builder does not draw them.'));
   }

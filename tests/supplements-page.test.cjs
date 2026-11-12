@@ -104,14 +104,25 @@ test('on a uniform that takes a unit patch the patch still follows the member\'s
   reset();
 });
 
-test('the section of supplements: a name in words, the date, the items; hidden without a unit or for a unit with no supplement', () => {
+test('the section of supplements: a name in words, the date, the items; hidden without a unit, for a unit with no supplement, or when nothing in them is for the member', () => {
   const src = read('js/supplements.js');
   assert.match(src, /make\('h4', 'supplementName', entry\.name\), make\('div', 'supplementDate', entry\.date\)/);
-  assert.match(src, /host\.hidden = !entries\.length/);
-  // The unit line says what was loaded, or that nothing was.
-  const line = state => { reset(); ev(state); ev('Supplements.render(true)'); };
-  line("State.unitPatchCharter = 'GLR-IL-049'");
-  assert.equal(ev('Supplements.forUnit(State.unitPatchCharter).length'), 0);
+  // The section is drawn into the stand-in page (every element answers); what the page would show is read from the unit line and the section's hidden flag.
+  const shown = state => { reset(); ev(state); const lines = []; ev(`globalThis.__lines = []`);
+    const real = context.document;
+    const els = {};
+    context.document = new Proxy({}, { get: (_t, key) => key === 'getElementById' ? id => (els[id] = els[id] || (id === 'supplementsSection' || id === 'unitSupplementsLine' || id === 'supplementsBody' ? { hidden: false, textContent: '', classList: { toggle(){} }, append(){}, childNodes: [] } : real.getElementById(id))) : real[key] });
+    try{ ev('Supplements.render(true)'); }finally{ context.document = real; }
+    return { hidden: els.supplementsSection.hidden, line: els.unitSupplementsLine.textContent }; };
+  assert.deepEqual(shown("State.unitPatchCharter = ''"), { hidden: true, line: 'Choose your unit to load the supplements of its wing and region.' });
+  assert.deepEqual(shown("State.unitPatchCharter = 'GLR-IL-049'"), { hidden: true, line: 'No wing or region supplement is loaded for this unit.' });
+  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'"), { hidden: false, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1.' });
+  // A senior member's Northeast and Maine supplements have cords only, which are for cadets: nothing to show.
+  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'; State.membership = 'senior'"), { hidden: true, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1. Nothing in it is for this membership type.' });
+  assert.deepEqual(shown("State.unitPatchCharter = 'NER-ME-021'; State.membership = ''"), { hidden: true, line: 'Loaded: Northeast Region Supplement 1 and Maine Wing Supplement 1. Choose your membership type to see what it allows.' });
+  // The Hawaii supplement has a wing patch and a hat, which a senior member keeps.
+  assert.equal(shown("State.unitPatchCharter = 'PCR-HI-073'; State.membership = 'senior'; State.uniform = 'abu'").hidden, false);
+  reset();
 });
 
 test('the wing\'s patch a supplement requires: selected when none is chosen, shown to the member, taken off at the member\'s wish with a warning that never blocks', () => {
