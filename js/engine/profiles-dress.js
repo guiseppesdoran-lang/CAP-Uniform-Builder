@@ -1325,6 +1325,20 @@
   };
   // ARM_SEAM end
 
+  // The open gap at the armpit on each of those sheets, sheet inches (scripts/measure-armpit.cjs computeGap; tests/engine-cord-end.test.cjs compares this table with the sheets): where the sleeve hangs
+  // apart from the body, the hole between arm and body (the sheet's own ring); where a short sleeve lies against the body, the open space below the sleeve's hem and outside the body (the body's side
+  // edge from the armpit down, the hem out from it, closed 20 in to the right). The cord's end piece is laid wholly in it (core.straightCord).
+  // GAP begin
+  const GAP = {
+    'garment-blues-class-a-coat': [[20.686, 15.409], [21.14, 18.204], [21.294, 20.164], [21.243, 23.62], [20.933, 26.746], [20.831, 25.219], [21.037, 24.91], [20.675, 23.105], [20.315, 20.525], [19.954, 18.617], [20.036, 18.049]],
+    'garment-blues-class-a-coat-female': [[19.08, 12.884], [19.42, 14.216], [19.783, 16.077], [20.031, 17.772], [20.156, 19.261], [20.156, 21.908], [19.95, 24.299], [19.701, 21.868], [19.345, 19.841], [18.584, 17.524], [18.584, 15.746], [18.667, 14.753]],
+    'garment-blues-class-b-shirt-male': [[21.093, 15.629], [20.584, 19.802], [20.469, 22.859], [40.469, 22.859], [46.66, 12.647], [26.66, 12.647], [26.62, 15.763], [26.397, 15.945]],
+    'garment-blues-class-b-shirt-male-long': [[21.046, 16.044], [21.046, 16.579], [21.046, 21.989], [21.009, 22.155], [21.046, 23.177], [21.009, 23.342], [21.009, 25.453], [20.973, 25.777], [20.936, 25.354], [20.789, 24.793], [20.533, 23.21], [20.46, 22.98], [20.46, 22.452], [20.606, 19.713], [20.679, 19.449], [20.679, 19.02], [20.827, 18.097], [20.863, 17.536], [20.936, 17.239]],
+    'garment-blues-class-b-blouse-female': [[19.6, 16.35], [19.444, 16.769], [19.302, 17.067], [19.16, 17.365], [19.021, 17.663], [18.892, 17.961], [18.775, 18.259], [18.674, 18.557], [18.584, 18.855], [18.503, 19.153], [18.43, 19.451], [18.366, 19.749], [18.309, 20.047], [18.259, 20.345], [18.213, 20.643], [18.179, 20.941], [18.168, 21.239], [18.196, 21.537], [18.265, 21.835], [18.353, 22.133], [38.353, 22.133], [44.942, 13.056], [24.942, 13.056], [24.948, 16.505], [24.801, 16.571], [23.395, 16.571], [23.067, 16.478], [21.521, 16.43], [21.052, 16.337]],
+    'garment-blues-class-b-blouse-female-long': [[19.434, 15.442], [19.507, 17.954], [19.507, 19.358], [19.617, 20.99], [19.617, 21.976], [19.69, 22.431], [19.726, 24.253], [19.799, 24.67], [19.799, 25.771], [19.872, 26.074], [19.872, 26.909], [19.923, 27.441], [19.916, 27.577], [19.887, 27.516], [19.66, 26.454], [18.872, 23.798], [18.317, 22.242], [18.302, 22.052], [18.09, 21.407], [17.879, 21.133], [17.718, 20.572], [17.791, 19.775], [17.981, 19.1], [18.558, 17.65]]
+  };
+  // GAP end
+
 
 
   // The cord overlay is one braided run drawn along the armhole seam, and the sheet's polyline stops short of the top of the shoulder. Ethan, live:
@@ -1336,10 +1350,11 @@
   // LIVE13 E122 (Ethan: "i genuinely dont think you understand how cords work. they go along the seam. they shouldnt conflict with the ribbons ever ...
   // im not sure why you have them fading out. they go around the seam in a circle, but we cant see that because we are only looking at the front."): the
   // cord is a closed loop round the sleeve head; the front shows the one arc from under the board down the seam, and at the armpit it passes behind
-  // the arm. The braid is fully opaque (no fade, no run down the body's side, never on the chest). LIVE13 (Ethan, 2026-11-12), in three passes: the braid went on past the armpit so no cloth showed under
+  // the arm. The braid is fully opaque (no fade, no run down the body's side, never on the chest). LIVE13 (Ethan, 2026-11-12), over several passes: the braid went on past the armpit so no cloth showed under
   // its square end, then "it should go under the eppaulet flush with the outside edge" and "the cord, goes all the way around the inner part of the sleve, under the wearers armpid", then "you have them
-  // kind of going to the left, which is not realistic": it comes out flush from under the epaulet (core.wrapCord), comes straight down and ends in the point of the armpit, its two edges closing in on
-  // the apex over the last cord width (core.cordTipCut) with nothing below it. The layer is cut to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
+  // kind of going to the left, which is not realistic"; "There's still a bit of coat and shirt below the cord"; "it should go down further until the entire rectangle of the cord is out there": it comes
+  // out flush from under the epaulet and goes in one straight line down to an end in the open gap, deep enough that the braid's end piece lies wholly in it (core.straightCord). The layer is cut
+  // to the sheet's OUTER outline only (clipOuter) so the braid lies over the hairline crease between
   // arm and body as a cord does.
   // The run starts at the board's outer end on the shoulder seam (shoulderSeamOf's shoulder point), under the board (the cord is drawn below it), and
   // continues down the armhole seam as the sheet draws it, or the cord overlay's own landmark where the sheet draws no seam (Ethan, 2 November 2026: "cord should
@@ -1416,24 +1431,39 @@
     const sm = shoulderSeamOf(id, 'left');
     return sm ? [sm.outer.x, sm.outer.y] : null;
   }
+  // The window the cord is drawn through, in addition to the garment's outline (layer.clipPlus; js/engine/render-svg.js): the box round the armpit from CORD_WINDOW_LEAD above it to CORD_WINDOW_DOWN below
+  // and CORD_WINDOW_SIDE either side, so the cord is drawn over the gap between arm and body, and over the empty space under a short sleeve, where its end piece lies. Everywhere else the cord is cut by the
+  // garment's outline as it always was. Scene inches, as a polygon.
+  const CORD_WINDOW_LEAD = 0.1, CORD_WINDOW_DOWN = 3.2, CORD_WINDOW_SIDE = 1.5;
+  function cordWindow(armpit){
+    const x0 = armpit[0] - CORD_WINDOW_SIDE, x1 = armpit[0] + CORD_WINDOW_SIDE, y0 = armpit[1] - CORD_WINDOW_LEAD, y1 = armpit[1] + CORD_WINDOW_DOWN;
+    return [{ x: x0, y: y0 }, { x: x1, y: y0 }, { x: x1, y: y1 }, { x: x0, y: y1 }];
+  }
+  // How deep the end piece lies when the gap never takes it (a slit, or a sleeve edge that hangs straight down the apex's line): the men's Class A coat's depth, in below the apex
+  // (tests/engine-cord-end.test.cjs recomputes it from that coat).
+  const CORD_SLIT_DEPTH = 1.46;
+  const CORD_SEAM_SPAN = 0.8;   // the length of the seam's top whose direction the cord's line starts from (in)
   function fitCordLayer(ctx, spec, look){
     const layer = ctx.layers[ctx.layers.length - 1], lm = core.landmark(spec, 'cord'), id = ctx.base && ctx.base.id;
     const run = cordRun(id, lm), apex = ARMPIT[id];
     if(!layer || !run || !apex) return;
-    const ring = GARMENT_TOP[id];
-    const outline = ring ? ring.slice(1).concat([ring[0]]) : null;
     // The Aide de Camp cord's run is drawn as wide as the aiguillette's braids it hangs beside, the sheet's own braid thickness (dimensions.braid_thickness_in), not the cord's width.
     const aideThick = look && look.id === 'aide_de_camp' && spec.raw && spec.raw.dimensions && spec.raw.dimensions.braid_thickness_in;
     const width = aideThick > 0 ? aideThick : core.CORD_WIDTH;
-    // The seam the cord follows (the sheet's drawn seam, or the overlay's landmark fitted to the armpit), laid by core.wrapCord: out from under the epaulet flush with its outside end, straight down
-    // to the apex of the gap, where its two edges close in on the apex (core.cordTipCut, the layer's clipOut) so it ends in the point of the armpit with nothing below it.
-    const fit = core.fitCord(run.seam, outline, apex, { exact: run.exact, topAt: run.seam[0] });
-    const wrap = core.wrapCord(fit.points, { width, edge: cordTopEdge(ctx, id), apex });
-    layer.cordPath = { d: wrap.d, pieces: wrap.pieces, points: wrap.points, start: wrap.start, top: wrap.top, bottom: wrap.bottom, end: wrap.end, heading: wrap.heading, offsets: wrap.offsets, topIndex: wrap.topIndex, bottomIndex: wrap.bottomIndex, apex: wrap.apex, edge: wrap.edge, width, exact: fit.exact, seam: fit.points };
+    // The cord is one straight line from where it comes out flush from under the epaulet to its end in the open gap (core.straightCord); the seam gives it its first direction.
+    const seam = run.seam;
+    let k = 1, len = 0;
+    while(k < seam.length - 1 && (len += Math.hypot(seam[k][0] - seam[k - 1][0], seam[k][1] - seam[k - 1][1])) < CORD_SEAM_SPAN) k++;
+    const dl = Math.hypot(seam[k][0] - seam[0][0], seam[k][1] - seam[0][1]) || 1, seamDir = [(seam[k][0] - seam[0][0]) / dl, (seam[k][1] - seam[0][1]) / dl];
+    let edge = cordTopEdge(ctx, id);
+    if(!edge) edge = [seam[0][0] + seamDir[1] * width / 2, seam[0][1] - seamDir[0] * width / 2];
+    const line = core.straightCord({ width, edge, apex, seamDir, gap: GAP[id], slitDepth: CORD_SLIT_DEPTH });
+    layer.cordPath = { d: line.d, pieces: line.pieces, points: line.points, start: line.start, top: line.top, end: line.end, heading: line.heading, depth: line.depth, angle: line.angle, mode: line.mode, apex: line.apex, edge: line.edge,
+      width, exact: run.exact, seam };
     layer.cordLook = look || null;   // which cord the renderer draws along this path (CordBraid; js/engine/render-svg.js)
     layer.clipSil = id;
     layer.clipOuter = true;
-    layer.clipOut = [core.cordTipCut(wrap.bottom, wrap.heading, width)];
+    layer.clipPlus = cordWindow(apex);
     tuckCordUnderEpaulet(ctx, layer);
   }
 

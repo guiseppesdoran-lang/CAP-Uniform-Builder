@@ -71,6 +71,43 @@ function bodySideOf(subs, armpit){
   return (xAt(a, 1) <= xAt(b, 1) ? a : b).map(p => [r(p[0]), r(p[1])]);
 }
 
+// The open gap at the armpit, as a polygon the cord's end piece is tested against (js/engine/profiles-dress.js GAP): where the sleeve hangs apart from the body it is the hole between arm and
+// body (the sheet's own ring, from the armpit down); where a short sleeve lies against the body there is no hole, and it is the open space below the sleeve's hem and outside the body: bounded by the
+// body's side edge from the armpit down GAP_ARC in of outline, the hem from the armpit out GAP_ARC in of outline, and a margin GAP_FAR in to the right of both ends, so a point of it is in the open.
+const GAP_ARC = 6, GAP_FAR = 20;
+function gapOf(subs, armpit){
+  const rings = subs.slice().sort((p, q) => area(q) - area(p)), outer = rings[0];
+  const cx = (Math.min(...outer.map(p => p[0])) + Math.max(...outer.map(p => p[0]))) / 2;
+  const hole = rings.slice(1).find(h => h.reduce((s, p) => s + p[0], 0) / h.length > cx);
+  if(hole) return hole.map(p => [r(p[0]), r(p[1])]);
+  const n = outer.length, at = outer.findIndex(p => p[0] === armpit[0] && p[1] === armpit[1]);
+  if(at < 0) return null;
+  const walk = step => {
+    const pts = [outer[at]]; let arc = 0;
+    for(let k = 1; k < n && arc < GAP_ARC; k++){
+      const a = pts[pts.length - 1], b = outer[(at + step * k + 2 * n) % n];
+      arc += Math.hypot(b[0] - a[0], b[1] - a[1]); pts.push(b);
+    }
+    return pts;
+  };
+  const xAt = (pts, d) => { let arc = 0; for(let i = 1; i < pts.length; i++){ const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if(arc + l >= d){ const t = (d - arc) / l; return pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t; } arc += l; } return pts[pts.length - 1][0]; };
+  const a = walk(1), b = walk(-1), bodyIsA = xAt(a, 1) <= xAt(b, 1), body = bodyIsA ? a : b, hem = bodyIsA ? b : a;
+  const bl = body[body.length - 1], hl = hem[hem.length - 1];
+  const poly = body.concat([[bl[0] + GAP_FAR, bl[1]], [hl[0] + GAP_FAR, hl[1]]], hem.slice(1).reverse());
+  return poly.map(p => [r(p[0]), r(p[1])]);
+}
+function computeGap(){
+  const out = {};
+  for(const id of IDS){
+    const a = manifest.assets.find(x => x.id === id);
+    const subs = silhouette(fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8'));
+    const p = armpitOf(subs), g = p && gapOf(subs, p);
+    if(!g) throw new Error('no gap found on ' + id);
+    out[id] = g;
+  }
+  return out;
+}
+
 function compute(){
   const out = {};
   for(const id of IDS){
@@ -145,12 +182,14 @@ function computeSeam(){
   return out;
 }
 
-module.exports = { compute, computeSide, computeSeam, IDS, armpitOf, bodySideOf, seamOf };
+module.exports = { compute, computeSide, computeSeam, computeGap, IDS, armpitOf, bodySideOf, seamOf, gapOf };
 if(require.main === module){
   const t = compute();
   console.log('  const ARMPIT = {\n' + Object.keys(t).map(k => `    '${k}': [${t[k][0]}, ${t[k][1]}]`).join(',\n') + '\n  };');
   const b = computeSide();
   console.log('\n  const BODY_SIDE = {\n' + Object.keys(b).map(k => `    '${k}': [${b[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
+  const gp = computeGap();
+  console.log('\n  const GAP = {\n' + Object.keys(gp).map(k => `    '${k}': [${gp[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
   const sm = computeSeam();
   console.log('\n  const ARM_SEAM = {\n' + Object.keys(sm).map(k => `    '${k}': [${sm[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
 }

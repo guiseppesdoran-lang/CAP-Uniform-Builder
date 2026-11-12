@@ -321,117 +321,82 @@
     return out;
   }
 
-  // ---- the shoulder cord's path: out from under the epaulet, down to the armpit ----
+  // ---- the shoulder cord: one straight line from under the epaulet to its end in the gap ----
   //
-  // LIVE13 (Ethan, 2026-11-12, on the cord that "somehow deletes itself" at the sleeve and at the top: "thats not how they work"; "the cord, goes all the way around the inner part of the sleve, under
-  // the wearers armpid"; "it should go under the eppaulet flush with the outside edge"; then, on the cord turning in toward the chest at the armpit: "you have them kind of going to the left, which
-  // is not realistic"). A cord is a loop round the arm: seen from the front it comes out from under the epaulet, comes straight down to the armpit and is gone. Neither end is a cap lying on cloth.
-  //   Top: the cord's sleeve-side edge passes through `edge`, the outer lower corner of the epaulet (the line of the epaulet's outside end edge), and the run goes on up under the epaulet, CORD_UP
-  //     further, to be cut by the garment's outline or hidden by the epaulet.
-  //   Armpit: the centre line runs to the apex itself (`apex`, the top of the gap between arm and body, or the inner end of a short sleeve's hem), the seam's shape with a sideways offset that goes
-  //     linearly with the run's length from the top's to nothing at the apex. Over the last cord width before it the two edges close in on the apex (cordTipCut), so the cord ends in the point of the
-  //     armpit and nothing of it is below: the path goes on straight CORD_BEYOND past the apex only so that the braid is whole where the edges close in, and that stretch, with the braid's end cap,
-  //     is cut away.
-  const CORD_UP = 2;           // how far the run is carried up past where it comes out from under the epaulet (in)
-  const CORD_BEYOND = 0.4;     // how far the path goes straight on past the apex, all of it cut away (in): the braid's end cap lies in it
-  const CORD_STEP = 0.05;      // distance between the points the path is laid at (in)
-  const CORD_TOP_SPAN = 0.8;   // the length of the seam's top whose direction the run takes above it (in)
+  // LIVE13 (Ethan, 2026-11-12, over five passes): "it should go under the eppaulet flush with the outside edge"; "the cord, goes all the way around the inner part of the sleve, under the wearers
+  // armpid"; then, on the turn toward the chest and the point at the armpit: "you have them kind of going to the left, which is not realistic"; "Cords look wrong. There's still a bit of coat and shirt
+  // below the cord"; and, choosing a straight cord: "it should go down further until the entire rectangle of the cord is out there. it should be obvious that it bends around the seam". So:
+  //   Top: the cord's sleeve-side edge passes through `edge`, the outer lower corner of the epaulet (the line of the epaulet's outside end edge); the line goes on up under the epaulet, CORD_UP further,
+  //     to be cut by the garment's outline or hidden by the epaulet.
+  //   Line: one straight segment from the top T to the end E; nothing bends and nothing tapers.
+  //   End E: below the apex of the gap between arm and body (or the inner end of a short sleeve's hem), the least depth at which the braid's end piece (the small flat rectangle that ends it, CORD_CAP)
+  //     lies wholly in the open: its four corners, and the CORD_END_CLEAR below it, outside every garment fill (in the gap, or below a short sleeve's hem and outside the body), while the cord still passes
+  //     over the armpit (the apex within half the cord's width of the centre line). E is searched over the points below the apex, within CORD_END_MAX; of the points that pass at the least depth, the one
+  //     whose line leans least from the seam's own direction. Where the gap never takes the end piece (a slit, or a sleeve edge that hangs straight down the apex's line) the line goes through the apex in
+  //     the seam's direction and ends at `slitDepth` below it.
+  const CORD_UP = 2;              // how far the line is carried up past where it comes out from under the epaulet (in)
+  const CORD_END_MAX = 2.5;       // the deepest E searched, below the apex (in)
+  const CORD_END_CLEAR = 0.3;     // how far below the end piece nothing but the open may lie (in)
+  const CORD_END_MARGIN = 0.01;   // how far round the end piece (its top and its sides) the open is asked to reach as well (in)
+  const CORD_CAP = { length: 0.2716, width: 0.7866 };   // the braid's end piece in braid widths: cord-braid.js LOOK.cap, 0.1358 by 0.3933 in at the braid's 0.5 in (tests/engine-cord-end.test.cjs holds them together)
 
-  // The polyline `pts` as points an equal arc length `step` apart, its ends included.
-  function resample(pts, step){
-    const out = [[pts[0][0], pts[0][1]]];
-    let carry = 0;
-    for(let i = 1; i < pts.length; i++){
-      const a = pts[i - 1], b = pts[i], l = Math.hypot(b[0] - a[0], b[1] - a[1]);
-      if(!(l > 1e-12)) continue;
-      let t = step - carry;
-      while(t <= l + 1e-12){ out.push([a[0] + (b[0] - a[0]) * t / l, a[1] + (b[1] - a[1]) * t / l]); t += step; }
-      carry = l - (t - step);
+  // `opts`: { width, edge: [x, y] (the epaulet's outer lower corner), apex: [x, y], seamDir: [x, y] (the unit direction the seam runs down the arm, at its top), gap: polygon [[x, y], ...] the open at
+  // the armpit, or null, slitDepth (in below the apex, for the fallback), up }.
+  // Returns { points, pieces, d, start, top (T), end (E), heading, depth (E below the apex), angle (degrees the line leans from the seam's own direction), mode ('found' | 'slit'), width, apex, edge }.
+  function straightCord(opts){
+    const o = opts || {}, w = o.width > 0 ? o.width : CORD_WIDTH, A = o.apex, up = o.up != null ? o.up : CORD_UP, gap = o.gap || null;
+    const unit = (a, b) => { const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [(b[0] - a[0]) / l, (b[1] - a[1]) / l]; };
+    const dot = (a, b) => a[0] * b[0] + a[1] * b[1], sleeve = h => [h[1], -h[0]];
+    const capLen = CORD_CAP.length * w, capW = CORD_CAP.width * w, maxDepth = o.maxDepth > 0 ? o.maxDepth : CORD_END_MAX;
+    const inGap = p => { if(!gap) return false; let c = false; for(let i = 0, j = gap.length - 1; i < gap.length; j = i++){ const a = gap[i], b = gap[j]; if((a[1] > p[1]) !== (b[1] > p[1]) && p[0] < (b[0] - a[0]) * (p[1] - a[1]) / (b[1] - a[1]) + a[0]) c = !c; } return c; };
+    // the corner the sleeve-side edge goes through (the shoulder point's place where the garment wears no epaulet is the caller's choice); T for a heading h puts that edge on it
+    const corner = o.edge || [0, 0], topFor = h => { const n = sleeve(h); return [corner[0] - n[0] * w / 2, corner[1] - n[1] * w / 2]; };
+    // the seam's own run: the line from T to the apex when T is laid along the seam's direction at the top
+    let hSeam = o.seamDir;
+    for(let i = 0; i < 4; i++) hSeam = unit(topFor(hSeam), A);
+    const angleOf = h => Math.acos(Math.max(-1, Math.min(1, dot(h, hSeam)))) * 180 / Math.PI;
+    // the line to an E: the heading and T settled together (T lies a half width inboard of the corner across the heading)
+    const settle = E => { let h = hSeam; for(let i = 0; i < 5; i++) h = unit(topFor(h), E); return h; };
+    const fits = (E, h) => {
+      const T = topFor(h), n = sleeve(h), ta = dot([A[0] - T[0], A[1] - T[1]], h);
+      if(Math.abs(dot([A[0] - T[0], A[1] - T[1]], n)) > w / 2 || ta <= 0) return false;      // the cord passes over the armpit
+      for(let s = -capLen - CORD_END_MARGIN; s <= CORD_END_CLEAR + 1e-9; s += 0.02) for(let k = -6; k <= 6; k++){
+        const u = k / 6 * (capW / 2 + CORD_END_MARGIN);
+        if(!inGap([E[0] + h[0] * s + n[0] * u, E[1] + h[1] * s + n[1] * u])) return false;
+      }
+      return true;
+    };
+    let best = null;
+    if(gap){
+      const T0 = topFor(hSeam);
+      for(let dy = 0.01; dy <= maxDepth + 1e-9 && !best; dy += 0.01){
+        const x0 = A[0] + (A[0] - T0[0]) * dy / (A[1] - T0[1]);
+        for(let k = -45; k <= 45; k++){
+          const E = [x0 + k * 0.01, A[1] + dy], h = settle(E);
+          if(!fits(E, h)) continue;
+          const a = angleOf(h);
+          if(!best || a < best.angle) best = { E, h, angle: a };
+        }
+      }
     }
-    const last = pts[pts.length - 1], q = out[out.length - 1];
-    if(Math.hypot(last[0] - q[0], last[1] - q[1]) > 1e-9) out.push([last[0], last[1]]);
-    return out;
-  }
-
-  // `seam`: the run the cord follows, top first (sheet inches); opts: { width, edge: [x, y] or null, apex: [x, y], up, beyond }.
-  // Returns { points, pieces, d, start, top, bottom, end, offsets, topIndex, bottomIndex, width, apex, edge }: `points` the path's centre line (top first), `top` the point on it at the epaulet's lower
-  // corner (the cord's centre line there is half a width inboard of `edge`), `bottom` the apex, where the path's run to the armpit ends (`points[bottomIndex]`), `end` the path's last point, CORD_BEYOND
-  // past it, straight on.
-  function wrapCord(seam, opts){
-    const o = opts || {}, w = o.width > 0 ? o.width : CORD_WIDTH, up = o.up != null ? o.up : CORD_UP, beyond = o.beyond != null ? o.beyond : CORD_BEYOND;
-    const A = o.apex, unit = (a, b) => { const l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [(b[0] - a[0]) / l, (b[1] - a[1]) / l]; };
-    const dot = (a, b) => a[0] * b[0] + a[1] * b[1];
-    // the seam as a smooth line, carried straight up past the shoulder
-    const raw = seam.map(p => [p[0], p[1]]);
-    // (up in the direction the seam has over its first CORD_TOP_SPAN, not that of its first segment, which a seam sampled finely or a landmark can leave pointing any way)
-    let kk = 1, run0 = 0;
-    while(kk < raw.length - 1 && (run0 += Math.hypot(raw[kk][0] - raw[kk - 1][0], raw[kk][1] - raw[kk - 1][1])) < CORD_TOP_SPAN) kk++;
-    const up0 = unit(raw[kk], raw[0]);
-    raw.unshift([raw[0][0] + up0[0] * up, raw[0][1] + up0[1] * up]);
-    const S = resample(samplePath(roundPolyline(raw, CORD_ROUND).pieces, CORD_STEP), CORD_STEP);
-    const tangent = i => unit(S[Math.max(0, i - 2)], S[Math.min(S.length - 1, i + 2)]);
-    // ended at the level of the apex across the run: trimmed back to it, or carried straight on to it
-    const tE = tangent(S.length - 1), along = P => dot([P[0] - A[0], P[1] - A[1]], tE);
-    if(along(S[S.length - 1]) < 0){
-      const last = S[S.length - 1], d = -along(last);
-      for(let t = CORD_STEP; t < d - 1e-9; t += CORD_STEP) S.push([last[0] + tE[0] * t, last[1] + tE[1] * t]);
-      S.push([last[0] + tE[0] * d, last[1] + tE[1] * d]);
-    }else{
-      let m = 1;
-      while(m < S.length - 1 && along(S[m]) < 0) m++;
-      const a = S[m - 1], b = S[m], da = along(a), db = along(b), k = db === da ? 1 : Math.max(0, Math.min(1, -da / (db - da)));
-      S.length = m;
-      S.push([a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]);
+    let E, h, mode, angle;
+    if(best){ E = best.E; h = best.h; angle = best.angle; mode = 'found'; }
+    else{
+      h = hSeam; angle = 0; mode = 'slit';
+      const dy = o.slitDepth > 0 ? o.slitDepth : 0;
+      E = [A[0] + h[0] * dy / h[1], A[1] + dy];
     }
-    const n = S.length, T = S.map((p, i) => tangent(i)), N = T.map(t => [t[1], -t[0]]);     // N: toward the sleeve (the sheet's right, for a cord running down)
-    const arc = [0];
-    for(let i = 1; i < n; i++) arc.push(arc[i - 1] + Math.hypot(S[i][0] - S[i - 1][0], S[i][1] - S[i - 1][1]));
-    // the top: the centre line passes half a width to the body side of the epaulet's outer lower corner, so the braid's sleeve-side edge is on the corner (the seam point whose normal runs through
-    // the corner, found by taking the local normal at each guess)
-    let jTop = 0, oTop = 0, sTopAlong = 0;
-    if(o.edge){
-      const nearest = q => { let best = 0, bd = Infinity; for(let i = 0; i < n; i++){ const d = Math.hypot(S[i][0] - q[0], S[i][1] - q[1]); if(d < bd){ bd = d; best = i; } } return best; };
-      let j = nearest(o.edge);
-      for(let it = 0; it < 4; it++) j = nearest([o.edge[0] - N[j][0] * w / 2, o.edge[1] - N[j][1] * w / 2]);
-      jTop = j;
-      oTop = dot([o.edge[0] - S[j][0], o.edge[1] - S[j][1]], N[j]) - w / 2;
-      sTopAlong = dot([o.edge[0] - S[j][0], o.edge[1] - S[j][1]], T[j]);   // the corner's place along the run from that sample, so the top lies exactly level with it
-    }
-    // the centre line ends on the apex: the offset goes from the top's to the one that puts the last point there
-    const oEnd = dot([A[0] - S[n - 1][0], A[1] - S[n - 1][1]], N[n - 1]);
-    const C = S.map((p, i) => {
-      const k = i <= jTop || arc[n - 1] === arc[jTop] ? 0 : (arc[i] - arc[jTop]) / (arc[n - 1] - arc[jTop]), off = oTop + (oEnd - oTop) * k;
-      return [p[0] + N[i][0] * off, p[1] + N[i][1] * off];
-    });
-    // straight on past the apex, in the direction the path has there (all of it cut away)
-    const tau = unit(C[Math.max(0, n - 3)], C[n - 1]), path = C.map(p => [p[0], p[1]]), from = C[n - 1];
-    for(let t = CORD_STEP; t < beyond - 1e-9; t += CORD_STEP) path.push([from[0] + tau[0] * t, from[1] + tau[1] * t]);
-    if(beyond > 0) path.push([from[0] + tau[0] * beyond, from[1] + tau[1] * beyond]);
-    const pieces = [];
-    for(let i = 1; i < path.length; i++) if(Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]) > 1e-9) pieces.push({ type: 'L', a: path[i - 1], b: path[i] });
+    const T = topFor(h), start = [T[0] - h[0] * up, T[1] - h[1] * up];
     const f = v => String(Math.round(v * 10000) / 10000);
-    let d = `M${f(pieces[0].a[0])},${f(pieces[0].a[1])}`;
-    for(const p of pieces) d += `L${f(p.b[0])},${f(p.b[1])}`;
-    const cT = unit(C[Math.max(0, jTop - 1)], C[Math.min(n - 1, jTop + 1)]), top = [C[jTop][0] + cT[0] * sTopAlong, C[jTop][1] + cT[1] * sTopAlong];
-    return { points: path, pieces, d, start: path[0], top, bottom: C[n - 1], end: path[path.length - 1], width: w, heading: tau,
-      bottomIndex: n - 1, topIndex: jTop, offsets: { top: oTop, bottom: oEnd }, apex: [A[0], A[1]], edge: o.edge ? [o.edge[0], o.edge[1]] : null };
-  }
-
-  // The part of the cord that is cut away at the armpit, as one polygon in the cord's own frame placed on the path: everything from one cord width before the apex on, outside the triangle whose base is
-  // the cord's width across at that place and whose point is the apex; so the cord's two edges close in on the apex and nothing of it lies beyond.
-  // `at`: the apex [x, y]; `heading`: the unit direction the path has there; scene inches, as points { x, y }.
-  function cordTipCut(at, heading, width){
-    const t = heading, n = [t[1], -t[0]], h = width / 2, B = 10;
-    const conv = (s, u) => ({ x: at[0] + t[0] * s + n[0] * u, y: at[1] + t[1] * s + n[1] * u });
-    return [conv(-width, -B), conv(-width, -h), conv(0, 0), conv(-width, h), conv(-width, B), conv(B, B), conv(B, -B)];
+    return { points: [start, E], pieces: [{ type: 'L', a: start, b: E }], d: `M${f(start[0])},${f(start[1])}L${f(E[0])},${f(E[1])}`, start, top: T, end: E, heading: h, depth: E[1] - A[1], angle, mode, width: w,
+      apex: [A[0], A[1]], edge: o.edge ? [o.edge[0], o.edge[1]] : null };
   }
 
   return {
     UNITS_PER_INCH,
     CORD_WIDTH,
-    CORD_UP, CORD_BEYOND,
-    wrapCord,
-    cordTipCut,
+    CORD_UP, CORD_END_MAX, CORD_END_CLEAR, CORD_CAP,
+    straightCord,
     ANCHOR_ALIASES,
     normalizeSpec,
     createSpecStore,

@@ -273,32 +273,27 @@ test('the engine\'s ARM_SEAM table is the drawn armhole seam of the current cord
   }
 });
 
-// LIVE13 (Ethan, 2026-11-12): the cord is laid from the epaulet's corner and the armpit, the seam giving it its shape (tests/engine-cord-end.test.cjs pins both ends: flush under the epaulet, ending in the point of the armpit); this test holds the run
-// to the seam in between, one smooth line with no end of its own in sight.
-test('every cord kind on every garment and both sexes: one smooth run from under the epaulet to the armpit, on the drawn seam to within half the braid\'s width (9.3)', async () => {
+// LIVE13 (Ethan, 2026-11-12): the cord is one straight line from the epaulet's corner to its end in the gap below the armpit (tests/engine-cord-end.test.cjs pins both ends); this test holds that
+// line to the sheet: it starts within 4 degrees of the seam's own direction, never fades, and is the width the engine states.
+test('every cord kind on every garment and both sexes: one straight line from under the epaulet to below the armpit, leaning no more than 4 degrees from the drawn seam (9.3)', async () => {
   const armpits = MEASURE_ARMPIT.compute();
   let checked = 0;
   for(const [gid, uniform, gender, opt] of FIT_GARMENTS) for(const k of KINDS){
     const scene = await P.composeUniform(hb(uniform, gender, 'cadet', 'C/Maj', opt, k.replace(/-/g, '_')), store);
-    const cl = scene.layers.find(l => l.id === `${gid}-cord-${k}`);
+    const cl = scene.layers.find(l => l.id === `${gid}-cord-${k}` && l.cordPath && !l.cordPath.pendant);
     const tag = `${gid} ${k}`;
     assert.ok(cl && cl.cordPath, `${tag}: the cord is drawn with its fitted path`);
     if(k === 'aide-de-camp'){
-      // E128: the aide cord's hanging pendant is one braid straight down from the attachment (tests/engine-live-aiguillette); its run is the shoulder cord's, wrapped like every cord.
-      const pend = scene.layers.find(l => l.cordPath && l.cordPath.pendant), run = scene.layers.find(l => l.cordPath && !l.cordPath.pendant && l.id === `${gid}-cord-aide-de-camp`);
-      assert.ok(pend && run && run.cordPath.heading && run.clipOut.length === 1, `${tag}: the aide cord's run is laid like every cord, beside its pendant`);
+      // E128: the aide cord's hanging pendant is one braid straight down from the attachment (tests/engine-live-aiguillette); its run is the shoulder cord's, laid like every cord.
+      const pend = scene.layers.find(l => l.cordPath && l.cordPath.pendant);
+      assert.ok(pend && cl.cordPath.heading && cl.cordPath.pieces.length === 1, `${tag}: the aide cord's run is one straight line, beside its pendant`);
       checked++;
       continue;
     }
-    const { pieces, top, bottom } = cl.cordPath;
-    // Continuity: each piece starts where the one before ends, along the same tangent.
-    assert.ok(pieces.length >= 3, `${tag}: ${pieces.length} pieces`);
-    for(let i = 1; i < pieces.length; i++){
-      const a = pieces[i - 1], b = pieces[i];
-      assert.ok(Math.hypot(a.b[0] - b.a[0], a.b[1] - b.a[1]) <= 0.02, `${tag}: piece ${i} starts ${Math.hypot(a.b[0] - b.a[0], a.b[1] - b.a[1]).toFixed(3)} in from where piece ${i - 1} ends`);
-      const ta = [a.b[0] - a.a[0], a.b[1] - a.a[1]], tb = [b.b[0] - b.a[0], b.b[1] - b.a[1]];
-      assert.ok(angDiff(ang(ta), ang(tb)) <= 5, `${tag}: the tangent turns ${angDiff(ang(ta), ang(tb)).toFixed(1)} degrees where piece ${i - 1} meets piece ${i}`);
-    }
+    const { pieces, points, top, end } = cl.cordPath;
+    assert.equal(pieces.length, 1, `${tag}: one straight piece`);
+    assert.equal(points.length, 2, `${tag}: from its start to its end`);
+    assert.ok(Math.hypot(pieces[0].b[0] - end[0], pieces[0].b[1] - end[1]) < 1e-9 && Math.hypot(pieces[0].a[0] - cl.cordPath.start[0], pieces[0].a[1] - cl.cordPath.start[1]) < 1e-9, `${tag}: the piece runs from the start to the end`);
     // LIVE13 E122 (Ethan: "they shouldnt conflict with the ribbons ever ... im not sure why you have them fading out"): full opacity, nothing on the cord fades it.
     for(const gone of ['fade', 'tail', 'visible', 'under']) assert.ok(!(gone in cl.cordPath), `${tag}: no ${gone} on the fitted path`);
     assert.ok(!('opacity' in cl) && !('fillOpacity' in cl), `${tag}: the cord layer carries no opacity`);
@@ -311,21 +306,20 @@ test('every cord kind on every garment and both sexes: one smooth run from under
     const notch = notchOf(gid);
     assert.ok(Math.hypot(cl.cordPath.apex[0] - notch[0], cl.cordPath.apex[1] - notch[1]) <= 0.05, `${tag}: the apex is ${Math.hypot(cl.cordPath.apex[0] - notch[0], cl.cordPath.apex[1] - notch[1]).toFixed(3)} in from the silhouette's notch`);
     assert.deepEqual(cl.cordPath.apex, armpits[gid]);
-    // The braid's centre line leaves the seam only by the sideways offset the wrap lays (up to half the braid's width at either end, going linearly between), and it never runs below the armpit
-    // except in the turn under the arm.
-    const BRAID = core.CORD_WIDTH / 2, seam = cl.cordPath.seam;
+    // the line's direction against the seam's, over the seam's first 0.8 in, and the line against the seam between the top and the apex: the sheets' seams bow (the women's coat's by 0.9 in)
+    const seam = cl.cordPath.seam, h = cl.cordPath.heading;
+    assert.ok(cl.cordPath.angle <= 4, `${tag}: the line leans ${cl.cordPath.angle.toFixed(2)} degrees from the seam's own direction`);
     const seamDist = q => Math.min(...seam.slice(1).map((r, i) => segDist(q, seam[i], r)));
     let maxDev = 0;
-    for(let i = cl.cordPath.topIndex; i <= cl.cordPath.bottomIndex; i += 4) maxDev = Math.max(maxDev, seamDist(cl.cordPath.points[i]));
-    assert.ok(maxDev <= BRAID + 0.02, `${tag}: the braid's centre line strays ${maxDev.toFixed(3)} in from the drawn seam (it may not pass half the braid's width, ${BRAID})`);
-    assert.ok(Math.abs(cl.cordPath.offsets.top) <= BRAID + 0.02 && Math.abs(cl.cordPath.offsets.bottom) <= BRAID + 0.02, `${tag}: offsets ${JSON.stringify(cl.cordPath.offsets)}`);
+    for(let t = 0; t <= 1; t += 0.05) maxDev = Math.max(maxDev, seamDist([top[0] + (cl.cordPath.apex[0] - top[0]) * t, top[1] + (cl.cordPath.apex[1] - top[1]) * t]));
+    assert.ok(maxDev <= 1.0, `${tag}: the straight line is ${maxDev.toFixed(3)} in from the drawn seam`);
     assert.equal(cl.clipOuter, true, `${tag}: cut to the sheet's outer outline, not to the gap between arm and body`);
     assert.equal(cl.clipSil, gid, `${tag}: cut to the sheet's silhouette`);
     if(uniform === 'blues_a'){
       // Under the shoulder board's strip at the shoulder seam: the strip covers the run's top end (it is drawn over the cord).
       const strip = scene.layers.find(x => x.key === 'epaulet:left'), o = strip.origin, R = strip.rotate || 0;
       const poly = [[strip.x, strip.y], [strip.x + strip.w, strip.y], [strip.x + strip.w, strip.y + strip.h], [strip.x, strip.y + strip.h]].map(([x, y]) => { const q = core.rotatePoint({ x, y }, o, R); return [q.x, q.y]; });
-      const underStrip = Math.min(...cl.cordPath.points.map(q => polyDist(q, poly)));
+      const underStrip = Math.min(...[0, 0.25, 0.5, 0.75, 1].map(t => polyDist([cl.cordPath.start[0] + (top[0] - cl.cordPath.start[0]) * t, cl.cordPath.start[1] + (top[1] - cl.cordPath.start[1]) * t], poly)));
       assert.ok(underStrip <= 0.02, `${tag}: the braid passes ${underStrip.toFixed(3)} in from the strip: it is not under it`);
       assert.ok(cl.z < strip.z, `${tag}: under the strip`);
     }
