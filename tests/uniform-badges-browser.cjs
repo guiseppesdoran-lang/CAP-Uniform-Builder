@@ -78,8 +78,8 @@ const ES = 'emergency_services_badge', PILOT = 'CAPPilot1_FA9D33EA587D8';
     // The picker's tiles by badge name: { name: checked }.
     await ev(`window.__open = async () => { document.getElementById('expandBadges').click(); await new Promise(r => setTimeout(r, 300)); }`);
     await ev(`window.__close = async () => { document.getElementById('galleryModalCloseBtn').click(); await __settle(); }`);
-    await ev(`window.__tiles = () => Object.fromEntries([...document.querySelectorAll('#galleryModalHost .galleryTile')].map(t => [t.querySelector('.title')?.textContent, !!t.querySelector('.bdChk')?.checked]))`);
-    await ev(`window.__add = async id => { const name = getBadgeDisplayName(id); const tile = [...document.querySelectorAll('#galleryModalHost .galleryTile')].find(t => t.querySelector('.title')?.textContent === name); if(!tile) throw new Error('no tile for ' + name); const c = tile.querySelector('.bdChk'); c.checked = true; c.dispatchEvent(new Event('change', { bubbles: true })); await __settle(); }`);
+    await ev(`window.__tiles = () => Object.fromEntries([...document.querySelectorAll('#galleryModalHost .vpCell')].map(t => [t.querySelector('.vpLabel')?.textContent, t.querySelector('.vpOption')?.getAttribute('aria-pressed') === 'true']))`);
+    await ev(`window.__add = async id => { const name = getBadgeDisplayName(id); const tile = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(t => t.querySelector('.vpLabel')?.textContent === name); if(!tile) throw new Error('no tile for ' + name); const b = tile.querySelector('.vpOption'); if(b.getAttribute('aria-pressed') !== 'true') b.click(); await __settle(); }`);
     await ev(`window.__state = () => {
       const note = document.getElementById('badgesNotWornNote');
       return {

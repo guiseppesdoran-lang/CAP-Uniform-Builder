@@ -45,10 +45,11 @@ test('badge ids that are image hashes have a real display name',()=>{
   for(const id of hashed) assert.match(names,new RegExp(`\\b${id}:\\s*'[^']+'`),`${id} has a name`);
 });
 
-test('all three badge tile builders use the plain-language line',()=>{
-  for(const file of ['galleries.js','wiring.js','patches.js']){
+test('the badge tiles of the chooser use the plain-language line, and no builder prints the abbreviation line',()=>{
+  // The one list is js/pick-lists.js (2026-11-12: picture tiles); the sidebar copies of it are gone.
+  assert.match(fs.readFileSync(path.join(__dirname,'..','js','pick-lists.js'),'utf8'),/getBadgeTileMetaHtml\(/,'pick-lists.js uses the shared line');
+  for(const file of ['galleries.js','wiring.js','patches.js','pick-lists.js']){
     const text=fs.readFileSync(path.join(__dirname,'..','js',file),'utf8');
-    assert.match(text,/getBadgeTileMetaHtml\(/,`${file} uses the shared line`);
     assert.doesNotMatch(text,/Regulation scale: \$\{Math\.round\(getBadgeRenderSize/,`${file} no longer prints the abbreviation line`);
   }
 });

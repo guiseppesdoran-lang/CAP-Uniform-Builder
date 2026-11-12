@@ -1432,121 +1432,15 @@ function rebuildBadgesFromGallery(){
   syncCommandInsigniaTiles();
 }
 
-// One command pin is worn, so a change to one command card (or to the row on the Items step) shows on the other card of an open chooser.
+// One command pin is worn, so a change to one command tile (or to the row on the Items step) shows on the other tile of an open chooser: the chooser's tiles are put as the state says.
 function syncCommandInsigniaTiles(){
-  if(typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
-  document.querySelectorAll('.galleryTile[data-badge-id]').forEach(tile => {
-    const id = tile.dataset.badgeId;
-    if(!isCommandInsigniaBadge(id)) return;
-    const on = !!State.badgeSelections[id]?.checked;
-    const chk = tile.querySelector('.bdChk'), gradChk = tile.querySelector('.cmdGradChk');
-    if(chk) chk.checked = on;
-    if(gradChk) gradChk.checked = on && !!State.commandInsignia?.graduatedCommander;
-  });
+  if(typeof window !== 'undefined' && typeof window.capubSyncBadgeTiles === 'function') window.capubSyncBadgeTiles();
 }
 
-// A level picker on the tile of a badge earned in levels (STEM, Cyber, NRA).
-function badgeLevelSelectHtml(id){
-  const list = window.CAPUBBadgeCatalog?.levels(id);
-  if(!list) return '';
-  return `<div class="miniRow"><label>Level <select class="bdLevel">${list.map(([k,label])=>`<option value="${escapeHtml(k)}">${escapeHtml(label)}</option>`).join('')}</select></label></div>`;
-}
-function wireBadgeLevelSelect(tile, id){
-  const select = tile.querySelector('.bdLevel');
-  if(!select) return;
-  const sel = State.badgeSelections[id] || (State.badgeSelections[id] = {checked:false});
-  select.value = CAPUBBadgeCatalog.level(id, sel.level)[0];
-  select.onchange = ()=>{
-    sel.level = select.value;
-    State.badgeSelections[id] = sel;
-    const img = tile.querySelector('img');
-    if(img) img.src = ASSET(getBadgeAssetPath(id));
-    if(!sel.checked){
-      sel.checked = true;
-      const chk = tile.querySelector('.bdChk');
-      if(chk) chk.checked = true;
-    }
-    rebuildBadgesFromGallery();
-  };
-}
-
+// The badges are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles; the sidebar keeps no list of its own.
 function buildBadgeGallery(){
   const wrap = by('badgeGallery');
-  if(!wrap) return;
-
-  normalizeBadgeSelections();
-  wrap.innerHTML = '';
-
-  // Only the badges the selected uniform wears (js/badge-rules.js isBadgeWornOnCurrentUniform, LIVE13 E67).
-  const eligible = getEligibleBadgeIdsForMembership(State.membership).filter(id => isBadgeWornOnCurrentUniform(id));
-
-  const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
-
-  for(let idx=0; idx<showCount; idx++){
-    const id = eligible[idx];
-    const sel = State.badgeSelections[id] || {checked:false};
-
-    const tile = document.createElement('div');
-    tile.className = 'galleryTile';
-    tile.dataset.badgeId = id;
-
-    const title = getBadgeDisplayName(id);
-    tile.innerHTML = `
-      <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
-      <div style="flex:1;min-width:0;">
-        <div class="title">${escapeHtml(title)}</div>
-        <div class="miniRow">
-          <label><input type="checkbox" class="bdChk"> Add</label>
-        </div>
-        ${badgeLevelSelectHtml(id)}
-        ${isCommandInsigniaBadge(id) ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        ${getBadgeTileMetaHtml(id)}
-      </div>
-    `;
-    wireBadgeLevelSelect(tile, id);
-
-    const chk = tile.querySelector('.bdChk');
-    const gradChk = tile.querySelector('.cmdGradChk');
-    chk.checked = !!sel.checked;
-    if(gradChk) gradChk.checked = !!sel.checked && !!State.commandInsignia?.graduatedCommander;
-
-    chk.onchange = ()=>{
-      if(isCommandInsigniaBadge(id) && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-        chk.checked = false;
-        sel.checked = false;
-        State.badgeSelections[id] = sel;
-        rebuildBadgesFromGallery();
-        return;
-      }
-      sel.checked = chk.checked;
-      State.badgeSelections[id] = sel;
-      if(chk.checked) enforceExclusive(id);
-      rebuildBadgesFromGallery();
-    };
-    if(gradChk){
-      gradChk.onchange = ()=>{
-        if(gradChk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-          gradChk.checked = false;
-          sel.checked = false;
-          chk.checked = false;
-          State.badgeSelections[id] = sel;
-          rebuildBadgesFromGallery();
-          return;
-        }
-        if(!State.commandInsignia) State.commandInsignia = {};
-        State.commandInsignia.graduatedCommander = gradChk.checked;
-        if(gradChk.checked){
-          sel.checked = true;
-          chk.checked = true;
-          State.badgeSelections[id] = sel;
-          chooseOnlyCommandInsignia(id);
-        }
-        rebuildBadgesFromGallery();
-      };
-    }
-
-    wrap.appendChild(tile);
-  }
+  if(wrap) wrap.innerHTML = '';
 }
 
 /* ===========================

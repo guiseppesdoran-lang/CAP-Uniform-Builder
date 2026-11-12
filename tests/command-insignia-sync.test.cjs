@@ -97,14 +97,15 @@ test('choosing one command pin takes the other off', () => {
   assert.deepEqual(out, { squadron: false, group: true, badges: [GROUP] });
 });
 
-test('every chooser gives each command pin the Graduated commander box and holds the one pin', () => {
-  for(const f of ['js/galleries.js', 'js/wiring.js', 'js/patches.js']){
-    const src = read(f);
-    assert.match(src, /isCommandInsigniaBadge\(id\)[^`\n]*\? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander/, f);
-    assert.doesNotMatch(src, /id\s*===?\s*'squadron_commander_badge'/, f + ' asks for the squadron pin by name');
-    assert.match(src, /chooseOnlyCommandInsignia\(id\)/, f);
-    assert.match(src, /gradChk\.checked = !!sel\.checked && !!State\.commandInsignia\?\.graduatedCommander/, f);
-  }
+test('the chooser gives each command pin the Graduated commander switch and holds the one pin (a switch under the tile, not a box: 2026-11-12, no checkboxes)', () => {
+  const src = read('js/pick-lists.js');
+  assert.match(src, /isCommand\(id\)\)\{\s*const button = el\('button', 'ghost vpSwitch', 'Graduated commander'\);/);
+  assert.match(src, /d\.chooseOnlyCommand\(id\)/);
+  assert.match(src, /chooseOnlyCommand: id => chooseOnlyCommandInsignia\(id\)/);
+  assert.doesNotMatch(src, /id\s*===?\s*'squadron_commander_badge'/, 'asks for the squadron pin by name');
+  assert.doesNotMatch(src.replace(/\/\/.*$/gm, ''), /checkbox|cmdGradChk/);
+  // The old sidebar lists, with their boxes, are gone: the chooser window is the one list.
+  for(const f of ['js/galleries.js', 'js/patches.js']) assert.doesNotMatch(read(f), /class="cmdGradChk"|class="bdChk"/, f);
 });
 
 test('the sync has no path from the pin to the ribbon or back', () => {
@@ -139,28 +140,18 @@ test('the texts give the rule and its paragraph: no slot letters, no invented ex
   assert.doesNotMatch(warn, /alert\(|Command Council|specifically authorized|will not render/);
 });
 
-test('an open chooser follows: the command cards show the one pin worn and whether it is a graduated commander\'s', () => {
+test('an open chooser follows: the badge rebuild ends by putting every tile of the open chooser as the state says (one pin worn, graduated or not)', () => {
   const { context, referenceErrors } = loadPageScripts();
   assert.deepEqual(referenceErrors, []);
-  // Three cards as a chooser draws them: both command pins and one other badge, each with its boxes as they stood before the change.
-  const card = (id, on, grad) => {
-    const boxes = { '.bdChk': { checked: on }, '.cmdGradChk': grad === null ? null : { checked: grad } };
-    return { dataset: { badgeId: id }, querySelector: sel => boxes[sel] || null, boxes };
-  };
-  const cards = [card(SQUADRON, true, true), card(GROUP, false, false), card('pilot_badge', true, null)];
-  context.document = { querySelectorAll: sel => sel === '.galleryTile[data-badge-id]' ? cards : [] };
+  let synced = 0;
+  context.capubSyncBadgeTiles = () => { synced++; };
   vm.runInContext(`
     State.membership = 'senior'; State.gender = 'male'; State.rank = 'Lt Col'; State.uniform = 'blues_a';
     normalizeBadgeSelections();
     State.commandInsignia = { graduatedCommander: true };
-    State.badgeSelections['${GROUP}'].checked = true; State.badgeSelections['${SQUADRON}'].checked = false;
     syncCommandInsigniaTiles();
   `, context);
-  const shown = cards.map(c => [c.boxes['.bdChk'].checked, c.boxes['.cmdGradChk'] && c.boxes['.cmdGradChk'].checked]);
-  assert.deepEqual(shown, [[false, false], [true, true], [true, null]], 'squadron card off, group card on as graduated, the other badge untouched');
-  vm.runInContext(`State.commandInsignia.graduatedCommander = false; syncCommandInsigniaTiles();`, context);
-  assert.equal(cards[1].boxes['.cmdGradChk'].checked, false, 'a current commander: the Graduated box is clear');
-
-  for(const file of ['js/galleries.js', 'js/wiring.js', 'js/patches.js']) assert.match(read(file), /tile\.dataset\.badgeId = id;/, file + ' names its badge cards');
-  assert.match(read('js/galleries.js'), /rebuildRibbonsFromGallery\(\);\n[^\n]*capubSyncBadgesNotWornNote[^\n]*\n\s*syncCommandInsigniaTiles\(\);\n\}/, 'the badge rebuild ends by bringing open cards in step');
+  assert.equal(synced, 1, 'the chooser\'s tiles are put as the state says');
+  assert.match(read('js/galleries.js'), /rebuildRibbonsFromGallery\(\);\n[^\n]*capubSyncBadgesNotWornNote[^\n]*\n\s*syncCommandInsigniaTiles\(\);\n\}/, 'the badge rebuild ends by bringing the open tiles in step');
+  assert.match(read('js/wiring.js'), /window\.capubSyncBadgeTiles = \(\) => pickers\.forEach\(entry => entry\.refresh\(\)\);/);
 });

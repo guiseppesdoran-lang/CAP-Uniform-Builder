@@ -125,7 +125,7 @@ test('on the page: a badge selected on the Class B stays selected on the ABU, is
   assert.equal(ev('capubBadgesNotWornLine()'), '');
 });
 
-test('the picker and the sidebar gallery list only the badges the uniform wears; the badge limit counts only those', () => {
+test('the picker lists only the badges the uniform wears; the badge limit counts only those', () => {
   const wiring = read('js/wiring.js');
   assert.match(wiring, /getEligibleBadgeIdsForMembership\(State\.membership\)\.filter\(id => isBadgeWornOnCurrentUniform\(id\)\)/);
   assert.match(wiring, /note\.textContent = notWornLine \+ ' They stay selected for the uniforms that wear them\.'/);
@@ -133,7 +133,6 @@ test('the picker and the sidebar gallery list only the badges the uniform wears;
   assert.match(wiring, /badges: countBadgesWornForLimit\(\)/);
   assert.match(read('js/badge-rules.js'), /const selected = \[\.\.\.new Set\(ids \|\| \[\]\)\]\.filter\(id => !isCommandInsigniaBadge\(id\) && isBadgeWornOnCurrentUniform\(id\)\);/);
   assert.match(wiring, /function capubSyncBadgesNotWornNote\(\)\{/);
-  assert.match(read('js/galleries.js'), /getEligibleBadgeIdsForMembership\(State\.membership\)\.filter\(id => isBadgeWornOnCurrentUniform\(id\)\)/);
 });
 
 test('in a real browser, an ES badge chosen on the Class B is hidden and not drawn on the ABU, and back on the Class B (needs Chrome)', { timeout: 240000 }, t => {

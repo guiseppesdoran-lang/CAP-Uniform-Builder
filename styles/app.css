@@ -1563,6 +1563,20 @@ html[data-access="guest"] #accessGate{display:none}
 .vpTick svg{display:block;width:14px;height:14px}
 .vpNote{margin-top:var(--s2)}
 .vpOption.noPicture{justify-content:center;min-height:56px}
+/* Switch tiles (mode "toggle", js/visual-picker.js): a list of badges, ribbons or patches, any number on. A tile sits in a cell with its own controls under it (the level, the
+   count, the devices), shown while it is on. Two to a row on a phone, as many as fit on a desktop. */
+.vpOption[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
+.vpOption[aria-pressed="true"] .vpTick{display:flex}
+.vp[data-mode="toggle"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.vpCell{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
+.vpCell[hidden],.vpSection[hidden],.vpControls[hidden]{display:none}
+.vpCaption{display:block;min-width:0;font-size:.6875rem;font-weight:400;line-height:1.25;color:var(--muted);overflow-wrap:anywhere}
+.vpControls{display:grid;gap:var(--s1);min-width:0;padding:0 2px}
+.vpControls select{min-width:0;width:100%}
+.vpControlStack{display:grid;gap:var(--s1);min-width:0}
+.vpControlStack .ribbonAwardLabel{margin:0}
+.vpSwitch{width:100%;min-height:36px;padding:0 var(--s2);font-size:var(--t-xs)}
+.vpSwitch[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg)}
 /* Small tiles (data-size="small"): a group of many choices whose pictures are small, such as the grades' insignia, wrap to four or five to a row at the sidebar's width. */
 .vp[data-size="small"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:4px}
 .vp[data-size="small"] .vpOption{padding:4px;gap:2px}

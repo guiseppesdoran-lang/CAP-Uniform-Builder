@@ -1102,93 +1102,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         .filter(id => isBadgeEligibleForMembership(id, State.membership));
     }
 
+    // The badges are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles; the sidebar keeps no list of its own.
     buildBadgeGallery = function capubBuildBadgeGalleryUtilityAware(){
       const wrap = by('badgeGallery');
-      if(!wrap) return;
-
-      normalizeBadgeSelections();
-      wrap.innerHTML = '';
-
-      const utilityMode = capubIsUtilityUniform();
-      const eligible = utilityMode
-        ? capubGetUtilityBadgeIds()
-        : getEligibleBadgeIdsForMembership(State.membership).filter(id => !CAPUB_UTILITY_ONLY_BADGE_IDS.has(id));
-      // The document-defined utility set is intentionally small; show the
-      // complete reviewed fabric-insignia catalog without an expansion step.
-      const showCount = utilityMode ? eligible.length : (State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length));
-
-      for(let idx=0; idx<showCount; idx++){
-        const id = eligible[idx];
-        const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
-        const title = CAPUB_UTILITY_BADGE_LABELS[id] || getBadgeDisplayName(id);
-        const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
-        const previewPath = utilityMode ? (utilityCandidates[0] || '') : getBadgeAssetPath(id);
-
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.dataset.badgeId = id;
-        tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${escapeHtml(title)}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
-          <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}</div>
-            ${utilityMode ? '<div class="sub">Silver-on-blue utility badge</div>' : ''}
-            <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
-            ${utilityMode ? '' : badgeLevelSelectHtml(id)}
-            ${isCommandInsigniaBadge(id) && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            ${getBadgeTileMetaHtml(id, utilityMode ? 'In its set position on the field uniform' : '')}
-          </div>`;
-        wireBadgeLevelSelect(tile, id);
-
-        const chk = tile.querySelector('.bdChk');
-        const gradChk = tile.querySelector('.cmdGradChk');
-        chk.checked = !!sel.checked;
-        if(gradChk) gradChk.checked = !!sel.checked && !!State.commandInsignia?.graduatedCommander;
-
-        chk.onchange = () => {
-          if(isCommandInsigniaBadge(id) && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-            chk.checked = false;
-            sel.checked = false;
-            State.badgeSelections[id] = sel;
-            rebuildBadgesFromGallery();
-            return;
-          }
-          if(chk.checked && CAPUB_INCIDENT_COMMANDER_BADGE_IDS.has(id)){
-            CAPUB_INCIDENT_COMMANDER_BADGE_IDS.forEach(otherId => {
-              if(otherId === id) return;
-              if(State.badgeSelections[otherId]) State.badgeSelections[otherId].checked = false;
-              State.badges = (State.badges || []).filter(selectedId => selectedId !== otherId);
-            });
-          }
-          if(chk.checked && GOVERNANCE_SERVICE_BADGE_IDS.has(id)){
-            GOVERNANCE_SERVICE_BADGE_IDS.forEach(otherId => {
-              if(otherId === id) return;
-              if(State.badgeSelections[otherId]) State.badgeSelections[otherId].checked = false;
-              State.badges = (State.badges || []).filter(selectedId => selectedId !== otherId);
-            });
-          }
-          sel.checked = chk.checked;
-          State.badgeSelections[id] = sel;
-          if(chk.checked && isCommandInsigniaBadge(id)) chooseOnlyCommandInsignia(id);
-          rebuildBadgesFromGallery();
-        };
-        if(gradChk){
-          gradChk.onchange = () => {
-            if(gradChk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-              gradChk.checked = false;
-              sel.checked = false;
-              chk.checked = false;
-              State.badgeSelections[id] = sel;
-              rebuildBadgesFromGallery();
-              return;
-            }
-            if(!State.commandInsignia) State.commandInsignia = {};
-            State.commandInsignia.graduatedCommander = gradChk.checked;
-            if(gradChk.checked){ sel.checked = true; chk.checked = true; State.badgeSelections[id] = sel; chooseOnlyCommandInsignia(id); }
-            rebuildBadgesFromGallery();
-          };
-        }
-        wrap.appendChild(tile);
-      }
+      if(wrap) wrap.innerHTML = '';
     };
 
     const capubPreviousGetRenderableCountedBadgeIds = getRenderableCountedBadgeIds;
@@ -1281,6 +1198,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       });
       return found;
     }
+    // The member report import asks which patch a credited activity stands for (js/member-report-import.js: an activity with none is told in the panel's fold).
+    window.CAPUBDetectNcsaPatches = capubDetectNCSAPatchesFromReport;
 
     function capubDetectUnitCharterFromReport(text){
       const t = String(text || '').replace(/\s+/g, ' ');

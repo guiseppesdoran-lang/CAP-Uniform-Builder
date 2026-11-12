@@ -309,6 +309,7 @@ function capubRefreshModalCount(){
 }
 function openGalleryModal(kind){
   capubModalKind = kind;
+  window.CAPUB_MODAL_PICKERS = [];   // the picture pickers of the window (a builder that has some lists them: the search reads them)
   modalHost.innerHTML = '';
 
   const host = document.createElement('div');
@@ -397,70 +398,19 @@ function openGalleryModal(kind){
       modalHost.appendChild(note);
     }
 
-    const buildTile = id => {
-        const sel = State.badgeSelections[id] || {checked:false};
-        const title = getBadgeDisplayName(id);
-
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.dataset.badgeId = id;
-        tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
-          <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}</div>
-            <div class="miniRow">
-              <label><input type="checkbox" class="bdChk"> Add</label>
-            </div>
-            ${badgeLevelSelectHtml(id)}
-            ${isCommandInsigniaBadge(id) ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            ${getBadgeTileMetaHtml(id)}
-          </div>
-        `;
-        wireBadgeLevelSelect(tile, id);
-
-        const chk = tile.querySelector('.bdChk');
-        const gradChk = tile.querySelector('.cmdGradChk');
-        chk.checked = !!sel.checked;
-        if(gradChk) gradChk.checked = !!sel.checked && !!State.commandInsignia?.graduatedCommander;
-        chk.onchange = ()=>{
-          sel.checked = chk.checked;
-          State.badgeSelections[id] = sel;
-          if(chk.checked && isCommandInsigniaBadge(id)) chooseOnlyCommandInsignia(id);
-          rebuildBadgesFromGallery();
-        };
-        if(gradChk){
-          gradChk.onchange = ()=>{
-            if(!State.commandInsignia) State.commandInsignia = {};
-            State.commandInsignia.graduatedCommander = gradChk.checked;
-            if(gradChk.checked){
-              sel.checked = true;
-              chk.checked = true;
-              State.badgeSelections[id] = sel;
-              chooseOnlyCommandInsignia(id);
-            }
-            rebuildBadgesFromGallery();
-          };
-        }
-
-        return tile;
-    };
-
+    // The badges are picture tiles of the picture picker (js/pick-lists.js, js/visual-picker.js toggle mode): each badge's own drawing with its name and the place it is worn
+    // under it; a tap turns the badge on or off and the tile shows it. `window.CAPUB_MODAL_PICKERS` lists the pickers of the open window (the search reads it) and
+    // `capubSyncBadgeTiles` puts every tile as the state says.
+    const pickers = [];
+    window.CAPUB_MODAL_PICKERS = pickers;
+    window.capubSyncBadgeTiles = () => pickers.forEach(entry => entry.refresh());
     const appendCategorizedBadges = (container, allowedIds) => {
       const allowedSet = new Set(allowedIds);
-      getBadgeCategoriesForCurrentMembership().forEach(cat=>{
-        const ids = cat.ids.filter(id => eligibleSet.has(id) && allowedSet.has(id));
-        if(!ids.length) return;
-
-        const h = document.createElement('div');
-        h.style.cssText = "margin:10px 0 6px;font-weight:800;color:var(--ink);font-size:13px;";
-        h.textContent = cat.key;
-
-        const subGrid = document.createElement('div');
-        subGrid.className = 'galleryGrid';
-        ids.forEach(id => subGrid.appendChild(buildTile(id)));
-        container.appendChild(h);
-        container.appendChild(subGrid);
-      });
+      // A command pin is not offered above the grade that wears one (CAPR 39-1, 10.2.5): the row of the Items step says so.
+      const groups = getBadgeCategoriesForCurrentMembership()
+        .map(cat => ({ key: cat.key, ids: cat.ids.filter(id => eligibleSet.has(id) && allowedSet.has(id) && (!isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))) }))
+        .filter(g => g.ids.length);
+      if(groups.length) pickers.push(CAPUBPickLists.badgeList(container, groups));
     };
 
     const eligibleIds = [...eligibleSet];
@@ -538,53 +488,8 @@ function openGalleryModal(kind){
         const summary=document.createElement('summary');
         summary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${records.length})`;
         details.appendChild(summary);
-        const branchGrid=document.createElement('div');
-        branchGrid.className='galleryGrid';
-        for(const badge of records){
-          const variants=getAvailableMilitaryBadgeVariants(badge);
-          const selected=State.militaryBadges?.[badge.id];
-          const activeVariant=selected?.variant || badge.representations?.metal?.defaultVariant || variants[0].id;
-          const representation=variants.find(item=>item.id===activeVariant)?.record || variants[0].record;
-          const tile=document.createElement('div');
-          tile.className='galleryTile militaryBadgeGalleryTile';
-          tile.dataset.militaryBadgeId=badge.id;
-          const preview=document.createElement('img');
-          preview.src=representation.asset; preview.alt=badge.officialName || badge.id;
-          const body=document.createElement('div'); body.style.cssText='flex:1;min-width:0;';
-          const title=document.createElement('div'); title.className='title'; title.textContent=badge.officialName || badge.id;
-          const sub=document.createElement('div'); sub.className='sub'; sub.textContent=[(badge.family && badge.family!=='OTHER') ? String(badge.family).charAt(0)+String(badge.family).slice(1).toLowerCase() : '',(badge.authorizedServices || []).map(militaryServiceLabel).join(' / ')].filter(Boolean).join(' • ');
-          const controls=document.createElement('div'); controls.className='miniRow';
-          const label=document.createElement('label');
-          const checkbox=document.createElement('input'); checkbox.type='checkbox'; checkbox.className='militaryBadgeCatalogCheck'; checkbox.checked=!!selected;
-          label.append(checkbox,document.createTextNode(' Add'));
-          controls.appendChild(label);
-          let variantSelect=null;
-          if(variants.length>1){
-            variantSelect=document.createElement('select'); variantSelect.className='militaryBadgeVariant'; variantSelect.title='Badge level or variant';
-            for(const variant of variants){
-              const option=document.createElement('option'); option.value=variant.id;
-              option.textContent=variant.id.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
-              variantSelect.appendChild(option);
-            }
-            variantSelect.value=activeVariant;
-            controls.appendChild(variantSelect);
-          }
-          checkbox.onchange=()=>{
-            if(!State.militaryBadges) State.militaryBadges={};
-            if(checkbox.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || activeVariant};
-            else delete State.militaryBadges[badge.id];
-            fullRender();
-          };
-          if(variantSelect) variantSelect.onchange=()=>{
-            if(!State.militaryBadges) State.militaryBadges={};
-            checkbox.checked=true;
-            State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
-            preview.src=getMilitaryBadgeRepresentation(badge).asset;
-            fullRender();
-          };
-          body.append(title,sub,controls); tile.append(preview,body); branchGrid.appendChild(tile);
-        }
-        details.appendChild(branchGrid); militaryRoot.appendChild(details);
+        pickers.push(CAPUBPickLists.militaryBadgeList(details, branch, records));
+        militaryRoot.appendChild(details);
       }
       modalHost.appendChild(militaryRoot);
     }
@@ -1155,14 +1060,17 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       const q = input.value.trim().toLowerCase();
       State.modalGallerySearchValues[kind]=input.value;
       let visible = 0;
-      body.querySelectorAll('.galleryTile').forEach(tile=>{
+      // The chooser's picture tiles hide themselves, and a section with none left (js/visual-picker.js filter); a window still of the old cards filters those.
+      const pickers = window.CAPUB_MODAL_PICKERS || [];
+      pickers.forEach(entry => { visible += entry.picker.filter(q); });
+      if(!pickers.length) body.querySelectorAll('.galleryTile').forEach(tile=>{
         const show = !q || tile.textContent.toLowerCase().includes(q);
         tile.classList.toggle('isFilteredOut', !show);
         if(show) visible++;
       });
       if(count) count.textContent = visible;
       // A category heading with every tile filtered out would sit there on its own.
-      if(kind === 'badges'){
+      if(kind === 'badges' && !pickers.length){
         body.querySelectorAll('.galleryGrid').forEach(grid=>{
           const heading = grid.previousElementSibling;
           if(!heading || heading.tagName !== 'DIV' || heading.style.fontWeight !== '800') return;

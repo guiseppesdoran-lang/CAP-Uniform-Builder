@@ -25,7 +25,8 @@ test('utility badge picker previews and renders fabric-only badge assets', () =>
   assert.match(source, /function capubUtilityBadgePreviewUrl\(id\)/);
   // Previews use the badge's field artwork from the badge catalog.
   assert.match(source, /CAPUBBadgeCatalog\.art\(id, 'field'\)/);
-  assert.match(source, /class="utilityBadgePreview"/);
+  // The chooser's tiles take the badge's picture from getBadgeAssetPath, which a field uniform answers with the field art (the sidebar list of cards is gone).
+  assert.match(source, /getBadgeAssetPath = function capubGetBadgeAssetPathUtilityAware\(id\)/);
   assert.match(source, /Never fall back to metal\/non-fabric artwork on a utility uniform/);
   assert.match(source, /return \[capubFieldBadgePath\(id\)\]/);
   assert.match(source, /const selected = \[\.\.\.new Set\(State\.badges \|\| \[\]\)\]/);

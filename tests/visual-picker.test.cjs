@@ -268,3 +268,97 @@ test('the script is on the page before the scripts that use it, and the picker n
   const src = read('js/visual-picker.js');
   assert.doesNotMatch(src, /\bState\b|CAPUB|localStorage|fetch\(/, 'a component, not page logic');
 });
+
+// ---- toggle mode: any number on at once (the lists of badges, ribbons and patches) ----------------------------------------------------------------------
+
+function makeToggle(config){
+  const host = doc.createElement('div');
+  doc.body.append(host);
+  const calls = [];
+  const p = VisualPicker.render(host, Object.assign({
+    name: 'badges', mode: 'toggle', values: ['b'], onToggle: (v, on) => calls.push([v, on]),
+    options: [
+      { value: 'a', label: 'Pilot Badge', picture: 'images/a.svg', caption: 'Worn: above the left pocket', group: 'Aviation' },
+      { value: 'b', label: 'Observer Badge', picture: 'images/b.svg', group: 'Aviation', controls: () => { const s = doc.createElement('select'); s.className = 'level'; return s; } },
+      { value: 'c', label: 'Ground Team Badge', picture: SQUARE, group: 'Ground', search: 'rescue' }
+    ]
+  }, config));
+  return { host, p, calls, buttons: () => p.el.querySelectorAll('.vpOption'), cell: v => p.el.querySelectorAll('.vpCell').find(c => c.dataset.value === v) };
+}
+
+test('toggle mode: the tiles are buttons with aria-pressed in a group, not radios; the ones on are pressed and carry the picked shade and the tick', () => {
+  const { p, buttons } = makeToggle();
+  assert.equal(p.el.dataset.mode, 'toggle');
+  assert.equal(p.el.querySelector('[role="group"]').getAttribute('role'), 'group');
+  assert.equal(p.el.querySelectorAll('[role="radio"]').length, 0);
+  assert.equal(p.el.querySelectorAll('[role="radiogroup"]').length, 0);
+  assert.ok(buttons().every(b => b.nodeName === 'BUTTON' && b.getAttribute('type') === 'button' && b.getAttribute('aria-pressed') !== null));
+  assert.deepEqual(buttons().map(b => b.getAttribute('aria-pressed')), ['false', 'true', 'false']);
+  assert.deepEqual(buttons().map(b => b.classList.contains('isPicked')), [false, true, false]);
+  assert.deepEqual(p.values, ['b']);
+  assert.deepEqual(p.el.querySelectorAll('.vpGroupHead').map(h => h.textContent), ['Aviation', 'Ground']);
+  assert.equal(p.el.querySelectorAll('input').length, 0, 'no checkbox, no radio');
+  assert.equal(p.el.querySelector('.vpCaption').textContent, 'Worn: above the left pocket');
+  assert.equal(p.el.querySelector('img').getAttribute('loading'), 'lazy');
+});
+
+test('toggle mode: a press turns the tile on, a second turns it off, any number on at once; onToggle is called by a press and not by setValues or setOptions', () => {
+  const { p, buttons, calls } = makeToggle();
+  buttons()[0].click();
+  buttons()[2].click();
+  assert.deepEqual(calls, [['a', true], ['c', true]]);
+  assert.deepEqual(buttons().map(b => b.getAttribute('aria-pressed')), ['true', 'true', 'true']);
+  buttons()[1].click();
+  assert.deepEqual(calls[2], ['b', false]);
+  assert.deepEqual(p.values.sort(), ['a', 'c']);
+  p.setValues(['b']);
+  p.setOptions(p.el.querySelectorAll('.vpOption').map((b, i) => ({ value: b.dataset.value, label: 'x' + i })));
+  assert.deepEqual(calls.length, 3, 'neither call told the page');
+  assert.deepEqual(p.values, ['b']);
+});
+
+test('toggle mode: the keys are the radio group\'s: one tab stop, the arrows move, Enter and the space bar turn the tile', () => {
+  const { buttons, calls } = makeToggle();
+  assert.deepEqual(buttons().map(b => b.tabIndex), [0, -1, -1], 'one tab stop: the first tile');
+  const b = buttons();
+  b[1].focus();
+  b[1].dispatchEvent(keydown('ArrowRight'));
+  assert.equal(doc.activeElement, b[2]);
+  assert.deepEqual(b.map(t => t.tabIndex), [-1, -1, 0], 'the tab stop follows the focus');
+  doc.activeElement.dispatchEvent(keydown('Enter'));
+  doc.activeElement.dispatchEvent(keydown(' '));
+  assert.deepEqual(calls, [['c', true], ['c', false]]);
+  b[2].dispatchEvent(keydown('Home'));
+  assert.equal(doc.activeElement, b[0]);
+});
+
+test('toggle mode: a tile\'s controls sit under it in its cell and show only while it is on; a tile with none has none', () => {
+  const { buttons, cell } = makeToggle();
+  const controls = v => cell(v).querySelector('.vpControls');
+  assert.equal(controls('a'), null);
+  assert.equal(controls('b').hidden, false, 'on to begin with');
+  assert.ok(controls('b').querySelector('select'));
+  buttons()[1].click();
+  assert.equal(controls('b').hidden, true, 'hidden when the tile is turned off');
+  buttons()[1].click();
+  assert.equal(controls('b').hidden, false);
+});
+
+test('toggle mode: the filter hides the tiles whose name, caption, search words or heading lack the text, and a heading with none left; the keys pass over the hidden', () => {
+  const { p, cell, buttons } = makeToggle();
+  assert.equal(p.filter('rescue'), 1, 'a search word finds a tile');
+  assert.deepEqual(p.el.querySelectorAll('.vpCell').filter(c => !c.hidden).map(c => c.dataset.value), ['c']);
+  assert.deepEqual(p.el.querySelectorAll('.vpSection').map(s => s.hidden), [true, false], 'the section with none left is hidden');
+  assert.equal(p.filter('above the left'), 1, 'a caption');
+  assert.equal(p.filter('aviation'), 2, 'a heading');
+  buttons()[0].focus();
+  buttons()[0].dispatchEvent(keydown('ArrowRight'));
+  assert.equal(doc.activeElement, buttons()[1]);
+  buttons()[1].dispatchEvent(keydown('ArrowRight'));
+  assert.equal(doc.activeElement, buttons()[0], 'the hidden tile is passed over');
+  assert.equal(p.filter(''), 3);
+  assert.ok(cell('c') && !cell('c').hidden);
+  p.filter('pilot');
+  p.setOptions(p.el.querySelectorAll('.vpOption').map(() => null).filter(Boolean));
+  assert.equal(p.el.querySelectorAll('.vpCell').length, 0);
+});

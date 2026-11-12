@@ -114,11 +114,11 @@ async function launch(){
     await shot('#groupBadges', 'badges-commander-graduated');
     // The chooser's own control still works and agrees.
     await ev(`document.getElementById('expandBadges').click()`); await sleep(600);
-    const tick = await ev(`(() => { const t = document.querySelector('#galleryModalHost .cmdGradChk'); return t ? t.checked : null; })()`);
-    if(tick !== true) fails.push('the chooser\'s Graduated commander box should agree with the row: ' + tick);
-    await ev(`(() => { const t = document.querySelector('#galleryModalHost .cmdGradChk'); t.click(); })()`); await sleep(900);
+    const tick = await ev(`(() => { const t = document.querySelector('#galleryModalHost .vpSwitch'); return t ? t.getAttribute('aria-pressed') === 'true' : null; })()`);
+    if(tick !== true) fails.push('the chooser\'s Graduated commander switch should agree with the row: ' + tick);
+    await ev(`(() => { const t = document.querySelector('#galleryModalHost .vpSwitch'); t.click(); })()`); await sleep(900);
     st = await state();
-    if(st.grad || st.radio !== 'current') fails.push('unticking the chooser box should make the row Current commander: ' + JSON.stringify(st));
+    if(st.grad || st.radio !== 'current') fails.push('turning the chooser switch off should make the row Current commander: ' + JSON.stringify(st));
     await ev(`document.querySelector('#galleryModalOverlay .modalClose, #galleryModalDone, #galleryModalOverlay button')?.click()`); await sleep(300);
     await ev(`State.badges = State.badges.filter(id => id !== 'squadron_commander_badge'); document.getElementById('galleryModalOverlay')?.classList.remove('open')`);
     await pickCmd('none');

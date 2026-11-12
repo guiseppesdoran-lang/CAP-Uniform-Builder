@@ -38,7 +38,7 @@ test('the row sets what the chooser sets, through the same rebuild, and asks the
   assert.match(ui, /wireCommandRow\(\); watchImporter\(\);/, 'wired with the rest of the page on load');
   assert.match(ui, /syncCommandRow\(\);\n\s*\}/, 'follows the state at every refresh');
   // The chooser's own control is untouched.
-  assert.match(gallery, /class="cmdGradChk"> Graduated commander/);
+  assert.match(fs.readFileSync(path.join(__dirname, '..', 'js', 'pick-lists.js'), 'utf8'), /'ghost vpSwitch', 'Graduated commander'/);
 });
 
 test('the row is shown only where a senior member can wear the pin on the uniform, and the choices close for a colonel', () => {
