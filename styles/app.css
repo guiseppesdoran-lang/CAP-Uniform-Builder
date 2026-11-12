@@ -1476,3 +1476,37 @@ html[data-access="guest"] #accessGate{display:none}
 @media (max-width:700px){
   .citeBtn::after{inset:-12px}
 }
+
+/* ---- Visual pickers (js/visual-picker.js): options chosen by picture, the name beneath ----
+   A group of tiles shaped like the uniform cards. The picture sits on the preview's own white, in a box of fixed shape, so a navy cap reads on either theme.
+   The tile picked has a heavier edge, its own shade and a tick, so it does not rest on colour alone. The tiles wrap to the width they have (three to a row
+   at the sidebar's width, two at 'large'), never wider than their column. */
+.vp{margin:0}
+.vpLegend{margin-bottom:var(--s2)}
+.vpSection+.vpSection{margin-top:var(--s3)}
+.vpGroupHead{margin:0 0 var(--s1);font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.2;color:var(--muted)}
+.vpGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.vp[data-size="large"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(136px,1fr))}
+.vpOption{
+  position:relative;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:var(--s1);
+  width:100%;min-width:0;min-height:44px;margin:0;padding:6px;
+  text-align:center;
+  background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);
+  font-family:var(--font-body);font-size:var(--t-xs);font-weight:400;letter-spacing:0;line-height:1.2;
+}
+.vpOption:hover{border-color:var(--ink);background:var(--panel-2)}
+.vpOption:active{transform:none}
+.vpOption:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.vpOption[aria-checked="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
+.vpPicture{display:flex;align-items:center;justify-content:center;aspect-ratio:4 / 3;min-width:0;overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:4px;color:var(--line-strong)}
+.vp[data-size="large"] .vpPicture{aspect-ratio:3 / 2}
+.vpPicture>svg,.vpPicture>img{display:block;width:100%;height:100%;object-fit:contain}
+.vpLabel{display:block;min-width:0;font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.15;overflow-wrap:anywhere}
+.vpMark{display:block;align-self:center;max-width:100%;padding:0 6px;border:1px solid var(--line-strong);border-radius:999px;font-size:.6875rem;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
+.vpTick{position:absolute;top:4px;right:4px;display:none;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--select-line);color:var(--panel)}
+.vpOption[aria-checked="true"] .vpTick{display:flex}
+.vpTick svg{display:block;width:14px;height:14px}
+.vpNote{margin-top:var(--s2)}
+.vpOption.noPicture{justify-content:center;min-height:56px}
