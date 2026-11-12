@@ -235,7 +235,7 @@ test('the seven other Northeast Region wings, Georgia Group I and the Hawk Mount
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'images', 'patches', 'patch-hawk-mountain-ranger-school', 'patch-hawk-mountain-ranger-school.png')), 'its picture is under images/');
 });
 
-test('the patches present today: the New York Wing and Northeast Region emblems are rows, TN-185 behaves as before', () => {
+test('the patches present today: the New York Wing, Northeast Region and Tennessee Wing emblems are rows, TN-185 keeps its own patch and has the Tennessee Wing\'s as its higher headquarters patch', () => {
   assert.equal(real(`getUnitPatchIdForCharter('NER-NY-001')`), 'unit_ner_ny_001');
   assert.equal(real(`getUnitPatchIdForCharter('NER-NER-001')`), 'unit_ner_ner_001');
   assert.equal(real(`getUnitHhqPatchId('NER-NY-001')`), 'unit_ner_ner_001');
@@ -253,7 +253,7 @@ test('the patches present today: the New York Wing and Northeast Region emblems 
     State.unitPatchCharter = 'SER-TN-185'; const b = CAPUBUniformView.buildFromState().patches.map(p => [p.id, p.kind, p.slot, p.asset]);
     State.unitPatchCharter = ''; return { a, b }; })()`);
   assert.deepEqual(p.a, [['unit_ner_ny_001', 'unit', 'R_SHOULDER', null], ['unit_ner_ner_001', 'hhq', 'L_SHOULDER', null]]);
-  assert.deepEqual(p.b, [['tn185_ocp_patch', 'unit', 'R_SHOULDER', 'patch-music-city-composite-squadron']]);
+  assert.deepEqual(p.b, [['tn185_ocp_patch', 'unit', 'R_SHOULDER', 'patch-music-city-composite-squadron'], ['unit_ser_tn_001', 'hhq', 'L_SHOULDER', null]], 'its wing has an emblem now (SER-TN-001)');
 });
 
 // Official digital artwork as given: a PNG at the size its spec gives, and the activity patches of the art tree.

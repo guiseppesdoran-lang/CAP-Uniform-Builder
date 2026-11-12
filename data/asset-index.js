@@ -1526,6 +1526,7 @@
     "patch-swr-tx-154": "patches/patch-swr-tx-154/patch-swr-tx-154.png",
     "patch-swr-tx-376": "patches/patch-swr-tx-376/patch-swr-tx-376.png",
     "patch-swr-tx-388": "patches/patch-swr-tx-388/patch-swr-tx-388.png",
+    "patch-tennessee-wing": "patches/patch-tennessee-wing/patch-tennessee-wing.png",
     "patch-texas-wing": "patches/patch-texas-wing/patch-texas-wing.png",
     "patch-vermont-wing": "patches/patch-vermont-wing/patch-vermont-wing.png",
     "patch-washington-wing": "patches/patch-washington-wing/patch-washington-wing.png",
@@ -1834,7 +1835,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "306168aeda", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "fb4c6ee0a2", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "306168aeda"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "fb4c6ee0a2"; }
 })(typeof self !== 'undefined' ? self : this);

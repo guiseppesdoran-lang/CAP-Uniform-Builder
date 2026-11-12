@@ -1,0 +1,84 @@
+{
+ "asset_id": "patch-tennessee-wing",
+ "label": "Tennessee Wing",
+ "charter": "SER-TN-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-tennessee-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.097,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   309.735
+  ],
+  "center": [
+   162.5,
+   154.868
+  ],
+  "left_edge": [
+   0,
+   154.868
+  ],
+  "right_edge": [
+   325,
+   154.868
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied-2026-11-12/tennessee-wing.jpg",
+ "artwork": {
+  "format": "jpeg (baseline, 8-bit) -> png via sips",
+  "source_color_type": 2,
+  "source_px": [
+   1320,
+   1281
+  ],
+  "source_bytes": 204799,
+  "source_sha256": "13b0b1f88c2ae82df690903bac01a1fa6d376877254cfb096bfaf92e9a75f6f5",
+  "trim_bbox_px": [
+   0,
+   16,
+   1320,
+   1274
+  ],
+  "trimmed": true,
+  "px": [
+   1320,
+   1258
+  ],
+  "bytes": 1037038,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "#f6f6f6",
+   "alpha": 255,
+   "flood": "4-neighbour flood from the picture's edge over pixels within 10 levels of the ground colour",
+   "px": 538734,
+   "band": {
+    "depth_px": 8,
+    "px": 29694,
+    "outline_colours": [
+     "#f1c217"
+    ],
+    "rule": "alpha from the pixel colour's place between the ground colour and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 538777
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Tennessee Wing (SER-TN-001), digital artwork supplied by Ethan Hillard on 2026-11-12 as the wing's official digital emblem. Official digital artwork shipped as given: jpeg (1320 x 1281 px, on a plain light ground) -> png via sips; the ground that came around the emblem (opaque near-white (#f6f6f6, jpeg noise); 538734 px, found by a flood from the picture's edge) was made clear, and the 29694 px where the outline had been blended into it (up to 8 px deep) were given their alpha from where their colour lies between the ground colour and the outline's own solid colour (#f1c217) and took that colour, and the picture was trimmed to the emblem's box (1320 x 1281 px to 1320 x 1258 px; the result is 8-bit RGBA); the white inside the scroll, the ring round the blue disc and the triangle stay, being enclosed by the emblem's own outline; no resampling, no redrawing, no tracing, no other colour change. Charter: SER-TN-001 is Tennessee Wing HQ in the builder's unit list.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the ground around the emblem, made clear so the emblem sits on the garment, and the trim to the emblem's box."
+}
