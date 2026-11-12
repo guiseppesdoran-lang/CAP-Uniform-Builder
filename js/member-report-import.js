@@ -866,8 +866,10 @@ function memberReportCadetTrainingRows(text){
   const rows = [];
   let previousEnd = 0, m;
   while((m = re.exec(section))){
-    // A page break may repeat the column headings in front of the next row.
-    const title = section.slice(previousEnd, m.index).replace(/^\s*(?:(?:Type|Activity|Location|Description)\s+)*Date\s+Completed\b/i, '').replace(/\s+/g, ' ').trim();
+    // A page break may repeat the column headings in front of the next row, and a PDF leaves what is left of the page's print header in front of it
+    // ("11 : 09 AM ? CAPID=123456": the time stamp, its colon set apart, and the end of the address).
+    const title = section.slice(previousEnd, m.index).replace(/^[,\s]*\d{1,2}\s*:\s*\d{2}\s*[AP]\.?M\.?(?=\s|$)/i, '').replace(/^\s*\??\s*CAPID\s*=\s*\d+/i, '')
+      .replace(/^\s*(?:(?:Type|Activity|Location|Description)\s+)*Date\s+Completed\b/i, '').replace(/\s+/g, ' ').trim();
     previousEnd = m.index + m[0].length;
     if(!/[A-Za-z]{2}/.test(title)) continue;
     const year = /\d{4}$/.exec(m[0])[0];

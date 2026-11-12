@@ -1714,3 +1714,12 @@ test('a row of the current table whose End Date has passed is a term served, one
   const ended = PERSONNEL_CURRENT_NCAC.replace('12 Nov 2025\n', '09 Oct 2023   11 Oct 2024\n');
   assert.equal(cacOf(runImport(noPast.replace(PERSONNEL_CURRENT_NCAC, ended))).ribbon, 'cac_national', 'an End Date in 2024: a term served, the gold star');
 });
+
+test('a page break inside the Cadet Training table, as a PDF prints it (the time stamp with its colon set apart, the end of the address), leaves no mark on a row', () => {
+  const header = '03/05/25, 9 : 41   AM Printer Friendly View - Member Details Page 4 of 9 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456\n';
+  const broken = PERSONNEL.replace('COS   Scott AFB IL', header + 'COS   Scott AFB IL').replace('NFAP Student', header + 'NFAP Student');
+  const rows = trainingRows(broken);
+  assert.deepEqual(rows.filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['NESA', 'HMRS', 'COS', 'MKSABA', 'NBB', 'NFAP']);
+  assert.ok(rows.every(r => !/CAPID|AM\b|\d : \d/.test(r.title)), JSON.stringify(rows.map(r => r.title)));
+  assert.equal(runImport(broken).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
+});
