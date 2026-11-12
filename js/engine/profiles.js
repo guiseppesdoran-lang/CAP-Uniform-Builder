@@ -389,12 +389,16 @@
   // embroidery, labelled with the regulation's 1/8 in. The border is the art's own: the art_top_center anchor of a field badge or
   // dimensions.border_each_side_in of a cloth-bordered insignia; a piece whose border is not 1/8 in (the 1 x 1 in command patch)
   // gets none. Returns the measure layer or null.
+  // The blue border all round a cloth-bordered piece, inches: its art_top_center anchor, or dimensions.border_each_side_in; null when the sheet states none.
+  function clothBorderOf(spec){
+    const top = core.anchor(spec, 'art_top_center');
+    const dims = spec.raw && spec.raw.dimensions;
+    return top && top.y > 0.01 ? top.y : (dims && dims.border_each_side_in) || null;
+  }
   async function blueBorder(ctx, layer){
     if(!layer || layer.type !== 'asset' || !ctx.has(layer.id)) return null;
     const spec = await ctx.spec(layer.id);
-    const top = core.anchor(spec, 'art_top_center');
-    const dims = spec.raw && spec.raw.dimensions;
-    const border = top && top.y > 0.01 ? top.y : (dims && dims.border_each_side_in) || null;
+    const border = clothBorderOf(spec);
     if(!border || Math.abs(border - 0.125) > 0.01) return null;
     const k = layer.h / spec.h;
     const o = layer.origin || { x: layer.x, y: layer.y };
@@ -690,13 +694,60 @@
 
   // ---- Flight Duty Uniforms (chapter 8) and flight jackets ---------------------------------------
 
+  // The shoulder line of a suit's sheet, as the frame the Class A coat's grade rule draws along (landmark shoulder_line, user units of 0.01 in: per side `p1`, the shoulder point
+  // where the armhole seam begins, `p2`, the neck end, and `edge_thickness_in`, the thickness the grade is squeezed to when the shoulder is seen edge-on; the two ends are
+  // vertices of the sheet's own outline, found by the rule the coat's shoulder seam is read by, shoulderSeamOf in profiles-dress.js). `outer` is the shoulder point, `axis` the unit
+  // vector toward the neck, `deg` the turn that stands an upright art with its top toward the neck (the same frame the coat's strap gives gradeOnStrap). Null when the sheet states none.
+  function shoulderLine(ctx, side){
+    const all = ctx.base && ctx.base.landmarks && ctx.base.landmarks.shoulder_line, l = all && all[side];
+    if(!l || !Array.isArray(l.p1) || !Array.isArray(l.p2) || !(l.edge_thickness_in > 0)) return null;
+    const outer = { x: l.p1[0] / 100, y: l.p1[1] / 100 }, neck = { x: l.p2[0] / 100, y: l.p2[1] / 100 };
+    const length = Math.hypot(neck.x - outer.x, neck.y - outer.y);
+    if(!(length > 1)) return null;
+    const axis = { x: (neck.x - outer.x) / length, y: (neck.y - outer.y) / length };
+    return { side, outer, neck, axis, length, thick: l.edge_thickness_in, deg: Math.round((90 + Math.atan2(axis.y, axis.x) * 180 / Math.PI) * 100) / 100 };
+  }
+
+  // 'centered on top of each shoulder with bottom edge of insignia placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2).
+  const SEAM_TO_GRADE = 0.5;
+
+  // F4 (Ethan, 2026-11-12, on the flight suit: "the ranks should probably be the same as the class a jacket, kinda half hanging off of the shoulder"): the suit's shoulder grade is drawn
+  // the way the service coat draws its own, by the coat's own function (gradeOnStrap, profiles-dress.js), not a second drawing of it. The grade lies on top of the shoulder, so seen from
+  // the front it is on the shoulder line, edge-on: the piece's centre line on the line the sheet states (shoulder_line), so half of it stands over the outline, squeezed across the shoulder
+  // to the line's thickness less 0.08 in (the coat's 0.46 less 0.08), kept at its regulation size along it, turned with its top toward the neck, the bars across the shoulder, the colonel's
+  // eagle mirrored on the wearer's right. Only the view changes, not the distance: officers keep the piece's seam-side edge 1/2 in from the shoulder seam (8.2.3.2, 8.3.3.2), measured from
+  // the shoulder point along the line; generals keep their stars' centre halfway between the neck and the seam (8.2.3.1, 8.3.3.1), the middle of the line. The jackets are not changed:
+  // they draw the grade in their zones (flightGrade).
+  async function suitShoulderGrade(ctx, g, b){
+    const gradeOnStrap = helpers.gradeOnStrap;   // the coat's rule, set by profiles-dress.js
+    if(typeof gradeOnStrap !== 'function') throw new Error('The service coat\'s shoulder grade drawing (profiles-dress.js) is not loaded');
+    const id = G.seniorOfficerInsignia(g, 'cloth-bordered', g.general ? { horizontal: false } : undefined);
+    let placed = null;
+    for(const side of ['right', 'left']){
+      const f = shoulderLine(ctx, side);
+      if(!f){ ctx.note('The shoulder grade cannot be placed on this uniform'); return; }
+      const rule = g.general ? { centerFromEnd: f.length / 2 } : { edgeFromEnd: SEAM_TO_GRADE };
+      const layer = await gradeOnStrap(ctx, g, side, f.outer, f.axis, f.deg, f.thick - 0.08, Object.assign({ id, key: 'grade:' + side, title: `${side === 'right' ? 'Right' : 'Left'} shoulder grade, seen along the shoulder` }, rule));
+      if(layer && side === 'right') placed = { f, layer };
+    }
+    if(!placed) return;
+    const { f, layer } = placed, along = d => ({ x: f.outer.x + f.axis.x * d, y: f.outer.y + f.axis.y * d });
+    // 'bottom edge of insignia placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2): shown once, on the wearer's right shoulder, from the shoulder point along the line.
+    if(!g.general) ctx.measure(along(0), along(SEAM_TO_GRADE), null, { caption: 'shoulder seam to grade' });
+    // The CFDU's embroidered grade is folded 'to create a rectangle that is 1/8 inch larger than the insignia' (8.3.5.1): measured once, on the wearer's right shoulder, at the piece's seam-side
+    // edge, along the shoulder, where the piece keeps its true size (across it the border is squeezed to a sliver with the rest, which is why blueBorder, a measure of the piece's top edge, is not used).
+    const border = b && b.uniform === 'corporate_flight_suit' ? clothBorderOf(await ctx.spec(layer.id)) : null;
+    if(border && Math.abs(border - 0.125) <= 0.01){
+      const edge = Math.min(...layerCorners(layer).map(p => (p.x - f.outer.x) * f.axis.x + (p.y - f.outer.y) * f.axis.y));
+      ctx.measure(along(edge), along(edge + border), '⅛ in', { callout: { gap: true, caption: 'of blue around the embroidery' } });
+    }
+  }
+
   // Officer grade on the shoulders (8.2.3, 8.3.3): cloth-bordered, centred in each grade zone; general
-  // officers' stars centred on the shoulder with a point toward the neck.
+  // officers' stars centred on the shoulder with a point toward the neck. The suits draw it along the shoulder line (suitShoulderGrade).
   async function flightGrade(ctx, g, b){
     if(!g.officer || g.cadet) return;
-    // The CFDU's embroidered grade is folded 'to create a rectangle that is 1/8 inch larger than the insignia' (8.3.5.1): measured
-    // once, on the wearer's right shoulder of the suit (the jacket beside it is configured the same, 8.3.7).
-    const border = async () => { if(b && b.uniform === 'corporate_flight_suit' && !b.opt.asJacket) await blueBorder(ctx, ctx.layers.filter(l => l.key === 'grade:right').pop()); };
+    if(!(b && b.opt.asJacket)) return suitShoulderGrade(ctx, g, b);
     if(g.general){
       const id = G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false });
       for(const side of ['right', 'left']){
@@ -705,7 +756,6 @@
         // The stacked form turned a quarter turn lies along the shoulder, points toward the neck.
         await ctx.place(id, { pieceAnchor: 'center', at: core.rectCenter(zone), rotate: side === 'right' ? 90 : -90, z: Z.insignia, role: 'grade', key: 'grade:' + side });
       }
-      await border();
       return;
     }
     // Officers (not generals): the cloth grade is 'centered on top of each shoulder with bottom edge of insignia
@@ -737,11 +787,7 @@
       const cy = zone.y + Math.max(zone.h, high) / 2;
       await ctx.place(id, { pieceAnchor: 'center', at: { x: cx, y: cy }, rotate: bars ? 0 : side === 'right' ? 90 : -90, flipX: !bars && side === 'right' && g.key === 'colonel',
         z: Z.insignia, role: 'grade', key: 'grade:' + side });
-      // 'bottom edge of insignia placed 1/2 inch from shoulder seam' (8.2.3.2, 8.3.3.2): the sheet draws the zone's seam-side edge
-      // 1/2 in from the seam (make-fdu.js), shown once, on the wearer's right shoulder of the suit.
-      if(side === 'right' && b && !b.opt.asJacket) ctx.measure({ x: zone.x - 0.5, y: cy }, { x: zone.x, y: cy }, null, { caption: 'shoulder seam to grade' });
     }
-    await border();
   }
 
   // The 2 x 4 in embroidered name tag over the left breast pocket (8.2.4.1, 8.3.4.1, Fig A6-3).
@@ -989,5 +1035,6 @@
     return scene;
   }
 
-  return { PROFILES, register, composeUniform, badgesWorn, helpers: { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarSlot, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, oneAviationBadgeParagraph, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT } };
+  const helpers = { blueBorder, pieceRect, piecePoint, polygonTopY, epauletFrame, frameFromPolygon, collarLeadingEdge, collarSlot, polygonCentroid, boxInPolygon, collarLeaf, chevronOnLeadingEdge, collarChevrons, collarChevronScale, EDGE_SX, edgeTurn, collarOfficerRow, collarPolygons, clearViewsOfHat, fitCenter, placeFitted, badgeSet, oneAviationBadgeParagraph, commandPin, gradeAbbrev, hat, chooseHat, SILVER_TEXT };
+  return { PROFILES, register, composeUniform, badgesWorn, helpers };
 });

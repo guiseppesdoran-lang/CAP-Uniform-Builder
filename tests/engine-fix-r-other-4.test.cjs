@@ -54,15 +54,15 @@ test('women\'s pair: a CAP service badge is closest to the collar and National S
 
 // ---- 9. Flight garments: the turned officer grade stays inside its zone's top ---------------------------------
 
-test('flight suits and jackets: no senior officer\'s turned cloth grade rises above the grade zone, a piece taller than the zone hangs from its top, the seam-side edge stays on the 1/2 in line (8.2.3.2, 8.3.3.2, 8.3.5.1)', async () => {
-  const cases = [['flight_suit', {}], ['corporate_flight_suit', {}], ['flight_suit', { jacket: 'green' }], ['corporate_flight_suit', { jacket: 'blue' }]];
+test('flight jackets: no senior officer\'s turned cloth grade rises above the grade zone, a piece taller than the zone hangs from its top, the seam-side edge stays on the 1/2 in line (8.2.3.2, 8.3.3.2, 8.3.5.1; the suits draw the grade along the shoulder line, tests/engine-flight-shoulder-grade.test.cjs)', async () => {
+  const cases = [['flight_suit', { jacket: 'green' }], ['corporate_flight_suit', { jacket: 'blue' }]];
   let checked = 0, tall = 0;
   for(const [uniform, o] of cases){
     for(const rank of ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col', 'FO', 'TFO', 'SFO']){
       for(const gender of ['male', 'female']){
         const scene = await compose(hb(uniform, gender, 'senior', rank, { opt: Object.assign({ headgear: 'auto' }, o) }));
         const sheets = scene.layers.filter(x => x.role === 'garment');
-        for(const l of scene.layers.filter(x => /^grade:(right|left)$/.test(x.key || ''))){
+        for(const l of scene.layers.filter(x => /^grade:(right|left)$/.test(x.key || '') && x.figure === 2)){
           const side = l.key.split(':')[1];
           const sheet = sheets.find(x => (x.figure || 1) === (l.figure || 1));
           const spec = await store.load(sheet.id);
@@ -83,7 +83,7 @@ test('flight suits and jackets: no senior officer\'s turned cloth grade rises ab
       }
     }
   }
-  assert.ok(checked >= 150 && tall >= 8, `checked ${checked} grades, ${tall} taller than the zone (the colonel's eagles)`);
+  assert.ok(checked >= 70 && tall >= 8, `checked ${checked} grades, ${tall} taller than the zone (the colonel's eagles)`);
 });
 
 // ---- 6. Overlay: a measure inside a cap view is drawn beside that view ----------------------------------------

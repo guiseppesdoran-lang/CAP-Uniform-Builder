@@ -927,8 +927,9 @@
     const acr = quarter ? gs.h : gs.w, alo = (quarter ? gs.w : gs.h) * along;
     const squeeze = Math.min(1, across / acr);
     // `centerFromEnd`: the piece's centre this far from the strap's outer end (the Class A boards, where it is the
-    // top view's rank slot distance from the board's outer end); else the piece's outer edge is 5/8 in from the end.
-    const d = o.centerFromEnd != null ? o.centerFromEnd : GRADE_FROM_END + alo / 2;
+    // top view's rank slot distance from the board's outer end); else the piece's outer edge is 5/8 in from the end,
+    // or `edgeFromEnd` when the garment has its own distance (the flight suit's shoulder grade, 1/2 in from the seam).
+    const d = o.centerFromEnd != null ? o.centerFromEnd : (o.edgeFromEnd != null ? o.edgeFromEnd : GRADE_FROM_END) + alo / 2;
     const at = { x: end.x + axis.x * d, y: end.y + axis.y * d };
     // The art's width is the across axis unless the quarter turn lays it along the strap; `place` has a
     // uniform scale and an extra x factor, so the quarter-turned piece squeezes its height and widens
@@ -1252,6 +1253,8 @@
   }
 
   H.shoulderSeamOf = shoulderSeamOf;
+  // The flight suit draws its shoulder grade with the coat's own rule (flightGrade in profiles.js).
+  H.gradeOnStrap = gradeOnStrap;
 
   // The wearer's-left epaulet strap axis as [neck end, arm end] points, from the garment's landmark.
   function strapAxis(ctx, side){

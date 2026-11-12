@@ -1,7 +1,7 @@
 'use strict';
 // E7-FLIGHT: the flight duty uniforms and flight jackets (CAPR 39-1 ch. 8, 6.1.7), measured in inches
 // on the composed scene: officer grade 1/2 in from the shoulder seam, general officer stars centred
-// on the shoulder, the name tag's badges (one by default, two on request: Ethan, 2 November 2026, over his B8 cut to one), the chest layout, the ES patch under the pocket.
+// on the shoulder (on the jackets, in their grade zones; the suits draw the grade along the shoulder line, tests/engine-flight-shoulder-grade.test.cjs), the name tag's badges (one by default, two on request: Ethan, 2 November 2026, over his B8 cut to one), the chest layout, the ES patch under the pocket.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -52,6 +52,8 @@ async function zoneOf(scene, garmentId, name){
   return { x: g.x + r.x * s, y: g.y + r.y * s, w: r.w * s, h: r.h * s };
 }
 const onFigure = (scene, f, pred) => scene.layers.filter(l => (f.jacket ? l.figure === 2 : l.figure !== 2) && pred(l));
+// The suits' shoulder grade is drawn along the shoulder line by the service coat's rule (F4, tests/engine-flight-shoulder-grade.test.cjs); the jackets draw it in their grade zones.
+const JACKETS = FIGURES.filter(f => f.jacket);
 
 // ---- officer grade and general officer stars on the shoulders ---------------------------------
 
@@ -63,9 +65,9 @@ const onFigure = (scene, f, pred) => scene.layers.filter(l => (f.jacket ? l.figu
 // (bars across the strap, parallel to the seam; R8) and as the grade zone (1.60 x 1.25 in) is sized; turned they ran from
 // the neck to the sleeve, across the seam. The piece's outer edge, its edge toward the seam, is on the half inch line.
 const BARS = new Set(['2d Lt', '1st Lt', 'Capt', 'FO', 'TFO', 'SFO']);
-test('officer grade: bars upright with their outer edge on the half inch line, leaf and eagle turned a quarter turn with their bottom edge on it, centred in height, never scaled (8.2.3.2, 8.3.3.2, 6.1.7)', async () => {
+test('flight jackets, officer grade: bars upright with their outer edge on the half inch line, leaf and eagle turned a quarter turn with their bottom edge on it, centred in height, never scaled (8.2.3.2, 8.3.3.2, 6.1.7)', async () => {
   const ranks = ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col'];
-  for(const f of FIGURES){
+  for(const f of JACKETS){
     for(const rank of ranks){
       const scene = await P.composeUniform(build(f.uniform, 'senior', rank), store());
       const grades = onFigure(scene, f, l => l.role === 'grade');
@@ -98,12 +100,12 @@ test('officer grade: bars upright with their outer edge on the half inch line, l
   }
 });
 
-test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement as the other bars', async () => {
+test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement as the other bars on the green jacket', async () => {
   for(const rank of ['FO', 'TFO', 'SFO']){
     const scene = await P.composeUniform(build('flight_suit', 'senior', rank), store());
-    const grades = onFigure(scene, FIGURES[0], l => l.role === 'grade');
+    const grades = onFigure(scene, JACKETS[0], l => l.role === 'grade');
     assert.equal(grades.length, 2, rank);
-    const zr = await zoneOf(scene, FIGURES[0].garment, 'grade_zone_right');
+    const zr = await zoneOf(scene, JACKETS[0].garment, 'grade_zone_right');
     const r = grades.find(l => l.key === 'grade:right');
     assert.equal(r.rotate, 0, rank);
     assert.ok(Math.abs(r.x - zr.x) < EPS, rank);
@@ -112,7 +114,7 @@ test('flight officers (FO, TFO, SFO) wear the same shoulder grade placement as t
 
 // The bars on the flight shoulder lie as they do on the Class B epaulet seen from above: their long axis (the art's height)
 // perpendicular to the strap, i.e. parallel to the armhole seam (R7, R8, FIX-R-OTHER-r4 item 10; 8.2.3.2, 4.2.5.1.1.1).
-test('flight shoulder bars match the epaulet\'s top view: the long axis of the bars is across the strap, along the seam', async () => {
+test('flight jacket shoulder bars match the epaulet\'s top view: the long axis of the bars is across the strap, along the seam', async () => {
   const axisOf = l => { const r = (l.rotate || 0) * Math.PI / 180; return { x: -Math.sin(r), y: Math.cos(r) }; };   // the art's height direction
   const cb = await P.composeUniform(build('blues_b', 'senior', 'Capt'), store());
   // The Class B captain's bars are placed by gradeOnStrap (the edge-on strip) with the same quarter turn the epaulet's top view art carries;
@@ -122,7 +124,7 @@ test('flight shoulder bars match the epaulet\'s top view: the long axis of the b
   const vr = (view.rotate || 0) * Math.PI / 180, strap = { x: -Math.sin(vr), y: Math.cos(vr) };     // the view's long side
   const a = axisOf(top);
   assert.ok(Math.abs(a.x * strap.x + a.y * strap.y) < 0.45, `Class B top view: the bars' long axis is across the strap (dot ${(a.x * strap.x + a.y * strap.y).toFixed(2)})`);
-  for(const f of FIGURES){
+  for(const f of JACKETS){
     const scene = await P.composeUniform(build(f.uniform, 'senior', 'Capt'), store());
     for(const l of onFigure(scene, f, l => l.role === 'grade')){
       const ax = axisOf(l);
@@ -133,8 +135,8 @@ test('flight shoulder bars match the epaulet\'s top view: the long axis of the b
   }
 });
 
-test('general officers: 1 in stars centred on the shoulder, points toward the neck (8.2.3.1, 8.3.3.1)', async () => {
-  for(const f of FIGURES){
+test('flight jackets, general officers: 1 in stars centred on the shoulder, points toward the neck (8.2.3.1, 8.3.3.1)', async () => {
+  for(const f of JACKETS){
     for(const rank of ['Brig Gen', 'Maj Gen']){
       const scene = await P.composeUniform(build(f.uniform, 'senior', rank), store());
       const grades = onFigure(scene, f, l => l.role === 'grade');
