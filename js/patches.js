@@ -179,38 +179,90 @@ function extractCommandServiceCommanderAssignments(text){
    ========================================================== */
 State.shoulderCord = State.shoulderCord || null;
 
-function syncShoulderCordControl(){
-  const sel = by('shoulderCordSelect');
-  if(!sel) return;
-  sel.value = State.shoulderCord || '';
-  // Cadets only, on Class A and Class B (CAPR 39-1, 9.3 and 9.4.1). Anyone else is not shown it.
-  // Cadets wear the CAC, color guard and honor guard cords on Class A and Class B (9.3, 9.4.1); the Aide
-  // de Camp cord is for senior members as well (9.3.4). Anyone else is not shown the control.
-  const choices = [...sel.options].filter(o => o.value);
-  choices.forEach(o => { o.hidden = o.disabled = !CAPUBUniformRules.allowsCord(State.uniform, State.membership, o.value); });
-  const usable = choices.some(o => !o.disabled);
-  if(State.shoulderCord && !CAPUBUniformRules.allowsCord(State.uniform, State.membership, State.shoulderCord)) sel.value = '';
-  sel.disabled = false;
-  const panel = by('shoulderCordPanel');
-  if(panel) panel.classList.toggle('hidden', !usable);
-  const note = by('shoulderCordNote');
-  if(note){
-    const meta = SHOULDER_CORD_META[State.shoulderCord];
-    note.textContent = meta && meta.note ? meta.note
-      : (State.membership === 'senior'
-        ? 'Senior members wear only the Aide de Camp cord; the other shoulder cords are for cadets (CAPR 39-1, 9.3).'
-        : '');
-  }
+// The cord choice, by picture (js/visual-picker.js): the cords of the regulation first, then one group for each supplement the member's unit brings in (Supplements.cords: the
+// ones the member's report shows earned come first and carry a mark), each drawn as a short piece of the cord itself (CAPUBEngine.cords.sampleSvg, drawn by CordBraid). The
+// control is not shown to anyone who cannot wear a cord on this uniform. A cord whose colour the unit commander picks adds a second choice, of the colour by swatch.
+const SHOULDER_CORD_GROUP = 'Regulation cords';
+let shoulderCordPicker = null, shoulderCordColourPicker = null, shoulderCordKey = '';
+const shoulderCordPictures = new Map();   // cord and colour -> the markup of its picture
+
+function capubCordColour(id){
+  const cords = CAPUBEngine.cords;
+  if(!cords.needsColour(id)) return null;
+  return cords.isChosenColour(State.shoulderCordColour) ? State.shoulderCordColour : cords.chosenColours()[0].name;
 }
 
+function capubCordPicture(id){
+  const colour = capubCordColour(id), key = id + '|' + (colour || '');
+  if(!shoulderCordPictures.has(key)) shoulderCordPictures.set(key, CAPUBEngine.cords.sampleSvg(id, colour));
+  return shoulderCordPictures.get(key);
+}
+
+// The options of the cord picker for this member on this uniform: none when no cord may be worn (the control is then hidden).
+function capubShoulderCordOptions(){
+  const allowed = id => CAPUBUniformRules.allowsCord(State.uniform, State.membership, id);
+  const regulation = SHOULDER_CORD_IDS.filter(allowed);
+  if(!regulation.length) return [];
+  const options = [{ value: '', label: 'No cord', picture: VisualPicker.emptyMark(), group: SHOULDER_CORD_GROUP }];
+  for(const id of regulation) options.push({ value: id, label: SHOULDER_CORD_META[id].tile, picture: capubCordPicture(id), note: SHOULDER_CORD_META[id].note || '', group: SHOULDER_CORD_GROUP });
+  const offered = window.Supplements && typeof Supplements.cords === 'function' ? Supplements.cords(State) : [];
+  for(const c of offered) if(allowed(c.id)) options.push({ value: c.id, label: c.label, picture: capubCordPicture(c.id), note: c.note, mark: c.earned ? 'In your report' : '', group: c.group });
+  return options;
+}
+
+const capubCordSwatch = c => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 36" focusable="false" aria-hidden="true"><rect x="7" y="5" width="34" height="26" rx="6" fill="${c.main}" stroke="${c.dark}" stroke-width="3"/></svg>`;
+
+function capubPickShoulderCord(value){
+  State.shoulderCord = value || null;
+  State.shoulderCordColour = CAPUBEngine.cords.needsColour(State.shoulderCord) ? capubCordColour(State.shoulderCord) : null;
+  renderCACShoulderCord();
+  fullRender();
+}
+
+function capubPickShoulderCordColour(name){
+  State.shoulderCordColour = CAPUBEngine.cords.isChosenColour(name) ? name : null;
+  syncShoulderCordControl();
+  fullRender();
+}
+
+function syncShoulderCordControl(){
+  const host = by('shoulderCordPicker');
+  if(!host || typeof VisualPicker === 'undefined') return;
+  const options = capubShoulderCordOptions();
+  // The cord the member chose, when it is on offer (a supplement cord the unit does not offer is not shown as chosen).
+  const value = State.shoulderCord && options.some(o => o.value === State.shoulderCord) ? State.shoulderCord : '';
+  const key = JSON.stringify(options.map(o => [o.value, o.label, o.note, o.mark, o.group, o.picture ? o.picture.length : 0]));
+  if(!shoulderCordPicker){
+    shoulderCordPicker = VisualPicker.render(host, { name: 'shoulderCord', legend: 'Shoulder cord', options, value, size: 'large', onChange: capubPickShoulderCord });
+    shoulderCordKey = key;
+  }else{
+    if(key !== shoulderCordKey){ shoulderCordPicker.setOptions(options); shoulderCordKey = key; }
+    shoulderCordPicker.setValue(value);
+  }
+  const panel = by('shoulderCordPanel');
+  if(panel) panel.classList.toggle('hidden', !options.length);
+  // A cord whose colour the unit commander picks: the member's colour, from the colours that are not a regulation cord's.
+  const colourHost = by('shoulderCordColour');
+  if(colourHost){
+    const colours = CAPUBEngine.cords.needsColour(value) ? CAPUBEngine.cords.chosenColours() : [];
+    colourHost.hidden = !colours.length;
+    if(colours.length){
+      const colourOptions = colours.map(c => ({ value: c.name, label: c.name.charAt(0).toUpperCase() + c.name.slice(1), picture: capubCordSwatch(c) }));
+      if(!shoulderCordColourPicker) shoulderCordColourPicker = VisualPicker.render(colourHost, { name: 'shoulderCordColour', legend: 'Cord colour', options: colourOptions, value: capubCordColour(value), onChange: capubPickShoulderCordColour });
+      else shoulderCordColourPicker.setValue(capubCordColour(value));
+    }
+  }
+  const note = by('shoulderCordNote');
+  if(note) note.textContent = State.membership === 'senior' && options.length ? 'Senior members wear only the Aide de Camp cord; the other shoulder cords are for cadets (CAPR 39-1, 9.3).' : '';
+}
+
+// The picker is drawn again when the unit, or the cords the member's report shows earned, change what is on offer (js/supplements.js); the drawing follows a cord that is no longer offered.
 function wireShoulderCordControl(){
-  const sel = by('shoulderCordSelect');
-  if(!sel || sel.dataset.wired === 'true') return;
-  sel.dataset.wired = 'true';
-  sel.addEventListener('change', () => {
-    State.shoulderCord = sel.value || null;
-    renderCACShoulderCord();
-    fullRender();
+  if(wireShoulderCordControl.wired) return;
+  wireShoulderCordControl.wired = true;
+  document.addEventListener('capub:supplements-changed', () => {
+    syncShoulderCordControl();
+    if(State.shoulderCord) fullRender();
   });
 }
 
@@ -228,15 +280,19 @@ const CAC_CORD_LABEL_BY_LEVEL = {
   national: 'National CAC shoulder cord - gold'
 };
 const SHOULDER_CORD_META = {
-  group:       { label:'Group CAC shoulder cord - green',    srcBase:'cords/group',       imported:true  },
-  wing:        { label:'Wing CAC shoulder cord - red',       srcBase:'cords/wing',        imported:true  },
-  region:      { label:'Region CAC shoulder cord - blue',    srcBase:'cords/region',      imported:true  },
-  national:    { label:'National CAC shoulder cord - gold',  srcBase:'cords/national',    imported:true  },
-  color_guard: { label:'Color Guard shoulder cord - white',  srcBase:'cords/color_guard', imported:false,
+  group:       { label:'Group CAC shoulder cord - green',    tile:'Group council, green',    srcBase:'cords/group',       imported:true,
+                 note:'Kelly green cord for the current primary members of a group Cadet Advisory Council (CAPR 39-1, 9.3.1.4).' },
+  wing:        { label:'Wing CAC shoulder cord - red',       tile:'Wing council, red',       srcBase:'cords/wing',        imported:true,
+                 note:'Red cord for the current primary members of a wing Cadet Advisory Council (CAPR 39-1, 9.3.1.3).' },
+  region:      { label:'Region CAC shoulder cord - blue',    tile:'Region council, blue',    srcBase:'cords/region',      imported:true,
+                 note:'Blue cord for the current primary members of a region Cadet Advisory Council (CAPR 39-1, 9.3.1.2).' },
+  national:    { label:'National CAC shoulder cord - gold',  tile:'National council, gold',  srcBase:'cords/national',    imported:true,
+                 note:'Gold cord for the current primary members of the National Cadet Advisory Council (CAPR 39-1, 9.3.1.1).' },
+  color_guard: { label:'Color Guard shoulder cord - white',  tile:'Color Guard, white',      srcBase:'cords/color_guard', imported:false,
                  note:'White cord for cadets on a drill or color guard competition team, or acting as a color guard (CAPR 39-1, 9.3.2).' },
-  honor_guard: { label:'Honor Guard shoulder cord - silver', srcBase:'cords/honor_guard', imported:false,
+  honor_guard: { label:'Honor Guard shoulder cord - silver', tile:'Honor Guard, silver',     srcBase:'cords/honor_guard', imported:false,
                  note:'Silver cord: worn for good by graduates of the former National or a Region Honor Guard Academy; members of a unit honor guard who are not graduates wear it only while taking part in an honor guard activity (CAPR 39-1, 9.3.3).' },
-  aide_de_camp: { label:'Aide de Camp shoulder cord',        srcBase:'cords/aide_de_camp', imported:false,
+  aide_de_camp: { label:'Aide de Camp shoulder cord',        tile:'Aide de Camp',            srcBase:'cords/aide_de_camp', imported:false,
                  note:'Worn by senior members and cadets serving as an aide to a general officer, only while acting as an aide, on the Class A and Class B (CAPR 39-1, 9.3.4).' }
 };
 const SHOULDER_CORD_IDS = Object.keys(SHOULDER_CORD_META);
@@ -425,8 +481,10 @@ parseCapMemberReport = function capubParseCapMemberReportCACPatch(textRaw){
 const capubOriginalApplyCapMemberReportImport_CACPatch = applyCapMemberReportImport;
 applyCapMemberReportImport = function capubApplyCapMemberReportImportCACPatch(parsed){
   State.shoulderCord = parsed?.shoulderCord || null;
+  State.shoulderCordColour = null;
   capubOriginalApplyCapMemberReportImport_CACPatch(parsed);
   State.shoulderCord = parsed?.shoulderCord || null;
+  State.shoulderCordColour = CAPUBEngine.cords.needsColour(State.shoulderCord) ? capubCordColour(State.shoulderCord) : null;
   syncShoulderCordControl();
   renderCACShoulderCord();
 };
