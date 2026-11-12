@@ -37,7 +37,7 @@ test('semi-formal: the rack is centred on the pocket and the crest, not slid tow
     assert.ok(Math.abs(pocketCenterX - crestX) < 0.02, `${gender}: the slot and the crest share an x`);
     assert.equal(A.miniRackCenterX('semi_formal', { pocketCenterX, lapelEdgeX: 15, armSeamX: 25 }), pocketCenterX, 'the lapel and the arm do not move it');
   }
-  assert.ok(Math.abs(spec('garment-corporate-service-dress-blazer-male').anchors.crest_center[0] / 100 - 18.2475) < 0.001, 'men: 18.25 in; the engine drew a 12-medal rack at 19.55 in (a 1.3 in slide) before the hookup');
+  assert.ok(Math.abs(spec('garment-corporate-service-dress-blazer-male').anchors.crest_center[0] / 100 - 18.5694) < 0.001, 'men: 18.57 in, the centre of the pocket; the engine once drew a 12-medal rack 1.3 in toward the arm of it, before the hookup');
 });
 
 test('mess dress: the centre is the midpoint of the lapel edge and the arm seam at the rack height, close to the sheet anchor (4.1.1.1.2.2)', () => {

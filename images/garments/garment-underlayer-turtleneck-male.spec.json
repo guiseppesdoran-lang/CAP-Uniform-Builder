@@ -2,29 +2,29 @@
  "asset_id": "garment-underlayer-turtleneck-male",
  "name": "White turtleneck sweater, men's corporate blazer V insert (registered to the blazer)",
  "size_in": {
-  "w": 25.522,
+  "w": 26.1658,
   "h": 38.45
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2552.2,
+  2616.58,
   3845
  ],
  "size_source": "estimated",
  "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names the garment but gives no figure or dimension: 4.2 in neck width and 3.4 in neck height are estimates.",
  "anchors": {
   "top_center": [
-   1276.1,
+   1308.2886777156057,
    0
   ],
   "bottom_center": [
-   1276.1,
+   1308.2886777156057,
    3845.0000000000005
   ],
   "center": [
-   1276.1,
+   1308.2886777156057,
    1922.5000000000002
   ],
   "left_edge": [
@@ -32,15 +32,15 @@
    1922.5000000000002
   ],
   "right_edge": [
-   2552.2,
+   2616.5773554312113,
    1922.5000000000002
   ],
   "neck_top_center": [
-   1276.1,
+   1308.29,
    34.22
   ],
   "neck_base_center": [
-   1276.1,
+   1308.29,
    374.22
   ]
  },

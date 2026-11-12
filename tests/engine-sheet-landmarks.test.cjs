@@ -70,12 +70,12 @@ test('corporate blazers: the miniature rack is held 1 in inside the sleeve edge 
     const drapes = scene => scene.layers.filter(l => l.role === 'mini-drape').map(l => [l.x, l.y]);
     const seamIn = await P.composeUniform(semi(sex), edit(-300, 0));
     assert.deepEqual(drapes(seamIn), drapes(asShipped), `${sex}: the drawn arm seam 3 in nearer the centre changes nothing (it is not a limit)`);
-    // The sleeve's edge 4 in nearer the centre (every band's last span pulled in by 40 cells; the men's rack ends about 4.9 in inside the shipped edge): the rack is narrowed or noted as straying.
+    // The sleeve's edge 5 in nearer the centre (every band's last span pulled in by 50 cells; the men's rack ends about 5.05 in inside the shipped edge, the women's about 4): the rack is narrowed or noted as straying.
     const F = ML.GARMENT_FOOTPRINT[id], saved = F.map(sp => sp.slice());
     try{
-      F.forEach(sp => { if(sp.length) sp[sp.length - 1] -= 40; });
+      F.forEach(sp => { if(sp.length) sp[sp.length - 1] -= 50; });
       const edgeIn = await P.composeUniform(semi(sex), edit(0, 0));
-      assert.ok(perRowMax(edgeIn) < perRowMax(asShipped) || strays(edgeIn), `${sex}: with the sleeve's edge 4 in nearer the centre the rack is narrowed (${perRowMax(asShipped)} to ${perRowMax(edgeIn)} to a row) or noted as straying`);
+      assert.ok(perRowMax(edgeIn) < perRowMax(asShipped) || strays(edgeIn), `${sex}: with the sleeve's edge 5 in nearer the centre the rack is narrowed (${perRowMax(asShipped)} to ${perRowMax(edgeIn)} to a row) or noted as straying`);
     }finally{ saved.forEach((sp, b) => { F[b] = sp; }); }
     const lowShoulder = await P.composeUniform(semi(sex), edit(0, 600));
     assert.ok(perRowMax(lowShoulder) < perRowMax(asShipped) || strays(lowShoulder), `${sex}: with the shoulder line 6 in lower the rack is narrowed or noted as straying`);

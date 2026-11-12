@@ -2,29 +2,29 @@
  "asset_id": "garment-underlayer-shell-female",
  "name": "White shell top, women's corporate blazer V insert (registered to the blazer)",
  "size_in": {
-  "w": 21.53,
+  "w": 26.5187,
   "h": 36.2124
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2153,
+  2651.87,
   3621.24
  ],
  "size_source": "estimated",
  "size_basis": "Original flat art fitted to the blazer V (same box/origin as the blazer). The regulation names a white shell top but gives no figure or dimension: scoop 3.4 in wide, 3.0 in below the neck line, are estimates.",
  "anchors": {
   "top_center": [
-   1076.4999999999998,
+   1325.9354744428415,
    0
   ],
   "bottom_center": [
-   1076.4999999999998,
+   1325.9354744428415,
    3621.2354838709684
   ],
   "center": [
-   1076.4999999999998,
+   1325.9354744428415,
    1810.6177419354842
   ],
   "left_edge": [
@@ -32,19 +32,19 @@
    1810.6177419354842
   ],
   "right_edge": [
-   2152.9999999999995,
+   2651.870948885683,
    1810.6177419354842
   ],
   "neck_top_center": [
-   1076.5,
+   1325.94,
    15
   ],
   "neck_base_center": [
-   1076.5,
+   1325.94,
    15
   ],
   "neckline_center": [
-   1076.5,
+   1325.94,
    395
   ]
  },

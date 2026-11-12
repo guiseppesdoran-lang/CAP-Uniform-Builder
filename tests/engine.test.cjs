@@ -142,7 +142,7 @@ test('the corporate blazer nameplate sits straight across from the left breast p
   const plate = layersBy(scene, l => l.key === 'nametag')[0];
   // Figure 4.14: on the wearer's left (the picture's right), over the crest on the left breast pocket (LIVE12 E52).
   assert.ok(plate.x + plate.w / 2 > 12.761, 'wearer\'s left (viewer\'s right) of the centre line');
-  assert.ok(Math.abs(plate.x + plate.w / 2 - 18.2475) < 0.01, 'centred over the crest and the pocket');
+  assert.ok(Math.abs(plate.x + plate.w / 2 - 18.5694) < 0.01, 'centred over the crest and the pocket');
   assert.ok(Math.abs(plate.y - 12.377) < 0.01, 'top even with the pocket top');
   assert.equal(layersBy(scene, l => l.key === 'text:name')[0].text, 'PAT DOE');
   const lastOnly = await P.composeUniform(build('aviator_blazer', 'senior', 'Col', { name: { first: '', last: 'Doe', show: true } }), store());
