@@ -93,11 +93,8 @@ function capubSyncBadgesNotWornNote(){
 by('clearPatches').addEventListener('click', ()=>{
   State.patches=[];
   State.patchSelections={};
-  State.unitPatchCharter='';
-  const unitSearch = by('unitPatchSearch');
-  if(unitSearch) unitSearch.value='';
+  // The unit is the member's, chosen in the Profile step: clearing the patches leaves it.
   buildPatchGallery();
-  if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   renderPatches();
 });
 
@@ -1013,6 +1010,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} patch picture is not available yet, so no unit patch is shown.`);
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} unit patch is not worn on this uniform, so it is not shown.`);
+    // A wing patch a supplement of the member's unit requires on this uniform and the build does not have (a warning: the member may leave it off).
+    if(window.Supplements && typeof Supplements.warnings === 'function') for(const w of Supplements.warnings(State)) addNotice('warn',w.msg,w.fix);
     if(State.membership === 'cadet'){
       const bad = State.badges.filter(id=>!isCadetAuthorized(id));
       if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '),{id:'expandBadges',label:'Review badges'});

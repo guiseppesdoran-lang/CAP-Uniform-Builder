@@ -65,9 +65,9 @@ test('only the first step is shown before the scripts run; each step is a tabpan
 
 test('the controls sit in the step they belong to; the cut is part of the profile',()=>{
   const where={
-    profile:['memberReportImportPanel','membershipType','rankSetupSelect','jacketSelect','adultCadetCheckbox','cadetFirstSergeantCheckbox','optionalName'],
+    profile:['memberReportImportPanel','membershipType','rankSetupSelect','jacketSelect','adultCadetCheckbox','cadetFirstSergeantCheckbox','unitPanel','unitPatchSearch','unitPatchSelect','supplementsSection','optionalName'],
     uniform:['uniformList','lockedUniforms'],
-    items:['uniformOptionsCard','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordPicker','shoulderCordColour','shoulderCordNote','expandRibbons','clearRibbons','cadetHighestOnly','removeRibbons','miniMountStyle','ribbonRackColumns','ribbonRowOverridePanel','expandBadges','badgesPlannedNote','expandPatches','unitPatchSearch','unitPatchSelect'],
+    items:['uniformOptionsCard','garmentOptionsPanel','garmentOptions','shoulderCordPanel','shoulderCordPicker','shoulderCordColour','shoulderCordNote','expandRibbons','clearRibbons','cadetHighestOnly','removeRibbons','miniMountStyle','ribbonRackColumns','ribbonRowOverridePanel','expandBadges','badgesPlannedNote','expandPatches','unitPatchStatus'],
     export:['capubV2StatusPanel','capubV2Notices','downloadImage','purchaseListSlot','capubV2ExportJson','capubV2ImportBtn','capubV2SaveLocal','capubV2LoadLocal','capubV2Reset']
   };
   for(const [step,ids] of Object.entries(where)) for(const id of ids) assert.equal(stepOf(id),step,`${id} is in step ${step}`);

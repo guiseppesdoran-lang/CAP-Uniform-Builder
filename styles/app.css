@@ -1424,6 +1424,23 @@ html[data-access="guest"] #accessGate{display:none}
 .itemSummaryPlace{flex:1 0 100%;font-size:var(--t-xs);color:var(--muted);min-width:0}
 .itemSummaryRow.notShown .itemSummaryPlace{color:var(--ink);font-weight:700}
 .itemSummaryWhy{flex:1 0 100%;margin-top:0;font-size:var(--t-xs);color:var(--muted)}
+/* Supplements: the section under "Your unit" in the Profile step (js/supplements.js). Rows follow the item lists of the Items step. */
+.supplementBlock{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s2);min-width:0}
+.supplementBlock:first-child{margin-top:0;padding-top:0;border-top:0}
+.supplementName{margin:0;font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.supplementDate{font-size:var(--t-xs);color:var(--muted)}
+.supplementItems{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3);min-width:0}
+.supplementRow{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s2);min-width:0;font-size:var(--t-sm);line-height:1.4}
+.supplementTag{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--muted)}
+.supplementText{flex:1 1 100%;min-width:0;color:var(--ink);overflow-wrap:anywhere}
+.supplementFound{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--ok)}
+.supplementWarn{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--warn)}
+.supplementCheck{flex:1 0 100%;display:flex;align-items:center;gap:var(--s2);min-height:44px;font-size:var(--t-sm);color:var(--ink)}
+.supplementCheck input{flex:none;margin:0}
+.supplementPointer{display:grid;gap:var(--s2);margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}
+.supplementPointer .hintText{margin:0}
+.supplementGo{min-height:44px}
+#unitPanel #unitPatchSelect{margin-top:var(--s2)}
 .commandRow{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s1);min-width:0}
 .commandRow.hidden{display:none}
 .commandRowHead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 var(--s2)}

@@ -243,15 +243,20 @@
     if(!mine.length || state.membership !== 'cadet') return null;
     const li = make('li', 'supplementRow supplementCords');
     li.append(make('span', 'supplementTag', 'Shoulder cords'));
-    const names = mine.map(i => i.label);
-    li.append(make('span', 'supplementText', `${sentence(listOf(names))}. You choose one under Shoulder cord on the Items step; it is worn on the left shoulder of Blues: Class A and Class B.`));
+    li.append(make('span', 'supplementText', `Adds ${listOf(mine.map(i => i.label))}.`));
     const earned = new Set(earnedIds(state)), found = mine.filter(i => earned.has(i.id)).map(i => i.label);
     if(found.length) li.append(make('span', 'supplementFound', `Your report shows: ${listOf(found)}.`));
+    return li;
+  }
+  // The one pointer to the cord choice, under all the supplements: the cords are chosen under Shoulder cord (the cord picker lists them), not here.
+  function cordPointer(){
+    const p = make('div', 'supplementPointer');
+    p.append(make('p', 'hintText', 'You choose one cord under Shoulder cord on the Items step. It is worn on the left shoulder of Blues: Class A and Class B.'));
     const go = make('button', 'ghost supplementGo', 'Go to the shoulder cord');
     go.type = 'button';
     go.addEventListener('click', goToCords);
-    li.append(go);
-    return li;
+    p.append(go);
+    return p;
   }
 
   let boxPlaced = false;
@@ -295,7 +300,7 @@
     if(!entries.length) return;
     boxPlaced = false;
     const plan = wingPatch(state);
-    let words = false;
+    let words = false, anyCords = false;
     for(const entry of entries){
       const block = make('div', 'supplementBlock');
       block.dataset.supplement = entry.key;
@@ -305,11 +310,12 @@
       const rows = entry.items.filter(i => i.kind !== 'cord' && forMember(i, state.membership)).sort((a, b) => order[a.kind] - order[b.kind]);
       const cordsRow = cordRow(entry, state);
       for(const item of rows.filter(i => i.kind === 'wing-patch')) list.append(itemRow(entry, item, state, plan));
-      if(cordsRow) list.append(cordsRow);
+      if(cordsRow){ list.append(cordsRow); anyCords = true; }
       for(const item of rows.filter(i => i.kind !== 'wing-patch')){ list.append(itemRow(entry, item, state, plan)); if(item.kind === 'headgear' || item.kind === 'accessory') words = true; }
       block.append(list);
       body.append(block);
     }
+    if(anyCords) body.append(cordPointer());
     if(words) body.append(make('p', 'hintText', 'Caps and other items listed here are described in words; the builder does not draw them.'));
   }
 
@@ -345,5 +351,5 @@
   }
 
   return { parseUnit, forUnit, entries: entriesFor, cords, items, hiddenOptions, wingPatch, wingPatches, wingCharter, warnings, cite, noteOf, earnedIds, cordIds, isSupplementCord,
-    chooseWingPatch, selectWingPatch, dropStaleCord, render, refresh, registerWingPatches, start };
+    chooseWingPatch, selectWingPatch, dropWingPatchOnOcp, dropStaleCord, render, refresh, registerWingPatches, start };
 });

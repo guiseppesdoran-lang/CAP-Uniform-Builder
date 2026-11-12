@@ -120,6 +120,21 @@
           </select>
         </section>
 
+        <section id="unitPanel" class="panelBlock">
+          <label class="fieldLabel" for="unitPatchSelect">Your unit</label>
+          <input id="unitPatchSearch" type="search" aria-label="Search your unit" placeholder="Search charter number or unit name…" autocomplete="off"/>
+          <select id="unitPatchSelect">
+            <option value="">No unit chosen</option>
+          </select>
+          <div id="unitSupplementsLine" class="hintText" aria-live="polite">Choose your unit to load the supplements of its wing and region.</div>
+        </section>
+
+        <!-- The supplements of the unit's wing and region (js/supplements.js fills it once a unit with a supplement is chosen). -->
+        <section id="supplementsSection" class="panelBlock supplementsCard" aria-labelledby="supplementsTitle" hidden>
+          <label class="fieldLabel" id="supplementsTitle">Supplements for your unit</label>
+          <div id="supplementsBody"></div>
+        </section>
+
         <details class="optionalName" id="optionalName" open>
           <summary>Your name</summary>
           <section id="capubV2TextPanel" class="panelBlock plainPanel">
@@ -389,12 +404,9 @@
           </div>
 
           <div class="panelDivider">
-            <label class="fieldLabel" for="unitPatchSelect">Unit patch</label>
-            <input id="unitPatchSearch" type="search" aria-label="Search unit patches" placeholder="Search charter number or unit name…" autocomplete="off"/>
-            <select id="unitPatchSelect">
-              <option value="">No unit patch</option>
-            </select>
+            <label class="fieldLabel">Unit patch</label>
             <div id="unitPatchStatus" class="hintText">No unit patch selected.</div>
+            <div class="hintText">Your unit patch follows the unit you choose in the Profile step.</div>
           </div>
 
           <div id="patchGallery" class="galleryGrid"></div>
@@ -562,6 +574,7 @@
 <script src="data/ribbon-awards.js?v=64c86061f9" defer></script>
 <script src="data/rotc-ribbons.js?v=c4617d05a0" defer></script>
 <script src="data/badge-catalog.js?v=ececd59dd1" defer></script>
+<script src="data/supplements.js?v=0000000000" defer></script>
 <script src="data/cords.js?v=0000000000" defer></script>
 <script src="js/engine/core.js?v=54b0b9e320" defer></script>
 <script src="js/engine/cord-braid.js?v=0000000000" defer></script>
@@ -599,6 +612,7 @@
 <script src="js/planned-uniforms.js?v=645b98dd2f" defer></script>
 <script src="js/guided-flow.js?v=4aadc676f8" defer></script>
 <script src="js/member-report-import.js?v=a916aa651f" defer></script>
+<script src="js/supplements.js?v=0000000000" defer></script>
 <!-- Feature scripts: add their script tags here, src first, then defer. They run after every helper above and
      before js/bootstrap.js performs the first render. -->
 <script src="js/telemetry.js?v=dd78c3c66e" defer></script>
