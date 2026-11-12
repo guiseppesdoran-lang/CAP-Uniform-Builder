@@ -116,7 +116,9 @@ test('the sync has no path from the pin to the ribbon or back', () => {
 test('the Items row asks which command is held and moves the one pin', () => {
   const html = read('index.html'), ui = read('js/workspace-ui.js');
   const row = html.slice(html.indexOf('id="commandInsigniaRow"'), html.indexOf('id="badgesPlannedNote"'));
-  assert.match(row, /<label class="fieldLabel" for="commandInsigniaLevel">Command held<\/label>/);
+  // The select stays as the source the row's handler reads; the choice is a picker of pictures beside it (js/item-pickers.js).
+  assert.match(row, /<label class="fieldLabel segmentedSource" for="commandInsigniaLevel" aria-hidden="true">Command held<\/label>/);
+  assert.match(row, /<div id="commandInsigniaLevelPicker" hidden><\/div>/);
   assert.deepEqual([...row.matchAll(/<option value="([a-z]+)">([^<]+)<\/option>/g)].map(m => [m[1], m[2]]), [['squadron', 'Squadron commander'], ['group', 'Group commander']]);
   assert.match(row, /one pin only/);
   assert.match(row, /The Command Service Ribbon is a separate award, added under Ribbons\./);

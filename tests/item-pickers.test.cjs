@@ -28,14 +28,17 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(rea
 // ---- the page --------------------------------------------------------------------------------------------------------------------------
 
 // The controls this file replaces by pictures, each with the host the picker is drawn in. The control stays, as a hidden source.
-const SOURCES = [['ribbonRackColumns', 'label'], ['ribbonRackArrangement', 'label']];
 
 test('each control keeps its element, hidden from sight and from the keyboard and screen readers, with a host for its picker beside it; the script loads after the panel\'s', () => {
-  for(const [id] of SOURCES){
+  for(const id of ['ribbonRackColumns', 'ribbonRackArrangement', 'miniMountStyle']){
     assert.equal([...html.matchAll(new RegExp(`id="${id}"`, 'g'))].length, 1, `${id} once`);
     const host = new RegExp(`<div id="${id}Picker"[^>]*\\bhidden\\b[^>]*></div>\\s*<label class="fieldNote segmentedSource" aria-hidden="true">[^<]*<select id="${id}" tabindex="-1">`).exec(html);
     assert.ok(host, `${id}: a host, then the control as a hidden source`);
   }
+  // The command insignia pin: its three radios stay inside the row (the page's handler is the row's), their list hidden, a host before it; the level's list and its label hidden too.
+  assert.match(html, /<div id="commandInsigniaChoicePicker" hidden><\/div>\s*<div class="badgeChooserList segmentedSource" role="radiogroup" aria-labelledby="commandInsigniaLabel" aria-hidden="true">\s*<label class="badgeChooserOption"><input type="radio" name="commandInsignia" value="none">/);
+  assert.match(html, /<div id="commandInsigniaLevelWrap" class="commandRowLevel hidden">\s*<div id="commandInsigniaLevelPicker" hidden><\/div>\s*<label class="fieldLabel segmentedSource" for="commandInsigniaLevel" aria-hidden="true">Command held<\/label>\s*<select id="commandInsigniaLevel" class="segmentedSource" tabindex="-1" aria-hidden="true">/);
+  assert.equal([...html.matchAll(/<input type="radio" name="commandInsignia"/g)].length, 3, 'the radios are the page\'s, once each');
   const at = name => html.indexOf(`<script src="js/${name}`);
   assert.ok(at('garment-options.js') < at('item-pickers.js') && at('item-pickers.js') < at('wiring.js'), 'after the pictures and the picker, before the page wiring');
   assert.match(html, /<script src="js\/item-pickers\.js\?v=[0-9a-f]+" defer><\/script>/);
@@ -62,6 +65,7 @@ const member = o => run(`
   return State.ribbons.length;`);
 const env = {
   core, compose: b => P.composeUniform(b, store), spec: id => store.load(id), entry: id => store.entry(id), url: p => 'images/' + p, empty: () => '<svg id="empty"></svg>',
+  draw: async scene => 'drawn:' + scene.title,
   build: () => run('return CAPUBUniformView.buildFromState();'),
   buildWith: over => run(`const over = ${JSON.stringify(over)}; const saved = Object.keys(over).map(k => [k, State[k]]);
     try{ Object.assign(State, over); return CAPUBUniformView.buildFromState(); } finally { saved.forEach(([k, v]) => { State[k] = v; }); }`)
@@ -70,6 +74,7 @@ const rects = markup => [...markup.matchAll(/<rect x="([-\d.]+)" y="([-\d.]+)" w
 const viewBox = markup => /viewBox="([^"]+)"/.exec(markup)[1];
 const near = (a, b) => Math.abs(a - b) < 0.002;
 const picturesOf = async (name, values) => OP.create(env).pictures(name, values).ready;
+const fmtN = n => String(Math.round(n * 1000) / 1000);
 
 test('rack layout: a blank rectangle for each ribbon the member wears, at the place the engine puts it for that choice, on the welt pocket and the lapel, all choices in one frame', async () => {
   // A woman's Class A coat, nine ribbons, the standard arrangement: the three widths lay three different racks.
@@ -153,40 +158,182 @@ test('the cache keys follow what the pictures are made from: the cut, the ribbon
   assert.notDeepEqual(key('rackColumns'), before, 'another cut');
 });
 
+// ---- miniature medals: blank medals, mounted as the engine mounts them ------------------------------------------------------------------------------
+
+const medalsOf = o => member(Object.assign({ uniform: 'mess_dress' }, o));
+const partsOf = markup => ({
+  drapes: [...markup.matchAll(/<polygon points="([^"]+)"/g)].map(m => m[1].split(' ').map(p => p.split(',').map(Number))),
+  bodies: [...markup.matchAll(/<ellipse cx="([-\d.]+)" cy="([-\d.]+)" rx="([-\d.]+)" ry="([-\d.]+)"/g)].map(m => ({ x: +m[1] - +m[3], y: +m[2] - +m[4], w: 2 * +m[3], h: 2 * +m[4] }))
+});
+
+test('miniature medals: a blank drape and a blank body for every medal the member wears, where the engine hangs it for that style, in one frame', async () => {
+  for(const uniform of ['mess_dress', 'semi_formal']){
+    assert.equal(medalsOf({ uniform, ribbons: 12 }), 12);
+    const pics = await picturesOf('miniMount', ['mounting', 'holding']);
+    assert.equal(typeof pics.mounting, 'string', uniform);
+    assert.equal(viewBox(pics.mounting), viewBox(pics.holding), `${uniform}: one frame`);
+    for(const style of ['mounting', 'holding']){
+      const { drapes, bodies } = partsOf(pics[style]);
+      const full = await P.composeUniform(env.buildWith({ miniMountStyle: style }), store);
+      const drapeLayers = full.layers.filter(l => l.role === 'mini-drape'), bodyLayers = full.layers.filter(l => l.role === 'mini-medal');
+      assert.equal(drapes.length, drapeLayers.length, `${uniform} ${style}: a drape for each`);
+      assert.equal(bodies.length, bodyLayers.length, `${uniform} ${style}: a body for each`);
+      assert.ok(drapes.length >= 12);
+      for(const l of drapeLayers){
+        const poly = l.clip.map(q => [+fmtN(q.x), +fmtN(q.y)]);
+        assert.ok(drapes.some(d => d.length === poly.length && d.every((q, i) => near(q[0], poly[i][0]) && near(q[1], poly[i][1]))), `${uniform} ${style}: the drape cut to its V point where the engine hangs it`);
+      }
+      for(const l of bodyLayers){ const b = core.layerBounds(l); assert.ok(bodies.some(x => near(x.x, b.x) && near(x.y, b.y) && near(x.w, b.w) && near(x.h, b.h)), `${uniform} ${style}: a body at ${JSON.stringify(b)}`); }
+    }
+    // Rows of four (the last row the full one) against rows of up to seven overlapped: different racks.
+    const rows = markup => new Set(partsOf(markup).bodies.map(b => b.y.toFixed(2))).size;
+    assert.ok(rows(pics.mounting) > rows(pics.holding), `${uniform}: more rows mounted than held`);
+  }
+});
+
+test('miniature medals: not offered where the two ways hang alike (four or fewer medals, or eight) or with none', async () => {
+  for(const n of [0, 1, 4]){
+    medalsOf({ ribbons: n });
+    assert.deepEqual(await picturesOf('miniMount', ['mounting', 'holding']), { mounting: false, holding: false }, `${n} medals`);
+  }
+  medalsOf({ ribbons: 8 });
+  assert.deepEqual(await picturesOf('miniMount', ['mounting', 'holding']), { mounting: false, holding: false }, 'eight: two rows of four either way');
+  medalsOf({ ribbons: 5 });
+  assert.equal(typeof (await picturesOf('miniMount', ['mounting', 'holding'])).holding, 'string', 'five differ');
+  // The cache follows the medals and the cut, not the style the picture is of.
+  medalsOf({ ribbons: 12 });
+  const key = over => OP.RECIPES.miniMount.key(over ? env.buildWith(over) : env.build());
+  assert.deepEqual(key(), key({ miniMountStyle: 'holding' }));
+  const before = key();
+  medalsOf({ ribbons: 11 });
+  assert.notDeepEqual(key(), before);
+});
+
+// ---- the command insignia pin -----------------------------------------------------------------------------------------------------------------------------------
+
+const withPin = (uniform, rank, level) => run(`
+  State.membership = 'senior'; State.uniform = ${JSON.stringify(uniform)}; State.gender = 'male'; State.rank = ${JSON.stringify(rank || 'Capt')}; State.garment = {};
+  State.badgeSelections = {}; State.badges = ${JSON.stringify(level ? [`${level}_commander_badge`] : [])};
+  for(const id of State.badges) State.badgeSelections[id] = { checked: true };
+  State.commandInsignia = { graduatedCommander: false }; return State.badges.length;`);
+const pinKey = (scene, id) => scene.layers.filter(l => l.role === 'badge' && String(l.key).startsWith('badge:' + id));
+const boxOf = layer => core.layerBounds(layer);
+
+test('command insignia pin: not worn is the empty mark; current and graduated are the uniform as the engine draws each, in a window centred on the pin (over the name tag, then under it)', async () => {
+  withPin('blues_a', 'Capt', 'squadron');
+  const pics = await OP.create(env).pictures('commandWorn', ['none', 'current', 'graduated']).ready;
+  assert.equal(pics.none, '<svg id="empty"></svg>');
+  for(const [choice, graduated] of [['current', false], ['graduated', true]]){
+    // The picture is a scene (it is drawn by the page); here the recipe itself.
+    const made = await OP.RECIPES.commandWorn.make(env, env.build(), [choice]);
+    const scene = made[choice].scene;
+    const full = await P.composeUniform(env.buildWith({ commandInsignia: { graduatedCommander: graduated } }), store);
+    const pin = pinKey(full, 'squadron_commander_badge');
+    assert.equal(pin.length, 1);
+    const drawn = pinKey({ layers: scene.layers }, 'squadron_commander_badge');
+    assert.equal(drawn.length, 1, `${choice}: the pin is in the picture`);
+    for(const k of ['x', 'y', 'w', 'h']) assert.ok(Math.abs(drawn[0][k] - pin[0][k]) < 1e-6, `${choice}: the pin where the engine puts it (${k})`);
+    const b = boxOf(pin[0]), f = scene.bounds;
+    assert.ok(near(f.x + f.w / 2, b.x + b.w / 2) && near(f.y + f.h / 2, b.y + b.h / 2), `${choice}: centred on the pin`);
+    assert.ok(f.w > 4 * b.w && f.h > 3 * b.h, `${choice}: a window that shows what the pin is worn over or under`);
+    assert.ok(scene.layers.some(l => l.role === 'garment'), `${choice}: on the garment`);
+  }
+  const cur = await OP.RECIPES.commandWorn.make(env, env.build(), ['current']), grad = await OP.RECIPES.commandWorn.make(env, env.build(), ['graduated']);
+  const y = made => { const l = pinKey({ layers: made.scene.layers }, 'squadron_commander_badge')[0]; return l.y; };
+  assert.ok(y(cur.current) < y(grad.graduated), 'a current commander\'s pin is over the name tag, a graduated commander\'s under it (CAPR 39-1, 10.2.5)');
+});
+
+test('command insignia pin: a way the uniform does not draw is not offered (no graduated pin on the flight suit), and the pin sewn on the left sleeve is found by its whole piece', async () => {
+  withPin('flight_suit', 'Capt', 'squadron');
+  const fs = await OP.create(env).pictures('commandWorn', ['none', 'current', 'graduated']).ready;
+  assert.equal(typeof fs.current === 'string', true);
+  assert.equal(fs.graduated, false, 'the flight suit has no graduated pin');
+  withPin('ocp', 'Capt', 'squadron');
+  const made = await OP.RECIPES.commandWorn.make(env, env.build(), ['current', 'graduated']);
+  const full = await P.composeUniform(env.buildWith({ commandInsignia: { graduatedCommander: true } }), store);
+  const pieces = pinKey(full, 'squadron_commander_badge');
+  assert.equal(pieces.length, 2, 'the whole pin and its edge piece lie apart');
+  const main = pieces.sort((a, b) => b.w * b.h - a.w * a.h)[0], f = made.graduated.scene.bounds;
+  assert.ok(near(f.x + f.w / 2, main.x + main.w / 2) && near(f.y + f.h / 2, main.y + main.h / 2), 'the window is centred on the whole piece, so the pin is in it');
+});
+
+test('command insignia pin: the insignia of each level is the art the engine draws for it on this uniform, at its own size, in one frame', async () => {
+  for(const [uniform, art] of [['blues_a', { squadron: 'squadron-commander', group: 'group-commander' }], ['ocp', { squadron: 'squadron-commander-field', group: 'group-commander-field' }]]){
+    withPin(uniform, 'Capt', 'squadron');
+    const made = await OP.RECIPES.commandLevel.make(env, env.build(), ['squadron', 'group']);
+    assert.deepEqual(made.squadron.scene.bounds, made.group.scene.bounds, `${uniform}: one frame`);
+    for(const level of ['squadron', 'group']){
+      const [layer] = made[level].scene.layers;
+      assert.equal(layer.id, art[level], `${uniform} ${level}`);
+      const spec = await store.load(art[level]);
+      assert.ok(Math.abs(layer.w - spec.w) < 1e-6 && Math.abs(layer.h - spec.h) < 1e-6, `${uniform} ${level}: its own size`);
+      assert.equal(made[level].scene.layers.length, 1, 'the insignia alone');
+    }
+  }
+  // The level's badge is the page's own (js/workspace-ui.js COMMAND_PINS).
+  const ui = read('js/workspace-ui.js');
+  assert.match(ui, /const COMMAND_PINS=\{squadron:'squadron_commander_badge',group:'group_commander_badge'\};/);
+  withPin('polo', 'Capt', 'squadron');
+  assert.deepEqual(await picturesOf('commandLevel', ['squadron', 'group']), { squadron: null, group: null }, 'a uniform that wears neither pin has none to show: the names alone');
+});
+
 // ---- the page's side: the picker beside the control ------------------------------------------------------------------------------------
 
-// The two controls and their hosts in the small DOM, the picker script and a stand-in for the pictures that records what it was asked.
-function page(state, pictures){
+// The controls and their hosts in the small DOM, the picker script and a stand-in for the pictures that records what it was asked.
+function page(state, pictures, before){
   const doc = createDocument();
-  const mk = (tag, id) => { const e = doc.createElement(tag); if(id) e.id = id; doc.body.append(e); return e; };
+  const mk = (tag, id, parent) => { const e = doc.createElement(tag); if(id) e.id = id; (parent || doc.body).append(e); return e; };
   const sources = {};
-  for(const [id, values, now] of [['ribbonRackColumns', ['3', '4-left', '4-center'], '3'], ['ribbonRackArrangement', ['standard', 'lapel'], 'lapel']]){
-    const host = mk('div', id + 'Picker'); host.hidden = true;
-    const select = mk('select', id);
-    values.forEach(v => { const o = doc.createElement('option'); o.setAttribute('value', v); o.value = v; select.append(o); });
-    select.value = now;
-    select.changes = [];
-    select.addEventListener('change', () => select.changes.push(select.value));
-    sources[id] = { host, select };
-  }
+  const select = (id, values, now, parent) => {
+    const host = mk('div', id + 'Picker', parent); host.hidden = true;
+    const sel = mk('select', id, parent);
+    values.forEach(v => { const o = doc.createElement('option'); o.setAttribute('value', v); o.value = v; sel.append(o); });
+    sel.value = now;
+    sel.changes = [];
+    sel.addEventListener('change', () => sel.changes.push(sel.value));
+    sources[id] = { host, select: sel };
+    return sel;
+  };
+  select('ribbonRackColumns', ['3', '4-left', '4-center'], '3');
+  select('ribbonRackArrangement', ['standard', 'lapel'], 'lapel');
+  // The miniature medals' control sits in a label the page hides by a class when the uniform wears none.
+  const label = mk('label'); label.className = 'fieldNote segmentedSource';
+  select('miniMountStyle', ['mounting', 'holding'], 'mounting', label);
+  sources.miniMountStyle.label = label;
+  sources.miniMountStyle.host.remove(); doc.body.append(sources.miniMountStyle.host);
+  // The command pin: a row with its three radios and, in a wrap the page hides when no pin is worn, the level.
+  const row = mk('div', 'commandInsigniaRow');
+  const head = mk('span', 'commandInsigniaLabel', row); head.textContent = 'Command insignia pin';
+  const host = mk('div', 'commandInsigniaChoicePicker', row); host.hidden = true;
+  const list = mk('div', null, row); list.className = 'badgeChooserList segmentedSource';
+  const radios = ['none', 'current', 'graduated'].map(v => { const i = mk('input', null, list); i.setAttribute('type', 'radio'); i.value = v; i.checked = v === 'none'; i.disabled = false; return i; });
+  row.changes = [];
+  row.addEventListener('change', e => { row.changes.push(e.target.value); radios.forEach(r => { r.checked = r === e.target; }); });
+  const wrap = mk('div', 'commandInsigniaLevelWrap', row); wrap.className = 'commandRowLevel';
+  select('commandInsigniaLevel', ['squadron', 'group'], 'squadron', wrap);
+  sources.commandInsigniaChoice = { host, row, radios, list };
+  if(before) before(sources);
   const asked = [];
   const sandbox = {
-    State: Object.assign({ uniform: 'blues_a', gender: 'male', ribbons: [], ribbonRackLayout: '3', ribbonRackArrangement: 'lapel' }, state), document: doc, console,
+    State: Object.assign({ uniform: 'blues_a', gender: 'male', rank: 'Capt', ribbons: [], badges: [], ribbonRackLayout: '3', ribbonRackArrangement: 'lapel' }, state), document: doc, console,
     Event: function(type, init){ this.type = type; Object.assign(this, init); },
-    CAPUBOptionPictures: { pictures(name, values){ asked.push(name); const made = pictures(name, values); return made; } }
+    CAPUBOptionPictures: { pictures(name, values){ asked.push(name); return pictures(name, values); } }
   };
   sandbox.window = sandbox; sandbox.self = sandbox;
   vm.runInNewContext(read('js/visual-picker.js'), sandbox);
   vm.runInNewContext(read('js/item-pickers.js'), sandbox);
-  const rendered = () => (doc.listeners['capub:rendered'] || []).forEach(f => f());
+  // The page's drawing: every listener of it runs, then (as the picker script waits for) the rest of the turn.
+  const rendered = async () => { (doc.listeners['capub:rendered'] || []).forEach(f => f()); await Promise.resolve(); await Promise.resolve(); };
   return { doc, sandbox, sources, asked, rendered, tiles: id => sources[id].host.querySelectorAll('[role="radio"]') };
 }
 const settled = now => ({ now, ready: Promise.resolve(now), settled: true });
 const SQUARE = '<svg viewBox="0 0 4 3"></svg>';
 const all = values => Object.fromEntries(values.map(v => [v, SQUARE]));
+const shownAll = (name, values) => settled(all(values));
 
-test('a picker is drawn from the control\'s own choices, in its order, with the words of each, and a press sets the control and gives the change the page listens to', () => {
-  const p = page({}, (name, values) => settled(all(values)));
+test('a picker is drawn from the control\'s own choices, in its order, with the words of each, and a press sets the control and gives the change the page listens to', async () => {
+  const p = page({}, shownAll);
+  await p.rendered();
   const cols = p.tiles('ribbonRackColumns');
   assert.deepEqual(cols.map(t => t.querySelector('.vpLabel').textContent), ['3 across, centered', '4 across, left edge on the pocket', '4 across, centered on the pocket']);
   assert.deepEqual(cols.map(t => t.dataset.value), ['3', '4-left', '4-center']);
@@ -205,53 +352,126 @@ test('a picker is drawn from the control\'s own choices, in its order, with the 
   assert.equal(p.sources.ribbonRackColumns.select.value, '4-center');
 });
 
-test('the picker follows the control when the page sets it (a saved setup, undo): after the next drawing it shows what the control holds', () => {
-  const p = page({}, (name, values) => settled(all(values)));
+test('the picker follows the control when the page sets it (a saved setup, undo): after the next drawing it shows what the control holds', async () => {
+  const p = page({}, shownAll);
+  await p.rendered();
   p.sources.ribbonRackColumns.select.value = '4-center';
-  p.rendered();
+  await p.rendered();
   assert.deepEqual(p.tiles('ribbonRackColumns').map(t => t.getAttribute('aria-checked')), ['false', 'false', 'true']);
   assert.deepEqual(p.sources.ribbonRackColumns.select.changes, [], 'the page setting it is not a change of the member\'s');
 });
 
-test('a choice that does not apply is not offered, and a group with nothing to pick between is hidden, not greyed; it comes back when it applies', () => {
+test('a choice that does not apply is not offered, and a group with nothing to pick between is hidden, not greyed; it comes back when it applies', async () => {
   let apply = false;
   const p = page({}, (name, values) => settled(Object.fromEntries(values.map(v => [v, apply ? SQUARE : false]))));
+  await p.rendered();
   assert.equal(p.sources.ribbonRackColumns.host.hidden, true, 'nothing to pick between: hidden');
   assert.equal(p.sources.ribbonRackArrangement.host.hidden, true);
   apply = true;
   p.sandbox.State.ribbons = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }];
-  p.rendered();
+  await p.rendered();
   assert.equal(p.sources.ribbonRackColumns.host.hidden, false);
   assert.equal(p.tiles('ribbonRackColumns').length, 3);
   // One of three does not apply: the other two are offered.
   const q = page({}, (name, values) => settled(Object.fromEntries(values.map((v, i) => [v, i === 1 && values.length === 3 ? false : SQUARE]))));
+  await q.rendered();
   assert.deepEqual(q.tiles('ribbonRackColumns').map(t => t.dataset.value), ['3', '4-center']);
+  // ...unless it is the one the control holds: the member's own choice is always there.
+  q.sources.ribbonRackColumns.select.value = '4-left';
+  q.sandbox.State.ribbons = [{ id: 'x' }];
+  await q.rendered();
+  assert.deepEqual(q.tiles('ribbonRackColumns').map(t => t.dataset.value), ['3', '4-left', '4-center']);
   // A control the page has disabled (the cut or the uniform has no choice) offers none.
-  const r = page({}, (name, values) => settled(all(values)));
+  const r = page({}, shownAll);
   r.sources.ribbonRackColumns.select.disabled = true;
-  r.rendered();
+  await r.rendered();
   assert.equal(r.sources.ribbonRackColumns.host.hidden, true);
 });
 
 test('the pictures are asked for again only when what they are made from has changed; a picture still being made keeps the host out of sight until it is there', async () => {
   let release;
   const slow = new Promise(res => { release = res; });
-  let n = 0;
-  const p = page({}, (name, values) => { n++; return { now: {}, ready: slow, settled: false }; });
+  const p = page({}, (name, values) => ({ now: {}, ready: slow.then(() => all(values)), settled: false }));
   assert.equal(p.sources.ribbonRackColumns.host.hidden, true, 'nothing to show yet: the host is not drawn as a row of blank boxes');
-  release(all(['3', '4-left', '4-center']));
+  release();
   await slow;
-  await Promise.resolve();
+  await Promise.resolve(); await Promise.resolve();
   assert.equal(p.sources.ribbonRackColumns.host.hidden, false, 'drawn when the pictures arrive');
   const asked = p.asked.length;
-  p.rendered(); p.rendered();
+  await p.rendered(); await p.rendered();
   assert.equal(p.asked.length, asked, 'nothing changed, nothing asked');
   p.sandbox.State.ribbons = [{ id: 'a' }];
-  p.rendered();
+  await p.rendered();
   assert.ok(p.asked.length > asked, 'the ribbons changed');
-  const after = p.asked.length;
+  const after = p.asked.length, columns = p.asked.filter(x => x === 'rackColumns').length;
   p.sandbox.State.ribbonRackLayout = '4-left';
-  p.rendered();
-  assert.equal(p.asked.filter(x => x === 'rackColumns').length, p.asked.slice(0, after).filter(x => x === 'rackColumns').length, 'the width is the choice the columns picture is of: not asked again');
+  await p.rendered();
+  assert.equal(p.asked.filter(x => x === 'rackColumns').length, columns, 'the width is the choice the columns picture is of: not asked again');
   assert.ok(p.asked.length > after, 'but the arrangement picture is made with it');
+});
+
+test('the miniature medals\' picker follows the class the page puts on its control: hidden where the uniform wears none, drawn where it does', async () => {
+  const p = page({ uniform: 'blues_a' }, shownAll, sources => sources.miniMountStyle.label.classList.add('hidden'));
+  await p.rendered();
+  assert.equal(p.sources.miniMountStyle.host.hidden, true, 'a uniform with no medals');
+  assert.equal(p.asked.includes('miniMount'), false, 'and no picture made for it');
+  p.sources.miniMountStyle.label.classList.remove('hidden');
+  p.sandbox.State.uniform = 'mess_dress';
+  await p.rendered();
+  assert.equal(p.sources.miniMountStyle.host.hidden, false);
+  assert.deepEqual(p.tiles('miniMountStyle').map(t => t.querySelector('.vpLabel').textContent), ['Mounting bars, 4 per row (up to 24)', 'Holding bars, custom overlap (up to 28)']);
+  p.tiles('miniMountStyle')[1].click();
+  assert.equal(p.sources.miniMountStyle.select.value, 'holding');
+  assert.deepEqual(p.sources.miniMountStyle.select.changes, ['holding']);
+  // Hidden again with the control: it stays so when nothing else changed, and comes back at once when the class goes.
+  p.sources.miniMountStyle.label.classList.add('hidden');
+  await p.rendered();
+  assert.equal(p.sources.miniMountStyle.host.hidden, true);
+  p.sources.miniMountStyle.label.classList.remove('hidden');
+  await p.rendered();
+  assert.equal(p.sources.miniMountStyle.host.hidden, false, 'with the picker it had');
+});
+
+test('the command pin\'s three radios are one picker; a press checks the radio and gives the change the row listens to; a radio the page disabled is not offered unless it is checked', async () => {
+  const p = page({}, shownAll);
+  await p.rendered();
+  const { host, row, radios } = p.sources.commandInsigniaChoice;
+  assert.equal(host.hidden, false);
+  assert.deepEqual(p.tiles('commandInsigniaChoice').map(t => t.querySelector('.vpLabel').textContent), ['Not worn', 'Current commander', 'Graduated commander']);
+  assert.equal(host.querySelector('.vpLegend'), null, 'the row\'s own line names it');
+  const group = host.querySelector('[role="radiogroup"]');
+  assert.equal(group.getAttribute('aria-labelledby'), 'commandInsigniaLabel', 'named by the line above it');
+  assert.equal(group.getAttribute('aria-label'), null);
+  p.tiles('commandInsigniaChoice')[2].click();
+  assert.deepEqual(row.changes, ['graduated']);
+  assert.equal(radios[2].checked, true);
+  // The page (a grade that may not wear the pin) disables two: only "Not worn" is left and there is nothing to pick between.
+  radios[1].disabled = true; radios[2].disabled = true; radios[2].checked = false; radios[0].checked = true;
+  await p.rendered();
+  assert.equal(host.hidden, true);
+  // A pin already worn stays offered with its own choice, though the grade no longer allows a new one.
+  radios[1].checked = true; radios[0].checked = false;
+  await p.rendered();
+  assert.equal(host.hidden, false);
+  assert.deepEqual(p.tiles('commandInsigniaChoice').map(t => t.dataset.value), ['none', 'current']);
+});
+
+test('the command level is set by a press, and its picker is the wrap\'s: hidden with it when no pin is worn', async () => {
+  const p = page({}, shownAll);
+  await p.rendered();
+  const lvl = p.sources.commandInsigniaLevel;
+  assert.deepEqual(p.tiles('commandInsigniaLevel').map(t => t.querySelector('.vpLabel').textContent), ['Squadron commander', 'Group commander']);
+  assert.equal(lvl.host.querySelector('.vpLegend').textContent, 'Command held');
+  p.tiles('commandInsigniaLevel')[1].click();
+  assert.equal(lvl.select.value, 'group');
+  assert.deepEqual(lvl.select.changes, ['group']);
+});
+
+test('the pictures of the Items step are made by recipes of js/option-pictures.js, one for each picker, and a recipe has the cache key the pictures depend on', () => {
+  const p = page({}, shownAll);
+  for(const def of p.sandbox.CAPUBItemPickers.PICKERS){
+    assert.ok(OP.RECIPES[def.recipe], `${def.id}: the recipe ${def.recipe}`);
+    assert.ok(Object.keys(def.labels).length >= 2, `${def.id}: the words of each choice`);
+    assert.ok(def.deps.length, `${def.id}: what it depends on`);
+  }
 });

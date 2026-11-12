@@ -194,6 +194,90 @@
   // What the pictures are made from: the cut, the ribbons, the member's rows if they set their own, and the one of the two choices the picture is not of.
   const rackKey = (...fields) => build => [build.uniform, build.gender, (build.ribbons || []).map(r => r.key), build.opt && [build.opt.rackCounts, ...fields.map(f => build.opt[f])]];
 
+  // ---- miniature medals: the member's own medals as blank medals, mounted as the engine mounts them for each style ---------------------------------
+
+  // The medals the engine hung in a scene (the drape of each, cut to its V point, and the body under it), in the order they are drawn so one that hangs over another does.
+  async function miniOf(env, build){
+    const scene = await env.compose(rackOnly(build));
+    const layers = scene.layers.filter(l => l.type === 'asset' && (l.role === 'mini-drape' || l.role === 'mini-medal')).sort((a, b) => a.z - b.z);
+    if(!layers.length) return null;
+    return { parts: layers.map(l => ({ drape: l.role === 'mini-drape', box: env.core.layerBounds(l), clip: l.clip || null })) };
+  }
+  const miniSignature = m => m && JSON.stringify(m.parts.map(p => [p.drape, p.box.x, p.box.y, p.box.w, p.box.h].map(n => typeof n === 'number' ? Math.round(n * 1000) : n)));
+  function miniMarkup(m, f){
+    const body = m.parts.map(p => {
+      if(p.drape){
+        const pts = p.clip ? p.clip.map(q => fmt(q.x) + ',' + fmt(q.y)).join(' ') : [[p.box.x, p.box.y], [p.box.x + p.box.w, p.box.y], [p.box.x + p.box.w, p.box.y + p.box.h], [p.box.x, p.box.y + p.box.h]].map(q => q.map(fmt).join(',')).join(' ');
+        return `<polygon points="${pts}" fill="#FFFFFF" stroke="#001871" stroke-width="0.04" stroke-linejoin="round"/>`;
+      }
+      return `<ellipse cx="${fmt(p.box.x + p.box.w / 2)}" cy="${fmt(p.box.y + p.box.h / 2)}" rx="${fmt(p.box.w / 2)}" ry="${fmt(p.box.h / 2)}" fill="#E6E9F3" stroke="#001871" stroke-width="0.04"/>`;
+    }).join('');
+    return `<svg xmlns="${SVG_NS}" viewBox="${fmt(f.x)} ${fmt(f.y)} ${fmt(f.w)} ${fmt(f.h)}" focusable="false" aria-hidden="true">${body}</svg>`;
+  }
+  // The two ways to mount, each the member's medals as the engine hangs them: rows of four on mounting bars, or rows of up to seven overlapped on holding bars. Not offered where
+  // the member wears no medal, or where the two hang alike (four or fewer, or eight, which both put in two rows of four).
+  async function miniMount(env, build, values) {
+    const out = {};
+    const none = () => { values.forEach(v => { out[v] = false; }); return out; };
+    const minis = await Promise.all(values.map(v => miniOf(env, buildWith(env, build, { miniMountStyle: v }))));
+    if(minis.some(m => !m) || new Set(minis.map(miniSignature)).size < 2) return none();
+    const frame = env.core.unionBounds(minis.flatMap(m => m.parts.map(p => p.box))), m = 0.25;
+    const framed = { x: frame.x - m, y: frame.y - m, w: frame.w + 2 * m, h: frame.h + 2 * m };
+    values.forEach((v, i) => { out[v] = { markup: miniMarkup(minis[i], framed) }; });
+    return out;
+  }
+  const miniKey = build => [build.uniform, build.gender, (build.medals || []).map(m => m.key)];
+
+  // ---- the command insignia pin: where it is worn, and the insignia of each level ----------------------------------------------------------------------
+
+  // The member as they are with a command pin of their own making (the badge, and current or graduated), nothing else: no cap, ribbons, badges or name. The miniature medals stay
+  // where the uniform wears them, for the mess dress puts the pin level with the top of the medals or below them.
+  const pinBase = (build, command) => Object.assign(rackOnly(Object.assign({}, build, { ribbons: [] })), { command });
+  // The pin the engine drew in a scene: its layers (a graduated pin on the field uniforms' sleeve is two), the key says whose they are.
+  const pinLayers = (scene, id) => scene.layers.filter(l => l.type === 'asset' && l.role === 'badge' && String(l.key).startsWith('badge:' + id));
+  const COMMAND_LEVEL_PIN = level => `${level}_commander_badge`;
+
+  // Current commander (over the name tag, or where the uniform puts it) and graduated commander (under it): the uniform as the engine draws it for each, in a window centred on the
+  // pin, so the pin and what it sits above or below show at a size to read. Not worn is the empty mark. A way the uniform does not draw is not offered (the flight suit has no
+  // graduated pin).
+  async function commandWorn(env, build, values){
+    const out = {};
+    const id = (build.command && build.command.id) || COMMAND_LEVEL_PIN('squadron');
+    await Promise.all(values.map(async v => {
+      if(v === 'none'){ out[v] = { markup: env.empty() }; return; }
+      const scene = await env.compose(pinBase(build, { id, title: id, graduated: v === 'graduated' }));
+      const pin = pinLayers(scene, id);
+      if(!pin.length){ out[v] = false; return; }
+      // The window is centred on the pin itself (a graduated pin on the field uniforms' sleeve is drawn in two pieces, the whole one and the edge, which lie apart).
+      const at = env.core.layerBounds([...pin].sort((x, y) => y.w * y.h - x.w * x.h)[0]);
+      const w = Math.max(3, at.w * 5.6), h = w * 0.75;
+      const layers = scene.layers.filter(l => l.type !== 'clear' && l.type !== 'measure');
+      out[v] = { scene: sceneOf(layers, { x: at.x + at.w / 2 - w / 2, y: at.y + at.h / 2 - h / 2, w, h }, 'Command insignia'), pad: 0 };
+    }));
+    return out;
+  }
+  const commandWornKey = build => [build.uniform, build.gender, build.command && build.command.id, build.grade && (build.grade.key || build.grade.rank), (build.medals || []).map(m => m.key)];
+
+  // The insignia of each level (squadron and group commander), as the engine draws each on this uniform, at its own size in one frame.
+  async function commandLevel(env, build, values){
+    const out = {};
+    const pins = await Promise.all(values.map(async v => {
+      const id = COMMAND_LEVEL_PIN(v);
+      const scene = await env.compose(pinBase(build, { id, title: id, graduated: false }));
+      return pinLayers(scene, id).sort((a, b) => b.w - a.w)[0] || null;
+    }));
+    if(pins.some(l => !l)){ values.forEach(v => { out[v] = null; }); return out; }
+    const w = Math.max(...pins.map(l => l.w)), h = Math.max(...pins.map(l => l.h)), m = 0.2;
+    const frame = { x: -w / 2 - m, y: -h / 2 - m, w: w + 2 * m, h: h + 2 * m };
+    values.forEach((v, i) => {
+      const l = pins[i];
+      const pin = Object.assign({}, l, { x: -l.w / 2, y: -l.h / 2, rotate: 0, origin: { x: 0, y: 0 }, z: 2 });
+      out[v] = { scene: sceneOf([pin], frame, 'Command insignia'), pad: 0 };
+    });
+    return out;
+  }
+  const commandLevelKey = build => [build.uniform, build.gender];
+
   // ---- the pieces a choice changes: sleeves, the women's top, the polo, what is under the blazer --------------------------------
 
   // The uniform as the engine draws it for the choice and nothing else (no cap, ribbons or name), framed on the figure; `crop(frame, figure)` narrows the frame.
@@ -310,6 +394,9 @@
     badgeLayout: { make: badgeLayout, key: badgeLayoutKey },
     rackColumns: { make: rackColumns, key: rackKey('rackArrangement') },
     rackArrangement: { make: rackArrangement, key: rackKey('rackColumns', 'rackAlign') },
+    miniMount: { make: miniMount, key: miniKey },
+    commandWorn: { make: commandWorn, key: commandWornKey },
+    commandLevel: { make: commandLevel, key: commandLevelKey },
     chevron: { make: chevron, key: chevronKey },
     esPatch: { make: esPatch, key: esPatchKey },
     skirt: { make: skirt, key: figureKey([]) },
