@@ -2275,6 +2275,8 @@ function applyCapMemberReportImport(parsed){
     if(!State.badges.includes(id)) State.badges.push(id);
     if(State.badgeSelections[id]) State.badgeSelections[id].checked = true;
   }
+  // Which of two badges of equal standing is worn higher stays for the badges the report keeps; a pair the report does not keep loses its choice.
+  State.badgeOrder = CAPUBBadgeCatalog.pruneEqual(State.badgeOrder, State.badges);
 
   // Apply imported field-uniform patches. Unauthorized patches, especially
   // the Communications patch on OCPs, are kept out of State.patches.
