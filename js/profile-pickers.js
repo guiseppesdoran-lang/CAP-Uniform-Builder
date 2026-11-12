@@ -177,7 +177,7 @@
   // ---- the uniforms -------------------------------------------------------------------------------------------------------------
 
   const cards = () => Array.from(doc.querySelectorAll('.uniformOption'));
-  // A card the member may pick: not locked (folded away with its reason) and not hidden (Ceremonials, for a senior member).
+  // A card the member may pick: not locked (folded away with its reason) and not hidden (Honor Guard, for a senior member).
   const pickable = card => !card.classList.contains('locked') && !card.hidden && !card.classList.contains('hidden');
   // The picture's box holds the card's place from the moment the card is shown, so the grid does not move when the pictures arrive.
   function boxOf(card){

@@ -77,7 +77,7 @@ test('each card the member may pick gets a box above its name, and its picture o
   assert.deepEqual(p.asked, [IDS]);
 });
 
-test('a card the member may not pick has no picture asked for: a locked card (folded away) and a hidden one (Ceremonials for a senior member)', async () => {
+test('a card the member may not pick has no picture asked for: a locked card (folded away) and a hidden one (Honor Guard for a senior member)', async () => {
   const map = { blues_a: 'a', blues_b: 'b', abu: 'abu' };
   const p = page({ membership: 'senior', rank: 'Capt' }, ids => known(map)(ids));
   p.cards[3].classList.add('locked');          // mess dress: locked

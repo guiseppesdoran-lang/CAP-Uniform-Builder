@@ -1,7 +1,7 @@
 'use strict';
 // The pictures of the Uniform step (js/profile-pictures.js; the owner, 2026-11-12: "make the uniform selection, and the grade selection visual. mostly everything should be
 // visual atp"). A card's picture is the engine's composition of the uniform for the member as they are, bare: their cut, their grade and their garment choices, and nothing they
-// chose elsewhere (ribbons, badges, patches, name, cord, cap). Ceremonials is the coat or the shirt with the honor guard items on. The composition here is the real engine on the
+// chose elsewhere (ribbons, badges, patches, name, cord, cap). Honor Guard is the coat or the shirt with the honor guard items on. The composition here is the real engine on the
 // real art; only the drawing (an SVG in a browser) is replaced by a record of the scene it was asked to draw.
 
 const test = require('node:test');
@@ -77,7 +77,7 @@ test('a picture is the member bare: their cut, grade and garment choices stay, w
   assert.equal(base.ribbons.length > 0, true);
 });
 
-test('Ceremonials is the coat or the shirt with the honor guard items: the guard role and the silver cord, the member\'s own role, chinstrap and shirt kept', () => {
+test('Honor Guard is the coat or the shirt with the honor guard items: the guard role and the silver cord, the member\'s own role, chinstrap and shirt kept', () => {
   const coat = PP.bare(RULES, member({ uniform: 'ocp' })(), { ceremonial: true });
   assert.equal(coat.uniform, 'blues_a', 'the coat when the member is not on the shirt');
   assert.deepEqual(coat.ceremonial, { role: 'guard', chinstrap: 'down' });
@@ -128,7 +128,7 @@ test('the grade is the member\'s own on the picture: a cadet colonel\'s Class A 
   assert.notDeepEqual(colonel, basic);
 });
 
-test('Ceremonials shows what makes it Ceremonials: the white pistol belt and the white ascot on the coat, the cord, and no cap', async () => {
+test('Honor Guard shows what makes it Honor Guard: the white pistol belt and the white ascot on the coat, the cord, and no cap', async () => {
   for(const gender of ['male', 'female']){
     const env = envOf(member({ gender }));
     const done = await PP.create(env).uniforms(['blues_a', 'ceremonial']).ready;
@@ -298,7 +298,7 @@ test('the cut is shown by the member\'s own uniform in each cut: the engine\'s p
   assert.ok(idsOf(scene).some(id => /blouse/.test(id)), 'the women\'s blouse sheet, not the men\'s shirt');
 });
 
-test('Ceremonials is pictured for the cut as the uniform it rides on, without its items: the cut is the garment\'s', async () => {
+test('Honor Guard is pictured for the cut as the uniform it rides on, without its items: the cut is the garment\'s', async () => {
   const env = envOf(member({ uniform: 'blues_a' }));
   const base = env.build();
   env.build = () => Object.assign(base, { ceremonial: { role: 'flag', chinstrap: 'up' }, cordOnTop: true, cord: 'honor_guard' });

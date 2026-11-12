@@ -11,7 +11,7 @@
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
 // they made) with nothing else on it: no ribbons, badges, patches, name or cord, and no cap, so the garment fills the picture. The coat and the shirt, the
 // field uniforms with their sleeves and the blazer beside its shirt are drawn by the page's own code (E.profiles.composeUniform, E.renderSvg.buildSvg) and
-// shown as an image. Ceremonials is the Service Dress coat or the Blue Service shirt with the white pistol belt, the white ascot and the silver cord the
+// shown as an image. Honor Guard is the Service Dress coat or the Blue Service shirt with the white pistol belt, the white ascot and the silver cord the
 // engine puts on it. A picture is kept for the member and choices it was made for (the newest ones; the rest are let go), so a change of grade or cut
 // makes only the pictures it changes.
 //
@@ -165,9 +165,9 @@
       return { now, ready, settled };
     }
     return {
-      // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Ceremonials the honor guard items on the coat or the shirt.
+      // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Honor Guard the honor guard items on the coat or the shirt.
       uniforms: ids => pictures(ids, id => id === env.rules.CEREMONIAL.id ? { ceremonial: true } : { uniform: id }),
-      // The uniform the member is on (Ceremonials rides on the coat or the shirt, and is pictured as it), in each cut: the same pictures as its card's where the cut is the member's.
+      // The uniform the member is on (Honor Guard rides on the coat or the shirt, and is pictured as it), in each cut: the same pictures as its card's where the cut is the member's.
       cuts: () => pictures(['male', 'female'], gender => ({ gender }))
     };
   }
