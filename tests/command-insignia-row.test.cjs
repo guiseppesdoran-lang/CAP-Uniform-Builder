@@ -37,8 +37,8 @@ test('the row sets what the chooser sets, through the same rebuild, and asks the
   assert.match(ui, /rebuildBadgesFromGallery\(\)/);
   assert.match(ui, /wireCommandRow\(\); watchImporter\(\);/, 'wired with the rest of the page on load');
   assert.match(ui, /syncCommandRow\(\);\n\s*\}/, 'follows the state at every refresh');
-  // The chooser's own control is untouched.
-  assert.match(fs.readFileSync(path.join(__dirname, '..', 'js', 'pick-lists.js'), 'utf8'), /'ghost vpSwitch', 'Graduated commander'/);
+  // The chooser's own control is two picture tiles for the same two states.
+  assert.match(fs.readFileSync(path.join(__dirname, '..', 'js', 'pick-lists.js'), 'utf8'), /graduated: 'Graduated commander'/);
 });
 
 test('the row is shown only where a senior member can wear the pin on the uniform, and the choices close for a colonel', () => {

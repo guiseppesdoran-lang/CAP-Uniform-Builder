@@ -1595,12 +1595,12 @@ html[data-access="guest"] #accessGate{display:none}
 .vpControlStack{display:grid;gap:var(--s1);min-width:0}
 /* A ribbon that is on and has a row of counts, services or devices takes the width of the list so that its row has room: the tile on the left and the row beside it, the row under
    the tile at a phone's width. */
-.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls .vpRow){grid-column:1/-1;display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);column-gap:var(--s3);align-items:start}
-.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls .vpRow)>.vpOption,.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls .vpRow)>.vpCaption{grid-column:1}
-.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls .vpRow)>.vpControls{grid-column:2;grid-row:1 / span 2}
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow){grid-column:1/-1;display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);column-gap:var(--s3);align-items:start}
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpOption,.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpCaption{grid-column:1}
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpControls{grid-column:2;grid-row:1 / span 2}
 @media (max-width:699px){
-  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls .vpRow){grid-template-columns:minmax(0,150px)}
-  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls .vpRow)>.vpControls{grid-column:1/-1;grid-row:auto}
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow){grid-template-columns:minmax(0,150px)}
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpControls{grid-column:1/-1;grid-row:auto}
 }
 .vpControlStack .ribbonAwardLabel{margin:0}
 .vpSwitch{width:100%;min-height:36px;padding:0 var(--s2);font-size:var(--t-xs)}

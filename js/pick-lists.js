@@ -31,6 +31,10 @@
       isCommand: id => isCommandInsigniaBadge(id),
       levels: id => typeof CAPUBBadgeCatalog !== 'undefined' ? CAPUBBadgeCatalog.levels(id) : null,
       level: (id, level) => CAPUBBadgeCatalog.level(id, level)[0],
+      // The drawing of a badge at a level (the path the page loads it from), for the tile of that level.
+      levelArt: (id, level) => { const art = CAPUBBadgeCatalog.art(id, 'dress', level); return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || ''; },
+      // The command pin as the engine draws it worn each way (`values`: 'current', 'graduated'): { now, ready, settled }, a picture for each or false where the uniform does not draw it.
+      commandPictures: values => typeof CAPUBOptionPictures !== 'undefined' ? CAPUBOptionPictures.pictures('commandWorn', values) : null,
       canCommand: () => canSelectCommandInsigniaForCurrentRank(true),
       chooseOnlyCommand: id => chooseOnlyCommandInsignia(id),
       rebuild: () => rebuildBadgesFromGallery(),
@@ -149,37 +153,60 @@
     return true;
   }
 
+  // The words on a level's tile: its name without the paragraph in brackets (which is the tile's title), so a long name does not run over a small tile.
+  const shortLevel = text => String(text || '').replace(/\s*\(.*$/, '') || String(text || '');
+  const graduatedNow = d => !!(d.State.commandInsignia && d.State.commandInsignia.graduatedCommander);
+
+  // The command pin worn each way, as the engine draws the uniform with it: two tiles (current commander over the name tag, graduated commander under it), the one the member has picked
+  // marked. The pictures are made as the page is free to; a way the uniform does not draw (the flight suit has no graduated pin) is not offered, and one way is no choice.
+  function commandRow(d, id, deps, again){
+    const host = el('div', 'vpCommandWorn');
+    host.hidden = true;
+    const values = ['current', 'graduated'];
+    const words = { current: 'Current commander', graduated: 'Graduated commander' };
+    const made = d.commandPictures ? d.commandPictures(values) : null;
+    const paint = known => {
+      host.textContent = '';
+      const offered = values.filter(v => known[v] !== false);
+      if(offered.length < 2){ host.hidden = true; return; }
+      host.append(pictureRow(d, {
+        name: `commandWorn-${id}`, label: 'Where the command pin is worn', value: graduatedNow(d) ? 'graduated' : 'current', pictureHeight: '56px',
+        options: offered.map(v => ({ value: v, label: words[v], picture: known[v] || undefined })),
+        onChange: v => { setGraduated(id, v === 'graduated', deps); again(); }
+      }).host);
+      host.hidden = false;
+    };
+    if(!made) paint({});
+    else{
+      if(made.settled || Object.keys(made.now).length) paint(made.now);
+      if(!made.settled) made.ready.then(done => paint(done));
+    }
+    return host;
+  }
+
   // One picker for the badges of a list of categories: `groups` is [{ key, ids }], the key a heading above its tiles.
   function badgeList(container, groups, deps){
     const d = withDeps(deps);
     const ids = groups.flatMap(g => g.ids);
-    const grads = [];
-    const ref = { picker: null };
     const controls = id => {
       const box = el('div', 'vpControlStack');
       const levels = d.levels(id);
+      // The level of a badge earned in levels: a tile for each, the badge's own drawing at that level.
       if(levels){
-        const label = el('label', 'ribbonAwardLabel');
-        label.append('Level ');
-        const select = el('select', 'bdLevel');
-        select.setAttribute('aria-label', `Level of the ${d.name(id)}`);
-        for(const [k, text] of levels){ const o = el('option'); o.value = k; o.textContent = text; select.append(o); }
-        select.value = d.level(id, sel(d, id).level);
-        select.addEventListener('change', () => { setBadgeLevel(id, select.value, deps); entry.setOptions(); });
-        label.append(select);
-        box.append(label);
+        box.append(pictureRow(d, {
+          name: `badgeLevel-${id}`, label: `Level of the ${d.name(id)}`, value: d.level(id, sel(d, id).level), pictureHeight: '52px',
+          options: levels.map(([key, text]) => ({ value: key, label: shortLevel(text), title: shortLevel(text) !== text ? text : undefined, picture: d.levelArt ? d.asset(d.levelArt(id, key)) : undefined })),
+          onChange: key => { setBadgeLevel(id, key, deps); entry.setOptions(); }
+        }).host);
       }
-      if(d.isCommand(id)){
-        const button = el('button', 'ghost vpSwitch', 'Graduated commander');
-        button.setAttribute('type', 'button');
-        button.setAttribute('aria-pressed', 'false');
-        button.addEventListener('click', () => { setGraduated(id, !(d.State.commandInsignia && d.State.commandInsignia.graduatedCommander), deps); entry.refresh(); });
-        grads.push({ id, button });
-        box.append(button);
-      }
+      if(d.isCommand(id)) box.append(commandRow(d, id, deps, () => entry.setOptions()));
       return box.childNodes.length ? box : null;
     };
-    const options = () => { const rows = d.badgeRows(); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), caption: badgeLine(rows, id, d.caption(id)), group: g.key, search: g.key, controls: () => controls(id) }))); };
+    // The controls of a badge that has levels are made for every tile and shown while it is on; a command pin's are made only while it is on (the pin as drawn depends on which pin is held),
+    // so the list is made again when the pin held changes.
+    const pinsOn = () => ids.filter(id => d.isCommand(id) && d.State.badgeSelections[id] && d.State.badgeSelections[id].checked).join();
+    let built = '';
+    const options = () => { built = pinsOn(); const rows = d.badgeRows(); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), caption: badgeLine(rows, id, d.caption(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null }))); };
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
@@ -188,18 +215,16 @@
     });
     const entry = {
       picker, ids,
-      // Every tile as the state says (a pin turned on turns the other off; a badge the rules took off is off).
+      // Every tile as the state says (a pin turned on turns the other off; a badge the rules took off is off); the controls again where the pin held has changed.
       refresh(){
         picker.setValues(selectedIn(d, ids));
-        for(const g of grads) g.button.setAttribute('aria-pressed', String(!!(d.State.badgeSelections[g.id] && d.State.badgeSelections[g.id].checked) && !!(d.State.commandInsignia && d.State.commandInsignia.graduatedCommander)));
+        if(pinsOn() !== built) keepingFocus(picker.el, () => picker.setOptions(options()));
       },
-      // The pictures again (a badge at another level is another drawing).
-      setOptions(){ picker.setOptions(options()); entry.refresh(); },
+      // The pictures again (a badge at another level is another drawing); a field the member was in under a tile keeps the focus.
+      setOptions(){ keepingFocus(picker.el, () => { picker.setValues(selectedIn(d, ids)); picker.setOptions(options()); }); },
       // The drawing has been made again: what it did with each badge chosen is the line under its name.
       rendered(){ entry.setOptions(); }
     };
-    ref.picker = picker;
-    entry.refresh();
     return entry;
   }
 
@@ -222,21 +247,17 @@
       controls: () => {
         const { variants, active } = variantOf(badge);
         if(variants.length < 2) return null;
-        const label = el('label', 'ribbonAwardLabel');
-        label.append('Level ');
-        const select = el('select', 'militaryBadgeVariant');
-        select.setAttribute('title', 'Badge level or variant');
-        for(const v of variants){ const o = el('option'); o.value = v.id; o.textContent = v.id.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase()); select.append(o); }
-        select.value = active;
-        select.addEventListener('change', () => {
-          if(!d.State.militaryBadges) d.State.militaryBadges = {};
-          d.State.militaryBadges[badge.id] = { selected: true, variant: select.value };
-          d.fullRender();
-          picker.setOptions(options());
-          picker.setValues(chosen());
-        });
-        label.append(select);
-        return label;
+        // The level or variant of the badge: a tile for each, the badge's own drawing at that level.
+        return pictureRow(d, {
+          name: `militaryVariant-${badge.id}`, label: `Level of the ${badge.officialName || badge.id}`, value: active, pictureHeight: '52px',
+          options: variants.map(v => ({ value: v.id, label: v.id.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase()), picture: v.record.asset })),
+          onChange: variant => {
+            if(!d.State.militaryBadges) d.State.militaryBadges = {};
+            d.State.militaryBadges[badge.id] = { selected: true, variant };
+            d.fullRender();
+            again();
+          }
+        }).host;
       }
     })); };
     const host = el('div');
@@ -250,7 +271,9 @@
         d.fullRender();
       }
     });
-    return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); }, rendered(){ picker.setOptions(options()); picker.setValues(chosen()); } };
+    // The list made again (the drawing has been made again, or a level was picked): the picture of each badge at its level; a field the member was in under a tile keeps the focus.
+    const again = () => keepingFocus(picker.el, () => { picker.setValues(chosen()); picker.setOptions(options()); });
+    return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); }, rendered: again };
   }
 
   // ---- patches ------------------------------------------------------------------------------------------------------------------------------
@@ -324,7 +347,7 @@
     const host = el('div', 'vpRow');
     const picker = d.VisualPicker.render(host, Object.assign({
       name: cfg.name, ariaLabel: cfg.label, layout: 'row', size: 'small', shape: cfg.shape || 'wide',
-      options: cfg.options.map(o => ({ value: o.value, label: o.label, picture: o.picture }))
+      options: cfg.options.map(o => ({ value: o.value, label: o.label, picture: o.picture, title: o.title }))
     }, cfg.toggle ? { mode: 'toggle', values: cfg.values, onToggle: cfg.onToggle } : { value: cfg.value, onChange: cfg.onChange }));
     if(host.style && host.style.setProperty && cfg.pictureHeight) host.style.setProperty('--vpRowPic', cfg.pictureHeight);
     const draws = new Map(cfg.options.filter(o => typeof o.draw === 'function').map(o => [String(o.value), o.draw]));
@@ -340,6 +363,25 @@
       }
     }
     return { host, picker };
+  }
+
+  // The list made again (a count, a level or a service was picked): the field the member was in under a tile (a tile of a row, the numeral) keeps the focus, the same tile of the same row
+  // of the same item, else the same kind of field.
+  function keepingFocus(root, rebuild){
+    const active = document.activeElement;
+    const inside = active && root.contains && root.contains(active) ? active : null;
+    const cell = inside && inside.closest ? inside.closest('.vpCell') : null;
+    const row = inside && inside.closest ? inside.closest('.vp') : null;
+    const keep = cell && inside !== cell.querySelector('.vpOption')
+      ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], option: inside.dataset ? inside.dataset.value : '', row: row && row.dataset ? row.dataset.name : '' } : null;
+    rebuild();
+    if(!keep) return;
+    const again = root.querySelectorAll('.vpCell').find(c => c.dataset.value === keep.value);
+    const rowAgain = again && keep.row ? again.querySelectorAll('.vp').find(v => v.dataset.name === keep.row) : null;
+    const target = rowAgain
+      ? rowAgain.querySelectorAll('.vpOption').find(n => n.dataset.value === keep.option)
+      : again && again.querySelectorAll('.' + keep.className).find(n => n !== again.querySelector('.vpOption'));
+    if(target && target.focus) target.focus();
   }
 
   // ---- ribbons ------------------------------------------------------------------------------------------------------------------------------
@@ -520,24 +562,7 @@
       ids: shown,
       // Every tile as the state says, the controls and the drawn ribbons again; a field the member was in keeps the focus.
       refresh(){
-        const active = document.activeElement;
-        const inside = active && picker.el.contains && picker.el.contains(active) ? active : null;
-        const cell = inside && inside.closest ? inside.closest('.vpCell') : null;
-        // A field the member was in under a tile (a tile of a row of counts, the numeral) keeps the focus: the same tile of the same row, else the same kind of field.
-        const row = inside && inside.closest ? inside.closest('.vp') : null;
-        const keep = cell && inside !== cell.querySelector('.vpOption')
-          ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], option: inside.dataset ? inside.dataset.value : '', row: row && row.dataset ? row.dataset.name : '' } : null;
-        picker.setOptions(options());
-        picker.setValues(on());
-        draw();
-        if(keep){
-          const again = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === keep.value);
-          const rowAgain = again && keep.row ? again.querySelectorAll('.vp').find(v => v.dataset.name === keep.row) : null;
-          const target = rowAgain
-            ? rowAgain.querySelectorAll('.vpOption').find(n => n.dataset.value === keep.option)
-            : again && again.querySelectorAll('.' + keep.className).find(n => n !== again.querySelector('.vpOption'));
-          if(target && target.focus) target.focus();
-        }
+        keepingFocus(picker.el, () => { picker.setValues(on()); picker.setOptions(options()); draw(); });
       }
     };
     draw();

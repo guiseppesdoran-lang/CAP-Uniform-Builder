@@ -103,8 +103,6 @@ const BUILT=[
   ['placementTemplatesOpen','js/placement-templates.js','Placement templates'],
   ['purchaseListButton','purchase-feature-core.js','Shopping list'],
   ['feedbackOpen','js/feedback.js','Feedback'],
-  ['modalShowLess','js/wiring.js','Show less'],
-  ['modalShowAll','js/wiring.js','Show all'],
   ['capubV2ModalSearch','js/wiring.js','by name or category']
 ];
 test('the controls the page builds are still built',()=>{
@@ -123,9 +121,12 @@ test('the controls the page builds are still built',()=>{
 
 // The owner's removals: these are gone on purpose and stay gone.
 const REMOVED=['quickStripBtn','quickStripPanel','quickStripHint','sheetClose','stepGroup-tools','cmdValidate','cmdRibbons','previewEmptyState'];
+// The chooser window's Show less / Show all (the windows list all they offer, in one list) are gone from the page and from the code that built them.
+const REMOVED_IN_CODE=['modalShowLess','modalShowAll'];
 test('what the owner removed stays removed',()=>{
   for(const id of REMOVED) assert.ok(!ids.includes(id),`${id} is gone from the page`);
   assert.doesNotMatch(read('js/workspace-ui.js'),/id="topStatusText"|capubCommandBar/);
+  for(const id of REMOVED_IN_CODE) assert.doesNotMatch(read('js/wiring.js'),new RegExp(id),`${id} is not built`);
 });
 
 test('nothing in the panel hides a control in a fold that starts closed, apart from the uniforms a member may not wear',()=>{

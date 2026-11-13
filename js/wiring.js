@@ -314,19 +314,6 @@ function openGalleryModal(kind){
 
   const host = document.createElement('div');
 
-  const header = document.createElement('div');
-  header.style.cssText = "display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;";
-  header.innerHTML = `
-    <div style="font-size:12px;color:var(--muted);line-height:1.3;">
-      
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show less</button>
-      <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show all</button>
-    </div>
-  `;
-  host.appendChild(header);
-
   const grid = document.createElement('div');
   grid.className = 'galleryGrid';
   host.appendChild(grid);
@@ -336,12 +323,11 @@ function openGalleryModal(kind){
   function syncFromSidebar(){
     if(kind==='ribbons'){
       // The ribbons as picture tiles of the picture picker (js/pick-lists.js ribbonLists): the CAP ribbons in the order of precedence under their headings, the JROTC / ROTC menu
-      // and the U.S. military ones by branch. All of them, so the window has no Show less or Show all.
+      // and the U.S. military ones by branch. All of them, in one list.
       State.ribbonGalleryExpanded = true;
       modalTitle.textContent = "Ribbons / miniature medals";
       grid.innerHTML = '';
       grid.className = '';
-      host.querySelectorAll('#modalShowLess,#modalShowAll').forEach(b => { b.hidden = true; });
       window.CAPUB_MODAL_PICKERS = CAPUBPickLists.ribbonLists(grid);
     }
 
@@ -353,12 +339,11 @@ function openGalleryModal(kind){
     }
 
     if(kind==='patches'){
-      // The patches the uniform takes, as picture tiles of the picture picker (js/pick-lists.js patchList): all of them, so the window has no Show less or Show all.
+      // The patches the uniform takes, as picture tiles of the picture picker (js/pick-lists.js patchList): all of them, in one list.
       State.patchGalleryExpanded = true;
       modalTitle.textContent = "Patches";
       grid.innerHTML = '';
       grid.className = '';
-      host.querySelectorAll('#modalShowLess,#modalShowAll').forEach(b => { b.hidden = true; });
       window.CAPUB_MODAL_PICKERS = [CAPUBPickLists.patchList(grid)];
     }
   }
@@ -445,9 +430,9 @@ function openGalleryModal(kind){
       appendCategorizedBadges(modalHost, eligibleIds);
     }
 
-    // U.S. military badges are offered on the uniforms that wear U.S. military awards (data/uniform-rules.js usafAwards; the aviator shirt and the
-    // Corporate Semi-Formal among the Corporate-style ones, ICL 25-02).
-    const militaryBadges=isMilitaryAwardWornOnUniform() ? getAllSelectableMilitaryBadges() : [];
+    // U.S. military badges are offered on the uniforms that wear U.S. military awards and that the builder draws them on (data/uniform-rules.js usafAwards, drawsMilitaryBadges); on the
+    // ABU, OCP, flight suit and Corporate Semi-Formal they are not offered at all, and a choice made on another uniform is kept (the Check says so).
+    const militaryBadges=isMilitaryAwardWornOnUniform() && CAPUBUniformRules.drawsMilitaryBadges(State.uniform) ? getAllSelectableMilitaryBadges() : [];
     if(militaryBadges.length){
       const militaryRoot=document.createElement('details');
       militaryRoot.dataset.militaryBadgeCatalog='true';
@@ -456,13 +441,6 @@ function openGalleryModal(kind){
       militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
       militarySummary.textContent=`U.S. military badges (${militaryBadges.length})`;
       militaryRoot.appendChild(militarySummary);
-      // The ABU, OCP, flight suit and Corporate Semi-Formal allow military badges and the builder does not draw them there yet.
-      if(!CAPUBUniformRules.drawsMilitaryBadges(State.uniform)){
-        const notDrawn=document.createElement('div');
-        notDrawn.className='sub militaryBadgesNotDrawn'; notDrawn.setAttribute('role','note'); notDrawn.style.cssText='margin:6px 0 8px;font-weight:700;';
-        notDrawn.textContent='U.S. military badges are not drawn on this uniform yet. Your choices are kept for the uniforms that show them.';
-        militaryRoot.appendChild(notDrawn);
-      }
 
       for(const branch of MILITARY_BRANCH_ORDER){
         const records=militaryBadges.filter(badge=>{
@@ -481,19 +459,6 @@ function openGalleryModal(kind){
       modalHost.appendChild(militaryRoot);
     }
   }
-
-  host.querySelector('#modalShowLess').onclick = ()=>{
-    if(kind==='ribbons'){ State.ribbonGalleryExpanded=false; buildRibbonGallery(); }
-    if(kind==='badges'){ State.badgeGalleryExpanded=false; buildBadgeGallery(); }
-    if(kind==='patches'){ State.patchGalleryExpanded=false; buildPatchGallery(); }
-    syncFromSidebar();
-  };
-  host.querySelector('#modalShowAll').onclick = ()=>{
-    if(kind==='ribbons'){ State.ribbonGalleryExpanded=true; buildRibbonGallery(); }
-    if(kind==='badges'){ State.badgeGalleryExpanded=true; buildBadgeGallery(); }
-    if(kind==='patches'){ State.patchGalleryExpanded=true; buildPatchGallery(); }
-    syncFromSidebar();
-  };
 
   syncFromSidebar();
 

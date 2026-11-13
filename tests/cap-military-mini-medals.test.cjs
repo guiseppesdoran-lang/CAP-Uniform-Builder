@@ -31,6 +31,6 @@ test('no picker has a select-all, select-max or add-all control: ribbons, badges
   const bulk = /select[\s_-]*all|select[\s_-]*max|add[\s_-]*all|check[\s_-]*all|tick[\s_-]*all|toggle[\s_-]*all|choose[\s_-]*all/i;
   sources.forEach(src => assert.doesNotMatch(src, bulk));
   for(const id of ['clearRibbons', 'clearBadges', 'clearPatches']) assert.match(indexSource, new RegExp(`id="${id}"`));
-  // The modal's Show All / Show Less only widen the list of what is on offer; they select nothing.
-  assert.match(indexSource, /modalShowAll/);
+  // The chooser window lists all it offers: it has no Show All / Show Less (they only widened the list; they selected nothing).
+  assert.doesNotMatch(indexSource, /modalShowAll|modalShowLess/);
 });

@@ -106,7 +106,7 @@ test('U.S. military badges follow the uniform\'s award rule in both the gallery 
   const view=fs.readFileSync(path.join(__dirname,'..','js','uniform-view.js'),'utf8');
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
   assert.match(view,/function buildMilitaryBadges\(\)\{[\s\S]{0,200}isAwardAllowedOnUniform\('', State\.uniform, \{ isMilitary: true \}\)/);
-  assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
+  assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) && CAPUBUniformRules\.drawsMilitaryBadges\(State\.uniform\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
 });
 
 test('Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1 4.2.3.1.1.3, 4.2.1)',()=>{

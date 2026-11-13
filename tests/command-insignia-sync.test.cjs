@@ -97,9 +97,11 @@ test('choosing one command pin takes the other off', () => {
   assert.deepEqual(out, { squadron: false, group: true, badges: [GROUP] });
 });
 
-test('the chooser gives each command pin the Graduated commander switch and holds the one pin (a switch under the tile, not a box: 2026-11-12, no checkboxes)', () => {
+test('the chooser gives each command pin the two ways it is worn as picture tiles (current and graduated commander) and holds the one pin (tiles under the tile, no box and no switch: 2026-11-12)', () => {
   const src = read('js/pick-lists.js');
-  assert.match(src, /isCommand\(id\)\)\{\s*const button = el\('button', 'ghost vpSwitch', 'Graduated commander'\);/);
+  assert.match(src, /if\(d\.isCommand\(id\)\) box\.append\(commandRow\(d, id, deps, \(\) => entry\.setOptions\(\)\)\);/);
+  assert.match(src, /graduated: 'Graduated commander'/);
+  assert.doesNotMatch(src, /vpSwitch', 'Graduated commander'/, 'no switch button');
   assert.match(src, /d\.chooseOnlyCommand\(id\)/);
   assert.match(src, /chooseOnlyCommand: id => chooseOnlyCommandInsignia\(id\)/);
   assert.doesNotMatch(src, /id\s*===?\s*'squadron_commander_badge'/, 'asks for the squadron pin by name');

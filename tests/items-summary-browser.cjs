@@ -116,13 +116,16 @@ async function launch(){
     if(!st.chosen || !st.grad || st.radio !== 'graduated' || !/Graduated commander: below the name tag/.test(st.text)) fails.push('Graduated commander should choose the pin under the name tag: ' + JSON.stringify(st));
     if(!await ev(`CAPUBUniformView.scene.layers.some(l => /squadron_commander_badge:UN/.test(l.key || ''))`)) fails.push('the drawing should carry the graduated commander pin');
     await shot('#groupBadges', 'badges-commander-graduated');
-    // The chooser's own control still works and agrees.
-    await ev(`document.getElementById('expandBadges').click()`); await sleep(600);
-    const tick = await ev(`(() => { const t = document.querySelector('#galleryModalHost .vpSwitch'); return t ? t.getAttribute('aria-pressed') === 'true' : null; })()`);
-    if(tick !== true) fails.push('the chooser\'s Graduated commander switch should agree with the row: ' + tick);
-    await ev(`(() => { const t = document.querySelector('#galleryModalHost .vpSwitch'); t.click(); })()`); await sleep(900);
+    // The chooser's own control still works and agrees: two picture tiles under the pin, the one matching the row picked.
+    await ev(`document.getElementById('expandBadges').click()`); await sleep(1500);
+    const tiles = () => ev(`(() => { const c = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === 'squadron_commander_badge'); const t = c ? [...c.querySelectorAll('.vpCommandWorn .vpOption')] : []; return { values: t.map(x => x.dataset.value), checked: t.filter(x => x.getAttribute('aria-checked') === 'true').map(x => x.dataset.value), pictures: t.filter(x => x.querySelector('img')).length, switches: c ? c.querySelectorAll('button.vpSwitch').length : -1 }; })()`);
+    let tl = await tiles();
+    if(tl.values.join() !== 'current,graduated' || tl.checked.join() !== 'graduated') fails.push('the chooser\'s two tiles should agree with the row (graduated): ' + JSON.stringify(tl));
+    if(tl.pictures !== 2) fails.push('each way the pin is worn should be a picture: ' + JSON.stringify(tl));
+    if(tl.switches) fails.push('no switch button should be left under the pin: ' + JSON.stringify(tl));
+    await ev(`(() => { const c = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === 'squadron_commander_badge'); c.querySelector('.vpCommandWorn .vpOption[data-value="current"]').click(); })()`); await sleep(900);
     st = await state();
-    if(st.grad || st.radio !== 'current') fails.push('turning the chooser switch off should make the row Current commander: ' + JSON.stringify(st));
+    if(st.grad || st.radio !== 'current') fails.push('picking the current commander tile should make the row Current commander: ' + JSON.stringify(st));
     await ev(`document.querySelector('#galleryModalOverlay .modalClose, #galleryModalDone, #galleryModalOverlay button')?.click()`); await sleep(300);
     await ev(`State.badges = State.badges.filter(id => id !== 'squadron_commander_badge'); document.getElementById('galleryModalOverlay')?.classList.remove('open')`);
     await pickCmd('none');

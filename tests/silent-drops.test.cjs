@@ -22,10 +22,10 @@ test('military badges are drawn on the dress uniforms and not (yet) on the ABU, 
   for(const u of ['aviator_blazer', 'corporate_field', 'corporate_flight_suit', 'polo']) assert.equal(rules.drawsMilitaryBadges(u), false, u + ' does not allow them at all');
 });
 
-test('the picker\'s military section says the badges are not drawn on those uniforms yet, and the footer does not count them', () => {
+test('the picker offers no military section on the uniforms that do not draw those badges, and the footer does not count them', () => {
   const src = fs.readFileSync(path.join(root, 'js', 'wiring.js'), 'utf8');
-  assert.match(src, /!CAPUBUniformRules\.drawsMilitaryBadges\(State\.uniform\)/);
-  assert.match(src, /U\.S\. military badges are not drawn on this uniform yet\. Your choices are kept for the uniforms that show them\./);
+  assert.match(src, /isMilitaryAwardWornOnUniform\(\) && CAPUBUniformRules\.drawsMilitaryBadges\(State\.uniform\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
+  assert.doesNotMatch(src, /militaryBadgesNotDrawn/, 'no section to say so: the fold is not offered');
   ev(`State.membership = 'senior'; State.rank = 'Capt'; State.gender = 'male'; State.garment = {}; State.militaryBadges = { army_air_assault_badge: { selected: true } }; State.uniform = 'abu'`);
   assert.equal(ev('countMilitaryBadgesSelected()'), 0, 'not drawn on the ABU: not counted');
   ev(`State.uniform = 'blues_a'`);
