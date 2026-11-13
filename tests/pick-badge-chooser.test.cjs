@@ -125,3 +125,11 @@ test('the chooser is hidden with nothing to choose, and the old radio rows are g
   assert.doesNotMatch(chooser, /type = 'radio'|createElement\('input'\)|createElement\('select'\)/);
   assert.match(chooser, /VisualPicker\.render\(/);
 });
+
+test('in a real browser, the badge for each place is picked by its tile, the engine moves it, and the arrow keys stay within the place (needs Chrome)', { timeout: 150000 }, t => {
+  const chrome = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+  if(!fs.existsSync(chrome)) return t.skip('Chrome not installed');
+  const r = require('node:child_process').spawnSync(process.execPath, [path.join(__dirname, 'badge-chooser-browser.cjs')], { encoding: 'utf8', timeout: 140000 });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /^PASS$/m);
+});

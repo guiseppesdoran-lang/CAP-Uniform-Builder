@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Browser check for the grade insignia's paint (not part of `npm test`: needs Chrome, like tests/badge-chooser-browser.cjs).
+// Browser check for the grade insignia's paint (not part of `npm test`: needs Chrome).
 //
 //   node tests/bullion-browser.cjs [--out DIR]
 //
