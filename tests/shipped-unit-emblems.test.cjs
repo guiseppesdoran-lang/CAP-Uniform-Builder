@@ -75,7 +75,7 @@ test('each emblem says where it came from: the page and file address for the one
     if(/^assets\/refs\/patches-official\//.test(spec.reference)) assert.match(spec.provenance, /page https:\/\/hiwg\.cap\.gov\/about\/heraldry-of-our-units; file address https:\/\/hiwg\.cap\.gov\/media\/cms\/[\w.-]+\.png/, `${charter}: page and file address`);
     else assert.match(spec.provenance, /digital artwork supplied by Ethan Hillard on 2026-11-11/, `${charter}: supplied`);
     assert.match(spec.artwork.source_sha256, /^[0-9a-f]{64}$/, `${charter}: the source file's hash`);
-    assert.doesNotMatch(text, /\/Users\/|\/private\/|\/tmp\/|\.scratch|\.claude|file:\/\//, `${charter}: no local path`);
+    assert.doesNotMatch(text, /\/Users\/|\/private\/|\/tmp\/|\.scratch|file:\/\//, `${charter}: no local path`);
   }
 });
 

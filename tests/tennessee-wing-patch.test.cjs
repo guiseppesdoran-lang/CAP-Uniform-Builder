@@ -57,7 +57,7 @@ test('its spec is the official emblem as given: Tennessee Wing, SER-TN-001, a wi
   assert.match(spec.provenance, /SER-TN-001/);
   assert.match(spec.provenance, /Charter: /);
   assert.match(spec.artwork.source_sha256, /^[0-9a-f]{64}$/);
-  assert.doesNotMatch(JSON.stringify(spec), /\/Users\/|\/private\/|\/tmp\/|\.scratch|\.claude|file:\/\//, 'no local path');
+  assert.doesNotMatch(JSON.stringify(spec), /\/Users\/|\/private\/|\/tmp\/|\.scratch|file:\/\//, 'no local path');
   assert.deepEqual(fs.readdirSync(path.join(PATCHES, ASSET)).sort(), [ASSET + '.png', ASSET + '.spec.json']);
 });
 

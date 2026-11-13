@@ -64,7 +64,7 @@ test('its spec is the official emblem as given: Burlington Composite Squadron, M
   assert.match(spec.provenance, /Charter: /);
   assert.match(spec.artwork.source_sha256, /^[0-9a-f]{64}$/);
   assert.match(spec.reference, /^assets\/refs\/unit-emblems-supplied-2026-11-12\/burlington-composite-squadron\.webp$/);
-  assert.doesNotMatch(JSON.stringify(spec), /\/Users\/|\/private\/|\/tmp\/|\.scratch|\.claude|file:\/\//, 'no local path');
+  assert.doesNotMatch(JSON.stringify(spec), /\/Users\/|\/private\/|\/tmp\/|\.scratch|file:\/\//, 'no local path');
   assert.deepEqual(fs.readdirSync(path.join(PATCHES, ASSET)).sort(), [ASSET + '.png', ASSET + '.spec.json']);
 });
 

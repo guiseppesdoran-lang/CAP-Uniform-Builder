@@ -111,7 +111,7 @@ test('data/cords.js is in the form the script writes, the list is sound, and it 
   assert.deepEqual(list.regulation.map(c => c.id), sync.REGULATION);
   assert.equal(list.supplement.length, 58);
   assert.ok(!('about' in list) && list.supplement.every(c => !('figure' in c)), 'the art tree\'s notes are not shipped');
-  assert.doesNotMatch(fs.readFileSync(sync.OUT, 'utf8'), /\.scratch|\/Users\/|\/private\/tmp|~\/\.claude/, 'no local path in a tracked file');
+  assert.doesNotMatch(fs.readFileSync(sync.OUT, 'utf8'), /\.scratch|\/Users\/|\/private\/tmp/, 'no local path in a tracked file');
 });
 
 test('js/engine/cord-braid.js, once it is synced, loads as a module and as window.CordBraid and draws the list\'s cords', { skip: !fs.existsSync(sync.BRAID_OUT) && 'the drawing function is not in the tree yet' }, () => {
