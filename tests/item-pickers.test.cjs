@@ -16,6 +16,8 @@ const ROOT = path.join(__dirname, '..');
 const read = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const core = require('../js/engine/core.js');
 const P = require('../js/engine/profiles.js');
+const awards = require('../js/engine/awards.js');
+const G = require('../js/engine/grades.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 require('../js/engine/profiles-polo.js');
@@ -70,67 +72,135 @@ const env = {
   // The page's own function, run in the page's context (State and the engine's build are its free names), so the pictures are made from the state as the page makes it.
   buildWith: change => JSON.parse(JSON.stringify(vm.runInContext('(' + OP.stateBuildWith.toString() + ')', context)(change)))
 };
-const rects = markup => [...markup.matchAll(/<rect x="([-\d.]+)" y="([-\d.]+)" width="([-\d.]+)" height="([-\d.]+)"[^>]*fill="([^"]+)"/g)].map(m => ({ x: +m[1], y: +m[2], w: +m[3], h: +m[4], fill: m[5] }));
 const viewBox = markup => /viewBox="([^"]+)"/.exec(markup)[1];
 const near = (a, b) => Math.abs(a - b) < 0.002;
 const picturesOf = async (name, values) => OP.create(env).pictures(name, values).ready;
 const fmtN = n => String(Math.round(n * 1000) / 1000);
+// The rack's pictures are scenes of the coat and the ribbons: the test takes the scene itself where the page would draw it.
+const sceneEnv = Object.assign({}, env, { draw: async (scene, pad) => ({ scene, pad }) });
+const scenesOf = async (name, values) => OP.create(sceneEnv).pictures(name, values).ready;
+const ribbonBoxes = scene => scene.layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l));
+const same = (a, b) => a.length === b.length && a.every((d, i) => near(d.x, b[i].x) && near(d.y, b[i].y) && near(d.w, b[i].w) && near(d.h, b[i].h));
+const rowsOf = scene => { const m = new Map(); ribbonBoxes(scene).forEach(r => m.set(r.y.toFixed(3), (m.get(r.y.toFixed(3)) || 0) + 1)); return [...m.keys()].sort((a, b) => a - b).map(k => m.get(k)); };
+// The lapel drawn over the ribbons: the coat's foreground layer is above every ribbon and device of the scene.
+const lapelAbove = scene => {
+  const fg = scene.layers.find(l => l.key === 'layer:foreground' && (l.onlyGroups || []).includes('lapel-left'));
+  return !!fg && scene.layers.filter(l => l.role === 'ribbon' || l.role === 'device').every(l => fg.z > l.z);
+};
 
-test('rack layout: a blank rectangle for each ribbon the member wears, at the place the engine puts it for that choice, on the welt pocket and the lapel, all choices in one frame', async () => {
+test('rack layout: each tile is the member\'s own ribbons on the coat, as the engine lays them for that choice (the figure\'s own layers), the lapel over them, all choices in one frame', async () => {
   // A woman's Class A coat, nine ribbons, the standard arrangement: the three widths lay three different racks.
   assert.equal(member({ gender: 'female', arrangement: 'standard' }), 9);
-  const pics = await picturesOf('rackColumns', ['3', '4-left', '4-center']);
-  const sheet = await store.load('garment-blues-class-a-coat-female');
-  const welt = core.landmarkBounds(sheet, 'welt_pocket');
+  const pics = await scenesOf('rackColumns', ['3', '4-left', '4-center']);
   const seen = new Set();
   for(const layout of ['3', '4-left', '4-center']){
-    const markup = pics[layout];
-    assert.equal(typeof markup, 'string', layout);
-    const all = rects(markup);
-    const [pocket, ...ribbons] = all;
-    assert.equal(ribbons.length, 9, `${layout}: one rectangle for each ribbon`);
-    assert.ok(near(pocket.x, welt.x) && near(pocket.y, welt.y) && near(pocket.w, welt.w) && near(pocket.h, welt.h), `${layout}: the welt pocket is the sheet's own landmark`);
-    assert.match(markup, /<polygon points=/, `${layout}: the lapel that may cover the ribbons`);
-    // The rectangles are where the engine laid the ribbons for that choice, as the whole drawing has them.
+    const pic = pics[layout];
+    assert.ok(pic && pic.scene && Array.isArray(pic.scene.layers), `${layout}: a drawing of the engine's layers, not a diagram`);
+    const scene = pic.scene;
+    assert.ok(scene.layers.some(l => l.role === 'garment'), `${layout}: the coat`);
+    assert.equal(ribbonBoxes(scene).length, 9, `${layout}: the ribbon of each, with its art`);
+    assert.ok(scene.layers.filter(l => l.role === 'ribbon').every(l => /^ribbon-/.test(l.id)), `${layout}: the ribbon's own sheet, not a blank`);
+    // The ribbons are where the engine laid them for that choice, as the whole drawing has them.
     const full = await P.composeUniform(env.buildWith({ ribbonRackLayout: layout }), store);
-    const drawn = full.layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l));
-    assert.equal(drawn.length, 9);
-    for(const d of drawn) assert.ok(ribbons.some(r => near(r.x, d.x) && near(r.y, d.y) && near(r.w, d.w) && near(r.h, d.h)), `${layout}: a rectangle at ${JSON.stringify(d)}`);
-    assert.ok(ribbons.every(r => near(r.w, 1.375) && near(r.h, 0.375)), `${layout}: the ribbon's size, 1 3/8 by 3/8 in (CAPR 39-1, 11.3)`);
-    seen.add(JSON.stringify(ribbons));
+    assert.ok(same(ribbonBoxes(scene), full.layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l))), `${layout}: the same rack as the figure`);
+    assert.ok(ribbonBoxes(scene).every(r => near(r.w, 1.375) && near(r.h, 0.375)), `${layout}: the ribbon's size, 1 3/8 by 3/8 in (CAPR 39-1, 11.3)`);
+    assert.ok(lapelAbove(scene), `${layout}: the lapel is drawn over the ribbons (11.1.8)`);
+    seen.add(JSON.stringify(ribbonBoxes(scene)));
   }
   assert.equal(seen.size, 3, 'three different racks');
-  // Automatic, the lapel decides where the shortened rows go: two widths can lay the same rack there, and the picture says so.
+  const frames = ['3', '4-left', '4-center'].map(v => JSON.stringify(pics[v].scene.bounds));
+  assert.equal(new Set(frames).size, 1, 'one frame, so the choices can be compared');
+  const f = pics['3'].scene.bounds;
+  assert.ok(near(f.w / f.h, 1.5), 'the tile\'s own shape, 3 to 2');
+  // Automatic, the lapel decides where the shortened rows go: at least two widths lay different racks there.
   member({ gender: 'female' });
-  const auto = await picturesOf('rackColumns', ['3', '4-left', '4-center']);
-  assert.ok(new Set(['3', '4-left', '4-center'].map(v => JSON.stringify(rects(auto[v])))).size >= 2, 'the automatic arrangement lays at least two different racks');
-  assert.equal(new Set(['3', '4-left', '4-center'].map(v => viewBox(pics[v]))).size, 1, 'one frame, so the choices can be compared');
+  const auto = await scenesOf('rackColumns', ['3', '4-left', '4-center']);
+  assert.ok(new Set(['3', '4-left', '4-center'].map(v => auto[v] && JSON.stringify(ribbonBoxes(auto[v].scene)))).size >= 2, 'the automatic arrangement lays at least two different racks');
   // Four across is four ribbons a row, three across three: the rows the engine counts.
-  const rowsOf = markup => { const m = new Map(); rects(markup).slice(1).forEach(r => m.set(r.y.toFixed(3), (m.get(r.y.toFixed(3)) || 0) + 1)); return [...m.keys()].sort((a, b) => a - b).map(k => m.get(k)); };
-  assert.deepEqual(rowsOf(pics['4-left']).slice(1), [4, 4], 'rows of four under the one ribbon of the top row');
-  assert.ok(rowsOf(pics['3']).every(n => n <= 3));
+  assert.deepEqual(rowsOf(pics['4-left'].scene).slice(1), [4, 4], 'rows of four under the one ribbon of the top row');
+  assert.ok(rowsOf(pics['3'].scene).every(n => n <= 3));
+  // The ribbons carry their own devices: a ribbon the member holds with clasps shows them in its tile.
+  member({ gender: 'female', arrangement: 'standard' });
+  run(`setRibbonSelectionFromDropdown('cap_achievment_award', 'capub_total_12', { deferRender: true }); rebuildRibbonsFromGallery(); return 1;`);
+  const withDevices = await scenesOf('rackColumns', ['3', '4-left', '4-center']);
+  for(const layout of ['3', '4-left', '4-center']) assert.ok(withDevices[layout].scene.layers.filter(l => l.role === 'device').length >= 3, `${layout}: the clasps of the 12th award`);
 });
 
-test('upper-row arrangement: the standard and the automatic arrangement as the engine lays them against the lapel; not offered where they are the same rack', async () => {
+test('a chosen four-wide rack is drawn in full with the lapel over it, on every coat that has a rack: the lapel is above the ribbons and covers part of the rack, the automatic arrangement for the same ribbons covers none where the paragraph can keep it clear', async () => {
+  const wide = { '4-left': { rackColumns: 4, rackAlign: 'outboard' }, '4-center': { rackColumns: 4 } };
+  const rack = n => Array.from({ length: n }, (_, i) => ({ key: 'ribbon:r' + i, id: 'r' + i, title: 'r' + i, asset: 'ribbon-armstrong-achievement', devices: [], centered: false }));
+  const buildOf = (uniform, membership, rank, gender, n, opt, extra) => Object.assign({
+    uniform, gender, membership, grade: G.gradeInfo(membership, rank, {}), opt: Object.assign({ headgear: 'none' }, opt), name: { first: '', last: '', show: false },
+    ribbons: rack(n), medals: [], badges: [], command: null, militaryBadges: [], patches: [], cord: null
+  }, extra || {});
+  const coats = [['blues_a', 'senior', 'Capt', 'male'], ['blues_a', 'senior', 'Capt', 'female'], ['blues_a', 'cadet', 'C/Capt', 'male'], ['blues_a', 'cadet', 'C/Capt', 'female'],
+    ['semi_formal_usaf', 'cadet', 'C/Capt', 'male'], ['semi_formal_usaf', 'cadet', 'C/Capt', 'female']];
+  const checked = [];
+  for(const [uniform, membership, rank, gender] of coats){
+    for(const [name, opt] of Object.entries(wide)){
+      const chosen = await P.composeUniform(buildOf(uniform, membership, rank, gender, 28, Object.assign({ rackArrangement: 'standard' }, opt)), store);
+      const coat = chosen.layers.find(l => l.role === 'garment');
+      const lapel = (await store.load(coat.id)).landmarks.lapel_left.points;
+      const ribbons = chosen.layers.filter(l => l.role === 'ribbon');
+      const fg = chosen.layers.find(l => l.key === 'layer:foreground' && (l.onlyGroups || []).includes('lapel-left'));
+      const covered = ribbons.filter(r => awards.coverage(r, lapel) > awards.LAPEL_COVER_TOLERANCE);
+      const label = `${uniform} ${membership} ${gender} ${name}`;
+      assert.ok(fg, `${label}: the lapel is redrawn over the rack`);
+      assert.ok(chosen.layers.filter(l => l.role === 'ribbon' || l.role === 'device').every(l => fg.z > l.z), `${label}: the lapel is above every ribbon and device`);
+      assert.ok(covered.length >= 1, `${label}: a rack tall enough to reach the lapel has a ribbon partly under it`);
+      // What the lapel covers is inside the part redrawn: the clip holds the lapel where it meets the rack.
+      const clip = core.polygonBounds(fg.clip);
+      for(const r of covered) assert.ok(r.x + r.w > clip.x && r.x < clip.x + clip.w && r.y + r.h > clip.y && r.y < clip.y + clip.h, `${label}: ${r.key} is within the redrawn lapel`);
+      assert.deepEqual(ribbons.map(r => r.key).sort(), rack(28).map(r => r.key).sort(), `${label}: every ribbon drawn once (the order is tests/ribbon-rack-rule.test.cjs's)`);
+      // The automatic arrangement keeps the lapel clear where the paragraph lets it (a man's coat); a woman's four across cannot be kept clear (the bottom row is covered).
+      if(gender === 'male'){
+        const auto = await P.composeUniform(buildOf(uniform, membership, rank, gender, 28, Object.assign({ rackArrangement: 'lapel' }, opt)), store);
+        const none = auto.layers.filter(l => l.role === 'ribbon').filter(r => awards.coverage(r, lapel) > awards.LAPEL_COVER_TOLERANCE);
+        assert.equal(none.length, 0, `${label}: the automatic arrangement covers no ribbon`);
+      }
+      checked.push(label);
+    }
+  }
+  assert.equal(checked.length, 12);
+  // The Honor Guard Uniform is the cadet's Class A coat with its own dress: the same rack, the same lapel.
+  const guard = await P.composeUniform(buildOf('blues_a', 'cadet', 'C/Capt', 'male', 28, { rackArrangement: 'standard', rackColumns: 4, rackAlign: 'outboard' }, { ceremonial: { role: 'guard', chinstrap: 'up' } }), store);
+  assert.ok(lapelAbove(guard), 'the Honor Guard Uniform: the lapel is over the rack');
+});
+
+test('upper-row arrangement: the standard and the automatic arrangement as the engine lays them against the lapel, the lapel over both; not offered where they are the same rack', async () => {
   member({ gender: 'female' });
-  const pics = await picturesOf('rackArrangement', ['standard', 'lapel']);
-  assert.equal(typeof pics.standard, 'string');
-  assert.notEqual(rects(pics.standard).slice(1).map(r => r.x + ',' + r.y).join(';'), rects(pics.lapel).slice(1).map(r => r.x + ',' + r.y).join(';'));
+  const pics = await scenesOf('rackArrangement', ['standard', 'lapel']);
+  assert.ok(pics.standard && pics.standard.scene && pics.lapel && pics.lapel.scene);
+  assert.ok(!same(ribbonBoxes(pics.standard.scene), ribbonBoxes(pics.lapel.scene)), 'two different racks');
   for(const arrangement of ['standard', 'lapel']){
     const full = await P.composeUniform(env.buildWith({ ribbonRackArrangement: arrangement }), store);
-    const drawn = full.layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l));
-    const ribbons = rects(pics[arrangement]).slice(1);
-    for(const d of drawn) assert.ok(ribbons.some(r => near(r.x, d.x) && near(r.y, d.y)), `${arrangement}: a rectangle at ${JSON.stringify(d)}`);
+    assert.ok(same(ribbonBoxes(pics[arrangement].scene), full.layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l))), `${arrangement}: the rack the figure has`);
+    assert.ok(lapelAbove(pics[arrangement].scene), `${arrangement}: the lapel is over the ribbons`);
   }
   // A woman's four across: the lapel covers even the bottom row, which 11.2.7 does not let be shortened, so the automatic arrangement is the regular rack there and there is
   // nothing to pick between (tests/ribbon-rack-rule.test.cjs); her three across has the choice.
   member({ gender: 'female', layout: '4-left' });
   assert.deepEqual(await picturesOf('rackArrangement', ['standard', 'lapel']), { standard: false, lapel: false });
   member({ gender: 'female', layout: '3' });
-  assert.ok((await picturesOf('rackArrangement', ['standard', 'lapel'])).lapel);
+  assert.ok((await scenesOf('rackArrangement', ['standard', 'lapel'])).lapel);
   // A man's nine ribbons clear the lapel either way: the two are one rack, and there is nothing to pick between.
   member({ gender: 'male' });
   assert.deepEqual(await picturesOf('rackArrangement', ['standard', 'lapel']), { standard: false, lapel: false });
+});
+
+test('of the choices that lay the same rack only one is offered: the one the member has now, else the first; fewer than two racks, none', async () => {
+  const layer = (i, x) => ({ type: 'asset', role: 'ribbon', id: 'ribbon-x', key: 'ribbon:' + i, x: x + i * 1.375, y: 0, w: 1.375, h: 0.375, rotate: 0, origin: { x: 0, y: 0 }, z: 12 });
+  const fake = (rackColumns, rackAlign) => ({ uniform: 'blues_a', gender: 'male', membership: 'senior', ribbons: [{ key: 'ribbon:0' }, { key: 'ribbon:1' }], opt: { rackColumns, rackAlign } });
+  // '3' and '4-center' lay one rack, '4-left' another.
+  const compose = b => ({ layers: [{ type: 'asset', role: 'garment', id: 'coat', x: 0, y: 0, w: 20, h: 20, rotate: 0, origin: { x: 0, y: 0 }, z: 1 }, ...[0, 1].map(i => layer(i, b.opt.rackAlign === 'outboard' ? 5 : 3))] });
+  const make = now => OP.create({
+    core, compose: async b => compose(b), draw: async (scene, pad) => ({ scene, pad }), build: () => fake(now === '3' ? 3 : 4, now === '4-left' ? 'outboard' : undefined),
+    buildWith: over => { const w = over.ribbonRackLayout; return fake(w === '3' ? 3 : 4, w === '4-left' ? 'outboard' : undefined); }, empty: () => ''
+  });
+  const offered = async now => { const got = await make(now).pictures('rackColumns', ['3', '4-left', '4-center']).ready; return Object.fromEntries(Object.entries(got).map(([k, v]) => [k, !!v])); };
+  assert.deepEqual(await offered('4-center'), { '3': false, '4-left': true, '4-center': true }, 'the member has four centered: three lays the same, so it is the one left out');
+  assert.deepEqual(await offered('3'), { '3': true, '4-left': true, '4-center': false }, 'the member has three: four centered lays the same');
+  assert.deepEqual(await offered('4-left'), { '3': true, '4-left': true, '4-center': false }, 'the first of the two that lay one rack');
 });
 
 test('the rack\'s choices are not offered with no ribbon worn, and not while the member\'s own rows are in force; the cadet semi-formal coat has them too', async () => {
@@ -149,8 +219,8 @@ test('the rack\'s choices are not offered with no ribbon worn, and not while the
   run('State.ribbonRowOverrideEnabled = false; State.ribbonRowOverride = []; return 1;');
   const semi = member({ membership: 'cadet', uniform: 'semi_formal_usaf', rank: 'C/Capt', gender: 'female', ribbons: 12 });
   assert.ok(semi >= 5, 'the cadet semi-formal coat with a rack of its own');
-  const pics = await picturesOf('rackColumns', ['3', '4-left', '4-center']);
-  assert.ok(['3', '4-left', '4-center'].every(v => typeof pics[v] === 'string'), 'a picture of each');
+  const pics = await scenesOf('rackColumns', ['3', '4-left', '4-center']);
+  assert.ok(['3', '4-left', '4-center'].every(v => pics[v] && pics[v].scene && lapelAbove(pics[v].scene)), 'a picture of each, the lapel over the ribbons');
 });
 
 test('the cache keys follow what the pictures are made from: the cut, the ribbons, the rows and the other choice; not the choice the picture is of', () => {

@@ -138,7 +138,7 @@
   }
   const badgeLayoutKey = build => [build.uniform, build.gender, (build.badges || []).map(b => b.id)];
 
-  // ---- the ribbon rack: the member's own ribbons as blank rectangles, in the rows the engine lays for each choice -------------------------------
+  // ---- the ribbon rack: the member's own ribbons on the coat, as the engine lays them for each choice ----------------------------------------------------
 
   // The build the page would hand the engine if the member's state held `over` (a map of State fields: { ribbonRackLayout: '4-left' }, or a function of the state that returns one,
   // for a field made from another: S => ({ garment: { ...S.garment, commandChief: true } })). The page's own path from state to build, so a picture of a choice is the build of that
@@ -154,48 +154,55 @@
       name: { first: '', last: '', state: '', show: false }, opt: Object.assign({}, build.opt, { headgear: 'none' })
     });
   }
-  // The rack the engine laid in a scene, where the garment sheet is registered at the origin (its landmarks are scene inches): the ribbons' boxes (top row first, as the layers are),
-  // the welt pocket they rest on and the lapel that may cover them. null when no ribbon is worn.
-  async function rackOf(env, build){
+  // The rack the engine laid for a build: the coat with the lapel drawn over the ribbons where it lies across them (11.1.8), the ribbons with their devices, and the boxes of the ribbons
+  // (scene inches, top row first as the layers are). The picture of a choice is these layers, so it is the figure's own chest and the two cannot disagree. null when no ribbon is worn.
+  async function rackScene(env, build){
     const scene = await env.compose(rackOnly(build));
     const ribbons = scene.layers.filter(l => l.type === 'asset' && l.role === 'ribbon');
     if(!ribbons.length) return null;
-    const coat = scene.layers.find(l => l.role === 'garment');
-    const spec = coat && await env.spec(coat.id);
-    const origin = !!spec && coat.x === 0 && coat.y === 0 && Math.abs(coat.w - spec.w) < 1e-6;
-    const lapel = origin && spec.landmarks.lapel_left && spec.landmarks.lapel_left.points;
-    return { layers: ribbons, ribbons: ribbons.map(l => env.core.layerBounds(l)), welt: origin ? env.core.landmarkBounds(spec, 'welt_pocket') : null, lapel: lapel || null };
+    const layers = scene.layers.filter(l => (!l.figure || l.figure === 1) && l.type !== 'clear' && l.type !== 'measure');
+    return { layers, ribbons: ribbons.map(l => env.core.layerBounds(l)) };
   }
   const rackSignature = r => r && JSON.stringify(r.ribbons.map(b => [b.x, b.y, b.w, b.h].map(n => Math.round(n * 1000))));
-  // The frame every choice of one rack shares (so the choices can be compared at a glance): the ribbons and the welt of all of them.
+  // The frame every choice of one rack shares (so the choices can be compared at a glance): the ribbons of all of them, with room round them for the coat's pocket and the lapel's edge.
+  // The window is as wide as it is high by 3 to 2, the tile's own shape, so the coat shows round the ribbons and no bar of the tile is left bare.
   function rackFrame(racks, env){
-    const all = racks.flatMap(r => [...r.ribbons, ...(r.welt ? [r.welt] : [])]);
-    const f = env.core.unionBounds(all), m = 0.3;
-    return { x: f.x - m, y: f.y - m, w: f.w + 2 * m, h: f.h + 2 * m };
+    const f = env.core.unionBounds(racks.flatMap(r => r.ribbons)), m = 0.35;
+    let w = f.w + 2 * m, h = f.h + 2 * m;
+    if(w / h > 1.5) h = w / 1.5; else w = h * 1.5;
+    return { x: f.x + f.w / 2 - w / 2, y: f.y + f.h / 2 - h / 2, w, h };
   }
-  function rackMarkup(r, f){
-    const lapel = r.lapel ? `<polygon points="${r.lapel.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' ')}" fill="#001871" fill-opacity="0.14" stroke="#001871" stroke-width="0.05" stroke-linejoin="round"/>` : '';
-    const welt = r.welt ? `<rect x="${fmt(r.welt.x)}" y="${fmt(r.welt.y)}" width="${fmt(r.welt.w)}" height="${fmt(r.welt.h)}" rx="0.06" fill="#001871" fill-opacity="0.55"/>` : '';
-    const rects = r.ribbons.map(b => `<rect x="${fmt(b.x)}" y="${fmt(b.y)}" width="${fmt(b.w)}" height="${fmt(b.h)}" rx="0.04" fill="#FFFFFF" stroke="#001871" stroke-width="0.04"/>`).join('');
-    return `<svg xmlns="${SVG_NS}" viewBox="${fmt(f.x)} ${fmt(f.y)} ${fmt(f.w)} ${fmt(f.h)}" focusable="false" aria-hidden="true">${lapel}${welt}${rects}</svg>`;
-  }
-  // The pictures of one choice among `values`, each the member's rack with `overFor(value)` in their state. The choice does not apply (false for every value) when the member wears
-  // no ribbon, when their own rows are in force (the rack is theirs, not the engine's), or when every choice lays the same rack: nothing to pick between.
-  async function rackChoices(env, build, values, overFor){
+  const rackPicture = (r, frame) => ({ scene: sceneOf(r.layers, frame, 'Ribbon rack'), pad: 0 });
+  // The pictures of one choice among `values`, each the member's own rack with `overFor(value)` in their state, drawn as the engine draws it. The choice does not apply (false for every
+  // value) when the member wears no ribbon, when their own rows are in force (the rack is theirs, not the engine's), or when the choices lay fewer than two different racks: nothing to
+  // pick between. Of the choices that lay the same rack only one is offered: the one the member has now, else the first.
+  async function rackChoices(env, build, values, overFor, current){
     const out = {};
     const none = () => { values.forEach(v => { out[v] = false; }); return out; };
     if(build.opt && build.opt.rackCounts) return none();
-    const racks = await Promise.all(values.map(v => rackOf(env, buildWith(env, build, overFor(v)))));
-    if(racks.some(r => !r) || new Set(racks.map(rackSignature)).size < 2) return none();
+    const racks = await Promise.all(values.map(v => rackScene(env, buildWith(env, build, overFor(v)))));
+    if(racks.some(r => !r)) return none();
+    const keep = new Map();   // signature -> the value shown for it
+    values.forEach((v, i) => {
+      const sig = rackSignature(racks[i]);
+      if(!keep.has(sig) || v === current) keep.set(sig, v);
+    });
+    if(keep.size < 2) return none();
     const frame = rackFrame(racks, env);
-    values.forEach((v, i) => { out[v] = { markup: rackMarkup(racks[i], frame) }; });
+    values.forEach((v, i) => { out[v] = keep.get(rackSignature(racks[i])) === v ? rackPicture(racks[i], frame) : false; });
     return out;
   }
+  // The width the member has now, as the choice names it: three across, four with the left edge on the pocket, four centered.
+  const rackWidthNow = build => {
+    const o = build.opt || {};
+    return Number(o.rackColumns) === 4 ? (o.rackAlign === 'outboard' ? '4-left' : '4-center') : '3';
+  };
   // Ribbons are laid the way the choice says; what else the member has chosen about the rack (the other of the two) is theirs.
-  const rackColumns = (env, build, values) => rackChoices(env, build, values, v => ({ ribbonRackLayout: v }));
-  const rackArrangement = (env, build, values) => rackChoices(env, build, values, v => ({ ribbonRackArrangement: v }));
-  // What the pictures are made from: the cut, the ribbons, the member's rows if they set their own, and the one of the two choices the picture is not of.
-  const rackKey = (...fields) => build => [build.uniform, build.gender, (build.ribbons || []).map(r => r.key), build.opt && [build.opt.rackCounts, ...fields.map(f => build.opt[f])]];
+  const rackColumns = (env, build, values) => rackChoices(env, build, values, v => ({ ribbonRackLayout: v }), rackWidthNow(build));
+  const rackArrangement = (env, build, values) => rackChoices(env, build, values, v => ({ ribbonRackArrangement: v }), build.opt && build.opt.rackArrangement);
+  // What the pictures are made from: the cut, the ribbons with their devices, the member's rows if they set their own, and the one of the two choices the picture is not of.
+  const ribbonsOf = build => (build.ribbons || []).map(r => [r.key, r.asset, r.devices, r.devicePlan]);
+  const rackKey = (...fields) => build => [build.uniform, build.gender, build.membership, !!build.ceremonial, ribbonsOf(build), build.opt && [build.opt.rackCounts, ...fields.map(f => build.opt[f])]];
 
   // ---- miniature medals: the member's own medals as blank medals, mounted as the engine mounts them for each style ---------------------------------
 
