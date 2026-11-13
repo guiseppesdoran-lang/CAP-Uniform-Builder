@@ -259,6 +259,29 @@
     return p;
   }
 
+  // The wing's patch is one switch tile: the patch's own picture and its name, pressed while it is on the build (the picture picker's toggle mode, as the Patches list is). A page that did
+  // not load the picker gets a plain pressed button that does the same.
+  function wingTile(plan){
+    const host = make('div', 'supplementWingPick');
+    host.id = 'supplementWingPatchBox';
+    const meta = patchMeta(plan.patchId), art = meta && meta.img && typeof ASSET === 'function' ? ASSET(meta.img) : undefined;
+    const name = `${plan.label} patch`;
+    if(typeof VisualPicker !== 'undefined'){
+      VisualPicker.render(host, {
+        name: 'supplementWingPatch', mode: 'toggle', size: 'large', options: [{ value: plan.patchId, label: name, picture: art }], values: plan.own ? [plan.patchId] : [],
+        onToggle: (id, on) => { chooseWingPatch(on); }
+      });
+    }else{
+      const b = make('button', 'ghost vpSwitch', `Wear the ${name} on this uniform`);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(!!plan.own));
+      b.addEventListener('click', () => { chooseWingPatch(b.getAttribute('aria-pressed') !== 'true'); });
+      host.append(b);
+    }
+    return host;
+  }
+
+  const WING_TILE_ID = 'vp-supplementWingPatch-0';   // the tile the picture picker makes for the wing patch (its name, then its place in the list)
   let boxPlaced = false;
   function itemRow(entry, item, state, plan){
     const li = make('li', 'supplementRow');
@@ -269,11 +292,7 @@
       if(!plan.hasArt){
         li.append(make('span', 'supplementWarn', `The ${plan.label} patch is not in the builder yet, so it cannot be shown.`));
       }else{
-        const label = make('label', 'supplementCheck'), box = make('input');
-        box.type = 'checkbox'; box.id = 'supplementWingPatchBox'; box.checked = plan.own;
-        box.addEventListener('change', () => { chooseWingPatch(box.checked); });
-        label.append(box, make('span', '', ` Wear the ${plan.label} patch on this uniform`));
-        li.append(label);
+        li.append(wingTile(plan));
         if(plan.required && !plan.own) li.append(make('span', 'supplementWarn', `The ${plan.label} patch is not chosen. This uniform requires it; you may leave it off.`));
       }
     }
@@ -319,8 +338,11 @@
     if(!host || !body) return;
     host.hidden = !blocks.length;
     host.classList.toggle('hidden', !blocks.length);
+    // A tap on the wing patch's tile draws the section again: the focus stays on the tile.
+    const held = d.activeElement && d.activeElement.id === WING_TILE_ID;
     body.textContent = '';
     for(const block of blocks) body.append(block);
+    if(held){ const again = by(WING_TILE_ID); if(again && again.focus) again.focus(); }
     if(anyCords) body.append(cordPointer());
     if(words) body.append(make('p', 'hintText', 'Caps and other items listed here are described in words; the builder does not draw them.'));
   }

@@ -1453,8 +1453,7 @@ html[data-access="guest"] #accessGate{display:none}
 .supplementText{flex:1 1 100%;min-width:0;color:var(--ink);overflow-wrap:anywhere}
 .supplementFound{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--ok)}
 .supplementWarn{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--warn)}
-.supplementCheck{flex:1 0 100%;display:flex;align-items:center;gap:var(--s2);min-height:44px;font-size:var(--t-sm);color:var(--ink)}
-.supplementCheck input{flex:none;margin:0}
+.supplementWingPick{flex:0 0 140px;max-width:100%}
 .supplementPointer{display:grid;gap:var(--s2);margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}
 .supplementPointer .hintText{margin:0}
 .supplementGo{min-height:44px}

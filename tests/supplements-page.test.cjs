@@ -10,6 +10,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const { loadPageScripts } = require('./helpers/page-scripts.cjs');
+const { createDocument } = require('./helpers/mini-dom.cjs');
 
 const read = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
 const html = read('index.html');
@@ -227,5 +228,42 @@ test('a supplement cord the unit no longer offers is let go: another unit, no un
 test('the Check list carries the warning, and the section styles are in the stylesheet', () => {
   assert.match(read('js/wiring.js'), /Supplements\.warnings\(State\)\) addNotice\('warn',w\.msg,w\.fix\)/);
   const css = read('styles/app.css');
-  for(const rule of ['.supplementBlock', '.supplementName', '.supplementRow', '.supplementTag', '.supplementWarn', '.supplementCheck']) assert.ok(css.includes(rule), rule);
+  for(const rule of ['.supplementBlock', '.supplementName', '.supplementRow', '.supplementTag', '.supplementWarn', '.supplementWingPick']) assert.ok(css.includes(rule), rule);
+});
+
+// The owner: "mostly everything should be visual". The wing's patch a supplement asks for is one switch tile (the patch's own picture and its name), not a checkbox and a sentence.
+test('the wing patch of a supplement is a switch tile with the patch\'s own picture: pressed while the patch is on the build, a tap puts it on and takes it off, the focus stays', () => {
+  reset();
+  ev(`State.uniform = 'abu'; State.membership = 'senior'; State.unitPatchCharter = 'MAR-DC-026'`);
+  const plan = ev('Supplements.wingPatch(State)');
+  assert.equal(plan.hasArt, true);
+  const mini = createDocument();
+  const section = mini.createElement('section'), body = mini.createElement('div'), line = mini.createElement('div');
+  section.id = 'supplementsSection'; body.id = 'supplementsBody'; line.id = 'unitSupplementsLine';
+  mini.body.append(section, body, line);
+  const real = context.document;
+  context.document = mini;
+  try{
+    ev('Supplements.render(true)');
+    const tile = () => mini.getElementById('supplementWingPatchBox').querySelector('.vpOption');
+    const host = mini.getElementById('supplementWingPatchBox');
+    assert.ok(host, 'the tile\'s host keeps the id the Check list points to');
+    assert.equal(host.querySelectorAll('input').length, 0, 'no checkbox');
+    assert.equal(tile().nodeName, 'BUTTON');
+    assert.equal(tile().getAttribute('aria-pressed'), 'false', 'the patch is not on the build');
+    assert.equal(tile().querySelector('.vpLabel').textContent, 'National Capital Wing patch');
+    assert.equal(tile().closest('.vpCell') ? tile().closest('.vpCell').querySelector('img').getAttribute('src') : tile().querySelector('img').getAttribute('src'), ev(`ASSET(PATCH_META['unit_mar_dc_001'].img)`), 'the patch\'s own picture');
+    tile().focus();
+    tile().click();
+    assert.ok(ev('State.patches').includes('unit_mar_dc_001'), 'a tap puts the patch on the build');
+    ev('Supplements.render(true)');
+    assert.equal(tile().getAttribute('aria-pressed'), 'true');
+    assert.equal(mini.activeElement, tile(), 'the focus stays on the tile');
+    tile().click();
+    assert.ok(!ev('State.patches').includes('unit_mar_dc_001'), 'a second tap takes it off');
+    ev('Supplements.render(true)');
+    assert.equal(tile().getAttribute('aria-pressed'), 'false');
+    assert.match(body.textContent, /This uniform requires it; you may leave it off\./, 'the warning that never blocks is still said');
+  }finally{ context.document = real; }
+  reset();
 });
