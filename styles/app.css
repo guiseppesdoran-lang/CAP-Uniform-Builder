@@ -1553,6 +1553,10 @@ html[data-access="guest"] #accessGate{display:none}
 .vp[data-boxed] .vpCell:hover{border-color:var(--ink);background:var(--panel-2)}
 .vp[data-boxed] .vpCell:has(> .vpOption[aria-pressed="true"]),.vp[data-boxed] .vpCell:has(> .vpOption[aria-checked="true"]){border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
 .vp[data-boxed] .vpOption,.vp[data-boxed] .vpOption:hover{border:0;background:transparent;padding:0;min-height:0}
+/* A picture fills its frame as far as the frame's shape lets it (it is fitted whole, never cropped): a badge taller than the frame is wide fills the frame's height, and the frame's edge
+   and the outline of the art meet and read as a cut (the Historian Technician badge, a shield 1.25 by 1.43 in, in a frame 3 by 2). The frame keeps a margin all round, so what is fitted is
+   seen whole with room round it. */
+.vp[data-boxed] .vpPicture{padding:6px}
 .vpOption[aria-pressed="true"] .vpTick{display:flex}
 /* The tiles that choose badges, ribbons and patches are about two thirds of the size of the ones that choose the uniform: three to a row in the Badges panel and in the chooser
    window at a phone's width, seven in the window on a desktop (six before). The name stays at 13 px under its picture, wrapping to a second line, and no tile is under 44 px. */
