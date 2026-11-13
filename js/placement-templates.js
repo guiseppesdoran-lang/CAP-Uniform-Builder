@@ -1251,7 +1251,7 @@
     const pieces = s => (s.attach === 'pin' ? aligners(s) : []);
     const stlButtons = s => pieces(s).map((p, i) => `<button type="button" class="ghost" data-side="${esc(s.key)}" data-what="stl"${i ? ` data-piece="${i}"` : ''}>3D aligner${pieces(s).length > 1 ? ': ' + esc(p.label.toLowerCase()) : ''} (STL)</button>`).join('');
     list.innerHTML = sides.map(s => `<li class="ptCard" data-side-key="${esc(s.key)}"><div class="ptPicture" aria-hidden="true"></div><div class="ptSide"><b>${esc(s.label.charAt(0).toUpperCase() + s.label.slice(1))}</b><small>${esc(describe(s))}</small></div><div class="ptActions">
-<button type="button" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${stlButtons(s)}<button type="button" class="ptAlt" data-side="${esc(s.key)}" data-what="svg">also as SVG</button></div></li>`).join('')
+<button type="button" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${stlButtons(s)}<button type="button" class="ptAlt" data-side="${esc(s.key)}" data-what="svg">Also as SVG</button></div></li>`).join('')
       + gaugeRow(ui.plan);
     paintPictures(list, sides);
   }
@@ -1318,7 +1318,7 @@
   async function open(){
     const d = ensureDialog();
     if(!ui.paper){ try{ ui.paper = localStorage.getItem('capubTemplatePaper'); }catch(e){ ui.paper = null; } if(!PAPERS[ui.paper]) ui.paper = defaultPaper(); }
-    d.querySelector('#placementTemplatesList').innerHTML = '<li class="ptEmpty">Reading the uniform...</li>';
+    d.querySelector('#placementTemplatesList').innerHTML = '<li class="ptEmpty">Reading the uniform</li>';
     if(!d.open){ if(typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', ''); }
     try{ ui.plan = await currentPlan(); }catch(e){ console.error('[placement templates]', e); ui.plan = null; }
     try{ fillPaper(d); }catch(e){ console.error('[placement templates]', e); }

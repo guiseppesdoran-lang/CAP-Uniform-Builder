@@ -6,7 +6,7 @@
 //
 // Opens the real page, sets up a men's Class A for a Capt with seven ribbons, the Pilot and the Emergency Services badges, clicks the
 // Templates control beside Download PNG, and checks the window lists the sides that carry pins (left and right chest, both lapels), each
-// with Paper (PDF) as the main button, a 3D aligner (STL) for each plate, and the SVG as an "also as SVG" link; then clicks the left chest's three buttons and reads the files Chrome saves:
+// with Paper (PDF) as the main button, a 3D aligner (STL) for each plate, and the SVG as an "Also as SVG" link; then clicks the left chest's three buttons and reads the files Chrome saves:
 //   - the SVG is one US Letter page at 1:1 (width 8.5in, height 11in), a stencil with the print line, the cut line and the pin rule,
 //   - the PDF is a one-page PDF,
 //   - the STL is binary, closed (every edge used twice), 2 mm thick with its letters 0.6 mm over that, and names the address in its header;
@@ -110,7 +110,7 @@ async function launch(){
     expect(list && list.paper === 'letter', 'US Letter is not the default paper for an en-US browser');
     const keys = list ? list.sides.map(s => s.key).sort().join(',') : '';
     expect(keys === 'left-chest,left-lapel,right-chest,right-lapel', `sides offered: ${keys}`);
-    expect(list && list.sides.every(s => s.buttons[0] === 'Paper (PDF)' && s.buttons[s.buttons.length - 1] === 'also as SVG' && s.buttons.length >= 3 && s.buttons.slice(1, -1).every(b => /^3D aligner.*\(STL\)$/.test(b))), 'each side offers Paper (PDF) first, then a 3D aligner (STL) for each plate, then the SVG as a link');
+    expect(list && list.sides.every(s => s.buttons[0] === 'Paper (PDF)' && s.buttons[s.buttons.length - 1] === 'Also as SVG' && s.buttons.length >= 3 && s.buttons.slice(1, -1).every(b => /^3D aligner.*\(STL\)$/.test(b))), 'each side offers Paper (PDF) first, then a 3D aligner (STL) for each plate, then the SVG as a link');
     expect(list && list.spacers && /Spacer gauges/.test(list.spacers), 'the window offers the spacer gauges');
     if(OUT){ fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'templates-window.png'), Buffer.from((await S('Page.captureScreenshot', { format: 'png' })).data, 'base64')); }
 
@@ -143,7 +143,7 @@ async function launch(){
     let abu = null;
     for(let i = 0; i < 100; i++){ abu = await ev(`(() => { const li = [...document.querySelectorAll('#placementTemplates li[data-side-key]')]; return li.length && /Sewn on/.test(li[0].textContent) ? li.map(x => ({ key: x.dataset.sideKey, text: x.querySelector('small').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) : null; })()`); if(abu) break; await sleep(50); }
     console.log('abu:', JSON.stringify(abu));
-    expect(abu && abu.length >= 2 && abu.every(s => s.buttons.join('|') === 'Paper (PDF)|also as SVG' && /paper sewing guide only, no 3D aligner/.test(s.text)), 'the ABU sides are not paper-only sewing guides');
+    expect(abu && abu.length >= 2 && abu.every(s => s.buttons.join('|') === 'Paper (PDF)|Also as SVG' && /paper sewing guide only, no 3D aligner/.test(s.text)), 'the ABU sides are not paper-only sewing guides');
     if(OUT) fs.writeFileSync(path.join(OUT, 'templates-window-abu.png'), Buffer.from((await S('Page.captureScreenshot', { format: 'png' })).data, 'base64'));
   } catch(e){
     fails.push(e.stack || String(e));

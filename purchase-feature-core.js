@@ -15,7 +15,7 @@
   'use strict';
 
   // ---- helpers ------------------------------------------------------------------------------------------------
-  const money = n => Number.isFinite(Number(n)) ? `$${Number(n).toFixed(2)}` : 'no price';
+  const money = n => Number.isFinite(Number(n)) ? `$${Number(n).toFixed(2)}` : 'No price';
   const titleCase = s => String(s || '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim().replace(/\b\w/g, c => c.toUpperCase());
   const sentence = s => { s = String(s || ''); return s ? s[0].toUpperCase() + s.slice(1) : s; };
   const vendorName = v => (C.vendors[v] && C.vendors[v].name) || titleCase(v);
@@ -78,7 +78,7 @@
       add('low_quarters', { ref: female ? '4.1.9.11' : '4.1.6.6' });
       add(female ? 'socks_or_hosiery' : 'socks_black', { ref: female ? '4.1.9.11' : '4.1.6.6' });
     }else if(/^garment-semiformal-class-a-coat-(male|female)$/.test(id)){
-      add(`service_coat_enlisted_${female ? 'female' : 'male'}`, { detail: 'Worn without the nametag (4.1.3.2.1)' });
+      add(`service_coat_enlisted_${female ? 'female' : 'male'}`, { detail: 'Worn without the name tag (4.1.3.2.1)' });
       if(female){ add('white_blouse_semiformal_female'); add('blue_satin_tie_tab', { ref: '4.1.4.4' }); add('slacks_blue_female'); add('socks_or_hosiery'); }
       else { add('white_shirt_semiformal_male'); add('blue_tie', { ref: '4.1.3.2.4' }); add('undershirt_white', { ref: '4.1.3.2.3' }); add('trousers_blue_male'); add('socks_black', { ref: '4.1.3.2.5' }); }
       add('blue_belt');
@@ -297,7 +297,7 @@
         else if(/^garment-mess-dress-(male|female)-(general-)?officer-shoulder-boards$/.test(id)){
           const bullion = layers.find(x => x.role === 'grade' && /-bullion$/.test(x.id || ''));
           const grade = bullion ? gradeFromAsset(bullion.id) : '';
-          line = makeLine('mess-boards', { group: 'Grade', name: `CAP mess dress shoulder boards${grade ? ', ' + grade : ''}`, detail: 'Grade in bullion; buttons to match the coat (4.1.1.1.1.1)', rule: 'CAP_ONLY', ref: '4.1.1.1.1.1', offers: C.gradeOffers('mess-board', grade, 'mess dress shoulder board') });
+          line = makeLine('mess-boards', { group: 'Grade', name: `CAP Mess Dress shoulder boards${grade ? ', ' + grade : ''}`, detail: 'Grade in bullion; buttons to match the coat (4.1.1.1.1.1)', rule: 'CAP_ONLY', ref: '4.1.1.1.1.1', offers: C.gradeOffers('mess-board', grade, 'mess dress shoulder board') });
         }else if(/^rank-epaulet-sleeve-blue-cadet/.test(id) || /-epaulet-sleeve-cadet-officer$/.test(id)) line = fromItem('cadet_epaulet_sleeves_blank', { detail: 'Worn with the miniature metal grade below' });
         else if(/^rank-epaulet-sleeve-gray-/.test(id) || /-epaulet-sleeve-officer$/.test(id)){
           const g = gradeFromAsset(id) || '';
@@ -468,6 +468,7 @@
       line.total = line.lowest ? +(line.lowest.price * (line.qty || 1)).toFixed(2) : null;
       if(line.texts && line.texts.length) line.detail = [line.detail, line.texts.map(t => `"${t}"`).join(' / ')].filter(Boolean).join(' · ');
       if(line.where) line.detail = [line.detail, line.where].filter(Boolean).join(' · ');
+      line.detail = sentence(line.detail);
       if(line.alt) line.note = [line.note, `Or: ${C.items[line.alt].name}.`].filter(Boolean).join(' ');
       line.search = [line.name, line.detail, line.group, line.note, ...line.offers.map(o => o.vendorName + ' ' + (o.sku || ''))].join(' ').toLowerCase();
       delete line.detailSet; delete line.refSet; delete line.noteSet;
@@ -501,7 +502,7 @@
     let group = null;
     for(const l of list){
       if(l.group !== group){ group = l.group; out.push(`== ${group} ==`); }
-      const price = l.notSold ? 'not sold at retail' : l.byOrderForm && !l.lowest ? 'by order form' : l.lowest ? `${money(l.total)}${l.qty > 1 ? ` (${l.qty} x ${money(l.unitPrice)})` : ''} at ${l.lowest.vendorName}, ${l.lowest.status}${l.lowest.checked ? ' ' + l.lowest.checked : ''}${l.lowest.status === 'estimated' ? ' *' : ''}` : 'no price';
+      const price = l.notSold ? 'Not sold at retail' : l.byOrderForm && !l.lowest ? 'By order form' : l.lowest ? `${money(l.total)}${l.qty > 1 ? ` (${l.qty} x ${money(l.unitPrice)})` : ''} at ${l.lowest.vendorName}, ${l.lowest.status}${l.lowest.checked ? ' ' + l.lowest.checked : ''}${l.lowest.status === 'estimated' ? ' *' : ''}` : 'No price';
       out.push(`${owned && owned[l.key] ? '[OWN]' : '[BUY]'} ${l.name}${l.detail ? ' - ' + l.detail : ''}${l.qty > 1 ? ` x ${l.qty}` : ''}: ${price}`);
       const link = l.lowest || l.offers[0];
       if(link) out.push(`    ${link.vendorName} ${linkWord(link)}: ${link.url}`);
@@ -514,7 +515,7 @@
     const rows = [['Section', 'Item', 'Detail', 'Quantity', 'Lowest unit price', 'Line total', 'Vendor', 'Price status', 'Price checked', 'SKU', 'Link', 'Other vendors', 'Own it', 'Sourcing', 'CAPR 39-1']];
     for(const l of list){
       const lo = l.lowest, link = lo || l.offers[0];
-      rows.push([l.group, l.name, l.detail, l.qty, lo ? lo.price.toFixed(2) : '', l.total != null ? l.total.toFixed(2) : '', lo ? lo.vendorName : '', lo ? lo.status : l.notSold ? 'not sold at retail' : l.byOrderForm ? 'by order form' : 'no price', lo ? lo.checked || '' : '', lo ? lo.sku : '', link ? link.url : '',
+      rows.push([l.group, l.name, l.detail, l.qty, lo ? lo.price.toFixed(2) : '', l.total != null ? l.total.toFixed(2) : '', lo ? lo.vendorName : '', lo ? lo.status : l.notSold ? 'Not sold at retail' : l.byOrderForm ? 'By order form' : 'No price', lo ? lo.checked || '' : '', lo ? lo.sku : '', link ? link.url : '',
         l.offers.filter(o => o !== lo).map(o => `${o.vendorName}: ${o.price != null ? money(o.price) : 'search'} ${o.url}`).join(' | '), owned && owned[l.key] ? 'yes' : '', l.rule, l.ref]);
     }
     return rows.map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
@@ -630,7 +631,7 @@
   function visibleLines(){ return sorted(current.lines).filter(l => matches(l, query)); }
 
   function offerLabel(o){
-    return (o.price != null ? `${money(o.price)} · ${o.status}${o.checked ? ' ' + o.checked : ''}` : 'search, no price') + (o.sku ? ` · SKU ${o.sku}` : '');
+    return (o.price != null ? `${money(o.price)} · ${o.status}${o.checked ? ' ' + o.checked : ''}` : 'Search, no price') + (o.sku ? ` · SKU ${o.sku}` : '');
   }
   function rowHtml(l){
     const lo = l.lowest;
@@ -638,12 +639,12 @@
     const ruleClass = l.rule === 'CAP_ONLY' ? 'cap' : (l.rule === 'MILSPEC_OK' ? 'ok' : '');
     const others = l.offers.filter(o => o !== main);
     const priceCell = l.notSold
-      ? '<span class="capub-shop-none">not sold at retail</span><span class="capub-shop-low">Issued through CAP</span>'
+      ? '<span class="capub-shop-none">Not sold at retail</span><span class="capub-shop-low">Issued through CAP</span>'
       : l.byOrderForm && !lo
-      ? '<span class="capub-shop-none">by order form</span><span class="capub-shop-low">Price on the order form</span>'
+      ? '<span class="capub-shop-none">By order form</span><span class="capub-shop-low">Price on the order form</span>'
       : lo
       ? `${money(l.total)}${lo.status === 'estimated' ? '<span class="capub-shop-star" title="Estimated price"> *</span>' : ''}<span class="capub-shop-low">${l.qty > 1 ? `${l.qty} x ${money(lo.price)} · ` : ''}${esc(lo.vendorName)}${lo.sku ? ' SKU ' + esc(lo.sku) : ''} · ${lo.status === 'verified' ? 'verified' : 'estimated'}${lo.checked ? ' ' + esc(lo.checked) : ''}</span>`
-      : '<span class="capub-shop-none">no price</span><span class="capub-shop-low">Search the vendors</span>';
+      : '<span class="capub-shop-none">No price</span><span class="capub-shop-low">Search the vendors</span>';
     return `<tr data-key="${esc(l.key)}" class="${owned[l.key] ? 'capub-shop-owned' : ''}">
         <td data-label="Own it"><button type="button" class="mpToggle capub-owned" role="switch" aria-checked="${owned[l.key] ? 'true' : 'false'}" aria-label="Already own ${esc(l.name)}"><span class="mpMark" aria-hidden="true"></span></button></td>
         <td data-label="Item"><div class="capub-purchase-item-name">${esc(l.name)}</div>${l.detail ? `<div class="capub-shop-detail">${esc(l.detail)}</div>` : ''}<span class="capub-purchase-chip ${ruleClass}">${esc(RULE_LABEL[l.rule] || 'Verify')}</span>${l.notSold ? '<span class="capub-purchase-chip">Not sold at retail</span>' : l.byOrderForm && !lo ? '<span class="capub-purchase-chip">By order form</span>' : lo ? `<span class="capub-purchase-chip ${lo.status === 'estimated' ? 'est' : ''}">${lo.status === 'verified' ? 'Verified price' : 'Estimated price'}</span>` : '<span class="capub-purchase-chip est">No price</span>'}${l.ref ? `<span class="citeHost"><span class="citeRef capub-purchase-chip">CAPR 39-1 ${esc(l.ref)}</span><span class="citeBtn" role="button" tabindex="0" aria-label="Regulation reference" aria-expanded="false"></span></span>` : ''}${l.note ? `<div class="capub-purchase-note">${esc(l.note)}</div>` : ''}</td>
@@ -701,11 +702,11 @@
     if(!body) return;
     if(subtitle) subtitle.textContent = `${current.title || 'No uniform drawn'}${current.meta.who ? ' · ' + current.meta.who : ''} · catalog ${C.version}`;
     if(!current.lines.length){
-      body.innerHTML = '<div class="capub-purchase-empty">Choose a membership, gender, rank and uniform. The list is made from the uniform as drawn.</div>';
+      body.innerHTML = '<div class="capub-purchase-empty">Choose a membership type, grade, cut and uniform. The list is made from the uniform as drawn.</div>';
       return;
     }
     body.innerHTML = `
-      <details class="capub-purchase-rule"><summary><b>How items are sourced</b></summary> CAP-specific rank/grade insignia, ribbons, miniature medals, badges, patches, nameplates and other CAP-only items are intentionally separated from ordinary military components. A visually similar USAF or other military item is not treated as a substitute. Standard garments/components are shown as military-spec alternatives only where the catalog marks them <b>Milspec OK</b>. Always verify the current CAPR 39-1 requirement before ordering. Prices are the lowest the catalog knows across Vanguard, Uniforms-4U and Ira Green: verified prices were seen on the vendor's page on the date shown, estimated ones (*) are budgeting figures. The page does not fetch prices live.</details>
+      <details class="capub-purchase-rule"><summary><b>How items are sourced</b></summary> CAP-specific grade insignia, ribbons, miniature medals, badges, patches, nameplates and other CAP-only items are intentionally separated from ordinary military components. A visually similar USAF or other military item is not treated as a substitute. Standard garments/components are shown as military-spec alternatives only where the catalog marks them <b>Milspec OK</b>. Always verify the current CAPR 39-1 requirement before ordering. Prices are the lowest the catalog knows across Vanguard, Uniforms-4U and Ira Green: verified prices were seen on the vendor's page on the date shown, estimated ones (*) are budgeting figures. The page does not fetch prices live.</details>
       <div class="capub-purchase-summary">
         <div class="capub-purchase-card"><span>Subtotal, lowest prices</span><b id="capubTotalComplete">$0.00</b></div>
         <div class="capub-purchase-card"><span>Still to buy</span><b id="capubTotalRemaining">$0.00</b></div>

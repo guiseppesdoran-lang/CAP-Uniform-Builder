@@ -212,14 +212,14 @@ test('the CAP Crest on the blazer pocket is listed as not sold at retail: no lin
     assert.equal(t.notSold,1);
     assert.equal(t.unpriced,res.lines.filter(l=>!l.notSold&&l.total==null).length,'not counted as unpriced');
     assert.equal(t.subtotal,+res.lines.filter(l=>l.total!=null).reduce((a,l)=>a+l.total,0).toFixed(2));
-    assert.match(SHOP.toText(res.lines,{}),/CAP Crest \(blazer pocket\) - Left breast pocket: not sold at retail\n(?!\s+\S+ (product|search):)/);
-    assert.match(SHOP.toCSV(res.lines,{}),/CAP Crest \(blazer pocket\),Left breast pocket,1,,,,not sold at retail,/);
+    assert.match(SHOP.toText(res.lines,{}),/CAP Crest \(blazer pocket\) - Left breast pocket: Not sold at retail\n(?!\s+\S+ (product|search):)/);
+    assert.match(SHOP.toCSV(res.lines,{}),/CAP Crest \(blazer pocket\),Left breast pocket,1,,,,Not sold at retail,/);
   }
   // A badge worn in the crest's place (4.2.3.1.1.1) takes it off the list.
   const b=build('aviator_blazer','male','senior','Col',{badges:[{id:'command_council_badge'}]});
   const res=SHOP.deriveList(await P.composeUniform(b,store),b,{badges:BADGES});
   assert.ok(!res.lines.some(l=>l.itemId==='cap_crest'),'no crest when the Command Council badge replaces it');
-  assert.match(core,/not sold at retail<\/span><span class="capub-shop-low">Issued through CAP/);
+  assert.match(core,/Not sold at retail<\/span><span class="capub-shop-low">Issued through CAP/);
 });
 
 test('a Ranger tab patch resolves to the capranger.org order form: no price, no vendor searches',()=>{
@@ -246,9 +246,9 @@ test('a Ranger tab patch resolves to the capranger.org order form: no price, no 
   const unit=res.lines.find(l=>/Unit patch/.test(l.name));
   assert.ok(unit&&unit.offers.some(o=>o.vendor==='vanguard'),'an ordinary patch keeps its vendor offers');
   const text=SHOP.toText(res.lines,{});
-  assert.match(text,/CAP Ranger tab - First Class: by order form\n    Hawk Mountain Ranger School \(capranger\.org\) order form: https:\/\/docs\.google\.com\/forms\//);
-  assert.match(SHOP.toCSV(res.lines,{}),/,by order form,/);
-  assert.match(core,/'<span class="capub-shop-none">by order form<\/span>/);
+  assert.match(text,/CAP Ranger tab - First Class: By order form\n    Hawk Mountain Ranger School \(capranger\.org\) order form: https:\/\/docs\.google\.com\/forms\//);
+  assert.match(SHOP.toCSV(res.lines,{}),/,By order form,/);
+  assert.match(core,/'<span class="capub-shop-none">By order form<\/span>/);
 });
 
 test('the field and flight uniforms list the badge in the form drawn, the name tapes and the sheet\'s own patches',async()=>{

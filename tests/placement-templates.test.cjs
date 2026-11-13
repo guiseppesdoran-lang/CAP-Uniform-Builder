@@ -368,7 +368,7 @@ test('file names and the page control: the Templates entry in the Finish panel o
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   assert.match(html, /<div class="finishAction" id="downloadAction">\s*<button id="downloadImage" type="button">Download picture \(PNG\)<\/button>\s*<\/div>/);
   // PDF is the main action for each side and the SVG a link after it (LIVE13 E78, Ethan: "nobody prints svg's lol make pdf the default").
-  assert.match(src, /data-what="pdf">Paper \(PDF\)<\/button>\$\{stlButtons\(s\)\}<button type="button" class="ptAlt" data-side="\$\{esc\(s\.key\)\}" data-what="svg">also as SVG<\/button>/);
+  assert.match(src, /data-what="pdf">Paper \(PDF\)<\/button>\$\{stlButtons\(s\)\}<button type="button" class="ptAlt" data-side="\$\{esc\(s\.key\)\}" data-what="svg">Also as SVG<\/button>/);
   assert.match(src, /<button type="button" class="ghost" data-side="\$\{esc\(s\.key\)\}" data-what="stl"\$\{i \? ` data-piece="\$\{i\}"` : ''\}>3D aligner/);
   assert.doesNotMatch(src, /data-what="pdf"[^>]*class="ghost"|class="ghost"[^>]*data-what="pdf"/, 'the PDF button is not the secondary style');
   assert.match(src, /\(STL\)<\/button>/);
