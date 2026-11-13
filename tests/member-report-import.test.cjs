@@ -71,12 +71,20 @@ test("Commander's Commendation Award (Region) is the commander commendation ribb
   assert.deepEqual(curly.devices('commander_commendation_award'), [{ devices: ['star-silver'], centered: false }]);
 });
 
-test('Crisis Service Award is the Crisis Service Ribbon, awarded once, no device', () => {
+// ICL 21-03, para 2: one Crisis Service Ribbon for each service period, the later periods the bronze triangle clasp. The level is only what the report's rows carry.
+test('Crisis Service Award is the Crisis Service Ribbon: a row is the first period, each further row of another date is a bronze clasp', () => {
   const r = runImport(FIXTURE);
   assert.equal(r.ribbon('crisis_ribbon').value, 'earned');
   assert.deepEqual(r.devices('crisis_ribbon'), [{ devices: [], centered: false }]);
   const twice = runImport(FIXTURE.replace('Crisis Service Award 15 Dec 2023', 'Crisis Service Award 15 Dec 2023\nCrisis Service Award 15 Dec 2024'));
-  assert.deepEqual(twice.devices('crisis_ribbon'), [{ devices: [], centered: false }]);
+  assert.equal(twice.ribbon('crisis_ribbon').value, 'bronze_clasp_1');
+  assert.deepEqual(twice.devices('crisis_ribbon'), [{ devices: ['clasp-bronze'], centered: false }]);
+  const thrice = runImport(FIXTURE.replace('Crisis Service Award 15 Dec 2023', 'Crisis Service Award 15 Dec 2023\nCrisis Service Award 15 Dec 2024\nCrisis Service Award 15 Dec 2025'));
+  assert.equal(thrice.ribbon('crisis_ribbon').value, 'bronze_clasp_2');
+  assert.deepEqual(thrice.devices('crisis_ribbon'), [{ devices: ['clasp-bronze', 'clasp-bronze'], centered: false }]);
+  // No row, no ribbon.
+  const none = runImport(FIXTURE.replace('Crisis Service Award 15 Dec 2023\n', ''));
+  assert.equal(none.ribbon('crisis_ribbon'), undefined);
 });
 
 // CAPR 39-3 9h and Attachment 2: the Certificate of Recognition for Lifesaving carries the Lifesaving Award ribbon, so the

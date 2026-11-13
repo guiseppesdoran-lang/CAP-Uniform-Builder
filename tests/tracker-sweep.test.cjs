@@ -3,8 +3,8 @@
 // and data. The page's classic scripts are loaded into one vm context behind a permissive DOM stub, as
 // tests/member-report-rules.test.cjs does, so the real functions run.
 //   Ribbons (CAPR 39-3): the National Commander's Citation and the Gill Robb Wilson Award share one place
-//   (Attachment 2, Note 2); the Crisis Service Ribbon, the IACE and the annual cadet awards take the bronze
-//   clasp for later awards (6b); the cadet recruiter ribbon counts recruits (21k(1)); the AAF Air Medal and
+//   (Attachment 2, Note 2); the Crisis Service Ribbon (one award for each service period, ICL 21-03) and the IACE take the bronze
+//   clasp for later awards (6b); the annual cadet awards are earned once; the cadet recruiter ribbon counts recruits (21k(1)); the AAF Air Medal and
 //   the Aerial Achievement Medal are federal awards, the AFOEA sits below them and above the CAP ribbons.
 //   Badges and cords (CAPR 39-1): National Staff is not authorized on the corporate blazer and the semi-formal
 //   (Attachment 4); the Aide de Camp cord is worn by senior members as well (9.3.4).
@@ -202,10 +202,9 @@ test('the Lifesaving ribbon holds three devices at most, a second ribbon beyond 
   assert.deepEqual(RA.resolve('search_find_ribbon', { awardValue: 'mcchord_23300', awardLabel: '5th Award' }).map(p => p.devices.length), [4], 'a ground find ribbon, no propeller, holds four');
 });
 
-// Ethan: "this isn't a thing" (the Crisis Service Ribbon's Nth service period / N bronze clasps) and "OTY awards
-// are once" (the AFA Award to Unit Cadet of the Year showing 2nd/3rd/4th Award). Each of these is awarded once.
-test('the Crisis Service Ribbon and the Cadet of the Year awards (AFA, AFSA, VFW officer, VFW NCO) are awarded once: only the basic award, no clasps, no repeat counts', () => {
-  for(const id of ['crisis_ribbon', 'afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award']){
+// The annual cadet awards are given for one year's winner, so each is awarded once (the owner: "OTY awards are once", the AFA Award to Unit Cadet of the Year showing 2nd/3rd/4th Award).
+test('the Cadet of the Year awards (AFA, AFSA, VFW officer, VFW NCO) are awarded once: only the basic award, no clasps, no repeat counts', () => {
+  for(const id of ['afa_award', 'afsa_award', 'vfw_officer_award', 'vfw_nco_award']){
     assert.equal(RA.FAMILIES[id].once, true, id);
     for(const membership of ['cadet', 'senior']){
       ev(`State.membership = '${membership}'`);
@@ -222,6 +221,28 @@ test('the Crisis Service Ribbon and the Cadet of the Year awards (AFA, AFSA, VFW
     assert.doesNotMatch(RA.hint(id), /clasp marks|service period/i, id);
   }
   // An imported 'earned' selection is the one award.
+  ev("State.membership = 'senior'");
+  assert.equal(ev("getRibbonSelectionOption('afa_award', 'earned').value"), 'award_1');
+});
+
+// ICL 21-03, para 2: "Only one award is earned per service period; awards during additional periods are recognized by the wear of the bronze triangle clasp." (6b: a silver clasp for five bronze, four devices at most.)
+test('the Crisis Service Ribbon is one award for each service period: the first period is the plain ribbon, each later one adds a bronze clasp, a silver clasp stands for five (ICL 21-03, 6b)', () => {
+  assert.equal(RA.FAMILIES.crisis_ribbon.once, undefined, 'not an award given once');
+  for(const membership of ['cadet', 'senior']){
+    ev(`State.membership = '${membership}'`);
+    const options = ev("getRibbonAwardOptions('crisis_ribbon').filter(o => o.value)");
+    assert.ok(options.length > 5, `${membership}: a count for each period`);
+    assert.equal(options[0].label, 'Basic Award');
+    assert.equal(options[1].label, '2nd Award');
+  }
+  const devices = n => RA.resolve('crisis_ribbon', { awardValue: `award_${n}`, awardLabel: n === 1 ? 'Basic Award' : `${n}th Award` }).map(p => p.devices);
+  assert.deepEqual(devices(1), [[]], 'the first period: the plain ribbon');
+  assert.deepEqual(devices(2), [['device-clasp-bronze']], 'the second: one bronze clasp');
+  assert.deepEqual(devices(4), [Array(3).fill('device-clasp-bronze')]);
+  assert.deepEqual(devices(6), [['device-clasp-silver']], 'five bronze are one silver');
+  assert.equal(devices(2).length, 1, 'one ribbon');
+  assert.match(RA.hint('crisis_ribbon'), /^One award for each service period; a bronze clasp marks each later one \(ICL 21-03, 2\)\.$/);
+  // An imported 'earned' selection is the first period.
   ev("State.membership = 'senior'");
   assert.equal(ev("getRibbonSelectionOption('crisis_ribbon', 'earned').value"), 'award_1');
 });

@@ -1540,6 +1540,8 @@ const MEMBER_REPORT_COUNTED_AWARDS = [
   { id:'air_search_and_rescue_ribbon', name:'Air Search and Rescue Ribbon', re:/\b(?:Air\s+)?Search\s+and\s+Rescue\s+Ribbon\b/i, aircrew:true },
   { id:'cap_counterdrug_ribbon', name:'Counterdrug Ribbon', re:/\bCounter[\s-]?drug\s+Ribbon\b/i },
   { id:'homeland_security_ribbon', name:'Homeland Security Ribbon', re:/\bHomeland\s+Security\s+Ribbon\b/i },
+  // The CAP Member Search Report prints "Crisis Service Award": a row for each service period, the later ones a bronze clasp (ICL 21-03, 2).
+  { id:'crisis_ribbon', name:'Crisis Service Ribbon', re:/\bCrisis\s+Service\s+(?:Award|Ribbon)\b|\bCrisis\s+Ribbon\b/i },
   { id:'cap_cadet_orientation_pilot_ribbon', name:'Cadet Orientation Pilot Ribbon', re:/\b(?:Cadet\s+)?Orientation\s+Pilot\s+Ribbon\b/i },
   { id:'national_cadet_competition_ribbon', name:'National Cadet Competition Ribbon', re:/\bNational\s+Cadet\s+Competition\s+Ribbon\b/i, once:true,
     note:'National Cadet Competition Ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star), so no star is added; add it under Ribbons if it applies.' },
@@ -1993,12 +1995,6 @@ function parseCapMemberReport(textRaw){
     result.ribbons.push({ id:'cadet_recruiter_ribbon', value:'earned', reason:'Cadet Recruiter Ribbon' });
     const rows = countMemberReportAwardRows(text, /\bCadet\s+Recruiter\s+Ribbon\b/i);
     if(rows > 1) result.notes.push(memberReportRepeatedRowNote('Cadet Recruiter Ribbon', rows));
-  }
-
-  // In the CAP Member Search Report this appears as "Crisis Service Award";
-  // in the builder it maps to the crisis_ribbon asset/id.
-  if(/Crisis Service Award/i.test(text) || /\bCrisis Ribbon\b/i.test(text)){
-    result.ribbons.push({ id:'crisis_ribbon', value:'earned', reason:'Crisis Service Award' });
   }
 
   const joinDate = extractJoinDateFromMemberReport(text);

@@ -376,8 +376,7 @@ const CAPUB_RELABELED_RIBBONS = new Set(['cadet_advisory_council_ribbon','goddar
 function capubRibbonOptionOverride(id){
   const pick = { label:'- Select -', value:'', devices:{} };
   if(globalThis.CAPUBRibbonAwards?.FAMILIES?.[id]?.once){
-    // An award given a single time (the Crisis Service Ribbon, the Cadet of the Year awards): no clasps,
-    // no repeat counts, only the basic award.
+    // An award given a single time (the Cadet of the Year awards): no clasps, no repeat counts, only the basic award.
     return [pick, { label:'Basic Award', value:'award_1', devices:{} }];
   }
   if(id === 'cadet_recruiter_ribbon'){

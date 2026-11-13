@@ -48,11 +48,10 @@
     cadet_recruiter_ribbon: { devices: 'recruiter', first: 2, step: 2, silverStep: 10 },
     cap_senior_recruiter_ribbon: { devices: 'recruiter', first: 7, step: 10, silverStep: 50 },
     // 6b: subsequent awards of the same ribbon are marked by the bronze clasp; the IACE follows that rule.
-    // `once`: awarded a single time, so no clasp and no repeat count. The Cadet of the Year awards (AFA,
-    // AFSA, VFW officer and NCO) are given for one year's winner (CAPR 39-3); the Crisis Service Ribbon is
-    // one award, by Ethan's ruling (the earlier reading, one per service period with a clasp for each later
-    // period, is dropped: .scratch/DECISIONS.md). `devices` stays for shape compatibility.
-    crisis_ribbon: { devices: 'clasps', once: true },
+    // 21-03 para 2: one Crisis Service Ribbon is earned for each service period, and the awards of the later periods are the bronze triangle clasp on it (6b: a silver clasp for five).
+    crisis_ribbon: { devices: 'clasps' },
+    // `once`: awarded a single time, so no clasp and no repeat count. The Cadet of the Year awards (AFA, AFSA, VFW officer and NCO) are given for one year's winner (CAPR 39-3);
+    // `devices` stays for shape compatibility.
     iace_ribbon: { devices: 'clasps' },
     afa_award: { devices: 'clasps', once: true },
     afsa_award: { devices: 'clasps', once: true },
@@ -216,7 +215,7 @@
   const HINTS = {
     search_find_ribbon: 'A bronze clasp for each additional distress find, or for each additional 20 non-distress finds. A propeller marks a find made as aircrew (CAPR 39-3, 21d).',
     air_search_and_rescue_ribbon: 'A bronze clasp for each additional 10 sorties; the propeller marks aircrew sorties (CAPR 39-3, 21c).',
-    crisis_ribbon: 'Earned once; it takes no clasp and has no repeat count.',
+    crisis_ribbon: 'One award for each service period; a bronze clasp marks each later one (ICL 21-03, 2).',
     iace_ribbon: 'A bronze clasp marks each later exchange (CAPR 39-3, 6b).',
     afa_award: 'Earned once, for the year as Unit Cadet of the Year; no clasp (CAPR 39-3).',
     afsa_award: 'Earned once, for the year as Unit Cadet of the Year; no clasp (CAPR 39-3).',
