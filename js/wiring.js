@@ -367,12 +367,13 @@ function openGalleryModal(kind){
     }
 
     if(kind==='patches'){
+      // The patches the uniform takes, as picture tiles of the picture picker (js/pick-lists.js patchList): all of them, so the window has no Show less or Show all.
       State.patchGalleryExpanded = true;
-      buildPatchGallery();
       modalTitle.textContent = "Patches";
-      const sidebar = by('patchGallery');
-      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
-      wireModalInteractions('patches');
+      grid.innerHTML = '';
+      grid.className = '';
+      host.querySelectorAll('#modalShowLess,#modalShowAll').forEach(b => { b.hidden = true; });
+      window.CAPUB_MODAL_PICKERS = [CAPUBPickLists.patchList(grid)];
     }
   }
 
@@ -531,28 +532,6 @@ function openGalleryModal(kind){
           original?.call(control,event);
           syncFromSidebar();
         };
-      });
-    }
-
-    if(k==='patches'){
-      const showCount = State.patchGalleryExpanded ? patchList.length : Math.min(10, patchList.length);
-      const ids = patchList.slice(0, showCount);
-
-      const tiles = [...grid.querySelectorAll('.galleryTile')];
-      tiles.forEach((tile, i) => {
-        const id = ids[i];
-        if(!id) return;
-        const sel = State.patchSelections[id] || {checked:false};
-
-        const chk = tile.querySelector('.ptChk');
-        if(chk){
-          chk.checked = !!sel.checked;
-          chk.onchange = () => {
-            sel.checked = chk.checked;
-            rebuildPatchesFromGallery();
-            syncFromSidebar();
-          };
-        }
       });
     }
   }
@@ -1177,11 +1156,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
   function wireV2Controls(){
     syncTextControls();
-    const save = by('capubV2SaveLocal'), load = by('capubV2LoadLocal'), exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
+    const exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
     const reset = by('capubV2Reset');
     const fn = by('capubV2FirstName'), ln = by('capubV2LastName'), pl = by('capubV2PlateLine'), sh = by('capubV2ShowText');
-    if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
-    if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
     if(exp) exp.onclick = ()=>(window.CAPUB_TELEMETRY?.track('setup_file', { action: 'save' }), downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.ceremonial ? 'honor_guard' : State.uniform},'json'), JSON.stringify(collectProfile(), null, 2)));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
     if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; window.CAPUB_TELEMETRY?.track('setup_file', { action: 'open' }); };

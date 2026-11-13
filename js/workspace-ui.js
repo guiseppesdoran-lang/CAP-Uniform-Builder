@@ -308,17 +308,24 @@
   // One list under each card: every badge or patch chosen, by name, with the place the drawing put it in words, and for each the drawing leaves
   // off the reason with its paragraph (js/badge-rules.js capubBadgeSummary, capubPatchSummary; the places are the engine's own).
   const sentence=t=>{ const s=String(t||''); return s.charAt(0).toUpperCase()+s.slice(1); };
-  function fillSummary(hostId,rows){
+  // `pictures`: a row of small pictures with the words under each (the Patches card), a row with none left dimmed; otherwise a list of names.
+  function fillSummary(hostId,rows,pictures){
     const host=safeBy(hostId); if(!host) return;
     const list=host.querySelector('.itemSummaryList'); if(!list) return;
     host.classList.toggle('hidden',!rows.length);
+    list.classList.toggle('withPictures',!!pictures);
     // The list is rebuilt only when a row changed: a rebuild on every press would draw each reference mark again and close the one the member opened.
-    const sig=JSON.stringify(rows.map(r=>[r.id,r.name,!!r.shown,!!r.pending,r.place,r.why]));
+    const sig=JSON.stringify(rows.map(r=>[r.id,r.name,!!r.shown,!!r.pending,r.place,r.why,r.picture||'']));
     if(list.dataset.sig===sig) return;
     list.dataset.sig=sig;
     list.replaceChildren(...rows.map(r=>{
       const li=document.createElement('li');
       li.className='itemSummaryRow'+(r.shown||r.pending?'':' notShown');
+      if(pictures){
+        const box=document.createElement('span'); box.className='itemSummaryPicture';
+        if(r.picture){ const img=document.createElement('img'); img.src=r.picture; img.alt=''; img.loading='lazy'; img.decoding='async'; box.append(img); }
+        li.append(box);
+      }
       const name=document.createElement('span'); name.className='itemSummaryName'; name.textContent=r.name;
       const place=document.createElement('span'); place.className='itemSummaryPlace';
       place.textContent=r.shown ? sentence(r.place) : (r.pending ? '' : 'Not shown');
@@ -332,7 +339,7 @@
   }
   function updateItemSummaries(){
     if(typeof capubBadgeSummary==='function') fillSummary('badgeSummary',capubBadgeSummary());
-    if(typeof capubPatchSummary==='function') fillSummary('patchSummary',capubPatchSummary());
+    if(typeof capubPatchSummary==='function') fillSummary('patchSummary',capubPatchSummary(),true);
   }
 
   /* ---------- the command insignia pin, set on the Items step (CAPR 39-1, 10.2.5) ---------- */

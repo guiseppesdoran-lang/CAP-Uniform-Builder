@@ -25,7 +25,7 @@
 // Toggle mode (mode: 'toggle'): the options are switches, any number on at once, the way a list of badges, ribbons or patches is chosen: each tile is a button with aria-pressed,
 // the ones on carry a tick and the picked shade. `values` is the list of the values on; onToggle(value, on) is called when the member turns one (not by setValues or
 // setOptions). An option may carry a `caption` (a small line under its name), a `search` (more words the filter reads) and `controls` (a node or a function(on) that returns one: the
-// level, the count or the devices of the item; it is shown under the tile only while the tile is on). p.setValues(list); p.values; p.filter(text) hides the tiles whose name, caption
+// level, the count or the devices of the item; it is shown under the tile only while the tile is on) and a `groupNote` (a line under the heading of its group). p.setValues(list); p.values; p.filter(text) hides the tiles whose name, caption
 // or search words do not contain the text, and the sections left with none, and returns how many tiles are shown. The keys are the same: arrows move, Enter or the space bar turns one.
 //
 // To assistive technology it is a radio group (role="radiogroup"; each option role="radio" with aria-checked). It is one stop of the Tab key: the
@@ -350,6 +350,9 @@
           const head = make('div', 'vpGroupHead', s.group);
           head.id = headId;
           sec.append(head);
+          // A line under the heading, from the first of its options that has one (toggle mode: the Ranger tabs' note).
+          const noted = toggle ? s.items.find(o => o.groupNote) : null;
+          if(noted) sec.append(make('div', 'vpGroupNote', String(noted.groupNote)));
         }
         const grid = make('div', 'vpGrid');
         for(const o of s.items){

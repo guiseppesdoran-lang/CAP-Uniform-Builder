@@ -30,14 +30,14 @@ test('every patch the catalog authorizes on a flight suit is a wing, region, nat
   }
 });
 
-test('the two squadron patches the catalog holds (SER-TN-185, SER-TN-330) are refused on both flight suits with the paragraph, in the Patches chooser tile and for a saved unit choice', () => {
+test('the two squadron patches the catalog holds (SER-TN-185, SER-TN-330) are refused on both flight suits with the paragraph, in the words of its tile (the Patches chooser does not list it) and for a saved unit choice', () => {
   for(const [u, para] of [['flight_suit', '8.2.4.5'], ['corporate_flight_suit', '8.3.4.5']]){
     for(const [id, code] of [['tn185_ocp_patch', 'SER-TN-185'], ['tn330_ocp_patch', 'SER-TN-330']]){
       assert.equal(ev(`isPatchAuthorizedForUniform(${j(id)}, ${j(u)}, 'senior')`), false, `${u} ${id}`);
       assert.equal(ev(`isPatchAuthorizedForUniform(${j(id)}, ${j(u)}, 'cadet')`), false, `${u} ${id} cadet`);
-      const tile = ev(`patchTileHtml(${j(id)}, { uniformId: ${j(u)}, membership: 'senior' })`);
-      assert.match(tile, new RegExp(`not a group or squadron patch \\(CAPR 39-1, ${para.replace(/\./g, '\\.')}\\)`), `${u} ${id}: the tile says why`);
-      assert.doesNotMatch(tile, /<select/, `${u} ${id}: no placement picker for a patch that is not worn`);
+      const tile = ev(`patchTileWords(${j(id)}, { uniformId: ${j(u)}, membership: 'senior' })`);
+      assert.match(tile.reason, new RegExp(`not a group or squadron patch \\(CAPR 39-1, ${para.replace(/\./g, '\\.')}\\)`), `${u} ${id}: the reason is in words`);
+      assert.deepEqual(tile.places, [], `${u} ${id}: no choice of places for a patch that is not worn`);
       // The placement picker offers no place for it, and a saved unit choice is not drawn.
       ev(`State.uniform = ${j(u)}; State.membership = 'senior'; State.unitPatchCharter = ${j(code)}`);
       assert.equal(ev('isUnitPatchAuthorizedForCurrentUniform()'), false, `${u} ${code}: the saved unit choice is not worn`);

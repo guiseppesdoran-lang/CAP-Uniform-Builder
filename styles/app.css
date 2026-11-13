@@ -1449,6 +1449,15 @@ html[data-access="guest"] #accessGate{display:none}
 .itemSummaryPlace{flex:1 0 100%;font-size:var(--t-xs);color:var(--muted);min-width:0}
 .itemSummaryRow.notShown .itemSummaryPlace{color:var(--ink);font-weight:700}
 .itemSummaryWhy{flex:1 0 100%;margin-top:0;font-size:var(--t-xs);color:var(--muted)}
+/* The Patches card: a row of small patch pictures, each with its name and place under it; a patch with no place left is dimmed and takes the width, its reason beside it. */
+.itemSummaryList.withPictures{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s2);align-items:flex-start}
+.itemSummaryList.withPictures .itemSummaryRow{flex:0 1 104px;display:grid;justify-items:center;align-content:start;gap:2px;text-align:center}
+.itemSummaryPicture{display:flex;align-items:center;justify-content:center;width:100%;height:76px;min-width:0}
+.itemSummaryPicture img{max-width:100%;max-height:100%;object-fit:contain}
+.itemSummaryList.withPictures .itemSummaryName,.itemSummaryList.withPictures .itemSummaryPlace,.itemSummaryList.withPictures .itemSummaryWhy{flex:none;width:100%;font-size:var(--t-xs);line-height:1.25}
+.itemSummaryList.withPictures .itemSummaryRow.notShown{flex:1 0 100%;grid-template-columns:96px minmax(0,1fr);justify-items:start;text-align:left;column-gap:var(--s2)}
+.itemSummaryList.withPictures .itemSummaryRow.notShown .itemSummaryPicture{grid-row:1 / span 3;opacity:.4}
+.itemSummaryList.withPictures .itemSummaryRow.notShown .itemSummaryName{color:var(--muted)}
 /* Supplements: the section under "Your unit" in the Profile step (js/supplements.js). Rows follow the item lists of the Items step. */
 .supplementBlock{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s2);min-width:0}
 .supplementBlock:first-child{margin-top:0;padding-top:0;border-top:0}
@@ -1570,9 +1579,14 @@ html[data-access="guest"] #accessGate{display:none}
 .vp[data-mode="toggle"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 .vpCell{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
 .vpCell[hidden],.vpSection[hidden],.vpControls[hidden]{display:none}
+.vpGroupNote{margin:calc(-1 * var(--s1)) 0 var(--s2);font-size:var(--t-xs);line-height:1.3;color:var(--muted)}
 .vpCaption{display:block;min-width:0;font-size:.6875rem;font-weight:400;line-height:1.25;color:var(--muted);overflow-wrap:anywhere}
 .vpControls{display:grid;gap:var(--s1);min-width:0;padding:0 2px}
 .vpControls select{min-width:0;width:100%}
+.vpPlaceChoice .vpGrid{grid-template-columns:1fr;gap:4px}
+.vpPlaceChoice .vpOption.noPicture{min-height:36px;padding:4px 6px}
+.vpPlaceChoice .vpLabel{font-size:var(--t-xs);font-weight:400}
+.vpPlaceChoice .vpOption[aria-checked] .vpTick{display:none}
 .vpControlStack{display:grid;gap:var(--s1);min-width:0}
 .vpControlStack .ribbonAwardLabel{margin:0}
 .vpSwitch{width:100%;min-height:36px;padding:0 var(--s2);font-size:var(--t-xs)}

@@ -77,36 +77,30 @@ test('the default place is the catalog\'s own when the uniform has it, else the 
   assert.deepEqual(ev('State.patchPlacements'), { corporate_field: {} });
 });
 
-test('the tile: a picker where the patch has more than one place, each option in words, the pick selected; one line where it has one', () => {
+test('the tile: a choice of places where the patch has more than one, each in words, the pick the drawn one; one line where it has one', () => {
   ev(`State.patchPlacements = {}; State.uniform = 'corporate_field'; State.membership = 'senior'`);
-  let html = ev(`patchTileHtml('nesa_patch')`);
-  assert.match(html, /<select class="ptPlace"/);
-  const options = [...html.matchAll(/<option value="([A-Z_]+)"( selected)?>([^<]+)<\/option>/g)].map(m => [m[1], !!m[2], m[3]]);
-  assert.deepEqual(options, [
+  const words = id => ev(`patchTileWords(${JSON.stringify(id)})`);
+  const choices = id => words(id).places.map(pl => [pl.slot, pl.slot === words(id).slot, pl.label]);
+  assert.deepEqual(choices('nesa_patch'), [
     ['R_SHOULDER', true, 'Right sleeve, ½ in below the shoulder seam'],
     ['CHEST_RIGHT', false, 'Right breast pocket'],
     ['CHEST_LEFT', false, 'Left breast pocket']
   ]);
+  assert.equal(words('nesa_patch').where, 'Worn: Right sleeve, ½ in below the shoulder seam');
   ev(`setPatchPlacement('nesa_patch', 'CHEST_LEFT')`);
-  html = ev(`patchTileHtml('nesa_patch')`);
-  assert.match(html, /<option value="CHEST_LEFT" selected>/);
-  assert.doesNotMatch(html, /<option value="R_SHOULDER" selected>/);
-  // One place: no picker, the place in words.
-  html = ev(`patchTileHtml('nywg_patch')`);
-  assert.doesNotMatch(html, /ptPlace/);
-  assert.match(html, /Worn: <b>Left sleeve, ½ in below the shoulder seam<\/b>/);
+  assert.deepEqual(choices('nesa_patch').map(c => [c[0], c[1]]), [['R_SHOULDER', false], ['CHEST_RIGHT', false], ['CHEST_LEFT', true]]);
+  assert.equal(words('nesa_patch').where, 'Worn: Left breast pocket', 'the line under the picture follows the pick');
+  // One place: no choice, the place in words.
+  assert.equal(words('nywg_patch').places.length, 1);
+  assert.equal(words('nywg_patch').where, 'Worn: Left sleeve, ½ in below the shoulder seam');
   ev(`State.uniform = 'abu'`);
-  html = ev(`patchTileHtml('nesa_patch')`);
-  assert.deepEqual([...html.matchAll(/<option value="([A-Z_]+)"( selected)?>/g)].map(m => [m[1], !!m[2]]), [['CHEST_RIGHT', true], ['CHEST_LEFT', false]], 'the ABU: either breast pocket');
-  html = ev(`patchTileHtml('ner_patch')`);
-  assert.deepEqual([...html.matchAll(/<option value="([A-Z_]+)"( selected)?>([^<]+)</g)].map(m => [m[1], !!m[2], m[3]]), [['L_SHOULDER', true, 'Left sleeve, ½ in below the shoulder seam'], ['CHEST_RIGHT', false, 'Right breast pocket']], 'a region patch: the left sleeve, or the right pocket');
-  html = ev(`patchTileHtml('tn185_ocp_patch')`);
-  assert.doesNotMatch(html, /ptPlace/);
-  assert.match(html, /Worn: <b>Right breast pocket<\/b>/);
-  // The gallery and the popup wire the picker.
-  const patches = fs.readFileSync(path.join(ROOT, 'js', 'patches.js'), 'utf8');
-  assert.match(patches, /place\.onchange = \(\) => \{ setPatchPlacement\(id, place\.value\); rebuildPatchesFromGallery\(\); \}/);
-  assert.match(patches, /const place = event\.target\.closest\('\.ptPlace'\);[\s\S]*?setPatchPlacement\(id, place\.value\)/);
+  assert.deepEqual(choices('nesa_patch').map(c => [c[0], c[1]]), [['CHEST_RIGHT', true], ['CHEST_LEFT', false]], 'the ABU: either breast pocket');
+  assert.deepEqual(choices('ner_patch'), [['L_SHOULDER', true, 'Left sleeve, ½ in below the shoulder seam'], ['CHEST_RIGHT', false, 'Right breast pocket']], 'a region patch: the left sleeve or the right pocket');
+  assert.equal(words('tn185_ocp_patch').places.length, 1);
+  assert.equal(words('tn185_ocp_patch').where, 'Worn: Right breast pocket');
+  // The Choose… window\'s tile carries the choice as buttons, one for each place (js/pick-lists.js patchList) and sets the pick per uniform, then redraws.
+  const lists = fs.readFileSync(path.join(ROOT, 'js', 'pick-lists.js'), 'utf8');
+  assert.match(lists, /onChange: slot => \{\s*d\.setPlace\(id, slot\);\s*d\.rebuildPatches\(\);/);
   // The page hands the engine the picked slot.
   const view = fs.readFileSync(path.join(ROOT, 'js', 'uniform-view.js'), 'utf8');
   assert.match(view, /const chosen = typeof getPatchSlot === 'function' \? getPatchSlot\(resolved, State\.uniform\) : null;/);

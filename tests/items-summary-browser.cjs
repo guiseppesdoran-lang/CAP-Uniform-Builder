@@ -7,7 +7,8 @@
 // Serves the repo, opens the page in headless Chrome, chooses badges on the Class A and checks that the Badges card lists each by name with the
 // place the drawing put it, names the badge left off with the reason and the paragraph, and that the command insignia pin can be set to
 // current or graduated commander from the Items step without opening the chooser (CAPR 39-1, 10.2.5) and the drawing follows. Then the same
-// for patches on the ABU. Screenshots of the two cards go to --out.
+// for patches on the ABU: the card is a row of small patch pictures with the place under each, the chooser picture tiles with no checkbox, and a tap on a tile changes the
+// build. Screenshots of the two cards and the patch chooser go to --out.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -133,12 +134,27 @@ async function launch(){
     if(!await ev(`document.getElementById('commandInsigniaRow').classList.contains('hidden')`)) fails.push('a cadet should not be offered the command pin');
 
     // Patches on the ABU: the unit patch and a school patch fight for the one pocket.
-    await set(`State.membership = 'senior'; State.rank = 'Capt'; State.uniform = 'abu'; State.badges = []; State.patches = ['ner_patch', 'comms_patch', 'check_pilot_patch']; updateAvailabilityUI(null); if(typeof refreshUI === 'function') refreshUI()`);
+    await set(`State.membership = 'senior'; State.rank = 'Capt'; State.uniform = 'abu'; State.badges = []; State.patches = ['ner_patch', 'comms_patch', 'check_pilot_patch']; State.patchSelections = {}; for(const id of State.patches) State.patchSelections[id] = { checked: true }; updateAvailabilityUI(null); if(typeof refreshUI === 'function') refreshUI()`);
     list = await rows('patchSummary');
     console.log(JSON.stringify(list, null, 1));
     if(list.length < 2 || list.some(r => !r.notShown && !r.place)) fails.push('every patch the drawing wears should name its place');
     if(!list.some(r => r.notShown && /CAPR 39-1/.test(r.why))) fails.push('a patch left off should say why with the paragraph');
     await shot('#groupPatches', 'patches');
+    // The Patches card is a row of small patch pictures, each with its name and place under it; a patch with no place left is dimmed and says so.
+    const cells = await ev(`[...document.querySelectorAll('#patchSummary .itemSummaryRow')].map(li => ({ picture: !!li.querySelector('.itemSummaryPicture img'), inputs: li.querySelectorAll('input').length, notShown: li.classList.contains('notShown'), dim: Number(getComputedStyle(li.querySelector('.itemSummaryPicture')).opacity), words: li.querySelector('.itemSummaryPlace').textContent }))`);
+    if(!cells.length || cells.some(c => !c.picture || c.inputs)) fails.push('each patch in the Patches card should be a small picture with no input: ' + JSON.stringify(cells));
+    if(!cells.some(c => c.notShown && c.dim < 1 && c.words === 'Not shown')) fails.push('a patch with no place left should be dimmed and say Not shown: ' + JSON.stringify(cells));
+    // The chooser: picture tiles with no checkbox or radio button, and a tap changes the build.
+    await ev(`document.getElementById('expandPatches').click()`); await sleep(900);
+    const chooser = await ev(`(() => { const h = document.getElementById('galleryModalHost'); return { tiles: h.querySelectorAll('.vpCell').length, boxes: h.querySelectorAll('input[type=checkbox],input[type=radio]').length, pressed: h.querySelectorAll('.vpCell .vpOption[aria-pressed]').length, on: State.patches.length }; })()`);
+    console.log('patch chooser:', JSON.stringify(chooser));
+    if(chooser.tiles < 10 || chooser.boxes || chooser.pressed !== chooser.tiles) fails.push('the patch chooser should be picture tiles with aria-pressed and no checkbox or radio button: ' + JSON.stringify(chooser));
+    await sleep(500);
+    await shot('#galleryModalOverlay', 'patches-chooser');
+    await ev(`(() => { const c = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.querySelector('.vpOption').getAttribute('aria-pressed') === 'false' && !c.querySelector('.vpControls')); c.querySelector('.vpOption').click(); })()`); await sleep(700);
+    const after = await ev(`({ on: State.patches.length, pressed: document.querySelectorAll('#galleryModalHost .vpCell .vpOption[aria-pressed=true]').length })`);
+    if(after.on !== chooser.on + 1 || after.pressed < 1) fails.push('tapping a patch tile should add it to the build: ' + JSON.stringify([chooser, after]));
+    await ev(`document.querySelector('#galleryModalOverlay .modalClose, #galleryModalDone, #galleryModalOverlay button')?.click()`); await sleep(300);
   }catch(e){ console.error(e); code = 1; }
   finally { try{ ws.close(); }catch(e){} proc.kill(); srv.close(); }
   if(fails.length){ console.error('FAIL:\n - ' + fails.join('\n - ')); code = 1; } else if(!code) console.log('OK');

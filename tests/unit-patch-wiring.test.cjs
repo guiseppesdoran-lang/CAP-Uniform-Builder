@@ -293,10 +293,10 @@ test('an activity patch is a catalog entry of the NCSA kind: in the patch list, 
       assert.deepEqual(evp(`getPatchPlaces(${j(id)}, ${j(u)}).map(p => p.slot)`), evp(`getPatchPlaces('nesa_patch', ${j(u)}).map(p => p.slot)`), `${id} places on ${u}`);
     }
     evp(`State.uniform = 'corporate_field'; State.membership = 'cadet'`);
-    const tile = evp(`patchTileHtml(${j(id)})`);
-    assert.match(tile, /<select class="ptPlace"/, 'the Worn picker');
-    assert.match(tile, /patches\/patch-ncsa-[a-z-]+\.png|\.png/);
-    assert.doesNotMatch(tile.replace(/<img[^>]*>/, ''), /ncsa_|patch-ncsa|\.png/, 'no id or file name in the text');
+    const tile = evp(`patchTileWords(${j(id)})`);
+    assert.ok(tile.places.length > 1, 'the choice of places');
+    assert.match(evp(`PATCH_META[${j(id)}].img`), /patches\/patch-ncsa-[a-z-]+\.png|\.png/);
+    assert.doesNotMatch([tile.title, tile.where, ...tile.places.map(pl => pl.label)].join(' '), /ncsa_|patch-ncsa|\.png/, 'no id or file name in the text');
   }
   assert.equal(evp(`getUnitPatchIdForCharter('NCSA')`), null, 'an activity patch has no charter');
 });

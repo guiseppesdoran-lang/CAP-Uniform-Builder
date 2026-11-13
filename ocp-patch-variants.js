@@ -50,8 +50,8 @@
       : patchId;
   };
 
-  // The patch picker itself (the tiles, their wiring in the sidebar and in the Choose... popup, the one-only Ranger tab group, the place
-  // picker) is js/patches.js buildPatchGallery over js/catalog.js patchTileHtml; this file only names the OCP's own patch forms above.
+  // The patch picker itself (the picture tiles of the Choose... window, the one-only Ranger tab group, the choice of places) is js/pick-lists.js patchList over
+  // js/catalog.js patchTileWords; this file only names the OCP's own patch forms above.
 
   const migrated = [];
   for(const rawId of State.patches || []){

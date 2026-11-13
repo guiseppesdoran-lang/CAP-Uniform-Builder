@@ -15,7 +15,8 @@
   // The page's own functions, looked up when a list is built (they are the page's globals: the scripts are classic scripts).
   function pageDeps(){
     /* global State, ASSET, getBadgeAssetPath, getBadgeDisplayName, getBadgeTileMetaHtml, isCommandInsigniaBadge, CAPUBBadgeCatalog, canSelectCommandInsigniaForCurrentRank,
-       chooseOnlyCommandInsignia, rebuildBadgesFromGallery, isCommandInsigniaGradeEligible, fullRender, getAvailableMilitaryBadgeVariants, militaryServiceLabel */
+       chooseOnlyCommandInsignia, rebuildBadgesFromGallery, isCommandInsigniaGradeEligible, fullRender, getAvailableMilitaryBadgeVariants, militaryServiceLabel, PATCH_META,
+       patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery */
     return {
       State: typeof State !== 'undefined' ? State : null,
       VisualPicker: typeof VisualPicker !== 'undefined' ? VisualPicker : null,
@@ -32,7 +33,15 @@
       rebuild: () => rebuildBadgesFromGallery(),
       fullRender: () => fullRender(),
       variants: badge => getAvailableMilitaryBadgeVariants(badge),
-      serviceLabel: service => militaryServiceLabel(service)
+      serviceLabel: service => militaryServiceLabel(service),
+      // patches
+      patchIds: () => window.capubVisiblePatchIdsForGallery(),
+      patchMeta: id => PATCH_META[id] || {},
+      patchWords: id => patchTileWords(id),
+      setPlace: (id, slot) => setPatchPlacement(id, slot),
+      keepOneTab: id => window.capubKeepOneRangerTab(id),
+      normalizePatches: () => normalizePatchSelections(),
+      rebuildPatches: () => rebuildPatchesFromGallery()
     };
   }
   const withDeps = deps => Object.assign(pageDeps(), deps || {});
@@ -181,5 +190,67 @@
     return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); } };
   }
 
-  return { badgeList, militaryBadgeList, selectBadge, setBadgeLevel, setGraduated };
+  // ---- patches ------------------------------------------------------------------------------------------------------------------------------
+
+  const patchOn = (d, id) => !!(d.State.patchSelections[id] && d.State.patchSelections[id].checked && d.patchWords(id).authorized);
+
+  // What a tap does: the patch on or off (never one the uniform does not take), a one-only group (a Ranger tab) keeping the one picked, then the drawing. Returns whether it is on.
+  function selectPatch(id, on, deps){
+    const d = withDeps(deps);
+    const s = d.State.patchSelections[id] || (d.State.patchSelections[id] = { checked: false });
+    s.checked = !!on && d.patchWords(id).authorized;
+    d.State.patchSelections[id] = s;
+    if(s.checked && d.patchMeta(id).oneOnly) d.keepOneTab(id);
+    d.rebuildPatches();
+    return patchOn(d, id);
+  }
+
+  // The tiles of the patches the uniform takes (`ids`, in the order shown): the patch's own picture, its name and where it is worn under it, a heading (with its note) for a
+  // group of its own; a patch with more than one place on the uniform has the choice of its places under its tile while it is on. A patch the uniform does not take is not listed.
+  function patchList(container, ids, deps){
+    const d = withDeps(deps);
+    d.normalizePatches();
+    const listed = () => (ids || d.patchIds()).filter(id => d.patchWords(id).authorized);
+    const options = () => listed().map(id => {
+      const meta = d.patchMeta(id), words = d.patchWords(id);
+      return {
+        value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, caption: words.where,
+        group: meta.group || undefined, groupNote: meta.group ? meta.note : undefined, search: meta.group || '',
+        controls: () => placeChoice(id)
+      };
+    });
+    // The places of a patch (one only on most uniforms: no choice then): a choice of buttons, each a place in words, under the tile while it is on.
+    const placeChoice = id => {
+      const words = d.patchWords(id);
+      if(words.places.length < 2) return null;
+      const box = el('div', 'vpPlaceChoice');
+      d.VisualPicker.render(box, {
+        name: `patchPlace-${id}`, legend: 'Worn', value: words.slot,
+        options: words.places.map(place => ({ value: place.slot, label: place.label })),
+        onChange: slot => {
+          d.setPlace(id, slot);
+          d.rebuildPatches();
+          const cell = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
+          const caption = cell && cell.querySelector('.vpCaption');
+          if(caption) caption.textContent = d.patchWords(id).where;
+        }
+      });
+      return box;
+    };
+    const host = el('div');
+    container.append(host);
+    const picker = d.VisualPicker.render(host, {
+      name: 'patches', mode: 'toggle', size: 'large', options: options(), values: listed().filter(id => patchOn(d, id)),
+      onToggle: (id, on) => { selectPatch(id, on, deps); entry.refresh(); }
+    });
+    const entry = {
+      picker, ids: listed(),
+      // Every tile as the state says (a Ranger tab picked turns the other tabs off).
+      refresh(){ picker.setValues(listed().filter(id => patchOn(d, id))); },
+      setOptions(){ picker.setOptions(options()); entry.refresh(); }
+    };
+    return entry;
+  }
+
+  return { badgeList, militaryBadgeList, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch };
 });

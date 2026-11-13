@@ -1468,48 +1468,8 @@ function rebuildPatchesFromGallery(){
   renderPatches();
 }
 
+// The patches are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles (js/pick-lists.js patchList); the sidebar keeps no list of its own.
 function buildPatchGallery(){
   const wrap = by('patchGallery');
-  if(!wrap) return;
-
-  normalizePatchSelections();
-  wrap.innerHTML='';
-
-  const showCount = State.patchGalleryExpanded ? patchList.length : Math.min(10, patchList.length);
-
-  for(let idx=0; idx<showCount; idx++){
-    const id = patchList[idx];
-    const meta = PATCH_META[id];
-
-    // Safety guard: patchList may contain legacy/menu placeholder IDs
-    // that do not have a PATCH_META entry yet. Without this, the builder
-    // crashes at meta.label before later hotfixes can replace the gallery.
-    if(!meta) continue;
-
-    const sel = State.patchSelections[id];
-
-    // The tile's words are patchTileHtml's (js/catalog.js): the name, Add, and where the patch is worn; never an id or a file name.
-    const tile = document.createElement('div');
-    tile.className='galleryTile';
-    tile.dataset.patchId = id;
-    tile.innerHTML = patchTileHtml(id);
-
-    const chk = tile.querySelector('.ptChk');
-    const authorized = isPatchAuthorizedForUniform(id);
-    chk.checked = !!sel.checked && authorized;
-    chk.disabled = !authorized;
-    if(!authorized) tile.classList.add('disabledBlock');
-
-    chk.onchange=()=>{
-      if(!authorized){
-        chk.checked = false;
-        sel.checked = false;
-        return;
-      }
-      sel.checked = chk.checked;
-      rebuildPatchesFromGallery();
-    };
-
-    wrap.appendChild(tile);
-  }
+  if(wrap) wrap.innerHTML = '';
 }

@@ -1,7 +1,7 @@
 'use strict';
-// Ethan: "please remove the file names, and dont do stuff like L Shoulder, spell it all out". A patch tile (the sidebar gallery and the
-// Choose… popup, js/catalog.js patchTileHtml) names the patch, offers Add, and says where it is worn in words ("Left sleeve, ½ in below the
-// shoulder seam"), or why it is not offered. No tile text carries an id, a file name, a slot constant (L_SHOULDER) or a pixel size.
+// Ethan: "please remove the file names, and dont do stuff like L Shoulder, spell it all out". A patch tile (the picture tiles of the Choose… window, js/pick-lists.js patchList,
+// worded by js/catalog.js patchTileWords) names the patch and says where it is worn in words ("Left sleeve, ½ in below the shoulder seam"), or why it is not offered. No tile text
+// carries an id, a file name, a slot constant (L_SHOULDER) or a pixel size.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -25,8 +25,8 @@ test('no patch tile text carries an id, a file name, a slot constant or a pixel 
     for(const membership of ['senior', 'cadet']){
       ev(`State.uniform = ${JSON.stringify(uniform)}; State.membership = ${JSON.stringify(membership)}`);
       for(const id of ids){
-        const html = ev(`patchTileHtml(${JSON.stringify(id)})`);
-        const t = text(html);
+        const words = ev(`patchTileWords(${JSON.stringify(id)})`);
+        const t = text([words.title, words.where, words.reason, ...words.places.map(pl => pl.label)].join(' '));
         const where = `${uniform} ${membership} ${id}: "${t}"`;
         assert.ok(!t.includes(id), `the id is not printed: ${where}`);
         assert.doesNotMatch(t, /\([a-z0-9]+(?:[_-][a-z0-9]+)+\)/, `no parenthesised id: ${where}`);
@@ -34,21 +34,18 @@ test('no patch tile text carries an id, a file name, a slot constant or a pixel 
         assert.doesNotMatch(t, /\d+\s*[×x]\s*\d+\s*px|\bpx\b/, `no pixel size: ${where}`);
         assert.doesNotMatch(t, /\.(svg|png|webp|jpe?g)\b|\//, `no file name or path: ${where}`);
         assert.doesNotMatch(t, /Slot hint/i, where);
-        // The tile text is the name, Add, and one line in words.
-        assert.match(t, /\bAdd\b/, where);
+        assert.ok(words.title, `a name: ${where}`);
         if(ev(`isPatchAuthorizedForUniform(${JSON.stringify(id)})`)){
+          assert.equal(words.authorized, true, where);
           const label = ev(`getPatchPlaceLabel(${JSON.stringify(id)})`);
           assert.ok(label, `an authorized patch has a place in words: ${where}`);
           const places = ev(`getPatchPlaces(${JSON.stringify(id)}).map(p => p.label)`);
-          if(places.length > 1){
-            // More than one place: a picker whose options are the places in words, the drawn one selected.
-            const options = [...String(html).matchAll(/<option value="[A-Z_]+"( selected)?>([^<]+)<\/option>/g)].map(m => [m[2], !!m[1]]);
-            assert.deepEqual(options.map(o => o[0]), places, `the picker lists the places: ${where}`);
-            assert.deepEqual(options.filter(o => o[1]).map(o => o[0]), [label], `the drawn place is selected: ${where}`);
-          }else{
-            assert.ok(t.includes(`Worn: ${label}`), `the place is spelled out: ${where}`);
-          }
+          // The line under the picture is the place spelled out; where there is more than one place the choices are the places in words, the drawn one the one picked.
+          assert.equal(words.where, `Worn: ${label}`, `the place is spelled out: ${where}`);
+          assert.deepEqual(words.places.map(pl => pl.label), places, `the choices are the places: ${where}`);
+          assert.equal((words.places.find(pl => pl.slot === words.slot) || {}).label, label, `the drawn place is the one picked: ${where}`);
         }else{
+          assert.equal(words.authorized, false, where);
           assert.match(t, /not authorized on|only[.:]|OCP sleeve form|Only a wing, region or national patch/i, `the reason is in words: ${where}`);
         }
         tiles++;
@@ -81,20 +78,18 @@ test('places are spelled out per uniform: the sleeve and pocket names of CAPR 39
   assert.equal(ev(`getPatchAuthorizationReason('model_rocketry_patch', 'corporate_field', 'senior')`), 'Model Rocketry patch is cadet-only.');
 });
 
-test('every patch gallery in js/ draws its tiles with patchTileHtml and marks them with data-patch-id; none prints the id, a slot hint or a size', () => {
+test('no file in js/ prints an id, a slot hint or a size in a patch tile; the Choose… window\'s patch tiles are worded by patchTileWords and carry the place choice as words', () => {
   const js = fs.readdirSync(path.join(ROOT, 'js')).filter(f => f.endsWith('.js')).map(f => [f, fs.readFileSync(path.join(ROOT, 'js', f), 'utf8')]);
   for(const [name, src] of js){
     assert.doesNotMatch(src, /Slot hint/, `${name}: no slot hint`);
     assert.doesNotMatch(src, /\(\$\{escapeHtml\(id\)\}\)/, `${name}: no parenthesised id in a tile`);
     assert.doesNotMatch(src, /\$\{meta\.w\}×\$\{meta\.h\} px/, `${name}: no pixel size in a tile`);
   }
-  for(const name of ['galleries.js', 'patches.js']){
-    const src = fs.readFileSync(path.join(ROOT, 'js', name), 'utf8');
-    assert.match(src, /tile\.dataset\.patchId = id;\s*\n\s*tile\.innerHTML = patchTileHtml\(id\);/, `${name}: the gallery tile is patchTileHtml's, marked by id`);
-  }
-  // The popup's wiring reads the tile's data-patch-id, not a printed id.
-  const patches = fs.readFileSync(path.join(ROOT, 'js', 'patches.js'), 'utf8');
-  assert.match(patches, /\.galleryTile\[data-patch-id\]/);
+  const lists = fs.readFileSync(path.join(ROOT, 'js', 'pick-lists.js'), 'utf8');
+  assert.match(lists, /patchWords: id => patchTileWords\(id\)/, 'the tiles are worded by patchTileWords');
+  assert.match(lists, /options: words\.places\.map\(place => \(\{ value: place\.slot, label: place\.label \}\)\)/, 'the places are the choice, in words');
+  assert.match(fs.readFileSync(path.join(ROOT, 'js', 'wiring.js'), 'utf8'), /CAPUBPickLists\.patchList\(grid\)/, 'the Choose… window lists the patches with it');
   // The member report import names the patches it matched, not their ids.
+  const patches = fs.readFileSync(path.join(ROOT, 'js', 'patches.js'), 'utf8');
   assert.match(patches, /NCSA\/activity patch match\(es\): \$\{ncsaPatches\.map\(id => PATCH_META\[id\]\?\.label/);
 });

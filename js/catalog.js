@@ -1706,37 +1706,20 @@ function getPatchPlaceLabel(patchId, uniformId = State.uniform){
   return place ? place.label : '';
 }
 
-// One patch tile's inner HTML, the same in every patch picker (the sidebar gallery, the Choose… popup): the picture, the name,
-// Add, and where it is worn in words, or why it is not offered. No id, file name, slot constant or pixel size (Ethan: "please
-// remove the file names, and dont do stuff like L Shoulder, spell it all out"). Where the patch has more than one place on
-// the uniform the line is a picker (class ptPlace); the tile element carries data-patch-id for the wiring.
-function patchTileHtml(patchId, { uniformId = State.uniform, membership = State.membership } = {}){
+// What one patch tile says, the same in every patch picker (the Choose… window, js/pick-lists.js): the name, where it is worn in words, the places the patch may
+// take where it has more than one on the uniform, or why it is not offered. No id, file name, slot constant or pixel size (Ethan: "please remove the file names, and dont do
+// stuff like L Shoulder, spell it all out"). `where` is the line under the picture ("Worn: " and the place); `places` are the choices (the regulation's primary place first)
+// and `slot` the one drawn, which the member changes on the tile while the patch is on (Osprey: "a drop down for the authorised patch placements").
+function patchTileWords(patchId, { uniformId = State.uniform, membership = State.membership } = {}){
   const meta = PATCH_META[patchId] || {};
   const title = meta.label || String(patchId).replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
   const authorized = isPatchAuthorizedForUniform(patchId, uniformId, membership);
-  let where;
   if(!authorized){
-    where = `<div class="sub"><b>${escapeHtml(getPatchAuthorizationReason(patchId, uniformId, membership) || 'Not authorized on this uniform.')}</b></div>`;
-  }else{
-    const places = getPatchPlaces(patchId, uniformId);
-    if(places.length > 1){
-      // More than one authorized place (the Corporate Field Uniform's right sleeve and two pockets): the member picks, the regulation's
-      // primary place first and chosen until the member changes it (Osprey: "a drop down for the authorised patch placements").
-      const slot = getPatchSlot(patchId, uniformId);
-      const options = places.map(pl => `<option value="${escapeHtml(pl.slot)}"${pl.slot === slot ? ' selected' : ''}>${escapeHtml(pl.label)}</option>`).join('');
-      where = `<div class="miniRow"><label>Worn <select class="ptPlace" aria-label="Where the ${escapeHtml(title)} is worn">${options}</select></label></div>`;
-    }else{
-      const label = getPatchPlaceLabel(patchId, uniformId);
-      where = `<div class="sub">Worn: <b>${escapeHtml(label || meta.note || 'where the regulation puts it')}</b></div>`;
-    }
+    return { title, authorized: false, reason: getPatchAuthorizationReason(patchId, uniformId, membership) || 'Not authorized on this uniform.', where: '', places: [], slot: '' };
   }
-  return `
-    ${meta.img ? `<img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">` : ''}
-    <div style="flex:1;min-width:0;">
-      <div class="title">${escapeHtml(title)}</div>
-      <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-      ${where}
-    </div>`;
+  const places = getPatchPlaces(patchId, uniformId).map(pl => ({ slot: pl.slot, label: pl.label }));
+  const label = getPatchPlaceLabel(patchId, uniformId);
+  return { title, authorized: true, reason: '', where: `Worn: ${label || meta.note || 'where the regulation puts it'}`, places, slot: getPatchSlot(patchId, uniformId) || '' };
 }
 
 function isCommsPatchId(patchId){

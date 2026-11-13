@@ -178,22 +178,24 @@ function capubBadgeSummary(scene){
   return rows;
 }
 
-// The same list for patches (the Patches card): the place each patch the drawing wears is in, in words from the uniform's own places
+// The same list for patches (the Patches card, a row of small patch pictures with the place under each): the place each patch the drawing wears is in, in words from the uniform's own places
 // (js/catalog.js PATCH_PLACES), and the reason for each it leaves off (capubPatchPlan).
 function capubPatchSummary(scene){
   const sc = capubDrawnScene(scene);
   const plan = capubPatchPlan(scene);
   const layers = ((sc && sc.layers) || []).filter(l => l.role === 'patch');
+  // The patch's own picture, for the small pictures of the Patches card.
+  const pictureOf = c => { const meta = typeof PATCH_META !== 'undefined' && PATCH_META[c.resolved]; return meta && meta.img && typeof ASSET === 'function' ? ASSET(meta.img) : ''; };
   const slotOf = c => { for(const l of layers){ const m = /^patch:([^:]+)(?::([A-Z_]+))?/.exec(l.key || ''); if(m && m[1] === c.resolved && m[2]) return m[2]; } return null; };
   const rows = plan.shown.map(c => {
     const slot = slotOf(c);
     const places = typeof getPatchPlaces === 'function' ? getPatchPlaces(c.resolved) : [];
     const place = (slot && (places.find(pl => pl.slot === slot) || {}).label) || (typeof getPatchPlaceLabel === 'function' ? getPatchPlaceLabel(c.resolved) : '');
-    return { id: c.resolved, name: c.title, shown: true, place: place || '', why: '' };
+    return { id: c.resolved, name: c.title, shown: true, place: place || '', why: '', picture: pictureOf(c) };
   });
   for(const c of plan.hidden){
     const why = c.line.startsWith(c.title + ' is not shown: ') ? c.line.slice((c.title + ' is not shown: ').length) : c.line;
-    rows.push({ id: c.resolved, name: c.title, shown: false, place: '', why: why.charAt(0).toUpperCase() + why.slice(1) });
+    rows.push({ id: c.resolved, name: c.title, shown: false, place: '', why: why.charAt(0).toUpperCase() + why.slice(1), picture: pictureOf(c) });
   }
   return rows;
 }

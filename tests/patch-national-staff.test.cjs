@@ -32,12 +32,13 @@ test('authorized for a senior member on every uniform the regulation puts it on,
     assert.equal(authorized(u), true, `${u}: offered, not greyed`);
     assert.equal(authorized(u, 'cadet'), false, `${u}: a cadet`);
   }
+  const words = () => ev(`patchTileWords(${JSON.stringify(ID)})`);
   ev(`State.uniform = 'corporate_field'; State.membership = 'cadet'`);
-  assert.match(ev(`patchTileHtml(${JSON.stringify(ID)})`), /Senior members only: worn by members appointed to a National Staff position \(CAPR 39-1, 10\.2\.3\)\./);
+  assert.match(words().reason, /^Senior members only: worn by members appointed to a National Staff position \(CAPR 39-1, 10\.2\.3\)\.$/);
   ev(`State.membership = 'senior'`);
-  assert.match(ev(`patchTileHtml(${JSON.stringify(ID)})`), /Worn: <b>Right breast pocket<\/b>/);
-  assert.match(ev(`patchTileHtml(${JSON.stringify(ID)})`), /National Staff Patch/);
-  assert.doesNotMatch(ev(`patchTileHtml(${JSON.stringify(ID)})`), /OCP/, 'the title does not say OCP on a uniform that is not');
+  assert.equal(words().where, 'Worn: Right breast pocket');
+  assert.match(words().title, /National Staff Patch/);
+  assert.doesNotMatch(words().title, /OCP/, 'the title does not say OCP on a uniform that is not');
 });
 
 test('its places: the OCP left sleeve in lieu of the HHQ patch, the ABU and CFU right pocket (not the left sleeve a national patch takes), the flight suits\' right sleeve', () => {
