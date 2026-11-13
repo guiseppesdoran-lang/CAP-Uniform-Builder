@@ -442,3 +442,95 @@ test('the grades\' devices are drawn a few at a time, not all at once', async ()
   assert.equal(Object.values(done).filter(Boolean).length, items.length);
   assert.ok(most > 1 && most <= 4, `${most} at once`);
 });
+
+// ---- the membership, the weight standard and the name ---------------------------------------------------------------------------------
+
+const withEngine = (env) => Object.assign(env, { grades: G, core });
+const idsOfBuild = log => log.composed.map(b => [b.uniform, b.membership, b.grade && b.grade.rank]);
+
+test('a picture of a choice not made yet takes its membership and grade, and the name the picture is about, over the member\'s own', () => {
+  const base = member({ membership: 'cadet', rank: 'C/Maj' })();
+  const senior = PP.bare(RULES, base, { membership: 'senior', grade: G.gradeInfo('senior', 'Capt', {}) });
+  assert.equal(senior.membership, 'senior');
+  assert.equal(senior.grade.rank, 'Capt');
+  assert.equal(PP.bare(RULES, base, {}).membership, 'cadet', 'the member\'s own where nothing is given');
+  assert.equal(PP.bare(RULES, base, {}).grade.rank, 'C/Maj');
+  const named = PP.bare(RULES, base, { name: { first: 'A', last: 'B', state: '', show: true } });
+  assert.equal(named.name.last, 'B');
+  assert.equal(PP.bare(RULES, base, {}).name.show, false, 'no name unless the picture is about it');
+});
+
+test('the membership is two pictures of the Class A coat, one for each membership, each with a grade of the same name as its neighbour and none of the member\'s own', async () => {
+  const env = withEngine(envOf(member({ uniform: 'aviator_blazer', membership: 'senior', rank: 'Lt Col', gender: 'female' })));
+  const made = PP.create(env).memberships();
+  assert.deepEqual(Object.keys(made.now), ['cadet', 'senior']);
+  assert.equal(made.settled, false);
+  const done = await made.ready;
+  assert.match(done.cadet, /^picture:\d+$/); assert.match(done.senior, /^picture:\d+$/);
+  assert.deepEqual(idsOfBuild(env.log), [['blues_a', 'cadet', 'C/Capt'], ['blues_a', 'senior', 'Capt']], 'the Class A coat for each, whichever uniform the member is on');
+  for(const b of env.log.composed){
+    assert.equal(b.gender, 'female', 'the member\'s own cut');
+    assert.equal(b.ribbons.length + b.badges.length, 0, 'none of the items');
+  }
+});
+
+test('a cadet who is 18 or older and does not meet the weight standard: the Class A coat they would otherwise wear and the Corporate blazer they may wear, a cadet in both', async () => {
+  const env = withEngine(envOf(member({ uniform: 'blues_b', membership: 'cadet', rank: 'C/Maj' })));
+  const done = await PP.create(env).adults().ready;
+  assert.match(done.no, /^picture:\d+$/); assert.match(done.yes, /^picture:\d+$/);
+  assert.deepEqual(idsOfBuild(env.log), [['blues_a', 'cadet', 'C/Capt'], ['aviator_blazer', 'cadet', 'C/Capt']]);
+});
+
+test('a picture of the name is the member\'s uniform at its name, windowed on the lettering, with the name and without it', async () => {
+  const env = withEngine(envOf(member({ uniform: 'blues_a', membership: 'cadet', rank: 'C/Maj', name: { first: '', last: '', show: false } })));
+  const made = PP.create(env).names();
+  assert.equal(made.settled, false);
+  const done = await made.ready;
+  assert.match(done.on, /^picture:\d+$/); assert.match(done.off, /^picture:\d+$/);
+  const [on, off] = env.log.composed;
+  assert.equal(on.name.show, true); assert.equal(on.name.last, 'NAME', 'the word NAME where the member has entered none');
+  assert.equal(off.name.show, false);
+  const [a, b] = env.log.drawn.map(d => d.scene);
+  assert.ok(a.layers.some(l => l.role === 'text' && /^text:name/.test(l.key || '')), 'the name is drawn');
+  assert.ok(!b.layers.some(l => l.role === 'text' && /^text:name/.test(l.key || '')), 'and not on the other');
+  assert.deepEqual(a.bounds, b.bounds, 'the same window on both, so the two differ in the name alone');
+  assert.ok(a.bounds.w >= 4.5 && a.bounds.w <= 8, `${a.bounds.w} in wide`);
+  assert.ok(Math.abs(a.bounds.h / a.bounds.w - 0.75) < 1e-9, 'four to three');
+  assert.equal(env.log.drawn[0].pad, 0);
+  // The member's own name is the one shown.
+  const own = withEngine(envOf(member({ uniform: 'blues_a', name: { first: 'Pat', last: 'Doe', show: true } })));
+  await PP.create(own).names().ready;
+  assert.equal(own.log.composed[0].name.last, 'Doe');
+  // Asked again for the same member and name: not made again.
+  const same = PP.create(env); await same.names().ready;
+  const m = env.log.composed.length; await same.names().ready;
+  assert.equal(env.log.composed.length, m);
+});
+
+test('a uniform that draws no name has no picture of one (false, not null), and a name picture that cannot be drawn is null', async () => {
+  const none = withEngine(envOf(member({ uniform: 'mess_dress', membership: 'senior', rank: 'Capt' })));
+  assert.deepEqual(plain(await PP.create(none).names().ready), { on: false, off: false });
+  const broken = withEngine(Object.assign(envOf(member({ uniform: 'blues_a' })), { draw: async () => { throw new Error('Failed to fetch'); }, wait: () => Promise.resolve(), warn: () => {} }));
+  assert.deepEqual(plain(await PP.create(broken).names().ready), { on: null, off: null });
+  const noMember = withEngine(Object.assign(envOf(member({})), { build: () => { throw new Error('no member'); } }));
+  const out = PP.create(noMember).names();
+  assert.equal(out.settled, true); assert.deepEqual(plain(out.now), { on: null, off: null });
+});
+
+test('the name pictures are let go with the oldest sets', async () => {
+  const env = withEngine(envOf(member({ uniform: 'blues_a' })));
+  let n = 0;
+  const base = env.build();
+  env.build = () => Object.assign({}, base, { name: { first: 'N' + (n++), last: 'X', show: false } });
+  const made = PP.create(env);
+  for(let i = 0; i < 14; i++) await made.names().ready;
+  assert.ok(env.log.released.length >= 4, `${env.log.released.length} let go`);
+});
+
+test('a picture of lettering keeps its font: one carried as data stays in the document, one by an address goes', () => {
+  const data = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3"><defs><style class="engraved-fonts">@font-face{font-family:"Ubuntu";src:url(data:font/woff2;base64,AAAA) format("woff2");}</style></defs><text x="1" y="1">DOE</text><use href="#a"/></svg>';
+  const kept = PP.standalone(data);
+  assert.match(kept, /engraved-fonts/); assert.match(kept, /url\(data:font\/woff2;base64,AAAA\)/);
+  const file = data.replace('url(data:font/woff2;base64,AAAA)', 'url("vendor/fonts/Ubuntu-Bold.woff2")');
+  assert.doesNotMatch(PP.standalone(file), /vendor\/fonts|engraved-fonts/);
+});

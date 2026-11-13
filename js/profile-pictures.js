@@ -10,6 +10,11 @@
 //   made.uniforms(ids)                { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
 //   made.cuts()                       { now: { male, female }, ready, settled }: the uniform the member is on, in each cut
 //   made.grades(items)                { now: { key: picture | null | undefined }, ready, settled }: the devices of the grades, items [{ key, id, hide }]
+//   made.memberships()                { now: { cadet, senior }, ready, settled }: the Class A coat of each kind of membership, with a stand-in grade of the same name
+//   made.adults()                     { now: { no, yes }, ready, settled }: the cadet's Class A coat, and the Corporate blazer a cadet of 18 or older who does not meet the
+//                                     weight standard may also wear
+//   made.names()                      { now: { on, off }, ready, settled }: the member's uniform at its name (nameplate, tape or tag) with the name and without it, each
+//                                     false (not offered) where the uniform draws no name
 //   standalone(markup)                a drawing as a file a browser decodes on its own as an image (see below), or null when nothing was drawn
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
@@ -112,13 +117,14 @@
     };
   }
 
-  // The member as they are, without what they chose elsewhere: the garment, the grade and the garment choices stay; the items, the name, the cord and the cap go.
+  // The member as they are, without what they chose elsewhere: the garment, the grade and the garment choices stay; the items, the name, the cord and the cap go. `over` changes
+  // the uniform, the cut, the membership and grade (a tile of a choice not made yet), the name (the pictures of the name), or puts the Honor Guard items on.
   function bare(rules, base, over){
     const o = over || {};
     const build = Object.assign({}, base, {
-      uniform: o.uniform || base.uniform, gender: o.gender || base.gender,
+      uniform: o.uniform || base.uniform, gender: o.gender || base.gender, membership: o.membership || base.membership, grade: o.grade || base.grade,
       ribbons: [], medals: [], badges: [], badgeChoices: {}, badgeOrder: {}, patches: [], militaryBadges: [], command: null, cord: null, cordColour: null,
-      name: { first: '', last: '', state: '', show: false }
+      name: o.name || { first: '', last: '', state: '', show: false }
     });
     delete build.ceremonial;
     delete build.cordOnTop;
@@ -148,7 +154,8 @@
   function standalone(markup){
     let text = String(markup == null ? '' : markup);
     if(!/<(?:use|image)\b/.test(text)) return null;
-    text = text.replace(/<metadata\b[\s\S]*?<\/metadata>/g, '').replace(/<style\b[^>]*\bengraved-fonts\b[^>]*>[\s\S]*?<\/style>/g, '');
+    // The font's own file is left out; a font carried inside the drawing as data (the page does that for lettering: E.renderSvg.embedFonts) is part of the document and stays.
+    text = text.replace(/<metadata\b[\s\S]*?<\/metadata>/g, '').replace(/<style\b[^>]*\bengraved-fonts\b[^>]*>[\s\S]*?<\/style>/g, m => /url\(\s*["']?data:/.test(m) ? m : '');
     const root = /<svg\b[^>]*>/.exec(text);
     const box = root && /\sviewBox="\s*([-+\d.eE]+)[\s,]+([-+\d.eE]+)[\s,]+([-+\d.eE]+)[\s,]+([-+\d.eE]+)\s*"/.exec(root[0]);
     if(!box) return null;
@@ -260,8 +267,62 @@
       }
       return { now: set.value || Object.fromEntries(keys.map(k => [k, undefined])), ready: set.promise, settled: !!set.value };
     }
+    // The stand-in grades of the tiles that choose the membership, before there is a grade: the same name in each (a cadet captain, a captain).
+    const STAND_IN = { cadet: 'C/Capt', senior: 'Capt' };
+    const stand = m => env.grades.gradeInfo(m, STAND_IN[m], {});
+    // The name of the member as the pictures of the name show it: their own where they have entered one, else the word NAME, as the polo's picture does.
+    const nameOf = base => base.name && (base.name.first || base.name.last)
+      ? { first: base.name.first || '', last: base.name.last || '', state: base.name.state || '', show: true }
+      : { first: '', last: 'NAME', state: '', show: true };
+    // The window of a picture of the name: centred on the lettering, a quarter wider than the plate, tape or tag it is on (at least 4.5 in, at most 8), four to three.
+    const NAME_KEY = /^text:(?:name|name_tape|polo-name)$/;
+    const box = l => l.type === 'clear' ? { x: l.x, y: l.y, w: l.w, h: l.h } : env.core.layerBounds(l);
+    function nameFrame(scene){
+      const text = scene.layers.find(l => l.role === 'text' && NAME_KEY.test(l.key || ''));
+      if(!text) return null;
+      const t = box(text), cx = t.x + t.w / 2, cy = t.y + t.h / 2;
+      const plates = scene.layers.filter(l => l.role === 'nametag' || (l.role === 'clear' && /name/i.test(l.key || ''))).map(box)
+        .filter(b => cx >= b.x && cx <= b.x + b.w && cy >= b.y && cy <= b.y + b.h);
+      const w = Math.min(8, Math.max(4.5, Math.max(t.w * 2.2, ...plates.map(b => b.w * 1.45))));
+      return { x: cx - w / 2, y: cy - w * 0.375, w, h: w * 0.75 };
+    }
+    const nameSets = new Map();   // the two builds -> { value, promise }; the newest last
+    async function drawNames(on, off){
+      const [a, b] = await Promise.all([env.compose(on), env.compose(off)]);
+      const frame = nameFrame(a);
+      if(!frame) return { on: false, off: false };
+      const out = {};
+      for(const [k, scene] of [['on', a], ['off', b]]){
+        const cut = Object.assign({}, framed(scene), { bounds: frame });
+        out[k] = await drawn(env, cut, 0).catch(error => { if(env.warn) env.warn(`The picture of the name ${k} could not be made`, error); return null; });
+      }
+      return out;
+    }
+    function names(){
+      const base = member();
+      if(!base || !env.core) return { now: { on: null, off: null }, ready: Promise.resolve({ on: null, off: null }), settled: true };
+      const name = nameOf(base);
+      const on = bare(env.rules, base, { name }), off = bare(env.rules, base, { name: Object.assign({}, name, { show: false }) });
+      const key = JSON.stringify([on, off]);
+      let set = nameSets.get(key);
+      if(set){ nameSets.delete(key); nameSets.set(key, set); }
+      else{
+        set = { value: undefined };
+        set.promise = Promise.resolve().then(() => drawNames(on, off)).catch(error => { if(env.warn) env.warn('The pictures of the name could not be made', error); return { on: null, off: null }; })
+          .then(done => { set.value = done; return done; });
+        nameSets.set(key, set);
+        while(nameSets.size > 12){
+          const [k, old] = nameSets.entries().next().value;
+          nameSets.delete(k);
+          if(env.release && old.value) Object.values(old.value).forEach(u => { if(typeof u === 'string') env.release(u); });
+        }
+      }
+      return { now: set.value || { on: undefined, off: undefined }, ready: set.promise, settled: !!set.value };
+    }
     return {
-      grades,
+      grades, names,
+      memberships: () => pictures(['cadet', 'senior'], m => ({ uniform: 'blues_a', membership: m, grade: stand(m) })),
+      adults: () => pictures(['no', 'yes'], k => ({ uniform: k === 'yes' ? 'aviator_blazer' : 'blues_a', membership: 'cadet', grade: stand('cadet') })),
       // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Honor Guard the honor guard items on the coat or the shirt.
       uniforms: ids => pictures(ids, id => id === env.rules.CEREMONIAL.id ? { ceremonial: true } : { uniform: id }),
       // The uniform the member is on (Honor Guard rides on the coat or the shirt, and is pictured as it), in each cut: the same pictures as its card's where the cut is the member's.
