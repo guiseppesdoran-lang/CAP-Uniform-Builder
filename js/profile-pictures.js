@@ -18,6 +18,8 @@
 //   made.callouts()                   { now: { off, on }, ready, settled }: one distance of the member's uniform as the measurements draw it, without and with its paragraph
 //                                     on the pill, cut to the distance and its pill; false (not offered) where the uniform draws no distance that has a paragraph
 //   citeSample(shown)                 a sample of a note, as a small drawing: the reference behind its question mark (shown false) or printed in the text (true)
+//   made.crops(items)                 { now: { key: picture | null | undefined }, ready, settled }: the member's uniform, as drawn now (env.scene), cut to a box for each of
+//                                     items [{ key, box: { x, y, w, h } }] (inches of the scene): the parts the Placement templates window offers
 //   standalone(markup)                a drawing as a file a browser decodes on its own as an image (see below), or null when nothing was drawn
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
@@ -225,6 +227,16 @@
     return best ? { entry: best.entry, hide: cat.entries.filter(e => e !== best.entry).map(e => e.id) } : null;
   }
 
+  // ---- a part of the drawn uniform ---------------------------------------------------------------------------------------------------
+
+  // The window of the picture of a box of the scene: the box and a margin, four to three (the garment shown round it where the box is wide or tall), at least 1.5 in across.
+  // { x, y, w, h } in the scene's inches.
+  function cropWindow(box){
+    const m = 0.1, w0 = box.w + 2 * m, h0 = box.h + 2 * m;
+    const w = Math.max(w0, h0 * 4 / 3, 1.5), h = w * 0.75;
+    return { x: box.x + box.w / 2 - w / 2, y: box.y + box.h / 2 - h / 2, w, h };
+  }
+
   // Drawing is tried again when it fails or comes out empty (a fetch of a sheet that is cut off by a busy server or a flaky connection): twice more, a moment apart.
   async function drawn(env, scene, pad, options){
     let last = new Error('nothing was drawn');
@@ -410,8 +422,40 @@
       }
       return { now: set.value || { off: undefined, on: undefined }, ready: set.promise, settled: !!set.value };
     }
+    // The member's uniform as it is drawn now, cut to each box asked for. The scene is the page's own drawing (so the boxes, which the templates worked out from that scene, are
+    // in its inches); a set is kept for the drawing and the boxes it was made for, and the oldest are let go.
+    const cropSets = [];   // { scene, key, value, promise }; the newest last
+    async function drawCrops(scene, items){
+      const whole = framed(scene), out = {};
+      await inBatches(items, 3, async i => {
+        out[i.key] = await drawn(env, Object.assign({}, whole, { bounds: cropWindow(i.box) }), 0)
+          .catch(error => { if(env.warn) env.warn(`The picture of ${i.key} could not be made`, error); return null; });
+      });
+      return out;
+    }
+    function crops(items){
+      const list = (Array.isArray(items) ? items : []).filter(i => i && i.key && i.box && i.box.w > 0 && i.box.h > 0);
+      const scene = env.scene && env.scene();
+      const none = Object.fromEntries(list.map(i => [i.key, null]));
+      if(!list.length || !scene) return { now: none, ready: Promise.resolve(none), settled: true };
+      const key = JSON.stringify(list.map(i => [i.key, i.box]));
+      let set = cropSets.find(x => x.scene === scene && x.key === key);
+      if(set){ cropSets.splice(cropSets.indexOf(set), 1); cropSets.push(set); }
+      else{
+        set = { scene, key, value: undefined };
+        set.promise = Promise.resolve().then(() => drawCrops(scene, list)).catch(error => { if(env.warn) env.warn('The pictures of the parts could not be made', error); return none; })
+          .then(done => { set.value = done; return done; });
+        cropSets.push(set);
+        while(cropSets.length > 4){
+          const old = cropSets.shift();
+          if(env.release && old.value) Object.values(old.value).forEach(u => { if(typeof u === 'string') env.release(u); });
+        }
+      }
+      const keys = list.map(i => i.key);
+      return { now: set.value || Object.fromEntries(keys.map(k => [k, undefined])), ready: set.promise, settled: !!set.value };
+    }
     return {
-      grades, names, callouts,
+      grades, names, callouts, crops,
       memberships: () => pictures(['cadet', 'senior'], m => ({ uniform: 'blues_a', membership: m, grade: stand(m) })),
       adults: () => pictures(['no', 'yes'], k => ({ uniform: k === 'yes' ? 'aviator_blazer' : 'blues_a', membership: 'cadet', grade: stand('cadet') })),
       // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Honor Guard the honor guard items on the coat or the shirt.
@@ -421,5 +465,5 @@
     };
   }
 
-  return { create, bare, standalone, citeSample, calloutWindow, pickCallout, pillBox, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD, IMAGE_PX };
+  return { create, bare, standalone, citeSample, cropWindow, calloutWindow, pickCallout, pillBox, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD, IMAGE_PX };
 });

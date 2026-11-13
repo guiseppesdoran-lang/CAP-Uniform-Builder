@@ -636,3 +636,58 @@ test('the sample note is a drawing of its own, in the page\'s ink, with the ques
   assert.ok(/\(4\.1\.5\.2\.2\)/.test(on) && !on.includes('>?</text>'), 'the reference printed, no question mark');
   assert.doesNotMatch(off + on, /CAPR|ICL/, 'no publication named in a drawing');
 });
+
+// ---- the part of the drawn uniform a template covers --------------------------------------------------------------------------------
+
+test('the window of a part\'s picture is its box and a margin, four to three, never under 1.5 in across; a wide or tall box shows the garment round it', () => {
+  const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs ${b}`);
+  const sq = PP.cropWindow({ x: 10, y: 20, w: 3, h: 2 });
+  near(sq.w, 3.2, 'a margin of 0.1 each side'); near(sq.h, 2.4, 'four to three');
+  near(sq.x + sq.w / 2, 11.5, 'centred'); near(sq.y + sq.h / 2, 21, 'centred');
+  const wide = PP.cropWindow({ x: 0, y: 0, w: 9, h: 1 });
+  near(wide.w, 9.2, 'as wide as the box'); near(wide.h, 6.9, 'the garment above and below it');
+  const tall = PP.cropWindow({ x: 0, y: 0, w: 1, h: 6 });
+  near(tall.h / tall.w, 0.75, 'four to three'); assert.ok(tall.w >= 6.2 * 4 / 3 - 1e-9, 'as tall as the box');
+  const tiny = PP.cropWindow({ x: 5, y: 5, w: 0.2, h: 0.2 });
+  assert.ok(tiny.w >= 1.5 - 1e-9, 'a small item is not a blur');
+});
+
+test('the parts are the member\'s uniform as drawn now, cut to each box: drawn once for the drawing and boxes, the other layers kept, the oldest sets let go', async () => {
+  const scenes = [0, 1, 2, 3, 4, 5].map(n => ({ title: 'Scene ' + n, bounds: { x: 0, y: 0, w: 20, h: 30 }, layers: [{ type: 'asset', id: 'a', x: 0, y: 0, w: 1, h: 1, role: 'garment', key: 'g' }, { type: 'clear', x: 0, y: 0, w: 1, h: 1, role: 'clear', key: 'c' }, { type: 'measure', from: { x: 0, y: 0 }, to: { x: 1, y: 1 }, role: 'measure', key: 'm' }] }));
+  let current = scenes[0];
+  const env = Object.assign(envOf(member({})), { scene: () => current });
+  const made = PP.create(env);
+  const items = [{ key: 'left-chest', box: { x: 2, y: 3, w: 4, h: 2 } }, { key: 'collar', box: { x: 8, y: 1, w: 3, h: 1 } }];
+  const first = made.crops(items);
+  assert.deepEqual(Object.keys(first.now), ['left-chest', 'collar']);
+  assert.equal(first.settled, false);
+  const done = await first.ready;
+  assert.match(done['left-chest'], /^picture:\d+$/); assert.match(done.collar, /^picture:\d+$/);
+  assert.equal(env.log.drawn.length, 2);
+  const cut = env.log.drawn[0].scene;
+  assert.deepEqual(cut.bounds, PP.cropWindow(items[0].box), 'framed on the box');
+  assert.equal(env.log.drawn[0].pad, 0);
+  assert.deepEqual(cut.layers.map(l => l.type), ['asset'], 'no patch for an overlay, no measuring layer');
+  assert.equal(env.log.composed.length, 0, 'the page\'s own drawing is used: nothing is composed again');
+  // The same drawing and boxes: kept. Another drawing: made again.
+  await made.crops(items).ready;
+  assert.equal(env.log.drawn.length, 2);
+  assert.equal(made.crops(items).settled, true);
+  for(let i = 1; i < scenes.length; i++){ current = scenes[i]; await made.crops(items).ready; }
+  assert.equal(env.log.drawn.length, 2 * scenes.length);
+  assert.ok(env.log.released.length >= 4, `${env.log.released.length} let go (the two oldest sets)`);
+});
+
+test('no scene or no box: nothing is offered (null); a part that cannot be drawn is null and the others are made', async () => {
+  const none = Object.assign(envOf(member({})), { scene: () => null });
+  const out = PP.create(none).crops([{ key: 'a', box: { x: 0, y: 0, w: 1, h: 1 } }]);
+  assert.equal(out.settled, true); assert.deepEqual(plain(out.now), { a: null });
+  const scene = { bounds: { x: 0, y: 0, w: 4, h: 4 }, layers: [{ type: 'asset', id: 'a', x: 0, y: 0, w: 1, h: 1, role: 'garment' }] };
+  assert.deepEqual(plain(PP.create(Object.assign(envOf(member({})), { scene: () => scene })).crops([]).now), {});
+  let n = 0;
+  const waits = [];
+  const env = Object.assign(envOf(member({})), { scene: () => scene, warn: () => {}, wait: ms => { waits.push(ms); return Promise.resolve(); },
+    draw: async s => { if(s.bounds.x < 0) throw new Error('Failed to fetch'); return 'picture:' + (++n); } });
+  const done = await PP.create(env).crops([{ key: 'good', box: { x: 1, y: 1, w: 2, h: 2 } }, { key: 'bad', box: { x: -9, y: -9, w: 2, h: 2 } }]).ready;
+  assert.match(done.good, /^picture:/); assert.equal(done.bad, null);
+});

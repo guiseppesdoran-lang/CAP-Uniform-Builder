@@ -67,6 +67,7 @@
       rules: window.CAPUBUniformRules,
       core: E.core, grades: E.grades, measure: E.measureLayout,
       build: () => window.CAPUBUniformView.buildFromState(),
+      scene: () => window.CAPUBUniformView.scene,
       async compose(build){
         const [store] = await Promise.all([getStore(), assets.prepare(build.uniform, build.gender)]);
         return E.profiles.composeUniform(build, store);
@@ -396,14 +397,14 @@
   const up = (node, test) => { for(let n = node && node.parentNode; n && n.nodeType === 1; n = n.parentNode) if(test(n)) return n; return null; };
   const has = (n, name) => !!(n.classList && n.classList.contains(name));
   function dropImage(img){
-    const box = up(img, n => has(n, 'vpPicture') || has(n, 'uPicture'));
+    const box = up(img, n => has(n, 'vpPicture') || has(n, 'uPicture') || has(n, 'ptPicture'));
     if(!box) return;
     const tile = up(box, n => has(n, 'vpOption'));
     if(tile){ box.remove(); tile.classList.add('noPicture'); }
     else box.hidden = true;
   }
   // Only the pictures of these pickers and of the uniform cards: another picker's images are its own.
-  const isOurs = img => !!(up(img, n => has(n, 'uniformOption')) || up(img, n => has(n, 'vp') && n.dataset && OURS.includes(n.dataset.name)));
+  const isOurs = img => !!(up(img, n => has(n, 'uniformOption') || has(n, 'ptCard')) || up(img, n => has(n, 'vp') && n.dataset && OURS.includes(n.dataset.name)));
   function checkImage(event){
     const img = event && event.target;
     if(!img || img.nodeName !== 'IMG' || !isOurs(img)) return;

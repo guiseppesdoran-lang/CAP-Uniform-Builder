@@ -375,3 +375,42 @@ test('file names and the page control: the Templates entry in the Finish panel o
   assert.match(src, /Sewn on: paper sewing guide only, no 3D aligner/);
   assert.doesNotMatch(src, /3D jig/);
 });
+
+// ---- the window chooses by picture (the owner, 2026-11-12: visual pickers, not word lists) ------------------------------------------
+
+test('the paper size is two tiles, a sheet of each paper at its true shape with the stencil on it: a document of its own, nothing outside it, the sheet distinct from its ground', async () => {
+  const { plan } = await planOf('classA');
+  const side = plan.sides.find(s => s.key === 'left-chest');
+  for(const key of ['letter', 'a4']){
+    const tile = PT.paperTile(side, plan.meta, key);
+    assert.match(tile, /^<\?xml version="1\.0" encoding="UTF-8"\?>\n<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" width="[\d.]+" height="[\d.]+" viewBox="/);
+    const root0 = /<svg\b[^>]*>/.exec(tile)[0];
+    const w = +/width="([\d.]+)"/.exec(root0)[1], h = +/height="([\d.]+)"/.exec(root0)[1];
+    assert.ok(Math.max(w, h) >= 100 && Math.max(w, h) <= 400, 'a size in pixels a browser decodes (WebKit takes a viewBox with no size as pixels)');
+    // The paper's own shape inside the wrapper: US Letter 8.5 x 11, A4 210 x 297 mm.
+    const inner = /<svg x="0" y="0" width="([\d.]+)" height="([\d.]+)" viewBox="0 0 [\d.]+ [\d.]+"/.exec(tile);
+    assert.ok(inner, 'the sheet is its own nested drawing');
+    const ratio = +inner[1] / +inner[2];
+    near(ratio, key === 'a4' ? 210 / 297 : 8.5 / 11, 0.002, `${key} keeps its shape`);
+    assert.doesNotMatch(tile, /<style|@page|<script|<image|href=|url\((?!#)/, 'no style, file or reference outside it (the clips of the stencil are inside it)');
+    assert.ok(/<line|<polygon|<polyline|<circle|<text/.test(tile), 'the stencil is on the sheet');
+    assert.ok(tile.includes('fill="#fff"') && tile.includes('fill="#d9dce3"'), 'a white sheet on a grey ground, so its edge shows on the picture\'s white box');
+  }
+  const [l, a] = ['letter', 'a4'].map(k => { const t = PT.paperTile(side, plan.meta, k); const m = /<svg x="0" y="0" width="([\d.]+)" height="([\d.]+)"/.exec(t); return +m[1] / +m[2]; });
+  assert.ok(l > a, 'Letter is the wider sheet');
+});
+
+test('the window\'s source: the paper is a picker over the choice kept in the browser, each part a card with the picture of its region, and the files stay buttons', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'placement-templates.js'), 'utf8');
+  assert.match(src, /<div id="placementPaperPicker" hidden><\/div>/);
+  assert.doesNotMatch(src, /type="radio"|name="ptPaper"|ptPaper/, 'no radio buttons');
+  assert.match(src, /VisualPicker\.render\(host, \{ name: 'paper', legend: 'Paper', options, value: ui\.paper, size: 'large', shape: 'tall',/);
+  assert.match(src, /localStorage\.setItem\('capubTemplatePaper', ui\.paper\)/);
+  assert.match(src, /<li class="ptCard" data-side-key="\$\{esc\(s\.key\)\}"><div class="ptPicture" aria-hidden="true"><\/div>/);
+  assert.match(src, /sh\.maker\(\)\.crops\(sides\.map\(s => \(\{ key: s\.key, box: s\.region \}\)\)\)/, 'the picture is the part\'s region of the member\'s drawing');
+  assert.match(src, /sh\.claim\('paper'\)/, 'the pictures are under the guard of an image that does not decode');
+  assert.match(src, /if\(url === null\)\{ box\.hidden = true; continue; \}/, 'a picture that could not be made leaves the card its name and buttons');
+  assert.match(src, /host\.hidden = !sides\.length/, 'no paper to choose where nothing is laid out');
+  // The spacer gauges stay a row of words: nothing on the uniform to picture.
+  assert.match(src, /li\[data-side-key="spacers"\]\{grid-column:1 \/ -1;/);
+});

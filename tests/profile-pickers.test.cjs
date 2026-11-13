@@ -801,3 +801,19 @@ test('an image of any of these pickers that fails is taken out, and the pictures
     assert.ok(tile.querySelector('.vpPicture') === null && tile.classList.contains('noPicture'), `${host.id}: the name alone`);
   }
 });
+
+test('an image on a part\'s card of the Placement templates window that does not decode is taken out with its box: the card keeps its name and its buttons', () => {
+  const p = ownPage({ membership: 'cadet', rank: 'C/Maj', gender: 'male' });
+  const card = p.doc.createElement('li'); card.className = 'ptCard';
+  const box = p.doc.createElement('div'); box.className = 'ptPicture';
+  const img = p.doc.createElement('img'); box.append(img); card.append(box);
+  const name = p.doc.createElement('b'); card.append(name);
+  p.doc.body.append(card);
+  p.doc.listeners.error[0]({ type: 'error', target: img });
+  assert.equal(box.hidden, true, 'the picture\'s box is gone');
+  assert.ok(card.children.includes(name), 'the card still has its name');
+  // An image of something else on the page is left to its own handler.
+  const other = p.doc.createElement('img'), holder = p.doc.createElement('div'); holder.className = 'ptPicture'; holder.append(other); p.doc.body.append(holder);
+  p.doc.listeners.error[0]({ type: 'error', target: other });
+  assert.equal(holder.hidden, false);
+});

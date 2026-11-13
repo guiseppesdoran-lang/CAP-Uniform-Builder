@@ -1184,16 +1184,24 @@
 #placementTemplates::backdrop{background:var(--scrim,rgba(0,0,0,.4))}
 #placementTemplates h2{margin:0 0 8px;font-size:var(--t-xl,20px);line-height:1.15}
 #placementTemplates p{margin:0 0 10px;font-size:var(--t-sm,14px);line-height:1.45;color:var(--muted,#555)}
-#placementTemplates .ptPaper{display:flex;gap:16px;align-items:center;margin:0 0 12px;font-size:var(--t-sm,14px)}
-#placementTemplates .ptPaper label{display:flex;gap:6px;align-items:center;width:auto;margin:0}
-#placementTemplates .ptPaper input{width:auto;margin:0}
-#placementTemplates ul{list-style:none;margin:0 0 12px;padding:0;border-top:1px solid var(--line,#ccd)}
-#placementTemplates li{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line,#ccd)}
-#placementTemplates li .ptSide{flex:1 1 220px;min-width:0}
+#placementTemplates #placementPaperPicker{margin:0 0 12px}
+#placementTemplates #placementPaperPicker[hidden]{display:none}
+#placementTemplates .vp[data-name="paper"] .vpGrid{grid-template-columns:repeat(2,minmax(0,150px))}
+#placementTemplates ul{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+#placementTemplates li{display:flex;flex-direction:column;gap:8px;min-width:0;padding:8px;border:1px solid var(--line,#ccd);border-radius:var(--r,6px);background:var(--panel,#fff)}
+#placementTemplates li.ptEmpty{grid-column:1 / -1;padding:12px 0;border:0}
+#placementTemplates li[data-side-key="spacers"]{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between}
+#placementTemplates li .ptPicture{display:flex;align-items:center;justify-content:center;aspect-ratio:4 / 3;min-width:0;overflow:hidden;background:var(--paper,#fff);border:1px solid var(--line,#ccd);border-radius:4px}
+#placementTemplates li .ptPicture[hidden]{display:none}
+#placementTemplates li .ptPicture img{display:block;width:100%;height:100%;object-fit:contain}
+#placementTemplates li .ptSide{flex:1 1 auto;min-width:0}
+#placementTemplates li[data-side-key="spacers"] .ptSide{flex:1 1 220px}
 #placementTemplates li .ptSide b{display:block;font-size:var(--t-md,15px)}
 #placementTemplates li .ptSide small{display:block;color:var(--muted,#555);font-size:var(--t-xs,12px);line-height:1.35}
-#placementTemplates li .ptActions{display:flex;flex-wrap:wrap;gap:6px}
-#placementTemplates li .ptActions button{width:auto;margin:0;padding:0 12px;min-height:36px}
+#placementTemplates li .ptActions{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+#placementTemplates li[data-side-key="spacers"] .ptActions{flex-direction:row;flex-wrap:wrap}
+#placementTemplates li .ptActions button{width:100%;margin:0;padding:0 8px;min-height:36px}
+#placementTemplates li[data-side-key="spacers"] .ptActions button{width:auto;padding:0 12px}
 #placementTemplates li .ptActions button.ptAlt{min-height:36px;padding:0 4px;border:0;background:none;color:var(--ink,#111);font-weight:400;text-decoration:underline}
 #placementTemplates li .ptActions button.ptAlt:hover{background:none;color:var(--ink,#111)}
 #placementTemplates .ptFoot{display:flex;justify-content:flex-end}
@@ -1209,12 +1217,11 @@
     d.setAttribute('aria-labelledby', 'placementTemplatesTitle');
     d.innerHTML = `<h2 id="placementTemplatesTitle">Placement templates</h2>
 <p>Full-size helpers for putting your items on the garment, from the uniform as drawn. The paper template is a stencil: print it at 100% (actual size), cut out each item's outline, lay the sheet on the garment lined up with the edges it names, and mark through the holes; the ticks outside each hole are its pins. The 3D aligners are thin flat plates: print each one flat, no supports. Lay its straight feet along the garment edge it runs to (the pocket's top, the button line, a collar or shoulder edge), set each item in its cradle, pin through, and lift the plate off. The spacer gauges are bars as wide as the gaps the aligners use, each marked with its size. Pin positions are estimated from each item's width; check them against your own items.</p>
-<div class="ptPaper" role="radiogroup" aria-label="Paper size"><span>Paper</span><label><input type="radio" name="ptPaper" value="letter"> US Letter</label><label><input type="radio" name="ptPaper" value="a4"> A4</label></div>
+<div id="placementPaperPicker" hidden></div>
 <ul id="placementTemplatesList" aria-live="polite"></ul>
 <div class="ptFoot"><button type="button" class="ghost" id="placementTemplatesClose">Close</button></div>`;
     document.body.appendChild(d);
     d.querySelector('#placementTemplatesClose').addEventListener('click', () => d.close());
-    d.querySelectorAll('input[name="ptPaper"]').forEach(r => r.addEventListener('change', () => { if(r.checked){ ui.paper = r.value; try{ localStorage.setItem('capubTemplatePaper', ui.paper); }catch(e){ /* per-browser convenience */ } } }));
     d.addEventListener('click', ev => {
       const g = ev.target.closest('button[data-gauges]');
       if(g && ui.plan){
@@ -1243,9 +1250,30 @@
     const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
     const pieces = s => (s.attach === 'pin' ? aligners(s) : []);
     const stlButtons = s => pieces(s).map((p, i) => `<button type="button" class="ghost" data-side="${esc(s.key)}" data-what="stl"${i ? ` data-piece="${i}"` : ''}>3D aligner${pieces(s).length > 1 ? ': ' + esc(p.label.toLowerCase()) : ''} (STL)</button>`).join('');
-    list.innerHTML = sides.map(s => `<li data-side-key="${esc(s.key)}"><div class="ptSide"><b>${esc(s.label.charAt(0).toUpperCase() + s.label.slice(1))}</b><small>${esc(describe(s))}</small></div><div class="ptActions">
+    list.innerHTML = sides.map(s => `<li class="ptCard" data-side-key="${esc(s.key)}"><div class="ptPicture" aria-hidden="true"></div><div class="ptSide"><b>${esc(s.label.charAt(0).toUpperCase() + s.label.slice(1))}</b><small>${esc(describe(s))}</small></div><div class="ptActions">
 <button type="button" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${stlButtons(s)}<button type="button" class="ptAlt" data-side="${esc(s.key)}" data-what="svg">also as SVG</button></div></li>`).join('')
       + gaugeRow(ui.plan);
+    paintPictures(list, sides);
+  }
+  // The picture on each part's card: the member's own uniform, as drawn now, cut to the part's region (what its template covers), made by the engine (js/profile-pictures.js crops) and
+  // kept; one still being made holds its place, one that could not be made leaves the card its name and its buttons. Where the pictures' script is not on the page the cards are as before.
+  function paintPictures(list, sides){
+    const sh = root().CAPUBProfilePickers && root().CAPUBProfilePickers.shared;
+    if(!sh || !sides.length) return;
+    sh.claim('paper');
+    const paint = urls => {
+      for(const side of sides){
+        const card = [...list.children].find(li => li.dataset && li.dataset.sideKey === side.key), box = card && card.querySelector('.ptPicture');
+        if(!box) continue;
+        const url = urls[side.key];
+        if(url === null){ box.hidden = true; continue; }
+        box.hidden = false;
+        if(typeof url === 'string' && !box.querySelector('img')){ const img = document.createElement('img'); img.alt = ''; img.decoding = 'async'; img.src = url; box.appendChild(img); }
+      }
+    };
+    const made = sh.maker().crops(sides.map(s => ({ key: s.key, box: s.region })));
+    paint(made.now);
+    if(!made.settled) made.ready.then(done => { if(list.isConnected) paint(done); });
   }
   // The spacer gauges of the build: one row, a button for each file (a bed holds six or so).
   function gaugeRow(plan){
@@ -1254,13 +1282,46 @@
     const files = gaugeFiles(sizes);
     return `<li data-side-key="spacers"><div class="ptSide"><b>Spacer gauges</b><small>${sizes.map(z => z.label.toLowerCase()).join(', ')}: each a bar as wide as a gap the aligners use.</small></div><div class="ptActions">${files.map((f, i) => `<button type="button" class="ghost" data-gauges="${i}">Spacer gauges${files.length > 1 ? ' ' + (i + 1) : ''} (STL)</button>`).join('')}</div></li>`;
   }
+  // The paper size is two tiles, a sheet of each paper at its true shape with a stencil laid out on it (the first part's, the engine's own paperSvg), over the choice kept in this
+  // browser. Where there is nothing to lay out the choice is not offered.
+  const paperUrls = [];
+  function paperTile(side, meta, paperKey, sheet){
+    const svg = paperSvg(side, meta, paperKey);
+    const root0 = /<svg\b[^>]*>/.exec(svg)[0];
+    const W = +/viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(root0)[1], H = +/viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(root0)[2];
+    const body = svg.slice(svg.indexOf(root0) + root0.length, svg.lastIndexOf('</svg>')).replace(/<style>[\s\S]*?<\/style>/, '');
+    const m = Math.max(W, H) * 0.04, tw = W + 2 * m, th = H + 2 * m, k = 300 / Math.max(tw, th);
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${(tw * k).toFixed(2)}" height="${(th * k).toFixed(2)}" viewBox="${(-m).toFixed(4)} ${(-m).toFixed(4)} ${tw.toFixed(4)} ${th.toFixed(4)}">`
+      + `<rect x="${(-m).toFixed(4)}" y="${(-m).toFixed(4)}" width="${tw.toFixed(4)}" height="${th.toFixed(4)}" fill="${sheet || '#d9dce3'}"/>`
+      + `<svg x="0" y="0" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="Helvetica, Arial, sans-serif">${body}</svg>`
+      + `<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#6b7078" stroke-width="${(Math.max(W, H) * 0.004).toFixed(4)}"/></svg>`;
+  }
+  let paperPicker = null;
+  function fillPaper(d){
+    const host = d.querySelector('#placementPaperPicker'), sh = root().CAPUBProfilePickers && root().CAPUBProfilePickers.shared;
+    if(!host) return;
+    const sides = (ui.plan && ui.plan.sides) || [];
+    host.hidden = !sides.length || !root().VisualPicker || !sh;
+    if(host.hidden) return;
+    paperUrls.splice(0).forEach(u => URL.revokeObjectURL(u));
+    // The sheet that holds the stencil on one page where one does.
+    const first = sides.find(s => paperPages(s, ui.plan.meta, 'letter').length === 1) || sides[0];
+    const options = Object.keys(PAPERS).map(key => {
+      const url = URL.createObjectURL(new Blob([paperTile(first, ui.plan.meta, key)], { type: 'image/svg+xml;charset=utf-8' }));
+      paperUrls.push(url);
+      return { value: key, label: PAPERS[key].label, picture: url };
+    });
+    sh.claim('paper');
+    paperPicker = root().VisualPicker.render(host, { name: 'paper', legend: 'Paper', options, value: ui.paper, size: 'large', shape: 'tall',
+      onChange: value => { ui.paper = value; try{ localStorage.setItem('capubTemplatePaper', ui.paper); }catch(e){ /* per-browser convenience */ } } });
+  }
   async function open(){
     const d = ensureDialog();
     if(!ui.paper){ try{ ui.paper = localStorage.getItem('capubTemplatePaper'); }catch(e){ ui.paper = null; } if(!PAPERS[ui.paper]) ui.paper = defaultPaper(); }
-    d.querySelectorAll('input[name="ptPaper"]').forEach(r => { r.checked = r.value === ui.paper; });
     d.querySelector('#placementTemplatesList').innerHTML = '<li class="ptEmpty">Reading the uniform...</li>';
     if(!d.open){ if(typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', ''); }
     try{ ui.plan = await currentPlan(); }catch(e){ console.error('[placement templates]', e); ui.plan = null; }
+    try{ fillPaper(d); }catch(e){ console.error('[placement templates]', e); }
     fillList(d);
     return ui.plan;
   }
@@ -1282,5 +1343,5 @@
     document.addEventListener('capub:rendered', () => { const d = document.getElementById('placementTemplates'); if(d && d.open) open(); });
   }
 
-  return { plan, paperPages, paperSvg, paperPdf, sheetOf, aligners, alignerModel, alignerStl, gaugeSizes, gaugeFiles, gaugeStl, collectItems, sidesFrom, specIds, open, install, fileNames, humanize, PIN_RULE, PAPERS, MM };
+  return { plan, paperPages, paperSvg, paperTile, paperPdf, sheetOf, aligners, alignerModel, alignerStl, gaugeSizes, gaugeFiles, gaugeStl, collectItems, sidesFrom, specIds, open, install, fileNames, humanize, PIN_RULE, PAPERS, MM };
 });
