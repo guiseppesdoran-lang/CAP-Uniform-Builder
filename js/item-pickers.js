@@ -58,11 +58,11 @@
     { id: 'miniMountStyle', kind: 'select', recipe: 'miniMount', legend: 'Miniature medal mounting method', size: 'large', shape: 'tall',
       labels: { mounting: 'Mounting bars, 4 per row (up to 24)', holding: 'Holding bars, custom overlap (up to 28)' },
       mirror: el => el.closest('label'), deps: ['uniform', 'gender', 'membership', 'ribbons'] },
-    // Short Stack (cadets, CAPR 39-1 11.1.2.2) and removing the ribbons from a shirt where they are optional (11.1.2): the member's own ribbons without and with.
+    // Short Stack (cadets, CAPR 39-1 11.1.2.2): the member's own ribbons without and with, laid in the rack layout they chose; removing the ribbons from a shirt where they are optional (11.1.2).
     { id: 'cadetHighestOnly', kind: 'check', recipe: 'shortStack', legend: 'Short Stack', size: 'large',
       labels: { off: 'All achievement ribbons', on: 'Highest only' },
       notes: { on: 'Only the highest cadet achievement ribbon is worn; the others stay selected (CAPR 39-1, 11.1.2.2).' },
-      deps: ['uniform', 'gender', 'membership', 'ribbons', 'cadetHighestOnly'] },
+      deps: [...RACK, 'membership', 'ribbonSelections', 'ribbonRackLayout', 'ribbonRackArrangement'] },
     { id: 'removeRibbons', kind: 'check', recipe: 'removeRibbons', legend: 'Ribbons on this shirt', size: 'large',
       labels: { off: 'Ribbons worn', on: 'No ribbons' },
       notes: { on: 'Ribbons are optional on this shirt; it is drawn without them and your selections stay (CAPR 39-1, 11.1.2).' },

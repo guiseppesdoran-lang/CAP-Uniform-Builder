@@ -621,6 +621,66 @@ test('Short Stack: the member\'s own ribbons with every cadet achievement ribbon
   assert.deepEqual(await OP.create(env).pictures('shortStack', ['off', 'on']).ready, { off: false, on: false });
 });
 
+test('Short Stack follows the rack layout the member chose: each tile is the engine\'s rack for that layout with every achievement ribbon and with the highest only, and changes with the layout and the ribbons', async () => {
+  const achievements = ['armstrong_achievement', 'goddard_achievement', 'doolittle_achievement', 'mitchell_award', 'earhart_award'];
+  const others = ['community_service_ribbon', 'cap_leadership_ribbon', 'cap_membership_ribbon', 'lifesaving_award', 'unit_citation_award', 'cap_gill_robb_wilson_ribbon', 'cap_paul_e_garber_ribbon'];
+  const set = (o, ids) => run(`
+    State.membership = 'cadet'; State.uniform = 'blues_a'; State.gender = ${JSON.stringify(o.gender || 'male')}; State.rank = 'C/Capt'; State.badges = []; State.garment = {}; State.hideRibbons = false; State.cadetHighestOnly = ${!!o.on};
+    State.ribbonRackLayout = ${JSON.stringify(o.layout || '3')}; State.ribbonRackArrangement = ${JSON.stringify(o.arrangement || 'standard')}; State.ribbonRowOverrideEnabled = false; State.ribbonRowOverride = [];
+    normalizeRibbonSelections(); for(const id of Object.keys(State.ribbonSelections)) clearRibbonSelection(id);
+    for(const id of ${JSON.stringify(ids)}) setRibbonSelectionFromDropdown(id, 'earned', { deferRender: true });
+    rebuildRibbonsFromGallery(); return State.ribbons.length;`);
+  const ids = [...achievements, ...others.slice(0, 5)];
+  const tiles = async o => { set(o, ids); return OP.RECIPES.shortStack.make(env, env.build(), ['off', 'on']); };
+  const boxes = scene => scene.layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l));
+  const rowCounts = scene => { const m = new Map(); boxes(scene).forEach(r => m.set(r.y.toFixed(3), (m.get(r.y.toFixed(3)) || 0) + 1)); return [...m.keys()].sort((a, b) => a - b).map(k => m.get(k)); };
+  const rackFor = async (over) => (await P.composeUniform(env.buildWith(over), store)).layers.filter(l => l.role === 'ribbon').map(l => core.layerBounds(l));
+  const results = {};
+  for(const layout of ['3', '4-left']){
+    const total = set({ layout }, ids);
+    assert.ok(total >= 8, 'a rack with the five achievement ribbons and others');
+    const pics = await OP.RECIPES.shortStack.make(env, env.build(), ['off', 'on']);
+    results[layout] = pics;
+    // Each tile is the rack the engine lays in this layout for those ribbons, and the coat's lapel is over it.
+    assert.ok(same(boxes(pics.off.scene), await rackFor({ cadetHighestOnly: false })), `${layout}: every achievement ribbon, as the figure has it`);
+    assert.ok(same(boxes(pics.on.scene), await rackFor({ cadetHighestOnly: true })), `${layout}: the highest only, as the figure has it`);
+    assert.ok(pics.off.scene.layers.some(l => l.role === 'garment') && pics.on.scene.layers.some(l => l.role === 'garment'), `${layout}: on the coat`);
+    assert.equal(boxes(pics.off.scene).length, total);
+    assert.equal(boxes(pics.on.scene).length, total - 4, 'four of the five achievements are left out');
+    assert.deepEqual(pics.off.scene.bounds, pics.on.scene.bounds, `${layout}: one frame`);
+  }
+  assert.ok(rowCounts(results['3'].off.scene).every(n => n <= 3), 'three across: rows of three');
+  assert.ok(rowCounts(results['4-left'].off.scene).slice(1).every(n => n === 4) && rowCounts(results['4-left'].off.scene)[0] <= 4 && rowCounts(results['4-left'].off.scene).length >= 2, 'four across: rows of four, the top row the incomplete one');
+  assert.notDeepEqual(boxes(results['3'].off.scene), boxes(results['4-left'].off.scene), 'the full rack differs with the layout');
+  assert.notDeepEqual(boxes(results['3'].on.scene), boxes(results['4-left'].on.scene), 'the short stack differs with the layout: its rows are the layout\'s');
+  // The coat's lapel over the ribbons on a woman's coat with the chosen four across.
+  set({ layout: '4-center', gender: 'female' }, ids);
+  const woman = await OP.RECIPES.shortStack.make(env, env.build(), ['off', 'on']);
+  for(const v of ['off', 'on']) assert.ok(lapelAbove(woman[v].scene), `a woman, four across: the lapel is over the ribbons (${v})`);
+  // The cache follows the layout, the arrangement and the ribbons, those the box leaves out too.
+  const key = () => JSON.stringify(OP.RECIPES.shortStack.key(env.build(), env));
+  set({ layout: '3' }, ids); const k3 = key();
+  set({ layout: '4-left' }, ids); assert.notEqual(key(), k3, 'the layout');
+  set({ layout: '3', arrangement: 'lapel' }, ids); assert.notEqual(key(), k3, 'the arrangement');
+  set({ layout: '3', on: true }, ids); assert.equal(key(), k3, 'the box the picture is of is not in it: all the ribbons are, whether or not it is checked');
+  set({ layout: '3', on: true }, ids.filter(id => id !== 'goddard_achievement')); assert.notEqual(key(), k3, 'a ribbon the box leaves out of the rack, taken off');
+  // The page asks again when the layout or a ribbon changes: the picker's inputs name them.
+  const items = read('js/item-pickers.js');
+  const dep = items.slice(items.indexOf("id: 'cadetHighestOnly'"), items.indexOf("id: 'removeRibbons'"));
+  for(const field of ['ribbonRackLayout', 'ribbonRackArrangement', 'ribbonSelections', 'ribbonRowOverrideEnabled', 'ribbonRowOverride', 'membership']) assert.ok(dep.includes(field) || /\.\.\.RACK/.test(dep) && ['ribbonRowOverrideEnabled', 'ribbonRowOverride'].includes(field), `Short Stack depends on ${field}`);
+  // Nothing to pick between: one achievement ribbon only, or a layout that leaves no difference, is hidden.
+  set({ layout: '4-left' }, ['earhart_award']);
+  assert.deepEqual(await OP.create(env).pictures('shortStack', ['off', 'on']).ready, { off: false, on: false });
+});
+
+test('while the page is still loading the Short Stack\'s key (which lists the ribbons again) is made from the build alone, and asking for its pictures does not throw', () => {
+  member({ membership: 'cadet', rank: 'C/Capt', gender: 'male' });
+  const loading = Object.assign({}, env, { buildWith: () => { throw new ReferenceError('isCommandInsigniaGradeEligible is not defined'); } });
+  const asked = OP.create(loading).pictures('shortStack', ['off', 'on']);
+  assert.ok(asked && asked.ready, 'a promise of the pictures, no exception');
+  return asked.ready.catch(() => {});
+});
+
 test('removing the ribbons from a shirt: the shirt with the rack and without it, shown from the state with the box unchecked and checked; not offered with no ribbon', async () => {
   const set = (hide, n, uniform) => run(`
     State.membership = 'senior'; State.uniform = ${JSON.stringify(uniform || 'blues_b')}; State.gender = 'male'; State.rank = 'Maj'; State.badges = []; State.garment = {}; State.hideRibbons = ${hide}; State.cadetHighestOnly = false;

@@ -402,22 +402,18 @@
     return out;
   }
 
-  // Short Stack: the member's own ribbons as the engine lays them with every cadet achievement ribbon and with only the highest (the rack alone, in one frame); removing ribbons from
-  // the shirt: the shirt's chest with the rack and without it.
-  async function rackPair(env, build, values, over){
+  // Short Stack: the member's own ribbons on the coat as the engine lays them in the layout the member has chosen (ribbons to a row, flush or centered, the upper-row arrangement), with every
+  // cadet achievement ribbon and with only the highest, in one frame: the scene of each build with the box unchecked and checked, the lapel over the ribbons where it lies across them.
+  // The rows of a short stack are the layout's own rows for the fewer ribbons, so the tile shows where the layout puts them (the top row centered or kept clear of the lapel). Not offered
+  // where the two lay the same rack (too few ribbons for the box to change anything, or a layout that leaves no difference).
+  async function shortStack(env, build, values){
     const out = {};
-    const scenes = await Promise.all(values.map(v => env.compose(rackOnly(buildWith(env, build, over(v === 'on'))))));
-    const racks = scenes.map(sc => sc.layers.filter(l => (l.role === 'ribbon' || l.role === 'device') && l.type === 'asset'));
-    const sig = i => JSON.stringify(racks[i].map(l => [l.id, l.key, l.x, l.y]));
-    if(!racks[0].length && !racks[1].length || sig(0) === sig(1)){ values.forEach(v => { out[v] = false; }); return out; }
-    const f = env.core.unionBounds(racks.flat().map(l => env.core.layerBounds(l))), m = 0.3;
-    const frame = { x: f.x - m, y: f.y - m, w: f.w + 2 * m, h: f.h + 2 * m };
-    // A ribbon's own colours can be white at its edges, so each is outlined (on the picture's white).
-    const outline = l => ({ type: 'rect', x: l.x, y: l.y, w: l.w, h: l.h, fill: 'none', stroke: '#001871', strokeWidth: 0.03, rotate: 0, origin: { x: l.x, y: l.y }, z: 90, role: 'outline', key: 'outline:' + l.key });
-    values.forEach((v, i) => { out[v] = { scene: sceneOf([...racks[i], ...racks[i].filter(l => l.role === 'ribbon').map(outline)], frame, 'Ribbons'), pad: 0 }; });
+    const racks = await Promise.all(values.map(v => rackScene(env, buildWith(env, build, { cadetHighestOnly: v === 'on' }))));
+    if(racks.some(r => !r) || rackSignature(racks[0]) === rackSignature(racks[1])){ values.forEach(v => { out[v] = false; }); return out; }
+    const frame = rackFrame(racks, env);
+    values.forEach((v, i) => { out[v] = rackPicture(racks[i], frame); });
     return out;
   }
-  const shortStack = (env, build, values) => rackPair(env, build, values, on => ({ cadetHighestOnly: on }));
   async function removeRibbons(env, build, values){
     const out = {};
     // values: 'off' (the ribbons are worn) and 'on' (removed): the member's build with the box unchecked and checked, so the ribbons are there to show though the box is checked now.
@@ -431,6 +427,13 @@
     return out;
   }
   const rackPairKey = build => [build.uniform, build.gender, (build.ribbons || []).map(r => r.key)];
+  // What the Short Stack pictures are made from: the cut, the layout (width, flush or centered, arrangement, the member's own rows) and every ribbon the member has chosen with its devices,
+  // those the box leaves out as well (the box unchecked lists them all), so a ribbon taken off the rack by the box still changes the picture of the rack without it.
+  const shortStackKey = (build, env) => {
+    const all = (env && typeof env.buildWith === 'function' ? buildWith(env, build, { cadetHighestOnly: false }) : build);
+    const o = build.opt || {};
+    return [build.uniform, build.gender, build.membership, !!build.ceremonial, ribbonsOf(all), [o.rackColumns, o.rackAlign, o.rackArrangement, o.rackCounts]];
+  };
 
   // ---- the pieces a choice changes: sleeves, the women's top, the polo, what is under the blazer --------------------------------
 
@@ -558,7 +561,7 @@
     poloMark: { make: poloMark, key: build => [build.gender, build.name && build.name.first, build.name && build.name.last, build.opt && [build.opt.poloShirt, build.opt.poloCut, build.opt.dutyTitle], (build.badges || []).map(b => b.id)] },
     commandChief: { make: commandChief, key: figureKey([]) },
     noGradeTrack: { make: noGradeTrack, key: headgearKey },
-    shortStack: { make: shortStack, key: rackPairKey },
+    shortStack: { make: shortStack, key: shortStackKey },
     removeRibbons: { make: removeRibbons, key: rackPairKey },
     miniMount: { make: miniMount, key: miniKey },
     commandWorn: { make: commandWorn, key: commandWornKey },
@@ -600,7 +603,10 @@
       if(!recipe || !list.length) return { now: none, ready: Promise.resolve(none), settled: true };
       let build;
       try{ build = env.build(); }catch(e){ return { now: none, ready: Promise.resolve(none), settled: true }; }
-      const key = JSON.stringify([optionKey, recipe.key(build), list]);
+      // A key that asks the page for more than the build (the Short Stack's, which lists the ribbons again) is made from the build alone while the page is still loading.
+      let made;
+      try{ made = recipe.key(build, env); }catch(e){ made = recipe.key(build); }
+      const key = JSON.stringify([optionKey, made, list]);
       const kind = JSON.stringify([optionKey, list]);
       let hit = cache.get(key);
       if(hit){ cache.delete(key); cache.set(key, hit); }
