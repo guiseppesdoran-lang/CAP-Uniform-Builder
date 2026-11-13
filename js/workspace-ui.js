@@ -304,9 +304,9 @@
     if(card) setCardOpen(card,true);
   }
 
-  /* ---------- what is chosen and where it sits (the Badges and Patches cards) ---------- */
-  // One list under each card: every badge or patch chosen, by name, with the place the drawing put it in words, and for each the drawing leaves
-  // off the reason with its paragraph (js/badge-rules.js capubBadgeSummary, capubPatchSummary; the places are the engine's own).
+  /* ---------- what is chosen and where it sits (the Patches card; a badge's place is on its own tile, js/pick-lists.js and js/uniform-view.js) ---------- */
+  // One row of pictures under the Patches card: every patch chosen, with the place the drawing put it in words, and for each the drawing leaves
+  // off the reason with its paragraph (js/badge-rules.js capubPatchSummary; the places are the engine's own).
   const sentence=t=>{ const s=String(t||''); return s.charAt(0).toUpperCase()+s.slice(1); };
   // `pictures`: a row of small pictures with the words under each (the Patches card), a row with none left dimmed; otherwise a list of names.
   function fillSummary(hostId,rows,pictures){
@@ -338,7 +338,6 @@
     }));
   }
   function updateItemSummaries(){
-    if(typeof capubBadgeSummary==='function') fillSummary('badgeSummary',capubBadgeSummary());
     if(typeof capubPatchSummary==='function') fillSummary('patchSummary',capubPatchSummary(),true);
   }
 
@@ -377,7 +376,7 @@
     if(state){
       const summary=typeof capubBadgeSummary==='function' ? capubBadgeSummary().find(r=>r.id===COMMAND_PINS[level]) : null;
       state.textContent=choice==='none' ? 'Not worn'
-        : (choice==='graduated' ? 'Graduated commander' : 'Current commander')+(summary && summary.shown && summary.place ? `: ${summary.place}` : (summary && !summary.shown && !summary.pending ? ': not shown' : ''));
+        : (choice==='graduated' ? 'Graduated commander' : 'Current commander')+(summary && summary.shown && summary.place ? `: ${summary.place}` : (summary && !summary.shown && !summary.pending && summary.why ? `: ${summary.why}` : ''));
     }
   }
   function wireCommandRow(){

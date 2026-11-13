@@ -536,7 +536,7 @@
       const slotHead = el('div', 'badgeChooserSlotHead');
       const name = el('h5', 'badgeChooserSlotName', sl.label);
       name.id = nameId;
-      slotHead.append(name, el('span', 'badgeChooserTag'));
+      slotHead.append(name);
       row.append(slotHead, buildChooserOptions(group, sl, nameId));
       list.append(row);
     }
@@ -545,7 +545,7 @@
   }
 
   // The tiles of one place: a picture tile per competing badge (its own drawing, its name under it), one group per place so the arrow keys move within the place; the picked tile is the
-  // one the place holds, and a tile carries "not shown" where that badge is drawn nowhere in the position (updateBadgeChooser). A position with one place writes the badge id; a
+  // one the place holds, and each tile has the line of what the drawing did with its badge under the name (updateBadgeChooser). A position with one place writes the badge id; a
   // position with several writes the picks of all its places (the badge picked here swaps with the one the place held, nextBadgePicks). The picture picker of js/visual-picker.js.
   const chooserPickers = new Map();   // "position|place" -> the picker of that place
   const badgeArt = id => typeof getBadgeAssetPath === 'function' ? ASSET(getBadgeAssetPath(id)) : undefined;
@@ -554,7 +554,7 @@
     host.dataset.place = slot.key;
     const single = group.slots.length === 1;
     const picker = VisualPicker.render(host, {
-      name: `badgeChooser-${group.position}-${slot.key}`, labelledBy, size: 'large', value: slot.value,
+      name: `badgeChooser-${group.position}-${slot.key}`, labelledBy, size: 'large', boxed: true, value: slot.value,
       options: group.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id) })),
       onChange: id => {
         if(single){ setBadgeChoice(group.position, id); return; }
@@ -589,23 +589,15 @@
         if(again) again.focus();
       }
     }
-    // The picked and the shown badges, read off the latest scene: in each place the radio of the badge the place holds is checked, and a
-    // row's tag reads "shown" when that badge is drawn in that place and "not shown" when it is drawn nowhere in the position; a badge drawn
-    // in another place of the same position carries no tag (that place's own heading row says it is shown there).
+    // The picked badges, read off the latest scene: in each place the tile of the badge the place holds is picked. The line under a badge's name is what the drawing did with it, the one
+    // line the list of where the badges are worn used to give: the place it takes on this uniform, or why it is left off, with its paragraph.
+    const rows = typeof capubBadgeSummary === 'function' ? capubBadgeSummary(scene) : [];
+    const lineOf = id => window.CAPUBPickLists ? CAPUBPickLists.badgeLine(rows, id, undefined) : undefined;
     for(const g of model){
-      const root = host.querySelector(`[data-position="${CSS.escape(g.position)}"]`);
-      if(!root) continue;
-      const shown = new Set(conflicts.find(c => c.position === g.position).shown || []);
       for(const sl of g.slots){
-        const row = g.slots.length === 1 ? root : root.querySelector(`.badgeChooserSlot[data-slot="${CSS.escape(sl.key)}"]`);
-        if(!row) continue;
-        const slotHead = row.querySelector('.badgeChooserSlotHead');
-        const slotTag = slotHead && slotHead.querySelector('.badgeChooserTag');
-        if(slotTag) slotTag.textContent = sl.shown ? 'shown' : 'not shown';
         const picker = chooserPickers.get(`${g.position}|${sl.key}`);
         if(picker){
-          // The tile of the badge the place holds is the picked one ("shown" where it is drawn there); a badge drawn nowhere in the position says "not shown".
-          picker.setOptions(g.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id), mark: cand.id === sl.value && sl.shown ? 'shown' : (shown.has(cand.id) ? undefined : 'not shown') })));
+          picker.setOptions(g.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id), caption: lineOf(cand.id) })));
           picker.setValue(sl.value);
         }
       }

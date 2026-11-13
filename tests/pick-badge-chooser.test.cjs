@@ -1,7 +1,8 @@
 'use strict';
 // The owner (2026-11-12, on the "CAP aviation badge, one is worn" list of radio buttons): "This ui should be visual". Which badge takes each place is chosen from picture tiles (the
-// badge's own drawing, its name under it, the picture picker of js/visual-picker.js), one group per place; the badge shown is the picked tile and a badge drawn nowhere carries
-// "not shown". No radio button is left in it.
+// badge's own drawing, its name under it, the picture picker of js/visual-picker.js), one group per place; the badge shown is the picked tile. The line under each name is what the
+// drawing did with that badge, the one line the list of where the badges are worn used to give (its place, or why it is left off with its paragraph); no "shown" or "not shown".
+// No radio button is left in it.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -40,7 +41,11 @@ function page(){
   };
   sandbox.window = sandbox; sandbox.self = sandbox;
   vm.runInNewContext(read('js/visual-picker.js'), sandbox);
+  vm.runInNewContext(read('js/pick-lists.js'), sandbox);
   vm.runInNewContext(read('js/uniform-view.js'), sandbox);
+  // What the drawing did with each badge chosen (js/badge-rules.js capubBadgeSummary), as the test says it.
+  sandbox.badgeRows = [];
+  sandbox.capubBadgeSummary = () => sandbox.badgeRows;
   return { sandbox, doc, host: () => doc.getElementById('badgeChooser') };
 }
 const SINGLE = { position: 'aviation', label: 'CAP aviation badge', limit: 1, candidates: [{ id: PILOT, title: 'Pilot Badge' }, { id: OBSERVER, title: 'Observer Badge' }, { id: AIRCREW, title: 'Air Crew Badge' }], shown: [OBSERVER], choice: OBSERVER,
@@ -49,20 +54,33 @@ const SEVERAL = { position: 'pocket', label: 'Pocket and nametag badges', limit:
   slots: [{ key: 'left-pocket', label: 'Left pocket', choice: ES, badge: ES, shown: true }, { key: 'right-pocket', label: 'Right pocket', choice: COMM, badge: COMM, shown: true }, { key: 'over-nametag', label: 'Over the nametag', choice: null, badge: null, shown: false }] };
 const tiles = (host, place) => host.querySelectorAll('.badgeChooserList').find(l => l.dataset.place === place).querySelectorAll('[role="radio"]');
 
-test('which badge takes a place is chosen from picture tiles: each competing badge is a tile with its own drawing and its name, the one shown picked, the others marked "not shown"; no radio button or box is left', () => {
+const WHY = 'Only one CAP aviation badge is worn (CAPR 39-1, 4.1.5.2.2.4.1)';
+test('which badge takes a place is chosen from picture tiles: each competing badge is a tile with its own drawing and its name and one line under the name, the one shown picked; no "shown" or "not shown", no radio button or box', () => {
   const p = page();
+  p.sandbox.badgeRows = [{ id: PILOT, shown: false, place: '', why: WHY }, { id: OBSERVER, shown: true, place: 'above the Ground Team Badge', why: '' }, { id: AIRCREW, shown: false, place: '', why: WHY }];
   p.sandbox.CAPUBUniformView.updateBadgeChooser({ conflicts: [SINGLE] });
   const host = p.host();
   assert.ok(host && !host.classList.contains('hidden'));
   const t = tiles(host, 'only');
   assert.deepEqual(t.map(x => x.querySelector('.vpLabel').textContent), ['Pilot Badge', 'Observer Badge', 'Air Crew Badge']);
   assert.deepEqual(t.map(x => x.getAttribute('aria-checked')), ['false', 'true', 'false'], 'the badge shown is the picked tile');
-  assert.deepEqual(t.map(x => (x.querySelector('.vpMark') || { textContent: '' }).textContent), ['not shown', 'shown', 'not shown']);
+  assert.deepEqual(t.map(x => x.querySelector('.vpMark')), [null, null, null], 'no mark on a tile');
+  // The line is under the name, in the tile's box and outside its button (so the paragraph can carry its question mark): the place, or why it is left off, one line each.
+  const cells = host.querySelectorAll('.badgeChooserList')[0].querySelectorAll('.vpCell');
+  assert.deepEqual(cells.map(c => c.querySelectorAll('.vpCaption').length), [1, 1, 1], 'one line under each name, never two');
+  assert.deepEqual(cells.map(c => c.querySelector('.vpCaption').textContent), [WHY, 'Above the Ground Team Badge', WHY]);
+  assert.ok(cells.every(c => c.querySelector('.vpCaption').parentNode === c && !t.some(b => b.contains(c.querySelector('.vpCaption')))), 'outside the button');
+  assert.doesNotMatch(host.textContent, /\bshown\b/i, 'no "shown" or "not shown" anywhere in the chooser');
   assert.deepEqual(t.map(x => x.querySelector('img') ? x.querySelector('img').getAttribute('src') : null), [PILOT, OBSERVER, AIRCREW].map(id => `images/badges/${id}.svg`), 'the badge\'s own drawing');
   assert.equal(host.querySelectorAll('input').length, 0, 'no input at all: no radio, no checkbox');
   const group = host.querySelector('[role="radiogroup"]');
   assert.equal(group.getAttribute('aria-labelledby'), 'badgeChooserHead-aviation', 'named by the heading above it');
   assert.equal(host.querySelector('.badgeChooserCount').textContent, 'one is worn');
+  // Before the drawing has been made there is no line to give.
+  const early = page();
+  early.sandbox.badgeRows = [{ id: OBSERVER, pending: true }];
+  early.sandbox.CAPUBUniformView.updateBadgeChooser({ conflicts: [SINGLE] });
+  assert.deepEqual(early.host().querySelectorAll('.vpCaption').length, 0);
 });
 
 test('tapping a tile picks that badge for the place: the choice the build is made from (State.badgeChoices of the uniform) changes, and the keyboard does the same', () => {
@@ -93,7 +111,8 @@ test('a position with several places has a group of tiles for each place; pickin
   assert.deepEqual(tiles(host, 'over-nametag').map(x => x.getAttribute('aria-checked')), ['false', 'false', 'false'], 'a place with no badge picks none');
   tiles(host, 'left-pocket')[1].click();       // the communications badge moves to the left pocket; the emergency services badge takes the place it had
   assert.deepEqual(JSON.parse(JSON.stringify(p.sandbox.State.badgeChoices.blues_a.pocket)), { 'left-pocket': COMM, 'right-pocket': ES, 'over-nametag': '' });
-  assert.deepEqual(host.querySelectorAll('.badgeChooserSlotHead').map(h => h.querySelector('.badgeChooserTag').textContent), ['shown', 'shown', 'not shown']);
+  assert.deepEqual(host.querySelectorAll('.badgeChooserSlotHead').map(h => h.childNodes.length), [1, 1, 1], 'a place\'s heading row is its name alone: no "shown" or "not shown"');
+  assert.doesNotMatch(host.textContent, /\bshown\b/i);
 });
 
 test('the chooser is hidden with nothing to choose, and the old radio rows are gone from the code', () => {

@@ -1546,16 +1546,19 @@ html[data-access="guest"] #accessGate{display:none}
 .vpTick svg{display:block;width:14px;height:14px}
 .vpNote{margin-top:var(--s2)}
 .vpOption.noPicture{justify-content:center;min-height:56px}
-/* Switch tiles (mode "toggle", js/visual-picker.js): a list of badges, ribbons or patches, any number on. A tile sits in a cell with its own controls under it (the level, the
-   count, the devices), shown while it is on. Two to a row on a phone, as many as fit on a desktop. */
-.vpOption[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
+/* Boxed tiles (data-boxed, js/visual-picker.js): every switch tile (mode "toggle": a list of badges, ribbons or patches, any number on) and a choice whose options carry a line under
+   the name (the badge for each place). The cell is the box; the button in it is the picture and the name, and the line under the name (outside the button, so a reference in it can carry
+   its mark) and a switch tile's controls (the level, the count, the devices, shown while it is on) are inside the box. The box takes the picked edge and shade. */
+.vp[data-boxed] .vpCell{position:relative;display:flex;flex-direction:column;gap:var(--s1);min-width:0;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.vp[data-boxed] .vpCell:hover{border-color:var(--ink);background:var(--panel-2)}
+.vp[data-boxed] .vpCell:has(> .vpOption[aria-pressed="true"]),.vp[data-boxed] .vpCell:has(> .vpOption[aria-checked="true"]){border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
+.vp[data-boxed] .vpOption,.vp[data-boxed] .vpOption:hover{border:0;background:transparent;padding:0;min-height:0}
 .vpOption[aria-pressed="true"] .vpTick{display:flex}
 /* The tiles that choose badges, ribbons and patches are about two thirds of the size of the ones that choose the uniform: three to a row in the Badges panel and in the chooser
    window at a phone's width, seven in the window on a desktop (six before). The name stays at 13 px under its picture, wrapping to a second line, and no tile is under 44 px. */
 .vp[data-mode="toggle"] .vpGrid,.vp[data-name^="badgeChooser-"] .vpGrid,.vp[data-name^="itemOpt-commandInsignia"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
 @media (min-width:700px){.vp[data-mode="toggle"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
 .vp[data-mode="toggle"] .vpLabel,.vp[data-name^="badgeChooser-"] .vpLabel,.vp[data-name^="itemOpt-commandInsignia"] .vpLabel{font-size:.8125rem}
-.vpCell{display:flex;flex-direction:column;gap:var(--s1);min-width:0}
 .vpCell[hidden],.vpSection[hidden],.vpControls[hidden]{display:none}
 /* Ribbons (shape "wide"): a ribbon is about 3.7 times as wide as it is high, so its picture box is wide and low and a row holds more of them; the drawn ribbon of one that is on has its devices. */
 .vp[data-shape="wide"] .vpPicture,.vp[data-size="large"][data-shape="wide"] .vpPicture{aspect-ratio:3 / 1;padding:4px}
@@ -1566,7 +1569,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpControls .militarySpecialDeviceRow .vpSwitch{width:auto;min-height:32px}
 .militaryRibbonMenu .vpSwitch.militaryAdvancedMode{width:auto;min-height:32px;margin-left:var(--s2)}
 .vpGroupNote{margin:calc(-1 * var(--s1)) 0 var(--s2);font-size:var(--t-xs);line-height:1.3;color:var(--muted)}
-.vpCaption{display:block;min-width:0;font-size:.75rem;font-weight:400;line-height:1.25;color:var(--muted);overflow-wrap:anywhere}
+.vpCaption{display:block;min-width:0;font-size:.75rem;font-weight:400;line-height:1.25;color:var(--muted);text-align:center;overflow-wrap:anywhere}
 .vpControls{display:grid;gap:var(--s1);min-width:0;padding:0 2px}
 .vpControls select{min-width:0;width:100%}
 .vpPlaceChoice .vpGrid{grid-template-columns:1fr;gap:4px}

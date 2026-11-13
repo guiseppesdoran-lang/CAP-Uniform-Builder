@@ -22,6 +22,7 @@ const PILOT = 'CAPPilot1_FA9D33EA587D8', OBSERVER = 'observer_badge', STEM = 'ca
 const NAMES = { [PILOT]: 'Pilot Badge', [OBSERVER]: 'Observer Badge', [STEM]: 'Cadet STEM Badge', [SQUADRON]: 'Squadron Commander Badge', [GROUP]: 'Group Commander Badge', [ES]: 'Emergency Services Badge' };
 
 // The page's own functions, standing in: the selections, the rules that run after a tap (one command pin), the grade that may wear a pin, the levels of a badge.
+let ROWS = [];   // what the drawing did with each badge chosen (js/badge-rules.js capubBadgeSummary), as a test says it
 function deps(extra){
   const State = { badgeSelections: {}, badges: [], commandInsignia: { graduatedCommander: false }, rank: 'Capt' };
   const d = {
@@ -29,7 +30,8 @@ function deps(extra){
     caption: id => 'Worn: above the left pocket', isCommand: id => id === SQUADRON || id === GROUP,
     levels: id => id === STEM ? [['basic', 'Basic'], ['senior', 'Senior'], ['master', 'Master']] : null, level: (id, level) => level || 'basic',
     canCommand: () => !extra || extra.canCommand !== false, chooseOnlyCommand: id => { for(const x of [SQUADRON, GROUP]) if(x !== id && State.badgeSelections[x]) State.badgeSelections[x].checked = false; },
-    rebuild: () => { State.badges = Object.keys(State.badgeSelections).filter(id => State.badgeSelections[id].checked); }
+    rebuild: () => { State.badges = Object.keys(State.badgeSelections).filter(id => State.badgeSelections[id].checked); },
+    badgeRows: () => ROWS
   };
   return d;
 }
@@ -209,4 +211,34 @@ test('the list is wired in: the chooser window builds it with the picker, the ol
   }
   const lists = read('js/pick-lists.js');
   assert.doesNotMatch(lists.replace(/\/\/.*$/gm, ''), /checkbox|type = 'radio'|createElement\('input'\)/);
+});
+
+// The owner (2026-11-12): the list "Where your badges are worn" is folded into the tiles. A badge that is chosen says under its name what the drawing did with it, the one line the list gave:
+// the place it takes on this uniform, or why it is left off, with its paragraph; a badge that is not chosen keeps its general line; never two lines, never "shown" or "not shown".
+test('the line under a chosen badge\'s name is its place on this uniform or why it is left off; an unchosen badge keeps its general line; one line, no "shown" or "not shown"', () => {
+  const p = make();
+  ROWS = [];
+  const caps = id => p.tile(id).querySelectorAll('.vpCaption').map(c => c.textContent);
+  assert.deepEqual(caps(OBSERVER), ['Worn: above the left pocket'], 'not chosen: the general line');
+  p.button(OBSERVER).click(); p.button(PILOT).click(); p.button(STEM).click();
+  const WHY = 'No place is left for it on this uniform, which wears 4 (CAPR 39-1, 4.1.5.2.2.4)';
+  ROWS = [{ id: OBSERVER, shown: true, place: 'above the ribbons', why: '' }, { id: PILOT, shown: false, place: '', why: WHY }, { id: STEM, pending: true }];
+  // The drawing has been made again: the open chooser puts each line as the drawing has it.
+  p.entry.rendered();
+  assert.deepEqual(caps(OBSERVER), ['Above the ribbons'], 'chosen and drawn: its place');
+  assert.deepEqual(caps(PILOT), [WHY], 'chosen and left off: why, with the paragraph (the page puts it behind a question mark)');
+  assert.deepEqual(caps(STEM), ['Worn: above the left pocket'], 'chosen but not drawn yet: the general line');
+  assert.deepEqual(caps(SQUADRON), ['Worn: above the left pocket'], 'not chosen: the general line');
+  assert.ok(p.host.querySelectorAll('.vpCell').every(c => c.querySelectorAll('.vpCaption').length === 1), 'one line under a name, never two');
+  assert.ok(p.host.querySelectorAll('.vpCaption').every(c => c.parentNode.dataset.value && c.parentNode.querySelector('.vpOption') && !c.parentNode.querySelector('.vpOption').contains(c)), 'outside the button, so a reference in it carries its mark');
+  assert.doesNotMatch(p.host.textContent, /\bshown\b/i, 'no "shown" or "not shown"');
+  p.button(PILOT).click();
+  ROWS = [{ id: OBSERVER, shown: true, place: 'above the ribbons', why: '' }];
+  p.entry.rendered();
+  assert.deepEqual(caps(PILOT), ['Worn: above the left pocket'], 'turned off: back to its general line');
+  // The line is the sentence's own: the first letter capital, a stop where the text has none.
+  assert.equal(Lists.badgeLine([{ id: 'x', shown: false, why: 'it cannot be shown on this uniform' }], 'x', 'general'), 'It cannot be shown on this uniform.');
+  assert.equal(Lists.badgeLine([{ id: 'x', shown: true, place: 'left pocket' }], 'x', 'general'), 'Left pocket');
+  assert.equal(Lists.badgeLine([], 'x', 'general'), 'general');
+  ROWS = [];
 });

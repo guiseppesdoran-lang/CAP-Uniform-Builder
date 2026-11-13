@@ -24,7 +24,8 @@
 //
 // Toggle mode (mode: 'toggle'): the options are switches, any number on at once, the way a list of badges, ribbons or patches is chosen: each tile is a button with aria-pressed,
 // the ones on carry a tick and the picked shade. `values` is the list of the values on; onToggle(value, on) is called when the member turns one (not by setValues or
-// setOptions). An option may carry a `caption` (a small line under its name), a `search` (more words the filter reads) and `controls` (a node or a function(on) that returns one: the
+// setOptions). An option may carry a `caption` (a small line under its name, in the tile's box outside the button, so a reference in it carries its question mark; a choice whose options carry
+// one is drawn as boxed tiles too, or says `boxed: true`), a `search` (more words the filter reads) and `controls` (a node or a function(on) that returns one: the
 // level, the count or the devices of the item; it is shown under the tile only while the tile is on) and a `groupNote` (a line under the heading of its group). p.setValues(list); p.values; p.filter(text) hides the tiles whose name, caption
 // or search words do not contain the text, and the sections left with none, and returns how many tiles are shown. The keys are the same: arrows move, Enter or the space bar turns one.
 //
@@ -216,6 +217,7 @@
     const name = String(cfg.name || 'picker');
     const id = slug(name);
     const toggle = cfg.mode === 'toggle';
+    let boxed = toggle || !!cfg.boxed;   // the tile is a box of its own (a cell) holding the button, the line under its name and its controls: every switch tile, a choice that says so (`boxed`) and a choice whose options carry a line
     let options = [];
     let value = cfg.value;
     let selected = new Set(Array.isArray(cfg.values) ? cfg.values : []);   // toggle mode: the values on
@@ -315,7 +317,7 @@
         b.append(box);
       }else b.classList.add('noPicture');
       b.append(make('span', 'vpLabel', o.label != null ? o.label : String(o.value)));
-      if(o.caption) b.append(make('span', 'vpCaption', o.caption));
+      if(o.caption && !boxed) b.append(make('span', 'vpCaption', o.caption));
       if(o.mark) b.append(make('span', 'vpMark', o.mark));
       const tick = make('span', 'vpTick');
       tick.setAttribute('aria-hidden', 'true');
@@ -337,6 +339,8 @@
     }
 
     function draw(){
+      boxed = toggle || !!cfg.boxed || options.some(o => o && o.caption);
+      if(boxed) rootEl.dataset.boxed = '1'; else delete rootEl.dataset.boxed;
       const focused = document.activeElement;
       const had = tiles.find(t => t.button === focused);
       const hadValue = had ? had.option.value : undefined;
@@ -357,15 +361,17 @@
         const grid = make('div', 'vpGrid');
         for(const o of s.items){
           const b = tile(o, tiles.length, headId);
-          if(!toggle){
+          if(!boxed){
             tiles.push({ option: o, button: b });
             grid.append(b);
             continue;
           }
-          // A switch tile sits in a cell with its own controls under it (a button cannot hold a list or a field): shown while the tile is on.
+          // A tile that is a box of its own: a cell holding the button (the picture and the name), the line under the name (outside the button, so a reference in it can carry its
+          // mark: a control cannot sit in a control) and, for a switch tile, its controls (a button cannot hold a list or a field), shown while the tile is on.
           const cell = make('div', 'vpCell');
           cell.dataset.value = String(o.value);
           cell.append(b);
+          if(o.caption) cell.append(make('div', 'vpCaption', o.caption));
           let controls = null;
           const node = o.controls ? (typeof o.controls === 'function' ? o.controls(selected.has(o.value)) : o.controls) : null;
           if(node){

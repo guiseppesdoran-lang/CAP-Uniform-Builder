@@ -16,7 +16,7 @@
   function pageDeps(){
     /* global State, ASSET, getBadgeAssetPath, getBadgeDisplayName, getBadgeTileMetaHtml, isCommandInsigniaBadge, CAPUBBadgeCatalog, canSelectCommandInsigniaForCurrentRank,
        chooseOnlyCommandInsignia, rebuildBadgesFromGallery, isCommandInsigniaGradeEligible, fullRender, getAvailableMilitaryBadgeVariants, militaryServiceLabel, PATCH_META,
-       patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery, getEligibleRibbonIds, isAwardWornOnUniform, isRotcRibbonId, isMilitaryRibbonId, groupRibbonIds,
+       capubBadgeSummary, patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery, getEligibleRibbonIds, isAwardWornOnUniform, isRotcRibbonId, isMilitaryRibbonId, groupRibbonIds,
        getRibbonDisplayName, getRibbonImagePath, getRibbonAwardOptions, capubFirstRibbonOptionValue, setRibbonSelectionFromDropdown, normalizeRibbonSelections, CAPUBRibbonAwards,
        CAPUBUniformRules, hasMiniMedal, CAPUBUniformView, capubInstallImageFallback, ROTC_RIBBONS, capubRotcLimitMessage, getMilitaryRibbonIds, getMilitaryRibbonAward, getMilitaryAwardBranch,
        militaryAwardFilterType, getMilitarySelectionService, deviceMeta, MILITARY_BRANCH_ORDER, MILITARY_BRANCH_LABELS, isMilitaryAwardWornOnUniform, getMilitaryUIState */
@@ -37,6 +37,8 @@
       fullRender: () => fullRender(),
       variants: badge => getAvailableMilitaryBadgeVariants(badge),
       serviceLabel: service => militaryServiceLabel(service),
+      // what the drawing did with each badge chosen (js/badge-rules.js capubBadgeSummary): { id, shown, place, why, pending }
+      badgeRows: () => typeof capubBadgeSummary === 'function' ? capubBadgeSummary() : [],
       // patches
       patchIds: () => window.capubVisiblePatchIdsForGallery(),
       patchMeta: id => PATCH_META[id] || {},
@@ -93,6 +95,17 @@
   // The badges turned on, as the page's selections have them.
   const selectedIn = (d, ids) => ids.filter(id => d.State.badgeSelections[id] && d.State.badgeSelections[id].checked);
   const sel = (d, id) => d.State.badgeSelections[id] || (d.State.badgeSelections[id] = { checked: false });
+
+  // The line under a badge's name. A badge that is not chosen says where it is worn in general (`general`). A badge that is chosen says what the drawing did with it: the place it takes on
+  // this uniform, or why it is left off, with its paragraph (the page puts the paragraph behind a question mark); until the drawing has been made it says the general line.
+  const sentence = t => { const x = String(t || ''); return x.charAt(0).toUpperCase() + x.slice(1); };
+  const stopped = t => /[.)]$/.test(t) ? t : t + '.';
+  function badgeLine(rows, id, general){
+    const row = rows.find(r => r.id === id);
+    if(!row || row.pending) return general;
+    if(row.shown) return sentence(row.place) || general;
+    return row.why ? stopped(sentence(row.why)) : general;
+  }
 
   // What a tap does: the badge on or off, the page's rules after it (one command pin, the exclusive badges, the order: rebuildBadgesFromGallery). A command pin above the grade that
   // wears one (CAPR 39-1, 10.2.5) turns back, with the reason. Returns whether the badge is on afterwards.
@@ -153,7 +166,7 @@
       }
       return box.childNodes.length ? box : null;
     };
-    const options = () => groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), caption: d.caption(id), group: g.key, search: g.key, controls: () => controls(id) })));
+    const options = () => { const rows = d.badgeRows(); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), caption: badgeLine(rows, id, d.caption(id)), group: g.key, search: g.key, controls: () => controls(id) }))); };
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
@@ -168,7 +181,9 @@
         for(const g of grads) g.button.setAttribute('aria-pressed', String(!!(d.State.badgeSelections[g.id] && d.State.badgeSelections[g.id].checked) && !!(d.State.commandInsignia && d.State.commandInsignia.graduatedCommander)));
       },
       // The pictures again (a badge at another level is another drawing).
-      setOptions(){ picker.setOptions(options()); entry.refresh(); }
+      setOptions(){ picker.setOptions(options()); entry.refresh(); },
+      // The drawing has been made again: what it did with each badge chosen is the line under its name.
+      rendered(){ entry.setOptions(); }
     };
     ref.picker = picker;
     entry.refresh();
@@ -189,8 +204,8 @@
     };
     const pictureOf = badge => { const { variants, active } = variantOf(badge); return (variants.find(v => v.id === active) || variants[0]).record.asset; };
     const captionOf = badge => [(badge.family && badge.family !== 'OTHER') ? String(badge.family).charAt(0) + String(badge.family).slice(1).toLowerCase() : '', (badge.authorizedServices || []).map(s => d.serviceLabel(s)).join(' / ')].filter(Boolean).join(' • ');
-    const options = () => records.map(badge => ({
-      value: badge.id, label: badge.officialName || badge.id, picture: pictureOf(badge), caption: captionOf(badge), search: `${branch} ${badge.family || ''}`,
+    const options = () => { const rows = d.badgeRows(); return records.map(badge => ({
+      value: badge.id, label: badge.officialName || badge.id, picture: pictureOf(badge), caption: badgeLine(rows, badge.id, captionOf(badge)), search: `${branch} ${badge.family || ''}`,
       controls: () => {
         const { variants, active } = variantOf(badge);
         if(variants.length < 2) return null;
@@ -210,7 +225,7 @@
         label.append(select);
         return label;
       }
-    }));
+    })); };
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
@@ -222,7 +237,7 @@
         d.fullRender();
       }
     });
-    return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); } };
+    return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); }, rendered(){ picker.setOptions(options()); picker.setValues(chosen()); } };
   }
 
   // ---- patches ------------------------------------------------------------------------------------------------------------------------------
@@ -682,5 +697,5 @@
     };
   }
 
-  return { badgeList, militaryBadgeList, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pageDeps };
+  return { badgeList, militaryBadgeList, badgeLine, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pageDeps };
 });

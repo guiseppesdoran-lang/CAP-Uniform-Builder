@@ -1129,7 +1129,12 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   CAPUB_V2.validateBuild = validateBuild;
 
   // The Check panel follows the drawing just made: which badges are worn is known once the engine has drawn them (LIVE13 E77).
-  document.addEventListener('capub:rendered', () => { updateStatusPanel(); capubRefreshModalCount(); });
+  document.addEventListener('capub:rendered', () => {
+    updateStatusPanel(); capubRefreshModalCount();
+    // The open chooser's lists put the line under each badge's name as the drawing just made has it (what it did with the badge: its place, or why it is left off).
+    const open = document.getElementById('galleryModalOverlay');
+    if(open && open.classList.contains('open')) (window.CAPUB_MODAL_PICKERS || []).forEach(entry => { if(entry && typeof entry.rendered === 'function') entry.rendered(); });
+  });
 
   // Wire once after this script block has loaded.
   setTimeout(()=>{ wireV2Controls(); updateStatusPanel(); },0);

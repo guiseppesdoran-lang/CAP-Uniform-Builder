@@ -70,11 +70,9 @@ test('patches: the place of each patch worn comes from the uniform\'s own places
   ev(`State.patches = []; delete window.CAPUBUniformView`);
 });
 
-test('the cards carry the lists, and the old patch note that repeated the lines is gone', () => {
+test('the Patches card carries its row of pictures; the Badges card has no separate list (a badge\'s place is the line on its own tile), and the old patch note that repeated the lines is gone', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  assert.match(html, /<div id="badgeSummary" class="itemSummary hidden">\s*<h4[^>]*>Where your badges are worn<\/h4>/);
+  assert.doesNotMatch(html, /badgeSummary|Where your badges are worn/, 'no separate list of where the badges are worn');
   assert.match(html, /<div id="patchSummary" class="itemSummary hidden">\s*<h4[^>]*>Where your patches are worn<\/h4>/);
   assert.doesNotMatch(html, /patchesNotShownNote/);
-  // The badge list sits under the card's rule line, above the chooser the card adds.
-  assert.ok(html.indexOf('id="badgeSummary"') > html.indexOf('data-rule="badges"') && html.indexOf('id="badgeSummary"') < html.indexOf('id="badgesPlannedNote"'));
 });
