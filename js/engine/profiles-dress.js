@@ -746,18 +746,7 @@
 
   // The polygon grown outward by `d` inches (a mitred offset), so the leaf's own edge stroke, half of which lies
   // outside the polygon, stays uncovered.
-  function growPolygon(pts, d){
-    const n = pts.length;
-    let area = 0;
-    for(let i = 0; i < n; i++){ const p = pts[i], q = pts[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
-    const sgn = area > 0 ? 1 : -1;
-    const norm = (p, q) => { const dx = q.x - p.x, dy = q.y - p.y, len = Math.hypot(dx, dy) || 1; return { x: sgn * dy / len, y: -sgn * dx / len }; };
-    return pts.map((p, i) => {
-      const a = norm(pts[(i + n - 1) % n], p), b = norm(p, pts[(i + 1) % n]);
-      const k = Math.max(0.35, 1 + a.x * b.x + a.y * b.y);
-      return { x: p.x + (a.x + b.x) / k * d, y: p.y + (a.y + b.y) / k * d };
-    });
-  }
+  const growPolygon = C.growPolygon;   // the polygon moved out by d (js/engine/compose.js)
 
   // The shirts' collar leaves lie over what reaches them (4.1.11.1.1.2.3.1, 4.1.12.2.5.1: the second badge 1/2 in above the
   // first, 'under the collar'). Ethan 2026-10-22: 'the collar should be over the badges'; and again 2026-11-10 on the aviator shirt, over a badge that reached the

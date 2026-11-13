@@ -6,7 +6,7 @@
 //   node tests/badge-toggle-perf-browser.cjs [--runs 6] [--uniforms ocp,blues_b] [--profile DIR]
 //
 // Serves the repo, opens the page in headless Chrome, sets a senior Capt, male, on each uniform with two badges selected, and toggles a third badge
-// on and off through its gallery tile's checkbox (the "Add" box), timing from the click to the drawing on screen (capub:rendered, then a frame).
+// on and off through its picture tile in the badge chooser window (a tap), timing from the tap to the drawing on screen (capub:rendered, then a frame).
 // The page's composeUniform and buildSvg are wrapped to split the time; --profile writes a CPU profile of the OCP toggles for DevTools.
 const fs = require('node:fs');
 const os = require('node:os');
@@ -92,9 +92,11 @@ const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? 
         State.membership = 'senior'; State.gender = 'male'; State.rank = 'Capt'; State.uniform = ${JSON.stringify(uniform)};
         State.badgeSelections = {}; for(const id of ${JSON.stringify(setup.slice(0, 2))}) State.badgeSelections[id] = { checked: true };
         State.badges = ${JSON.stringify(setup.slice(0, 2))}; State.badgeGalleryExpanded = true;
-        fullRender(); buildBadgeGallery(); await CAPUBUniformView.render(); return true;
+        fullRender(); buildBadgeGallery(); await CAPUBUniformView.render();
+        document.getElementById('expandBadges').click();
+        return true;
       })()`);
-      await sleep(1500);
+      await sleep(2000);
       if(PROFILE && uniform === 'ocp'){ await S('Profiler.enable'); await S('Profiler.setSamplingInterval', { interval: 200 }); await S('Profiler.start'); }
       const runs = [];
       for(let i = 0; i < RUNS; i++){
@@ -102,9 +104,9 @@ const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? 
         const r = await ev(`(async () => {
           const id = ${JSON.stringify(FRESH ? (FRESH_IDS[uniform][i] || setup[2]) : setup[2])};
           const name = getBadgeDisplayName(id);
-          const tile = [...document.querySelectorAll('#badgeGallery .galleryTile')].find(t => t.querySelector('.title')?.textContent === name);
+          const tile = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.querySelector('.vpLabel')?.textContent === name);
           if(!tile) return { error: 'no tile for ' + id };
-          const chk = tile.querySelector('.bdChk');
+          const chk = tile.querySelector('.vpOption');
           __t.compose = 0; __t.svg = 0;
           const rendered = new Promise(res => document.addEventListener('capub:rendered', res, { once: true }));
           const t0 = performance.now();
@@ -114,7 +116,7 @@ const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? 
           const tRendered = performance.now() - t0;
           await new Promise(res => requestAnimationFrame(() => setTimeout(res, 0)));
           const tFrame = performance.now() - t0;
-          return { on: chk.checked, sync: tSync, rendered: tRendered, frame: tFrame, compose: __t.compose, svg: __t.svg };
+          return { on: chk.getAttribute('aria-pressed') === 'true', sync: tSync, rendered: tRendered, frame: tFrame, compose: __t.compose, svg: __t.svg };
         })()`);
         if(r.error) throw new Error(r.error);
         r.requests = requests.length; r.urls = requests.slice();

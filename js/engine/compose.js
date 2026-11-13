@@ -695,8 +695,44 @@
     }));
   }
 
+  // A polygon moved out along its edges by `d` (inches): each vertex along the sum of its two edges' outward normals, the corner's reach held to a bevel at the sharpest turns.
+  function growPolygon(pts, d){
+    const n = pts.length;
+    let area = 0;
+    for(let i = 0; i < n; i++){ const p = pts[i], q = pts[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
+    const sgn = area > 0 ? 1 : -1;
+    const norm = (p, q) => { const dx = q.x - p.x, dy = q.y - p.y, len = Math.hypot(dx, dy) || 1; return { x: sgn * dy / len, y: -sgn * dx / len }; };
+    return pts.map((p, i) => {
+      const a = norm(pts[(i + n - 1) % n], p), b = norm(p, pts[(i + 1) % n]);
+      const k = Math.max(0.35, 1 + a.x * b.x + a.y * b.y);
+      return { x: p.x + (a.x + b.x) / k * d, y: p.y + (a.y + b.y) / k * d };
+    });
+  }
+
+  // Nothing pinned to a coat is drawn inside its opening, over the shirt, the tie, the tab or the ascot: a rack the member made wide enough passes under the lapel, and what would lie
+  // beyond the lapel's inner edge is not seen (the owner, 2026-11-12). The opening is the sheet's own outline of it (its `shirt` landmark); every ribbon, device, miniature medal, drape
+  // and badge that reaches it is drawn without it (`clipOut`, which the renderer already cuts a collar leaf over a badge with), and the lapel that lies over the rest stays over it. A sheet
+  // with no such landmark (the corporate blazers, whose shirt is a group of the sheet only) is left as it is. It adds to a layer's own cuts and runs once, after everything is placed.
+  const OPENING_ROLES = new Set(['ribbon', 'device', 'mini-medal', 'mini-drape', 'badge']);
+  const OPENING_EDGE = 0.15;
+  function cutOpening(ctx){
+    const lm = ctx.base ? ctx.landmark('shirt') : null;
+    // The lapel's front edge (the edge line and its shadow the sheets draw) lies up to 0.13 in outside the shirt's outline, the coat's cloth showing in that strip, so the cut is the outline moved
+    // out by OPENING_EDGE: it takes in the strip and goes no further than the lapel, which lies over what is beyond it.
+    const opening = lm && Array.isArray(lm.points) && lm.points.length >= 3 ? growPolygon(lm.points, OPENING_EDGE) : null;
+    if(!opening) return;
+    const ob = core.polygonBounds(opening);
+    for(const l of ctx.layers){
+      if(!OPENING_ROLES.has(l.role) || (l.type !== 'asset' && l.type !== 'raster') || (l.rotate || 0)) continue;
+      const b = core.layerBounds(l);
+      if(!b || b.x > ob.x + ob.w || b.x + b.w < ob.x || b.y > ob.y + ob.h || b.y + b.h < ob.y || !rectHitsPolygon(b, opening)) continue;
+      l.clipOut = (l.clipOut || []).concat([opening]);
+    }
+  }
+
   function finish(ctx, title){
     settleConflicts(ctx);
+    cutOpening(ctx);
     const cut = cutFrame(ctx);
     const bounds = shownBounds(ctx);
     const scene = { title, layers: ctx.layers, bounds, frameCut: cut, notes: ctx.notes, conflicts: ctx.conflicts || [], badgeOrders: settleBadgeOrders(ctx), garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
@@ -802,5 +838,5 @@
     }
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, FRAME_CUT, frameCutOf, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict, reportBadgeOrder };
+  return { Z, createContext, growPolygon, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, FRAME_CUT, frameCutOf, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict, reportBadgeOrder };
 });
