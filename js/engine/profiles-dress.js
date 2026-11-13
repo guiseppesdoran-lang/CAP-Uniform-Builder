@@ -113,8 +113,8 @@
       const cap = Math.max(1, Math.min(count, places.length + special));
       places = places.slice(0, cap);
       while(places.length < cap) places.push({ key: 'separate' + places.length, label: 'Rocketry or marksmanship place' });
-      if(cap === 1) places = [{ key: 'only', label: 'Pocket and nametag badges' }];
-      rest = C.chooseBadges(ctx, 'pocket', 'Pocket and nametag badges', others, places);
+      if(cap === 1) places = [{ key: 'only', label: 'Pocket and name tag badges' }];
+      rest = C.chooseBadges(ctx, 'pocket', 'Pocket and name tag badges', others, places);
       if(cap < count) ctx.note('Some badges have no place left on this uniform and are not shown');
       const collar = places.findIndex(x => x.service);
       if(collar >= 0 && service[0] && rest.includes(service[0]) && rest[collar] !== service[0]) ctx.note('The CAP service badge is worn closest to the collar (CAPR 39-1, 4.1.9.4.4.2, 4.1.12.2.5.2)');
@@ -138,10 +138,10 @@
     if(g.onStyle === 'men'){
       if(g.lp) places.push({ key: 'left-pocket', label: "Left pocket (wearer's left)" });
       if(g.rp && !ns) places.push({ key: 'right-pocket', label: "Right pocket (wearer's right)" });
-      if(g.nametag) places.push({ key: 'over-nametag', label: 'Over the nametag' });
+      if(g.nametag) places.push({ key: 'over-nametag', label: 'Over the name tag' });
     }else{
-      places.push({ key: 'left', label: "Over the nametag, wearer's left (nearest the collar)", service: true });
-      if(!ns) places.push({ key: 'right', label: "Over the nametag, wearer's right" });
+      places.push({ key: 'left', label: "Over the name tag, wearer's left (nearest the collar)", service: true });
+      if(!ns) places.push({ key: 'right', label: "Over the name tag, wearer's right" });
     }
     return places;
   }
@@ -441,7 +441,7 @@
         if(rpBox){
           if(levelBox) ctx.measure({ x: geo.rp.x, y: levelBox.y + levelBox.h }, { x: geo.rp.x, y: rpBox.y }, null, { caption: 'upper badge to pocket badge' });
           else if(lpBox) ctx.measure({ x: rpBox.x + rpBox.w, y: rpBox.y }, { x: lpBox.x, y: lpBox.y }, 'level with', { side: { x: 0, y: -1 }, caption: 'pocket badge to pocket badge' });
-          ctx.note(`The badge on the wearer's right keeps its service dress place on the semi-formal, 1½ in below where the nametag's bottom would be (the bottom of the ribbons)${levelBox ? '' : ', level with the badge on the wearer\'s left pocket'} (CAPR 39-1, ${geo.semi.cite}, 4.1.5.2.2.4.2)`);
+          ctx.note(`The badge on the wearer's right keeps its service dress place on the semi-formal, 1½ in below where the name tag's bottom would be (the bottom of the ribbons)${levelBox ? '' : ', level with the badge on the wearer\'s left pocket'} (CAPR 39-1, ${geo.semi.cite}, 4.1.5.2.2.4.2)`);
         }
       }
       if(queue.length) ctx.note('Some badges have no place left on this uniform and are not shown');
@@ -1544,7 +1544,7 @@
     // The cadet cords are for cadets (9.3); the Aide de Camp cord is also worn by senior members (9.3.4).
     if(!b.grade.cadet && b.cord !== 'aide_de_camp') return;
     if(!CORDS.isKnown(b.cord)){ ctx.note('The selected shoulder cord cannot be shown'); return; }
-    if(CORDS.needsColour(b.cord) && !CORDS.isChosenColour(b.cordColour)){ ctx.note('The unit commander chooses the colour of this cord: pick one to show it'); return; }
+    if(CORDS.needsColour(b.cord) && !CORDS.isChosenColour(b.cordColour)){ ctx.note('The unit commander chooses the color of this cord: pick one to show it'); return; }
     const look = { id: b.cord, colour: CORDS.needsColour(b.cord) ? b.cordColour : null };
     const base = ctx.base && ctx.base.id, carrier = base && `${base}-cord-${CORDS.carrierOf(b.cord)}`, aideSheet = base && `${base}-cord-aide-de-camp`;
     if(!carrier || !ctx.has(carrier)){ ctx.note('The selected shoulder cord cannot be shown'); return; }
@@ -2320,7 +2320,7 @@
       const tagBottom = tagRect.y + tagRect.h;
       ctx.measure({ x: span.seamX, y: tagBottom }, { x: span.lapelX, y: tagBottom }, 'centered', { mid: { x: tagRect.x + tagRect.w / 2, y: tagBottom }, side: { x: 0, y: 1 }, offsetOnly: true, offsetPx: 14, caption: 'nameplate between seam and lapel' });
       if(rack) ctx.measure({ x: tagRect.x + tagRect.w, y: tagBottom }, { x: rack.x, y: rack.y + rack.h }, sex === 'male' ? 'even with' : 'parallel with', { side: { x: 0, y: 1 }, caption: 'nameplate bottom to ribbons bottom' });
-      else ctx.note(`With no ribbons worn there is no ribbon bottom to measure from: the nametag's bottom is ${sex === 'male' ? 'even with' : 'parallel with'} the bottom of the ribbons (CAPR 39-1, ${sex === 'male' ? '4.1.5.2.2.2' : '4.1.9.4.2'})`);
+      else ctx.note(`With no ribbons worn there is no ribbon bottom to measure from: the name tag's bottom is ${sex === 'male' ? 'even with' : 'parallel with'} the bottom of the ribbons (CAPR 39-1, ${sex === 'male' ? '4.1.5.2.2.2' : '4.1.9.4.2'})`);
     }
 
     const geo = {
@@ -3225,7 +3225,7 @@
       }
     }
     if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 }, null, { caption: 'crest to medals' });
-    if(box && bottomY < ruleBottom) ctx.note('The miniature medals end at the top of the pocket: the crest is centred on the pocket (CAPR 39-1, 4.2.3.1.1.1), so the 1/2 in above the crest (4.2.2.4, ICL 25-02) would put them over the pocket');
+    if(box && bottomY < ruleBottom) ctx.note('The miniature medals end at the top of the pocket: the crest is centered on the pocket (CAPR 39-1, 4.2.3.1.1.1), so the 1/2 in above the crest (4.2.2.4, ICL 25-02) would put them over the pocket');
     if(chaplain){
       // The chaplain insignia goes 1/2 in above the top row, on the crest line (4.2.1.5, 4.2.2.5): the sheet's
       // chaplain_badge_semiformal anchor states the x, which moves with the rack.
@@ -3247,7 +3247,7 @@
       ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
       ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
     }
-    if(touching.some(l => RACK_ROLES.includes(l.role))) ctx.note('The lapel lies over the inner corner of the miniature medals: the rack is centred above the pocket (CAPR 39-1 4.2.2.4, ICL 25-02) and the collar is worn over awards (11.1.8)');
+    if(touching.some(l => RACK_ROLES.includes(l.role))) ctx.note('The lapel lies over the inner corner of the miniature medals: the rack is centered above the pocket (CAPR 39-1 4.2.2.4, ICL 25-02) and the collar is worn over awards (11.1.8)');
     for(const l of touching.filter(l => l.role === 'badge')) ctx.note(`The lapel lies over part of the ${l.title || 'badge'}: it is worn under the collar there (CAPR 39-1 11.1.8)`);
   }
 

@@ -292,7 +292,7 @@ test('the Class A nametag with no ribbons: the centred measure stays, the level 
   const labels = scene.layers.filter(l => l.type === 'measure').map(m => m.label);
   assert.ok(labels.includes('centered'));
   assert.ok(!labels.includes('even with'));
-  assert.ok(scene.notes.some(n => /no ribbon bottom to measure from: the nametag's bottom is even with/.test(n)), scene.notes.join(' | '));
+  assert.ok(scene.notes.some(n => /no ribbon bottom to measure from: the name tag's bottom is even with/.test(n)), scene.notes.join(' | '));
   for(const name of ['semi_formal_usaf-male-cadet-C-SSgt', 'semi_formal_usaf-female-cadet-C-Maj']){
     const ms = await measuresOf(name);
     assert.ok(!ms.some(m => m.label === 'parallel with') && !ms.some(m => m.label === 'centered' && /nameplate/.test(m.opts.caption)), name);

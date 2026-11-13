@@ -157,7 +157,7 @@ test('the headgear is every cap view the engine draws: both views of the OCP cap
   assert.ok(head.layers.some(l => l.role === 'text' && /back_name_tape/.test(l.key)), 'the name tape on the back of the cap is the cap\'s');
 });
 
-test('a rank worn on the chest alone is Rank insignia; a grade on the front of a field cap is the cap\'s', async () => {
+test('a grade worn on the chest alone is Grade insignia; a grade on the front of a field cap is the cap\'s', async () => {
   const ocp = PARTS.plan(await scene({ uniform: 'ocp', membership: 'senior', rank: 'Capt' }), null);
   assert.ok(ids(ocp).includes('rank-insignia') && !ids(ocp).includes('collar-and-shoulders'), ids(ocp).join());
   const head = ocp.parts.find(p => p.id === 'headgear');

@@ -125,10 +125,10 @@ function syncRibbonRackColumnsControl(){
 
   if(hint){
     hint.textContent = classA && preferredLayout === '4-center'
-      ? 'Display option: the left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This arrangement is not in accordance with CAPR 39-1.'
+      ? 'Display option: the left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This arrangement is not in accordance with the regulation.'
       : classA
         ? 'Choose three across, or align a four-across rack with the wearer-left/outboard pocket edge. Rows have no spacing.'
-        : 'CAPR 39-1 requires rows of three on Class B and aviator shirts. Four-across is available only on Class A.';
+        : 'Rows of three are required on Class B and aviator shirts. Four-across is available only on Class A (CAPR 39-1, 11.2.7).';
   }
 
   if(arrangementSelect){
@@ -221,7 +221,7 @@ if(ribbonRackColumnsSelect){
       ? e.target.value
       : '3';
     if(State.ribbonRackLayout === '4-center'){
-      capubNotify('The four-across rack centered above the welt/pocket is a display option and is not in accordance with CAPR 39-1.', 9000);
+      capubNotify('The four-across rack centered above the welt/pocket is a display option and is not in accordance with the regulation.', 9000);
     }
     syncRibbonRackColumnsControl();
     renderRack();
@@ -901,7 +901,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     // What a woman wears with it, on the coat and on the blouse alike (9.6.7.3): only slacks.
     if(State.ceremonial && State.membership === 'cadet' && State.gender === 'female') addNotice('ok',`Female members wear only slacks with this uniform (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.slacks}).`);
-    if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
+    if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires a review against the regulation and any applicable supplement.');
     return CAPUB_V2.notices;
   }
 
@@ -941,7 +941,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category"/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');

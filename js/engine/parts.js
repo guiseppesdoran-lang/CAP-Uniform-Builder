@@ -196,7 +196,7 @@
         }else if(def.kind === 'shoulders'){
           // A rank worn on the chest alone (the OCP's) is not on the collar or the shoulders.
           const worn = ofKind('shoulders');
-          make(def, figure, worn, worn.length && worn.every(([l]) => /^grade:chest/.test(String(l.key))) ? { label: 'Rank insignia', file: 'rank-insignia' } : null);
+          make(def, figure, worn, worn.length && worn.every(([l]) => /^grade:chest/.test(String(l.key))) ? { label: 'Grade insignia', file: 'rank-insignia' } : null);
         }else{
           make(def, figure, ofKind(def.kind));
         }

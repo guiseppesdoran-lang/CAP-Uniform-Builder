@@ -229,7 +229,7 @@ for(const [name, b] of CAP_BUILDS){
     // The device's own ink under the mark: four thin arms with the middle open, so the device's centre, where its eagle or shield is, is untouched.
     const dev = scene.layers.find(l => l.role === 'hat-device');
     assert.ok(Math.abs(d.centres[0].x - (dev.x + dev.w / 2)) < 0.05 && Math.abs(d.centres[0].y - (dev.y + dev.h / 2)) < 0.05, 'centred on the device');
-    assert.equal(d.label.caption.join(' '), "cap front to the grade's centre CAPR 39-1, 6.2.2.2.1-3", 'the caption says the distance ends at the centre, then the paragraph (E101)');
+    assert.equal(d.label.caption.join(' '), "Cap front to the grade's center CAPR 39-1, 6.2.2.2.1-3", 'the caption says the distance ends at the centre, then the paragraph (E101)');
     // The line reaches the crosshair's centre; its arrowhead there sits inside the device only because the device has room for it.
     const end = d.dim.find(p => Math.hypot(p.x - m.to.x, p.y - m.to.y) < 1e-9);
     assert.ok(end, 'the dimension line ends on the centre');
@@ -243,7 +243,7 @@ test('every centre mark on the standard matrix is a small open crosshair, and it
     for(const d of drawings){
       marks += d.centres.length;
       checkMarks(d, px, `${name} ${d.label.text}`);
-      if(d.centres.length) assert.ok(/centre/.test(d.label.caption.join(' ')), `${name} '${d.label.text}': caption names the centre (${d.label.caption.join(' ')})`);
+      if(d.centres.length) assert.ok(/center/.test(d.label.caption.join(' ')), `${name} '${d.label.text}': caption names the center (${d.label.caption.join(' ')})`);
     }
   }
   assert.ok(marks > 0, 'the matrix draws centre marks');
@@ -391,7 +391,7 @@ for(const gender of ['male', 'female']){
 for(const [name, b] of LAPEL_BUILDS){
   test(`MEAS3: no dimension, bar, tick, extension line or dashed reference crosses a piece: ${name}`, async () => {
     const { scene, drawings, pieces, solids } = await laidOutWithPieces(b);
-    assert.ok(drawings.some(d => d.label.text === 'halfway' || d.label.text === 'halfway to elbow'), 'a halfway measure is drawn');
+    assert.ok(drawings.some(d => d.label.text === 'Halfway' || d.label.text === 'Halfway to elbow'), 'a halfway measure is drawn');
     if(/CAP cutouts|US pins/.test(name)) assert.ok(pieces.length >= 2, 'the lapel insignia are pieces the lines keep off');
     assert.deepEqual(crossings(drawings, solids, name, scene), []);
     checkAttached(scene, drawings, name);

@@ -332,7 +332,12 @@
     return String(o.caption != null ? o.caption : (o.callout && o.callout.caption) || captionFor(scene, m) || '').trim();
   }
   // The caption as a list item: a callout's "of blue around the embroidery" starts mid-sentence, so its lead word goes; the first letter is capital.
-  const nameOf = caption => { const c = String(caption || '').replace(/^(of|from the|from)\s+/i, '').trim() || 'Other distance'; return c[0].toUpperCase() + c.slice(1); };
+  const american = s => String(s).replace(/\bcentre\b/g, 'center').replace(/\bcentred\b/g, 'centered');
+  const nameOf = caption => { const c = american(String(caption || '').replace(/^(of|from the|from)\s+/i, '').trim() || 'Other distance'); return c[0].toUpperCase() + c.slice(1); };
+  // A value as a member reads it ("Centered", "Even with", "1½ in"): the first letter capital, the spelling American; its id keeps the engine's word.
+  const valueOf = label => { const v = american(String(label)); return v ? v[0].toUpperCase() + v.slice(1) : v; };
+  // The caption on a pill: as the list names the distance.
+  const pillCaption = caption => (String(caption || '').trim() ? nameOf(caption) : '');
   const idOf = (caption, label) => (String(caption).toLowerCase() + '|' + String(label)).replace(/\s+/g, ' ');
   // The ids of the distinct measures the scene carries, in the order they are drawn, as { id, name, value, area, ref, keys, count }; `groups` them by area in AREAS' order.
   function catalogue(scene){
@@ -341,7 +346,7 @@
       if(m.type !== 'measure' || len(sub(m.to, m.from)) < 1e-6) continue;
       const cap = captionOf(scene, m), id = idOf(cap, m.label);
       let e = byId.get(id);
-      if(!e){ e = { id, name: nameOf(cap), value: String(m.label), area: areaOf(cap), ref: m.ref || refFor(scene, m) || '', keys: [], count: 0 }; byId.set(id, e); }
+      if(!e){ e = { id, name: nameOf(cap), value: valueOf(m.label), area: areaOf(cap), ref: m.ref || refFor(scene, m) || '', keys: [], count: 0 }; byId.set(id, e); }
       e.keys.push(m.key); e.count++;
     }
     const entries = [...byId.values()];
@@ -589,7 +594,7 @@
       // ---- a magnified callout (opts.callout): the inset beside the piece, laid out first so that every other label keeps clear of it ----
       const placeCallout = (m, ci) => {
         const A = m.from, B = m.to, o = m.opts.callout;
-        const lw = textWidth(m.label, fontSize) + 2 * PX.padX * P, lh = fontSize * 1.25 + 2 * PX.padY * P;
+        const lw = textWidth(valueOf(m.label), fontSize) + 2 * PX.padX * P, lh = fontSize * 1.25 + 2 * PX.padY * P;
         const b = len(sub(B, A));
         let frame = null;
         if(o.layer){
@@ -608,7 +613,7 @@
         if(!arr) return null;
         // The caption under the circle: the words split into lines of at most 15 characters.
         const capSize = CO.captionFont * P;
-        const words = (String(o.caption || '') + (m.ref ? ' ' + refText(m.ref) : '')).split(/\s+/).filter(Boolean), capLines = [];
+        const words = (pillCaption(o.caption) + (m.ref ? ' ' + refText(m.ref) : '')).split(/\s+/).filter(Boolean), capLines = [];
         for(const w of words){ const last = capLines[capLines.length - 1]; if(last && (last + ' ' + w).length <= 15) capLines[capLines.length - 1] = last + ' ' + w; else capLines.push(w); }
         const capW = capLines.length ? Math.max(...capLines.map(t => textWidth(t, capSize))) + 2 * PX.padX * P : 0;
         const capH = capLines.length ? capLines.length * capSize * 1.2 + 2 * PX.padY * P : 0;
@@ -694,7 +699,7 @@
         const lab = shift({ x: arr.label.x, y: arr.label.y });
         const drawing = {
           key: m.key,
-          label: { text: m.label, x: lab.x, y: lab.y, w: lw, h: lh },
+          label: { text: valueOf(m.label), x: lab.x, y: lab.y, w: lw, h: lh },
           dim: [shift(arr.d0), shift(arr.d1)],
           bars: arr.bars.map(([p, q]) => [shift(p), shift(q)]),
           ext: arr.ext.map(([p, q]) => [shift(p), shift(q)]),
@@ -800,11 +805,11 @@
       const u = unit(sub(B, A));
       const n = { x: -u.y, y: u.x };
       const o = m.opts || {};
-      const text = m.label;
+      const text = valueOf(m.label);
       // The pill: the length over the caption of what is measured (the profile's words, else the two pieces the measure joins), the caption
       // in lines of at most PILL.wrap characters.
       // The paragraph the distance carries out is the last line of the pill (CAPR 39-1, 4.1.5.2.2.4.1).
-      const capLines = wrapWords(o.caption != null ? o.caption : captionFor(scene, m), PILL.wrap).concat(m.ref ? wrapWords(refText(m.ref), PILL.refWrap) : []);
+      const capLines = wrapWords(pillCaption(o.caption != null ? o.caption : captionFor(scene, m)), PILL.wrap).concat(m.ref ? wrapWords(refText(m.ref), PILL.refWrap) : []);
       const lw = Math.max(textWidth(text, fontSize), ...capLines.map(t => textWidth(t, capSize) * PILL.capWidth)) + 2 * PX.padX * P;
       const lh = fontSize * 1.25 + capLines.length * capSize * 1.2 + 2 * PX.padY * P;
 

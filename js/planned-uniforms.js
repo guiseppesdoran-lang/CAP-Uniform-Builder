@@ -31,7 +31,7 @@
     if(!items.length) return;
 
     box.append(el('div','plannedTitle','Authorized, not drawn yet'));
-    box.append(el('div','hintText','CAPR 39-1 allows these. The builder cannot show them yet, so they are here to read about.'));
+    box.append(el('div','hintText','The regulation allows these. The builder cannot show them yet, so they are here to read about.'));
     items.forEach(item=>{
       const card=el('details','plannedCard');
       card.dataset.planned=item.id;

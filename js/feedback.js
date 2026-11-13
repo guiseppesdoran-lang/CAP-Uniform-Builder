@@ -59,7 +59,7 @@
       if(setup) body.setup = setup;
       error.hidden = true;
       send.disabled = true;
-      send.textContent = 'Sending...';
+      send.textContent = 'Sending';
       try{
         const r = await fetch(ENDPOINT, { method: 'POST', credentials: 'omit', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         let reply = null;

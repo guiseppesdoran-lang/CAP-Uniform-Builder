@@ -147,8 +147,8 @@ function loadPdfJs(){
     pdfJsLoading = new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = PDFJS_URL;
-      script.onload = () => window.pdfjsLib ? resolve(window.pdfjsLib) : reject(new Error('PDF.js loaded but is unavailable.'));
-      script.onerror = () => { pdfJsLoading = null; script.remove(); reject(new Error('PDF.js did not load. Check your internet connection or upload a .txt export instead.')); };
+      script.onload = () => window.pdfjsLib ? resolve(window.pdfjsLib) : reject(new Error('The PDF reader loaded but is unavailable.'));
+      script.onerror = () => { pdfJsLoading = null; script.remove(); reject(new Error('The PDF reader did not load. Check your internet connection or upload a .txt export instead.')); };
       document.head.appendChild(script);
     });
   }
@@ -2654,7 +2654,7 @@ function wireMemberReportImporter(){
     // The change event of a file chosen later makes this one stale: whichever was chosen last is the one imported.
     const turn = ++memberReportImportTurn;
     try{
-      setMemberReportImportStatus('Reading the file...');
+      setMemberReportImportStatus('Reading the file');
       const result = await importMemberReportFile(file, { isCurrent: () => turn === memberReportImportTurn });
       if(result.superseded) return;
       setMemberReportImportStatus(result.lines, result.ok ? 'ok' : 'error');

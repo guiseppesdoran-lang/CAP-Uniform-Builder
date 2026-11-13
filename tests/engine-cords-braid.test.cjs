@@ -91,7 +91,7 @@ test('a cord whose colour the unit commander picks is drawn in the member\'s col
     for(const bad of [null, '', 'green', 'silver', 'teal', 'constructor']){
       const scene = await compose(cut, id, { cordColour: bad });
       assert.equal(scene.layers.filter(l => l.cordLook).length, 0, `${id} with ${JSON.stringify(bad)}: nothing drawn`);
-      assert.ok(scene.notes.some(t => /unit commander chooses the colour/.test(t)), `${id} ${bad}: a note`);
+      assert.ok(scene.notes.some(t => /unit commander chooses the color/.test(t)), `${id} ${bad}: a note`);
     }
     for(const c of CORDS.chosenColours()){
       const scene = await compose(cut, id, { cordColour: c.name });
