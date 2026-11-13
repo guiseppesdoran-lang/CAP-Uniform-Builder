@@ -11,6 +11,8 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
 const P = require('../js/engine/profiles.js');
+const C = require('../js/engine/compose.js');
+const MEASURE = require('../scripts/measure-frame-cut.cjs');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
 require('../js/engine/profiles-polo.js');
@@ -140,9 +142,13 @@ test('the canvas makes room below for the three overlays taller than their sheet
     const [a, z] = [await compose(b), await compose(b, storeWithout)];
     const [x0, x1] = [a.bounds, z.bounds];
     assert.deepEqual([round(x0.x), round(x0.y), round(x0.w)], [round(x1.x), round(x1.y), round(x1.w)], `${cut.name}, ${role}: nothing moves at the left, the top or the width`);
-    assert.ok(Math.abs(bottom(a) - bottom(z) - cut.extra) < 1e-3, `${cut.name}, ${role}: ${bottom(z)} grows to ${bottom(a)}, by ${cut.extra}`);
     const spec = await store.load(glovesId(cut));
-    assert.ok(bottom(a) + 1e-6 >= spec.h, 'the overlay is inside the canvas');
+    // A women's sheet is cut at its line (compose.js FRAME_CUT): the hands grow the frame below that line, to their lowest ink and a hair more, or not at all where they end above it.
+    const line = C.frameCutOf(await store.load(cut.sheet));
+    const ink = Math.max(...MEASURE.shapesOf(svgOf(glovesId(cut)), { hidden: true }).map(s => Math.max(...s.pts.map(p => p[1]))));
+    const want = line == null ? cut.extra : Math.max(0, Math.min(spec.h, ink + 0.1) - bottom(z));
+    assert.ok(Math.abs(bottom(a) - bottom(z) - want) < 1e-3, `${cut.name}, ${role}: ${bottom(z)} grows to ${bottom(a)}, by ${want}`);
+    assert.ok(bottom(a) + 1e-6 >= (line == null ? spec.h : ink), 'the overlay (a women\'s sheet: its hands) is inside the canvas');
     for(const side of ['right', 'left']){
       const tip = core.anchor(spec, `glove_${side}_fingertip`);
       if(!tip) continue;
@@ -156,7 +162,8 @@ test('the canvas makes room below for the three overlays taller than their sheet
   // The numbers the owner reads: how much taller.
   const grown = [];
   for(const cut of CUTS){ const b = guard(cut, 'guard'); grown.push(round(bottom(await compose(b)) - bottom(await compose(b, storeWithout)))); }
-  assert.deepEqual(grown, [0.25, 1.85, 0, 1.5, 0, 0]);
+  // The women's coat's frame is 0.04 in shorter than it was (its cut), so the same hands grow it 0.04 in more; the long blouse's hands hang below its cut.
+  assert.deepEqual(grown.map(n => Math.round(n * 100) / 100), [0.25, 1.89, 0, 1.5, 0, 1.65]);
 });
 
 test('the placement template (the paper and the jig) is a stencil for what is pinned and draws no garment art: the gloves are not in it, and it plans as it did', async () => {

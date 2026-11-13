@@ -978,6 +978,7 @@
   // Move a layer by (dx, dy) inches.
   function shiftLayer(l, dx, dy){
     l.x += dx; l.y += dy;
+    if(l.cutBelow != null) l.cutBelow += dy;
     if(l.origin) l.origin = { x: l.origin.x + dx, y: l.origin.y + dy };
     if(l.clip) l.clip = l.clip.map(p => ({ x: p.x + dx, y: p.y + dy }));
     if(l.strip) l.strip = Object.assign({}, l.strip, { x: l.strip.x + dx, y: l.strip.y + dy, origin: { x: l.strip.origin.x + dx, y: l.strip.origin.y + dy } });

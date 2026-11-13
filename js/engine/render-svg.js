@@ -634,6 +634,21 @@
           node = g;
         }
       }
+      if(layer.cutBelow != null){
+        // The picture ends at this line in scene inches (js/engine/compose.js FRAME_CUT): nothing of the layer is drawn below it.
+        const key = 'below:' + fmt(layer.cutBelow);
+        let cid = clipIds.get(key);
+        if(!cid){
+          cid = 'clip-' + clipIds.size;
+          const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
+          cp.appendChild(el('rect', { x: -1000, y: -1000, width: 3000, height: fmt(1000 + layer.cutBelow) }));
+          defs.appendChild(cp);
+          clipIds.set(key, cid);
+        }
+        const g = el('g', { 'clip-path': `url(#${cid})` });
+        g.appendChild(node);
+        node = g;
+      }
       const wrap = el('g', {
         class: 'layer ' + (layer.className || ''),
         'data-calib-key': layer.key || null,

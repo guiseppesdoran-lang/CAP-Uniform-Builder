@@ -594,6 +594,77 @@
 
   // ---- The scene ---------------------------------------------------------------------------------
 
+  // ---- Where the picture ends ----
+  //
+  // The picture shows the top (the owner, 2026-11-12: "you only have to show the top, not the skirt. thats why the female mess dress (and others) look like a ... witch robe. it
+  // should cut off where the rest of the uniforms cut off. the only reaosn class b includes some of the pants is because includes the belt"). The women's sheets draw a skirt or slacks
+  // far longer than the trousers the men's sheets draw, so a picture ends a short strip under the top's own lowest point: the sheet's reference line (the lower edge of the belt where
+  // one is drawn, else the lowest point of the top, hem and cuffs, whichever is lower). The strip is the one rule of scripts/measure-frame-cut.cjs: a figure with a belt drawn shows the
+  // men's strip of the same uniform, a figure with no belt drawn (a coat, a blazer, an overblouse, the women's polo) shows the Class A coat's 0.288 in; the mess dress keeps the men's own.
+  // FRAME_CUT is that line and that strip per sheet, generated from the sheets by that script and checked against them by tests/engine-frame-cut.test.cjs. A sheet with no entry
+  // (the men's coat, mess dress and belted shirts, the field coats, the flight suits) ends where its sheet does. The sheet's inches run from its top, the scene's origin, so the cut
+  // is scene inches too.
+  // GARMENT FRAME_CUT begin
+  const FRAME_CUT = {
+    'garment-blues-class-a-coat-female': { line: 29.147, strip: 0.288 },
+    'garment-semiformal-class-a-coat-female': { line: 29.147, strip: 0.288 },
+    'garment-mess-dress-female': { line: 32.458, strip: 2.227 },
+    'garment-corporate-service-dress-blazer-female': { line: 28.382, strip: 0.288 },
+    'garment-blues-class-b-blouse-female': { line: 23.172, strip: 4.446 },
+    'garment-blues-class-b-blouse-female-long': { line: 29.207, strip: 1.354 },
+    'garment-aviator-shirt-female': { line: 24.944, strip: 3.535 },
+    'garment-aviator-shirt-female-long': { line: 33.222, strip: 0.409 },
+    'garment-overblouse-female': { line: 24.529, strip: 0.288 },
+    'garment-overblouse-female-long': { line: 24.914, strip: 0.288 },
+    'garment-polo-female': { line: 28.794, strip: 0.288 },
+    'garment-polo-female-long': { line: 29.183, strip: 0.288 },
+    'garment-corporate-service-dress-blazer-male': { line: 33.73, strip: 0.288 }
+  };
+  // GARMENT FRAME_CUT end
+  // The flat sleeves drawn beside the figure for the patches are no part of the lower garment: they count whole, and the frame grows to hold them. The Honor Guard uniform's white gloves
+  // hang past the cuff and, on three sheets, past the sheet's lower edge (the sheet draws them as an overlay taller than itself): they stay whole too, so the line they are held to is the
+  // lower of the cut and the gloves' own lowest edge (the overlay is a whole sheet, and its box says nothing of where the hands end).
+  const CUT_WHOLE = ['sleeve-flat'];
+  const GLOVES = 'honor-guard-gloves', GLOVE_EDGE = 0.1;
+  // The lowest point the gloves overlay's landmarks give (outlines of the hands, in the sheet's units of 0.01 in), in inches.
+  function glovesBottom(spec){
+    let low = -Infinity;
+    const walk = v => {
+      if(Array.isArray(v)){ if(v.length === 2 && v.every(Number.isFinite)) low = Math.max(low, v[1]); else v.forEach(walk); }
+      else if(v && typeof v === 'object') Object.keys(v).forEach(k => { if(k !== 'groups' && k !== 'sheet_box') walk(v[k]); });
+    };
+    walk(spec && spec.raw && spec.raw.landmarks);
+    return low / core.UNITS_PER_INCH;
+  }
+  // The scene's y of the line the base sheet's picture ends at, or null for a sheet that is cut nowhere.
+  function frameCutOf(base){
+    const e = base && FRAME_CUT[base.id];
+    return e ? e.line + e.strip : null;
+  }
+  // A box held to a line: what lies above it, or null for a box wholly below.
+  function heldTo(box, y){
+    if(box.y >= y) return null;
+    return box.y + box.h > y ? { x: box.x, y: box.y, w: box.w, h: y - box.y } : box;
+  }
+  // Marks every layer that reaches below the line (`cutBelow`, scene inches; the renderer draws nothing of it below that line and the scene's bounds count nothing of it there) and
+  // gives the line, or null.
+  function cutFrame(ctx){
+    const y = frameCutOf(ctx.base);
+    if(y == null) return null;
+    for(const l of ctx.layers){
+      if(l.type === 'measure' || l.type === 'clear' || CUT_WHOLE.includes(l.role)) continue;
+      const b = core.layerBounds(l), bottom = b.y + b.h;
+      let line = y;
+      if(l.role === GLOVES){
+        let low = -Infinity;
+        try{ low = glovesBottom(ctx.store.get(l.id)); }catch(e){ /* the spec is not loaded: the whole box counts */ }
+        line = Math.max(y, Math.min(bottom, low + GLOVE_EDGE));
+      }
+      if(bottom > line + 1e-6) l.cutBelow = line;
+    }
+    return y;
+  }
+
   // The scene frame is what is shown (LIVE9-3; Ethan: "the corporate field is significantly smaller than the abus for some reason. should be the same size"). A garment
   // sheet's box is larger than its cloth: the field coats stack the cap views in a top margin (the CFU's boonie hats above its ball and patrol caps, 12.7 in, the ABU's
   // 7.0 in) which the engine hides and re-places on the figure, so the whole box made the CFU frame 5.7 in taller than the ABU's for the same coat, and the page fits
@@ -618,13 +689,17 @@
     }
     const sameBox = l => cloth && l.type === 'asset' && (l.role === 'garment' || l.role === 'garment-layer' || l.role === 'garment-foreground') && !(l.rotate || 0)
       && Math.abs(l.x - cloth.sheet.x) < 1e-6 && Math.abs(l.y - cloth.sheet.y) < 1e-6 && Math.abs(l.w - cloth.sheet.w) < 1e-6 && Math.abs(l.h - cloth.sheet.h) < 1e-6;
-    return core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(l => (sameBox(l) ? cloth.box : core.layerBounds(l))));
+    return core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(l => {
+      const b = sameBox(l) ? cloth.box : core.layerBounds(l);
+      return l.cutBelow != null ? heldTo(b, l.cutBelow) : b;
+    }));
   }
 
   function finish(ctx, title){
     settleConflicts(ctx);
+    const cut = cutFrame(ctx);
     const bounds = shownBounds(ctx);
-    const scene = { title, layers: ctx.layers, bounds, notes: ctx.notes, conflicts: ctx.conflicts || [], badgeOrders: settleBadgeOrders(ctx), garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
+    const scene = { title, layers: ctx.layers, bounds, frameCut: cut, notes: ctx.notes, conflicts: ctx.conflicts || [], badgeOrders: settleBadgeOrders(ctx), garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
     // Every callout quotes the regulation paragraph it carries out (measure-layout.js refFor).
     const ML = measureLayoutModule();
     if(ML && ML.refFor) for(const l of ctx.layers) if(l.type === 'measure') l.ref = ML.refFor(scene, l);
@@ -727,5 +802,5 @@
     }
   }
 
-  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict, reportBadgeOrder };
+  return { Z, createContext, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, FRAME_CUT, frameCutOf, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict, reportBadgeOrder };
 });
