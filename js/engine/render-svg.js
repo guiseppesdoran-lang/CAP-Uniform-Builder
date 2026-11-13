@@ -394,7 +394,7 @@
       return baseKey(layer) + (layer.showGroups && layer.showGroups.length ? '--show-' + layer.showGroups.join('-').replace(/[^a-z0-9-]/gi, '') : '');
     }
     function baseKey(layer){
-      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : '' + (layer.clipPlus ? '|' + JSON.stringify(layer.clipPlus) : '')));
+      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : '') + (layer.clipPlus ? '|' + JSON.stringify(layer.clipPlus) : ''));
       // Both: the named groups only, less the hidden ones inside them (a collar group redrawn without its cover).
       if(layer.onlyGroups && layer.onlyGroups.length && layer.hideGroups && layer.hideGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '') + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
       if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
