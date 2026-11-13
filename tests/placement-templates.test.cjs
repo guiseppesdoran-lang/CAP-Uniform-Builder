@@ -5,7 +5,7 @@
 //
 // Composes three builds the way the page does (scripts/render-builds.cjs makeBuild, the engine in node) and checks, against the scene
 // and the garment sheets' own specs (not copies of their numbers):
-//   - which sides are offered, and that the ABU's sewn items give a sewing guide with no pins and no jig;
+//   - which sides are offered, and that the ABU's sewn items give a sewing guide with no pins and no 3D aligner;
 //   - every pin position (estimated from the item's width: 1/4 in in from each end on its centreline above 1 in wide, one centre pin
 //     otherwise; the ribbon rack's two mounting-bar pins on its widest row);
 //   - the registration lines (the welt pocket's top edge under the bottom ribbon row, the button line, the collar edge);
@@ -15,7 +15,7 @@
 //   - page packing: a side goes on one page whenever its items fit the printable area at true scale (the men's Class A left chest with
 //     a 22-ribbon rack, three badges and the pocket badge below the rack, which used to spill its lowest item onto a second page), and a
 //     side taller than a page is split between the holes and tiled with crop marks;
-//   - the STL is binary, watertight (every edge used twice, once each way), and its holes are where the scene puts the pins (0.1 mm).
+//   - the 3D aligners (tests/placement-aligners.test.cjs): thin flat plates with no pin holes, closed solids, registered on a garment edge.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -30,7 +30,6 @@ require('../js/engine/profiles-dress.js');
 require('../js/engine/profiles-polo.js');
 const RB = require('../scripts/render-builds.cjs');
 const PT = require('../js/placement-templates.js');
-const STL = require('../js/placement-stl.js');
 
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
 const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
@@ -77,42 +76,6 @@ function samePins(got, want, msg){
   g.forEach((p, i) => { near(p.x, w[i].x, 1e-6, `${msg} pin ${i} x`); near(p.y, w[i].y, 1e-6, `${msg} pin ${i} y`); });
 }
 
-// Holes found in the STL itself: the vertices on the underside (z = 0) within 1 mm of where the pin should be, all on a 0.75 mm circle.
-function stlHoleCentre(tris, at){
-  const pts = new Map();
-  for(const t of tris) for(const v of t.v) if(Math.abs(v[2]) < 1e-4 && Math.hypot(v[0] - at[0], v[1] - at[1]) < 1.0) pts.set(v.join(','), v);
-  const list = [...pts.values()];
-  if(list.length < 8) return null;
-  const cx = list.reduce((a, v) => a + v[0], 0) / list.length, cy = list.reduce((a, v) => a + v[1], 0) / list.length;
-  const radii = list.map(v => Math.hypot(v[0] - cx, v[1] - cy));
-  return { x: cx, y: cy, n: list.length, rMin: Math.min(...radii), rMax: Math.max(...radii) };
-}
-function checkJig(side, label){
-  const { bytes, model } = PT.jigStl(side, {});
-  assert.equal(bytes.length, 84 + 50 * model.triangles.length, `${label}: binary STL size`);
-  const parsed = STL.parseBinaryStl(bytes);
-  const stats = STL.meshStats(parsed.triangles);
-  assert.ok(stats.watertight, `${label}: watertight (${stats.open} open, ${stats.misoriented} misoriented of ${stats.edges} edges)`);
-  assert.ok(stats.volume > 0, `${label}: normals point out`);
-  const R = side.region;
-  const xs = parsed.triangles.flatMap(t => t.v.map(v => v[0])), ys = parsed.triangles.flatMap(t => t.v.map(v => v[1])), zs = parsed.triangles.flatMap(t => t.v.map(v => v[2]));
-  near(Math.min(...xs), 0, 1e-3, `${label}: plate starts at x 0`); near(Math.max(...xs), R.w * MM, 1e-2, `${label}: plate width`);
-  near(Math.min(...ys), 0, 1e-3, `${label}: plate starts at y 0`); near(Math.max(...ys), R.h * MM, 1e-2, `${label}: plate height`);
-  near(Math.max(...zs), 2.5, 1e-6, `${label}: plate 2.5 mm`);
-  assert.ok(zs.some(z => Math.abs(z - 1.9) < 1e-5), `${label}: 0.6 mm pockets`);
-  if(model.lips.length) near(Math.min(...zs), -3, 1e-6, `${label}: 3 mm lips`);
-  const pins = side.items.filter(i => i.attach === 'pin').flatMap(i => i.pins);
-  assert.equal(model.holes.length, pins.length, `${label}: one hole per pin (${model.notes.join('; ')})`);
-  for(const p of pins){
-    const want = [(p.x - R.x) * MM, (R.y + R.h - p.y) * MM];
-    const got = stlHoleCentre(parsed.triangles, want);
-    assert.ok(got, `${label}: a hole near ${want}`);
-    assert.ok(Math.hypot(got.x - want[0], got.y - want[1]) <= 0.1, `${label}: hole at ${got.x},${got.y} for pin ${want}`);
-    assert.ok(got.rMin > 0.74 && got.rMax < 0.76, `${label}: 1.5 mm hole (r ${got.rMin}-${got.rMax})`);
-  }
-  return { model, parsed };
-}
-
 test('Class A, men, Capt with ribbons and badges: the sides that carry pins', async () => {
   const { plan } = await planOf('classA');
   assert.deepEqual(plan.sides.map(s => s.key).sort(), ['left-chest', 'left-lapel', 'right-chest', 'right-lapel']);
@@ -148,7 +111,7 @@ test('Class A left chest: the welt pocket\'s top edge is the registration line u
   const side = sideOf(plan, 'left-chest');
   const welt = rawSpec('garment-blues-class-a-coat').landmarks.welt_pocket;
   const ref = side.refs.find(r => r.kind === 'pocket-top');
-  assert.ok(ref && ref.lip, 'pocket top edge, a lip on the jig');
+  assert.ok(ref && ref.lip, 'pocket top edge, a registration edge');
   const seg = ref.segs[0];
   near(seg[0].y, welt.y / 100, 1e-6, 'line at the welt top'); near(seg[1].y, welt.y / 100, 1e-6, 'level');
   near(seg[0].x, welt.x / 100, 1e-6, 'from the welt\'s left end'); near(seg[1].x, (welt.x + welt.w) / 100, 1e-6, 'to its right end');
@@ -207,7 +170,7 @@ test('Class B, women, cadet: rack and badge on the left, nameplate on the right,
   }
 });
 
-test('ABU: the sewn-on tapes, badges and cloth grade give a sewing guide, no pins and no jig; a cadet\'s metal collar grade is pinned', async () => {
+test('ABU: the sewn-on tapes, badges and cloth grade give a sewing guide, no pins and no 3D aligner; a cadet\'s metal collar grade is pinned', async () => {
   const { plan } = await planOf('abu');
   assert.ok(plan.sides.length >= 3);
   for(const s of plan.sides){
@@ -226,7 +189,8 @@ test('ABU: the sewn-on tapes, badges and cloth grade give a sewing guide, no pin
   const collar = sideOf(cadet, 'left-collar');
   assert.equal(collar.attach, 'pin');
   assert.equal(collar.items[0].pins.length, 2);
-  checkJig(collar, 'ABU cadet left collar');
+  assert.equal(PT.aligners(collar).length, 1, 'the cadet\'s collar grade has one aligner');
+  assert.deepEqual(PT.aligners(sideOf(cadet, 'left-chest')), [], 'a sewn side has none');
   assert.equal(sideOf(cadet, 'left-chest').attach, 'sew');
 });
 
@@ -268,7 +232,7 @@ test('paper SVG: one page at 1:1 in inches (Letter) or millimetres (A4), the sca
   near(g.dx + S.x - 0.3, 8.2 - (g.dx + S.x + S.w), 1e-9, 'centred');
   assert.equal(g.clip.w, S.w); assert.equal(g.clip.h, S.h);
   for(const it of side.items) assert.ok(inBox({ x: it.box.x, y: it.box.y }, S, 0) && inBox({ x: it.box.x + it.box.w, y: it.box.y + it.box.h }, S, 0), it.name + ' on the sheet');
-  assert.ok(S.h < side.region.h && S.y > side.region.y, 'the sheet is tighter than the jig plate');
+  assert.ok(S.h < side.region.h && S.y > side.region.y, 'the sheet is tighter than the side\'s whole region');
 });
 
 test('the stencil: every item is one solid cut line with a scissor mark at its top-left corner, the pins are red ticks outside the cut, the garment edges dashed with one-word labels', async () => {
@@ -282,7 +246,7 @@ test('the stencil: every item is one solid cut line with a scissor mark at its t
   const rack = side.items.find(i => i.kind === 'rack');
   assert.equal(rack.cut.length, 4, 'the rack is cut as one rectangle');
   assert.deepEqual(boxOfPts(rack.cut), rack.box);
-  assert.equal(rack.outline.length, 8, 'the jig keeps the stepped outline');
+  assert.equal(rack.outline.length, 8, 'the rack keeps its stepped outline');
   assert.ok(!ops.some(o => o.t === 'circle' && o.r === 0.06), 'no pin rings inside the holes (they would be cut away)');
   assert.ok(!ops.some(o => o.t === 'poly' && o.w === 0.006), 'no ribbon part boxes inside the rack\'s hole');
   for(const it of side.items){
@@ -335,14 +299,10 @@ test('page packing: Doran\'s men\'s Class A left chest (22-ribbon rack, Observer
     assert.ok(foot.every(o => o.y + 0.02 <= H - 0.3 + 1e-9), paper + ': the footer ends above the bottom margin');
     if(paper === 'letter') assert.ok(new Set(foot.map(o => o.x)).size >= 3, 'Letter: the footer went to columns to make room');
   }
-  // The right chest carries the nameplate alone, one page; the jig is untouched by the stencil (its plate is still the side's region).
+  // The right chest carries the nameplate alone, one page.
   const right = sideOf(plan, 'right-chest');
   assert.deepEqual(right.items.map(i => i.kind), ['nametag']);
   assert.equal(PT.paperPages(right, plan.meta, 'letter').length, 1);
-  const jig = PT.jigInput(side);
-  near(Math.max(...jig.plate.map(p => p[0])), side.region.w * MM, 1e-3, 'plate width from the region');
-  near(Math.max(...jig.plate.map(p => p[1])), side.region.h * MM, 1e-3, 'plate height from the region');
-  assert.equal(jig.pockets.find(p => /Ribbon rack/.test(p.name)).ring.length, side.items.find(i => i.kind === 'rack').outline.length, 'the rack pocket keeps the stepped outline');
 });
 
 test('paper PDF: written without a library, one page per tile, US Letter 612 x 792 pt or A4 595.28 x 841.89 pt, valid cross-reference', async () => {
@@ -397,38 +357,6 @@ test('a side taller than a page is split between the holes, tiled with crop mark
   near(wp.reduce((a, p) => a + p.tile.w * p.tile.h, 0), PT.sheetOf(wide).w * PT.sheetOf(wide).h, 1e-6, 'the tiles cover the sheet once');
 });
 
-test('3D jigs: binary, watertight, holes where the pins are (within 0.1 mm), for every pinned side of the three builds', async () => {
-  let n = 0;
-  for(const name of ['classA', 'classB']){
-    const { plan } = await planOf(name);
-    for(const side of plan.sides.filter(s => s.attach === 'pin')){ checkJig(side, `${name} ${side.key}`); n++; }
-  }
-  assert.equal(n, 8);
-  const { plan } = await planOf('classA');
-  const { model } = checkJig(sideOf(plan, 'left-chest'), 'Class A left chest');
-  assert.ok(model.lips.some(l => /welt pocket top/.test(l.name)), 'a lip on the welt pocket top');
-  assert.equal(model.pockets.length, 3, 'a pocket for the rack and each badge');
-  const { plan: b } = await planOf('classB');
-  assert.ok(checkJig(sideOf(b, 'left-chest'), 'Class B left chest').model.lips.some(l => /button/.test(l.name)), 'a lip on the button line');
-});
-
-test('the triangulation: a square plate with holes and a stepped pocket gives a closed solid of the right volume', () => {
-  const plate = [[0, 0], [100, 0], [100, 60], [0, 60]];
-  const pockets = [{ ring: [[10, 10], [45, 10], [45, 20], [10, 20]], name: 'a' }, { ring: [[50, 30], [80, 30], [80, 40], [60, 40], [60, 50], [50, 50]], name: 'b' }];
-  const holes = [{ x: 15, y: 15, name: '1' }, { x: 40, y: 15, name: '2' }, { x: 55, y: 45, name: '3' }, { x: 90, y: 50, name: '4' }];
-  const lips = [{ a: [5, 5], b: [95, 5], toward: [50, 50], name: 'pocket top' }];
-  const m = STL.buildJig({ plate, pockets, holes, lips });
-  const s = STL.meshStats(m.triangles);
-  assert.ok(s.watertight);
-  const hole = STL.signedArea(STL.circle(0, 0, 0.75, 24));
-  const want = 100 * 60 * 2.5 - (35 * 10 + 30 * 10 + 10 * 10) * 0.6 - hole * (1.9 * 3 + 2.5) + 90 * 2 * 3;
-  near(s.volume, want, 1e-6, 'volume');
-  // Ear clipping covers a concave ring exactly.
-  const ring = [[0, 0], [4, 0], [4, 1], [1, 1], [1, 3], [4, 3], [4, 4], [0, 4]];
-  const tris = STL.triangulate(ring, []);
-  near(tris.reduce((a, t) => a + STL.signedArea(t), 0), STL.signedArea(ring), 1e-12, 'concave ring area');
-});
-
 test('file names and the page control: the Templates entry in the Finish panel opens the window', () => {
   // The floating command bar that used to carry a Templates button is gone; the entry this module adds to the
   // Check & finish step, after the download block, is the one place the window opens from.
@@ -440,8 +368,10 @@ test('file names and the page control: the Templates entry in the Finish panel o
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   assert.match(html, /<div class="finishAction" id="downloadAction">\s*<button id="downloadImage" type="button">Download picture \(PNG\)<\/button>\s*<\/div>/);
   // PDF is the main action for each side and the SVG a link after it (LIVE13 E78, Ethan: "nobody prints svg's lol make pdf the default").
-  assert.match(src, /data-what="pdf">Paper \(PDF\)<\/button>\$\{s\.attach === 'pin' \? `<button type="button" class="ghost" data-side="\$\{esc\(s\.key\)\}" data-what="stl">3D jig \(STL\)<\/button>` : ''\}<button type="button" class="ptAlt" data-side="\$\{esc\(s\.key\)\}" data-what="svg">also as SVG<\/button>/);
+  assert.match(src, /data-what="pdf">Paper \(PDF\)<\/button>\$\{stlButtons\(s\)\}<button type="button" class="ptAlt" data-side="\$\{esc\(s\.key\)\}" data-what="svg">also as SVG<\/button>/);
+  assert.match(src, /<button type="button" class="ghost" data-side="\$\{esc\(s\.key\)\}" data-what="stl"\$\{i \? ` data-piece="\$\{i\}"` : ''\}>3D aligner/);
   assert.doesNotMatch(src, /data-what="pdf"[^>]*class="ghost"|class="ghost"[^>]*data-what="pdf"/, 'the PDF button is not the secondary style');
-  assert.match(src, />3D jig \(STL\)</);
-  assert.match(src, /Sewn on: paper sewing guide only, no 3D jig/);
+  assert.match(src, /\(STL\)<\/button>/);
+  assert.match(src, /Sewn on: paper sewing guide only, no 3D aligner/);
+  assert.doesNotMatch(src, /3D jig/);
 });

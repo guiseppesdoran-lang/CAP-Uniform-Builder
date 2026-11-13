@@ -1,16 +1,18 @@
-// Placement jig geometry and a binary STL writer (LIVE13 E64), with no library.
+// Placement aligner geometry and a binary STL writer (LIVE13 E64), with no library.
 //
-// The jig is a 2.5D solid built from flat faces and vertical walls:
-//   - the plate, a polygon (here a rectangle) from z = 0 (the face on the garment) to z = thickness,
-//   - pockets cut into its top face to pocketDepth (each item's outline, so the item sits in place),
-//   - round through-holes at the pin positions (a 24-sided polygon),
-//   - lips under the plate (strips from z = -lipHeight to 0) along the garment's registration edges.
-// Every planar face is a polygon with holes, triangulated by ear clipping after joining each hole to the
-// outer ring with a bridge (no extra points), so each face's boundary is exactly the loop its walls use and
-// the mesh is closed: every edge belongs to two triangles, once in each direction.
+// An aligner is a thin flat plate (2 mm) drawn as a 2D outline and stood up: the plate from z = 0 (the face on the garment) to
+// z = thickness, with the label letters raised on its top face by 0.6 mm. It has no holes for pins and no lips: it is made of bars
+// (legs, shelves, posts) that touch a garment edge with their straight ends and hold the items in open cradles, so nothing on it has
+// to fit a printed hole. Every planar face is a polygon with holes, triangulated by ear clipping after joining each hole to the outer
+// ring with a bridge (no extra points), so each face's boundary is exactly the loop its walls use and the mesh is closed: every edge
+// belongs to two triangles, once in each direction.
 //
-// Units are millimetres, x right, y up, z out of the garment. Loads as a classic script
-// (window.CAPUBPlacementSTL) and as a CommonJS module for the node tests.
+// The outline is the union of rectangles, minus the cuts (the garment edge it is clipped on, the centre notches): boolean2d does that
+// exactly by cutting every edge at every crossing and keeping the pieces that have the shape on one side only. The letters are a stroke
+// font of the same kind (a stroke is a rectangle), so the letters, too, are loops that boolean2d returns.
+//
+// Units are millimetres, x right, y up, z out of the garment. Loads as a classic script (window.CAPUBPlacementSTL) and as a CommonJS
+// module for the node tests.
 (function(root, factory){
   const api = factory();
   if(typeof module === 'object' && module.exports) module.exports = api;
@@ -105,166 +107,297 @@
     return t > 1e-9 && t < 1 - 1e-9;
   }
 
-  // Ear clipping of a (bridged) counter-clockwise ring. Returns triangles as point triples, counter-clockwise.
+  // Ear clipping of a (bridged) counter-clockwise ring on a linked list, walking on from each clipped ear. Returns triangles as
+  // point triples, counter-clockwise.
   function earClip(ring){
-    const pts = ring.slice();
-    const idx = pts.map((p, i) => i);
+    const n = ring.length;
+    if(n < 3) return [];
+    const prev = new Array(n), next = new Array(n);
+    for(let i = 0; i < n; i++){ prev[i] = (i + n - 1) % n; next[i] = (i + 1) % n; }
     const tris = [];
-    let guard = 0;
-    while(idx.length > 3){
-      if(++guard > 100000) throw new Error('triangulate: did not converge');
-      let clipped = false;
-      for(let k = 0; k < idx.length; k++){
-        const ia = idx[(k - 1 + idx.length) % idx.length], ib = idx[k], ic = idx[(k + 1) % idx.length];
-        const a = pts[ia], b = pts[ib], c = pts[ic];
-        if(cross(a, b, c) <= EPS) continue;
-        let ok = true;
-        for(const j of idx){
-          if(j === ia || j === ib || j === ic) continue;
-          const p = pts[j];
-          if(same(p, a) || same(p, b) || same(p, c)) continue;
-          if(strictlyInside(p, a, b, c) || onOpenSegment(p, a, c)){ ok = false; break; }
-        }
-        if(!ok) continue;
-        tris.push([a, b, c]);
-        idx.splice(k, 1);
-        clipped = true;
-        break;
+    const isEar = (ia, ib, ic) => {
+      const a = ring[ia], b = ring[ib], c = ring[ic];
+      if(cross(a, b, c) <= EPS) return false;
+      const x0 = Math.min(a[0], b[0], c[0]) - 1e-7, x1 = Math.max(a[0], b[0], c[0]) + 1e-7;
+      const y0 = Math.min(a[1], b[1], c[1]) - 1e-7, y1 = Math.max(a[1], b[1], c[1]) + 1e-7;
+      for(let j = next[ic]; j !== ia; j = next[j]){
+        const p = ring[j];
+        if(p[0] < x0 || p[0] > x1 || p[1] < y0 || p[1] > y1) continue;
+        if(same(p, a) || same(p, b) || same(p, c)) continue;
+        if(strictlyInside(p, a, b, c) || onOpenSegment(p, a, c)) return false;
       }
-      if(!clipped){
-        // A ring left with only straight or reflex corners: drop a vertex lying on a straight line between
-        // its neighbours only if it is a duplicate (bridge seam); otherwise this is a bug in the input.
-        const k = idx.findIndex((ib, k2) => { const a = pts[idx[(k2 - 1 + idx.length) % idx.length]], c = pts[idx[(k2 + 1) % idx.length]]; return same(a, c); });
-        if(k >= 0){ idx.splice(k, 1); continue; }
-        throw new Error('triangulate: no ear found');
+      return true;
+    };
+    let left = n, cur = 0, stuck = 0, guard = 0;
+    while(left > 3){
+      if(++guard > 60 * n + 1000) throw new Error('triangulate: did not converge');
+      const ia = prev[cur], ic = next[cur];
+      if(isEar(ia, cur, ic)){
+        tris.push([ring[ia], ring[cur], ring[ic]]);
+        next[ia] = ic; prev[ic] = ia; left--; cur = ia; stuck = 0;
+        continue;
+      }
+      cur = next[cur];
+      if(++stuck > left){
+        // A bridge seam can leave a spike (a vertex whose neighbours are one point): drop it; anything else is a bug in the input.
+        let k = cur, found = -1;
+        for(let s = 0; s < left; s++, k = next[k]) if(same(ring[prev[k]], ring[next[k]])){ found = k; break; }
+        if(found < 0) throw new Error('triangulate: no ear found');
+        const pa = prev[found], pc = next[found];
+        next[pa] = pc; prev[pc] = pa; left--; cur = pa; stuck = 0;
       }
     }
-    if(idx.length === 3 && cross(pts[idx[0]], pts[idx[1]], pts[idx[2]]) > EPS) tris.push([pts[idx[0]], pts[idx[1]], pts[idx[2]]]);
+    if(left === 3 && cross(ring[cur], ring[next[cur]], ring[next[next[cur]]]) > EPS) tris.push([ring[cur], ring[next[cur]], ring[next[next[cur]]]]);
     return tris;
   }
 
   function triangulate(outer, holes){ return earClip(bridgeHoles(outer, holes || [])); }
 
-  function circle(cx, cy, r, n){
-    const out = [];
-    for(let i = 0; i < n; i++){ const t = 2 * Math.PI * i / n; out.push([cx + r * Math.cos(t), cy + r * Math.sin(t)]); }
-    return out;
-  }
+  const bbox = ring => { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity; for(const p of ring){ if(p[0] < x0) x0 = p[0]; if(p[0] > x1) x1 = p[0]; if(p[1] < y0) y0 = p[1]; if(p[1] > y1) y1 = p[1]; } return { x0, y0, x1, y1 }; };
 
-  // Convex polygons a and b overlap (separating axis test), after growing each by `gap`.
-  function convexOverlap(a, b, gap){
-    for(const poly of [a, b]){
-      for(let i = 0; i < poly.length; i++){
-        const p = poly[i], q = poly[(i + 1) % poly.length];
-        const nx = q[1] - p[1], ny = p[0] - q[0], len = Math.hypot(nx, ny) || 1;
-        const proj = r => r.map(v => (v[0] * nx + v[1] * ny) / len);
-        const pa = proj(a), pb = proj(b);
-        if(Math.max(...pa) + gap < Math.min(...pb) || Math.max(...pb) + gap < Math.min(...pa)) return false;
-      }
-    }
-    return true;
-  }
-  const bbox = ring => { const xs = ring.map(p => p[0]), ys = ring.map(p => p[1]); return { x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) }; };
-  const boxRing = b => [[b.x0, b.y0], [b.x1, b.y0], [b.x1, b.y1], [b.x0, b.y1]];
-  function distToSegment(p, a, b){
-    const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy;
-    const t = l2 ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2)) : 0;
-    return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);
-  }
-  const ringClearance = (p, ring) => Math.min(...ring.map((a, i) => distToSegment(p, a, ring[(i + 1) % ring.length])));
-  // Drop points that lie on the straight line between their neighbours (they would leave T-junctions).
-  function simplify(ring){
+  // Drop points that lie on the straight line between their neighbours (they would leave T-junctions) and repeated points.
+  function simplify(ring, tol){
+    const t = tol === undefined ? 1e-9 : tol;
     let r = ring.filter((p, i) => !same(p, ring[(i + 1) % ring.length]));
     let changed = true;
     while(changed && r.length > 3){
       changed = false;
       for(let i = 0; i < r.length; i++){
         const a = r[(i - 1 + r.length) % r.length], b = r[i], c = r[(i + 1) % r.length];
-        if(Math.abs(cross(a, b, c)) < 1e-9){ r.splice(i, 1); changed = true; break; }
+        const len = Math.hypot(c[0] - a[0], c[1] - a[1]) || 1;
+        const between = (b[0] - a[0]) * (c[0] - b[0]) + (b[1] - a[1]) * (c[1] - b[1]) > 0;
+        if(Math.abs(cross(a, b, c)) / len <= t && between){ r.splice(i, 1); changed = true; break; }
       }
     }
     return r;
   }
 
-  const DEFAULTS = { thickness: 2.5, pocketDepth: 0.6, holeDiameter: 1.5, lipHeight: 3, lipWidth: 2, holeSides: 24, edgeInset: 1, holeClearance: 0.5, minLip: 3 };
+  // ---- 2D boolean: (union of adds) minus (union of cuts) ------------------------------------------------
+  //
+  // Every polygon edge is cut where it meets any other edge (a crossing, a corner on it, or a stretch it shares), the pieces are
+  // kept when exactly one side of them is inside the result, directed so the result is on their left, and chained into loops: outer
+  // loops counter-clockwise, holes clockwise. Coordinates are snapped to 0.1 micron and points within 1.5 micron are one point.
 
-  // Builds the jig. input: { plate: [[x, y], ...] (mm, counter-clockwise or not), pockets: [{ ring, name }],
-  // holes: [{ x, y, name }], lips: [{ a: [x, y], b: [x, y], toward: [x, y], name }] } where a lip is a strip of
-  // lipWidth on the `toward` side of the line a-b, its face on the line. Returns { triangles, pockets, holes,
-  // lips, notes, options }: what was built, and why anything asked for was left out.
-  function buildJig(input, options){
-    const o = Object.assign({}, DEFAULTS, options || {});
-    const notes = [];
-    const plate = simplify(ccw(input.plate));
-    const T = o.thickness, F = o.thickness - o.pocketDepth, L = -o.lipHeight, R = o.holeDiameter / 2;
+  const SNAP = 1e4, MERGE = 1.5e-3, PROBE = 5e-3;
 
-    // Pockets: merge any that touch or overlap into their common box.
-    let pockets = (input.pockets || []).map(p => ({ ring: simplify(ccw(p.ring)), names: [p.name] }));
-    for(let changed = true; changed;){
-      changed = false;
-      outer: for(let i = 0; i < pockets.length; i++){
-        for(let j = i + 1; j < pockets.length; j++){
-          const bi = bbox(pockets[i].ring), bj = bbox(pockets[j].ring);
-          if(bi.x0 - 1 < bj.x1 && bj.x0 - 1 < bi.x1 && bi.y0 - 1 < bj.y1 && bj.y0 - 1 < bi.y1){
-            const box = { x0: Math.min(bi.x0, bj.x0), y0: Math.min(bi.y0, bj.y0), x1: Math.max(bi.x1, bj.x1), y1: Math.max(bi.y1, bj.y1) };
-            notes.push(`Pockets for ${pockets[i].names.join(', ')} and ${pockets[j].names.join(', ')} were joined into one, as they touch`);
-            pockets[i] = { ring: boxRing(box), names: [...pockets[i].names, ...pockets[j].names] };
-            pockets.splice(j, 1);
-            changed = true;
-            break outer;
+  function boolean2d(adds, cuts){
+    const cells = new Map();
+    const reg = p => {
+      const x = Math.round(p[0] * SNAP) / SNAP, y = Math.round(p[1] * SNAP) / SNAP;
+      const cx = Math.round(x / 3e-3), cy = Math.round(y / 3e-3);
+      for(let i = -1; i <= 1; i++) for(let j = -1; j <= 1; j++){
+        const list = cells.get((cx + i) + ',' + (cy + j));
+        if(list) for(const q of list) if(Math.abs(q[0] - x) <= MERGE && Math.abs(q[1] - y) <= MERGE) return q;
+      }
+      const q = [x, y], k = cx + ',' + cy;
+      if(!cells.has(k)) cells.set(k, []);
+      cells.get(k).push(q);
+      return q;
+    };
+    const polys = [];
+    const prep = (ring, add) => {
+      let r = ring.map(reg).filter((p, i, a) => p !== a[(i + 1) % a.length]);
+      if(r.length < 3 || Math.abs(signedArea(r)) < 1e-9) return;
+      r = ccw(r);
+      polys.push({ ring: r, add, box: bbox(r) });
+    };
+    adds.forEach(r => prep(r, true));
+    cuts.forEach(r => prep(r, false));
+    const edges = [];
+    for(const P of polys) P.ring.forEach((a, i) => edges.push({ a, b: P.ring[(i + 1) % P.ring.length], pts: [] }));
+    const give = (e, p) => { if(p !== e.a && p !== e.b && !e.pts.includes(p)) e.pts.push(p); };
+    for(let i = 0; i < edges.length; i++){
+      const e = edges[i];
+      const ex0 = Math.min(e.a[0], e.b[0]), ex1 = Math.max(e.a[0], e.b[0]), ey0 = Math.min(e.a[1], e.b[1]), ey1 = Math.max(e.a[1], e.b[1]);
+      const rx = e.b[0] - e.a[0], ry = e.b[1] - e.a[1], le = Math.hypot(rx, ry);
+      for(let j = i + 1; j < edges.length; j++){
+        const f = edges[j];
+        if(ex1 < Math.min(f.a[0], f.b[0]) - 2e-3 || ex0 > Math.max(f.a[0], f.b[0]) + 2e-3 || ey1 < Math.min(f.a[1], f.b[1]) - 2e-3 || ey0 > Math.max(f.a[1], f.b[1]) + 2e-3) continue;
+        const sx = f.b[0] - f.a[0], sy = f.b[1] - f.a[1], lf = Math.hypot(sx, sy);
+        const den = rx * sy - ry * sx, qx = f.a[0] - e.a[0], qy = f.a[1] - e.a[1];
+        if(Math.abs(den) > 1e-9 * le * lf){
+          const t = (qx * sy - qy * sx) / den, u = (qx * ry - qy * rx) / den, te = 2e-3 / le, tf = 2e-3 / lf;
+          if(t >= -te && t <= 1 + te && u >= -tf && u <= 1 + tf){
+            const p = reg([e.a[0] + t * rx, e.a[1] + t * ry]);
+            give(e, p); give(f, p);
           }
+        } else if(Math.abs(qx * ry - qy * rx) / le < 1e-3){
+          const within = (g, p) => { const L = Math.hypot(g.b[0] - g.a[0], g.b[1] - g.a[1]); const t = ((p[0] - g.a[0]) * (g.b[0] - g.a[0]) + (p[1] - g.a[1]) * (g.b[1] - g.a[1])) / (L * L); return t > 0 && t < 1; };
+          for(const p of [f.a, f.b]) if(within(e, p)) give(e, p);
+          for(const p of [e.a, e.b]) if(within(f, p)) give(f, p);
         }
       }
     }
-    pockets = pockets.filter(p => {
-      const fits = p.ring.every(q => pointInRing(q, plate) && ringClearance(q, plate) >= o.edgeInset);
-      if(!fits) notes.push(`The pocket for ${p.names.join(', ')} reaches the plate's edge and was left out`);
-      return fits;
-    });
-
-    // Holes: one per pin, inside one pocket (or the plain plate), clear of every pocket wall and of each other.
-    const holes = [];
-    for(const h of input.holes || []){
-      const c = [h.x, h.y];
-      if(holes.some(k => Math.hypot(k.x - h.x, k.y - h.y) < o.holeDiameter + 0.5)){ notes.push(`The pin hole for ${h.name} is shared with a neighbouring pin`); continue; }
-      if(!pointInRing(c, plate) || ringClearance(c, plate) < R + o.edgeInset){ notes.push(`The pin hole for ${h.name} is off the plate`); continue; }
-      const pocket = pockets.findIndex(p => pointInRing(c, p.ring));
-      const near = pockets.some((p, i) => i !== pocket && ringClearance(c, p.ring) < R + 0.2) || (pocket >= 0 && ringClearance(c, pockets[pocket].ring) < R + 0.2);
-      if(near){ notes.push(`The pin hole for ${h.name} would cut a pocket wall and was left out`); continue; }
-      holes.push({ x: h.x, y: h.y, name: h.name, pocket, ring: circle(h.x, h.y, R, o.holeSides) });
-    }
-
-    // Lips: strips on the item side of each registration line, inside the plate, cut around the holes.
-    const lips = [];
-    const inner = bbox(plate);
-    for(const lip of input.lips || []){
-      const a = lip.a, b = lip.b;
-      const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
-      if(len < o.minLip) continue;
-      const ux = (b[0] - a[0]) / len, uy = (b[1] - a[1]) / len;
-      let nx = -uy, ny = ux;
-      if((lip.toward[0] - a[0]) * nx + (lip.toward[1] - a[1]) * ny < 0){ nx = -nx; ny = -ny; }
-      let spans = [[0, len]];
-      for(const h of holes){
-        const t = (h.x - a[0]) * ux + (h.y - a[1]) * uy, s = (h.x - a[0]) * nx + (h.y - a[1]) * ny, reach = R + o.holeClearance;
-        if(s < -reach || s > o.lipWidth + reach) continue;
-        spans = spans.flatMap(([t0, t1]) => [[t0, Math.min(t1, t - reach)], [Math.max(t0, t + reach), t1]]).filter(([t0, t1]) => t1 - t0 >= o.minLip);
-      }
-      for(const [t0, t1] of spans){
-        const p0 = [a[0] + ux * t0, a[1] + uy * t0], p1 = [a[0] + ux * t1, a[1] + uy * t1];
-        const ring = ccw([p0, p1, [p1[0] + nx * o.lipWidth, p1[1] + ny * o.lipWidth], [p0[0] + nx * o.lipWidth, p0[1] + ny * o.lipWidth]]);
-        if(!ring.every(q => pointInRing(q, plate) && ringClearance(q, plate) >= o.edgeInset)){ notes.push(`Part of the ${lip.name} lip runs off the plate and was left out`); continue; }
-        if(lips.some(l => convexOverlap(l.ring, ring, 0.5))){ notes.push(`Part of the ${lip.name} lip crosses another lip and was left out`); continue; }
-        lips.push({ ring, name: lip.name, a: p0, b: p1 });
+    const inPoly = (p, P) => p[0] >= P.box.x0 && p[0] <= P.box.x1 && p[1] >= P.box.y0 && p[1] <= P.box.y1 && pointInRing(p, P.ring);
+    const addPolys = polys.filter(P => P.add), cutPolys = polys.filter(P => !P.add);
+    const inResult = p => addPolys.some(P => inPoly(p, P)) && !cutPolys.some(P => inPoly(p, P));
+    const ids = new Map(), pts = [];
+    const id = p => { if(!ids.has(p)){ ids.set(p, pts.length); pts.push(p); } return ids.get(p); };
+    const kept = new Map();
+    for(const e of edges){
+      const chain = [e.a, ...e.pts.sort((p, q) => ((p[0] - e.a[0]) ** 2 + (p[1] - e.a[1]) ** 2) - ((q[0] - e.a[0]) ** 2 + (q[1] - e.a[1]) ** 2)), e.b];
+      for(let k = 0; k + 1 < chain.length; k++){
+        const p = chain[k], q = chain[k + 1];
+        if(p === q) continue;
+        const L = Math.hypot(q[0] - p[0], q[1] - p[1]), nx = -(q[1] - p[1]) / L, ny = (q[0] - p[0]) / L;
+        const mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2;
+        const left = inResult([mx + nx * PROBE, my + ny * PROBE]), right = inResult([mx - nx * PROBE, my - ny * PROBE]);
+        if(left === right) continue;
+        const [s, t] = left ? [p, q] : [q, p];
+        kept.set(id(s) + '>' + id(t), [id(s), id(t)]);
       }
     }
-    void inner;
+    const out = new Map();
+    for(const [k, [s, t]] of kept){ if(!out.has(s)) out.set(s, []); out.get(s).push({ k, t }); }
+    const used = new Set(), loops = [];
+    for(const [k0, [s0]] of kept){
+      if(used.has(k0)) continue;
+      const loop = [];
+      let k = k0, s = s0, guard = 0;
+      while(!used.has(k)){
+        if(++guard > kept.size + 5) throw new Error('boolean2d: loop did not close');
+        used.add(k);
+        loop.push(pts[s]);
+        const nexts = out.get(kept.get(k)[1]);
+        if(!nexts) throw new Error('boolean2d: open boundary');
+        const free = nexts.filter(x => !used.has(x.k));
+        if(nexts.length > 1 && free.length > 1) throw new Error('boolean2d: two loops touch at a point');
+        const nx = free[0] || nexts.find(x => x.k === k0);
+        if(!nx) break;
+        s = kept.get(k)[1]; k = nx.k;
+        if(k === k0) break;
+      }
+      if(loop.length >= 3) loops.push(loop);
+    }
+    const result = loops.map(l => simplify(l, 2e-3)).filter(l => l.length >= 3);
+    // A shape that touches itself (a corner on another edge) cannot be a closed solid: say so here, not as an open mesh later.
+    const segs = result.flatMap(l => l.map((a, i) => [a, l[(i + 1) % l.length]]));
+    for(const l of result) for(const v of l) for(const [a, b] of segs){
+      if(v === a || v === b || same(v, a) || same(v, b)) continue;
+      if(distToSegment(v, a, b) < 5e-3) throw new Error('boolean2d: the outline touches itself');
+    }
+    return result;
+  }
+  function distToSegment(p, a, b){
+    const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy;
+    const t = l2 ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2)) : 0;
+    return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);
+  }
 
-    // Faces and walls.
+  // The loops of a region as { outer, holes }: each clockwise loop belongs to the smallest counter-clockwise loop that contains it.
+  function regionsOf(loops){
+    const outers = loops.filter(l => signedArea(l) > 0).map(l => ({ outer: l, holes: [], area: signedArea(l) }));
+    for(const h of loops.filter(l => signedArea(l) < 0)){
+      const owner = outers.filter(o => pointInRing(h[0], o.outer)).sort((a, b) => a.area - b.area)[0];
+      if(!owner) throw new Error('regionsOf: a hole outside every outline');
+      owner.holes.push(h);
+    }
+    return outers.map(({ outer, holes }) => ({ outer, holes }));
+  }
+
+  // A rectangle as a ring.
+  const rect = (x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+
+  // ---- the letters: a stroke font ------------------------------------------------------------------------
+  //
+  // Capitals and digits five strokes tall: a glyph is polylines on a grid of cell units (x 0..w, y 0..4, y up) and each polyline is
+  // drawn one unit thick, so with a 1.2 mm unit the letters are 6 mm tall with 1.2 mm strokes and 1.2 mm between letters.
+
+  const FONT = (() => {
+    const g = (w, ...strokes) => ({ w, strokes });
+    const O = [[1, 4], [0, 3], [0, 1], [1, 0], [2, 1], [2, 3], [1, 4]];
+    return {
+      A: g(2, [[0, 0], [0, 3], [1, 4], [2, 3], [2, 0]], [[0, 2], [2, 2]]),
+      B: g(2, [[0, 0], [0, 4], [1, 4], [2, 3], [1, 2], [2, 1], [1, 0], [0, 0]], [[0, 2], [1, 2]]),
+      C: g(2, [[2, 3], [1, 4], [0, 3], [0, 1], [1, 0], [2, 1]]),
+      D: g(2, [[0, 0], [0, 4], [1, 4], [2, 3], [2, 1], [1, 0], [0, 0]]),
+      E: g(2, [[2, 4], [0, 4], [0, 0], [2, 0]], [[0, 2], [2, 2]]),
+      F: g(2, [[2, 4], [0, 4], [0, 0]], [[0, 2], [2, 2]]),
+      G: g(2, [[2, 3], [1, 4], [0, 3], [0, 1], [1, 0], [2, 1], [2, 2], [1.5, 2]]),
+      H: g(2, [[0, 0], [0, 4]], [[2, 0], [2, 4]], [[0, 2], [2, 2]]),
+      I: g(2, [[0, 4], [2, 4]], [[1, 4], [1, 0]], [[0, 0], [2, 0]]),
+      J: g(2, [[2, 4], [2, 1], [1, 0], [0, 1]]),
+      K: g(2, [[0, 0], [0, 4]], [[2, 4], [0, 2], [2, 0]]),
+      L: g(2, [[0, 4], [0, 0], [2, 0]]),
+      M: g(4, [[0, 0], [0, 4], [2, 2], [4, 4], [4, 0]]),
+      N: g(2, [[0, 0], [0, 4], [2, 0], [2, 4]]),
+      O: g(2, O),
+      P: g(2, [[0, 0], [0, 4], [1, 4], [2, 3], [1, 2], [0, 2]]),
+      Q: g(2, O, [[1, 1], [2, 0]]),
+      R: g(2, [[0, 0], [0, 4], [1, 4], [2, 3], [1, 2], [0, 2]], [[1, 2], [2, 0]]),
+      S: g(2, [[2, 3], [1, 4], [0, 3], [1, 2], [2, 1], [1, 0], [0, 1]]),
+      T: g(2, [[0, 4], [2, 4]], [[1, 4], [1, 0]]),
+      U: g(2, [[0, 4], [0, 1], [1, 0], [2, 1], [2, 4]]),
+      V: g(2, [[0, 4], [1, 0], [2, 4]]),
+      W: g(4, [[0, 4], [1, 0], [2, 2], [3, 0], [4, 4]]),
+      X: g(2, [[0, 4], [2, 0]], [[0, 0], [2, 4]]),
+      Y: g(2, [[0, 4], [1, 2], [2, 4]], [[1, 2], [1, 0]]),
+      Z: g(2, [[0, 4], [2, 4], [0, 0], [2, 0]]),
+      '0': g(2, O),
+      '1': g(2, [[0, 3], [1, 4], [1, 0]], [[0, 0], [2, 0]]),
+      '2': g(2, [[0, 3], [1, 4], [2, 3], [0, 0], [2, 0]]),
+      '3': g(2, [[0, 4], [2, 4], [1, 2], [2, 1], [1, 0], [0, 1]]),
+      '4': g(2, [[2, 0], [2, 4], [0, 1], [2, 1]]),
+      '5': g(2, [[2, 4], [0, 4], [0, 2], [1, 2], [2, 1], [1, 0], [0, 1]]),
+      '6': g(2, [[1, 4], [0, 3], [0, 1], [1, 0], [2, 1], [1, 2], [0, 2]]),
+      '7': g(2, [[0, 4], [2, 4], [0.5, 0]]),
+      '8': g(2, [[1, 2], [0, 3], [1, 4], [2, 3], [1, 2], [0, 1], [1, 0], [2, 1], [1, 2]]),
+      '9': g(2, [[1, 0], [2, 1], [2, 3], [1, 4], [0, 3], [1, 2], [2, 2]]),
+      '.': g(0, [[0, 0], [0, 0]]),
+      '/': g(2, [[0, 0], [2, 4]]),
+      '-': g(2, [[0, 2], [2, 2]]),
+      ' ': g(0)
+    };
+  })();
+
+  // A stroke of thickness t along p to q (ends squared and pushed out by t/2 so joints overlap), as a ring.
+  function strokeRing(p, q, t){
+    const dx = q[0] - p[0], dy = q[1] - p[1], L = Math.hypot(dx, dy);
+    const ux = L ? dx / L : 1, uy = L ? dy / L : 0, h = t / 2;
+    const a = [p[0] - ux * h, p[1] - uy * h], b = [q[0] + ux * h, q[1] + uy * h], nx = -uy * h, ny = ux * h;
+    return [[a[0] + nx, a[1] + ny], [b[0] + nx, b[1] + ny], [b[0] - nx, b[1] - ny], [a[0] - nx, a[1] - ny]];
+  }
+
+  // The width of a line of text in millimetres, and its height (five units).
+  function textSize(text, cell){
+    let w = 0;
+    for(const ch of String(text).toUpperCase()){
+      const gl = FONT[ch];
+      if(!gl) throw new Error(`no letter drawn for "${ch}"`);
+      w += gl.w + 2;
+    }
+    return { w: Math.max(0, w - 1) * cell, h: 5 * cell };
+  }
+
+  // A line of text as regions ({ outer, holes }), its lower-left corner at (0, 0), x to the right.
+  function textRegions(text, cell){
+    const rings = [];
+    let x = 0.5;
+    for(const ch of String(text).toUpperCase()){
+      const gl = FONT[ch];
+      if(!gl) throw new Error(`no letter drawn for "${ch}"`);
+      for(const s of gl.strokes) for(let i = 0; i + 1 < s.length; i++) rings.push(strokeRing([(x + s[i][0]) * cell, (s[i][1] + 0.5) * cell], [(x + s[i + 1][0]) * cell, (s[i + 1][1] + 0.5) * cell], cell));
+      x += gl.w + 2;
+    }
+    if(!rings.length) return [];
+    return regionsOf(boolean2d(rings, []));
+  }
+
+  // ---- the plate -----------------------------------------------------------------------------------------
+
+  const DEFAULTS = { thickness: 2, textHeight: 0.6 };
+
+  // Builds the solid. input: { regions: [{ outer, holes }] (the plate, mm), raised: [{ outer, holes }] (letters on its top face) }.
+  // Returns { triangles, options }.
+  function buildPlate(input, options){
+    const o = Object.assign({}, DEFAULTS, options || {});
+    const T = o.thickness, H = T + o.textHeight;
+    const regions = (input.regions || []).map(r => ({ outer: simplify(ccw(r.outer)), holes: (r.holes || []).map(h => simplify(cw(h))) }));
+    const raised = (input.raised || []).map(r => ({ outer: simplify(ccw(r.outer)), holes: (r.holes || []).map(h => simplify(cw(h))) }));
     const tris = [];
     const up = (ring2d, holes2d, z) => { for(const [a, b, c] of triangulate(ring2d, holes2d)) tris.push([[a[0], a[1], z], [b[0], b[1], z], [c[0], c[1], z]]); };
     const down = (ring2d, holes2d, z) => { for(const [a, b, c] of triangulate(ring2d, holes2d)) tris.push([[a[0], a[1], z], [c[0], c[1], z], [b[0], b[1], z]]); };
-    // A wall along a counter-clockwise loop; `out` true when the solid is inside the loop (normals point out of it).
+    // A wall along a loop; `out` true when the solid is inside the loop (normals point out of it).
     const wall = (loop, z0, z1, out) => {
       const r = ccw(loop);
       for(let i = 0; i < r.length; i++){
@@ -274,14 +407,26 @@
         else { tris.push([b0, a0, a1]); tris.push([b0, a1, b1]); }
       }
     };
-    const topHoles = holes.filter(h => h.pocket < 0);
-    up(plate, [...pockets.map(p => p.ring), ...topHoles.map(h => h.ring)], T);
-    pockets.forEach((p, i) => { up(p.ring, holes.filter(h => h.pocket === i).map(h => h.ring), F); wall(p.ring, F, T, false); });
-    down(plate, [...holes.map(h => h.ring), ...lips.map(l => l.ring)], 0);
-    wall(plate, 0, T, true);
-    for(const h of holes) wall(h.ring, 0, h.pocket < 0 ? T : F, false);
-    for(const l of lips){ wall(l.ring, L, 0, true); down(l.ring, [], L); }
-    return { triangles: tris, pockets, holes, lips, notes, options: o };
+    const own = new Map();
+    for(const r of raised){
+      const at = regions.findIndex(g => pointInRing(r.outer[0], g.outer) && !g.holes.some(h => pointInRing(r.outer[0], h)));
+      if(at < 0) throw new Error('a letter lies off the plate');
+      if(!own.has(at)) own.set(at, []);
+      own.get(at).push(r);
+    }
+    regions.forEach((g, i) => {
+      const letters = own.get(i) || [];
+      up(g.outer, [...g.holes, ...letters.map(l => l.outer)], T);
+      down(g.outer, g.holes, 0);
+      wall(g.outer, 0, T, true);
+      for(const h of g.holes) wall(h, 0, T, false);
+    });
+    for(const r of raised){
+      up(r.outer, r.holes, H);
+      wall(r.outer, T, H, true);
+      for(const h of r.holes){ up(h, [], T); wall(h, T, H, false); }
+    }
+    return { triangles: tris, options: o };
   }
 
   // ---- STL -----------------------------------------------------------------------------------------
@@ -349,5 +494,5 @@
     return { edges, open, misoriented: doubled, watertight: open === 0 && doubled === 0, volume };
   }
 
-  return { buildJig, triangulate, toBinaryStl, parseBinaryStl, meshStats, circle, signedArea, pointInRing, DEFAULTS };
+  return { boolean2d, regionsOf, rect, strokeRing, textRegions, textSize, buildPlate, triangulate, toBinaryStl, parseBinaryStl, meshStats, signedArea, pointInRing, simplify, FONT, DEFAULTS };
 });

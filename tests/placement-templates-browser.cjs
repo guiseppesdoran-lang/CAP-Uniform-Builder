@@ -6,11 +6,11 @@
 //
 // Opens the real page, sets up a men's Class A for a Capt with seven ribbons, the Pilot and the Emergency Services badges, clicks the
 // Templates control beside Download PNG, and checks the window lists the sides that carry pins (left and right chest, both lapels), each
-// with Paper (PDF) as the main button, 3D jig (STL), and the SVG as an "also as SVG" link; then clicks the left chest's three buttons and reads the files Chrome saves:
+// with Paper (PDF) as the main button, a 3D aligner (STL) for each plate, and the SVG as an "also as SVG" link; then clicks the left chest's three buttons and reads the files Chrome saves:
 //   - the SVG is one US Letter page at 1:1 (width 8.5in, height 11in), a stencil with the print line, the cut line and the pin rule,
 //   - the PDF is a one-page PDF,
-//   - the STL is binary, closed (every edge used twice) and has one 1.5 mm hole per pin the page's plan lists;
-// then switches to the ABU and checks its sides are paper-only sewing guides. Until index.html loads js/placement-stl.js and
+//   - the STL is binary, closed (every edge used twice), 2 mm thick with its letters 0.6 mm over that, and names the address in its header;
+// then switches to the ABU and checks its sides are paper-only sewing guides with no 3D aligner. Until index.html loads js/placement-stl.js and
 // js/placement-templates.js, the test server adds the two script tags before js/workspace-ui.js (the page itself is not changed).
 const fs = require('node:fs');
 const os = require('node:os');
@@ -94,27 +94,29 @@ async function launch(){
     // The entry sits in the Check & finish step's Finish panel, first after the (footer-bound) download block; the step
     // tab opens that step, and the download itself is the footer's primary action there.
     await ev(`CAPUB_V3.showStep('export')`);
-    const control = await ev(`(() => { const b = document.getElementById('placementTemplatesOpen'), d = document.getElementById('downloadImage'); const act = b && b.closest('.finishAction'); return { exists: !!b, inFinish: !!(b && b.closest('#finishPanel')), visible: !!(b && b.offsetParent), label: b && b.textContent, afterDownload: !!(act && act.previousElementSibling && act.previousElementSibling.id === 'downloadAction'), downloadInFooter: !!(d && d.closest('#stepFooter') && !d.hidden), noBar: !document.getElementById('capubCommandBar') }; })()`);
+    const control = await ev(`(() => { const b = document.getElementById('placementTemplatesOpen'), d = document.getElementById('downloadImage'); const act = b && b.closest('.finishAction'); return { hint: ((b && b.parentElement.querySelector('.hintText')) || {}).textContent || '', exists: !!b, inFinish: !!(b && b.closest('#finishPanel')), visible: !!(b && b.offsetParent), label: b && b.textContent, afterDownload: !!(act && act.previousElementSibling && act.previousElementSibling.id === 'downloadAction'), downloadInFooter: !!(d && d.closest('#stepFooter') && !d.hidden), noBar: !document.getElementById('capubCommandBar') }; })()`);
     console.log('control:', JSON.stringify(control));
     expect(control.exists && control.inFinish && control.visible && control.afterDownload && /^Placement templates/.test(control.label), 'the Templates entry is not offered in the Finish panel after the download block');
+    expect(/Print the aligners flat, no supports\./.test(control.hint), 'the Templates entry does not say how to print the aligners');
     expect(control.downloadInFooter && control.noBar, 'the download is not the footer primary on the last step, or the command bar is back');
 
     await ev(`document.getElementById('placementTemplatesOpen').click()`);
     let list = null;
     for(let i = 0; i < 100; i++){
-      list = await ev(`(() => { const d = document.getElementById('placementTemplates'); if(!d || !d.open) return null; const li = [...d.querySelectorAll('li[data-side-key]')]; return li.length ? { paper: (d.querySelector('input[name=ptPaper]:checked') || {}).value, sides: li.map(x => ({ key: x.dataset.sideKey, title: x.querySelector('b').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) } : null; })()`);
+      list = await ev(`(() => { const d = document.getElementById('placementTemplates'); if(!d || !d.open) return null; const li = [...d.querySelectorAll('li[data-side-key]')]; return li.length ? { paper: (d.querySelector('input[name=ptPaper]:checked') || {}).value, spacers: (d.querySelector('li[data-side-key=spacers] button') || {}).textContent, sides: [...li].filter(x => x.dataset.sideKey !== 'spacers').map(x => ({ key: x.dataset.sideKey, title: x.querySelector('b').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) } : null; })()`);
       if(list) break; await sleep(50);
     }
     console.log('window:', JSON.stringify(list));
     expect(list && list.paper === 'letter', 'US Letter is not the default paper for an en-US browser');
     const keys = list ? list.sides.map(s => s.key).sort().join(',') : '';
     expect(keys === 'left-chest,left-lapel,right-chest,right-lapel', `sides offered: ${keys}`);
-    expect(list && list.sides.every(s => s.buttons.join('|') === 'Paper (PDF)|3D jig (STL)|also as SVG'), 'each side offers Paper (PDF) first, then 3D jig (STL), then the SVG as a link');
+    expect(list && list.sides.every(s => s.buttons[0] === 'Paper (PDF)' && s.buttons[s.buttons.length - 1] === 'also as SVG' && s.buttons.length >= 3 && s.buttons.slice(1, -1).every(b => /^3D aligner.*\(STL\)$/.test(b))), 'each side offers Paper (PDF) first, then a 3D aligner (STL) for each plate, then the SVG as a link');
+    expect(list && list.spacers && /Spacer gauges/.test(list.spacers), 'the window offers the spacer gauges');
     if(OUT){ fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'templates-window.png'), Buffer.from((await S('Page.captureScreenshot', { format: 'png' })).data, 'base64')); }
 
     const waitFile = async re => { for(let i = 0; i < 200; i++){ const f = fs.readdirSync(downloads).find(n => re.test(n) && !/\.crdownload$/.test(n)); if(f) return path.join(downloads, f); await sleep(50); } return null; };
     for(const what of ['svg', 'pdf', 'stl']) await ev(`document.querySelector('#placementTemplates button[data-side="left-chest"][data-what="${what}"]').click()`);
-    const svgFile = await waitFile(/left-chest_paper-letter\.svg$/), pdfFile = await waitFile(/left-chest_paper-letter\.pdf$/), stlFile = await waitFile(/left-chest_jig\.stl$/);
+    const svgFile = await waitFile(/left-chest_paper-letter\.svg$/), pdfFile = await waitFile(/left-chest_paper-letter\.pdf$/), stlFile = await waitFile(/left-chest_aligner\.stl$/);
     console.log('files:', [svgFile, pdfFile, stlFile].map(f => f && `${path.basename(f)} ${fs.statSync(f).size} B`).join(', '));
     expect(svgFile && pdfFile && stlFile, 'not all three files were saved');
     if(svgFile){
@@ -127,22 +129,21 @@ async function launch(){
     if(stlFile){
       const parsed = STL.parseBinaryStl(new Uint8Array(fs.readFileSync(stlFile)));
       const stats = STL.meshStats(parsed.triangles);
-      const pins = await ev(`(async () => { const p = await CAPUBPlacementTemplates.plan(CAPUBUniformView.scene, (() => { const E = CAPUBEngine; let s; return async id => { s = s || E.core.createSpecStore(await fetch('images/MANIFEST.json').then(r => r.json()), q => fetch('images/' + q).then(r => r.json())); return s.load(id); }; })(), { uniform: State.uniform }); const side = p.sides.find(x => x.key === 'left-chest'); return side.items.reduce((a, i) => a + i.pins.length, 0); })()`);
-      const holeWalls = parsed.triangles.filter(t => Math.abs(t.normal[2]) < 1e-6 && t.v.some(v => Math.abs(v[2]) < 1e-6)).length;
-      console.log('stl:', JSON.stringify(stats), 'pins', pins, 'triangles', parsed.triangles.length);
+      const zs = [...new Set(parsed.triangles.flatMap(t => t.v.map(v => +v[2].toFixed(3))))].sort((x, y) => x - y);
+      console.log('stl:', JSON.stringify(stats), 'levels', zs.join(','), 'triangles', parsed.triangles.length);
       expect(stats.watertight && stats.volume > 0, 'the STL is not a closed solid');
-      expect(pins === 6, `left chest pins: ${pins}`);
-      expect(holeWalls > 0, 'no walls in the STL');
+      expect(zs.join(',') === '0,2,2.6', `the STL is not a 2 mm plate with 0.6 mm letters: ${zs}`);
+      expect(/uniform\.ebhq\.dev aligner/.test(parsed.header), 'the STL header does not name the address');
     }
 
-    // The ABU: sewn items, a sewing guide on paper and no jig.
+    // The ABU: sewn items, a sewing guide on paper and no aligner.
     await ev(`document.getElementById('placementTemplates').close()`);
     await setup('abu', [], ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge']);
     await ev(`document.getElementById('placementTemplatesOpen').click()`);
     let abu = null;
     for(let i = 0; i < 100; i++){ abu = await ev(`(() => { const li = [...document.querySelectorAll('#placementTemplates li[data-side-key]')]; return li.length && /Sewn on/.test(li[0].textContent) ? li.map(x => ({ key: x.dataset.sideKey, text: x.querySelector('small').textContent, buttons: [...x.querySelectorAll('button')].map(b => b.textContent) })) : null; })()`); if(abu) break; await sleep(50); }
     console.log('abu:', JSON.stringify(abu));
-    expect(abu && abu.length >= 2 && abu.every(s => s.buttons.join('|') === 'Paper (PDF)|also as SVG' && /paper sewing guide only, no 3D jig/.test(s.text)), 'the ABU sides are not paper-only sewing guides');
+    expect(abu && abu.length >= 2 && abu.every(s => s.buttons.join('|') === 'Paper (PDF)|also as SVG' && /paper sewing guide only, no 3D aligner/.test(s.text)), 'the ABU sides are not paper-only sewing guides');
     if(OUT) fs.writeFileSync(path.join(OUT, 'templates-window-abu.png'), Buffer.from((await S('Page.captureScreenshot', { format: 'png' })).data, 'base64'));
   } catch(e){
     fails.push(e.stack || String(e));

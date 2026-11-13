@@ -9,9 +9,11 @@
 //     mark, so the paper left is the space between the items and its holes show where each sits; the pins as ticks outside
 //     each hole, the garment edges to line the paper up on, a 1 in / 25 mm scale bar; one US Letter or A4 page when the side
 //     fits one, else split between the holes and tiled with crop marks;
-//   - a 3D-print jig (binary STL, js/placement-stl.js): a 2.5 mm plate with a 1.5 mm hole at every pin, a 0.6 mm pocket
-//     in each item's outline and 3 mm lips along the registration edges.
-// Pin spacing is not in the catalog: pins are estimated from each item's width (PIN_RULE).
+//   - 3D-print aligners (binary STL, js/placement-stl.js): for each side that carries pinned items one or two thin flat plates, 2 mm thick,
+//     printed flat without supports, made of bars that stop straight on the garment's edge (the pocket's top edge, the button line, the
+//     collar, lapel or shoulder board edge) and hold each item in a cradle open on one side, with the address and what the plate is for
+//     raised on it; and a set of spacer gauges, one for each gap the aligners use. No pin holes anywhere.
+// Pin spacing is not in the catalog: pins are estimated from each item's width (PIN_RULE); the aligners do not use pins.
 //
 // Loads as a classic script (window.CAPUBPlacementTemplates, with the "Placement templates" window) and as a CommonJS
 // module for the node tests (the builders only).
@@ -28,10 +30,8 @@
   const PIN_WIDE = 1;            // wider than this: two pins; else one centre pin
   const MARGIN = 0.5;            // paper/plate margin around a side's items, in
   const OVERHANG = 0.3;          // plate/paper beyond a registration line it was extended to, in
-  const CLEARANCE_MM = 0.25;     // pocket clearance around an item, each side
-  const BUTTON_R_EST = 0.25;     // button radius when the sheet gives only the centre, in (estimate)
+    const BUTTON_R_EST = 0.25;     // button radius when the sheet gives only the centre, in (estimate)
   const PIN_RULE = 'Pin ticks are estimated from each item\'s width: 1/4 in in from each end on its centerline for items wider than 1 in, the center for smaller ones; a ribbon or miniature medal rack: the mounting bar\'s two pins, 1/4 in in from the ends of its widest row. Check them against your own items.';
-  const JIG_RULE = 'Plate 2.5 mm thick, 1.5 mm pin holes, 0.6 mm item pockets (0.25 mm clearance), 3 mm x 2 mm lips on the registration edges; lip, pocket depth and clearance are estimates for a typical garment and printer.';
   const PAPERS = { letter: { w: 8.5, h: 11, label: 'US Letter' }, a4: { w: 210 / MM, h: 297 / MM, label: 'A4' } };
   const FIELD_UNIFORMS = new Set(['abu', 'ocp', 'corporate_field', 'flight_suit', 'corporate_flight_suit', 'polo']);
 
@@ -180,7 +180,7 @@
       it.zone = zone; it.side = sideHint || sideOf(it.c, g); it.garment = g ? g.index : 0;
       items.push(it);
     };
-    // A layer flagged `meme` (the chaplain patch as ICL 26-14 is written, 2 ft square) is a joke, not a placement: no stencil or jig item.
+    // A layer flagged `meme` (the chaplain patch as ICL 26-14 is written, 2 ft square) is a joke, not a placement: no stencil or aligner item.
     const L = (scene.layers || []).filter(l => !l.meme);
     // Ribbon racks and miniature medals, one per garment side.
     const groupBySide = (ls, fn) => {
@@ -326,7 +326,7 @@
   }
 
   // The sides of the garment that carry items, each with its items, its registration references (clipped to the
-  // side's region) and its region (scene inches). attach: 'pin' when any item is pinned (paper and jig), else 'sew'
+  // side's region) and its region (scene inches). attach: 'pin' when any item is pinned (paper and 3D aligner), else 'sew'
   // (paper only, a sewing guide).
   function sidesFrom(collected, scene){
     const { garments, items, marks } = collected;
@@ -454,7 +454,7 @@
   function footerNotes(side){
     const notes = [];
     const pinned = side.items.some(i => i.attach === 'pin'), sewn = side.items.some(i => i.attach === 'sew');
-    if(side.attach === 'sew') notes.push('Sewing guide: the items on this side are sewn on (or embroidered), not pinned, so there are no pin ticks and no 3D jig for it.');
+    if(side.attach === 'sew') notes.push('Sewing guide: the items on this side are sewn on (or embroidered), not pinned, so there are no pin ticks and no 3D aligner for it.');
     if(pinned) notes.push(PIN_RULE);
     if(pinned && sewn) notes.push('Items marked (sewn) are sewn on: no pin ticks.');
     for(const it of side.items) if(it.legend) notes.push(it.legend + '.');
@@ -760,73 +760,364 @@
     return bytes;
   }
 
-  // ---- 3D jig ----------------------------------------------------------------------------------------
+  // ---- 3D aligners -------------------------------------------------------------------------------------
+  //
+  // Thin flat plates in the manner of the published ribbon-rack aligners (a frame that lies on the garment with a straight edge on the
+  // garment's edge, items held in cradles open on one side, a shelf that is the gap), printed flat without supports, 2 mm thick, with
+  // no pin holes, no lips and no pockets cut to an item's size. A plate is bars of 5 mm (legs, posts, shelves, arms); where a bar
+  // ends on the garment's edge (the pocket's top edge, the button line, a collar, lapel or shoulder board edge) it is cut straight on
+  // that edge. Nothing depends on a printed hole fitting a post, so nothing depends on how exact the printer is:
+  //   - an item stands 0.5 mm clear of the post beside it (its other side is open) and rests on the shelf below it, which is exactly
+  //     the gap between it and the item under it: the shelf is the spacer;
+  //   - the first item (or the first item's legs) reach the garment's edge from the side the items are on, so the plate lies on one
+  //     side of that edge and an item below the edge gets a plate of its own, hanging from the edge;
+  //   - the plate is a tree of bars, with no enclosed window: every cradle is open on its far side, and the plate lifts straight off
+  //     once the items are pinned;
+  //   - the top bar is the label: the site's address and what the plate is for, 6 mm capitals raised 0.6 mm, with notches on its far
+  //     edge at the middle of the pocket (and at the pocket's sides) so the plate can be centred by eye.
+  // Everything is drawn in a frame of its own, x across, y away from the garment's edge: for items stacked above a level edge (the
+  // pocket) the legs run down to the edge; for a vertical edge (the button line) or a slanted one the shelves run across to the edge;
+  // a tilted item (a collar point's grade) has the frame of the item. The frame is mirrored where the edge is above or to the right
+  // of the items, and the letters are placed after, upright.
 
-  // Scene inches to jig millimetres: origin at the plate's bottom-left corner as you face the garment, x right, y up.
-  function toMm(side){ const R = side.region; return p => [r4((p.x - R.x) * MM), r4((R.y + R.h - p.y) * MM)]; }
+  const BAR = 5, CLEAR = 0.5, TEXT_CELL = 1.2, TEXT_MARGIN = 2.5, TEXT_FAR = 4.5, THICK = 2, RAISE = 0.6, BED = 180, DOMAIN = 'uniform.ebhq.dev';
+  const SMALLEST_GAP = 1.7;      // items closer than this (mm) are one block: a shelf that thin cannot be printed
+  const SPAN_MIN = 60;           // mm along the edge the plate should reach; shorter and flanges are added along the edge
 
-  function jigInput(side){
-    const R = side.region, mm = toMm(side);
-    const plate = [mm({ x: R.x, y: R.y + R.h }), mm({ x: R.x + R.w, y: R.y + R.h }), mm({ x: R.x + R.w, y: R.y }), mm({ x: R.x, y: R.y })];
-    const c = CLEARANCE_MM / MM;
-    const pinned = side.items.filter(i => i.attach === 'pin');
-    const pockets = pinned.map(it => {
-      let ring;
-      if(it.frame){
-        const f = it.frame, o = f.c, w = f.w / 2 + c, h = f.h / 2 + c;
-        ring = [[-w, -h], [w, -h], [w, h], [-w, h]].map(([dx, dy]) => rot({ x: o.x + dx, y: o.y + dy }, o, f.deg));
-      } else ring = growOrtho(it.outline, c);
-      return { ring: ring.map(mm), name: it.name };
+  // Scene inches to garment millimetres: origin at the side's region corner as you face the garment, x right, y up.
+  function toMm(side){ const R = side.region; return p => [(p.x - R.x) * MM, (R.y + R.h - p.y) * MM]; }
+
+  // A frame from the garment's plane (mm, y up) into the one a plate is drawn in: turn by -theta about o, then mirror x and/or y.
+  function frameTo(o, theta, fx, fy){
+    const c = Math.cos(theta), s = Math.sin(theta);
+    return {
+      to: p => { const dx = p[0] - o[0], dy = p[1] - o[1]; return [fx * (dx * c + dy * s), fy * (-dx * s + dy * c)]; },
+      from: q => { const x = fx * q[0], y = fy * q[1]; return [o[0] + x * c - y * s, o[1] + x * s + y * c]; },
+      mirrored: fx * fy < 0, theta, fx, fy
+    };
+  }
+  const pointInRing = (p, ring) => STL.pointInRing(p, ring);
+  const nearQuarter = deg => { const r = ((deg % 90) + 90) % 90; return Math.min(r, 90 - r) <= 0.75; };
+  const ringBox = pts => { const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]); return { x0: Math.min(...xs), y0: Math.min(...ys), x1: Math.max(...xs), y1: Math.max(...ys) }; };
+  const distToSeg = (p, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy, t = l2 ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2)) : 0; return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy); };
+
+  // The items of a side, pinned ones only, each as { name, kind, box (mm, axis-aligned) } and, for a tilted one, its own frame.
+  function alignerItems(side){
+    const mm = toMm(side);
+    return side.items.filter(i => i.attach === 'pin').map(it => {
+      const b = it.box, p0 = mm({ x: b.x, y: b.y + b.h }), p1 = mm({ x: b.x + b.w, y: b.y });
+      const out = { name: it.name, kind: it.kind, box: { x0: p0[0], y0: p0[1], x1: p1[0], y1: p1[1] } };
+      if(it.frame && !nearQuarter(it.frame.deg)){
+        const c = mm(it.frame.c);
+        out.tilt = { c, w: it.frame.w * MM, h: it.frame.h * MM, theta: -it.frame.deg * Math.PI / 180 };
+      }
+      return out;
     });
-    const holes = pinned.flatMap(it => it.pins.map((p, i) => { const q = mm(p); return { x: q[0], y: q[1], name: `${it.name} pin ${i + 1}` }; }));
-    const items = unionBox(pinned.map(i => i.box));
-    const toward = mm({ x: items.x + items.w / 2, y: items.y + items.h / 2 });
-    const inset = grow(R, -(2 + 1 + 0.6) / MM);
-    const lips = [];
-    // The lip stands against the raised edge from the flat side: beside the items for a pocket top, the buttons or a lapel the
-    // items sit next to; outside the edge for the collar, lapel or shoulder board the items sit on.
-    for(const r of side.refs.filter(x => x.lip)){
-      const away = r.kind === 'epaulet-edge' || r.kind === 'collar-edge' || (r.kind === 'lapel-edge' && side.zone === 'collar');
+  }
+
+  // The garment edge a group of items registers on, in mm: the pocket's top edge when the side has one, else the button line, the
+  // shoulder board's edge, else the nearest collar or lapel edge, else the gorge or shoulder seam. The button line is moved to the
+  // buttons' own edge.
+  const REG_ORDER = { 'pocket-top': 0, 'button-line': 1, 'epaulet-edge': 2 };
+  function chooseEdge(side, centre){
+    const mm = toMm(side);
+    let best = null;
+    for(const r of side.refs.filter(x => x.lip || x.kind === 'gorge-seam' || x.kind === 'seam')){
       for(const s of r.segs){
-        let a = s[0], b = s[1];
-        if(r.kind === 'button-line' && r.lipOffset){ // the lip's face on the buttons' edge, toward the items
-          const dir = toward[0] > mm(a)[0] ? 1 : -1;
-          a = { x: a.x + dir * r.lipOffset, y: a.y }; b = { x: b.x + dir * r.lipOffset, y: b.y };
+        let a = mm(s[0]), b = mm(s[1]);
+        const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        if(len < 8) continue;
+        if(r.kind === 'button-line' && r.lipOffset){ // the plate's edge on the buttons' edge, toward the items
+          const dir = centre[0] > a[0] ? 1 : -1, off = r.lipOffset * MM;
+          a = [a[0] + dir * off, a[1]]; b = [b[0] + dir * off, b[1]];
         }
-        const cl = clipSeg(a, b, inset);
-        if(!cl || segLen(cl) * MM < 5) continue;
-        const pa = mm(cl[0]), pb = mm(cl[1]), len = Math.hypot(pb[0] - pa[0], pb[1] - pa[1]);
-        const ux = (pb[0] - pa[0]) / len, uy = (pb[1] - pa[1]) / len; // 1 mm off each end, so lips meeting at a corner stay apart
-        const a2 = [pa[0] + ux, pa[1] + uy], b2 = [pb[0] - ux, pb[1] - uy], mid = [(pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2];
-        lips.push({ a: a2, b: b2, toward: away ? [2 * mid[0] - toward[0], 2 * mid[1] - toward[1]] : toward, name: r.label });
+        const rank = REG_ORDER[r.kind] !== undefined ? REG_ORDER[r.kind] : (r.lip ? 3 : 4), d = distToSeg(centre, a, b);
+        if(!best || rank < best.rank || (rank === best.rank && d < best.d)) best = { a, b, kind: r.kind, label: r.label, rank, d };
       }
     }
-    return { plate, pockets, holes, lips };
+    return best;
   }
-  // Grow an orthogonal (stepped) outline by d: each edge moved outward, corners re-joined.
-  function growOrtho(pts, d){
-    const n = pts.length;
-    let area = 0; for(let i = 0; i < n; i++){ const p = pts[i], q = pts[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
-    const s = area > 0 ? 1 : -1; // y down: positive area is clockwise on screen
-    const lines = pts.map((p, i) => { const q = pts[(i + 1) % n]; const dx = q.x - p.x, dy = q.y - p.y, l = Math.hypot(dx, dy) || 1; const nx = -dy / l * s, ny = dx / l * s; return { p: { x: p.x - nx * d, y: p.y - ny * d }, q: { x: q.x - nx * d, y: q.y - ny * d } }; });
-    return lines.map((L, i) => {
-      const P = lines[(i - 1 + n) % n];
-      const x1 = P.p.x, y1 = P.p.y, x2 = P.q.x, y2 = P.q.y, x3 = L.p.x, y3 = L.p.y, x4 = L.q.x, y4 = L.q.y;
-      const den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-      if(Math.abs(den) < 1e-12) return L.p;
-      const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
-      return { x: x1 + t * (x2 - x1), y: y1 + t * (y2 - y1) };
-    });
+  const pocketMarks = (side) => {
+    const mm = toMm(side), xs = [];
+    for(const r of side.refs.filter(x => x.kind === 'pocket-side')) for(const s of r.segs) xs.push(mm(s[0])[0]);
+    return xs.length >= 2 ? [Math.min(...xs), Math.max(...xs)] : null;
+  };
+
+  // The plate for one group of items on one side of an edge. blocks: [{ x0, y0, x1, y1 }] in the frame the group is drawn in
+  // (a tilted item: its own, turned upright), edge: { p, t } a point and unit direction of the edge in that frame, n the unit
+  // normal toward the items; reach: on a pocket, the x of its two sides, to which the feet run out. Returns { adds, cuts, cap, gaps,
+  // edgeGap, mode, blocks } in that frame with the label's room reserved.
+  function designBars(blocks, edge, n, text, reach){
+    const mode = Math.abs(n[1]) >= Math.abs(n[0]) ? 'H' : 'V';
+    const adds = [], gaps = [];
+    const bs = blocks.slice().sort((a, b) => a.y0 - b.y0).reduce((out, b) => {
+      const prev = out[out.length - 1];
+      if(prev && b.y0 - prev.y1 < SMALLEST_GAP){ prev.x0 = Math.min(prev.x0, b.x0); prev.x1 = Math.max(prev.x1, b.x1); prev.y1 = Math.max(prev.y1, b.y1); }
+      else out.push(Object.assign({}, b));
+      return out;
+    }, []).map(b => Object.assign(b, { xc: (b.x0 + b.x1) / 2, pl: b.x0 - CLEAR - BAR, pr: b.x1 + CLEAR + BAR }));
+    const N = bs.length, top = bs[N - 1];
+    const capW = text.w + 2 * TEXT_MARGIN, capH = text.h + TEXT_MARGIN + TEXT_FAR;      // more room on the far edge, where the notches are
+    const R = (x0, y0, x1, y1) => adds.push(STL.rect(x0, y0, x1, y1));
+    const sY = x => edge.p[1] + (x - edge.p[0]) * edge.t[1] / edge.t[0];     // the edge's height at x (a level-ish edge)
+    const sX = y => edge.p[0] + (y - edge.p[1]) * edge.t[0] / edge.t[1];     // the edge's x at height y (an upright-ish edge)
+    const along = q => (q[0] - edge.p[0]) * edge.t[0] + (q[1] - edge.p[1]) * edge.t[1];
+    for(let k = 0; k + 1 < N; k++) gaps.push(bs[k + 1].y0 - bs[k].y1);
+    let cap, ends, edgeGap, lines;
+    if(mode === 'H'){
+      // The first item's legs run down to the edge; a shelf over each item is the gap to the next; each later item has a post on its left.
+      const f = bs[0], low = Math.min(sY(f.pl), sY(f.pl + BAR), sY(f.x1 + CLEAR), sY(f.pr)) - 3;
+      edgeGap = f.y0 - sY(f.xc);
+      R(f.pl, low, f.x0 - CLEAR, f.y1 + CLEAR); R(f.x1 + CLEAR, low, f.pr, f.y1 + CLEAR);
+      // On a pocket the feet run out along its top edge to the pocket's sides (not more than 45 mm), so the plate is centred by lining the ends up.
+      if(reach && Math.abs(edge.t[1]) < 1e-9){
+        if(reach[0] < f.pl && f.pl - reach[0] <= 45) R(reach[0], low, f.pl + BAR, edge.p[1] + BAR);
+        if(reach[1] > f.pr && reach[1] - f.pr <= 45) R(f.pr - BAR, low, reach[1], edge.p[1] + BAR);
+      }
+      bs.forEach((b, k) => {
+        const nx = bs[k + 1];
+        if(k > 0) R(b.pl, b.y0, b.x0 - CLEAR, b.y1 + CLEAR);
+        if(nx) R(Math.min(b.pl, nx.pl), b.y1 + CLEAR, Math.max(k ? 0 : b.pr, nx.xc + 8, nx.pl + BAR + 12, b.pl + BAR + 2), nx.y0);
+      });
+      cap = { x0: top.pl, y0: top.y1 + CLEAR, x1: Math.max(top.pl + capW, top.xc + 8, N === 1 ? top.pr : 0), y1: top.y1 + CLEAR + capH };
+      R(cap.x0, cap.y0, cap.x1, cap.y1);
+      ends = [along([f.pl, sY(f.pl)]), along([f.pr, sY(f.pr)])];
+      lines = [{ q: [f.pl, 0], e: [0, 1] }, { q: [f.pr, 0], e: [0, 1] }];
+    } else {
+      // The edge is upright-ish: a shelf under the first item and an arm in each gap run across to it; a post beside each item on its side.
+      const f = bs[0], yLo = f.y0 - BAR, yHi = top.y1 + CLEAR + BAR;
+      const left = Math.min(sX(yLo), sX(yHi + capH)) - 3, sMax = Math.max(sX(yLo), sX(yHi + capH));
+      edgeGap = f.x0 - sX(f.y0 + (f.y1 - f.y0) / 2);
+      R(left, yLo, f.xc + 8, f.y0);
+      bs.forEach((b, k) => {
+        const nx = bs[k + 1];
+        R(b.pl, b.y0, b.x0 - CLEAR, b.y1 + CLEAR);
+        if(nx) R(left, b.y1 + CLEAR, Math.max(nx.xc + 8, nx.pl + BAR + 12, b.pl + BAR + 2), nx.y0);
+      });
+      const textX0 = Math.max(top.pl, sMax + 2);
+      cap = { x0: top.pl, y0: top.y1 + CLEAR, x1: Math.max(textX0 + capW, top.xc + 8), y1: top.y1 + CLEAR + capH, textX0 };
+      R(left, cap.y0, cap.x0 + BAR + 2, cap.y0 + BAR);                                                  // the top arm, to the edge
+      R(cap.x0, cap.y0, cap.x1, cap.y1);
+      ends = [along([sX(yLo), yLo]), along([sX(yHi), yHi])];
+      lines = [{ q: [0, yLo], e: [1, 0] }, { q: [0, yHi], e: [1, 0] }];
+    }
+    // The bars end on the edge a short way apart: where that is under SPAN_MIN a flange runs on along the edge from each end. A flange is
+    // the strip beside the edge (5 mm deep) from the bar's outer edge outward, so it meets the bar face to face: no corner pokes out past
+    // the bar and no sliver is left between them.
+    const lo = Math.min(...ends), hi = Math.max(...ends);
+    if(hi - lo < SPAN_MIN){
+      const Lf = Math.max(6, Math.min(20, (SPAN_MIN - (hi - lo)) / 2));
+      const meet = (p1, d1, p2, d2) => { const den = d1[0] * d2[1] - d1[1] * d2[0], s1 = ((p2[0] - p1[0]) * d2[1] - (p2[1] - p1[1]) * d2[0]) / den; return [p1[0] + d1[0] * s1, p1[1] + d1[1] * s1]; };
+      const inner = [edge.p[0] + n[0] * BAR, edge.p[1] + n[1] * BAR];
+      const flange = (L, end) => {
+        const A = meet(edge.p, edge.t, L.q, L.e), out = end === hi ? 1 : -1;
+        const B = [A[0] + edge.t[0] * out * Lf, A[1] + edge.t[1] * out * Lf];
+        return [A, B, [B[0] + n[0] * BAR, B[1] + n[1] * BAR], meet(inner, edge.t, L.q, L.e)];
+      };
+      lines.forEach((L, k) => adds.push(flange(L, ends[k])));
+    }
+    // The edge itself: everything on its far side is cut away, so each foot is straight on it.
+    const B = 4000, P = (u, v) => [edge.p[0] + edge.t[0] * u + n[0] * v, edge.p[1] + edge.t[1] * u + n[1] * v];
+    const cuts = [[P(-B, 0), P(B, 0), P(B, -B), P(-B, -B)]];
+    return { adds, cuts, cap, gaps, edgeGap, mode, blocks: bs };
+  }
+  // A notch cut into the cap's far edge: depth d, 2d wide at the edge.
+  const notchRing = (x, y, d) => [[x - d - 1, y + 1], [x + d + 1, y + 1], [x, y - d]];
+
+  // Everything about the aligner(s) of one side: [{ label, items, edge, regions, raised, texts, marks, gaps, size, ... }], the outlines in
+  // millimetres with the plate's lower-left corner at 0, 0 (origin: where that corner is on the garment). The first plate is for the items on
+  // the side of the edge the plate lies on, the next for items on its other side (the pocket's badge below its top edge), or for the next
+  // stack of a group too tall for a bed.
+  const designCache = new WeakMap();
+  function aligners(side){
+    if(designCache.has(side)) return designCache.get(side);
+    const items = alignerItems(side);
+    const out = [];
+    const groups = [];
+    const flat = items.filter(i => !i.tilt);
+    if(flat.length){
+      const centre = [flat.reduce((a, i) => a + (i.box.x0 + i.box.x1) / 2, 0) / flat.length, flat.reduce((a, i) => a + (i.box.y0 + i.box.y1) / 2, 0) / flat.length];
+      const edge = chooseEdge(side, centre);
+      groups.push({ items: flat, edge, tilt: null });
+    }
+    for(const t of items.filter(i => i.tilt)) groups.push({ items: [t], edge: chooseEdge(side, t.tilt.c), tilt: t.tilt });
+    const labelBase = String(side.key).replace(/^g\d+-/, '').replace(/-/g, ' ');
+    for(const grp of groups){
+      // Split by the edge's two sides: the items on each side get their own plate.
+      const sides = [];
+      if(!grp.edge){
+        sides.push({ items: grp.items, edge: null });
+      } else {
+        const t = [grp.edge.b[0] - grp.edge.a[0], grp.edge.b[1] - grp.edge.a[1]], tl = Math.hypot(t[0], t[1]);
+        const tu = [t[0] / tl, t[1] / tl], nu = [-tu[1], tu[0]];
+        const sd = i => { const c = grp.tilt ? grp.tilt.c : [(i.box.x0 + i.box.x1) / 2, (i.box.y0 + i.box.y1) / 2]; return (c[0] - grp.edge.a[0]) * nu[0] + (c[1] - grp.edge.a[1]) * nu[1]; };
+        for(const sign of [1, -1]){
+          const part = grp.items.filter(i => sd(i) * sign > 0);
+          if(part.length) sides.push({ items: part, edge: grp.edge, tu, n: [nu[0] * sign, nu[1] * sign] });
+        }
+      }
+      for(const part of sides){
+        const parts = fitParts(side, part, grp.tilt, labelBase);
+        parts.forEach((q, k) => out.push(designPiece(side, q, grp.tilt, labelBase, parts.length > 1 ? ` ${k + 1} of ${parts.length}` : '')));
+      }
+    }
+    // Two plates named alike are numbered.
+    const count = {};
+    out.forEach(p => { count[p.label] = (count[p.label] || 0) + 1; if(count[p.label] > 1) p.label += ' ' + count[p.label]; });
+    designCache.set(side, out);
+    return out;
   }
 
-  function jig(side){
-    const input = jigInput(side);
-    const model = STL.buildJig(input);
-    return Object.assign(model, { input, origin: 'Origin at the plate\'s bottom-left corner as you face the garment; x right, y up, z out of the garment; the plate\'s underside at z = 0, lips below it.' });
+  // The groups of items that each get a plate: one when its plate fits the bed; else the items are cut into stacks that do, the one
+  // nearest the edge first. The plates are used one after another (each lifted off once its items are pinned), so the next one's feet
+  // stand on a level edge at the top of the item pinned last (an upright edge stays the same edge).
+  function fitParts(side, part, tilt, labelBase){
+    const fits = p => p.size.w <= BED && p.size.h <= BED;
+    const whole = designPiece(side, part, tilt, labelBase, '');
+    if(tilt || fits(whole) || part.items.length < 2) return [part];
+    const nn = part.n || [0, 1];
+    const along = i => (i.box.x0 + i.box.x1) / 2 * nn[0] + (i.box.y0 + i.box.y1) / 2 * nn[1];
+    const items = part.items.slice().sort((a, b) => along(a) - along(b));
+    let m = 1;
+    while(m < items.length && fits(designPiece(side, Object.assign({}, part, { items: items.slice(0, m + 1) }), tilt, labelBase, ''))) m++;
+    const lower = items.slice(0, m), upper = items.slice(m);
+    let rest = Object.assign({}, part, { items: upper });
+    if(whole.mode === 'H'){
+      const y = nn[1] > 0 ? Math.max(...lower.map(i => i.box.y1)) : Math.min(...lower.map(i => i.box.y0));
+      rest = { items: upper, n: nn, edge: { a: [0, y], b: [1, y], kind: 'item-top', label: 'top edge of the item below' } };
+    }
+    return [Object.assign({}, part, { items: lower }), ...fitParts(side, rest, tilt, labelBase)];
   }
-  function jigStl(side, meta){
-    const m = jig(side);
-    return { bytes: STL.toBinaryStl(m.triangles, ascii(`CAPUB placement jig, mm. ${side.label}. Origin plate bottom-left, y up`)), model: m };
+
+  function designPiece(side, part, tilt, labelBase, suffix){
+    const notes = [];
+    let label = (labelBase + suffix).toUpperCase();
+    // The frame of the group: the garment's plane, or a tilted item's own (turned upright about its centre).
+    const o = tilt ? tilt.c : [0, 0], theta = tilt ? tilt.theta : 0, base = frameTo(o, theta, 1, 1);
+    const blocks = tilt ? [{ x0: -tilt.w / 2, y0: -tilt.h / 2, x1: tilt.w / 2, y1: tilt.h / 2 }] : part.items.map(i => i.box);
+    let edge = part.edge;
+    if(!edge){
+      // No garment edge is known for the side: a level edge under the first item, and the plate says so.
+      const low = Math.min(...blocks.map(b => b.y0));
+      edge = { a: base.from([-1000, low]), b: base.from([1000, low]), kind: 'level', label: 'level' };
+      notes.push('No garment edge is known on this side: line the straight feet up level with the bottom of the item.');
+    }
+    // The edge and the items' side of it, in the group's frame; the frame is mirrored so the edge is below (level edge) or left (upright edge).
+    const ea = base.to(edge.a), eb = base.to(edge.b), el = Math.hypot(eb[0] - ea[0], eb[1] - ea[1]);
+    const et = [(eb[0] - ea[0]) / el, (eb[1] - ea[1]) / el];
+    const mid = [(Math.min(...blocks.map(b => b.x0)) + Math.max(...blocks.map(b => b.x1))) / 2, (Math.min(...blocks.map(b => b.y0)) + Math.max(...blocks.map(b => b.y1))) / 2];
+    let nb = [-et[1], et[0]];
+    if((mid[0] - ea[0]) * nb[0] + (mid[1] - ea[1]) * nb[1] < 0) nb = [-nb[0], -nb[1]];
+    const level = Math.abs(nb[1]) >= Math.abs(nb[0]);
+    const fy = level && nb[1] < 0 ? -1 : 1;
+    // A level-ish edge that is slanted must fall away to the right, where the label bar runs; an upright-ish one is on the left.
+    const fx = level ? (fy * et[1] * et[0] > 1e-9 ? -1 : 1) : (nb[0] < 0 ? -1 : 1);
+    const F = frameTo(o, theta, fx, fy);
+    const fblocks = blocks.map(b => { const p = F.to(base.from([b.x0, b.y0])), q = F.to(base.from([b.x1, b.y1])); return { x0: Math.min(p[0], q[0]), y0: Math.min(p[1], q[1]), x1: Math.max(p[0], q[0]), y1: Math.max(p[1], q[1]) }; });
+    const fe = { p: F.to(edge.a), t: [fx * et[0], fy * et[1]] }, fn = [fx * nb[0], fy * nb[1]];
+    const onPocket = !tilt && edge.kind === 'pocket-top' && part.n && part.n[1] < 0;
+    if(onPocket) label = label.replace(/CHEST$/, 'POCKET');
+    const text = { w: Math.max(STL.textSize(DOMAIN, TEXT_CELL).w, STL.textSize(label, TEXT_CELL).w), h: 11 * TEXT_CELL + TEXT_CELL };
+    const pm = !tilt && edge.kind === 'pocket-top' ? pocketMarks(side) : null;
+    const d = designBars(fblocks, fe, fn, text, pm ? pm.map(x => F.to([x, 0])[0]).sort((a, b) => a - b) : null);
+    // The notches on the cap's far edge: the middle of the pocket (and its sides) when the side has one, else the middle of the items.
+    const marks = [{ x: pm ? F.to([(pm[0] + pm[1]) / 2, 0])[0] : (Math.min(...fblocks.map(b => b.x0)) + Math.max(...fblocks.map(b => b.x1))) / 2, d: 2.5 }];
+    if(pm) for(const px of pm) marks.push({ x: F.to([px, 0])[0], d: 1.5 });
+    const cuts = d.cuts.slice(), kept = [];
+    for(const m of marks) if(m.x - m.d - 1 > d.cap.x0 + 1 && m.x + m.d + 1 < d.cap.x1 - 1){ cuts.push(notchRing(m.x, d.cap.y1, m.d)); kept.push({ at: F.from([m.x, d.cap.y1 - m.d]), depth: m.d }); }
+    const mapRing = r => { const q = r.map(p => F.from(p)); return F.mirrored ? q.reverse() : q; };
+    const regions = STL.regionsOf(STL.boolean2d(d.adds, cuts)).map(r => ({ outer: mapRing(r.outer), holes: r.holes.map(mapRing) }));
+    // The letters, upright: the label over the address, centred on the cap's free part.
+    const textLeft = (d.cap.textX0 === undefined ? d.cap.x0 : d.cap.textX0) + TEXT_MARGIN;
+    const capC = F.from([textLeft + text.w / 2, d.cap.y0 + TEXT_MARGIN + text.h / 2]);
+    let psi = theta; while(psi > Math.PI / 2 + 1e-9) psi -= Math.PI; while(psi <= -Math.PI / 2 - 1e-9) psi += Math.PI;
+    const cs = Math.cos(psi), sn = Math.sin(psi), lineH = 5 * TEXT_CELL, off = (lineH + TEXT_CELL) / 2;
+    const raised = [], texts = [];
+    [[label, off], [DOMAIN, -off]].forEach(([s, dy]) => {
+      const w = STL.textSize(s, TEXT_CELL).w;
+      const place = p => { const lx = p[0] - w / 2, ly = p[1] - lineH / 2 + dy; return [capC[0] + lx * cs - ly * sn, capC[1] + lx * sn + ly * cs]; };
+      for(const r of STL.textRegions(s, TEXT_CELL)) raised.push({ outer: r.outer.map(place), holes: r.holes.map(h => h.map(place)) });
+      texts.push({ text: s.toLowerCase(), width: w, height: lineH, at: place([w / 2, lineH / 2]) });
+    });
+    // Every letter must stand on the plate, clear of its edge.
+    for(const r of raised) for(const v of r.outer){
+      const on = regions.find(g => pointInRing(v, g.outer) && !g.holes.some(h => pointInRing(v, h)));
+      const near = on && Math.min(...[on.outer, ...on.holes].flatMap(l => l.map((a, i) => distToSeg(v, a, l[(i + 1) % l.length]))));
+      if(!on || near < 0.9) throw new Error(`the label does not fit on the plate for ${label.toLowerCase()}`);
+    }
+    // To the print bed: the plate's lower-left corner at the origin.
+    const bb = ringBox(regions.flatMap(r => r.outer));
+    const shift = p => [p[0] - bb.x0, p[1] - bb.y0];
+    const moved = r => ({ outer: r.outer.map(shift), holes: r.holes.map(h => h.map(shift)) });
+    const size = { w: bb.x1 - bb.x0, h: bb.y1 - bb.y0 };
+    if(size.w > BED || size.h > BED) notes.push(`The plate is ${size.w.toFixed(0)} x ${size.h.toFixed(0)} mm, larger than a ${BED} mm bed: print it split in the slicer.`);
+    return {
+      label, onPocket, items: part.items.map(i => i.name), edge: edge.kind, edgeLabel: edge.label, mode: d.mode, tilted: !!tilt, blocks: d.blocks.length,
+      regions: regions.map(moved), raised: raised.map(moved), texts: texts.map(t => Object.assign(t, { at: shift(t.at) })), marks: kept.map(m => ({ at: shift(m.at), depth: m.depth })),
+      letters: { cell: TEXT_CELL, height: 5 * TEXT_CELL, stroke: TEXT_CELL, raise: RAISE }, thickness: THICK,
+      gaps: d.gaps.concat(edge.kind === 'pocket-top' || edge.kind === 'button-line' ? [d.edgeGap] : []).filter(g => g > 0.5), origin: [bb.x0, bb.y0], size, notes
+    };
+  }
+
+  function alignerModel(piece){
+    const m = STL.buildPlate({ regions: piece.regions, raised: piece.raised }, { thickness: THICK, textHeight: RAISE });
+    return Object.assign({}, piece, { triangles: m.triangles, options: m.options });
+  }
+  function alignerStl(side, index){
+    const list = aligners(side), piece = list[index || 0];
+    if(!piece) return null;
+    const m = alignerModel(piece);
+    return { bytes: STL.toBinaryStl(m.triangles, ascii(`${DOMAIN} aligner ${piece.label.toLowerCase()}, mm, print flat, x right y up`)), model: m };
+  }
+
+  // The spacer gauges: one for each gap the build's aligners use (rounded to 1/16 in, from 1/16 in to 2 in), a flat bar as wide as the
+  // gap hanging from a label, laid out for a bed.
+  function gaugeSizes(plan){
+    const seen = new Map();
+    for(const s of plan.sides.filter(x => x.attach === 'pin')) for(const p of aligners(s)) for(const g of p.gaps){
+      const sixteenths = Math.round(g / MM * 16);
+      if(sixteenths >= 1 && sixteenths <= 32) seen.set(sixteenths, true);
+    }
+    return [...seen.keys()].sort((a, b) => a - b).map(n => ({ sixteenths: n, mm: n * MM / 16, label: inchLabel(n) }));
+  }
+  function inchLabel(n){
+    const whole = Math.floor(n / 16), f = n % 16;
+    if(!f) return `${whole} IN`;
+    let a = f, b = 16;
+    while(a % 2 === 0){ a /= 2; b /= 2; }
+    return `${whole ? whole + ' ' : ''}${a}/${b} IN`;
+  }
+  function gaugeFiles(sizes){
+    const tabLen = 25, w = STL.textSize(DOMAIN, TEXT_CELL).w + 2 * TEXT_MARGIN, hh = 11 * TEXT_CELL + TEXT_CELL + TEXT_MARGIN + TEXT_FAR, cell = hh + tabLen, gap = 6;
+    const cols = Math.max(1, Math.floor((BED + gap) / (w + gap))), rows = Math.max(1, Math.floor((BED + gap) / (cell + gap)));
+    const files = [];
+    for(let i = 0; i < sizes.length; i += cols * rows) files.push(sizes.slice(i, i + cols * rows));
+    return files.map(list => {
+      const regions = [], raised = [], texts = [], bars = [];
+      list.forEach((g, i) => {
+        const cx = (i % cols) * (w + gap), cy = Math.floor(i / cols) * (cell + gap);
+        const top = cy + cell;
+        const loops = STL.boolean2d([STL.rect(cx, top - hh, cx + w, top), STL.rect(cx + TEXT_MARGIN, top - hh - tabLen, cx + TEXT_MARGIN + g.mm, top - hh + 1)], []);
+        regions.push(...STL.regionsOf(loops));
+        bars.push({ label: g.label, mm: g.mm, x0: cx + TEXT_MARGIN, x1: cx + TEXT_MARGIN + g.mm, y0: top - hh - tabLen });
+        [[g.label, 0], [DOMAIN, 1]].forEach(([s, li]) => {
+          const tw = STL.textSize(s, TEXT_CELL).w, x0 = cx + (w - tw) / 2, y0 = top - TEXT_FAR - 5 * TEXT_CELL - li * 6 * TEXT_CELL;
+          const place = p => [p[0] + x0, p[1] + y0];
+          for(const r of STL.textRegions(s, TEXT_CELL)) raised.push({ outer: r.outer.map(place), holes: r.holes.map(h => h.map(place)) });
+          texts.push({ text: s.toLowerCase(), line: li });
+        });
+      });
+      const size = (() => { const b = ringBox(regions.flatMap(r => r.outer)); return { w: b.x1 - b.x0, h: b.y1 - b.y0, x0: b.x0, y0: b.y0 }; })();
+      const sh = p => [p[0] - size.x0, p[1] - size.y0];
+      const mv = r => ({ outer: r.outer.map(sh), holes: r.holes.map(h => h.map(sh)) });
+      return { sizes: list, regions: regions.map(mv), raised: raised.map(mv), texts, bars: bars.map(b => Object.assign(b, { x0: b.x0 - size.x0, x1: b.x1 - size.x0, y0: b.y0 - size.y0 })), size: { w: size.w, h: size.h } };
+    });
+  }
+  function gaugeStl(plan, index){
+    const files = gaugeFiles(gaugeSizes(plan)), f = files[index || 0];
+    if(!f) return null;
+    const m = STL.buildPlate({ regions: f.regions, raised: f.raised }, { thickness: THICK, textHeight: RAISE });
+    return { bytes: STL.toBinaryStl(m.triangles, ascii(`${DOMAIN} spacer gauges ${f.sizes.map(s => s.label.toLowerCase()).join(', ')}, mm, print flat`)), model: Object.assign({}, f, { triangles: m.triangles }) };
   }
 
   // ---- the window (browser only) -------------------------------------------------------------------
@@ -878,14 +1169,14 @@
   }
   function fileNames(side, paperKey){
     const b = baseName() + '_' + side.key;
-    return { svg: `${b}_paper-${paperKey}.svg`, pdf: `${b}_paper-${paperKey}.pdf`, stl: `${b}_jig.stl` };
+    return { svg: `${b}_paper-${paperKey}.svg`, pdf: `${b}_paper-${paperKey}.pdf`, stl: `${b}_aligner.stl`, stlN: n => `${b}_aligner-${n}.stl`, gauges: n => `${baseName()}_spacers${n > 1 ? '-' + n : ''}.stl` };
   }
-  function download(side, what){
+  function download(side, what, piece){
     const meta = ui.plan.meta, paperKey = ui.paper;
     const names = fileNames(side, paperKey);
     if(what === 'svg') save(names.svg, paperSvg(side, meta, paperKey), 'image/svg+xml');
     else if(what === 'pdf') save(names.pdf, paperPdf(side, meta, paperKey), 'application/pdf');
-    else if(what === 'stl'){ const { bytes } = jigStl(side, meta); save(names.stl, bytes, 'model/stl'); }
+    else if(what === 'stl'){ const { bytes } = alignerStl(side, piece || 0); save(piece ? names.stlN(piece + 1) : names.stl, bytes, 'model/stl'); }
   }
 
   const STYLE = `
@@ -917,7 +1208,7 @@
     d.id = 'placementTemplates';
     d.setAttribute('aria-labelledby', 'placementTemplatesTitle');
     d.innerHTML = `<h2 id="placementTemplatesTitle">Placement templates</h2>
-<p>Full-size helpers for putting your items on the garment, from the uniform as drawn. The paper template is a stencil: print it at 100% (actual size), cut out each item's outline, lay the sheet on the garment lined up with the edges it names, and mark through the holes; the ticks outside each hole are its pins. The 3D jig is the same layout as a plate with a hole at every pin, a shallow pocket for each item and lips that seat on the garment's edges. Pin positions are estimated from each item's width; check them against your own items.</p>
+<p>Full-size helpers for putting your items on the garment, from the uniform as drawn. The paper template is a stencil: print it at 100% (actual size), cut out each item's outline, lay the sheet on the garment lined up with the edges it names, and mark through the holes; the ticks outside each hole are its pins. The 3D aligners are thin flat plates: print each one flat, no supports. Lay its straight feet along the garment edge it runs to (the pocket's top, the button line, a collar or shoulder edge), set each item in its cradle, pin through, and lift the plate off. The spacer gauges are bars as wide as the gaps the aligners use, each marked with its size. Pin positions are estimated from each item's width; check them against your own items.</p>
 <div class="ptPaper" role="radiogroup" aria-label="Paper size"><span>Paper</span><label><input type="radio" name="ptPaper" value="letter"> US Letter</label><label><input type="radio" name="ptPaper" value="a4"> A4</label></div>
 <ul id="placementTemplatesList" aria-live="polite"></ul>
 <div class="ptFoot"><button type="button" class="ghost" id="placementTemplatesClose">Close</button></div>`;
@@ -925,18 +1216,24 @@
     d.querySelector('#placementTemplatesClose').addEventListener('click', () => d.close());
     d.querySelectorAll('input[name="ptPaper"]').forEach(r => r.addEventListener('change', () => { if(r.checked){ ui.paper = r.value; try{ localStorage.setItem('capubTemplatePaper', ui.paper); }catch(e){ /* per-browser convenience */ } } }));
     d.addEventListener('click', ev => {
+      const g = ev.target.closest('button[data-gauges]');
+      if(g && ui.plan){
+        try{ const n = +g.dataset.gauges, { bytes } = gaugeStl(ui.plan, n); save(fileNames({ key: 'x' }, ui.paper).gauges(n + 1), bytes, 'model/stl'); const T = root().CAPUB_TELEMETRY; if(T) T.track('templates', { side: 'spacers', what: 'stl', paper: ui.paper }); }
+        catch(e){ console.error('[placement templates]', e); if(typeof root().capubNotify === 'function') root().capubNotify('The template could not be made: ' + (e && e.message || e)); }
+        return;
+      }
       const b = ev.target.closest('button[data-side]');
       if(!b || !ui.plan) return;
       const side = ui.plan.sides.find(s => s.key === b.dataset.side);
       if(!side) return;
-      try{ download(side, b.dataset.what); const T = root().CAPUB_TELEMETRY; if(T) T.track('templates', { side: side.key, what: b.dataset.what, paper: ui.paper }); }catch(e){ console.error('[placement templates]', e); if(typeof root().capubNotify === 'function') root().capubNotify('The template could not be made: ' + (e && e.message || e)); }
+      try{ download(side, b.dataset.what, +b.dataset.piece || 0); const T = root().CAPUB_TELEMETRY; if(T) T.track('templates', { side: side.key, what: b.dataset.what, paper: ui.paper }); }catch(e){ console.error('[placement templates]', e); if(typeof root().capubNotify === 'function') root().capubNotify('The template could not be made: ' + (e && e.message || e)); }
     });
     return d;
   }
   function describe(side){
     const pins = side.items.reduce((a, i) => a + i.pins.length, 0);
     const what = side.items.map(i => i.name + (i.attach === 'sew' ? ' (sewn)' : '')).join(', ');
-    if(side.attach === 'sew') return `${what}. Sewn on: paper sewing guide only, no 3D jig.`;
+    if(side.attach === 'sew') return `${what}. Sewn on: paper sewing guide only, no 3D aligner.`;
     return `${what}. ${pins} pin${pins === 1 ? '' : 's'} marked.`;
   }
   function fillList(d){
@@ -944,8 +1241,18 @@
     const sides = (ui.plan && ui.plan.sides) || [];
     if(!sides.length){ list.innerHTML = '<li class="ptEmpty">Nothing on this uniform is pinned or sewn on the chest, collar or shoulders yet. Add ribbons, badges or a nameplate first.</li>'; return; }
     const esc = s => String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+    const pieces = s => (s.attach === 'pin' ? aligners(s) : []);
+    const stlButtons = s => pieces(s).map((p, i) => `<button type="button" class="ghost" data-side="${esc(s.key)}" data-what="stl"${i ? ` data-piece="${i}"` : ''}>3D aligner${pieces(s).length > 1 ? ': ' + esc(p.label.toLowerCase()) : ''} (STL)</button>`).join('');
     list.innerHTML = sides.map(s => `<li data-side-key="${esc(s.key)}"><div class="ptSide"><b>${esc(s.label.charAt(0).toUpperCase() + s.label.slice(1))}</b><small>${esc(describe(s))}</small></div><div class="ptActions">
-<button type="button" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${s.attach === 'pin' ? `<button type="button" class="ghost" data-side="${esc(s.key)}" data-what="stl">3D jig (STL)</button>` : ''}<button type="button" class="ptAlt" data-side="${esc(s.key)}" data-what="svg">also as SVG</button></div></li>`).join('');
+<button type="button" data-side="${esc(s.key)}" data-what="pdf">Paper (PDF)</button>${stlButtons(s)}<button type="button" class="ptAlt" data-side="${esc(s.key)}" data-what="svg">also as SVG</button></div></li>`).join('')
+      + gaugeRow(ui.plan);
+  }
+  // The spacer gauges of the build: one row, a button for each file (a bed holds six or so).
+  function gaugeRow(plan){
+    const sizes = gaugeSizes(plan);
+    if(!sizes.length) return '';
+    const files = gaugeFiles(sizes);
+    return `<li data-side-key="spacers"><div class="ptSide"><b>Spacer gauges</b><small>${sizes.map(z => z.label.toLowerCase()).join(', ')}: each a bar as wide as a gap the aligners use.</small></div><div class="ptActions">${files.map((f, i) => `<button type="button" class="ghost" data-gauges="${i}">Spacer gauges${files.length > 1 ? ' ' + (i + 1) : ''} (STL)</button>`).join('')}</div></li>`;
   }
   async function open(){
     const d = ensureDialog();
@@ -965,7 +1272,7 @@
     if(!action) return;
     const div = document.createElement('div');
     div.className = 'finishAction';
-    div.innerHTML = '<button id="placementTemplatesOpen" type="button" class="ghost">Placement templates (print or 3D-print)</button><div class="hintText">Full-size paper templates and 3D-print jigs that show where each item and its pins go.</div>';
+    div.innerHTML = '<button id="placementTemplatesOpen" type="button" class="ghost">Placement templates (print or 3D-print)</button><div class="hintText">Paper stencils and thin 3D-print aligners that sit on a garment edge. Print the aligners flat, no supports.</div>';
     action.after(div);
     div.querySelector('button').addEventListener('click', open);
   }
@@ -975,5 +1282,5 @@
     document.addEventListener('capub:rendered', () => { const d = document.getElementById('placementTemplates'); if(d && d.open) open(); });
   }
 
-  return { plan, paperPages, paperSvg, paperPdf, sheetOf, jig, jigStl, jigInput, collectItems, sidesFrom, specIds, open, install, fileNames, humanize, PIN_RULE, JIG_RULE, PAPERS, MM };
+  return { plan, paperPages, paperSvg, paperPdf, sheetOf, aligners, alignerModel, alignerStl, gaugeSizes, gaugeFiles, gaugeStl, collectItems, sidesFrom, specIds, open, install, fileNames, humanize, PIN_RULE, PAPERS, MM };
 });
