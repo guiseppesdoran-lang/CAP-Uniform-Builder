@@ -212,7 +212,7 @@
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
-      name: 'badges', mode: 'toggle', size: 'large', options: options(), values: selectedIn(d, ids),
+      name: 'badges', ariaLabel: 'Badges', mode: 'toggle', size: 'large', options: options(), values: selectedIn(d, ids),
       onToggle: (id, on) => { selectBadge(id, on, deps); entry.refresh(); }
     });
     const entry = {
@@ -265,7 +265,7 @@
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
-      name: `militaryBadges-${branch}`, mode: 'toggle', size: 'large', options: options(), values: chosen(),
+      name: `militaryBadges-${branch}`, ariaLabel: `${(typeof MILITARY_BRANCH_LABELS !== 'undefined' && MILITARY_BRANCH_LABELS[branch]) || String(branch).replaceAll('_', ' ').toLowerCase().replace(/^./, c => c.toUpperCase())} badges`, mode: 'toggle', size: 'large', options: options(), values: chosen(),
       onToggle: (id, on) => {
         if(!d.State.militaryBadges) d.State.militaryBadges = {};
         if(on) d.State.militaryBadges[id] = { selected: true, variant: variantOf(byId.get(id)).active };
@@ -350,7 +350,7 @@
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
-      name: 'patches', mode: 'toggle', size: 'large', options: options(), values: listed().filter(id => patchOn(d, id)),
+      name: 'patches', ariaLabel: 'Patches', mode: 'toggle', size: 'large', options: options(), values: listed().filter(id => patchOn(d, id)),
       onToggle: (id, on) => { selectPatch(id, on, deps); entry.refresh(); }
     });
     const entry = {
@@ -539,16 +539,16 @@
     const mini = d.miniMedal(id);
     if(mini === 'yes'){
       const preview = el('div', 'miniMedalPreview');
-      preview.append(el('span', null, 'Mini medal'));
+      preview.append(el('span', null, 'Miniature medal'));
       const art = el('span', 'miniMedalArt');
       art.setAttribute('role', 'img');
-      art.setAttribute('aria-label', `${d.ribbonName(id)} mini medal`);
+      art.setAttribute('aria-label', `${d.ribbonName(id)} miniature medal`);
       preview.append(art);
       box.append(preview);
       d.drawMini(art, id, sel);
     }else if(mini === 'missing'){
       const preview = el('div', 'miniMedalPreview missing');
-      preview.append(el('span', null, 'No mini medal asset'));
+      preview.append(el('span', null, 'No miniature medal asset'));
       box.append(preview);
     }
     return box;
@@ -571,7 +571,7 @@
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
-      name: spec.name, mode: 'toggle', size: 'large', shape: 'wide', options: options(), values: on(),
+      name: spec.name, ariaLabel: spec.ariaLabel, mode: 'toggle', size: 'large', shape: 'wide', options: options(), values: on(),
       onToggle: (id, wantOn) => { selectRibbon(id, wantOn, d); after(); }
     });
     // The drawn ribbon, devices and all, in place of the plain picture of a ribbon that is on; a picture that fails to load falls back to the ribbon's plain one.
@@ -610,7 +610,7 @@
     const own = entry => { entries.push(entry); return entry; };
 
     own(ribbonPicker(container, {
-      name: 'ribbons', ids: () => capIds,
+      name: 'ribbons', ariaLabel: 'Ribbons', ids: () => capIds,
       groups: () => d.ribbonGroups(capIds).map(group => ({ key: group.label, note: group.note || '', ids: group.ids }))
     }, d, refreshAll));
     if(rotcIds.length) own(rotcMenu(container, rotcIds, d, refreshAll));
@@ -649,7 +649,7 @@
     const filters = el('div', 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters');
     const search = el('input', 'rotcRibbonSearch');
     search.setAttribute('type', 'search');
-    search.setAttribute('placeholder', 'Search JROTC / ROTC ribbons\u2026');
+    search.setAttribute('placeholder', 'Search JROTC / ROTC ribbons');
     search.setAttribute('aria-label', 'Search JROTC and ROTC ribbons');
     search.value = ui.rotcSearch;
     filters.append(search);
@@ -668,12 +668,12 @@
     };
     const words = () => {
       const n = chosen().length;
-      summary.textContent = `JROTC / ROTC Ribbons, ${n} of ${rotc.limit} chosen`;
+      summary.textContent = `JROTC / ROTC ribbons, ${n} of ${rotc.limit} chosen`;
       status.textContent = n >= rotc.limit ? `${n} of ${rotc.limit} chosen. ${d.rotcLimitMessage()}`
         : n ? `${n} of ${rotc.limit} chosen.` : 'None chosen.';
     };
     const entry = ribbonPicker(menu, {
-      name: 'rotcRibbons', ids: narrowed, military: false,
+      name: 'rotcRibbons', ariaLabel: 'JROTC and ROTC ribbons', ids: narrowed, military: false,
       groups: () => rotc.services.map(service => ({ key: service.label, note: '', ids: narrowed().filter(id => (rotc.get(id) || {}).service === service.key) })).filter(g => g.ids.length)
     }, d, () => { refreshAll(); });
     const refresh = entry.refresh;
@@ -706,7 +706,7 @@
     rememberOpen(d, menu, 'military-root');
     const summary = el('summary');
     menu.append(summary);
-    const intro = el('div', 'sub', 'Shared awards appear once under Joint / Multi-Service. Each award offers the devices its own rule allows. ');
+    const intro = el('div', 'sub', 'Shared awards appear once under Joint / multi-service. Each award offers the devices its own rule allows. ');
     const advanced = el('button', 'ghost vpSwitch militaryAdvancedMode', 'Choose devices by hand');
     advanced.setAttribute('type', 'button');
     advanced.setAttribute('aria-pressed', String(!!ui.advancedMode));
@@ -715,7 +715,7 @@
     const filters = el('div', 'militaryRibbonCatalogFilters');
     const search = el('input', 'militaryRibbonCatalogSearch');
     search.setAttribute('type', 'search');
-    search.setAttribute('placeholder', 'Search military ribbons…');
+    search.setAttribute('placeholder', 'Search military ribbons');
     search.setAttribute('aria-label', 'Search military ribbons');
     search.value = ui.gallerySearchValue || '';
     const service = el('select', 'militaryRibbonCatalogService');
@@ -726,7 +726,7 @@
     const type = el('select', 'militaryRibbonCatalogType');
     type.setAttribute('aria-label', 'Filter military ribbons by type');
     const anyType = el('option', null, 'All award types'); anyType.value = 'ALL'; type.append(anyType);
-    for(const [value, label] of [['DECORATIONS', 'Decorations'], ['UNIT_AWARD', 'Unit awards'], ['CAMPAIGN_EXPEDITIONARY', 'Campaign / Expeditionary'], ['SERVICE', 'Service awards'], ['TRAINING', 'Training'], ['FOREIGN', 'Foreign'], ['OTHER', 'Other']]){
+    for(const [value, label] of [['DECORATIONS', 'Decorations'], ['UNIT_AWARD', 'Unit awards'], ['CAMPAIGN_EXPEDITIONARY', 'Campaign / expeditionary'], ['SERVICE', 'Service awards'], ['TRAINING', 'Training'], ['FOREIGN', 'Foreign'], ['OTHER', 'Other']]){
       const o = el('option', null, label); o.value = value; type.append(o);
     }
     type.value = ui.galleryAwardTypeFilter || 'ALL';
@@ -757,10 +757,10 @@
       if(!b.details.open){
         b.body.append(el('div', 'sub', 'Open this branch to load its ribbon controls.'));
       }else if(!ids.length){
-        b.body.append(el('div', 'sub', `No ${labels[b.branch]}-only ribbon is in the catalog; shared awards are listed once under Joint / Multi-Service.`));
+        b.body.append(el('div', 'sub', `No ${labels[b.branch]}-only ribbon is in the catalog; shared awards are listed once under Joint / multi-service.`));
       }else{
         b.entry = ribbonPicker(b.body, {
-          name: `militaryRibbons-${b.branch}`, military: true, ids: () => idsOf(b),
+          name: `militaryRibbons-${b.branch}`, ariaLabel: `${labels[b.branch] || String(b.branch).replaceAll('_', ' ')} ribbons`, military: true, ids: () => idsOf(b),
           caption: id => ((d.militaryAward(id) && d.militaryAward(id).authorizedServices) || []).map(s => labels[s] || String(s).replaceAll('_', ' ')).join(' / ') || 'U.S. military',
           search: id => { const award = d.militaryAward(id); return [award && award.name, award && award.officialName, ...((award && award.aliases) || [])].filter(Boolean).join(' '); }
         }, d, refreshAll);
@@ -768,7 +768,7 @@
     };
     const words = () => {
       const ids = matches();
-      summary.textContent = `U.S. Military Ribbons (${ids.length} unique awards)`;
+      summary.textContent = `U.S. military ribbons (${ids.length} unique awards)`;
       result.textContent = `${ids.length} of ${all.length} unique military awards shown.`;
     };
     const redraw = () => { words(); branches.forEach(fill); };

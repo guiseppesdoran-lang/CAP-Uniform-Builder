@@ -268,7 +268,7 @@
     const name = `${plan.label} patch`;
     if(typeof VisualPicker !== 'undefined'){
       VisualPicker.render(host, {
-        name: 'supplementWingPatch', mode: 'toggle', size: 'large', options: [{ value: plan.patchId, label: name, picture: art }], values: plan.own ? [plan.patchId] : [],
+        name: 'supplementWingPatch', ariaLabel: 'Wing patch', mode: 'toggle', size: 'large', options: [{ value: plan.patchId, label: name, picture: art }], values: plan.own ? [plan.patchId] : [],
         onToggle: (id, on) => { chooseWingPatch(on); }
       });
     }else{

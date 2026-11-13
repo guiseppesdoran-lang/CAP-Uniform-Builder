@@ -50,8 +50,8 @@ function page(){
 }
 const SINGLE = { position: 'aviation', label: 'CAP aviation badge', limit: 1, candidates: [{ id: PILOT, title: 'Pilot Badge' }, { id: OBSERVER, title: 'Observer Badge' }, { id: AIRCREW, title: 'Air Crew Badge' }], shown: [OBSERVER], choice: OBSERVER,
   slots: [{ key: 'only', label: 'CAP aviation badge', choice: OBSERVER, badge: OBSERVER, shown: true }] };
-const SEVERAL = { position: 'pocket', label: 'Pocket and nametag badges', limit: 3, candidates: [{ id: ES, title: 'Emergency Services' }, { id: COMM, title: 'Communications' }, { id: IT, title: 'Information Technology' }], shown: [ES, COMM],
-  slots: [{ key: 'left-pocket', label: 'Left pocket', choice: ES, badge: ES, shown: true }, { key: 'right-pocket', label: 'Right pocket', choice: COMM, badge: COMM, shown: true }, { key: 'over-nametag', label: 'Over the nametag', choice: null, badge: null, shown: false }] };
+const SEVERAL = { position: 'pocket', label: 'Pocket and name tag badges', limit: 3, candidates: [{ id: ES, title: 'Emergency Services' }, { id: COMM, title: 'Communications' }, { id: IT, title: 'Information Technology' }], shown: [ES, COMM],
+  slots: [{ key: 'left-pocket', label: 'Left pocket', choice: ES, badge: ES, shown: true }, { key: 'right-pocket', label: 'Right pocket', choice: COMM, badge: COMM, shown: true }, { key: 'over-nametag', label: 'Over the name tag', choice: null, badge: null, shown: false }] };
 const tiles = (host, place) => host.querySelectorAll('.badgeChooserList').find(l => l.dataset.place === place).querySelectorAll('[role="radio"]');
 
 const WHY = 'Only one CAP aviation badge is worn (CAPR 39-1, 4.1.5.2.2.4.1)';
@@ -75,7 +75,7 @@ test('which badge takes a place is chosen from picture tiles: each competing bad
   assert.equal(host.querySelectorAll('input').length, 0, 'no input at all: no radio, no checkbox');
   const group = host.querySelector('[role="radiogroup"]');
   assert.equal(group.getAttribute('aria-labelledby'), 'badgeChooserHead-aviation', 'named by the heading above it');
-  assert.equal(host.querySelector('.badgeChooserCount').textContent, 'one is worn');
+  assert.equal(host.querySelector('.badgeChooserCount').textContent, 'One is worn');
   // Before the drawing has been made there is no line to give.
   const early = page();
   early.sandbox.badgeRows = [{ id: OBSERVER, pending: true }];
@@ -104,7 +104,7 @@ test('a position with several places has a group of tiles for each place; pickin
   const view = p.sandbox.CAPUBUniformView;
   view.updateBadgeChooser({ conflicts: [SEVERAL] });
   const host = p.host();
-  assert.deepEqual(host.querySelectorAll('.badgeChooserSlotName').map(n => n.textContent), ['Left pocket', 'Right pocket', 'Over the nametag']);
+  assert.deepEqual(host.querySelectorAll('.badgeChooserSlotName').map(n => n.textContent), ['Left pocket', 'Right pocket', 'Over the name tag']);
   assert.equal(host.querySelectorAll('[role="radiogroup"]').length, 3);
   assert.equal(host.querySelectorAll('input').length, 0);
   assert.deepEqual(tiles(host, 'left-pocket').map(x => x.getAttribute('aria-checked')), ['true', 'false', 'false']);

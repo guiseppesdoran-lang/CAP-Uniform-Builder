@@ -8,15 +8,15 @@ test('regulation abbreviations become plain phrases (CAPR 39-1 Attachment 4)',()
   assert.equal(placementCaption('OLP'),'Above the left pocket');
   assert.equal(placementCaption('OLPA'),'Above the left pocket, over aviation badges');
   assert.equal(placementCaption('OLPU'),'Above the left pocket, under aviation badges');
-  assert.equal(placementCaption('ON'),'Above the nametag');
-  assert.equal(placementCaption('UN'),'Below the nametag');
+  assert.equal(placementCaption('ON'),'Above the name tag');
+  assert.equal(placementCaption('UN'),'Below the name tag');
   assert.equal(placementCaption('LP,RP'),'On the left or right pocket');
   assert.equal(placementCaption('OLPF'),'On the left pocket flap');
 });
 
 test('a note after the dash is kept as a parenthetical',()=>{
-  assert.equal(placementCaption('UN — graduated commander'),'Below the nametag (graduated commander)');
-  assert.equal(placementCaption('ON — current commander'),'Above the nametag (current commander)');
+  assert.equal(placementCaption('UN — graduated commander'),'Below the name tag (graduated commander)');
+  assert.equal(placementCaption('ON — current commander'),'Above the name tag (current commander)');
   assert.equal(placementCaption('RP — Volunteer University exception'),'On the right pocket (Volunteer University exception)');
   assert.equal(placementCaption('LP only — not rendered unless selected first'),'On the left pocket (not rendered unless selected first)');
 });

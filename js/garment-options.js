@@ -196,7 +196,7 @@
       when: c => c.u === 'ocp' && !!c.g.officer && !c.chaplain && !['none', 'beret'].includes(c.o.headgear || 'auto') },
     // The meme (Ethan: "i know it says that its 2 foot by 2 foot, but its wrong. its 2 inches. however just for the meme, we should add it"): ICL 26-14 7.1.1.2.1
     // reads "2' x 2'". Off by default; on draws the chest square 24 in across with the badge scaled to it. Not a regulation placement.
-    { key: 'chaplainAsWritten', label: 'As written in ICL 26-14 (2 ft x 2 ft chaplain patch)', type: 'check', defaultValue: false,
+    { key: 'chaplainAsWritten', label: 'As written, 2 ft x 2 ft chaplain patch (ICL 26-14, 7.1.1.2.1)', type: 'check', defaultValue: false,
       picker: { labels: { off: 'Two inches, as worn', on: 'Two feet, as written' }, size: 'large' },
       note: () => 'For the joke only: the letter says 2 feet, the regulation means 2 inches.',
       when: c => c.u === 'ocp' && !!c.chaplain },
@@ -216,14 +216,14 @@
     { key: 'chevron', label: 'Chevron size', type: 'select',
       choices: c => {
         // The default each uniform's paragraph names comes first.
-        const four = ['4', '4 inch'], three = ['3.5', '3 1/2 inch'];
-        return ['blues_b'].includes(c.u) ? [['', '3 1/2 inch'], four] : [['', '4 inch'], three];
+        const four = ['4', '4 in'], three = ['3.5', '3 1/2 in'];
+        return ['blues_b'].includes(c.u) ? [['', '3 1/2 in'], four] : [['', '4 in'], three];
       },
       // Men's Class B: 3 1/2 in only (4.1.11.1.1.1.3). Women's Class B, Class A and mess dress:
       // 3 1/2 or 4 in (4.1.12.2.3.3, 4.1.9.3.3).
       picker: { notes: c => {
         const para = CHEVRON_PARA[c.u];
-        const note = `NCOs wear a 3 1/2 or 4 inch chevron centered on the outer arm halfway between the shoulder seam and the elbow${para ? ` (CAPR 39-1, ${para})` : ''}.`;
+        const note = `NCOs wear a 3 1/2 or 4 in chevron centered on the outer arm halfway between the shoulder seam and the elbow${para ? ` (CAPR 39-1, ${para})` : ''}.`;
         return { '': note, '3.5': note, '4': note };
       } },
       when: c => c.g.category === 'senior-nco' && (
@@ -294,7 +294,7 @@
   // uniforms show the first name and what the chosen uniform shows.
   const FULL_NAME = ['polo', ...FLIGHT, 'aviator_blazer'];
   const FULL_NAME_PARA = { polo: '5.3.2.1.1', flight_suit: '8.2.4.1', corporate_flight_suit: '8.3.4.1', aviator_blazer: '4.2.3.1.1.2, 4.2.4.1.1.2' };
-  const NAME_PARA = { semi_formal: 'no nametag, 4.2.1, 4.2.2', aviator: '4.2.5.1.2.1, 4.2.6.2.6.1', blues_a: '4.1.5.2.2.2, 4.1.9.4.2', blues_b: '4.1.11.1.1.2.1, 4.1.12.2.4', ocp: '7.1.1.2.3', abu: '5.1.1.1.2.1', corporate_field: '5.2.1.1.2.1', mess_dress: 'no nametag, 4.1.1.1.2.1' };
+  const NAME_PARA = { semi_formal: 'no name tag, 4.2.1, 4.2.2', aviator: '4.2.5.1.2.1, 4.2.6.2.6.1', blues_a: '4.1.5.2.2.2, 4.1.9.4.2', blues_b: '4.1.11.1.1.2.1, 4.1.12.2.4', ocp: '7.1.1.2.3', abu: '5.1.1.1.2.1', corporate_field: '5.2.1.1.2.1', mess_dress: 'no name tag, 4.1.1.1.2.1' };
   function nameHint(u){
     const all = 'The first name is shown on the polo (5.3.2.1.1), the flight duty uniforms (8.2.4.1, 8.3.4.1) and the Corporate Service Dress nameplate (4.2.3.1.1.2, 4.2.4.1.1.2); every other uniform shows the last name only.';
     if(!u) return all;

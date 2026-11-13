@@ -34,7 +34,7 @@ test('Class A, man: three badges fill the left pocket, the right pocket and the 
   const c = conflict(def);
   assert.ok(c, 'the pocket position is reported');
   assert.deepEqual(c.slots.map(s => s.key), ['left-pocket', 'right-pocket', 'over-nametag']);
-  assert.deepEqual(c.slots.map(s => s.label), ["Left pocket (wearer's left)", "Right pocket (wearer's right)", 'Over the nametag']);
+  assert.deepEqual(c.slots.map(s => s.label), ["Left pocket (wearer's left)", "Right pocket (wearer's right)", 'Over the name tag']);
   assert.deepEqual(c.slots.map(s => s.badge), [ES, COMM, IT], 'by default the rule\'s order fills the places');
   // The wearer's left is the viewer's right: the larger x.
   const at = scene => ({ es: where(scene, ES), comm: where(scene, COMM), it: where(scene, IT) });
@@ -122,9 +122,9 @@ test('the chooser model has one radio group per place, with a heading row of tit
   const model = run(`return CAPUBUniformView.chooserModel(${JSON.stringify(pocket)});`);
   const aviation = model.find(g => g.position === 'aviation'), slots = model.find(g => g.position === 'pocket');
   assert.equal(aviation.slots.length, 1);
-  assert.equal(aviation.count, 'one is worn');
+  assert.equal(aviation.count, 'One is worn');
   assert.equal(slots.slots.length, 3, 'one radio group per place');
-  assert.equal(slots.title, 'Pocket and nametag badges');
+  assert.equal(slots.title, 'Pocket and name tag badges');
   assert.equal(slots.count, '3 are worn');
   assert.deepEqual(slots.options.map(o => o.id), [ES, COMM, IT]);
   for(const s of slots.slots) assert.ok(s.label && s.value);

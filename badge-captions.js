@@ -12,8 +12,8 @@
   const PHRASES=Object.freeze({
     ORP:'Above the right pocket',
     OLP:'Above the left pocket',
-    UN:'Below the nametag',
-    ON:'Above the nametag',
+    UN:'Below the name tag',
+    ON:'Above the name tag',
     URBP:'Below the right pocket',
     OLPA:'Above the left pocket, over aviation badges',
     OLPU:'Above the left pocket, under aviation badges',

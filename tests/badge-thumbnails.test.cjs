@@ -119,6 +119,6 @@ test('cadet and senior specialty-track badges resolve to the same enamel dress a
   }
   // The cadet picker offers them under the cadet specialty group, with the ids the senior picker uses.
   ev("State.membership = 'cadet'");
-  const cadetGroups = ev('getBadgeCategoriesForCurrentMembership()').find(g => g.key === 'Cadet Specialty Track Badges').ids;
+  const cadetGroups = ev('getBadgeCategoriesForCurrentMembership()').find(g => g.key === 'Cadet specialty track badges').ids;
   for(const id of ids) assert.ok(cadetGroups.includes(id), id);
 });

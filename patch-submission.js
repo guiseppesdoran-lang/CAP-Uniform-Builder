@@ -57,7 +57,7 @@
     const btn=document.createElement('button');
     btn.id='capubSubmitPatchButton';
     btn.type='button';
-    btn.textContent='Submit a Patch';
+    btn.textContent='Submit a patch';
     btn.title='Upload a patch image for review and addition to the builder.';
     btn.addEventListener('click',openModal);
 
@@ -70,7 +70,7 @@
     const controls=document.querySelector('.controlsScrollArea') || document.getElementById('controls') || document.body;
     const wrap=document.createElement('section');
     wrap.className='panelBlock';
-    wrap.innerHTML='<label class="fieldLabel">Patch Submission</label><div class="hintText">Send a unit or activity patch image to the builder administrators for review.</div>';
+    wrap.innerHTML='<label class="fieldLabel">Patch submission</label><div class="hintText">Send a unit or activity patch image to the builder administrators for review.</div>';
     wrap.appendChild(btn);
     controls.appendChild(wrap);
   }
@@ -83,13 +83,13 @@
     overlay.innerHTML=`
       <div class="capub-patch-modal" role="dialog" aria-modal="true" aria-labelledby="capubPatchSubmitTitle">
         <div class="capub-patch-head">
-          <div><h2 id="capubPatchSubmitTitle">Submit a Patch</h2><div class="capub-patch-sub">Upload a patch image and identify the patch or the unit/activity it belongs to. The image will be emailed to the builder administrators for review.</div></div>
+          <div><h2 id="capubPatchSubmitTitle">Submit a patch</h2><div class="capub-patch-sub">Upload a patch image and identify the patch or the unit/activity it belongs to. The image will be emailed to the builder administrators for review.</div></div>
           <button type="button" class="capub-patch-close" id="capubPatchSubmitClose" aria-label="Close">×</button>
         </div>
         <div class="capub-patch-body">
           <form id="capubPatchSubmitForm" novalidate>
             <div class="capub-patch-grid">
-              <div class="capub-patch-field"><label for="capubPatchName">Patch name</label><input id="capubPatchName" name="patchName" maxlength="120" placeholder="Example: Sequoyah Cadet Squadron Patch"><div class="capub-patch-help">Enter the patch name if known.</div></div>
+              <div class="capub-patch-field"><label for="capubPatchName">Patch name</label><input id="capubPatchName" name="patchName" maxlength="120" placeholder="Example: Sequoyah Cadet Squadron patch"><div class="capub-patch-help">Enter the patch name if known.</div></div>
               <div class="capub-patch-field"><label for="capubPatchUnit">Unit / activity</label><input id="capubPatchUnit" name="unitName" maxlength="120" placeholder="Example: TN-330 / Sequoyah Cadet Squadron"><div class="capub-patch-help">At least the patch name or unit/activity is required.</div></div>
               <div class="capub-patch-field"><label for="capubPatchSubmitter">Your name <span style="font-weight:400">(optional)</span></label><input id="capubPatchSubmitter" name="submitterName" maxlength="100" autocomplete="name"></div>
               <div class="capub-patch-field"><label for="capubPatchEmail">Your email <span style="font-weight:400">(optional)</span></label><input id="capubPatchEmail" name="submitterEmail" type="email" maxlength="160" autocomplete="email"><div class="capub-patch-help">Used only if the administrators need to follow up about the patch.</div></div>
@@ -98,7 +98,7 @@
             </div>
             <input class="capub-patch-honey" tabindex="-1" autocomplete="off" name="website" id="capubPatchWebsite">
             <div id="capubPatchStatus" class="capub-patch-status" role="status" aria-live="polite"></div>
-            <div class="capub-patch-actions"><button class="ghost" type="button" id="capubPatchCancel">Cancel</button><button type="submit" id="capubPatchSend">Submit Patch</button></div>
+            <div class="capub-patch-actions"><button class="ghost" type="button" id="capubPatchCancel">Cancel</button><button type="submit" id="capubPatchSend">Submit patch</button></div>
           </form>
         </div>
       </div>`;
@@ -245,8 +245,8 @@
     if(Date.now()-last<20000){ setStatus('Please wait a few seconds before sending another patch submission.','err'); return; }
 
     const button=document.getElementById('capubPatchSend');
-    if(button){ button.disabled=true; button.textContent='Sending…'; }
-    setStatus('Uploading the patch image…','info');
+    if(button){ button.disabled=true; button.textContent='Sending'; }
+    setStatus('Uploading the patch image','info');
 
     try{
       const dataUrl=await readFileAsDataURL(file);
@@ -267,7 +267,7 @@
       console.error('CAPUB patch submission failed:',err);
       setStatus(`Submission failed: ${err?.message || 'The patch could not be submitted. Please try again later.'}`,'err');
     }finally{
-      if(button){ button.disabled=false; button.textContent='Submit Patch'; }
+      if(button){ button.disabled=false; button.textContent='Submit patch'; }
     }
   }
 

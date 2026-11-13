@@ -258,7 +258,7 @@ function syncShoulderCordControl(){
     colourHost.hidden = !colours.length;
     if(colours.length){
       const colourOptions = colours.map(c => ({ value: c.name, label: c.name.charAt(0).toUpperCase() + c.name.slice(1), picture: capubCordSwatch(c) }));
-      if(!shoulderCordColourPicker) shoulderCordColourPicker = VisualPicker.render(colourHost, { name: 'shoulderCordColour', legend: 'Cord colour', options: colourOptions, value: capubCordColour(value), onChange: capubPickShoulderCordColour });
+      if(!shoulderCordColourPicker) shoulderCordColourPicker = VisualPicker.render(colourHost, { name: 'shoulderCordColour', legend: 'Cord color', options: colourOptions, value: capubCordColour(value), onChange: capubPickShoulderCordColour });
       else shoulderCordColourPicker.setValue(capubCordColour(value));
     }
   }
@@ -858,7 +858,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         // w x h: the tab's 5.0 x 0.815 in at the gallery's 14 px to the inch (the patches' own 70 px for a 5 in patch).
         PATCH_META[id] = PATCH_META[id] || { label: `CAP Ranger tab: ${CAPUB_RANGER_TAB_LABELS[grade]}`, slotHint: 'L_SHOULDER', w: 70, h: 11,
           img: `patches/${id}/${id}.svg`, authorizedUniforms: ['ocp'], kind: 'ranger-tab', group: CAPUB_RANGER_TAB_GROUP, oneOnly: true,
-          note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the HHQ patch, in its place on the left sleeve under AUX (CAPR 39-1, 7.1.1.4.2)' };
+          note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the higher headquarters patch, in its place on the left sleeve under AUX (CAPR 39-1, 7.1.1.4.2)' };
         // A tab whose art is the school's own tab graphic (a PNG taken as given, data/patch-art.js) is a picture at the size its spec gives.
         const official = window.CAPUBPatchArt && window.CAPUBPatchArt[id];
         if(official && !/\.svg$/i.test(official.img)) Object.assign(PATCH_META[id], { img: official.img, asset: null, w: official.w, h: official.h, sizeIn: { w: official.w, h: official.h } });

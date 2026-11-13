@@ -91,7 +91,7 @@ test('a ribbon\'s picture box is wide and low (a ribbon is 3.7 times as wide as 
   assert.match(summary,/-webkit-line-clamp:3/);
   // The controls are made only for a ribbon that is on.
   assert.match(ribbonCode,/controls: isOn => isOn \? ribbonControls\(d, id, military, after\) : null/);
-  assert.match(ribbonCode,/name: spec\.name, mode: 'toggle', size: 'large', shape: 'wide'/);
+  assert.match(ribbonCode,/name: spec\.name, ariaLabel: spec\.ariaLabel, mode: 'toggle', size: 'large', shape: 'wide'/);
 });
 
 // LIVE14 E71 (Ethan: "you can remove those question mark things by some of the service ribbons").

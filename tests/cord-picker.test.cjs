@@ -143,7 +143,7 @@ test('picking a cord sets the state and draws; a cord whose colour the unit comm
     assert.match(s.picture, /<svg [^>]*>.*fill="#[0-9a-f]{6}"/, `${s.value}: a swatch`);
     assert.equal(s.label, s.value.charAt(0).toUpperCase() + s.value.slice(1));
   }
-  assert.equal(ev('__pickers.shoulderCordColour.cfg.legend'), 'Cord colour');
+  assert.equal(ev('__pickers.shoulderCordColour.cfg.legend'), 'Cord color');
   const r2 = renders();
   ev(`__pickers.shoulderCordColour.cfg.onChange('purple')`);
   assert.equal(ev('State.shoulderCordColour'), 'purple');

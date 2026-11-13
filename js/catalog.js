@@ -259,7 +259,7 @@ function getMilitaryRibbonIds(){
   return [...militaryRibbonCatalogCache.ids];
 }
 const MILITARY_BRANCH_ORDER=['JOINT','ARMY','MARINE_CORPS','NAVY','AIR_FORCE','SPACE_FORCE','COAST_GUARD'];
-const MILITARY_BRANCH_LABELS={JOINT:'Joint / Multi-Service',JOINT_DOD:'Department of Defense',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
+const MILITARY_BRANCH_LABELS={JOINT:'Joint / multi-service',JOINT_DOD:'Department of Defense',ARMY:'Army',MARINE_CORPS:'Marine Corps',NAVY:'Navy',AIR_FORCE:'Air Force',SPACE_FORCE:'Space Force',COAST_GUARD:'Coast Guard'};
 // A service as the member reads it: its name, never the catalog's token ("JOINT_DOD", "SPACE_FORCE").
 function militaryServiceLabel(service){
   const key=String(service||'');
@@ -949,32 +949,32 @@ const BADGE_CATEGORIES = [
     'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge',
     'solo_badge','pre_solo_badge'
   ]},
-  { key:'Emergency Services / Ground', ids:[
+  { key:'Emergency services / ground', ids:[
     'emergency_services_badge','senior_emergency_services_badge','master_emergency_services_badge',
     'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
   ]},
   { key:'Medical / EMS', ids:[
     'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
   ]},
-  { key:'Comms / IT / Cyber / STEM', ids:[
+  { key:'Comms / IT / cyber / STEM', ids:[
     'communications_technician_badge','communications_senior_badge','communications_master_badge',
     'information_technology_technician_badge','cyber_badges','stem_badges'
   ]},
-  { key:'Professional Development / Cadet Programs', ids:[
+  { key:'Professional development / cadet programs', ids:[
     'volunteer_university_instructor_badge','cadet_programs_technician_badge','cadet_programs_senior_badge','cadet_programs_master_badge',
     'administration_technician_badge','aerospace_education_technician_badge','aerospace_education_senior_badge','aerospace_education_master_badge','finance_technician_badge'
   ]},
-  { key:'Command Insignia', ids:[
+  { key:'Command insignia', ids:[
     'squadron_commander_badge','group_commander_badge'
   ]},
-  { key:'Command Council / National Governance', ids:[
+  { key:'Command council / national governance', ids:[
     'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge','national_staff_badge'
   ]},
-  { key:'Chaplain / Legal / Admin', ids:[
+  { key:'Chaplain / legal / admin', ids:[
     'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer','historian_technicianIbadge',
     'administration_technician_badge','administration_senior_badge','administration_master_badge'
   ]},
-  { key:'Specialty Tracks', ids:[
+  { key:'Specialty tracks', ids:[
     'stan_eval_tech_badge','stan_eval_senior_badge','stan_eval_master_badge',
     'safety_technician_badge','safety_senior_badge','safety_master_badge',
     'recruiting_retention_technician_badge','recruiting_retention_senior_badge','recruiting_retention_master_badge',
@@ -1119,7 +1119,7 @@ const CADET_SPECIALTY_TRACK_GROUP_IDS = [
 function getBadgeCategoriesForCurrentMembership(){
   if(State.membership === 'cadet'){
     return [
-      { key:'Aviation / Aircrew', ids:[
+      { key:'Aviation / aircrew', ids:[
         'pre_solo_badge','solo_badge','CAPPilot1_FA9D33EA587D8',
         'observer_badge','SeniorObserver1_0E35802A29801',
         'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
@@ -1128,12 +1128,12 @@ function getBadgeCategoriesForCurrentMembership(){
         // list left them out, so a cadet's chooser never showed them (Doran: "I'm not seeing the sUAS technician badges").
         'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'
       ]},
-      { key:'Emergency Services / Ground / EMS', ids:[
+      { key:'Emergency services / ground / EMS', ids:[
         'ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge',
         'emt_basic_badge','emt_intermediate','emt_paramedic'
       ]},
-      { key:'Cadet Specialty Track Badges', ids:CADET_SPECIALTY_TRACK_GROUP_IDS },
-      { key:'Cadet Activity / Marksmanship Badges', ids:[
+      { key:'Cadet specialty track badges', ids:CADET_SPECIALTY_TRACK_GROUP_IDS },
+      { key:'Cadet activity / marksmanship badges', ids:[
         'model_rocketry_badge','nra_marksman_badge'
       ]}
     ];
@@ -1141,7 +1141,7 @@ function getBadgeCategoriesForCurrentMembership(){
 
   if(State.membership === 'senior'){
     return [
-      { key:'Aviation / Aircrew', ids:[
+      { key:'Aviation / aircrew', ids:[
         'CAPPilot1_FA9D33EA587D8','CAPSeniorPilot1_D9725AE959752','CAPMasterPilot1_621A0E2ED15DA',
         'AirCrew1_DB3F0FCC3650F','SeniorAirCrew1_B289BAE6E515C','MasterAirCrew1_72AC4CAE7A310',
         'observer_badge','SeniorObserver1_0E35802A29801','MasterObserver1_1B88D5071FD5C',
@@ -1149,20 +1149,20 @@ function getBadgeCategoriesForCurrentMembership(){
         'uas_pilot_basic_badge','uas_pilot_senior_badge','uas_pilot_master_badge',
         'uas_technician_basic_badge','uas_technician_senior_badge','uas_technician_master_badge'
       ]},
-      { key:'Emergency Services / Ground', ids:[
+      { key:'Emergency services / ground', ids:[
         'basic_incident_commander_badge','incident_commander_2_badge','incident_commander_1_badge','ground_team_basic_badge','senior_ground_team_badge','master_ground_team_badge'
       ]},
       { key:'Medical / EMS', ids:[
         'emt_basic_badge','emt_intermediate','emt_paramedic','medical_officer','nurse_officer'
       ]},
-      { key:'Chaplain / Legal', ids:[
+      { key:'Chaplain / legal', ids:[
         'christian_chaplin','jewish_chaplin','muslim_chaplin','buddist_chaplin','legal_officer'
       ]},
-      { key:'Senior Member Specialty Track Badges', ids:SENIOR_SPECIALTY_TRACK_GROUP_IDS },
-      { key:'Command Insignia', ids:[
+      { key:'Senior member specialty track badges', ids:SENIOR_SPECIALTY_TRACK_GROUP_IDS },
+      { key:'Command insignia', ids:[
         'squadron_commander_badge','group_commander_badge'
       ]},
-      { key:'Command Council / National Governance', ids:[
+      { key:'Command council / national governance', ids:[
         'senior_advisory_group_badge','national_executive_committee_badge','command_council_badge','cap_national_command_board_badge','national_staff_badge'
       ]}
     ];

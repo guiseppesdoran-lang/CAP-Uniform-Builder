@@ -161,7 +161,7 @@ test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: its tiles are
   assert.ok(menu, 'the menu');
   const tiles = () => menu.querySelectorAll('.vpCell').filter(c => !c.hidden);
   const ROTC = require('../data/rotc-ribbons.js');
-  assert.equal(menu.querySelector('summary').textContent, 'JROTC / ROTC Ribbons, 0 of 3 chosen');
+  assert.equal(menu.querySelector('summary').textContent, 'JROTC / ROTC ribbons, 0 of 3 chosen');
   assert.equal(tiles().length, ROTC.ribbons.length, 'every ribbon');
   assert.ok(p.host.querySelectorAll('.vpCell').filter(c => ROTC.ribbons.some(r => r.id === c.dataset.value)).length === ROTC.ribbons.length, 'and no JROTC ribbon is a tile outside the menu');
   assert.equal(menu.querySelectorAll('select').length, 0, 'no drop-down: the program is the heading its ribbons are under');
@@ -196,7 +196,7 @@ test('the U.S. military ribbons are a menu by branch whose tiles are made when t
   setup('blues_a');
   const p = make();
   const root = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === 'military-root');
-  assert.match(root.querySelector('summary').textContent, /^U\.S\. Military Ribbons \(\d+ unique awards\)$/);
+  assert.match(root.querySelector('summary').textContent, /^U\.S\. military ribbons \(\d+ unique awards\)$/);
   const army = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === 'military-branch-ARMY');
   assert.equal(army.querySelectorAll('.vpCell').length, 0, 'not made until it is opened');
   assert.match(army.querySelector('.militaryBranchGrid').textContent, /Open this branch to load its ribbon controls\./);

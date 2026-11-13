@@ -461,7 +461,7 @@
       return {
         position: c.position,
         title: c.label,
-        count: many ? `${slots.length} are worn` : 'one is worn',
+        count: many ? `${slots.length} are worn` : 'One is worn',
         note: c.note || '',
         options: c.candidates.map(x => ({ id: x.id, title: x.title })),
         slots: slots.map(sl => ({ key: sl.key, label: sl.label, value: sl.badge || sl.choice || '', shown: sl.shown !== false }))
