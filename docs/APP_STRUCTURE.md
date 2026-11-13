@@ -85,7 +85,7 @@ The optional `google-apps-script/Code.gs` is a separate endpoint for patch image
 
 ## What the page stores
 
-The setup is autosaved to localStorage a moment after each change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a Resume prompt on the next visit. It is never loaded silently. "Save to browser" keeps one deliberate save under its own localStorage key, separate from the autosave, and a setup can be saved to and opened from a JSON file. Setups loaded from storage or a file pass through `sanitizeProfile()` in `js/wiring.js`, and values that go into HTML pass through `escapeHtml()` in `js/dom-assets.js`. A member report is read in the browser and not sent anywhere.
+The setup is autosaved to localStorage a moment after each change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a Resume prompt on the next visit. It is never loaded silently. A setup can be saved to and opened from a JSON file. Setups loaded from storage or a file pass through `sanitizeProfile()` in `js/wiring.js`, and values that go into HTML pass through `escapeHtml()` in `js/dom-assets.js`. A member report is read in the browser and not sent anywhere.
 
 ## Building, stamps and caching
 

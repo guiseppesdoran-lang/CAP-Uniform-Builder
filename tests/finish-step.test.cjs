@@ -19,16 +19,20 @@ test('the Finish section holds the three ways to finish',()=>{
   assert.match(finish,/id="capubV2ImportFile"/);
 });
 
-test('saving to a file and the browser slot are both in the open: Saved setups is plain, not a fold',()=>{
+test('saving to a file and the reset are both in the open: Saved setups is plain, not a fold, and has no button that saves or loads by hand',()=>{
   for(const id of ['capubV2ExportJson','capubV2ImportBtn','capubV2ImportFile']){
     assert.doesNotMatch(saved,new RegExp(`id="${id}"`),`${id} is not under Saved setups`);
   }
   assert.match(saved,/<label class="fieldLabel">Saved setups<\/label>/);
   assert.doesNotMatch(exportStep,/<details/,'no fold on the Extra step hides a control');
-  for(const id of ['capubV2SaveLocal','capubV2LoadLocal','capubV2Reset']) assert.match(saved,new RegExp(`id="${id}"`));
-  assert.match(saved,/>Save to browser</);
-  assert.match(saved,/>Load saved</);
+  assert.match(saved,/id="capubV2Reset"/);
   assert.match(saved,/>Reset builder</);
+  // The setup saves itself as the member works, so there is no button to save it to the browser or to load it back.
+  assert.doesNotMatch(html,/capubV2SaveLocal|capubV2LoadLocal|Save to browser|Load saved/);
+  // The hint lines are short and true.
+  assert.match(saved,/<div class="hintText">Saved in this browser as you work\.<\/div>/);
+  assert.match(finish,/<div class="hintText">Keep a copy, or move your setup to another device\.<\/div>/);
+  assert.doesNotMatch(finish,/Keeps your whole setup|saved automatically/);
 });
 
 test('the shopping list button goes into the Finish slot and reads as secondary',()=>{

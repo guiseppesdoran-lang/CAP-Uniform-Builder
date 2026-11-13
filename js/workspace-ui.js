@@ -874,8 +874,7 @@
 
 // Autosave and resume. The setup is written to this browser a moment after every change, so
 // a refresh or a closed tab no longer loses it. On the next visit the member is asked whether
-// to resume; nothing is loaded silently. It is separate from "Save to browser", which stays a
-// deliberate named save. Everything stays in localStorage on this device.
+// to resume; nothing is loaded silently. Everything stays in localStorage on this device.
 (function capubAutosave(){
   const KEY='cap_uniform_builder_autosave_v1';
   const SAVE_DELAY_MS=600;

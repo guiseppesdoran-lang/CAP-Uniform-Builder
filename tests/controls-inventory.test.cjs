@@ -64,8 +64,6 @@ const ON_THE_PAGE=[
   ['capubV2ExportJson','export','Save to a file'],
   ['capubV2ImportBtn','export','Open a saved file'],
   ['capubV2ImportFile','export',null],
-  ['capubV2SaveLocal','export','Save to browser'],
-  ['capubV2LoadLocal','export','Load saved'],
   ['capubV2Reset','export','Reset builder'],
   ['capubV2RibbonCount','export',null],
   ['capubV2BadgeCount','export',null],
