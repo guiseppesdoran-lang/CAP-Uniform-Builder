@@ -44,7 +44,9 @@ test('the JROTC/ROTC ribbons are not tiles among the CAP ones: one menu, after t
   assert.match(menu, /el\('details', 'militaryRibbonMenu rotcRibbonMenu'\)/);
   assert.match(menu, /rememberOpen\(d, menu, 'rotc-root'\)/);
   assert.match(menu, /el\('div', 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters'\)/);
-  assert.match(menu, /el\('select', 'rotcProgramSelect'\)/);
+  // The program is the heading its ribbons are under, not a drop-down.
+  assert.doesNotMatch(menu, /el\('select'|rotcProgramSelect/);
+  assert.match(menu, /groups: \(\) => rotc\.services\.map\(service => \(\{ key: service\.label/);
   assert.match(menu, /el\('input', 'rotcRibbonSearch'\)/);
   // No dropdown to add from and no Remove button: a ribbon is a tile, a tap turns it on or off.
   assert.doesNotMatch(menu + galleries, /rotcRibbonAddSelect|rotcRibbonRemove|rotcChosenGrid/);

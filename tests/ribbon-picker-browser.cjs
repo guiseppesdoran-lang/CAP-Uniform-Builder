@@ -5,7 +5,7 @@
 //   node tests/ribbon-picker-browser.cjs [--out DIR] [--tag before|after]
 //
 // Serves the repo, opens the page in headless Chrome and opens the ribbon picker: the ribbons are picture tiles in rows (two at a phone's width, more on a desktop), with
-// no checkbox or radio button; a tap turns one on with its count under the tile, the counting rule kept in the picked line's title and the select's, a ribbon with devices is
+// no checkbox or radio button; a tap turns one on with its count under the tile, the counting rule kept in the picked line's title and the row of counts', a ribbon with devices is
 // drawn with them in its tile, and the tiles of the other ribbons keep their size. Writes screenshots when --out is given.
 const fs = require('node:fs');
 const os = require('node:os');
@@ -88,20 +88,22 @@ async function launch(){
     const sizeBefore = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === 'cap_leadership_ribbon'); const r = c.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()`);
     await shot('0-start');
 
-    // A ribbon with a counting rule: nothing under the tile before the tap; after it the count select, the picked line, the rule in both titles.
+    // A ribbon with a counting rule: nothing under the tile before the tap; after it the row of counts, the picked line, the rule in both titles.
     const id = 'cadet_recruiter_ribbon';
     await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); c.scrollIntoView({ block: 'center' }); c.querySelector('.vpOption').click(); })()`);
     await sleep(1200);
-    const picked = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const line = c.querySelector('.ribbonDeviceSummary'); const sel = c.querySelector('select.rbAwardSelect'); return { on: c.querySelector('.vpOption').getAttribute('aria-pressed'), state: State.ribbonSelections['${id}'].checked, text: line && line.textContent, title: line && line.getAttribute('title'), select: sel && sel.getAttribute('title'), options: sel ? [...sel.options].map(o => o.value) : [], emptyOption: sel ? [...sel.options].some(o => !o.value) : null, drawn: !!c.querySelector('.vpPicture > svg') }; })()`);
+    const picked = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const line = c.querySelector('.ribbonDeviceSummary'); const row = c.querySelector('.vpRow'); const tiles = row ? [...row.querySelectorAll('.vpOption')] : []; return { on: c.querySelector('.vpOption').getAttribute('aria-pressed'), state: State.ribbonSelections['${id}'].checked, text: line && line.textContent, title: line && line.getAttribute('title'), select: row && row.getAttribute('title'), options: tiles.map(o => o.dataset.value), emptyOption: tiles.some(o => !o.dataset.value), drawn: !!c.querySelector('.vpPicture > svg'), drop: c.querySelectorAll('select').length, pictures: tiles.filter(o => o.querySelector('.vpPicture img, .vpPicture svg')).length }; })()`);
     console.log('recruiter after the tap:', JSON.stringify({ ...picked, options: picked.options.length }));
     if(picked.on !== 'true' || !picked.state) bad.push('the tap should turn the ribbon on');
     if(!/^Selected: /.test(picked.text || '')) bad.push(`the picked line: "${picked.text}"`);
-    if(!/Two recruits earn the ribbon/.test(picked.title || '') || !/Two recruits earn the ribbon/.test(picked.select || '')) bad.push('the rule is not in the picked line\'s title or the select\'s');
-    if(picked.emptyOption !== false || picked.options.length < 3) bad.push('the select lists the counts and no "- Select -": ' + JSON.stringify(picked.options));
+    if(!/Two recruits earn the ribbon/.test(picked.title || '') || !/Two recruits earn the ribbon/.test(picked.select || '')) bad.push('the rule is not in the picked line\'s title or the row\'s');
+    if(picked.emptyOption !== false || picked.options.length < 3) bad.push('the row lists the counts as tiles and no "- Select -": ' + JSON.stringify(picked.options));
+    if(picked.drop) bad.push('a drop-down is left under the ribbon: ' + picked.drop);
+    if(picked.pictures !== picked.options.length) bad.push(`every count is a picture: ${picked.pictures} of ${picked.options.length}`);
     await shot('1-recruiter-on');
 
     // The highest count: the award changes and the ribbon is drawn with its devices in its tile.
-    await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const s = c.querySelector('select.rbAwardSelect'); s.value = s.options[s.options.length - 1].value; s.dispatchEvent(new Event('change', { bubbles: true })); })()`);
+    await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const t = [...c.querySelectorAll('.vpRow .vpOption')]; t[t.length - 1].click(); })()`);
     await sleep(1500);
     const high = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const s = State.ribbonSelections['${id}']; return { value: s.awardValue, devices: Object.keys(s.devices || {}).length, drawn: !!c.querySelector('.vpPicture > svg'), line: c.querySelector('.ribbonDeviceSummary').textContent, inRack: State.ribbons.some(r => (r.id || r) === '${id}') }; })()`);
     console.log('the highest count:', JSON.stringify(high));

@@ -11,8 +11,8 @@
 // ribbon through the Eaker and the Encampment Ribbon are selected as earned, the Spaatz is not, the toast names them, and the drawn
 // rack has a ribbon piece for each. Drops to C/SSgt: the ribbons above it are gone from State and from the drawing, the hand-checked
 // one stays. --out writes a screenshot of the figure at each step. LIVE14 E73 (Ethan: "when i selected c/lt col the achievement ribbons
-// popped up as selected but not encampment"): each implied ribbon is its select's first real choice (the Encampment Ribbon's is the
-// McChord Basic Award, mcchord_19700, not 'earned'), and in the ribbon picker every implied tile's select shows that choice.
+// popped up as selected but not encampment"): each implied ribbon is its row's first real choice (the Encampment Ribbon's is the
+// McChord Basic Award, mcchord_19700, not 'earned'), and in the ribbon picker every implied tile's row of counts shows that choice.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -110,14 +110,14 @@ const sortJ = a => JSON.stringify([...a].sort());
     expect(!a.checked.includes('spaatz_award'), 'the Spaatz is not selected for C/Lt Col');
     const firstChoice = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => [id, getRibbonAwardOptions(id).find(o => o.value).value]))`);
     expect(firstChoice.encampment_ribbon === 'mcchord_19700', `the Encampment Ribbon's first choice: ${firstChoice.encampment_ribbon}`);
-    expect(IMPLIED_LT_COL.every(id => a.values[id] === firstChoice[id]), 'each implied ribbon is its select\'s first real choice');
-    // The ribbon picker, opened the way the page opens it: every implied tile is on and its select shows that choice, the Encampment Ribbon's included.
+    expect(IMPLIED_LT_COL.every(id => a.values[id] === firstChoice[id]), 'each implied ribbon is its row\'s first real choice');
+    // The ribbon picker, opened the way the page opens it: every implied tile is on and its row of counts shows that choice, the Encampment Ribbon's included.
     await ev(`(async () => { document.getElementById('expandRibbons').click(); await new Promise(r => setTimeout(r, 1500)); })()`);
-    const tiles = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => { const t = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === id); const s = t && t.querySelector('select.rbAwardSelect'); const on = t && t.querySelector('.vpOption').getAttribute('aria-pressed') === 'true'; const sel = State.ribbonSelections[id]; return [id, t ? { on, value: s ? s.value : sel.awardValue, text: s ? (s.selectedOptions[0]?.textContent || '') : sel.awardLabel, line: t.querySelector('.ribbonDeviceSummary')?.textContent || '' } : null]; }))`);
+    const tiles = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => { const t = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === id); const s = t && t.querySelector('.vpRow .vpOption[aria-checked="true"]'); const on = t && t.querySelector('.vpOption').getAttribute('aria-pressed') === 'true'; const sel = State.ribbonSelections[id]; return [id, t ? { on, value: s ? s.dataset.value : sel.awardValue, text: s ? (s.querySelector('.vpLabel')?.textContent || '') : sel.awardLabel, line: t.querySelector('.ribbonDeviceSummary')?.textContent || '' } : null]; }))`);
     console.log('picker tiles:', JSON.stringify(tiles.encampment_ribbon), Object.values(tiles).filter(Boolean).length, 'tiles');
     for(const id of IMPLIED_LT_COL){
       const t = tiles[id];
-      expect(t && t.on && t.value === firstChoice[id] && t.value !== '', `${id} tile is on, its select shows the first choice: ${JSON.stringify(t)}`);
+      expect(t && t.on && t.value === firstChoice[id] && t.value !== '', `${id} tile is on, its row of counts shows the first choice: ${JSON.stringify(t)}`);
       expect(t && /^Selected: /.test(t.line), `${id} tile line: ${t && t.line}`);
     }
     expect(tiles.encampment_ribbon && tiles.encampment_ribbon.text === 'Basic Award' && tiles.encampment_ribbon.line === 'Selected: Basic Award \u2022 Basic ribbon, no devices', `the Encampment tile: ${JSON.stringify(tiles.encampment_ribbon)}`);

@@ -250,7 +250,10 @@ test('the picked option carries a tick and a heavier edge in the styles, not onl
   assert.match(block, /\.vpOption\{[^}]*min-width:\s*0/, 'a tile may shrink to its column');
   assert.match(block, /\.vpLabel\{[^}]*overflow-wrap:\s*anywhere/, 'a long name wraps instead of widening the column');
   assert.match(block, /\.vpOption:focus-visible/, 'a focus ring of its own');
-  assert.doesNotMatch(block, /overflow-x:\s*(auto|scroll)/, 'nothing scrolls sideways');
+  // A row of tiles (layout "row", a choice under a tile) scrolls inside its own box; nothing else scrolls sideways, and the page never does.
+  const rowRule = /\.vp\[data-layout="row"\] \.vpGrid\{[^}]*overflow-x:\s*auto[^}]*\}/;
+  assert.match(block, rowRule, 'a row scrolls in its own box');
+  assert.doesNotMatch(block.replace(rowRule, ''), /overflow-x:\s*(auto|scroll)/, 'nothing else scrolls sideways');
   // The tile is at least a finger wide at the sidebar's narrowest.
   const min = Number(/minmax\((\d+)px/.exec(block)[1]);
   assert.ok(min >= 84 && min <= 110, 'a column of ' + min + 'px');

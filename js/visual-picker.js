@@ -229,6 +229,7 @@
     rootEl.dataset.name = name;
     if(cfg.size) rootEl.dataset.size = String(cfg.size);
     if(cfg.shape) rootEl.dataset.shape = String(cfg.shape);
+    if(cfg.layout) rootEl.dataset.layout = String(cfg.layout);   // 'row': one row of tiles that scrolls sideways where the choices run long
     if(toggle) rootEl.dataset.mode = 'toggle';
     const legendId = `vp-${id}-legend`;
     if(cfg.legend){
@@ -240,7 +241,7 @@
     list.setAttribute('role', toggle ? 'group' : 'radiogroup');
     if(cfg.legend) list.setAttribute('aria-labelledby', legendId);
     else if(cfg.labelledBy) list.setAttribute('aria-labelledby', String(cfg.labelledBy));   // a heading of the page's own names the group
-    else list.setAttribute('aria-label', name);
+    else list.setAttribute('aria-label', String(cfg.ariaLabel || name));
     const note = make('div', 'fieldNote vpNote');
     note.setAttribute('aria-live', 'polite');
     note.hidden = true;
@@ -390,6 +391,14 @@
       if(had && indexOfValue(hadValue) >= 0) stop = indexOfValue(hadValue);
       paint();
       if(had && tiles[stop]) tiles[stop].button.focus();
+      centerPicked();
+    }
+    // A row of tiles that scrolls sideways shows the picked tile in the middle of what is seen (on a draw, and when the value is set).
+    function centerPicked(){
+      if(cfg.layout !== 'row' || toggle) return;
+      const t = tiles[indexOfValue(value)];
+      const grid = t && t.button.parentNode;
+      if(grid && typeof grid.clientWidth === 'number' && grid.clientWidth) grid.scrollLeft = Math.max(0, t.button.offsetLeft - (grid.clientWidth - t.button.offsetWidth) / 2);
     }
 
     const api = {
@@ -421,6 +430,7 @@
         const i = indexOfValue(v);
         if(i >= 0) stop = i;
         paint();
+        centerPicked();
       },
       setOptions(next){
         options = Array.isArray(next) ? next.filter(o => o && typeof o === 'object') : [];

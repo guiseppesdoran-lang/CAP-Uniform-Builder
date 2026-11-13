@@ -95,9 +95,9 @@ test('a ribbon\'s picture box is wide and low (a ribbon is 3.7 times as wide as 
 });
 
 // LIVE14 E71 (Ethan: "you can remove those question mark things by some of the service ribbons").
-test('no "?" counting-rule button: the rule is in the title of the picked line and of the select',()=>{
+test('no "?" counting-rule button: the rule is in the title of the picked line and of the row of counts',()=>{
   assert.doesNotMatch(galleries+lists,/ribbonRuleBtn|ribbonRulePop|hasRule/);
-  assert.match(ribbonCode,/if\(hint\) select\.setAttribute\('title', hint\);/);
+  assert.match(ribbonCode,/if\(hint\) row\.host\.setAttribute\('title', hint\);/);
   assert.match(ribbonCode,/const title = \[`Selected: \$\{picked\.label\}\$\{picked\.rest\}`, hint\]\.filter\(Boolean\)\.join\('[^']+'\);\s*line\.setAttribute\('title', title\);/);
   const ra=require('../data/ribbon-awards.js');
   for(const id of ['cadet_recruiter_ribbon','cap_senior_recruiter_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','iace_ribbon','crisis_ribbon'])

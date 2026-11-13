@@ -74,6 +74,19 @@
       militaryService: (id, sel) => getMilitarySelectionService(id, sel),
       militaryRules: (award, service, advanced) => window.CAPUBMilitary && window.CAPUBMilitary.inferDeviceRules ? window.CAPUBMilitary.inferDeviceRules(award, service, { allowUnverified: !!advanced }) : null,
       deviceLabel: deviceId => (deviceMeta[deviceId] && deviceMeta[deviceId].label) || '',
+      // The devices of a U.S. military ribbon as the page works them out (setRibbonSelectionFromDropdown): a map { deviceId: count } for the selection `sel` with `over` ({ service, count,
+      // specials }) in place of its own, so a picture of a choice is made from the rule the drawing follows.
+      militaryDevices: (id, sel, over) => {
+        const o = over || {}, award = getMilitaryRibbonAward(id), s = sel || {};
+        const calc = window.CAPUBMilitary && window.CAPUBMilitary.calculateDevices ? window.CAPUBMilitary.calculateDevices({
+          award, service: o.service || getMilitarySelectionService(id, s), awardCount: o.count != null ? o.count : Math.max(1, Number(s.awardCount) || 1),
+          specialAuthorizations: o.specials || s.specialAuthorizations || [],
+          manualDevices: Number(s.manualNumeral) > 1 ? [`NUMERAL_${Math.min(99, Math.max(2, Math.trunc(Number(s.manualNumeral))))}`] : [], allowUnverifiedRules: !!getMilitaryUIState().advancedMode
+        }) : null;
+        const out = {};
+        for(const device of (calc && calc.devices) || []) out[device] = (out[device] || 0) + 1;
+        return out;
+      },
       branchOrder: () => MILITARY_BRANCH_ORDER,
       branchLabels: () => MILITARY_BRANCH_LABELS,
       militaryWorn: () => isMilitaryAwardWornOnUniform(),
@@ -302,6 +315,33 @@
     return entry;
   }
 
+  // ---- choices made by picture, in a row ----------------------------------------------------------------------------------------------------
+
+  // A choice under a tile (the count of a ribbon, the service of a military award, its devices) as tiles in one row that scrolls sideways where the choices run long: each tile is the
+  // item as the engine draws it at that choice (`draw(img)` fills the tile's picture, called as the tile comes into view, so a row of a hundred tiles draws what is seen). `toggle`: any
+  // number of the tiles on (the devices); otherwise one of them picked (`value`, `onChange`). Returns the host and the picker.
+  function pictureRow(d, cfg){
+    const host = el('div', 'vpRow');
+    const picker = d.VisualPicker.render(host, Object.assign({
+      name: cfg.name, ariaLabel: cfg.label, layout: 'row', size: 'small', shape: cfg.shape || 'wide',
+      options: cfg.options.map(o => ({ value: o.value, label: o.label, picture: o.picture }))
+    }, cfg.toggle ? { mode: 'toggle', values: cfg.values, onToggle: cfg.onToggle } : { value: cfg.value, onChange: cfg.onChange }));
+    if(host.style && host.style.setProperty && cfg.pictureHeight) host.style.setProperty('--vpRowPic', cfg.pictureHeight);
+    const draws = new Map(cfg.options.filter(o => typeof o.draw === 'function').map(o => [String(o.value), o.draw]));
+    if(draws.size){
+      const seen = typeof IntersectionObserver === 'function'
+        ? new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){ seen.unobserve(e.target); if(e.target.__draw) e.target.__draw(); } }), { rootMargin: '160px' })
+        : null;
+      for(const tile of picker.el.querySelectorAll(cfg.toggle ? '.vpCell' : '.vpOption')){
+        const draw = draws.get(tile.dataset.value), img = tile.querySelector('img');
+        if(!draw || !img) continue;
+        tile.__draw = () => draw(img);
+        if(seen) seen.observe(tile); else tile.__draw();
+      }
+    }
+    return { host, picker };
+  }
+
   // ---- ribbons ------------------------------------------------------------------------------------------------------------------------------
 
   const chosenRibbon = (d, id) => !!(d.State.ribbonSelections[id] && d.State.ribbonSelections[id].checked);
@@ -335,35 +375,39 @@
     const ui = military ? d.ui() : null;
     const award = military ? d.militaryAward(id) : null;
     const redo = () => { d.setRibbon(id, sel.awardValue || `military_award_${sel.awardCount || 1}`); };
-    if(military && award && (award.authorizedServices || []).length){
-      const label = el('label', 'ribbonAwardLabel');
-      label.append('Awarding / wearer service');
-      const select = el('select', 'militaryServiceSelect');
-      select.dataset.ribbonId = id;
-      for(const service of award.authorizedServices){ const o = el('option', null, d.branchLabels()[service] || String(service).replaceAll('_', ' ')); o.value = service; select.append(o); }
-      select.value = d.militaryService(id, sel);
-      select.addEventListener('change', () => {
-        const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
-        current.militaryService = select.value;
-        d.State.ribbonSelections[id] = current;
-        if(current.checked) d.setRibbon(id, current.awardValue || `military_award_${current.awardCount || 1}`);
-        after();
-      });
-      label.append(select);
-      box.append(label);
+    // The drawing of the ribbon at a choice: the member's own selection with the choice in place of its own, military devices worked out by the rule the drawing follows.
+    const countOf = value => Math.max(1, Number(String(value || '').match(/military_award_(\d+)/)?.[1]) || 1);
+    const art = d.ribbonArt(id) ? d.asset(d.ribbonArt(id)) : undefined;
+    const services = military && award ? (award.authorizedServices || []) : [];
+    // More than one service wears the award: a tile for each, the ribbon as that service wears it at the count chosen. One service is no choice and is not offered.
+    if(services.length > 1){
+      const now = d.militaryService(id, sel);
+      box.append(pictureRow(d, {
+        name: `militaryService-${id}`, label: 'Awarding / wearer service', value: now, pictureHeight: '30px',
+        options: services.map(service => ({ value: service, label: d.branchLabels()[service] || String(service).replaceAll('_', ' '), picture: art,
+          draw: img => d.drawRibbon(img, id, Object.assign({}, sel, { militaryService: service, devices: d.militaryDevices(id, sel, { service }) })) })),
+        onChange: service => {
+          const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
+          current.militaryService = service;
+          d.State.ribbonSelections[id] = current;
+          if(current.checked) d.setRibbon(id, current.awardValue || `military_award_${current.awardCount || 1}`);
+          after();
+        }
+      }).host);
     }
+    // The count or the level: a tile for each, the ribbon drawn at it with its devices; a long list scrolls in the one row and the one picked is in the middle.
     const options = d.ribbonOptions(id).filter(opt => opt && opt.value);
     if(options.length > 1){
-      const label = el('label', 'ribbonAwardLabel');
-      label.append('Award count / earned level');
-      const select = el('select', 'rbAwardSelect');
-      select.dataset.ribbonId = id;
-      if(hint) select.setAttribute('title', hint);
-      for(const opt of options){ const o = el('option', null, opt.label); o.value = opt.value; select.append(o); }
-      select.value = sel.awardValue || options[0].value;
-      select.addEventListener('change', () => { d.setRibbon(id, select.value); after(); });
-      label.append(select);
-      box.append(label);
+      const row = pictureRow(d, {
+        name: `ribbonCount-${id}`, label: 'Award count / earned level', value: sel.awardValue || options[0].value, pictureHeight: '30px',
+        options: options.map(opt => ({ value: opt.value, label: opt.label, picture: art,
+          draw: img => d.drawRibbon(img, id, Object.assign({}, sel, military
+            ? { awardValue: opt.value, awardLabel: opt.label, awardCount: countOf(opt.value), devices: d.militaryDevices(id, sel, { count: countOf(opt.value) }) }
+            : { awardValue: opt.value, awardLabel: opt.label, devices: opt.devices || {} })) })),
+        onChange: value => { d.setRibbon(id, value); after(); }
+      });
+      if(hint) row.host.setAttribute('title', hint);
+      box.append(row.host);
     }
     if(military){
       const rules = d.militaryRules(award, d.militaryService(id, sel), ui.advancedMode);
@@ -372,25 +416,25 @@
         ? [...new Set([...((rules && rules.allowedSpecialDevices) || []), 'V_DEVICE', 'C_DEVICE', 'R_DEVICE', 'ARROWHEAD_DEVICE', 'M_DEVICE', 'BRONZE_HOURGLASS', 'SILVER_HOURGLASS', 'GOLD_HOURGLASS'])]
         : ((rules && rules.allowedSpecialDevices) || []);
       if(specials.length || advanced){
-        const row = el('div', 'militarySpecialDeviceRow');
-        row.setAttribute('title', 'Select only devices authorized on your award orders.');
-        for(const deviceId of specials){
-          const on = (sel.specialAuthorizations || []).includes(deviceId);
-          const button = el('button', 'ghost vpSwitch militarySpecialDevice', d.deviceLabel(deviceId) || deviceId.replaceAll('_', ' '));
-          button.setAttribute('type', 'button');
-          button.setAttribute('aria-pressed', String(on));
-          button.dataset.ribbonId = id;
-          button.dataset.deviceId = deviceId;
-          button.addEventListener('click', () => {
-            const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
-            const chosen = new Set(current.specialAuthorizations || []);
-            if(chosen.has(deviceId)) chosen.delete(deviceId); else chosen.add(deviceId);
-            current.specialAuthorizations = [...chosen];
-            d.State.ribbonSelections[id] = current;
-            if(current.checked) d.setRibbon(id, current.awardValue || `military_award_${current.awardCount || 1}`);
-            after();
-          });
-          row.append(button);
+        const wrap = el('div', 'militarySpecialDeviceRow');
+        wrap.setAttribute('title', 'Select only devices authorized on your award orders.');
+        const chosen = specials.filter(deviceId => (sel.specialAuthorizations || []).includes(deviceId));
+        // The devices the award allows: a tile for each, the ribbon with that device on it (the devices chosen already stay), any number on.
+        if(specials.length){
+          wrap.append(pictureRow(d, {
+            name: `militaryDevices-${id}`, label: 'Devices', toggle: true, values: chosen, pictureHeight: '30px',
+            options: specials.map(deviceId => ({ value: deviceId, label: d.deviceLabel(deviceId) || deviceId.replaceAll('_', ' '), picture: art,
+              draw: img => d.drawRibbon(img, id, Object.assign({}, sel, { devices: d.militaryDevices(id, sel, { specials: [...new Set([...(sel.specialAuthorizations || []), deviceId])] }) })) })),
+            onToggle: (deviceId, on) => {
+              const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
+              const set = new Set(current.specialAuthorizations || []);
+              if(on) set.add(deviceId); else set.delete(deviceId);
+              current.specialAuthorizations = [...set];
+              d.State.ribbonSelections[id] = current;
+              if(current.checked) d.setRibbon(id, current.awardValue || `military_award_${current.awardCount || 1}`);
+              after();
+            }
+          }).host);
         }
         if(advanced){
           const label = el('label', null, 'Numeral ');
@@ -409,9 +453,9 @@
             after();
           });
           label.append(input);
-          row.append(label);
+          wrap.append(label);
         }
-        box.append(row);
+        box.append(wrap);
       }
     }
     const picked = pickedText(d, id, military);
@@ -463,6 +507,7 @@
     // The drawn ribbon, devices and all, in place of the plain picture of a ribbon that is on; a picture that fails to load falls back to the ribbon's plain one.
     const draw = () => {
       for(const cell of picker.el.querySelectorAll('.vpCell')){
+        if(cell.closest('.vpControls')) continue;   // a tile of a row under a ribbon (its devices) is not a ribbon's tile
         const id = cell.dataset.value;
         const img = cell.querySelector('img');
         if(!img) continue;
@@ -478,13 +523,19 @@
         const active = document.activeElement;
         const inside = active && picker.el.contains && picker.el.contains(active) ? active : null;
         const cell = inside && inside.closest ? inside.closest('.vpCell') : null;
-        const keep = cell && inside !== cell.querySelector('.vpOption') ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], device: inside.dataset ? inside.dataset.deviceId : '' } : null;
+        // A field the member was in under a tile (a tile of a row of counts, the numeral) keeps the focus: the same tile of the same row, else the same kind of field.
+        const row = inside && inside.closest ? inside.closest('.vp') : null;
+        const keep = cell && inside !== cell.querySelector('.vpOption')
+          ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], option: inside.dataset ? inside.dataset.value : '', row: row && row.dataset ? row.dataset.name : '' } : null;
         picker.setOptions(options());
         picker.setValues(on());
         draw();
         if(keep){
           const again = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === keep.value);
-          const target = again && again.querySelectorAll('.' + keep.className).find(n => !keep.device || n.dataset.deviceId === keep.device);
+          const rowAgain = again && keep.row ? again.querySelectorAll('.vp').find(v => v.dataset.name === keep.row) : null;
+          const target = rowAgain
+            ? rowAgain.querySelectorAll('.vpOption').find(n => n.dataset.value === keep.option)
+            : again && again.querySelectorAll('.' + keep.className).find(n => n !== again.querySelector('.vpOption'));
           if(target && target.focus) target.focus();
         }
       }
@@ -531,29 +582,24 @@
     });
   }
 
-  // The JROTC / ROTC ribbons: a menu with the program and a search to narrow the tiles; the ones chosen stay in sight whatever the narrowing says; three at most.
+  // The JROTC / ROTC ribbons: a menu whose tiles are under a heading for each program (so the program is the picture list, no drop-down), a search to narrow them, the ones chosen kept in
+  // sight whatever the search says; three at most.
   function rotcMenu(container, ids, d, refreshAll){
     const ui = d.ui();
     const rotc = d.rotc();
-    if(!ui.rotcProgram) ui.rotcProgram = 'ALL';
     if(typeof ui.rotcSearch !== 'string') ui.rotcSearch = '';
     const menu = el('details', 'militaryRibbonMenu rotcRibbonMenu');
     rememberOpen(d, menu, 'rotc-root');
     const summary = el('summary');
     menu.append(summary);
-    menu.append(el('div', 'sub', `Worn after the CAP ribbons, at most ${rotc.limit} in all, only while enrolled in the program (CAPR 39-1, ${rotc.ref}). Pick the program, then the ribbons.`));
+    menu.append(el('div', 'sub', `Worn after the CAP ribbons, at most ${rotc.limit} in all, only while enrolled in the program (CAPR 39-1, ${rotc.ref}). Find the ribbon under its program.`));
     const filters = el('div', 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters');
-    const program = el('select', 'rotcProgramSelect');
-    program.setAttribute('aria-label', 'JROTC or ROTC program');
-    const all = el('option', null, 'All programs'); all.value = 'ALL'; program.append(all);
-    for(const service of rotc.services){ const o = el('option', null, service.label); o.value = service.key; program.append(o); }
-    program.value = ui.rotcProgram;
     const search = el('input', 'rotcRibbonSearch');
     search.setAttribute('type', 'search');
-    search.setAttribute('placeholder', 'Search JROTC / ROTC ribbons…');
+    search.setAttribute('placeholder', 'Search JROTC / ROTC ribbons\u2026');
     search.setAttribute('aria-label', 'Search JROTC and ROTC ribbons');
     search.value = ui.rotcSearch;
-    filters.append(program, search);
+    filters.append(search);
     menu.append(filters);
     const status = el('div', 'sub rotcRibbonStatus');
     status.setAttribute('role', 'status');
@@ -564,7 +610,7 @@
       return ids.filter(id => {
         if(chosenRibbon(d, id)) return true;
         const r = rotc.get(id);
-        return r && (ui.rotcProgram === 'ALL' || r.service === ui.rotcProgram) && (!q || r.name.toLowerCase().includes(q));
+        return r && (!q || r.name.toLowerCase().includes(q));
       });
     };
     const words = () => {
@@ -575,12 +621,10 @@
     };
     const entry = ribbonPicker(menu, {
       name: 'rotcRibbons', ids: narrowed, military: false,
-      caption: id => { const r = rotc.get(id); const s = r && rotc.services.find(x => x.key === r.service); return s ? s.label : 'JROTC / ROTC'; },
-      search: id => { const r = rotc.get(id); const s = r && rotc.services.find(x => x.key === r.service); return s ? s.label : ''; }
+      groups: () => rotc.services.map(service => ({ key: service.label, note: '', ids: narrowed().filter(id => (rotc.get(id) || {}).service === service.key) })).filter(g => g.ids.length)
     }, d, () => { refreshAll(); });
     const refresh = entry.refresh;
     entry.refresh = () => { refresh(); words(); };
-    program.addEventListener('change', () => { ui.rotcProgram = program.value || 'ALL'; entry.refresh(); });
     search.addEventListener('input', () => { ui.rotcSearch = search.value; entry.refresh(); });
     words();
     container.append(menu);

@@ -73,11 +73,16 @@ test('a tap turns a ribbon on and off: the selection, its first choice, the tile
   assert.ok(p.button(id).classList.contains('isPicked'), 'the tile\'s own border and fill show it');
   const controls = p.cell(id).querySelector('.vpControls');
   assert.ok(controls && !controls.hidden, 'the controls are under it');
-  const select = controls.querySelector('select');
-  assert.equal(select.className, 'rbAwardSelect');
-  assert.ok(select.querySelectorAll('option').every(o => o.value), 'no "- Select -": off is the tile\'s tap');
-  assert.ok(select.querySelectorAll('option').length > 5, 'its counts');
-  assert.equal(select.value, sel.awardValue);
+  assert.equal(controls.querySelectorAll('select').length, 0, 'no drop-down: its counts are pictures');
+  const row = controls.querySelector('.vpRow');
+  assert.ok(row, 'its counts are a row of tiles');
+  assert.equal(row.querySelector('.vp').dataset.layout, 'row', 'one row that scrolls sideways');
+  const tiles = row.querySelectorAll('.vpOption');
+  assert.ok(tiles.length > 5, 'its counts');
+  assert.ok(tiles.every(t => t.nodeName === 'BUTTON' && t.getAttribute('role') === 'radio' && t.dataset.value), 'a radio button each, no "- Select -": off is the tile\'s tap');
+  assert.ok(tiles.every(t => t.querySelector('img')), 'each with the ribbon\'s picture');
+  assert.equal(tiles.filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), sel.awardValue, 'the one picked is the award');
+  assert.ok(drawn.filter(x => x === id).length >= tiles.length, 'each tile is the ribbon as the engine draws it at that count, devices and all');
   assert.match(controls.querySelector('.ribbonDeviceSummary').textContent, /^Selected: Basic Award/);
   assert.ok(drawn.includes(id), 'the drawn ribbon, devices and all, takes the place of the plain picture');
   assert.ok(p.cell('cap_leadership_ribbon').querySelector('.vpControls') === null, 'the other tiles have none');
@@ -88,37 +93,40 @@ test('a tap turns a ribbon on and off: the selection, its first choice, the tile
   assert.ok(p.cell(id).querySelector('.vpControls') === null, 'off, the controls are gone');
 });
 
-test('a ribbon\'s count is its own control: choosing another sets the award and the devices it wears, and the field keeps the focus', () => {
+test('a ribbon\'s count is a row of picture tiles: choosing another sets the award and the devices it wears, and the tile keeps the focus', () => {
   setup('blues_a');
   const p = make();
   const id = 'lifesaving_award';
   p.button(id).click();
-  const select = () => p.cell(id).querySelector('.rbAwardSelect');
-  const last = select().querySelectorAll('option').slice(-1)[0].value;
-  select().focus();
-  select().value = last;
-  select().dispatchEvent({ type: 'change', target: select() });
+  const tiles = () => p.cell(id).querySelector('.vpRow').querySelectorAll('.vpOption');
+  const last = tiles().slice(-1)[0].dataset.value;
+  assert.notEqual(last, State.ribbonSelections[id].awardValue);
+  tiles().slice(-1)[0].focus();
+  tiles().slice(-1)[0].click();
   assert.equal(State.ribbonSelections[id].awardValue, last);
   assert.notEqual(State.ribbonSelections[id].awardLabel, 'Basic Award', 'the label of that count');
-  assert.equal(select().value, last, 'the control shows it');
-  assert.equal(doc.activeElement, select(), 'the member is still in the select');
+  assert.equal(tiles().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), last, 'the row shows it');
+  assert.ok(doc.activeElement === tiles().slice(-1)[0], 'the member is still on that tile');
+  assert.equal(p.button(id).getAttribute('aria-pressed'), 'true', 'the ribbon stays on');
+  assert.match(p.cell(id).querySelector('.ribbonDeviceSummary').textContent, new RegExp('^Selected: ' + State.ribbonSelections[id].awardLabel));
 });
 
-test('a ribbon with one choice only (earned) has no count control, and the counting rule is in the title of the line and of the select', () => {
+test('a ribbon with one choice only (earned) has no row of counts, and the counting rule is in the title of the line', () => {
   setup('blues_a');
   const p = make();
   const single = evj('getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id) && !isRotcRibbonId(id)).find(id => getRibbonAwardOptions(id).filter(o => o.value).length === 1)');
   assert.ok(single, 'a ribbon that is earned once');
   p.button(single).click();
   assert.ok(p.cell(single).querySelector('.vpControls'), 'its line is under it');
-  assert.ok(p.cell(single).querySelector('select') === null, 'nothing to count');
+  assert.ok(p.cell(single).querySelector('.vpRow') === null, 'nothing to count: no row, no tile of one');
+  assert.ok(p.cell(single).querySelector('select') === null);
   assert.match(p.cell(single).querySelector('.ribbonDeviceSummary').textContent, /^Selected: /);
   const ra = require('../data/ribbon-awards.js');
   const id = 'cap_senior_recruiter_ribbon';
   assert.ok(ra.hint(id));
   p.button(id).click();
   const control = p.cell(id).querySelector('.vpControls');
-  assert.equal(control.querySelector('select').getAttribute('title'), ra.hint(id));
+  assert.equal(control.querySelector('.vpRow').getAttribute('title'), ra.hint(id), 'the counting rule is the title of the row');
   assert.ok(control.querySelector('.ribbonDeviceSummary').getAttribute('title').includes(ra.hint(id)));
 });
 
@@ -146,7 +154,7 @@ test('the miniature medal is shown under a ribbon that is on only where the unif
   assert.ok(minis.includes('lifesaving_award'), 'drawn as the uniform draws it');
 });
 
-test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: the program and the search narrow its tiles, the ones chosen stay in sight, three at most', () => {
+test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: its tiles are under a heading for each program, the search narrows them, the ones chosen stay in sight, three at most', () => {
   setup('blues_a', 'cadet');
   const p = make();
   const menu = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === 'rotc-root');
@@ -156,16 +164,13 @@ test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: the program a
   assert.equal(menu.querySelector('summary').textContent, 'JROTC / ROTC Ribbons, 0 of 3 chosen');
   assert.equal(tiles().length, ROTC.ribbons.length, 'every ribbon');
   assert.ok(p.host.querySelectorAll('.vpCell').filter(c => ROTC.ribbons.some(r => r.id === c.dataset.value)).length === ROTC.ribbons.length, 'and no JROTC ribbon is a tile outside the menu');
-  assert.deepEqual(menu.querySelector('.rotcProgramSelect').querySelectorAll('option').map(o => o.textContent), ['All programs', ...ROTC.services.map(s => s.label)]);
-  assert.deepEqual(tiles().map(c => c.dataset.value), ROTC.ribbons.map(r => r.id), 'the data\'s order, the order of wear');
-  const army = menu.querySelector('.rotcProgramSelect');
-  army.value = 'army-jrotc';
-  army.dispatchEvent({ type: 'change', target: army });
-  assert.deepEqual(tiles().map(c => c.dataset.value), ROTC.ribbons.filter(r => r.service === 'army-jrotc').map(r => r.id), 'the program');
+  assert.equal(menu.querySelectorAll('select').length, 0, 'no drop-down: the program is the heading its ribbons are under');
+  assert.deepEqual(menu.querySelectorAll('.vpGroupHead').map(h => h.textContent), ROTC.services.map(s => s.label), 'a heading for each program, in the data\'s order');
+  assert.deepEqual(tiles().map(c => c.dataset.value), ROTC.services.flatMap(s => ROTC.ribbons.filter(r => r.service === s.key).map(r => r.id)), 'by program, each in the order of wear');
   const search = menu.querySelector('.rotcRibbonSearch');
   search.value = 'profic';
   search.dispatchEvent({ type: 'input', target: search });
-  assert.deepEqual(tiles().map(c => c.dataset.value), ['rotc_army_jrotc_proficiency'], 'program and search');
+  assert.deepEqual(tiles().map(c => c.dataset.value), ['rotc_army_jrotc_proficiency'], 'the search');
   p.button('rotc_army_jrotc_proficiency', menu).click();
   assert.deepEqual(evj(`State.ribbonSelections.rotc_army_jrotc_proficiency`), { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Earned' }, 'the saved shape');
   assert.match(menu.querySelector('summary').textContent, /1 of 3 chosen/);
@@ -173,7 +178,6 @@ test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: the program a
   search.dispatchEvent({ type: 'input', target: search });
   assert.deepEqual(tiles().map(c => c.dataset.value), ['rotc_army_jrotc_proficiency'], 'the one chosen stays in sight');
   // The fourth is refused with the reason, and its tile stays off.
-  army.value = 'ALL'; army.dispatchEvent({ type: 'change', target: army });
   search.value = ''; search.dispatchEvent({ type: 'input', target: search });
   const toasts = [];
   context.capubToastShow = m => toasts.push(m);
@@ -188,7 +192,7 @@ test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: the program a
   assert.equal(menu.querySelectorAll('input').filter(i => i.getAttribute('type') !== 'search').length, 0, 'no input but the search');
 });
 
-test('the U.S. military ribbons are a menu by branch whose tiles are made when the branch is opened; a tap picks one with its service and count; the devices are buttons', () => {
+test('the U.S. military ribbons are a menu by branch whose tiles are made when the branch is opened; a tap picks one, its count is a row of picture tiles, and the service is one only where more than one service wears the award', () => {
   setup('blues_a');
   const p = make();
   const root = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === 'military-root');
@@ -209,19 +213,50 @@ test('the U.S. military ribbons are a menu by branch whose tiles are made when t
   const tile = () => army.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
   assert.equal(State.ribbonSelections[id].checked, true);
   assert.equal(State.ribbonSelections[id].awardValue, 'military_award_1');
-  assert.equal(tile().querySelector('.militaryServiceSelect').value, 'ARMY');
-  assert.ok(tile().querySelector('.rbAwardSelect'));
-  const count = tile().querySelector('.rbAwardSelect');
-  count.value = 'military_award_3';
-  count.dispatchEvent({ type: 'change', target: count });
+  assert.ok(tile().querySelectorAll('.vp').every(v => v.dataset.name !== `militaryService-${id}`), 'an award one service wears has no service to choose');
+  assert.equal(tile().querySelectorAll('select').length, 0, 'no drop-down under a military ribbon');
+  const counts = () => tile().querySelectorAll('.vp').find(v => v.dataset.name === `ribbonCount-${id}`).querySelectorAll('.vpOption');
+  assert.ok(counts().length > 3, 'its counts are tiles');
+  const third = counts().find(t => t.dataset.value === 'military_award_3');
+  third.click();
   assert.equal(State.ribbonSelections[id].awardValue, 'military_award_3');
   assert.equal(State.ribbonSelections[id].awardCount, 3);
   assert.match(tile().querySelector('.ribbonDeviceSummary').textContent, /^Selected: 3rd Award/);
+  assert.equal(counts().find(t => t.getAttribute('aria-checked') === 'true').dataset.value, 'military_award_3');
   // The window's search reads the tiles that are made.
   assert.equal(root.querySelectorAll('.vpCell').length, cells.length);
 });
 
-test('devices of a U.S. military award are buttons with aria-pressed; choosing devices by hand is a pressed switch that adds the numeral and the rest of the devices', () => {
+test('an award more than one service wears has a row of its services, each the ribbon as that service wears it; choosing one keeps the count; one service is no choice', () => {
+  setup('blues_a');
+  const p = make();
+  const id = 'military:silver_star';
+  const award = ev(`getMilitaryRibbonAward(${JSON.stringify(id)})`);
+  const services = evj(`getMilitaryRibbonAward(${JSON.stringify(id)}).authorizedServices`);
+  assert.ok(services.length > 1, 'an award several services wear');
+  const branch = ev(`getMilitaryAwardBranch(getMilitaryRibbonAward(${JSON.stringify(id)}))`);
+  const details = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === `military-branch-${branch}`);
+  details.open = true;
+  details.dispatchEvent({ type: 'toggle', bubbles: false });
+  const tile = () => details.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
+  tile().querySelector('.vpOption').click();
+  const row = () => tile().querySelectorAll('.vp').find(v => v.dataset.name === `militaryService-${id}`);
+  assert.ok(row(), 'the services are a row');
+  assert.deepEqual(row().querySelectorAll('.vpOption').map(t => t.dataset.value), services, 'a tile for each service, none for the others');
+  assert.ok(row().querySelectorAll('.vpOption').every(t => t.getAttribute('role') === 'radio' && t.querySelector('img')));
+  const count = () => tile().querySelectorAll('.vp').find(v => v.dataset.name === `ribbonCount-${id}`).querySelectorAll('.vpOption');
+  count().find(t => t.dataset.value === 'military_award_2').click();
+  const other = services.find(sv => sv !== ev(`getMilitarySelectionService(${JSON.stringify(id)}, State.ribbonSelections[${JSON.stringify(id)}])`));
+  row().querySelectorAll('.vpOption').find(t => t.dataset.value === other).focus();
+  row().querySelectorAll('.vpOption').find(t => t.dataset.value === other).click();
+  assert.equal(State.ribbonSelections[id].militaryService, other, 'the service');
+  assert.equal(State.ribbonSelections[id].awardValue, 'military_award_2', 'the count stays');
+  assert.equal(row().querySelectorAll('.vpOption').find(t => t.getAttribute('aria-checked') === 'true').dataset.value, other);
+  assert.ok(doc.activeElement === row().querySelectorAll('.vpOption').find(t => t.dataset.value === other), 'the member is still on that tile');
+  assert.ok(award, 'the award');
+});
+
+test('devices of a U.S. military award are picture tiles with aria-pressed; choosing devices by hand is a pressed switch that adds the numeral and the rest of the devices', () => {
   setup('blues_a');
   const p = make();
   const ids = evj('getMilitaryRibbonIds()');
@@ -235,24 +270,26 @@ test('devices of a U.S. military award are buttons with aria-pressed; choosing d
   tile().querySelector('.vpOption').click();
   const row = () => tile().querySelector('.militarySpecialDeviceRow');
   assert.ok(row(), 'the devices under the tile');
-  const buttons = () => row().querySelectorAll('button');
-  assert.ok(buttons().length >= 1 && buttons().every(b => b.nodeName === 'BUTTON' && b.getAttribute('aria-pressed') === 'false' && b.dataset.deviceId));
+  const devices = () => row().querySelectorAll('.vp').find(v => v.dataset.name === `militaryDevices-${withDevices}`).querySelectorAll('.vpCell');
+  assert.ok(devices().length >= 1, 'a tile for each device the award allows');
+  const pressed = c => c.querySelector('.vpOption').getAttribute('aria-pressed');
+  assert.ok(devices().every(c => c.querySelector('.vpOption').nodeName === 'BUTTON' && pressed(c) === 'false' && c.querySelector('img')), 'buttons with aria-pressed, each the ribbon with the device on it');
   assert.equal(row().querySelectorAll('input').length, 0, 'no numeral until devices are chosen by hand');
-  const device = buttons()[0].dataset.deviceId;
-  buttons()[0].click();
+  const device = devices()[0].dataset.value;
+  devices()[0].querySelector('.vpOption').click();
   assert.deepEqual(State.ribbonSelections[withDevices].specialAuthorizations, [device]);
-  assert.equal(buttons()[0].getAttribute('aria-pressed'), 'true');
-  buttons()[0].click();
+  assert.equal(pressed(devices()[0]), 'true');
+  devices()[0].querySelector('.vpOption').click();
   assert.deepEqual(State.ribbonSelections[withDevices].specialAuthorizations, []);
   const root = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === 'military-root');
   const advanced = root.querySelector('.militaryAdvancedMode');
   assert.equal(advanced.nodeName, 'BUTTON');
   assert.equal(advanced.getAttribute('aria-pressed'), 'false');
-  const before = buttons().length;
+  const before = devices().length;
   advanced.click();
   assert.equal(advanced.getAttribute('aria-pressed'), 'true');
   assert.equal(ev('getMilitaryUIState().advancedMode'), true);
-  assert.ok(buttons().length > before, 'the rest of the devices');
+  assert.ok(devices().length > before, 'the rest of the devices');
   assert.equal(row().querySelectorAll('input').length, 1, 'the numeral');
   assert.equal(row().querySelector('input').getAttribute('type'), 'number');
 });

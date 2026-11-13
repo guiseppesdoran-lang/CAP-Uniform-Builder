@@ -118,36 +118,38 @@ const sortJ = a => JSON.stringify([...a].sort());
     expect(s0.stray === 0, 'no JROTC/ROTC ribbon is a tile of its own outside the menu');
     expect(s0.shown.length === total, `All programs shows every JROTC ribbon: ${s0.shown.length}`);
     expect(s0.boxes === 0, `no checkbox or radio button in the picker: ${s0.boxes}`);
-    expect(await ev(`[...__menu().querySelectorAll('.rotcProgramSelect option')].map(o => o.textContent).join('|')`) === 'All programs|Air Force JROTC|Army JROTC|Marine Corps JROTC|Navy JROTC', 'the program select lists the programs');
+    expect(await ev(`[...__menu().querySelectorAll('.vpGroupHead')].map(h => h.textContent).join('|')`) === 'Air Force JROTC|Army JROTC|Marine Corps JROTC|Navy JROTC', 'the programs are headings, in the data order');
+    expect(await ev(`__menu().querySelectorAll('select').length`) === 0, 'no drop-down in the menu');
 
-    // ---- 1. Air Force JROTC: its program, then a tap on a tile. ----
-    await ev(`__set('.rotcProgramSelect', 'air-force-jrotc')`);
+    // ---- 1. Each program's ribbons are under its own heading; a tap on a tile. ----
+    const underHeadings = await ev(`Object.fromEntries([...__menu().querySelectorAll('.vpGroupHead')].map(h => [h.textContent, [...h.parentNode.querySelectorAll('.vpCell')].map(c => c.dataset.value)]))`);
+    const labels = { 'air-force-jrotc': 'Air Force JROTC', 'army-jrotc': 'Army JROTC', 'marine-corps-jrotc': 'Marine Corps JROTC', 'navy-jrotc': 'Navy JROTC' };
+    for(const [key, list] of Object.entries(ids)) expect(JSON.stringify(underHeadings[labels[key]]) === JSON.stringify(list), `the ${labels[key]} heading has its ${list.length} ribbons in the order of wear`);
     const s1 = await ev('__state()');
-    expect(sortJ(s1.shown) === sortJ(ids['air-force-jrotc']), `the Air Force JROTC program shows its ${ids['air-force-jrotc'].length} ribbons: ${s1.shown.length}`);
+    expect(s1.shown.length === total, `every ribbon is a tile: ${s1.shown.length}`);
     await ev(`__tap('${AF}')`);
     const s2 = await ev('__state()');
     console.log('after the first:', JSON.stringify({ ...s2, shown: s2.shown.length }));
     expect(sortJ(s2.checked) === sortJ([AF]) && sortJ(s2.pressed) === sortJ([AF]), `the first is chosen and its tile is on: ${s2.checked} / ${s2.pressed}`);
     expect(/1 of 3 chosen/.test(s2.summary), `the summary counts it: ${s2.summary}`);
 
-    // ---- 2. Army JROTC, narrowed by the search; the first stays in sight. ----
-    await ev(`__set('.rotcProgramSelect', 'army-jrotc')`);
+    // ---- 2. The search narrows the tiles; the first stays in sight. ----
     await ev(`__set('.rotcRibbonSearch', 'profic')`);
     const s3 = await ev('__state()');
-    expect(sortJ(s3.shown) === sortJ([ARMY, AF]), `program and search leave the ribbon and the one chosen: ${s3.shown.join(', ')}`);
+    const proficient = await ev(`CAPUBRotcRibbons.ribbons.filter(r => r.name.toLowerCase().includes('profic')).map(r => r.id)`);
+    expect(sortJ(s3.shown) === sortJ([...new Set([...proficient, AF])]), `the search leaves the matching ribbons and the one chosen: ${s3.shown.join(', ')}`);
     await ev(`__tap('${ARMY}')`);
     const s4 = await ev('__state()');
     console.log('after the second:', JSON.stringify({ ...s4, shown: s4.shown.length }));
     expect(sortJ(s4.checked) === sortJ([AF, ARMY]) && sortJ(s4.pressed) === sortJ([AF, ARMY]), `two chosen and on: ${s4.checked} / ${s4.pressed}`);
     expect(sortJ(s4.drawn) === sortJ([AF, ARMY]), `both are drawn in the rack: ${s4.drawn.join(', ')}`);
-    expect(JSON.stringify(s4.shown) === JSON.stringify([AF, ARMY]), 'the tiles follow the order of wear in the data');
+    expect(JSON.stringify(s4.shown) === JSON.stringify(Object.values(ids).flat().filter(id => s3.shown.includes(id))), 'the tiles follow the programs, each in the order of wear in the data');
     await ev(`__menu().scrollIntoView({ block: 'start' })`);
     await sleep(200);
     await shot('1-two');
 
     // ---- 3. A third from all programs, then a fourth is refused. ----
     await ev(`__set('.rotcRibbonSearch', '')`);
-    await ev(`__set('.rotcProgramSelect', 'ALL')`);
     await ev(`__tap('${NAVY}')`);
     const s5 = await ev('__state()');
     expect(sortJ(s5.checked) === sortJ([AF, ARMY, NAVY]), `three chosen: ${s5.checked.join(', ')}`);
