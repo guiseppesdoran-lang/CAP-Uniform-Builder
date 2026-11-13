@@ -78,23 +78,26 @@ async function launch(){
       fs.writeFileSync(path.join(OUT, `${TAG}-${name}-${width}.png`), Buffer.from(r.data, 'base64'));
     };
     const rows = id => ev(`[...document.querySelectorAll('#${id} .itemSummaryRow')].map(li => ({ name: li.querySelector('.itemSummaryName').textContent, place: (li.querySelector('.itemSummaryPlace') || {}).textContent || '', why: (li.querySelector('.itemSummaryWhy') || {}).textContent || '', notShown: li.classList.contains('notShown') }))`);
-    // What each badge chosen says under its name in the chooser window: the place it takes on this uniform, or why it is left off with its paragraph (there is no separate list).
-    const badgeLines = () => ev(`(async () => { document.getElementById('expandBadges').click(); await new Promise(r => setTimeout(r, 1500)); const rows = [...document.querySelectorAll('#galleryModalHost .vp[data-name="badges"] .vpCell')].filter(c => c.querySelector('.vpOption').getAttribute('aria-pressed') === 'true').map(c => ({ name: c.querySelector('.vpLabel').textContent, place: (c.querySelector('.vpCaption') || {}).textContent || '', why: (c.querySelector('.vpCaption') || {}).textContent || '', lines: c.querySelectorAll('.vpCaption').length, notShown: /\\(CAPR 39-1/.test((c.querySelector('.vpCaption') || {}).textContent || ''), shownWord: /shown/i.test(c.textContent) })); document.getElementById('galleryModalCloseBtn').click(); await new Promise(r => setTimeout(r, 300)); return rows; })()`);
+    // What the drawing did with each badge chosen, as the chooser window shows it: the tile is the picture and the name (no line under it, no "shown"), a badge the drawing leaves off is dim, and
+    // turning that badge on says in the window's status line why, with the paragraph. The place and the reason are the drawing's own (capubBadgeSummary).
+    const badgeLines = () => ev(`(async () => { document.getElementById('expandBadges').click(); await new Promise(r => setTimeout(r, 1500)); const sum = capubBadgeSummary(); const cap = t => String(t || '').charAt(0).toUpperCase() + String(t || '').slice(1); const cells = [...document.querySelectorAll('#galleryModalHost .vp[data-name="badges"] .vpCell')].filter(c => c.querySelector('.vpOption').getAttribute('aria-pressed') === 'true'); const rows = cells.map(c => { const r = sum.find(x => x.id === c.dataset.value) || {}; return { name: c.querySelector('.vpLabel').textContent, place: r.shown ? cap(r.place) : '', why: r.shown ? '' : cap(r.why), lines: c.querySelectorAll('.vpCaption').length, notShown: c.querySelector('.vpOption').classList.contains('isMuted'), shownWord: /shown/i.test(c.textContent) }; }); const dim = cells.find(c => c.querySelector('.vpOption').classList.contains('isMuted')); let say = ''; if(dim){ const b = dim.querySelector('.vpOption'); b.click(); await new Promise(r => setTimeout(r, 1200)); const again = [...document.querySelectorAll('#galleryModalHost .vp[data-name="badges"] .vpCell')].find(c => c.dataset.value === dim.dataset.value).querySelector('.vpOption'); again.click(); await new Promise(r => setTimeout(r, 2500)); const line = document.getElementById('capubV2ModalSay'); say = line && !line.hidden ? line.textContent : ''; } document.getElementById('galleryModalCloseBtn').click(); await new Promise(r => setTimeout(r, 300)); return { rows, say }; })()`);
     const set = async code => { await ev(`(async () => { ${code}; await CAPUBUniformView.render(); })()`); await sleep(700); };
 
     const ids = ['CAPPilot1_FA9D33EA587D8', 'ground_team_basic_badge', 'communications_technician_badge', 'emergency_services_badge', 'information_technology_technician_badge'];
     await set(`State.membership = 'senior'; State.gender = 'male'; State.rank = 'Capt'; State.uniform = 'blues_a'; State.badges = ${JSON.stringify(ids)}; State.badgeChoices = {}; State.commandInsignia = { graduatedCommander: false }; for(const id of ${JSON.stringify(ids)}){ State.badgeSelections[id] = State.badgeSelections[id] || { checked: false }; State.badgeSelections[id].checked = true; } if(typeof refreshUI === 'function') refreshUI()`);
     await ev(`CAPUB_V3.showStep('items')`); await sleep(400);
-    let list = await badgeLines();
-    console.log(JSON.stringify(list, null, 1));
+    let lines = await badgeLines();
+    let list = lines.rows;
+    console.log(JSON.stringify(lines, null, 1));
     const by = n => list.find(r => r.name === n);
     if(list.length !== 5) fails.push(`the chooser should have the 5 chosen badges on, it has ${list.length}`);
-    if(list.some(r => r.lines !== 1 || r.shownWord)) fails.push('each chosen badge says one line under its name, and never "shown" or "not shown": ' + JSON.stringify(list.map(r => [r.lines, r.shownWord])));
+    if(list.some(r => r.lines !== 0 || r.shownWord)) fails.push('a badge tile is the picture and the name: no line under it, never "shown" or "not shown": ' + JSON.stringify(list.map(r => [r.lines, r.shownWord])));
     if(!by('Pilot Badge') || !/^Above the Ground Team Badge$/.test(by('Pilot Badge').place)) fails.push('the pilot badge should be above the Ground Team badge');
     if(!by('Ground Team Badge') || !/^Above the (ribbons|left pocket)$/.test(by('Ground Team Badge').place)) fails.push('the Ground Team badge should be above the ribbons or the pocket');
     if(!by('Communications Technician Badge') || !/pocket|left/i.test(by('Communications Technician Badge').place)) fails.push('the communications badge should name its place');
     const gone = list.filter(r => r.notShown);
-    if(gone.length !== 1 || gone[0].name !== 'Information Technology Technician Badge' || !/CAPR 39-1, 4\.1\.5\.2\.2\.4/.test(gone[0].why)) fails.push('the badge with no place left should say why, with the paragraph');
+    if(gone.length !== 1 || gone[0].name !== 'Information Technology Technician Badge' || !/CAPR 39-1, 4\.1\.5\.2\.2\.4/.test(gone[0].why)) fails.push('the badge with no place left should be dim and the drawing should give its reason, with the paragraph');
+    if(!/^Information Technology Technician Badge is not shown\. .*CAPR 39-1, 4\.1\.5\.2\.2\.4/.test(lines.say)) fails.push('turning that badge on should say why in the window\'s status line: ' + lines.say);
     await shot('#groupBadges', 'badges');
     // The command pin row: visible on the Items step, no chooser needed.
     const rowVisible = await ev(`(() => { const r = document.getElementById('commandInsigniaRow'); const b = r.getBoundingClientRect(); return !r.classList.contains('hidden') && b.height > 0 && r.closest('#stepGroup-items') && !document.getElementById('stepGroup-items').hidden; })()`);
@@ -106,7 +109,7 @@ async function launch(){
     await pickCmd('current');
     st = await state(); console.log('current:', JSON.stringify(st));
     if(!st.chosen || st.grad || st.radio !== 'current' || !/Current commander: above the name tag/.test(st.text)) fails.push('Current commander should choose the pin over the name tag: ' + JSON.stringify(st));
-    list = await badgeLines();
+    list = (await badgeLines()).rows;
     if(!list.some(r => /Squadron Commander/.test(r.name) && r.place === 'Above the name tag')) fails.push('the pin\'s tile should say above the name tag');
     const drawnOn = await ev(`CAPUBUniformView.scene.layers.some(l => /squadron_commander_badge:ON/.test(l.key || ''))`);
     if(!drawnOn) fails.push('the drawing should carry the current commander pin');

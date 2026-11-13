@@ -463,6 +463,7 @@
         title: c.label,
         count: many ? `${slots.length} are worn` : 'One is worn',
         note: c.note || '',
+        why: c.why || '',
         options: c.candidates.map(x => ({ id: x.id, title: x.title })),
         slots: slots.map(sl => ({ key: sl.key, label: sl.label, value: sl.badge || sl.choice || '', shown: sl.shown !== false }))
       };
@@ -548,6 +549,8 @@
   // one the place holds, and each tile has the line of what the drawing did with its badge under the name (updateBadgeChooser). A position with one place writes the badge id; a
   // position with several writes the picks of all its places (the badge picked here swaps with the one the place held, nextBadgePicks). The picture picker of js/visual-picker.js.
   const chooserPickers = new Map();   // "position|place" -> the picker of that place
+  let chooserSay = null;      // the status line under the tiles: what the last pick did (set by updateBadgeChooser)
+  let pickedBadge = null;     // { position, id }: the badge the member just picked, whose line the status says once the drawing is made
   const badgeArt = id => typeof getBadgeAssetPath === 'function' ? ASSET(getBadgeAssetPath(id)) : undefined;
   function buildChooserOptions(group, slot, labelledBy){
     const host = el('div', 'badgeChooserList');
@@ -557,6 +560,7 @@
       name: `badgeChooser-${group.position}-${slot.key}`, labelledBy, size: 'large', boxed: true, value: slot.value,
       options: group.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id) })),
       onChange: id => {
+        pickedBadge = { position: group.position, id };
         if(single){ setBadgeChoice(group.position, id); return; }
         const live = (lastScene && lastScene.conflicts || []).find(c => c.position === group.position);
         const current = live ? chooserModel([live])[0] : group;
@@ -584,23 +588,38 @@
       chooserPickers.clear();
       host.append(el('p', 'hintText badgeChooserLead', 'Where a uniform has more than one place for badges, pick the badge for each place.'));
       for(const g of model) host.append(buildChooserGroup(g));
+      chooserSay = el('p', 'hintText badgeChooserSay');
+      chooserSay.setAttribute('role', 'status');
+      chooserSay.setAttribute('aria-live', 'polite');
+      chooserSay.hidden = true;
+      host.append(chooserSay);
       if(keep){
         const again = [...host.querySelectorAll('[role="radio"]')].find(n => n.closest('.badgeChooserList') && n.closest('.badgeChooserList').dataset.place === keep.place && n.dataset.value === keep.value);
         if(again) again.focus();
       }
     }
-    // The picked badges, read off the latest scene: in each place the tile of the badge the place holds is picked. The line under a badge's name is what the drawing did with it, the one
-    // line the list of where the badges are worn used to give: the place it takes on this uniform, or why it is left off, with its paragraph.
+    // The picked badges, read off the latest scene: in each place the tile of the badge the place holds is picked. A tile is the picture and the name, nothing under it; what the drawing did
+    // with the badge just picked (the place it takes, and the rule that decides which badge is worn there, with its paragraph) is said in the status line under the tiles.
     const rows = typeof capubBadgeSummary === 'function' ? capubBadgeSummary(scene) : [];
-    const lineOf = id => window.CAPUBPickLists ? CAPUBPickLists.badgeLine(rows, id, undefined) : undefined;
     for(const g of model){
       for(const sl of g.slots){
         const picker = chooserPickers.get(`${g.position}|${sl.key}`);
         if(picker){
-          picker.setOptions(g.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id), caption: lineOf(cand.id) })));
+          picker.setOptions(g.options.map(cand => ({ value: cand.id, label: cand.title, picture: badgeArt(cand.id) })));
           picker.setValue(sl.value);
         }
       }
+    }
+    // What the pick did, said once: where the badge is worn (or why it is left off), then the rule that decides which badge goes there, with its paragraph.
+    if(pickedBadge && chooserSay){
+      const g = model.find(x => x.position === pickedBadge.position);
+      const cand = g && g.options.find(x => x.id === pickedBadge.id);
+      const note = cand && window.CAPUBPickLists ? CAPUBPickLists.badgeNote(rows, cand.id, cand.title) : '';
+      const rule = g && g.why ? (/[.)]$/.test(g.why) ? g.why : g.why + '.') : '';
+      const text = [note, rule].filter(Boolean).join(' ');
+      chooserSay.textContent = text;
+      chooserSay.hidden = !text;
+      pickedBadge = null;
     }
   }
 

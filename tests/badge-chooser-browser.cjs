@@ -6,7 +6,7 @@
 //
 // Serves the repo, opens the page in headless Chrome, selects five badges on the Class A (two aviation badges compete for the one aviation place, three specialty badges for the
 // left pocket, the right pocket and the place over the nametag), and checks the chooser: a plain heading row per position, one picture tile group per place with a tile for each
-// competing badge (its own drawing, its name and the line of what the drawing did with it), no input, no select, no fieldset. Picks a badge for a place through its tile and checks the
+// competing badge (its own drawing and its name), no input, no select, no fieldset. Picks a badge for a place through its tile and checks the
 // engine moved it there and the badge it displaced took its old place; moves the pick with the arrow key and checks it stays within the place. Writes a screenshot of the chooser when
 // --out is given (LIVE7-1, Ethan: "pick the badges on the left and right manually"; 2026-11-12: the choices are pictures, the way the other selections are).
 const fs = require('node:fs');
@@ -108,7 +108,7 @@ async function launch(){
     if(pocket && !pocket.slots.every(sl => sl.role === 'radiogroup' && sl.labelled && sl.options.length === 3 && sl.options.every(o => o.hasPicture))) fails.push('each pocket place should be a labelled radio group of picture tiles, one for each of the three competing badges');
     if(pocket && pocket.slots.some(sl => sl.options.filter(o => o.checked).length !== 1)) fails.push('each place should have exactly one tile picked');
     if(pocket && new Set(Object.values(picked(pocket))).size !== 3) fails.push('the places should start with three different badges');
-    if(pocket && !pocket.slots.every(sl => sl.options.every(o => o.line.length > 0))) fails.push('each tile should carry the line of what the drawing did with its badge');
+    if(pocket && !pocket.slots.every(sl => sl.options.every(o => o.line.length === 0))) fails.push('a tile is the picture and the name: no line under the name');
     if(!aviation || aviation.tiles !== 2 || !aviation.own || aviation.own.role !== 'radiogroup') fails.push('the aviation group should be a radio group with a tile per competing badge (2)');
     if(aviation && aviation.own && aviation.own.options.filter(o => o.checked).length !== 1) fails.push('the aviation place should have exactly one tile picked');
     await shot('0-default');
@@ -126,6 +126,9 @@ async function launch(){
     const drawn = await ev(`CAPUBUniformView.scene.layers.filter(l => l.role === 'badge').map(l => l.key.replace('badge:', '') + '@' + (l.x + l.w / 2).toFixed(1))`);
     console.log('drawn:', drawn.join(', '));
     if(!drawn.some(d => d.startsWith('information_technology_technician_badge@') && Number(d.split('@')[1]) > 15)) fails.push('the IT badge is not drawn on the left pocket');
+    const said = await ev(`(() => { const n = document.querySelector('#badgeChooser .badgeChooserSay'); return n ? { hidden: n.hidden, text: n.textContent } : null; })()`);
+    console.log('status line after the pick:', JSON.stringify(said));
+    if(!said || said.hidden || !/Information Technology/.test(said.text)) fails.push('the status line under the tiles should say what the pick did with the badge: ' + JSON.stringify(said));
     await shot('1-picked');
     // Keyboard: focus the picked tile of the right pocket and press the down arrow; the pick moves to the next badge in that place only.
     const focused = await ev(`(() => { const t = document.querySelector('#badgeChooser .badgeChooserSlot[data-slot="right-pocket"] [role=radio][aria-checked="true"]'); t.focus(); return document.hasFocus() && document.activeElement === t; })()`);

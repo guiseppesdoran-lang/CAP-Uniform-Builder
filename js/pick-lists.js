@@ -14,7 +14,7 @@
 
   // The page's own functions, looked up when a list is built (they are the page's globals: the scripts are classic scripts).
   function pageDeps(){
-    /* global State, ASSET, getBadgeAssetPath, getBadgeDisplayName, getBadgeTileMetaHtml, isCommandInsigniaBadge, CAPUBBadgeCatalog, canSelectCommandInsigniaForCurrentRank,
+    /* global State, ASSET, getBadgeAssetPath, getBadgeDisplayName, isCommandInsigniaBadge, CAPUBBadgeCatalog, canSelectCommandInsigniaForCurrentRank,
        chooseOnlyCommandInsignia, rebuildBadgesFromGallery, isCommandInsigniaGradeEligible, fullRender, getAvailableMilitaryBadgeVariants, militaryServiceLabel, PATCH_META,
        capubBadgeSummary, patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery, getEligibleRibbonIds, isAwardWornOnUniform, isRotcRibbonId, isMilitaryRibbonId, groupRibbonIds,
        getRibbonDisplayName, getRibbonImagePath, getRibbonAwardOptions, capubFirstRibbonOptionValue, setRibbonSelectionFromDropdown, normalizeRibbonSelections, CAPUBRibbonAwards,
@@ -26,8 +26,6 @@
       asset: p => ASSET(p),
       artPath: id => getBadgeAssetPath(id),
       name: id => getBadgeDisplayName(id),
-      // The line under a badge: where it is worn, from the page's own words (an HTML line, read as text).
-      caption: id => { const n = document.createElement('div'); n.innerHTML = getBadgeTileMetaHtml(id); return n.textContent.trim(); },
       isCommand: id => isCommandInsigniaBadge(id),
       levels: id => typeof CAPUBBadgeCatalog !== 'undefined' ? CAPUBBadgeCatalog.levels(id) : null,
       level: (id, level) => CAPUBBadgeCatalog.level(id, level)[0],
@@ -43,6 +41,10 @@
       serviceLabel: service => militaryServiceLabel(service),
       // what the drawing did with each badge chosen (js/badge-rules.js capubBadgeSummary): { id, shown, place, why, pending }
       badgeRows: () => typeof capubBadgeSummary === 'function' ? capubBadgeSummary() : [],
+      // The window's short status line (js/wiring.js): what a tap on a tile says, with its paragraph.
+      say: text => { if(typeof window !== 'undefined' && typeof window.capubModalSay === 'function') window.capubModalSay(text); },
+      // what the drawing did with each patch chosen (js/badge-rules.js capubPatchSummary): { id, name, shown, place, why }
+      patchRows: () => typeof capubPatchSummary === 'function' ? capubPatchSummary() : [],
       // patches
       patchIds: () => window.capubVisiblePatchIdsForGallery(),
       patchMeta: id => PATCH_META[id] || {},
@@ -115,16 +117,19 @@
   const selectedIn = (d, ids) => ids.filter(id => d.State.badgeSelections[id] && d.State.badgeSelections[id].checked);
   const sel = (d, id) => d.State.badgeSelections[id] || (d.State.badgeSelections[id] = { checked: false });
 
-  // The line under a badge's name. A badge that is not chosen says where it is worn in general (`general`). A badge that is chosen says what the drawing did with it: the place it takes on
-  // this uniform, or why it is left off, with its paragraph (the page puts the paragraph behind a question mark); until the drawing has been made it says the general line.
   const sentence = t => { const x = String(t || ''); return x.charAt(0).toUpperCase() + x.slice(1); };
   const stopped = t => /[.)]$/.test(t) ? t : t + '.';
-  function badgeLine(rows, id, general){
-    const row = rows.find(r => r.id === id);
-    if(!row || row.pending) return general;
-    if(row.shown) return sentence(row.place) || general;
-    return row.why ? stopped(sentence(row.why)) : general;
+
+  // What a tap on a badge's tile says in the window's status line (not on the tile): where the drawing wore it, or why it is left off, with its paragraph; nothing until the drawing
+  // has been made.
+  function badgeNote(rows, id, name){
+    const row = rows.find(r => r.id === id || (name && r.name === name));
+    if(!row || row.pending) return '';
+    if(row.shown) return row.place ? `${name}: ${row.place}.` : '';
+    return row.why ? `${name} is not shown. ${stopped(sentence(row.why))}` : '';
   }
+  // A badge or patch that is chosen and that the drawing leaves off looks unavailable: its picture is dim, its name stays.
+  const leftOff = (rows, id, name, on) => { const row = rows.find(r => r.id === id || (name && r.name === name)); return !!on && !!row && !row.pending && !row.shown; };
 
   // What a tap does: the badge on or off, the page's rules after it (one command pin, the exclusive badges, the order: rebuildBadgesFromGallery). A command pin above the grade that
   // wears one (CAPR 39-1, 10.2.5) turns back, with the reason. Returns whether the badge is on afterwards.
@@ -208,12 +213,15 @@
     // so the list is made again when the pin held changes.
     const pinsOn = () => ids.filter(id => d.isCommand(id) && d.State.badgeSelections[id] && d.State.badgeSelections[id].checked).join();
     let built = '';
-    const options = () => { built = pinsOn(); const rows = d.badgeRows(); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), caption: badgeLine(rows, id, d.caption(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null }))); };
+    const options = () => { built = pinsOn(); const rows = d.badgeRows(), on = new Set(selectedIn(d, ids)); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), muted: leftOff(rows, id, d.name(id), on.has(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null }))); };
+    // The last badge the member turned on: the window's status line says what the drawing did with it, as soon as the drawing has been made.
+    let tapped = null;
+    const say = () => { if(tapped) d.say(badgeNote(d.badgeRows(), tapped, d.name(tapped))); };
     const host = el('div');
     container.append(host);
     const picker = d.VisualPicker.render(host, {
       name: 'badges', ariaLabel: 'Badges', mode: 'toggle', size: 'large', options: options(), values: selectedIn(d, ids),
-      onToggle: (id, on) => { selectBadge(id, on, deps); entry.refresh(); }
+      onToggle: (id, on) => { tapped = on ? id : null; if(!on) d.say(''); selectBadge(id, on, deps); entry.refresh(); say(); }
     });
     const entry = {
       picker, ids,
@@ -225,7 +233,7 @@
       // The pictures again (a badge at another level is another drawing); a field the member was in under a tile keeps the focus.
       setOptions(){ keepingFocus(picker.el, () => { picker.setValues(selectedIn(d, ids)); picker.setOptions(options()); }); },
       // The drawing has been made again: what it did with each badge chosen is the line under its name.
-      rendered(){ entry.setOptions(); }
+      rendered(){ entry.setOptions(); say(); }
     };
     return entry;
   }
@@ -243,9 +251,10 @@
       return { variants, active };
     };
     const pictureOf = badge => { const { variants, active } = variantOf(badge); return (variants.find(v => v.id === active) || variants[0]).record.asset; };
-    const captionOf = badge => [(badge.family && badge.family !== 'OTHER') ? String(badge.family).charAt(0) + String(badge.family).slice(1).toLowerCase() : '', (badge.authorizedServices || []).map(s => d.serviceLabel(s)).join(' / ')].filter(Boolean).join(' • ');
-    const options = () => { const rows = d.badgeRows(); return records.map(badge => ({
-      value: badge.id, label: badge.officialName || badge.id, picture: pictureOf(badge), caption: badgeLine(rows, badge.id, captionOf(badge)), search: `${branch} ${badge.family || ''}`,
+    const nameOf = badge => badge.officialName || badge.id;
+    let tapped = null;
+    const options = () => { const rows = d.badgeRows(), on = new Set(chosen()); return records.map(badge => ({
+      value: badge.id, label: nameOf(badge), picture: pictureOf(badge), muted: leftOff(rows, badge.id, nameOf(badge), on.has(badge.id)), search: `${branch} ${badge.family || ''}`,
       controls: () => {
         const { variants, active } = variantOf(badge);
         if(variants.length < 2) return null;
@@ -270,12 +279,17 @@
         if(!d.State.militaryBadges) d.State.militaryBadges = {};
         if(on) d.State.militaryBadges[id] = { selected: true, variant: variantOf(byId.get(id)).active };
         else delete d.State.militaryBadges[id];
+        tapped = on ? id : null;
+        if(!on) d.say('');
         d.fullRender();
+        say();
       }
     });
+    // The last badge turned on: the window's status line says what the drawing did with it once the drawing has been made.
+    const say = () => { if(tapped) d.say(badgeNote(d.badgeRows(), tapped, nameOf(byId.get(tapped)))); };
     // The list made again (the drawing has been made again, or a level was picked): the picture of each badge at its level; a field the member was in under a tile keeps the focus.
     const again = () => keepingFocus(picker.el, () => { picker.setValues(chosen()); picker.setOptions(options()); });
-    return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); }, rendered: again };
+    return { picker, ids: [...byId.keys()], refresh(){ picker.setValues(chosen()); }, rendered(){ again(); say(); } };
   }
 
   // ---- patches ------------------------------------------------------------------------------------------------------------------------------
@@ -303,12 +317,21 @@
     // The patches that are on and have places to choose from: their tiles carry the choice, so the list is made again when these change.
     const placed = () => listed().filter(id => patchOn(d, id) && d.patchWords(id).places.length > 1).join();
     let built = '';
+    // A patch chosen that the drawing leaves off looks unavailable (its picture is dim); a tap on a tile says in the window's status line where the patch is worn, or why it is left off.
+    const rowOf = id => { const title = d.patchWords(id).title; return (d.patchRows() || []).find(r => r.id === id || r.name === title); };
+    const leftOffPatch = id => { const row = rowOf(id); return patchOn(d, id) && !!row && !row.shown; };
+    let tapped = null;
+    const say = () => {
+      if(!tapped) return;
+      const row = patchOn(d, tapped) ? rowOf(tapped) : null, title = d.patchWords(tapped).title;
+      d.say(!row ? '' : row.shown ? (row.place ? `${title}: ${row.place}.` : '') : (row.why ? `${title} is not shown. ${stopped(sentence(row.why))}` : ''));
+    };
     const options = () => {
       built = placed();
       return listed().map(id => {
         const meta = d.patchMeta(id), words = d.patchWords(id);
         return {
-          value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, caption: words.where,
+          value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, muted: leftOffPatch(id),
           group: meta.group || undefined, groupNote: meta.group ? meta.note : undefined, search: meta.group || '',
           controls: isOn => isOn ? placeChoice(id) : null
         };
@@ -333,9 +356,8 @@
           onChange: slot => {
             d.setPlace(id, slot);
             d.rebuildPatches();
-            const cell = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
-            const caption = cell && cell.querySelector('.vpCaption');
-            if(caption) caption.textContent = d.patchWords(id).where;
+            tapped = id;
+            say();
           }
         }).host);
         host.hidden = false;
@@ -351,7 +373,7 @@
     container.append(host);
     const picker = d.VisualPicker.render(host, {
       name: 'patches', ariaLabel: 'Patches', mode: 'toggle', size: 'large', options: options(), values: listed().filter(id => patchOn(d, id)),
-      onToggle: (id, on) => { selectPatch(id, on, deps); entry.refresh(); }
+      onToggle: (id, on) => { tapped = on ? id : null; if(!on) d.say(''); selectPatch(id, on, deps); entry.refresh(); say(); }
     });
     const entry = {
       picker, ids: listed(),
@@ -360,7 +382,9 @@
         picker.setValues(listed().filter(id => patchOn(d, id)));
         if(placed() !== built) keepingFocus(picker.el, () => picker.setOptions(options()));
       },
-      setOptions(){ keepingFocus(picker.el, () => { picker.setValues(listed().filter(id => patchOn(d, id))); picker.setOptions(options()); }); }
+      setOptions(){ keepingFocus(picker.el, () => { picker.setValues(listed().filter(id => patchOn(d, id))); picker.setOptions(options()); }); },
+      // The drawing has been made again: a patch it left off is dim, and the last tap says where the patch is worn or why it is not.
+      rendered(){ entry.setOptions(); say(); }
     };
     return entry;
   }
@@ -794,5 +818,5 @@
     };
   }
 
-  return { badgeList, militaryBadgeList, badgeLine, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pictureRow, pageDeps };
+  return { badgeList, militaryBadgeList, badgeNote, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pictureRow, pageDeps };
 });

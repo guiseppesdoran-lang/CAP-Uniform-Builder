@@ -1,8 +1,8 @@
 'use strict';
 // The owner (2026-11-12, on the "CAP aviation badge, one is worn" list of radio buttons): "This ui should be visual". Which badge takes each place is chosen from picture tiles (the
-// badge's own drawing, its name under it, the picture picker of js/visual-picker.js), one group per place; the badge shown is the picked tile. The line under each name is what the
-// drawing did with that badge, the one line the list of where the badges are worn used to give (its place, or why it is left off with its paragraph); no "shown" or "not shown".
-// No radio button is left in it.
+// badge's own drawing and its name, the picture picker of js/visual-picker.js), one group per place; the badge shown is the picked tile. A tile is the picture and the name (the owner,
+// 2026-11-13: "remove these lower letters"); what the drawing did with the badge the member just picked (its place, and the rule that decides which badge goes there, with its paragraph)
+// is said once in the status line under the tiles; no "shown" or "not shown". No radio button is left in it.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -55,32 +55,50 @@ const SEVERAL = { position: 'pocket', label: 'Pocket and name tag badges', limit
 const tiles = (host, place) => host.querySelectorAll('.badgeChooserList').find(l => l.dataset.place === place).querySelectorAll('[role="radio"]');
 
 const WHY = 'Only one CAP aviation badge is worn (CAPR 39-1, 4.1.5.2.2.4.1)';
-test('which badge takes a place is chosen from picture tiles: each competing badge is a tile with its own drawing and its name and one line under the name, the one shown picked; no "shown" or "not shown", no radio button or box', () => {
+test('which badge takes a place is chosen from picture tiles: each competing badge is a tile with its own drawing and its name and nothing under the name, the one shown picked; no "shown" or "not shown", no radio button or box', () => {
   const p = page();
   p.sandbox.badgeRows = [{ id: PILOT, shown: false, place: '', why: WHY }, { id: OBSERVER, shown: true, place: 'above the Ground Team Badge', why: '' }, { id: AIRCREW, shown: false, place: '', why: WHY }];
-  p.sandbox.CAPUBUniformView.updateBadgeChooser({ conflicts: [SINGLE] });
+  p.sandbox.CAPUBUniformView.updateBadgeChooser({ conflicts: [Object.assign({}, SINGLE, { why: WHY })] });
   const host = p.host();
   assert.ok(host && !host.classList.contains('hidden'));
   const t = tiles(host, 'only');
   assert.deepEqual(t.map(x => x.querySelector('.vpLabel').textContent), ['Pilot Badge', 'Observer Badge', 'Air Crew Badge']);
   assert.deepEqual(t.map(x => x.getAttribute('aria-checked')), ['false', 'true', 'false'], 'the badge shown is the picked tile');
   assert.deepEqual(t.map(x => x.querySelector('.vpMark')), [null, null, null], 'no mark on a tile');
-  // The line is under the name, in the tile's box and outside its button (so the paragraph can carry its question mark): the place, or why it is left off, one line each.
-  const cells = host.querySelectorAll('.badgeChooserList')[0].querySelectorAll('.vpCell');
-  assert.deepEqual(cells.map(c => c.querySelectorAll('.vpCaption').length), [1, 1, 1], 'one line under each name, never two');
-  assert.deepEqual(cells.map(c => c.querySelector('.vpCaption').textContent), [WHY, 'Above the Ground Team Badge', WHY]);
-  assert.ok(cells.every(c => c.querySelector('.vpCaption').parentNode === c && !t.some(b => b.contains(c.querySelector('.vpCaption')))), 'outside the button');
-  assert.doesNotMatch(host.textContent, /\bshown\b/i, 'no "shown" or "not shown" anywhere in the chooser');
+  // Nothing under a name: no place, no reason, no question mark.
+  assert.equal(host.querySelectorAll('.vpCaption').length, 0, 'no line under any name');
+  assert.doesNotMatch(host.textContent, /Only one CAP|above the Ground Team|\bshown\b/i, 'no reason or place on the tiles, no "shown" or "not shown" anywhere in the chooser');
   assert.deepEqual(t.map(x => x.querySelector('img') ? x.querySelector('img').getAttribute('src') : null), [PILOT, OBSERVER, AIRCREW].map(id => `images/badges/${id}.svg`), 'the badge\'s own drawing');
   assert.equal(host.querySelectorAll('input').length, 0, 'no input at all: no radio, no checkbox');
   const group = host.querySelector('[role="radiogroup"]');
   assert.equal(group.getAttribute('aria-labelledby'), 'badgeChooserHead-aviation', 'named by the heading above it');
   assert.equal(host.querySelector('.badgeChooserCount').textContent, 'One is worn');
-  // Before the drawing has been made there is no line to give.
-  const early = page();
-  early.sandbox.badgeRows = [{ id: OBSERVER, pending: true }];
-  early.sandbox.CAPUBUniformView.updateBadgeChooser({ conflicts: [SINGLE] });
-  assert.deepEqual(early.host().querySelectorAll('.vpCaption').length, 0);
+  const say = host.querySelector('.badgeChooserSay');
+  assert.ok(say && say.getAttribute('role') === 'status' && say.hidden === true, 'a status line under the tiles, empty until a tile is tapped');
+});
+
+test('a pick says in the status line under the tiles where the badge is worn and the rule that decides which badge goes there, once', () => {
+  const p = page();
+  const view = p.sandbox.CAPUBUniformView;
+  p.sandbox.badgeRows = [{ id: OBSERVER, name: 'Observer Badge', shown: true, place: 'above the Ground Team Badge', why: '' }];
+  view.updateBadgeChooser({ conflicts: [Object.assign({}, SINGLE, { why: WHY })] });
+  const say = () => p.host().querySelector('.badgeChooserSay');
+  assert.equal(say().hidden, true);
+  tiles(p.host(), 'only')[2].click();
+  // The drawing is made with the new choice.
+  p.sandbox.badgeRows = [{ id: AIRCREW, name: 'Air Crew Badge', shown: true, place: 'above the CAP tape', why: '' }];
+  view.updateBadgeChooser({ conflicts: [Object.assign({}, SINGLE, { why: WHY, shown: [AIRCREW], choice: AIRCREW, slots: [{ key: 'only', label: SINGLE.label, choice: AIRCREW, badge: AIRCREW, shown: true }] })] });
+  assert.equal(say().hidden, false);
+  assert.equal(say().textContent, `Air Crew Badge: above the CAP tape. ${WHY}`, 'the place, then the rule with its paragraph');
+  // Not said again by a later drawing of the same choice (it stays until the next pick).
+  p.sandbox.badgeRows = [];
+  view.updateBadgeChooser({ conflicts: [Object.assign({}, SINGLE, { why: WHY, shown: [AIRCREW], choice: AIRCREW, slots: [{ key: 'only', label: SINGLE.label, choice: AIRCREW, badge: AIRCREW, shown: true }] })] });
+  assert.equal(say().textContent, `Air Crew Badge: above the CAP tape. ${WHY}`);
+  // A badge the drawing leaves off gives its reason.
+  tiles(p.host(), 'only')[0].click();
+  p.sandbox.badgeRows = [{ id: PILOT, name: 'Pilot Badge', shown: false, place: '', why: 'No place is left for it (CAPR 39-1, 4.1.5.2.2.4)' }];
+  view.updateBadgeChooser({ conflicts: [Object.assign({}, SINGLE, { why: WHY, shown: [AIRCREW], choice: PILOT, slots: [{ key: 'only', label: SINGLE.label, choice: PILOT, badge: AIRCREW, shown: true }] })] });
+  assert.equal(say().textContent, `Pilot Badge is not shown. No place is left for it (CAPR 39-1, 4.1.5.2.2.4) ${WHY}`);
 });
 
 test('tapping a tile picks that badge for the place: the choice the build is made from (State.badgeChoices of the uniform) changes, and the keyboard does the same', () => {

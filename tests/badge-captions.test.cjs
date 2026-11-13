@@ -45,9 +45,11 @@ test('badge ids that are image hashes have a real display name',()=>{
   for(const id of hashed) assert.match(names,new RegExp(`\\b${id}:\\s*'[^']+'`),`${id} has a name`);
 });
 
-test('the badge tiles of the chooser use the plain-language line, and no builder prints the abbreviation line',()=>{
-  // The one list is js/pick-lists.js (2026-11-12: picture tiles); the sidebar copies of it are gone.
-  assert.match(fs.readFileSync(path.join(__dirname,'..','js','pick-lists.js'),'utf8'),/getBadgeTileMetaHtml\(/,'pick-lists.js uses the shared line');
+test('a badge tile is the picture and the name: no builder prints a line under it, plain-language or abbreviation',()=>{
+  // The owner (2026-11-13): "remove these lower letters". Where a badge is worn is said in the window's status line when the tile is tapped (js/pick-lists.js badgeNote), not on the tile.
+  const lists=fs.readFileSync(path.join(__dirname,'..','js','pick-lists.js'),'utf8');
+  assert.doesNotMatch(lists,/getBadgeTileMetaHtml|caption: badge/,'pick-lists.js puts no caption on a badge tile');
+  assert.doesNotMatch(fs.readFileSync(path.join(__dirname,'..','js','badge-rules.js'),'utf8'),/getBadgeTileMetaHtml/,'the line under a badge\'s name is gone with the tiles that had it');
   for(const file of ['galleries.js','wiring.js','patches.js','pick-lists.js']){
     const text=fs.readFileSync(path.join(__dirname,'..','js',file),'utf8');
     assert.doesNotMatch(text,/Regulation scale: \$\{Math\.round\(getBadgeRenderSize/,`${file} no longer prints the abbreviation line`);

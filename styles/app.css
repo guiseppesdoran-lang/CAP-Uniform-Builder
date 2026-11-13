@@ -582,6 +582,8 @@ header h1::after{
 .capubV2Search input{margin:0}
 .militaryBadgeGalleryTile select{width:100%;min-width:0;font-size:var(--t-sm)}
 .capubV2Search .sub{font-size:var(--t-xs);color:var(--muted);margin-top:var(--s2)}
+.capubV2Search .capubModalSay{color:var(--ink)}
+.badgeChooserSay{margin:var(--s2) 0 0;font-size:var(--t-xs);color:var(--ink)}
 
 /* ---- Preview ---- */
 #previewWrapper{
@@ -1550,6 +1552,8 @@ html[data-access="guest"] #accessGate{display:none}
 .vpTick{position:absolute;top:4px;right:4px;display:none;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--select-line);color:var(--panel)}
 .vpOption[aria-checked="true"] .vpTick{display:flex}
 .vpTick svg{display:block;width:14px;height:14px}
+/* A badge or patch that is chosen and that the drawing leaves off: its picture is dim, its name stays; the status line says why when it is tapped. */
+.vpOption.isMuted .vpPicture{opacity:.4}
 .vpNote{margin-top:var(--s2)}
 .vpOption.noPicture{justify-content:center;min-height:56px}
 /* Boxed tiles (data-boxed, js/visual-picker.js): every switch tile (mode "toggle": a list of badges, ribbons or patches, any number on) and a choice whose options carry a line under

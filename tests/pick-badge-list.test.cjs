@@ -1,6 +1,7 @@
 'use strict';
 // The owner (2026-11-12): "Badge selection ... should be like the other selections (no checkboxes, those are annoying)". The badges of the chooser window are picture tiles (js/pick-lists.js
-// on the picture picker's toggle mode): the badge's own drawing, its name and where it is worn under it; a tap turns it on or off, the tile shows it; the level of a badge (a row of tiles,
+// on the picture picker's toggle mode): the badge's own drawing and its name, nothing under the name; a tap turns it on or off, the tile shows it, and the window's status line says where the
+// drawing wore it or why it left it off; the level of a badge (a row of tiles,
 // each the badge drawn at that level) and the way a command pin is worn (two tiles, each the pin as the engine draws it) are under the tile while it is on. No checkbox, no drop-down and
 // no switch button is in the list.
 
@@ -23,17 +24,19 @@ const PILOT = 'CAPPilot1_FA9D33EA587D8', OBSERVER = 'observer_badge', STEM = 'ca
 const NAMES = { [PILOT]: 'Pilot Badge', [OBSERVER]: 'Observer Badge', [STEM]: 'Cadet STEM Badge', [SQUADRON]: 'Squadron Commander Badge', [GROUP]: 'Group Commander Badge', [ES]: 'Emergency Services Badge' };
 
 // The page's own functions, standing in: the selections, the rules that run after a tap (one command pin), the grade that may wear a pin, the levels of a badge.
+const SAID = [];   // what the window's status line was told, in order
 let ROWS = [];   // what the drawing did with each badge chosen (js/badge-rules.js capubBadgeSummary), as a test says it
 function deps(extra){
   const State = { badgeSelections: {}, badges: [], commandInsignia: { graduatedCommander: false }, rank: 'Capt' };
   const d = {
     State, VisualPicker, asset: p => 'images/' + p, artPath: id => `badges/${id}${(State.badgeSelections[id] || {}).level ? '-' + State.badgeSelections[id].level : ''}.svg`, name: id => NAMES[id] || id,
-    caption: id => 'Worn: above the left pocket', isCommand: id => id === SQUADRON || id === GROUP,
+    isCommand: id => id === SQUADRON || id === GROUP,
     levels: id => id === STEM ? [['basic', 'Basic'], ['senior', 'Senior'], ['master', 'Master']] : null, level: (id, level) => level || 'basic',
     levelArt: (id, level) => `badges/${id}-${level}.svg`,
     canCommand: () => !extra || extra.canCommand !== false, chooseOnlyCommand: id => { for(const x of [SQUADRON, GROUP]) if(x !== id && State.badgeSelections[x]) State.badgeSelections[x].checked = false; },
     rebuild: () => { State.badges = Object.keys(State.badgeSelections).filter(id => State.badgeSelections[id].checked); },
-    badgeRows: () => ROWS
+    badgeRows: () => ROWS,
+    say: text => { SAID.push(text); }
   };
   // The pin as the engine draws it worn each way, as a test says it: { current, graduated } (false where the uniform does not draw it); `late` makes them arrive after the list is built.
   if(extra && extra.pictures){
@@ -50,14 +53,14 @@ const make = (extra, groups) => {
   return { d, host, entry, tile: id => host.querySelectorAll('.vpCell').find(c => c.dataset.value === id), button: id => host.querySelectorAll('.vpCell').find(c => c.dataset.value === id).querySelector('.vpOption') };
 };
 
-test('the badges are picture tiles: each with its own drawing, its name and where it is worn, under a heading for its category; no checkbox or radio button is in the list', () => {
+test('the badges are picture tiles: each with its own drawing and its name and nothing under the name, under a heading for its category; no checkbox or radio button is in the list', () => {
   const p = make();
   assert.equal(p.host.querySelectorAll('input').length, 0, 'no input at all');
   assert.deepEqual(p.host.querySelectorAll('.vpGroupHead').map(h => h.textContent), ['Aviation / Aircrew', 'Cadet Specialty Track Badges', 'Command']);
   const cells = p.host.querySelectorAll('.vpCell');
   assert.deepEqual(cells.map(c => c.querySelector('.vpLabel').textContent), [NAMES[PILOT], NAMES[OBSERVER], NAMES[STEM], NAMES[SQUADRON], NAMES[GROUP]]);
   assert.deepEqual(cells.map(c => c.querySelector('img').getAttribute('src')), [PILOT, OBSERVER, STEM, SQUADRON, GROUP].map(id => `images/badges/${id}.svg`), 'the badge\'s own drawing');
-  assert.ok(cells.every(c => c.querySelector('.vpCaption').textContent === 'Worn: above the left pocket'));
+  assert.ok(cells.every(c => c.querySelector('.vpCaption') === null), 'no line under the name');
   assert.ok(cells.every(c => c.querySelector('img').getAttribute('loading') === 'lazy'), 'the pictures load as they come into view');
   assert.ok(p.host.querySelectorAll('.vpOption').filter(b => !b.closest('.vpControls')).every(b => b.nodeName === 'BUTTON' && b.getAttribute('aria-pressed') === 'false'), 'buttons with aria-pressed, off to begin with');
   assert.equal(p.host.querySelector('[role="group"]').nodeName, 'DIV');
@@ -212,7 +215,7 @@ test('the military badges of a branch are tiles too: a row of tiles for the leve
   const entry = Lists.militaryBadgeList(host, 'USAF', records, d);
   assert.equal(host.querySelectorAll('input').length, 0);
   const cell = id => host.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
-  assert.deepEqual(host.querySelectorAll('.vpCaption').map(c => c.textContent), ['Aviation • USAF', 'USN / USMC']);
+  assert.equal(host.querySelectorAll('.vpCaption').length, 0, 'the badge\'s family and services are not under its name');
   assert.ok(cell('pin').querySelector('.vpControls') === null);
   assert.equal(cell('wings').querySelector('.vpControls').hidden, true, 'not shown while the badge is off');
   cell('wings').querySelector('.vpOption').click();
@@ -276,32 +279,42 @@ test('the list is wired in: the chooser window builds it with the picker, the ol
   assert.doesNotMatch(lists.replace(/\/\/.*$/gm, ''), /checkbox|type = 'radio'|createElement\('input'\)/);
 });
 
-// The owner (2026-11-12): the list "Where your badges are worn" is folded into the tiles. A badge that is chosen says under its name what the drawing did with it, the one line the list gave:
-// the place it takes on this uniform, or why it is left off, with its paragraph; a badge that is not chosen keeps its general line; never two lines, never "shown" or "not shown".
-test('the line under a chosen badge\'s name is its place on this uniform or why it is left off; an unchosen badge keeps its general line; one line, no "shown" or "not shown"', () => {
+// The owner (2026-11-13): "remove these lower letters": a badge tile is the picture and the name. What the drawing did with a badge the member turns on (the place it takes, or why it is left off,
+// with the paragraph) is said once in the window's status line; a badge that is chosen and left off is dim; nothing is said for a badge turned off.
+test('a tap says in the window\'s status line where the badge is worn or why it is left off, and a chosen badge the drawing leaves off is dim; the tiles carry no line of their own', () => {
   const p = make();
-  ROWS = [];
-  const caps = id => p.tile(id).querySelectorAll('.vpCaption').map(c => c.textContent);
-  assert.deepEqual(caps(OBSERVER), ['Worn: above the left pocket'], 'not chosen: the general line');
-  p.button(OBSERVER).click(); p.button(PILOT).click(); p.button(STEM).click();
-  const WHY = 'No place is left for it on this uniform, which wears 4 (CAPR 39-1, 4.1.5.2.2.4)';
-  ROWS = [{ id: OBSERVER, shown: true, place: 'above the ribbons', why: '' }, { id: PILOT, shown: false, place: '', why: WHY }, { id: STEM, pending: true }];
-  // The drawing has been made again: the open chooser puts each line as the drawing has it.
+  ROWS = []; SAID.length = 0;
+  const muted = id => p.button(id).classList.contains('isMuted');
+  assert.ok(p.host.querySelectorAll('.vpOption').every(b => !b.classList.contains('isMuted')), 'none dim to begin with');
+  p.button(OBSERVER).click();
+  assert.deepEqual(SAID, [''], 'the drawing has not been made yet: nothing to say');
+  const WHY = 'Only one CAP aviation badge is worn (CAPR 39-1, 7.1.1.3.1)';
+  ROWS = [{ id: OBSERVER, name: NAMES[OBSERVER], shown: true, place: 'above the ribbons', why: '' }];
+  SAID.length = 0;
   p.entry.rendered();
-  assert.deepEqual(caps(OBSERVER), ['Above the ribbons'], 'chosen and drawn: its place');
-  assert.deepEqual(caps(PILOT), [WHY], 'chosen and left off: why, with the paragraph (the page puts it behind a question mark)');
-  assert.deepEqual(caps(STEM), ['Worn: above the left pocket'], 'chosen but not drawn yet: the general line');
-  assert.deepEqual(caps(SQUADRON), ['Worn: above the left pocket'], 'not chosen: the general line');
-  assert.ok(p.host.querySelectorAll('.vpCell').every(c => c.querySelectorAll('.vpCaption').length === 1), 'one line under a name, never two');
-  assert.ok(p.host.querySelectorAll('.vpCaption').every(c => c.parentNode.dataset.value && c.parentNode.querySelector('.vpOption') && !c.parentNode.querySelector('.vpOption').contains(c)), 'outside the button, so a reference in it carries its mark');
-  assert.doesNotMatch(p.host.textContent, /\bshown\b/i, 'no "shown" or "not shown"');
+  assert.deepEqual(SAID, ['Observer Badge: above the ribbons.'], 'the drawing was made: the place it took');
   p.button(PILOT).click();
-  ROWS = [{ id: OBSERVER, shown: true, place: 'above the ribbons', why: '' }];
+  ROWS = [{ id: OBSERVER, name: NAMES[OBSERVER], shown: true, place: 'above the ribbons', why: '' }, { id: PILOT, name: NAMES[PILOT], shown: false, place: '', why: WHY }];
+  SAID.length = 0;
   p.entry.rendered();
-  assert.deepEqual(caps(PILOT), ['Worn: above the left pocket'], 'turned off: back to its general line');
-  // The line is the sentence's own: the first letter capital, a stop where the text has none.
-  assert.equal(Lists.badgeLine([{ id: 'x', shown: false, why: 'it cannot be shown on this uniform' }], 'x', 'general'), 'It cannot be shown on this uniform.');
-  assert.equal(Lists.badgeLine([{ id: 'x', shown: true, place: 'left pocket' }], 'x', 'general'), 'Left pocket');
-  assert.equal(Lists.badgeLine([], 'x', 'general'), 'general');
+  assert.deepEqual(SAID, [`Pilot Badge is not shown. ${WHY}`], 'chosen and left off: why, with the paragraph (the page puts it behind a question mark)');
+  assert.ok(muted(PILOT), 'the tile looks unavailable: its picture is dim');
+  assert.ok(!muted(OBSERVER), 'a badge the drawing wears is not dim');
+  assert.equal(p.tile(PILOT).querySelector('.vpLabel').textContent, 'Pilot Badge', 'its name stays');
+  // The tile itself has no line, however it is shaded.
+  assert.ok(p.host.querySelectorAll('.vpCell').every(c => c.querySelector('.vpCaption') === null));
+  assert.doesNotMatch(p.host.textContent, /Only one CAP|shown|Above the/i, 'no reason, no place on a tile');
+  // Turned off: nothing is said, and the tile is not dim.
+  p.button(PILOT).click();
+  assert.equal(SAID[SAID.length - 1], '', 'the status line is cleared');
+  ROWS = [{ id: OBSERVER, name: NAMES[OBSERVER], shown: true, place: 'above the ribbons', why: '' }];
+  p.entry.rendered();
+  assert.ok(!muted(PILOT));
+  assert.equal(SAID[SAID.length - 1], '', 'a badge that is off says nothing');
+  // The sentence is the drawing's own: the place as it stands, the reason with its first letter capital and a stop where it has none.
+  assert.equal(Lists.badgeNote([{ id: 'x', shown: false, why: 'it cannot be shown on this uniform' }], 'x', 'The X'), 'The X is not shown. It cannot be shown on this uniform.');
+  assert.equal(Lists.badgeNote([{ id: 'x', shown: true, place: 'left pocket' }], 'x', 'The X'), 'The X: left pocket.');
+  assert.equal(Lists.badgeNote([{ id: 'x', pending: true }], 'x', 'The X'), '');
+  assert.equal(Lists.badgeNote([], 'x', 'The X'), '');
   ROWS = [];
 });

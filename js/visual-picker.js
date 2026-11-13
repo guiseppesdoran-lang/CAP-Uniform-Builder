@@ -303,6 +303,7 @@
       b.dataset.value = String(o.value);
       if(describedBy) b.setAttribute('aria-describedby', describedBy);
       if(o.title) b.setAttribute('title', String(o.title));
+      if(o.muted) b.classList.add('isMuted');   // chosen but left off by the drawing: the picture is dim, the name stays
       if(o.picture){
         const box = make('span', 'vpPicture');
         box.setAttribute('aria-hidden', 'true');

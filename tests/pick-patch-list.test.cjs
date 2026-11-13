@@ -23,6 +23,8 @@ const { context } = loadPageScripts();
 const ev = src => vm.runInContext(src, context);
 const State = ev('State'), PATCH_META = ev('PATCH_META'), patchList = ev('patchList');
 
+const SAID = [];   // what the window's status line was told, in order
+let ROWS = [];     // what the drawing did with each patch chosen (js/badge-rules.js capubPatchSummary), as a test says it
 const deps = () => ({
   State, VisualPicker, asset: p => 'images/' + p,
   patchIds: () => context.capubVisiblePatchIdsForGallery(),
@@ -31,6 +33,8 @@ const deps = () => ({
   setPlace: (id, slot) => context.setPatchPlacement(id, slot),
   keepOneTab: id => context.capubKeepOneRangerTab(id),
   normalizePatches: () => context.normalizePatchSelections(),
+  patchRows: () => ROWS,
+  say: text => { SAID.push(text); },
   rebuildPatches: () => { context.State.patches = []; context.normalizePatchSelections(); for(const id of patchList) if(State.patchSelections[id] && State.patchSelections[id].checked && context.isPatchAuthorizedForUniform(id)) State.patches.push(id); }
 });
 const setup = (uniform, membership) => { ev(`State.uniform = ${JSON.stringify(uniform)}; State.membership = ${JSON.stringify(membership || 'senior')}; State.patches = []; State.patchSelections = {}; State.patchPlacements = {}`); };
@@ -42,7 +46,7 @@ const make = (ids) => {
   return { host, entry, d, cell, button: id => cell(id).querySelector('.vpOption') };
 };
 
-test('the patches are picture tiles: each with its own picture, its name and where it is worn; no checkbox, no radio button, no input at all', () => {
+test('the patches are picture tiles: each with its own picture and its name and nothing under the name; no checkbox, no radio button, no input at all', () => {
   setup('abu');
   const p = make();
   const cells = p.host.querySelectorAll('.vpCell');
@@ -50,7 +54,7 @@ test('the patches are picture tiles: each with its own picture, its name and whe
   assert.equal(p.host.querySelectorAll('input').length, 0, 'no input of any kind');
   assert.ok(cells.every(c => c.querySelector('.vpOption').getAttribute('role') === null), 'the tiles are switches (aria-pressed), not radio buttons; the only radio buttons are a patch\'s places, under it');
   assert.ok(cells.every(c => c.querySelector('.vpLabel').textContent.length > 2), 'a name under each');
-  assert.ok(cells.every(c => /^Worn: [A-Z]/.test(c.querySelector('.vpCaption').textContent)), 'where it is worn, in words, under each');
+  assert.ok(cells.every(c => c.querySelector('.vpCaption') === null), 'no line under the name');
   assert.ok(cells.every(c => c.querySelector('img') && /^images\/patches\//.test(c.querySelector('img').getAttribute('src'))), 'the patch\'s own picture');
   assert.ok(cells.every(c => c.querySelector('img').getAttribute('loading') === 'lazy'), 'pictures load as they come into view');
   assert.ok(cells.every(c => { const b = c.querySelector('.vpOption'); return b.nodeName === 'BUTTON' && b.getAttribute('aria-pressed') === 'false'; }), 'buttons with aria-pressed, all off to begin with');
@@ -85,13 +89,13 @@ test('a tap turns a patch on and off: the selection, the patches the drawing is 
   assert.equal(p.button(id).getAttribute('aria-pressed'), 'false');
 });
 
-test('a patch with more than one place on the uniform has the choice of them under its tile while it is on, a tile for each; the pick is kept per uniform and the line under the picture follows it', () => {
+test('a patch with more than one place on the uniform has the choice of them under its tile while it is on, a tile for each; the pick is kept per uniform and the window\'s status line says where the patch is worn now', () => {
   setup('corporate_field');
   const p = make();
   const id = 'nesa_patch';
   const controls = () => p.cell(id).querySelector('.vpControls');
   assert.ok(controls() === null, 'no choice while the patch is off (its pictures are made for a patch that is on)');
-  assert.equal(p.cell(id).querySelector('.vpCaption').textContent, 'Worn: Right sleeve, ½ in below the shoulder seam');
+  assert.ok(p.cell(id).querySelector('.vpCaption') === null, 'the tile says nothing of where it is worn');
   p.button(id).click();
   assert.ok(controls() && !controls().hidden, 'the choice is there');
   assert.equal(controls().querySelectorAll('input').length + controls().querySelectorAll('select').length, 0, 'tiles, not an input or a list');
@@ -101,11 +105,15 @@ test('a patch with more than one place on the uniform has the choice of them und
     ['CHEST_RIGHT', 'Right breast pocket', 'false'],
     ['CHEST_LEFT', 'Left breast pocket', 'false']
   ], 'each place in words, the drawn one picked');
+  ROWS = [{ id, name: ev(`patchTileWords('nesa_patch').title`), shown: true, place: 'Left breast pocket' }];
+  SAID.length = 0;
   choice()[2].focus();
   choice()[2].click();
   assert.equal(ev(`getPatchSlot('nesa_patch')`), 'CHEST_LEFT', 'the slot the drawing is made at');
   assert.deepEqual(choice().map(b => b.getAttribute('aria-checked')), ['false', 'false', 'true']);
-  assert.equal(p.cell(id).querySelector('.vpCaption').textContent, 'Worn: Left breast pocket');
+  assert.equal(SAID[SAID.length - 1], `${ev(`patchTileWords('nesa_patch').title`)}: Left breast pocket.`, 'the status line says where it is worn now');
+  ROWS = [];
+  assert.ok(p.cell(id).querySelector('.vpCaption') === null);
   assert.ok(p.cell('nywg_patch').querySelector('.vpControls') === null, 'a patch with one place has no choice');
 });
 
@@ -151,6 +159,36 @@ test('each place of a patch is the uniform as the engine draws it with the patch
   // A tile turned off takes its row away, and the other patch turned on has its own.
   p.cell(id).querySelector('.vpOption').click();
   assert.ok(p.cell(id).querySelector('.vpControls') === null);
+});
+
+// The owner (2026-11-13): "remove these lower letters". A patch tile is the picture and the name; where the patch is worn, or why the drawing leaves it off, is said once in the window's status
+// line when the member turns it on, and a patch that is chosen and left off is dim.
+test('a tap says in the window\'s status line where the patch is worn or why the drawing leaves it off, and a patch it leaves off is dim; the tile carries no line', () => {
+  setup('abu');
+  ROWS = []; SAID.length = 0;
+  const p = make();
+  const comms = 'comms_patch', pilot = 'check_pilot_patch';
+  const title = id => ev(`patchTileWords(${JSON.stringify(id)}).title`);
+  p.button(comms).click();
+  assert.deepEqual(SAID, [''], 'the drawing has not been made yet');
+  ROWS = [{ id: comms, name: title(comms), shown: true, place: 'Right breast pocket' }];
+  SAID.length = 0;
+  p.entry.rendered();
+  assert.deepEqual(SAID, [`${title(comms)}: Right breast pocket.`]);
+  p.button(pilot).click();
+  const WHY = 'The ABU breast pocket takes one patch, and the Communications Patch is on it (CAPR 39-1, 5.1.1.1.2.3)';
+  ROWS = [{ id: comms, name: title(comms), shown: true, place: 'Right breast pocket' }, { id: pilot, name: title(pilot), shown: false, place: '', why: WHY }];
+  SAID.length = 0;
+  p.entry.rendered();
+  assert.deepEqual(SAID, [`${title(pilot)} is not shown. ${WHY}`], 'why, with the paragraph');
+  assert.ok(p.button(pilot).classList.contains('isMuted'), 'the tile looks unavailable');
+  assert.ok(!p.button(comms).classList.contains('isMuted'));
+  assert.equal(p.cell(pilot).querySelector('.vpLabel').textContent, title(pilot), 'its name stays');
+  assert.ok(p.host.querySelectorAll('.vpCell').every(c => c.querySelector('.vpCaption') === null));
+  assert.doesNotMatch(p.host.textContent, /not shown|Worn:|breast pocket takes/i);
+  p.button(pilot).click();
+  assert.equal(SAID[SAID.length - 1], '', 'turned off: nothing is said');
+  ROWS = [];
 });
 
 test('the Hawk Mountain Ranger tabs are listed last on the OCP under their own heading with its note, and picking one turns the others off', () => {

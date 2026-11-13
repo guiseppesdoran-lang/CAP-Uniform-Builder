@@ -943,6 +943,16 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
   }
 
+  // The window's short status line, under the search: what a tap on a tile says (where the badge or patch is worn, or why it is left off, with its paragraph) when the tile itself shows
+  // only the picture and the name. js/pick-lists.js calls it; an empty text clears it.
+  window.capubModalSay = text => {
+    const line = by('capubV2ModalSay');
+    if(!line) return;
+    const t = String(text || '');
+    line.hidden = !t;
+    if(line.dataset.said !== t){ line.dataset.said = t; line.textContent = t; }
+  };
+
   function injectModalSearch(kind){
     const body = modalHost;
     if(!body) return;
@@ -953,7 +963,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category"/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category"/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div><div id="capubV2ModalSay" class="sub capubModalSay" role="status" aria-live="polite" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');
