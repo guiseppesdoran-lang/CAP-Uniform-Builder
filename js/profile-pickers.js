@@ -266,8 +266,8 @@
     const source = by('membershipType'), host = by('membershipPicker');
     if(!source || !host || !window.VisualPicker) return;
     if(!membership){
-      const optionsOf = urls => [['cadet', 'Cadet'], ['senior', 'Senior member']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK_TALL) }));
-      const picker = window.VisualPicker.render(host, { name: 'membership', legend: 'Membership type', options: optionsOf({}), value: source.value, size: 'large', shape: 'tall', onChange: value => write(source, value) });
+      const optionsOf = urls => [['cadet', 'Cadet'], ['senior', 'Senior member']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK) }));
+      const picker = window.VisualPicker.render(host, { name: 'membership', legend: 'Membership type', options: optionsOf({}), value: source.value, size: 'large', onChange: value => write(source, value) });
       picker.el.dataset.pickerFor = 'membershipType';
       membership = slotOf(picker, ['cadet', 'senior'], optionsOf);
     }
@@ -284,9 +284,9 @@
     const source = by('adultCadetCheckbox'), host = by('adultCadetPicker'), row = by('adultCadetRow');
     if(!source || !host || !row || !window.VisualPicker) return;
     if(!adult){
-      const optionsOf = urls => [['no', 'Meets it, or under 18'], ['yes', '18 or older, does not meet it']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK_TALL),
+      const optionsOf = urls => [['no', 'Meets it, or under 18'], ['yes', '18 or older, does not meet it']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK),
         note: value === 'yes' ? 'Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).' : undefined }));
-      const picker = window.VisualPicker.render(host, { name: 'adultCadet', legend: 'USAF weight standard', options: optionsOf({}), value: source.checked ? 'yes' : 'no', size: 'large', shape: 'tall',
+      const picker = window.VisualPicker.render(host, { name: 'adultCadet', legend: 'USAF weight standard', options: optionsOf({}), value: source.checked ? 'yes' : 'no', size: 'large',
         onChange: value => { source.checked = value === 'yes'; source.dispatchEvent(new Event('change', { bubbles: true })); } });
       picker.el.dataset.pickerFor = 'adultCadetCheckbox';
       adult = slotOf(picker, ['no', 'yes'], optionsOf);

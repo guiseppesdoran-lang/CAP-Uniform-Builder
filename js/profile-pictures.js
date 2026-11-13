@@ -10,9 +10,10 @@
 //   made.uniforms(ids)                { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
 //   made.cuts()                       { now: { male, female }, ready, settled }: the uniform the member is on, in each cut
 //   made.grades(items)                { now: { key: picture | null | undefined }, ready, settled }: the devices of the grades, items [{ key, id, hide }]
-//   made.memberships()                { now: { cadet, senior }, ready, settled }: the Class A coat of each kind of membership, with a stand-in grade of the same name
+//   made.memberships()                { now: { cadet, senior }, ready, settled }: the Class A coat of each kind of membership, with a stand-in grade of the same name,
+//                                     cut to a band (shoulders, collar and chest down to just under the nameplate line)
 //   made.adults()                     { now: { no, yes }, ready, settled }: the cadet's Class A coat, and the Corporate blazer a cadet of 18 or older who does not meet the
-//                                     weight standard may also wear
+//                                     weight standard may also wear, the same band of each
 //   made.names()                      { now: { on, off }, ready, settled }: the member's uniform at its name (nameplate, tape or tag) with the name and without it, each
 //                                     false (not offered) where the uniform draws no name
 //   made.callouts()                   { now: { off, on }, ready, settled }: one distance of the member's uniform as the measurements draw it, without and with its paragraph
@@ -154,6 +155,8 @@
   // picture framed on 0.81 in (the C/2d Lt's disc) is then smaller than a pixel and shown as an image that did not load; a font by an address that is not a file of
   // the image is a reference outside it. So the font and the metadata are left out, the namespaces and an XML declaration are there, and the picture has the size of
   // IMAGE_PX on its longer side. A drawing that holds nothing (a sheet that could not be fetched leaves the drawing empty, without an error) is null.
+  // The band of a coat that a pair of pictures shows (the Membership type and the weight standard): to this many inches under the nameplate line, in a box twice as wide as high.
+  const BAND_BELOW = 0.9, BAND_ASPECT = 2;
   const IMAGE_PX = 320;
   const fmtPx = n => String(Math.round(n * 100) / 100);
   function standalone(markup){
@@ -267,15 +270,40 @@
       }
     }
     // The picture of one uniform for the member as they are: { value, promise }, `value` set once it is made (null when it could not be).
-    function picture(base, over){
+    // The lowest line of the nameplate in a scene, in its inches: the nameplate a layer draws (the blazer's), or the nameplate the garment's sheet states (the coat's and the
+    // shirt's are drawn on the sheet, so the sheet's landmark says where); the lowest of them where there are several garments. Null where nothing says.
+    async function nameplateBottom(scene){
+      let bottom = null;
+      const take = v => { if(Number.isFinite(v)) bottom = bottom === null ? v : Math.max(bottom, v); };
+      for(const l of scene.layers){
+        if(l.type === 'clear' || l.type === 'measure') continue;
+        if(l.role === 'nametag' && env.core){ const b = env.core.layerBounds(l); take(b.y + b.h); }
+        if(l.role === 'garment' && env.spec){
+          const spec = await env.spec(l.id).catch(() => null), lm = spec && spec.raw && spec.raw.landmarks, mark = lm && (lm.nameplate || lm.nameplate_slot);
+          if(mark && spec.w > 0) take(l.y + (mark.y + mark.h) / 100 * (l.w / spec.w));
+        }
+      }
+      return bottom;
+    }
+    // The picture of the band that tells two coats apart: the figure from the top of its shoulder boards to just under the nameplate line, as wide as the figure, and never
+    // narrower than BAND_ASPECT to one (so the picture's box is a short one). The scene as it is where there is no nameplate line to cut at.
+    async function bandOf(scene){
+      const bottom = await nameplateBottom(scene);
+      if(bottom === null || !scene.bounds) return null;
+      const B = scene.bounds, top = B.y - 0.1, x0 = B.x - 0.1, w0 = B.w + 0.2, h = bottom + BAND_BELOW - top;
+      if(!(h > 0)) return null;
+      const w = Math.max(w0, h * BAND_ASPECT);
+      return Object.assign({}, framed(scene), { bounds: { x: x0 + w0 / 2 - w / 2, y: top, w, h } });
+    }
+    function picture(base, over, band){
       const build = bare(env.rules, base, over);
-      const key = JSON.stringify(build);
+      const key = JSON.stringify(band ? [build, 'band'] : build);
       let hit = cache.get(key);
       if(hit){ cache.delete(key); cache.set(key, hit); return hit; }
       hit = { value: undefined };
       hit.promise = Promise.resolve()
         .then(() => env.compose(build))
-        .then(scene => drawn(env, framed(scene), PAD))
+        .then(async scene => { const cut = band ? await bandOf(scene) : null; return cut ? drawn(env, cut, 0) : drawn(env, framed(scene), PAD); })
         .catch(error => { if(env.warn) env.warn(`The picture of ${build.uniform} could not be made`, error); return null; })
         .then(url => { hit.value = url; return url; });
       cache.set(key, hit);
@@ -286,11 +314,11 @@
       try{ return env.build(); }catch(error){ return null; }
     }
     // The pictures of a list of choices, each by the way `make` asks of `picture`.
-    function pictures(keys, make){
+    function pictures(keys, make, band){
       const base = member();
       const none = Object.fromEntries(keys.map(k => [k, null]));
       if(!base || !keys.length) return { now: none, ready: Promise.resolve(none), settled: true };
-      const hits = keys.map(k => [k, picture(base, make(k))]);
+      const hits = keys.map(k => [k, picture(base, make(k), band)]);
       const now = Object.fromEntries(hits.map(([k, h]) => [k, h.value]));
       const settled = hits.every(([, h]) => h.value !== undefined);
       const ready = Promise.all(hits.map(([, h]) => h.promise)).then(urls => Object.fromEntries(keys.map((k, i) => [k, urls[i]])));
@@ -455,8 +483,8 @@
     }
     return {
       grades, names, callouts, crops,
-      memberships: () => pictures(['cadet', 'senior'], m => ({ uniform: 'blues_a', membership: m, grade: stand(m) })),
-      adults: () => pictures(['no', 'yes'], k => ({ uniform: k === 'yes' ? 'aviator_blazer' : 'blues_a', membership: 'cadet', grade: stand('cadet') })),
+      memberships: () => pictures(['cadet', 'senior'], m => ({ uniform: 'blues_a', membership: m, grade: stand(m) }), true),
+      adults: () => pictures(['no', 'yes'], k => ({ uniform: k === 'yes' ? 'aviator_blazer' : 'blues_a', membership: 'cadet', grade: stand('cadet') }), true),
       // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Honor Guard the honor guard items on the coat or the shirt.
       uniforms: ids => pictures(ids, id => id === env.rules.CEREMONIAL.id ? { ceremonial: true } : { uniform: id }),
       // The uniform the member is on (Honor Guard rides on the coat or the shirt, and is pictured as it), in each cut: the same pictures as its card's where the cut is the member's.

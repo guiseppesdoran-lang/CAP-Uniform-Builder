@@ -685,7 +685,7 @@ test('the membership is two pictures, the Class A coat of a cadet and of a senio
   assert.equal(picker.querySelector('.vpLegend').textContent, 'Membership type');
   assert.deepEqual(radios(p.memberHost).map(r => r.dataset.value), ['cadet', 'senior']);
   assert.deepEqual(labelsOf(p.memberHost), ['Cadet', 'Senior member']);
-  assert.equal(picker.dataset.size, 'large'); assert.equal(picker.dataset.shape, 'tall'); assert.equal(picker.dataset.pickerFor, 'membershipType');
+  assert.equal(picker.dataset.size, 'large'); assert.equal(picker.dataset.shape, undefined, 'a short box: the pictures are a band of the coat, not the whole of it'); assert.equal(picker.dataset.pickerFor, 'membershipType');
   assert.deepEqual(radios(p.memberHost).map(srcOf), ['pic-cadet', 'pic-senior']);
   assert.deepEqual(picked(p.memberHost), [], 'nothing chosen yet');
   radios(p.memberHost)[1].click();
@@ -719,6 +719,7 @@ test('a cadet who is 18 or older and does not meet the weight standard: two pict
   assert.deepEqual(radios(p.adultHost).map(srcOf), ['pic-no', 'pic-yes']);
   assert.deepEqual(picked(p.adultHost), ['no']);
   assert.equal(picker.dataset.pickerFor, 'adultCadetCheckbox');
+  assert.equal(picker.dataset.shape, undefined, 'a short box, as the membership pair');
   radios(p.adultHost)[1].click();
   assert.equal(p.adultBox.checked, true); assert.deepEqual(p.changes.adult, [true]);
   assert.equal(picker.querySelector('.vpNote').textContent, 'Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).');
@@ -816,4 +817,13 @@ test('an image on a part\'s card of the Placement templates window that does not
   const other = p.doc.createElement('img'), holder = p.doc.createElement('div'); holder.className = 'ptPicture'; holder.append(other); p.doc.body.append(holder);
   p.doc.listeners.error[0]({ type: 'error', target: other });
   assert.equal(holder.hidden, false);
+});
+
+test('the Membership type and weight standard pairs are short boxes: twice as wide as high, never over 110 px, in the styles', () => {
+  const css = read('styles/app.css');
+  assert.match(css, /\.vp\[data-name="membership"\] \.vpPicture,\.vp\[data-name="adultCadet"\] \.vpPicture\{aspect-ratio:2 \/ 1;max-height:110px\}/);
+  assert.ok(css.indexOf('.vp[data-name="membership"] .vpPicture') > css.indexOf('.vp[data-size="large"] .vpPicture{aspect-ratio:3 / 2}'), 'after the large box it overrides');
+  const src = read('js/profile-pickers.js');
+  const picks = src.slice(src.indexOf('function syncMembership'), src.indexOf('function syncName'));
+  assert.doesNotMatch(picks, /shape: 'tall'|BLANK_TALL/, 'neither pair is a tall box');
 });

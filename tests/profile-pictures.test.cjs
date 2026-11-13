@@ -691,3 +691,56 @@ test('no scene or no box: nothing is offered (null); a part that cannot be drawn
   const done = await PP.create(env).crops([{ key: 'good', box: { x: 1, y: 1, w: 2, h: 2 } }, { key: 'bad', box: { x: -9, y: -9, w: 2, h: 2 } }]).ready;
   assert.match(done.good, /^picture:/); assert.equal(done.bad, null);
 });
+
+// ---- the band that tells two coats apart ---------------------------------------------------------------------------------------------
+
+const approx = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a} vs ${b}`);
+const withSpecs = env => Object.assign(withEngine(env), { spec: id => store.load(id) });
+const landmarkBottom = async (layer, name) => { const spec = await store.load(layer.id), m = spec.raw.landmarks[name]; return layer.y + (m.y + m.h) / 100; };
+
+test('the Membership type pictures are a band of the coat: from the top of its boards to 0.9 in under the nameplate line the garment sheet states, as wide as the coat, twice as wide as high at least', async () => {
+  const env = withSpecs(envOf(member({ uniform: 'blues_a', membership: 'senior', rank: 'Capt', gender: 'male' })));
+  await PP.create(env).memberships().ready;
+  assert.equal(env.log.drawn.length, 2);
+  for(const d of env.log.drawn){
+    assert.equal(d.pad, 0);
+    const coat = d.scene.layers.find(l => l.role === 'garment');
+    const want = await landmarkBottom(coat, 'nameplate') + 0.9;
+    const b = d.scene.bounds;
+    approx(b.y + b.h, want, 1e-6, 'the bottom is just under the nameplate line');
+    assert.ok(b.y <= 0 + 1e-9 && b.y > -3, 'from the top of the figure (the boards stand above the shoulders)');
+    assert.ok(b.w >= coat.w && b.w >= 2 * b.h - 1e-9, 'the whole width of the coat, in a box twice as wide as high');
+    assert.ok(b.h < coat.h / 2, 'a band, not the coat');
+  }
+});
+
+test('the weight standard pictures are the same band of the Class A coat and of the blazer and the white shirt beside it', async () => {
+  const env = withSpecs(envOf(member({ uniform: 'blues_a', membership: 'cadet', rank: 'C/Maj', gender: 'male' })));
+  await PP.create(env).adults().ready;
+  const scenes = env.log.drawn.map(d => d.scene);
+  const countOf = sc => sc.layers.filter(l => l.role === 'garment').length;
+  const no = scenes.find(sc => countOf(sc) === 1), yes = scenes.find(sc => countOf(sc) === 2);
+  assert.ok(no && yes, 'the coat alone, and the blazer with its shirt');
+  const coat = no.layers.find(l => l.role === 'garment');
+  approx(no.bounds.y + no.bounds.h, await landmarkBottom(coat, 'nameplate') + 0.9, 1e-6, 'the coat: under its nameplate');
+  const garments = yes.layers.filter(l => l.role === 'garment');
+  assert.equal(garments.length, 2, 'the blazer and the shirt');
+  const lowest = Math.max(...await Promise.all(garments.map(g => landmarkBottom(g, 'nameplate_slot'))));
+  approx(yes.bounds.y + yes.bounds.h, lowest + 0.9, 1e-6, 'the blazer and the shirt: under the lower of their nameplates');
+  assert.ok(yes.bounds.w >= 50, 'both garments across');
+  assert.ok(yes.layers.some(l => /blazer/.test(l.id || '')) && yes.layers.some(l => /shirt/.test(l.id || '')));
+});
+
+test('a band is its own picture: the whole coat drawn for the uniform card is not taken for it, and where no nameplate line is known the whole figure is drawn', async () => {
+  const env = withSpecs(envOf(member({ uniform: 'blues_a', membership: 'cadet', rank: 'C/Capt', gender: 'male' })));
+  const made = PP.create(env);
+  await made.uniforms(['blues_a']).ready;           // the member's own Class A, with the grade the stand-in also takes
+  await made.memberships().ready;
+  assert.equal(env.log.drawn.length, 3, 'the whole coat for the card, then the cadet band and the senior band');
+  const [whole, band] = env.log.drawn.slice(0, 2).map(d => d.scene);
+  assert.ok(band.bounds.h < whole.bounds.h, 'the same build twice: one whole, one a band');
+  // No sheet specs and no engine core: nothing says where the nameplate is, so the picture is the figure.
+  const plain1 = withEngine(envOf(member({ uniform: 'blues_a', membership: 'senior', rank: 'Capt' })));
+  await PP.create(plain1).memberships().ready;
+  for(const d of plain1.log.drawn) assert.equal(d.pad, PP.PAD, 'drawn whole, as before');
+});
