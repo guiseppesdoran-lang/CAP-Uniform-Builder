@@ -37,6 +37,9 @@
   --accent:#001871;
   --select-bg:#CCD1E3;
   --select-line:#001871;
+  /* The grade tiles are their own dark surface in both themes (js/profile-pickers.js): an insignia is shown as it is worn on the dark blues, with nothing behind it. These are
+     the dark theme's own values, so the tiles are the dark theme's tiles there and the same dark tiles on the light page. */
+  --grade-panel:#0F1739;--grade-panel-2:#141E48;--grade-ink:#F2F4FA;--grade-line:#2C3769;--grade-line-strong:#7C86B4;--grade-select-bg:#1B2860;--grade-select-line:#FFCD00;
   --danger:#BA0C2F;
   --danger-bg:#F1CED5;
   --warn:#7A5C00;
@@ -1592,9 +1595,10 @@ html[data-access="guest"] #accessGate{display:none}
 .vp[data-size="small"] .vpLabel{font-size:var(--t-xs)}
 .vp[data-size="small"] .vpTick{top:2px;right:2px;width:16px;height:16px}
 .vp[data-size="small"] .vpTick svg{width:11px;height:11px}
-/* A grade's insignia is the device alone, as worn on the blues, with no cloth under it (js/profile-pickers.js): silver and white metal and thread vanish on the tile's
-   white, so each device has a thin outline, a halo of the CAP blue (a colour that does not change with the theme), on either theme. */
-.vp[data-name="rank"] .vpPicture>img{filter:drop-shadow(0 0 .6px var(--cap-blue)) drop-shadow(0 0 .6px var(--cap-blue))}
+/* A grade's insignia (the grades and the first sergeant's diamond) is the device alone, as worn on the blues, with no cloth under it and no white box behind it
+   (js/profile-pickers.js): the grade tile is the dark surface (the --grade tokens, the same on either theme), the picture box has no ground of its own, and the silver, white and gold of the metal and thread read on it. */
+.vp[data-name="rank"] .vpOption,.vp[data-name="firstSergeant"] .vpOption{--panel:var(--grade-panel);--panel-2:var(--grade-panel-2);--ink:var(--grade-ink);--line:var(--grade-line);--line-strong:var(--grade-line-strong);--select-bg:var(--grade-select-bg);--select-line:var(--grade-select-line)}
+.vp[data-name="rank"] .vpPicture,.vp[data-name="firstSergeant"] .vpPicture{background:transparent;border-color:transparent}
 /* Action tiles (mode 'action'): they do something when pressed and keep no mark. One whose action is under way is dimmed and does not answer a second press. */
 .vp[data-mode="action"] .vpOption.isBusy{opacity:.6;cursor:progress}
 /* The Photos menu (js/photos-menu.js): each picture is of the part on the white ground (--paper) the downloaded PNG has. */

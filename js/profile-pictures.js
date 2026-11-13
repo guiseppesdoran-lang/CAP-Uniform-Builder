@@ -80,6 +80,9 @@
     if(g.category === 'cadet-nco') return { id: G.cadetNcoChevron(g, 'metal'), hide: [] };
     if(g.category === 'cadet-officer') return { id: G.cadetOfficerInsignia(g, 'metal-regular'), hide: [] };
     if(g.category === 'senior-nco') return { id: G.seniorChevron(g, {}), hide: ['field'] };
+    // A flight officer's thread bar is a navy bar with silver stripes, and the navy is as dark as the tile: the cloth-bordered sheet's own `thread` group is the same bar's
+    // outline and stripes, which is the device, so that sheet is drawn with its `cloth` group left off.
+    if(g.category === 'flight-officer') return { id: G.seniorOfficerInsignia(g, 'cloth-bordered', { horizontal: false }), hide: ['cloth'] };
     return { id: G.seniorOfficerInsignia(g, 'thread', { horizontal: false }), hide: [] };
   }
   function gradeArt(G, membership, rank, options){

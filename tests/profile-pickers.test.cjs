@@ -241,19 +241,20 @@ test('a cadet is shown the cadet grades under their headings, each by its insign
   assert.match(art('SM').innerHTML, /stroke-dasharray/);
 });
 
-test('the pictures are the devices alone, as worn on the blues: metal chevrons and discs for the cadets, thread for the officers, the chevron without its field for the senior NCOs, never the cloth', () => {
+test('the pictures are the devices alone, as worn on the blues: metal chevrons and discs for the cadets, thread for the officers, the chevron without its field and the flight officer\'s bar without its cloth, never a cloth patch', () => {
   const ids = membership => { const p = gradePage({}); p.offer(membership); p.sync(); return p.asked[0]; };
   const cadet = ids('cadet'), senior = ids('senior');
   assert.deepEqual(cadet.map(i => i.key), RANKS.cadet.filter(r => r !== 'C/AB'), 'every grade that wears insignia, not C/AB');
   assert.deepEqual(senior.map(i => i.key), RANKS.senior.filter(r => r !== 'SM'), 'and not SM');
   for(const i of [...cadet, ...senior]){
-    assert.doesNotMatch(i.id, /cloth|ocp-square|bullion/, `${i.key}: ${i.id} is not a cloth patch`);
+    assert.doesNotMatch(i.id, /ocp-square|bullion/, `${i.key}: ${i.id}`);
+    if(/cloth/.test(i.id)) assert.ok(i.hide.includes('cloth'), `${i.key}: ${i.id} is drawn without its cloth`);
     assert.ok(INDEX[i.id], `${i.key}: ${i.id} is an asset the page has`);
   }
   assert.equal(cadet.find(i => i.key === 'C/SSgt').id, 'rank-cadet-nco-staff-sergeant-metal');
   assert.equal(cadet.find(i => i.key === 'C/Maj').id, 'rank-cadet-officer-major-metal-regular');
   assert.equal(senior.find(i => i.key === 'Capt').id, 'rank-senior-captain-thread');
-  assert.deepEqual(senior.filter(i => i.hide.length).map(i => [i.key, i.hide]), ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt'].map(k => [k, ['field']]), 'the senior chevron\'s navy field is the one thing left off');
+  assert.deepEqual(senior.filter(i => i.hide.length).map(i => [i.key, i.hide]), [...['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt'].map(k => [k, ['field']]), ...['FO', 'TFO', 'SFO'].map(k => [k, ['cloth']])], 'the senior chevron\'s navy field and the flight officer bar\'s cloth are what is left off');
   assert.deepEqual(cadet.filter(i => i.hide.length), []);
 });
 
@@ -494,12 +495,18 @@ test('the unit field shows REG-WG-UN while it is empty, and keeps its accessible
   assert.equal([...html.matchAll(/placeholder="[^"]*charter[^"]*"/gi)].length, 0);
 });
 
-test('the grade tiles\' pictures are outlined so silver and white devices read on the tile\'s white, on either theme', () => {
+test('the grade tiles are their own dark surface on either theme, the insignia sits on it with no box behind it, no cloth and no white', () => {
   const css = read('styles/app.css');
-  assert.match(css, /\.vp\[data-name="rank"\] \.vpPicture>img\{filter:drop-shadow\(0 0 \.6px var\(--cap-blue\)\) drop-shadow\(0 0 \.6px var\(--cap-blue\)\)\}/, 'a halo of a colour the themes share (the stylesheet holds no hex outside its tokens)');
-  assert.match(css, /--cap-blue:#001871;/);
-  assert.match(css, /--paper:#FFFFFF;/, 'the tile\'s ground is white');
-  assert.doesNotMatch(css.slice(css.indexOf('@media (prefers-color-scheme:dark)'), css.indexOf('@media (prefers-reduced-motion')), /--paper:/, 'and stays white in the dark theme');
+  // The tokens are the dark theme's own values, defined once on :root (the light block) and so there in both themes.
+  const tokens = Object.fromEntries([...css.matchAll(/--grade-([\w-]+):(#[0-9A-Fa-f]{6});/g)].map(m => [m[1], m[2]]));
+  const dark = Object.fromEntries([...css.slice(css.indexOf('@media (prefers-color-scheme:dark)')).matchAll(/--(panel|panel-2|ink|line|line-strong|select-bg|select-line):(#[0-9A-Fa-f]{6});/g)].slice(0, 7).map(m => [m[1], m[2]]));
+  assert.deepEqual(tokens, { panel: dark.panel, 'panel-2': dark['panel-2'], ink: dark.ink, line: dark.line, 'line-strong': dark['line-strong'], 'select-bg': dark['select-bg'], 'select-line': dark['select-line'] }, 'the dark theme\'s values');
+  assert.equal(css.indexOf('--grade-panel:'), css.lastIndexOf('--grade-panel:'), 'once');
+  assert.ok(css.indexOf('--grade-panel:') < css.indexOf('@media (prefers-color-scheme:dark)'), 'in the light block, which every theme inherits');
+  assert.match(css, /\.vp\[data-name="rank"\] \.vpOption,\.vp\[data-name="firstSergeant"\] \.vpOption\{--panel:var\(--grade-panel\);--panel-2:var\(--grade-panel-2\);--ink:var\(--grade-ink\);--line:var\(--grade-line\);--line-strong:var\(--grade-line-strong\);--select-bg:var\(--grade-select-bg\);--select-line:var\(--grade-select-line\)\}/);
+  assert.match(css, /\.vp\[data-name="rank"\] \.vpPicture,\.vp\[data-name="firstSergeant"\] \.vpPicture\{background:transparent;border-color:transparent\}/);
+  assert.doesNotMatch(css, /\.vp\[data-name="rank"\][^{]*\{[^}]*(?:filter|drop-shadow)/, 'no halo: Safari did not draw it, and the dark surface needs none');
+  assert.doesNotMatch(css.slice(css.indexOf('.badgeChooser{')), /#[0-9a-fA-F]{3,6}\b/, 'and the stylesheet holds no hex outside its tokens');
 });
 
 // ---- an image that did not decode, and an address let go too soon ---------------------------------------------------------------------

@@ -233,7 +233,7 @@ test('the grades are shown under plain headings in the order of rank, each rank 
   assert.deepEqual(PP.gradeGroups('', []), []);
 });
 
-test('each grade is shown by the insignia the engine draws for it on the blues, the device alone: metal chevrons and discs, thread, the senior chevron without its field', () => {
+test('each grade is shown by the insignia the engine draws for it on the blues, the device alone: metal chevrons and discs, thread, the chevron and the flight officer\'s bar without the cloth they are sewn on', () => {
   const assetIds = new Set(manifest.assets.map(a => a.id));
   for(const membership of ['cadet', 'senior']) for(const rank of RANKS[membership]){
     const d = PP.gradeDevice(G, membership, rank);
@@ -245,11 +245,12 @@ test('each grade is shown by the insignia the engine draws for it on the blues, 
     assert.ok(INDEX[d.id], `${rank}: ${d.id} has a file the page can address`);
     const svg = read('images/' + INDEX[d.id]);
     const groups = [...svg.matchAll(/<g id="[^"]*?__([^"]*)"/g)].map(m => m[1]);
-    // No backing: no cloth group in the file, and the one field a sheet has that is its backing (the senior chevron's) is left off by name.
-    assert.equal(groups.includes('cloth'), false, `${rank}: ${d.id} has no cloth`);
+    // No backing: what is drawn of the file, its groups less the ones left off by name, holds no cloth and no field.
     for(const name of d.hide) assert.ok(groups.includes(name), `${rank}: the group ${name} is in the file`);
-    assert.equal(groups.filter(n => !d.hide.includes(n)).includes('cloth'), false);
-    if(g.category === 'senior-nco') assert.deepEqual(plain(d.hide), ['field'], `${rank}: the navy field the chevron is sewn on`);
+    const drawnGroups = groups.filter(n => !d.hide.includes(n));
+    assert.equal(drawnGroups.includes('cloth'), false, `${rank}: ${d.id} draws no cloth`);
+    if(g.category === 'senior-nco'){ assert.deepEqual(plain(d.hide), ['field'], `${rank}: the navy field the chevron is sewn on`); assert.equal(drawnGroups.includes('field'), false); }
+    else if(g.category === 'flight-officer') assert.deepEqual(plain(d.hide), ['cloth'], `${rank}: the cloth the bar is sewn on`);
     else assert.deepEqual(plain(d.hide), [], `${rank}: nothing to leave off`);
   }
   assert.deepEqual(RANKS.cadet.filter(r => !PP.gradeArt(G, 'cadet', r)), ['C/AB'], 'only a cadet airman basic has no insignia');
@@ -260,7 +261,7 @@ test('each grade is shown by the insignia the engine draws for it on the blues, 
   assert.equal(PP.gradeArt(G, 'senior', 'MSgt'), G.seniorChevron(G.gradeInfo('senior', 'MSgt', {}), {}));
   assert.equal(PP.gradeArt(G, 'senior', 'Maj'), 'rank-senior-major-thread');
   assert.equal(PP.gradeArt(G, 'senior', 'Maj Gen'), 'rank-senior-major-general-1in-vertical-thread');
-  assert.equal(PP.gradeArt(G, 'senior', 'TFO'), 'rank-senior-technical-flight-officer-thread');
+  assert.equal(PP.gradeArt(G, 'senior', 'TFO'), 'rank-senior-technical-flight-officer-cloth-bordered', 'the bar\'s outline and stripes: its navy is as dark as the tile, the thread sheet has the same navy');
   assert.equal(new Set(RANKS.cadet.map(r => PP.gradeArt(G, 'cadet', r))).size, RANKS.cadet.length, 'no two cadet grades share a picture (the one without insignia counts once)');
   assert.equal(new Set(RANKS.senior.map(r => PP.gradeArt(G, 'senior', r))).size, RANKS.senior.length, 'no two senior grades share a picture');
 });
