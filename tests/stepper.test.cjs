@@ -342,6 +342,30 @@ test('tab states follow the prerequisites: profile, then uniform, then items; fi
   assert.equal(t.tab('export').classList.contains('done'),false,'warnings keep Finish open');
 });
 
+test('a step that can be opened reads as bright, Extra included: only a step that cannot be opened is dimmed and dashed',()=>{
+  // The owner (2026-11-13): "why is extra circle and number darker?". Extra counts as finished only with items chosen and nothing
+  // flagged, and a tab used to turn bright only once finished, so an Extra that could be opened sat dimmer than the finished steps.
+  const t=boot();
+  Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'male'});
+  t.by('capubV2WarningCount').textContent='2'; t.refresh();
+  const extra=t.tab('export');
+  assert.equal(extra.classList.contains('done'),false,'Extra is not finished: it has no items and carries flags');
+  assert.equal(extra.classList.contains('blocked'),false,'and it can be opened');
+  // The look of every tab rule. A rule that dims the label or the ring, or makes the ring dashed, must be for .blocked alone.
+  const rulesOf=[...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(m=>({sel:m[1].replace(/\/\*[\s\S]*?\*\//g,'').trim(),body:m[2]})).filter(r=>/\.stepTab\b/.test(r.sel));
+  const dims=r=>/(^|;)\s*color:var\(--muted\)|(^|;)\s*border-color:var\(--line\)|(^|;)\s*border-style:dashed|(^|;)\s*border:[^;]*var\(--line/.test(r.body);
+  const dimming=rulesOf.filter(dims);
+  assert.ok(dimming.length>=2,'the blocked look exists');
+  for(const r of dimming) assert.match(r.sel,/\.blocked/,`${r.sel} dims a tab that may be open`);
+  const base=rulesOf.find(r=>r.sel==='.stepTab'), ring=rulesOf.find(r=>r.sel==='.stepTab .stepNum');
+  assert.match(base.body,/(^|;)\s*color:var\(--ink\)/,'the label is bright by default');
+  assert.match(ring.body,/(^|;)\s*border:2px solid var\(--ink\)/,'the ring is bright and solid by default');
+  assert.match(ring.body,/(^|;)\s*color:var\(--ink\)/,'the number is bright by default');
+  assert.doesNotMatch(css,/\.stepTab\.done\b/,'finished is not what makes a tab bright');
+  const blockedRing=rulesOf.find(r=>r.sel==='.stepTab.blocked .stepNum');
+  assert.match(blockedRing.body,/border-style:dashed/,'a step that cannot be opened keeps the dashed ring');
+});
+
 test('Next and Back walk the steps in order with the right labels; the last step has the download as its primary',()=>{
   const t=boot();
   Object.assign(t.State,{membership:'senior',rank:'Capt',gender:'female'}); t.refresh();

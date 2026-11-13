@@ -302,7 +302,7 @@ header h1::after{
   border:0;
   border-bottom:3px solid transparent;
   border-radius:0;
-  color:var(--muted);
+  color:var(--ink);
   font-family:var(--font-body);
   font-size:var(--t-xs);
   font-weight:700;
@@ -317,7 +317,7 @@ header h1::after{
   justify-content:center;
   width:28px;
   height:28px;
-  border:2px solid var(--line-strong);
+  border:2px solid var(--ink);
   border-radius:50%;
   background:var(--panel);
   color:var(--ink);
@@ -325,12 +325,12 @@ header h1::after{
   font-size:var(--t-md);
   line-height:1;
 }
-.stepTab.done{color:var(--ink)}
-.stepTab.done .stepNum{border-color:var(--ink)}
 .stepTab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--action)}
 .stepTab[aria-selected="true"]:hover{background:transparent;border-bottom-color:var(--action)}
 .stepTab[aria-selected="true"] .stepNum{background:var(--action);border-color:var(--action);color:var(--on-action)}
-.stepTab.blocked{cursor:not-allowed}
+/* A step that can be opened reads as bright, finished or not (Extra is finished only once items are chosen and nothing is
+   flagged, so an open Extra sat dimmer than the others). Only a step that cannot be opened yet is dimmed and dashed. */
+.stepTab.blocked{cursor:not-allowed;color:var(--muted)}
 .stepTab.blocked:hover{background:transparent;border-bottom-color:transparent}
 .stepTab.blocked .stepNum{border-style:dashed;border-color:var(--line);background:transparent;color:var(--muted)}
 /* The Extra step holds two tabs, in the stepper's own style: underlined, the selected one in the action colour. */
