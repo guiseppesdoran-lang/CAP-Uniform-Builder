@@ -123,12 +123,12 @@
       if(!ranks.length){
         // No kind of membership yet, so no grades to show.
         host.textContent = '';
-        host.append(make('div', 'fieldLabel', 'Rank'), make('div', 'hintText', 'Choose a membership type first.'));
+        host.append(make('div', 'fieldLabel', 'Grade'), make('div', 'hintText', 'Choose a membership type first.'));
         grade = { picker: null, signature, token: 0, last: {}, shownSignature: '' };
       }else{
         const items = gradeItems(membership, ranks);
         const picker = window.VisualPicker.render(host, {
-          name: 'rank', legend: 'Rank', options: gradeOptions(membership, ranks, items, {}), value: source.value, size: 'small',
+          name: 'rank', legend: 'Grade', options: gradeOptions(membership, ranks, items, {}), value: source.value, size: 'small',
           onChange: value => write(source, value)
         });
         picker.el.dataset.pickerFor = 'rankSetupSelect';

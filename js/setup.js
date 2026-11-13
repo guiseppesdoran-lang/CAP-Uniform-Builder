@@ -135,7 +135,7 @@ if(adultCadetBox){
   });
 }
 function populateRankSetup(){
-  rankSetupSelect.innerHTML = `<option value="">Select rank</option>`;
+  rankSetupSelect.innerHTML = `<option value="">Select grade</option>`;
   if(!State.membership) return;
   RANKS[State.membership].forEach(r=>{
     const opt=document.createElement('option');

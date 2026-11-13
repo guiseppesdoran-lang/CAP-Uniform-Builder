@@ -59,7 +59,7 @@
       labels: { mounting: 'Mounting bars, 4 per row (up to 24)', holding: 'Holding bars, custom overlap (up to 28)' },
       mirror: el => el.closest('label'), deps: ['uniform', 'gender', 'membership', 'ribbons'] },
     // Short Stack (cadets, CAPR 39-1 11.1.2.2): the member's own ribbons without and with, laid in the rack layout they chose; removing the ribbons from a shirt where they are optional (11.1.2).
-    { id: 'cadetHighestOnly', kind: 'check', recipe: 'shortStack', legend: 'Short Stack', size: 'large',
+    { id: 'cadetHighestOnly', kind: 'check', recipe: 'shortStack', legend: 'Short stack', size: 'large',
       labels: { off: 'All achievement ribbons', on: 'Highest only' },
       notes: { on: 'Only the highest cadet achievement ribbon is worn; the others stay selected (CAPR 39-1, 11.1.2.2).' },
       deps: [...RACK, 'membership', 'ribbonSelections', 'ribbonRackLayout', 'ribbonRackArrangement'] },

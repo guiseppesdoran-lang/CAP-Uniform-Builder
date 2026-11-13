@@ -34,7 +34,7 @@ test('the same things are called the same: Aide de Camp, Blues: Class A, None in
   assert.match(patches, /aide_de_camp: \{ label:'Aide de Camp shoulder cord',\s+tile:'Aide de Camp',/, 'the cord picker names the cord the same way');
   assert.doesNotMatch(html, /Aide-de-camp/);
   assert.doesNotMatch(patches, /Aide-de-camp/);
-  assert.match(html, /four-across racks only on Blues: Class A\./);
+  assert.match(html, /Four-across racks are permitted only on Blues: Class A \(CAPR 39-1, 11\.2\.7\)\./);
   assert.doesNotMatch(html, /USAF-style Service Dress \(Class A\)/);
   assert.match(read('js/measure-panel.js'), /<span class="regNone">None<\/span>/);
 });

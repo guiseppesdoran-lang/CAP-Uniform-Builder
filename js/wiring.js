@@ -810,7 +810,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   function validateBuild(){
     CAPUB_V2.notices = [];
     if(!State.membership) addNotice('warn','Select membership type first.',{id:'membershipType',label:'Choose'});
-    if(!State.rank) addNotice('warn','Select rank before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
+    if(!State.rank) addNotice('warn','Select a grade before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
     if(!State.gender) addNotice('warn','Select the male or female cut so the uniform can be drawn.',{id:'jacketSelect',label:'Choose'});
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
     if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} patch picture is not available yet, so no unit patch is shown.`);

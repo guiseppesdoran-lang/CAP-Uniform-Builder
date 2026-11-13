@@ -56,7 +56,7 @@
   function getProfileGaps(){
     return [
       {label:'Membership type',short:'a membership type',target:'membershipType',ok:!!State.membership},
-      {label:'Rank',short:'a rank',target:'rankSetupSelect',ok:!!State.rank},
+      {label:'Grade',short:'a grade',target:'rankSetupSelect',ok:!!State.rank},
       {label:'Cut (male or female)',short:'the cut',target:'jacketSelect',ok:!!State.gender}
     ];
   }
@@ -649,7 +649,7 @@
       area.classList.toggle('isEmpty',setupNeeded);
       area.setAttribute('role','group');
       area.setAttribute('aria-label', setupNeeded
-        ? 'Uniform preview. Choose a membership type, rank and cut to begin.'
+        ? 'Uniform preview. Choose a membership type, grade and cut to begin.'
         : `Uniform preview: ${State.rank || ''} ${State.uniform ? uniformName(shownUniform()) : ''} with ${(State.ribbons||[]).length} ribbons, ${(State.badges||[]).length} badges and ${(State.patches||[]).length} patches. Select an item to remove it.`.replace(/\s+/g,' '));
     }
   }

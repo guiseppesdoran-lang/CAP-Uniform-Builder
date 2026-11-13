@@ -18,7 +18,7 @@ test('the footer is one word and its links on a phone; the credit and the feedba
   assert.match(phone,/\.footerTiny\{display:inline\}/);
   assert.match(phone,/:root\{--capub-footer-h:40px;/);
   const about=html.slice(html.indexOf('<dialog id="aboutDialog"'),html.indexOf('</dialog>'));
-  assert.match(about,/Developed by C\/Col\. Guiseppe Doran and C\/Lt Col\. Ethan Hillard/);
+  assert.match(about,/Developed by C\/Col Guiseppe Doran and C\/Lt Col Ethan Hillard/);
   assert.match(about,/id="aboutFeedback"/);
 });
 

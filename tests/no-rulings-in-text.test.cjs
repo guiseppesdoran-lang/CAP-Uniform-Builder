@@ -13,7 +13,7 @@ const { stringLiterals } = require('./helpers/string-literals.cjs');
 const root = path.join(__dirname, '..');
 const BAD = /ruling|Doran|Ethan|Discord|LIVE\d|\b[ED]\d{2,3}\b|\bB\d\b|critique/i;
 // The developer credit lines, the only place the names appear.
-const CREDIT = /Developed by C\/Col\. Guiseppe Doran and C\/Lt Col\. Ethan Hillard/;
+const CREDIT = /Developed by C\/Col Guiseppe Doran and C\/Lt Col Ethan Hillard/;
 
 const walk = (dir, out = []) => {
   for(const f of fs.readdirSync(dir, { withFileTypes: true })){

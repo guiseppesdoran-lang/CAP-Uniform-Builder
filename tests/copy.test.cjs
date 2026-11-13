@@ -32,7 +32,7 @@ test('what is and is not collected is said at the gate, under the import button 
   assert.match(visible,/<div class="hintText" id="memberReportImportHint">Your Member Search report, saved as a PDF\. It stays on this device\.<\/div>/);
   assert.match(visible,/<div id="memberReportImportStatus" class="hintText" aria-live="polite"><\/div>/,'no line says nothing is imported: the status stays empty until a report is read');
   const about=visible.slice(visible.indexOf('<dialog id="aboutDialog"'),visible.indexOf('</dialog>'));
-  assert.match(about,/<b>Privacy\.<\/b> Usage counts are collected only to improve this tool\./);
+  assert.match(about,/<b>Privacy:<\/b> Usage counts are collected only to improve this tool\./);
   assert.match(about,/ever leave your browser, member report searches are never stored, and with Do Not Track on/);
   // The visitor number (js/telemetry.js, kept in this browser unless Do Not Track is on) is said too, and the grade that a build count carries.
   assert.match(about,/which uniforms are built and for which grade,/);

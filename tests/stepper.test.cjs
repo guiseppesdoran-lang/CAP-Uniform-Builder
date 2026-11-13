@@ -308,7 +308,7 @@ test('exactly one step body is on screen at a time, and Next names the next step
   assert.equal(t.by('stepNext').textContent,'Next: Uniform');
   assert.equal(t.by('stepNext').disabled,true,'Next waits for the profile');
   assert.equal(t.by('stepBack').hidden,true,'no Back on the first step');
-  assert.equal(t.by('stepFooterNote').textContent,'Choose a membership type, a rank and the cut to go on.');
+  assert.equal(t.by('stepFooterNote').textContent,'Choose a membership type, a grade and the cut to go on.');
   // The download moved into the footer and hides until the last step.
   assert.equal(t.by('downloadImage').parentNode,t.by('stepNext').parentNode);
   assert.equal(t.by('downloadImage').hidden,true);

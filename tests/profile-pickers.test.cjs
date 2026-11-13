@@ -215,11 +215,11 @@ function gradePage(state, devices){
 const radios = host => host.querySelectorAll('[role="radio"]');
 const headings = host => host.querySelectorAll('.vpGroupHead').map(h => h.textContent);
 
-test('no grade is offered before a membership is chosen: the word Rank and a line saying why, no pictures', () => {
+test('no grade is offered before a membership is chosen: the word Grade and a line saying why, no pictures', () => {
   const p = gradePage({});
   p.sync();
   assert.equal(radios(p.host).length, 0);
-  assert.equal(p.host.textContent, 'RankChoose a membership type first.');
+  assert.equal(p.host.textContent, 'GradeChoose a membership type first.');
 });
 
 test('a cadet is shown the cadet grades under their headings, each by its insignia with its name beneath; a senior member the senior grades', async () => {
@@ -279,11 +279,11 @@ test('the devices are made while the Profile step is shown, and a tile whose pic
   assert.match(tile('C/AB').querySelector('.vpPicture').innerHTML, /stroke-dasharray/);
 });
 
-test('it is a radio group named Rank, with a note of the grade picked in words, and the grade picked is the select\'s', () => {
+test('it is a radio group named Grade, with a note of the grade picked in words, and the grade picked is the select\'s', () => {
   const p = gradePage({ rank: 'C/Maj' });
   p.offer('cadet'); p.select.value = 'C/Maj'; p.sync();
   const picker = p.host.querySelector('.vp');
-  assert.equal(picker.querySelector('.vpLegend').textContent, 'Rank');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'Grade');
   assert.equal(picker.querySelector('[role="radiogroup"]').getAttribute('aria-labelledby'), picker.querySelector('.vpLegend').id);
   assert.equal(picker.dataset.size, 'small', 'small pictures: the grades are many');
   assert.equal(picker.dataset.pickerFor, 'rankSetupSelect', 'the page finds the picture group that stands for the hidden select');
@@ -342,7 +342,7 @@ test('the grades are drawn again only when the membership changes the list, so t
 
 test('index.html: the grade select stays as the hidden source of truth, the way the membership select does, with the host of the pictures before it', () => {
   const html = read('index.html');
-  assert.match(html, /<div id="rankSetupPicker" class="mt-10"><\/div>\s*<select id="rankSetupSelect" class="segmentedSource" tabindex="-1" aria-hidden="true" disabled>\s*<option value="">Select rank<\/option>\s*<\/select>/);
+  assert.match(html, /<div id="rankSetupPicker" class="mt-10"><\/div>\s*<select id="rankSetupSelect" class="segmentedSource" tabindex="-1" aria-hidden="true" disabled>\s*<option value="">Select grade<\/option>\s*<\/select>/);
   assert.doesNotMatch(html, /for="rankSetupSelect"/, 'no label for a control that cannot be seen or reached');
   assert.match(read('styles/app.css'), /\.segmentedSource\{position:absolute;width:1px;height:1px;margin:-1px;opacity:0;pointer-events:none;overflow:hidden\}/);
 });
