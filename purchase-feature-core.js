@@ -538,7 +538,7 @@
   // The dialog's own styles, beside styles/app.css's .capub-purchase-* rules (CSP allows inline styles).
   const CSS = `
 .capub-shop-tools{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:end;margin:var(--s3) 0}
-.capub-shop-tools label{display:flex;flex-direction:column;gap:2px;font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.capub-shop-tools label{display:flex;flex-direction:column;gap:2px;font-size:var(--t-xs);font-weight:700;color:var(--muted)}
 .capub-shop-tools input[type=search]{min-width:240px;min-height:40px;padding:0 var(--s3);border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel);color:var(--ink);font:inherit;font-size:var(--t-md);text-transform:none;letter-spacing:0}
 .capub-shop-tools select{min-height:40px;width:auto;margin:0}
 .capub-shop-tools .capub-shop-grow{flex:1 1 260px}
@@ -547,7 +547,7 @@
 .capub-shop-exports button{width:auto;margin:0;padding:0 var(--s3);min-height:40px;background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-sm)}
 .capub-shop-exports button:hover{background:var(--panel-2);border-color:var(--ink)}
 .capub-shop-shown{margin:0 0 var(--s2);font-size:var(--t-sm);color:var(--muted)}
-.capub-shop-group td{padding:var(--s3) var(--s2) var(--s1);background:var(--bg);border-bottom:2px solid var(--line-strong);font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.capub-shop-group td{padding:var(--s3) var(--s2) var(--s1);background:var(--bg);border-bottom:2px solid var(--line-strong);font-family:var(--font-head);font-size:var(--t-lg);font-weight:700}
 .capub-shop-detail{font-size:var(--t-sm);color:var(--ink)}
 .capub-shop-low{display:block;font-size:var(--t-xs);font-weight:400;color:var(--muted);margin-top:2px}
 .capub-shop-star{color:var(--warn);font-weight:700}

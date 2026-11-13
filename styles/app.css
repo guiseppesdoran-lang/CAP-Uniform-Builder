@@ -1356,8 +1356,6 @@ small.hintText{display:block}
     margin-right:var(--s2);
     font-size:var(--t-xs);
     font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.04em;
     color:var(--muted);
   }
   .capub-purchase-table td[data-label="Item"]::before{display:none}
