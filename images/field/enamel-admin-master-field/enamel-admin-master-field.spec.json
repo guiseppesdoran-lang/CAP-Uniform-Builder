@@ -1,7 +1,7 @@
 {
  "asset_id": "enamel-admin-master-field",
  "width_in": 1.5,
- "height_in": 1.954,
+ "height_in": 1.927,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-administration-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\" | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    75,
-   195.4
+   192.7
   ],
   "center": [
    75,
-   97.7
+   96.35
   ],
   "left_edge": [
    0,
-   97.7
+   96.35
   ],
   "right_edge": [
    150,
-   97.7
+   96.35
   ],
   "art_top_center": [
    75,
@@ -33,7 +33,7 @@
   ],
   "art_bottom_center": [
    75,
-   182.9
+   180.2
   ]
  },
  "dimensions": {
@@ -44,10 +44,10 @@
  "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Admin_master",
  "reference": "../batch/ref/Admin_master.png",
  "source_bbox_user_units": [
-  32.167,
-  1.667,
-  204.833,
-  237
+  30.9,
+  1.6,
+  206.1,
+  236.7
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from enamel-admin-master.",
  "field_uniform": {
@@ -67,7 +67,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 1.25,
-  "art_height_in": 1.704,
+  "art_height_in": 1.677,
   "source_asset": "enamel-admin-master",
   "kind": "chest-badge"
  },

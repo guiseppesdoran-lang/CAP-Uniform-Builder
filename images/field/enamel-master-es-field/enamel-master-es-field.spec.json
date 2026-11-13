@@ -1,7 +1,7 @@
 {
  "asset_id": "enamel-master-es-field",
  "width_in": 1.5,
- "height_in": 1.898,
+ "height_in": 1.90881,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-emergency-services-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\" | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    75,
-   189.8
+   190.881
   ],
   "center": [
    75,
-   94.9
+   95.4405
   ],
   "left_edge": [
    0,
-   94.9
+   95.4405
   ],
   "right_edge": [
    150,
-   94.9
+   95.4405
   ],
   "art_top_center": [
    75,
@@ -33,7 +33,7 @@
   ],
   "art_bottom_center": [
    75,
-   177.3
+   178.381
   ]
  },
  "dimensions": {
@@ -41,13 +41,13 @@
   "level": "master"
  },
  "data_source": "reference-art-measured",
- "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Master_ES_Badge",
+ "generator": "artwork-samples/enamel (g3/make-triangle.js, shield.js + shield-profile-reg.json) + Master_ES_Badge",
  "reference": "../batch/ref/Master_ES_Badge.png",
  "source_bbox_user_units": [
-  29.5,
-  0.833,
-  210.5,
-  239.5
+  29.8,
+  0.8,
+  210.2,
+  240.2
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from enamel-master-es.",
  "field_uniform": {
@@ -67,7 +67,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 1.25,
-  "art_height_in": 1.648,
+  "art_height_in": 1.65881,
   "source_asset": "enamel-master-es",
   "kind": "chest-badge"
  },

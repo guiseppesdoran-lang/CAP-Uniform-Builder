@@ -1,7 +1,7 @@
 {
  "asset_id": "enamel-ops-tech",
  "width_in": 1.25,
- "height_in": 1.339,
+ "height_in": 1.341,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-operations-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    62.5,
-   133.849
+   134.1
   ],
   "center": [
    62.5,
-   66.924
+   67.066
   ],
   "left_edge": [
    0,
-   66.924
+   67.066
   ],
   "right_edge": [
    125,
-   66.924
+   67.066
   ]
  },
  "dimensions": {
@@ -36,14 +36,14 @@
  "generator": "artwork-samples/enamel (g*/make-*.js, shield.js) + Ops_tech",
  "reference": "../batch/ref/Ops_tech.png",
  "source_bbox_user_units": [
-  9,
-  0,
-  232.667,
-  239.5
+  7.3,
+  -4.4,
+  234.5,
+  239.4
  ],
  "fit_score": {
-  "silhouette_iou_approx": 0.913,
+  "silhouette_iou_approx": 0.904,
   "note": "bbox-normalised 96x96 mask IoU vs the product photo (check-asset.js); the shield outline is the shared Fig A7-4 outline (the Emergency Services badge's), so an IoU below the old photo-averaged shape is expected"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. The shield outline is the one shared outline of every shield-shaped specialty-track badge (enamel/shield.js, CAPR 39-1 Figure A7-4, the Emergency Services badge's), fitted to this badge's own box; the emblem and level device are drawn from the product photo. Rescaled uniformly x1.25 (A4b) from 1 x 1.071 in to 1.25 x 1.338 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. The shield outline is the one shared outline of every shield-shaped specialty-track badge (enamel/shield.js, CAPR 39-1 Figure A7-4, the Emergency Services badge's), fitted to this badge's own box; the emblem and level device are drawn from the product photo. The rim is one flat silver (#bcc1c6) of one width all round, 1.75 % of the shield's width (the photographs show 1.71 % over 48 of them, enamel/measure-ref-rim.js), and the enamel field one flat colour, no shadow (LIVE13-ART 58); the art box is measured on the art as drawn, the whole shield inside it. Rescaled uniformly x1.25 (A4b) from 1 x 1.073 in to 1.25 x 1.341 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }
