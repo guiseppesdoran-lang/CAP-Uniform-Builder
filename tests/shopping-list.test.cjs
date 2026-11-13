@@ -46,8 +46,22 @@ test('the long sourcing note is folded, and its words are unchanged',()=>{
   assert.match(core,/A visually similar USAF or other military item is not treated as a substitute\./);
 });
 
-test('the own-it checkbox is a 44px row on a phone',()=>{
+test('the own-it mark is a 44px row on a phone',()=>{
   assert.match(css,/td\[data-label="Include"\],\.capub-purchase-table td\[data-label="Own it"\]\{display:flex;align-items:center;min-height:44px\}/);
+});
+
+test('an item is marked owned by a tap on its row, and by the switch in its first cell: a button, no checkbox, nothing that submits or follows a link',()=>{
+  // The switch (the picture-picker switch of the Measurements panel: a track with a knob and a tick), named by the item, on or off by aria-checked.
+  assert.match(core,/<td data-label="Own it"><button type="button" class="mpToggle capub-owned" role="switch" aria-checked="\$\{owned\[l\.key\] \? 'true' : 'false'\}" aria-label="Already own \$\{esc\(l\.name\)\}"><span class="mpMark" aria-hidden="true"><\/span><\/button><\/td>/);
+  assert.doesNotMatch(core,/type="checkbox"|class="capub-owned"[^>]*checked/,'no checkbox in the list');
+  // One handler on the row: the switch's own press bubbles to it, so the keyboard and a tap flip once; a link, the list of other vendors and a selection are left alone.
+  assert.match(core,/tr\.addEventListener\('click', e => \{\s*if\(e\.target\.closest && e\.target\.closest\('a, details'\)\) return;\s*const picked = typeof getSelection === 'function' \? getSelection\(\) : null;\s*if\(picked && String\(picked\)\.length\) return;/);
+  assert.match(core,/if\(now\) owned\[tr\.dataset\.key\] = true; else delete owned\[tr\.dataset\.key\];\s*writeStore\(OWNED_KEY, owned\);/,'the choice is kept as before, an item owned under its key');
+  assert.match(core,/own\.setAttribute\('aria-checked', String\(now\)\);\s*renderTotals\(\);/);
+  assert.doesNotMatch(core,/own\?\.addEventListener\('change'/,'the checkbox\'s change handler is gone');
+  assert.match(core,/\.capub-purchase-table tr\[data-key\]\{cursor:pointer\}/);
+  // Saved choices still load: the store is the same key and the same shape.
+  assert.match(core,/const OWNED_KEY = 'CAPUB_PURCHASE_OWNED_V2';/);
 });
 
 test('the dialog has a live search, a price sort and text and CSV exports, and asks no vendor site for prices',()=>{

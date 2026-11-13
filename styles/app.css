@@ -1362,7 +1362,7 @@ small.hintText{display:block}
   }
   .capub-purchase-table td[data-label="Item"]::before{display:none}
   .capub-purchase-table td[data-label="Include"],.capub-purchase-table td[data-label="Own it"]{display:flex;align-items:center;min-height:44px}
-  .capub-purchase-table td[data-label="Include"] input,.capub-purchase-table td[data-label="Own it"] input{width:24px;height:24px;margin:0}
+  .capub-purchase-table td[data-label="Include"] input{width:24px;height:24px;margin:0}
 }
 .capub-purchase-rule>summary{cursor:pointer}
 

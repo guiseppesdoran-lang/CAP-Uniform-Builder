@@ -556,6 +556,7 @@
 .capub-shop-more ul{margin:var(--s1) 0 0;padding:0;list-style:none}
 .capub-shop-more li{display:flex;justify-content:space-between;gap:var(--s3);padding:2px 0;border-bottom:1px dotted var(--line)}
 .capub-shop-more a{color:var(--ink)}
+.capub-purchase-table tr[data-key]{cursor:pointer}
 .capub-purchase-table tr.capub-shop-owned td{opacity:.6}
 .capub-purchase-table tr[hidden]{display:none}
 @media (max-width:760px){
@@ -644,7 +645,7 @@
       ? `${money(l.total)}${lo.status === 'estimated' ? '<span class="capub-shop-star" title="Estimated price"> *</span>' : ''}<span class="capub-shop-low">${l.qty > 1 ? `${l.qty} x ${money(lo.price)} · ` : ''}${esc(lo.vendorName)}${lo.sku ? ' SKU ' + esc(lo.sku) : ''} · ${lo.status === 'verified' ? 'verified' : 'estimated'}${lo.checked ? ' ' + esc(lo.checked) : ''}</span>`
       : '<span class="capub-shop-none">no price</span><span class="capub-shop-low">Search the vendors</span>';
     return `<tr data-key="${esc(l.key)}" class="${owned[l.key] ? 'capub-shop-owned' : ''}">
-        <td data-label="Own it"><input type="checkbox" class="capub-owned" ${owned[l.key] ? 'checked' : ''} aria-label="Already own ${esc(l.name)}"></td>
+        <td data-label="Own it"><button type="button" class="mpToggle capub-owned" role="switch" aria-checked="${owned[l.key] ? 'true' : 'false'}" aria-label="Already own ${esc(l.name)}"><span class="mpMark" aria-hidden="true"></span></button></td>
         <td data-label="Item"><div class="capub-purchase-item-name">${esc(l.name)}</div>${l.detail ? `<div class="capub-shop-detail">${esc(l.detail)}</div>` : ''}<span class="capub-purchase-chip ${ruleClass}">${esc(RULE_LABEL[l.rule] || 'Verify')}</span>${l.notSold ? '<span class="capub-purchase-chip">Not sold at retail</span>' : l.byOrderForm && !lo ? '<span class="capub-purchase-chip">By order form</span>' : lo ? `<span class="capub-purchase-chip ${lo.status === 'estimated' ? 'est' : ''}">${lo.status === 'verified' ? 'Verified price' : 'Estimated price'}</span>` : '<span class="capub-purchase-chip est">No price</span>'}${l.ref ? `<span class="citeHost"><span class="citeRef capub-purchase-chip">CAPR 39-1 ${esc(l.ref)}</span><span class="citeBtn" role="button" tabindex="0" aria-label="Regulation reference" aria-expanded="false"></span></span>` : ''}${l.note ? `<div class="capub-purchase-note">${esc(l.note)}</div>` : ''}</td>
         <td class="capub-purchase-qty" data-label="Quantity">${Number(l.qty) || 1}</td>
         <td class="capub-purchase-price" data-label="Price">${priceCell}</td>
@@ -662,9 +663,20 @@
       html += rowHtml(l);
     }
     tbody.innerHTML = html || '<tr><td colspan="5" class="capub-purchase-empty">Nothing matches the search.</td></tr>';
+    // A tap on an item's row marks it owned, or not: the switch in its first cell is the mark (a button, so the keyboard reaches it; its press is the row's), and the row's
+    // links, the list of other vendors and a drag that selected text are left to themselves.
     tbody.querySelectorAll('tr[data-key]').forEach(tr => {
-      const own = tr.querySelector('.capub-owned');
-      own?.addEventListener('change', () => { owned[tr.dataset.key] = own.checked; if(!own.checked) delete owned[tr.dataset.key]; writeStore(OWNED_KEY, owned); tr.classList.toggle('capub-shop-owned', own.checked); renderTotals(); });
+      tr.addEventListener('click', e => {
+        if(e.target.closest && e.target.closest('a, details')) return;
+        const picked = typeof getSelection === 'function' ? getSelection() : null;
+        if(picked && String(picked).length) return;
+        const own = tr.querySelector('.capub-owned'), now = !owned[tr.dataset.key];
+        if(now) owned[tr.dataset.key] = true; else delete owned[tr.dataset.key];
+        writeStore(OWNED_KEY, owned);
+        tr.classList.toggle('capub-shop-owned', now);
+        if(own) own.setAttribute('aria-checked', String(now));
+        renderTotals();
+      });
     });
     renderTotals();
   }
