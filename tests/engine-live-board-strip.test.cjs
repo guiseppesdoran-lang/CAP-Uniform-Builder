@@ -74,7 +74,9 @@ test('Class A and cadet semi-formal: the edge-on board is the top board flattene
           const grade = scene.layers.find(l => l.key === 'grade:edge-' + side);
           assert.ok(grade, `${tag}: the grade is on the strip`);
           const c = { x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 };
-          assert.ok(Math.abs(off(c).down - drop) < 0.005, `${tag}: grade centre ${off(c).down.toFixed(4)} in below the seam, on the strip's centre line`);
+          // the grade's row has its centre line BOARD_GRADE_ROW of the strip's thickness below the strip's upper edge (the guidance figures), not on the strip's centre line
+          const rowDown = drop - (0.5 - P.helpers.BOARD_GRADE_ROW) * THICK;
+          assert.ok(Math.abs(off(c).down - rowDown) < 0.005, `${tag}: grade centre ${off(c).down.toFixed(4)} in below the seam, on the row's line (${rowDown.toFixed(4)})`);
           const slot = core.anchor(spec, 'rank_slot_center');
           const fromEnd = Math.hypot(slot.x - outer.x, slot.y - outer.y);
           assert.ok(Math.abs(off(c).along - fromEnd) < 0.01, `${tag}: the grade is on the band's centre, ${fromEnd.toFixed(3)} in from the outer end`);

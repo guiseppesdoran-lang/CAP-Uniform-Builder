@@ -137,3 +137,59 @@ test('the rounded outer corner leaves no outline vertex within the cord\'s snap 
     }
   }
 });
+
+// ---- the grade on the board strip, as the guidance figures draw it ---------------------------------------------------------------------------------
+// The Honor Guard guidance's two Class A figures (four boards) and CAPR 39-1 Fig 4.6 (two) draw the cadet first lieutenant's two discs on the board like this, measured as fractions of the strip's thickness (the
+// discs are circles, a disc 0.50 of the thickness): the row's centre line 0.276 to 0.307 down from the upper edge (0.29 on average); the back disc cut by the upper edge, 39 to 47 % of it showing; the front disc
+// whole, 0.11 to 0.17 of the thickness above the lower edge; the row 1.09 to 1.17 of the thickness across (1.12). The strip is a window on the board over the ridge of the shoulder, the grade's row across the board.
+const GRADES = ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col'], TWO_FORMS = ['C/1st Lt', 'C/Lt Col'];
+const HONOR_GUARD = { cord: 'honor_guard', cordOnTop: true, ceremonial: { role: 'guard', chinstrap: 'up' } };
+
+async function gradeRows(build){
+  const scene = await P.composeUniform(build, store), T = H.BOARD_STRIP_THICK, out = [];
+  for(const side of ['right', 'left']){
+    const strip = scene.layers.find(l => l.key === 'epaulet:' + side), grade = scene.layers.find(l => l.key === 'grade:edge-' + side);
+    const r = (strip.rotate || 0) * Math.PI / 180, dn = { x: -Math.sin(r), y: Math.cos(r) };
+    const c = { x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, cc = core.rotatePoint(c, grade.origin, grade.rotate || 0);
+    // how far the row's centre line lies below the strip's upper edge, as a fraction of the thickness (the strip's origin is on its centre line)
+    out.push({ side, strip, grade, scene, row: ((cc.x - strip.origin.x) * dn.x + (cc.y - strip.origin.y) * dn.y + T / 2) / T });
+  }
+  return out;
+}
+
+test('every grade on the board sits with its row\'s centre line 0.29 of the strip down from its upper edge, squeezed across by the one factor the guidance figures give, and cut to the strip\'s outline', async () => {
+  const T = H.BOARD_STRIP_THICK, S = H.BOARD_GRADE_SPAN * T / H.GRADE_ROW_TWO;
+  assert.equal(H.BOARD_GRADE_ROW, 0.29);
+  assert.ok(Math.abs(H.BOARD_GRADE_SPAN - 1.12) < 1e-9 && H.GRADE_ROW_TWO === 1.5, 'a two-form row of 1 1/2 in spans 1.12 of the thickness');
+  let n = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of GRADES){
+    for(const [side_, build] of [['', hb(uniform, sex, rank)]].concat(uniform === 'blues_a' ? [[' (Honor Guard)', Object.assign(hb(uniform, sex, rank), HONOR_GUARD)]] : [])){
+      for(const { side, strip, grade, row } of await gradeRows(build)){
+        const tag = `${uniform} ${sex} ${rank}${side_} ${side}`;
+        assert.ok(Math.abs(row - H.BOARD_GRADE_ROW) < 0.005, `${tag}: the row's centre line is ${row.toFixed(3)} of the thickness down`);
+        const spec = await store.load(grade.id);
+        assert.ok(Math.abs(grade.w - spec.w * S) < 0.005, `${tag}: ${grade.w.toFixed(3)} in across, the sheet's ${spec.w} in squeezed by ${S.toFixed(3)}`);
+        assert.deepEqual(grade.clip, strip.clip, `${tag}: cut to the strip's outline`);
+        // the measurements keep off what shows of it: the box it is cut to is inside the strip's outline box and smaller than the piece's
+        const xs = strip.clip.map(p => p.x), ys = strip.clip.map(p => p.y), o = grade.obstacle;
+        assert.ok(o && o.x >= Math.min(...xs) - 0.01 && o.y >= Math.min(...ys) - 0.01 && o.x + o.w <= Math.max(...xs) + 0.01 && o.y + o.h <= Math.max(...ys) + 0.01, `${tag}: the obstacle is within the strip`);
+        n++;
+      }
+    }
+  }
+  assert.equal(n, 48 + 24, 'two coats, both sexes, six grades and both sides, and the Honor Guard coat of each sex');
+});
+
+test('the two-form grades (first lieutenant, lieutenant colonel) show as the guidance draws them: the back form half over the ridge, the front one near the lower edge', async () => {
+  const T = H.BOARD_STRIP_THICK;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of TWO_FORMS){
+    for(const { side, grade, row } of await gradeRows(hb(uniform, sex, rank))){
+      const E = grade.w, c = row * T, tag = `${uniform} ${sex} ${rank} ${side}`;
+      // the row is two equal forms across E, centred on the row's line: the back form [c - E/2, c], the front one [c, c + E/2], from the strip's upper edge
+      const backShows = Math.min(1, c / (E / 2)), frontMargin = (T - (c + E / 2)) / T;
+      assert.ok(backShows >= 0.39 && backShows <= 0.56, `${tag}: ${(backShows * 100).toFixed(0)} % of the back form shows (the figures: 39 to 47)`);
+      assert.ok(frontMargin >= 0.10 && frontMargin <= 0.20, `${tag}: the front form lies ${frontMargin.toFixed(3)} of the thickness above the lower edge (the figures: 0.11 to 0.17)`);
+      assert.ok(Math.abs(E / T - 1.12) < 0.001 && E / T >= 1.09 && E / T <= 1.17, `${tag}: the row spans ${(E / T).toFixed(3)} of the thickness (the figures: 1.09 to 1.17)`);
+    }
+  }
+});

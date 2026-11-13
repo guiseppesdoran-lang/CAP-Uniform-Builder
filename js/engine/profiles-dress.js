@@ -947,7 +947,8 @@
     // place among the art's lettering and stripes (LIVE11-2: unsqueezed it ran over the CAP).
     const along = o.along > 0 && o.along < 1 ? o.along : 1;
     const acr = quarter ? gs.h : gs.w, alo = (quarter ? gs.w : gs.h) * along;
-    const squeeze = Math.min(1, across / acr);
+    // `squeeze`: the factor across the strap when the strip states one (the Class A boards, BOARD_GRADE_ROW); else the piece is squeezed to fit `across`, never enlarged.
+    const squeeze = o.squeeze > 0 ? o.squeeze : Math.min(1, across / acr);
     // `centerFromEnd`: the piece's centre this far from the strap's outer end (the Class A boards, where it is the
     // top view's rank slot distance from the board's outer end); else the piece's outer edge is 5/8 in from the end,
     // or `edgeFromEnd` when the garment has its own distance (the flight suit's shoulder grade, 1/2 in from the seam).
@@ -967,17 +968,27 @@
   // draw when it is not the sleeve's own (the Class A boards' regular-size metal grade).
   // `strip` ({ thick, drop }): the strip's thickness and how far its centre line lies below the strap axis (the boards, drawn
   // thicker than the strap with their upper edge kept on the strap's); the grade is squeezed to that thickness and kept on its centre.
+  // `strip.row`: the grade is drawn as the guidance figures draw it on a board (BOARD_GRADE_ROW): its row's centre line a fixed way down the strip, the row squeezed
+  // across by one factor for every grade, and cut to the strip's own outline, so the part of it that lies over the shoulder's ridge is not drawn.
   async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd, strip){
-    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, dropOf = (strip && strip.drop) || 0, z = strip && strip.z;
+    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, dropOf = (strip && strip.drop) || 0, z = strip && strip.z, row = strip && strip.row;
     for(const side of ['right', 'left']){
-      const drop = typeof dropOf === 'function' ? dropOf(side) : dropOf;
+      const drop = (typeof dropOf === 'function' ? dropOf(side) : dropOf) - (row ? (0.5 - BOARD_GRADE_ROW) * thick : 0);
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
       if(!f || !mid) continue;
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
       const end = { x: mid.x + f.axis.x * back - f.normal.x * drop, y: mid.y + f.axis.y * back - f.normal.y * drop };
-      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, along, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      const layer = await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, along, squeeze: row ? BOARD_GRADE_SPAN * thick / GRADE_ROW_TWO : 0, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+      const edge = row && layer && ctx.layers.find(l => l.key === 'epaulet:' + side);
+      if(edge && edge.clip){
+        layer.clip = edge.clip;
+        // The measurements keep off what shows of it, not off its whole box, much of which lies over the ridge and is not drawn: the box's corners cut to the strip's outline.
+        const q = [[layer.x, layer.y], [layer.x + layer.w, layer.y], [layer.x + layer.w, layer.y + layer.h], [layer.x, layer.y + layer.h]].map(([x, y]) => core.rotatePoint({ x, y }, layer.origin || { x: layer.x, y: layer.y }, layer.rotate || 0));
+        const seen = clipToConvex(q, edge.clip);
+        if(seen.length > 2){ const xs = seen.map(v => v.x), ys = seen.map(v => v.y); layer.obstacle = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }; }
+      }
     }
   }
 
@@ -1781,6 +1792,15 @@
   // (a guess: at the strap's 0.32 in the peak was a sliver) and read as a flat plank.
   const BOARD_STRIP_THICK = 1.05;
   H.BOARD_STRIP_THICK = BOARD_STRIP_THICK;
+  // Where the grade sits on the board strip, measured on the six boards of the Honor Guard guidance's two Class A figures and CAPR 39-1 Fig 4.6 (the cadet first lieutenant's two discs, worn on the board;
+  // the strip fitted in its own frame, the discs read as grey blobs), as fractions of the strip's thickness: the discs' row centre line lies 0.28 to 0.31 below the upper edge (0.285, 0.276, 0.29 and 0.297 on
+  // the four guidance boards, 0.276 and 0.307 on Fig 4.6's two; 0.29 on average); the back disc is cut by the upper edge, 39 to 47 % of it showing; the front disc lies whole, its lower rim 0.11 to 0.17 above
+  // the lower edge; the two discs together span 1.09 (guidance) to 1.17 (Fig 4.6), 1.12 on average, a disc being 0.50 of the thickness and a circle. The grade is the board's row across it (the sheets'
+  // 1 1/2 in for two forms, GRADE_ROW_TWO), so every grade takes the one squeeze across that makes a two-form row 1.12 of the thickness, and its row's centre line is put 0.29 down: the back form passes over
+  // the ridge and is cut off by the strip's upper edge, the front one is close to the lower edge (the owner, 2026-11-12: "the shoulder boards dont look rounded ... have the insignia almost hanging off
+  // the other side. look again at the honor guard uniform guidance").
+  const BOARD_GRADE_ROW = 0.29, BOARD_GRADE_SPAN = 1.12, GRADE_ROW_TWO = 1.5;
+  H.BOARD_GRADE_ROW = BOARD_GRADE_ROW; H.BOARD_GRADE_SPAN = BOARD_GRADE_SPAN; H.GRADE_ROW_TWO = GRADE_ROW_TWO;
   // The strip lies along the shoulder seam with its UPPER edge on the coat's own upper outline, the outer edge of its stroke, so the whole board is on the coat and no coat shows above it.
   // Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder seam"; that put the strip's axis ON the seam, its thickness half on each side, and the upper half stood over
   // the page above the shoulder, the outer end hanging over the corner of the sleeve. Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating" (a strip of background between the board
@@ -2171,7 +2191,7 @@
         const slot = bs && core.anchor(bs, 'rank_slot_center'), outer = bs && core.anchor(bs, 'board_outer_end');
         if(slot && outer) fromEnd[side] = Math.hypot(slot.x - outer.x, slot.y - outer.y);
       }
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: side => boardDrop(ctx.base.id, side), z: BOARD_STRIP_Z + 0.2 });
+      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: side => boardDrop(ctx.base.id, side), z: BOARD_STRIP_Z + 0.2, row: true });
     }
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);

@@ -82,7 +82,9 @@ test('the edge-on grade is squeezed to its strip\'s thickness less 0.08 in on th
     for(const side of ['right', 'left']){
       const edge = byKey(scene, `grade:edge-${side}`);
       assert.ok(edge, `${u} ${gender} ${rank} ${side}: edge-on grade`);
-      assert.ok(Math.abs(edge.w - (thick - 0.08)) < 0.005, `${u} ${gender} ${rank} ${side}: grade ${edge.w.toFixed(3)} in across the ${thick} in strip`);
+      // the Class A boards squeeze it by the one factor of the guidance figures' grade row; every other strip squeezes it to its thickness less 0.08 in
+      const want = g ? thick - 0.08 : (await store.load(edge.id)).w * P.helpers.BOARD_GRADE_SPAN * thick / P.helpers.GRADE_ROW_TWO;
+      assert.ok(Math.abs(edge.w - want) < 0.005, `${u} ${gender} ${rank} ${side}: grade ${edge.w.toFixed(3)} in across the ${thick} in strip (${want.toFixed(3)})`);
     }
   }
   // the Class A coat's officers (senior and general): the strip is the sheet's own overlay, whose thickness follows from its epaulet_sleeve box and the strap's angle
