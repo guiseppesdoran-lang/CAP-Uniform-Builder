@@ -95,31 +95,36 @@
       ctx.note('Only one service badge is worn; the others are not shown');
       service = C.chooseBadges(ctx, 'service', 'Service badge', set.service, [{ key: 'only', label: 'Service badge' }], { why: 'Only one CAP service badge is worn' });
     }
-    const others = [...service, ...set.cadetSpecialty, ...set.specialty, ...set.rocketry, ...set.marksmanship];
-    const total = olp.length + nationalStaff.length + others.length;
+    // Where the paragraph gives the first badge to the left and the marksmanship badge its own place on that side (the men's Class A, Class B and aviator shirt, `marksFirst`), a worn
+    // marksmanship badge is the first badge of the group: it takes the left, and nothing but the model rocketry badge goes under it, so the others take the places on the right and over
+    // the nametag. It counts in the four. With no room for it (the aviation and the National Staff badges fill the four) it is not drawn.
+    const marksShown = !!o.marksFirst && set.marksmanship.length > 0 && olp.length + set.nationalStaff.slice(0, 1).length < (o.max || 4);
+    const marks = marksShown ? set.marksmanship[0] : null;
+    const others = [...service, ...set.cadetSpecialty, ...set.specialty, ...set.rocketry, ...(o.marksFirst ? [] : set.marksmanship)];
+    const total = olp.length + nationalStaff.length + (marks ? 1 : 0) + others.length;
     const max = o.max || 4;
     let rest = others;
     if(total > max) ctx.note(`At most ${max} badges are worn on this uniform; the rest are not shown`);
     // The pocket and nametag places (one slot each, in the order the layout fills them): the member picks the badge for each place by hand
     // (build.badgeChoices.pocket = { slotKey: badgeId }); the places nobody picked take the others in the order the rule lists them, the
     // CAP service badge first. One place left: one pick among the competing badges.
-    const room = Math.max(0, max - olp.length - nationalStaff.length);
+    const room = Math.max(0, max - olp.length - nationalStaff.length - (marks ? 1 : 0));
     const count = Math.min(room, others.length);
     if(count >= 1 && others.length >= 2){
       // A place for each badge the layout can put somewhere: its named places, and the separate places model rocketry and marksmanship have
       // (`specialPlaces`); a badge beyond them has no place on this uniform.
-      let places = o.places ? o.places(count, nationalStaff.length, others) : Array.from({ length: count }, (_, i) => ({ key: 'place' + (i + 1), label: 'Place ' + (i + 1) }));
+      let places = o.places ? o.places(count, nationalStaff.length, others, !!marks) : Array.from({ length: count }, (_, i) => ({ key: 'place' + (i + 1), label: 'Place ' + (i + 1) }));
       const special = o.specialPlaces ? others.filter(x => x.family === 'rocketry' || x.family === 'marksmanship').length : 0;
       const cap = Math.max(1, Math.min(count, places.length + special));
       places = places.slice(0, cap);
-      while(places.length < cap) places.push({ key: 'separate' + places.length, label: 'Rocketry or marksmanship place' });
+      while(places.length < cap) places.push({ key: 'separate' + places.length, label: marks ? 'Model rocketry place' : 'Rocketry or marksmanship place' });
       if(cap === 1) places = [{ key: 'only', label: 'Pocket and name tag badges' }];
-      rest = C.chooseBadges(ctx, 'pocket', 'Pocket and name tag badges', others, places);
+      rest = C.chooseBadges(ctx, 'pocket', 'Pocket and name tag badges', others, places, marks && o.marksWhy ? { why: o.marksWhy } : undefined);
       if(cap < count) ctx.note('Some badges have no place left on this uniform and are not shown');
       const collar = places.findIndex(x => x.service);
       if(collar >= 0 && service[0] && rest.includes(service[0]) && rest[collar] !== service[0]) ctx.note('The CAP service badge is worn closest to the collar (CAPR 39-1, 4.1.9.4.4.2, 4.1.12.2.5.2)');
     }else rest = others.slice(0, room);
-    return { olp, nationalStaff, rest, pin: H.commandPin(ctx, b, 'dress') };
+    return { olp, nationalStaff, rest, marks, pin: H.commandPin(ctx, b, 'dress') };
   }
 
   // The places the layout gives the pocket and nametag badges, in the order the layout fills them (the order of plan.rest), named as the
@@ -127,7 +132,7 @@
   // badge takes the wearer's right (it is not one of the slots). Men: the left pocket, the right pocket, one over the nametag; women: two
   // side by side over the nametag, the CAP service badge nearest the collar (the wearer's left). Used by planBadges to give each place a slot.
   const SPECIAL_FAMILY = x => x.family === 'rocketry' || x.family === 'marksmanship';
-  function dressPlaces(geo, count, ns, others){
+  function dressPlaces(geo, count, ns, others, marksOnLeft){
     let g = geo;
     // The women's aviator shirt takes the men's layout from a third ordinary badge (4.2.6.2.7.2).
     if(g.onStyle === 'women-a' && g.menLayout){
@@ -136,7 +141,8 @@
     }
     const places = [];
     if(g.onStyle === 'men'){
-      if(g.lp) places.push({ key: 'left-pocket', label: "Left pocket (wearer's left)" });
+      // The marksmanship badge worn first holds the left; the model rocketry badge that goes under it has its own place, not this one.
+      if(g.lp && !marksOnLeft) places.push({ key: 'left-pocket', label: "Left pocket (wearer's left)" });
       if(g.rp && !ns) places.push({ key: 'right-pocket', label: "Right pocket (wearer's right)" });
       if(g.nametag) places.push({ key: 'over-nametag', label: 'Over the name tag' });
     }else{
@@ -348,7 +354,10 @@
   //   onBottom: y                  override for the ON line (semi-formal: even with the ribbons)
   //   un: { x, y, anchor }         graduated commander position
   async function dressBadges(ctx, b, geo){
-    const plan = planBadges(ctx, b, { max: geo.max, specialPlaces: true, places: (count, ns, others) => dressPlaces(geo, count, ns, others) });
+    // The marksmanship badge is the first badge where the layout has a place for it on the left (the men's layouts; the women's keep their paragraphs' own places).
+    const marksFirst = geo.onStyle === 'men' && !!geo.marks;
+    const marksWhy = marksFirst && geo.marks.cite ? `With the marksmanship badge worn, the others take the right and over the name tag, and only the model rocketry badge goes under it (CAPR 39-1, ${geo.marks.cite})` : '';
+    const plan = planBadges(ctx, b, { max: geo.max, specialPlaces: true, marksFirst, marksWhy, places: (count, ns, others, marksOnLeft) => dressPlaces(geo, count, ns, others, marksOnLeft) });
     // Women's aviator shirt: the two places over the nametag hold two badges (4.2.6.2.7.2). A third
     // ordinary badge takes the men's option the same paragraph allows ("as worn on the male aviator
     // shirt"): first badge on the left pocket, second on the right, third over the nametag.
@@ -401,7 +410,7 @@
     // 4.1.9.4.4.2, 4.1.10.1.2.4.2, 4.1.11.1.1.2.4, 4.2.6.2.7.2).
     const isSpecial = x => x.family === 'rocketry' || x.family === 'marksmanship';
     const rocketry = plan.rest.find(x => x.family === 'rocketry') || null;
-    const marks = plan.rest.find(x => x.family === 'marksmanship') || null;
+    const marks = plan.marks || plan.rest.find(x => x.family === 'marksmanship') || null;
     const regular = plan.rest.filter(x => !isSpecial(x));
 
     if(geo.onStyle === 'men'){
@@ -409,11 +418,11 @@
       // with a current command pin over the nametag the third badge sits 1/2 in above the pin.
       // Model rocketry is worn only on the left pocket; marksmanship on the welt or pocket flap.
       const queue = [...regular];
-      if(marks){
-        if(geo.marks) await putBadge(ctx, marks, geo.marks, geo.marks.anchor || 'top_center', undefined, 'top of the left pocket flap');
-        else queue.push(marks);
-      }
-      const lpItem = geo.lp ? (rocketry || queue.shift()) : null;
+      // The marksmanship badge is the first badge: it holds the wearer's left (drawn last, so it lies over the model rocketry badge where the two touch), and only the model rocketry
+      // badge goes under it. Without a place of its own on the layout it is the first of the queue.
+      const marksOnLeft = !!marks && !!geo.marks;
+      if(marks && !geo.marks) queue.unshift(marks);
+      const lpItem = geo.lp ? (rocketry || (marksOnLeft ? null : queue.shift())) : null;
       if(rocketry && !geo.lp) ctx.note('The model rocketry badge is worn only on the left pocket, which this uniform does not have');
       let rpItem = plan.nationalStaff[0] || null;
       if(!rpItem && geo.rp) rpItem = queue.shift() || null;
@@ -434,6 +443,7 @@
         if(pinItem) ctx.measure({ x: onX, y }, { x: onX, y: y - 0.5 }, null, { caption: 'command pin to badge' });
         else{ onMeasure(); if(p) levelBox = p; }
       }
+      if(marksOnLeft) await putBadge(ctx, marks, geo.marks, geo.marks.anchor || 'top_center', undefined, geo.marks.where || 'top of the left pocket flap');
       if(geo.semi){
         // The semi-formal (LIVE13 E80): the piece in the nametag's place, bottom even with the ribbons' bottom; the right pocket badge 1 1/2 in
         // below that piece, or, with nothing there, level with the left pocket badge (both 1 1/2 in below the ribbons' bottom line).
@@ -2353,7 +2363,7 @@
     }
     // Men's marksmanship badge: centred on the welt pocket (4.1.5.2.2.4.2). Women's moved rocketry
     // or marksmanship badge: wearer's left, 1 1/2 in below the ribbons (4.1.9.4.4.2).
-    if(sex === 'male') geo.marks = { x: rest.x, y: rest.y, anchor: 'top_center' };
+    if(sex === 'male') geo.marks = { x: rest.x, y: rest.y, anchor: 'top_center', cite: '4.1.5.2.2.4.2', where: 'on the welt pocket' };
     else geo.belowRibbons = { x: rest.x, y: (rack ? rack.y + rack.h : rest.y) + 1.5, anchor: 'top_center' };
     await dressBadges(ctx, b, geo);
 
@@ -2448,7 +2458,7 @@
       geo.rp = { x: pocketR.x + pocketR.w / 2, y: midY, span };
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.63 };
-      geo.marks = { x: pocketL.x + pocketL.w / 2, y: pocketL.y, anchor: 'top_center' }; // top edge of the flap
+      geo.marks = { x: pocketL.x + pocketL.w / 2, y: pocketL.y, anchor: 'top_center', cite: '4.1.11.1.1.2.3.2' }; // top edge of the flap
       // The nametag and the ribbons each rest on their pleated pocket, centred on it (4.1.11.1.1.2.1-2, 4.1.8.2.1-2; LIVE13 E99).
       restingOn(ctx, tag, pocketR, 'nameplate resting on the right pocket', 'right pocket to nameplate');
       if(rack) restingOn(ctx, rack, pocketL, 'ribbons resting on the left pocket', 'left pocket to ribbons');
@@ -2806,7 +2816,7 @@
       geo.rp = rp ? { x: rp.x, y: rp.y } : null;
     }
     // Marksmanship: centred on the top edge of the left pocket flap, where the ribbons rest.
-    const flapTop = { x: rest.x, y: rest.y, anchor: 'top_center' };
+    const flapTop = { x: rest.x, y: rest.y, anchor: 'top_center', cite: '4.2.5.1.3.2' };
     if(!female){
       geo.onStyle = 'men';
       geo.un = { x: tag.x + tag.w / 2, y: tag.y + tag.h + 0.715 };
