@@ -110,6 +110,7 @@ test('the panel lists every distance with an on/off switch, grouped, with a host
   for(const t of toggles) assert.match(t, /aria-label="[^"]+, [^"]+"/, 'named by the distance and its value, for assistive technology');
   assert.match(html, new RegExp(`${cat.entries.length - 1} of ${cat.entries.length}`));
   assert.match(html, /<div class="mpRefs"><\/div>/, 'the host of the pair of pictures that choose the references');
+  assert.ok(html.indexOf('<div class="mpList">') < html.indexOf('<div class="mpRefs">') && html.indexOf('<div class="mpRefs">') < html.indexOf('data-mp="all"') && html.indexOf('data-mp="none"') < html.indexOf('<fieldset'), 'the pair and All and None scroll with the list under the head');
   assert.doesNotMatch(html, /data-mp="refs"|Show regulation references/);
   assert.match(html, /data-mp="all">All<\/button><button type="button" class="ghost" data-mp="none">None</);
   for(const g of cat.groups) assert.ok(html.includes(`<legend>${g.area}</legend>`));

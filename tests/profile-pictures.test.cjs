@@ -601,7 +601,7 @@ test('where no distance of the uniform states a paragraph there is no callout pi
   const waits = [];
   const broken = withMeasure(Object.assign(envOf(member({ uniform: 'ocp', membership: 'senior', rank: 'Capt' })), { draw: async () => { throw new Error('Failed to fetch'); }, wait: ms => { waits.push(ms); return Promise.resolve(); }, warn: () => {} }));
   assert.deepEqual(plain(await PP.create(broken).callouts().ready), { off: null, on: null });
-  assert.deepEqual(waits, [300, 600, 300, 600]);
+  assert.deepEqual([...waits].sort((a, b) => a - b), [300, 300, 600, 600], 'each of the two tried three times, a moment apart (they are drawn together)');
   const noEngine = envOf(member({}));
   assert.deepEqual(plain(PP.create(noEngine).callouts().now), { off: null, on: null }, 'no measure layout: nothing is offered');
 });
@@ -623,13 +623,13 @@ test('the engine has the hook the callout\'s picture is cut with: measureView is
   assert.match(read('js/profile-pickers.js'), /Object\.assign\(\{ pad \}, options\)/, 'the page hands the options on to the renderer');
 });
 
-test('the sample note is a drawing of its own, in the page\'s ink, with the question mark or with the reference printed in it, and nothing outside it', () => {
+test('the sample note is a drawing of its own, in a dark ink on the white box, with the question mark or with the reference printed in it, and nothing outside it', () => {
   const off = PP.citeSample(false), on = PP.citeSample(true);
   for(const s of [off, on]){
     assert.match(s, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 120 78"/);
     assert.match(s, /<\/svg>$/);
-    assert.match(s, /currentColor/);
-    assert.doesNotMatch(s, /<script|<image|href=|url\(|<style|#[0-9a-fA-F]{3,6}\b/, 'no file, no script, no colour of its own');
+    assert.doesNotMatch(s, /<script|<image|href=|url\(|<style|currentColor/, 'no file, no script, no style: the box is paper white on either theme, so the ink is its own');
+    assert.ok(s.includes('#1a1f2b'), 'a dark ink that reads on the white box');
     assert.ok(s.includes('Ribbons rest ½ in') && s.includes('above the badge'));
   }
   assert.ok(off.includes('>?</text>') && !/\(\d+\.\d+/.test(off), 'the question mark, no reference');

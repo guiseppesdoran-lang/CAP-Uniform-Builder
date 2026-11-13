@@ -56,8 +56,8 @@
   }
 
   // ---- markup, as strings (the page sets them as innerHTML; the tests read them) ----
-  // The panel: the pair of pictures that choose whether the callouts quote their paragraph (set by the page), All and None, then each area's distances with an on/off
-  // switch, the value, and the question mark.
+  // The panel: under the head, in one scrolling list, the pair of pictures that choose whether the callouts quote their paragraph (set by the page), All and None, then each
+  // area's distances with an on/off switch, the value, and the question mark.
   function panelHtml(cat, hidden){
     const off = new Set(hidden || []);
     const total = cat.entries.length, shown = cat.entries.filter(e => !off.has(e.id)).length;
@@ -74,7 +74,8 @@
       + `<span class="mpText"${noteOf(e) ? ` data-cite-measure="${esc(e.id)}"` : ''} aria-hidden="true"><span class="mpName">${esc(e.name)}${e.count > 1 ? ` <span class="mpTimes">(${e.count})</span>` : ''}</span><span class="mpVal">${esc(e.value)}</span></span>`
       + mark(e) + `</div>`;
     const groups = cat.groups.map(g => `<fieldset class="mpGroup"><legend>${esc(g.area)}</legend>` + g.entries.map(row).join('') + '</fieldset>').join('');
-    return head + refs + bulk + `<div class="mpList">${groups}</div>`;
+    // The pair of pictures and All and None scroll with the list under the head, so on a phone's sheet the distances are not squeezed into what the pictures leave.
+    return head + `<div class="mpList">${refs}${bulk}${groups}</div>`;
   }
 
   // The Regulation tab: a table by area of the rule, its value and its paragraph (CAPR 39-1, and the ICL where the engine cites one).

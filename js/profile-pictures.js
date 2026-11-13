@@ -175,14 +175,16 @@
   }
 
   // A sample of a note for the choice of where its references are shown (the Regulation tab): a sentence and its question mark, or the same sentence with the reference
-  // printed after it. Markup for the picture picker, in the page's own ink (currentColor) and font, with nothing outside it.
+  // printed after it. Markup for the picture picker, in the page's font, with nothing outside it.
   function citeSample(shown){
-    const line = (y, text, extra) => `<text x="8" y="${y}" font-size="11.5" fill="currentColor"${extra || ''}>${text}</text>`;
-    const mark = '<circle cx="97" cy="47" r="7.5" fill="none" stroke="currentColor" stroke-width="1.3"/><text x="97" y="51" font-size="10.5" font-weight="700" text-anchor="middle" fill="currentColor">?</text>';
+    // The picture's box is paper white on either theme, so the sample is drawn in its own dark ink and not in the page's.
+    const INK = '#1a1f2b', MUTED = '#59606e';
+    const line = (y, text, fill) => `<text x="8" y="${y}" font-size="10.5" fill="${fill || INK}">${text}</text>`;
+    const mark = `<circle cx="104" cy="45" r="7" fill="none" stroke="${INK}" stroke-width="1.3"/><text x="104" y="48.8" font-size="10" font-weight="700" text-anchor="middle" fill="${INK}">?</text>`;
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 78" focusable="false" aria-hidden="true" font-family="inherit">'
-      + '<rect x="2" y="2" width="116" height="74" rx="5" fill="none" stroke="currentColor" stroke-opacity=".35"/>'
+      + `<rect x="2" y="2" width="116" height="74" rx="5" fill="none" stroke="${MUTED}" stroke-opacity=".45"/>`
       + line(30, 'Ribbons rest ½ in') + line(48, 'above the badge')
-      + (shown ? line(65, '(4.1.5.2.2)', ' fill-opacity=".7"') : mark)
+      + (shown ? line(65, '(4.1.5.2.2)', MUTED) : mark)
       + '</svg>';
   }
 
@@ -395,12 +397,9 @@
       const pick = pickCallout(env.measure, scene);
       if(!pick) return { off: false, on: false };
       const whole = Object.assign({}, scene, { layers: scene.layers.filter(l => l.type !== 'clear') });
-      const out = {};
-      for(const [k, refs] of [['off', false], ['on', true]]){
-        out[k] = await drawn(env, whole, 0, { measure: true, measureHide: pick.hide, measureRefs: refs, measurePx: CALLOUT_PX, measureView: calloutWindow })
-          .catch(error => { if(env.warn) env.warn(`The picture of the callout ${k} could not be made`, error); return null; });
-      }
-      return out;
+      const both = await Promise.all([['off', false], ['on', true]].map(async ([k, refs]) => [k, await drawn(env, whole, 0, { measure: true, measureHide: pick.hide, measureRefs: refs, measurePx: CALLOUT_PX, measureView: calloutWindow })
+        .catch(error => { if(env.warn) env.warn(`The picture of the callout ${k} could not be made`, error); return null; })]));
+      return Object.fromEntries(both);
     }
     function callouts(){
       const base = member();
