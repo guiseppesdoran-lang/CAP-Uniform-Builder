@@ -66,10 +66,10 @@ test('the popover\'s markup: the distance, then each paragraph on a line of its 
   assert.match(C.measurePopHtml({ rule: 'A <b> & "c"', refs: ['1.2.3'] }), /A &lt;b&gt; &amp; &quot;c&quot;/);
 });
 
-test('in the list a distance with a paragraph has a question mark beside its row, outside the checkbox\'s label; one without has none', async () => {
+test('in the list a distance with a paragraph has a question mark beside its row, outside the switch; its text opens the same paragraph; one without has neither', async () => {
   const scene = await compose('ocp-male-senior-Capt');
   const cat = ML.catalogue(scene);
-  const html = MP.panelHtml(cat, [], false);
+  const html = MP.panelHtml(cat, []);
   const rows = html.split('<div class="mpRow">').slice(1);
   assert.equal(rows.length, cat.entries.length);
   const marks = html.match(/<span class="citeBtn citeMeasure"[^>]*>/g) || [];
@@ -80,17 +80,17 @@ test('in the list a distance with a paragraph has a question mark beside its row
     assert.ok(row, e.name);
     const mark = `data-cite-measure="${MP.esc(e.id)}"`;
     if(e.ref){
-      assert.ok(row.includes(mark), `${e.name} has its mark`);
-      assert.ok(row.indexOf('</label>') < row.indexOf(mark), 'the mark is beside the label, not in it');
+      assert.equal(row.split(mark).length - 1, 2, `${e.name}: its text and its mark both carry the id`);
+      assert.match(row, /<span class="mpText" data-cite-measure="[^"]*" aria-hidden="true">/, 'the text opens the paragraph by the page\'s own handler');
+      assert.ok(row.indexOf('</button>') < row.indexOf(mark), 'the mark is beside the switch, not in it');
       assert.match(row, /role="button" tabindex="0" aria-expanded="false" aria-label="Regulation reference: /);
     }else{
-      assert.ok(!row.includes('data-cite-measure'), `${e.name} states no paragraph: no mark`);
+      assert.ok(!row.includes('data-cite-measure'), `${e.name} states no paragraph: no mark, and its text opens nothing`);
       assert.match(row, /<span class="mpNoMark" aria-hidden="true"><\/span>/, 'the mark\'s room is kept so the values line up');
     }
   });
-  // The row still holds its checkbox, name and value; the count and the switch are unchanged.
-  assert.equal((html.match(/<input type="checkbox" data-id=/g) || []).length, cat.entries.length);
-  assert.match(html, /<label class="mpPick"><input type="checkbox"/);
+  // The row still holds its switch, name and value; the count is unchanged.
+  assert.equal((html.match(/<button type="button" class="mpToggle"/g) || []).length, cat.entries.length);
   const text = html.replace(/<[^>]*>/g, ' ');
   for(const e of cat.entries) assert.ok(text.includes(e.name) && text.includes(e.value));
   // The marks' ids are never read aloud or shown.

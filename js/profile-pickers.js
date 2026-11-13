@@ -65,16 +65,16 @@
     const getStore = () => storeP || (storeP = assets.manifest().then(m => E.core.createSpecStore(m, path => assets.spec(path))));
     pictures = window.CAPUBProfilePictures.create({
       rules: window.CAPUBUniformRules,
-      core: E.core, grades: E.grades,
+      core: E.core, grades: E.grades, measure: E.measureLayout,
       build: () => window.CAPUBUniformView.buildFromState(),
       async compose(build){
         const [store] = await Promise.all([getStore(), assets.prepare(build.uniform, build.gender)]);
         return E.profiles.composeUniform(build, store);
       },
       // The drawing as a document a browser decodes on its own (js/profile-pictures.js standalone); null for a drawing that holds nothing, which is tried again.
-      async draw(scene, pad){
+      async draw(scene, pad, options){
         const store = await getStore();
-        const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad });
+        const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, Object.assign({ pad }, options));
         // Lettering (the name) needs the engraved face, which an image loads from nowhere: it is carried inside the drawing as data.
         if(svg.querySelector && svg.querySelector('text')) await E.renderSvg.embedFonts(svg);
         const text = window.CAPUBProfilePictures.standalone(new XMLSerializer().serializeToString(svg));
@@ -214,6 +214,25 @@
       diamond = { picker, signature };
     }
     diamond.picker.setValue(source.checked ? 'diamond' : 'plain');
+  }
+
+  // ---- where the references are shown ---------------------------------------------------------------------------------------------
+
+  // Two tiles in place of the switch of the Regulation tab: a sample note with its reference behind the question mark, and the same with the reference printed in it, over
+  // #citesShown, which stays as the source of truth (js/citations.js listens to its change and keeps the choice in the browser).
+  let cites = null;
+  function syncCites(){
+    const source = by('citesShown'), host = by('citesShownPicker');
+    if(!source || !host || !window.VisualPicker || !window.CAPUBProfilePictures) return;
+    if(!cites){
+      const P = window.CAPUBProfilePictures;
+      const options = [['off', 'Behind a question mark', false], ['on', 'Printed in the text', true]].map(([value, label, on]) => ({ value, label, picture: P.citeSample(on) }));
+      const picker = window.VisualPicker.render(host, { name: 'citesShown', legend: 'References in notes and hints', options, value: source.checked ? 'on' : 'off', size: 'large',
+        onChange: value => { source.checked = value === 'on'; source.dispatchEvent(new Event('change', { bubbles: true })); } });
+      picker.el.dataset.pickerFor = 'citesShown';
+      cites = { picker };
+    }
+    cites.picker.setValue(source.checked ? 'on' : 'off');
   }
 
   // ---- the pictures of a choice made once and kept while another set is made ------------------------------------------------------
@@ -397,7 +416,7 @@
 
   function sync(){
     if(!ready()) return;
-    for(const part of [syncMembership, syncGrade, syncAdult, syncCut, syncDiamond, syncName, syncUnitEmblem, syncUniforms]){
+    for(const part of [syncMembership, syncGrade, syncAdult, syncCut, syncDiamond, syncName, syncUnitEmblem, syncCites, syncUniforms]){
       try{ part(); }catch(error){ console.warn('[profile pickers]', error); }
     }
     sweep();
@@ -409,5 +428,8 @@
   if(shell && typeof MutationObserver === 'function') new MutationObserver(() => sync()).observe(shell, { attributes: true, attributeFilter: ['data-step'] });
   setTimeout(sync, 0);
 
-  window.CAPUBProfilePickers = { sync, syncMembership, syncGrade, syncAdult, syncCut, syncDiamond, syncName, syncUnitEmblem, syncUniforms, dropImage };
+  // What the other pages' pictures use (js/measure-panel.js, js/placement-templates.js, js/citations.js): the engine's pictures made once and kept, a group of tiles that holds the
+  // last pictures while new ones are made, the blank box, and `claim(name)`, which puts a picker's pictures under the guard of an image that does not decode (the name alone).
+  const shared = { maker, slotOf, feed, tilePicture, BLANK, BLANK_TALL, claim: name => { if(!OURS.includes(name)) OURS.push(name); } };
+  window.CAPUBProfilePickers = { sync, syncMembership, syncGrade, syncAdult, syncCut, syncDiamond, syncName, syncUnitEmblem, syncCites, syncUniforms, dropImage, shared };
 })();

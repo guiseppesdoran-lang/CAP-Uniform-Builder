@@ -96,24 +96,29 @@ test('every distance falls in an area; the areas keep their order', async () => 
   for(const a of ['Collar', 'Shoulders', 'Chest', 'Pockets', 'Sleeves', 'Badges', 'Headgear']) assert.ok(seen.has(a), a + ' appears');
 });
 
-test('the panel lists every distance with a checkbox, grouped, with the switch and All and None; no ids show', async () => {
+test('the panel lists every distance with an on/off switch, grouped, with a host for the pair of pictures and All and None; no ids show, no checkbox', async () => {
   const scene = await compose('abu-male-senior-Capt');
   const cat = ML.catalogue(scene);
   const hidden = [cat.entries[0].id];
-  const html = MP.panelHtml(cat, hidden, false);
-  assert.equal((html.match(/<input type="checkbox" data-id=/g) || []).length, cat.entries.length);
-  assert.equal((html.match(/ checked>/g) || []).length, cat.entries.length - 1, 'the hidden one is unchecked');
+  const html = MP.panelHtml(cat, hidden);
+  assert.doesNotMatch(html, /type="checkbox"|<label|<input/, 'no checkbox and no label: a switch is a button');
+  const toggles = html.match(/<button type="button" class="mpToggle"[^>]*>/g) || [];
+  assert.equal(toggles.length, cat.entries.length, 'a switch for each distance');
+  assert.equal(toggles.filter(t => /role="switch" aria-checked="true"/.test(t)).length, cat.entries.length - 1, 'the hidden one is off');
+  assert.equal(toggles.filter(t => /aria-checked="false"/.test(t)).length, 1);
+  for(const e of cat.entries) assert.ok(toggles.some(t => t.includes(`data-id="${MP.esc(e.id)}" `) || t.includes(`data-id="${MP.esc(e.id)}">`)), e.name);
+  for(const t of toggles) assert.match(t, /aria-label="[^"]+, [^"]+"/, 'named by the distance and its value, for assistive technology');
   assert.match(html, new RegExp(`${cat.entries.length - 1} of ${cat.entries.length}`));
-  assert.match(html, /Show regulation references/);
-  assert.doesNotMatch(html, /data-mp="refs" checked/);
-  assert.match(MP.panelHtml(cat, [], true), /data-mp="refs" checked/);
+  assert.match(html, /<div class="mpRefs"><\/div>/, 'the host of the pair of pictures that choose the references');
+  assert.doesNotMatch(html, /data-mp="refs"|Show regulation references/);
   assert.match(html, /data-mp="all">All<\/button><button type="button" class="ghost" data-mp="none">None</);
   for(const g of cat.groups) assert.ok(html.includes(`<legend>${g.area}</legend>`));
   // What a member reads: the text between the tags, never an id.
   const text = html.replace(/<[^>]*>/g, ' ');
   assert.doesNotMatch(text, /measure:|\|/);
   for(const e of cat.entries) assert.ok(text.includes(e.name) && text.includes(e.value));
-  assert.match(MP.panelHtml({ entries: [], groups: [] }, [], false), /draws no measurements/);
+  assert.match(MP.panelHtml({ entries: [], groups: [] }, []), /draws no measurements/);
+  assert.doesNotMatch(MP.panelHtml({ entries: [], groups: [] }, []), /mpRefs/, 'no pictures where there is nothing to choose');
 });
 
 test('the choice is kept per uniform and survives a reload; the switch is off until it is turned on', () => {

@@ -61,7 +61,8 @@ test('every button of the top bar, step bar, preview toolbar, measurement panel 
   assert.match(ui, /btn\.type='button'; btn\.id='themeToggle'/);
   for(const id of ['undoBtn', 'redoBtn', 'zoomOutBtn', 'zoomInBtn', 'zoomFitBtn', 'measureBtn', 'measureListBtn', 'previewCloseBtn']) assert.match(ui, new RegExp(`<button type="button"[^>]*id="${id}"`), id);
   assert.deepEqual(untyped(panel), [], 'measure-panel.js builds no button without a type');
-  assert.equal((panel.match(/<button type="button"/g) || []).length, 3, 'Done, All and None');
+  assert.equal((panel.match(/<button type="button"/g) || []).length, 4, 'Done, All, None and the on/off switch of a distance');
+  assert.doesNotMatch(panel, /<a\b|href=|type="submit"|<form\b|<input\b/, 'nothing in the panel is a link, a submit or a field');
 });
 
 test('the controls sit in no form, and the only form on the page is the access gate, closed before the page starts', () => {

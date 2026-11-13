@@ -1,9 +1,10 @@
 // The measurement panel and the Regulation tab.
 //
 // The Measurements button has a caret attached to it that opens a list beside the preview (it also opens by itself the first time Measurements is turned
-// on in a session); the list names every distance the build draws, by area, each with a checkbox; one that is unchecked is left
-// off the drawing and the rest are laid out again over the room it frees (measure-layout.js filterScene). The choice is kept per uniform in this browser,
-// with the switch that puts each callout's paragraph back on its pill (off by default). The Regulation tab in the Extra step lists the same distances
+// on in a session); the list names every distance the build draws, by area, each with an on/off switch (a button, never a checkbox: a tap on the mark turns the distance
+// on or off); one that is off is left off the drawing and the rest are laid out again over the room it frees (measure-layout.js filterScene). A tap on a row's text opens
+// its paragraph, as its question mark does; on a row with no paragraph it turns the distance on or off. The choice is kept per uniform in this browser, with the pair of
+// pictures that puts each callout's paragraph back on its pill (off by default): the engine's own drawing of one distance, without and with it (js/profile-pictures.js callouts). The Regulation tab in the Extra step lists the same distances
 // with their paragraphs, for a member who asks for them. A tap on a distance (its question mark in the list, or its line or label in the drawing) opens its paragraph in
 // the popover the page's other question marks use (js/citations.js asks noteFor for what to show). Everything here is plain functions over measure-layout.js's catalogue;
 // the page's glue is at the end.
@@ -55,20 +56,25 @@
   }
 
   // ---- markup, as strings (the page sets them as innerHTML; the tests read them) ----
-  // The panel: the references switch, All and None, then each area's distances with a checkbox and the value.
-  function panelHtml(cat, hidden, refs){
+  // The panel: the pair of pictures that choose whether the callouts quote their paragraph (set by the page), All and None, then each area's distances with an on/off
+  // switch, the value, and the question mark.
+  function panelHtml(cat, hidden){
     const off = new Set(hidden || []);
     const total = cat.entries.length, shown = cat.entries.filter(e => !off.has(e.id)).length;
     const head = `<div class="mpHead"><strong id="measurePanelTitle">Measurements shown</strong><span class="mpCount" aria-live="polite">${shown} of ${total}</span><button type="button" class="ghost mpDone" data-mp="close">Done</button></div>`;
-    const sw = `<label class="mpSwitch"><input type="checkbox" data-mp="refs"${refs ? ' checked' : ''}><span>Show regulation references</span></label>`;
+    if(!total) return head + '<p class="mpEmpty hintText">This uniform draws no measurements.</p>';
+    const refs = '<div class="mpRefs"></div>';
     const bulk = `<div class="mpBulk" role="group" aria-label="Show or hide all"><button type="button" class="ghost" data-mp="all">All</button><button type="button" class="ghost" data-mp="none">None</button></div>`;
-    if(!total) return head + sw + '<p class="mpEmpty hintText">This uniform draws no measurements.</p>';
-    // A row is the checkbox's label, and beside it (not inside it) the question mark that opens the distance's paragraph, for a distance that has one.
-    // A row with no paragraph keeps the mark's room empty, so the values of all the rows line up.
+    // A row: the switch (a button that is on or off, named by the distance and its value), the text (the name, its count, the value: a tap opens the paragraph the distance
+    // has, by the page's own handler, js/citations.js) and beside it, not inside it, the question mark that opens the same paragraph, for a distance that has one.
+    // A row with no paragraph keeps the mark's room empty, so the values of all the rows line up. The text is for the eye and the hand; the switch carries its words for assistive technology.
     const mark = e => noteOf(e) ? `<span class="citeBtn citeMeasure" role="button" tabindex="0" aria-expanded="false" aria-label="Regulation reference: ${esc(e.name)}, ${esc(e.value)}" data-cite-measure="${esc(e.id)}"></span>` : '<span class="mpNoMark" aria-hidden="true"></span>';
-    const groups = cat.groups.map(g => `<fieldset class="mpGroup"><legend>${esc(g.area)}</legend>` + g.entries.map(e =>
-      `<div class="mpRow"><label class="mpPick"><input type="checkbox" data-id="${esc(e.id)}"${off.has(e.id) ? '' : ' checked'}><span class="mpName">${esc(e.name)}${e.count > 1 ? ` <span class="mpTimes">(${e.count})</span>` : ''}</span><span class="mpVal">${esc(e.value)}</span></label>${mark(e)}</div>`).join('') + '</fieldset>').join('');
-    return head + sw + bulk + `<div class="mpList">${groups}</div>`;
+    const row = e => `<div class="mpRow">`
+      + `<button type="button" class="mpToggle" role="switch" aria-checked="${off.has(e.id) ? 'false' : 'true'}" aria-label="${esc(e.name)}, ${esc(e.value)}" data-id="${esc(e.id)}"><span class="mpMark" aria-hidden="true"></span></button>`
+      + `<span class="mpText"${noteOf(e) ? ` data-cite-measure="${esc(e.id)}"` : ''} aria-hidden="true"><span class="mpName">${esc(e.name)}${e.count > 1 ? ` <span class="mpTimes">(${e.count})</span>` : ''}</span><span class="mpVal">${esc(e.value)}</span></span>`
+      + mark(e) + `</div>`;
+    const groups = cat.groups.map(g => `<fieldset class="mpGroup"><legend>${esc(g.area)}</legend>` + g.entries.map(row).join('') + '</fieldset>').join('');
+    return head + refs + bulk + `<div class="mpList">${groups}</div>`;
   }
 
   // The Regulation tab: a table by area of the rule, its value and its paragraph (CAPR 39-1, and the ICL where the engine cites one).
@@ -95,15 +101,41 @@
   // The note of the distance with this id on the build now drawn (null when there is none or no paragraph states it).
   const noteFor = id => { const cat = currentCatalogue(); return cat ? noteOf(cat.entries.find(e => e.id === id)) : null; };
 
+  // The pair of pictures of the callout, without and with its paragraph on the pill, in the panel's .mpRefs: the picture picker over the choice kept in prefs. It is made when the
+  // panel is first filled (the panel's html is replaced when the distances change, and then the host is new and the group is made again); the pictures are the engine's
+  // (js/profile-pickers.js shared), made once for the uniform and kept; one that cannot be made is the name alone; none where the uniform draws no distance with a paragraph.
+  let refsSlot = null;
+  function mountRefs(panel){
+    const host = panel.querySelector('.mpRefs');
+    if(!host){ refsSlot = null; return; }
+    const pp = window.CAPUBProfilePickers, sh = pp && pp.shared;
+    if(!sh || !window.VisualPicker){ host.hidden = true; return; }
+    const on = prefs.refs();
+    if(!refsSlot || refsSlot.host !== host){
+      sh.claim('measureRefs');
+      const optionsOf = urls => urls.off === false ? [] : [['off', 'Distance only'], ['on', 'With the paragraph']].map(([value, label]) => ({ value, label, picture: sh.tilePicture(urls, value, sh.BLANK) }));
+      const picker = window.VisualPicker.render(host, { name: 'measureRefs', legend: 'On the drawing', options: optionsOf({}), value: on ? 'on' : 'off', size: 'large',
+        onChange: value => { prefs.setRefs(value === 'on'); rerender(); } });
+      picker.el.dataset.pickerFor = 'measureRefs';
+      refsSlot = sh.slotOf(picker, ['off', 'on'], optionsOf);
+      refsSlot.host = host;
+      const base = refsSlot.optionsOf;
+      refsSlot.optionsOf = urls => { const list = base(urls); host.hidden = urls.off === false; return list; };
+    }
+    refsSlot.picker.setValue(on ? 'on' : 'off');
+    sh.feed(refsSlot, sh.maker().callouts());
+  }
   function fillPanel(){
     const panel = by('measurePanel'); if(!panel) return;
     const cat = currentCatalogue() || { entries: [], groups: [] };
     const top = panel.querySelector('.mpList'), scroll = top ? top.scrollTop : 0;
-    // The same list is left as it is: a redraw after every change would replace the checkbox a finger is on.
-    const html = panelHtml(cat, prefs.hidden(uniformId()), prefs.refs());
-    if(panel.dataset.shown === html) return;
-    panel.dataset.shown = html; panel.innerHTML = html;
-    const list = panel.querySelector('.mpList'); if(list) list.scrollTop = scroll;
+    // The same list is left as it is: a redraw after every change would replace the switch a finger is on.
+    const html = panelHtml(cat, prefs.hidden(uniformId()));
+    if(panel.dataset.shown !== html){
+      panel.dataset.shown = html; panel.innerHTML = html;
+      const list = panel.querySelector('.mpList'); if(list) list.scrollTop = scroll;
+    }
+    try{ mountRefs(panel); }catch(error){ console.warn('[measurements]', error); }
   }
   function fillRegulation(){
     const host = by('regulationBody'); if(!host) return;
@@ -123,9 +155,33 @@
       panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-labelledby', 'measurePanelTitle');
       toolbar.appendChild(panel);
       btn.addEventListener('click', e => { e.stopPropagation(); setOpen(by('measurePanel').hidden); });
+      // Turns one distance on or off, in place: the switch, the count and the drawing, and the panel is left as it is (a redraw of the list would replace the switch a finger is on).
+      function flip(sw){
+        const u = uniformId(), id = sw.getAttribute('data-id'); if(id == null) return;
+        const on = sw.getAttribute('aria-checked') !== 'true';
+        const hidden = prefs.hidden(u).filter(x => x !== id);
+        if(!on) hidden.push(id);
+        prefs.setHidden(u, hidden);
+        sw.setAttribute('aria-checked', String(on));
+        const count = panel.querySelector('.mpCount'), cat = currentCatalogue();
+        if(count && cat){ const off = new Set(hidden); count.textContent = `${cat.entries.filter(x => !off.has(x.id)).length} of ${cat.entries.length}`; }
+        if(cat) panel.dataset.shown = panelHtml(cat, hidden);
+        rerender();
+      }
       panel.addEventListener('click', e => {
         e.stopPropagation();
-        const t = e.target.closest ? e.target.closest('[data-mp]') : null; if(!t) return;
+        const near = sel => (e.target && e.target.closest ? e.target.closest(sel) : null);
+        const sw = near('.mpToggle');
+        if(sw){ flip(sw); return; }
+        // The text of a row that has a paragraph is the page's mark (js/citations.js takes that press first); the text of one that has none turns the distance on or off.
+        const text = near('.mpText');
+        if(text){
+          if(text.getAttribute('data-cite-measure') !== null) return;
+          const row = text.closest ? text.closest('.mpRow') : null, own = row && row.querySelector('.mpToggle');
+          if(own) flip(own);
+          return;
+        }
+        const t = near('[data-mp]'); if(!t) return;
         const act = t.getAttribute('data-mp'), u = uniformId();
         if(act === 'close'){ setOpen(false); btn.focus(); return; }
         const cat = currentCatalogue(); if(!cat) return;
@@ -133,18 +189,6 @@
         else if(act === 'none') prefs.setHidden(u, prefs.hidden(u).concat(cat.entries.map(x => x.id)));
         else return;
         fillPanel(); rerender();
-      });
-      panel.addEventListener('change', e => {
-        const t = e.target, u = uniformId();
-        if(t.getAttribute('data-mp') === 'refs'){ prefs.setRefs(t.checked); const c = currentCatalogue(); if(c) panel.dataset.shown = panelHtml(c, prefs.hidden(u), prefs.refs()); rerender(); return; }
-        const id = t.getAttribute('data-id'); if(id == null) return;
-        const hidden = prefs.hidden(u).filter(x => x !== id);
-        if(!t.checked) hidden.push(id);
-        prefs.setHidden(u, hidden);
-        const count = panel.querySelector('.mpCount'), cat = currentCatalogue();
-        if(count && cat){ const off = new Set(hidden); count.textContent = `${cat.entries.filter(x => !off.has(x.id)).length} of ${cat.entries.length}`; }
-        if(cat) panel.dataset.shown = panelHtml(cat, hidden, prefs.refs());
-        rerender();
       });
       // A press inside the paragraph's popover (it sits on the page, not in the panel) leaves the panel as it is.
       document.addEventListener('click', e => { const p = by('measurePanel'); if(p && !p.hidden && !p.contains(e.target) && !(e.target.closest && e.target.closest('.measureGroup, .citePop'))) setOpen(false); });

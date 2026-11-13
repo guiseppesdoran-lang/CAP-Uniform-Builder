@@ -675,18 +675,27 @@ header h1::after{
 .mpHead strong{flex:1 1 auto;font-family:var(--font-head);font-size:var(--t-md)}
 .mpCount{font-size:var(--t-sm);color:var(--muted)}
 .mpHead .mpDone{width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
-.mpSwitch,.mpPick{display:flex;align-items:center;gap:var(--s2);margin:0;font-size:var(--t-sm);font-weight:400;color:var(--ink);cursor:pointer}
-.mpSwitch input,.mpPick input{flex:0 0 auto;width:18px;height:18px;margin:0}
 .mpBulk{display:flex;gap:var(--s2)}
 .mpBulk button{width:auto;min-height:34px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
 .mpList{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:var(--s1)}
 .mpGroup{margin:0 0 var(--s2);padding:0;border:0;min-width:0}
 .mpGroup legend{padding:0;margin:0 0 2px;font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
-/* A row of the list: the checkbox's label, which takes the room, and the question mark that opens the distance's paragraph (js/citations.js) beside it, not inside it. */
-.mpRow{display:flex;align-items:center;gap:var(--s2);min-height:32px;padding:2px 0;border-bottom:1px solid var(--line)}
-.mpPick{flex:1 1 auto;min-width:0;align-self:stretch}
+/* A row of the list: the on/off switch (a button: the track with its round knob, and a tick on the knob when it is on, so it is not told by colour alone), the text, which takes
+   the room (a tap opens the distance's paragraph, js/citations.js), and the question mark that opens the same paragraph beside it, not inside it. */
+.mpRow{display:flex;align-items:center;gap:var(--s2);min-height:40px;padding:2px 0;border-bottom:1px solid var(--line)}
+.mpToggle{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:48px;min-height:36px;margin:0;padding:0;background:transparent;border:0;border-radius:var(--r);cursor:pointer}
+.mpMark{position:relative;display:block;box-sizing:border-box;width:38px;height:22px;border:2px solid var(--line-strong);border-radius:999px;background:var(--panel-2)}
+.mpMark::before{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--line-strong)}
+.mpToggle[aria-checked="true"] .mpMark{background:var(--select-line);border-color:var(--select-line)}
+.mpToggle[aria-checked="true"] .mpMark::before{left:16px;background:var(--panel)}
+.mpToggle[aria-checked="true"] .mpMark::after{content:"";position:absolute;top:3px;left:21px;width:3px;height:7px;border:solid var(--select-line);border-width:0 2px 2px 0;transform:rotate(45deg);box-sizing:content-box}
+.mpToggle:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.mpText{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;gap:var(--s2);font-size:var(--t-sm);color:var(--ink);cursor:pointer}
 .mpRow .citeBtn,.mpNoMark{flex:0 0 16px;width:16px;height:16px;margin-left:var(--s2)}
 .mpName{flex:1 1 auto;min-width:0;line-height:1.2}
+.mpRefs{margin:0}
+.mpRefs[hidden]{display:none}
+.mpRefs .vpLegend{margin:0 0 var(--s1);font-size:var(--t-xs)}
 .mpTimes{color:var(--muted)}
 .mpVal{flex:0 0 auto;font-weight:700;white-space:nowrap}
 .mpEmpty{margin:0}
@@ -1132,7 +1141,7 @@ header h1::after{
   .mpHead .mpDone{min-height:44px}
   .mpBulk button{min-height:44px}
   .mpRow{min-height:44px}
-  .mpSwitch{min-height:44px}
+  .mpToggle{min-height:44px}
 
   /* The steps. */
   .uniformGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1504,7 +1513,6 @@ html[data-access="guest"] #accessGate{display:none}
 .uniformSvg g.measure{cursor:pointer}
 .uniformSvg [data-cite-measure]:focus{outline:none}
 .uniformSvg rect[data-cite-measure]:focus-visible{stroke:var(--cap-red);stroke-width:3px;vector-effect:non-scaling-stroke}
-#citationsPanel .mpSwitch{min-height:44px}
 #citationsPanel .hintText{margin-top:0}
 .citeTable{margin-top:var(--s3)}
 .citeTable tbody th[scope="row"]{color:var(--muted)}

@@ -82,7 +82,8 @@ test('the page: the script, the switch and the list in the Regulation tab, the m
   const html = read('index.html'), css = read('styles/app.css'), js = read('js/citations.js');
   assert.match(html, /<script src="js\/citations\.js[^"]*" defer><\/script>/);
   const tab = html.slice(html.indexOf('id="extraPanel-regulation"'));
-  assert.match(tab, /<label class="mpSwitch"><input type="checkbox" id="citesShown"><span>[^<]+<\/span><\/label>/);
+  // The switch is a pair of pictures (js/profile-pickers.js syncCites); the box stays in the page, hidden, as its source of truth.
+  assert.match(tab, /<input type="checkbox" id="citesShown" class="segmentedSource" tabindex="-1" aria-hidden="true">\s*<div id="citesShownPicker"><\/div>/);
   assert.ok(tab.indexOf('id="citesShown"') < tab.indexOf('id="regulationNotes"') && tab.indexOf('id="regulationNotes"') < tab.indexOf('id="regulationBody"'));
   // A reference is hidden until its text is opened or the switch is on; the switch takes the marks away.
   assert.ok(css.includes(':root:not([data-cites="shown"]) .citeRef{display:none}'));
