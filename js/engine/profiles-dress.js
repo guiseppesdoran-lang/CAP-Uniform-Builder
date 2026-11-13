@@ -896,7 +896,7 @@
 
   // EDGE_ON_THICK is the 0.4 in strip the sheets' own edge-on overlays drew (their size_basis), over the outer 82% of the strap landmark; it is the
   // strap rectangle's half-width in strapFrames and the fallback thickness of epauletEdgeGrades. The strips the engine draws (the Class A
-  // boards (BOARD_STRIP_THICK), the shirts' sleeves (epauletStrips: 0.5 in, or what the sheet states) and the officers' Class A overlay strip the thickness its sheet states (about 0.46 in): the grade on any of them
+  // boards (boardWorn), the shirts' sleeves (epauletStrips: 0.5 in, or what the sheet states) and the officers' Class A overlay strip the thickness its sheet states (about 0.46 in): the grade on any of them
   // is squeezed to that strip's thickness less 0.08 in (gradeOnStrap), and sits 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1),
   // the same place the sleeve's own grade is drawn.
   const EDGE_ON_THICK = 0.4;
@@ -947,7 +947,7 @@
     // place among the art's lettering and stripes (LIVE11-2: unsqueezed it ran over the CAP).
     const along = o.along > 0 && o.along < 1 ? o.along : 1;
     const acr = quarter ? gs.h : gs.w, alo = (quarter ? gs.w : gs.h) * along;
-    // `squeeze`: the factor across the strap when the strip states one (the Class A boards, BOARD_GRADE_ROW); else the piece is squeezed to fit `across`, never enlarged.
+    // `squeeze`: the factor across the strap when the caller states one; else the piece is squeezed to fit `across`, never enlarged.
     const squeeze = o.squeeze > 0 ? o.squeeze : Math.min(1, across / acr);
     // `centerFromEnd`: the piece's centre this far from the strap's outer end (the Class A boards, where it is the
     // top view's rank slot distance from the board's outer end); else the piece's outer edge is 5/8 in from the end,
@@ -968,27 +968,17 @@
   // draw when it is not the sleeve's own (the Class A boards' regular-size metal grade).
   // `strip` ({ thick, drop }): the strip's thickness and how far its centre line lies below the strap axis (the boards, drawn
   // thicker than the strap with their upper edge kept on the strap's); the grade is squeezed to that thickness and kept on its centre.
-  // `strip.row`: the grade is drawn as the guidance figures draw it on a board (BOARD_GRADE_ROW): its row's centre line a fixed way down the strip, the row squeezed
-  // across by one factor for every grade, and cut to the strip's own outline, so the part of it that lies over the shoulder's ridge is not drawn.
   async function epauletEdgeGrades(ctx, g, frames, gradeId, centerFromEnd, strip){
-    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, dropOf = (strip && strip.drop) || 0, z = strip && strip.z, row = strip && strip.row;
+    const thick = (strip && strip.thick) || EDGE_ON_THICK, along = strip && strip.along, dropOf = (strip && strip.drop) || 0, z = strip && strip.z;
     for(const side of ['right', 'left']){
-      const drop = (typeof dropOf === 'function' ? dropOf(side) : dropOf) - (row ? (0.5 - BOARD_GRADE_ROW) * thick : 0);
+      const drop = typeof dropOf === 'function' ? dropOf(side) : dropOf;
       const f = (frames && frames[side]) || H.epauletFrame(ctx, side);
       const mid = frames ? f && f.outer : ctx.point(`rank_slot_${side}_center`);
       if(!f || !mid) continue;
       // Slide from the strip's centre back along the strap axis to the plane of the outer end.
       const back = (f.outer.x - mid.x) * f.axis.x + (f.outer.y - mid.y) * f.axis.y;
       const end = { x: mid.x + f.axis.x * back - f.normal.x * drop, y: mid.y + f.axis.y * back - f.normal.y * drop };
-      const layer = await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, along, squeeze: row ? BOARD_GRADE_SPAN * thick / GRADE_ROW_TWO : 0, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
-      const edge = row && layer && ctx.layers.find(l => l.key === 'epaulet:' + side);
-      if(edge && edge.clip){
-        layer.clip = edge.clip;
-        // The measurements keep off what shows of it, not off its whole box, much of which lies over the ridge and is not drawn: the box's corners cut to the strip's outline.
-        const q = [[layer.x, layer.y], [layer.x + layer.w, layer.y], [layer.x + layer.w, layer.y + layer.h], [layer.x, layer.y + layer.h]].map(([x, y]) => core.rotatePoint({ x, y }, layer.origin || { x: layer.x, y: layer.y }, layer.rotate || 0));
-        const seen = clipToConvex(q, edge.clip);
-        if(seen.length > 2){ const xs = seen.map(v => v.x), ys = seen.map(v => v.y); layer.obstacle = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }; }
-      }
+      await gradeOnStrap(ctx, g, side, end, f.axis, f.deg, thick - 0.08, { id: gradeId, z, along, centerFromEnd: centerFromEnd ? centerFromEnd[side] : null, title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
     }
   }
 
@@ -1776,31 +1766,37 @@
     await boardStrips(ctx, sex, frames, overlay);
   }
 
-  // The edge-on board (the lower copy) is the shoulder board of the view from above seen from the front: the whole board, its
-  // outer end on the strap's outer end and its pointed neck end (the peak, with the button) running on past the strap's neck end
-  // toward the collar at true length, so the CAP crest, the peak and the button are all on the strip as on the view from above
-  // (Ethan, live site: 'there should be a cap logo here', 'the shoulder boards on the uniform are missing the triangle part, and
-  // it's looking a little flat'; R7). It is foreshortened across the strap only (a flat board tilted toward the viewer, the
-  // top view squeezed by BOARD_STRIP_THICK / its width), its upper edge kept where the strap's is, so the strip grows downward,
-  // over the top of the shoulder cord. Its outline is the top view's own, the corners rounded (boardPlan): the point of the neck end
-  // narrows to the middle of the strip from both edges, as the point of a flat board does. The coat overlay's own strip drawing (a
-  // separate drawing from the product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board
-  // is drawn. Neither sheet has a crest group of its own, so the whole board is used (FOLLOWUPS: art to give the sheets one).
-  // How thick the board shows from the front, in inches across the strap (the board is 2.3 in wide): measured on the figures that
-  // draw it worn, the Honor Guard guidance figures' four boards (1.03 in by the board's own stripes' scale: 51 px against 49.7 px
-  // to the inch) and CAPR 39-1 Fig 4.6's two (0.23 of the board's length, 1.05 in); every one a constant-width strip. It was 0.5 in
-  // (a guess: at the strap's 0.32 in the peak was a sliver) and read as a flat plank.
-  const BOARD_STRIP_THICK = 1.05;
-  H.BOARD_STRIP_THICK = BOARD_STRIP_THICK;
-  // Where the grade sits on the board strip, measured on the six boards of the Honor Guard guidance's two Class A figures and CAPR 39-1 Fig 4.6 (the cadet first lieutenant's two discs, worn on the board;
-  // the strip fitted in its own frame, the discs read as grey blobs), as fractions of the strip's thickness: the discs' row centre line lies 0.28 to 0.31 below the upper edge (0.285, 0.276, 0.29 and 0.297 on
-  // the four guidance boards, 0.276 and 0.307 on Fig 4.6's two; 0.29 on average); the back disc is cut by the upper edge, 39 to 47 % of it showing; the front disc lies whole, its lower rim 0.11 to 0.17 above
-  // the lower edge; the two discs together span 1.09 (guidance) to 1.17 (Fig 4.6), 1.12 on average, a disc being 0.50 of the thickness and a circle. The grade is the board's row across it (the sheets'
-  // 1 1/2 in for two forms, GRADE_ROW_TWO), so every grade takes the one squeeze across that makes a two-form row 1.12 of the thickness, and its row's centre line is put 0.29 down: the back form passes over
-  // the ridge and is cut off by the strip's upper edge, the front one is close to the lower edge (the owner, 2026-11-12: "the shoulder boards dont look rounded ... have the insignia almost hanging off
-  // the other side. look again at the honor guard uniform guidance").
-  const BOARD_GRADE_ROW = 0.29, BOARD_GRADE_SPAN = 1.12, GRADE_ROW_TWO = 1.5;
-  H.BOARD_GRADE_ROW = BOARD_GRADE_ROW; H.BOARD_GRADE_SPAN = BOARD_GRADE_SPAN; H.GRADE_ROW_TWO = GRADE_ROW_TWO;
+  // The edge-on board (the lower copy) is the shoulder board of the view from above seen from the front, worn: the whole board, its outer end on the strap's outer end and its pointed neck end
+  // (the peak, with the button) running on past the strap's neck end toward the collar at true length, so the CAP crest, the peak and the button are all on the strip as on the view from above
+  // (Ethan, live site: 'there should be a cap logo here', 'the shoulder boards on the uniform are missing the triangle part, and it's looking a little flat'; R7). It is not a flat strip: it lies
+  // over the ridge of the shoulder, so what shows is the front half of its top (from the ridge, the strip's upper edge, to the board's front edge) squeezed across by the camera's low angle, and
+  // under it the face of the front edge (boardWorn). Its outline is the top view's own, the corners rounded (boardPlan). The coat overlay's own strip drawing (a separate drawing from the
+  // product photo whose blue field lay 0.4 in nearer the arm than the board's) is hidden where the board is drawn. Neither sheet has a crest group of its own, so the whole board is used.
+  // (The owner, 2026-11-12: "the shoulder boards dont look right. research more about what the shoulder boards look like irl, and then implement.")
+  // Measured on photographs of the real board worn, as fractions of the board's visible length: an official photograph of a cadet colonel, straight on from the front at the shoulders' height, its
+  // strap rectified to lie level (456 px from the outer end to the point): the top face 36.5 px (0.080) over the body, 39.5 px (0.087) toward the outer end, its front face 12 px (0.026), the two
+  // together 48.5 px (0.106); a second front view of a cadet colonel, 0.095; two portraits taken from higher up, 0.19 and 0.27. BOARD_TOP and BOARD_FRONT are the straight-on photograph's: the front
+  // elevation, as the drawing is. The far edge is straight (the outer 150 px dip 5 px, 0.012 of the length) and the board's outer corners are rounded; the point ends near the far edge line, its
+  // button on that line. (The real board is longer than the sheets' 4.55 in: CAPR 39-1 gives the male officer's 5 1/2 in by 2 1/4 in, and the photograph's diamonds, 1.25 in long, are 0.22 of its length. On
+  // the sheets' board the point stops about 0.7 in short of the collar's edge; a longer sheet needs no change here, the board's size is read from it.) The board's centre line, where its crest and the row of its grade lie, is BOARD_RIDGE of the top face's thickness below the far edge (0.32 by the photograph's
+  // two diamonds, 0.29 and 0.30 by the six boards the guidance's figures and Fig 4.6 draw): the top shows from 0.49 in behind the centre line to the front edge. The grade stands up off the
+  // board, so each of its forms is squeezed across less than the surface: a diamond measures 0.61 of the top face across in the photograph, the surface's own squeeze would give 0.46: 1.3 times
+  // (BOARD_STAND), 0.59 of the top face.
+  const BOARD_TOP = 0.080, BOARD_FRONT = 0.026, BOARD_RIDGE = 0.30, BOARD_STAND = 1.30;
+  function boardWorn(len, wid){
+    const top = BOARD_TOP * len, face = BOARD_FRONT * len, ridge = BOARD_RIDGE * top, k = (top - ridge) / (wid / 2);
+    return { top, face, total: top + face, ridge, k, stand: BOARD_STAND * k, behind: ridge / k };
+  }
+  // The forms of a grade (a disc or a diamond each, one to three) stand on the board in a row across it, 0.75 in apart on the surface and 0.75 in wide each. Their places are foreshortened as the surface is (the pitch
+  // by k) and each form is squeezed by `stand` only, so the forms overlap and the ones behind rise above the front one, the back one crossing the far edge (the photograph of a colonel's board: the front diamond lies whole
+  // near the front edge, the middle one reaches the far edge, the third is a sliver above it, 0.2 of the top face high: 0.19 to 0.23 on the two crops). What lies further back than BOARD_CROSS of the top face above the far
+  // edge is behind the ridge and is not seen: the pieces are cut by that line. The front form stays on the top face, BOARD_FRONT_MARGIN of the top face short of its front edge (as the two-form rows of the guidance
+  // figures lie); a row of one or two forms is centred on the board's centre line, a row of three is wider and moves back as far as that takes.
+  const BOARD_CROSS = 0.20, BOARD_FRONT_MARGIN = 0.11;
+  // How far the row's centre lies below the board's centre line (zero or less), inches, for a row of `count` forms `pitch` in apart (on the surface) and `ew` in wide.
+  const boardRowAt = (worn, count, pitch, ew) => Math.min(0, worn.top - worn.ridge - BOARD_FRONT_MARGIN * worn.top - ew * worn.stand / 2 - (count - 1) / 2 * pitch * worn.k);
+  H.boardRowAt = boardRowAt; H.BOARD_FRONT_MARGIN = BOARD_FRONT_MARGIN;
+  H.boardWorn = boardWorn; H.BOARD_TOP = BOARD_TOP; H.BOARD_FRONT = BOARD_FRONT; H.BOARD_RIDGE = BOARD_RIDGE; H.BOARD_STAND = BOARD_STAND; H.BOARD_CROSS = BOARD_CROSS;
   // The strip lies along the shoulder seam with its UPPER edge on the coat's own upper outline, the outer edge of its stroke, so the whole board is on the coat and no coat shows above it.
   // Ethan, 2 November 2026: "the shoulder boards on class a's should always match the shoulder seam"; that put the strip's axis ON the seam, its thickness half on each side, and the upper half stood over
   // the page above the shoulder, the outer end hanging over the corner of the sleeve. Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating" (a strip of background between the board
@@ -1843,8 +1839,8 @@
     return { shift: Math.round(shift * 1000) / 1000, bends: shift - COAT_STROKE_HALF > BOARD_BEND_MIN };
   }
   H.boardEdgeShift = boardEdgeShift;
-  // How far the strip's centre line lies below the seam: half its thickness less the shift of its upper edge.
-  const boardDrop = (coatId, side) => { const e = boardEdgeShift(coatId, side); return BOARD_STRIP_THICK / 2 - (e ? e.shift : COAT_STROKE_HALF); };
+  // How far the board's centre line lies below the seam: its ridge's depth below the far edge, less the shift of the far edge (the half stroke on the men's coats).
+  const boardDrop = (coatId, side, worn) => { const e = boardEdgeShift(coatId, side); return worn.ridge - (e ? e.shift : COAT_STROKE_HALF); };
   // The coat's drawn outline as a polygon in sheet inches: the table's ring grown by the half stroke (and a hair, so the cover is not shaved), each vertex moved out along the bisector of its two edges' normals.
   function growRing(ring, grow){
     const pts = ring.map(([x, y]) => ({ x, y })), n = pts.length;
@@ -1882,8 +1878,7 @@
   // The regulation's figure (A5-6) draws all of them sharp.
   const BOARD_ROUND = { outer: 0.32, shoulder: 0.115, apex: 0.115 };
   const BOARD_STROKE_HALF = 0.015;   // the board sheets' outline stroke is 0.03 in wide; the cut keeps its outer half
-  const BOARD_CORNER_CLEAR = 0.102;   // no vertex of the strip's outline within this of the lower outer corner (CORD_CORNER_SNAP, 0.1 in, is the cord's snap; boardStrips)
-  H.BOARD_CORNER_CLEAR = BOARD_CORNER_CLEAR;
+  const BOARD_FACE_ART = 0.06, BOARD_EDGE_LINE = 0.025;   // the depth of the sheet's front-most strip that the face stretches, and the light line along the face's top edge, inches
   // A convex polygon (points { x, y }) with each corner cut to a circle of the given radius, the arc sampled in `steps` points.
   function roundPolygon(pts, radii, steps){
     const out = [];
@@ -1907,6 +1902,40 @@
     return roundPolygon([{ x: 0, y: 0 }, { x: straight, y: 0 }, { x: len, y: wid / 2 }, { x: straight, y: wid }, { x: 0, y: wid }], [R.outer, R.shoulder, R.apex, R.shoulder, R.outer], 24);
   }
   H.boardPlan = boardPlan;
+  // The grade on the board worn: one piece for each form of the grade (the sheet's element_<i>_center anchors, each form's column of the sheet cut out), each squeezed across by `stand` about its own centre and set
+  // down `pitch * k` apart across the board, the back one first so the front ones overlap it; every piece is cut to the near side of the line BOARD_CROSS of the top face above the board's far edge (see BOARD_CROSS).
+  // Its key is `grade:edge-<side>` for the front form and `grade:edge-<side>:<n>` for the ones behind it, n counting back. `fromEnd[side]` is the forms' distance along the board from its outer end.
+  async function boardGrades(ctx, frames, gradeId, fromEnd, worn, z){
+    if(!gradeId || !ctx.has(gradeId)) return;
+    const gs = await ctx.spec(gradeId), dim = (gs.raw && gs.raw.dimensions) || {}, count = dim.count || 1, pitch = dim.centre_pitch_in || gs.w / count, ew = dim.element_w_in || gs.w / count, eh = dim.element_h_in || gs.h;
+    const row = boardRowAt(worn, count, pitch, ew);
+    for(const side of ['right', 'left']){
+      const f = frames && frames[side];
+      if(!f || !fromEnd || fromEnd[side] == null) continue;
+      // `d` is how far below the strap's seam a point is, `u` how far along it from the outer end
+      const front = { x: -f.normal.x, y: -f.normal.y }, at = (u, d) => ({ x: f.outer.x + f.axis.x * u + front.x * d, y: f.outer.y + f.axis.y * u + front.y * d });
+      const e = boardEdgeShift(ctx.base.id, side), lift = e ? e.shift : COAT_STROKE_HALF, centre = boardDrop(ctx.base.id, side, worn);
+      const cutAt = -lift - BOARD_CROSS * worn.top, window = [at(-6, cutAt), at(12, cutAt), at(12, cutAt + 8), at(-6, cutAt + 8)];
+      // the art's x is the row's direction: across the strap, turned by the frame's angle
+      const rot = f.deg, across = { x: Math.cos(rot * Math.PI / 180), y: Math.sin(rot * Math.PI / 180) }, sign = across.x * front.x + across.y * front.y >= 0 ? 1 : -1;
+      const hw = ew * worn.stand / 2;
+      for(let i = 0; i < count; i++){
+        const place = (i - (count - 1) / 2) * sign;               // toward the front: the front form has the largest
+        const nth = Math.round((count - 1) / 2 - place);          // 0 = the front form, count - 1 = the back one
+        const d = centre + row + place * pitch * worn.k, P = at(fromEnd[side], d);
+        const column = [[1, 1], [1, -1], [-1, -1], [-1, 1]].map(([a, b]) => ({ x: P.x + across.x * hw * a + f.axis.x * 1.2 * b, y: P.y + across.y * hw * a + f.axis.y * 1.2 * b }));
+        const shape = [[1, 1], [1, -1], [-1, -1], [-1, 1]].map(([a, b]) => ({ x: P.x + across.x * hw * a + f.axis.x * eh / 2 * b, y: P.y + across.y * hw * a + f.axis.y * eh / 2 * b }));
+        const layer = await ctx.place(gradeId, { pieceAnchor: `element_${i}_center`, at: P, rotate: rot, scale: 1, scaleX: worn.stand, z: z - 0.002 * nth, role: 'grade', key: nth === 0 ? `grade:edge-${side}` : `grade:edge-${side}:${nth}`,
+          title: `${side === 'right' ? 'Right' : 'Left'} epaulet grade, edge-on` });
+        if(!layer) continue;
+        layer.clip = clipToConvex(column, window);
+        // the measurements keep off what shows of it: the form's own box cut to the window
+        const seen = clipToConvex(shape, window);
+        if(seen.length > 2){ const xs = seen.map(v => v.x), ys = seen.map(v => v.y); layer.obstacle = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }; }
+      }
+    }
+  }
+
   // The board's neck end runs on past the strap's, toward the neck, where the coat's collar leaf (the lapel foreground, Z.badge + 0.5)
   // would cover the peak and the button: the board is drawn over it, and the cord stays under (Z.cord).
   const BOARD_STRIP_Z = LAPEL_Z + 0.1;
@@ -1919,25 +1948,35 @@
       const board = core.landmarkBounds(s, 'board'), outer = core.anchor(s, 'board_outer_end'), button = core.anchor(s, 'button_end_center');
       if(!board || !outer || !button) continue;
       const rot = Math.round((Math.atan2(f.axis.y, f.axis.x) - Math.atan2(button.y - outer.y, button.x - outer.x)) * 18000 / Math.PI) / 100;
-      const k = BOARD_STRIP_THICK / board.h;
-      const coatId = ctx.base.id, edge = boardEdgeShift(coatId, side), drop = boardDrop(coatId, side);
+      const worn = boardWorn(board.w, board.h), k = worn.k;
+      const coatId = ctx.base.id, edge = boardEdgeShift(coatId, side), drop = boardDrop(coatId, side, worn), lift = edge ? edge.shift : COAT_STROKE_HALF;
+      // The far edge lies on the coat's own outline (lift out from the seam); the board's centre line, the sheet's own centre row, lies worn.ridge below it, so the piece is anchored there.
       const at = { x: f.outer.x - f.normal.x * drop, y: f.outer.y - f.normal.y * drop };
       // The drawn outline the board is cut to where the shoulder line bends under its edge (the women's coats): the outline grown by the half stroke, so the stroke is covered and nothing of the board stands over the page.
       const boundary = edge && edge.bends ? growRing(GARMENT_TOP[coatId], COAT_STROKE_HALF + 0.002) : null;
-      // The board sheet squeezed across the strap, cut to its own outline (the point and the rounded corners; the stroke's half width, 0.015 in across the sheet, is kept) and, where the shoulder line bends, to the coat's.
-      const dn = { x: -f.normal.x, y: -f.normal.y }, lift = edge ? edge.shift : COAT_STROKE_HALF;
+      const dn = { x: -f.normal.x, y: -f.normal.y };
       const edgeAt = (u, v) => ({ x: f.outer.x + f.normal.x * lift + f.axis.x * u + dn.x * v, y: f.outer.y + f.normal.y * lift + f.axis.y * u + dn.y * v });
-      const shape = growRing(boardPlan(board.w, board.h, BOARD_PEAK).map(q => [q.x, k * q.y]), BOARD_STROKE_HALF * k);
-      // The shoulder cord's top edge is snapped to the vertex of this outline nearest the board's lower outer corner when one lies within CORD_CORNER_SNAP (0.1 in) of it (cordTopEdge). The rounded corner has
-      // none that near once the arc's few vertices there are dropped (the chord that replaces them is within 0.002 in of the arc), so the cord stays flush with the line of the board's end edge.
-      const corner = edgeAt(0, BOARD_STRIP_THICK);
-      const outline = shape.map(q => edgeAt(q.x, q.y)).filter(q => Math.hypot(q.x - corner.x, q.y - corner.y) > BOARD_CORNER_CLEAR);
+      // The board's plan (the sharp sides and point of the sheet, the corners rounded) in the strip's frame, u along the strap from the outer end and v down from the far edge: the surface squeezed
+      // across by k about the centre line. The top is what lies below the far edge; the face is the band under the front half's boundary, the board's front edge seen from the front.
+      const plan = boardPlan(board.w, board.h, BOARD_PEAK).map(q => ({ x: q.x, y: worn.ridge + k * (q.y - board.h / 2) }));
+      const top = clipToConvex(plan, [{ x: -5, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 5 }, { x: -5, y: 5 }]);
+      const outline = growRing(top.map(q => [q.x, q.y]), BOARD_STROKE_HALF * k).map(q => edgeAt(q.x, q.y));
       const title = `${side === 'right' ? 'Right' : 'Left'} shoulder board, edge-on`;
       const strip = await ctx.place(id, { pieceAnchor: 'board_outer_end', at, rotate: rot, scale: k, scaleX: 1 / k, z: BOARD_STRIP_Z, role: 'epaulet', key: 'epaulet:' + side, title });
       if(strip) strip.clip = boundary ? clipToConvex(boundary, outline) : outline;
+      // The face: the sheet's own front-most BOARD_FACE_ART inches stretched over the band, so the stripes of the band run down it as they wrap the real board, and the body is the body's black; flat tints
+      // darken it and a light line marks the edge between it and the top.
+      const chain = plan.filter(q => q.y >= worn.ridge - 1e-9);
+      const face = chain.map(q => edgeAt(q.x, q.y)).concat(chain.slice().reverse().map(q => edgeAt(q.x, q.y + worn.face)));
+      const kf = worn.face / BOARD_FACE_ART, faceEnd = edgeAt(0, worn.top - (board.h / 2 - BOARD_FACE_ART) * kf);
+      const faceLayer = await ctx.place(id, { pieceAnchor: 'board_outer_end', at: faceEnd, rotate: rot, scale: kf, scaleX: 1 / kf, z: BOARD_STRIP_Z, role: 'epaulet', key: 'epaulet-face:' + side, title: title + ', front edge' });
+      if(faceLayer) faceLayer.clip = face;
+      const edgeLine = chain.map(q => edgeAt(q.x, q.y)).concat(chain.slice().reverse().map(q => edgeAt(q.x, q.y + BOARD_EDGE_LINE)));
+      for(const [name, pts, tone] of [['dark', face, SHADE.dark], ['light', edgeLine, SHADE.light]])
+        ctx.layers.push({ type: 'polygon', points: pts, fill: tone.fill, fillOpacity: tone.opacity, z: BOARD_STRIP_Z + 0.1, role: 'epaulet-shade', key: `epaulet-shade:${name}:${side}`, title: `${side === 'right' ? 'Right' : 'Left'} shoulder board, ${name === 'dark' ? 'front edge' : 'edge line'}`, noBounds: true, ...core.polygonBounds(pts) });
       const c = { x: at.x + f.axis.x * board.w / 2, y: at.y + f.axis.y * board.w / 2 };
-      stripShading(ctx, side, c, f.axis, f.normal, board.w, BOARD_STRIP_THICK, outline, BOARD_STRIP_Z + 0.1, boundary);
-      markBandEdge(ctx, side, Object.assign({}, f, { outer: at }), BOARD_STRIP_THICK);   // the cord comes out from under the board's lower edge (B7)
+      // the cord comes out from under the board's lower edge, the face's lower edge (B7), flush with its outer end
+      markBandEdge(ctx, side, Object.assign({}, f, { outer: { x: f.outer.x + f.normal.x * (lift - worn.total / 2), y: f.outer.y + f.normal.y * (lift - worn.total / 2) } }), worn.total);
       // The board lies on the shoulder seam, from the collar seam to the shoulder point (4.1.5.2.1.3, 4.1.9.3.4; Class A), drawn once, on the wearer's right shoulder.
       if(side === 'right') ctx.measure(f.outer, f.neck, 'on the seam', { mid: c, side: { x: 0, y: -1 }, offsetOnly: true, reference: true, caption: 'shoulder board on the seam' });
       if(overlay) overlay.hideGroups = [...new Set([...(overlay.hideGroups || []), 'shoulder-strip-right', 'shoulder-strip-left'])];
@@ -2191,7 +2230,8 @@
         const slot = bs && core.anchor(bs, 'rank_slot_center'), outer = bs && core.anchor(bs, 'board_outer_end');
         if(slot && outer) fromEnd[side] = Math.hypot(slot.x - outer.x, slot.y - outer.y);
       }
-      await epauletEdgeGrades(ctx, g, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, { thick: BOARD_STRIP_THICK, drop: side => boardDrop(ctx.base.id, side), z: BOARD_STRIP_Z + 0.2, row: true });
+      const boardSpec = await ctx.spec(`garment-blues-shoulder-board-top-${sex}-right`).catch(() => null), boardBox = boardSpec && core.landmarkBounds(boardSpec, 'board'), worn = boardBox && boardWorn(boardBox.w, boardBox.h);
+      if(worn) await boardGrades(ctx, strapFrames(ctx, A), G.cadetOfficerInsignia(g, 'metal-regular'), fromEnd, worn, BOARD_STRIP_Z + 0.2);
     }
     else if(!semi && g.general){
       await ctx.overlay(`${A.layer}-general-officer`);

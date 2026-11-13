@@ -117,11 +117,12 @@ test('cadet officer shoulder boards: edge-on on the coat, seen from above with t
   assert.ok(tops.every(t => t.origin.y < seam.y && seam.y - t.origin.y < 3), 'just above the shoulder');
   // The grade is on the view from above (regular size) and on the edge-on board at the shoulder line
   // (miniature size), as on the Class B (R7, D6, D42).
+  // The captain's three discs: one piece in the view from above, one piece for each disc on the edge-on board (the board worn, boardGrades), three on each shoulder.
   const grade = layersBy(scene, l => l.role === 'grade');
-  assert.equal(grade.length, 4);
+  assert.equal(grade.length, 2 + 6);
   assert.ok(grade.filter(g => /^grade:top-/.test(g.key)).every(g => /metal-regular$/.test(g.id)));
   assert.equal(grade.filter(g => /^grade:top-/.test(g.key)).length, 2);
-  assert.equal(grade.filter(g => /^grade:edge-/.test(g.key)).length, 2);
+  assert.equal(grade.filter(g => /^grade:edge-/.test(g.key)).length, 6);
 });
 
 test('hats are drawn on top of the uniform, with the right device', async () => {

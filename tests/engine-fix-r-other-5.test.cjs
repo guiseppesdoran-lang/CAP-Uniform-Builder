@@ -46,8 +46,8 @@ test('Class A and cadet semi-formal coats: a cadet officer\'s edge-on strip carr
       // The top view is level (DORAN5-ENG-3): its board's long axis is horizontal, so the grade's length along the board is measured horizontally.
       const level = { x: 1, y: 0 };
       assert.ok(Math.abs(along(edge, axis) - along(top, level)) <= 0.05, `${label}: along the strap ${along(edge, axis).toFixed(3)} edge-on vs ${along(top, level).toFixed(3)} from above`);
-      // across the strap the grade takes the board's one squeeze (P.helpers.BOARD_GRADE_SPAN: a two-form row spans 1.12 of the strip's thickness): its row is the sheet's own width times it
-      const gs = await store.load(edge.id), want = gs.w * P.helpers.BOARD_GRADE_SPAN * P.helpers.BOARD_STRIP_THICK / P.helpers.GRADE_ROW_TWO;
+      // across the strap the grade takes the board's one squeeze (boardWorn's `stand`: the grade stands up off the board, so it is squeezed less than the surface): its width is the sheet's own times it
+      const gs = await store.load(edge.id), want = gs.w * P.helpers.boardWorn(4.55, 2.3).stand;
       assert.ok(Math.abs(along(edge, cross) - want) <= 0.01, `${label}: squeezed across to ${want.toFixed(3)} in (${along(edge, cross).toFixed(3)} across)`);
       n++;
     }

@@ -2,8 +2,8 @@
 // B5 again (Ethan, 2026-11-10, looking at the first B5 pictures: "looking at some of the after photos theres some coat blue above the board"): the cadet officer's edge-on board lies on the very top of the
 // shoulder: its upper edge is the coat's own upper outline (the outer edge of the outline's stroke) along its straight part, the 3.81 in from the outer end to where the pointed neck end begins, and nowhere does
 // the board stand above the drawn coat. No coat shows above the board along that straight part and no background shows between the board and the coat. Beyond it the board narrows to its point from both edges,
-// to the middle of the strip (the owner, 2026-11-12: "why does it curve up at the end?": the point was sheared up to lie on the upper edge, which turned the lower edge up 34 degrees), so the coat shows behind
-// the point's upper slant.
+// to the board's centre line (the owner, 2026-11-12: "why does it curve up at the end?": the point was sheared up to lie on the upper edge, which turned the lower edge up 34 degrees), so the coat shows behind
+// the point's upper slant. The board worn lies over the ridge of the shoulder (boardWorn): the part of its top above the coat's outline is not drawn.
 // Measured here against the coat sheets' own outline (scripts/measure-garment-outline.cjs, the sheet's silhouette path): the outline is drawn with a stroke 0.06 in wide, half of it outside the path, so the
 // drawn coat is the outline grown by 0.03 in. At each station along the board (outer end to tip, 4.55 in) `above` is how far the drawn coat reaches over the board's visible top (coat blue above the board)
 // and `over` how far the board's visible top stands above the drawn coat (the board over the background), both along the board's up normal. The board's visible top is read from the drawn layer: the board
@@ -96,8 +96,10 @@ for(const uniform of Object.keys(COATS)) for(const sex of ['male', 'female']) fo
       assert.equal(layers.length, 1, `${side}: the edge-on board is drawn, one piece`);
       const m = measure(ring, layers, side, half);
       assert.ok(Math.abs(m.len - 4.55) < 0.02, `${side}: the board is its 4.55 in long (${m.len.toFixed(3)})`);
-      // the point narrows from both edges: its tip is on the strip's centre line, half the strip below the upper edge line
-      assert.ok(Math.abs(m.tipOff - P.helpers.BOARD_STRIP_THICK / 2) <= 0.005, `${side}: the tip lies ${m.tipOff.toFixed(3)} in off the upper edge line (the middle of the ${P.helpers.BOARD_STRIP_THICK} in strip)`);
+      // the point narrows from both edges: its tip is on the board's centre line, half the board's squeezed width below its upper edge line (the board worn: that line lies above the coat's outline, over the ridge,
+      // and what is above the outline is cut away; boardWorn)
+      const half2 = P.helpers.boardWorn(4.55, 2.3).k * 2.3 / 2;
+      assert.ok(Math.abs(m.tipOff - half2) <= 0.005, `${side}: the tip lies ${m.tipOff.toFixed(3)} in off the upper edge line (the middle of the squeezed board, ${half2.toFixed(3)} in)`);
       assert.ok(m.over <= 0.01, `${side}: the board stands ${m.over.toFixed(3)} in above the drawn coat at ${m.worst.over} in (background between the board and the coat)`);
       assert.ok(m.above <= 0.01, `${side}: ${m.above.toFixed(3)} in of coat shows above the board at ${m.worst.above} in`);
       assert.ok(layers[0].clip && !layers[0].shear, `${side}: the board is cut to its outline, not sheared`);

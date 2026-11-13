@@ -33,11 +33,11 @@ test('Class A coats: the edge-on board and the strap frame follow the shoulder s
       const a = base.layers.find(l => l.key === 'epaulet:' + side);
       assert.ok(a, `${sex} ${side}: the edge-on board is drawn`);
       const sm = require('./helpers/class-a-sheet.cjs').seam(coat, side), want = sm.outer;
-      // The strip hangs from the seam, its upper edge on the coat's outline (B5): its outer end is the shoulder point moved half a strip less the shift of its upper edge (the half stroke it covers, 0.03 in, on the men's coats), square to the seam, down.
-      const drop = P.helpers.BOARD_STRIP_THICK / 2 - P.helpers.boardEdgeShift(coat, side).shift;
+      // The strip hangs from the seam, its far edge on the coat's outline (B5): its outer end is the shoulder point moved the board's ridge depth (boardWorn) less the shift of its far edge (the half stroke it covers, 0.03 in, on the men's coats), square to the seam, down.
+      const drop = P.helpers.boardWorn(4.55, 2.3).ridge - P.helpers.boardEdgeShift(coat, side).shift;
       const sl = Math.hypot(sm.neck.x - want.x, sm.neck.y - want.y);
       let dn = { x: (sm.neck.y - want.y) / sl, y: -(sm.neck.x - want.x) / sl }; if(dn.y < 0) dn = { x: -dn.x, y: -dn.y };
-      assert.ok(Math.hypot(a.origin.x - (want.x + dn.x * drop), a.origin.y - (want.y + dn.y * drop)) < 0.005, `${sex} ${side}: the board's outer end is the sheet's shoulder point, half a strip down`);
+      assert.ok(Math.hypot(a.origin.x - (want.x + dn.x * drop), a.origin.y - (want.y + dn.y * drop)) < 0.005, `${sex} ${side}: the board's outer end is the sheet's shoulder point, the ridge's depth down`);
     }
     assert.ok(ring.length > 10 && seam.outer.x > seam.neck.x, `${sex}: the sheet states an outline with a shoulder line`);
   }

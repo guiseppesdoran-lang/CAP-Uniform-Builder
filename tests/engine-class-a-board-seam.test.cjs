@@ -26,7 +26,7 @@ const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.
 const hb = (uniform, gender, membership, rank, cord, opt) => HARNESS.makeBuild({ uniform, gender, membership, rank, cord, name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' }, opt || {}) });
 const COATS = { blues_a: { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' }, semi_formal_usaf: { male: 'garment-semiformal-class-a-coat-male', female: 'garment-semiformal-class-a-coat-female' } };
 const TOL = 0.01;   // inches
-const THICK = P.helpers.BOARD_STRIP_THICK;   // how thick the edge-on board shows across the strap
+const WORN = P.helpers.boardWorn(4.55, 2.3);   // the edge-on board worn: its centre line lies WORN.ridge below its far edge, its lower edge WORN.total
 
 // Signed distance of p from the line a to b.
 const across = (p, a, b) => { const L = Math.hypot(b.x - a.x, b.y - a.y); return ((p.x - a.x) * (b.y - a.y) - (p.y - a.y) * (b.x - a.x)) / L; };
@@ -42,22 +42,22 @@ test('the engine reads the shoulder seam off the sheet\'s outline: the same coll
   }
 });
 
-// B5 (Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating"; then "theres some coat blue above the board"): the strip's UPPER edge is the coat's drawn outline: the seam moved out by
-// the half stroke of the outline (0.03 in) on the men's coats, and by what clears the bend of the shoulder line on the women's (P.helpers.boardEdgeShift, measured from the sheet's outline). Its axis lies
-// half the strip's thickness less that below the seam, its outer end that far square down from the shoulder point, and its direction is still the seam's angle.
+// B5 (Ethan, 2026-11-10: "she class a blue shouldet boards are slightly levetating"; then "theres some coat blue above the board"): the strip's far (upper) edge is the coat's drawn outline: the seam moved out by
+// the half stroke of the outline (0.03 in) on the men's coats, and by what clears the bend of the shoulder line on the women's (P.helpers.boardEdgeShift, measured from the sheet's outline). Its centre line lies
+// WORN.ridge less that below the seam (the board worn lies over the ridge of the shoulder, boardWorn), its outer end that far square down from the shoulder point, and its direction is still the seam's angle.
 const shiftOf = (uniform, sex, side) => P.helpers.boardEdgeShift(COATS[uniform][sex], side).shift;
-test('cadet officer boards, every cut and both coats: the strip\'s upper edge lies on the seam (0.01 in), its outer end half a strip below the shoulder point and its direction on the seam\'s angle', async () => {
+test('cadet officer boards, every cut and both coats: the strip\'s far edge lies on the seam (0.01 in), its centre line and outer end the ridge\'s depth below the shoulder point and its direction on the seam\'s angle', async () => {
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Maj', 'C/Col']){
     const scene = await P.composeUniform(hb(uniform, sex, 'cadet', rank), store);
     for(const side of ['right', 'left']){
-      const tag = `${uniform} ${sex} ${rank} ${side}`, HALF_STRIP = THICK / 2 - shiftOf(uniform, sex, side);
+      const tag = `${uniform} ${sex} ${rank} ${side}`, CENTRE = Math.abs(WORN.ridge - shiftOf(uniform, sex, side))   // (the women's far edge stands out further than the ridge is deep, so there the centre line lies just above the seam: its distance from the seam is what is tested);
       const sm = SHEET.seam(COATS[uniform][sex], side), strip = scene.layers.find(l => l.key === 'epaulet:' + side);
       const spec = await store.load(strip.id), outer = core.anchor(spec, 'board_outer_end'), button = core.anchor(spec, 'button_end_center');
-      assert.ok(Math.abs(Math.hypot(strip.origin.x - sm.outer.x, strip.origin.y - sm.outer.y) - HALF_STRIP) <= TOL && Math.abs(Math.abs(across(strip.origin, sm.outer, sm.neck)) - HALF_STRIP) <= TOL, `${tag}: the outer end is half a strip below the shoulder point (${across(strip.origin, sm.outer, sm.neck).toFixed(4)} off the seam)`);
+      assert.ok(Math.abs(Math.hypot(strip.origin.x - sm.outer.x, strip.origin.y - sm.outer.y) - CENTRE) <= TOL && Math.abs(Math.abs(across(strip.origin, sm.outer, sm.neck)) - CENTRE) <= TOL, `${tag}: the outer end is the board's ridge depth below the shoulder point (${across(strip.origin, sm.outer, sm.neck).toFixed(4)} off the seam)`);
       // The board's axis (outer end to the button end) as drawn: the unrotated strip is level, so the axis runs along the strip's turn.
       const dir = core.rotatePoint({ x: button.x - outer.x, y: button.y - outer.y }, { x: 0, y: 0 }, strip.rotate);
       const L = Math.hypot(dir.x, dir.y), tip = { x: strip.origin.x + dir.x / L * 4.55, y: strip.origin.y + dir.y / L * 4.55 };
-      assert.ok(Math.abs(Math.abs(across(tip, sm.outer, sm.neck)) - HALF_STRIP) <= TOL, `${tag}: the board's far end lies ${across(tip, sm.outer, sm.neck).toFixed(4)} in off the seam (half a strip below it)`);
+      assert.ok(Math.abs(Math.abs(across(tip, sm.outer, sm.neck)) - CENTRE) <= TOL, `${tag}: the board's far end lies ${across(tip, sm.outer, sm.neck).toFixed(4)} in off the seam (the ridge's depth below it)`);
       const want = Math.atan2(sm.neck.y - sm.outer.y, sm.neck.x - sm.outer.x), got = Math.atan2(dir.y, dir.x);
       assert.ok(Math.abs(want - got) * 180 / Math.PI < 0.05, `${tag}: the board's angle is the seam's`);
     }
@@ -102,14 +102,14 @@ test('shoulder cord and aide cord: the cord comes out from under the board\'s lo
     const tuck = cl.cordPath.pendant ? 0.012 : Number(/const CORD_TUCK = ([\d.]+);/.exec(fs.readFileSync(path.join(__dirname, '..', 'js', 'engine', 'profiles-dress.js'), 'utf8'))[1]);
     assert.ok(Array.isArray(cl.clip) && cl.clip.length === (cl.cordPath.pendant ? 4 : 6), `${tag}: the cord is cut to the garment side of the epaulet's lower edge`);
     // The cut line is the strip's lower long edge, a hair above it: its two end points lie within 0.02 in of the line through that edge.
-    // The cut line is the epaulet's lower edge, parallel to the seam: the strip's thickness (THICK) less the shift of its upper edge (0.03 in on the men's coats) below the seam for a cadet board (B5), the strap's
+    // The cut line is the epaulet's lower edge, parallel to the seam: the board's visible thickness (WORN.total, its top and its front edge) less the shift of its far edge (0.03 in on the men's coats) below the seam for a cadet board (B5), the strap's
     // or sleeve's half thickness (0.20 to 0.25 in) for an officer's strip, whose centre line is the seam.
     const sm = SHEET.seam(COATS.blues_a[sex], 'left'), c0 = cl.clip[0], c1 = cl.clip[1];
     const angCut = Math.atan2(c1.y - c0.y, c1.x - c0.x), angSeam = Math.atan2(sm.neck.y - sm.outer.y, sm.neck.x - sm.outer.x);
     let dAng = Math.abs(angCut - angSeam) % Math.PI; dAng = Math.min(dAng, Math.PI - dAng);
     assert.ok(dAng * 180 / Math.PI < 1, `${tag}: the cut line runs along the seam (${(dAng * 180 / Math.PI).toFixed(2)} degrees off)`);
     const drop = Math.abs(across(c0, sm.outer, sm.neck)) + (cl.cordPath.pendant ? 0 : tuck - 0.012);
-    if(membership === 'cadet') assert.ok(Math.abs(drop - (THICK - shiftOf('blues_a', sex, 'left'))) <= 0.03, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the board's lower edge (${THICK} in)`);
+    if(membership === 'cadet') assert.ok(Math.abs(drop - (WORN.total - shiftOf('blues_a', sex, 'left'))) <= 0.03, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the board's lower edge (${WORN.total.toFixed(3)} in)`);
     else assert.ok(drop >= 0.19 && drop <= 0.26, `${tag}: the cut line is ${drop.toFixed(3)} in off the seam, the strap's lower edge`);
     // Nothing of the cord shows above the cut line: its top end lies on the strip's side (or on the line); the run's path goes on up under the strip, so its start does.
     const top = cl.cordPath.pendant ? { x: cl.cordPath.top[0], y: cl.cordPath.top[1] } : { x: cl.cordPath.start[0], y: cl.cordPath.start[1] };

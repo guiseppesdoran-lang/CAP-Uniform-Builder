@@ -1,8 +1,10 @@
 'use strict';
-// The cadet officer shoulder board's shape (the owner, 2026-11-12, on the live Class A coat: "why does it curve up at the end? it should be rounded like it is in real life. having it flat is killing me a little bit").
-// The board seen edge-on is the board seen from above squeezed across the strap, so it has the top view's outline, the corners rounded as the real board's are (boardPlan: the commercial board's photograph,
-// the outer end's corners 0.32 in, the corners where the point begins and the tip 0.115 in on the 2.3 in wide board), and it shows as thick as the figures that draw it worn draw it (1.05 in). The point
-// narrows to the middle of the strip from both edges: it was sheared up so its tip lay on the upper edge, which turned the lower edge up 34 degrees where the point begins.
+// The cadet officer shoulder board worn (the owner, 2026-11-12, on the live Class A coat: "why does it curve up at the end? it should be rounded like it is in real life. having it flat is killing me a little bit";
+// then, on the side by side: "the shoulder boards dont look right. research more about what the shoulder boards look like irl, and then implement.").
+// The board is the board seen from above, worn as photographs of the real one show it: a thin slab lying over the ridge of the shoulder (boardWorn), so what shows from the front is the front half of its top
+// face under a straight far edge on the coat's outline, and under that the face of its front edge, the two together 0.08 to 0.11 of the board's length thick; its outline is the top view's, the corners rounded as
+// the real board's are (boardPlan: the commercial board's photograph, the outer end's corners 0.32 in, the corners where the point begins and the tip 0.115 in on the 2.3 in wide board); the point narrows to the
+// board's centre line from both edges and ends near the far edge; the grade stands on the centre line and is not cut by the far edge, so the back form crosses it.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -64,40 +66,68 @@ test('the board seen from above: the sheets\' straight sides and 0.74 in point, 
   assert.ok(maxTurn(plan) < 25, `no sharp vertex (${maxTurn(plan).toFixed(1)} degrees at the sharpest)`);
 });
 
-test('the edge-on board is the top view squeezed across the strap, cut to that outline: rounded corners, a point that narrows to the middle of the strip, no bend in the lower edge', async () => {
+// The board worn, in numbers: measured on photographs of the real board worn (straight on from the front at the shoulders' height: the top face 0.080 of the length, its front face 0.026, together 0.106; a second
+// front view 0.095; two portraits from higher up 0.19 and 0.27, not used), so a drawing of the board from the front shows it between 0.08 and 0.11 of its length thick.
+test('the board worn is a thin slab: its visible thickness is 0.08 to 0.11 of its length, its centre line a third of the way down its top face, the grade squeezed less than the surface', () => {
+  const w = H.boardWorn(L, W);
+  assert.ok(Math.abs(w.top - 0.080 * L) < 1e-9 && Math.abs(w.face - 0.026 * L) < 1e-9 && Math.abs(w.total - (w.top + w.face)) < 1e-12);
+  assert.ok(w.total / L >= 0.08 && w.total / L <= 0.11, `the board shows ${(w.total / L).toFixed(3)} of its length thick`);
+  assert.ok(Math.abs(w.ridge / w.top - 0.30) < 1e-9, 'the centre line lies 0.30 of the top face below the far edge');
+  assert.ok(Math.abs(w.k * (W / 2) - (w.top - w.ridge)) < 1e-9, 'the surface is squeezed across so its front half is what shows of the top face');
+  assert.ok(Math.abs(w.stand / w.k - 1.3) < 1e-9, 'the grade stands up off the board: squeezed 1.3 times less than the surface');
+  assert.ok(w.k < 0.3 && w.k > 0.15, `the surface squeeze ${w.k.toFixed(3)}`);
+});
+
+// The outline of a layer's clip in the strip's frame: u along the strap from the outer end (the art's x runs outer end to button end: the left sheets are mirrored), v down from the board's centre line (the piece's origin is on it).
+async function frameOf(layer){
+  const o = layer.origin, r = (layer.rotate || 0) * Math.PI / 180, ax = { x: Math.cos(r), y: Math.sin(r) }, dn = { x: -Math.sin(r), y: Math.cos(r) };
+  const spec = await store.load(layer.id), outer = core.anchor(spec, 'board_outer_end'), button = core.anchor(spec, 'button_end_center'), toward = Math.sign(button.x - outer.x) || 1;
+  return poly => poly.map(p => ({ x: toward * ((p.x - o.x) * ax.x + (p.y - o.y) * ax.y), y: (p.x - o.x) * dn.x + (p.y - o.y) * dn.y }));
+}
+// the edge of the outline at station u: the smallest or the largest v of the polygon's edges that cross it
+const edgeAtU = (U, u, lower) => { let best = lower ? -Infinity : Infinity; for(let i = 0; i < U.length; i++){ const a = U[i], b = U[(i + 1) % U.length]; if((a.x - u) * (b.x - u) <= 0 && a.x !== b.x){ const v = a.y + (b.y - a.y) * (u - a.x) / (b.x - a.x); best = lower ? Math.max(best, v) : Math.min(best, v); } } return best; };
+
+test('the board worn: the top face under a far edge on the coat, the front edge\'s face under it, rounded outer corners, a point that ends near the far edge, no bend in the lower edge', async () => {
+  const worn = H.boardWorn(L, W);
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Col']){
     const scene = await P.composeUniform(hb(uniform, sex, rank), store);
     for(const side of ['right', 'left']){
-      const tag = `${uniform} ${sex} ${rank} ${side}`, strip = scene.layers.find(l => l.key === 'epaulet:' + side);
-      assert.ok(strip && Array.isArray(strip.clip) && strip.clip.length > 20, `${tag}: the strip is cut to the board's outline`);
+      const tag = `${uniform} ${sex} ${rank} ${side}`, strip = scene.layers.find(l => l.key === 'epaulet:' + side), face = scene.layers.find(l => l.key === 'epaulet-face:' + side);
+      assert.ok(strip && Array.isArray(strip.clip) && strip.clip.length > 20, `${tag}: the top face is cut to the board's outline`);
+      assert.ok(face && Array.isArray(face.clip) && face.clip.length > 20, `${tag}: the front edge's face is drawn`);
       assert.ok(!strip.shear, `${tag}: no shear`);
-      assert.equal(scene.layers.filter(l => (l.key || '').startsWith('epaulet-tip')).length, 0, `${tag}: one piece, no separate point`);
-      assert.ok(Math.abs(strip.h - 2.5 * H.BOARD_STRIP_THICK / W) < 0.002, `${tag}: across the strap ${strip.h}`);
-      // the outline in the strip's frame: u along the strap from the outer end, v down from the strip's centre line (the piece's origin is on it)
-      const o = strip.origin, r = (strip.rotate || 0) * Math.PI / 180, ax = { x: Math.cos(r), y: Math.sin(r) }, dn = { x: -Math.sin(r), y: Math.cos(r) };
-      const q = strip.clip.map(p => ({ x: (p.x - o.x) * ax.x + (p.y - o.y) * ax.y, y: (p.x - o.x) * dn.x + (p.y - o.y) * dn.y }));
-      const spec = await store.load(strip.id), outer = core.anchor(spec, 'board_outer_end'), button = core.anchor(spec, 'button_end_center');
-      // the art's x runs outer end to button end: turn the frame so u grows toward the button (the left sheets are mirrored)
-      const toward = Math.sign((button.x - outer.x) * 1) || 1;
-      const U = q.map(p => ({ x: toward * p.x, y: p.y }));
-      const T = H.BOARD_STRIP_THICK;
-      const lowerAt = u => { let best = -Infinity; for(let i = 0; i < U.length; i++){ const a = U[i], b = U[(i + 1) % U.length]; if((a.x - u) * (b.x - u) <= 0 && a.x !== b.x) best = Math.max(best, a.y + (b.y - a.y) * (u - a.x) / (b.x - a.x)); } return best; };
-      assert.ok(Math.abs(lowerAt(2.0) - T / 2) < 0.03, `${tag}: the lower edge lies ${lowerAt(2.0).toFixed(3)} in below the strip's centre line, the strip is ${T} in across`);
-      // no sharp turn in the lower edge (below the centre line; the upper edge of the women's cut follows the coat's own bend): the point's slant joins the straight edge by a curve
-      let turn = 0, counted = 0;
-      for(let i = 0; i < U.length; i++){
-        const a = U[(i + U.length - 1) % U.length], b = U[i], c = U[(i + 1) % U.length];
-        if(a.y < 0.02 || b.y < 0.02 || c.y < 0.02) continue;
-        const d1 = { x: b.x - a.x, y: b.y - a.y }, d2 = { x: c.x - b.x, y: c.y - b.y };
+      assert.equal(scene.layers.filter(l => (l.key || '').startsWith('epaulet-tip')).length, 0, `${tag}: no separate point`);
+      assert.ok(Math.abs(strip.h - 2.5 * worn.k) < 0.002, `${tag}: the top face's sheet is squeezed across to ${strip.h}`);
+      const frame = await frameOf(strip), U = frame(strip.clip), F = frame(face.clip);
+      // far edge: on the coat's outline, the ridge's depth above the centre line; the top face ends at its front edge; the face under it is worn.face thick; together 0.08 to 0.11 of the length
+      const far = edgeAtU(U, 2.0, false), front = edgeAtU(U, 2.0, true), bottom = edgeAtU(F, 2.0, true);
+      assert.ok(Math.abs(far + worn.ridge) < 0.03, `${tag}: the far edge lies ${(-far).toFixed(3)} in above the centre line (the ridge's depth ${worn.ridge.toFixed(3)})`);
+      assert.ok(Math.abs(front - (worn.top - worn.ridge)) < 0.03, `${tag}: the top face ends ${front.toFixed(3)} in below the centre line`);
+      assert.ok(Math.abs(bottom - (worn.total - worn.ridge)) < 0.03, `${tag}: the front face ends ${bottom.toFixed(3)} in below the centre line`);
+      const total = bottom - far;
+      assert.ok(total / L >= 0.09 && total / L <= 0.115, `${tag}: the board shows ${total.toFixed(3)} in thick, ${(total / L).toFixed(3)} of its length`);
+      assert.ok(Math.abs((bottom - front) - worn.face) < 0.03, `${tag}: the front face is ${(bottom - front).toFixed(3)} in thick`);
+      // the face has the top face's reach along the strap
+      const reach = pts => Math.max(...pts.map(p => p.x)), start = pts => Math.min(...pts.map(p => p.x));
+      assert.ok(Math.abs(reach(F) - reach(U)) < 0.05 && Math.abs(start(F) - start(U)) < 0.03, `${tag}: the face runs as far as the top`);
+      // no sharp turn along the lower edge of the face (the second half of its outline, the front chain offset down and reversed): the point's slant joins the straight edge by a curve
+      let turn = 0;
+      const lower = F.slice(F.length / 2);
+      for(let i = 1; i < lower.length - 1; i++){
+        const a = lower[i - 1], b = lower[i], c = lower[i + 1], d1 = { x: b.x - a.x, y: b.y - a.y }, d2 = { x: c.x - b.x, y: c.y - b.y };
         if(Math.hypot(d1.x, d1.y) < 1e-9 || Math.hypot(d2.x, d2.y) < 1e-9) continue;
-        turn = Math.max(turn, Math.abs(Math.atan2(d1.x * d2.y - d1.y * d2.x, d1.x * d2.x + d1.y * d2.y)) * 180 / Math.PI); counted++;
+        turn = Math.max(turn, Math.abs(Math.atan2(d1.x * d2.y - d1.y * d2.x, d1.x * d2.x + d1.y * d2.y)) * 180 / Math.PI);
       }
-      assert.ok(counted > 10 && turn < 30, `${tag}: no bend in the lower edge (${turn.toFixed(1)} degrees at the sharpest of ${counted} vertices)`);
-      // the point reaches the middle of the strip at its tip
+      assert.ok(lower.length > 10 && turn < 40, `${tag}: no bend in the face's lower edge (${turn.toFixed(1)} degrees at the sharpest of ${lower.length - 2} vertices)`);
+      // the point reaches the board's centre line at its tip, near the far edge
       const tipV = U.filter(p => p.x > L - 0.12).map(p => p.y);
-      assert.ok(tipV.length && Math.abs(tipV.reduce((a, b) => a + b, 0) / tipV.length) < 0.08, `${tag}: the point ends in the middle of the strip`);
-      // the outer end's lower corner is rounded: the sharp corner (0, T) is outside the cut
-      assert.ok(!U.some(p => p.x < 0.05 && p.y > T / 2 - 0.05), `${tag}: the outer end's lower corner is rounded off`);
+      assert.ok(tipV.length && Math.abs(tipV.reduce((a, b) => a + b, 0) / tipV.length) < 0.08, `${tag}: the point ends on the board's centre line`);
+      assert.ok(Math.max(...F.filter(p => p.x > L - 0.3).map(p => p.y)) < worn.total - worn.ridge - 0.05, `${tag}: toward the tip the lower edge rises to the point`);
+      // the outer end's corners are rounded: the face's lower edge at the end lies well above the sharp corner (0, bottom) and falls to its full depth only over the corner's 0.32 in, and the top face's far corner is cut by
+      // the far edge, not drawn above it
+      assert.ok(edgeAtU(F, 0.001, true) < worn.total - worn.ridge - 0.05, `${tag}: the outer end's lower corner is rounded off (the face's lower edge ${edgeAtU(F, 0.001, true).toFixed(3)} in down at the end)`);
+      assert.ok(edgeAtU(F, 0.1, true) < bottom - 0.01, `${tag}: the lower edge is still rounding at 0.1 in from the end`);
+      assert.ok(Math.min(...U.map(p => p.y)) > -worn.ridge - 0.02 || sex === 'female', `${tag}: nothing of the top face over the far edge`);
     }
   }
 });
@@ -121,58 +151,72 @@ test('the top view is cut to the same outline and keeps it when the cap makes it
   assert.ok(slid > 0, 'at least one build slid its views clear of the cap, so the moved outline was checked');
 });
 
-// The shoulder cord is cut flush with the line of the board's outside end edge, through the board's lower outer corner (the cord's top edge snaps to a vertex of the strip's outline within the cord's snap
-// distance of that corner, cordTopEdge): the rounded corner leaves no vertex that near, so the cord's edge is on the corner itself and the cord is still flush with the board's end.
-test('the rounded outer corner leaves no outline vertex within the cord\'s snap distance of the lower outer corner: the cord stays flush with the board\'s end edge', async () => {
-  const snap = Number(/const CORD_CORNER_SNAP = ([\d.]+);/.exec(fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8'))[1]);
-  assert.ok(H.BOARD_CORNER_CLEAR > snap, `the board keeps ${H.BOARD_CORNER_CLEAR} in clear, the cord snaps within ${snap}`);
-  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']){
-    const scene = await P.composeUniform(hb(uniform, sex, 'C/Maj', { headgear: 'none' }), store);
-    for(const side of ['right', 'left']){
-      const strip = scene.layers.find(l => l.key === 'epaulet:' + side);
-      // the lower outer corner: the strip's origin (its outer end, on its centre line) half the strip down the strip's own turn
-      const r = (strip.rotate || 0) * Math.PI / 180, corner = { x: strip.origin.x - Math.sin(r) * H.BOARD_STRIP_THICK / 2, y: strip.origin.y + Math.cos(r) * H.BOARD_STRIP_THICK / 2 };
-      const near = Math.min(...strip.clip.map(p => Math.hypot(p.x - corner.x, p.y - corner.y)));
-      assert.ok(near > snap, `${uniform} ${sex} ${side}: the nearest outline vertex is ${near.toFixed(3)} in from the lower outer corner (the cord snaps within ${snap})`);
-    }
+// The shoulder cord is cut flush with the line of the board's outside end edge, through the board's lower outer corner (the cord's top edge snaps to a vertex of the top face's outline within the cord's snap
+// distance of that corner, cordTopEdge). The front edge's face hangs 0.12 in lower than the top face's rounded corner, so there is no vertex that near and the cord's cut is on the corner itself: flush with the board's
+// end, its lower line the face's lower edge.
+test('the cord is cut flush with the board\'s outer end and its top edge is the face\'s lower edge, with the board worn', async () => {
+  const worn = H.boardWorn(L, W), snap = Number(/const CORD_CORNER_SNAP = ([\d.]+);/.exec(fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8'))[1]);
+  assert.ok(worn.face > snap, `the face (${worn.face.toFixed(3)} in) hangs lower than the cord's snap distance (${snap}) from the top face's corner`);
+  for(const sex of ['male', 'female']){
+    const scene = await P.composeUniform(HARNESS.makeBuild({ uniform: 'blues_a', gender: sex, membership: 'cadet', rank: 'C/Col', cord: 'group', name: { first: 'Pat', last: 'Doe', show: true }, opt: { headgear: 'none' } }), store);
+    const strip = scene.layers.find(l => l.key === 'epaulet:left'), cl = scene.layers.find(l => l.role === 'garment-layer' && /-cord-/.test(l.id));
+    const frame = await frameOf(strip), U = frame(strip.clip), C = frame(cl.clip);
+    const corner = { x: 0, y: worn.total - worn.ridge };
+    assert.ok(Math.min(...U.map(p => Math.hypot(p.x - corner.x, p.y - corner.y))) > snap, `${sex}: no vertex of the top face is within the snap distance of the lower outer corner`);
+    // the cord's cut: the line of the board's end (u = 0) and the line of the face's lower edge (v = corner.y)
+    assert.ok(C.filter(p => Math.abs(p.x) < 0.01).length >= 2, `${sex}: the cord is cut on the line of the board's end`);
+    assert.ok(Math.abs(Math.max(...C.filter(p => Math.abs(p.x) < 0.01).map(p => p.y)) - corner.y) < 0.01, `${sex}: the cord's cut runs down to the face's lower edge (${corner.y.toFixed(3)} in below the centre line)`);
   }
 });
 
-// ---- the grade on the board strip, as the guidance figures draw it ---------------------------------------------------------------------------------
-// The Honor Guard guidance's two Class A figures (four boards) and CAPR 39-1 Fig 4.6 (two) draw the cadet first lieutenant's two discs on the board like this, measured as fractions of the strip's thickness (the
-// discs are circles, a disc 0.50 of the thickness): the row's centre line 0.276 to 0.307 down from the upper edge (0.29 on average); the back disc cut by the upper edge, 39 to 47 % of it showing; the front disc
-// whole, 0.11 to 0.17 of the thickness above the lower edge; the row 1.09 to 1.17 of the thickness across (1.12). The strip is a window on the board over the ridge of the shoulder, the grade's row across the board.
-const GRADES = ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col'], TWO_FORMS = ['C/1st Lt', 'C/Lt Col'];
+// ---- the grade on the board worn ---------------------------------------------------------------------------------------------------------------
+// The forms of a grade (a disc or a diamond each: the second lieutenant's one disc, the first lieutenant's two, the captain's three, the major's one diamond, the lieutenant colonel's two, the colonel's three) stand on the
+// board in a row across it, 0.75 in apart on the surface and 0.75 in wide. Each form is a piece of its own, squeezed across by `stand`, 1.3 times less than the surface (the photograph of the real board: the diamonds stand
+// up off it), their places foreshortened as the surface is (the pitch by k), so they overlap and the ones behind the front one rise above it; the back form crosses the far edge, and what lies behind the ridge shows only
+// what stands above it, a sliver (the photograph of a colonel's board: its third diamond is a sliver 0.2 of the top face above the far edge), BOARD_CROSS. The row is centred on the board's centre line; a row of three is
+// wider than the top face and moves back, over the ridge, until its front form is BOARD_FRONT_MARGIN of the top face short of the front edge, as a row of two lies.
+const GRADES = ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col'], FORMS = { 'C/2d Lt': 1, 'C/1st Lt': 2, 'C/Capt': 3, 'C/Maj': 1, 'C/Lt Col': 2, 'C/Col': 3 };
 const HONOR_GUARD = { cord: 'honor_guard', cordOnTop: true, ceremonial: { role: 'guard', chinstrap: 'up' } };
 
-async function gradeRows(build){
-  const scene = await P.composeUniform(build, store), T = H.BOARD_STRIP_THICK, out = [];
+// Every form of the grade on each side, front form first, with how far its centre lies below the board's centre line (inches).
+async function gradeForms(build){
+  const scene = await P.composeUniform(build, store), out = [];
   for(const side of ['right', 'left']){
-    const strip = scene.layers.find(l => l.key === 'epaulet:' + side), grade = scene.layers.find(l => l.key === 'grade:edge-' + side);
-    const r = (strip.rotate || 0) * Math.PI / 180, dn = { x: -Math.sin(r), y: Math.cos(r) };
-    const c = { x: grade.x + grade.w / 2, y: grade.y + grade.h / 2 }, cc = core.rotatePoint(c, grade.origin, grade.rotate || 0);
-    // how far the row's centre line lies below the strip's upper edge, as a fraction of the thickness (the strip's origin is on its centre line)
-    out.push({ side, strip, grade, scene, row: ((cc.x - strip.origin.x) * dn.x + (cc.y - strip.origin.y) * dn.y + T / 2) / T });
+    const strip = scene.layers.find(l => l.key === 'epaulet:' + side), r = (strip.rotate || 0) * Math.PI / 180, dn = { x: -Math.sin(r), y: Math.cos(r) };
+    const forms = scene.layers.filter(l => l.role === 'grade' && (l.key === 'grade:edge-' + side || l.key.startsWith(`grade:edge-${side}:`))).sort((a, b) => (a.key.length - b.key.length) || a.key.localeCompare(b.key))
+      .map(layer => ({ layer, down: (layer.origin.x - strip.origin.x) * dn.x + (layer.origin.y - strip.origin.y) * dn.y }));
+    out.push({ side, strip, forms, scene });
   }
   return out;
 }
 
-test('every grade on the board sits with its row\'s centre line 0.29 of the strip down from its upper edge, squeezed across by the one factor the guidance figures give, and cut to the strip\'s outline', async () => {
-  const T = H.BOARD_STRIP_THICK, S = H.BOARD_GRADE_SPAN * T / H.GRADE_ROW_TWO;
-  assert.equal(H.BOARD_GRADE_ROW, 0.29);
-  assert.ok(Math.abs(H.BOARD_GRADE_SPAN - 1.12) < 1e-9 && H.GRADE_ROW_TWO === 1.5, 'a two-form row of 1 1/2 in spans 1.12 of the thickness');
+test('every grade on the board is a piece for each form, squeezed across by `stand`, set 0.75 in times the surface\'s squeeze apart, the row centred (or moved back) as the front form stays on the top face', async () => {
+  const worn = H.boardWorn(L, W);
+  assert.equal(H.BOARD_CROSS, 0.20);
+  assert.ok(worn.k * 0.75 < worn.stand * 0.75, 'the forms overlap: their pitch is foreshortened more than their width');
   let n = 0;
   for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of GRADES){
     for(const [side_, build] of [['', hb(uniform, sex, rank)]].concat(uniform === 'blues_a' ? [[' (Honor Guard)', Object.assign(hb(uniform, sex, rank), HONOR_GUARD)]] : [])){
-      for(const { side, strip, grade, row } of await gradeRows(build)){
-        const tag = `${uniform} ${sex} ${rank}${side_} ${side}`;
-        assert.ok(Math.abs(row - H.BOARD_GRADE_ROW) < 0.005, `${tag}: the row's centre line is ${row.toFixed(3)} of the thickness down`);
-        const spec = await store.load(grade.id);
-        assert.ok(Math.abs(grade.w - spec.w * S) < 0.005, `${tag}: ${grade.w.toFixed(3)} in across, the sheet's ${spec.w} in squeezed by ${S.toFixed(3)}`);
-        assert.deepEqual(grade.clip, strip.clip, `${tag}: cut to the strip's outline`);
-        // the measurements keep off what shows of it: the box it is cut to is inside the strip's outline box and smaller than the piece's
-        const xs = strip.clip.map(p => p.x), ys = strip.clip.map(p => p.y), o = grade.obstacle;
-        assert.ok(o && o.x >= Math.min(...xs) - 0.01 && o.y >= Math.min(...ys) - 0.01 && o.x + o.w <= Math.max(...xs) + 0.01 && o.y + o.h <= Math.max(...ys) + 0.01, `${tag}: the obstacle is within the strip`);
+      for(const { side, strip, forms } of await gradeForms(build)){
+        const tag = `${uniform} ${sex} ${rank}${side_} ${side}`, spec = await store.load(forms[0].layer.id), dim = spec.raw.dimensions;
+        assert.equal(dim.count, FORMS[rank], `${tag}: the grade's form count`);
+        assert.equal(forms.length, FORMS[rank], `${tag}: a piece for each form`);
+        const row = H.boardRowAt(worn, dim.count, dim.centre_pitch_in, dim.element_w_in);
+        forms.forEach(({ layer, down }, nth) => {
+          assert.ok(Math.abs(layer.w - spec.w * worn.stand) < 0.005 && Math.abs(layer.h - spec.h) < 0.005, `${tag}: form ${nth} is ${layer.w.toFixed(3)} x ${layer.h.toFixed(3)} in, the sheet squeezed across by ${worn.stand.toFixed(3)}`);
+          // the front form is first: its centre is (count - 1) / 2 pitches in front of the row's centre, each form behind it one pitch (foreshortened by k) further back
+          const want = row + ((dim.count - 1) / 2 - nth) * dim.centre_pitch_in * worn.k;
+          assert.ok(Math.abs(down - want) < 0.005, `${tag}: form ${nth} lies ${down.toFixed(3)} in below the board's centre line (${want.toFixed(3)})`);
+          assert.ok(!nth || layer.z < forms[nth - 1].layer.z, `${tag}: form ${nth} is drawn under the one in front of it`);
+          assert.equal(layer.key, nth ? `grade:edge-${side}:${nth}` : `grade:edge-${side}`, `${tag}: the layer's key`);
+        });
+        if(dim.count === 1) assert.ok(Math.abs(forms[0].down) < 0.005, `${tag}: one form lies on the board's centre line`);
+        // each piece is cut to the near side of the line BOARD_CROSS of the top face above the far edge, and to its own form's column
+        for(const { layer } of forms){
+          assert.ok(Array.isArray(layer.clip) && layer.clip.length >= 3, `${tag}: cut to its form's column and the window`);
+          const U = (await frameOf(strip))(layer.clip);
+          assert.ok(Math.min(...U.map(p => p.y)) >= -worn.ridge - H.BOARD_CROSS * worn.top - 0.005, `${tag}: nothing above the line ${H.BOARD_CROSS} of the top face over the far edge`);
+        }
         n++;
       }
     }
@@ -180,16 +224,28 @@ test('every grade on the board sits with its row\'s centre line 0.29 of the stri
   assert.equal(n, 48 + 24, 'two coats, both sexes, six grades and both sides, and the Honor Guard coat of each sex');
 });
 
-test('the two-form grades (first lieutenant, lieutenant colonel) show as the guidance draws them: the back form half over the ridge, the front one near the lower edge', async () => {
-  const T = H.BOARD_STRIP_THICK;
-  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of TWO_FORMS){
-    for(const { side, grade, row } of await gradeRows(hb(uniform, sex, rank))){
-      const E = grade.w, c = row * T, tag = `${uniform} ${sex} ${rank} ${side}`;
-      // the row is two equal forms across E, centred on the row's line: the back form [c - E/2, c], the front one [c, c + E/2], from the strip's upper edge
-      const backShows = Math.min(1, c / (E / 2)), frontMargin = (T - (c + E / 2)) / T;
-      assert.ok(backShows >= 0.39 && backShows <= 0.56, `${tag}: ${(backShows * 100).toFixed(0)} % of the back form shows (the figures: 39 to 47)`);
-      assert.ok(frontMargin >= 0.10 && frontMargin <= 0.20, `${tag}: the front form lies ${frontMargin.toFixed(3)} of the thickness above the lower edge (the figures: 0.11 to 0.17)`);
-      assert.ok(Math.abs(E / T - 1.12) < 0.001 && E / T >= 1.09 && E / T <= 1.17, `${tag}: the row spans ${(E / T).toFixed(3)} of the thickness (the figures: 1.09 to 1.17)`);
+test('the grades of two or three forms cross the far edge: the back form breaks the outline, the one behind it shows a sliver; the front form lies whole on the top face; one form lies whole on the board', async () => {
+  const worn = H.boardWorn(L, W), cut = -worn.ridge - H.BOARD_CROSS * worn.top, frontEdge = worn.top - worn.ridge;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']) for(const sex of ['male', 'female']) for(const rank of GRADES){
+    for(const { side, strip, forms } of await gradeForms(hb(uniform, sex, rank))){
+      const tag = `${uniform} ${sex} ${rank} ${side}`, spec = await store.load(forms[0].layer.id), hw = spec.raw.dimensions.element_w_in * worn.stand / 2;
+      const front = forms[0], back = forms[forms.length - 1];
+      // the front form: whole (its far edge inside the window), its near edge short of the top face's front edge
+      assert.ok(front.down - hw > cut, `${tag}: the front form is wholly in view`);
+      if(forms.length === 1){
+        assert.ok(front.down - hw > -worn.ridge - 0.02, `${tag}: one form lies whole on the board, ${(front.down - hw + worn.ridge).toFixed(3)} in below the far edge`);
+        continue;
+      }
+      const margin = frontEdge - (front.down + hw);
+      assert.ok(margin >= H.BOARD_FRONT_MARGIN * worn.top - 0.005 && margin < 0.09, `${tag}: the front form ends ${margin.toFixed(3)} in short of the top face's front edge (at least ${(H.BOARD_FRONT_MARGIN * worn.top).toFixed(3)})`);
+      if(forms.length === 3) assert.ok(Math.abs(margin - H.BOARD_FRONT_MARGIN * worn.top) < 0.005, `${tag}: a row of three is moved back to ${margin.toFixed(3)} in short of the front edge`);
+      // the back form's far edge lies beyond the far edge of the board; what the window leaves of it
+      const crosses = -worn.ridge - (back.down - hw), seen = (back.down + hw) - cut;
+      assert.ok(crosses > 0.05, `${tag}: the back form reaches ${crosses.toFixed(3)} in beyond the far edge`);
+      assert.ok(seen > 0.02, `${tag}: the window leaves ${seen.toFixed(3)} in of the back form: it shows over the far edge`);
+      assert.ok(Math.min(...(await frameOf(strip))(back.layer.clip).map(p => p.y)) <= cut + 0.005, `${tag}: the back form is cut by the window's line`);
+      // the forms overlap: the next form's far edge reaches past the front one's near edge less its width
+      assert.ok(forms[1].down + hw > front.down - hw, `${tag}: the forms overlap`);
     }
   }
 });
