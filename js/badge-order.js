@@ -1,15 +1,16 @@
 // Which of two badges of equal standing is worn higher. Where the regulation leaves the order of badges to the wearer (two CAP occupational badges over
-// the left pocket or above the CAP tape, data/badge-catalog.js EQUAL_STANDING), the Badges card lists the stack as the drawing has it and offers the swap:
-// one "Swap" for a pair, "Move up" and "Move down" for each badge of three or more. Where the regulation fixes the order nothing is offered, and where
-// the other order would not stay on the garment the card says so and offers nothing.
+// the left pocket or above the CAP tape, data/badge-catalog.js EQUAL_STANDING), the Badges card shows the stack drawn each way it may be worn, as a row of
+// picture tiles (the pair both ways; three or four badges every order, a long list scrolling in the row) and the member picks one. Where the regulation fixes
+// the order nothing is offered, and where the other order would not stay on the garment the card says so and offers nothing.
 //
 // The drawing is the source: the engine reports each such stack (scene.badgeOrders, js/engine/compose.js reportBadgeOrder), the card is made from that
-// report only, and a press changes State.badgeOrder (data/badge-catalog.js moveEqual) and redraws. The choice is saved with the setup (js/wiring.js).
+// report only, each tile is the engine's own drawing of the member's uniform with that order (js/option-pictures.js, the recipe badgeOrder), and a pick
+// changes State.badgeOrder (data/badge-catalog.js setEqual) and redraws. The choice is saved with the setup (js/wiring.js).
 //
-//   CAPUBBadgeOrder.model(scene)             what the card shows: [{ group, label, place, ref, title, note, rows: [{ id, title, position, up, down }],
-//                                            pair, swap, why }]
-//   CAPUBBadgeOrder.render(host, scene, onMove, focus)   draws the card in `host`; onMove(group, shownIds, id, dir, how) is called on a press
-//   CAPUBBadgeOrder.start()                  the page's glue: puts the card under "Where your badges are worn" and redraws it with every drawing
+//   CAPUBBadgeOrder.model(scene)             what the card shows: [{ group, label, place, ref, title, note, rows: [{ id, title, position }], pair, swap, why }]
+//   CAPUBBadgeOrder.orders(ids)              every order the badges may take, each a list of ids, highest first
+//   CAPUBBadgeOrder.render(host, scene, onChoose, focus, deps)   draws the card in `host`; onChoose(group, order) is called on a pick
+//   CAPUBBadgeOrder.start()                  the page's glue: puts the card in the Badges card and redraws it with every drawing
 //
 // Loads as a classic script (window.CAPUBBadgeOrder) and as a CommonJS module for the Node tests, which provide the document.
 (function(root, factory){
@@ -42,7 +43,7 @@
         title: cap(`${e.label} ${e.place}`),
         // The rule, with its paragraph (js/citations.js puts the paragraph behind the question mark).
         note: `The regulation sets no order between these badges, so either may be worn higher${e.ref ? ` (CAPR 39-1, ${e.ref})` : ''}.`,
-        rows: e.badges.map((b, i) => ({ id: b.id, title: b.title || b.id, position: positionWord(i, n), up: swap && i > 0, down: swap && i < n - 1 })),
+        rows: e.badges.map((b, i) => ({ id: b.id, title: b.title || b.id, position: positionWord(i, n) })),
         pair: n === 2, swap, why: swap ? '' : (e.why || '')
       };
     });
@@ -54,22 +55,66 @@
     if(text != null) node.textContent = text;
     return node;
   }
-  function button(label, name, onPress, data){
-    const b = make('button', 'badgeOrderButton ghost', label);
-    b.type = 'button';
-    b.setAttribute('type', 'button');
-    b.setAttribute('aria-label', name);
-    Object.assign(b.dataset, data || {});
-    b.addEventListener('click', onPress);
-    return b;
+  // Every order the badges of a stack may take. The tiles keep one fixed order of their own (the catalog's precedence, then the name), so a tile stays where it is when another is picked.
+  // Up to four badges are every arrangement of them; more than that (the page holds fewer) is the order as it stands and each badge moved one place.
+  function orders(ids){
+    const Catalog = page.CAPUBBadgeCatalog;
+    const rank = id => (Catalog && Catalog.occupationalRank ? Number(Catalog.occupationalRank(id)) : 0) || 0;
+    const base = [...ids].sort((a, b) => rank(a) - rank(b) || (a < b ? -1 : a > b ? 1 : 0));
+    const out = [];
+    if(base.length > 4){
+      out.push([...ids]);
+      for(let i = 0; i < ids.length - 1; i++){ const next = [...ids]; [next[i], next[i + 1]] = [next[i + 1], next[i]]; out.push(next); }
+      return out;
+    }
+    const go = (rest, head) => { if(!rest.length) out.push(head); else rest.forEach((x, i) => go(rest.filter((_, j) => j !== i), [...head, x])); };
+    go(base, []);
+    return out;
   }
 
-  // Draws the card in `host` and returns the list of groups drawn. `focus` ({ group, id, how }) names the control that had the focus before this
-  // drawing (a press redraws the card), so the focus stays with the member's place in it.
-  function render(host, scene, onMove, focus){
+  // The row of tiles for one stack: each order, its badges named top to bottom, the engine's picture of it; the order the drawing has is picked. Pictures are asked for as the page is free
+  // to make them; an order the engine does not keep is not offered unless it is the one drawn.
+  function choice(section, g, onChoose, deps, token, host, focusGroup){
+    const slot = make('div', 'badgeOrderChoice');
+    section.append(slot);
+    const ids = g.rows.map(r => r.id);
+    const here = ids.join(',');
+    const all = orders(ids);
+    const key = o => o.join(',');
+    const titleOf = Object.fromEntries(g.rows.map(r => [r.id, r.title]));
+    const row = page.CAPUBPickLists && page.CAPUBPickLists.pictureRow;
+    const Picker = (deps && deps.VisualPicker) || page.VisualPicker;
+    const made = deps && deps.pictures ? deps.pictures(g.group, all.map(key)) : (page.CAPUBOptionPictures ? page.CAPUBOptionPictures.pictures('badgeOrder:' + g.group, all.map(key)) : null);
+    const draw = known => {
+      if(host.__badgeOrderToken !== token) return;
+      const had = slot.contains && slot.contains(document.activeElement);
+      slot.textContent = '';
+      if(!row || !Picker) return;
+      const offered = all.filter(o => known[key(o)] !== false || key(o) === here);
+      slot.append(row({ VisualPicker: Picker }, {
+        name: `badgeOrder-${g.group}`, label: `${g.title}: the order the badges are worn in`, value: here, pictureHeight: '84px', tileWidth: '128px',
+        options: offered.map(o => ({ value: key(o), label: o.map(id => titleOf[id]).join(' over '), title: `Top to bottom: ${o.map(id => titleOf[id]).join(', ')}`, picture: known[key(o)] || undefined })),
+        onChange: v => onChoose && onChoose(g.group, v.split(','))
+      }).host);
+      if(had || focusGroup === g.group){
+        const on = slot.querySelector('[aria-checked="true"]');
+        if(on && on.focus) on.focus();
+      }
+    };
+    if(!made) draw({});
+    else{
+      draw(made.settled || Object.keys(made.now).length ? made.now : {});
+      if(!made.settled) made.ready.then(draw);
+    }
+  }
+
+  // Draws the card in `host` and returns the list of groups drawn. `focus` ({ group }) names the stack whose tile had the focus before this drawing (a pick redraws the card), so the
+  // focus stays with the member's place in it. `deps` ({ VisualPicker, pictures }) stand in for the page's own in the tests.
+  function render(host, scene, onChoose, focus, deps){
     const groups = model(scene);
     host.replaceChildren();
     host.classList.toggle('hidden', !groups.length);
+    const token = host.__badgeOrderToken = {};
     if(!groups.length) return groups;
     for(const g of groups){
       const section = make('section', 'badgeOrderGroup');
@@ -80,36 +125,21 @@
       const head = make('h4', 'badgeChooserTitle badgeOrderTitle', g.title);
       head.id = headId;
       section.append(head, make('p', 'fieldNote badgeOrderNote', g.note));
-      const list = make('ol', 'badgeOrderList');
-      const shown = g.rows.map(r => r.id);
-      for(const r of g.rows){
-        const li = make('li', 'badgeOrderRow');
-        li.dataset.badge = r.id;
-        li.append(make('span', 'badgeOrderName', r.title), make('span', 'badgeOrderPosition', r.position));
-        if(!g.pair && g.swap){
-          const press = (dir, how) => () => onMove && onMove(g.group, shown, r.id, dir, how);
-          const actions = make('span', 'badgeOrderActions');
-          if(r.up) actions.append(button('Move up', `Move up the ${r.title}`, press(-1, 'up'), { badge: r.id, how: 'up' }));
-          if(r.down) actions.append(button('Move down', `Move down the ${r.title}`, press(1, 'down'), { badge: r.id, how: 'down' }));
-          li.append(actions);
+      if(g.swap){
+        choice(section, g, onChoose, deps, token, host, focus && focus.group);
+      }else{
+        // The other order would not fit: the stack as it stands, and why.
+        const list = make('ol', 'badgeOrderList');
+        for(const r of g.rows){
+          const li = make('li', 'badgeOrderRow');
+          li.dataset.badge = r.id;
+          li.append(make('span', 'badgeOrderName', r.title), make('span', 'badgeOrderPosition', r.position));
+          list.append(li);
         }
-        list.append(li);
-      }
-      section.append(list);
-      if(g.pair && g.swap){
-        const [upper, lower] = g.rows;
-        section.append(button('Swap', `Swap the ${upper.title} and the ${lower.title}`, () => onMove && onMove(g.group, shown, upper.id, 1, 'swap'), { how: 'swap' }));
+        section.append(list);
       }
       if(g.why) section.append(make('p', 'fieldNote badgeOrderWhy', g.why));
       host.append(section);
-    }
-    // The member's place in the card: the same control again, or the nearest one that is left (a badge moved to the top has no "Move up").
-    if(focus){
-      const section = [...host.children].find(n => n.dataset && n.dataset.group === focus.group);
-      const buttons = section ? [...section.querySelectorAll('button')] : [];
-      const again = buttons.find(b => b.dataset.how === focus.how && (focus.how === 'swap' || b.dataset.badge === focus.id))
-        || buttons.find(b => b.dataset.badge === focus.id) || buttons[0];
-      if(again && again.focus) again.focus();
     }
     return groups;
   }
@@ -135,12 +165,12 @@
     host.insertAdjacentElement('afterend', status);
     return host;
   }
-  // What a press does: the badge moves one place among the badges of its group as drawn (a pair swaps), State.badgeOrder keeps it, the page redraws.
-  function move(group, shown, id, dir, how){
+  // What a pick does: the order picked is the member's order for the group (State.badgeOrder keeps it), the page redraws.
+  function choose(group, order){
     const State = page.State, Catalog = page.CAPUBBadgeCatalog;
     if(!State || !Catalog) return;
-    State.badgeOrder = Catalog.moveEqual(State.badgeOrder, group, shown, id, dir);
-    lastFocus = { group, id, how };
+    State.badgeOrder = Catalog.setEqual(State.badgeOrder, group, order);
+    lastFocus = { group, order };
     const view = page.CAPUBUniformView;
     if(view && view.scheduleRender) view.scheduleRender();
   }
@@ -151,18 +181,14 @@
     const current = scene && (!State || !State.uniform || scene.uniform === State.uniform) ? scene : null;
     const told = lastFocus;
     lastFocus = null;
-    render(host, current, move, told);
-    // After a press the redraw says in words what moved.
+    render(host, current, choose, told);
+    // After a pick the redraw says in words what the order is now.
     if(told && current){
       const status = document.getElementById(STATUS_ID);
       const g = model(current).find(x => x.group === told.group);
-      if(status && g){
-        const at = g.rows.findIndex(r => r.id === told.id);
-        const row = g.rows[at];
-        if(row) status.textContent = told.how === 'swap'
-          ? `${g.rows[0].title} is now worn above ${g.rows[1].title}.`
-          : `${row.title} is now ${/^(Highest|Lowest)$/.test(row.position) ? 'the ' + row.position.toLowerCase() : row.position} of the ${g.rows.length} badges.`;
-      }
+      if(status && g) status.textContent = g.pair
+        ? `${g.rows[0].title} is now worn above ${g.rows[1].title}.`
+        : `The badges are now worn, top to bottom: ${g.rows.map(r => r.title).join(', ')}.`;
     }
   }
   function start(){
@@ -174,5 +200,5 @@
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
   }
 
-  return { model, render, update, move, start, positionWord, HOST_ID, STATUS_ID };
+  return { model, orders, render, update, choose, start, positionWord, HOST_ID, STATUS_ID };
 });

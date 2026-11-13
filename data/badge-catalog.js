@@ -224,6 +224,16 @@
     out[group] = next;
     return out;
   }
+  // The member's order after they pick a whole order for a group: `order` (badge ids, highest first) becomes the saved list for the group, kept only for badges of that group, each once; the
+  // saved list of another group is untouched. An order of fewer than two badges of the group leaves what was saved for the group as it was.
+  function setEqual(saved, group, order){
+    const out = {};
+    for(const g of Object.keys(EQUAL_STANDING)){ const list = savedOf(saved, g); if(list.length) out[g] = list; }
+    if(!Object.prototype.hasOwnProperty.call(EQUAL_STANDING, group)) return out;
+    const next = (Array.isArray(order) ? order : []).filter((id, i, all) => typeof id === 'string' && equalGroup(id) === group && all.indexOf(id) === i);
+    if(next.length >= 2) out[group] = next;
+    return out;
+  }
   // What `saved` keeps once only the badges in `selected` are held: the ids still held, in the member's order; a group left with fewer than two
   // badges has no order to keep and is dropped, so a badge taken off never leaves a choice behind for a later build. Anything that is not a group
   // of equal standing, a list of badge ids of that group, is dropped as well. Returns a new object ({} for none).
@@ -273,5 +283,5 @@
     if(membership === 'senior') return !cadetOnlySet.has(id);
     return true;
   }
-  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
+  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, setEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
 });

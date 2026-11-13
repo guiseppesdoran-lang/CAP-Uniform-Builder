@@ -175,6 +175,17 @@ async function launch(){
     pl = await places();
     if(pl.slot !== 'CHEST_LEFT' || pl.checked.join() !== 'CHEST_LEFT') fails.push('picking the left pocket should move the patch: ' + JSON.stringify(pl));
     await ev(`document.querySelector('#galleryModalOverlay .modalClose, #galleryModalDone, #galleryModalOverlay button')?.click()`); await sleep(300);
+    // The order of two badges of equal standing: a tile for each order, each the uniform drawn with it; a pick moves the badges.
+    await set(`State.uniform = 'blues_a'; State.patches = []; State.patchSelections = {}; State.badges = ['ground_team_basic_badge', 'nurse_officer']; State.badgeSelections = {}; for(const id of State.badges) State.badgeSelections[id] = { checked: true }; State.badgeOrder = {}; updateAvailabilityUI(null); if(typeof refreshUI === 'function') refreshUI()`);
+    await sleep(2500);
+    const orderState = () => ev(`(() => { const h = document.getElementById('badgeOrder'); const t = h ? [...h.querySelectorAll('.vpOption')] : []; const y = id => { const l = (CAPUBUniformView.scene.layers || []).find(l => l.role === 'badge' && String(l.key).split(':')[1] === id); return l ? l.y : null; }; return { hidden: h ? h.classList.contains('hidden') : null, values: t.map(x => x.dataset.value), checked: t.filter(x => x.getAttribute('aria-checked') === 'true').map(x => x.dataset.value), pictures: t.filter(x => /^blob:/.test((x.querySelector('img') || {}).src || '')).length, buttons: h ? h.querySelectorAll('button:not(.vpOption)').length : -1, saved: State.badgeOrder, gtHigher: y('ground_team_basic_badge') < y('nurse_officer') }; })()`);
+    let od = await orderState();
+    console.log('badge order:', JSON.stringify(od));
+    if(od.hidden || od.values.length !== 2 || od.pictures !== 2 || od.buttons) fails.push('two badges of equal standing should be two picture tiles, no Swap button: ' + JSON.stringify(od));
+    if(!od.gtHigher) fails.push('the Ground Team badge starts higher: ' + JSON.stringify(od));
+    await ev(`[...document.querySelectorAll('#badgeOrder .vpOption')].find(x => x.dataset.value.startsWith('nurse_officer')).click()`); await sleep(3000);
+    od = await orderState();
+    if(od.gtHigher || JSON.stringify(od.saved) !== JSON.stringify({ occupational: ['nurse_officer', 'ground_team_basic_badge']}) || od.checked.join() !== 'nurse_officer,ground_team_basic_badge') fails.push('picking the other order should put the Nurse Officer badge higher and keep it: ' + JSON.stringify(od));
   }catch(e){ console.error(e); code = 1; }
   finally { try{ ws.close(); }catch(e){} proc.kill(); srv.close(); }
   if(fails.length){ console.error('FAIL:\n - ' + fails.join('\n - ')); code = 1; } else if(!code) console.log('OK');

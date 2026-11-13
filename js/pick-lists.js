@@ -794,5 +794,5 @@
     };
   }
 
-  return { badgeList, militaryBadgeList, badgeLine, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pageDeps };
+  return { badgeList, militaryBadgeList, badgeLine, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pictureRow, pageDeps };
 });

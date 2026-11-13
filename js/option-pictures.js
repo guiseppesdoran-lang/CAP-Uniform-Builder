@@ -572,6 +572,30 @@
     return [build.uniform, build.gender, build.membership, build.grade && (build.grade.key || build.grade.rank), build.opt, patch && [patch.asset, patch.href, patch.size, patch.aspect, patch.echelon]];
   };
 
+  // ---- the order of badges of equal standing: each order the stack may take, as the engine draws it ----------------------------------------------------------
+
+  // Each way the badges of a stack (`values`: their ids, highest first, joined by commas) may be arranged, as the engine draws the member's own uniform with that order for the group
+  // (`about`: the group), in a window round the stack so the badges and the pocket they are over show. An order the engine does not keep (it reports the stack in another order, or a
+  // badge has no place) is not offered.
+  async function badgeOrder(env, build, values, group){
+    const out = {};
+    await Promise.all(values.map(async v => {
+      const ids = String(v).split(',');
+      const scene = await env.compose(Object.assign({}, build, { badgeOrder: Object.assign({}, build.badgeOrder, { [group]: ids }) }));
+      const mine = scene.layers.filter(l => l.role === 'badge' && ids.some(id => String(l.key).startsWith('badge:' + id + ':') || l.key === 'badge:' + id));
+      const drawn = new Set(mine.map(l => String(l.key).split(':')[1]));
+      const kept = (scene.badgeOrders || []).find(e => e.group === group && ids.every(id => (e.badges || []).some(b => b.id === id)));
+      if(!ids.every(id => drawn.has(id)) || (kept && kept.badges.map(b => b.id).join(',') !== ids.join(','))){ out[v] = false; return; }
+      const at = env.core.unionBounds(mine.map(l => env.core.layerBounds(l)));
+      const w = Math.max(3.6, at.w * 2), h = w * 0.75;
+      const layers = scene.layers.filter(l => l.type !== 'clear' && l.type !== 'measure');
+      out[v] = { scene: sceneOf(layers, { x: at.x + at.w / 2 - w / 2, y: at.y + at.h / 2 - h / 2, w, h }, 'Badge order'), pad: 0 };
+    }));
+    return out;
+  }
+  const badgeOrderKey = build => [build.uniform, build.gender, build.membership, build.grade && (build.grade.key || build.grade.rank), (build.badges || []).map(b => [b.id, b.variant, b.level]),
+    (build.ribbons || []).map(r => r && (r.id || r.key || r)), build.opt, build.command, build.name && [build.name.first, build.name.last, build.name.show]];
+
   const RECIPES = {
     headgear: { make: headgear, key: headgearKey },
     capGrade: { make: capGrade, key: capGradeKey },
@@ -596,6 +620,7 @@
     chevron: { make: chevron, key: chevronKey },
     esPatch: { make: esPatch, key: esPatchKey },
     patchPlace: { make: patchPlace, key: patchPlaceKey },
+    badgeOrder: { make: badgeOrder, key: badgeOrderKey },
     skirt: { make: skirt, key: figureKey([]) },
     buttons: { make: buttons, key: buttonsKey },
     chinstrap: { make: chinstrap, key: chinstrapKey },

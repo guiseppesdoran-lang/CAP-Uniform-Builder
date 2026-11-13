@@ -15,7 +15,7 @@ test('the page loads the script with the other feature scripts and the styleshee
   assert.ok(html.indexOf('<script src="js/badge-order.js') < html.indexOf('<script src="js/bootstrap.js'), 'before the first drawing');
   assert.ok(html.indexOf('<script src="js/badge-order.js') > html.indexOf('<script src="js/uniform-view.js'), 'after the drawing it listens to');
   const css = read('styles/app.css');
-  for(const sel of ['.badgeOrder{', '.badgeOrderGroup{', '.badgeOrderList{', '.badgeOrderRow{', '.badgeOrderName{', '.badgeOrderPosition{', '.badgeOrderButton{', '.badgeOrderStatus{'])
+  for(const sel of ['.badgeOrder{', '.badgeOrderGroup{', '.badgeOrderList{', '.badgeOrderRow{', '.badgeOrderName{', '.badgeOrderPosition{', '.badgeOrderChoice{', '.badgeOrderStatus{'])
     assert.ok(css.includes(sel), sel);
   assert.match(css, /\.badgeOrder\.hidden\{display:none\}/);
 });
