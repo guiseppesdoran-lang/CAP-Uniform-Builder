@@ -253,7 +253,7 @@ test('the picker has a rule line for the ribbons whose counting is not plain "Nt
   }
   assert.match(RA.hint('search_find_ribbon'), /20 non-distress finds/);
   assert.equal(RA.hint('meritorious_service_award'), '');
-  assert.match(read('js/galleries.js'), /CAPUBRibbonAwards\.hint\(id\)/);
+  assert.match(read('js/pick-lists.js'), /CAPUBRibbonAwards\.hint\(id\)/);
 });
 
 // ---- badges and cords ------------------------------------------------------------------------------------------------
@@ -411,7 +411,7 @@ test('JROTC/ROTC ribbons follow the military awards\' rule on the uniforms: worn
 });
 
 test('the picker tile for a JROTC/ROTC ribbon carries no miniature medal box, and saved setups keep the choice (the sanitiser walks ribbonList)', () => {
-  assert.match(read('js/galleries.js'), /allowsMiniMedals\(State\.uniform\) && !isRotcRibbonId\(id\)/);
+  assert.match(read('js/pick-lists.js'), /allowsMiniMedals\(State\.uniform\) \|\| isRotcRibbonId\(id\) \? ''/);
   assert.match(read('js/wiring.js'), /for\(const id of \[\.\.\.ribbonList, \.\.\.getMilitaryRibbonIds\(\)\]\)/);
   assert.ok(ROTC.ribbons.every(r => ev(`ribbonList.includes('${r.id}')`)));
 });

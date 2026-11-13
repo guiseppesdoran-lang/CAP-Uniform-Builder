@@ -4,10 +4,9 @@
 //
 //   node tests/ribbon-picker-browser.cjs [--out DIR] [--tag before|after]
 //
-// Serves the repo, opens the page in headless Chrome, opens the ribbon picker, then selects three ribbons that
-// carry devices one after another. After each pick it measures every tile's height and the top of a later tile
-// in the same list. Exits 1 if any tile changed height or any later tile moved (Ethan: "the ui keeps shifting
-// down because tiles increase size"). Writes screenshots when --out is given.
+// Serves the repo, opens the page in headless Chrome and opens the ribbon picker: the ribbons are picture tiles in rows (two at a phone's width, more on a desktop), with
+// no checkbox or radio button; a tap turns one on with its count under the tile, the counting rule kept in the picked line's title and the select's, a ribbon with devices is
+// drawn with them in its tile, and the tiles of the other ribbons keep their size. Writes screenshots when --out is given.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -72,51 +71,53 @@ async function launch(){
     // Open the picker window the way the page does (the sidebar grid is hidden by CSS).
     const opened = await ev(`(() => { const b = document.getElementById('expandRibbons'); if(!b) return 'no-button'; b.click(); return 'expandRibbons'; })()`);
     await sleep(2500);
-    const where = await ev(`(() => { const g = document.querySelector('#galleryModalHost .galleryGrid') ; return g ? 'modal:' + g.querySelectorAll('.ribbonSelectorTile').length : 'nomodal:' + document.querySelectorAll('#ribbonGallery .ribbonSelectorTile').length; })()`);
-    console.log('picker', opened, where);
-    // LIVE14 E71: no "?" counting-rule button; before a pick the rule is the line under the select.
-    const ruleButtons = await ev(`document.querySelectorAll('#galleryModalHost .ribbonRuleBtn, #galleryModalHost .ribbonRulePop').length`);
-    const ruleLine = await ev(`document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"] .ribbonDeviceSummary')?.textContent || ''`);
-    console.log('rule buttons:', ruleButtons, '| recruiter line before the pick:', ruleLine);
-    const ruleFails = [];
-    if(ruleButtons) ruleFails.push(`${ruleButtons} rule buttons or popovers in the picker`);
-    if(!/^Two recruits earn the ribbon/.test(ruleLine)) ruleFails.push(`the recruiter tile does not print its counting rule under the select: "${ruleLine}"`);
-
-    // Ribbons that carry devices.
-    // Three ribbons in a row that carry devices and a counting rule (cadet recruiter bronze/silver clasps, search finds, air search and rescue).
-    const picks = await ev(`(() => { const want = ['cadet_recruiter_ribbon', 'search_find_ribbon', 'air_search_and_rescue_ribbon', 'cap_senior_recruiter_ribbon']; const root = document.querySelector('#galleryModalHost .galleryGrid'); return want.filter(id => root.querySelector('.ribbonSelectorTile[data-ribbon-id="' + id + '"]')).slice(0, 3); })()`);
-    console.log('ribbons with devices:', picks.join(', '));
-    const measure = `(() => { const root = document.querySelector('#galleryModalHost .galleryGrid') || document.querySelector('#ribbonGallery'); const tiles = [...root.querySelectorAll('.ribbonSelectorTile:not(.militaryRibbonSelectorTile)')]; const scroller = root.closest('.modalBody,.modalContent,#galleryModalHost') || root; const last = tiles[tiles.length - 1]; return { heights: tiles.map(t => Math.round(t.getBoundingClientRect().height * 100) / 100), tops: tiles.map(t => Math.round((t.getBoundingClientRect().top - root.getBoundingClientRect().top) * 100) / 100), n: tiles.length }; })()`;
-    const base = await ev(measure);
+    const root = `#galleryModalHost`;
+    const bad = [];
+    const tiles = await ev(`(() => { const h = document.querySelector('${root}'); return { cells: h.querySelectorAll('.vpCell').length, pressed: h.querySelectorAll('.vpCell > .vpOption[aria-pressed]').length, boxes: h.querySelectorAll('input[type=checkbox],input[type=radio]').length, controls: h.querySelectorAll('.vpControls').length, ruleButtons: h.querySelectorAll('.ribbonRuleBtn, .ribbonRulePop').length }; })()`);
+    console.log('picker', opened, JSON.stringify(tiles));
+    if(tiles.cells < 40 || tiles.pressed !== tiles.cells) bad.push(`the ribbons should be picture tiles with aria-pressed: ${JSON.stringify(tiles)}`);
+    if(tiles.boxes) bad.push(`${tiles.boxes} checkboxes or radio buttons in the picker`);
+    if(tiles.controls) bad.push(`${tiles.controls} controls under tiles before a pick: they show only while a ribbon is on`);
+    if(tiles.ruleButtons) bad.push(`${tiles.ruleButtons} rule buttons or popovers in the picker`);
+    // The rows: two to a row at a phone's width, more on a desktop.
+    const width = Number(opt('--width')) || 1280;
+    const columns = await ev(`(() => { const rows = {}; for(const c of document.querySelectorAll('${root} .vpCell')){ const r = c.getBoundingClientRect(); if(r.height > 0){ const k = Math.round(r.top); rows[k] = (rows[k] || 0) + 1; } } return Math.max(...Object.values(rows)); })()`);
+    console.log('tiles in the fullest row at', width, 'px:', columns);
+    if(width <= 420 && columns < 2) bad.push(`two tiles to a row at ${width} px, found ${columns}`);
+    if(width >= 1200 && columns < 4) bad.push(`more tiles to a row on a desktop, found ${columns}`);
+    const sizeBefore = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === 'cap_leadership_ribbon'); const r = c.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()`);
     await shot('0-start');
-    const log = [];
-    for(let k = 0; k < picks.length; k++){
-      // Choose the highest award level on that ribbon (the one with the most devices).
-      await ev(`(() => { const root = document.querySelector('#galleryModalHost .galleryGrid') || document.querySelector('#ribbonGallery'); const t = root.querySelector('.ribbonSelectorTile[data-ribbon-id="${picks[k]}"]'); const s = t.querySelector('select.rbAwardSelect'); const vals = [...s.options].map(o => o.value).filter(Boolean); s.value = vals[Math.min(vals.length - 1, 6)]; s.dispatchEvent(new Event('change', { bubbles: true })); })()`);
-      await sleep(1200);
-      const m = await ev(measure);
-      log.push(m);
-      await shot(`${k + 1}-picked`);
-    }
-    await ev(`document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"]').scrollIntoView({ block: 'center' })`);
-    await sleep(300);
-    await shot('3b-recruiter-tile');
-    // Picked, the line says what was selected; the rule stays in its title and the select's.
-    const picked = await ev(`(() => { const t = document.querySelector('#galleryModalHost .ribbonSelectorTile[data-ribbon-id="cadet_recruiter_ribbon"]'); const line = t.querySelector('.ribbonDeviceSummary'); return { text: line.textContent, title: line.title, select: t.querySelector('select.rbAwardSelect').title }; })()`);
-    console.log('recruiter after the pick:', JSON.stringify(picked));
-    if(!/^Selected: /.test(picked.text)) ruleFails.push(`the picked line: "${picked.text}"`);
-    if(!/Two recruits earn the ribbon/.test(picked.title) || !/Two recruits earn the ribbon/.test(picked.select)) ruleFails.push('the rule is not in the picked line\'s title or the select\'s');
-    log.push(await ev(measure));
-    // Compare by tile index (same tiles, same order).
-    let bad = [...ruleFails];
-    log.forEach((m, k) => {
-      if(m.n !== base.n) bad.push(`pick ${k + 1}: tile count ${base.n} -> ${m.n}`);
-      for(let i = 0; i < base.n && i < m.n; i++){
-        if(Math.abs(m.heights[i] - base.heights[i]) > 0.5) bad.push(`pick ${k + 1}: tile ${i} height ${base.heights[i]} -> ${m.heights[i]}`);
-        if(Math.abs(m.tops[i] - base.tops[i]) > 0.5) bad.push(`pick ${k + 1}: tile ${i} top ${base.tops[i]} -> ${m.tops[i]}`);
-      }
-    });
-    console.log(bad.length ? `FAIL (${bad.length}):\n  ${bad.slice(0, 12).join('\n  ')}` : `PASS: ${base.n} tiles kept their height and position through ${picks.length} picks`);
+
+    // A ribbon with a counting rule: nothing under the tile before the tap; after it the count select, the picked line, the rule in both titles.
+    const id = 'cadet_recruiter_ribbon';
+    await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); c.scrollIntoView({ block: 'center' }); c.querySelector('.vpOption').click(); })()`);
+    await sleep(1200);
+    const picked = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const line = c.querySelector('.ribbonDeviceSummary'); const sel = c.querySelector('select.rbAwardSelect'); return { on: c.querySelector('.vpOption').getAttribute('aria-pressed'), state: State.ribbonSelections['${id}'].checked, text: line && line.textContent, title: line && line.getAttribute('title'), select: sel && sel.getAttribute('title'), options: sel ? [...sel.options].map(o => o.value) : [], emptyOption: sel ? [...sel.options].some(o => !o.value) : null, drawn: !!c.querySelector('.vpPicture > svg') }; })()`);
+    console.log('recruiter after the tap:', JSON.stringify({ ...picked, options: picked.options.length }));
+    if(picked.on !== 'true' || !picked.state) bad.push('the tap should turn the ribbon on');
+    if(!/^Selected: /.test(picked.text || '')) bad.push(`the picked line: "${picked.text}"`);
+    if(!/Two recruits earn the ribbon/.test(picked.title || '') || !/Two recruits earn the ribbon/.test(picked.select || '')) bad.push('the rule is not in the picked line\'s title or the select\'s');
+    if(picked.emptyOption !== false || picked.options.length < 3) bad.push('the select lists the counts and no "- Select -": ' + JSON.stringify(picked.options));
+    await shot('1-recruiter-on');
+
+    // The highest count: the award changes and the ribbon is drawn with its devices in its tile.
+    await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const s = c.querySelector('select.rbAwardSelect'); s.value = s.options[s.options.length - 1].value; s.dispatchEvent(new Event('change', { bubbles: true })); })()`);
+    await sleep(1500);
+    const high = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); const s = State.ribbonSelections['${id}']; return { value: s.awardValue, devices: Object.keys(s.devices || {}).length, drawn: !!c.querySelector('.vpPicture > svg'), line: c.querySelector('.ribbonDeviceSummary').textContent, inRack: State.ribbons.some(r => (r.id || r) === '${id}') }; })()`);
+    console.log('the highest count:', JSON.stringify(high));
+    if(!high.drawn) bad.push('the ribbon that is on should be drawn with its devices in its tile');
+    if(!high.inRack) bad.push('the ribbon should be in the rack');
+    if(!/^Selected: /.test(high.line)) bad.push('the picked line after the count: ' + high.line);
+    // The tiles of the other ribbons keep their size.
+    const sizeAfter = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === 'cap_leadership_ribbon'); const r = c.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()`);
+    if(sizeBefore[0] !== sizeAfter[0] || Math.abs(sizeBefore[1] - sizeAfter[1]) > 1) bad.push(`another ribbon's tile changed size: ${sizeBefore} -> ${sizeAfter}`);
+    await shot('2-highest');
+    // And off again: the controls are gone.
+    await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); c.querySelector('.vpOption').click(); })()`);
+    await sleep(800);
+    const off = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === '${id}'); return { on: c.querySelector('.vpOption').getAttribute('aria-pressed'), controls: !!c.querySelector('.vpControls'), state: State.ribbonSelections['${id}'].checked }; })()`);
+    if(off.on !== 'false' || off.controls || off.state) bad.push('a second tap should turn the ribbon off and take its controls away: ' + JSON.stringify(off));
+    console.log(bad.length ? `FAIL (${bad.length}):\n  ${bad.slice(0, 12).join('\n  ')}` : 'PASS');
     if(bad.length) code = 1;
   } catch (e) { console.error(e); code = 2; }
   finally { try { ws.close(); } catch {} proc.kill(); srv.close(); process.exit(code); }

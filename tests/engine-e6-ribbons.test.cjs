@@ -142,7 +142,7 @@ test('the picker names what each device stands for', () => {
   assert.match(say('air_search_and_rescue_ribbon', 'mcchord_36800', '20 Sorties (Aircrew)'), /propeller \(aircrew\)/);
   assert.match(say('lifesaving_award', 'mcchord_28001', 'Basic with Star'), /silver star \(lifesaving other than blood or organ transport\)/);
   assert.equal(say('cap_achievment_award', 'capub_total_12', '12th Award'), 'Devices: 2 silver clasps, bronze clasp');
-  assert.match(fs.readFileSync(path.join(root, 'js', 'galleries.js'), 'utf8'), /CAPUBRibbonAwards\.describe\(id/, 'the tile uses it');
+  assert.match(fs.readFileSync(path.join(root, 'js', 'pick-lists.js'), 'utf8'), /CAPUBRibbonAwards\.describe\(id/, 'the tile uses it');
 });
 
 test('a Class A rack with the COS star, the rocketry star and aircrew propellers draws every device', async () => {

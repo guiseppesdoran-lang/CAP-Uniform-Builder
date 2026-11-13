@@ -1,7 +1,7 @@
 'use strict';
-// LIVE14 E74 (Ethan: "make all of the jrotc stuff dropdowns like the mil stuff"). The JROTC/ROTC ribbons are picked in one menu the
-// way the U.S. military ribbons are: a program select, a search and a dropdown of that program's ribbons; the ones chosen are tiles
-// with a Remove button; three at most (CAPR 39-1 11.2.5). tests/rotc-ribbon-picker-browser.cjs drives it in headless Chrome.
+// LIVE14 E74 (Ethan: "make all of the jrotc stuff dropdowns like the mil stuff"), then the owner (2026-11-12): ribbons chosen by picture, no checkboxes. The JROTC/ROTC ribbons
+// are one menu of the chooser window, in the way the U.S. military ribbons are: a program select and a search narrow its tiles, the ones chosen stay in sight, three at most
+// (CAPR 39-1 11.2.5). tests/pick-ribbon-list.test.cjs drives the menu on the page's own data; tests/rotc-ribbon-picker-browser.cjs drives it in headless Chrome.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -10,24 +10,17 @@ const vm = require('node:vm');
 const { loadPageScripts } = require('./helpers/page-scripts.cjs');
 
 const galleries = fs.readFileSync(path.join(__dirname, '..', 'js', 'galleries.js'), 'utf8');
+const lists = fs.readFileSync(path.join(__dirname, '..', 'js', 'pick-lists.js'), 'utf8');
 const { context } = loadPageScripts();
 const ev = src => { const v = vm.runInContext(src, context); return v && typeof v === 'object' ? JSON.parse(JSON.stringify(v)) : v; };
-const values = html => [...html.matchAll(/<option value="([^"]*)"/g)].map(m => m[1]).filter(Boolean);
 const ROTC = require('../data/rotc-ribbons.js');
 
-test('the dropdown offers a program\'s ribbons, narrowed by the search, without the ones already chosen', () => {
-  const all = ROTC.ribbons.map(r => r.id);
-  ev("State.ribbonSelections = {}");
-  assert.deepEqual(values(ev(`capubRotcAddOptionsHtml(${JSON.stringify(all)}, 'ALL', '')`)), all, 'all programs, in the data\'s order');
-  for(const service of ROTC.services){
-    const own = ROTC.ribbons.filter(r => r.service === service.key).map(r => r.id);
-    assert.deepEqual(values(ev(`capubRotcAddOptionsHtml(${JSON.stringify(all)}, ${JSON.stringify(service.key)}, '')`)), own, service.label);
-  }
-  assert.deepEqual(values(ev(`capubRotcAddOptionsHtml(${JSON.stringify(all)}, 'army-jrotc', 'PROFIC')`)), ['rotc_army_jrotc_proficiency']);
-  assert.match(ev(`capubRotcAddOptionsHtml(${JSON.stringify(all)}, 'ALL', '')`), /^<option value="">- Add a ribbon -<\/option><optgroup label="Air Force JROTC">/);
-  ev("State.ribbonSelections = { rotc_army_jrotc_proficiency: { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Earned' } }");
-  assert.deepEqual(values(ev(`capubRotcAddOptionsHtml(${JSON.stringify(all)}, 'army-jrotc', 'profic')`)), []);
-  assert.match(ev(`capubRotcAddOptionsHtml(${JSON.stringify(all)}, 'army-jrotc', 'profic')`), /^<option value="">- No ribbon matches -<\/option>$/);
+test('every program has its ribbons in the data\'s order, which is the order of wear, and the page knows each as a JROTC/ROTC ribbon', () => {
+  assert.ok(ROTC.services.length === 4);
+  for(const service of ROTC.services) assert.ok(ROTC.ribbons.some(r => r.service === service.key), service.label);
+  assert.ok(ROTC.ribbons.every(r => ev(`isRotcRibbonId(${JSON.stringify(r.id)})`)));
+  const wearOrder = ev('ribbonList.filter(id => isRotcRibbonId(id))');
+  assert.deepEqual(wearOrder, ROTC.ribbons.map(r => r.id));
 });
 
 test('a fourth is refused with the 11.2.5 message, and the selections keep their saved shape', () => {
@@ -41,26 +34,24 @@ test('a fourth is refused with the 11.2.5 message, and the selections keep their
   assert.match(galleries, /window\.capubToastShow\(capubRotcLimitMessage\(\)\)/);
 });
 
-test('the JROTC/ROTC ribbons are not tiles of their own: one menu, after the CAP ribbons and before the U.S. military ones', () => {
-  const build = galleries.slice(galleries.indexOf('function buildRibbonGallery'), galleries.indexOf('function capubRotcLimitMessage'));
-  assert.match(build, /const eligible = wornIds\.filter\(id => !isRotcRibbonId\(id\)\);/);
-  assert.ok(build.indexOf('capubBuildRotcRibbonMenu(rotcIds, buildTile)') > build.indexOf('section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)))'));
-  assert.ok(build.indexOf('capubBuildRotcRibbonMenu(rotcIds, buildTile)') < build.indexOf("militaryMenu.className='militaryRibbonMenu'"));
-  const menu = galleries.slice(galleries.indexOf('function capubBuildRotcRibbonMenu'), galleries.indexOf('function wireRibbonTileControls'));
+test('the JROTC/ROTC ribbons are not tiles among the CAP ones: one menu, after the CAP ribbons and before the U.S. military ones', () => {
+  const build = lists.slice(lists.indexOf('function ribbonLists'), lists.indexOf('function rememberOpen'));
+  assert.match(build, /const capIds = worn\.filter\(id => !d\.isRotc\(id\)\);/);
+  assert.ok(build.indexOf('rotcMenu(container, rotcIds, d, refreshAll)') > build.indexOf("name: 'ribbons'"));
+  assert.ok(build.indexOf('rotcMenu(container, rotcIds, d, refreshAll)') < build.indexOf('militaryMenu(container, d, refreshAll)'));
+  const menu = lists.slice(lists.indexOf('function rotcMenu'), lists.indexOf('function militaryMenu'));
   // The military menu's look: the same details, filter row and grid classes, and its open/closed state kept the same way.
-  assert.match(menu, /menu\.className = 'militaryRibbonMenu rotcRibbonMenu';/);
-  assert.match(menu, /menu\.dataset\.militarySection = 'rotc-root';/);
-  assert.match(menu, /filters\.className = 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters';/);
-  assert.match(menu, /<select class="rotcProgramSelect"/);
-  assert.match(menu, /<input class="rotcRibbonSearch" type="search"/);
-  // The picker window re-syncs after a change to an rbAwardSelect (js/wiring.js wireModalInteractions); adding is one.
-  assert.match(menu, /<select class="rbAwardSelect rotcRibbonAddSelect"/);
-  assert.match(fs.readFileSync(path.join(__dirname, '..', 'js', 'wiring.js'), 'utf8'), /grid\.querySelectorAll\('\.rbAwardSelect,/);
-  assert.match(menu, /grid\.className = 'militaryBranchGrid rotcChosenGrid';/);
-  assert.match(menu, /remove\.className = 'ghost rotcRibbonRemove';/);
+  assert.match(menu, /el\('details', 'militaryRibbonMenu rotcRibbonMenu'\)/);
+  assert.match(menu, /rememberOpen\(d, menu, 'rotc-root'\)/);
+  assert.match(menu, /el\('div', 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters'\)/);
+  assert.match(menu, /el\('select', 'rotcProgramSelect'\)/);
+  assert.match(menu, /el\('input', 'rotcRibbonSearch'\)/);
+  // No dropdown to add from and no Remove button: a ribbon is a tile, a tap turns it on or off.
+  assert.doesNotMatch(menu + galleries, /rotcRibbonAddSelect|rotcRibbonRemove|rotcChosenGrid/);
+  assert.match(menu, /name: 'rotcRibbons'/);
 });
 
-test('in a real browser, two JROTC ribbons picked through the program and ribbon dropdowns are drawn, and a fourth is refused (needs Chrome)', { timeout: 240000 }, t => {
+test('in a real browser, JROTC ribbons picked by tapping their tiles are drawn, and a fourth is refused (needs Chrome)', { timeout: 240000 }, t => {
   const chrome = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
   if(!fs.existsSync(chrome)) return t.skip('Chrome not installed');
   const r = require('node:child_process').spawnSync(process.execPath, [path.join(__dirname, 'rotc-ribbon-picker-browser.cjs')], { encoding: 'utf8', timeout: 220000 });

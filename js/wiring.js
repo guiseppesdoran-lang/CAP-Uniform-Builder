@@ -335,28 +335,14 @@ function openGalleryModal(kind){
 
   function syncFromSidebar(){
     if(kind==='ribbons'){
-      const hadMilitaryUI=!!grid.querySelector('details[data-military-section]');
-      if(hadMilitaryUI) captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-      const ui=getMilitaryUIState();
-      const modalSnapshot=hadMilitaryUI ? {
-        expandedSections:[...(ui.expandedSections || [])],
-        modalScrollTop:ui.modalScrollTop,
-        focusedControl:ui.focusedControl ? {...ui.focusedControl} : null
-      } : null;
+      // The ribbons as picture tiles of the picture picker (js/pick-lists.js ribbonLists): the CAP ribbons in the order of precedence under their headings, the JROTC / ROTC menu
+      // and the U.S. military ones by branch. All of them, so the window has no Show less or Show all.
       State.ribbonGalleryExpanded = true;
-      buildRibbonGallery({capture:false});
-      if(modalSnapshot){
-        ui.expandedSections=modalSnapshot.expandedSections;
-        ui.modalScrollTop=modalSnapshot.modalScrollTop;
-        ui.focusedControl=modalSnapshot.focusedControl;
-      }
       modalTitle.textContent = "Ribbons / miniature medals";
-      const sidebar = by('ribbonGallery');
-      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
-      wireModalInteractions('ribbons');
-      fillRibbonTilePreviews(grid);
-      restoreMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-      queueMicrotask(()=>window.CAPUB_refreshModalGallerySearch?.('ribbons'));
+      grid.innerHTML = '';
+      grid.className = '';
+      host.querySelectorAll('#modalShowLess,#modalShowAll').forEach(b => { b.hidden = true; });
+      window.CAPUB_MODAL_PICKERS = CAPUBPickLists.ribbonLists(grid);
     }
 
     if(kind==='badges'){
@@ -493,46 +479,6 @@ function openGalleryModal(kind){
         militaryRoot.appendChild(details);
       }
       modalHost.appendChild(militaryRoot);
-    }
-  }
-
-  function wireModalInteractions(k){
-    if(k==='ribbons'){
-      wireRibbonTileControls(grid);
-      grid.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
-        input.oninput=()=>{
-          const ui=getMilitaryUIState();
-          ui.gallerySearchValue=input.value;
-          ui.focusedControl={ribbonId:'',deviceId:'',className:'militaryRibbonCatalogSearch',selectionStart:input.selectionStart};
-          clearTimeout(wireModalInteractions.searchTimer);
-          wireModalInteractions.searchTimer=setTimeout(()=>syncFromSidebar(),100);
-        };
-      });
-      grid.querySelectorAll('.militaryRibbonCatalogService,.militaryRibbonCatalogType').forEach(select=>{
-        select.onchange=()=>{
-          const ui=getMilitaryUIState();
-          if(select.classList.contains('militaryRibbonCatalogService')) ui.galleryServiceFilter=select.value || 'ALL';
-          else ui.galleryAwardTypeFilter=select.value || 'ALL';
-          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-          syncFromSidebar();
-        };
-      });
-      grid.querySelectorAll('details[data-military-section]').forEach(details=>{
-        details.addEventListener('toggle',()=>{
-          if(details.open && details.querySelector(':scope > [data-military-lazy="true"]')){
-            captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-            syncFromSidebar();
-          }
-        });
-      });
-      grid.querySelectorAll('.rbAwardSelect,.militaryServiceSelect,.militarySpecialDevice,.militaryNumeralDevice,.militaryAdvancedMode').forEach(control=>{
-        const original=control.onchange;
-        control.onchange=(event)=>{
-          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-          original?.call(control,event);
-          syncFromSidebar();
-        };
-      });
     }
   }
 

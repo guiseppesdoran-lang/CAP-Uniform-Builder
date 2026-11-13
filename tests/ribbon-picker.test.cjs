@@ -42,13 +42,15 @@ test('ribbons that title-case badly have their official names',()=>{
   assert.equal(names.iace_ribbon,'IACE Ribbon');
 });
 
+const lists=fs.readFileSync(path.join(__dirname,'..','js','pick-lists.js'),'utf8');
+const ribbonCode=lists.slice(lists.indexOf('// ---- ribbons'),lists.indexOf('return { badgeList'));
+
 test('the picker is grouped, drops raw ids, and shows mini medals only where they are worn',()=>{
-  assert.match(galleries,/groupRibbonIds\(visible\)/);
-  assert.match(galleries,/CAPUBUniformRules\.allowsMiniMedals\(State\.uniform\)/);
-  const start=galleries.indexOf('function buildRibbonGallery');
-  const builder=galleries.slice(start,galleries.indexOf('\nfunction ',start+10));
-  assert.doesNotMatch(builder,/'Not selected'/);
-  assert.doesNotMatch(builder,/\(\$\{escapeHtml\(id\)\}\)<\/div>/);
+  assert.match(ribbonCode,/ribbonGroups\(capIds\)/);
+  assert.match(lists,/CAPUBUniformRules\.allowsMiniMedals\(State\.uniform\)/);
+  assert.doesNotMatch(ribbonCode,/Not selected/);
+  assert.doesNotMatch(ribbonCode,/- Select -/,'off is the tile\'s tap, not a choice in the select');
+  assert.doesNotMatch(ribbonCode,/escapeHtml\(id\)|\(\$\{id\}\)/,'no raw id in the text');
 });
 
 const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
@@ -74,7 +76,7 @@ test('the option is cadet-only and does not delete selections',()=>{
   assert.doesNotMatch(block,/ribbonSelections\[[^\]]+\]\.checked\s*=/);
 });
 
-/* ---- A ribbon tile keeps one height (Ethan: "the ui keeps shifting down because tiles increase size") ---- */
+/* ---- The ribbon tiles (the picture picker's toggle mode) ---- */
 const css=fs.readFileSync(path.join(__dirname,'..','styles','app.css'),'utf8');
 const rule=sel=>{
   const i=css.indexOf(sel+'{');
@@ -82,37 +84,30 @@ const rule=sel=>{
   return css.slice(i,css.indexOf('}',i));
 };
 
-test('the picked line and the counting rule share one fixed device area and a fixed preview slot',()=>{
-  // The area is always rendered, picked or not, so it always takes the same room.
-  const builder=galleries.slice(galleries.indexOf('function buildRibbonGallery'));
-  assert.match(builder,/<div class="ribbonDeviceArea">/);
-  assert.doesNotMatch(builder,/<div class="sub ribbonRuleHint">/,'no detached rule paragraph');
-  assert.match(rule('.ribbonDeviceArea'),/height:calc\(3 \* 1\.3 \* var\(--t-xs\)\)/);
-  const summary=rule('.ribbonDeviceArea .ribbonDeviceSummary');
+test('a ribbon\'s picture box is wide and low (a ribbon is 3.7 times as wide as high), its controls are under the tile only while it is on, and its picked line is clamped to three lines',()=>{
+  assert.match(rule('.vp[data-size="large"][data-shape="wide"] .vpPicture'),/aspect-ratio:3 \/ 1/);
+  const summary=rule('.vpControls .ribbonDeviceSummary');
   assert.match(summary,/overflow:hidden/);
   assert.match(summary,/-webkit-line-clamp:3/);
-  // The enlarged drawn preview and the plain picture share one fixed slot.
-  const slot=css.match(/\.ribbonSelectorTile:not\(\.militaryRibbonSelectorTile\) > img,\s*\.ribbonSelectorTile:not\(\.militaryRibbonSelectorTile\) > svg\.ribbonPreviewSvg\{([^}]*)\}/);
-  assert.ok(slot,'preview slot rule');
-  assert.match(slot[1],/width:96px;height:56px/);
+  // The controls are made only for a ribbon that is on.
+  assert.match(ribbonCode,/controls: isOn => isOn \? ribbonControls\(d, id, military, after\) : null/);
+  assert.match(ribbonCode,/name: spec\.name, mode: 'toggle', size: 'large', shape: 'wide'/);
 });
 
 // LIVE14 E71 (Ethan: "you can remove those question mark things by some of the service ribbons").
-test('no "?" counting-rule button: the rule is the line under the select until the ribbon is picked, and stays in that line\'s title and the select\'s',()=>{
-  assert.doesNotMatch(galleries,/ribbonRuleBtn|ribbonRulePop|hasRule/);
-  const builder=galleries.slice(galleries.indexOf('function buildRibbonGallery'),galleries.indexOf('function wireRibbonTileControls'));
-  assert.match(builder,/const areaTitle = \[pickedText, ruleHint \? escapeHtml\(ruleHint\) : ''\]\.filter\(Boolean\)\.join\(' \\u2022 '\);/);
-  assert.match(builder,/ribbonDeviceSummary"\$\{areaTitle \? ` title="\$\{areaTitle\}"` : ''\}>\$\{pickedLine \|\| \(ruleHint \? escapeHtml\(ruleHint\) : ''\)\}<\/div>/);
-  assert.match(builder,/<select class="rbAwardSelect" data-ribbon-id="\$\{escapeHtml\(id\)\}"\$\{ruleHint \? ` title="\$\{escapeHtml\(ruleHint\)\}"` : ''\}>/);
+test('no "?" counting-rule button: the rule is in the title of the picked line and of the select',()=>{
+  assert.doesNotMatch(galleries+lists,/ribbonRuleBtn|ribbonRulePop|hasRule/);
+  assert.match(ribbonCode,/if\(hint\) select\.setAttribute\('title', hint\);/);
+  assert.match(ribbonCode,/const title = \[`Selected: \$\{picked\.label\}\$\{picked\.rest\}`, hint\]\.filter\(Boolean\)\.join\('[^']+'\);\s*line\.setAttribute\('title', title\);/);
   const ra=require('../data/ribbon-awards.js');
   for(const id of ['cadet_recruiter_ribbon','cap_senior_recruiter_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','iace_ribbon','crisis_ribbon'])
     assert.ok(ra.hint(id),`${id} has a rule note`);
 });
 
-test('in a real browser, picking three ribbons with devices moves no tile and changes no tile height (needs Chrome)',{timeout:180000},t=>{
+test('in a real browser, the ribbons are picture tiles, a tap turns one on with its controls under it, and the rule is kept in the picked line (needs Chrome)',{timeout:180000},t=>{
   const chrome=process.env.CHROME||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
   if(!fs.existsSync(chrome)) return t.skip('Chrome not installed');
   const r=require('node:child_process').spawnSync(process.execPath,[path.join(__dirname,'ribbon-picker-browser.cjs')],{encoding:'utf8',timeout:150000});
   assert.equal(r.status,0,r.stdout+r.stderr);
-  assert.match(r.stdout,/PASS: \d+ tiles kept their height and position/);
+  assert.match(r.stdout,/^PASS$/m);
 });

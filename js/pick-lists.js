@@ -16,7 +16,10 @@
   function pageDeps(){
     /* global State, ASSET, getBadgeAssetPath, getBadgeDisplayName, getBadgeTileMetaHtml, isCommandInsigniaBadge, CAPUBBadgeCatalog, canSelectCommandInsigniaForCurrentRank,
        chooseOnlyCommandInsignia, rebuildBadgesFromGallery, isCommandInsigniaGradeEligible, fullRender, getAvailableMilitaryBadgeVariants, militaryServiceLabel, PATCH_META,
-       patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery */
+       patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery, getEligibleRibbonIds, isAwardWornOnUniform, isRotcRibbonId, isMilitaryRibbonId, groupRibbonIds,
+       getRibbonDisplayName, getRibbonImagePath, getRibbonAwardOptions, capubFirstRibbonOptionValue, setRibbonSelectionFromDropdown, normalizeRibbonSelections, CAPUBRibbonAwards,
+       CAPUBUniformRules, hasMiniMedal, CAPUBUniformView, capubInstallImageFallback, ROTC_RIBBONS, capubRotcLimitMessage, getMilitaryRibbonIds, getMilitaryRibbonAward, getMilitaryAwardBranch,
+       militaryAwardFilterType, getMilitarySelectionService, deviceMeta, MILITARY_BRANCH_ORDER, MILITARY_BRANCH_LABELS, isMilitaryAwardWornOnUniform, getMilitaryUIState */
     return {
       State: typeof State !== 'undefined' ? State : null,
       VisualPicker: typeof VisualPicker !== 'undefined' ? VisualPicker : null,
@@ -41,7 +44,39 @@
       setPlace: (id, slot) => setPatchPlacement(id, slot),
       keepOneTab: id => window.capubKeepOneRangerTab(id),
       normalizePatches: () => normalizePatchSelections(),
-      rebuildPatches: () => rebuildPatchesFromGallery()
+      rebuildPatches: () => rebuildPatchesFromGallery(),
+      // ribbons
+      ribbonIds: () => getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id)),
+      isRotc: id => isRotcRibbonId(id),
+      isMilitary: id => isMilitaryRibbonId(id),
+      ribbonGroups: ids => groupRibbonIds(ids),
+      ribbonName: id => getRibbonDisplayName(id),
+      ribbonArt: id => getRibbonImagePath(id),
+      ribbonOptions: id => getRibbonAwardOptions(id),
+      firstOption: id => capubFirstRibbonOptionValue(id),
+      setRibbon: (id, value) => setRibbonSelectionFromDropdown(id, value),
+      normalizeRibbons: () => normalizeRibbonSelections(),
+      describeRibbon: (id, sel) => window.CAPUBRibbonAwards ? CAPUBRibbonAwards.describe(id, Object.assign({ membership: State.membership }, sel)) : '',
+      ribbonHint: id => window.CAPUBRibbonAwards ? CAPUBRibbonAwards.hint(id) : '',
+      // '' where the uniform wears no miniature medals (or the ribbon has none to show), 'yes' with its picture, 'missing' without one
+      miniMedal: id => !CAPUBUniformRules.allowsMiniMedals(State.uniform) || isRotcRibbonId(id) ? '' : (hasMiniMedal(id) ? 'yes' : 'missing'),
+      drawRibbon: (img, id, sel) => { if(window.CAPUBUniformView) CAPUBUniformView.fillRibbonPreview(img, id, sel); },
+      drawMini: (host, id, sel) => { if(window.CAPUBUniformView) CAPUBUniformView.fillMiniMedalPreview(host, id, sel); },
+      fallback: (img, id) => capubInstallImageFallback(img, [getRibbonImagePath({ id, awardValue: '' })]),
+      rotc: () => ROTC_RIBBONS,
+      rotcLimitMessage: () => capubRotcLimitMessage(),
+      militaryIds: () => getMilitaryRibbonIds(),
+      militaryAward: id => getMilitaryRibbonAward(id),
+      militaryBranchOf: award => getMilitaryAwardBranch(award),
+      militaryType: award => militaryAwardFilterType(award),
+      militaryService: (id, sel) => getMilitarySelectionService(id, sel),
+      militaryRules: (award, service, advanced) => window.CAPUBMilitary && window.CAPUBMilitary.inferDeviceRules ? window.CAPUBMilitary.inferDeviceRules(award, service, { allowUnverified: !!advanced }) : null,
+      deviceLabel: deviceId => (deviceMeta[deviceId] && deviceMeta[deviceId].label) || '',
+      branchOrder: () => MILITARY_BRANCH_ORDER,
+      branchLabels: () => MILITARY_BRANCH_LABELS,
+      militaryWorn: () => isMilitaryAwardWornOnUniform(),
+      ui: () => getMilitaryUIState(),
+      escapeText: s => String(s == null ? '' : s)
     };
   }
   const withDeps = deps => Object.assign(pageDeps(), deps || {});
@@ -252,5 +287,400 @@
     return entry;
   }
 
-  return { badgeList, militaryBadgeList, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch };
+  // ---- ribbons ------------------------------------------------------------------------------------------------------------------------------
+
+  const chosenRibbon = (d, id) => !!(d.State.ribbonSelections[id] && d.State.ribbonSelections[id].checked);
+
+  // What a tap does: the ribbon on at its first choice (its basic award, or "earned") or off, the page's rules after it (the shared slot, the exclusions, the three JROTC / ROTC
+  // ribbons at most, which refuses a fourth with the reason). Returns whether the ribbon is on afterwards.
+  function selectRibbon(id, on, deps){
+    const d = withDeps(deps);
+    d.normalizeRibbons();
+    d.setRibbon(id, on ? (d.isRotc(id) ? 'earned' : d.firstOption(id)) : '');
+    return chosenRibbon(d, id);
+  }
+
+  // The line a ribbon that is on prints under its tile: what was selected and the devices it wears; the counting rule is in its title.
+  function pickedText(d, id, military){
+    const sel = d.State.ribbonSelections[id] || {};
+    const devices = military
+      ? Object.entries(sel.devices || {}).filter(([, qty]) => Number(qty) > 0).map(([deviceId, qty]) => `${d.deviceLabel(deviceId) || deviceId}: ${Number(qty)}`).join(' • ')
+      : d.describeRibbon(id, sel);
+    const warnings = sel.deviceWarnings && sel.deviceWarnings.length ? ` • ${sel.deviceWarnings.join(' ')}` : '';
+    return { label: sel.awardLabel || 'Earned', rest: `${devices ? ` • ${devices}` : ''}${warnings}` };
+  }
+
+  // The controls under the tile of a ribbon that is on: for a U.S. military ribbon the service, for every ribbon its count or level (where it has more than one), the devices a
+  // military award allows (a button each, pressed when worn; the member's own numeral when devices are chosen by hand), then what was selected and the miniature medal where the
+  // uniform wears them. `after()` redraws the lists once something changed.
+  function ribbonControls(d, id, military, after){
+    const sel = d.State.ribbonSelections[id] || {};
+    const box = el('div', 'vpControlStack');
+    const hint = military ? '' : d.ribbonHint(id);
+    const ui = military ? d.ui() : null;
+    const award = military ? d.militaryAward(id) : null;
+    const redo = () => { d.setRibbon(id, sel.awardValue || `military_award_${sel.awardCount || 1}`); };
+    if(military && award && (award.authorizedServices || []).length){
+      const label = el('label', 'ribbonAwardLabel');
+      label.append('Awarding / wearer service');
+      const select = el('select', 'militaryServiceSelect');
+      select.dataset.ribbonId = id;
+      for(const service of award.authorizedServices){ const o = el('option', null, d.branchLabels()[service] || String(service).replaceAll('_', ' ')); o.value = service; select.append(o); }
+      select.value = d.militaryService(id, sel);
+      select.addEventListener('change', () => {
+        const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
+        current.militaryService = select.value;
+        d.State.ribbonSelections[id] = current;
+        if(current.checked) d.setRibbon(id, current.awardValue || `military_award_${current.awardCount || 1}`);
+        after();
+      });
+      label.append(select);
+      box.append(label);
+    }
+    const options = d.ribbonOptions(id).filter(opt => opt && opt.value);
+    if(options.length > 1){
+      const label = el('label', 'ribbonAwardLabel');
+      label.append('Award count / earned level');
+      const select = el('select', 'rbAwardSelect');
+      select.dataset.ribbonId = id;
+      if(hint) select.setAttribute('title', hint);
+      for(const opt of options){ const o = el('option', null, opt.label); o.value = opt.value; select.append(o); }
+      select.value = sel.awardValue || options[0].value;
+      select.addEventListener('change', () => { d.setRibbon(id, select.value); after(); });
+      label.append(select);
+      box.append(label);
+    }
+    if(military){
+      const rules = d.militaryRules(award, d.militaryService(id, sel), ui.advancedMode);
+      const advanced = !!ui.advancedMode;
+      const specials = advanced
+        ? [...new Set([...((rules && rules.allowedSpecialDevices) || []), 'V_DEVICE', 'C_DEVICE', 'R_DEVICE', 'ARROWHEAD_DEVICE', 'M_DEVICE', 'BRONZE_HOURGLASS', 'SILVER_HOURGLASS', 'GOLD_HOURGLASS'])]
+        : ((rules && rules.allowedSpecialDevices) || []);
+      if(specials.length || advanced){
+        const row = el('div', 'militarySpecialDeviceRow');
+        row.setAttribute('title', 'Select only devices authorized on your award orders.');
+        for(const deviceId of specials){
+          const on = (sel.specialAuthorizations || []).includes(deviceId);
+          const button = el('button', 'ghost vpSwitch militarySpecialDevice', d.deviceLabel(deviceId) || deviceId.replaceAll('_', ' '));
+          button.setAttribute('type', 'button');
+          button.setAttribute('aria-pressed', String(on));
+          button.dataset.ribbonId = id;
+          button.dataset.deviceId = deviceId;
+          button.addEventListener('click', () => {
+            const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
+            const chosen = new Set(current.specialAuthorizations || []);
+            if(chosen.has(deviceId)) chosen.delete(deviceId); else chosen.add(deviceId);
+            current.specialAuthorizations = [...chosen];
+            d.State.ribbonSelections[id] = current;
+            if(current.checked) d.setRibbon(id, current.awardValue || `military_award_${current.awardCount || 1}`);
+            after();
+          });
+          row.append(button);
+        }
+        if(advanced){
+          const label = el('label', null, 'Numeral ');
+          const input = el('input', 'militaryNumeralDevice');
+          input.setAttribute('type', 'number');
+          input.setAttribute('min', '0');
+          input.setAttribute('max', '99');
+          input.setAttribute('title', '0 means no numeral');
+          input.value = String(Number(sel.manualNumeral) || 0);
+          input.dataset.ribbonId = id;
+          input.addEventListener('change', () => {
+            const current = d.State.ribbonSelections[id] || { checked: false, devices: {} };
+            current.manualNumeral = Math.min(99, Math.max(0, Math.trunc(Number(input.value) || 0)));
+            d.State.ribbonSelections[id] = current;
+            if(current.checked) redo();
+            after();
+          });
+          label.append(input);
+          row.append(label);
+        }
+        box.append(row);
+      }
+    }
+    const picked = pickedText(d, id, military);
+    const line = el('div', 'sub ribbonDeviceSummary');
+    line.append('Selected: ');
+    line.append(el('b', null, picked.label));
+    line.append(picked.rest);
+    const title = [`Selected: ${picked.label}${picked.rest}`, hint].filter(Boolean).join(' • ');
+    line.setAttribute('title', title);
+    box.append(line);
+    const mini = d.miniMedal(id);
+    if(mini === 'yes'){
+      const preview = el('div', 'miniMedalPreview');
+      preview.append(el('span', null, 'Mini medal'));
+      const art = el('span', 'miniMedalArt');
+      art.setAttribute('role', 'img');
+      art.setAttribute('aria-label', `${d.ribbonName(id)} mini medal`);
+      preview.append(art);
+      box.append(preview);
+      d.drawMini(art, id, sel);
+    }else if(mini === 'missing'){
+      const preview = el('div', 'miniMedalPreview missing');
+      preview.append(el('span', null, 'No mini medal asset'));
+      box.append(preview);
+    }
+    return box;
+  }
+
+  // One list of ribbon tiles. spec: { name, ids(): the ribbons shown, in order of precedence; groups(): [{ key, note, ids }] where they are under headings; military: the tiles are
+  // U.S. military ribbons; caption(id): the line under the name; search(id): more words the search reads }. Every change redraws all the lists of the window (`after`).
+  function ribbonPicker(container, spec, d, after){
+    const military = !!spec.military;
+    const shown = () => spec.ids();
+    const on = () => shown().filter(id => chosenRibbon(d, id));
+    const option = (id, group, note) => ({
+      value: id, label: d.ribbonName(id), picture: d.ribbonArt(id) ? d.asset(d.ribbonArt(id)) : undefined,
+      caption: spec.caption ? spec.caption(id) : undefined, group, groupNote: note, search: spec.search ? spec.search(id) : (group || ''),
+      controls: isOn => isOn ? ribbonControls(d, id, military, after) : null
+    });
+    const options = () => spec.groups
+      ? spec.groups().flatMap(g => g.ids.map(id => option(id, g.key, g.note)))
+      : shown().map(id => option(id));
+    const host = el('div');
+    container.append(host);
+    const picker = d.VisualPicker.render(host, {
+      name: spec.name, mode: 'toggle', size: 'large', shape: 'wide', options: options(), values: on(),
+      onToggle: (id, wantOn) => { selectRibbon(id, wantOn, d); after(); }
+    });
+    // The drawn ribbon, devices and all, in place of the plain picture of a ribbon that is on; a picture that fails to load falls back to the ribbon's plain one.
+    const draw = () => {
+      for(const cell of picker.el.querySelectorAll('.vpCell')){
+        const id = cell.dataset.value;
+        const img = cell.querySelector('img');
+        if(!img) continue;
+        if(chosenRibbon(d, id)) d.drawRibbon(img, id, d.State.ribbonSelections[id]);
+        else d.fallback(img, id);
+      }
+    };
+    const entry = {
+      picker, spec,
+      ids: shown,
+      // Every tile as the state says, the controls and the drawn ribbons again; a field the member was in keeps the focus.
+      refresh(){
+        const active = document.activeElement;
+        const inside = active && picker.el.contains && picker.el.contains(active) ? active : null;
+        const cell = inside && inside.closest ? inside.closest('.vpCell') : null;
+        const keep = cell && inside !== cell.querySelector('.vpOption') ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], device: inside.dataset ? inside.dataset.deviceId : '' } : null;
+        picker.setOptions(options());
+        picker.setValues(on());
+        draw();
+        if(keep){
+          const again = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === keep.value);
+          const target = again && again.querySelectorAll('.' + keep.className).find(n => !keep.device || n.dataset.deviceId === keep.device);
+          if(target && target.focus) target.focus();
+        }
+      }
+    };
+    draw();
+    return entry;
+  }
+
+  // The window's lists of ribbons: the CAP ribbons in the order of precedence under their headings, the JROTC / ROTC menu, and the U.S. military ribbons by branch. Returns the
+  // entries, each with a `picker` whose filter(text) the window's search reads.
+  function ribbonLists(container, deps){
+    const d = withDeps(deps);
+    d.normalizeRibbons();
+    const worn = d.ribbonIds();
+    const rotcIds = worn.filter(id => d.isRotc(id));
+    const capIds = worn.filter(id => !d.isRotc(id));
+    const entries = [];
+    const refreshAll = () => entries.forEach(entry => entry.refresh());
+    const own = entry => { entries.push(entry); return entry; };
+
+    own(ribbonPicker(container, {
+      name: 'ribbons', ids: () => capIds,
+      groups: () => d.ribbonGroups(capIds).map(group => ({ key: group.label, note: group.note || '', ids: group.ids }))
+    }, d, refreshAll));
+    if(rotcIds.length) own(rotcMenu(container, rotcIds, d, refreshAll));
+    if(!d.militaryWorn()){
+      const note = el('div', 'hintText', 'U.S. military, JROTC and ROTC awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6, 11.2.5).');
+      container.append(note);
+    }else{
+      own(militaryMenu(container, d, refreshAll));
+    }
+    return entries;
+  }
+
+  // Whether the menu named `key` is open (the member's choice, kept in the page's state), and keeping it when the member opens or closes it.
+  function rememberOpen(d, details, key){
+    const ui = d.ui();
+    details.dataset.militarySection = key;
+    details.open = (ui.expandedSections || []).includes(key);
+    details.addEventListener('toggle', () => {
+      const current = new Set(d.ui().expandedSections || []);
+      if(details.open) current.add(key); else current.delete(key);
+      d.ui().expandedSections = [...current];
+    });
+  }
+
+  // The JROTC / ROTC ribbons: a menu with the program and a search to narrow the tiles; the ones chosen stay in sight whatever the narrowing says; three at most.
+  function rotcMenu(container, ids, d, refreshAll){
+    const ui = d.ui();
+    const rotc = d.rotc();
+    if(!ui.rotcProgram) ui.rotcProgram = 'ALL';
+    if(typeof ui.rotcSearch !== 'string') ui.rotcSearch = '';
+    const menu = el('details', 'militaryRibbonMenu rotcRibbonMenu');
+    rememberOpen(d, menu, 'rotc-root');
+    const summary = el('summary');
+    menu.append(summary);
+    menu.append(el('div', 'sub', `Worn after the CAP ribbons, at most ${rotc.limit} in all, only while enrolled in the program (CAPR 39-1, ${rotc.ref}). Pick the program, then the ribbons.`));
+    const filters = el('div', 'militaryRibbonCatalogFilters rotcRibbonCatalogFilters');
+    const program = el('select', 'rotcProgramSelect');
+    program.setAttribute('aria-label', 'JROTC or ROTC program');
+    const all = el('option', null, 'All programs'); all.value = 'ALL'; program.append(all);
+    for(const service of rotc.services){ const o = el('option', null, service.label); o.value = service.key; program.append(o); }
+    program.value = ui.rotcProgram;
+    const search = el('input', 'rotcRibbonSearch');
+    search.setAttribute('type', 'search');
+    search.setAttribute('placeholder', 'Search JROTC / ROTC ribbons…');
+    search.setAttribute('aria-label', 'Search JROTC and ROTC ribbons');
+    search.value = ui.rotcSearch;
+    filters.append(program, search);
+    menu.append(filters);
+    const status = el('div', 'sub rotcRibbonStatus');
+    status.setAttribute('role', 'status');
+    menu.append(status);
+    const chosen = () => ids.filter(id => chosenRibbon(d, id));
+    const narrowed = () => {
+      const q = String(ui.rotcSearch || '').trim().toLowerCase();
+      return ids.filter(id => {
+        if(chosenRibbon(d, id)) return true;
+        const r = rotc.get(id);
+        return r && (ui.rotcProgram === 'ALL' || r.service === ui.rotcProgram) && (!q || r.name.toLowerCase().includes(q));
+      });
+    };
+    const words = () => {
+      const n = chosen().length;
+      summary.textContent = `JROTC / ROTC Ribbons, ${n} of ${rotc.limit} chosen`;
+      status.textContent = n >= rotc.limit ? `${n} of ${rotc.limit} chosen. ${d.rotcLimitMessage()}`
+        : n ? `${n} of ${rotc.limit} chosen.` : 'None chosen.';
+    };
+    const entry = ribbonPicker(menu, {
+      name: 'rotcRibbons', ids: narrowed, military: false,
+      caption: id => { const r = rotc.get(id); const s = r && rotc.services.find(x => x.key === r.service); return s ? s.label : 'JROTC / ROTC'; },
+      search: id => { const r = rotc.get(id); const s = r && rotc.services.find(x => x.key === r.service); return s ? s.label : ''; }
+    }, d, () => { refreshAll(); });
+    const refresh = entry.refresh;
+    entry.refresh = () => { refresh(); words(); };
+    program.addEventListener('change', () => { ui.rotcProgram = program.value || 'ALL'; entry.refresh(); });
+    search.addEventListener('input', () => { ui.rotcSearch = search.value; entry.refresh(); });
+    words();
+    container.append(menu);
+    return entry;
+  }
+
+  // The U.S. military ribbons: a menu with a search, a service and a type to narrow them, the devices chosen by hand where the member says so, and a menu for each branch whose
+  // tiles are made when it is opened.
+  function militaryMenu(container, d, refreshAll){
+    const ui = d.ui();
+    const order = d.branchOrder(), labels = d.branchLabels();
+    const all = d.militaryIds();
+    const matches = () => {
+      const q = String(ui.gallerySearchValue || '').trim().toLowerCase();
+      return all.filter(id => {
+        const award = d.militaryAward(id);
+        const services = ((award && award.authorizedServices) || []).map(service => String(service).toUpperCase());
+        const branch = d.militaryBranchOf(award);
+        const serviceMatch = ui.galleryServiceFilter === 'ALL' || branch === ui.galleryServiceFilter || services.includes(ui.galleryServiceFilter);
+        const typeMatch = ui.galleryAwardTypeFilter === 'ALL' || d.militaryType(award) === ui.galleryAwardTypeFilter;
+        const haystack = [award && award.name, award && award.officialName, ...((award && award.aliases) || []), award && award.id, ...services, d.militaryType(award)].join(' ').toLowerCase();
+        return serviceMatch && typeMatch && (!q || haystack.includes(q));
+      });
+    };
+    const menu = el('details', 'militaryRibbonMenu');
+    rememberOpen(d, menu, 'military-root');
+    const summary = el('summary');
+    menu.append(summary);
+    const intro = el('div', 'sub', 'Shared awards appear once under Joint / Multi-Service. Each award offers the devices its own rule allows. ');
+    const advanced = el('button', 'ghost vpSwitch militaryAdvancedMode', 'Choose devices by hand');
+    advanced.setAttribute('type', 'button');
+    advanced.setAttribute('aria-pressed', String(!!ui.advancedMode));
+    intro.append(advanced);
+    menu.append(intro);
+    const filters = el('div', 'militaryRibbonCatalogFilters');
+    const search = el('input', 'militaryRibbonCatalogSearch');
+    search.setAttribute('type', 'search');
+    search.setAttribute('placeholder', 'Search military ribbons…');
+    search.setAttribute('aria-label', 'Search military ribbons');
+    search.value = ui.gallerySearchValue || '';
+    const service = el('select', 'militaryRibbonCatalogService');
+    service.setAttribute('aria-label', 'Filter military ribbons by service');
+    const anyService = el('option', null, 'All services'); anyService.value = 'ALL'; service.append(anyService);
+    for(const branch of order){ const o = el('option', null, labels[branch]); o.value = branch; service.append(o); }
+    service.value = ui.galleryServiceFilter || 'ALL';
+    const type = el('select', 'militaryRibbonCatalogType');
+    type.setAttribute('aria-label', 'Filter military ribbons by type');
+    const anyType = el('option', null, 'All award types'); anyType.value = 'ALL'; type.append(anyType);
+    for(const [value, label] of [['DECORATIONS', 'Decorations'], ['UNIT_AWARD', 'Unit awards'], ['CAMPAIGN_EXPEDITIONARY', 'Campaign / Expeditionary'], ['SERVICE', 'Service awards'], ['TRAINING', 'Training'], ['FOREIGN', 'Foreign'], ['OTHER', 'Other']]){
+      const o = el('option', null, label); o.value = value; type.append(o);
+    }
+    type.value = ui.galleryAwardTypeFilter || 'ALL';
+    filters.append(search, service, type);
+    menu.append(filters);
+    const result = el('div', 'sub militaryRibbonCatalogSummary');
+    menu.append(result);
+
+    const entries = [];   // the branch lists made so far
+    const branches = order.map(branch => {
+      const details = el('details', 'militaryBranchMenu');
+      const key = `military-branch-${branch}`;
+      rememberOpen(d, details, key);
+      const title = el('summary');
+      details.append(title);
+      const body = el('div', 'militaryBranchGrid');
+      details.append(body);
+      return { branch, key, details, title, body, entry: null };
+    });
+    const idsOf = b => matches().filter(id => d.militaryBranchOf(d.militaryAward(id)) === b.branch);
+    const fill = b => {
+      const ids = idsOf(b);
+      const filtering = !!String(ui.gallerySearchValue || '').trim() || ui.galleryServiceFilter !== 'ALL' || ui.galleryAwardTypeFilter !== 'ALL';
+      b.title.textContent = `${labels[b.branch]} (${ids.length})`;
+      if(filtering && ids.length) b.details.open = true;
+      b.body.replaceChildren();
+      b.entry = null;
+      if(!b.details.open){
+        b.body.append(el('div', 'sub', 'Open this branch to load its ribbon controls.'));
+      }else if(!ids.length){
+        b.body.append(el('div', 'sub', `No ${labels[b.branch]}-only ribbon is in the catalog; shared awards are listed once under Joint / Multi-Service.`));
+      }else{
+        b.entry = ribbonPicker(b.body, {
+          name: `militaryRibbons-${b.branch}`, military: true, ids: () => idsOf(b),
+          caption: id => ((d.militaryAward(id) && d.militaryAward(id).authorizedServices) || []).map(s => labels[s] || String(s).replaceAll('_', ' ')).join(' / ') || 'U.S. military',
+          search: id => { const award = d.militaryAward(id); return [award && award.name, award && award.officialName, ...((award && award.aliases) || [])].filter(Boolean).join(' '); }
+        }, d, refreshAll);
+      }
+    };
+    const words = () => {
+      const ids = matches();
+      summary.textContent = `U.S. Military Ribbons (${ids.length} unique awards)`;
+      result.textContent = `${ids.length} of ${all.length} unique military awards shown.`;
+    };
+    const redraw = () => { words(); branches.forEach(fill); };
+    search.addEventListener('input', () => { ui.gallerySearchValue = search.value; redraw(); });
+    service.addEventListener('change', () => { ui.galleryServiceFilter = service.value || 'ALL'; redraw(); });
+    type.addEventListener('change', () => { ui.galleryAwardTypeFilter = type.value || 'ALL'; redraw(); });
+    advanced.addEventListener('click', () => {
+      ui.advancedMode = !ui.advancedMode;
+      advanced.setAttribute('aria-pressed', String(!!ui.advancedMode));
+      refreshAll();
+    });
+    for(const b of branches){
+      b.details.addEventListener('toggle', () => { if(b.details.open && !b.entry) fill(b); });
+      menu.append(b.details);
+    }
+    redraw();
+    container.append(menu);
+    // The window's search and redraws reach the lists made so far.
+    return {
+      picker: { filter: text => branches.reduce((n, b) => n + (b.entry ? b.entry.picker.filter(text) : 0), 0) },
+      refresh(){ branches.forEach(b => { if(b.entry) b.entry.refresh(); }); words(); },
+      branches
+    };
+  }
+
+  return { badgeList, militaryBadgeList, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pageDeps };
 });

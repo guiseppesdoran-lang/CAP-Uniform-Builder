@@ -17,11 +17,11 @@ test('no precomposed ribbon picture and no canvas compositing are left',()=>{
 test('the uniform hands the engine the ribbon SVG and the chooser tile draws it with its devices',()=>{
   assert.match(indexSource,/asset: getMilitaryRibbonAward\(id\)\?\.images\?\.ribbonAsset \|\| null, devices, centered: false, military: true/);
   assert.match(indexSource,/ribbonDevicePlan\(sequence\)/);
-  assert.match(indexSource,/querySelector\('\.militaryRibbonArt img, :scope > img'\)/);
+  assert.match(indexSource,/CAPUBUniformView\.fillRibbonPreview\(img, id, sel\)/,'the tile of a ribbon that is on is the drawn ribbon, devices and all');
 });
 
 test('the chooser tile has no fabric overlay, no filter and no box',()=>{
-  const rules=style.match(/[^{}]*militaryRibbonArt[^{}]*\{[^}]*\}/g)||[];
+  const rules=style.match(/[^{}]*data-shape="wide"[^{}]*\{[^}]*\}/g)||[];
   assert.ok(rules.length);
   for(const rule of rules){
     assert.doesNotMatch(rule,/filter|gradient|box-shadow|background/,rule);

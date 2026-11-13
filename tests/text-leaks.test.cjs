@@ -63,7 +63,7 @@ test('a military service is named for the member, never by its catalog token', (
 });
 
 test('the military pickers carry no developer wording', () => {
-  const g = read('js/galleries.js'), w = read('js/wiring.js');
+  const g = read('js/galleries.js') + read('js/pick-lists.js'), w = read('js/wiring.js');
   for(const s of ['Normal mode only exposes', 'Manual / unverified configurations', 'Branch contents load when opened', 'reviewed local artwork', "'U.S. MILITARY'", "badge.family || 'OTHER'"]){
     assert.ok(!g.includes(s) && !w.includes(s), s);
   }

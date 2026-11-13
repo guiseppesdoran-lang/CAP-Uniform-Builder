@@ -5,11 +5,11 @@
 //
 //   node tests/rotc-ribbon-picker-browser.cjs [--out DIR]
 //
-// Serves the repo, opens index.html in headless Chrome, sets up a cadet in the men's Class A, opens the ribbon picker the way the page
-// does and its JROTC / ROTC menu. Picks the Air Force JROTC program and a ribbon from its dropdown, then the Army JROTC program, narrows
-// it with the search and picks a second; both are listed as tiles, checked in State and drawn in the rack. A third comes from "All
-// programs"; a fourth is refused with the 11.2.5 message, in the toast and in the menu. Remove takes one off the list and the drawing,
-// and a setup saved with JROTC ribbons in the old shape loads into the menu.
+// Serves the repo, opens index.html in headless Chrome, sets up a cadet in the men's Class A, opens the ribbon picker the way the page does and its JROTC / ROTC menu: the
+// ribbons are picture tiles, the program and the search narrow them. Tapping the Air Force JROTC color guard tile and then, narrowed to the Army program by the search, the Army
+// proficiency tile chooses two: both are checked in State and drawn in the rack, and the first stays in sight whatever the narrowing says. A third comes from "All programs"; a
+// fourth is refused with the 11.2.5 message, in the toast and in the menu. A second tap takes one off the drawing, and a setup saved with JROTC ribbons in the old shape loads
+// into the menu with its tiles on.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -72,21 +72,24 @@ const sortJ = a => JSON.stringify([...a].sort());
     await S('Page.enable');
     await S('Page.addScriptToEvaluateOnNewDocument', { source: "try{localStorage.setItem('cap_uniform_builder_access_v1','1')}catch(e){}" });
     await S('Page.navigate', { url: `http://127.0.0.1:${srv.address().port}/index.html` });
-    for(let i = 0; i < 400; i++){ if(await ev('typeof CAPUBUniformView !== "undefined" && typeof capubBuildRotcRibbonMenu === "function"').catch(() => false)) break; await sleep(50); }
+    for(let i = 0; i < 400; i++){ if(await ev('typeof CAPUBUniformView !== "undefined" && typeof CAPUBPickLists === "object"').catch(() => false)) break; await sleep(50); }
     await sleep(800);
     await ev(`window.__settle = async () => { await new Promise(r => setTimeout(r, 150)); for(let i = 0; i < 4; i++){ await CAPUBUniformView.scheduleRender(); await new Promise(r => setTimeout(r, 60)); } }`);
     await ev(`window.__pick = async (id, value) => { const el = document.getElementById(id); el.value = value; el.dispatchEvent(new Event('change', { bubbles: true })); await __settle(); await new Promise(r => setTimeout(r, 500)); }`);
     // A control of the picker window's JROTC / ROTC menu, changed the way a member changes it.
     await ev(`window.__menu = () => document.querySelector('#galleryModalHost details.rotcRibbonMenu')`);
     await ev(`window.__set = async (selector, value) => { const el = __menu().querySelector(selector); el.value = value; el.dispatchEvent(new Event(el.tagName === 'INPUT' ? 'input' : 'change', { bubbles: true })); await __settle(); await new Promise(r => setTimeout(r, 300)); }`);
+    await ev(`window.__tap = async id => { const c = [...__menu().querySelectorAll('.vpCell')].find(c => c.dataset.value === id); c.querySelector('.vpOption').click(); await __settle(); await new Promise(r => setTimeout(r, 500)); }`);
     await ev(`window.__state = () => {
       const m = __menu();
+      const cells = m ? [...m.querySelectorAll('.vpCell')].filter(c => !c.hidden) : [];
       return {
         checked: Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked),
         drawn: [...new Set([...document.querySelectorAll('#uniformCanvas svg.uniformSvg g.layer[data-role="ribbon"]')].map(g => String(g.getAttribute('data-calib-key')).replace(/^ribbon:/, '').replace(/#\\d+$/, '')))].filter(id => /^rotc_/.test(id)),
-        tiles: m ? [...m.querySelectorAll('.rotcChosenGrid .ribbonSelectorTile')].map(t => t.dataset.ribbonId) : null,
-        stray: document.querySelectorAll('#galleryModalHost .ribbonSelectorTile[data-ribbon-id^="rotc_"]').length - (m ? m.querySelectorAll('.rotcChosenGrid .ribbonSelectorTile').length : 0),
-        options: m ? [...m.querySelectorAll('.rotcRibbonAddSelect option')].map(o => o.value).filter(Boolean) : null,
+        shown: cells.map(c => c.dataset.value),
+        pressed: cells.filter(c => c.querySelector('.vpOption').getAttribute('aria-pressed') === 'true').map(c => c.dataset.value),
+        stray: [...document.querySelectorAll('#galleryModalHost .vpCell')].filter(c => !(m && m.contains(c)) && /^rotc_/.test(c.dataset.value)).length,
+        boxes: document.querySelectorAll('#galleryModalHost input[type=checkbox],#galleryModalHost input[type=radio]').length,
         summary: m ? m.querySelector('summary').textContent : '',
         status: m ? m.querySelector('.rotcRibbonStatus').textContent : '',
         open: m ? m.open : false,
@@ -108,35 +111,36 @@ const sortJ = a => JSON.stringify([...a].sort());
     await ev(`__pick('rankSetupSelect', 'C/AB')`);
     await ev(`(async () => { document.getElementById('expandRibbons').click(); await new Promise(r => setTimeout(r, 1500)); })()`);
     await ev(`(async () => { __menu().open = true; await new Promise(r => setTimeout(r, 300)); })()`);
+    const total = Object.values(ids).flat().length;
     const s0 = await ev('__state()');
-    console.log('menu:', s0.summary, '|', s0.options.length, 'ribbons offered');
-    expect(s0.open && s0.tiles && s0.tiles.length === 0, 'the menu opens with no ribbon chosen');
+    console.log('menu:', s0.summary, '|', s0.shown.length, 'tiles');
+    expect(s0.open && s0.pressed.length === 0, 'the menu opens with no ribbon chosen');
     expect(s0.stray === 0, 'no JROTC/ROTC ribbon is a tile of its own outside the menu');
-    expect(s0.options.length === Object.values(ids).flat().length, `All programs offers every JROTC ribbon: ${s0.options.length}`);
+    expect(s0.shown.length === total, `All programs shows every JROTC ribbon: ${s0.shown.length}`);
+    expect(s0.boxes === 0, `no checkbox or radio button in the picker: ${s0.boxes}`);
     expect(await ev(`[...__menu().querySelectorAll('.rotcProgramSelect option')].map(o => o.textContent).join('|')`) === 'All programs|Air Force JROTC|Army JROTC|Marine Corps JROTC|Navy JROTC', 'the program select lists the programs');
 
-    // ---- 1. Air Force JROTC, from its dropdown. ----
+    // ---- 1. Air Force JROTC: its program, then a tap on a tile. ----
     await ev(`__set('.rotcProgramSelect', 'air-force-jrotc')`);
     const s1 = await ev('__state()');
-    expect(sortJ(s1.options) === sortJ(ids['air-force-jrotc']), `the Air Force JROTC program offers its ${ids['air-force-jrotc'].length} ribbons: ${s1.options.length}`);
-    await ev(`__set('.rotcRibbonAddSelect', '${AF}')`);
+    expect(sortJ(s1.shown) === sortJ(ids['air-force-jrotc']), `the Air Force JROTC program shows its ${ids['air-force-jrotc'].length} ribbons: ${s1.shown.length}`);
+    await ev(`__tap('${AF}')`);
     const s2 = await ev('__state()');
-    console.log('after the first:', JSON.stringify({ ...s2, options: s2.options.length }));
-    expect(sortJ(s2.checked) === sortJ([AF]) && sortJ(s2.tiles) === sortJ([AF]), `the first is chosen and listed: ${s2.checked} / ${s2.tiles}`);
-    expect(!s2.options.includes(AF), 'a chosen ribbon is no longer offered');
+    console.log('after the first:', JSON.stringify({ ...s2, shown: s2.shown.length }));
+    expect(sortJ(s2.checked) === sortJ([AF]) && sortJ(s2.pressed) === sortJ([AF]), `the first is chosen and its tile is on: ${s2.checked} / ${s2.pressed}`);
     expect(/1 of 3 chosen/.test(s2.summary), `the summary counts it: ${s2.summary}`);
 
-    // ---- 2. Army JROTC, narrowed by the search. ----
+    // ---- 2. Army JROTC, narrowed by the search; the first stays in sight. ----
     await ev(`__set('.rotcProgramSelect', 'army-jrotc')`);
     await ev(`__set('.rotcRibbonSearch', 'profic')`);
     const s3 = await ev('__state()');
-    expect(sortJ(s3.options) === sortJ([ARMY]), `program and search leave one ribbon: ${s3.options.join(', ')}`);
-    await ev(`__set('.rotcRibbonAddSelect', '${ARMY}')`);
+    expect(sortJ(s3.shown) === sortJ([ARMY, AF]), `program and search leave the ribbon and the one chosen: ${s3.shown.join(', ')}`);
+    await ev(`__tap('${ARMY}')`);
     const s4 = await ev('__state()');
-    console.log('after the second:', JSON.stringify({ ...s4, options: s4.options.length }));
-    expect(sortJ(s4.checked) === sortJ([AF, ARMY]) && sortJ(s4.tiles) === sortJ([AF, ARMY]), `two chosen and listed: ${s4.checked} / ${s4.tiles}`);
+    console.log('after the second:', JSON.stringify({ ...s4, shown: s4.shown.length }));
+    expect(sortJ(s4.checked) === sortJ([AF, ARMY]) && sortJ(s4.pressed) === sortJ([AF, ARMY]), `two chosen and on: ${s4.checked} / ${s4.pressed}`);
     expect(sortJ(s4.drawn) === sortJ([AF, ARMY]), `both are drawn in the rack: ${s4.drawn.join(', ')}`);
-    expect(JSON.stringify(s4.tiles) === JSON.stringify([AF, ARMY]), 'the tiles follow the order of wear in the data');
+    expect(JSON.stringify(s4.shown) === JSON.stringify([AF, ARMY]), 'the tiles follow the order of wear in the data');
     await ev(`__menu().scrollIntoView({ block: 'start' })`);
     await sleep(200);
     await shot('1-two');
@@ -144,33 +148,32 @@ const sortJ = a => JSON.stringify([...a].sort());
     // ---- 3. A third from all programs, then a fourth is refused. ----
     await ev(`__set('.rotcRibbonSearch', '')`);
     await ev(`__set('.rotcProgramSelect', 'ALL')`);
-    await ev(`__set('.rotcRibbonAddSelect', '${NAVY}')`);
+    await ev(`__tap('${NAVY}')`);
     const s5 = await ev('__state()');
     expect(sortJ(s5.checked) === sortJ([AF, ARMY, NAVY]), `three chosen: ${s5.checked.join(', ')}`);
     expect(/At most 3 JROTC\/ROTC ribbons may be worn \(CAPR 39-1, 11\.2\.5\)/.test(s5.status), `the menu says the limit is reached: ${s5.status}`);
-    await ev(`__set('.rotcRibbonAddSelect', '${USMC}')`);
+    await ev(`__tap('${USMC}')`);
     const s6 = await ev('__state()');
-    console.log('after the fourth:', JSON.stringify({ ...s6, options: s6.options.length }));
-    expect(sortJ(s6.checked) === sortJ([AF, ARMY, NAVY]) && sortJ(s6.tiles) === sortJ([AF, ARMY, NAVY]), `the fourth is refused: ${s6.checked.join(', ')}`);
+    console.log('after the fourth:', JSON.stringify({ ...s6, shown: s6.shown.length }));
+    expect(sortJ(s6.checked) === sortJ([AF, ARMY, NAVY]) && sortJ(s6.pressed) === sortJ([AF, ARMY, NAVY]), `the fourth is refused and its tile stays off: ${s6.checked.join(', ')}`);
     expect(/At most 3 JROTC\/ROTC ribbons may be worn \(CAPR 39-1, 11\.2\.5\); remove one to add another\./.test(s6.toast), `the toast gives the limit: ${s6.toast}`);
     expect(sortJ(s6.drawn) === sortJ([AF, ARMY, NAVY]), `three drawn: ${s6.drawn.join(', ')}`);
     await ev(`__menu().scrollIntoView({ block: 'start' })`);
     await sleep(200);
     await shot('2-limit');
 
-    // ---- 4. Remove. ----
-    await ev(`(async () => { __menu().querySelector('.ribbonSelectorTile[data-ribbon-id="${ARMY}"] .rotcRibbonRemove').click(); await __settle(); await new Promise(r => setTimeout(r, 300)); })()`);
+    // ---- 4. A second tap takes one off. ----
+    await ev(`__tap('${ARMY}')`);
     const s7 = await ev('__state()');
-    expect(sortJ(s7.checked) === sortJ([AF, NAVY]) && sortJ(s7.tiles) === sortJ([AF, NAVY]) && sortJ(s7.drawn) === sortJ([AF, NAVY]), `Remove takes it off: ${JSON.stringify({ ...s7, options: s7.options.length })}`);
-    expect(s7.options.includes(ARMY), 'a removed ribbon is offered again');
+    expect(sortJ(s7.checked) === sortJ([AF, NAVY]) && sortJ(s7.pressed) === sortJ([AF, NAVY]) && sortJ(s7.drawn) === sortJ([AF, NAVY]), `a second tap takes it off: ${JSON.stringify({ ...s7, shown: s7.shown.length })}`);
 
     // ---- 5. A setup saved with the old tiles (the same State shape) loads into the menu. ----
     const saved = await ev(`(() => { const p = CAPUB_V2.collectProfile(); p.ribbonSelections = Object.assign({}, p.ribbonSelections, { '${USMC}': { checked: true, devices: {}, awardValue: 'earned', awardLabel: 'Earned' }, '${NAVY}': { checked: false, devices: {}, awardValue: '', awardLabel: '' } }); return JSON.stringify(p); })()`);
     await ev(`document.getElementById('galleryModalCloseBtn').click()`);
     await ev(`(async () => { CAPUB_V2.applyProfile(JSON.parse(${JSON.stringify(saved)})); await __settle(); document.getElementById('expandRibbons').click(); await new Promise(r => setTimeout(r, 1500)); })()`);
     const s8 = await ev('__state()');
-    console.log('after load:', JSON.stringify({ ...s8, options: s8.options.length }));
-    expect(sortJ(s8.checked) === sortJ([AF, USMC]) && sortJ(s8.tiles) === sortJ([AF, USMC]) && sortJ(s8.drawn) === sortJ([AF, USMC]), `the saved setup loads: ${JSON.stringify({ ...s8, options: s8.options.length })}`);
+    console.log('after load:', JSON.stringify({ ...s8, shown: s8.shown.length }));
+    expect(sortJ(s8.checked) === sortJ([AF, USMC]) && sortJ(s8.pressed) === sortJ([AF, USMC]) && sortJ(s8.drawn) === sortJ([AF, USMC]), `the saved setup loads: ${JSON.stringify({ ...s8, shown: s8.shown.length })}`);
 
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS');
     if(fails.length) code = 1;
