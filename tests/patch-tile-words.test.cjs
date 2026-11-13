@@ -78,7 +78,7 @@ test('places are spelled out per uniform: the sleeve and pocket names of CAPR 39
   assert.equal(ev(`getPatchAuthorizationReason('model_rocketry_patch', 'corporate_field', 'senior')`), 'Model Rocketry patch is cadet-only.');
 });
 
-test('no file in js/ prints an id, a slot hint or a size in a patch tile; the Choose… window\'s patch tiles are worded by patchTileWords and carry the place choice as words', () => {
+test('no file in js/ prints an id, a slot hint or a size in a patch tile; the Choose… window\'s patch tiles are worded by patchTileWords and carry the place choice as words under their pictures', () => {
   const js = fs.readdirSync(path.join(ROOT, 'js')).filter(f => f.endsWith('.js')).map(f => [f, fs.readFileSync(path.join(ROOT, 'js', f), 'utf8')]);
   for(const [name, src] of js){
     assert.doesNotMatch(src, /Slot hint/, `${name}: no slot hint`);
@@ -87,7 +87,7 @@ test('no file in js/ prints an id, a slot hint or a size in a patch tile; the Ch
   }
   const lists = fs.readFileSync(path.join(ROOT, 'js', 'pick-lists.js'), 'utf8');
   assert.match(lists, /patchWords: id => patchTileWords\(id\)/, 'the tiles are worded by patchTileWords');
-  assert.match(lists, /options: words\.places\.map\(place => \(\{ value: place\.slot, label: place\.label \}\)\)/, 'the places are the choice, in words');
+  assert.match(lists, /options: offered\.map\(place => \(\{ value: place\.slot, label: place\.label, picture: known\[place\.slot\] \|\| undefined \}\)\)/, 'the places are the choice, each in words under its picture');
   assert.match(fs.readFileSync(path.join(ROOT, 'js', 'wiring.js'), 'utf8'), /CAPUBPickLists\.patchList\(grid\)/, 'the Choose… window lists the patches with it');
   // The member report import names the patches it matched, not their ids.
   const patches = fs.readFileSync(path.join(ROOT, 'js', 'patches.js'), 'utf8');

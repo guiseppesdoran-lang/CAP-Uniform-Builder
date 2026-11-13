@@ -77,7 +77,7 @@ async function launch(){
       const r = await S('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: Object.assign({ scale: 1 }, r0) });
       fs.writeFileSync(path.join(OUT, `${TAG}-${name}-${width}.png`), Buffer.from(r.data, 'base64'));
     };
-    const rows = id => ev(`[...document.querySelectorAll('#${id} .itemSummaryRow')].map(li => ({ name: li.querySelector('.itemSummaryName').textContent, place: li.querySelector('.itemSummaryPlace').textContent, why: (li.querySelector('.itemSummaryWhy') || {}).textContent || '', notShown: li.classList.contains('notShown') }))`);
+    const rows = id => ev(`[...document.querySelectorAll('#${id} .itemSummaryRow')].map(li => ({ name: li.querySelector('.itemSummaryName').textContent, place: (li.querySelector('.itemSummaryPlace') || {}).textContent || '', why: (li.querySelector('.itemSummaryWhy') || {}).textContent || '', notShown: li.classList.contains('notShown') }))`);
     // What each badge chosen says under its name in the chooser window: the place it takes on this uniform, or why it is left off with its paragraph (there is no separate list).
     const badgeLines = () => ev(`(async () => { document.getElementById('expandBadges').click(); await new Promise(r => setTimeout(r, 1500)); const rows = [...document.querySelectorAll('#galleryModalHost .vp[data-name="badges"] .vpCell')].filter(c => c.querySelector('.vpOption').getAttribute('aria-pressed') === 'true').map(c => ({ name: c.querySelector('.vpLabel').textContent, place: (c.querySelector('.vpCaption') || {}).textContent || '', why: (c.querySelector('.vpCaption') || {}).textContent || '', lines: c.querySelectorAll('.vpCaption').length, notShown: /\\(CAPR 39-1/.test((c.querySelector('.vpCaption') || {}).textContent || ''), shownWord: /shown/i.test(c.textContent) })); document.getElementById('galleryModalCloseBtn').click(); await new Promise(r => setTimeout(r, 300)); return rows; })()`);
     const set = async code => { await ev(`(async () => { ${code}; await CAPUBUniformView.render(); })()`); await sleep(700); };
@@ -146,10 +146,11 @@ async function launch(){
     if(list.length < 2 || list.some(r => !r.notShown && !r.place)) fails.push('every patch the drawing wears should name its place');
     if(!list.some(r => r.notShown && /CAPR 39-1/.test(r.why))) fails.push('a patch left off should say why with the paragraph');
     await shot('#groupPatches', 'patches');
-    // The Patches card is a row of small patch pictures, each with its name and place under it; a patch with no place left is dimmed and says so.
-    const cells = await ev(`[...document.querySelectorAll('#patchSummary .itemSummaryRow')].map(li => ({ picture: !!li.querySelector('.itemSummaryPicture img'), inputs: li.querySelectorAll('input').length, notShown: li.classList.contains('notShown'), dim: Number(getComputedStyle(li.querySelector('.itemSummaryPicture')).opacity), words: li.querySelector('.itemSummaryPlace').textContent }))`);
+    // The Patches card is a row of small patch pictures, each with its name and place under it; a patch with no place left is dimmed and says why.
+    const cells = await ev(`[...document.querySelectorAll('#patchSummary .itemSummaryRow')].map(li => ({ picture: !!li.querySelector('.itemSummaryPicture img'), inputs: li.querySelectorAll('input').length, notShown: li.classList.contains('notShown'), dim: Number(getComputedStyle(li.querySelector('.itemSummaryPicture')).opacity), words: (li.querySelector('.itemSummaryPlace') || {}).textContent || '', why: (li.querySelector('.itemSummaryWhy') || {}).textContent || '' }))`);
     if(!cells.length || cells.some(c => !c.picture || c.inputs)) fails.push('each patch in the Patches card should be a small picture with no input: ' + JSON.stringify(cells));
-    if(!cells.some(c => c.notShown && c.dim < 1 && c.words === 'Not shown')) fails.push('a patch with no place left should be dimmed and say Not shown: ' + JSON.stringify(cells));
+    if(!cells.some(c => c.notShown && c.dim < 1 && !c.words && /CAPR 39-1/.test(c.why))) fails.push('a patch with no place left should be dimmed and say only why, with the paragraph: ' + JSON.stringify(cells));
+    if(cells.some(c => /not shown/i.test(c.words))) fails.push('the Patches card should never say Not shown: ' + JSON.stringify(cells));
     // The chooser: picture tiles with no checkbox or radio button, and a tap changes the build.
     await ev(`document.getElementById('expandPatches').click()`); await sleep(900);
     const chooser = await ev(`(() => { const h = document.getElementById('galleryModalHost'); return { tiles: h.querySelectorAll('.vpCell').length, boxes: h.querySelectorAll('input[type=checkbox],input[type=radio]').length, pressed: h.querySelectorAll('.vpCell .vpOption[aria-pressed]').length, on: State.patches.length }; })()`);
@@ -160,6 +161,19 @@ async function launch(){
     await ev(`(() => { const c = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.querySelector('.vpOption').getAttribute('aria-pressed') === 'false' && !c.querySelector('.vpControls')); c.querySelector('.vpOption').click(); })()`); await sleep(700);
     const after = await ev(`({ on: State.patches.length, pressed: document.querySelectorAll('#galleryModalHost .vpCell .vpOption[aria-pressed=true]').length })`);
     if(after.on !== chooser.on + 1 || after.pressed < 1) fails.push('tapping a patch tile should add it to the build: ' + JSON.stringify([chooser, after]));
+    await ev(`document.querySelector('#galleryModalOverlay .modalClose, #galleryModalDone, #galleryModalOverlay button')?.click()`); await sleep(300);
+    // Where a patch is worn: a tile for each place the uniform has for it, the uniform as the engine draws it with the patch there; a pick moves the patch.
+    await set(`State.uniform = 'corporate_field'; State.patches = []; State.patchSelections = {}; State.patchPlacements = {}; updateAvailabilityUI(null); if(typeof refreshUI === 'function') refreshUI()`);
+    await ev(`document.getElementById('expandPatches').click()`); await sleep(900);
+    await ev(`(() => { [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === 'nesa_patch').querySelector('.vpOption').click(); })()`); await sleep(4000);
+    const places = () => ev(`(() => { const c = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === 'nesa_patch'); const t = [...c.querySelectorAll('.vpPlaceChoice [role=radio]')]; return { values: t.map(x => x.dataset.value), checked: t.filter(x => x.getAttribute('aria-checked') === 'true').map(x => x.dataset.value), pictures: t.filter(x => /^blob:/.test((x.querySelector('img') || {}).src || '')).length, selects: c.querySelectorAll('select').length, slot: getPatchSlot('nesa_patch') }; })()`);
+    let pl = await places();
+    console.log('patch places:', JSON.stringify(pl));
+    if(pl.values.join() !== 'R_SHOULDER,CHEST_RIGHT,CHEST_LEFT' || pl.checked.join() !== 'R_SHOULDER') fails.push('a patch with several places should have a tile for each, the drawn one picked: ' + JSON.stringify(pl));
+    if(pl.pictures !== pl.values.length || pl.selects) fails.push('each place should be the uniform drawn with the patch there, and there is no drop-down: ' + JSON.stringify(pl));
+    await ev(`[...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === 'nesa_patch').querySelector('.vpPlaceChoice [data-value="CHEST_LEFT"]').click()`); await sleep(900);
+    pl = await places();
+    if(pl.slot !== 'CHEST_LEFT' || pl.checked.join() !== 'CHEST_LEFT') fails.push('picking the left pocket should move the patch: ' + JSON.stringify(pl));
     await ev(`document.querySelector('#galleryModalOverlay .modalClose, #galleryModalDone, #galleryModalOverlay button')?.click()`); await sleep(300);
   }catch(e){ console.error(e); code = 1; }
   finally { try{ ws.close(); }catch(e){} proc.kill(); srv.close(); }

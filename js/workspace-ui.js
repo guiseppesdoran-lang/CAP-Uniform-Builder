@@ -327,9 +327,13 @@
         li.append(box);
       }
       const name=document.createElement('span'); name.className='itemSummaryName'; name.textContent=r.name;
-      const place=document.createElement('span'); place.className='itemSummaryPlace';
-      place.textContent=r.shown ? sentence(r.place) : (r.pending ? '' : 'Not shown');
-      li.append(name,place);
+      li.append(name);
+      // A patch the drawing wears says where; one it leaves off says only why, with its paragraph.
+      if(r.shown){
+        const place=document.createElement('span'); place.className='itemSummaryPlace';
+        place.textContent=sentence(r.place);
+        li.append(place);
+      }
       if(!r.shown && !r.pending && r.why){
         const why=document.createElement('span'); why.className='itemSummaryWhy'; why.textContent=/[.)]$/.test(r.why) ? sentence(r.why) : sentence(r.why)+'.';
         li.append(why);

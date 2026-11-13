@@ -76,3 +76,13 @@ test('the Patches card carries its row of pictures; the Badges card has no separ
   assert.match(html, /<div id="patchSummary" class="itemSummary hidden">\s*<h4[^>]*>Where your patches are worn<\/h4>/);
   assert.doesNotMatch(html, /patchesNotShownNote/);
 });
+
+// The owner: a badge or patch the drawing leaves off says why and nothing else, never the words "Shown" or "Not shown" (the badges' lines in the chooser, the Patches card's row).
+test('the Patches card says only why for a patch the drawing leaves off: no "Not shown" label, and no empty place line for it', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'workspace-ui.js'), 'utf8');
+  const fill = src.slice(src.indexOf('function fillSummary('), src.indexOf('function updateItemSummaries'));
+  assert.doesNotMatch(fill, /Not shown/);
+  // The place line is made only for a patch that is drawn; the reason (with its paragraph) is the one line of a patch that is not.
+  assert.match(fill, /if\(r\.shown\)\{\s*const place=document\.createElement\('span'\); place\.className='itemSummaryPlace';\s*place\.textContent=sentence\(r\.place\);\s*li\.append\(place\);\s*\}/);
+  assert.match(fill, /if\(!r\.shown && !r\.pending && r\.why\)\{/);
+});

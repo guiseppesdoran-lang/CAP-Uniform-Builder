@@ -545,6 +545,33 @@
   }
   const esPatchKey = build => [build.uniform];
 
+  // ---- where a patch is worn: each place the uniform has for it, with the patch on it ----------------------------------------------------------------------
+
+  // The member as they are with one patch of their own choosing at a place, and nothing else: no ribbons, badges, name, command pin or cap, and the other patches (the unit's, a wing's) left
+  // off, so a picture changes with the patch and the place only.
+  const patchOnly = (build, patch, slot) => Object.assign(rackOnly(Object.assign({}, build, { ribbons: [] })), { patches: [Object.assign({}, patch, { slot })] });
+  // Each place the patch may take: the uniform as the engine draws it with the patch at that place, in a window round the patch so the part of the garment it is on (the sleeve and its loop
+  // tape, the pocket, the left or the right) shows with the patch on it. A place the engine draws no patch at is not offered. The patch is the one the option is for (`id`).
+  async function patchPlace(env, build, values, id){
+    const out = {};
+    const patch = (build.patches || []).find(p => p.id === id);
+    if(!patch){ values.forEach(v => { out[v] = false; }); return out; }
+    await Promise.all(values.map(async slot => {
+      const scene = await env.compose(patchOnly(build, patch, slot));
+      const mine = scene.layers.filter(l => l.role === 'patch' && String(l.key).startsWith(`patch:${id}:`));
+      if(!mine.length){ out[slot] = false; return; }
+      const at = env.core.layerBounds([...mine].sort((x, y) => y.w * y.h - x.w * x.h)[0]);
+      const w = Math.max(4, at.w * 3), h = w * 0.75;
+      const layers = scene.layers.filter(l => l.type !== 'clear' && l.type !== 'measure');
+      out[slot] = { scene: sceneOf(layers, { x: at.x + at.w / 2 - w / 2, y: at.y + at.h / 2 - h / 2, w, h }, 'Patch place'), pad: 0 };
+    }));
+    return out;
+  }
+  const patchPlaceKey = (build, env, id) => {
+    const patch = (build.patches || []).find(p => p.id === id);
+    return [build.uniform, build.gender, build.membership, build.grade && (build.grade.key || build.grade.rank), build.opt, patch && [patch.asset, patch.href, patch.size, patch.aspect, patch.echelon]];
+  };
+
   const RECIPES = {
     headgear: { make: headgear, key: headgearKey },
     capGrade: { make: capGrade, key: capGradeKey },
@@ -568,6 +595,7 @@
     commandLevel: { make: commandLevel, key: commandLevelKey },
     chevron: { make: chevron, key: chevronKey },
     esPatch: { make: esPatch, key: esPatchKey },
+    patchPlace: { make: patchPlace, key: patchPlaceKey },
     skirt: { make: skirt, key: figureKey([]) },
     buttons: { make: buttons, key: buttonsKey },
     chinstrap: { make: chinstrap, key: chinstrapKey },
@@ -596,7 +624,10 @@
       }
     }
     function pictures(optionKey, values){
-      const recipe = RECIPES[optionKey];
+      // An option may be asked about one thing in particular: "patchPlace:nywg_patch" is the recipe patchPlace for that patch; the recipe is handed the rest as its last argument.
+      const cut = String(optionKey).indexOf(':');
+      const recipe = RECIPES[cut < 0 ? optionKey : optionKey.slice(0, cut)];
+      const about = cut < 0 ? undefined : optionKey.slice(cut + 1);
       const list = Array.isArray(values) ? values : [];
       const none = Object.fromEntries(list.map(v => [v, null]));
       // A choice no recipe makes a picture of, or no member to compose for, has no art to show.
@@ -605,7 +636,7 @@
       try{ build = env.build(); }catch(e){ return { now: none, ready: Promise.resolve(none), settled: true }; }
       // A key that asks the page for more than the build (the Short Stack's, which lists the ribbons again) is made from the build alone while the page is still loading.
       let made;
-      try{ made = recipe.key(build, env); }catch(e){ made = recipe.key(build); }
+      try{ made = recipe.key(build, env, about); }catch(e){ made = recipe.key(build); }
       const key = JSON.stringify([optionKey, made, list]);
       const kind = JSON.stringify([optionKey, list]);
       let hit = cache.get(key);
@@ -613,7 +644,7 @@
       else{
         hit = { value: null };
         hit.promise = Promise.resolve()
-          .then(() => recipe.make(env, build, list))
+          .then(() => recipe.make(env, build, list, about))
           .then(async specs => {
             const done = {};
             for(const v of list){

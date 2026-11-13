@@ -1,7 +1,8 @@
 'use strict';
 // The owner (2026-11-12): "patches should be visual as well". The patches of the chooser window are picture tiles (js/pick-lists.js patchList on the picture picker's toggle mode): the
 // patch's own picture, its name and where it is worn under it; a tap turns it on or off and the tile shows it; a patch with more than one place on the uniform has the choice of
-// them under its tile while it is on. A patch the uniform does not take is not listed. No checkbox and no radio button is in the list. The page's own patch data and functions
+// them under its tile while it is on, a tile for each place with the uniform drawn with the patch there. A patch the uniform does not take is not listed. No checkbox, no drop-down and
+// no word list is in the list. The page's own patch data and functions
 // are used (the page's scripts loaded as index.html lists them); only the picker's DOM is the test's.
 
 const test = require('node:test');
@@ -84,28 +85,72 @@ test('a tap turns a patch on and off: the selection, the patches the drawing is 
   assert.equal(p.button(id).getAttribute('aria-pressed'), 'false');
 });
 
-test('a patch with more than one place on the uniform has the choice of them under its tile while it is on; the pick is kept per uniform and the line under the picture follows it', () => {
+test('a patch with more than one place on the uniform has the choice of them under its tile while it is on, a tile for each; the pick is kept per uniform and the line under the picture follows it', () => {
   setup('corporate_field');
   const p = make();
   const id = 'nesa_patch';
   const controls = () => p.cell(id).querySelector('.vpControls');
-  assert.ok(controls(), 'the choice is there');
-  assert.equal(controls().hidden, true, 'shown only while the patch is on');
+  assert.ok(controls() === null, 'no choice while the patch is off (its pictures are made for a patch that is on)');
   assert.equal(p.cell(id).querySelector('.vpCaption').textContent, 'Worn: Right sleeve, ½ in below the shoulder seam');
   p.button(id).click();
-  assert.equal(controls().hidden, false);
-  assert.equal(controls().querySelectorAll('input').length + controls().querySelectorAll('select').length, 0, 'buttons, not an input or a list');
-  const choice = controls().querySelectorAll('[role="radio"]');
-  assert.deepEqual(choice.map(b => [b.dataset.value, b.querySelector('.vpLabel').textContent, b.getAttribute('aria-checked')]), [
+  assert.ok(controls() && !controls().hidden, 'the choice is there');
+  assert.equal(controls().querySelectorAll('input').length + controls().querySelectorAll('select').length, 0, 'tiles, not an input or a list');
+  const choice = () => controls().querySelectorAll('[role="radio"]');
+  assert.deepEqual(choice().map(b => [b.dataset.value, b.querySelector('.vpLabel').textContent, b.getAttribute('aria-checked')]), [
     ['R_SHOULDER', 'Right sleeve, ½ in below the shoulder seam', 'true'],
     ['CHEST_RIGHT', 'Right breast pocket', 'false'],
     ['CHEST_LEFT', 'Left breast pocket', 'false']
   ], 'each place in words, the drawn one picked');
-  choice[2].click();
+  choice()[2].focus();
+  choice()[2].click();
   assert.equal(ev(`getPatchSlot('nesa_patch')`), 'CHEST_LEFT', 'the slot the drawing is made at');
-  assert.deepEqual(controls().querySelectorAll('[role="radio"]').map(b => b.getAttribute('aria-checked')), ['false', 'false', 'true']);
+  assert.deepEqual(choice().map(b => b.getAttribute('aria-checked')), ['false', 'false', 'true']);
   assert.equal(p.cell(id).querySelector('.vpCaption').textContent, 'Worn: Left breast pocket');
-  assert.equal(p.cell('nywg_patch').querySelector('.vpControls'), null, 'a patch with one place has no choice');
+  assert.ok(p.cell('nywg_patch').querySelector('.vpControls') === null, 'a patch with one place has no choice');
+});
+
+const PLACE_PICTURES = { R_SHOULDER: 'blob:right-sleeve', CHEST_RIGHT: 'blob:right-pocket', CHEST_LEFT: 'blob:left-pocket' };
+test('each place of a patch is the uniform as the engine draws it with the patch there; a place the engine draws no patch at is not offered, and the pictures that come late fill the row', async () => {
+  setup('corporate_field');
+  const ask = [];
+  const make2 = (known, late) => {
+    setup('corporate_field');
+    const host = doc.createElement('div'); doc.body.append(host);
+    const d = deps();
+    d.patchPlacePictures = (id, slots) => { ask.push([id, slots]); return late ? { now: {}, ready: late.then(() => known), settled: false } : { now: known, ready: Promise.resolve(known), settled: true }; };
+    const entry = Lists.patchList(host, null, d);
+    const cell = id => host.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
+    return { host, entry, cell };
+  };
+  const id = 'nesa_patch';
+  let p = make2(PLACE_PICTURES);
+  assert.deepEqual(ask, [], 'no picture is asked for while the patch is off');
+  p.cell(id).querySelector('.vpOption').click();
+  assert.equal(JSON.stringify(ask), JSON.stringify([[id, ['R_SHOULDER', 'CHEST_RIGHT', 'CHEST_LEFT']]]), 'one request for its places');
+  const tiles = () => p.cell(id).querySelector('.vpControls').querySelectorAll('[role="radio"]');
+  assert.deepEqual(tiles().map(t => t.querySelector('img').getAttribute('src')), ['blob:right-sleeve', 'blob:right-pocket', 'blob:left-pocket']);
+  assert.deepEqual(tiles().map(t => t.dataset.value), ['R_SHOULDER', 'CHEST_RIGHT', 'CHEST_LEFT']);
+  // The left pocket is not drawn on this uniform: not offered.
+  p = make2({ R_SHOULDER: 'blob:right-sleeve', CHEST_RIGHT: 'blob:right-pocket', CHEST_LEFT: false });
+  p.cell(id).querySelector('.vpOption').click();
+  assert.deepEqual(tiles().map(t => t.dataset.value), ['R_SHOULDER', 'CHEST_RIGHT']);
+  // With one place left there is no choice.
+  p = make2({ R_SHOULDER: 'blob:right-sleeve', CHEST_RIGHT: false, CHEST_LEFT: false });
+  p.cell(id).querySelector('.vpOption').click();
+  assert.ok(p.cell(id).querySelector('.vpPlaceChoice').hidden === true, 'one place is no choice');
+  // The pictures arrive after the row is built.
+  let release;
+  const late = new Promise(res => { release = res; });
+  p = make2(PLACE_PICTURES, late);
+  p.cell(id).querySelector('.vpOption').click();
+  assert.ok(p.cell(id).querySelector('.vpPlaceChoice').hidden === true, 'hidden until the pictures are made');
+  release();
+  await late; await Promise.resolve(); await Promise.resolve();
+  assert.equal(p.cell(id).querySelector('.vpPlaceChoice').hidden, false);
+  assert.equal(tiles().length, 3);
+  // A tile turned off takes its row away, and the other patch turned on has its own.
+  p.cell(id).querySelector('.vpOption').click();
+  assert.ok(p.cell(id).querySelector('.vpControls') === null);
 });
 
 test('the Hawk Mountain Ranger tabs are listed last on the OCP under their own heading with its note, and picking one turns the others off', () => {

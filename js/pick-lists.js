@@ -47,6 +47,8 @@
       patchIds: () => window.capubVisiblePatchIdsForGallery(),
       patchMeta: id => PATCH_META[id] || {},
       patchWords: id => patchTileWords(id),
+      // Each place of a patch as the engine draws the uniform with the patch there (`slots`): { now, ready, settled }, a picture for each or false where it draws no patch at that place.
+      patchPlacePictures: (id, slots) => typeof CAPUBOptionPictures !== 'undefined' ? CAPUBOptionPictures.pictures('patchPlace:' + id, slots) : null,
       setPlace: (id, slot) => setPatchPlacement(id, slot),
       keepOneTab: id => window.capubKeepOneRangerTab(id),
       normalizePatches: () => normalizePatchSelections(),
@@ -292,36 +294,58 @@
   }
 
   // The tiles of the patches the uniform takes (`ids`, in the order shown): the patch's own picture, its name and where it is worn under it, a heading (with its note) for a
-  // group of its own; a patch with more than one place on the uniform has the choice of its places under its tile while it is on. A patch the uniform does not take is not listed.
+  // group of its own; a patch with more than one place on the uniform has its places under its tile while it is on, a tile for each, the uniform as the engine draws it with the patch
+  // at that place. A patch the uniform does not take is not listed.
   function patchList(container, ids, deps){
     const d = withDeps(deps);
     d.normalizePatches();
     const listed = () => (ids || d.patchIds()).filter(id => d.patchWords(id).authorized);
-    const options = () => listed().map(id => {
-      const meta = d.patchMeta(id), words = d.patchWords(id);
-      return {
-        value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, caption: words.where,
-        group: meta.group || undefined, groupNote: meta.group ? meta.note : undefined, search: meta.group || '',
-        controls: () => placeChoice(id)
-      };
-    });
-    // The places of a patch (one only on most uniforms: no choice then): a choice of buttons, each a place in words, under the tile while it is on.
+    // The patches that are on and have places to choose from: their tiles carry the choice, so the list is made again when these change.
+    const placed = () => listed().filter(id => patchOn(d, id) && d.patchWords(id).places.length > 1).join();
+    let built = '';
+    const options = () => {
+      built = placed();
+      return listed().map(id => {
+        const meta = d.patchMeta(id), words = d.patchWords(id);
+        return {
+          value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, caption: words.where,
+          group: meta.group || undefined, groupNote: meta.group ? meta.note : undefined, search: meta.group || '',
+          controls: isOn => isOn ? placeChoice(id) : null
+        };
+      });
+    };
+    // The places of a patch (one only on most uniforms: no choice then): a tile for each, the uniform with the patch at that place, under the tile while it is on. A place the engine draws
+    // no patch at is not offered (unless it is the one drawn), and with fewer than two left there is no choice. The pictures are made as the page is free to.
     const placeChoice = id => {
       const words = d.patchWords(id);
       if(words.places.length < 2) return null;
-      const box = el('div', 'vpPlaceChoice');
-      d.VisualPicker.render(box, {
-        name: `patchPlace-${id}`, legend: 'Worn', value: words.slot,
-        options: words.places.map(place => ({ value: place.slot, label: place.label })),
-        onChange: slot => {
-          d.setPlace(id, slot);
-          d.rebuildPatches();
-          const cell = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
-          const caption = cell && cell.querySelector('.vpCaption');
-          if(caption) caption.textContent = d.patchWords(id).where;
-        }
-      });
-      return box;
+      const host = el('div', 'vpPlaceChoice');
+      const slots = words.places.map(place => place.slot);
+      const made = d.patchPlacePictures ? d.patchPlacePictures(id, slots) : null;
+      const paint = known => {
+        host.textContent = '';
+        const now = d.patchWords(id).slot;
+        const offered = words.places.filter(place => known[place.slot] !== false || place.slot === now);
+        if(offered.length < 2){ host.hidden = true; return; }
+        host.append(pictureRow(d, {
+          name: `patchPlace-${id}`, label: 'Where the patch is worn', value: now, pictureHeight: '72px', tileWidth: '128px',
+          options: offered.map(place => ({ value: place.slot, label: place.label, picture: known[place.slot] || undefined })),
+          onChange: slot => {
+            d.setPlace(id, slot);
+            d.rebuildPatches();
+            const cell = picker.el.querySelectorAll('.vpCell').find(c => c.dataset.value === id);
+            const caption = cell && cell.querySelector('.vpCaption');
+            if(caption) caption.textContent = d.patchWords(id).where;
+          }
+        }).host);
+        host.hidden = false;
+      };
+      if(!made) paint({});
+      else{
+        if(made.settled || Object.keys(made.now).length) paint(made.now); else host.hidden = true;
+        if(!made.settled) made.ready.then(done => paint(done));
+      }
+      return host;
     };
     const host = el('div');
     container.append(host);
@@ -331,9 +355,12 @@
     });
     const entry = {
       picker, ids: listed(),
-      // Every tile as the state says (a Ranger tab picked turns the other tabs off).
-      refresh(){ picker.setValues(listed().filter(id => patchOn(d, id))); },
-      setOptions(){ picker.setOptions(options()); entry.refresh(); }
+      // Every tile as the state says (a Ranger tab picked turns the other tabs off); the places again where the patches that have them changed.
+      refresh(){
+        picker.setValues(listed().filter(id => patchOn(d, id)));
+        if(placed() !== built) keepingFocus(picker.el, () => picker.setOptions(options()));
+      },
+      setOptions(){ keepingFocus(picker.el, () => { picker.setValues(listed().filter(id => patchOn(d, id))); picker.setOptions(options()); }); }
     };
     return entry;
   }
@@ -350,6 +377,7 @@
       options: cfg.options.map(o => ({ value: o.value, label: o.label, picture: o.picture, title: o.title }))
     }, cfg.toggle ? { mode: 'toggle', values: cfg.values, onToggle: cfg.onToggle } : { value: cfg.value, onChange: cfg.onChange }));
     if(host.style && host.style.setProperty && cfg.pictureHeight) host.style.setProperty('--vpRowPic', cfg.pictureHeight);
+    if(host.style && host.style.setProperty && cfg.tileWidth) host.style.setProperty('--vpRowW', cfg.tileWidth);
     const draws = new Map(cfg.options.filter(o => typeof o.draw === 'function').map(o => [String(o.value), o.draw]));
     if(draws.size){
       const seen = typeof IntersectionObserver === 'function'
