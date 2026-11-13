@@ -634,3 +634,170 @@ test('a picture dropped from the kept ones is let go only when no image has it: 
   assert.ok(shown.some(s => !p.srcs().includes(s)), 'the old pictures left the page');
   assert.ok(shown.some(s => p.revoked.has(s)), 'and were let go once nothing showed them');
 });
+
+// ---- the membership, the weight standard, the name and the unit's emblem ---------------------------------------------------------------
+
+// The Profile step's other choices: the hidden select or box of each, its host, the step, the real picker and the real module (for the pictures' words), and stand-ins for the
+// pictures: `stubs` answer for memberships(), adults() and names().
+function ownPage(state, stubs){
+  const doc = createDocument();
+  doc.querySelectorAll = sel => doc.body.querySelectorAll(sel);
+  const shell = doc.createElement('main'); shell.id = 'layoutShell'; doc.body.append(shell);
+  const step = doc.createElement('div'); step.id = 'stepGroup-profile'; step.hidden = false; doc.body.append(step);
+  const el = (tag, id, parent, extra) => { const n = doc.createElement(tag); n.id = id; Object.assign(n, extra || {}); (parent || step).append(n); return n; };
+  const memberSel = el('select', 'membershipType', null, { value: '' }), memberHost = el('div', 'membershipPicker');
+  const adultRow = el('div', 'adultCadetRow', null, { className: 'hidden mt-10' }), adultBox = el('input', 'adultCadetCheckbox', adultRow, { checked: false }), adultHost = el('div', 'adultCadetPicker', adultRow);
+  const nameBox = el('input', 'capubV2ShowText', null, { checked: true }), nameHost = el('div', 'showNamePicker');
+  const emblem = el('img', 'unitEmblem', null, { hidden: true });
+  const changes = { member: [], adult: [], name: [] }, asked = { memberships: 0, adults: 0, names: 0 };
+  memberSel.addEventListener('change', () => changes.member.push(memberSel.value));
+  adultBox.addEventListener('change', () => changes.adult.push(adultBox.checked));
+  nameBox.addEventListener('change', () => changes.name.push(nameBox.checked));
+  const timers = [];
+  const sandbox = {
+    document: doc, console, setTimeout: (fn, ms) => { timers.push({ fn, ms }); return timers.length; }, clearTimeout: id => { if(timers[id - 1]) timers[id - 1].dead = true; },
+    Event: function(type, init){ this.type = type; Object.assign(this, init || {}); },
+    State: Object.assign({ membership: '', rank: null, gender: '', uniform: 'blues_a' }, state),
+    CAPUBEngine: { grades: G, core: { createSpecStore: () => ({}) }, profiles: {}, renderSvg: {} }, CAPUBAssetIndex: INDEX, ASSET: p => 'images/' + p,
+    CAPUBUniformRules: {}, CAPUBUniformView: { buildFromState: () => ({}) },
+    CAPUBAssetPacks: { createLoader: () => ({ manifest: () => Promise.resolve({}), prepare: () => Promise.resolve(), spec: () => Promise.resolve({}) }) },
+    fetch: () => Promise.reject(new Error('offline')), URL, Blob: function(){}, XMLSerializer: function(){}
+  };
+  sandbox.window = sandbox; sandbox.self = sandbox;
+  vm.runInNewContext(read('js/visual-picker.js'), sandbox);
+  const real = (() => { const m = {}; vm.runInNewContext(read('js/profile-pictures.js'), Object.assign(m, { window: m, self: m })); return m.CAPUBProfilePictures; })();
+  const none = { now: {}, ready: Promise.resolve({}), settled: true };
+  const answer = (key, fallback) => () => { asked[key]++; return ((stubs && stubs[key]) || (() => fallback))(); };
+  sandbox.CAPUBProfilePictures = Object.assign({}, real, { create: () => ({ uniforms: () => none, cuts: () => none, grades: () => none,
+    memberships: answer('memberships', { now: { cadet: 'pic-cadet', senior: 'pic-senior' }, ready: Promise.resolve({}), settled: true }),
+    adults: answer('adults', { now: { no: 'pic-no', yes: 'pic-yes' }, ready: Promise.resolve({}), settled: true }),
+    names: answer('names', { now: { on: 'pic-on', off: 'pic-off' }, ready: Promise.resolve({}), settled: true }) }) });
+  vm.runInNewContext(read('js/profile-pickers.js'), sandbox);
+  return { sandbox, doc, step, memberSel, memberHost, adultRow, adultBox, adultHost, nameBox, nameHost, emblem, changes, asked, timers, sync: () => sandbox.CAPUBProfilePickers.sync() };
+}
+const labelsOf = host => radios(host).map(r => r.querySelector('.vpLabel').textContent);
+const srcOf = tile => { const b = tile.querySelector('.vpPicture'); const i = b && b.children.find(n => n.nodeName === 'IMG'); return i ? i.getAttribute('src') : null; };
+
+test('the membership is two pictures, the Class A coat of a cadet and of a senior member, over the select that stays the source of truth', () => {
+  const p = ownPage({});
+  p.sync();
+  const picker = p.memberHost.querySelector('.vp');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'Membership type');
+  assert.deepEqual(radios(p.memberHost).map(r => r.dataset.value), ['cadet', 'senior']);
+  assert.deepEqual(labelsOf(p.memberHost), ['Cadet', 'Senior member']);
+  assert.equal(picker.dataset.size, 'large'); assert.equal(picker.dataset.shape, 'tall'); assert.equal(picker.dataset.pickerFor, 'membershipType');
+  assert.deepEqual(radios(p.memberHost).map(srcOf), ['pic-cadet', 'pic-senior']);
+  assert.deepEqual(picked(p.memberHost), [], 'nothing chosen yet');
+  radios(p.memberHost)[1].click();
+  assert.equal(p.memberSel.value, 'senior'); assert.deepEqual(p.changes.member, ['senior']);
+  p.memberSel.value = 'cadet'; p.sync();
+  assert.deepEqual(picked(p.memberHost), ['cadet'], 'the page sets the select (a saved setup, the report import, Undo): the picture shows it');
+  assert.deepEqual(p.changes.member, ['senior'], 'and does not write to it');
+  p.step.hidden = true; const before = p.asked.memberships; p.sync();
+  assert.equal(p.asked.memberships, before, 'the pictures are made while the Profile step is shown');
+});
+
+test('a membership picture still being made holds its place, and one that could not be made is the name alone', async () => {
+  let release;
+  const p = ownPage({}, { memberships: () => ({ now: { cadet: undefined, senior: null }, settled: false, ready: new Promise(r => { release = () => r({ cadet: 'pic-late', senior: null }); }) }) });
+  p.sync();
+  const [cadet, senior] = radios(p.memberHost);
+  assert.ok(cadet.querySelector('.vpPicture') && srcOf(cadet) === null, 'a blank box');
+  assert.equal(senior.classList.contains('noPicture'), true, 'its name alone');
+  release(); await settle();
+  assert.equal(srcOf(radios(p.memberHost)[0]), 'pic-late');
+});
+
+test('a cadet who is 18 or older and does not meet the weight standard: two pictures over the box, shown to cadets only, the Corporate blazer with its sentence', async () => {
+  const p = ownPage({ membership: 'cadet' });
+  p.sync();
+  assert.equal(p.asked.adults, 0, 'the row is hidden (js/setup.js shows it to cadets): nothing is made');
+  p.adultRow.className = 'mt-10'; p.sync();
+  const picker = p.adultHost.querySelector('.vp');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'USAF weight standard');
+  assert.deepEqual(labelsOf(p.adultHost), ['Meets it, or under 18', '18 or older, does not meet it']);
+  assert.deepEqual(radios(p.adultHost).map(srcOf), ['pic-no', 'pic-yes']);
+  assert.deepEqual(picked(p.adultHost), ['no']);
+  assert.equal(picker.dataset.pickerFor, 'adultCadetCheckbox');
+  radios(p.adultHost)[1].click();
+  assert.equal(p.adultBox.checked, true); assert.deepEqual(p.changes.adult, [true]);
+  assert.equal(picker.querySelector('.vpNote').textContent, 'Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).');
+  radios(p.adultHost)[0].click();
+  assert.deepEqual(p.changes.adult, [true, false]);
+  p.adultBox.checked = true; p.sync();
+  assert.deepEqual(picked(p.adultHost), ['yes'], 'the page sets the box (a saved setup, Undo): the picture shows it');
+  p.sandbox.State.membership = 'senior'; const n = p.asked.adults; p.sync();
+  assert.equal(p.asked.adults, n, 'not for a senior member');
+});
+
+test('the name on the uniform: two pictures of the uniform at its name, with the name and without it, over the box; none where the uniform draws no name', async () => {
+  const p = ownPage({ membership: 'cadet', rank: 'C/Maj', gender: 'male' });
+  p.sync();
+  const picker = p.nameHost.querySelector('.vp');
+  assert.equal(picker.querySelector('.vpLegend').textContent, 'Name on the uniform');
+  assert.deepEqual(labelsOf(p.nameHost), ['Show my name', 'Leave it off']);
+  assert.deepEqual(radios(p.nameHost).map(srcOf), ['pic-on', 'pic-off']);
+  assert.deepEqual(picked(p.nameHost), ['on'], 'the box is checked');
+  radios(p.nameHost)[1].click();
+  assert.equal(p.nameBox.checked, false); assert.deepEqual(p.changes.name, [false]);
+  p.nameBox.checked = true; p.sync();
+  assert.deepEqual(picked(p.nameHost), ['on']);
+  assert.equal(p.nameHost.hidden, false);
+  // The mess dress and the semi-formal coats draw no name: the engine says so (false), and the group is not offered.
+  const q = ownPage({ membership: 'senior', rank: 'Capt', gender: 'male', uniform: 'mess_dress' }, { names: () => ({ now: { on: false, off: false }, ready: Promise.resolve({}), settled: true }) });
+  q.sync();
+  assert.equal(q.nameHost.hidden, true);
+  assert.equal(radios(q.nameHost).length, 0);
+});
+
+test('the name pictures wait for a pause while the member is typing, and are made at once otherwise; none are made before there is a membership, a grade and a cut', () => {
+  const p = ownPage({ membership: 'cadet', rank: 'C/Maj', gender: 'male' });
+  const field = p.doc.createElement('input'); field.type = 'text';
+  const panel = p.doc.createElement('section'); panel.id = 'capubV2TextPanel'; panel.append(field); p.step.append(panel);
+  p.sync();
+  const calls = p.asked.names;
+  assert.ok(calls >= 1);
+  p.doc.activeElement = field;
+  p.sync();
+  assert.equal(p.asked.names, calls, 'typing: not yet');
+  const wait = p.timers.filter(t => !t.dead && t.ms === 500);
+  assert.ok(wait.length >= 1, 'a pause of half a second is waited for');
+  wait[wait.length - 1].fn();
+  assert.equal(p.asked.names, calls + 1, 'then the pictures are made');
+  p.doc.activeElement = null;
+  const none = ownPage({ membership: 'cadet', rank: null, gender: 'male' });
+  none.sync();
+  assert.equal(none.asked.names, 0);
+});
+
+test('the unit\'s emblem is shown beside its name for a unit that has one, and not otherwise', () => {
+  const p = ownPage({});
+  const meta = { 'patch-sequoyah': { img: 'patches/patch-sequoyah/patch-sequoyah.png' } };
+  p.sandbox.PATCH_META = meta;
+  p.sandbox.getSelectedUnitPatchId = () => 'patch-sequoyah';
+  p.sync();
+  assert.equal(p.emblem.hidden, false);
+  assert.equal(p.emblem.getAttribute('src'), 'images/patches/patch-sequoyah/patch-sequoyah.png');
+  p.sandbox.getSelectedUnitPatchId = () => null;
+  p.sync();
+  assert.equal(p.emblem.hidden, true);
+  assert.equal(p.emblem.getAttribute('src'), null);
+  p.sandbox.getSelectedUnitPatchId = () => 'patch-no-art';
+  p.sync();
+  assert.equal(p.emblem.hidden, true, 'a unit with no emblem art: its name alone');
+  const html = read('index.html');
+  assert.match(html, /<div class="unitRow">\s*<select id="unitPatchSelect">[\s\S]*?<\/select>\s*<img id="unitEmblem" class="unitEmblem" alt="" hidden>\s*<\/div>/);
+  assert.match(read('styles/app.css'), /\.unitEmblem\{flex:0 0 auto;width:44px;height:44px;object-fit:contain\}/);
+});
+
+test('an image of any of these pickers that fails is taken out, and the pictures of the membership, the weight standard and the name are in the guard\'s list', () => {
+  const p = ownPage({ membership: 'cadet', rank: 'C/Maj', gender: 'male' });
+  p.adultRow.className = 'mt-10';
+  p.sync();
+  const listener = p.doc.listeners.error[0];
+  for(const host of [p.memberHost, p.adultHost, p.nameHost]){
+    const tile = radios(host)[0], img = tile.querySelector('.vpPicture').children.find(n => n.nodeName === 'IMG');
+    listener({ type: 'error', target: img });
+    assert.ok(tile.querySelector('.vpPicture') === null && tile.classList.contains('noPicture'), `${host.id}: the name alone`);
+  }
+});

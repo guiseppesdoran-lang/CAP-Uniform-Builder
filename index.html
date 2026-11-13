@@ -72,11 +72,7 @@
         </section>
 
         <section id="capMembershipPanel" class="panelBlock">
-          <label class="fieldLabel" id="membershipLabel" for="membershipType">Membership type</label>
-          <div class="segmented" role="radiogroup" aria-labelledby="membershipLabel" data-segments-for="membershipType">
-            <button type="button" role="radio" aria-checked="false" data-value="cadet">Cadet</button>
-            <button type="button" role="radio" aria-checked="false" data-value="senior">Senior member</button>
-          </div>
+          <div id="membershipPicker"></div>
           <select id="membershipType" class="segmentedSource" tabindex="-1" aria-hidden="true">
             <option value="">Select membership</option>
             <option value="senior">Senior member</option>
@@ -84,11 +80,8 @@
           </select>
 
           <div id="adultCadetRow" class="hidden mt-10">
-            <label class="fieldNote">
-              <input type="checkbox" id="adultCadetCheckbox">
-              I am 18 or older and do not meet the USAF weight standard
-            </label>
-            <div class="hintText mt-4">Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).</div>
+            <input type="checkbox" id="adultCadetCheckbox" class="segmentedSource" tabindex="-1" aria-hidden="true">
+            <div id="adultCadetPicker"></div>
           </div>
 
           <div id="rankSetupPicker" class="mt-10"></div>
@@ -115,9 +108,12 @@
         <section id="unitPanel" class="panelBlock">
           <label class="fieldLabel" for="unitPatchSelect">Your unit</label>
           <input id="unitPatchSearch" type="search" aria-label="Search your unit" placeholder="REG-WG-UN" autocomplete="off"/>
-          <select id="unitPatchSelect">
-            <option value="">No unit chosen</option>
-          </select>
+          <div class="unitRow">
+            <select id="unitPatchSelect">
+              <option value="">No unit chosen</option>
+            </select>
+            <img id="unitEmblem" class="unitEmblem" alt="" hidden>
+          </div>
           <div id="unitSupplementsLine" class="hintText" aria-live="polite">Choose your unit to load the supplements of its wing and region.</div>
         </section>
 
@@ -141,9 +137,8 @@
               <input id="capubV2PlateLine" maxlength="24" placeholder="e.g. New York, Tennessee, etc."/>
               <div class="hintText">The state or region shown on nameplates.</div>
             </div>
-            <label class="fieldNote mt-8">
-              <input type="checkbox" id="capubV2ShowText" checked> Show my name on the uniform
-            </label>
+            <input type="checkbox" id="capubV2ShowText" class="segmentedSource" tabindex="-1" aria-hidden="true" checked>
+            <div id="showNamePicker" class="mt-8"></div>
             <div class="hintText" id="nameHint">Name tapes and nametags show the last name; flight suit name tags show the full name.</div>
           </section>
         </details>

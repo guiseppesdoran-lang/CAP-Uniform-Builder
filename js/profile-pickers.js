@@ -65,6 +65,7 @@
     const getStore = () => storeP || (storeP = assets.manifest().then(m => E.core.createSpecStore(m, path => assets.spec(path))));
     pictures = window.CAPUBProfilePictures.create({
       rules: window.CAPUBUniformRules,
+      core: E.core, grades: E.grades,
       build: () => window.CAPUBUniformView.buildFromState(),
       async compose(build){
         const [store] = await Promise.all([getStore(), assets.prepare(build.uniform, build.gender)]);
@@ -74,6 +75,8 @@
       async draw(scene, pad){
         const store = await getStore();
         const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad });
+        // Lettering (the name) needs the engraved face, which an image loads from nowhere: it is carried inside the drawing as data.
+        if(svg.querySelector && svg.querySelector('text')) await E.renderSvg.embedFonts(svg);
         const text = window.CAPUBProfilePictures.standalone(new XMLSerializer().serializeToString(svg));
         return text ? URL.createObjectURL(new Blob([text], { type: 'image/svg+xml;charset=utf-8' })) : null;
       },
@@ -213,6 +216,111 @@
     diamond.picker.setValue(source.checked ? 'diamond' : 'plain');
   }
 
+  // ---- the pictures of a choice made once and kept while another set is made ------------------------------------------------------
+
+  // A group of pictures that are made for the member and are made again when the member changes: while the new ones are made the last stay, so a change does not blink.
+  // `optionsOf(urls)` is the options for the pictures known (a value still being made is undefined, one that could not be made null, one that does not apply false).
+  function slotOf(picker, keys, optionsOf){ return { picker, keys, optionsOf, token: 0, last: {}, signature: '' }; }
+  function feed(slot, made){
+    const paint = urls => {
+      const known = {};
+      for(const k of slot.keys){ if(urls[k] !== undefined) slot.last[k] = urls[k]; known[k] = urls[k] !== undefined ? urls[k] : slot.last[k]; }
+      const signature = JSON.stringify(known);
+      if(signature === slot.signature) return;
+      slot.signature = signature;
+      slot.picker.setOptions(slot.optionsOf(known));
+    };
+    const token = ++slot.token;
+    paint(made.now);
+    if(!made.settled) made.ready.then(done => { if(token === slot.token) paint(done); });
+  }
+  // The tile of a picture: still being made holds its place with a blank box, one that could not be made is its name alone.
+  const tilePicture = (urls, key, blank) => urls[key] ? urls[key] : urls[key] === null ? undefined : blank;
+
+  // ---- the membership ------------------------------------------------------------------------------------------------------------
+
+  // Two tiles, the Class A coat the engine draws for a cadet and for a senior member (a stand-in grade of the same name in each: the grade is chosen after), over the select
+  // #membershipType, which stays as the source of truth.
+  let membership = null;
+  function syncMembership(){
+    const source = by('membershipType'), host = by('membershipPicker');
+    if(!source || !host || !window.VisualPicker) return;
+    if(!membership){
+      const optionsOf = urls => [['cadet', 'Cadet'], ['senior', 'Senior member']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK_TALL) }));
+      const picker = window.VisualPicker.render(host, { name: 'membership', legend: 'Membership type', options: optionsOf({}), value: source.value, size: 'large', shape: 'tall', onChange: value => write(source, value) });
+      picker.el.dataset.pickerFor = 'membershipType';
+      membership = slotOf(picker, ['cadet', 'senior'], optionsOf);
+    }
+    membership.picker.setValue(source.value);
+    if(shown('stepGroup-profile')) feed(membership, maker().memberships());
+  }
+
+  // ---- a cadet of 18 or older who does not meet the weight standard ---------------------------------------------------------------------
+
+  // Two tiles in place of the box: the cadet's Class A coat and the Corporate blazer the member may also wear, over #adultCadetCheckbox, which stays as the source of truth. The
+  // row is shown by js/setup.js syncAdultCadetControl to cadets only.
+  let adult = null;
+  function syncAdult(){
+    const source = by('adultCadetCheckbox'), host = by('adultCadetPicker'), row = by('adultCadetRow');
+    if(!source || !host || !row || !window.VisualPicker) return;
+    if(!adult){
+      const optionsOf = urls => [['no', 'Meets it, or under 18'], ['yes', '18 or older, does not meet it']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK_TALL),
+        note: value === 'yes' ? 'Cadets in this position may wear the Corporate uniforms (CAPR 39-1, 1.2.5.2).' : undefined }));
+      const picker = window.VisualPicker.render(host, { name: 'adultCadet', legend: 'USAF weight standard', options: optionsOf({}), value: source.checked ? 'yes' : 'no', size: 'large', shape: 'tall',
+        onChange: value => { source.checked = value === 'yes'; source.dispatchEvent(new Event('change', { bubbles: true })); } });
+      picker.el.dataset.pickerFor = 'adultCadetCheckbox';
+      adult = slotOf(picker, ['no', 'yes'], optionsOf);
+    }
+    adult.picker.setValue(source.checked ? 'yes' : 'no');
+    if(shown('stepGroup-profile') && !row.classList.contains('hidden') && State.membership === 'cadet') feed(adult, maker().adults());
+  }
+
+  // ---- the name on the uniform ----------------------------------------------------------------------------------------------------
+
+  // Two tiles in place of the box: the uniform at its name, with the name and without it, over #capubV2ShowText, which stays as the source of truth. A uniform that draws no
+  // name (the mess dress, the semi-formal coats) has no such choice: the group is not offered. The name in the picture is the member's own once they have entered it; while they
+  // are typing the pictures wait for a pause.
+  let naming = null, nameTimer = 0;
+  function syncName(){
+    const source = by('capubV2ShowText'), host = by('showNamePicker');
+    if(!source || !host || !window.VisualPicker) return;
+    if(!naming){
+      const optionsOf = urls => urls.on === false ? [] : [['on', 'Show my name'], ['off', 'Leave it off']].map(([value, label]) => ({ value, label, picture: tilePicture(urls, value, BLANK) }));
+      const picker = window.VisualPicker.render(host, { name: 'showName', legend: 'Name on the uniform', options: optionsOf({}), value: source.checked ? 'on' : 'off', size: 'large',
+        onChange: value => { source.checked = value === 'on'; source.dispatchEvent(new Event('change', { bubbles: true })); } });
+      picker.el.dataset.pickerFor = 'capubV2ShowText';
+      naming = slotOf(picker, ['on', 'off'], optionsOf);
+      naming.host = host;
+      const base = naming.optionsOf;
+      naming.optionsOf = urls => { const list = base(urls); host.hidden = urls.on === false; return list; };
+    }
+    naming.picker.setValue(source.checked ? 'on' : 'off');
+    if(!shown('stepGroup-profile') || !State.membership || !State.rank || !State.gender) return;
+    const active = doc.activeElement;
+    const typing = !!(active && active.nodeName === 'INPUT' && active.type !== 'checkbox' && up(active, n => n.id === 'capubV2TextPanel'));
+    clearTimeout(nameTimer);
+    if(typing) nameTimer = setTimeout(() => feed(naming, maker().names()), 500);
+    else feed(naming, maker().names());
+  }
+
+  // ---- the unit's emblem ------------------------------------------------------------------------------------------------------------
+
+  // A unit that has an emblem (data/unit-patch-art.js: 77 of the 1,454) shows it beside its name; the search and the list stay words.
+  function syncUnitEmblem(){
+    const img = by('unitEmblem');
+    if(!img) return;
+    const id = typeof getSelectedUnitPatchId === 'function' ? getSelectedUnitPatchId() : null;
+    const meta = id && typeof PATCH_META === 'object' && PATCH_META ? PATCH_META[id] : null;
+    const url = meta && meta.img && typeof ASSET === 'function' ? ASSET(meta.img) : '';
+    if(url){
+      if(img.getAttribute('src') !== url) img.setAttribute('src', url);
+      img.hidden = false;
+    }else if(!img.hidden){
+      img.hidden = true;
+      img.removeAttribute('src');
+    }
+  }
+
   // ---- the uniforms -------------------------------------------------------------------------------------------------------------
 
   const cards = () => Array.from(doc.querySelectorAll('.uniformOption'));
@@ -265,7 +373,7 @@
 
   // A picture the browser could not decode (a network error, a drawing it will not read) is not left as the browser's broken-image mark: the choice is its name alone. The
   // events of an image do not bubble, so one listener on the page takes them in the capture phase.
-  const OURS = ['rank', 'cut', 'firstSergeant'];
+  const OURS = ['membership', 'rank', 'adultCadet', 'cut', 'firstSergeant', 'showName'];
   const up = (node, test) => { for(let n = node && node.parentNode; n && n.nodeType === 1; n = n.parentNode) if(test(n)) return n; return null; };
   const has = (n, name) => !!(n.classList && n.classList.contains(name));
   function dropImage(img){
@@ -289,7 +397,7 @@
 
   function sync(){
     if(!ready()) return;
-    for(const part of [syncGrade, syncCut, syncDiamond, syncUniforms]){
+    for(const part of [syncMembership, syncGrade, syncAdult, syncCut, syncDiamond, syncName, syncUnitEmblem, syncUniforms]){
       try{ part(); }catch(error){ console.warn('[profile pickers]', error); }
     }
     sweep();
@@ -301,5 +409,5 @@
   if(shell && typeof MutationObserver === 'function') new MutationObserver(() => sync()).observe(shell, { attributes: true, attributeFilter: ['data-step'] });
   setTimeout(sync, 0);
 
-  window.CAPUBProfilePickers = { sync, syncGrade, syncCut, syncDiamond, syncUniforms, dropImage };
+  window.CAPUBProfilePickers = { sync, syncMembership, syncGrade, syncAdult, syncCut, syncDiamond, syncName, syncUnitEmblem, syncUniforms, dropImage };
 })();

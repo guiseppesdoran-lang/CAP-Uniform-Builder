@@ -1617,6 +1617,10 @@ html[data-access="guest"] #accessGate{display:none}
    (js/profile-pickers.js): the grade tile is the dark surface (the --grade tokens, the same on either theme), the picture box has no ground of its own, and the silver, white and gold of the metal and thread read on it. */
 .vp[data-name="rank"] .vpOption,.vp[data-name="firstSergeant"] .vpOption{--panel:var(--grade-panel);--panel-2:var(--grade-panel-2);--ink:var(--grade-ink);--line:var(--grade-line);--line-strong:var(--grade-line-strong);--select-bg:var(--grade-select-bg);--select-line:var(--grade-select-line)}
 .vp[data-name="rank"] .vpPicture,.vp[data-name="firstSergeant"] .vpPicture{background:transparent;border-color:transparent}
+/* The unit's emblem beside its name (js/profile-pickers.js), for a unit that has one; the list stays words. */
+.unitRow{display:flex;align-items:center;gap:var(--s2)}
+.unitRow select{flex:1 1 auto;min-width:0}
+.unitEmblem{flex:0 0 auto;width:44px;height:44px;object-fit:contain}
 /* Action tiles (mode 'action'): they do something when pressed and keep no mark. One whose action is under way is dimmed and does not answer a second press. */
 .vp[data-mode="action"] .vpOption.isBusy{opacity:.6;cursor:progress}
 /* The Photos menu (js/photos-menu.js): each picture is of the part on the white ground (--paper) the downloaded PNG has. */

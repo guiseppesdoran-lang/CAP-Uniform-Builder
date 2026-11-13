@@ -15,15 +15,13 @@ const profile=html.slice(html.indexOf('id="stepGroup-profile"'),html.indexOf('id
 const ribbons=html.slice(html.indexOf('id="groupRibbons"'),html.indexOf('id="groupBadges"'));
 const rack=html.slice(html.indexOf('id="rackLayoutMore"'),html.indexOf('</details>',html.indexOf('id="rackLayoutMore"')));
 
-test('membership is two buttons side by side, the cut and the grade are chosen by picture, each with its select kept as the source of truth',()=>{
-  assert.match(html,/data-segments-for="membershipType"/);
-  assert.doesNotMatch(html,/data-segments-for="jacketSelect"/,'the cut is two pictures of the uniform (js/profile-pickers.js), not two buttons');
+test('membership, grade, cut, the weight standard and the name are chosen by picture, each with its select or box kept as the source of truth',()=>{
+  assert.doesNotMatch(html,/data-segments-for=/,'no two-button control is left: every one of these choices is pictures (js/profile-pickers.js)');
+  assert.match(html,/<div id="membershipPicker"><\/div>\s*<select id="membershipType" class="segmentedSource"/);
   assert.match(html,/<div id="cutPicker"><\/div>\s*<select id="jacketSelect" class="segmentedSource"/);
   assert.match(html,/<div id="rankSetupPicker" class="mt-10"><\/div>\s*<select id="rankSetupSelect" class="segmentedSource"/);
-  assert.match(html,/<select id="membershipType" class="segmentedSource"/);
-  assert.match(html,/<select id="jacketSelect" class="segmentedSource"/);
-  assert.match(css,/\.segmented\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
-  assert.match(css,/\.segmented button\{[^}]*min-height:44px/);
+  assert.match(html,/<input type="checkbox" id="adultCadetCheckbox" class="segmentedSource" tabindex="-1" aria-hidden="true">\s*<div id="adultCadetPicker"><\/div>/);
+  assert.match(html,/<input type="checkbox" id="capubV2ShowText" class="segmentedSource" tabindex="-1" aria-hidden="true" checked>\s*<div id="showNamePicker" class="mt-8"><\/div>/);
   assert.match(setup,/source\.dispatchEvent\(new Event\('change', \{bubbles:true\}\)\)/);
 });
 

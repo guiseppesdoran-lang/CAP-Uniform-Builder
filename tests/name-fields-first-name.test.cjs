@@ -48,7 +48,9 @@ test('the page labels the three fields First name, Last name and Wing, with the 
   assert.match(block, /<label class="fieldLabel" for="capubV2FirstName">First name<\/label>/);
   assert.match(block, /<label class="fieldLabel mt-8" for="capubV2LastName">Last name<\/label>/);
   assert.match(block, /<label class="fieldLabel mt-8" for="capubV2PlateLine">Wing<\/label>\s*<input id="capubV2PlateLine" maxlength="24" placeholder="e\.g\. New York, Tennessee, etc\."\/>\s*<div class="hintText">The state or region shown on nameplates\.<\/div>/);
-  assert.match(block, /Show my name on the uniform/);
+  // Whether the name is shown is two pictures, the uniform at its name with the name and without it (js/profile-pickers.js), over the box, which stays as the source of truth.
+  assert.match(block, /<input type="checkbox" id="capubV2ShowText" class="segmentedSource" tabindex="-1" aria-hidden="true" checked>\s*<div id="showNamePicker" class="mt-8"><\/div>/);
+  assert.match(fs.readFileSync(path.join(root, 'js', 'profile-pickers.js'), 'utf8'), /name: 'showName', legend: 'Name on the uniform'/);
   assert.doesNotMatch(block, /<details/, 'the three fields are not inside a second fold');
 });
 
