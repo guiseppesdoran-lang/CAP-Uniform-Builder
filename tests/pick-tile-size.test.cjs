@@ -51,3 +51,19 @@ test('the tiles built for the badge chooser and the command pin name their picke
   assert.match(items, /id: 'commandInsigniaLevel'/);
   assert.match(lists, /mode: 'toggle'/);
 });
+
+test('a tile that is on with a row of choices under it takes the width of the list: its tile beside the row on a desktop; at a phone\'s width the tile is capped and the row under it has the whole width', () => {
+  const live = ':has(> .vpControls:not([hidden]) .vpRow)';
+  const sel = '.vp[data-boxed]:not([data-layout="row"]) .vpCell' + live;
+  const wide = rule(sel);
+  assert.match(wide, /grid-column:1\/-1;display:grid;grid-template-columns:minmax\(0,150px\) minmax\(0,1fr\)/, 'the tile (150 px) and the row beside it');
+  assert.match(css, new RegExp(`${sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}>\\.vpControls\\{grid-column:2;grid-row:1 / span 2\\}`));
+  const at = css.indexOf('@media (max-width:699px){\n  ' + sel);
+  assert.ok(at >= 0, 'a phone-width rule');
+  const narrow = css.slice(at, css.indexOf('\n}', at));
+  assert.match(narrow, /\{grid-template-columns:minmax\(0,1fr\)\}/, 'one column the width of the list, so the row is not held to the tile\'s width');
+  assert.match(narrow, />\.vpOption,[^{]*>\.vpCaption\{max-width:150px\}/, 'the tile itself stays 150 px at most');
+  assert.match(narrow, />\.vpControls\{grid-column:1\/-1;grid-row:auto\}/, 'the row under the tile');
+  // A row only takes the width while its controls are shown: a badge that is off keeps its place in the grid.
+  assert.doesNotMatch(css, /\.vpCell:has\(> \.vpControls \.vpRow\)/);
+});

@@ -1602,7 +1602,8 @@ html[data-access="guest"] #accessGate{display:none}
 .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpOption,.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpCaption{grid-column:1}
 .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpControls{grid-column:2;grid-row:1 / span 2}
 @media (max-width:699px){
-  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow){grid-template-columns:minmax(0,150px)}
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow){grid-template-columns:minmax(0,1fr)}
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpOption,.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpCaption{max-width:150px}
   .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpControls{grid-column:1/-1;grid-row:auto}
 }
 .vpControlStack .ribbonAwardLabel{margin:0}
