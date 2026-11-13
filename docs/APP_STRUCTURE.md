@@ -24,6 +24,7 @@ The builder is a static site. There is no bundler and no transform: the files in
 | `profiles-polo.js` | The Corporate Working Uniform polo. |
 | `measure-layout.js` | The measurement overlay: the regulation distances drawn as dimension lines. |
 | `render-svg.js` | Draws a scene as SVG and exports a PNG. It needs a browser. |
+| `parts.js` | Sorts a scene's layers into the parts a member can download as a picture of their own (the ribbon rack, a side of the chest, the collar and shoulders, the headgear, a sleeve or pocket with a patch, the cord) and gives each part's box and picture size. The Photos menu of the last step (`js/photos-menu.js`) offers them. |
 
 Every other engine file also loads in Node, which is how the tests compose scenes with no browser. Paragraph numbers in the engine are CAPR 39-1, with the ICLs through 26-04.
 

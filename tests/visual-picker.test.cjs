@@ -362,3 +362,91 @@ test('toggle mode: the filter hides the tiles whose name, caption, search words 
   p.setOptions(p.el.querySelectorAll('.vpOption').map(() => null).filter(Boolean));
   assert.equal(p.el.querySelectorAll('.vpCell').length, 0);
 });
+
+// ---- action mode: tiles that do something when pressed (the Photos menu), no choice made ----
+
+function makeActions(config){
+  const host = doc.createElement('div');
+  doc.body.append(host);
+  const calls = [];
+  const p = VisualPicker.render(host, Object.assign({ mode: 'action', name: 'photos', labelledBy: 'photosHead', options: OPTIONS, onAction: (v, o) => calls.push([v, o.label]) }, config));
+  return { host, p, calls, buttons: () => p.el.querySelectorAll('.vpOption') };
+}
+
+test('action mode: a group of plain buttons with their pictures and names, none checked, pressed or picked, no tick to show', () => {
+  const { p, buttons } = makeActions({ size: 'large' });
+  assert.equal(p.el.dataset.mode, 'action');
+  assert.equal(p.el.dataset.size, 'large');
+  const group = p.el.querySelector('[role="group"]');
+  assert.ok(group, 'a group, not a radio group');
+  assert.equal(group.getAttribute('aria-labelledby'), 'photosHead');
+  assert.equal(p.el.querySelectorAll('[role="radiogroup"]').length + p.el.querySelectorAll('[role="radio"]').length, 0);
+  assert.equal(p.el.querySelectorAll('[aria-checked]').length + p.el.querySelectorAll('[aria-pressed]').length, 0);
+  assert.equal(p.el.querySelectorAll('.vpTick').length, 0);
+  assert.deepEqual(buttons().map(b => b.querySelector('.vpLabel').textContent), ['Patrol cap', 'Tactical cap', 'No headgear']);
+  assert.ok(buttons().every(b => b.nodeName === 'BUTTON' && b.getAttribute('type') === 'button'));
+  assert.equal(buttons()[0].querySelector('.vpPicture').innerHTML.includes('<svg'), true, 'markup is drawn');
+  assert.equal(buttons()[1].querySelector('img').getAttribute('src'), 'images/hat.svg', 'an address is an image');
+  assert.equal(p.value, undefined, 'there is no value to hold');
+});
+
+test('action mode: a press calls onAction with the value and the option, as often as it is pressed, and picks nothing', () => {
+  const { buttons, calls, p } = makeActions();
+  buttons()[1].click();
+  buttons()[1].click();
+  buttons()[2].click();
+  assert.deepEqual(calls, [['b', 'Tactical cap'], ['b', 'Tactical cap'], ['', 'No headgear']]);
+  assert.ok(!buttons().some(b => b.classList.contains('isPicked')));
+  assert.equal(p.el.querySelector('.vpNote'), null, 'and says nothing about a pick');
+});
+
+test('action mode: one stop of the Tab key; the arrows, Home and End move the focus; Enter and the space bar are left to the button', () => {
+  const { buttons } = makeActions();
+  assert.deepEqual(buttons().map(b => b.tabIndex), [0, -1, -1]);
+  buttons()[0].dispatchEvent(keydown('ArrowDown'));
+  assert.equal(doc.activeElement, buttons()[1]);
+  assert.deepEqual(buttons().map(b => b.tabIndex), [-1, 0, -1]);
+  buttons()[1].dispatchEvent(keydown('End'));
+  assert.equal(doc.activeElement, buttons()[2]);
+  buttons()[2].dispatchEvent(keydown('ArrowRight'));
+  assert.equal(doc.activeElement, buttons()[0]);
+  buttons()[0].dispatchEvent(keydown('ArrowUp'));
+  assert.equal(doc.activeElement, buttons()[2]);
+  buttons()[2].dispatchEvent(keydown('Home'));
+  assert.equal(doc.activeElement, buttons()[0]);
+  for(const key of ['Enter', ' ']){
+    const e = keydown(key);
+    buttons()[0].dispatchEvent(e);
+    assert.equal(e.defaultPrevented, undefined, `${JSON.stringify(key)} is not taken: the browser presses the button`);
+  }
+});
+
+test('action mode: a busy tile answers no press until it is free; setOptions keeps the focus and what is busy; groups get their headings', () => {
+  const { p, buttons, calls } = makeActions();
+  p.setBusy('a', true);
+  assert.equal(buttons()[0].getAttribute('aria-busy'), 'true');
+  assert.ok(buttons()[0].classList.contains('isBusy'));
+  buttons()[0].click();
+  assert.deepEqual(calls, [], 'a press on it does nothing');
+  buttons()[1].click();
+  assert.equal(calls.length, 1, 'the others still answer');
+  buttons()[1].focus();
+  p.setOptions(OPTIONS.map(o => Object.assign({}, o, { group: o.value === 'a' ? 'Caps' : 'Others' })));
+  assert.equal(buttons()[0].getAttribute('aria-busy'), 'true', 'still busy after the tiles are drawn again');
+  assert.equal(doc.activeElement, buttons()[1], 'the focus stays on the tile it was on');
+  assert.deepEqual(p.el.querySelectorAll('.vpGroupHead').map(h => h.textContent), ['Caps', 'Others']);
+  p.setBusy('a', false);
+  assert.equal(buttons()[0].getAttribute('aria-busy'), null);
+  buttons()[0].click();
+  assert.equal(calls.length, 2);
+});
+
+test('action mode: the radio and switch modes are as they were, and the styles dim a busy tile and leave the pictures on the paper white the PNG has', () => {
+  const css = read('styles/app.css');
+  assert.match(css, /\.vp\[data-mode="action"\] \.vpOption\.isBusy\{[^}]*opacity/);
+  assert.match(css, /\.vpPicture\{[^}]*background:var\(--paper\)/);
+  assert.match(css, /--paper:#FFFFFF;/);
+  const { p } = make();
+  assert.equal(p.el.dataset.mode, undefined);
+  assert.ok(p.el.querySelector('[role="radiogroup"]'));
+});

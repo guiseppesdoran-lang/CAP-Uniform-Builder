@@ -1584,6 +1584,11 @@ html[data-access="guest"] #accessGate{display:none}
 /* A grade's insignia is the device alone, as worn on the blues, with no cloth under it (js/profile-pickers.js): silver and white metal and thread vanish on the tile's
    white, so each device has a thin outline, a halo of the CAP blue (a colour that does not change with the theme), on either theme. */
 .vp[data-name="rank"] .vpPicture>img{filter:drop-shadow(0 0 .6px var(--cap-blue)) drop-shadow(0 0 .6px var(--cap-blue))}
+/* Action tiles (mode 'action'): they do something when pressed and keep no mark. One whose action is under way is dimmed and does not answer a second press. */
+.vp[data-mode="action"] .vpOption.isBusy{opacity:.6;cursor:progress}
+/* The Photos menu (js/photos-menu.js): each picture is of the part on the white ground (--paper) the downloaded PNG has. */
+#photosMenu .vpGrid{margin-top:var(--s2)}
+#photosMenu .hintText:empty{display:none}
 
 /* The Uniform options panel: the options are groups of their own. A group chosen by picture is set off from the rows around it by a line. */
 .garmentOption+.garmentOption{margin-top:var(--s3)}

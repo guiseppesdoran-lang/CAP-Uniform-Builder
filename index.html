@@ -438,6 +438,14 @@
 
           <section id="finishPanel" class="panelBlock">
             <label class="fieldLabel">Downloads and files</label>
+            <!-- The Photos menu (js/photos-menu.js): a picture tile for the whole uniform and for each part of it the build has; a tile downloads that part as a PNG.
+                 It stays hidden until the drawing is made. -->
+            <div class="finishAction" id="photosMenu" hidden>
+              <label class="fieldLabel" id="photosMenuLabel">Photos</label>
+              <div class="hintText">Tap a picture to download that part of your uniform.</div>
+              <div id="photosMenuTiles"></div>
+              <div class="hintText" id="photosMenuStatus" role="status" aria-live="polite"></div>
+            </div>
             <!-- The download is the step's primary action: js/workspace-ui.js moves this button into the panel's footer once the
                  page is up (js/placement-templates.js adds its Templates entry after this block first). -->
             <div class="finishAction" id="downloadAction">
@@ -587,6 +595,7 @@
 <script src="js/engine/profiles-polo.js?v=89b1ecb2fd" defer></script>
 <script src="js/engine/measure-layout.js?v=ec42fe492a" defer></script>
 <script src="js/engine/render-svg.js?v=5084ca25ca" defer></script>
+<script src="js/engine/parts.js?v=0000000000" defer></script>
 <script src="badge-captions.js?v=1db6f784fa" defer></script>
 <script src="export-names.js?v=54e956edaa" defer></script>
 <script src="js/state.js?v=0dc38f02ae" defer></script>
@@ -621,6 +630,7 @@
 <script src="js/telemetry.js?v=f9f5d96219" defer></script>
 <script src="js/feedback.js?v=c445b2a0c9" defer></script>
 <script src="js/badge-order.js?v=3aa1554074" defer></script>
+<script src="js/photos-menu.js?v=0000000000" defer></script>
 
 <!-- End of feature scripts. -->
 <script src="js/bootstrap.js?v=c5a09e0e74" defer></script>

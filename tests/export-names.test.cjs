@@ -44,3 +44,14 @@ test('a uniform saved under the name it had before it was renamed still names th
   assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonials'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.png');
   assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonial'},'json',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.json');
 });
+
+test('a picture of one part of the uniform says the part, in lower case with hyphens, after the uniform and before the day',()=>{
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a',part:'ribbon-rack'},'png',day),'CAP-Uniform_C-SSgt_Blues-A_ribbon-rack_2026-10-10.png');
+  assert.equal(exportFileName({rank:'Lt Col',uniform:'aviator_blazer',part:'left-chest-shirt'},'png',day),'CAP-Uniform_Lt-Col_Aviator-Blazer_left-chest-shirt_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'honor_guard',part:'Collar and Shoulders'},'png',day),'CAP-Uniform_C-Maj_Honor-Guard_collar-and-shoulders_2026-10-10.png');
+  assert.match(exportFileName({rank:'C/Capt',uniform:'ocp',part:'left sleeve (jacket)'},'png',day),/^[A-Za-z0-9_.-]+$/,'safe for any file system');
+  // The whole uniform has no part and is named as it always was.
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a'},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a',part:''},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a',part:null},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
+});

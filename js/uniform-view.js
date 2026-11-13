@@ -381,6 +381,66 @@
     return E.renderSvg.svgToCanvas(lastSvg, vb[2] * (ppi || 60));
   }
 
+  // ---- The parts of the drawing as pictures of their own (js/engine/parts.js; the Photos menu of the last step) ----------------------------------------------------------------
+
+  // What each layer of a drawing drew, as a box in inches: the browser's own measure of the layer's group (getBBox), made on a copy of the drawing kept off to the side, so it
+  // works whether or not the preview is on screen. A sheet laid over the whole garment (the lapel insignia, the name plate) is measured by what it draws, not by its sheet.
+  function measureDrawing(svg, scene){
+    const host = document.createElement('div');
+    host.setAttribute('aria-hidden', 'true');
+    host.style.cssText = 'position:fixed;left:-10000px;top:0;width:200px;height:200px;overflow:hidden;visibility:hidden;pointer-events:none';
+    const copy = svg.cloneNode(true);
+    copy.setAttribute('width', '200');
+    copy.setAttribute('height', '200');
+    E.renderSvg.scopeIds(copy);   // the preview holds the same ids: the copy keeps to its own
+    host.appendChild(copy);
+    document.body.appendChild(host);
+    const boxes = new Map();
+    // The drawing holds one group for each layer it drew, in the order buildSvg draws them (the layers by z, ties in the scene's order), each with the layer's key and role; a
+    // layer nothing was drawn for (a measurement, a place set aside) has none, and is passed over.
+    const order = scene.layers.map((layer, i) => ({ layer, i })).sort((p, q) => (p.layer.z || 0) - (q.layer.z || 0) || p.i - q.i).map(x => x.layer);
+    let at = 0;
+    try{
+      copy.querySelectorAll('g.layer').forEach(g => {
+        const key = g.getAttribute('data-calib-key'), role = g.getAttribute('data-role');
+        while(at < order.length && !((order[at].key || null) === key && (order[at].role || null) === role)) at++;
+        const layer = order[at++];
+        let b = null;
+        try{ b = g.getBBox(); }catch(_){ b = null; }
+        if(layer && b && b.width > 0 && b.height > 0) boxes.set(layer, { x: b.x, y: b.y, w: b.width, h: b.height });
+      });
+    }finally{
+      host.remove();
+    }
+    return layer => boxes.get(layer) || null;
+  }
+
+  let partsHeld = null;
+  // The parts of the drawing on screen: { scene, plan } (plan.parts: what E.parts.plan found), worked out once for each drawing. Null while there is nothing drawn.
+  async function parts(){
+    if(!lastScene || !lastSvg) await render();
+    const scene = lastScene, svg = lastSvg;
+    if(!scene || !svg || !E.parts) return null;
+    if(!partsHeld || partsHeld.scene !== scene){
+      // The parts are held to the frame the whole picture was drawn in (its viewBox: the scene's bounds, whatever the engine made them, and the pad).
+      const vb = svg.getAttribute('viewBox').split(/\s+/).map(Number);
+      partsHeld = { scene, plan: E.parts.plan(scene, measureDrawing(svg, scene), { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }) };
+    }
+    return partsHeld;
+  }
+
+  // The drawing of one part: the garment and the part's own items, framed on the part and its margin, as an <svg> in inches.
+  async function partSvg(held, part){
+    const s = await getStore();
+    return E.renderSvg.buildSvg(E.parts.sceneFor(held.scene, held.plan, part), id => s.entry(id).path, { pad: 0 });
+  }
+
+  // The picture of one part: the same drawing at the size parts.resolution gives it (150 pixels to the inch where that fits, 1200 to 3000 pixels on the longer side).
+  async function exportPart(held, part){
+    const svg = await partSvg(held, part);
+    return E.renderSvg.svgToCanvas(svg, E.parts.resolution(part.view).widthPx);
+  }
+
   // ---- Badge chooser: which badge goes where --------------------------------------------------------------------------------------
 
   // The engine reports each position that has more than one badge to place (scene.conflicts: { position, label, limit, candidates: [{ id,
@@ -629,7 +689,7 @@
   window.CAPUBUniformView = {
     // Fetches the manifest ahead of the first drawing (js/bootstrap.js calls it once the page is idle).
     warm: () => getStore().then(() => true, () => false),
-    render, scheduleRender, exportCanvas, updateBadgeChooser, setBadgeChoice, chooserModel, nextBadgePicks, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview, miniMedalPreview, fillMiniMedalPreview,
+    render, scheduleRender, exportCanvas, parts, partSvg, exportPart, updateBadgeChooser, setBadgeChoice, chooserModel, nextBadgePicks, buildFromState, rackRowCounts, describeRibbon, ribbonPreview, fillRibbonPreview, miniMedalPreview, fillMiniMedalPreview,
     get ribbonNotes(){ return ribbonNotes; },
     get scene(){ return lastScene; },
     get svg(){ return lastSvg; },
