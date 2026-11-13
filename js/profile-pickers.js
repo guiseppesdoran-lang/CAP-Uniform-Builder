@@ -43,6 +43,17 @@
     return path && typeof ASSET === 'function' ? ASSET(path) : null;
   }
 
+  // A picture's address is let go (revoked) when its picture is dropped from the ones kept (js/profile-pictures.js), but not while a tile on the page still shows it: an
+  // image that is lazy, or is made again by the page, would then find nothing at its address. The address waits here until no image has it, and is let go then.
+  const held = new Set();
+  function sweep(){
+    for(const url of [...held]){
+      if(doc.querySelectorAll(`img[src="${url}"]`).length) continue;
+      held.delete(url);
+      URL.revokeObjectURL(url);
+    }
+  }
+
   // ---- what the engine needs, made when a picture is first asked for ------------------------------------------------------------
 
   let pictures = null;
@@ -59,13 +70,16 @@
         const [store] = await Promise.all([getStore(), assets.prepare(build.uniform, build.gender)]);
         return E.profiles.composeUniform(build, store);
       },
+      // The drawing as a document a browser decodes on its own (js/profile-pictures.js standalone); null for a drawing that holds nothing, which is tried again.
       async draw(scene, pad){
         const store = await getStore();
         const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad });
-        return URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml;charset=utf-8' }));
+        const text = window.CAPUBProfilePictures.standalone(new XMLSerializer().serializeToString(svg));
+        return text ? URL.createObjectURL(new Blob([text], { type: 'image/svg+xml;charset=utf-8' })) : null;
       },
+      wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
       async spec(id){ return (await getStore()).load(id); },
-      release: url => URL.revokeObjectURL(url),
+      release: url => { held.add(url); sweep(); },
       warn: (...a) => console.warn('[profile pictures]', ...a)
     });
     return pictures;
@@ -247,6 +261,30 @@
     if(!made.settled) made.ready.then(done => { if(token === uniforms.token) paint(done); });
   }
 
+  // ---- an image that did not decode ----------------------------------------------------------------------------------------------
+
+  // A picture the browser could not decode (a network error, a drawing it will not read) is not left as the browser's broken-image mark: the choice is its name alone. The
+  // events of an image do not bubble, so one listener on the page takes them in the capture phase.
+  const OURS = ['rank', 'cut', 'firstSergeant'];
+  const up = (node, test) => { for(let n = node && node.parentNode; n && n.nodeType === 1; n = n.parentNode) if(test(n)) return n; return null; };
+  const has = (n, name) => !!(n.classList && n.classList.contains(name));
+  function dropImage(img){
+    const box = up(img, n => has(n, 'vpPicture') || has(n, 'uPicture'));
+    if(!box) return;
+    const tile = up(box, n => has(n, 'vpOption'));
+    if(tile){ box.remove(); tile.classList.add('noPicture'); }
+    else box.hidden = true;
+  }
+  // Only the pictures of these pickers and of the uniform cards: another picker's images are its own.
+  const isOurs = img => !!(up(img, n => has(n, 'uniformOption')) || up(img, n => has(n, 'vp') && n.dataset && OURS.includes(n.dataset.name)));
+  function checkImage(event){
+    const img = event && event.target;
+    if(!img || img.nodeName !== 'IMG' || !isOurs(img)) return;
+    if(event.type === 'error' || !img.naturalWidth) dropImage(img);
+  }
+  doc.addEventListener('error', checkImage, true);
+  doc.addEventListener('load', checkImage, true);
+
   // ---- all of it ----------------------------------------------------------------------------------------------------------------
 
   function sync(){
@@ -254,6 +292,7 @@
     for(const part of [syncGrade, syncCut, syncDiamond, syncUniforms]){
       try{ part(); }catch(error){ console.warn('[profile pickers]', error); }
     }
+    sweep();
   }
   doc.addEventListener('capub:rendered', sync);
   doc.addEventListener('capub:history', sync);
@@ -262,5 +301,5 @@
   if(shell && typeof MutationObserver === 'function') new MutationObserver(() => sync()).observe(shell, { attributes: true, attributeFilter: ['data-step'] });
   setTimeout(sync, 0);
 
-  window.CAPUBProfilePickers = { sync, syncGrade, syncCut, syncDiamond, syncUniforms };
+  window.CAPUBProfilePickers = { sync, syncGrade, syncCut, syncDiamond, syncUniforms, dropImage };
 })();

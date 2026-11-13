@@ -501,3 +501,129 @@ test('the grade tiles\' pictures are outlined so silver and white devices read o
   assert.match(css, /--paper:#FFFFFF;/, 'the tile\'s ground is white');
   assert.doesNotMatch(css.slice(css.indexOf('@media (prefers-color-scheme:dark)'), css.indexOf('@media (prefers-reduced-motion')), /--paper:/, 'and stays white in the dark theme');
 });
+
+// ---- an image that did not decode, and an address let go too soon ---------------------------------------------------------------------
+
+// The page, with everything the pictures need but the engine's drawing, which is a stand-in that makes a drawing with one <use>; the pictures are the real module's. Object
+// addresses are 'blob:<n>' and the ones revoked are kept, so a test can see an address revoked while an image still has it. `compose` answers from `composing` so a test can
+// hold the pictures of a member back.
+function livePage(state){
+  const doc = createDocument();
+  doc.querySelectorAll = sel => doc.body.querySelectorAll(sel);
+  const shell = doc.createElement('main'); shell.id = 'layoutShell'; doc.body.append(shell);
+  const profile = doc.createElement('div'); profile.id = 'stepGroup-profile'; profile.hidden = false; doc.body.append(profile);
+  const uniform = doc.createElement('div'); uniform.id = 'stepGroup-uniform'; uniform.hidden = true; doc.body.append(uniform);
+  const rankHost = doc.createElement('div'); rankHost.id = 'rankSetupPicker'; profile.append(rankHost);
+  const rank = doc.createElement('select'); rank.id = 'rankSetupSelect'; rank.value = ''; rank.options = []; profile.append(rank);
+  const cutHost = doc.createElement('div'); cutHost.id = 'cutPicker'; profile.append(cutHost);
+  const cut = doc.createElement('select'); cut.id = 'jacketSelect'; cut.value = ''; profile.append(cut);
+  const list = doc.createElement('div'); list.id = 'uniformList'; uniform.append(list);
+  const cards = ['blues_a', 'blues_b', 'abu'].map(id => { const c = doc.createElement('button'); c.className = 'uniformOption'; c.dataset.uniformId = id; list.append(c); return c; });
+  const made = [], revoked = new Set(), composing = [];
+  let n = 0;
+  const sandbox = {
+    document: doc, console, Event: function(type, init){ this.type = type; Object.assign(this, init || {}); },
+    setTimeout: fn => { fn(); return 0; },
+    State: Object.assign({ membership: 'cadet', rank: 'C/Maj', gender: 'male', uniform: 'blues_a', garment: {} }, state),
+    CAPUBAssetIndex: INDEX, ASSET: p => 'images/' + p,
+    CAPUBUniformRules: RULES_FOR_PAGE, CAPUBUniformView: { buildFromState: () => ({ uniform: sandbox.State.uniform, gender: sandbox.State.gender, membership: sandbox.State.membership, grade: G.gradeInfo(sandbox.State.membership, sandbox.State.rank, {}), opt: {}, name: {} }) },
+    CAPUBEngine: {
+      grades: G, core: { createSpecStore: () => ({ load: async () => ({ w: 1, h: 1 }), entry: () => ({ path: 'x.svg' }) }) },
+      profiles: { composeUniform: build => new Promise(res => { const job = { build, res: () => res({ layers: [], bounds: { x: 0, y: 0, w: 1, h: 1 } }) }; composing.push(job); if(!sandbox.hold) job.res(); }) },
+      renderSvg: { buildSvg: async () => ({ tag: 'svg' }) }
+    },
+    CAPUBAssetPacks: { createLoader: () => ({ manifest: () => Promise.resolve({}), prepare: () => Promise.resolve(), spec: () => Promise.resolve({}) }) },
+    fetch: () => Promise.reject(new Error('offline')),
+    Blob: function(parts){ this.parts = parts; },
+    XMLSerializer: function(){ this.serializeToString = () => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 3"><use href="#a"/></svg>'; },
+    URL: { createObjectURL: () => { const u = 'blob:' + (++n); made.push(u); return u; }, revokeObjectURL: u => revoked.add(u) }
+  };
+  sandbox.window = sandbox; sandbox.self = sandbox;
+  vm.runInNewContext(read('js/visual-picker.js'), sandbox);
+  vm.runInNewContext(read('js/profile-pictures.js'), sandbox);
+  vm.runInNewContext(read('js/profile-pickers.js'), sandbox);
+  const offer = membership => { sandbox.State.membership = membership; rank.options = [{ value: '' }, ...(RANKS[membership] || []).map(value => ({ value }))]; };
+  const srcs = () => doc.body.querySelectorAll('img').map(i => i.getAttribute('src'));
+  return { sandbox, doc, rankHost, cutHost, cards, uniform, profile, made, revoked, composing, offer, srcs, sync: () => sandbox.CAPUBProfilePickers.sync(), settle: () => new Promise(r => setImmediate(r)) };
+}
+const RULES_FOR_PAGE = require('../data/uniform-rules.js');
+
+test('an image the browser cannot decode is not left as its broken-image mark: a grade tile is its name alone, a uniform card its words, and the others\' images are left alone', async () => {
+  const p = livePage({});
+  p.offer('cadet'); p.sync(); await p.settle(); await p.settle();
+  const tiles = radios(p.rankHost);
+  const imgOf = tile => tile.querySelector('.vpPicture') && tile.querySelector('.vpPicture').children.find(n => n.nodeName === 'IMG');
+  assert.ok(!!imgOf(tiles.find(t => t.dataset.value === 'C/2d Lt')), 'the picture is there');
+  const listener = p.doc.listeners.error[0];
+  assert.ok(!!(listener && p.doc.listeners.load[0]), 'listens for both, on the page, in the capture phase');
+  const bad = imgOf(tiles.find(t => t.dataset.value === 'C/2d Lt'));
+  listener({ type: 'error', target: bad });
+  const tile = tiles.find(t => t.dataset.value === 'C/2d Lt');
+  assert.ok(tile.querySelector('.vpPicture') === null, 'no box, so no broken mark');
+  assert.equal(tile.classList.contains('noPicture'), true, 'the name alone');
+  assert.ok(tile.querySelector('.vpLabel').textContent === 'C/2d Lt');
+  // A picture that loads but has no size is the same failure.
+  const zero = imgOf(tiles.find(t => t.dataset.value === 'C/Capt')); zero.naturalWidth = 0;
+  p.doc.listeners.load[0]({ type: 'load', target: zero });
+  assert.equal(tiles.find(t => t.dataset.value === 'C/Capt').classList.contains('noPicture'), true);
+  const good = imgOf(tiles.find(t => t.dataset.value === 'C/Maj')); good.naturalWidth = 320;
+  p.doc.listeners.load[0]({ type: 'load', target: good });
+  assert.equal(tiles.find(t => t.dataset.value === 'C/Maj').classList.contains('noPicture'), false, 'one that decoded stays');
+  // A uniform card's picture.
+  p.doc.querySelectorAll('#stepGroup-uniform').length;
+  p.uniform.hidden = false; p.sandbox.State.membership = 'cadet'; p.sync(); await p.settle(); await p.settle();
+  const card = p.cards[0], box = card.children.find(n => n.classList.contains('uPicture')), img = box.children.find(n => n.nodeName === 'IMG');
+  assert.ok(!!img, 'the card has its picture');
+  listener({ type: 'error', target: img });
+  assert.equal(box.hidden, true, 'the card is its words');
+  // An image of another picker or of the page is not ours to take out.
+  const other = p.doc.createElement('div'); other.className = 'vp'; other.dataset.name = 'garmentOpt-headgear';
+  const oBox = p.doc.createElement('span'); oBox.className = 'vpPicture'; const oImg = p.doc.createElement('img'); oBox.append(oImg); other.append(oBox); p.doc.body.append(other);
+  listener({ type: 'error', target: oImg });
+  assert.equal(other.querySelector('.vpPicture') !== null, true);
+});
+
+test('every picture on the page is one the page still holds: switching membership, grade and cut over and over (more than the pictures kept) never leaves a tile on an address that was let go', async () => {
+  const p = livePage({});
+  p.uniform.hidden = false;
+  const states = [];
+  for(let i = 0; i < 2; i++) for(const rank of RANKS.cadet) for(const gender of ['male', 'female']) states.push({ membership: 'cadet', rank, gender, uniform: i % 2 ? 'blues_b' : 'blues_a' });
+  assert.ok(states.length * 3 > 80, 'more pictures than are kept');
+  let checked = 0;
+  for(const state of states){
+    Object.assign(p.sandbox.State, state); p.offer(state.membership); p.rank = p.rank;
+    p.sync(); await p.settle(); await p.settle();
+    // Every image the page shows has an address that has not been let go.
+    for(const src of p.srcs()) if(/^blob:/.test(src)){ checked++; assert.equal(p.revoked.has(src), false, `${src} was let go but is on the page`); }
+  }
+  p.offer('senior'); p.sync(); await p.settle(); await p.settle();
+  for(const src of p.srcs()) if(/^blob:/.test(src)) assert.equal(p.revoked.has(src), false, `${src}`);
+  assert.ok(checked > 200, `${checked} images checked`);
+  assert.ok(p.made.length > 90, `${p.made.length} pictures made, more than the ${80} kept`);
+  assert.ok(p.revoked.size > 0, 'old pictures were let go');
+});
+
+test('a picture dropped from the kept ones is let go only when no image has it: held while a tile shows it, then revoked at the next change', async () => {
+  const p = livePage({ rank: 'C/Maj' });
+  p.uniform.hidden = false;
+  p.sync(); await p.settle(); await p.settle();
+  const shown = p.srcs().filter(s => /^blob:/.test(s));
+  assert.ok(shown.length >= 3);
+  // Hold back the pictures of every later state, and ask for more than the kept number of them: the first are dropped from the cache, and the tiles still show them.
+  p.sandbox.hold = true;
+  for(const rank of RANKS.cadet){ for(const gender of ['male', 'female']){ Object.assign(p.sandbox.State, { rank, gender }); p.sync(); } }
+  Object.assign(p.sandbox.State, { membership: 'senior', rank: 'Capt' }); p.offer('senior');
+  for(const rank of RANKS.senior){ for(const gender of ['male', 'female']){ Object.assign(p.sandbox.State, { rank, gender }); p.sync(); } }
+  await p.settle();
+  const still = p.srcs().filter(s => /^blob:/.test(s));
+  for(const src of still) assert.equal(p.revoked.has(src), false, `${src} is on the page and is held`);
+  assert.ok(still.some(s => shown.includes(s)), 'the tiles still show the pictures they had, whose pictures were dropped from the cache');
+  // The new pictures arrive, the tiles change, and the addresses nothing shows are let go.
+  p.sandbox.hold = false;
+  p.composing.splice(0).forEach(job => job.res());
+  await p.settle(); await p.settle();
+  p.sync();
+  for(const src of p.srcs().filter(s => /^blob:/.test(s))) assert.equal(p.revoked.has(src), false, `${src} is on the page`);
+  assert.ok(shown.some(s => !p.srcs().includes(s)), 'the old pictures left the page');
+  assert.ok(shown.some(s => p.revoked.has(s)), 'and were let go once nothing showed them');
+});

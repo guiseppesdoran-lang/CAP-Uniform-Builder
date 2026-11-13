@@ -10,6 +10,7 @@
 //   made.uniforms(ids)                { now: { id: picture | null | undefined }, ready: Promise, settled }: one picture for each uniform card
 //   made.cuts()                       { now: { male, female }, ready, settled }: the uniform the member is on, in each cut
 //   made.grades(items)                { now: { key: picture | null | undefined }, ready, settled }: the devices of the grades, items [{ key, id, hide }]
+//   standalone(markup)                a drawing as a file a browser decodes on its own as an image (see below), or null when nothing was drawn
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
 // they made) with nothing else on it: no ribbons, badges, patches, name or cord, and no cap, so the garment fills the picture. The coat and the shirt, the
@@ -133,6 +134,49 @@
   // The scene as the picture shows it: what the engine drew, without the white patches it lays where an overlay will go and any measuring layer.
   const framed = scene => Object.assign({}, scene, { layers: scene.layers.filter(l => l.type !== 'clear' && l.type !== 'measure') });
 
+  // A drawing the page makes with E.renderSvg.buildSvg is made to sit in the page: it carries a class and a role for the page's stylesheet, the engraved lettering's font
+  // by a relative address, the sheets' metadata, and no size of its own, only a viewBox in inches. Shown as an image on its own (an object address in an <img>) it must
+  // be a document the browser can decode alone, and Safari is the strict one: a drawing with no width and height has the size of its viewBox taken as pixels, and a
+  // picture framed on 0.81 in (the C/2d Lt's disc) is then smaller than a pixel and shown as an image that did not load; a font by an address that is not a file of
+  // the image is a reference outside it. So the font and the metadata are left out, the namespaces and an XML declaration are there, and the picture has the size of
+  // IMAGE_PX on its longer side. A drawing that holds nothing (a sheet that could not be fetched leaves the drawing empty, without an error) is null.
+  const IMAGE_PX = 320;
+  const fmtPx = n => String(Math.round(n * 100) / 100);
+  function standalone(markup){
+    let text = String(markup == null ? '' : markup);
+    if(!/<(?:use|image)\b/.test(text)) return null;
+    text = text.replace(/<metadata\b[\s\S]*?<\/metadata>/g, '').replace(/<style\b[^>]*\bengraved-fonts\b[^>]*>[\s\S]*?<\/style>/g, '');
+    const root = /<svg\b[^>]*>/.exec(text);
+    const box = root && /\sviewBox="\s*([-+\d.eE]+)[\s,]+([-+\d.eE]+)[\s,]+([-+\d.eE]+)[\s,]+([-+\d.eE]+)\s*"/.exec(root[0]);
+    if(!box) return null;
+    const w = parseFloat(box[3]), h = parseFloat(box[4]);
+    if(!(w > 0) || !(h > 0)) return null;
+    const k = IMAGE_PX / Math.max(w, h);
+    let tag = root[0].replace(/\s(?:width|height)="[^"]*"/g, '');
+    if(!/\sxmlns="http:\/\/www\.w3\.org\/2000\/svg"/.test(tag)) tag = tag.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+    if(/\sxlink:href=/.test(text) && !/\sxmlns:xlink=/.test(tag)) tag = tag.replace('<svg', '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    tag = tag.replace('<svg', `<svg width="${fmtPx(w * k)}" height="${fmtPx(h * k)}"`);
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + text.replace(root[0], tag);
+  }
+
+  // Drawing is tried again when it fails or comes out empty (a fetch of a sheet that is cut off by a busy server or a flaky connection): twice more, a moment apart.
+  async function drawn(env, scene, pad){
+    let last = new Error('nothing was drawn');
+    for(let attempt = 0; attempt < 3; attempt++){
+      try{
+        const url = await env.draw(scene, pad);
+        if(url) return url;
+        last = new Error('nothing was drawn');
+      }catch(error){ last = error; }
+      if(attempt < 2 && env.wait) await env.wait(300 * (attempt + 1));
+    }
+    throw last;
+  }
+  // `fn` over the list, a few at a time: a page of thirty pictures does not ask for thirty sheets at once.
+  async function inBatches(list, size, fn){
+    for(let i = 0; i < list.length; i += size) await Promise.all(list.slice(i, i + size).map(fn));
+  }
+
   function create(env){
     const cache = new Map();   // key -> { value, promise }; the newest last
     function drop(){
@@ -151,7 +195,7 @@
       hit = { value: undefined };
       hit.promise = Promise.resolve()
         .then(() => env.compose(build))
-        .then(scene => env.draw(framed(scene), PAD))
+        .then(scene => drawn(env, framed(scene), PAD))
         .catch(error => { if(env.warn) env.warn(`The picture of ${build.uniform} could not be made`, error); return null; })
         .then(url => { hit.value = url; return url; });
       cache.set(key, hit);
@@ -187,13 +231,13 @@
     async function drawGrades(list){
       await Promise.all(list.map(async i => { if(!sizes.has(i.id)){ const spec = await env.spec(i.id); sizes.set(i.id, { w: spec.w, h: spec.h }); } }));
       const out = {};
-      await Promise.all(list.map(async i => {
+      await inBatches(list, 4, async i => {
         const s = sizes.get(i.id), frame = Math.max(s.w, s.h) * MARGIN;
         const layer = { type: 'asset', id: i.id, x: -s.w / 2, y: -s.h / 2, w: s.w, h: s.h, rotate: 0, origin: { x: 0, y: 0 }, z: 1, role: 'grade', key: 'grade:' + i.id };
         if(i.hide && i.hide.length) layer.hideGroups = [...i.hide];
         const scene = { title: 'Grade', layers: [layer], bounds: { x: -frame / 2, y: -frame / 2, w: frame, h: frame }, notes: [], conflicts: [] };
-        out[i.key] = await env.draw(scene, 0).catch(error => { if(env.warn) env.warn(`The picture of ${i.key} could not be made`, error); return null; });
-      }));
+        out[i.key] = await drawn(env, scene, 0).catch(error => { if(env.warn) env.warn(`The picture of ${i.key} could not be made`, error); return null; });
+      });
       return out;
     }
     function grades(items){
@@ -222,5 +266,5 @@
     };
   }
 
-  return { create, bare, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD };
+  return { create, bare, standalone, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD, IMAGE_PX };
 });

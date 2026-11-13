@@ -367,3 +367,77 @@ test('Honor Guard is pictured for the cut as the uniform it rides on, without it
   await PP.create(env).cuts().ready;
   for(const d of env.log.drawn) assert.equal(idsOf(d.scene).some(id => /honor-guard/.test(id)), false, 'no belt, sling or ascot');
 });
+
+// ---- a picture a browser decodes on its own ------------------------------------------------------------------------------------------
+
+// What E.renderSvg.buildSvg makes for the C/2d Lt's disc framed on 0.81 in, serialized as the page does (the picture Safari showed as a broken image, 2026-11-12): a class and a
+// role for the page, the engraved lettering's font by a relative address, the sheet's metadata, and a viewBox in inches with no size.
+const DISC = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.405 -0.405 0.81 0.81" class="uniformSvg" role="img" aria-label="Grade" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><style class="engraved-fonts">@font-face{font-family:"Ubuntu";font-weight:700;font-style:normal;src:url("vendor/fonts/Ubuntu-Bold.woff2") format("woff2");}</style><symbol id="sym-rank-cadet-officer-second-lieutenant-metal-regular--d5" viewBox="0 0 75 75" preserveAspectRatio="none"><title xmlns="http://www.w3.org/2000/svg">Cadet Second Lieutenant insignia, regular metal</title><metadata xmlns="http://www.w3.org/2000/svg">{"asset_id":"rank-cadet-officer-second-lieutenant-metal-regular","size_in":{"w":0.75,"h":0.75}}</metadata><defs xmlns="http://www.w3.org/2000/svg"><pattern id="rank-cadet-officer-second-lieutenant-metal-regular__mesh--d5" width="3" height="3" patternUnits="userSpaceOnUse"><rect width="3" height="3" fill="#c9ced4"/></pattern></defs><g xmlns="http://www.w3.org/2000/svg" id="rank-cadet-officer-second-lieutenant-metal-regular__metal--d5"><circle cx="37.50" cy="37.50" r="37.50" fill="#d9dde2"/><circle cx="37.50" cy="37.50" r="33.00" fill="url(#rank-cadet-officer-second-lieutenant-metal-regular__mesh--d5)"/></g></symbol></defs><g class="layer " data-role="grade"><use href="#sym-rank-cadet-officer-second-lieutenant-metal-regular--d5" x="-0.375" y="-0.375" width="0.75" height="0.75" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#sym-rank-cadet-officer-second-lieutenant-metal-regular--d5"/></g></svg>';
+
+test('a picture is a document of its own: namespaces, an XML declaration, a size in pixels, no font and no metadata, no reference outside it', () => {
+  const out = PP.standalone(DISC);
+  assert.match(out, /^<\?xml version="1\.0" encoding="UTF-8"\?>\n<svg /);
+  const root = /<svg\b[^>]*>/.exec(out)[0];
+  assert.match(root, /\sxmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
+  assert.match(root, /\sxmlns:xlink="http:\/\/www\.w3\.org\/1999\/xlink"/);
+  assert.match(root, /\sviewBox="-0\.405 -0\.405 0\.81 0\.81"/, 'the drawing itself is as the engine made it');
+  const w = Number(/\swidth="([\d.]+)"/.exec(root)[1]), h = Number(/\sheight="([\d.]+)"/.exec(root)[1]);
+  assert.equal(w, PP.IMAGE_PX); assert.equal(h, PP.IMAGE_PX);
+  assert.equal([...root.matchAll(/\swidth=/g)].length, 1, 'one width');
+  assert.doesNotMatch(out, /<style|@font-face|<metadata|vendor\/fonts/);
+  // Nothing refers outside the document: every url() and href is to an id in it, or data.
+  for(const m of out.matchAll(/url\(\s*["']?([^"')]*)/g)) assert.match(m[1], /^#/, `url(${m[1]})`);
+  for(const m of out.matchAll(/\s(?:xlink:)?href="([^"]*)"/g)) assert.match(m[1], /^(#|data:)/, `href ${m[1]}`);
+  for(const id of [...out.matchAll(/(?:href|url\()="?#?([^")]*)/g)].map(m => m[1].replace(/^#/, '')).filter(Boolean)) assert.ok(out.includes(`id="${id}"`), `${id} is in the document`);
+  assert.ok(out.includes('<use '), 'what was drawn is still there');
+});
+
+test('no picture reaches the browser with a size below a pixel: the longer side is IMAGE_PX whatever the frame in inches, wide or tall', () => {
+  for(const [w, h] of [[0.81, 0.81], [1.08, 1.08], [1.62, 0.54], [0.4, 3], [25.8, 33], [54.1, 38.5], [0.05, 0.05]]){
+    const out = PP.standalone(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><use href="#a"/></svg>`);
+    const root = /<svg\b[^>]*>/.exec(out)[0];
+    const pw = Number(/\swidth="([\d.]+)"/.exec(root)[1]), ph = Number(/\sheight="([\d.]+)"/.exec(root)[1]);
+    assert.equal(Math.max(pw, ph), PP.IMAGE_PX, `${w} x ${h}`);
+    assert.ok(Math.min(pw, ph) >= 1, `${w} x ${h}: ${pw} x ${ph}`);
+    assert.ok(Math.abs(pw / ph - w / h) < 0.01, 'the proportions are the frame\'s');
+  }
+  // A size the drawing already had is replaced, not doubled.
+  const sized = PP.standalone('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="30" viewBox="0 0 3 1"><image href="data:image/png;base64,AA=="/></svg>');
+  assert.equal([...sized.matchAll(/\swidth=/g)].length, 1);
+  assert.match(sized, /width="320" height="106\.67"/);
+});
+
+test('a drawing with nothing in it (a sheet that could not be fetched leaves an empty drawing, with no error) or no frame is not a picture', () => {
+  assert.equal(PP.standalone('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><defs></defs></svg>'), null);
+  assert.equal(PP.standalone('<svg xmlns="http://www.w3.org/2000/svg"><use href="#a"/></svg>'), null);
+  assert.equal(PP.standalone('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 1"><use href="#a"/></svg>'), null);
+  assert.equal(PP.standalone(''), null);
+  assert.equal(PP.standalone(undefined), null);
+});
+
+test('a drawing that fails or comes out empty is tried again, a moment apart, twice; then the picture is null and says why; a good one is not drawn twice', async () => {
+  const waits = [], warned = [];
+  let calls = 0;
+  const env = { rules: RULES, build: member({}), warn: m => warned.push(m), wait: ms => { waits.push(ms); return Promise.resolve(); },
+    compose: async () => ({ layers: [], bounds: { x: 0, y: 0, w: 1, h: 1 } }),
+    draw: async () => { calls++; if(calls === 1) return null; if(calls === 2) throw new Error('Failed to fetch'); return 'pic-' + calls; } };
+  const first = await PP.create(env).uniforms(['blues_a']).ready;
+  assert.deepEqual(plain(first), { blues_a: 'pic-3' }, 'the third try drew it');
+  assert.deepEqual(waits, [300, 600]);
+  assert.equal(calls, 3);
+  const never = { ...env, build: member({ rank: 'C/Col' }), draw: async () => { throw new Error('Failed to fetch'); } };
+  warned.length = 0; waits.length = 0;
+  assert.deepEqual(plain(await PP.create(never).uniforms(['blues_a']).ready), { blues_a: null });
+  assert.equal(warned.length, 1);
+  assert.deepEqual(waits, [300, 600], 'tried three times, a moment apart');
+});
+
+test('the grades\' devices are drawn a few at a time, not all at once', async () => {
+  let running = 0, most = 0;
+  const env = { rules: RULES, build: member({}), spec: async () => ({ w: 1, h: 1 }), wait: () => Promise.resolve(),
+    draw: async () => { running++; most = Math.max(most, running); await new Promise(r => setImmediate(r)); running--; return 'p' + Math.random(); } };
+  const items = RANKS.cadet.slice(1).map(r => ({ key: r, ...PP.gradeDevice(G, 'cadet', r) }));
+  const done = await PP.create(env).grades(items).ready;
+  assert.equal(Object.values(done).filter(Boolean).length, items.length);
+  assert.ok(most > 1 && most <= 4, `${most} at once`);
+});
