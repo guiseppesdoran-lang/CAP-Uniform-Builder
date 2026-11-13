@@ -683,6 +683,14 @@
         svg.setAttribute('viewBox', frame.map(fmt).join(' '));
         if(options.widthPx){ svg.setAttribute('width', fmt(options.widthPx)); svg.setAttribute('height', fmt(options.widthPx * frame[3] / frame[2])); }
       }
+      // A picture of one distance (js/profile-pictures.js callouts): the caller is handed what was laid out and cuts the drawing to the window it wants, [x, y, w, h].
+      if(typeof options.measureView === 'function'){
+        const view = options.measureView(drawings, frame);
+        if(Array.isArray(view) && view.length === 4 && view.every(Number.isFinite) && view[2] > 0 && view[3] > 0){
+          svg.setAttribute('viewBox', view.map(fmt).join(' '));
+          if(options.widthPx){ svg.setAttribute('width', fmt(options.widthPx)); svg.setAttribute('height', fmt(options.widthPx * view[3] / view[2])); }
+        }
+      }
       // The magnified insets draw copies of the layers that reach their window, as the page draws them but not as layers of their own.
       const CORE = root.CAPUBEngine && root.CAPUBEngine.core;
       const copies = win => drawn.filter(({ layer }) => layer.role !== 'measure' && layer.role !== 'clear' && (() => {

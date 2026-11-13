@@ -44,7 +44,7 @@ function envOf(build, record){
     rules: RULES,
     build,
     compose: async b => { log.composed.push(b); return P.composeUniform(b, store); },
-    draw: async (scene, pad) => { log.drawn.push({ scene, pad }); return 'picture:' + log.drawn.length; },
+    draw: async (scene, pad, options) => { log.drawn.push({ scene, pad, options }); return 'picture:' + log.drawn.length; },
     release: url => log.released.push(url)
   };
 }
@@ -533,4 +533,106 @@ test('a picture of lettering keeps its font: one carried as data stays in the do
   assert.match(kept, /engraved-fonts/); assert.match(kept, /url\(data:font\/woff2;base64,AAAA\)/);
   const file = data.replace('url(data:font/woff2;base64,AAAA)', 'url("vendor/fonts/Ubuntu-Bold.woff2")');
   assert.doesNotMatch(PP.standalone(file), /vendor\/fonts|engraved-fonts/);
+});
+
+// ---- the callout of one distance, without and with its paragraph, and the sample note ------------------------------------------------
+
+const ML = require('../js/engine/measure-layout.js');
+const withMeasure = env => Object.assign(withEngine(env), { measure: ML });
+
+test('the callout is the engine\'s own drawing of one distance of the member\'s bare uniform, twice: its pill without the paragraph and with it, the other distances hidden', async () => {
+  const env = withMeasure(envOf(member({ uniform: 'ocp', membership: 'senior', rank: 'Capt' })));
+  const made = PP.create(env).callouts();
+  assert.deepEqual(Object.keys(made.now), ['off', 'on']);
+  assert.equal(made.settled, false);
+  const done = await made.ready;
+  assert.match(done.off, /^picture:\d+$/); assert.match(done.on, /^picture:\d+$/);
+  assert.equal(env.log.composed.length, 1, 'the uniform is composed once for both');
+  const b = env.log.composed[0];
+  assert.equal(b.ribbons.length + b.badges.length, 0, 'bare: the pictures do not change as items are picked');
+  const [off, on] = env.log.drawn;
+  for(const d of [off, on]){
+    assert.equal(d.pad, 0);
+    assert.equal(d.options.measure, true);
+    assert.equal(d.options.measurePx, 0.04);
+    assert.equal(typeof d.options.measureView, 'function');
+    assert.ok(d.scene.layers.some(l => l.type === 'measure'), 'the measuring layers are kept');
+    assert.ok(!d.scene.layers.some(l => l.type === 'clear'), 'the white patches for an overlay are not');
+  }
+  assert.equal(off.options.measureRefs, false); assert.equal(on.options.measureRefs, true);
+  assert.deepEqual(off.options.measureHide, on.options.measureHide);
+  const cat = ML.catalogue(off.scene);
+  assert.equal(cat.entries.length - off.options.measureHide.length, 1, 'one distance is left on');
+  const shown = cat.entries.find(e => !off.options.measureHide.includes(e.id));
+  assert.ok(shown.ref && shown.keys.length === 1, 'one that states a paragraph and is one line');
+  // The same member: made once and kept.
+  const same = PP.create(env); await same.callouts().ready; const n = env.log.composed.length; await same.callouts().ready;
+  assert.equal(env.log.composed.length, n);
+});
+
+test('the distance chosen is the one whose pill sits nearest its line, of those with a paragraph', async () => {
+  const scene = await P.composeUniform(member({ uniform: 'ocp', membership: 'senior', rank: 'Capt' })(), store);
+  const pick = PP.pickCallout(ML, scene);
+  assert.ok(pick && pick.entry.ref);
+  const cat = ML.catalogue(scene), B = scene.bounds, vb = [B.x, B.y, B.w, B.h];
+  const drawings = ML.layout(ML.filterScene(scene, { refs: true }), { px: 0.04, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea: ML.calloutRoom(vb, 0.04) });
+  const area = e => { const b = PP.pillBox(drawings.find(d => d.key === e.keys[0])); return b ? b.w * b.h : Infinity; };
+  for(const e of cat.entries.filter(x => x.ref && x.keys.length === 1)) assert.ok(area(pick.entry) <= area(e), `${pick.entry.name} is no farther than ${e.name}`);
+  assert.deepEqual([...pick.hide].sort(), cat.entries.filter(e => e.id !== pick.entry.id).map(e => e.id).sort());
+  assert.equal(PP.pickCallout(ML, { layers: [], bounds: { x: 0, y: 0, w: 1, h: 1 } }), null, 'nothing to show where no distance is drawn');
+  assert.equal(PP.pickCallout(null, scene), null);
+});
+
+test('the window of the callout\'s picture holds the pill and where its leader meets the line, four to three, and is never narrower than a pill and a half or 3.2 in', () => {
+  const near = { key: 'a', label: { x: 10, y: 10, w: 2.4, h: 1 }, leader: [{ x: 11, y: 11 }, { x: 11, y: 12.4 }], dim: [{ x: 4, y: 12.5 }, { x: 18, y: 12.5 }] };
+  const [x, y, w, h] = PP.calloutWindow([near]);
+  assert.ok(Math.abs(h / w - 0.75) < 1e-9);
+  assert.ok(w >= 3.2 && w >= 2.4 * 1.5 - 1e-9);
+  assert.ok(x <= 10 && x + w >= 12.4 && y <= 10 && y + h >= 12.4, 'the pill and the leader\'s end are in it');
+  assert.ok(w < 6, 'the far ends of the line are not: the pill is what the picture is of');
+  assert.equal(PP.calloutWindow([]), null);
+  assert.equal(PP.calloutWindow([{ key: 'b', callout: {}, label: { x: 0, y: 0, w: 1, h: 1 } }]), null, 'a magnified inset is a drawing of another kind');
+});
+
+test('where no distance of the uniform states a paragraph there is no callout picture (false), one that cannot be drawn is null, and one that fails is tried three times', async () => {
+  const bare = withMeasure(envOf(member({ uniform: 'blues_a' })));
+  bare.compose = async () => ({ layers: [], bounds: { x: 0, y: 0, w: 4, h: 4 } });
+  assert.deepEqual(plain(await PP.create(bare).callouts().ready), { off: false, on: false });
+  const waits = [];
+  const broken = withMeasure(Object.assign(envOf(member({ uniform: 'ocp', membership: 'senior', rank: 'Capt' })), { draw: async () => { throw new Error('Failed to fetch'); }, wait: ms => { waits.push(ms); return Promise.resolve(); }, warn: () => {} }));
+  assert.deepEqual(plain(await PP.create(broken).callouts().ready), { off: null, on: null });
+  assert.deepEqual(waits, [300, 600, 300, 600]);
+  const noEngine = envOf(member({}));
+  assert.deepEqual(plain(PP.create(noEngine).callouts().now), { off: null, on: null }, 'no measure layout: nothing is offered');
+});
+
+test('the oldest callout sets are let go', async () => {
+  const env = withMeasure(envOf(member({ uniform: 'ocp', membership: 'senior', rank: 'Capt' })));
+  const base = env.build();
+  let n = 0;
+  env.build = () => Object.assign({}, base, { gender: n++ % 2 ? 'male' : 'female', rank: ['Capt', 'Maj', 'Lt Col', 'Col', 'Brig Gen', '1st Lt'][Math.floor(n / 2) % 6] });
+  const made = PP.create(env);
+  for(let i = 0; i < 8; i++) await made.callouts().ready;
+  assert.ok(env.log.released.length >= 2, `${env.log.released.length} let go`);
+});
+
+test('the engine has the hook the callout\'s picture is cut with: measureView is handed what was laid out, and its window is the picture\'s viewBox', () => {
+  const svg = read('js/engine/render-svg.js');
+  assert.match(svg, /if\(typeof options\.measureView === 'function'\)\{\s*const view = options\.measureView\(drawings, frame\);/);
+  assert.match(svg, /svg\.setAttribute\('viewBox', view\.map\(fmt\)\.join\(' '\)\);/);
+  assert.match(read('js/profile-pickers.js'), /Object\.assign\(\{ pad \}, options\)/, 'the page hands the options on to the renderer');
+});
+
+test('the sample note is a drawing of its own, in the page\'s ink, with the question mark or with the reference printed in it, and nothing outside it', () => {
+  const off = PP.citeSample(false), on = PP.citeSample(true);
+  for(const s of [off, on]){
+    assert.match(s, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 120 78"/);
+    assert.match(s, /<\/svg>$/);
+    assert.match(s, /currentColor/);
+    assert.doesNotMatch(s, /<script|<image|href=|url\(|<style|#[0-9a-fA-F]{3,6}\b/, 'no file, no script, no colour of its own');
+    assert.ok(s.includes('Ribbons rest ½ in') && s.includes('above the badge'));
+  }
+  assert.ok(off.includes('>?</text>') && !/\(\d+\.\d+/.test(off), 'the question mark, no reference');
+  assert.ok(/\(4\.1\.5\.2\.2\)/.test(on) && !on.includes('>?</text>'), 'the reference printed, no question mark');
+  assert.doesNotMatch(off + on, /CAPR|ICL/, 'no publication named in a drawing');
 });

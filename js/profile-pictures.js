@@ -15,6 +15,9 @@
 //                                     weight standard may also wear
 //   made.names()                      { now: { on, off }, ready, settled }: the member's uniform at its name (nameplate, tape or tag) with the name and without it, each
 //                                     false (not offered) where the uniform draws no name
+//   made.callouts()                   { now: { off, on }, ready, settled }: one distance of the member's uniform as the measurements draw it, without and with its paragraph
+//                                     on the pill, cut to the distance and its pill; false (not offered) where the uniform draws no distance that has a paragraph
+//   citeSample(shown)                 a sample of a note, as a small drawing: the reference behind its question mark (shown false) or printed in the text (true)
 //   standalone(markup)                a drawing as a file a browser decodes on its own as an image (see below), or null when nothing was drawn
 //
 // A uniform's picture is the engine's composition of the uniform for the member as they are (their cut, their grade, cadet or senior, the garment choices
@@ -169,12 +172,65 @@
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + text.replace(root[0], tag);
   }
 
+  // A sample of a note for the choice of where its references are shown (the Regulation tab): a sentence and its question mark, or the same sentence with the reference
+  // printed after it. Markup for the picture picker, in the page's own ink (currentColor) and font, with nothing outside it.
+  function citeSample(shown){
+    const line = (y, text, extra) => `<text x="8" y="${y}" font-size="11.5" fill="currentColor"${extra || ''}>${text}</text>`;
+    const mark = '<circle cx="97" cy="47" r="7.5" fill="none" stroke="currentColor" stroke-width="1.3"/><text x="97" y="51" font-size="10.5" font-weight="700" text-anchor="middle" fill="currentColor">?</text>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 78" focusable="false" aria-hidden="true" font-family="inherit">'
+      + '<rect x="2" y="2" width="116" height="74" rx="5" fill="none" stroke="currentColor" stroke-opacity=".35"/>'
+      + line(30, 'Ribbons rest ½ in') + line(48, 'above the badge')
+      + (shown ? line(65, '(4.1.5.2.2)', ' fill-opacity=".7"') : mark)
+      + '</svg>';
+  }
+
+  // ---- one distance as the measurements draw it ------------------------------------------------------------------------------------
+
+  // Inches per pixel the callout of a picture is drawn at (the preview's own is about 0.057): the pill's words keep their size to the line.
+  const CALLOUT_PX = 0.04;
+  const CALLOUT_MARGIN = 0.3, CALLOUT_MIN_W = 3.2, CALLOUT_PILL_SHARE = 1.5;
+  // The pill of a laid-out distance and what ties it to its line: the box of the pill and the leader, or null for a distance drawn another way (a magnified inset).
+  function pillBox(d){
+    if(!d || d.callout || !d.label || !Number.isFinite(d.label.w) || !Number.isFinite(d.label.h)) return null;
+    let x0 = d.label.x, y0 = d.label.y, x1 = d.label.x + d.label.w, y1 = d.label.y + d.label.h;
+    for(const p of d.leader || []) if(p && Number.isFinite(p.x) && Number.isFinite(p.y)){ x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y); x1 = Math.max(x1, p.x); y1 = Math.max(y1, p.y); }
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, pill: d.label.w };
+  }
+  // The window of the picture of the one distance that is drawn: its pill, the leader and the line where the leader meets it, a margin round them, four to three, a pill wide
+  // and a half. [x, y, w, h] in the scene's inches.
+  function calloutWindow(drawings){
+    const boxes = (drawings || []).map(pillBox).filter(Boolean);
+    if(!boxes.length) return null;
+    const x0 = Math.min(...boxes.map(b => b.x)) - CALLOUT_MARGIN, y0 = Math.min(...boxes.map(b => b.y)) - CALLOUT_MARGIN;
+    const x1 = Math.max(...boxes.map(b => b.x + b.w)) + CALLOUT_MARGIN, y1 = Math.max(...boxes.map(b => b.y + b.h)) + CALLOUT_MARGIN;
+    const pill = Math.max(...boxes.map(b => b.pill));
+    const w = Math.max(x1 - x0, (y1 - y0) * 4 / 3, pill * CALLOUT_PILL_SHARE, CALLOUT_MIN_W), h = w * 0.75, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    return [cx - w / 2, cy - h / 2, w, h];
+  }
+  // The distance the pictures are of: of those that state a paragraph and are one line on the drawing, the one whose pill sits nearest its line, so the picture is the pill, its
+  // words and the line it belongs to. `ML` is the engine's measure-layout.
+  function pickCallout(ML, scene){
+    if(!ML || !scene || !scene.bounds) return null;
+    const cat = ML.catalogue(scene), B = scene.bounds, vb = [B.x, B.y, B.w, B.h];
+    const candidates = cat.entries.filter(e => e.ref && e.keys.length === 1);
+    if(!candidates.length) return null;
+    const drawings = ML.layout(ML.filterScene(scene, { refs: true }), { px: CALLOUT_PX, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea: ML.calloutRoom(vb, CALLOUT_PX) });
+    let best = null;
+    for(const e of candidates){
+      const box = pillBox(drawings.find(d => d.key === e.keys[0]));
+      if(!box) continue;
+      const area = box.w * box.h;
+      if(!best || area < best.area) best = { entry: e, area };
+    }
+    return best ? { entry: best.entry, hide: cat.entries.filter(e => e !== best.entry).map(e => e.id) } : null;
+  }
+
   // Drawing is tried again when it fails or comes out empty (a fetch of a sheet that is cut off by a busy server or a flaky connection): twice more, a moment apart.
-  async function drawn(env, scene, pad){
+  async function drawn(env, scene, pad, options){
     let last = new Error('nothing was drawn');
     for(let attempt = 0; attempt < 3; attempt++){
       try{
-        const url = await env.draw(scene, pad);
+        const url = await env.draw(scene, pad, options);
         if(url) return url;
         last = new Error('nothing was drawn');
       }catch(error){ last = error; }
@@ -319,8 +375,43 @@
       }
       return { now: set.value || { on: undefined, off: undefined }, ready: set.promise, settled: !!set.value };
     }
+    // The distance of the uniform, without its paragraph and with it: the member's uniform bare (so the pictures do not change as they pick items), composed once, the one
+    // distance chosen (pickCallout), and the engine drawing it twice, cut to the distance and its pill (the hook of E.renderSvg.buildSvg, measureView).
+    const calloutSets = new Map();   // the build -> { value, promise }; the newest last
+    async function drawCallouts(build){
+      const scene = await env.compose(build);
+      const pick = pickCallout(env.measure, scene);
+      if(!pick) return { off: false, on: false };
+      const whole = Object.assign({}, scene, { layers: scene.layers.filter(l => l.type !== 'clear') });
+      const out = {};
+      for(const [k, refs] of [['off', false], ['on', true]]){
+        out[k] = await drawn(env, whole, 0, { measure: true, measureHide: pick.hide, measureRefs: refs, measurePx: CALLOUT_PX, measureView: calloutWindow })
+          .catch(error => { if(env.warn) env.warn(`The picture of the callout ${k} could not be made`, error); return null; });
+      }
+      return out;
+    }
+    function callouts(){
+      const base = member();
+      if(!base || !env.measure) return { now: { off: null, on: null }, ready: Promise.resolve({ off: null, on: null }), settled: true };
+      const build = bare(env.rules, base, {});
+      const key = JSON.stringify(build);
+      let set = calloutSets.get(key);
+      if(set){ calloutSets.delete(key); calloutSets.set(key, set); }
+      else{
+        set = { value: undefined };
+        set.promise = Promise.resolve().then(() => drawCallouts(build)).catch(error => { if(env.warn) env.warn('The pictures of the callout could not be made', error); return { off: null, on: null }; })
+          .then(done => { set.value = done; return done; });
+        calloutSets.set(key, set);
+        while(calloutSets.size > 4){
+          const [k, old] = calloutSets.entries().next().value;
+          calloutSets.delete(k);
+          if(env.release && old.value) Object.values(old.value).forEach(u => { if(typeof u === 'string') env.release(u); });
+        }
+      }
+      return { now: set.value || { off: undefined, on: undefined }, ready: set.promise, settled: !!set.value };
+    }
     return {
-      grades, names,
+      grades, names, callouts,
       memberships: () => pictures(['cadet', 'senior'], m => ({ uniform: 'blues_a', membership: m, grade: stand(m) })),
       adults: () => pictures(['no', 'yes'], k => ({ uniform: k === 'yes' ? 'aviator_blazer' : 'blues_a', membership: 'cadet', grade: stand('cadet') })),
       // `ids` are the uniform cards ('ceremonial' among them): the card's id is the uniform, Honor Guard the honor guard items on the coat or the shirt.
@@ -330,5 +421,5 @@
     };
   }
 
-  return { create, bare, standalone, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD, IMAGE_PX };
+  return { create, bare, standalone, citeSample, calloutWindow, pickCallout, pillBox, gradeGroups, gradeDevice, gradeArt, gradeName, GROUPS, PAD, IMAGE_PX };
 });
