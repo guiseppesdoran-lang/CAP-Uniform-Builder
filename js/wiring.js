@@ -851,7 +851,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     if(State.uniform === 'aviator_blazer' && capubBadgeWearOptions().underlayer === 'shirt'
       && (State.badges || []).some(id => !isBadgeAuthorizedOnCurrentDressUniform(id))){
-      addNotice('ok','On the blazer itself only the chaplain badge and, in place of the CAP Crest, the CSAG, Command Council, National Board or NEC badge are worn (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3); the other badges are shown on the aviator shirt drawn beside it.');
+      addNotice('ok','On the blazer itself only the chaplain badge and, in place of the CAP Crest, the Senior Advisory Group, Command Council, National Board or National Executive Committee badge are worn (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3); the other badges are shown on the aviator shirt drawn beside it.');
     }
     // Each award chosen that this uniform does not wear, named, with the paragraph that says so (the choice is kept for the uniforms that wear it).
     for(const id of Object.entries(State.ribbonSelections || {}).filter(([k,sel])=>sel && sel.checked && !isAwardWornOnUniform(k)).map(([k])=>k)){

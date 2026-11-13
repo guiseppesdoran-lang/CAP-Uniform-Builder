@@ -779,7 +779,7 @@
       else if(delta<0) parts.push(`Removed ${words(delta,name)}`);
     });
     last=now;
-    if(parts.length && typeof window.capubToastShow==='function') window.capubToastShow(parts.join(', '));
+    if(parts.length && typeof window.capubToastShow==='function') window.capubToastShow(parts.map((p,i)=>i ? p.charAt(0).toLowerCase()+p.slice(1) : p).join(', '));
   }
   // Pickers re-render without a full render, so the history event alone misses them. Any change
   // or click schedules a check; onChange compares counts, so repeated checks say nothing twice.
