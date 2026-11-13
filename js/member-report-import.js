@@ -2557,6 +2557,8 @@ function memberReportStatusLines(parsed, fileName, { replaced = false, before = 
   if(!parsed.membership) unread.push(State.membership ? `The member type was not found, so ${State.membership} was kept.` : 'The member type was not found, so none is chosen.');
   else if(!parsed.profileFound && parsed.gender) unread.push('The member type and gender come from words in the report, not from its first row. Check them.');
   if(!(parsed.firstName || parsed.lastName)) unread.push(name ? 'The name was not found, so the name on the uniform was kept.' : 'The name was not found, so the uniform has no name.');
+  // The unit is the one the report's unit line names, when the builder's list has it (js/patches.js); otherwise none is chosen.
+  if(!parsed.unitPatchCharter) unread.push('The unit was not found, so none is chosen.');
   if(!parsed.joinDateFound) unread.push('The join date was not found, so the Red Service Ribbon is not added.');
   unread.push(...(parsed.missingHeadings || []));
   const rows = parsed.unreadRows || [];

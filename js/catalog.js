@@ -1509,14 +1509,17 @@ function buildUnitPatchSelector(filterText=''){
   none.textContent = 'No unit chosen';
   sel.appendChild(none);
 
-  matches.slice(0, 350).forEach(unit => {
+  // The list shows the first 350; the unit the member has chosen is on it whatever the search says, or after the others (a setup brought back by Resume
+  // names a unit that may lie beyond the first 350 of an empty search).
+  const shown = matches.slice(0, 350);
+  shown.forEach(unit => {
     const opt = document.createElement('option');
     opt.value = unit.code;
     opt.textContent = unit.text;
     sel.appendChild(opt);
   });
 
-  if(selected && !matches.some(unit => unit.code === selected)){
+  if(selected && !shown.some(unit => unit.code === selected)){
     const unit = CAP_UNIT_OPTIONS.find(u => u.code === selected);
     const opt = document.createElement('option');
     opt.value = selected;

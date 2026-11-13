@@ -1105,6 +1105,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       // The member's own unit is the Unit column of the General Information row, the first charter in the report. A charter in a duty,
       // transfer or committee row is another unit (the wing's, the group's) and is never the member's: with the member's unit missing
       // from the list, the old scan of the whole report chose the wing's patch. The report may be in lower case.
+      // The print of the member search today names it under "Organization" in its first table (headed "General Info"): "... LSCode: General Info Organization
+      // NER-NY-109 Gender ..."; the older print's row ends with it, after the General Information heading.
+      const organization = t.match(/\bOrganization\s+([A-Za-z]{2,3}-[A-Za-z]{2,3}-\d{3})\b/i);
+      if(organization && CAP_UNIT_OPTIONS?.some?.(u => u.code === organization[1].toUpperCase())) return organization[1].toUpperCase();
       const info = t.search(/General\s+Information/i);
       const head = t.slice(Math.max(0, info), Math.max(0, info) + 400);
       const explicit = head.match(/\b([A-Za-z]{2,3}-[A-Za-z]{2,3}-\d{3})\b/);
@@ -1150,6 +1154,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const charter = parsed?.unitPatchCharter || '';
       const result = capubPreviousApplyCapMemberReportImport(parsed);
 
+      // The unit is the one the report gives; a report that gives none leaves none (the panel says so), not the unit of the member before.
       State.unitPatchCharter = charter;
       const unitSearch = by('unitPatchSearch');
       if(unitSearch && charter) unitSearch.value = charter;

@@ -584,6 +584,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       shoulderCord: State.shoulderCord || '',
       shoulderCordColour: State.shoulderCordColour || '',
       unitPatchCharter: State.unitPatchCharter || '',
+      // What the member's report showed, which the setup carries so that Resume and a reload bring it back with the unit: the cords of a supplement it
+      // shows earned (js/supplements-import.js) and the badges it authorized (the badge list's own group).
+      supplementCordsEarned: Array.isArray(State.supplementCordsEarned) ? State.supplementCordsEarned : [],
+      reportAuthorizedBadgeIds: Array.isArray(State.reportAuthorizedBadgeIds) ? State.reportAuthorizedBadgeIds : null,
       assetBase: State.assetBase,
       ribbons: State.ribbons,
       badges: State.badges,
@@ -638,6 +642,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.shoulderCord = CAPUBEngine.cords.isKnown(p.shoulderCord) ? p.shoulderCord : null;
     out.shoulderCordColour = out.shoulderCord && CAPUBEngine.cords.needsColour(out.shoulderCord) && CAPUBEngine.cords.isChosenColour(p.shoulderCordColour) ? p.shoulderCordColour : null;
     out.unitPatchCharter = typeof p.unitPatchCharter === 'string' && /^[A-Za-z0-9-]{0,24}$/.test(p.unitPatchCharter) ? p.unitPatchCharter : '';
+    // Cords by id as the cord list knows them, badges as the badge list does: nothing else is kept.
+    out.supplementCordsEarned = [...new Set(Array.isArray(p.supplementCordsEarned) ? p.supplementCordsEarned : [])].filter(id => typeof id === 'string' && CAPUBEngine.cords.isKnown(id)).slice(0, 40);
+    out.reportAuthorizedBadgeIds = Array.isArray(p.reportAuthorizedBadgeIds) ? [...new Set(p.reportAuthorizedBadgeIds)].filter(id => typeof id === 'string' && badgeList.includes(id)) : null;
 
     const ribbons = p.ribbonSelections && typeof p.ribbonSelections === 'object' ? p.ribbonSelections : {};
     out.ribbonSelections = {};
@@ -762,6 +769,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.shoulderCord = p.shoulderCord;
     State.shoulderCordColour = p.shoulderCordColour;
     State.unitPatchCharter = p.unitPatchCharter;
+    State.supplementCordsEarned = p.supplementCordsEarned;
+    State.reportAuthorizedBadgeIds = p.reportAuthorizedBadgeIds;
     State.assetBase = 'images';
     State.ribbons = [];
     State.badges = p.badges;
@@ -792,7 +801,10 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     rebuildRibbonsFromGallery();
     syncTextControls();
     buildRibbonGallery(); buildBadgeGallery(); buildPatchGallery();
-    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
+    // The unit's code goes in the search box, as it does after an import, so the list is narrowed to the unit and shows it (and its emblem) at once.
+    const unitSearch = by('unitPatchSearch');
+    if(unitSearch && State.unitPatchCharter) unitSearch.value = State.unitPatchCharter;
+    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(unitSearch?.value || '');
     fullRender();
   }
 
