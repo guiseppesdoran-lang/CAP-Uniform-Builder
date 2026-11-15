@@ -111,7 +111,7 @@ test('every reference written in a string of the page is one the split takes out
     }
     return out;
   };
-  const files = [...walk(path.join(root, 'js')), ...walk(path.join(root, 'data')), ...['purchase-catalog.js', 'purchase-feature-core.js', 'purchase-feature.js'].map(f => path.join(root, f))]
+  const files = [...walk(path.join(root, 'js')), ...walk(path.join(root, 'data')), ...['purchase-catalog.js', 'purchase-feature-core.js'].map(f => path.join(root, f))]
     .filter(f => path.basename(f) !== 'citations.js');
   // Whole brackets (one level of brackets inside) that name a publication or a paragraph and are still in the text after the split.
   const BRACKETS = /\((?:[^()]|\([^()]*\))*\)/g, CITES = /\b(?:CAPR|CAPP|CAPM|ICL|DAFI|AFI)\s?\d|\d+\.\d+\.\d+/;

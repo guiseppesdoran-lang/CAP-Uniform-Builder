@@ -62,7 +62,7 @@ The artwork is SVG made by this project. The exceptions are the official unit em
 7. The page code, in this order: `js/state.js`, `badge-rules.js`, `dom-assets.js`, `catalog.js`, `setup.js`, `render-core.js`, `galleries.js`, `placement.js`, `asset-packs.js`, `uniform-view.js`, `garment-options.js`, `wiring.js`, `placement-stl.js`, `placement-templates.js`, `workspace-ui.js`, `measure-panel.js`, `citations.js`, `planned-uniforms.js`, `member-report-import.js`.
 8. The feature scripts `js/telemetry.js` and `js/feedback.js`.
 9. `js/bootstrap.js`, which does the first render.
-10. `js/patches.js`, then `purchase-feature-core.js`, `purchase-feature.js`, `patch-submission.js`, `ocp-patch-variants.js`.
+10. `js/patches.js`, then `purchase-feature-core.js`, `patch-submission.js`, `ocp-patch-variants.js`.
 
 `js/patches.js` holds dated patches that wrap functions defined in earlier files. Do not reorder it, and do not move code out of the earlier files into it without checking what it wraps. `tests/helpers/page-scripts.cjs` loads the scripts in the order `index.html` lists them.
 
