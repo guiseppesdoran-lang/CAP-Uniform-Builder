@@ -156,10 +156,10 @@ test('a current "Cadet Commander" duty row earns the cadet commander cord of Mar
   const md = UNITS.md;
   for(const duty of [`Cadet Commander ${md} UNIT Yes 01 Jan 2026`, `Cadet Flight Commander ${md} UNIT No 01 Jan 2026`, `Encampment Cadet Commander ${md} UNIT No 01 Jan 2026`,
     `Acting Cadet Commander ${md} UNIT No 01 Jan 2026`, `Cadet Deputy Commander ${md} UNIT No 01 Jan 2026`, `Flight Commander ${md} UNIT No 01 Jan 2026`,
-    `Cadet Commander ${md} UNIT No 01 Jan 2024 31 Dec 2024`]){
+    `Cadet Commander ${md} UNIT No 04 Feb 2024 20 Nov 2024`]){
     assert.deepEqual(earned(report(md, { council: false, duty })), [], duty);
   }
-  assert.deepEqual(earned(report(md, { council: false, past: `Cadet Commander ${md} UNIT No 01 Jan 2024 31 Dec 2025` })), [], 'a past duty');
+  assert.deepEqual(earned(report(md, { council: false, past: `Cadet Commander ${md} UNIT No 04 Feb 2024 25 Nov 2025` })), [], 'a past duty');
   // A commander of a unit of another wing does not earn this wing's cord.
   assert.deepEqual(earned(report(UNITS.ne, { council: false, duty: `Cadet Commander ${UNITS.md} UNIT No 01 Jan 2026` })), []);
   // And a unit with no cadet commander cord earns none.
