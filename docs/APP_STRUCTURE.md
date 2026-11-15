@@ -54,7 +54,7 @@ The artwork is SVG made by this project. The exceptions are the official unit em
 `index.html` loads every script with `defer`, so they run in document order after the page is parsed. They are classic scripts that share one global scope, and later ones read what earlier ones define. A new tag must keep `src` first and carry `defer` (`tests/script-tags.test.cjs`). The order is:
 
 1. `js/access-gate.js`, a plain script in `<head>`, so a returning member never sees the gate.
-2. `config.js`, `purchase-catalog.js`, `mcchord-ribbon-variants.js`, `member-report-rules.js`, `ribbon-layout.js`.
+2. `config.js`, `purchase-catalog.js`, `mcchord-ribbon-variants.js`, `member-report-rules.js`.
 3. `military/military-core.js`, `military-device-layout.js`, `military-data.js`.
 4. `data/*.js`: `unit-options`, `uniform-rules`, `military-badge-sizes`, `military-medals`, `patch-art`, `unit-patch-art`, `asset-index`, `ribbon-awards`, `rotc-ribbons`, `badge-catalog`.
 5. `js/engine/*.js`: `core`, `awards`, `grades`, `compose`, `profiles`, `profiles-field`, `profiles-dress`, `profiles-polo`, `measure-layout`, `render-svg`.
