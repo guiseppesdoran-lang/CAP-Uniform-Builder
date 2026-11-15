@@ -58,7 +58,7 @@ The artwork is SVG made by this project. The exceptions are the official unit em
 3. `military/military-core.js`, `military-device-layout.js`, `military-data.js`.
 4. `data/*.js`: `unit-options`, `uniform-rules`, `military-badge-sizes`, `military-medals`, `patch-art`, `unit-patch-art`, `asset-index`, `ribbon-awards`, `rotc-ribbons`, `badge-catalog`.
 5. `js/engine/*.js`: `core`, `awards`, `grades`, `compose`, `profiles`, `profiles-field`, `profiles-dress`, `profiles-polo`, `measure-layout`, `render-svg`.
-6. `badge-captions.js`, `export-names.js`.
+6. `export-names.js`.
 7. The page code, in this order: `js/state.js`, `badge-rules.js`, `dom-assets.js`, `catalog.js`, `setup.js`, `render-core.js`, `galleries.js`, `placement.js`, `asset-packs.js`, `uniform-view.js`, `garment-options.js`, `wiring.js`, `placement-stl.js`, `placement-templates.js`, `workspace-ui.js`, `measure-panel.js`, `citations.js`, `planned-uniforms.js`, `guided-flow.js`, `member-report-import.js`.
 8. The feature scripts `js/telemetry.js` and `js/feedback.js`.
 9. `js/bootstrap.js`, which does the first render.

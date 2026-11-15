@@ -2,38 +2,6 @@
 
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {placementCaption,PHRASES}=require('../badge-captions.js');
-
-test('regulation abbreviations become plain phrases (CAPR 39-1 Attachment 4)',()=>{
-  assert.equal(placementCaption('OLP'),'Above the left pocket');
-  assert.equal(placementCaption('OLPA'),'Above the left pocket, over aviation badges');
-  assert.equal(placementCaption('OLPU'),'Above the left pocket, under aviation badges');
-  assert.equal(placementCaption('ON'),'Above the name tag');
-  assert.equal(placementCaption('UN'),'Below the name tag');
-  assert.equal(placementCaption('LP,RP'),'On the left or right pocket');
-  assert.equal(placementCaption('OLPF'),'On the left pocket flap');
-});
-
-test('a note after the dash is kept as a parenthetical',()=>{
-  assert.equal(placementCaption('UN — graduated commander'),'Below the name tag (graduated commander)');
-  assert.equal(placementCaption('ON — current commander'),'Above the name tag (current commander)');
-  assert.equal(placementCaption('RP — Volunteer University exception'),'On the right pocket (Volunteer University exception)');
-  assert.equal(placementCaption('LP only — not rendered unless selected first'),'On the left pocket (not rendered unless selected first)');
-});
-
-test('an unrecognised label is returned as it came, never guessed',()=>{
-  assert.equal(placementCaption('XYZ'),'XYZ');
-  assert.equal(placementCaption('somewhere odd'),'somewhere odd');
-  assert.equal(placementCaption(''),'');
-  assert.equal(placementCaption(null),'');
-});
-
-test('no caption still uses the regulation abbreviations',()=>{
-  for(const text of Object.values(PHRASES)){
-    assert.doesNotMatch(text,/\b(OLP|ORP|URBP|OLPA|OLPU|OLPF|FON)\b/);
-  }
-});
-
 const fs=require('node:fs');
 const path=require('node:path');
 const catalog=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
