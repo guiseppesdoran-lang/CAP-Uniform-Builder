@@ -59,12 +59,12 @@ The artwork is SVG made by this project. The exceptions are the official unit em
 4. `data/*.js`: `unit-options`, `uniform-rules`, `military-badge-sizes`, `military-medals`, `patch-art`, `unit-patch-art`, `asset-index`, `ribbon-awards`, `rotc-ribbons`, `badge-catalog`.
 5. `js/engine/*.js`: `core`, `awards`, `grades`, `compose`, `profiles`, `profiles-field`, `profiles-dress`, `profiles-polo`, `measure-layout`, `render-svg`.
 6. `export-names.js`.
-7. The page code, in this order: `js/state.js`, `badge-rules.js`, `dom-assets.js`, `catalog.js`, `setup.js`, `render-core.js`, `galleries.js`, `placement.js`, `asset-packs.js`, `uniform-view.js`, `garment-options.js`, `wiring.js`, `placement-stl.js`, `placement-templates.js`, `workspace-ui.js`, `measure-panel.js`, `citations.js`, `planned-uniforms.js`, `guided-flow.js`, `member-report-import.js`.
+7. The page code, in this order: `js/state.js`, `badge-rules.js`, `dom-assets.js`, `catalog.js`, `setup.js`, `render-core.js`, `galleries.js`, `placement.js`, `asset-packs.js`, `uniform-view.js`, `garment-options.js`, `wiring.js`, `placement-stl.js`, `placement-templates.js`, `workspace-ui.js`, `measure-panel.js`, `citations.js`, `planned-uniforms.js`, `member-report-import.js`.
 8. The feature scripts `js/telemetry.js` and `js/feedback.js`.
 9. `js/bootstrap.js`, which does the first render.
 10. `js/patches.js`, then `purchase-feature-core.js`, `purchase-feature.js`, `patch-submission.js`, `ocp-patch-variants.js`.
 
-`js/patches.js` holds dated patches that wrap functions defined in earlier files. Do not reorder it, and do not move code out of the earlier files into it without checking what it wraps. `js/guided-flow.js` is empty on purpose and stays so the page's script list does not change. `tests/helpers/page-scripts.cjs` loads the scripts in the order `index.html` lists them.
+`js/patches.js` holds dated patches that wrap functions defined in earlier files. Do not reorder it, and do not move code out of the earlier files into it without checking what it wraps. `tests/helpers/page-scripts.cjs` loads the scripts in the order `index.html` lists them.
 
 ## Server code (`deploy/api`)
 

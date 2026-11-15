@@ -107,7 +107,7 @@ test('the uniform cards are one flat two-column grid in the regulation\'s order,
 });
 
 test('the floating command bar and the ?ux=2 flag are gone from every file',()=>{
-  const files=['index.html','styles/app.css','js/state.js','js/workspace-ui.js','js/wiring.js','js/bootstrap.js','js/guided-flow.js'];
+  const files=['index.html','styles/app.css','js/state.js','js/workspace-ui.js','js/wiring.js','js/bootstrap.js'];
   for(const f of files){
     const src=read(f);
     assert.doesNotMatch(src,/capubCommandBar|cmdRibbons|cmdDownload|cmdTemplates|cmdValidate/,f);

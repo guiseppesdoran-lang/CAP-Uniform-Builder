@@ -9,7 +9,6 @@ const path=require('node:path');
 const rules=require('../data/uniform-rules.js');
 
 const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
-const flow=read('js/guided-flow.js');
 const state=read('js/state.js');
 const html=read('index.html');
 const css=read('styles/app.css');
@@ -24,10 +23,8 @@ test('the ?ux=2 flag is gone from the state, the page, the styles and the wiring
   assert.doesNotMatch(wiring,/guidedEdit|isActive/);
 });
 
-test('the module is empty but its script tag stays, so the asset list is unchanged',()=>{
-  assert.doesNotMatch(flow,/^\s*[^\/\s]/m,'only comment lines');
-  assert.match(html,/<script src="js\/guided-flow\.js\?v=[0-9a-f]{10}" defer><\/script>/);
-  assert.ok(html.indexOf('js/guided-flow.js')>html.indexOf('js/workspace-ui.js'));
+test('the empty script that stood for the guided flow is gone: the page loads none by that name',()=>{
+  assert.doesNotMatch(html,/guided-flow/);
 });
 
 test('the uniforms are one flat list in the regulation\'s order; the occasion groups stay in the data only',()=>{
