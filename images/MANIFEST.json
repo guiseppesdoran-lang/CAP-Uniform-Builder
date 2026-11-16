@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1649,
+ "count": 1611,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -24021,44 +24021,6 @@
    "issues": []
   },
   {
-   "id": "medal-air-medal-full",
-   "path": "medals/medal-air-medal-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-air-medal-miniature",
    "path": "medals/medal-air-medal-miniature.svg",
    "category": "medals",
@@ -24089,44 +24051,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-air-search-and-rescue-ribbon-full",
-   "path": "medals/medal-air-search-and-rescue-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -24173,44 +24097,6 @@
    "issues": []
   },
   {
-   "id": "medal-bronze-medal-of-valor-full",
-   "path": "medals/medal-bronze-medal-of-valor-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-bronze-medal-of-valor-miniature",
    "path": "medals/medal-bronze-medal-of-valor-miniature.svg",
    "category": "medals",
@@ -24241,44 +24127,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cadet-certificate-of-proficiency-full",
-   "path": "medals/medal-cadet-certificate-of-proficiency-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     69.19,
      0
     ]
    },
@@ -24325,44 +24173,6 @@
    "issues": []
   },
   {
-   "id": "medal-cap-a-scott-crossfield-ribbon-full",
-   "path": "medals/medal-cap-a-scott-crossfield-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-cap-a-scott-crossfield-ribbon-miniature",
    "path": "medals/medal-cap-a-scott-crossfield-ribbon-miniature.svg",
    "category": "medals",
@@ -24393,44 +24203,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cap-achievment-award-full",
-   "path": "medals/medal-cap-achievment-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -24477,44 +24249,6 @@
    "issues": []
   },
   {
-   "id": "medal-cap-bridgadier-general-charles-yaeger-ribbon-full",
-   "path": "medals/medal-cap-bridgadier-general-charles-yaeger-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-cap-bridgadier-general-charles-yaeger-ribbon-miniature",
    "path": "medals/medal-cap-bridgadier-general-charles-yaeger-ribbon-miniature.svg",
    "category": "medals",
@@ -24545,82 +24279,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cap-catalog-air-force-aerial-achievement-medal-full",
-   "path": "medals/medal-cap-catalog-air-force-aerial-achievement-medal-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cap-command-service-ribbon-full",
-   "path": "medals/medal-cap-command-service-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -24667,44 +24325,6 @@
    "issues": []
   },
   {
-   "id": "medal-cap-gill-robb-wilson-ribbon-full",
-   "path": "medals/medal-cap-gill-robb-wilson-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-cap-gill-robb-wilson-ribbon-miniature",
    "path": "medals/medal-cap-gill-robb-wilson-ribbon-miniature.svg",
    "category": "medals",
@@ -24735,44 +24355,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cap-grover-loening-aerospace-ribbon-full",
-   "path": "medals/medal-cap-grover-loening-aerospace-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -24819,44 +24401,6 @@
    "issues": []
   },
   {
-   "id": "medal-cap-leadership-ribbon-full",
-   "path": "medals/medal-cap-leadership-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-cap-leadership-ribbon-miniature",
    "path": "medals/medal-cap-leadership-ribbon-miniature.svg",
    "category": "medals",
@@ -24887,44 +24431,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cap-membership-ribbon-full",
-   "path": "medals/medal-cap-membership-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -24971,44 +24477,6 @@
    "issues": []
   },
   {
-   "id": "medal-cap-paul-e-garber-ribbon-full",
-   "path": "medals/medal-cap-paul-e-garber-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-cap-paul-e-garber-ribbon-miniature",
    "path": "medals/medal-cap-paul-e-garber-ribbon-miniature.svg",
    "category": "medals",
@@ -25039,44 +24507,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-cap-senior-recruiter-ribbon-full",
-   "path": "medals/medal-cap-senior-recruiter-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -25123,44 +24553,6 @@
    "issues": []
   },
   {
-   "id": "medal-cap-world-war-2-service-ribbon-full",
-   "path": "medals/medal-cap-world-war-2-service-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-cap-world-war-2-service-ribbon-miniature",
    "path": "medals/medal-cap-world-war-2-service-ribbon-miniature.svg",
    "category": "medals",
@@ -25191,44 +24583,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-commander-commendation-award-full",
-   "path": "medals/medal-commander-commendation-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -25275,44 +24629,6 @@
    "issues": []
   },
   {
-   "id": "medal-crisis-ribbon-full",
-   "path": "medals/medal-crisis-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-crisis-ribbon-miniature",
    "path": "medals/medal-crisis-ribbon-miniature.svg",
    "category": "medals",
@@ -25343,44 +24659,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-disaster-relief-ribbon-full",
-   "path": "medals/medal-disaster-relief-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -25427,44 +24705,6 @@
    "issues": []
   },
   {
-   "id": "medal-distinguished-service-award-full",
-   "path": "medals/medal-distinguished-service-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.9291,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     192.91
-    ],
-    "center": [
-     68.75,
-     96.46
-    ],
-    "left_edge": [
-     0,
-     113.52
-    ],
-    "right_edge": [
-     137.5,
-     113.52
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-distinguished-service-award-miniature",
    "path": "medals/medal-distinguished-service-award-miniature.svg",
    "category": "medals",
@@ -25495,44 +24735,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-eaker-award-full",
-   "path": "medals/medal-eaker-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -25579,44 +24781,6 @@
    "issues": []
   },
   {
-   "id": "medal-earhart-award-full",
-   "path": "medals/medal-earhart-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-earhart-award-miniature",
    "path": "medals/medal-earhart-award-miniature.svg",
    "category": "medals",
@@ -25647,44 +24811,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-encampment-ribbon-full",
-   "path": "medals/medal-encampment-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -25731,44 +24857,6 @@
    "issues": []
   },
   {
-   "id": "medal-exceptional-service-award-full",
-   "path": "medals/medal-exceptional-service-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.9291,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     192.91
-    ],
-    "center": [
-     68.75,
-     96.46
-    ],
-    "left_edge": [
-     0,
-     113.52
-    ],
-    "right_edge": [
-     137.5,
-     113.52
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-exceptional-service-award-miniature",
    "path": "medals/medal-exceptional-service-award-miniature.svg",
    "category": "medals",
@@ -25799,44 +24887,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-frank-borman-falcon-award-full",
-   "path": "medals/medal-frank-borman-falcon-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -25883,44 +24933,6 @@
    "issues": []
   },
   {
-   "id": "medal-iace-ribbon-full",
-   "path": "medals/medal-iace-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-iace-ribbon-miniature",
    "path": "medals/medal-iace-ribbon-miniature.svg",
    "category": "medals",
@@ -25951,44 +24963,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-lifesaving-award-full",
-   "path": "medals/medal-lifesaving-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -26035,44 +25009,6 @@
    "issues": []
   },
   {
-   "id": "medal-meritorious-service-award-full",
-   "path": "medals/medal-meritorious-service-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.9291,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     192.91
-    ],
-    "center": [
-     68.75,
-     96.46
-    ],
-    "left_edge": [
-     0,
-     113.52
-    ],
-    "right_edge": [
-     137.5,
-     113.52
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-meritorious-service-award-miniature",
    "path": "medals/medal-meritorious-service-award-miniature.svg",
    "category": "medals",
@@ -26103,44 +25039,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-mitchell-award-full",
-   "path": "medals/medal-mitchell-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -26187,44 +25085,6 @@
    "issues": []
   },
   {
-   "id": "medal-national-cadet-competition-ribbon-full",
-   "path": "medals/medal-national-cadet-competition-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-national-cadet-competition-ribbon-miniature",
    "path": "medals/medal-national-cadet-competition-ribbon-miniature.svg",
    "category": "medals",
@@ -26255,44 +25115,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-national-color-guard-competition-ribbon-full",
-   "path": "medals/medal-national-color-guard-competition-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -26339,44 +25161,6 @@
    "issues": []
   },
   {
-   "id": "medal-national-commander-unit-citation-award-full",
-   "path": "medals/medal-national-commander-unit-citation-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-national-commander-unit-citation-award-miniature",
    "path": "medals/medal-national-commander-unit-citation-award-miniature.svg",
    "category": "medals",
@@ -26407,44 +25191,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-national-commanders-citation-full",
-   "path": "medals/medal-national-commanders-citation-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -26491,44 +25237,6 @@
    "issues": []
   },
   {
-   "id": "medal-red-service-ribbon-full",
-   "path": "medals/medal-red-service-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-red-service-ribbon-miniature",
    "path": "medals/medal-red-service-ribbon-miniature.svg",
    "category": "medals",
@@ -26559,44 +25267,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-search-find-ribbon-full",
-   "path": "medals/medal-search-find-ribbon-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
@@ -26643,44 +25313,6 @@
    "issues": []
   },
   {
-   "id": "medal-silver-medal-of-valor-full",
-   "path": "medals/medal-silver-medal-of-valor-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-silver-medal-of-valor-miniature",
    "path": "medals/medal-silver-medal-of-valor-miniature.svg",
    "category": "medals",
@@ -26719,44 +25351,6 @@
    "issues": []
   },
   {
-   "id": "medal-spaatz-award-full",
-   "path": "medals/medal-spaatz-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "medal-spaatz-award-miniature",
    "path": "medals/medal-spaatz-award-miniature.svg",
    "category": "medals",
@@ -26787,44 +25381,6 @@
     ],
     "ribbon_attach": [
      31.25,
-     0
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "medal-unit-citation-award-full",
-   "path": "medals/medal-unit-citation-award-full.svg",
-   "category": "medals",
-   "w_in": 1.375,
-   "h_in": 1.6706,
-   "size_source": "estimated",
-   "basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
-   "anchors": {
-    "top_center": [
-     68.75,
-     0
-    ],
-    "bottom_center": [
-     68.75,
-     167.06
-    ],
-    "center": [
-     68.75,
-     83.53
-    ],
-    "left_edge": [
-     0,
-     98.31
-    ],
-    "right_edge": [
-     137.5,
-     98.31
-    ],
-    "ribbon_attach": [
-     68.75,
      0
     ]
    },
