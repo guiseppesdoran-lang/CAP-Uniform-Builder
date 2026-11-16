@@ -484,6 +484,18 @@ function findImportedRibbonOption(id, value){
   }
   const RA = globalThis.CAPUBRibbonAwards;
   const semantic = String(value || '');
+  // PME and specialty stars describe qualifications, not repeated awards. Match the
+  // actual devices so a semantic value cannot silently fall back to a basic ribbon.
+  if(RA?.resolve && ['pme', 'starList'].includes(RA.FAMILIES?.[id]?.devices)){
+    const signature = selection => RA.resolve(id, selection).map(row => ({
+      devices: [...row.devices].sort(), centered: !!row.centered
+    }));
+    const wanted = JSON.stringify(signature({ awardValue:semantic, awardLabel:'' }));
+    const found = usable.find(option => JSON.stringify(signature({
+      awardValue:option.value, awardLabel:option.label
+    })) === wanted);
+    if(found) return found;
+  }
   if(RA?.readCount && RA.FAMILIES?.[id] && !/^years_/.test(semantic)){
     const count = importedAwardCountFromValue(semantic);
     const wanted = importedOptionModifiers(id, semantic);
@@ -725,25 +737,31 @@ function getReportSectionUntilAny(text, startLabel, endLabels=[]){
 
 function extractEncampmentCountFromReport(text){
   const source = String(text || '');
-
-  // Prefer the actual Encampments table only. PDF text extraction can split headings
-  // across lines/pages, so the end-marker regex intentionally allows a small amount
-  // of any text between words like "Orientation" and "Flights".
   const startMatch = /\bEncampments\b/i.exec(source);
-  if(!startMatch) return 0;
-
-  const rest = source.slice(startMatch.index);
-  const endRe = /\b(?:In-Person[\s\S]{0,30}Required[\s\S]{0,30}Staff[\s\S]{0,30}Training|Required[\s\S]{0,30}Staff[\s\S]{0,30}Training|Orientation[\s\S]{0,30}Flights|Cadet[\s\S]{0,30}Achievements|Awards|Promotions|Decorations|Ribbons|Local[\s\S]{0,30}Activities|Professional[\s\S]{0,30}Development|Specialty[\s\S]{0,30}Tracks)\b/i;
-  const afterHeading = rest.slice('Encampments'.length);
-  const endMatch = endRe.exec(afterHeading);
-  const section = endMatch
-    ? rest.slice(0, 'Encampments'.length + endMatch.index)
-    : rest;
-
-  // Count only CAP-style dates in that section: one per encampment. The picker's options run well past
-  // nine (the McChord catalog), so the count is not capped.
-  const dates = section.match(/\b\d{1,2}\s+(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\s+\d{4}\b/gi) || [];
-  return dates.length;
+  let section = '';
+  if(startMatch){
+    const rest = source.slice(startMatch.index);
+    const endRe = /\b(?:In-Person[\s\S]{0,30}Required[\s\S]{0,30}Staff[\s\S]{0,30}Training|Required[\s\S]{0,30}Staff[\s\S]{0,30}Training|Orientation[\s\S]{0,30}Flights|Cadet[\s\S]{0,30}Achievements|Awards|Promotions|Decorations|Ribbons|Local[\s\S]{0,30}Activities|Professional[\s\S]{0,30}Development|Specialty[\s\S]{0,30}Tracks)\b/i;
+    const afterHeading = rest.slice('Encampments'.length);
+    const endMatch = endRe.exec(afterHeading);
+    section = endMatch ? rest.slice(0, 'Encampments'.length + endMatch.index) : rest;
+  }
+  const dateKey = value => {
+    const date = parseCapReportDate(value);
+    return date ? [date.getFullYear(), date.getMonth(), date.getDate()].join('-') : null;
+  };
+  const datePattern = new RegExp(MEMBER_REPORT_DATE, 'gi');
+  const dates = new Set((section.match(datePattern) || []).map(dateKey).filter(Boolean));
+  // A dated first award may predate every later Encampments-table entry. Merge
+  // those dates, rather than choosing one table and losing the original credit.
+  // An award repeated for a date already in the table is still just one credit.
+  const ribbonRows = new RegExp('\\bEncampment\\s+Ribbon\\b(?:\\s*\\([^)]{0,40}\\))?\\s+(' + MEMBER_REPORT_DATE + ')', 'gi');
+  let row;
+  while((row = ribbonRows.exec(source))){
+    const key = dateKey(row[1]);
+    if(key) dates.add(key);
+  }
+  return dates.size;
 }
 
 // "MITCHELL, GUISEPPE" -> "Mitchell", "Guiseppe": each word, and each part after a hyphen or apostrophe,
@@ -1797,6 +1815,77 @@ function memberReportUnreadRows(text){
 // The text without its rating exam rows ("Technician Rating Exam: Communications LMS 19 Aug 2023": the words up to the row's date).
 const memberReportWithoutExamRows = text => String(text || '').replace(/\b(?:(?:Technician|Senior|Master)\s+)?Rating\s+Exam\b[^\d]{0,100}/gi, ' ');
 
+// Read only dated completion rows in Professional Development. A title elsewhere
+// (a duty position, ceremony, planned course, or a member's name) is not PME credit.
+function importedCompletedPmeFromReport(text){
+  const section = getReportSectionUntilAny(text, 'Professional\\s+Development', [
+    'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Cadet\\s+Achievements',
+    'Awards', 'Promotions', 'Decorations', 'Current\\s+Duty\\s+Positions', 'Past\\s+Duty\\s+Positions'
+  ]);
+  const courses = [
+    { rank:3, value:'awc_gold_star', re:/\bAir\s+War\s+College\b|\bAWC\b/i },
+    { rank:2, value:'acsc_silver_star', re:/\bAir\s+Command\s+(?:and|&)\s+Staff\s+College\b|\bACSC\b/i },
+    { rank:1, value:'sos_bronze_star', re:/\bSquadron\s+Officers?['’]?\s+School\b|\bSOS\b/i }
+  ];
+  const completed = new Set();
+  const dates = new RegExp(MEMBER_REPORT_DATE, 'gi');
+  let previousEnd = 0, match;
+  while((match = dates.exec(section))){
+    const title = section.slice(previousEnd, match.index).replace(/\s+/g, ' ').trim();
+    previousEnd = match.index + match[0].length;
+    const date = parseCapReportDate(match[0]);
+    if(!date || date > new Date() || /\b(?:pending|planned|enrolled|incomplete|not\s+completed|in\s+progress)\b/i.test(title)) continue;
+    for(const course of courses) if(course.re.test(title)) completed.add(course.rank);
+  }
+  return courses.filter(course => completed.has(course.rank));
+}
+
+function applyImportedProfessionalDevelopmentDevices(result, text){
+  const leadership = result.ribbons.find(row => row.id === 'cap_leadership_ribbon');
+  if(leadership){
+    // A specialty listed at several levels earns only its highest recorded star.
+    const highest = new Map();
+    const levels = { NONE:0, TECHNICIAN:1, SENIOR:2, MASTER:3 };
+    for(const row of parseMemberReportSpecialtyTracks(text)){
+      if((levels[row.level] || 0) > (levels[highest.get(row.name)] || 0)) highest.set(row.name, row.level);
+    }
+    const silver = Math.min(3, [...highest.values()].filter(level => level === 'MASTER').length);
+    const bronze = Math.min(3 - silver, [...highest.values()].filter(level => level === 'SENIOR').length);
+    if(silver || bronze){
+      // The common device resolver understands the catalog's S-S-B notation.
+      leadership.value = [...Array(silver).fill('S'), ...Array(bronze).fill('B')].join('-') + ' Stars';
+      // The single-star form needs words, since the compact notation has a hyphen.
+      if(silver + bronze === 1) leadership.value = silver ? 'master_silver_star' : 'senior_bronze_star';
+      leadership.reason += ' + recorded specialty rating stars';
+      result.notes.push('Leadership Award: the highest recorded rating in each specialty sets its star; at most three stars are selected, with master ratings first.');
+    }
+  }
+  const wilson = result.ribbons.find(row => row.id === 'cap_gill_robb_wilson_ribbon');
+  const garber = result.ribbons.find(row => row.id === 'cap_paul_e_garber_ribbon');
+  if(!wilson && !garber) return;
+  const courses = importedCompletedPmeFromReport(text);
+  const highestWilson = wilson && courses.find(course => course.rank >= 2);
+  if(highestWilson){
+    wilson.value = highestWilson.value;
+    wilson.reason += ' + completed PME course';
+  }
+  const nextGarber = garber && courses.find(course => !highestWilson || course.rank !== highestWilson.rank);
+  if(nextGarber){
+    garber.value = nextGarber.value;
+    garber.reason += ' + completed PME course';
+  }
+  if(!courses.length) result.notes.push('Garber and Gill Robb Wilson Awards: no completed PME course was found in Professional Development, so no star is added; add it under Ribbons if it applies.');
+}
+
+// Senior reports may list a milestone in Awards instead of Cadet Achievements.
+// Read the award name there, never a similarly named Local Activity.
+function importedMilestoneAwardsSection(text){
+  return getReportSectionUntilAny(text, 'Awards', [
+    'Promotions', 'Decorations', 'Activity\\s*\\/\\s*Service\\s+Ribbon', 'Local\\s+Activities',
+    'Professional\\s+Development', 'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments'
+  ]);
+}
+
 function parseCapMemberReport(textRaw){
   const text = labelCurrentDutyPositionsHeading(normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw)));
   const result = {
@@ -1894,11 +1983,13 @@ function parseCapMemberReport(textRaw){
       reason:`Achievement ${i}${honorCredit ? ' with Honor Credit' : ''}`
     });
   }
-  if(/Wright\s+Brothers/i.test(cadetAchievements)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
-  if(/\bMitchell\b/i.test(cadetAchievements)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
-  if(/\bEarhart\b/i.test(cadetAchievements)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
-  if(/\bEaker\b/i.test(cadetAchievements)) result.ribbons.push({ id:'eaker_award', value:'earned', reason:'Eaker' });
-  if(/\bSpaatz\b/i.test(cadetAchievements)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
+  const milestoneAwards = importedMilestoneAwardsSection(text);
+  const milestoneEvidence = cadetAchievements + ' ' + milestoneAwards.replace(/\b(?:Wright\s+Brothers|Mitchell|Earhart|Eaker|Spaatz)\s+(?:Award\s+)?(?:Presentation|Ceremony|Nomination|Application)\b/gi, '');
+  if(/Wright\s+Brothers/i.test(milestoneEvidence)) result.ribbons.push({ id:'wright_brothers_award', value:'earned', reason:'Wright Brothers' });
+  if(/\bMitchell\b/i.test(milestoneEvidence)) result.ribbons.push({ id:'mitchell_award', value:'earned', reason:'Billy Mitchell' });
+  if(/\bEarhart\b/i.test(milestoneEvidence)) result.ribbons.push({ id:'earhart_award', value:'earned', reason:'Amelia Earhart' });
+  if(/\bEaker\b/i.test(milestoneEvidence)) result.ribbons.push({ id:'eaker_award', value:'earned', reason:'Eaker' });
+  if(/\bSpaatz\b/i.test(milestoneEvidence)) result.ribbons.push({ id:'spaatz_award', value:'earned', reason:'Spaatz' });
 
   // Decorations / service ribbons.
   // Every listed line is one award, dated or not. The Yeager award's full name ("Brig Gen Charles E. Yeager
@@ -1955,12 +2046,7 @@ function parseCapMemberReport(textRaw){
   if(/\bYeager\s+(?:Aerospace|Award|AE|Ribbon)\b|\bCharles\s+E\.?\s+(?:["“”]?Chuck["“”]?\s+)?Yeager\b|\bChuck\s+Yeager\b/i.test(awardText)){
     result.ribbons.push({ id:'cap_bridgadier_general_charles_yaeger_ribbon', value:'earned', reason:'Yeager Award' });
   }
-  if(result.ribbons.some(r => r.id === 'cap_leadership_ribbon') && parseMemberReportSpecialtyTracks(text).some(row => /^(?:SENIOR|MASTER)$/.test(row.level))){
-    result.notes.push('Leadership Award: a senior or master specialty rating earns a star (bronze for senior, silver for master), which is not added; add it under Ribbons if it applies.');
-  }
-  if(result.ribbons.some(r => r.id === 'cap_gill_robb_wilson_ribbon' || r.id === 'cap_paul_e_garber_ribbon')){
-    result.notes.push('Garber and Gill Robb Wilson Awards: the report does not show Squadron Officer School, Air Command and Staff College or Air War College, so no star is added; add it under Ribbons if it applies.');
-  }
+  applyImportedProfessionalDevelopmentDevices(result, text);
 
   for(const award of MEMBER_REPORT_COUNTED_AWARDS){
     const rows = countMemberReportAwardRows(awardText, award.re, award.skipAfter || null);
