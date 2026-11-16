@@ -68,10 +68,12 @@ The page sends two things to its own origin. One is anonymous usage counts (`js/
 
 The visual system is one token block at the top of `styles/app.css`: the colors and typefaces of the CAP Brand Guide (Symbol Blue, Silver Gray, Scarlet Red and Air Force Yellow; Rajdhani for headings, Ubuntu for body, self-hosted in `vendor/fonts/`). A dark theme follows the system setting. The interface uses none of CAP's logos, seal or wordmark. Change colors and sizes in the tokens, not in individual rules. `docs/style-guide.html` documents the palette, type, components and the rules for changing them. Open it through a local server so it can load the stylesheet.
 
-## License and credits
+## License
 
-The source is published so it can be read, but all rights are reserved and no license is granted: copying, modifying, hosting, distributing, selling or building on the code or documentation needs written permission from Ethan Hillard, which you can ask for by opening an issue in this repository (`LICENSE`). Using the public website is welcome and is not affected, and versions published before 10 November 2026 were offered under the MIT license, which stands for those versions only. `NOTICE.md` lists what the notice does not cover and where the artwork and data come from: CAP and U.S. Air Force names and insignia, the artwork in `images/`, the official unit emblems, compiled and mirrored data, the fonts, and pdf.js (Apache-2.0, in `vendor/pdfjs/`).
+The source is published so it can be read, but all rights are reserved and no license is granted: copying, modifying, hosting, distributing, selling or building on the code or documentation needs written permission from Guiseppe Doran for rights he owns or is authorized to license, which you can ask for by opening an issue in this repository (`LICENSE`). Other contributors retain any rights they hold; this notice does not transfer those rights. Permission from other rights holders may also be required. Using the public website is welcome and is not affected, and versions published before 10 November 2026 were offered under the MIT license, which stands for those versions only. `NOTICE.md` lists what the notice does not cover and where the artwork and data come from: CAP and U.S. Air Force names and insignia, the artwork in `images/`, the official unit emblems, compiled and mirrored data, the fonts, and pdf.js (Apache-2.0, in `vendor/pdfjs/`).
 
 `docs/HISTORY.md` is a digest of the commit history up to 2026-10-07.
+
+## Credits
 
 Developed by C/Col. Guiseppe Doran and C/Lt Col. Ethan Hillard.

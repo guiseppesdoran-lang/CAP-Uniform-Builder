@@ -11,11 +11,11 @@ const path = require('node:path');
 const ROOT = path.join(__dirname, '..');
 const read = rel => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 
-test('LICENSE reserves all rights for both authors and grants no permission', () => {
+test('LICENSE names Guiseppe Doran as the permission contact and grants no permission', () => {
   const text = read('LICENSE');
-  assert.match(text, /^Copyright \(c\) 2026 Guiseppe Doran and Ethan Hillard\. All rights reserved\./);
+  assert.match(text, /^Copyright \(c\) 2026 Guiseppe Doran\. All rights reserved\./);
   assert.match(text, /No license is granted/);
-  assert.match(text, /prior written permission from Ethan\s+Hillard/);
+  assert.match(text, /prior written permission from Guiseppe\s+Doran/);
   assert.match(text, /open an issue in this project's repository/);
   assert.doesNotMatch(text, /Permission is hereby granted/i);
   assert.doesNotMatch(text, /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/, 'no address in the notice');
