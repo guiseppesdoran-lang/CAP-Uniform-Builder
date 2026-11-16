@@ -65,10 +65,9 @@ test('every button of the top bar, step bar, preview toolbar, measurement panel 
   assert.doesNotMatch(panel, /<a\b|href=|type="submit"|<form\b|<input\b/, 'nothing in the panel is a link, a submit or a field');
 });
 
-test('the controls sit in no form, and the only form on the page is the access gate, closed before the page starts', () => {
+test('the builder controls sit in no form after removal of the access gate', () => {
   const forms = html.match(/<form\b/g) || [];
-  assert.equal(forms.length, 1);
-  assert.ok(html.indexOf('</form>') < html.indexOf('<header>'), 'the access form ends before the top bar');
+  assert.equal(forms.length, 0);
   assert.doesNotMatch(ui + panel, /createElement\(['"]form['"]\)|<form\b/);
 });
 

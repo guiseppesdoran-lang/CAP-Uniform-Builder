@@ -1757,6 +1757,7 @@ const NOTE_KINDS = [
   [/^The name is longer than 40 letters/, 'sight', 'The name is longer than 40 letters, so the uniform shows the first 40 of each part.'],
   [/^The Cadet Achievements heading was not found/, 'sight', 'The Cadet Achievements heading was not found; its Achievement rows were read without it.'],
   // The fold.
+  [/^Leadership Award: the highest recorded rating/, 'more', "Leadership Award: the highest recorded rating in each specialty sets its star; at most three stars are selected, with master ratings first."],
   [/^\d+ rows? listed twice in the report/, 'more', '1 row listed twice in the report was counted once.'],
   [/^Current First Sergeant duty found/, 'more', 'Current First Sergeant duty found, so the Cadet First Sergeant diamond is chosen for the Class B shirt (CAPR 39-1, 10.10.4).'],
   [/records found; the ribbon picker offers at most|: the picker offers at most \d+ awards/, 'more', 'Disaster Relief Ribbon: the picker offers at most 84 awards, so 84 are used.'],
