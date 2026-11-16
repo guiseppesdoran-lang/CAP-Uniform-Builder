@@ -2,162 +2,448 @@
  "asset_id": "garment-aviator-shirt-male-long",
  "name": "Men's Aviator Shirt Uniform: white long-sleeve aviator shirt, gray trousers",
  "size_in": {
-  "w": 21.156,
-  "h": 26.2
+  "w": 26.0508,
+  "h": 31.5847
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2115.6,
-  2620
+  2605.08,
+  3158.47
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same sleeve-to-sleeve width as the Class B shirt (20.8 in). No real garment was measured.",
+ "size_basis": "Silhouette traced from images/base/aviator_shirt_male.webp (581x719 px; the female outline is traced from the clean 1130x1392 re-render of the same drawing) at 0.0376 in per 581-px-canvas px, chosen so the shirt is the same body width as the Class B shirt (20.8 in sleeve to sleeve before the sleeves were widened). The two sleeves are then widened outward by up to 0.3 in (smooth ramp from the shoulder end at 4.33 in to full at 9.03 in below the top, body side untouched) so the regulation 3 1/2 in chevron sits on the sleeve: the hanging view traced here is only 2.95 in wide at the chevron line (x 1.204 after the scale). The widening is an estimate (the regulation gives no sleeve width). Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1; 0.0376 in/px becomes 0.0453): the men's pocket measures 4.36 in wide on the traced image and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task; no CAPR 39-1 or DAFI 36-2903 dimension), so the men's pocket is drawn 5.25 x 6.0 in. Nametag and ribbon slots, edge-on strip thickness and the tie tab keep their true size. No real garment was measured.",
  "anchors": {
   "top_center": [
-   1057.8,
+   1302.53,
    0
   ],
   "bottom_center": [
-   1057.8,
-   2620
+   1302.53,
+   3158.47
   ],
   "center": [
-   1057.8,
-   1310
+   1302.53,
+   1579.24
   ],
   "left_edge": [
    0,
-   1310
+   1579.24
   ],
   "right_edge": [
-   2115.6,
-   1310
+   2605.08,
+   1579.24
+  ],
+  "shoulder_seam_right": [
+   321.26,
+   389.96
+  ],
+  "elbow_right": [
+   277.43,
+   1890.14
+  ],
+  "sleeve_bottom_right": [
+   282.87,
+   3117.55
+  ],
+  "chevron_halfway_right": [
+   262.36,
+   1140.05
+  ],
+  "shoulder_seam_left": [
+   2283.81,
+   389.96
+  ],
+  "elbow_left": [
+   2327.65,
+   1890.14
+  ],
+  "sleeve_bottom_left": [
+   2322.21,
+   3117.55
+  ],
+  "chevron_halfway_left": [
+   2342.72,
+   1140.05
   ],
   "hem_center": [
-   1057.8,
-   2610
+   1302.53,
+   3141.62
   ],
   "nameplate_slot_center": [
-   668.65,
-   758.3
+   834.06,
+   920.4
   ],
   "ribbon_slot_center": [
-   1446.95,
-   720.8
+   1770.95,
+   882.9
   ],
   "epaulet_right_center": [
-   436.85,
-   319.1
+   592.15,
+   316.06
   ],
   "epaulet_left_center": [
-   1678.75,
-   319.1
+   2012.93,
+   316.06
+  ],
+  "tie_mount_center": [
+   1302.53,
+   272.03
   ],
   "badge_right_pocket_center": [
-   668.64,
-   1164.32
+   834.11,
+   1382.4
   ],
   "badge_left_pocket_center": [
-   1446.96,
-   1164.32
+   1770.96,
+   1382.4
   ],
   "badge_above_ribbons_center": [
-   1446.95,
-   595.8
+   1770.95,
+   757.91
   ],
   "command_pin_above_nametag_center": [
-   668.65,
-   670.8
+   834.06,
+   832.9
   ],
   "command_pin_below_nametag_center": [
-   668.65,
-   845.8
+   834.06,
+   1007.9
   ],
   "collar_insignia_right_center": [
-   822.8,
-   347.46
+   1155.3,
+   182.76
   ],
   "collar_insignia_left_center": [
-   1292.8,
-   347.46
-  ],
-  "nco_chevron_right_center": [
-   131.94,
-   928.01
-  ],
-  "nco_chevron_left_center": [
-   1948.83,
-   928.01
+   1449.78,
+   182.76
   ]
  },
  "landmarks": {
   "nameplate_slot": {
-   "x": 499.9,
-   "y": 720.8,
-   "w": 337.5,
-   "h": 75
+   "x": 665.3,
+   "y": 882.9,
+   "w": 337.51,
+   "h": 74.99
   },
   "ribbon_slot": {
-   "x": 1240.7,
-   "y": 645.8,
+   "x": 1564.7,
+   "y": 807.91,
    "w": 412.5,
-   "h": 150
+   "h": 149.98
   },
   "epaulet_right": [
    [
-    245.6,
-    323.5
+    321.26,
+    389.96
    ],
    [
-    576.5,
-    194.7
+    826.81,
+    196.57
    ],
    [
-    628.1,
-    239
+    863.06,
+    207.34
    ],
    [
-    620.1,
-    306.5
+    843.24,
+    239.53
    ],
    [
-    271.2,
-    443.5
+    330.85,
+    435.55
    ]
   ],
   "epaulet_left": [
    [
-    1870,
-    323.5
+    2283.81,
+    389.96
    ],
    [
-    1539.1,
-    194.7
+    1778.27,
+    196.57
    ],
    [
-    1487.5,
-    239
+    1742.02,
+    207.34
    ],
    [
-    1495.5,
-    306.5
+    1761.82,
+    239.53
    ],
    [
-    1844.4,
-    443.5
+    2274.23,
+    435.55
+   ]
+  ],
+  "epaulet_axis": {
+   "right": {
+    "p1": [
+     326.05,
+     412.76
+    ],
+    "p2": [
+     863.06,
+     207.34
+    ],
+    "w_in": 0.9,
+    "edge_thickness_in": 0.46,
+    "length_in": 5.75,
+    "tip_in": 0.3,
+    "button": [
+     816.35,
+     225.2
+    ],
+    "button_from_tip_in": 0.5
+   },
+   "left": {
+    "p1": [
+     2279.02,
+     412.76
+    ],
+    "p2": [
+     1742.02,
+     207.34
+    ],
+    "w_in": 0.9,
+    "edge_thickness_in": 0.46,
+    "length_in": 5.75,
+    "tip_in": 0.3,
+    "button": [
+     1788.73,
+     225.2
+    ],
+    "button_from_tip_in": 0.5
+   }
+  },
+  "collar_right": [
+   [
+    1007.53,
+    52.04
+   ],
+   [
+    982.53,
+    402.03
+   ],
+   [
+    1212.53,
+    350.03
+   ],
+   [
+    1302.53,
+    272.03
+   ],
+   [
+    1279.49,
+    241.38
+   ],
+   [
+    1255.01,
+    212.64
+   ],
+   [
+    1229.11,
+    185.84
+   ],
+   [
+    1201.76,
+    160.94
+   ],
+   [
+    1172.97,
+    137.99
+   ],
+   [
+    1142.76,
+    116.95
+   ],
+   [
+    1111.1,
+    97.84
+   ],
+   [
+    1078.02,
+    80.65
+   ],
+   [
+    1043.5,
+    65.38
+   ]
+  ],
+  "collar_left": [
+   [
+    1597.53,
+    52.04
+   ],
+   [
+    1622.53,
+    402.03
+   ],
+   [
+    1392.53,
+    350.03
+   ],
+   [
+    1302.53,
+    272.03
+   ],
+   [
+    1325.58,
+    241.38
+   ],
+   [
+    1350.06,
+    212.64
+   ],
+   [
+    1375.97,
+    185.84
+   ],
+   [
+    1403.32,
+    160.94
+   ],
+   [
+    1432.1,
+    137.99
+   ],
+   [
+    1462.32,
+    116.95
+   ],
+   [
+    1493.97,
+    97.84
+   ],
+   [
+    1527.06,
+    80.65
+   ],
+   [
+    1561.58,
+    65.38
+   ]
+  ],
+  "tie": {
+   "kind": "tie",
+   "knot": {
+    "x": 1302.53,
+    "y": 272.03
+   },
+   "w_in": 3,
+   "length_in": 21.9
+  },
+  "sleeve_flat_view": {
+   "left": {
+    "x": 3044.79,
+    "y": 377.96
+   },
+   "right": {
+    "x": -439.72,
+    "y": 377.96
+   }
+  },
+  "armhole_seam_right": [
+   [
+    321.26,
+    389.96
+   ],
+   [
+    479.61,
+    1143.5
+   ],
+   [
+    527.99,
+    1566.37
+   ]
+  ],
+  "armhole_seam_left": [
+   [
+    2283.81,
+    389.96
+   ],
+   [
+    2125.47,
+    1143.5
+   ],
+   [
+    2077.09,
+    1566.37
    ]
   ]
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve assets <id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, its top at the shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
-  "length_in": 26,
-  "max_width_in": 20.76,
+  "collar": {
+   "kind": "standard pointed shirt collar, leaves lying on the shirt, points toward the chest (CAPR 39-1 4.2.5.1 / 4.2.6.1.1: straight collars only, no button downs)",
+   "size_source": "estimated",
+   "note": "the regulation draws no collar dimension (Fig 4.16 / 4.17 show the open camp collar worn without a tie: 4.2.5.1.9 \"undershirt will not be visible if the collar is worn open\"); a standard shirt's",
+   "band_top_ends_from_centre_in": 2.95,
+   "leaf_point_from_top_end_in": 3.5,
+   "leaf_point_from_centre_in": 3.2,
+   "neck_opening_depth_in": 2.2,
+   "knot_shoulder_from_centre_in": 0.9,
+   "front_edge_vertex_from_centre_in": 0.9,
+   "front_edge_vertex_below_front_of_neck_in": 0.78,
+   "roll_line_bow_in": -0.4,
+   "chevron_fit": {
+    "size_source": "measured",
+    "note": "LIVE8-ART 1. Fig 4.16 / 4.17, 8x, pocket 5.25 in = 354 px (67.4 px/in): the figures draw the open camp collar, top ends 3.0 in from the centre line, points 5.4-5.7 in out, free edge 2.9-3.0 in, outer edge 5.7-6.1 in (the pointed collar here is the smaller closed-collar form, AVIATOR-ART-3). The regulation-size cadet NCO chevron (Fig A5-5: 1.09 in wide, 0.71 to 1.75 in long, axis along the leading edge, near outline 1 in from it, centred) must lie on cloth: the leaf is 2.91 / 2.43 / 1.86 in across at 1.0 / 1.54 (the chevron's middle) / 2.09 in from the leading edge (was 1.16 / 0.59 / 0.20), and all eight grades clear its edges by at least 0.21 in (base-art/audit-aviator.js; before: overhang up to 0.58 in)"
+   }
+  },
+  "tie": {
+   "group": "tie",
+   "kind": "tie",
+   "w_in": 3,
+   "length_in": 21.9,
+   "knot_w_in": 1.8,
+   "construction": "base-art/tie.js, the Class A coats' tie (knot apex, shoulder, neck, blade, tip) / tab (inverted V); apex at the front of the collar, under the leaves",
+   "size_source": "estimated",
+   "note": "required with the long-sleeve shirt, optional with the short (4.2.5.1.4 men, 4.2.6.3 women's tab); the builder hides the group when the option is off. Men: the tip is 80 % of the way down the belt buckle (covers part of it, not below it)"
+  },
+  "seams": {
+   "armhole_seam": "drawn from the shoulder line (first traced segment extended up to the silhouette) to the armpit notch, which is ONE vertex of the silhouette (the traced two-vertex hook is replaced by the seam line meeting the sleeve hem line); the cuff stitch line runs from the seam to the outer edge; the picture-left half of the traced outline is mirrored (the trace differed by up to 0.06 in)",
+   "armpit_notch_in": [
+    7.746,
+    15.543
+   ]
+  },
+  "scale": {
+   "k": 1.2037,
+   "in_per_px": 0.04526,
+   "previous_in_per_px": 0.0376,
+   "pocket_in": [
+    5.25,
+    6
+   ],
+   "size_source": "estimated",
+   "note": "pocket 5.25 x 6 in = USAF-style men's size-M short-sleeve shirt (estimate); the whole sheet is drawn at the traced scale and scaled by k when written"
+  },
+  "length_in": 31.3,
+  "max_width_in": 25.57,
   "nametag_slot_in": [
    3.375,
    0.75
-  ]
+  ],
+  "sleeve_widening": {
+   "outward_in": 0.3,
+   "ramp_from_y_in": 4.33,
+   "full_by_y_in": 9.03,
+   "body_edge_abs_x_in": 7.58,
+   "size_source": "estimated",
+   "note": "outward warp of the traced sleeve (outline and every stroke in it) so the 3 1/2 in regulation chevron (4.2.5.1.1.3 / 4.2.6.2.3) lies inside the sleeve outline instead of 0.27 in (men) / 0.31 in (women) off the garment; the pre-widening flat sleeve was 2.95 in (men) / 3.5 in (women) at the chevron line"
+  },
+  "belt_strap": {
+   "size_source": "measured",
+   "note": "LIVE13-ART 49 (Ethan, 2026-11-12: \"both the belt and pants must go all the way around\"): the strap runs from one side edge of the body to the other on every one of its rows. Its top and bottom edges are the two curves the sheet always had (read off the base image: top (132,556) (288,567) (441,556) px, bottom (443,590) (288,607) (133,590) px), carried on along the same quadratics past their old ends until they lie outside the body (parameter run from -0.12 to 1 + 0.12); the body's outline clips the group, so the strap ends on the outline. The old ends stopped 0.07 to 0.37 in short of the outline (measured at 60 px per in, rows 23.1 to 24.5 in from the top of the box). Everything else, the trousers (which already filled the body to the outline), the loops, the buckle and the seams, is as before.",
+   "old_ends_half_width_in": [
+    7.082,
+    6.902
+   ],
+   "curve_param_run": 0.12,
+   "clip": "clipSil (the shirt body's outline)"
+  }
  },
  "documented": [
   "white aviator-style shirt, two standard sewn flap pockets, curved flap bottom allowed, straight collar, two epaulet straps (CAPR 39-1 4.2.5.1 / 4.2.6.1.1)",
@@ -168,8 +454,9 @@
  ],
  "assumed": [
   "px-to-inch scale",
+  "sleeve widening (outward warp of the traced sleeve, see dimensions.sleeve_widening)",
   "nametag slot size (CAP plate size)",
-  "epaulet strap size (not drawn in the base image)",
+  "epaulet strap size (not drawn in the base image); drawn edge-on as a band 0.46 in thick (the strap is 0.90 in wide, epaulet_axis.w_in), LIVE10-ART 2",
   "gray shade and belt colours sampled from the base image"
  ],
  "fit": {

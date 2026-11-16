@@ -1,37 +1,5 @@
-// Extracted verbatim from index.html: select population, sidebar toggle, tooltips, the setup flow
+// Extracted verbatim from index.html: sidebar toggle, tooltips, the setup flow
 // and member type / uniform authorization.
-
-/* ===========================
-   POPULATE SELECTS
-   =========================== */
-function optionize(sel,list, pretty=false){
-  sel.innerHTML='';
-  list.forEach(v=>{
-    const o=document.createElement('option');
-    o.value=v;
-    o.textContent = pretty ? v : v.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    sel.appendChild(o);
-  });
-}
-
-/*
-  Eager asset preloading was removed here.
-
-  It built a hidden <img> for every ribbon, rank, badge and patch at parse
-  time with loading='eager' and decoding='sync', which pulled 27.7 MB over
-  250 requests before the user had chosen anything - 26.3 MB of that was
-  badge art alone, and decoding='sync' forced it onto the main thread.
-
-  Nothing needed it. Every renderer builds its own <img> and resolves the
-  source through capubInstallImageFallback(); renderPatches() already had a
-  new Image() fallback, and placeBadgeSlotAnchored() only used the preloaded
-  node as an existence check, now KNOWN_BADGE_IDS.
-
-  The rank preload was pure waste on top of that: renderRankOverlay() has
-  been retired because rank is baked into the base uniform art, and only 9 of
-  the ~29 rank ids have files, so most requests 404 and then dragged the
-  whole filename-variant fallback chain along behind them.
-*/
 
 /* ===========================
    SIDEBAR TOGGLE (HAMBURGER)
@@ -40,6 +8,10 @@ function capubSetSidebarOpen(open){
   layoutShell.classList.toggle('sidebar-open', open);
   layoutShell.classList.toggle('sidebar-collapsed', !open);
   hamburgerBtn.setAttribute('aria-expanded', String(open));
+  // The button says what it does now (the label a screen reader reads and the tooltip).
+  const menuLabel = open ? 'Hide the controls' : 'Show the controls';
+  hamburgerBtn.setAttribute('aria-label', menuLabel);
+  hamburgerBtn.title = menuLabel;
   // The preview refits: on a phone the controls are a sheet over the lower part of the screen.
   document.dispatchEvent(new CustomEvent('capub:sidebar',{detail:{open}}));
 }
@@ -87,17 +59,24 @@ document.addEventListener('mouseout', e => {
 /* ===========================
    SETUP FLOW
    =========================== */
+// What the setup choices unlock, worked out from State alone: the rank list needs a membership
+// type, and the uniform and cut blocks need membership and rank (they start as .disabledBlock,
+// which also turns off pointer events). Anything that sets State without going through the
+// change handlers (Resume, Load, Import, Undo) reaches this through refreshUI(), so the blocks
+// can never stay locked over controls that already show their values.
+function capubSyncSetupGates(){
+  const enableUniformGender = !!State.membership && !!State.rank;
+  rankSetupSelect.disabled = !State.membership;
+  uniformBlock.classList.toggle('disabledBlock', !enableUniformGender);
+  genderBlock.classList.toggle('disabledBlock', !enableUniformGender);
+}
 function updateSetupGates(){
   const readyMembership = !!State.membership;
   const readyRank       = !!State.rank;
   const readyGender     = !!State.gender;
 
-  rankSetupSelect.disabled = !readyMembership;
+  capubSyncSetupGates();
   syncCadetFirstSergeantControl();
-
-  const enableUniformGender = readyMembership && readyRank;
-  uniformBlock.classList.toggle('disabledBlock', !enableUniformGender);
-  genderBlock.classList.toggle('disabledBlock', !enableUniformGender);
 
   if(readyMembership && readyRank && readyGender && State.uniform){
     fullRender();
@@ -117,6 +96,8 @@ function capubSyncSegments(){
       btn.classList.toggle('isOn', on);
     });
   });
+  // The pictures that stand in front of the other choices (js/profile-pickers.js) follow their selects the same way.
+  if(window.CAPUBProfilePickers) window.CAPUBProfilePickers.sync();
 }
 document.querySelectorAll('.segmented[data-segments-for]').forEach(group=>{
   group.addEventListener('click', e=>{
@@ -154,7 +135,7 @@ if(adultCadetBox){
   });
 }
 function populateRankSetup(){
-  rankSetupSelect.innerHTML = `<option value="">Select Rank</option>`;
+  rankSetupSelect.innerHTML = `<option value="">Select grade</option>`;
   if(!State.membership) return;
   RANKS[State.membership].forEach(r=>{
     const opt=document.createElement('option');
@@ -196,6 +177,8 @@ membershipTypeEl.addEventListener('change', ()=>{
   // Rebuild the ribbon list and current rendered rack whenever membership changes.
   buildRibbonGallery();
   rebuildRibbonsFromGallery();
+  // A cadet grade the new membership does not keep takes its ribbons with it (a ribbon checked by hand stays).
+  capubApplyGradeRibbons();
 
   if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)){
     const fallback=findFirstAllowedUniform(State.membership) || 'blues_a';
@@ -214,8 +197,77 @@ rankSetupSelect.addEventListener('change', ()=>{
   State.rank = rankSetupSelect.value || null;
   if(!isCadetFirstSergeantEligible()) State.cadetFirstSergeant = false;
   syncCadetFirstSergeantControl();
+  capubApplyGradeRibbons();
   updateSetupGates();
   fullRender();
+});
+
+/* ===========================
+   GRADE IMPLIES RIBBONS (LIVE13 E66)
+   =========================== */
+// Ethan: "if someone selects a grade, it goes along with the ribbons required to get it. like for C/Lt Col, if selected,
+// it selects all ach ribbons except spaatz and the encampment ribbon." Choosing a cadet grade adds the ribbons that grade
+// requires (js/state.js capubGradeImpliedRibbons, CAPR 60-1), each as earned once, and takes off the ones an earlier grade
+// added that the new grade does not imply. State.gradeRibbons records which the grade added; a ribbon the member checked
+// or changed by hand is not in it and is never taken off. A senior grade implies none. Returns { added, removed }.
+function capubGradeRibbonNames(ids){
+  const names = ids.map(id => getRibbonDisplayName(id));
+  if(names.length < 2) return names.join('');
+  return names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+}
+function capubApplyGradeRibbons({announce=true}={}){
+  normalizeRibbonSelections();
+  const rank = State.rank || null;
+  const implied = State.membership === 'cadet'
+    ? capubGradeImpliedRibbons(rank).filter(id => isRibbonEligibleForMembership(id, 'cadet'))
+    : [];
+  const wanted = new Set(implied);
+  const record = State.gradeRibbons && Array.isArray(State.gradeRibbons.ids) ? State.gradeRibbons.ids : [];
+  const kept = [], removed = [], added = [];
+  for(const id of record){
+    const sel = State.ribbonSelections[id];
+    if(!sel?.checked) continue;
+    if(wanted.has(id)){ kept.push(id); continue; }
+    clearRibbonSelection(id);
+    removed.push(id);
+  }
+  for(const id of implied){
+    if(State.ribbonSelections[id]?.checked) continue; // on already: by hand, by the import, or by the grade before
+    setRibbonSelectionFromDropdown(id, 'earned', {deferRender:true, byGrade:true});
+    if(State.ribbonSelections[id]?.checked) added.push(id);
+  }
+  const ours = [...kept, ...added];
+  State.gradeRibbons = ours.length ? {rank, ids:ours} : null;
+  if(added.length || removed.length){
+    buildRibbonGallery();
+    rebuildRibbonsFromGallery();
+  }
+  if(announce){
+    const lines = [];
+    // Counts, not names (LIVE13 E106, Ethan on the thirteen-name toast: "this is dumb lol"): the rack shows which.
+    if(added.length) lines.push(`${rank}: ${added.length === 1 ? 'the achievement ribbon' : added.length + ' achievement ribbons'} earned on the way to this grade added (CAPR 60-1).`);
+    if(removed.length) lines.push(`${removed.length === 1 ? 'One ribbon' : removed.length + ' ribbons'} the earlier grade had added taken off.`);
+    // A senior member who expected the grade to fill the rack: it does not.
+    if(State.membership === 'senior' && rank && (removed.length || !(State.ribbons || []).length)){
+      lines.push('A senior member\'s grade adds no ribbons: promotion is not tied to one.');
+    }
+    // After the page's item-count toast (js/workspace-ui.js capubItemToasts speaks 200 ms after a change), so this one, which names
+    // the ribbons, is the one left showing.
+    if(lines.length) setTimeout(()=>capubNotify(lines.join(' '), 5000), 450);
+  }
+  return {added, removed};
+}
+// A member report import sets the grade and the ribbons itself, and its selections win: the grade's record is
+// dropped when an import starts, so a later grade change never takes off a ribbon the report gave.
+document.addEventListener('DOMContentLoaded', ()=>{
+  if(typeof applyCapMemberReportImport !== 'function' || applyCapMemberReportImport.capubGradeAware) return;
+  const original = applyCapMemberReportImport;
+  const wrapped = function(){
+    State.gradeRibbons = null;
+    return original.apply(this, arguments);
+  };
+  wrapped.capubGradeAware = true;
+  window.applyCapMemberReportImport = wrapped;
 });
 
 if(cadetFirstSergeantCheckbox){
@@ -232,24 +284,6 @@ jacketSelect.addEventListener('change', ()=>{
   fullRender();
 });
 
-garmentOverlaySelect?.addEventListener('change', ()=>{
-  State.garmentOverlayMode = ['both','left','right','off'].includes(garmentOverlaySelect.value)
-    ? garmentOverlaySelect.value
-    : 'both';
-  fullRender();
-});
-garmentMaskSide?.addEventListener('change', syncGarmentMaskStatus);
-editGarmentMaskBtn?.addEventListener('click', beginGarmentMaskEdit);
-resetGarmentMaskBtn?.addEventListener('click', resetCurrentGarmentMask);
-saveGarmentMaskBtn?.addEventListener('click', ()=>closeGarmentMaskEditor(true));
-cancelGarmentMaskBtn?.addEventListener('click', ()=>closeGarmentMaskEditor(false));
-undoGarmentMaskBtn?.addEventListener('click', ()=>{
-  const previous=garmentMaskEditor.history.pop();
-  if(!previous) return;
-  garmentMaskEditor.points=previous.map(point=>({...point}));
-  renderGarmentMaskEditor();
-  if(undoGarmentMaskBtn) undoGarmentMaskBtn.disabled=!garmentMaskEditor.history.length;
-});
 
 /* ===========================
    MEMBER TYPE / UNIFORM AUTHZ
@@ -260,36 +294,54 @@ undoGarmentMaskBtn?.addEventListener('click', ()=>{
 function isUniformAllowedFor(uniformId, membership){
   const btn = uniformListEl.querySelector(`.uniformOption[data-uniform-id="${uniformId}"]`);
   if(!btn) return false;
-  return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet});
+  return CAPUBUniformRules.isUniformAllowedFor(uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank});
 }
 function findFirstAllowedUniform(membership){
-  const opts=[...uniformListEl.querySelectorAll('.uniformOption')];
+  // The Honor Guard Uniform rides on Class A or Class B (State.ceremonial), so it is never the uniform a member falls back to.
+  const opts=[...uniformListEl.querySelectorAll('.uniformOption')].filter(opt=>opt.dataset.uniformId!==CAPUBUniformRules.CEREMONIAL.id);
   for(const opt of opts){
-    if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet})){
+    if(CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, membership, {adultCadet:!!State.adultCadet,rank:State.rank})){
       return opt.dataset.uniformId;
     }
   }
   return null;
 }
 function applyMemberTypeToUniformOptions(){
+  // A member who is not offered the Honor Guard Uniform (a senior member, whoever chose it or saved it) wears the uniform it rides on, without the honor guard items.
+  if(State.ceremonial && State.membership && !CAPUBUniformRules.allowsCeremonial(State.membership)) State.ceremonial=false;
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
     const isAllowed = State.membership
-      ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet})
+      ? CAPUBUniformRules.isUniformAllowedFor(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank})
       : true;
 
+    // The Honor Guard Uniform is not offered to a senior member at all: its card is hidden, not greyed out and not moved to the fold of what the member may not wear.
+    if(opt.dataset.uniformId===CAPUBUniformRules.CEREMONIAL.id){
+      opt.classList.remove('locked');
+      opt.classList.toggle('hidden', !isAllowed);
+      opt.hidden = !isAllowed;
+      const gone=opt.querySelector('.uWhy');
+      if(gone) gone.remove();
+      return;
+    }
+    // The reason a card is locked is a line of the card, not text the stylesheet draws from an attribute: js/citations.js cannot reach text that is not in
+    // the page, and the paragraph in it ("... (CAPR 39-1, 4.1.1)") belongs behind the question mark like every other.
+    let why=opt.querySelector('.uWhy');
     if(isAllowed){
       opt.classList.remove('locked');
-      opt.removeAttribute('data-locked-reason');
+      if(why) why.remove();
     }else{
       opt.classList.add('locked');
-      opt.setAttribute('data-locked-reason', 'This uniform is not authorized for this membership type.');
+      if(!why){ why=document.createElement('span'); why.className='uWhy'; opt.appendChild(why); }
+      const reason=CAPUBUniformRules.lockedReason(opt.dataset.uniformId, State.membership, {adultCadet:!!State.adultCadet,rank:State.rank}) || 'This uniform is not authorized for this membership type.';
+      // Written only when it changed: the line holds a reference mark, which a rewrite would draw again.
+      if(why.textContent!==reason) why.textContent=reason;
     }
   });
 }
 function highlightActiveUniformButton(){
   const opts=uniformListEl.querySelectorAll('.uniformOption');
   opts.forEach(opt=>{
-    opt.classList.toggle('activeUniform', opt.dataset.uniformId===State.uniform);
+    opt.classList.toggle('activeUniform', opt.dataset.uniformId===(State.ceremonial ? CAPUBUniformRules.CEREMONIAL.id : State.uniform));
   });
 }

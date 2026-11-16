@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-cap-paul-e-garber-ribbon-miniature",
  "name": "Paul E. Garber Award (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6118,
  "size_in": {
   "w": 0.625,
-  "h": 0.6625
+  "h": 0.6118
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  66.25
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_garber.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Absolute size is an estimate.",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 174 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7152 x 0.7033 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7152 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 289.8 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,65 +17,207 @@
   ],
   "bottom_center": [
    31.25,
-   66.25
+   61.18
   ],
   "center": [
    31.25,
-   33.13
+   30.59
   ],
   "left_edge": [
    0,
-   33.13
+   30.59
   ],
   "right_edge": [
    62.5,
-   33.13
+   30.59
   ],
   "ribbon_attach": [
    31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle -0.43 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "garber",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-cap-paul-e-garber-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Paul E. Garber Award"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-cap-paul-e-garber-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-cap-paul-e-garber-ribbon",
   "spec": "../ribbons/ribbon-cap-paul-e-garber-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": {
-  "raster": "images/mini_medals/mcchord/m_garber.webp",
-  "body_top_row": 123,
-  "px_to_in": 0.0125,
-  "bbox_px": [
-   0,
-   0,
-   50,
-   53
-  ]
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/garber.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js garber --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-garber-miniature-medal (civil air patrol garber miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-garber-miniature-medal",
+  "title": "civil air patrol garber miniature medal",
+  "px": [
+   600,
+   600
+  ],
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/garber.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "fidelity": "silhouette_and_tone",
- "fit": {
-  "metric": "silhouette IoU vs source alpha at source resolution",
-  "score": 0.9782,
-  "threshold": 0.9,
-  "colour_mae_0_255": 38,
-  "outline": "circle",
-  "inner_ring_radius_px": 18.3,
-  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+ "measured": {
+  "photo": "garber.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 289.8,
+   "disc_diameter_px": 181.1,
+   "origin_px": [
+    295.8,
+    511.5
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
+  },
+  "hang_angle_removed_deg": -0.43,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0065,
+   "ridge": [
+    0.2895,
+    0.3035
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.0001,
+   "cy": -0.0015,
+   "r": 0.2166,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0092,
+   "top_letters": 14,
+   "bottom_letters": 11,
+   "cap_height_top_in": 0.045,
+   "cap_height_bottom_in": 0.0451
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.108,
+    "top": -0.4325,
+    "neck": 0.098,
+    "shoulder": -0.332
+   },
+   "ring": {
+    "c": [
+     0.01,
+     -0.495
+    ],
+    "r": 0.143,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "the emblem is an engraved line drawing that the 290 px-per-inch photograph resolves only partly: buildings, lens/arch and the main coast lines are modelled (centre-lines read off the photograph, stroke 0.007 in); the finer window frames inside the cells are reduced to dividers and one slot per cell",
+   "the stippled, grainy land area at the lower left of the map (South America side) is texture the photograph shows as noise; it is not drawn and no outline of it is invented beyond the coast line that bounds it",
+   "the identity of the map (which coasts these are) and of the three lines to the right of the tower (pole, second upright, slanted line) cannot be established from the photograph; they are modelled as lines only, named neutrally",
+   "two small specks in the lettering band (between L and E of PAUL E, and a dash between E and G) are not drawn; the full stop after E is drawn as a round dot",
+   "silhouette gate: the shared ref.js ribbon mask leaks through the saturated bronze bail and the dark ground into the disc (IoU 0.12 against a wrongly emptied reference); this module cuts that mask at photo row 400 at run time so the gate compares the disc with the disc (shared files untouched)",
+   "the ring is cut by the ribbon over its upper half, so its centre (0.010 in right of the bail axis) and radius are fitted to the visible arcs only; the bail is the shared barrel with the shared shading (the photograph's faceted highlights are not modelled)",
+   "engraving grain, specular highlights and the dark pits of the cast bronze are not drawn (flat tones)"
+  ],
+  "tones_luminance": {
+   "ground": 33,
+   "shadow": 12,
+   "base": 113,
+   "hi": 160,
+   "rim": 175,
+   "rim_hi": 225,
+   "metal": 140,
+   "metal_hi": 170,
+   "bail": 134,
+   "lip": 185
+  }
  },
  "palette": {
-  "mid": "#504336",
-  "dark": "#150a04",
-  "light": "#93867a",
-  "emblem": null
+  "metal": "bronze",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#2b1f16",
+   "shadow": "#190e09",
+   "base": "#7d705a",
+   "hi": "#ab9c83",
+   "rim": "#baab8f",
+   "rim_hi": "#f2e0b7",
+   "lip": "#c4b596",
+   "metal": "#988971",
+   "metal_hi": "#b5a68c",
+   "bail": "#92836c"
+  }
  },
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "garber_b",
-   "garber_g",
-   "garber_s"
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9856,
+  "light_class_iou": 0.587,
+  "landmarks_checked": 48,
+  "landmark_max_dist_in": 0.0053,
+  "landmark_worst": [
+   [
+    "star 1",
+    0.0053
+   ],
+   [
+    "star 2",
+    0.0051
+   ],
+   [
+    "middle building roof",
+    0.0044
+   ],
+   [
+    "left building body",
+    0.0043
+   ],
+   [
+    "letter A (top 26.7deg)",
+    0.004
+   ]
   ],
-  "different_body": []
- }
+  "edge_recall_0p006in": 0.867,
+  "edge_recall_0p012in": 0.904,
+  "edge_precision_0p012in": 0.991,
+  "tone_mae_luminance": 27,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.19
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9856,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from garber.jpeg (reference only, never shipped). Dark bronze miniature: CIVIL AIR PATROL / PAUL E. GARBER around an engraved map-and-buildings scene in a second ring, six stars in the lettering band. Low contrast photograph: the emblem is modelled only where its lines can be measured. Hang angle -0.43 deg of the photograph removed: the body hangs upright."
 }

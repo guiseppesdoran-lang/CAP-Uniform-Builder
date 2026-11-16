@@ -1,0 +1,442 @@
+'use strict';
+// FIX-R-OTHER-r2 review round 4 findings (engine side). One block per finding.
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.join(__dirname, '..');
+const core = require('../js/engine/core.js');
+const P = require('../js/engine/profiles.js');
+require('../js/engine/profiles-field.js');
+require('../js/engine/profiles-dress.js');
+const HARNESS = require('../scripts/render-builds.cjs');
+
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
+const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
+const compose = b => P.composeUniform(b, store);
+const near = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a} vs ${b} (tol ${tol})`);
+const NAME = { first: 'Pat', last: 'Doe', show: true };
+const PILOT = 'CAPPilot1_FA9D33EA587D8';
+// A harness build (the same ids the page and the critique set use).
+const hb = (uniform, gender, membership, rank, o) => HARNESS.makeBuild(Object.assign({ uniform, gender, membership, rank, name: NAME, opt: { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' } }, o || {}));
+const RIB = [['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
+const byKey = (scene, key) => scene.layers.find(l => l.key === key);
+const badgeLayers = scene => scene.layers.filter(l => l.role === 'badge' && l.figure !== 2);
+
+// ---- 3. Women's badge pair over the nametag: the first badge is nearest the collar ----------------------------
+
+test('women\'s Class A and Class B: the first badge over the nametag is nearest the collar, the second to the wearer\'s right (4.1.9.4.4.2, 4.1.12.2.5.2)', async () => {
+  for(const uniform of ['blues_a', 'blues_b']){
+    const scene = await compose(hb(uniform, 'female', 'senior', 'Capt', { badgeIds: [PILOT, 'emergency_services_badge', 'communications_technician_badge'] }));
+    const es = byKey(scene, 'badge:emergency_services_badge'), comms = byKey(scene, 'badge:communications_technician_badge');
+    assert.ok(es && comms, `${uniform}: both specialty badges drawn`);
+    // The wearer's right is the picture's left: the second badge has the smaller x.
+    assert.ok(es.x > comms.x, `${uniform}: first badge (ES, x ${es.x}) is on the collar side of the second (Comms, x ${comms.x})`);
+    near(es.x - (comms.x + comms.w), 0.5, 0.005, `${uniform}: 1/2 in apart`);
+  }
+});
+
+test('women\'s pair: a CAP service badge is closest to the collar and National Staff to the wearer\'s right of a second badge, whatever the order the member listed (4.1.9.4.4.2, 4.1.12.2.5.2)', async () => {
+  for(const uniform of ['blues_a', 'blues_b']){
+    for(const order of [['emergency_services_badge', 'volunteer_university_instructor_badge'], ['volunteer_university_instructor_badge', 'emergency_services_badge']]){
+      const scene = await compose(hb(uniform, 'female', 'senior', 'Capt', { badgeIds: order }));
+      const vu = byKey(scene, 'badge:volunteer_university_instructor_badge'), es = byKey(scene, 'badge:emergency_services_badge');
+      assert.ok(vu && es, `${uniform} ${order}: both drawn`);
+      assert.ok(vu.x > es.x, `${uniform} ${order}: the service badge is the collar side`);
+    }
+    const scene = await compose(hb(uniform, 'female', 'senior', 'Capt', { badgeIds: ['emergency_services_badge', 'national_staff_badge'] }));
+    const ns = byKey(scene, 'badge:national_staff_badge'), es = byKey(scene, 'badge:emergency_services_badge');
+    assert.ok(ns && es && ns.x < es.x, `${uniform}: National Staff is to the wearer's right of the second badge`);
+  }
+});
+
+// ---- 9. Flight garments: the turned officer grade stays inside its zone's top ---------------------------------
+
+test('flight jackets: no senior officer\'s turned cloth grade rises above the grade zone, a piece taller than the zone hangs from its top, the seam-side edge stays on the 1/2 in line (8.2.3.2, 8.3.3.2, 8.3.5.1; the suits draw the grade along the shoulder line, tests/engine-flight-shoulder-grade.test.cjs)', async () => {
+  const cases = [['flight_suit', { jacket: 'green' }], ['corporate_flight_suit', { jacket: 'blue' }]];
+  let checked = 0, tall = 0;
+  for(const [uniform, o] of cases){
+    for(const rank of ['2d Lt', '1st Lt', 'Capt', 'Maj', 'Lt Col', 'Col', 'FO', 'TFO', 'SFO']){
+      for(const gender of ['male', 'female']){
+        const scene = await compose(hb(uniform, gender, 'senior', rank, { opt: Object.assign({ headgear: 'auto' }, o) }));
+        const sheets = scene.layers.filter(x => x.role === 'garment');
+        for(const l of scene.layers.filter(x => /^grade:(right|left)$/.test(x.key || '') && x.figure === 2)){
+          const side = l.key.split(':')[1];
+          const sheet = sheets.find(x => (x.figure || 1) === (l.figure || 1));
+          const spec = await store.load(sheet.id);
+          const z = spec.landmarks['grade_zone_' + side];
+          const box = core.layerBounds(l);
+          const zx = z.x + sheet.x, zy = z.y + sheet.y;
+          const id = `${uniform}${o.jacket ? '+' + o.jacket : ''} ${gender} ${rank} ${side}`;
+          assert.ok(box.y >= zy - 0.005, `${id}: the grade top ${box.y.toFixed(3)} is not above the zone top ${zy.toFixed(3)}`);
+          if(box.h > z.h + 0.005){ tall++; near(box.y, zy, 0.005, `${id}: a piece taller than the zone hangs from its top`); }
+          else assert.ok(box.y + box.h <= zy + z.h + 0.005, `${id}: a piece that fits stays in the zone`);
+          // The seam side (the sleeve side of the zone) is the half inch line.
+          if(side === 'right') near(box.x, zx, 0.005, `${id}: seam-side edge on the zone's seam line`);
+          else near(box.x + box.w, zx + z.w, 0.005, `${id}: seam-side edge on the zone's seam line`);
+          // And the whole piece is on the garment sheet.
+          assert.ok(box.x >= sheet.x && box.x + box.w <= sheet.x + sheet.w && box.y >= sheet.y && box.y + box.h <= sheet.y + sheet.h, `${id}: inside the sheet`);
+          checked++;
+        }
+      }
+    }
+  }
+  assert.ok(checked >= 70 && tall >= 8, `checked ${checked} grades, ${tall} taller than the zone (the colonel's eagles)`);
+});
+
+// ---- 6. Overlay: a measure inside a cap view is drawn beside that view ----------------------------------------
+
+const ML = require('../js/engine/measure-layout.js');
+async function laidOut(b){
+  const scene = await compose(b);
+  const B = scene.bounds;
+  const vb = [B.x - 0.4, B.y - 0.4, B.w + 0.8, B.h + 0.8];
+  const px = ML.previewPx(vb);
+  const area = { x: vb[0], y: vb[1], w: vb[2], h: vb[3] };
+  return { scene, drawings: ML.layout(scene, { px, area }) };
+}
+const gap1 = (p, r) => Math.hypot(Math.max(r.x - p.x, 0, p.x - (r.x + r.w)), Math.max(r.y - p.y, 0, p.y - (r.y + r.h)));
+const segIn = (a, b, r) => { // does segment a-b run through box r by more than a hair?
+  const d = { x: b.x - a.x, y: b.y - a.y };
+  let t0 = 0, t1 = 1;
+  for(const [p, q] of [[-d.x, a.x - r.x], [d.x, r.x + r.w - a.x], [-d.y, a.y - r.y], [d.y, r.y + r.h - a.y]]){
+    if(p === 0){ if(q < 0) return false; continue; }
+    const t = q / p;
+    if(p < 0){ if(t > t1) return false; if(t > t0) t0 = t; } else { if(t < t0) return false; if(t < t1) t1 = t; }
+  }
+  return (t1 - t0) * Math.hypot(d.x, d.y) > 0.01;
+};
+
+test('overlay: the 1/2 in measure of a cap view\'s grade is drawn beside that view, not beside another cap view (7.1.1.8, 6.2.11.1; D26)', async () => {
+  let checked = 0;
+  for(const uniform of ['ocp', 'abu', 'corporate_field']){
+    for(const gender of ['male', 'female']){
+      for(const [membership, rank] of [['senior', 'Capt'], ['senior', 'Lt Col'], ['senior', 'Col'], ['cadet', 'C/Capt'], ['cadet', 'C/Maj']]){
+      // One cap is drawn (LIVE-ENGINE 3): each cap the uniform offers is laid out in turn.
+      for(const headgear of uniform === 'corporate_field' ? ['auto', 'tactical', 'boonie'] : ['auto', 'tactical']){
+        const { scene, drawings } = await laidOut(hb(uniform, gender, membership, rank, { opt: { headgear, overlay: true } }));
+        const views = scene.layers.filter(l => (l.role === 'hat' || l.role === 'hat-view') && l.obstacle).map(l => ({ key: l.key, box: l.obstacle }));
+        for(const m of scene.layers.filter(l => l.type === 'measure')){
+          const mid = { x: (m.from.x + m.to.x) / 2, y: (m.from.y + m.to.y) / 2 };
+          const owner = views.find(v => mid.x >= v.box.x && mid.x <= v.box.x + v.box.w && mid.y >= v.box.y && mid.y <= v.box.y + v.box.h);
+          if(!owner) continue;
+          const d = drawings.find(x => x.key === m.key);
+          assert.ok(d, `${uniform} ${gender} ${rank}: ${m.key} drawn`);
+          const id = `${uniform} ${gender} ${rank} ${m.key} in ${owner.key}`;
+          // The dimension line is within an inch of its own view. A magnified callout (the 1/8 in of blue on the cap grade) draws its
+          // dimension inside its circle instead: the leader joins the circle to the corner on the view, and the circle lies over no view.
+          if(d.callout){
+            assert.ok(gap1(d.callout.leader[1], owner.box) <= 0.01, `${id}: the callout's leader ends on its view`);
+            for(const v of views) assert.ok(!(Math.min(d.callout.box.x + d.callout.box.w, v.box.x + v.box.w) - Math.max(d.callout.box.x, v.box.x) > 0 && Math.min(d.callout.box.y + d.callout.box.h, v.box.y + v.box.h) - Math.max(d.callout.box.y, v.box.y) > 0), `${id}: the callout lies over ${v.key}`);
+          }else for(const p of d.dim) assert.ok(gap1(p, owner.box) <= 1, `${id}: the dimension is ${gap1(p, owner.box).toFixed(2)} in from its view`);
+          // And nothing of it (dimension, extension lines, label) lies over another view.
+          for(const other of views.filter(v => v !== owner)){
+            assert.ok(!segIn(d.dim[0], d.dim[1], other.box), `${id}: the dimension runs over ${other.key}`);
+            for(const [p, q] of d.ext) assert.ok(!segIn(p, q, other.box), `${id}: an extension line runs over ${other.key}`);
+            const L = d.label;
+            const ov = Math.min(L.x + L.w, other.box.x + other.box.w) - Math.max(L.x, other.box.x) > 0 && Math.min(L.y + L.h, other.box.y + other.box.h) - Math.max(L.y, other.box.y) > 0;
+            assert.ok(!ov, `${id}: the label lies over ${other.key}`);
+          }
+          checked++;
+        }
+      }
+      }
+    }
+  }
+  assert.ok(checked >= 20, `${checked} measures inside a cap view checked`);
+});
+
+// ---- 4. Corporate Semi-Formal: the miniature rack and the chaplain badge stay centred over the crest ---------------
+
+test('semi-formal blazers: the miniature rack starts centred on the crest and moves toward the arm only for the lapel, the chaplain badge follows it 1/2 in above the top row, 7 and 12 miniatures, every grade (4.2.1.4, 4.2.1.5, 4.2.2.4, 4.2.2.5, ICL 25-02)', async () => {
+  const sevenIds = [['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
+  const twelveIds = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
+  let checked = 0;
+  for(const sex of ['male', 'female']){
+    const spec = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
+    const crest = core.anchor(spec, 'crest_center'), chap = core.anchor(spec, 'chaplain_badge_semiformal');
+    for(const [label, ids, cols] of [['7', sevenIds, 3], ['12', twelveIds, sex === 'male' ? 4 : 3]]){
+      for(const rank of ['SMSgt', 'Capt', 'Col', 'Maj Gen']){
+        const scene = await compose(hb('semi_formal', sex, 'senior', rank, { ribbonSel: ids, medalSel: true, badgeIds: ['christian_chaplin'], opt: { rackColumns: cols, rackArrangement: 'lapel', miniStyle: 'mounting' } }));
+        const parts = scene.layers.filter(l => l.role === 'mini-drape' || l.role === 'mini-medal');
+        assert.ok(parts.length >= Number(label), `${sex} ${label} ${rank}: minis drawn`);
+        // The lowest row (the drapes at the greatest y) starts centred on the crest and moves toward the arm only as far
+        // as the lapel needs (never toward the lapel); the badge follows it by at least as much (the lapel fix, D8).
+        const all = parts.filter(l => l.role === 'mini-drape');
+        const lowDrapeY = Math.max(...all.map(l => l.y));
+        const lowest = all.filter(l => Math.abs(l.y - lowDrapeY) < 0.01);
+        const cx = (Math.min(...lowest.map(l => l.x)) + Math.max(...lowest.map(l => l.x + l.w))) / 2;
+        assert.ok(cx >= crest.x - 0.5, `${sex} ${label} ${rank}: the lowest row is not moved toward the lapel (${cx.toFixed(2)} vs crest ${crest.x.toFixed(2)})`);
+        const ch = byKey(scene, 'badge:christian_chaplin');
+        assert.ok(ch, `${sex} ${label} ${rank}: chaplain badge drawn`);
+        assert.ok(ch.x + ch.w / 2 >= chap.x - 0.02, `${sex} ${label} ${rank}: chaplain badge on or past chaplain_badge_semiformal toward the arm`);
+        near(ch.y + ch.h, Math.min(...all.map(l => l.y)) - 0.5, 0.02, `${sex} ${label} ${rank}: 1/2 in above the top row`);
+        checked++;
+      }
+    }
+  }
+  assert.equal(checked, 16);
+});
+
+// ---- 5. Shirts: the collar lies over every badge that reaches it, on the companion shirt figure too ------------
+
+const C = require('../js/engine/compose.js');
+const RAW_AWARDS = require('../data/ribbon-awards.js');
+// Every CAP ribbon family the page offers, in one rack (46 ribbons, about 16 rows): the only rack tall enough to reach the shirts' collar leaves since the sheets are at true size and the Class B
+// collar was rebuilt as a closed collar (LIVE9-ART 1), whose leaves hang 4.0 to 4.6 in below the sheet's top and so well above a rack of twelve.
+const FULL_RIB = Object.keys(RAW_AWARDS.FAMILIES).map(id => [id]);
+const TWELVE_RIB = [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_3'], ['search_find_ribbon', 'aircrew'], ['air_search_and_rescue_ribbon'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon']];
+test('aviator and Class B shirts, the aviator beside the blazer included: a badge, ribbon or device that reaches a collar leaf lies under the collar, drawn again above it, and is never cut (4.2.5.1.3.1, 4.1.11.1.1.2.3.1; Ethan 2026-10-22, D8; 2026-11-10, B1)', async () => {
+  const builds = [];
+  for(const gender of ['male', 'female']){
+    for(const rank of ['Capt', 'Col']){
+      for(const rib of [RIB, TWELVE_RIB, FULL_RIB]){
+        builds.push(['aviator_blazer', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin'], rib]);
+        builds.push(['aviator', gender, rank, [PILOT, 'observer_badge', 'christian_chaplin'], rib]);
+        builds.push(['blues_b', gender, rank, [PILOT, 'emergency_services_badge', 'communications_technician_badge', 'christian_chaplin'], rib]);
+      }
+    }
+  }
+  let reached = 0;
+  const covered = new Set();   // `${uniform} ${gender} ${sleeve}` of every build in which something reaches a leaf and the collar foreground covers it
+  for(const [uniform, gender, rank, badgeIds, rib] of builds){
+    for(const sleeve of ['short', 'long']){
+      const scene = await compose(hb(uniform, gender, 'senior', rank, { badgeIds, ribbonSel: rib, opt: { headgear: 'none', sleeve, underlayer: 'shirt', femaleTop: 'shirt' } }));
+      for(const sheet of scene.layers.filter(l => l.role === 'garment')){
+        const spec = await store.load(sheet.id);
+        // a sheet with two collar states (the short Class B and aviator sheets): the leaves of the state shown (the open group `collar` is hidden when the closed one shows)
+        const closed = spec.landmarks.collar_states && (sheet.hideGroups || []).includes(spec.landmarks.collar_states.open);
+        const polys = (closed ? ['collar_closed_left', 'collar_closed_right'] : ['collar_left', 'collar_right']).map(n => spec.landmarks[n]).filter(l => l && l.points).map(l => l.points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
+        if(polys.length !== 2) continue;
+        for(const l of scene.layers.filter(x => ['badge', 'ribbon', 'device'].includes(x.role) && (x.figure || 1) === (sheet.figure || 1) && !(x.rotate) && x.type === 'asset')){
+          const touches = polys.filter(p => C.rectHitsPolygon(l, p));
+          if(!touches.length) continue;
+          reached++;
+          const id = `${uniform} ${gender} ${rank} ${sleeve} ${l.key}`;
+          // Every shirt sheet draws its collar leaves again above the badges, ribbons and devices (collarOverBadges: the short sheets' state shown, the long aviator sheets' `collar` group, the
+          // Class B `collar-foreground`), so the collar lies over whatever reaches it by order alone: nothing is cut and nothing is lifted over the leaf (Ethan 2026-11-10, B1: "it needs to go over the badges").
+          assert.ok(!l.clipOut, `${id}: covered by the collar's foreground, not cut`);
+          assert.ok(scene.layers.some(f => f.role === 'garment-foreground' && (f.figure || 1) === (sheet.figure || 1) && f.z > l.z), `${id}: below the collar foreground`);
+          covered.add(`${uniform} ${gender} ${sleeve}`);
+        }
+      }
+    }
+  }
+  // The shirt sheets are drawn at true size (the pocket is 5.25 in wide). Seven or twelve ribbons no longer reach a leaf anywhere; the rack of every CAP ribbon family does on the men's long aviator
+  // shirt (alone and beside the blazer), on the Class B shirt and blouse and on the short aviator shirts' open collar. The women's long leaves (3.90 in) end above the tallest rack of CAP ribbons:
+  // nothing is under them there, which the loop asserts for whatever does reach.
+  assert.ok(reached >= 1, `${reached} layers reach a collar leaf`);
+  for(const want of ['aviator male short', 'aviator female short', 'aviator male long', 'aviator_blazer male long', 'blues_b male short', 'blues_b male long']) assert.ok(covered.has(want), `${want}: something reaches its collar and the collar covers it (${[...covered].sort().join('; ')})`);
+});
+
+test('aviator beside the blazer: the chaplain badge on the shirt figure lies under the collar (the foreground is on this figure) and is never cut', async () => {
+  const scene = await compose(hb('aviator_blazer', 'male', 'senior', 'Capt', { badgeIds: [PILOT, 'observer_badge', 'christian_chaplin'], ribbonSel: RIB }));
+  const ch = scene.layers.find(l => l.key === 'badge:christian_chaplin' && l.figure === 2);
+  assert.ok(ch, 'the shirt\'s chaplain badge is drawn');
+  // The shirt beside the blazer is the long sleeve, whose pointed collar leaves hang near the centre line (the tie is worn, 4.2.5.1.4): the collar is drawn again above the badge on this figure whether or not
+  // its box reaches a leaf, and the badge is not cut.
+  const sheet = scene.layers.find(l => l.role === 'garment' && l.figure === 2);
+  const spec = await store.load(sheet.id);
+  const polys = ['collar_left', 'collar_right'].map(n => spec.landmarks[n].points.map(p => ({ x: p.x + sheet.x, y: p.y + sheet.y })));
+  const reaches = polys.some(p => C.rectHitsPolygon(ch, p));
+  assert.ok(!ch.clipOut, `never cut (it ${reaches ? 'reaches' : 'does not reach'} a leaf)`);
+  assert.ok(scene.layers.some(f => f.role === 'garment-foreground' && f.figure === 2 && f.z > ch.z), 'the collar foreground of the shirt figure is above the badge');
+  if(reaches) assert.ok(scene.notes.some(n => /collar lies over part of the Christian Chaplain Badge/.test(n)), 'a leaf it reaches is reported');
+});
+
+// ---- 1. Insignia rest on the gorge seam by their ink, not their box ----------------------------------------------
+
+const INK = require('./helpers/ink-rest.cjs');
+const COATS = { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' };
+
+test('the engine\'s INK_REST table is the lower hull of the drawn ink of the current SVGs (regenerate with scripts/measure-ink-rest.cjs after an art sync)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
+  const body = /\/\/ INK_REST begin\n([\s\S]*?)\/\/ INK_REST end/.exec(src);
+  assert.ok(body, 'the table is in the engine between its markers');
+  const table = new Function(body[1] + '; return INK_REST;')();
+  const fresh = INK.allHulls();
+  assert.deepEqual(Object.keys(table).sort(), Object.keys(fresh).sort(), 'the same pieces');
+  assert.deepEqual(table, fresh, 'the same hulls');
+});
+
+test('cadet NCO metal chevrons (every grade, both cuts, Class A and semi-formal): the lowest ink rests on the gorge seam, parallel with the ground, centred on its midpoint (4.1.5.2.1.4, 4.1.9.3.5)', async () => {
+  let checked = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']){
+    for(const sex of ['male', 'female']){
+      const coat = await store.load(COATS[sex]);
+      for(const rank of ['C/Amn', 'C/A1C', 'C/SrA', 'C/SSgt', 'C/TSgt', 'C/MSgt', 'C/SMSgt', 'C/CMSgt']){
+        const scene = await compose(hb(uniform, sex, 'cadet', rank, {}));
+        for(const side of ['right', 'left']){
+          const l = byKey(scene, 'grade:' + side);
+          assert.ok(l, `${uniform} ${sex} ${rank} ${side}: chevron drawn`);
+          assert.equal(l.rotate || 0, 0, 'parallel with the ground');
+          const gap = INK.placedInkGap(coat, side, l);
+          near(gap, 0, 0.003, `${uniform} ${sex} ${rank} ${side}: lowest ink on the seam`);
+          assert.ok(gap >= -0.001, `${uniform} ${sex} ${rank} ${side}: not over the seam (${gap.toFixed(4)})`);
+          near(l.x + l.w / 2, core.anchor(coat, `gorge_seam_${side}_mid`).x, 0.005, 'centred on the seam midpoint');
+          checked++;
+        }
+      }
+    }
+  }
+  assert.equal(checked, 64);
+});
+
+test('the evidence builds: the cadet C/SSgt chevron box bottom is lower than before, the ink touches the seam (men 4.715 in box bottom, 0.095 in gap at the centre; women 4.13, 0.077)', async () => {
+  // The numbers in the title are the evidence on the first sheets. The comparison is made on the sheet as it is: the old rule rested the BOX bottom on the seam's high point
+  // under the piece (seamRest), which a sheet lifted by art e212600b (the lapel insignia rest line 0.35 in above the drawn seam, both coats; Doran: "The US is too low")
+  // puts 0.35 in higher than the 4.13 in the women's evidence build had, so the old bottom is derived from the sheet's own seam anchors, not stated.
+  for(const sex of ['male', 'female']){
+    const coat = await store.load(COATS[sex]);
+    const scene = await compose(hb('blues_a', sex, 'cadet', 'C/SSgt', {}));
+    const l = byKey(scene, 'grade:right');
+    const p1 = core.anchor(coat, 'gorge_seam_right_p1'), p2 = core.anchor(coat, 'gorge_seam_right_p2'), mid = core.anchor(coat, 'gorge_seam_right_mid');
+    const yAt = x => p1.y + (p2.y - p1.y) / (p2.x - p1.x) * (x - p1.x);
+    const oldBottom = Math.min(yAt(mid.x - l.w / 2), yAt(mid.x + l.w / 2));
+    const bottom = l.y + l.h;
+    // The shield's bottom point (the box bottom, 0.935 in down the box) is the lowest ink: it lies 0 to 0.02 in above the box edge.
+    assert.ok(bottom - oldBottom > 0.01, `${sex}: the box now sits below the old rest (${bottom.toFixed(3)} vs ${oldBottom.toFixed(3)})`);
+    near(INK.placedInkGap(coat, 'right', l), 0, 0.003, `${sex}: ink on the seam`);
+  }
+});
+
+test('lapel US letters (officers, men and women) and cadet officer CAP letters: each lapel\'s lowest ink rests on its own seam (4.1.5.2.2.1, 4.1.9.4.1)', async () => {
+  let checked = 0;
+  for(const uniform of ['blues_a', 'semi_formal_usaf']){
+    for(const sex of ['male', 'female']){
+      const coat = await store.load(COATS[sex]);
+      for(const [membership, rank, sheet] of [['senior', 'Capt', 'lapel-us'], ['senior', 'Col', 'lapel-us'], ['senior', 'Maj Gen', 'lapel-us'], ['cadet', 'C/2d Lt', 'lapel-cap'], ['cadet', 'C/1st Lt', 'lapel-cap'], ['cadet', 'C/Capt', 'lapel-cap'], ['cadet', 'C/Maj', 'lapel-cap'], ['cadet', 'C/Lt Col', 'lapel-cap'], ['cadet', 'C/Col', 'lapel-cap']]){
+        if(uniform === 'semi_formal_usaf' && membership === 'senior') continue; // the semi-formal is a cadet uniform
+        const scene = await compose(hb(uniform, sex, membership, rank, {}));
+        const id = `${COATS[sex]}-${sheet}`;
+        for(const side of ['right', 'left']){
+          const l = scene.layers.find(x => x.id === id && (side === 'left' ? x.key.endsWith(':left') : !x.key.endsWith(':left')));
+          assert.ok(l, `${uniform} ${sex} ${rank} ${side}: letters drawn`);
+          assert.deepEqual(l.onlyGroups, [`${sheet}-${side}`], 'one side per layer');
+          const gap = INK.overlayInkGap(coat, side, l, sheet === 'lapel-cap' ? INK.DRAWN_SEAM_DROP : 0);
+          near(gap, 0, 0.003, `${uniform} ${sex} ${rank} ${side}: lowest ink of the letters on the seam`);
+          // The CAP cutouts rest on the seam as drawn, 0.35 in below the lifted line the US pins keep (Ethan's ruling over Doran's lift); not on the lifted line.
+          if(sheet === 'lapel-cap') assert.ok(INK.overlayInkGap(coat, side, l, 0) < -0.3, `${uniform} ${sex} ${rank} ${side}: the CAP is below the lifted line`);
+          assert.ok(gap >= -0.001, `${uniform} ${sex} ${rank} ${side}: not over the seam (${gap.toFixed(4)})`);
+          checked++;
+        }
+      }
+    }
+  }
+  assert.ok(checked >= 56, String(checked));
+});
+
+test('the CAP collar insignia of an adult on the NCO track rests by its ink too', async () => {
+  for(const sex of ['male', 'female']){
+    const coat = await store.load(COATS[sex]);
+    const scene = await compose(hb('blues_a', sex, 'senior', 'SM', { opt: { headgear: 'auto', noGradeTrack: 'nco' } }));
+    for(const side of ['right', 'left']){
+      const l = byKey(scene, 'collar:' + side);
+      assert.ok(l, `${sex} ${side}: CAP collar insignia drawn`);
+      near(INK.placedInkGap(coat, side, l), 0, 0.003, `${sex} ${side}: collar insignia ink on the seam`);
+    }
+  }
+});
+
+
+// ---- 7. ABU and CFU: the figure's arms carry the chevron and sleeve patch edge-on ---------------------------------
+
+const ARM = require('../scripts/measure-arm-edge.cjs');
+test('the engine\'s ARM_EDGE table is the outline of the arms of the current ABU and CFU sheets (regenerate with scripts/measure-arm-edge.cjs)', () => {
+  const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-field.js'), 'utf8');
+  const body = /\/\/ ARM_EDGE begin\n([\s\S]*?)\/\/ ARM_EDGE end/.exec(src);
+  assert.ok(body);
+  assert.deepEqual(new Function(body[1] + '; return ARM_EDGE;')(), ARM.compute());
+});
+
+const distToPolyline = (p, poly) => Math.min(...poly.slice(1).map((b, i) => {
+  const a = poly[i], dx = b[0] - a[0], dy = b[1] - a[1];
+  const t = Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.y - a[1]) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(p.x - (a[0] + t * dx), p.y - (a[1] + t * dy));
+}));
+
+test('ABU and CFU, senior NCO chevrons and shoulder patches: the figure\'s arms carry them edge-on, centred on the arm\'s outer edge, narrowed, turned with the edge and cut to the coat (5.1.1.1.1.2, 5.2.1.1.1.3, 5.1.1.1.2.2, 5.2.1.1.2.2-3; D22, D42)', async () => {
+  const table = ARM.compute();
+  // The left sleeve takes a wing, region or national patch (5.1.1.1.2.2, 5.2.1.1.2.2); ARCHER is a special activity patch (FIX-R-OTHER-r4 item 6, D8).
+  const patch = { id: 'nywg_patch', kind: 'general', slot: 'L_SHOULDER', label: 'New York Wing' };
+  for(const [uniform, sheet] of [['abu', 'garment-abu-coat'], ['corporate_field', 'garment-cfu-coat']]){
+    for(const gender of ['male', 'female']){
+      const scene = await compose(hb(uniform, gender, 'senior', 'SMSgt', { patchRefs: [patch], badgeIds: [PILOT] }));
+      const spec = await store.load(sheet);
+      for(const side of ['right', 'left']){
+        const flat = byKey(scene, `grade:sleeve-${side}`), edge = byKey(scene, `grade:sleeve-${side}:edge`);
+        const id = `${uniform} ${gender} ${side}`;
+        assert.ok(flat && edge, `${id}: the chevron on the flat sleeve and edge-on on the arm`);
+        assert.equal(edge.clipSil, sheet, `${id}: cut to the coat silhouette`);
+        near(edge.w, flat.w * 0.5, 0.001, `${id}: narrowed to half`);
+        near(edge.h, flat.h, 0.001, `${id}: not shortened`);
+        const centre = { x: edge.x + edge.w / 2, y: edge.y + edge.h / 2 };
+        assert.ok(distToPolyline(centre, table[sheet][side]) < 0.05, `${id}: centred on the arm's outer edge (${centre.x.toFixed(2)}, ${centre.y.toFixed(2)})`);
+        // Turned with the edge: clockwise on the wearer's right arm (the picture's left, the edge runs down and out to the left), the other way on the left.
+        assert.ok(side === 'right' ? edge.rotate > 3 && edge.rotate < 25 : edge.rotate < -3 && edge.rotate > -25, `${id}: turn ${edge.rotate.toFixed(1)} deg follows the edge`);
+        // The same distance down the sleeve: the chevron's centre lies about the arm's own length fraction below the seam.
+        const seam = core.anchor(spec, `seam_top_center_${side}`);
+        const frac = (flat.y + flat.h / 2 - seam.y) / 27.66;
+        const arm = table[sheet][side];
+        const armLen = arm.slice(1).reduce((s, p, i) => s + Math.hypot(p[0] - arm[i][0], p[1] - arm[i][1]), 0);
+        near((centre.y - arm[0][1]) / (arm[arm.length - 1][1] - arm[0][1]), frac, 0.04, `${id}: same fraction of the sleeve down the arm (arm ${armLen.toFixed(1)} in)`);
+      }
+      const p = scene.layers.filter(l => l.role === 'patch' && /L_SHOULDER/.test(l.key));
+      assert.deepEqual(p.map(l => l.key).sort(), ['patch:nywg_patch:L_SHOULDER:0', 'patch:nywg_patch:L_SHOULDER:edge'], `${uniform} ${gender}: the shoulder patch flat and edge-on`);
+      const pe = p.find(l => /:edge$/.test(l.key));
+      assert.equal(pe.clipSil, sheet);
+      assert.ok(pe.x + pe.w / 2 < 40 && pe.w < p.find(l => /:0$/.test(l.key)).w * 0.55, 'narrowed');
+    }
+  }
+});
+
+test('ABU and CFU cadet and officer builds without sleeve items add nothing to the arms; the OCP keeps its own edge view', async () => {
+  for(const uniform of ['abu', 'corporate_field']){
+    const scene = await compose(hb(uniform, 'male', 'senior', 'Capt', {}));
+    assert.ok(!scene.layers.some(l => /:edge$/.test(l.key || '')), `${uniform}: an officer wears no sleeve chevron or patch here`);
+  }
+  const ocp = await compose(hb('ocp', 'male', 'senior', 'Lt Col', { patchRefs: [{ id: 'archer_ocp_patch', kind: 'general', slot: 'L_SHOULDER', label: 'ARCHER' }] }));
+  assert.ok(ocp.layers.some(l => /:edge$/.test(l.key || '')), 'the OCP edge views stay');
+});
+
+// ---- 2. The critique set covers the service cap -------------------------------------------------------------------
+
+const { execFileSync } = require('node:child_process');
+const critique = JSON.parse(execFileSync(process.execPath, [path.join(root, 'scripts', 'critique-builds.cjs')], { encoding: 'utf8' }));
+
+test('critique set: blues_a service-cap builds for both cuts, company grade, field grade, general, senior NCO and cadet officer; the cap is seated on the collar, cut for the member, with its device on the slot (6.2.1.1-6.2.1.3, ICL 25-02 (g); R6)', async () => {
+  const want = [
+    ['Capt', 'senior', 'officer-nco', 'cap-device-officer-service'], ['Col', 'senior', 'field-grade', 'cap-device-officer-service'],
+    ['MajGen', 'senior', 'general', 'cap-device-officer-service'], ['SMSgt', 'senior', 'officer-nco', 'cap-device-nco-senior'],
+    ['CMaj', 'cadet', 'cadet-officer', 'cap-device-cadet-officer-service']
+  ];
+  for(const gender of ['male', 'female']){
+    const sex = gender === 'male' ? 'men' : 'women';
+    const coat = await store.load(gender === 'male' ? 'garment-blues-class-a-coat' : 'garment-blues-class-a-coat-female');
+    for(const [tag, membership, hatKind, deviceId] of want){
+      const name = `blues_a-${gender}-${membership}-${tag}-service-cap`;
+      const entry = critique.find(x => x.name === name);
+      assert.ok(entry, `${name} is in the critique set`);
+      assert.equal(entry.build.opt.headgear, 'service');
+      const scene = await compose(HARNESS.makeBuild(entry.build));
+      const hat = scene.layers.find(l => l.role === 'hat'), dev = scene.layers.find(l => l.role === 'hat-device');
+      assert.ok(hat && dev, `${name}: cap and device drawn`);
+      assert.equal(hat.id, `hat-service-cap-${sex}-${hatKind}`, `${name}: the cap for the member's grade class and cut`);
+      assert.equal(dev.id, deviceId, `${name}: the device`);
+      assert.ok(!scene.layers.some(l => /hat-flight-cap/.test(l.id || '')), `${name}: no flight cap`);
+      // Seating: the cap's garment_attach_center on the coat's hat_attach (else top_center + 1/4 in), the device's mount on the cap's slot.
+      const hs = await store.load(hat.id);
+      const attach = core.anchor(hs, 'garment_attach_center');
+      const top = core.anchor(coat, 'hat_attach') || { x: core.anchor(coat, 'top_center').x, y: core.anchor(coat, 'top_center').y + (hs.raw && hs.raw.attach_overlap ? 0 : 0.25) };
+      near(hat.x + attach.x, top.x, 0.01, `${name}: cap centred on the collar`);
+      near(hat.y + attach.y, top.y, 0.01, `${name}: cap seated on the collar`);
+      const slot = core.anchor(hs, 'device_slot_center');
+      const ds = await store.load(dev.id);
+      const mount = core.anchor(ds, 'mount_center') || { x: ds.w / 2, y: ds.h / 2 };
+      near(dev.x + mount.x, hat.x + slot.x, 0.01, `${name}: device on device_slot_center (x)`);
+      near(dev.y + mount.y, hat.y + slot.y, 0.01, `${name}: device on device_slot_center (y)`);
+    }
+  }
+});

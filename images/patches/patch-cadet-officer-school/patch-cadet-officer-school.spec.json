@@ -1,0 +1,58 @@
+{
+ "asset_id": "patch-cadet-officer-school",
+ "label": "Cadet Officer School",
+ "file": "patch-cadet-officer-school.png",
+ "width_in": 3,
+ "height_in": 3.0,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   300.0
+  ],
+  "center": [
+   150,
+   150
+  ],
+  "left_edge": [
+   0,
+   150
+  ],
+  "right_edge": [
+   300,
+   150
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/cos_patch/cos.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   1024,
+   1024
+  ],
+  "trimmed": false,
+  "px": [
+   1024,
+   1024
+  ],
+  "bytes": 1604973,
+  "source_bytes": 1604973,
+  "source_sha256": "16add7002a38ab67dd9af893440e07b9914df4ebb2f247dcaa478e555af395af",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Cadet Officer School, published by CAP national Marketing & Communication (MAC) team: the Brand Tools app linked from the CAP Brand Portal (brand.gocivilairpatrol.com); hosted at cap-brand-tools.netlify.app, not a cap.gov domain (page https://cap-brand-tools.netlify.app/logo-generator/; file address https://cap-brand-tools.netlify.app/logo-generator/ncsa/cos.png); fetched 2026-11-10 and kept in assets/refs/patches-official/cos_patch/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. It is a different design from the embroidered patch the redraw followed (navy field with a globe and stars, gold lettering, against a black field and white lettering)."
+}

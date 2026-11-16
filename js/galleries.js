@@ -132,47 +132,25 @@ function capubSplitAwardsAcrossRibbons(total){
   return ribbons;
 }
 
-// Families whose levels are a plain "Nth Award" progression. Each keeps ONE
-// piece of artwork - its own basic-award image - and every higher level is that
-// image plus composited devices. The base image is deliberately the McChord
-// basic-award file rather than the generic ribbons/<id>.png, because the two
-// are different renderings of the same ribbon and swapping them would restyle
-// every level.
-const CAPUB_COMPOSITED_AWARD_FAMILIES = {
-  'air_force_aerial_achievement_medal': 'usaf_aam01.png',
-  'cadet_special_activity_ribbon':      'ncsa01.png',
-  'cap_achievment_award':               'AA01.png',
-  'distinguished_service_award':        'distin01.png',
-  'encampment_ribbon':                  'encamp01.png',
-  'exceptional_service_award':          'except01.png',
-  'meritorious_service_award':          'meriti01.png',
-  'national_commander_unit_citation_award': 'unitci-nat01.png',
-  'unit_citation_award':                'unitci01.png'
-};
+// Families whose levels are a plain "Nth Award" progression: one ribbon, and every higher level is that ribbon plus devices.
+const CAPUB_COMPOSITED_AWARD_FAMILIES = new Set([
+  'air_force_aerial_achievement_medal','cadet_special_activity_ribbon','cap_achievment_award','distinguished_service_award','encampment_ribbon',
+  'exceptional_service_award','meritorious_service_award','national_commander_unit_citation_award','unit_citation_award'
+]);
 
 /*
-  Rebuild an award-count family's options so the artwork is one base image plus
-  computed devices. Labels and option values are taken from the existing option
-  list unchanged, so saved profiles and the dropdown text are unaffected.
+  Rebuild an award-count family's options as one ribbon plus computed devices. Labels and option values are taken from the existing
+  option list unchanged, so saved profiles and the dropdown text are unaffected.
 */
 function capubCompositeAwardOptions(id, options){
-  const base = CAPUB_COMPOSITED_AWARD_FAMILIES[id];
-  if(!base) return options;
+  if(!CAPUB_COMPOSITED_AWARD_FAMILIES.has(id)) return options;
   return options.map((opt, index) => {
     const total = index + 1;
     const [first, ...overflow] = capubSplitAwardsAcrossRibbons(total);
     return {
       ...opt,
-      image: base,
-      // Miniature medals still use McChord's per-level artwork: devices on a
-      // mini medal are rotated vertically (CAPR 39-1 11.4.2) and are not the
-      // horizontal run composited onto the ribbon. getMiniMedalImagePath()
-      // derives its filename from this rather than from the ribbon image, so
-      // mess dress keeps the exact medal it rendered before.
-      medalImage: opt.image,
       devices: capubDevicesForAwardTotal(first),
       duplicates: overflow.map(count => ({
-        image: base,
         awardLabel: `${opt.label} - additional ribbon`,
         devices: capubDevicesForAwardTotal(count)
       }))
@@ -181,21 +159,12 @@ function capubCompositeAwardOptions(id, options){
 }
 
 /*
-  Star-combo families. Their level labels spell the device set out directly -
-  "Basic Award", "Bronze Star", "S-S-B Stars" - so the devices are parsed from
-  the label rather than derived from an award count. Each keeps one image.
+  Star-combo families. Their level labels spell the device set out directly - "Basic Award", "Bronze Star", "S-S-B Stars" - so the
+  devices are parsed from the label rather than derived from an award count.
 
-  Order within a run comes from deviceMeta weight (gold > silver > bronze),
-  which reproduces the label order the artwork uses.
+  Order within a run comes from deviceMeta weight (gold > silver > bronze), which reproduces the label order.
 */
-const CAPUB_STAR_COMBO_FAMILIES = {
-  'cadet_advisory_council_ribbon':           'cac.png',
-  'cap_gill_robb_wilson_ribbon':             'wilson.png',
-  'cap_paul_e_garber_ribbon':                'garber.png',
-  'cap_leadership_ribbon':                   'leader.png',
-  'national_cadet_competition_ribbon':       'ncc.png',
-  'national_color_guard_competition_ribbon': 'ncgc01.png'
-};
+const CAPUB_STAR_COMBO_FAMILIES = new Set(['cadet_advisory_council_ribbon','cap_gill_robb_wilson_ribbon','cap_paul_e_garber_ribbon','cap_leadership_ribbon','national_cadet_competition_ribbon','national_color_guard_competition_ribbon']);
 
 function capubDevicesFromStarLabel(label){
   const text = String(label || '').trim();
@@ -218,7 +187,7 @@ function capubDevicesFromStarLabel(label){
     });
     return devices;
   }
-  return null; // unrecognised - caller keeps the baked artwork
+  return null; // unrecognised - the caller keeps the option as it is
 }
 
 /*
@@ -247,29 +216,27 @@ function capubDevicesFromStarValue(value){
 }
 
 function capubCompositeStarComboOptions(id, options){
-  const base = CAPUB_STAR_COMBO_FAMILIES[id];
-  if(!base) return options;
+  if(!CAPUB_STAR_COMBO_FAMILIES.has(id)) return options;
   return options.map(opt => {
     const devices = capubDevicesFromStarLabel(opt.label) ?? capubDevicesFromStarValue(opt.value);
     if(devices === null || devices === undefined) return opt;
-    return { ...opt, image: base, medalImage: opt.image, devices };
+    return { ...opt, devices };
   });
 }
 
 /*
   RIBBON_SPECIAL_IMAGE_OPTIONS carries a second, semantically-keyed option list
   for these same families (bronze_clasp_1, silver_clasp_2, ...). The member
-  report importer resolves to those values, so it has to composite too -
-  otherwise an imported award count would still ask for the deleted per-level
-  artwork. Labels and values are untouched; only image/devices change.
+  report importer resolves to those values, so it has to composite too.
+  Labels and values are untouched; only the devices change.
 */
-for(const familyId of Object.keys(CAPUB_COMPOSITED_AWARD_FAMILIES)){
+for(const familyId of CAPUB_COMPOSITED_AWARD_FAMILIES){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[familyId];
   if(Array.isArray(special) && special.length){
     RIBBON_SPECIAL_IMAGE_OPTIONS[familyId] = capubCompositeAwardOptions(familyId, special);
   }
 }
-for(const familyId of Object.keys(CAPUB_STAR_COMBO_FAMILIES)){
+for(const familyId of CAPUB_STAR_COMBO_FAMILIES){
   const special = RIBBON_SPECIAL_IMAGE_OPTIONS[familyId];
   if(Array.isArray(special) && special.length){
     RIBBON_SPECIAL_IMAGE_OPTIONS[familyId] = capubCompositeStarComboOptions(familyId, special);
@@ -293,19 +260,19 @@ function ordinalLabel(n){
 }
 
 const MCCHORD_21_LEVEL_RIBBONS = {
-  distinguished_service_award:{ prefix:'distin', unit:'award', multiplier:1 },
-  exceptional_service_award:{ prefix:'except', unit:'award', multiplier:1 },
-  meritorious_service_award:{ prefix:'meriti', unit:'award', multiplier:1 },
-  cap_achievment_award:{ prefix:'AA', unit:'award', multiplier:1 },
-  national_commander_unit_citation_award:{ prefix:'unitci-nat', unit:'award', multiplier:1 },
-  unit_citation_award:{ prefix:'unitci', unit:'award', multiplier:1 },
-  cap_counterdrug_ribbon:{ prefix:'coudru', unit:'sorties', multiplier:10 },
-  disaster_relief_ribbon:{ prefix:'disast', unit:'award', multiplier:1 },
-  homeland_security_ribbon:{ prefix:'homeland', unit:'sorties', multiplier:10 },
-  cap_cadet_orientation_pilot_ribbon:{ prefix:'cadpil', unit:'flights', multiplier:50 },
-  community_service_ribbon:{ prefix:'commun', unit:'hours', multiplier:60 },
-  cadet_special_activity_ribbon:{ prefix:'ncsa', unit:'activities', multiplier:1 },
-  encampment_ribbon:{ prefix:'encamp', unit:'encampments', multiplier:1 }
+  distinguished_service_award:{ unit:'award', multiplier:1 },
+  exceptional_service_award:{ unit:'award', multiplier:1 },
+  meritorious_service_award:{ unit:'award', multiplier:1 },
+  cap_achievment_award:{ unit:'award', multiplier:1 },
+  national_commander_unit_citation_award:{ unit:'award', multiplier:1 },
+  unit_citation_award:{ unit:'award', multiplier:1 },
+  cap_counterdrug_ribbon:{ unit:'sorties', multiplier:10 },
+  disaster_relief_ribbon:{ unit:'award', multiplier:1 },
+  homeland_security_ribbon:{ unit:'sorties', multiplier:10 },
+  cap_cadet_orientation_pilot_ribbon:{ unit:'flights', multiplier:50 },
+  community_service_ribbon:{ unit:'hours', multiplier:60 },
+  cadet_special_activity_ribbon:{ unit:'activities', multiplier:1 },
+  encampment_ribbon:{ unit:'encampments', multiplier:1 }
 };
 
 function mcchordContinuationLabel(config, level){
@@ -317,32 +284,9 @@ function mcchordContinuationLabel(config, level){
 function mcchordContinuationOptions(id){
   const config = MCCHORD_21_LEVEL_RIBBONS[id];
   if(!config) return [];
-  const p = config.prefix;
-  const baseDuplicate = { image:null, awardLabel:'Additional Ribbon' };
-  const imageDuplicate = suffix => ({ image:`${p}${suffix}.png`, awardLabel:'Additional Ribbon' });
-  const layout = {
-    10:{ image:`${p}09.png`, duplicates:[baseDuplicate] },
-    11:{ image:`${p}11.png` },
-    12:{ image:`${p}12.png` },
-    13:{ image:`${p}13.png` },
-    14:{ image:`${p}13.png`, duplicates:[baseDuplicate] },
-    15:{ image:`${p}13.png`, duplicates:[imageDuplicate('02')] },
-    16:{ image:`${p}16.png` },
-    17:{ image:`${p}17.png` },
-    18:{ image:`${p}17.png`, duplicates:[baseDuplicate] },
-    19:{ image:`${p}17.png`, duplicates:[imageDuplicate('02')] },
-    20:{ image:`${p}17.png`, duplicates:[imageDuplicate('03')] },
-    21:{ image:`${p}21.png` }
-  };
-  if(id === 'disaster_relief_ribbon'){
-    Object.assign(layout, {
-      5:{ image:'disast05.png' },
-      6:{ image:'disast06.png' },
-      7:{ image:'disast07.png' },
-      8:{ image:'disast08.png' },
-      9:{ image:'disast09.png' }
-    });
-  }
+  const second = [{ awardLabel:'Additional Ribbon' }];
+  const layout = { 10:{ duplicates:second }, 11:{}, 12:{}, 13:{}, 14:{ duplicates:second }, 15:{ duplicates:second }, 16:{}, 17:{}, 18:{ duplicates:second }, 19:{ duplicates:second }, 20:{ duplicates:second }, 21:{} };
+  if(id === 'disaster_relief_ribbon') Object.assign(layout, { 5:{}, 6:{}, 7:{}, 8:{}, 9:{} });
   return Object.entries(layout).map(([level, option]) => ({
     label:mcchordContinuationLabel(config, Number(level)),
     value:`mcchord_level_${level}`,
@@ -351,14 +295,12 @@ function mcchordContinuationOptions(id){
   }));
 }
 
+// Earned once: the AFOEA was awarded for one period only (ICL 18-02). The other single-looking ribbons
+// follow 39-3 6b, a bronze clasp for each later award.
 const CAPUB_SINGLE_AWARD_RIBBON_IDS = new Set([
   'Air_Force_Organizational_Excellence_Award',
-  'crisis_ribbon',
-  'iace_ribbon',
-  'afa_award',
-  'afsa_award',
-  'vfw_officer_award',
-  'vfw_nco_award'
+  // A JROTC/ROTC ribbon is shown once, with no devices (39-1 11.2.5).
+  ...ROTC_RIBBONS.ribbons.map(r => r.id)
 ]);
 
 const CAPUB_REPEATABLE_RIBBON_84_CONFIG = {
@@ -386,15 +328,14 @@ function capubExtendedRibbonLabel(config, count){
 }
 
 function capubFlattenRibbonChunks(chunks, label){
-  const first = chunks[0];
   const duplicates = [];
   chunks.forEach((chunk, chunkIndex) => {
     if(chunkIndex > 0){
-      duplicates.push({ image:chunk.image || null, awardLabel:`${label} - ribbon ${chunkIndex + 1}` });
+      duplicates.push({ awardLabel:`${label} - ribbon ${chunkIndex + 1}` });
     }
     (chunk.duplicates || []).forEach(duplicate => duplicates.push({ ...duplicate }));
   });
-  return { image:first.image || null, duplicates };
+  return { duplicates };
 }
 
 function capubExtendMcchordOptionsTo84(id, sourceOptions){
@@ -417,12 +358,65 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
     extended.push({
       label,
       value:`capub_total_${count}`,
-      image:rendered.image,
       devices:{},
       duplicates:rendered.duplicates
     });
   }
   return extended;
+}
+
+// Ribbons whose choices CAPR 39-3 sets directly. These come before the older option lists, which
+// carried a COS star on the Eaker for cadets (the regulation allows it on the Mitchell only) and named
+// the Cadet Advisory Council choices by star instead of by level.
+const CAPUB_COS_STAR_RIBBONS = new Set(['eaker_award','earhart_award','spaatz_award','cadet_certificate_of_proficiency','frank_borman_falcon_award']);
+const CAPUB_HONOR_CREDIT_RIBBONS = new Set(['curry_achievement','hap_arnold_achievement','mary_feik_achievement','rickenbacker_achievement','lindbergh_achievement','doolittle_achievement','armstrong_achievement']);
+const CAPUB_PLAIN_ACHIEVEMENT_RIBBONS = new Set(['wright_brothers_award']);
+// The ribbons whose option labels lost a device parenthetical in LIVE14 E72 (normalizeRibbonSelections relabels saved setups).
+const CAPUB_RELABELED_RIBBONS = new Set(['cadet_advisory_council_ribbon','goddard_achievement']);
+function capubRibbonOptionOverride(id){
+  const pick = { label:'- Select -', value:'', devices:{} };
+  if(globalThis.CAPUBRibbonAwards?.FAMILIES?.[id]?.once){
+    // An award given a single time (the Cadet of the Year awards): no clasps, no repeat counts, only the basic award.
+    return [pick, { label:'Basic Award', value:'award_1', devices:{} }];
+  }
+  if(id === 'cadet_recruiter_ribbon'){
+    // 21k(1): two recruits earn the ribbon, a bronze clasp for each additional two, a silver clasp for
+    // five bronze, another silver clasp for each additional ten.
+    return [pick, ...[2,4,6,8,10,12,22,32,42].map(n => ({ label:`${n} members recruited`, value:`recruits_${n}`, devices:{} }))];
+  }
+  if(id === 'cadet_advisory_council_ribbon'){
+    // 39-3 21j: the highest level served, shown by the star. The labels name the level only (LIVE14 E72, Ethan: "remove
+    // the star things, make them all like region level"); data/ribbon-awards.js reads the star from the level, and the
+    // line under the select says which star it is.
+    return [pick,
+      { label:'Group level', value:'cac_group', devices:{} },
+      { label:'Wing level', value:'cac_wing', devices:{} },
+      { label:'Region level', value:'cac_region', devices:{} },
+      { label:'National level', value:'cac_national', devices:{} }];
+  }
+  if(id === 'mitchell_award'){
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned + COS graduate', value:'earned_cos_star', devices:{} }];
+  }
+  // Honor credit: a silver star on achievements 1-8 (CAPR 39-3 is silent on it; the vendor ribbons and
+  // the eServices cadet report carry it). Goddard also takes the rocketry star (14h).
+  if(id === 'goddard_achievement'){
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned with Honor Credit', value:'honor_credit', devices:{} },
+      { label:'Earned + Model Rocketry Badge (Mitchell required)', value:'rocketry_star', devices:{} },
+      { label:'Earned + Honor Credit and Model Rocketry Badge', value:'honor_credit_and_rocketry', devices:{} }];
+  }
+  if(CAPUB_HONOR_CREDIT_RIBBONS.has(id)){
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned with Honor Credit', value:'honor_credit', devices:{} }];
+  }
+  if(CAPUB_COS_STAR_RIBBONS.has(id)){
+    if(State.membership === 'cadet') return ribbonSelectOnlyOptions();
+    return [pick, { label:'Earned', value:'earned', devices:{} },
+      { label:'Earned + COS star moved from the Mitchell', value:'earned_cos_star', devices:{} }];
+  }
+  if(CAPUB_PLAIN_ACHIEVEMENT_RIBBONS.has(id)) return ribbonSelectOnlyOptions();
+  return null;
 }
 
 function getRibbonAwardOptions(id){
@@ -439,12 +433,14 @@ function getRibbonAwardOptions(id){
     }
     return options;
   }
+  const override = capubRibbonOptionOverride(id);
+  if(override) return override;
   if(CAPUB_SINGLE_AWARD_RIBBON_IDS.has(id)) return ribbonSelectOnlyOptions();
   const mcchordOptions = globalThis.MCCHORD_RIBBON_VARIANTS?.[id];
   if(Array.isArray(mcchordOptions) && mcchordOptions.length){
     const expanded = capubExtendMcchordOptionsTo84(id, mcchordOptions);
     return [
-      { label:'- Select -', value:'', image:null, devices:{} },
+      { label:'- Select -', value:'', devices:{} },
       ...capubCompositeStarComboOptions(id, capubCompositeAwardOptions(id, expanded))
     ];
   }
@@ -454,12 +450,7 @@ function getRibbonAwardOptions(id){
     return continuation.length ? [...specialImageOptions, ...continuation] : specialImageOptions;
   }
 
-  if(id === 'Air_Force_Organizational_Excellence_Award'){
-    return ribbonAwardCountOptions(10);
-  }
-
-  if(id === 'air_medal') return ribbonAwardCountOptions(2);
-
+  // Awards that are earned once and have no devices.
   if(new Set([
     'national_commanders_citation','cadet_certificate_of_proficiency',
     'historic_cadet_blue_achievement','historic_cadet_white_achievement',
@@ -468,61 +459,6 @@ function getRibbonAwardOptions(id){
     'southern_liaison_patrol_ribbon','tow_target_tracking_ribbon','courier_ribbon',
     'forest_patrol_ribbon','missing_aircraft_ribbon'
   ]).has(id)) return ribbonSelectOnlyOptions();
-
-  if(id === 'silver_medal_of_valor'){
-    return [
-      { label:'- Select -', value:'', devices:{} },
-      { label:'1 Silver Medal of Valor', value:'silver_valor_1', devices:{} },
-      { label:'2 Silver Medals of Valor', value:'silver_valor_2', devices:{} },
-      { label:'3 Silver Medals of Valor', value:'silver_valor_3', devices:{} }
-    ];
-  }
-
-  if(CADET_ACHIEVEMENT_RIBBONS.has(id)){
-    if(id === 'mitchell_award'){
-      return [
-        { label:'- Select -', value:'', devices:{} },
-        { label:'Earned', value:'earned', devices:{} },
-        { label:'Earned + COS Star', value:'earned_cos_star', devices:{'1_Bronze_Star_Device':1} }
-      ];
-    }
-
-    if(id === 'goddard_achievement'){
-      return [
-        { label:'- Select -', value:'', devices:{} },
-        { label:'Earned', value:'earned', devices:{} },
-        { label:'Earned + Rocketry/Honor Device', value:'earned_device', devices:{'1_Bronze_Star_Device':1} },
-        { label:'Earned + Both Devices', value:'earned_both_devices', devices:{'1_Bronze_Star_Device':2} }
-      ];
-    }
-
-    return ribbonSelectOnlyOptions();
-  }
-
-  if(id === 'red_service_ribbon'){
-    return ribbonYearOptions([2,5,10,15,20,25,30,35,40,45,50,55,60,65]);
-  }
-
-  if(id === 'search_find_ribbon') return ribbonFindOptions(32);
-  if(id === 'air_search_and_rescue_ribbon') return ribbonSortieOptions(320,10);
-  if(id === 'community_service_ribbon') return ribbonHourOptions(1260,60);
-
-  if(id === 'cadet_advisory_council_ribbon'){
-    return [
-      { label:'- Select -', value:'', devices:{} },
-      { label:'Group CAC', value:'group', devices:{} },
-      { label:'Wing CAC / Bronze Star', value:'wing_bronze', devices:{'1_Bronze_Star_Device':1} },
-      { label:'Region CAC / Silver Star', value:'region_silver', devices:{'1_Silver_Star_Device':1} },
-      { label:'National CAC / Gold-Level Placeholder', value:'national_gold', devices:{'1_Silver_Star_Device':1,'1_Bronze_Star_Device':1} }
-    ];
-  }
-
-  if(id === 'disaster_relief_ribbon'){
-    return [
-      ...ribbonAwardCountOptions(10),
-      { label:'Basic Award + V Device Placeholder', value:'basic_v', devices:{'1_Bronze_Star_Device':1} }
-    ];
-  }
 
   if([
     'cap_gill_robb_wilson_ribbon',
@@ -571,6 +507,14 @@ function getRibbonSelectionOption(id, value){
   const years = String(value || '').match(/^years_(\d+)$/i);
   if(years){
     const found = labelMatch(new RegExp(`^${Number(years[1])} Years$`, 'i'));
+    if(found) return found;
+  }
+
+  // A setup saved when repeated Silver Medals of Valor were separate ribbons ("silver_valor_2", "silver_valor_3") takes the choice with
+  // that many awards: the later awards are the bronze clasp on the one ribbon now (CAPR 39-3, 6b).
+  const legacyValor = id === 'silver_medal_of_valor' && /^silver_valor_(\d+)$/.exec(String(value || ''));
+  if(legacyValor){
+    const found = awardOption(Number(legacyValor[1]));
     if(found) return found;
   }
 
@@ -629,7 +573,6 @@ function getRibbonSelectionOption(id, value){
 }
 
 const COMMAND_SERVICE_RIBBON_ID = 'cap_command_service_ribbon';
-const COMMAND_SERVICE_RIBBON_VALUES = new Set(['earned','group_bronze_star','wing_silver_star','region_gold_star','national_two_gold_stars']);
 
 function applyRibbonSelectionValue(id, value){
   const option = getRibbonSelectionOption(id, value || 'earned');
@@ -638,42 +581,27 @@ function applyRibbonSelectionValue(id, value){
   State.ribbonSelections[id].awardValue = option?.value || value || '';
   State.ribbonSelections[id].awardLabel = option?.label || '';
   State.ribbonSelections[id].devices = { ...(option?.devices || {}) };
-  State.ribbonSelections[id].imageOverride = option?.image || getRibbonImageOverride(id, option?.value || value || '');
 }
 
+// The command insignia pin and the Command Service Ribbon are separate: the pin is worn by current and graduated commanders in the grade
+// of lieutenant colonel and below (CAPR 39-1, 10.2.5), the ribbon is awarded after a year of continuous command with the star of the one
+// level it shows (CAPR 39-3, 21a). A commander in the first year wears the pin without the ribbon, so neither choice sets the other; the
+// member report adds the ribbon from the length of the tour. What is kept here is the grade rule and the one pin.
 function syncCommandBadgeAndRibbonSelections(){
   normalizeRibbonSelections();
   normalizeBadgeSelections();
-
-  State.badgeSelections['squadron_commander_badge'] = State.badgeSelections['squadron_commander_badge'] || { checked:false };
-  const badgeSel = State.badgeSelections['squadron_commander_badge'];
-  const commanderRankEligible = isCommandInsigniaGradeEligible(State.rank);
-
-  // Never allow the commander pin to render for Col and above.
-  // The Command Service Ribbon is handled separately and may still be awarded
-  // after one year of qualifying command service at the proper echelon.
-  if(!commanderRankEligible){
-    badgeSel.checked = false;
-    State.badges = (State.badges || []).filter(id => id !== 'squadron_commander_badge');
-    State.badgeSelections['squadron_commander_badge'] = badgeSel;
+  const commandIds = [...COMMAND_INSIGNIA_BADGE_IDS];
+  if(!isCommandInsigniaGradeEligible(State.rank)){
+    commandIds.forEach(id => { if(State.badgeSelections[id]) State.badgeSelections[id].checked = false; });
+    State.badges = (State.badges || []).filter(id => !isCommandInsigniaBadge(id));
+    return;
   }
-
-  const hasBadge = commanderRankEligible && (!!badgeSel.checked || (State.badges || []).includes('squadron_commander_badge'));
-
-  const ribbonSel = State.ribbonSelections[COMMAND_SERVICE_RIBBON_ID] || { checked:false, devices:{}, awardValue:'', awardLabel:'' };
-  const ribbonValue = ribbonSel.awardValue || '';
-  const ribbonImpliesCommand = !!ribbonSel.checked && COMMAND_SERVICE_RIBBON_VALUES.has(ribbonValue);
-
-  if(hasBadge && !ribbonImpliesCommand){
-    applyRibbonSelectionValue(COMMAND_SERVICE_RIBBON_ID, 'earned');
-  }
-
-  // Reverse-sync the ribbon to the badge only when the selected grade is allowed
-  // to wear command insignia. This prevents Cols from receiving a rendered badge
-  // simply because the Command Service Ribbon imported or was manually selected.
-  if(ribbonImpliesCommand && commanderRankEligible){
-    badgeSel.checked = true;
-    State.badgeSelections['squadron_commander_badge'] = badgeSel;
+  // Only one command pin is worn: the one already on the uniform stays, else the first chosen.
+  const chosen = commandIds.filter(id => State.badgeSelections[id]?.checked);
+  if(chosen.length > 1){
+    const keep = (State.badges || []).find(id => chosen.includes(id)) || chosen[0];
+    chosen.filter(id => id !== keep).forEach(id => { State.badgeSelections[id].checked = false; });
+    State.badges = (State.badges || []).filter(id => !isCommandInsigniaBadge(id) || id === keep);
   }
 }
 
@@ -714,13 +642,27 @@ function syncGoddardRocketryStar(){
   goddard.awardValue = desiredValue;
   goddard.awardLabel = option.label || '';
   goddard.devices = { ...(option.devices || {}) };
-  goddard.imageOverride = option.image || getRibbonImageOverride('goddard_achievement', desiredValue);
   State.ribbonSelections.goddard_achievement = goddard;
   return true;
 }
 
-function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
+// The first real choice of a ribbon's award select (its basic award, a count of one), as the select lists it.
+function capubFirstRibbonOptionValue(id){
+  return (getRibbonAwardOptions(id).find(opt => opt?.value) || {}).value || '';
+}
+
+function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=false}={}){
   normalizeRibbonSelections();
+  // A ribbon the cadet grade adds is its select's first real choice, looked up, whatever the caller passed (LIVE14 E73,
+  // Ethan: "when i selected c/lt col the achievement ribbons popped up as selected but not encampment"): the Encampment
+  // Ribbon's choices are the McChord counts (mcchord_19700 'Basic Award' ...), so the 'earned' js/setup.js passes matched
+  // none of them and the select stayed on '- Select -'.
+  if(byGrade) value = capubFirstRibbonOptionValue(id);
+  // A ribbon the member sets by hand is his own from now on: a later grade change leaves it (js/setup.js capubApplyGradeRibbons).
+  if(!byGrade && State.gradeRibbons && Array.isArray(State.gradeRibbons.ids) && State.gradeRibbons.ids.includes(id)){
+    const ids = State.gradeRibbons.ids.filter(x => x !== id);
+    State.gradeRibbons = ids.length ? {rank:State.gradeRibbons.rank, ids} : null;
+  }
   const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
   const option = getRibbonSelectionOption(id, value);
 
@@ -728,7 +670,6 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
   sel.awardLabel = option.label || '';
   sel.checked = !!value;
   sel.devices = value ? { ...(option.devices || {}) } : {};
-  sel.imageOverride = value ? (option.image || getRibbonImageOverride(id, value)) : null;
 
   if(isMilitaryRibbonId(id)){
     sel.awardCount=Math.max(1,Number(String(value || '').match(/military_award_(\d+)/)?.[1]) || 1);
@@ -751,7 +692,7 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
 
   State.ribbonSelections[id] = sel;
 
-  enforceSeniorSingleCadetAwardRibbon(id);
+  enforceRibbonExclusions(id);
 
   if(id === 'goddard_achievement' || id === 'mitchell_award'){
     syncGoddardRocketryStar();
@@ -759,36 +700,59 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false}={}){
   if(!deferRender) rebuildRibbonsFromGallery();
 }
 
-function selectAllCapUniformAwards({maximum=false}={}){
-  State.ribbonSelections={};
-  normalizeRibbonSelections();
+// Ribbons that share one place in the order of precedence: CAPR 39-3 Attachment 2 lists the National
+// Commander's Citation (earned before 1 July 1977, Note 2) "OR" the Gill Robb Wilson Award, so only one
+// of the two is worn.
+const CAPUB_SHARED_RIBBON_SLOTS = [['national_commanders_citation','cap_gill_robb_wilson_ribbon']];
 
-  for(const id of getEligibleRibbonIds()){
-    const usable=getRibbonAwardOptions(id).filter(option=>option.value);
-    const selected=maximum ? usable[usable.length-1] : usable[0];
-    if(selected) setRibbonSelectionFromDropdown(id,selected.value,{deferRender:true});
-  }
-
-  for(const id of getMilitaryRibbonIds()){
-    const award=getMilitaryRibbonAward(id);
-    const count=maximum ? maximumRenderableMilitaryAwardCount(award,'RIBBON') : 1;
-    setRibbonSelectionFromDropdown(id,`military_award_${count}`,{deferRender:true});
-  }
-
-  rebuildRibbonsFromGallery();
-  buildRibbonGallery();
+function clearRibbonSelection(id){
+  const sel = State.ribbonSelections?.[id];
+  if(!sel) return;
+  sel.checked = false;
+  sel.awardValue = '';
+  sel.awardLabel = '';
+  sel.devices = {};
 }
 
+function enforceSharedRibbonSlot(selectedId){
+  if(!State.ribbonSelections?.[selectedId]?.checked) return;
+  for(const group of CAPUB_SHARED_RIBBON_SLOTS){
+    if(!group.includes(selectedId)) continue;
+    group.filter(otherId => otherId !== selectedId).forEach(clearRibbonSelection);
+  }
+}
+
+// The choices that rule out others: a senior member's single cadet award, the shared slots.
+function enforceRibbonExclusions(selectedId){
+  enforceSeniorSingleCadetAwardRibbon(selectedId);
+  enforceSharedRibbonSlot(selectedId);
+  enforceRotcRibbonLimit(selectedId);
+}
+
+// Three JROTC/ROTC ribbons may be worn (39-1 11.2.5): choosing a fourth is refused and says why.
+function enforceRotcRibbonLimit(selectedId){
+  if(!isRotcRibbonId(selectedId) || !State.ribbonSelections?.[selectedId]?.checked) return;
+  const chosen = Object.keys(State.ribbonSelections).filter(id => isRotcRibbonId(id) && State.ribbonSelections[id].checked);
+  if(chosen.length <= ROTC_RIBBONS.limit) return;
+  clearRibbonSelection(selectedId);
+  if(typeof window.capubToastShow === 'function') window.capubToastShow(capubRotcLimitMessage());
+}
+
+// A senior member wears one cadet program award ribbon (CAPR 39-3 Attachment 2, 14j-14m speak of ribbons), but may choose some or all of
+// the medals he or she earned for the mess dress and the corporate semi-formal (CAPR 39-1 11.1.4), so the cadet milestone awards
+// (Wright Brothers, Mitchell, Earhart, Eaker, Spaatz) may be picked together: the rack shows the highest, the miniature medals every one that
+// has a medal. Any other cadet award still excludes the rest, and a milestone excludes the awards that are not milestones.
 function enforceSeniorSingleCadetAwardRibbon(selectedId){
   const selected = State.ribbonSelections?.[selectedId];
   if(State.membership !== 'senior' || !selected?.checked || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(selectedId)) return;
+  const keepsMilestones = CADET_MILESTONES.has(selectedId);
   for(const otherId of Object.keys(State.ribbonSelections)){
     if(otherId === selectedId || !SENIOR_HIGHEST_CADET_AWARD_RIBBONS.has(otherId)) continue;
+    if(keepsMilestones && CADET_MILESTONES.has(otherId)) continue;
     State.ribbonSelections[otherId].checked = false;
     State.ribbonSelections[otherId].awardValue = '';
     State.ribbonSelections[otherId].awardLabel = '';
     State.ribbonSelections[otherId].devices = {};
-    State.ribbonSelections[otherId].imageOverride = null;
   }
 }
 
@@ -808,18 +772,41 @@ function normalizeRibbonSelections(){
         State.ribbonSelections[id].awardValue = 'earned';
         State.ribbonSelections[id].awardLabel = 'Earned';
         State.ribbonSelections[id].devices = {};
-        State.ribbonSelections[id].imageOverride = null;
       }
       if(State.ribbonSelections[id].awardValue === undefined){
         const hasDevices = Object.values(State.ribbonSelections[id].devices || {}).some(v => Number(v) > 0);
         State.ribbonSelections[id].awardValue = State.ribbonSelections[id].checked ? (hasDevices ? 'custom_devices' : 'earned') : '';
       }
+      // A grade ribbon saved as 'earned' where its select has no such choice (the Encampment Ribbon, from before LIVE14 E73)
+      // takes the choice that value stands for, so the select shows it.
+      if(State.ribbonSelections[id].checked && State.ribbonSelections[id].awardValue === 'earned' && CADET_GRADE_RIBBON_IDS.includes(id)){
+        const opts = getRibbonAwardOptions(id);
+        if(!opts.some(o => o.value === 'earned')){
+          const opt = getRibbonSelectionOption(id, 'earned');
+          if(opt?.value){
+            State.ribbonSelections[id].awardValue = opt.value;
+            State.ribbonSelections[id].awardLabel = opt.label || '';
+          }
+        }
+      }
+      // A setup saved when repeated Silver Medals of Valor were separate ribbons keeps its number of awards: it takes the choice for
+      // that many (one bronze clasp for the second, two for the third, CAPR 39-3, 6b).
+      if(id === 'silver_medal_of_valor' && /^silver_valor_\d+$/.test(String(State.ribbonSelections[id].awardValue || ''))){
+        const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
+        if(opt?.value){
+          State.ribbonSelections[id].awardValue = opt.value;
+          State.ribbonSelections[id].awardLabel = opt.label || '';
+        }
+      }
       if(State.ribbonSelections[id].awardLabel === undefined){
         const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
         State.ribbonSelections[id].awardLabel = opt?.label || '';
       }
-      if(State.ribbonSelections[id].imageOverride === undefined){
-        State.ribbonSelections[id].imageOverride = getRibbonImageOverride(id, State.ribbonSelections[id].awardValue || '');
+      // A setup saved before LIVE14 E72 keeps the old label ("Wing level (bronze star)"); the option's own label replaces
+      // it. The devices come from the value, so they do not change.
+      if(CAPUB_RELABELED_RIBBONS.has(id) && State.ribbonSelections[id].checked){
+        const opt = getRibbonAwardOptions(id).find(o => o.value && o.value === State.ribbonSelections[id].awardValue);
+        if(opt) State.ribbonSelections[id].awardLabel = opt.label;
       }
       if(isMilitaryRibbonId(id)){
         const sel=State.ribbonSelections[id];
@@ -844,17 +831,20 @@ function rebuildRibbonsFromGallery(){
         .sort((a,b) => precedence(a) - precedence(b))[0] || null
     : null;
 
+  let rotcWorn = 0;
   for(const id of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
     const sel = State.ribbonSelections[id];
     if(!sel || !sel.checked) continue;
     if(!isAwardWornOnUniform(id)) continue;
+    // Three JROTC/ROTC ribbons at most (39-1 11.2.5); a saved setup that lists more wears the first three in order.
+    if(isRotcRibbonId(id) && ++rotcWorn > ROTC_RIBBONS.limit) continue;
     if(highestCadetAward && CADET_ACHIEVEMENT_RIBBONS.has(id) && id !== highestCadetAward) continue;
+    // A saved setup may list both ribbons of a shared slot; the one higher in the order is worn.
+    if(CAPUB_SHARED_RIBBON_SLOTS.some(group => group.includes(id) && group.some(other => other !== id && State.ribbonSelections[other]?.checked && precedence(other) < precedence(id)))) continue;
 
     // compute stacks needed due to caps or special rules.
-    // Silver Medal of Valor has no device for multiple awards in this builder;
-    // it renders as multiple separate ribbons, capped at three.
     let militaryInstances=null;
-    let stacks = getRibbonDuplicateCountForSelection(id, sel.awardValue || '');
+    let stacks = 1;
     if(isMilitaryRibbonId(id)){
       militaryInstances=window.CAPUBMilitary?.splitRibbonAwardInstances?.({
         award:getMilitaryRibbonAward(id),service:getMilitarySelectionService(id,sel),awardCount:sel.awardCount || 1,
@@ -874,12 +864,7 @@ function rebuildRibbonsFromGallery(){
         id,
         devices:{},
         awardValue: sel.awardValue || '',
-        awardLabel: sel.awardLabel || '',
-        // Prefer the resolved option's image: composited families deliberately
-        // return one base image for every level, while getRibbonImageOverride()
-        // reads the raw McChord table and would restore the per-level artwork.
-        imageOverride: (getRibbonSelectionOption(id, sel.awardValue || '') || {}).image
-                       || getRibbonImageOverride(id, sel.awardValue || '')
+        awardLabel: sel.awardLabel || ''
       };
 
       if(isMilitaryRibbonId(id)){
@@ -908,8 +893,7 @@ function rebuildRibbonsFromGallery(){
             // scheme; it is not always a bare ribbon.
             devices: { ...(dup.devices || {}) },
             awardValue: `${sel.awardValue || 'earned'}_duplicate_${dupIndex+1}`,
-            awardLabel: dup.awardLabel || 'Additional Ribbon',
-            imageOverride: dup.image || null
+            awardLabel: dup.awardLabel || 'Additional Ribbon'
           });
         });
       }
@@ -932,292 +916,17 @@ function getMilitaryUIState(){
   return ui;
 }
 
-function captureMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
-  if(!root) return;
-  const ui=getMilitaryUIState();
-  ui.expandedSections=[...root.querySelectorAll('details[data-military-section][open]')]
-    .map(details=>details.dataset.militarySection);
-  if(scrollHost) ui[scrollKey]=scrollHost.scrollTop || 0;
-  const active=document.activeElement;
-  if(active && root.contains(active)){
-    ui.focusedControl={
-      ribbonId:active.dataset?.ribbonId || active.closest?.('[data-ribbon-id]')?.dataset?.ribbonId || '',
-      deviceId:active.dataset?.deviceId || '',
-      className:[...active.classList].find(name=>/rbAwardSelect|militaryServiceSelect|militarySpecialDevice|militaryNumeralDevice|militaryRibbonCatalogSearch|militaryRibbonCatalogService|militaryRibbonCatalogType/.test(name)) || '',
-      selectionStart:Number.isFinite(active.selectionStart) ? active.selectionStart : null
-    };
-  }
-}
-
-function restoreMilitaryGalleryUI(root,scrollHost,scrollKey='sidebarScrollTop'){
-  if(!root) return;
-  const ui=getMilitaryUIState();
-  const expanded=new Set(ui.expandedSections || []);
-  root.querySelectorAll('details[data-military-section]').forEach(details=>{
-    details.open=expanded.has(details.dataset.militarySection);
-    details.addEventListener('toggle',()=>{
-      const current=new Set(getMilitaryUIState().expandedSections || []);
-      if(details.open) current.add(details.dataset.militarySection); else current.delete(details.dataset.militarySection);
-      getMilitaryUIState().expandedSections=[...current];
-      if(details.open && details.querySelector(':scope > [data-military-lazy="true"]') && root===by('ribbonGallery')) buildRibbonGallery();
-    });
-  });
-  if(scrollHost) scrollHost.scrollTop=Number(ui[scrollKey]) || 0;
-  const focus=ui.focusedControl;
-  if(focus?.className){
-    const selector=focus.ribbonId
-      ? `[data-ribbon-id="${CSS.escape(focus.ribbonId)}"].${CSS.escape(focus.className)}`
-      : `.${CSS.escape(focus.className)}`;
-    const target=root.querySelector(selector);
-    if(target){
-      target.focus({preventScroll:true});
-      if(focus.selectionStart !== null && target.setSelectionRange) target.setSelectionRange(focus.selectionStart,focus.selectionStart);
-    }
-  }
-}
-
-function buildRibbonGallery(options={}){
+// The ribbons are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles (js/pick-lists.js ribbonLists); the sidebar keeps no list of its own.
+function buildRibbonGallery(){
   const wrap = by('ribbonGallery');
-  if(!wrap) return;
-  if(options.capture!==false) captureMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
-  normalizeRibbonSelections();
-  wrap.innerHTML = '';
-  const eligible = getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id));
-  const visible = State.ribbonGalleryExpanded ? eligible : eligible.slice(0, 12);
-  // Grouped the way CAPR 39-3 Attachment 2 lists them, in precedence order within each group.
-  const sections = State.ribbonGalleryExpanded
-    ? groupRibbonIds(visible).map(group => ({ title:group.label, description:'', ids:group.ids }))
-    : [{ title:'', description:'', ids:visible }];
-
-  const buildTile=(id,military=false)=>{
-    const sel = State.ribbonSelections[id];
-    const tile = document.createElement('div');
-    tile.className = 'galleryTile ribbonSelectorTile';
-    if(military) tile.classList.add('militaryRibbonSelectorTile');
-    tile.dataset.ribbonId = id;
-    const title = getRibbonDisplayName(id);
-    const miniPath = getMiniMedalImagePath({id, awardValue:sel.awardValue || ''});
-    const miniFallbackPath = miniMedalImages[normalizeRibbonId(id)] || miniMedalImages[id] || '';
-    // A miniature medal only matters on the uniforms that wear them (CAPR 39-1 11.1.4).
-    const showMini = CAPUBUniformRules.allowsMiniMedals(State.uniform);
-    const miniPreview = !showMini ? '' : miniPath
-      ? `<div class="miniMedalPreview"><span>Mini medal</span><img loading="lazy" decoding="async" alt="${escapeHtml(title)} mini medal"></div>`
-      : `<div class="miniMedalPreview missing"><span>No mini medal asset</span></div>`;
-    const options = getRibbonAwardOptions(id).map(opt => {
-      const selected = (sel.awardValue || '') === opt.value ? 'selected' : '';
-      return `<option value="${escapeHtml(opt.value)}" ${selected}>${escapeHtml(opt.label)}</option>`;
-    }).join('');
-    const deviceSummary = Object.entries(sel.devices || {})
-      .filter(([,qty]) => Number(qty) > 0)
-      .map(([devId,qty]) => `${escapeHtml(deviceMeta[devId]?.label || devId)}: ${Number(qty)}`)
-      .join(' • ');
-    const award=military ? getMilitaryRibbonAward(id) : null;
-    const service=military ? getMilitarySelectionService(id,sel) : null;
-    const militaryRules=military ? window.CAPUBMilitary?.inferDeviceRules?.(award,service,{allowUnverified:!!getMilitaryUIState().advancedMode}) : null;
-    const serviceOptions=military ? (award?.authorizedServices || []).map(service=>
-      `<option value="${escapeHtml(service)}" ${getMilitarySelectionService(id,sel)===service?'selected':''}>${escapeHtml(MILITARY_BRANCH_LABELS[service] || service.replaceAll('_',' '))}</option>`
-    ).join('') : '';
-    const advanced=!!getMilitaryUIState().advancedMode;
-    const specialIds=advanced
-      ? [...new Set([...(militaryRules?.allowedSpecialDevices || []),'V_DEVICE','C_DEVICE','R_DEVICE','ARROWHEAD_DEVICE','M_DEVICE','BRONZE_HOURGLASS','SILVER_HOURGLASS','GOLD_HOURGLASS'])]
-      : (militaryRules?.allowedSpecialDevices || []);
-    const specialControls=military ? specialIds.map(deviceId=>
-      `<label><input type="checkbox" class="militarySpecialDevice" data-ribbon-id="${escapeHtml(id)}" data-device-id="${escapeHtml(deviceId)}" ${(sel.specialAuthorizations || []).includes(deviceId)?'checked':''}>${escapeHtml(deviceMeta[deviceId]?.label || deviceId.replaceAll('_',' '))}</label>`
-    ).join('') + (advanced ? `<label>Numeral <input type="number" class="militaryNumeralDevice" data-ribbon-id="${escapeHtml(id)}" min="0" max="99" value="${Number(sel.manualNumeral)||0}" style="width:62px" title="0 means no numeral"></label>` : '') : '';
-    tile.innerHTML = `
-      ${military ? `<span class="militaryRibbonArt"><img loading="lazy" decoding="async" alt="${escapeHtml(title)}"></span>` : `<img loading="lazy" decoding="async" alt="${escapeHtml(title)}">`}
-      <div style="flex:1;min-width:0;">
-        <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">${military ? `${(award?.authorizedServices || []).map(service=>escapeHtml(MILITARY_BRANCH_LABELS[service] || service)).join(' / ') || 'U.S. MILITARY'}` : (CAPUB_DEV ? escapeHtml(id) : '')}</div>
-        ${miniPreview}
-        ${military ? `<label class="ribbonAwardLabel">Awarding / wearer service<select class="militaryServiceSelect" data-ribbon-id="${escapeHtml(id)}">${serviceOptions}</select></label>` : ''}
-        <label class="ribbonAwardLabel">
-          Award count / earned level
-          <select class="rbAwardSelect" data-ribbon-id="${escapeHtml(id)}">
-            ${options}
-          </select>
-        </label>
-        ${military ? `<div class="militarySpecialDeviceRow" title="Select only devices authorized on your award orders.">${specialControls}</div>` : ''}
-        <div class="sub ribbonDeviceSummary">
-          ${sel.checked ? `Selected: <b>${escapeHtml(sel.awardLabel || 'Earned')}</b>${deviceSummary ? ` • ${deviceSummary}` : ''}${sel.deviceWarnings?.length ? ` • ${escapeHtml(sel.deviceWarnings.join(' '))}` : ''}` : ''}
-        </div>
-      </div>
-    `;
-    const ribbonPreview = tile.querySelector('.militaryRibbonArt img, :scope > img');
-    capubInstallImageFallback(ribbonPreview, [
-      getRibbonImagePath({id, awardValue: sel.awardValue || ''}),
-      `ribbons/${normalizeRibbonId(id)}.png`
-    ]);
-    if(military) applyMilitaryRibbonVariant(ribbonPreview,{id,devices:sel.devices || {}});
-    const miniMedalPreview = tile.querySelector('.miniMedalPreview img');
-    if(miniMedalPreview){
-      capubInstallImageFallback(miniMedalPreview, [miniPath, miniFallbackPath]);
-    }
-    wireRibbonTileControls(tile);
-    return tile;
-  };
-
-  for(const section of sections){
-    if(!section.ids.length) continue;
-    if(section.title){
-      const heading = document.createElement('div');
-      heading.className = 'ribbonGallerySectionTitle';
-      heading.innerHTML = `${section.title}<span class="sub">${section.description}</span>`;
-      wrap.appendChild(heading);
-    }
-    section.ids.forEach(id=>wrap.appendChild(buildTile(id,false)));
-  }
-
-  if(State.ribbonGalleryExpanded && !isMilitaryAwardWornOnUniform()){ // Corporate-style only: USAF-style uniforms allow them
-    const note=document.createElement('div');
-    note.className='hintText';
-    note.textContent='U.S. military awards are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6).';
-    wrap.appendChild(note);
-  }
-  if(State.ribbonGalleryExpanded && isMilitaryAwardWornOnUniform()){
-    const ui=getMilitaryUIState();
-    const galleryQuery=ui.gallerySearchValue.trim().toLowerCase();
-    const allMilitaryIds=getMilitaryRibbonIds();
-    const militaryIds=allMilitaryIds.filter(id=>{
-      const award=getMilitaryRibbonAward(id);
-      const services=(award?.authorizedServices || []).map(service=>String(service).toUpperCase());
-      const branch=getMilitaryAwardBranch(award);
-      const serviceMatch=ui.galleryServiceFilter==='ALL'
-        || branch===ui.galleryServiceFilter
-        || services.includes(ui.galleryServiceFilter);
-      const typeMatch=ui.galleryAwardTypeFilter==='ALL'
-        || militaryAwardFilterType(award)===ui.galleryAwardTypeFilter;
-      const haystack=[award?.name,award?.officialName,...(award?.aliases || []),award?.id,...services,militaryAwardFilterType(award)].join(' ').toLowerCase();
-      return serviceMatch && typeMatch && (!galleryQuery || haystack.includes(galleryQuery));
-    });
-    const militaryMenu=document.createElement('details');
-    militaryMenu.className='militaryRibbonMenu';
-    militaryMenu.dataset.militarySection='military-root';
-    const summary=document.createElement('summary');
-    summary.textContent=`U.S. Military Ribbons (${militaryIds.length} unique awards)`;
-    militaryMenu.appendChild(summary);
-    const intro=document.createElement('div');
-    intro.className='sub';
-    intro.innerHTML=`Shared awards appear once under Joint / Multi-Service. Normal mode only exposes award-specific device rules in the local verified dataset. <label style="display:inline-flex;gap:5px;align-items:center;margin-left:8px"><input class="militaryAdvancedMode" type="checkbox" ${getMilitaryUIState().advancedMode?'checked':''}> Manual / unverified configurations</label>`;
-    militaryMenu.appendChild(intro);
-    const filters=document.createElement('div');
-    filters.className='militaryRibbonCatalogFilters';
-    filters.innerHTML=`
-      <input class="militaryRibbonCatalogSearch" type="search" placeholder="Search military ribbons…" value="${militaryEscapeHtml(ui.gallerySearchValue)}" aria-label="Search military ribbons">
-      <select class="militaryRibbonCatalogService" aria-label="Filter military ribbons by service">
-        <option value="ALL">All services</option>
-        ${MILITARY_BRANCH_ORDER.map(branch=>`<option value="${branch}" ${ui.galleryServiceFilter===branch?'selected':''}>${MILITARY_BRANCH_LABELS[branch]}</option>`).join('')}
-      </select>
-      <select class="militaryRibbonCatalogType" aria-label="Filter military ribbons by type">
-        <option value="ALL">All award types</option>
-        ${[['DECORATIONS','Decorations'],['UNIT_AWARD','Unit awards'],['CAMPAIGN_EXPEDITIONARY','Campaign / Expeditionary'],['SERVICE','Service awards'],['TRAINING','Training'],['FOREIGN','Foreign'],['OTHER','Other']].map(([value,label])=>`<option value="${value}" ${ui.galleryAwardTypeFilter===value?'selected':''}>${label}</option>`).join('')}
-      </select>
-    `;
-    militaryMenu.appendChild(filters);
-    const resultSummary=document.createElement('div');
-    resultSummary.className='sub militaryRibbonCatalogSummary';
-    resultSummary.textContent=`${militaryIds.length} of ${allMilitaryIds.length} unique military awards shown. Branch contents load when opened.`;
-    militaryMenu.appendChild(resultSummary);
-    const filtersActive=!!galleryQuery || ui.galleryServiceFilter!=='ALL' || ui.galleryAwardTypeFilter!=='ALL';
-    const expandedSections=new Set(ui.expandedSections || []);
-    for(const branch of MILITARY_BRANCH_ORDER){
-      const ids=militaryIds.filter(id=>getMilitaryAwardBranch(getMilitaryRibbonAward(id))===branch);
-      const branchMenu=document.createElement('details');
-      branchMenu.className='militaryBranchMenu';
-      const branchKey=`military-branch-${branch}`;
-      branchMenu.dataset.militarySection=branchKey;
-      const shouldPopulate=expandedSections.has(branchKey) || (filtersActive && ids.length>0);
-      branchMenu.open=shouldPopulate;
-      const branchSummary=document.createElement('summary');
-      branchSummary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${ids.length})`;
-      branchMenu.appendChild(branchSummary);
-      const grid=document.createElement('div');
-      grid.className='militaryBranchGrid';
-      if(shouldPopulate && ids.length) ids.forEach(id=>grid.appendChild(buildTile(id,true)));
-      else if(!shouldPopulate){
-        grid.dataset.militaryLazy='true';
-        const lazy=document.createElement('div');
-        lazy.className='sub'; lazy.textContent='Open this branch to load its ribbon controls.';
-        grid.appendChild(lazy);
-      }
-      else{
-        const empty=document.createElement('div');
-        empty.className='sub';
-        empty.textContent=`No ${MILITARY_BRANCH_LABELS[branch]}-only ribbon is in the catalog; shared awards are listed once under Joint / Multi-Service.`;
-        grid.appendChild(empty);
-      }
-      branchMenu.appendChild(grid);
-      militaryMenu.appendChild(branchMenu);
-    }
-    wireRibbonTileControls(militaryMenu);
-    wrap.appendChild(militaryMenu);
-  }
-  restoreMilitaryGalleryUI(wrap,wrap,'sidebarScrollTop');
+  if(wrap) wrap.innerHTML = '';
 }
 
-function wireRibbonTileControls(root){
-  root.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
-    input.oninput=()=>{
-      const ui=getMilitaryUIState();
-      ui.gallerySearchValue=input.value;
-      ui.focusedControl={ribbonId:'',deviceId:'',className:'militaryRibbonCatalogSearch',selectionStart:input.selectionStart};
-      clearTimeout(wireRibbonTileControls.searchTimer);
-      wireRibbonTileControls.searchTimer=setTimeout(()=>buildRibbonGallery(),100);
-    };
-  });
-  root.querySelectorAll('.militaryRibbonCatalogService').forEach(select=>{
-    select.onchange=()=>{
-      getMilitaryUIState().galleryServiceFilter=select.value || 'ALL';
-      buildRibbonGallery();
-    };
-  });
-  root.querySelectorAll('.militaryRibbonCatalogType').forEach(select=>{
-    select.onchange=()=>{
-      getMilitaryUIState().galleryAwardTypeFilter=select.value || 'ALL';
-      buildRibbonGallery();
-    };
-  });
-  root.querySelectorAll('.militaryAdvancedMode').forEach(input=>{
-    input.onchange=()=>{
-      getMilitaryUIState().advancedMode=!!input.checked;
-      buildRibbonGallery();
-    };
-  });
-  root.querySelectorAll('.rbAwardSelect').forEach(select=>{
-    const id=select.dataset.ribbonId;
-    if(id) select.onchange=()=>setRibbonSelectionFromDropdown(id,select.value);
-  });
-  root.querySelectorAll('.militaryServiceSelect').forEach(select=>{
-    const id=select.dataset.ribbonId;
-    if(!id) return;
-    select.onchange=()=>{
-      const sel=State.ribbonSelections[id] || {checked:false,devices:{}};
-      sel.militaryService=select.value;
-      State.ribbonSelections[id]=sel;
-      if(sel.checked) setRibbonSelectionFromDropdown(id,sel.awardValue || `military_award_${sel.awardCount || 1}`);
-      buildRibbonGallery();
-    };
-  });
-  root.querySelectorAll('.militarySpecialDevice').forEach(input=>{
-    input.onchange=()=>{
-      const id=input.dataset.ribbonId;
-      const sel=State.ribbonSelections[id] || {checked:false,devices:{}};
-      const chosen=new Set(sel.specialAuthorizations || []);
-      if(input.checked) chosen.add(input.dataset.deviceId); else chosen.delete(input.dataset.deviceId);
-      sel.specialAuthorizations=[...chosen];
-      State.ribbonSelections[id]=sel;
-      if(sel.checked) setRibbonSelectionFromDropdown(id,sel.awardValue || `military_award_${sel.awardCount || 1}`);
-    };
-  });
-  root.querySelectorAll('.militaryNumeralDevice').forEach(input=>{
-    input.onchange=()=>{
-      const id=input.dataset.ribbonId;
-      const sel=State.ribbonSelections[id] || {checked:false,devices:{}};
-      sel.manualNumeral=Math.min(99,Math.max(0,Math.trunc(Number(input.value)||0)));
-      State.ribbonSelections[id]=sel;
-      if(sel.checked) setRibbonSelectionFromDropdown(id,sel.awardValue || `military_award_${sel.awardCount || 1}`);
-    };
-  });
+/* JROTC / ROTC ribbons (LIVE14 E74): picked in a menu of the chooser window (js/pick-lists.js rotcMenu) with the program and a search to narrow its tiles, in the data's
+   order, which is the order of wear among them (js/catalog.js ribbonList). Three at most (CAPR 39-1 11.2.5): a fourth is refused with the message
+   enforceRotcRibbonLimit gives. A selection is still State.ribbonSelections[id] = { checked, awardValue:'earned', ... }, so setups saved with the old tiles load as they were. */
+function capubRotcLimitMessage(){
+  return `At most ${ROTC_RIBBONS.limit} JROTC/ROTC ribbons may be worn (CAPR 39-1, ${ROTC_RIBBONS.ref}); remove one to add another.`;
 }
 
 
@@ -1278,83 +987,21 @@ function rebuildBadgesFromGallery(){
 
   syncGoddardRocketryStar();
 
-  // Badge changes can automatically add the Command Service Ribbon, so rebuild
-  // the ribbon state/rack too. That pass also re-renders badges afterward.
+  // The ribbon pass draws the rack and then the badges again.
   rebuildRibbonsFromGallery();
+  if(typeof capubSyncBadgesNotWornNote === 'function') capubSyncBadgesNotWornNote();
+  syncCommandInsigniaTiles();
 }
 
+// One command pin is worn, so a change to one command tile (or to the row on the Items step) shows on the other tile of an open chooser: the chooser's tiles are put as the state says.
+function syncCommandInsigniaTiles(){
+  if(typeof window !== 'undefined' && typeof window.capubSyncBadgeTiles === 'function') window.capubSyncBadgeTiles();
+}
+
+// The badges are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles; the sidebar keeps no list of its own.
 function buildBadgeGallery(){
   const wrap = by('badgeGallery');
-  if(!wrap) return;
-
-  normalizeBadgeSelections();
-  wrap.innerHTML = '';
-
-  const eligible = getEligibleBadgeIdsForMembership(State.membership);
-
-  const showCount = State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length);
-
-  for(let idx=0; idx<showCount; idx++){
-    const id = eligible[idx];
-    const sel = State.badgeSelections[id] || {checked:false};
-
-    const tile = document.createElement('div');
-    tile.className = 'galleryTile';
-
-    const title = getBadgeDisplayName(id);
-    tile.innerHTML = `
-      <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
-      <div style="flex:1;min-width:0;">
-        <div class="title">${escapeHtml(title)}</div>
-        <div class="miniRow">
-          <label><input type="checkbox" class="bdChk"> Add</label>
-        </div>
-        ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-        ${getBadgeTileMetaHtml(id)}
-      </div>
-    `;
-
-    const chk = tile.querySelector('.bdChk');
-    const gradChk = tile.querySelector('.cmdGradChk');
-    chk.checked = !!sel.checked;
-    if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
-
-    chk.onchange = ()=>{
-      if(id === 'squadron_commander_badge' && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-        chk.checked = false;
-        sel.checked = false;
-        State.badgeSelections[id] = sel;
-        rebuildBadgesFromGallery();
-        return;
-      }
-      sel.checked = chk.checked;
-      State.badgeSelections[id] = sel;
-      if(chk.checked) enforceExclusive(id);
-      rebuildBadgesFromGallery();
-    };
-    if(gradChk){
-      gradChk.onchange = ()=>{
-        if(gradChk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-          gradChk.checked = false;
-          sel.checked = false;
-          chk.checked = false;
-          State.badgeSelections[id] = sel;
-          rebuildBadgesFromGallery();
-          return;
-        }
-        if(!State.commandInsignia) State.commandInsignia = {};
-        State.commandInsignia.graduatedCommander = gradChk.checked;
-        if(gradChk.checked){
-          sel.checked = true;
-          chk.checked = true;
-          State.badgeSelections[id] = sel;
-        }
-        rebuildBadgesFromGallery();
-      };
-    }
-
-    wrap.appendChild(tile);
-  }
+  if(wrap) wrap.innerHTML = '';
 }
 
 /* ===========================
@@ -1382,63 +1029,8 @@ function rebuildPatchesFromGallery(){
   renderPatches();
 }
 
+// The patches are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles (js/pick-lists.js patchList); the sidebar keeps no list of its own.
 function buildPatchGallery(){
   const wrap = by('patchGallery');
-  if(!wrap) return;
-
-  normalizePatchSelections();
-  wrap.innerHTML='';
-
-  const showCount = State.patchGalleryExpanded ? patchList.length : Math.min(10, patchList.length);
-
-  for(let idx=0; idx<showCount; idx++){
-    const id = patchList[idx];
-    const meta = PATCH_META[id];
-
-    // Safety guard: patchList may contain legacy/menu placeholder IDs
-    // that do not have a PATCH_META entry yet. Without this, the builder
-    // crashes at meta.label before later hotfixes can replace the gallery.
-    if(!meta) continue;
-
-    const sel = State.patchSelections[id];
-
-    const tile = document.createElement('div');
-    tile.className='galleryTile';
-
-    const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    tile.innerHTML=`
-      <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">
-      <div style="flex:1;min-width:0;">
-        <div class="title">${escapeHtml(title)}</div>
-        <div class="sub">(${escapeHtml(id)})</div>
-        <div class="miniRow">
-          <label><input type="checkbox" class="ptChk"> Add</label>
-        </div>
-        <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px</div>
-      </div>
-    `;
-
-    const chk = tile.querySelector('.ptChk');
-    const authorized = isPatchAuthorizedForUniform(id);
-    chk.checked = !!sel.checked && authorized;
-    chk.disabled = !authorized;
-    if(!authorized){
-      tile.classList.add('disabledBlock');
-      const sub = tile.querySelector('.sub:last-child');
-      const reason = getPatchAuthorizationReason(id);
-      if(sub) sub.innerHTML += ` • <b>${escapeHtml(reason || 'Not authorized on current uniform')}</b>`;
-    }
-
-    chk.onchange=()=>{
-      if(!authorized){
-        chk.checked = false;
-        sel.checked = false;
-        return;
-      }
-      sel.checked = chk.checked;
-      rebuildPatchesFromGallery();
-    };
-
-    wrap.appendChild(tile);
-  }
+  if(wrap) wrap.innerHTML = '';
 }

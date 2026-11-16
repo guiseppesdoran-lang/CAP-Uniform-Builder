@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-mar-dc-033",
+ "label": "MAR-DC-033",
+ "charter": "MAR-DC-033",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-mar-dc-033.png",
+ "width_in": 3,
+ "height_in": 2.86,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   286.047
+  ],
+  "center": [
+   150,
+   143.023
+  ],
+  "left_edge": [
+   0,
+   143.023
+  ],
+  "right_edge": [
+   300,
+   143.023
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/squadron/dc033emblem.png",
+ "emblemoptions": {
+  "label": "MAR-DC-033",
+  "type": "Squadron",
+  "path": "squadron/dc033emblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   800,
+   800
+  ],
+  "trim_bbox_px": [
+   13,
+   31,
+   774,
+   738
+  ],
+  "trimmed": true,
+  "px": [
+   774,
+   738
+  ],
+  "bytes": 142265,
+  "chunks_kept": [
+   "cHRM",
+   "pHYs"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"MAR-DC-033\" (Squadron), path squadron/dc033emblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (800 x 800 px to 774 x 738 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

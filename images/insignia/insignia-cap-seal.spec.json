@@ -1,6 +1,6 @@
 {
  "asset_id": "insignia-cap-seal",
- "name": "CAP seal (2 1/2 in medallion, blue background) as worn over the middle button of the mess dress",
+ "name": "CAP seal (2 1/2 in medallion, gray field, official vector) as worn over the middle button of the mess dress",
  "size_in": {
   "w": 2.5,
   "h": 2.5
@@ -12,9 +12,9 @@
   250,
   250
  ],
- "size_source": "regulation",
+ "size_source": "measured",
  "size_citation": "CAPR 39-1 (3 Mar 2020) Figure A6-4, CAP Crest and Seal",
- "size_basis": "CAPR 39-1 Figure A6-4 (CAP Crest and Seal) dimensions the seal at 2 1/2 in diameter.",
+ "size_basis": "Drawing = the official seal vector, base-art/seal-ref/Seal_of_the_United_States_Civil_Air_Patrol.svg (Wikimedia Commons \"Seal of the United States Civil Air Patrol.svg\", https://commons.wikimedia.org/wiki/File:Seal_of_the_United_States_Civil_Air_Patrol.svg, public domain, work of the US Air Force / Civil Air Patrol), 579 x 579 units, 416 drawn elements, taken path for path by base-art/seal-from-official.js (CSS classes inlined to attributes; the unused feather pattern tile dropped; no tracing, no redrawing) and scaled so the outer edge of the gold ring (centre-line radius 288.5 + 1 stroke = 289.5 units) is the 2 1/2 in medallion of CAPR 39-1 Figure A6-4 (1.25 in radius, 0.0043178 in per unit). Gold #ffcd00, blue #001689, gray #9ea1a2, red #c10230, white #ffffff, eagle browns #7a3f28 #8a5d3b #943221 #ae582e and the official file's other classes, all as the file states them.",
  "anchors": {
   "top_center": [
    125,
@@ -41,15 +41,18 @@
  "landmarks_note": "rects are {x,y,w,h}; all in user units (0.01 in), origin top-left",
  "documented": [
   "CAP seal worn over the middle button on the right side of the mess dress jacket (CAPR 39-1 4.1.1.1.2.3, 4.1.2.1.2.3)",
-  "2 1/2 in diameter (Fig A6-4)"
+  "2 1/2 in diameter (Fig A6-4)",
+  "gold outer ring with blue edge lines, white lettering band (UNITED STATES AIR FORCE AUXILIARY above, CIVIL AIR PATROL below, blue serif capitals), gray field with 13 white stars, eagle with spread wings on a cloud, torse, blue shield with white triangle and red three-blade propeller: all as the official vector draws them"
  ],
  "assumed": [
-  "blue-background version drawn (the gray-background enamel variant is also authorized)",
-  "ring lettering and star count read from the figure"
+  "the 2 1/2 in diameter of Fig A6-4 is the outer edge of the vector's gold ring",
+  "the gray-field version (the official vector) is drawn; the blue-background variant of the first drawing is not"
  ],
  "fit": {
-  "method": "original",
-  "score": null
+  "method": "official vector, converted path for path",
+  "score": 1,
+  "score_basis": "per-colour-layer IoU of the asset against the official vector rendered at 800 px: 1.0 on every layer (nothing lost in conversion); against the 800 px screenshot of the official seal (seal-ref/seal-full-800.jpg, own sampled palette): gold ring 0.944, gray field 0.986, blue shield 0.998, blue lettering and ring lines 0.883, brown eagle 0.975, red propeller 0.934, white 0.991 (base-art/seal-score.js)",
+  "screenshot_colours": "the screenshot shows gold #f6ce47, blue #051585, gray #a0a1a3, red #b12536 (JPEG, tone-shifted); the vector states gold #ffcd00, blue #001689, gray #9ea1a2, red #c10230, which the asset keeps"
  },
  "grade": "accessory"
 }

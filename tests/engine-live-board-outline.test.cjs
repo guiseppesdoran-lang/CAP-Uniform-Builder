@@ -1,0 +1,108 @@
+'use strict';
+// B5 again (Ethan, 2026-11-10, looking at the first B5 pictures: "looking at some of the after photos theres some coat blue above the board"): the cadet officer's edge-on board lies on the very top of the
+// shoulder: its upper edge is the coat's own upper outline (the outer edge of the outline's stroke) along its straight part, the 3.81 in from the outer end to where the pointed neck end begins, and nowhere does
+// the board stand above the drawn coat. No coat shows above the board along that straight part and no background shows between the board and the coat. Beyond it the board narrows to its point from both edges,
+// to the board's centre line (the owner, 2026-11-12: "why does it curve up at the end?": the point was sheared up to lie on the upper edge, which turned the lower edge up 34 degrees), so the coat shows behind
+// the point's upper slant. The board worn lies over the ridge of the shoulder (boardWorn): the part of its top above the coat's outline is not drawn.
+// Measured here against the coat sheets' own outline (scripts/measure-garment-outline.cjs, the sheet's silhouette path): the outline is drawn with a stroke 0.06 in wide, half of it outside the path, so the
+// drawn coat is the outline grown by 0.03 in. At each station along the board (outer end to tip, 4.55 in) `above` is how far the drawn coat reaches over the board's visible top (coat blue above the board)
+// and `over` how far the board's visible top stands above the drawn coat (the board over the background), both along the board's up normal. The board's visible top is read from the drawn layer: the board
+// sheet's body mapped through the placed layer and cut to the layer's clip (the board's rounded outline, and where the shoulder line bends the coat's).
+//   Men's coats: the shoulder line is one straight run, so the board's straight upper edge is on it.
+//   Women's coats: the shoulder line bends 0.1 in above the straight seam 1.4 in from the shoulder point, so the board's edge stands higher and the board is cut to the drawn outline (option D of the owner's choice).
+// Both are zero to a hair's breadth, 0.01 in (the outline table is simplified to 0.01 in).
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.join(__dirname, '..');
+const core = require('../js/engine/core.js');
+const P = require('../js/engine/profiles.js');
+require('../js/engine/profiles-field.js');
+require('../js/engine/profiles-dress.js');
+const HARNESS = require('../scripts/render-builds.cjs');
+const OUTLINE = require('../scripts/measure-garment-outline.cjs');
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
+const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
+
+const COATS = { blues_a: { male: 'garment-blues-class-a-coat', female: 'garment-blues-class-a-coat-female' }, semi_formal_usaf: { male: 'garment-semiformal-class-a-coat-male', female: 'garment-semiformal-class-a-coat-female' } };
+const svgOf = id => fs.readFileSync(path.join(root, 'images', manifest.assets.find(a => a.id === id).path), 'utf8');
+// The sheets' outline stroke: the coat body's silhouette path carries `stroke-width`; half of it lies outside the path.
+const strokeOf = id => Number(new RegExp(`id="${id}__silhouette"[^>]*?stroke-width="([\\d.]+)"|stroke-width="([\\d.]+)"[^>]*?id="${id}__silhouette"`).exec(svgOf(id)).slice(1).find(Boolean));
+
+const inPoly = (poly, p) => { let c = false; for(let i = 0, j = poly.length - 1; i < poly.length; j = i++){ const a = poly[i], b = poly[j]; if((a[1] > p.y) !== (b[1] > p.y) && p.x < (b[0] - a[0]) * (p.y - a[1]) / (b[1] - a[1]) + a[0]) c = !c; } return c; };
+const distToRing = (poly, p) => {
+  let best = Infinity;
+  for(let i = 0; i < poly.length; i++){
+    const a = poly[i], b = poly[(i + 1) % poly.length], dx = b[0] - a[0], dy = b[1] - a[1];
+    const t = Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.y - a[1]) * dy) / (dx * dx + dy * dy)));
+    best = Math.min(best, Math.hypot(p.x - a[0] - t * dx, p.y - a[1] - t * dy));
+  }
+  return best;
+};
+const drawnCoat = (ring, p, half) => inPoly(ring, p) || distToRing(ring, p) <= half;
+
+// The board body (the board sheets' __board-body path, 0.1 in in from the sheet's edge), in the sheet's own inches: the right board's outer end is on the left, the left board's on the right; the pointed neck end is 0.74 in.
+const BODY = { right: [[0, 0], [3.81, 0], [4.55, 1.15], [3.81, 2.3], [0, 2.3]], left: [[4.55, 0], [0.74, 0], [0, 1.15], [0.74, 2.3], [4.55, 2.3]] };
+const TIP = { right: [4.55, 1.15], left: [0, 1.15] }, OUTER_TOP = { right: [0, 0], left: [4.55, 0] }, POINT_TOP = { right: [3.81, 0], left: [0.74, 0] };
+const OUTER_ROUND = 0.4;   // the outer end's corners are rounded over 0.35 in (the board's rounded outline, the engine's BOARD_ROUND): the straight upper edge is measured beyond it
+// A point of the board sheet (art inches) in the scene: through the layer's placement (turn about its origin).
+function toScene(l, [bx, by]){
+  return core.rotatePoint({ x: l.x + (bx + 0.1) * l.w / 4.75, y: l.y + (by + 0.1) * l.h / 2.5 }, l.origin, l.rotate || 0);
+}
+const polyOf = pts => pts.map(p => [p.x, p.y]);
+// { above, over } the largest of each: `over` along the whole length, `above` over the straight upper edge (beyond the outer end's rounded corners, to where the point begins); and the tip's distance from
+// the board's upper edge line.
+function measure(ring, layers, side, half){
+  const parts = layers.map(l => ({ l, body: polyOf(BODY[side].map(b => toScene(l, b))), clip: l.clip ? polyOf(l.clip) : null }));
+  const visible = p => parts.some(q => inPoly(q.body, p) && (!q.clip || inPoly(q.clip, p)));
+  const a0 = toScene(layers[0], OUTER_TOP[side]), tip = toScene(layers[layers.length - 1], TIP[side]);
+  // the straight upper edge's line, from the outer end to where the point begins; the tip's distance from that line, and the board's length along it
+  const a1 = toScene(layers[0], POINT_TOP[side]), el = Math.hypot(a1.x - a0.x, a1.y - a0.y), u = { x: (a1.x - a0.x) / el, y: (a1.y - a0.y) / el };
+  let n = { x: u.y, y: -u.x }; if(n.y > 0) n = { x: -n.x, y: -n.y };
+  const tipOff = Math.abs((tip.x - a0.x) * n.x + (tip.y - a0.y) * n.y), len = (tip.x - a0.x) * u.x + (tip.y - a0.y) * u.y, straightLen = el;
+  let above = 0, over = 0, worst = {};
+  for(let s = 0.02; s <= len - 0.03; s += 0.02){
+    const p = { x: a0.x + u.x * s, y: a0.y + u.y * s };
+    // scan down the normal from 0.6 in above the edge line to 0.7 below it: the first visible point of the board, the first drawn point of the coat
+    let tb = null, tc = null;
+    for(let t = 0.6; t >= -0.7 && (tb === null || tc === null); t -= 0.002){
+      const q = { x: p.x + n.x * t, y: p.y + n.y * t };
+      if(tb === null && visible(q)) tb = t;
+      if(tc === null && drawnCoat(ring, q, half)) tc = t;
+    }
+    if(tb === null || tc === null) continue;
+    if(tc - tb > above && s >= OUTER_ROUND && s <= straightLen){ above = tc - tb; worst.above = s; }
+    if(tb - tc > over){ over = tb - tc; worst.over = s; }
+  }
+  return { above, over, len, tipOff, worst };
+}
+
+const hb = (uniform, gender, rank) => HARNESS.makeBuild({ uniform, gender, membership: 'cadet', rank, opt: { headgear: 'none' } });
+const RINGS = OUTLINE.compute();
+
+test('the coat sheets\' outline is stroked 0.06 in, half of it outside the path the board is fitted to', () => {
+  for(const uniform of Object.keys(COATS)) for(const sex of ['male', 'female']) assert.equal(strokeOf(COATS[uniform][sex]), 0.06, `${COATS[uniform][sex]}: the silhouette's stroke width`);
+});
+
+for(const uniform of Object.keys(COATS)) for(const sex of ['male', 'female']) for(const rank of ['C/2d Lt', 'C/Col']){
+  test(`${uniform} ${sex} ${rank}: the board's upper edge is the coat's drawn outline along its straight part: no coat above it, no background between, and the point narrows to the middle of the strip`, async () => {
+    const scene = await P.composeUniform(hb(uniform, sex, rank), store);
+    const id = COATS[uniform][sex], ring = RINGS[id], half = strokeOf(id) / 2;
+    for(const side of ['right', 'left']){
+      const layers = scene.layers.filter(l => l.key === 'epaulet:' + side);
+      assert.equal(layers.length, 1, `${side}: the edge-on board is drawn, one piece`);
+      const m = measure(ring, layers, side, half);
+      assert.ok(Math.abs(m.len - 4.55) < 0.02, `${side}: the board is its 4.55 in long (${m.len.toFixed(3)})`);
+      // the point narrows from both edges: its tip is on the board's centre line, half the board's squeezed width below its upper edge line (the board worn: that line lies above the coat's outline, over the ridge,
+      // and what is above the outline is cut away; boardWorn)
+      const half2 = P.helpers.boardWorn(4.55, 2.3).k * 2.3 / 2;
+      assert.ok(Math.abs(m.tipOff - half2) <= 0.005, `${side}: the tip lies ${m.tipOff.toFixed(3)} in off the upper edge line (the middle of the squeezed board, ${half2.toFixed(3)} in)`);
+      assert.ok(m.over <= 0.01, `${side}: the board stands ${m.over.toFixed(3)} in above the drawn coat at ${m.worst.over} in (background between the board and the coat)`);
+      assert.ok(m.above <= 0.01, `${side}: ${m.above.toFixed(3)} in of coat shows above the board at ${m.worst.above} in`);
+      assert.ok(layers[0].clip && !layers[0].shear, `${side}: the board is cut to its outline, not sheared`);
+    }
+  });
+}

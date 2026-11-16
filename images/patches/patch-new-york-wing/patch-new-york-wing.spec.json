@@ -1,0 +1,58 @@
+{
+ "asset_id": "patch-new-york-wing",
+ "label": "New York Wing",
+ "file": "patch-new-york-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.182,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   318.172
+  ],
+  "center": [
+   162.5,
+   159.086
+  ],
+  "left_edge": [
+   0,
+   159.086
+  ],
+  "right_edge": [
+   325,
+   159.086
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/patches/patch-new-york-wing-brand-tools/patch-new-york-wing-brand-tools.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   714,
+   699
+  ],
+  "trimmed": false,
+  "px": [
+   714,
+   699
+  ],
+  "bytes": 144447,
+  "source_bytes": 144447,
+  "source_sha256": "8c8fd724bc737141320b47497c94ebaacebd1bedff24e930d46a0653797c69a8",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of New York Wing, published by the CAP Brand Tools app (nyemblem.webp, decoded losslessly), the file already ingested as assets/patches/patch-new-york-wing-brand-tools; fetched 2026-11-10 and kept in assets/refs/patches-official/patch-new-york-wing-brand-tools/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw. The same file as patch-new-york-wing-brand-tools (the NER-NY-001 unit patch), here also standing for the general New York Wing patch."
+}

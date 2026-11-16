@@ -2,38 +2,6 @@
 
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {placementCaption,PHRASES}=require('../badge-captions.js');
-
-test('regulation abbreviations become plain phrases (CAPR 39-1 Attachment 4)',()=>{
-  assert.equal(placementCaption('OLP'),'Above the left pocket');
-  assert.equal(placementCaption('OLPA'),'Above the left pocket, over aviation badges');
-  assert.equal(placementCaption('OLPU'),'Above the left pocket, under aviation badges');
-  assert.equal(placementCaption('ON'),'Above the nametag');
-  assert.equal(placementCaption('UN'),'Below the nametag');
-  assert.equal(placementCaption('LP,RP'),'On the left or right pocket');
-  assert.equal(placementCaption('OLPF'),'On the left pocket flap');
-});
-
-test('a note after the dash is kept as a parenthetical',()=>{
-  assert.equal(placementCaption('UN — graduated commander'),'Below the nametag (graduated commander)');
-  assert.equal(placementCaption('ON — current commander'),'Above the nametag (current commander)');
-  assert.equal(placementCaption('RP — Volunteer University exception'),'On the right pocket (Volunteer University exception)');
-  assert.equal(placementCaption('LP only — not rendered unless selected first'),'On the left pocket (not rendered unless selected first)');
-});
-
-test('an unrecognised label is returned as it came, never guessed',()=>{
-  assert.equal(placementCaption('XYZ'),'XYZ');
-  assert.equal(placementCaption('somewhere odd'),'somewhere odd');
-  assert.equal(placementCaption(''),'');
-  assert.equal(placementCaption(null),'');
-});
-
-test('no caption still uses the regulation abbreviations',()=>{
-  for(const text of Object.values(PHRASES)){
-    assert.doesNotMatch(text,/\b(OLP|ORP|URBP|OLPA|OLPU|OLPF|FON)\b/);
-  }
-});
-
 const fs=require('node:fs');
 const path=require('node:path');
 const catalog=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
@@ -45,10 +13,13 @@ test('badge ids that are image hashes have a real display name',()=>{
   for(const id of hashed) assert.match(names,new RegExp(`\\b${id}:\\s*'[^']+'`),`${id} has a name`);
 });
 
-test('all three badge tile builders use the plain-language line',()=>{
-  for(const file of ['galleries.js','wiring.js','patches.js']){
+test('a badge tile is the picture and the name: no builder prints a line under it, plain-language or abbreviation',()=>{
+  // The owner (2026-11-13): "remove these lower letters". Where a badge is worn is said in the window's status line when the tile is tapped (js/pick-lists.js badgeNote), not on the tile.
+  const lists=fs.readFileSync(path.join(__dirname,'..','js','pick-lists.js'),'utf8');
+  assert.doesNotMatch(lists,/getBadgeTileMetaHtml|caption: badge/,'pick-lists.js puts no caption on a badge tile');
+  assert.doesNotMatch(fs.readFileSync(path.join(__dirname,'..','js','badge-rules.js'),'utf8'),/getBadgeTileMetaHtml/,'the line under a badge\'s name is gone with the tiles that had it');
+  for(const file of ['galleries.js','wiring.js','patches.js','pick-lists.js']){
     const text=fs.readFileSync(path.join(__dirname,'..','js',file),'utf8');
-    assert.match(text,/getBadgeTileMetaHtml\(/,`${file} uses the shared line`);
     assert.doesNotMatch(text,/Regulation scale: \$\{Math\.round\(getBadgeRenderSize/,`${file} no longer prints the abbreviation line`);
   }
 });
@@ -56,7 +27,27 @@ test('all three badge tile builders use the plain-language line',()=>{
 test('the top pilot badge is named Command Pilot, and a member report may say Command or Master',()=>{
   const names=fs.readFileSync(path.join(__dirname,'..','js','catalog.js'),'utf8');
   assert.match(names,/CAPMasterPilot1_621A0E2ED15DA: 'Command Pilot Badge'/);
-  const importer=fs.readFileSync(path.join(__dirname,'..','js','member-report-import.js'),'utf8');
-  assert.match(importer,/\(\?:Master\|Command\)\\s\+Pilot\\s\+Badge/);
+  // The importer is run, not read: a Command or a Master Pilot Badge row is the top pilot badge.
+  const vm=require('node:vm');
+  const {loadPageScripts}=require('./helpers/page-scripts.cjs');
+  const {context}=loadPageScripts();
+  for(const row of ['Command Pilot Badge 01 Jan 2020','Master Pilot Badge 01 Jan 2020']){
+    const parsed=JSON.parse(vm.runInContext('(t)=>JSON.stringify(parseCapMemberReport(t).authorizedBadges)',context)('Printer Friendly View - Member Details General Information 654321 WILSON, DAVID MALE SENIOR Maj 01 Mar 2024 15 Jan 2016 Decorations '+row));
+    assert.ok(parsed.includes('CAPMasterPilot1_621A0E2ED15DA'),row);
+  }
   assert.match(names,/cdi_senior_badge: 'Character Development Instructor Senior Badge'/);
+});
+
+test('a badge has one name: the page\'s display names agree with the badge catalog\'s (Ground Team Badge, CAPR 39-1 10.4.5; Recruiting and Retention)', () => {
+  const vm=require('node:vm');
+  const { loadPageScripts }=require('./helpers/page-scripts.cjs');
+  const { context }=loadPageScripts();
+  const ev=src=>vm.runInContext(src,context);
+  const B=require('../data/badge-catalog.js').BADGES;
+  const differ=[];
+  for(const [id,b] of Object.entries(B)){
+    const shown=ev(`getBadgeDisplayName(${JSON.stringify(id)})`);
+    if(b.name && shown!==b.name) differ.push(`${id}: page "${shown}", catalog "${b.name}"`);
+  }
+  assert.deepEqual(differ,[]);
 });

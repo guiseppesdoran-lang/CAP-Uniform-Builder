@@ -2,29 +2,29 @@
  "asset_id": "garment-abu-coat",
  "name": "ABU coat (long sleeve) with blank name tape",
  "size_in": {
-  "w": 34.6,
+  "w": 39.3,
   "h": 38.86
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  3460,
+  3930,
   3886
  ],
  "size_source": "estimated",
- "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Body basis only: MIL-DTL-44048H (BDU-style combat coat) gives the same body (Medium Regular half chest 24-1/4 in, back length about 29-3/8 to 29-1/2 in, Large about 30 in), so the 29.96 in length is consistent with a Large Regular; that spec has no pocket sizes in its text, so pocket, tape and button sizes remain estimates. Sleeve cap/width widened by script (same as the OCP coat).",
+ "size_basis": "Outline traced from images/base/ABU_male.webp (581x719 px) at 0.0474 in/px, chosen so the coat is 29.96 in long. No real garment was measured. Body basis only: MIL-DTL-44048H (BDU-style combat coat) gives the same body (Medium Regular half chest 24-1/4 in, back length about 29-3/8 to 29-1/2 in, Large about 30 in), so the 29.96 in length is consistent with a Large Regular; that spec has no pocket sizes in its text, so pocket, tape and button sizes remain estimates. Sleeve cap/width widened by script (same as the OCP coat). Print cell: 1/16 in, from the weave pitch of the cloth (abu-weave-measure.json) and the autocorrelation of the Vanguard coat front (abu-scale-check.json), not from the tape or the pocket size (the pockets and tape are estimates).",
  "anchors": {
   "top_center": [
-   1730,
+   1965,
    0
   ],
   "bottom_center": [
-   1730,
+   1965,
    3886
   ],
   "center": [
-   1730,
+   1965,
    1943
   ],
   "left_edge": [
@@ -32,280 +32,608 @@
    1943
   ],
   "right_edge": [
-   3460,
+   3930,
    1943
   ],
+  "seam_top_center_right": [
+   350,
+   920
+  ],
+  "seam_top_center_left": [
+   3580,
+   920
+  ],
   "collar_apex": [
-   1375,
+   1965,
    1340
   ],
   "hem_center": [
-   1375,
+   1965,
    3846
   ],
   "name_tape_top_center": [
-   990,
+   1580,
    1605
   ],
   "cap_tape_top_center": [
-   1760,
+   2350,
    1605
   ],
   "chest_pocket_right_center": [
-   990,
+   1580,
    2020
   ],
   "chest_pocket_left_center": [
-   1760,
+   2350,
    2020
   ],
   "chest_flap_left_bottom_center": [
-   1760,
+   2350,
    1930
   ],
   "chest_flap_right_bottom_center": [
-   990,
+   1580,
    1930
   ]
  },
+ "collar_slots": {
+  "left": {
+   "cadet_officer": {
+    "center": [
+     2314,
+     1101.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 2226.5,
+     "y": 1026.5,
+     "w": 175,
+     "h": 150
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     2291.8,
+     1092.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 2236.8,
+     "y": 1005,
+     "w": 110,
+     "h": 175
+    }
+   },
+   "officer": {
+    "center": [
+     2269.9,
+     1137
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 2189.9,
+     "y": 1072,
+     "w": 160,
+     "h": 130
+    }
+   },
+   "front_edge": {
+    "p1": [
+     2221,
+     807
+    ],
+    "p2": [
+     1965,
+     1340
+    ],
+    "dir_down": [
+     -0.433,
+     0.9014
+    ],
+    "angle_deg": 25.7
+   },
+   "leading_edge": {
+    "points": [
+     [
+      2221,
+      807
+     ],
+     [
+      1965,
+      1340
+     ]
+    ],
+    "angle_deg": 25.7,
+    "note": "the leaf and lapel front edge, tip to apex (one straight line); grade is 1 in from it and parallel (CAPR 39-1 5.1.1.1.1.4, 5.2.1.1.1)"
+   },
+   "bottom_edge": {
+    "p1": [
+     2463,
+     1237
+    ],
+    "p2": [
+     2193,
+     1237
+    ],
+    "mid": [
+     2328,
+     1237
+    ],
+    "points": [
+     [
+      2463,
+      1237
+     ],
+     [
+      2193,
+      1237
+     ]
+    ],
+    "angle_deg": 0,
+    "note": "the leaf's lower seam (the stitched bottom edge under the grade), outer corner to notch; HORIZONTAL (parallel to the ground). Every grade piece's bottom edge is parallel to it; officer grade is centred 1 in above it (CAPR 39-1 5.1.1.1.1.1, 5.2.1.1.1.1)"
+   }
+  },
+  "right": {
+   "cadet_officer": {
+    "center": [
+     1616,
+     1101.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 1528.5,
+     "y": 1026.5,
+     "w": 175,
+     "h": 150
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     1638.2,
+     1092.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 1583.2,
+     "y": 1005,
+     "w": 110,
+     "h": 175
+    }
+   },
+   "officer": {
+    "center": [
+     1660.1,
+     1137
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 1580.1,
+     "y": 1072,
+     "w": 160,
+     "h": 130
+    }
+   },
+   "front_edge": {
+    "p1": [
+     1709,
+     807
+    ],
+    "p2": [
+     1965,
+     1340
+    ],
+    "dir_down": [
+     0.433,
+     0.9014
+    ],
+    "angle_deg": -25.7
+   },
+   "leading_edge": {
+    "points": [
+     [
+      1709,
+      807
+     ],
+     [
+      1965,
+      1340
+     ]
+    ],
+    "angle_deg": -25.7,
+    "note": "the leaf and lapel front edge, tip to apex (one straight line); grade is 1 in from it and parallel (CAPR 39-1 5.1.1.1.1.4, 5.2.1.1.1)"
+   },
+   "bottom_edge": {
+    "p1": [
+     1467,
+     1237
+    ],
+    "p2": [
+     1737,
+     1237
+    ],
+    "mid": [
+     1602,
+     1237
+    ],
+    "points": [
+     [
+      1467,
+      1237
+     ],
+     [
+      1737,
+      1237
+     ]
+    ],
+    "angle_deg": 0,
+    "note": "the leaf's lower seam (the stitched bottom edge under the grade), outer corner to notch; HORIZONTAL (parallel to the ground). Every grade piece's bottom edge is parallel to it; officer grade is centred 1 in above it (CAPR 39-1 5.1.1.1.1.1, 5.2.1.1.1.1)"
+   }
+  },
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade (nominal 1.75 x 1.5 in, the regular C/Lt Col cloth) / cadet NCO metal chevron (1.1 x 1.75 in), NEAR CORNER 1 in from the collar FRONT edge (front_edge) and centred on the leaf along it, NOT turned: every grade piece stands on the leaf's horizontal lower seam (bottom_edge, angle_deg), so angle_deg of every slot is the seam's angle (0); the engine places each cadet officer grade by the same rule with its own size (CAPR 39-1 5.1.1.1.1.3-4, 5.2.1.1.1.4). bottom_edge: the leaf's lower seam, two points (p1, p2, also points), horizontal, with its angle_deg; also the landmark collar_bottom_edge_<side>. officer: officer grade centred 1 in from the collar BOTTOM edge on the centre line of the leaf there (the midpoint of the chord that parallel line cuts across the leaf), long axis perpendicular to the edge; its 1.6 x 1.3 in box lies inside the leaf (collar_left / collar_right). size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
+ },
  "landmarks": {
   "name_tape": {
-   "x": 740,
+   "x": 1330,
    "y": 1605,
    "w": 500,
    "h": 90
   },
   "cap_tape": {
-   "x": 1510,
+   "x": 2100,
    "y": 1605,
    "w": 500,
    "h": 90
   },
   "chest_pocket_right": {
-   "x": 740,
+   "x": 1330,
    "y": 1700,
    "w": 500,
    "h": 640
   },
   "chest_flap_right": {
-   "x": 737,
+   "x": 1327,
    "y": 1700,
    "w": 506,
    "h": 230
   },
   "lower_pocket_right": {
-   "x": 760,
+   "x": 1350,
    "y": 2970,
    "w": 440,
    "h": 640
   },
   "lower_flap_right": {
-   "x": 757,
+   "x": 1347,
    "y": 2970,
    "w": 446,
    "h": 200
   },
   "cuff_right": [
    [
-    200.7,
+    790.7,
     3606
    ],
    [
-    631.2,
+    1221.2,
     3606
    ],
    [
-    631.2,
+    1221.2,
     3876
    ],
    [
-    200.7,
+    790.7,
     3876
    ]
   ],
   "chest_pocket_left": {
-   "x": 1510,
+   "x": 2100,
    "y": 1700,
    "w": 500,
    "h": 640
   },
   "chest_flap_left": {
-   "x": 1507,
+   "x": 2097,
    "y": 1700,
    "w": 506,
    "h": 230
   },
   "lower_pocket_left": {
-   "x": 1550,
+   "x": 2140,
    "y": 2970,
    "w": 440,
    "h": 640
   },
   "lower_flap_left": {
-   "x": 1547,
+   "x": 2137,
    "y": 2970,
    "w": 446,
    "h": 200
   },
   "cuff_left": [
    [
-    2118.8,
+    2708.8,
     3606
    ],
    [
-    2549.3,
+    3139.3,
     3606
    ],
    [
-    2549.3,
+    3139.3,
     3876
    ],
    [
-    2118.8,
+    2708.8,
     3876
    ]
   ],
   "placket": [
    [
-    1280,
+    1870,
     1340
    ],
    [
-    1470,
+    2060,
     1340
    ],
    [
-    1470,
+    2060,
     3846
    ],
    [
-    1280,
+    1870,
     3846
    ]
   ],
+  "collar_right": [
+   [
+    1709,
+    807
+   ],
+   [
+    1525,
+    992
+   ],
+   [
+    1467,
+    1237
+   ],
+   [
+    1737,
+    1237
+   ],
+   [
+    1854.5,
+    1110
+   ]
+  ],
   "collar_officer_zone_right": {
-   "x": 1065,
-   "y": 1115,
+   "x": 1580.1,
+   "y": 1072,
    "w": 160,
    "h": 130
   },
   "collar_cadet_officer_zone_right": {
-   "x": 1031,
-   "y": 1044,
-   "w": 250,
+   "x": 1528.5,
+   "y": 1026.5,
+   "w": 175,
    "h": 150
   },
   "collar_cadet_nco_zone_right": {
-   "x": 1101,
-   "y": 1031.5,
+   "x": 1583.2,
+   "y": 1005,
    "w": 110,
    "h": 175
   },
+  "collar_left": [
+   [
+    2221,
+    807
+   ],
+   [
+    2405,
+    992
+   ],
+   [
+    2463,
+    1237
+   ],
+   [
+    2193,
+    1237
+   ],
+   [
+    2075.5,
+    1110
+   ]
+  ],
   "collar_officer_zone_left": {
-   "x": 1525,
-   "y": 1115,
+   "x": 2189.9,
+   "y": 1072,
    "w": 160,
    "h": 130
   },
   "collar_cadet_officer_zone_left": {
-   "x": 1469,
-   "y": 1044,
-   "w": 250,
+   "x": 2226.5,
+   "y": 1026.5,
+   "w": 175,
    "h": 150
   },
   "collar_cadet_nco_zone_left": {
-   "x": 1539,
-   "y": 1031.5,
+   "x": 2236.8,
+   "y": 1005,
    "w": 110,
    "h": 175
   },
   "wing_patch_zone_left": {
-   "x": 2840,
-   "y": 1020,
+   "x": 3430,
+   "y": 970,
    "w": 300,
    "h": 295
   },
-  "chevron_zone_left": {
-   "x": 2790,
+  "chevron_zone_right": {
+   "x": 150,
    "y": 1316.5,
    "w": 400,
    "h": 677
   },
-  "button_1": {
-   "x": 1358,
-   "y": 1453,
-   "w": 34,
-   "h": 34
-  },
-  "button_2": {
-   "x": 1358,
-   "y": 1963,
-   "w": 34,
-   "h": 34
-  },
-  "button_3": {
-   "x": 1358,
-   "y": 2473,
-   "w": 34,
-   "h": 34
-  },
-  "button_4": {
-   "x": 1358,
-   "y": 2983,
-   "w": 34,
-   "h": 34
-  },
-  "button_5": {
-   "x": 1358,
-   "y": 3473,
-   "w": 34,
-   "h": 34
+  "chevron_zone_left": {
+   "x": 3380,
+   "y": 1316.5,
+   "w": 400,
+   "h": 677
   },
   "patrol_cap_front": {
-   "x": 40,
+   "x": 275,
    "y": 200,
    "w": 780,
    "h": 500
   },
   "patrol_cap_front_insignia_zone": {
-   "x": 350,
+   "x": 585,
    "y": 380,
    "w": 160,
    "h": 160
   },
   "patrol_cap_back": {
-   "x": 920,
+   "x": 1155,
    "y": 310,
    "w": 780,
    "h": 390
   },
   "baseball_cap_front": {
-   "x": 1800,
+   "x": 2035,
    "y": 40,
    "w": 760,
    "h": 660
   },
   "baseball_cap_front_insignia_zone": {
-   "x": 2100,
+   "x": 2335,
    "y": 300,
    "w": 160,
    "h": 160
   },
   "baseball_cap_back": {
-   "x": 2660,
+   "x": 2895,
    "y": 230,
    "w": 760,
    "h": 470
   },
   "baseball_cap_back_name_tape": {
-   "x": 2790,
+   "x": 3025,
    "y": 490,
    "w": 500,
    "h": 90
-  }
+  },
+  "collar_lapel_right": [
+   [
+    1854.53,
+    1110
+   ],
+   [
+    1737,
+    1237
+   ],
+   [
+    1660,
+    1310
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_leading_edge_right": [
+   [
+    1709,
+    807
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_bottom_edge_right": [
+   [
+    1467,
+    1237
+   ],
+   [
+    1737,
+    1237
+   ]
+  ],
+  "collar_lapel_left": [
+   [
+    2075.47,
+    1110
+   ],
+   [
+    2193,
+    1237
+   ],
+   [
+    2270,
+    1310
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_leading_edge_left": [
+   [
+    2221,
+    807
+   ],
+   [
+    1965,
+    1340
+   ]
+  ],
+  "collar_bottom_edge_left": [
+   [
+    2463,
+    1237
+   ],
+   [
+    2193,
+    1237
+   ]
+  ]
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
  "dimensions": {
+  "print_cell_in": 0.0625,
+  "print_tile_in": [
+   19,
+   14.25
+  ],
   "coat_length_in": 29.96,
   "max_width_in": 24.6,
   "chest_pocket_in": [
@@ -324,19 +652,25 @@
    5,
    0.9
   ],
-  "buttons": 5
+  "print_vector": {
+   "polygons": 378,
+   "vertices": 8290,
+   "pattern_bytes": 39503,
+   "drawn": "straight-edged regions in four flat tones, no raster, no filter"
+  }
  },
  "documented": [
-  "button front, hip length (CAPR 39-1 5.1.1.1)",
+  "Desert Tan short or long-sleeved t-shirt worn under the ABU coat, its crew neck shown in the open V (5.1.1.2)",
+  "button front, hip length (CAPR 39-1 5.1.1.1); all closures are concealed, so no buttons are drawn",
   "name tape above wearer's right upper pocket, CAP tape above left, cut to pocket width, light silver on dark blue (5.1.1.1.2.1)",
   "badges 1/2 in above the CAP tape (5.1.1.1.2.4)"
  ],
  "assumed": [
   "px-to-inch scale",
   "pocket sizes/positions (measured off the ABU raster, then scaled)",
-  "button count and spacing",
   "lower pocket size",
-  "tiger-stripe print is procedural; palette sampled from the raster",
+  "tiger-stripe print: our own vector regions (abu-print.js, 2026-11-10), the print's four flat tones as straight-edged polygons: 378 polygons, 8290 vertices, 39503 bytes (the cell outlines it replaces: 1303 loops, 13694 vertices, 39236 bytes), no raster and no filter, one 19 x 14.25 in tile that repeats without a seam (the outlines are traced on a lattice padded by the tile's own wrap). The regions are drawn from the measured design: the tone grid abu-tile.json (abu-trace.js: 304 x 228 cells of 1/16 in read off a 6000 px photograph of original-issue ABU twill, Wikimedia Commons, Qirille, CC BY-SA 4.0, assets/refs/abu, a reference only, never embedded or shipped; cell 14.89 px = 1/16 in, 238.2 px per in, abu-ref-measure.json; the cloth's weave, abu-weave-measure.json, and the Vanguard autocorrelation, abu-scale-check.json, agree), each tone layer blurred 0.65 cell, traced at the level that keeps its area, simplified to 0.5 cell with specks under 5 cells dropped (abu-vector-check.js: tone shares dark / ground / base / tan 0.112 / 0.507 / 0.173 / 0.209 in the grid, 0.112 / 0.505 / 0.176 / 0.207 drawn; 87 percent of cells keep their tone, the rest are edge cells; dark slashes 16.3 per 100 sq in, median 1.31 in long, 0.25 in thick in the grid, 13.7, 1.38, 0.30 drawn); colours matched to the Vanguard shirt photograph (#31332f #51564f #6f746d #9c9888); band length, thickness and stripe angle of the photograph agree with the grid within one cell (abu-trace-report.json); the cell is 1/16 in from the weave pitch of the cloth and the autocorrelation of the Vanguard coat front, NOT from the CAP tape or the pocket size; band-row density along the chest matches the Vanguard shirt (abu-density-check.json)",
+  "T-shirt colours in the neck (Desert Tan, estimated; the regulation names the colour, not a value)",
   "all headgear sizes and shapes (patrol cap ~7.8 in wide, baseball cap ~7.6 in wide; head circumference taken as ~22.5 in)"
  ],
  "fit": {

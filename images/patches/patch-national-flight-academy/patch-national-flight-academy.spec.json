@@ -1,0 +1,63 @@
+{
+ "asset_id": "patch-national-flight-academy",
+ "file": "patch-national-flight-academy.png",
+ "width_in": 3.5,
+ "height_in": 3.5,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   350
+  ],
+  "center": [
+   175,
+   175
+  ],
+  "left_edge": [
+   0,
+   175
+  ],
+  "right_edge": [
+   350,
+   175
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
+ "reference": "refs-png/national-flight-academy.png",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   600,
+   600
+  ],
+  "px": [
+   1200,
+   1200
+  ],
+  "bytes": 75031,
+  "colours": 6,
+  "palette": [
+   "#292e66",
+   "#262124",
+   "#eeeef1",
+   "#bf2b27",
+   "#795b45",
+   "#654c3e"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph national-flight-academy.png (600 x 600 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
+}

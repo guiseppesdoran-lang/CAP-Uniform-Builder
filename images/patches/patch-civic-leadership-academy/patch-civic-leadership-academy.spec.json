@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-civic-leadership-academy",
+ "width_in": 2.75,
+ "height_in": 3.641,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 2.75 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   137.5,
+   0
+  ],
+  "bottom_center": [
+   137.5,
+   364.075
+  ],
+  "center": [
+   137.5,
+   182.037
+  ],
+  "left_edge": [
+   0,
+   182.037
+  ],
+  "right_edge": [
+   275,
+   182.037
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + cla",
+ "reference": "UniformBuilder-svg/images/patches/cla_patch.webp",
+ "source_bbox_user_units": [
+  35.167,
+  25.667,
+  164.833,
+  197.333
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated."
+}

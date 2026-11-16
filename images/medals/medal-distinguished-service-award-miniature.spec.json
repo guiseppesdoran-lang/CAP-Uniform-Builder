@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-distinguished-service-award-miniature",
  "name": "Distinguished Service Award (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6691,
  "size_in": {
   "w": 0.625,
-  "h": 0.6875
+  "h": 0.6691
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  68.75
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_distin01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 55 source px = 0.625 x 0.688 in at that scale. Absolute size is an estimate.",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 182 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6497 x 0.6951 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6497 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 172.3 px = 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,79 +17,308 @@
   ],
   "bottom_center": [
    31.25,
-   68.75
+   66.91
   ],
   "center": [
    31.25,
-   34.38
+   33.45
   ],
   "left_edge": [
    0,
-   34.38
+   33.45
   ],
   "right_edge": [
    62.5,
-   34.38
+   33.45
   ],
   "ribbon_attach": [
    31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the top centre of the suspension ring (or of the bail where the box cuts the ring away), on the body axis: the body is upright, the photograph's hang angle (0 deg) is removed; compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "distin01",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-distinguished-service-award",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Distinguished Service Award"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-distinguished-service-award-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-distinguished-service-award",
   "spec": "../ribbons/ribbon-distinguished-service-award.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": {
-  "raster": "images/mini_medals/mcchord/m_distin01.webp",
-  "body_top_row": 121,
-  "px_to_in": 0.0125,
-  "bbox_px": [
-   0,
-   0,
-   50,
-   55
-  ]
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/b-distinguished-service-award.js (parameters in inches) over lib.js, common.js, font.js, emit.js, lib-b.js; gates: lib-b.js; npm-free, node make-b.js b-distinguished-service-award --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-distinguished-service-miniature-medal (civil air patrol distinguished service miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-distinguished-service-miniature-medal",
+  "title": "civil air patrol distinguished service miniature medal",
+  "px": [
+   600,
+   600
+  ],
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/distinguished-service.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "fidelity": "silhouette_and_tone",
- "fit": {
-  "metric": "silhouette IoU vs source alpha at source resolution",
-  "score": 0.9867,
-  "threshold": 0.9,
-  "colour_mae_0_255": 43.1,
-  "outline": "polygon",
-  "inner_ring_radius_px": null,
-  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+ "measured": {
+  "photo": "distinguished-service.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 172.3,
+   "body_centre_px": [
+    302.3,
+    514.8
+   ],
+   "ppi_in_frame": 275.7,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
+  },
+  "hang_angle_removed_deg": 0,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "shared_die": {
+   "source": "design/lib-b-hex-die.js (geometry of the Exceptional Service photograph, the clearest of the three struck from the same die)",
+   "fit_per_group": {
+    "wingL": {
+     "s": 1.0562,
+     "r": 0.84,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      -0.001,
+      0.0055
+     ]
+    },
+    "wingR": {
+     "s": 0.9587,
+     "r": -5.34,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      0.0081,
+      -0.0148
+     ]
+    },
+    "banL": {
+     "s": 1.0504,
+     "r": -1.03,
+     "t": [
+      0.0091,
+      0.009
+     ]
+    },
+    "banR": {
+     "s": 1.0575,
+     "r": -5.95,
+     "t": [
+      0.0084,
+      0.0037
+     ]
+    },
+    "tail": {
+     "s": 1.0075,
+     "r": -0.38,
+     "t": [
+      0.0058,
+      -0.0074
+     ]
+    },
+    "lawL": {
+     "s": 1.0645,
+     "r": -0.09,
+     "t": [
+      0,
+      -0.0003
+     ]
+    },
+    "lawR": {
+     "s": 0.985,
+     "r": 1.72,
+     "t": [
+      0.015,
+      -0.0083
+     ]
+    }
+   },
+   "fit_note": "s scale, a aspect, r turn in degrees clockwise, t shift of the group pivot in inches (hex frame); rows = feather rows inserted between the four nested rows of a wing, ext = feather rows continued along their end tangent",
+   "line_width_factors": {
+    "tail": 0.8
+   },
+   "lettering": {
+    "band": "DISTINGUISHED (13 letters, fitted to the measured text strip u -0.258 to 0.264, cap 0.050, stroke 0.011)",
+    "banners": {
+     "left": "SEMPER",
+     "right": "VIGILANS"
+    },
+    "status": "words from the award name and the shared die; lettering is present in the photograph, individual letters are not resolved"
+   }
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.093,
+    "top": -0.5015000000000001,
+    "neck": 0.042,
+    "shoulder": -0.38149999999999995,
+    "bottom": -0.36450000000000005
+   },
+   "ring": {
+    "c": [
+     -0.0087,
+     -0.5835
+    ],
+    "r": 0.163,
+    "w": 0.019
+   }
+  },
+  "tones_luminance": {
+   "ground": 34,
+   "shadow": 27.4,
+   "base": 162,
+   "hi": 216,
+   "rim": 144.5,
+   "rim_hi": 202.8,
+   "metal": 135,
+   "metal_hi": 210,
+   "bail": 145
+  }
  },
  "palette": {
-  "mid": "#7f6c40",
-  "dark": "#31240d",
-  "light": "#ccbc97",
-  "emblem": null
+  "metal": "gold",
+  "ramp": "gold ramp fitted to the reference's metal (lib-b.js fitRamp)",
+  "tone_colours": {
+   "ground": "#302105",
+   "shadow": "#271a05",
+   "base": "#c2a348",
+   "hi": "#f1dc80",
+   "rim": "#b19137",
+   "rim_hi": "#e6ce70",
+   "metal": "#a8872f",
+   "metal_hi": "#ecd679",
+   "bail": "#b29138"
+  }
  },
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "distin02",
-   "distin03",
-   "distin04",
-   "distin05",
-   "distin06",
-   "distin07",
-   "distin08",
-   "distin09",
-   "distin10",
-   "distin11",
-   "distin12",
-   "distin13",
-   "distin14",
-   "distin16",
-   "distin17",
-   "distin18",
-   "distin21"
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph mask resampled into the same upright box)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ink_coverage": "lit-metal area of mine / reference between 0.85 and 1.15 (body and named zones): letters and emblem strokes as solid as the reference",
+   "ribbon_attach": "top centre of the ring (or of the bail where the box cuts the ring) at the box top, x on the body axis",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9619,
+  "light_class_iou": 0.411,
+  "ink_coverage": [
+   {
+    "zone": "body",
+    "ref_px": 47441,
+    "mine_px": 48557,
+    "ratio": 1.024
+   },
+   {
+    "zone": "emblem",
+    "ref_px": 4117,
+    "mine_px": 4621,
+    "ratio": 1.122
+   },
+   {
+    "zone": "wings",
+    "ref_px": 13447,
+    "mine_px": 13910,
+    "ratio": 1.034
+   },
+   {
+    "zone": "band",
+    "ref_px": 4861,
+    "mine_px": 4338,
+    "ratio": 0.892
+   },
+   {
+    "zone": "laurel left",
+    "ref_px": 6711,
+    "mine_px": 6439,
+    "ratio": 0.959
+   },
+   {
+    "zone": "laurel right",
+    "ref_px": 5899,
+    "mine_px": 6218,
+    "ratio": 1.054
+   },
+   {
+    "zone": "tail",
+    "ref_px": 7561,
+    "mine_px": 7995,
+    "ratio": 1.057
+   }
   ],
-  "different_body": []
- }
+  "landmarks_checked": 52,
+  "landmark_max_dist_in": 0.0149,
+  "landmark_worst": [
+   [
+    "tail spray L cap",
+    0.0149
+   ],
+   [
+    "tail spray R cap",
+    0.0097
+   ],
+   [
+    "emblem ring top",
+    0.0074
+   ],
+   [
+    "pennant",
+    0.0067
+   ],
+   [
+    "VIGILANS banner lower edge",
+    0.0065
+   ]
+  ],
+  "edge_recall_0p006in": 0.812,
+  "edge_recall_0p012in": 0.965,
+  "edge_precision_0p012in": 0.933,
+  "tone_mae_luminance": 50.9,
+  "ribbon_attach_units": {
+   "mine": 31.19,
+   "spec_new": [
+    31.25,
+    0
+   ],
+   "spec_old": [
+    31.25,
+    0
+   ]
+  },
+  "gate_pass": true,
+  "pass": true,
+  "not_measurable": [
+   "band lettering: DISTINGUISHED (13 letters), the award's name as the sister bands carry EXCEPTIONAL and MERITORIOUS, drawn with the Meritorious letter builder (font glyphs, centre-line strokes) and fitted to the bright text strip measured on the straightened band: the strip runs from u -0.258 to +0.264 (outer edges of the first and last strokes) and its top and bottom stroke rows lie at v -0.002 and 0.048, so the letters are laid between u -0.253 and 0.259 with equal gaps, cap height 0.050 (centre lines), stroke 0.011 in, glyphs drawn 14 percent narrower than the font because 13 cells share the strip that holds 11 on the Meritorious band. The photograph confirms that lettering is present (a strip of raised cells between two end bars, rows at those heights), but individual letters are not resolved in it: polished gold at 2800 px/in, 3 px strokes, 0.76 of the strip lit; a shuffle test of the same 13 letters cannot rank the word above shuffled orders (117 of 300 shuffles put as much letter ink on lit metal). The words come from the award name and the shared die, the letter widths and pitch from the font fitted to the measured strip. The band interior stays excluded from the gates (P.sel), as it was before the lettering, because its ground is unresolvable texture",
+   "banner lettering (both banners): SEMPER on the left and VIGILANS on the right, drawn on the banner centre lines of the shared die exactly as on the Meritorious (font glyphs, cap height 0.0175 in times this medal's die fit) because the die carries those words. The photograph shows lettering on both ribbons (dotted letter marks on the left one, a stippled comb of about nine bright strokes along the upper edge of the right one), but the letters are not resolved in it, so their forms, cell pitch and exact extent are the die's, not measured; the ribbon faces are included in the gates",
+   "laurel leaves: individual leaf outlines, veins and serration are below the photograph resolution (leaves are about 0.06 in long, veins 0.005 in); the two sprays are the die's stem and outlined leaves placed and scaled by measurement",
+   "wing feathers: the row pitch (0.0097 in) is 2.7 photograph pixels; the wings are the die's four nested rows with one inserted between each pair (7 rows each) continued down to the band (rows extended by 0.036 in, as the photograph shows them running on to the band), not each barb",
+   "eagle head: about 0.045 in wide, 12 px in the photograph; drawn as a lump with one recessed spot, beak direction not resolved",
+   "tail: the two fans of three feather ovals, the shaft, the pennant with two recessed triangles and the talon paddles are the die's shapes at 10 to 15 px; barbs and vein structure are not resolved, the shaft is drawn in a recessed tone (the photograph shows it dark between the fans)",
+   "banner scroll curls: the die's scroll tail (one hook and curl per banner) placed by measurement; the knobs under the curl and the number of turns are not resolved",
+   "the left and right halves of the photograph are not exact mirror images: each group is fitted separately (the right wing and banner turn about 5 to 6 deg more than the left)",
+   "specular glints on the bail, ring and band (polished gold) are lighting, not features; the ring is hidden above v=-0.49 by the ribbon in the photograph"
+  ],
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9619,
+  "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from distinguished-service.jpeg (reference only, never shipped). Hang angle 0 deg of the photograph removed. The photograph hangs at 1.5 deg by the bail, but the hexagon flats, the band and the symmetry of the outline all level at about 0 deg (flats vertical to 0.5 deg, upper and lower corner heights equal to 0.006 in), so the body is levelled at 0 deg: P.frame.th = 0. The band tilts a further -1.4 deg in the photograph (right end higher); that tilt is kept as measured. The body is 0.619 in wide and 0.683 in high between vertices in the photograph; the spec box (0.625 x 0.6691 in, unchanged) is 0.0345 in shorter than the vertex to vertex height, so the model is drawn in the hex frame and shifted 0.0345 in up in the shipped frame: the bottom vertex sits on the bottom of the box (the top vertex is cut by 0.014 in by the box top, the bail is above it). The ribbon ring top is cut by the box. The three Service Awards are struck from one die: the eagle (feathered wings, scrolled banners, tail fans with shaft, pennant and talons) and the laurel sprays are the shared die of lib-b-hex-die.js (geometry of the clearest photograph, the Exceptional one) refitted here by a scale, a turn and a shift per object group, found by correlating the group with the photograph's band-passed luminance in a bounded search around the landmark placement and checked on overlays; the wings carry the die's four nested rows plus one row between each pair, run on down to the band. The band (framed plate with end bars at u +-0.283 and +-0.270 (measured: left bars at -0.283 and -0.266, right at 0.282 and about 0.274, symmetrised), a bottom rail and a top bead row) carries DISTINGUISHED and the banners SEMPER and VIGILANS; the words come from the award name and the shared die, the photograph shows lettering in all three places but not its letters (see notMeasurable). The lower eagle uses the die's tail sprays (a rounded cap, a rachis and four nested barb chevrons per spray, measured on the Exceptional photograph), the leg and talon shapes and the pennant of the die."
 }

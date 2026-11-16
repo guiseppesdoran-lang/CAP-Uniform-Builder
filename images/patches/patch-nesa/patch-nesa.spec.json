@@ -1,0 +1,58 @@
+{
+ "asset_id": "patch-nesa",
+ "label": "National Emergency Services Academy",
+ "file": "patch-nesa.png",
+ "width_in": 3.5,
+ "height_in": 3.646,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.5 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   175,
+   0
+  ],
+  "bottom_center": [
+   175,
+   364.583
+  ],
+  "center": [
+   175,
+   182.292
+  ],
+  "left_edge": [
+   0,
+   182.292
+  ],
+  "right_edge": [
+   350,
+   182.292
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/nesa_patch/oie_1821830OqdPE1d9_63440D008424E.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   144,
+   150
+  ],
+  "trimmed": false,
+  "px": [
+   144,
+   150
+  ],
+  "bytes": 36788,
+  "source_bytes": 36788,
+  "source_sha256": "e88750d8ddc0599630daa662c73fcf08be04b7d8e0e3d67f08cac55ce4bb40c0",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of National Emergency Services Academy, published by National Emergency Services Academy site, hosted by CAP (nesa.cap.gov) (page https://nesa.cap.gov/; file address https://nesa.cap.gov/media/cms/oie_1821830OqdPE1d9_63440D008424E.png); fetched 2026-11-10 and kept in assets/refs/patches-official/nesa_patch/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

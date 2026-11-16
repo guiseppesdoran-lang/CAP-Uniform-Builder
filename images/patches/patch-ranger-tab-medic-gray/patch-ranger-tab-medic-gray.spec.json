@@ -1,0 +1,65 @@
+{
+ "asset_id": "patch-ranger-tab-medic-gray",
+ "label": "Hawk Mountain Ranger tab: Medic (green)",
+ "file": "patch-ranger-tab-medic-gray.png",
+ "width_in": 2.7,
+ "height_in": 0.425,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "measured",
+ "size_basis": "width 2.7 in kept from the tab this file replaces (the tab as worn above the CAP tape on the HMRS 2021 uniform poster, assets/refs/capranger/hmrs-uniform-poster-2021.png); height follows the official file's own aspect (559 x 88 px)",
+ "citation": "CAPR 39-1 Figure A8-2 (Hawk Mountain Ranger Qualification Tabs); 7.1.1.4.2.1 (OCP: in lieu of the higher-headquarters patch on the left sleeve pocket, whose loop field is 4 x 6.5 in); 9.2.4 (HMRS graduates, one tab). Ethan, LIVE13-ART 3: \"the ranger tabs arent authorized on ABUs!!! only on OCPs unfortunately in lieu of an hhq patch\"",
+ "anchors": {
+  "top_center": [
+   135,
+   0
+  ],
+  "bottom_center": [
+   135,
+   42.504
+  ],
+  "center": [
+   135,
+   21.252
+  ],
+  "left_edge": [
+   0,
+   21.252
+  ],
+  "right_edge": [
+   270,
+   21.252
+  ]
+ },
+ "anchors_note": "the five anchors the NCSA patches carry: the engine centres the tab (center) on garment-ocp-coat-abu-cut's hhq_patch_left_center, the left sleeve pocket's loop field, as it does those patches; OCP only, one tab, in lieu of the HHQ patch (7.1.1.4.2.1). LIVE13-ART 2's placement above_cap_tape and anchor seat_on_cap_tape (ABU / CFU wear above the CAP tape) are withdrawn",
+ "dimensions": {
+  "family": "patch",
+  "kind": "ranger-tab",
+  "group": "Hawk Mountain Ranger tabs",
+  "grade": "medic-gray",
+  "colour": "full",
+  "one_only": true
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/patch-ranger-tab-medic-gray/67cca1_5f9ae5368bb7434d8e57ffde04a4055f~mv2.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   559,
+   88
+  ],
+  "trimmed": false,
+  "px": [
+   559,
+   88
+  ],
+  "bytes": 2751,
+  "source_bytes": 2751,
+  "source_sha256": "c429c9a423ad43ad2bb81b006922b44c578cd5876186df00fc6400821615f363",
+  "ground": "transparent",
+  "fills_box": true,
+  "fills_box_share": 0.989
+ },
+ "provenance": "Official digital artwork of Hawk Mountain Ranger tab: Medic (green), published by Hawk Mountain Ranger School, the Pennsylvania Wing activity site (capranger.org; footer: Pennsylvania Wing Civil Air Patrol) (page https://www.capranger.org/cap-ranger-grades; file address https://static.wixstatic.com/media/67cca1_5f9ae5368bb7434d8e57ffde04a4055f~mv2.png); fetched 2026-11-10 and kept in assets/refs/patches-official/patch-ranger-tab-medic-gray/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The picture is a rectangle with its own white or gold border that fills its box (measured: 98.9 percent of the box is not clear, the rest being the rounded corners and one clear row), so it has no ground to remove."
+}

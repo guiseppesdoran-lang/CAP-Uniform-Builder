@@ -1,31 +1,31 @@
 {
  "asset_id": "national-staff",
- "width_in": 3.0738,
- "height_in": 2.999,
+ "width_in": 1.537,
+ "height_in": 1.5,
  "unit": "1 user unit = 0.01 in",
- "size_source": "regulation",
- "size_basis": "regulation: height 3 in",
- "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "size_source": "estimated",
+ "size_basis": "estimated: no Vanguard listing found; no regulation size (CAPR 39-1 Att. 7 gives none; the old 3 in was wrong). Sized 1.5 in tall, same as the governance badges; no Vanguard listing found",
+ "citation": null,
  "anchors": {
   "top_center": [
-   153.69,
+   76.871,
    0
   ],
   "bottom_center": [
-   153.69,
-   299.904
+   76.871,
+   150
   ],
   "center": [
-   153.69,
-   149.952
+   76.871,
+   75.001
   ],
   "left_edge": [
    0,
-   149.952
+   75.001
   ],
   "right_edge": [
-   307.38,
-   149.952
+   153.7,
+   75.001
   ]
  },
  "dimensions": {
@@ -49,5 +49,5 @@
   "silhouette_iou_approx": 0.847,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art."
+ "notes": "Geometry is script-generated but parameters live in the generator scripts, not yet a JSON spec table. Silhouette fit is measured against the reference art. Rescaled uniformly x0.5002 (A4b) from 3.0738 x 2.999 in to 1.537 x 1.5 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

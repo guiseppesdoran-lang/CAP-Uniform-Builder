@@ -1,0 +1,67 @@
+{
+ "asset_id": "patch-glr-il-189",
+ "label": "GLR-IL-189",
+ "charter": "GLR-IL-189",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-glr-il-189.png",
+ "width_in": 3,
+ "height_in": 3.302,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   330.189
+  ],
+  "center": [
+   150,
+   165.095
+  ],
+  "left_edge": [
+   0,
+   165.095
+  ],
+  "right_edge": [
+   300,
+   165.095
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/glr-il-189-col-shorty-powers-composite-squadron.webp",
+ "unit_name": "Col Shorty Powers Composite Squadron",
+ "artwork": {
+  "format": "webp (VP8L lossless) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   640,
+   700
+  ],
+  "trim_bbox_px": [
+   2,
+   0,
+   636,
+   700
+  ],
+  "trimmed": true,
+  "px": [
+   636,
+   700
+  ],
+  "bytes": 114643,
+  "chunks_kept": []
+ },
+ "provenance": "Unit emblem of Col Shorty Powers Composite Squadron (GLR-IL-189), digital artwork supplied by Ethan Hillard on 2026-11-10. Official digital artwork shipped as given: webp (VP8L lossless) -> png via dwebp; trimmed to its alpha bounding box only (640 x 700 px to 636 x 700 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

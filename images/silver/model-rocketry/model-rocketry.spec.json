@@ -4,8 +4,8 @@
  "height_in": 3,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
- "size_basis": "regulation: height 3 in",
- "citation": "CAPR 39-1 Attachment 7 (regular-size badge), as encoded in js/catalog.js CAPUB_BADGE_DIMENSIONS_INCHES; regulation text not re-read",
+ "size_basis": "regulation: height 3 in (Fig A7-2 dimension arrow, full badge height)",
+ "citation": "CAPR 39-1 Attachment 7 Fig A7-2 (p178, printed page 146): the figure carries a 3 in dimension arrow whose extension lines meet the top and bottom of the badge, so 3 in is the full height; width follows the traced art (0.69 in, the figure shows 197/857 x 3 in = 0.69 in). Re-read against the PDF 2026-10-22.",
  "anchors": {
   "top_center": [
    34.52,

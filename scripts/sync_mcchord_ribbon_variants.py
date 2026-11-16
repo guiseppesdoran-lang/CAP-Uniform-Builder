@@ -1,4 +1,4 @@
-"""Mirror McChord's senior ribbon dropdown variants and their rendered images."""
+"""Mirror McChord's senior ribbon dropdown variants (labels, values and how many ribbons each takes; the ribbons are the measured SVGs)."""
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
@@ -10,7 +10,6 @@ from urllib.request import Request, urlopen
 
 
 ROOT = Path(__file__).resolve().parents[1]
-IMAGE_DIR = ROOT / "images" / "ribbons"
 OUTPUT = ROOT / "mcchord-ribbon-variants.js"
 SOURCE_FORM = "https://mcchord.org/rack_builder/check_sr.html"
 GENERATOR = "https://www.mcchord.org/rack_builder/check_sr2.asp"
@@ -88,43 +87,24 @@ def fetch_variant(item):
     return sequence, ribbon_id, code, label, urls
 
 
-def download_image(url):
-    name = Path(urlparse(url).path).name
-    target = IMAGE_DIR / name
-    with urlopen(url, timeout=30) as response:
-        target.write_bytes(response.read())
-    return name
-
-
 def main():
-    IMAGE_DIR.mkdir(parents=True, exist_ok=True)
     variants = {}
-    all_urls = set()
     work = source_rows()
     with ThreadPoolExecutor(max_workers=16) as pool:
         futures = [pool.submit(fetch_variant, item) for item in work]
         for future in as_completed(futures):
             sequence, ribbon_id, code, label, urls = future.result()
-            all_urls.update(urls)
             option = {
                 "label": label,
                 "value": f"mcchord_{code}",
-                "image": Path(urlparse(urls[0]).path).name,
                 "devices": {},
             }
             if len(urls) > 1:
                 option["duplicates"] = [
-                    {
-                        "image": Path(urlparse(url).path).name,
-                        "awardLabel": f"{label} - additional ribbon",
-                    }
+                    {"awardLabel": f"{label} - additional ribbon"}
                     for url in urls[1:]
                 ]
             variants.setdefault(ribbon_id, []).append((sequence, option))
-
-    with ThreadPoolExecutor(max_workers=16) as pool:
-        for future in as_completed([pool.submit(download_image, url) for url in all_urls]):
-            future.result()
 
     ordered = {
         ribbon_id: [option for _, option in sorted(options, key=lambda pair: pair[0])]
@@ -137,7 +117,6 @@ def main():
         encoding="utf-8",
     )
     print(f"Mirrored {sum(map(len, ordered.values()))} options for {len(ordered)} ribbons")
-    print(f"Downloaded {len(all_urls)} unique McChord ribbon images")
 
 
 if __name__ == "__main__":

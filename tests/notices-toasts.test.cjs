@@ -10,14 +10,14 @@ const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8'
 
 test('the setup notices point at the control that fixes them',()=>{
   assert.match(wiring,/Select membership type first\.',\{id:'membershipType'/);
-  assert.match(wiring,/Select rank before building the uniform\.',\{id:'rankSetupSelect'/);
-  assert.match(wiring,/Select male\/female cut[^']*',\{id:'jacketSelect'/);
+  assert.match(wiring,/Select a grade before building the uniform\.',\{id:'rankSetupSelect'/);
+  assert.match(wiring,/Select the male or female cut[^']*',\{id:'jacketSelect'/);
   assert.match(wiring,/are selected\. Command insignia does not count against this limit\.`,\{id:'expandBadges'/);
 });
 
-test('a Fix link presses buttons, focuses fields, and opens a folded step first',()=>{
+test('a Fix link presses buttons, focuses fields, and shows the step that holds the control first',()=>{
   const fn=wiring.slice(wiring.indexOf('function runNoticeFix'),wiring.indexOf('function runNoticeFix')+900);
-  assert.match(fn,/guidedEdit/);
+  assert.match(fn,/CAPUB_V3\.showStepFor\(target\)/);
   assert.match(fn,/target\.tagName === 'BUTTON'/);
   assert.match(fn,/scrollIntoView/);
 });
@@ -38,7 +38,6 @@ test('adding or removing items is acknowledged with a toast',()=>{
 test('clicking an item on the uniform asks before removing it, and undo brings it back',()=>{
   assert.match(ui,/function capubRemoveFromPreview/);
   assert.match(ui,/label\.textContent=item\.name/);
-  assert.match(ui,/if\(typeof State!=='undefined' && State\.calib && State\.calib\.enabled\) return;/);
   // Unticks the selection the way the picker does; nothing is deleted from the catalog.
   assert.match(ui,/sel\.checked=false;\s*rebuildRibbonsFromGallery\(\)/);
   assert.match(ui,/sel\.checked=false;\s*rebuildBadgesFromGallery\(\)/);

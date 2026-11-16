@@ -37,6 +37,9 @@
   --accent:#001871;
   --select-bg:#CCD1E3;
   --select-line:#001871;
+  /* The grade tiles are their own dark surface in both themes (js/profile-pickers.js): an insignia is shown as it is worn on the dark blues, with nothing behind it. These are
+     the dark theme's own values, so the tiles are the dark theme's tiles there and the same dark tiles on the light page. */
+  --grade-panel:#0F1739;--grade-panel-2:#141E48;--grade-ink:#F2F4FA;--grade-line:#2C3769;--grade-line-strong:#7C86B4;--grade-select-bg:#1B2860;--grade-select-line:#FFCD00;
   --danger:#BA0C2F;
   --danger-bg:#F1CED5;
   --warn:#7A5C00;
@@ -58,8 +61,10 @@
   --t-xs:.8125rem;--t-sm:.875rem;--t-md:.9375rem;--t-lg:1.25rem;--t-xl:1.75rem;
 
   --capub-header-h:64px;
+  /* The step bar over the panel and the toolbar over the preview are one bar: the same height, so the line under each is one line (above 700px). */
+  --bar-h:57px;
   --capub-footer-h:36px;
-  --sidebar-w:380px;
+  --sidebar-w:400px;
 }
 /* Dark theme: follows the system unless the member picked one (data-theme on <html>). */
 @media (prefers-color-scheme:dark){
@@ -129,7 +134,12 @@ h1,h2,h3{font-family:var(--font-head);font-weight:700}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 [hidden]{display:none !important}
 .hidden{display:none !important}
-.disabledBlock{opacity:.55;pointer-events:none}
+.disabledBlock{position:relative;pointer-events:none}
+/* A block that is not available (a patch the member may not wear, the uniform and cut before a rank is chosen) takes no presses and is greyed by a veil
+   over it, not by opacity on it: opacity would grey the reference mark with the rest, and its question mark must stay readable and keep working
+   (.citeBtn takes presses wherever it sits, and sits above the veil). */
+.disabledBlock::after{content:"";position:absolute;inset:-1px;border-radius:inherit;background:var(--panel);opacity:.45;pointer-events:none;z-index:1}
+.disabledBlock .citeBtn{z-index:2}
 html:not([data-dev]) .devOnly{display:none !important}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none !important;animation:none !important}
@@ -184,6 +194,9 @@ button:disabled{cursor:not-allowed;background:var(--panel-2);border-color:var(--
   color:var(--muted);
 }
 .fieldNote{display:block;font-size:var(--t-xs);color:var(--muted)}
+/* A checkbox option with its explanation as one block: the hint hangs directly under the option text, indented past the box. */
+.optionWithHint{display:block}
+.optionWithHint .optionHint{display:block;margin-top:2px;padding-left:1.6em}
 .mt-4{margin-top:4px}.mt-5{margin-top:5px}.mt-6{margin-top:6px}.mt-7{margin-top:7px}.mt-8{margin-top:8px}.mt-10{margin-top:10px}.mt-12{margin-top:12px}
 
 /* ---- Shell: header, sidebar, layout ---- */
@@ -192,7 +205,7 @@ header{
   min-height:var(--capub-header-h);
   display:flex;
   align-items:center;
-  padding:0 var(--s5) 0 72px; /* leaves room for the fixed menu button */
+  padding:0 var(--s5);
   background:var(--brand);
   color:var(--on-brand);
 }
@@ -237,35 +250,20 @@ header h1::after{
   font-weight:700;
   opacity:.8;
 }
-.hamburgerBtn{
-  position:fixed;
-  left:var(--s4);
-  top:10px;
-  z-index:10000;
-  width:44px;
-  min-height:44px;
-  height:44px;
-  margin:0;
-  padding:0;
-  border-radius:var(--r);
-  border:1px solid rgba(255,255,255,.55);
-  background:rgba(255,255,255,.14);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-}
-.hamburgerBtn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.8)}
-.hamburgerBtn span{display:block;width:20px;height:2px;background:#fff;border-radius:1px}
+.hamburgerBtn{display:none}
 
 #layoutShell{
   display:flex;
-  height:calc(100vh - var(--capub-header-h) - var(--capub-footer-h));
-  position:relative;
+  /* Fill what is left between the header and footer as they actually are, not 100vh sums. */
+  position:fixed;
+  top:var(--chrome-header-h,var(--capub-header-h));
+  bottom:var(--chrome-footer-h,var(--capub-footer-h));
+  left:0;
+  right:0;
   background:var(--bg);
   color:var(--ink);
-  overflow:hidden;
+  /* clip, not hidden: scrollIntoView() on a sidebar control must not scroll the shell itself. */
+  overflow:clip;
 }
 #controls{
   width:var(--sidebar-w);
@@ -276,7 +274,7 @@ header h1::after{
   display:flex;
   flex-direction:column;
   z-index:10;
-  overflow:hidden;
+  overflow:clip;
   transition:width .2s ease,min-width .2s ease,max-width .2s ease,transform .2s ease;
 }
 #layoutShell.sidebar-collapsed #controls{
@@ -286,70 +284,117 @@ header h1::after{
   border-right:0;
   overflow:hidden;
 }
-.controlsHeader{
-  padding:var(--s3) var(--s4) var(--s3) 72px; /* 72px clears the fixed CAL tab */
-  background:var(--panel);
-  border-bottom:1px solid var(--line);
-}
-.controlsHeader .controlsTitle{
-  margin:0;
-  font-size:var(--t-lg);
-  line-height:1.15;
-  color:var(--ink);
-}
-.controlsHeader .controlsTitle::after{
-  content:"Choose profile, select uniform, add items, validate and export";
-  display:block;
-  margin-top:var(--s1);
-  font-family:var(--font-body);
-  font-size:var(--t-xs);
-  font-weight:400;
-  color:var(--muted);
-}
-.controlsScrollArea{flex:1;overflow-y:auto;padding:var(--s4) var(--s4) 48px}
-
-/* Stepper */
-.capubProgress{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s2);margin:0 0 var(--s4)}
-.capubStep{
+/* The panel is a stepper: a fixed row of four step tabs, one step's controls, and a fixed footer with Back and
+   Next (js/workspace-ui.js). A member never has to find out that the panel scrolls: only the middle scrolls, and
+   when it holds more than fits a fade shows above the footer. */
+.controlsHeader{flex:0 0 auto;background:var(--panel);border-bottom:1px solid var(--line)}
+.stepTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.stepTab{
   display:flex;
   flex-direction:column;
-  align-items:flex-start;
-  gap:2px;
-  width:100%;
-  min-height:64px;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  min-height:calc(var(--bar-h) - 1px);
   margin:0;
-  padding:var(--s2) var(--s3);
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  color:var(--muted);
+  padding:var(--s1) var(--s1) calc(var(--s1) - 3px);
+  background:transparent;
+  border:0;
+  border-bottom:3px solid transparent;
+  border-radius:0;
+  color:var(--ink);
   font-family:var(--font-body);
   font-size:var(--t-xs);
-  font-weight:400;
+  font-weight:700;
   letter-spacing:0;
-  text-align:left;
+  line-height:1.1;
 }
-.capubStep:hover{background:var(--panel-2);border-color:var(--line-strong)}
-.capubStep strong{font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1;color:var(--ink)}
-.capubStep.blocked{border-style:dashed}
-.capubStep.blocked strong{color:var(--muted)}
-.capubStep.done{border-color:var(--ok);background:var(--ok-bg)}
-.capubStep.done strong{color:var(--ok)}
-.capubStep.current{border:2px solid var(--select-line);background:var(--select-bg);padding:calc(var(--s2) - 1px) calc(var(--s3) - 1px)}
-.capubSectionHint{
-  display:flex;
-  gap:var(--s2);
-  align-items:flex-start;
-  margin-bottom:var(--s3);
-  padding:var(--s2) var(--s3);
-  border:1px solid var(--line);
-  border-left:4px solid var(--cap-yellow);
-  border-radius:var(--r);
-  background:var(--panel-2);
-  font-size:var(--t-xs);
-  color:var(--muted);
+.stepTab:hover{background:var(--panel-2);border-color:transparent;border-bottom-color:var(--line)}
+.stepTab:focus-visible{outline-offset:-3px}
+.stepTab .stepNum{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border:2px solid var(--ink);
+  border-radius:50%;
+  background:var(--panel);
+  color:var(--ink);
+  font-family:var(--font-head);
+  font-size:var(--t-md);
+  line-height:1;
 }
-.capubSectionHint b{color:var(--ink)}
-.capubProgress[hidden],.capubSectionHint[hidden]{display:none}
+.stepTab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--action)}
+.stepTab[aria-selected="true"]:hover{background:transparent;border-bottom-color:var(--action)}
+.stepTab[aria-selected="true"] .stepNum{background:var(--action);border-color:var(--action);color:var(--on-action)}
+/* A step that can be opened reads as bright, finished or not (Extra is finished only once items are chosen and nothing is
+   flagged, so an open Extra sat dimmer than the others). Only a step that cannot be opened yet is dimmed and dashed. */
+.stepTab.blocked{cursor:not-allowed;color:var(--muted)}
+.stepTab.blocked:hover{background:transparent;border-bottom-color:transparent}
+.stepTab.blocked .stepNum{border-style:dashed;border-color:var(--line);background:transparent;color:var(--muted)}
+/* The Extra step holds two tabs, in the stepper's own style: underlined, the selected one in the action colour. */
+.subTabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 var(--s3);border-bottom:1px solid var(--line)}
+.subTab{
+  min-height:44px;margin:0;padding:var(--s1) var(--s2);
+  background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;
+  color:var(--muted);font-family:var(--font-body);font-size:var(--t-sm);font-weight:700;letter-spacing:0;
+}
+.subTab:hover{background:var(--panel-2);border-color:transparent;border-bottom-color:var(--line)}
+.subTab:focus-visible{outline-offset:-3px}
+.subTab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--action)}
+.subTab[aria-selected="true"]:hover{background:transparent;border-bottom-color:var(--action)}
+/* The Regulation list: a compact table by area, the rule, its value and its paragraph. */
+.regNote{margin:0 0 var(--s2)}
+.regTable{width:100%;border-collapse:collapse;font-size:var(--t-sm);line-height:1.25}
+.regTable th,.regTable td{padding:var(--s1) var(--s2) var(--s1) 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-weight:400}
+.regTable thead th{padding-bottom:var(--s1);font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
+.regTable tbody th[scope="row"]{color:var(--ink)}
+.regTable .regArea th{padding:var(--s2) 0 var(--s1);border-bottom:2px solid var(--line-strong);font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+.regTable .regVal{white-space:nowrap;font-weight:700;color:var(--ink)}
+.regTable .regRef{min-width:5.5em;padding-right:0;overflow-wrap:anywhere}
+.regTable .regRef span{display:block}
+.regTable .regIcl,.regTable .regNone{color:var(--muted)}
+.controlsScrollArea{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:var(--s2) var(--s4) var(--s3)}
+.controlsFooter{position:relative;flex:0 0 auto;padding:var(--s2) var(--s4) var(--s3);background:var(--panel);border-top:1px solid var(--line)}
+/* The fade above the footer while the step has more below the fold. */
+.controlsFooter::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:100%;
+  height:56px;
+  background:linear-gradient(to bottom,transparent,var(--panel) 85%);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .15s ease;
+}
+#controls.hasMoreBelow .controlsFooter::before{opacity:1}
+#controls.hasMoreBelow .controlsFooter{box-shadow:0 -8px 14px -10px rgba(0,16,60,.35)}
+.stepMoreBtn{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + var(--s2));
+  transform:translateX(-50%);
+  z-index:3;
+  width:auto;
+  min-height:36px;
+  margin:0;
+  padding:0 var(--s4);
+  background:var(--panel);
+  border-color:var(--line-strong);
+  box-shadow:var(--shadow);
+  font-size:var(--t-sm);
+  white-space:nowrap;
+}
+.stepMoreBtn[hidden]{display:none}
+.stepFooterNote{margin:0 0 var(--s2);font-size:var(--t-xs);line-height:1.4;color:var(--muted)}
+.stepFooterNote[hidden]{display:none}
+.stepFooterRow{display:flex;gap:var(--s2);align-items:stretch}
+.stepFooterRow button{margin:0}
+.stepBack{flex:0 0 auto;width:auto;padding:0 var(--s4)}
+.stepNext,#stepFooter #downloadImage{flex:1 1 auto;width:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* Resume banner: shown once, above the preview, when a saved setup is waiting. */
 .resumeBanner{
   display:flex;
@@ -372,32 +417,83 @@ header h1::after{
 .resumeActions button{white-space:nowrap}
 
 /* ---- Panels ---- */
-.stepGroup{margin-bottom:var(--s2)}
-.stepGroupTitle{
-  margin:var(--s5) 0 var(--s3);
-  font-size:var(--t-xl);
-  line-height:1.1;
-  color:var(--ink);
-}
+.stepGroup{margin:0}
+/* The tab names the step; its heading is for screen readers and is where focus lands on a step change. */
+.stepGroupTitle{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.stepGroupTitle:focus{outline:none}
 .panelBlock{
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:var(--r-lg);
-  padding:var(--s4);
+  padding:var(--s3) var(--s4);
   margin-bottom:var(--s3);
 }
-.controlsScrollArea .panelBlock,.controlsScrollArea .stepGroup{scroll-margin-top:var(--s4)}
-.toolsGroup{margin:var(--s5) 0 var(--s2);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
-.toolsGroup>summary{cursor:pointer;padding:var(--s3) 2px;font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
-.toolsGroup[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
+.stepGroup>:last-child{margin-bottom:0}
+.controlsScrollArea .panelBlock{scroll-margin-top:var(--s3)}
+/* A card's heading row: the name on the left, a count on the right. */
+.cardRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--s2);align-items:center}
+.cardRow button{margin:0;width:auto;padding:0 var(--s3);font-size:var(--t-md)}
+.cardHead{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);min-width:0}
+.cardHead .fieldLabel{margin:0;font-family:var(--font-head);font-size:var(--t-lg);line-height:1.1;white-space:nowrap}
+.countChip{flex:0 0 auto;padding:2px var(--s2);border:1px solid var(--line);border-radius:999px;background:var(--panel-2);font-size:var(--t-xs);font-weight:700;line-height:1.3;color:var(--muted);white-space:nowrap}
+.countChip.hasItems{background:var(--select-bg);border-color:var(--select-line);color:var(--ink)}
+.cardRule{margin-top:var(--s1)}
+/* A card for something the uniform does not wear (Ribbons on the OCP and the flight suits) is greyed out and keeps only its name and its count: no line
+   saying so, and no "kept" (the choices stay, silently). Grey by its colours and a dashed edge, not by opacity. */
+.itemCard.unavailable{background:var(--panel-2);border-style:dashed}
+.itemCard.unavailable .cardHead .fieldLabel{color:var(--muted)}
+.itemCard.unavailable .countChip,.itemCard.unavailable .countChip.hasItems{background:transparent;border-color:var(--line);color:var(--muted)}
+.itemCard.unavailable>:not(.cardRow){display:none}
+.itemCard.unavailable .cardToggle{color:var(--muted)}
+/* The name and the count are one button that folds the card (js/workspace-ui.js): a disclosure drawn as the card's heading with a chevron, not as one of
+   its buttons. Folded, only that row is left, and of the row only the button: the card shows its name and its count. */
+.cardRow .cardToggle{
+  display:flex;align-items:center;gap:var(--s2);width:100%;min-height:44px;margin:0;padding:0;
+  background:transparent;border:0;border-radius:var(--r);color:var(--ink);
+  font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:0;text-align:left;
+}
+.cardRow .cardToggle:hover{background:transparent;border-color:transparent}
+.cardRow .cardToggle:hover .fieldLabel{text-decoration:underline}
+.cardToggle .cardHead{flex:1 1 auto}
+.cardChevron{flex:0 0 auto;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid currentColor;transition:transform .15s ease}
+.cardToggle[aria-expanded="true"] .cardChevron{transform:rotate(90deg)}
+.itemCard.collapsed>:not(.cardRow){display:none}
+.itemCard.collapsed .cardRow{grid-template-columns:minmax(0,1fr)}
+.itemCard.collapsed .cardRow button:not(.cardToggle){display:none}
+/* Secondary controls folded under a line: the import's explanation, the rack layout, the saved setups. */
+.moreDetails{margin-top:var(--s2);padding-top:2px;border-top:1px solid var(--line)}
+.moreDetails>summary{display:flex;align-items:center;min-height:44px;box-sizing:border-box;cursor:pointer;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+.moreDetails>summary::-webkit-details-marker{color:var(--muted)}
+.moreDetails[open]>summary{margin-bottom:var(--s1)}
+.moreDetails .hintText:first-of-type{margin-top:0}
+/* The fold as a block of its own (step 2: headgear, sleeves, skirt and cord), its summary carrying the choices. */
+/* The Uniform options card (Items step): the panels inside it are plain, the card draws the box. */
+.optionsCard>.fieldLabel{margin-top:0}
+.optionsCard .plainPanel{border:0;padding:0;margin:0 0 var(--s3);background:transparent;box-shadow:none}
+.optionsCard .plainPanel:last-child{margin-bottom:0}
+.optionsCard .plainPanel .fieldLabel:first-child{margin-top:0}
+.importCard>button{margin-top:0}
+.importCard .hintText{margin-top:var(--s2)}
+/* The import button and the question mark that holds the steps (js/citations.js: a help mark carries its words in data-cite-help, and stays when the
+   Regulation tab's switch prints the references in their text, since its words are no reference). The status line takes no room until a report is read. */
+.importRow{display:flex;align-items:center;gap:var(--s2)}
+.importRow>button{flex:1 1 auto;min-width:0;margin-top:0}
+.importRow>.citeBtn{flex:0 0 auto;margin-left:0}
+:root[data-cites="shown"] .citeBtn.citeHelp{display:inline-flex}
+#memberReportImportStatus:empty{margin-top:0}
+/* The patch submission button (patch-submission.js adds it under Choose patches) reads as secondary. */
+#capubSubmitPatchButton{grid-column:1 / -1;margin-top:0;background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-md)}
+#capubSubmitPatchButton:hover{background:var(--panel-2);border-color:var(--ink)}
 
+/* Uniforms: one grid, two cards to a row, in the regulation's order. */
 .uniformList{display:flex;flex-direction:column;gap:var(--s2)}
+.uniformGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .uniformOption{
   position:relative;
   width:100%;
   margin:0;
-  min-height:56px;
-  padding:var(--s3);
+  min-height:44px;
+  padding:6px var(--s3);
   text-align:left;
   background:var(--panel);
   color:var(--ink);
@@ -408,24 +504,40 @@ header h1::after{
   letter-spacing:0;
 }
 .uniformOption:hover{border-color:var(--ink);background:var(--panel-2)}
-.uniformOption .uName{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;line-height:1.15;color:var(--ink)}
-.uniformOption .uDesc{margin-top:2px;font-size:var(--t-xs);line-height:1.35;color:var(--muted)}
-.uniformOption.activeUniform{border:2px solid var(--select-line);background:var(--select-bg);padding:calc(var(--s3) - 1px)}
+.uniformOption .uName{font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.2;color:var(--ink)}
+.uniformOption .uDesc{margin-top:1px;font-size:.75rem;line-height:1.25;color:var(--muted)}
+.uniformOption.activeUniform{border:2px solid var(--select-line);background:var(--select-bg);padding:5px calc(var(--s3) - 1px)}
+/* A uniform this member may not wear (js/setup.js sets .locked and its .uWhy line from data/uniform-rules.js lockedReason) is folded under one line at
+   the end of the list, muted, its reason under its name. The reason is a line of the card so its paragraph can wait behind the question mark; the card is
+   greyed by its colours and its dashed edge, not by opacity, which would grey the mark with it. */
+.lockedFold{margin-top:var(--s1);border-top:1px solid var(--line);padding-top:2px}
+.lockedFold>summary{display:flex;align-items:center;min-height:36px;cursor:pointer;font-size:var(--t-xs);font-weight:700;color:var(--muted)}
+.lockedFold[open]>summary{margin-bottom:var(--s1)}
+.uniformOption .uWhy{display:none}
 .uniformOption.locked{
   cursor:not-allowed;
   background:var(--panel-2);
   border-style:dashed;
 }
-.uniformOption.locked:hover{border-color:var(--line);background:var(--panel-2)}
+.uniformOption.locked:hover,.uniformOption.locked:focus{border-color:var(--line);background:var(--panel-2)}
 .uniformOption.locked .uName{color:var(--muted)}
-.uniformOption.locked::after{
-  content:attr(data-locked-reason);
+.uniformOption.locked .uDesc{display:none}
+.uniformOption.locked .uWhy{
   display:block;
-  margin-top:var(--s1);
-  font-size:var(--t-xs);
-  line-height:1.35;
+  margin-top:2px;
+  font-size:.75rem;
+  line-height:1.25;
   color:var(--muted);
 }
+/* A card the member may pick holds a picture of the uniform, drawn by the engine for the member (js/profile-pickers.js), the name beneath it, the card picked
+   marked by its heavier edge and a tick as the visual pickers are. The box is the picker's own (.vpPicture) in a square, so a coat and a field uniform with its
+   sleeves both fill it. A card the member may not wear stays its words. */
+.uniformOption:not(.locked){padding:6px;text-align:center}
+.uniformOption.activeUniform:not(.locked){padding:5px}
+.uniformOption .uPicture{aspect-ratio:1 / 1;margin-bottom:var(--s1)}
+.uniformOption .uPicture[hidden]{display:none}
+.uniformOption.activeUniform .vpTick{display:flex}
+.uniformOption.locked .uPicture,.uniformOption.locked .vpTick{display:none}
 
 #deviceTool,#ribbonRowOverridePanel{
   margin-top:var(--s3);
@@ -454,26 +566,30 @@ header h1::after{
 #ribbonRowOverrideStatus[data-valid="false"]{color:var(--danger)}
 #ribbonRowOverrideStatus[data-valid="true"]{color:var(--ok)}
 
-.statusGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2);margin-top:var(--s2)}
-.statusCard{border:1px solid var(--line);border-radius:var(--r);background:var(--panel-2);padding:var(--s2) var(--s3);font-size:var(--t-sm)}
+.statusGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:var(--s2)}
+.statusCard{border:1px solid var(--line);border-radius:var(--r);background:var(--panel-2);padding:var(--s1) var(--s2);font-size:var(--t-sm);text-align:center}
 .statusCard strong{display:block;font-size:var(--t-xs);color:var(--muted);font-weight:700}
-.statusCard span{font-family:var(--font-head);font-size:var(--t-xl);font-weight:700;color:var(--ink)}
-.noticeList{margin:var(--s2) 0 0;padding-left:var(--s5);max-height:160px;overflow:auto;font-size:var(--t-sm);line-height:1.4;color:var(--muted)}
+.statusCard span{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;line-height:1.1;color:var(--ink)}
+.noticeList{margin:var(--s2) 0 0;padding-left:0;list-style:none;max-height:160px;overflow:auto;font-size:var(--t-sm);line-height:1.4;color:var(--muted)}
 .noticeList li.warn{color:var(--warn)}
 .noticeList li.err{color:var(--danger)}
 .noticeList li.ok{color:var(--ok)}
 .capubV2ChipBar{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s2)}
 .capubV2Chip{border:1px solid var(--line);background:var(--panel-2);border-radius:var(--r);padding:var(--s1) var(--s2);font-size:var(--t-xs);color:var(--ink)}
 .validationBadge{display:inline-block;border-radius:var(--r);padding:2px var(--s2);font-size:var(--t-xs);font-weight:700;background:var(--select-bg);color:var(--ink);margin-left:var(--s2)}
-.capubV2Search{position:sticky;top:0;z-index:5;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s2);margin-bottom:var(--s3)}
+/* The search stays at the top edge of the scrolling window, flush with it (the body's padding is covered), so no tile shows above it. */
+.capubV2Search{position:sticky;top:calc(-1 * var(--s4));z-index:5;background:var(--panel);border:1px solid var(--line);border-top:0;border-radius:0 0 var(--r-lg) var(--r-lg);padding:calc(var(--s4) + var(--s2)) var(--s2) var(--s2);margin:calc(-1 * var(--s4)) 0 var(--s3)}
 .capubV2Search input{margin:0}
+.militaryBadgeGalleryTile select{width:100%;min-width:0;font-size:var(--t-sm)}
 .capubV2Search .sub{font-size:var(--t-xs);color:var(--muted);margin-top:var(--s2)}
+.capubV2Search .capubModalSay{color:var(--ink)}
+.badgeChooserSay{margin:var(--s2) 0 0;font-size:var(--t-xs);color:var(--ink)}
 
 /* ---- Preview ---- */
 #previewWrapper{
   flex:1;
   position:relative;
-  padding:var(--s5) var(--s5) 96px;
+  padding:var(--s5);
   display:flex;
   gap:var(--s4);
   flex-wrap:wrap;
@@ -494,44 +610,16 @@ header h1::after{
   box-shadow:var(--shadow);
   overflow:visible;
   transform-origin:top left;
-  transition:width .18s ease,height .18s ease,transform .18s ease;
+  transition:transform .18s ease;
 }
-#previewArea::before{
-  content:"Uniform Preview";
-  position:absolute;
-  left:var(--s3);
-  top:var(--s3);
-  z-index:50;
-  padding:2px var(--s2);
-  background:var(--cap-silver-20);
-  color:#464B53;
-  border-radius:var(--r);
-  font-size:var(--t-xs);
-  font-weight:700;
-}
-#uniformCanvas{position:relative;width:100%;height:100%;overflow:visible;border-radius:var(--r-lg);transition:width .18s ease,height .18s ease}
+#previewArea.isEmpty{visibility:hidden}
+#uniformCanvas{position:relative;width:100%;height:100%;overflow:visible;border-radius:var(--r-lg)}
 .layer{position:absolute;image-rendering:auto}
 .layer[data-missing="true"]{outline:2px dashed var(--warn);outline-offset:2px}
 #sideDisplay{display:flex;flex-direction:column;gap:var(--s3);min-width:140px}
 
-/* Field uniforms use a larger calibrated stage; keep it scrollable instead of cropping. */
-#previewArea[data-field-uniform="true"]{
-  width:969.6px;
-  height:707.52px;
-  min-width:969.6px;
-  min-height:707.52px;
-  max-width:none;
-  max-height:none;
-  overflow:visible;
-}
-#previewArea[data-field-uniform="true"] #uniformCanvas{
-  width:969.6px;
-  height:707.52px;
-  min-width:969.6px;
-  min-height:707.52px;
-  overflow:visible;
-}
-#previewArea[data-field-uniform="true"] img.layer.jacket{object-fit:contain;max-width:none;max-height:none}
+/* The uniform is one SVG that fills the stage; js/uniform-view.js sizes the stage to its proportions. */
+#uniformCanvas svg.uniformSvg{display:block;width:100%;height:100%}
 
 .previewToolbar{
   /* The negative side margins below pull the bar out to the wrapper's edges, so the basis has
@@ -557,32 +645,67 @@ header h1::after{
 .previewTools{display:flex;flex-wrap:wrap;gap:var(--s3);margin-left:auto}
 .previewToolCard{display:flex;align-items:center;gap:var(--s2)}
 .previewToolCard button{width:auto;min-width:44px;margin:0;padding:0 var(--s3);font-size:var(--t-lg)}
+.previewToolCard button[aria-pressed="true"]{background:var(--select-bg);border-color:var(--select-line)}
 .previewToolCard .zoomReadout{min-width:48px;text-align:center;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+/* Measurements: the button and its caret are one control, the caret attached to the right edge (js/workspace-ui.js, js/measure-panel.js). */
+.previewToolCard.measureGroup{gap:0}
+.measureGroup #measureBtn{border-top-right-radius:0;border-bottom-right-radius:0}
+.measureGroup .measureCaret{min-width:40px;padding:0 var(--s2);margin-left:-1px;border-top-left-radius:0;border-bottom-left-radius:0}
+.measureGroup .measureCaret[aria-expanded="true"]{background:var(--select-bg);border-color:var(--select-line)}
+.measureCaretIcon{display:block;width:0;height:0;margin:0 auto;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid currentColor}
+.measureGroup .measureCaret[aria-expanded="true"] .measureCaretIcon{transform:rotate(180deg)}
 
-.capubCommandBar{
-  position:fixed;
-  left:50%;
-  bottom:calc(var(--capub-footer-h) + var(--s3));
-  transform:translateX(-50%);
-  z-index:12000;
-  width:max-content;
+/* The measurement panel: a popover under the preview's toolbar; on a phone a sheet over the bottom of the screen (below). */
+.previewToolbar .measurePanel{
+  position:absolute;
+  top:100%;
+  right:var(--s5);
+  z-index:90;
+  width:min(340px,calc(100% - 2 * var(--s5)));
+  max-height:min(70vh,560px);
   display:flex;
+  flex-direction:column;
   gap:var(--s2);
-  align-items:center;
-  padding:var(--s2);
+  padding:var(--s3);
   background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:var(--r-lg);
-  box-shadow:var(--shadow);
+  border:1px solid var(--line-strong);
+  border-radius:var(--r);
+  box-shadow:0 10px 28px -12px rgba(0,0,0,.45);
 }
-.capubCommandBar button{width:auto;margin:0;padding:0 var(--s4);font-size:var(--t-lg);white-space:nowrap}
-/* One primary action per bar: the download. The rest read as secondary. */
-.capubCommandBar button:not(#cmdDownload){background:transparent;color:var(--ink);border-color:var(--line-strong)}
-.capubCommandBar button:not(#cmdDownload):hover{background:var(--panel-2);border-color:var(--ink)}
+.measurePanel[hidden]{display:none}
+.mpHead{display:flex;align-items:center;gap:var(--s2)}
+.mpHead strong{flex:1 1 auto;font-family:var(--font-head);font-size:var(--t-md)}
+.mpCount{font-size:var(--t-sm);color:var(--muted)}
+.mpHead .mpDone{width:auto;min-height:36px;margin:0;padding:0 var(--s3)}
+.mpBulk{display:flex;gap:var(--s2)}
+.mpBulk button{width:auto;min-height:34px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
+.mpList{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:var(--s1)}
+.mpGroup{margin:0 0 var(--s2);padding:0;border:0;min-width:0}
+.mpGroup legend{padding:0;margin:0 0 2px;font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:none;letter-spacing:0}
+/* A row of the list: the on/off switch (a button: the track with its round knob, and a tick on the knob when it is on, so it is not told by colour alone), the text, which takes
+   the room (a tap opens the distance's paragraph, js/citations.js), and the question mark that opens the same paragraph beside it, not inside it. */
+.mpRow{display:flex;align-items:center;gap:var(--s2);min-height:40px;padding:2px 0;border-bottom:1px solid var(--line)}
+.mpToggle{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:48px;min-height:36px;margin:0;padding:0;background:transparent;border:0;border-radius:var(--r);cursor:pointer}
+.mpMark{position:relative;display:block;box-sizing:border-box;width:38px;height:22px;border:2px solid var(--line-strong);border-radius:999px;background:var(--panel-2)}
+.mpMark::before{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--line-strong)}
+.mpToggle[aria-checked="true"] .mpMark{background:var(--select-line);border-color:var(--select-line)}
+.mpToggle[aria-checked="true"] .mpMark::before{left:16px;background:var(--panel)}
+.mpToggle[aria-checked="true"] .mpMark::after{content:"";position:absolute;top:3px;left:21px;width:3px;height:7px;border:solid var(--select-line);border-width:0 2px 2px 0;transform:rotate(45deg);box-sizing:content-box}
+.mpToggle:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.mpText{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;gap:var(--s2);font-size:var(--t-sm);color:var(--ink);cursor:pointer}
+.mpRow .citeBtn,.mpNoMark{flex:0 0 16px;width:16px;height:16px;margin-left:var(--s2)}
+.mpName{flex:1 1 auto;min-width:0;line-height:1.2}
+.mpRefs{margin:0}
+.mpRefs[hidden]{display:none}
+.mpRefs .vpLegend{margin:0 0 var(--s1);font-size:var(--t-xs)}
+.mpTimes{color:var(--muted)}
+.mpVal{flex:0 0 auto;font-weight:700;white-space:nowrap}
+.mpEmpty{margin:0}
+
 .capubToast{
   position:fixed;
   right:var(--s5);
-  bottom:calc(var(--capub-footer-h) + 84px);
+  bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--s5));
   z-index:25000;
   max-width:min(360px,calc(100vw - 32px));
   background:var(--brand);
@@ -598,32 +721,12 @@ header h1::after{
   transition:opacity .18s ease,transform .18s ease;
 }
 .capubToast.show{opacity:1;transform:translateY(0)}
-
-.previewEmptyState{
-  position:absolute;
-  inset:0;
-  z-index:40;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:var(--s4);
-  padding:var(--s5);
-  text-align:center;
-  border-radius:inherit;
-  background:var(--panel);
-  color:var(--ink);
+/* While a chooser is open its footer (the count and Done) is at the bottom of the window: the message rides just above it. */
+.capubToast.aboveModal{
+  right:calc((100vw - min(1100px,96vw)) / 2 + var(--s4));
+  bottom:calc((100vh - min(720px,86vh)) / 2 + 76px);
 }
-.previewEmptyState[hidden]{display:none}
-/* While the Start your uniform card is up there is nothing to show; the collar overlay used to
-   float on its own over it once membership and cut were chosen but rank was not. */
-#previewArea:has(> #previewEmptyState:not([hidden])) #uniformCanvas{visibility:hidden}
-.previewEmptyState .emptyTitle{font-family:var(--font-head);font-size:var(--t-xl);font-weight:700;line-height:1.1}
-.previewEmptyState .emptyChecklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2);text-align:left;font-size:var(--t-md);color:var(--muted)}
-.previewEmptyState .emptyChecklist li::before{content:"\25CB";display:inline-block;width:24px;color:var(--muted)}
-.previewEmptyState .emptyChecklist li.ok{color:var(--ok)}
-.previewEmptyState .emptyChecklist li.ok::before{content:"\2713";color:var(--ok);font-weight:700}
-.previewEmptyState button{width:auto;margin:0;padding:0 var(--s5)}
+
 
 .tooltipBubble{
   position:fixed;
@@ -664,9 +767,11 @@ header h1::after{
   /* A text link in a line, with a 44px target: the padding is cancelled by the margin. */
   display:inline-block;
   width:auto;
+  flex:0 0 auto;
+  white-space:nowrap;
   min-width:44px;
   min-height:44px;
-  margin:calc(-1 * var(--s3)) calc(-1 * var(--s2));
+  margin:calc(-1 * var(--s3)) 0;
   padding:var(--s3) var(--s2);
   border:0;
   background:none;
@@ -692,34 +797,28 @@ header h1::after{
 }
 .galleryTile:hover{border-color:var(--line-strong)}
 .galleryTile.isFilteredOut,#galleryModalHost div.isFilteredOut{display:none !important}
-.galleryTile img{width:72px;height:auto;border-radius:var(--r);border:1px solid var(--line);background:var(--paper)}
+/* The preview box never clips the art (LIVE10-8, Ethan on the Christian Chaplain badge tile: "why is this rounded?"): the badges and patches are rectangles of their own
+   (the chaplain cross on its navy field), and a border radius with the image's own overflow cut their corners off. The box is square, the art sits inside it with
+   padding (object-fit: contain), the tile's own outer rounding stays. */
+.galleryTile img{width:72px;height:auto;box-sizing:border-box;padding:0;object-fit:contain;border:0;border-radius:0;background:transparent}
+.galleryTile svg.ribbonPreviewSvg{width:110px;height:auto;flex:none;display:block;overflow:visible}
 .galleryTile .title{font-size:var(--t-sm);font-weight:700;line-height:1.25}
 .galleryTile .sub{margin-top:2px;font-size:var(--t-xs);line-height:1.3;color:var(--muted)}
 .galleryTile .miniRow{display:flex;gap:var(--s2);align-items:center;margin-top:var(--s2);flex-wrap:wrap}
 .galleryTile .miniRow label{display:flex;align-items:center;gap:var(--s2);font-size:var(--t-xs);color:var(--muted)}
 .galleryTile .miniRow input[type="number"]{width:72px;margin-top:0;padding:var(--s1) var(--s2);font-size:var(--t-sm)}
 .galleryTile input[type="checkbox"]{width:auto;margin:0}
-.miniMedalPreview{display:flex;align-items:center;gap:var(--s2);margin:var(--s2) 0 var(--s1);padding:var(--s2);border:1px dashed var(--line-strong);border-radius:var(--r);background:var(--panel-2);width:max-content;max-width:100%}
+.miniMedalPreview{display:flex;align-items:center;gap:var(--s2);margin:var(--s2) 0 var(--s1);width:max-content;max-width:100%}
 .miniMedalPreview span{font-size:var(--t-xs);font-weight:700;color:var(--muted);white-space:nowrap}
-.miniMedalPreview img{width:auto;height:48px;max-width:28px;border-radius:2px;background:var(--paper)}
+.miniMedalArt{display:block;flex:none;width:28px;height:48px}
+.miniMedalArt>svg{display:block;width:100%;height:100%}
 .miniMedalPreview.missing{color:var(--muted);opacity:.75}
 
-.ribbonSelectorTile{align-items:center}
-.ribbonSelectorTile:has(.rbAwardSelect option:checked:not([value=""])){border-color:var(--select-line);background:var(--select-bg)}
 .ribbonAwardLabel{display:block;margin-top:var(--s2);font-size:var(--t-xs);font-weight:700;color:var(--muted)}
-.ribbonAwardLabel select.rbAwardSelect{width:100%;margin-top:var(--s1);padding:var(--s2);font-size:var(--t-sm)}
-.ribbonDeviceSummary{margin-top:6px}
-.ribbonGallerySectionTitle{
-  grid-column:1 / -1;
-  margin:var(--s3) 0 0;
-  padding:var(--s3) 2px var(--s2);
-  border-bottom:1px solid var(--line);
-  font-size:var(--t-lg);
-  line-height:1.1;
-  color:var(--ink);
-}
-.ribbonGallerySectionTitle:first-child{margin-top:0}
-.ribbonGallerySectionTitle .sub{display:block;margin-top:var(--s1);font-family:var(--font-body);font-size:var(--t-xs);font-weight:400;color:var(--muted)}
+.ribbonRuleBtn{position:absolute;z-index:5;top:0;right:0;width:26px;height:26px;min-height:0;padding:0;margin:0;border-radius:50%;font-size:var(--t-xs);font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;background:var(--panel-2);color:var(--muted);border:1px solid var(--line-strong);cursor:pointer}
+.ribbonRuleBtn:hover,.ribbonRuleBtn[aria-expanded="true"]{color:var(--ink);border-color:var(--select-line)}
+.ribbonRulePop{position:absolute;left:0;right:0;top:0;min-height:100%;z-index:4;visibility:hidden;padding:var(--s2) 36px var(--s2) var(--s3);border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel-2);color:var(--ink);font-size:var(--t-xs);line-height:1.35;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.ribbonRuleBtn[aria-expanded="true"] + .ribbonRulePop,.ribbonRuleBtn:hover + .ribbonRulePop,.ribbonRuleBtn:focus-visible + .ribbonRulePop{visibility:visible}
 
 .modalOverlay{
   position:fixed;
@@ -791,17 +890,10 @@ header h1::after{
 .militaryRepresentationStatus{display:inline-block;margin-top:2px;font-size:var(--t-xs);font-weight:700}
 .militaryPreviewTitle{position:absolute;left:24px;right:24px;top:24px;text-align:center;font-weight:700;color:#e5e7eb}
 .militaryPreviewNote{position:absolute;left:24px;right:24px;bottom:24px;text-align:center;color:#cbd5e1;font-size:var(--t-xs);line-height:1.4}
-.militaryRackTile,.ribbonTile.militaryRibbonTile{position:absolute;object-fit:fill;filter:saturate(.92) contrast(1.02);box-shadow:inset 0 1px rgba(255,255,255,.22),inset 0 -1px rgba(15,23,42,.28)}
-.militaryRackPending{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px;background:repeating-linear-gradient(45deg,#334155,#334155 5px,#475569 5px,#475569 10px);color:#fff;font-size:7px;line-height:1.05;overflow:hidden;border:1px dashed #f59e0b}
-.militaryRibbonArt{position:relative;display:block;flex:0 0 auto;width:72px;height:19.64px;overflow:hidden;border-radius:1px;box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(15,23,42,.2)}
-.militaryRibbonArt>img{width:72px;height:19.64px;object-fit:fill;border-radius:1px;filter:saturate(.9) contrast(.97)}
-.militaryRibbonArt::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0,rgba(255,255,255,.16) .45px,rgba(0,0,0,.09) .8px,transparent 1.25px),repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0,transparent .7px,rgba(0,0,0,.08) 1.1px);mix-blend-mode:soft-light;opacity:.72}
 .militaryRibbonMenu,.militaryBranchMenu{grid-column:1/-1;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--panel);padding:var(--s2) var(--s3);margin-top:var(--s3)}
 .militaryRibbonMenu>summary,.militaryBranchMenu>summary{cursor:pointer;font-weight:700;color:var(--ink);padding:var(--s1) 2px}
 .militaryBranchMenu{margin:var(--s2) 0 0;background:var(--panel-2)}
-.militaryBranchGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s3);margin:var(--s3) 0 var(--s1)}
-.militaryRibbonSelectorTile{position:relative}
-.militaryServiceSelect,.militarySpecialDevices{width:100%;margin-top:var(--s1);padding:var(--s2);font-size:var(--t-sm)}
+.militaryBranchGrid{margin:var(--s3) 0 var(--s1)}
 .militarySpecialDeviceRow{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:6px;font-size:var(--t-xs);color:var(--muted)}
 
 /* ---- Rendered uniform pieces (placed on the preview; keep geometry rules intact) ---- */
@@ -900,98 +992,191 @@ header h1::after{
 }
 
 /* ---- Responsive ---- */
-@media (min-width:769px){
-  /* Centre the command bar over the preview it acts on, not the whole viewport. */
-  body:has(#layoutShell.sidebar-open) .capubCommandBar{left:calc(50% + var(--sidebar-w) / 2)}
+/* Above 700px the panel sits beside the preview at every width (a tablet gets a narrower one). The menu button at the left
+   of the header hides it and brings it back, so the preview can take the whole width; there is no bottom sheet. */
+.previewPeekBtn,#previewCloseBtn,.footerTiny{display:none}
+.footerShort{display:none}
+.footerCredit{margin-left:var(--s1)}
+@media (min-width:701px){
+  header{padding-left:calc(var(--s4) + 44px + var(--s3))}
+  .hamburgerBtn{
+    position:fixed;left:var(--s4);top:calc((var(--chrome-header-h,var(--capub-header-h)) - 44px) / 2);z-index:10000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    width:44px;min-height:44px;height:44px;margin:0;padding:0;
+    border-radius:var(--r);border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);
+  }
+  .hamburgerBtn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.8)}
+  .hamburgerBtn span{display:block;width:20px;height:2px;background:#fff;border-radius:1px}
   #layoutShell.sidebar-collapsed #previewWrapper{justify-content:center}
+  /* One line under the step bar and the toolbar (the owner: "make it even"): both are --bar-h tall at every width, the border in it, the toolbar one row.
+     The toolbar fits its room by giving up what it can spare, in this order: the Uniform and Items chips, the Undo and Redo words, the zoom reading, the Fit
+     button, the size of the Measurements button; and last, below that, its row scrolls sideways. It is a container so its own width decides, whether the
+     panel is open or hidden (a container query cannot style the container itself, so its padding does not change). */
+  .controlsHeader{height:var(--bar-h)}
+  .previewToolbar{height:var(--bar-h);flex-wrap:nowrap;padding:0 var(--s4);gap:var(--s3);container-type:inline-size}
+  .capubTopBar{flex:0 1 auto;flex-wrap:nowrap;overflow:hidden}
+  .capubPill{white-space:nowrap}
+  /* The row scrolls only as a last resort; its padding and the matching negative margin keep a focused button's ring from being cut off at its edges. */
+  .previewTools{flex:0 1 auto;min-width:0;flex-wrap:nowrap;align-items:center;align-self:stretch;gap:var(--s2);padding:0 6px;margin-right:-6px;overflow-x:auto;scrollbar-width:none}
+  .previewTools::-webkit-scrollbar{display:none}
+  .previewToolCard{flex:0 0 auto}
+  .previewToolCard[aria-label="Close the preview"]{display:none}
+  @container (max-width:783px){
+    .capubTopBar{display:none}
+  }
+  @container (max-width:572px){
+    #undoBtn,#redoBtn{width:44px;padding:0;font-size:0}
+    #undoBtn::before,#redoBtn::before{font-size:22px;line-height:1}
+    #undoBtn::before{content:"\21B6"}
+    #redoBtn::before{content:"\21B7"}
+  }
+  @container (max-width:517px){
+    .zoomReadout{display:none}
+  }
+  @container (max-width:461px){
+    #zoomFitBtn{display:none}
+  }
+  @container (max-width:403px){
+    .previewTools,.previewToolCard{gap:var(--s1)}
+    .previewToolCard button{min-width:40px}
+    #undoBtn,#redoBtn{width:40px}
+    .measureGroup #measureBtn{padding:0 6px;font-size:var(--t-sm)}
+  }
 }
-@media (max-width:900px){
+@media (min-width:701px) and (max-width:1024px){
+  :root{--sidebar-w:340px}
   .modal .galleryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media (max-width:768px){
-  header{padding-left:72px}
-  header h1{font-size:var(--t-lg)}
-  header h1::after{display:block;margin-left:0;font-size:var(--t-md)}
-  .controlsHeader .controlsTitle::after{display:none}
-  #layoutShell{height:calc(100vh - var(--capub-header-h));flex-direction:column;min-height:calc(100vh - var(--capub-header-h))}
-  /* Controls are a bottom sheet on a phone: the uniform stays visible above them. */
-  #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{
+
+/* ---- Phones (to 700px): a stack, not a shrunk desktop ----
+   App bar (title, tag, Undo and Redo as icons, the theme as an icon), the step strip stuck under it, the preview as a
+   peek on steps 2 and 3 and at full width on step 4 (a tap opens it full-screen), the step as the page, and a fixed
+   action bar with Back and Next over the one-line footer (js/workspace-ui.js sets data-step on the shell and
+   .previewFull on the body). */
+@media (max-width:700px){
+  :root{--capub-footer-h:40px;--phone-bar-h:72px;--peek-h:148px}
+  html,body{overflow-x:hidden}
+  /* 16px so iOS does not zoom into a field. */
+  select,input:not([type="checkbox"]):not([type="radio"]):not([type="range"]){font-size:16px}
+  /* The title and the Unofficial tag stack, so neither is cut off beside the icon buttons. */
+  header{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:auto auto;align-items:center;align-content:center;column-gap:var(--s2);row-gap:1px;min-height:56px;padding:var(--s1) var(--s3)}
+  header h1{grid-column:1;grid-row:1;min-width:0;font-size:var(--t-lg);line-height:1.1;white-space:nowrap}
+  header h1::after{display:none}
+  .unofficialTag{grid-column:1;grid-row:2;justify-self:start;margin-left:0;padding:0 var(--s2);font-size:.625rem;line-height:1.5}
+  .themeToggle{grid-column:3;grid-row:1 / 3;flex:0 0 auto;width:44px;min-width:44px;margin:0;padding:0;font-size:0;border-color:rgba(255,255,255,.5)}
+  .themeToggle::before{content:"\263E";font-size:20px;line-height:1}
+  .themeToggle[data-mode="dark"]::before{content:"\2600";font-size:20px}
+  header .previewToolCard{grid-column:2;grid-row:1 / 3;gap:var(--s1);flex:0 0 auto}
+  header .previewToolCard button{width:44px;min-width:44px;padding:0;font-size:0;background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+  header .previewToolCard button::before{font-size:22px;line-height:1}
+  header #undoBtn::before{content:"\21B6"}
+  header #redoBtn::before{content:"\21B7"}
+  header .previewToolCard button:disabled{opacity:.4;background:transparent;color:#fff}
+
+  #layoutShell{position:static;display:flex;flex-direction:column;overflow:visible}
+  #controls,#layoutShell.sidebar-open #controls,#layoutShell.sidebar-collapsed #controls{display:contents}
+  .controlsHeader{order:0;position:sticky;top:0;z-index:60;width:100%;box-shadow:0 1px 0 var(--line)}
+  .stepTab{min-height:52px;font-size:.75rem;gap:2px}
+  .stepTab .stepNum{width:24px;height:24px;font-size:var(--t-sm)}
+  #previewWrapper{order:1}
+  #stepBody{order:2;width:100%;overflow:visible;padding:var(--s3) var(--s3) calc(var(--phone-bar-h) + var(--chrome-footer-h,var(--capub-footer-h)) + var(--s4))}
+  .controlsFooter{
     position:fixed;
     left:0;
     right:0;
-    top:auto;
-    bottom:var(--capub-footer-h);
-    width:100%;
-    min-width:0;
-    max-width:none;
-    height:var(--sheet-h);
-    z-index:9000;
-    border-radius:var(--r-lg) var(--r-lg) 0 0;
-    box-shadow:var(--shadow);
-    border-top:1px solid var(--line-strong);
-    border-right:0;
-    transition:transform .2s ease,visibility .2s ease;
-    will-change:transform;
+    bottom:var(--chrome-footer-h,var(--capub-footer-h));
+    z-index:70;
+    padding:var(--s2) var(--s3) calc(var(--s2) + env(safe-area-inset-bottom,0px));
+    box-shadow:0 -6px 16px -10px rgba(0,0,0,.35);
   }
-  #layoutShell.sidebar-open #controls{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto}
-  #layoutShell.sidebar-collapsed #controls{transform:translate3d(0,110%,0);visibility:hidden;pointer-events:none}
-  #previewWrapper{order:2;flex:1;width:100%;min-width:0;padding:var(--s4) var(--s3) 200px}
-  /* With the sheet up, leave room under the uniform so it can scroll clear of it. */
-  body:has(#layoutShell.sidebar-open) #previewWrapper{padding-bottom:calc(var(--sheet-h) + var(--capub-footer-h) + var(--s4))}
-  .sheetClose{display:inline-flex}
-  /* While the sheet is up the toolbar keeps only undo and redo, so the uniform has room. */
-  body:has(#layoutShell.sidebar-open) .capubTopBar,
-  body:has(#layoutShell.sidebar-open) .previewToolCard[aria-label="Preview zoom"]{display:none}
-  .previewToolbar{flex-basis:calc(100% + 2 * var(--s3));margin:calc(-1 * var(--s4)) calc(-1 * var(--s3)) 0;padding:var(--s2) var(--s3);top:calc(-1 * var(--s4))}
-  .controlsScrollArea{padding-bottom:96px}
-  .statusGrid{grid-template-columns:1fr}
-  .modal{height:90vh}
-  .modal .galleryGrid{grid-template-columns:repeat(1,minmax(0,1fr))}
-  body:has(#layoutShell.sidebar-open) .capubCommandBar{display:none}
-  :root{--capub-footer-h:64px;--sheet-h:min(46vh,420px)}
-  #pageFooter{font-size:var(--t-xs);line-height:1.35;padding-top:var(--s1);padding-bottom:var(--s1)}
-  .capubCommandBar{left:var(--s3);right:var(--s3);transform:none;width:auto;flex-wrap:wrap;justify-content:center}
-  .capubCommandBar button{flex:1 1 auto;padding:0 var(--s3);font-size:var(--t-md)}
-}
+  .controlsFooter::before,.stepMoreBtn{display:none}
+  .stepFooterRow button{min-height:48px}
+  .capubToast{right:var(--s3);bottom:calc(var(--chrome-footer-h,var(--capub-footer-h)) + var(--phone-bar-h) + var(--s3))}
+  /* The chooser is the whole screen on a phone: above its footer, which has the bottom safe area under it. */
+  .capubToast.aboveModal{right:var(--s3);bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 
-.sheetClose{position:absolute;top:var(--s2);right:var(--s3);width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
-@media (min-width:769px){.sheetClose{display:none}}
-/* ---- Phones: keep the header inside the screen and the toolbar to two short rows ----
-   At 375px the header was 14px too wide, which made the whole page scroll sideways and pushed
-   the fixed footer (and its About link) off the right edge. */
-@media (max-width:480px){
-  header{padding-right:var(--s3)}
-  header h1{font-size:var(--t-md)}
-  header h1::after{font-size:var(--t-sm)}
-  .unofficialTag{margin-left:var(--s2);padding:2px var(--s2);font-size:var(--t-xs)}
-  .themeToggle{flex:0 0 auto;max-width:64px;padding:0 var(--s2);font-size:var(--t-sm);line-height:1.1}
-  /* Status and item count stay; the chosen uniform is already highlighted in the sidebar. */
-  #capubTopBar .capubPill:nth-child(2){display:none}
-  .previewTools{width:100%;margin-left:0;gap:var(--s2);justify-content:space-between}
-  .previewToolCard{gap:var(--s1)}
+  /* The preview. */
+  #previewWrapper{display:none;flex:0 0 auto;width:100%;padding:var(--s2) var(--s3);overflow:hidden;gap:0;justify-content:flex-start;align-content:flex-start}
+  #previewWrapper .previewToolbar{display:none}
+  /* A short strip of the whole uniform beside the Expand button on every step that has a preview: the Check and the downloads of Extra stay in view under it. */
+  #layoutShell[data-step="uniform"] #previewWrapper,#layoutShell[data-step="items"] #previewWrapper,#layoutShell[data-step="export"] #previewWrapper{
+    display:flex;
+    position:relative;
+    height:var(--peek-h);
+    cursor:pointer;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+  }
+  #layoutShell[data-step="uniform"] #uniformCanvas,#layoutShell[data-step="items"] #uniformCanvas,#layoutShell[data-step="export"] #uniformCanvas{pointer-events:none}
+  .previewPeekBtn{display:inline-flex;align-items:center;position:absolute;right:var(--s3);bottom:var(--s2);width:auto;min-height:40px;margin:0;padding:0 var(--s3);font-size:var(--t-sm);background:var(--panel)}
+  body.previewFull{overflow:hidden}
+  body.previewFull #previewWrapper,body.previewFull #layoutShell[data-step] #previewWrapper{
+    display:flex;
+    flex-wrap:wrap;
+    position:fixed;
+    inset:0;
+    z-index:11000;
+    height:auto;
+    padding:0 var(--s3) var(--s5);
+    overflow:auto;
+    cursor:default;
+    background:var(--bg);
+    border:0;
+  }
+  body.previewFull #previewWrapper .previewToolbar{display:flex;flex-basis:calc(100% + 2 * var(--s3));position:sticky;top:0;margin:0 calc(-1 * var(--s3)) var(--s3);padding:var(--s2) var(--s3)}
+  body.previewFull #layoutShell[data-step] #uniformCanvas{pointer-events:auto}
+  body.previewFull .previewPeekBtn{display:none}
+  .previewToolbar .capubTopBar{display:none}
+  .previewTools{width:100%;margin-left:0;justify-content:space-between;gap:var(--s2)}
   .previewToolCard button{padding:0 var(--s2);font-size:var(--t-md)}
   .previewToolCard .zoomReadout{min-width:40px}
+  #previewCloseBtn{display:inline-flex;align-items:center}
+  .previewToolCard[aria-label="Close the preview"]{order:-1}
+  /* The measurement panel is a sheet over the bottom of the screen, the preview still showing above it. */
+  .previewToolbar .measurePanel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:11100;width:auto;max-height:56vh;max-height:56dvh;padding:var(--s3) var(--s3) calc(var(--s3) + env(safe-area-inset-bottom,0px));border-width:1px 0 0;border-radius:var(--r-lg,12px) var(--r-lg,12px) 0 0;box-shadow:0 -10px 28px -12px rgba(0,0,0,.5)}
+  /* The open preview is a fixed layer that scrolls and the measurement sheet sits over its bottom. A downward drag that ran out of room at the top of either
+     chained to the page, and Chrome on Android took it for pull-to-refresh and reloaded the page (a tap on Measurements, then a swipe on the sheet or the
+     uniform). Each layer now keeps the drag, and the page itself takes none while the preview is open. */
+  html:has(body.previewFull){overscroll-behavior-y:none}
+  body.previewFull #previewWrapper{overscroll-behavior:contain}
+  .previewToolbar .measurePanel{overscroll-behavior:contain}
+  .mpHead .mpDone{min-height:44px}
+  .mpBulk button{min-height:44px}
+  .mpRow{min-height:44px}
+  .mpToggle{min-height:44px}
+
+  /* The steps. */
+  .uniformGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .uniformOption{min-height:56px}
+  .uniformOption .uName{font-size:var(--t-md)}
+  .statusGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cardRow button{padding:0 var(--s2)}
+
+  /* The pickers fill the screen: the title bar and the search stay put, Done stays at the bottom. */
+  .modalOverlay{padding:0;align-items:stretch}
+  .modal{width:100vw;height:100vh;height:100dvh;border-radius:0;border:0}
+  .modal .galleryGrid{grid-template-columns:minmax(0,1fr)}
+  .modalFooter{padding-bottom:calc(var(--s2) + env(safe-area-inset-bottom,0px))}
+  .modalFooter button{min-height:48px}
+
+  /* The footer is one line: Unofficial | About | Feedback. The literal separators in the markup (and the one
+     js/feedback.js adds) are zero-sized here; each link draws a rule on its left instead. */
+  #pageFooter{gap:0;padding:0 var(--s2);font-size:0;line-height:1}
+  #pageFooter>*{font-size:var(--t-xs)}
+  .footerFull,.footerShort,.footerCredit{display:none}
+  .footerTiny{display:inline}
+  .footerLink{display:inline-flex;align-items:center;margin:0 0 0 var(--s2);min-height:40px;padding:0 var(--s2);border-left:1px solid var(--line);border-radius:0;font-size:var(--t-xs)}
 }
-
-.footerShort{display:none}
-.footerCredit{margin-left:var(--s1)}
-@media (max-width:480px){
-  .footerFull,.footerCredit{display:none}
-  .footerShort{display:inline}
-  /* Two short lines, so the footer (and the sheet that sits on it) can be shorter. */
-  :root{--capub-footer-h:52px}
-}
-
-html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
-
-/* Very narrow phones (320px): the Unofficial notice moves into the subtitle instead of a tag. */
 @media (max-width:360px){
   .unofficialTag{display:none}
-  header h1::after{content:"Unofficial tool"}
+  .countChip{font-size:0}
+  .countChip::before{content:attr(data-short);font-size:var(--t-xs)}
 }
 
 .noticeList li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2)}
-.noticeList li>span{flex:1 1 12rem;min-width:0}
+.noticeList li>span{flex:1 1 12rem;min-width:0;padding-left:1em;text-indent:-1em}
+/* The flex layout of an item drops the list's own marker, so the bullet is drawn on its text. */
+.noticeList li>span::before{content:"\2022\00a0\00a0"}
 .noticeFix{flex:0 0 auto;width:auto;min-height:44px;margin:0;padding:0 var(--s3);font-size:var(--t-sm)}
 
 .itemPopover{
@@ -1031,14 +1216,12 @@ html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 /* The select behind the buttons stays in the page as the source of truth. */
 .segmentedSource{position:absolute;width:1px;height:1px;margin:-1px;opacity:0;pointer-events:none;overflow:hidden}
 
-/* ---- A uniform the member may not wear is not listed ---- */
-.uniformOption.locked{display:none}
-
 /* ---- Name on the uniform: optional, near the start ---- */
 .optionalName{margin-top:var(--s3);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
 .optionalName>summary{cursor:pointer;min-height:44px;box-sizing:border-box;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
 .optionalName[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
-.optionalName .plainPanel{border:0;padding:0;background:transparent;box-shadow:none}
+.optionalName .plainPanel,.moreDetails .plainPanel{border:0;padding:0;margin:0 0 var(--s3);background:transparent;box-shadow:none}
+.moreDetails .plainPanel:last-child{margin-bottom:var(--s3)}
 
 /* ---- Authorized, not drawn yet ---- */
 .plannedUniforms{margin-top:var(--s4)}
@@ -1062,97 +1245,8 @@ html[data-ux="2"] .controlsHeader .controlsTitle::after{display:none}
 .plannedFacts{margin:0;padding:0 var(--s3) var(--s3) calc(var(--s3) + var(--s4));font-size:var(--t-sm);color:var(--muted)}
 .plannedFacts li+li{margin-top:var(--s1)}
 
-/* ---- Guided flow (?ux=2): one step at a time ---- */
-.guidedSummary,.guidedNav{display:none}
-html[data-ux="2"] .capubSectionHint{display:none}
-html[data-ux="2"] .stepGroup{
-  margin-bottom:var(--s3);
-  border:1px solid var(--line);
-  border-radius:var(--r-lg);
-  background:var(--panel);
-}
-html[data-ux="2"] .stepGroup.isActive{border:2px solid var(--select-line)}
-html[data-ux="2"] .stepGroup>.stepGroupTitle{margin:0;padding:var(--s3) var(--s4)}
-html[data-ux="2"] .stepGroup:not(.isActive)>*:not(.stepGroupTitle):not(.guidedSummary){display:none}
-html[data-ux="2"] .stepGroup:not(.isActive)>.guidedSummary{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:var(--s3);
-  padding:0 var(--s4) var(--s3);
-  color:var(--muted);
-  font-size:var(--t-sm);
-}
-html[data-ux="2"] .stepGroup.isDone{border-color:var(--ok)}
-html[data-ux="2"] .stepGroup.isDone>.stepGroupTitle{color:var(--ok)}
-html[data-ux="2"] .guidedEdit{width:auto;min-height:44px;margin:0;padding:0 var(--s3)}
-html[data-ux="2"] .stepGroup.isActive>*:not(.stepGroupTitle):not(.guidedSummary){margin-left:var(--s4);margin-right:var(--s4)}
-html[data-ux="2"] .stepGroup.isActive>.guidedNav{
-  display:flex;
-  gap:var(--s2);
-  justify-content:space-between;
-  margin-top:var(--s4);
-  margin-bottom:var(--s4);
-}
-html[data-ux="2"] .guidedNav button{width:auto;flex:1 1 auto;margin:0}
-html[data-ux="2"] .guidedNav .guidedBack{flex:0 0 auto}
-.guidedHint{margin:0 0 var(--s3);font-size:var(--t-sm);color:var(--muted)}
-.guidedAdvanced{margin-top:var(--s4);border:1px dashed var(--line-strong);border-radius:var(--r-lg);padding:0 var(--s3)}
-.guidedAdvanced>summary{cursor:pointer;padding:var(--s3) 2px;font-weight:700;color:var(--ink)}
-.guidedAdvanced[open]>summary{border-bottom:1px solid var(--line);margin-bottom:var(--s3)}
-
-/* Uniforms by occasion */
-html[data-ux="2"] .uniformList{display:block}
-.guidedUniformGroup+.guidedUniformGroup{margin-top:var(--s4)}
-.guidedGroupTitle{margin-bottom:var(--s2);font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
-.guidedUniformGrid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2)}
-html[data-ux="2"] .uniformOption.locked{display:none}
-html[data-ux="2"] .uniformOption{
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  gap:var(--s3);
-  width:100%;
-  min-height:0;
-  margin:0;
-  padding:var(--s2) var(--s3);
-  text-align:left;
-}
-.guidedThumb{
-  flex:0 0 52px;
-  width:52px;
-  height:64px;
-  object-fit:cover;
-  object-position:top center;
-  border-radius:var(--r);
-  background:var(--panel-2);
-}
-.guidedText{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
-.guidedTag{
-  padding:1px var(--s2);
-  border-radius:var(--r);
-  background:var(--cap-yellow);
-  color:#10131A;
-  font-size:var(--t-xs);
-  font-weight:700;
-}
-
-/* Item cards */
-.guidedItemCards{display:grid;gap:var(--s2)}
-.guidedCard{
-  padding:var(--s3);
-  border:1px solid var(--line);
-  border-radius:var(--r);
-  background:var(--panel-2);
-}
-.guidedCard.unavailable{opacity:.75}
-.guidedCardTitle{font-family:var(--font-head);font-size:var(--t-lg);font-weight:700;color:var(--ink)}
-.guidedCardCount{font-size:var(--t-md);font-weight:700;color:var(--ink)}
-.guidedCardRule{margin:var(--s1) 0 var(--s2);font-size:var(--t-sm);color:var(--muted)}
-.guidedCard button{width:100%;margin:0}
-
-/* ---- About dialog (unofficial-site and privacy notice) ---- */
-#aboutDialog{
+/* ---- About dialog (unofficial-site and privacy notice) and the confirm dialog (js/state.js capubConfirm) ---- */
+#aboutDialog,#confirmDialog{
   width:min(520px,calc(100vw - 32px));
   padding:var(--s5);
   border:1px solid var(--line);
@@ -1160,11 +1254,43 @@ html[data-ux="2"] .uniformOption{
   background:var(--panel);
   color:var(--ink);
 }
-#aboutDialog::backdrop{background:var(--scrim)}
-#aboutDialog h2{margin:0 0 var(--s3);font-size:var(--t-xl);line-height:1.1}
-#aboutDialog p{margin:0 0 var(--s3);font-size:var(--t-md);line-height:1.5}
-#aboutDialog .aboutActions{margin-top:var(--s4);text-align:right}
-#aboutDialog .aboutActions button{width:auto;margin:0;padding:0 var(--s5)}
+#aboutDialog::backdrop,#confirmDialog::backdrop{background:var(--scrim)}
+#aboutDialog h2,#confirmDialog h2{margin:0 0 var(--s3);font-size:var(--t-xl);line-height:1.1}
+#aboutDialog p,#confirmDialog p{margin:0 0 var(--s3);font-size:var(--t-md);line-height:1.5}
+#aboutDialog .aboutActions,#confirmDialog .aboutActions{margin-top:var(--s4);text-align:right}
+#aboutDialog .aboutActions button,#confirmDialog .aboutActions button{width:auto;margin:0;padding:0 var(--s5)}
+#confirmDialog .aboutActions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:var(--s2)}
+
+/* ---- Feedback dialog (js/feedback.js, LIVE13 E70) ---- */
+#feedbackDialog{
+  width:min(520px,calc(100vw - 32px));
+  max-height:calc(100vh - 32px);
+  padding:var(--s5);
+  border:1px solid var(--line);
+  border-top:6px solid var(--brand);
+  border-radius:var(--r-lg);
+  background:var(--panel);
+  color:var(--ink);
+}
+#feedbackDialog::backdrop{background:var(--scrim)}
+#feedbackDialog h2{margin:0 0 var(--s2);font-size:var(--t-xl);line-height:1.1}
+#feedbackDialog form,#feedbackDialog .feedbackThanks{margin:0}
+#feedbackDialog .feedbackIntro{margin:0 0 var(--s4);font-size:var(--t-md);line-height:1.45;color:var(--muted)}
+#feedbackDialog textarea{
+  display:block;width:100%;min-height:132px;margin-top:6px;padding:8px 10px;resize:vertical;
+  border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel);color:var(--ink);
+  font-family:inherit;font-size:var(--t-md);line-height:1.45;
+}
+#feedbackDialog .feedbackCount{margin:var(--s1) 0 var(--s3);text-align:right}
+#feedbackDialog .feedbackSetupRow{display:flex;gap:var(--s2);align-items:center;min-height:44px;margin-top:var(--s3);font-size:var(--t-sm);color:var(--ink)}
+#feedbackDialog .feedbackSetupRow + .hintText{margin-top:0;padding-left:calc(16px + var(--s2))}
+#feedbackDialog .feedbackWhat{margin:var(--s3) 0 0;padding:var(--s2) var(--s3);border-left:3px solid var(--line-strong);background:var(--panel-2)}
+#feedbackDialog .feedbackWhat b{color:var(--ink)}
+#feedbackDialog .feedbackError{margin:var(--s3) 0 0;padding:var(--s2) var(--s3);border-left:4px solid var(--danger);border-radius:var(--r);background:var(--danger-bg);color:var(--ink);font-size:var(--t-sm)}
+#feedbackDialog .feedbackActions{display:flex;justify-content:flex-end;gap:var(--s2);margin-top:var(--s4)}
+#feedbackDialog .feedbackActions button{width:auto;margin:0;padding:0 var(--s5)}
+#feedbackDialog .feedbackThanks p{margin:0;font-size:var(--t-md);color:var(--muted)}
+#feedbackDialog .feedbackThanks h2:focus{outline:none}
 
 /* ---- Small utilities (replace inline styles in index.html) ---- */
 .subHead{font-size:var(--t-sm);font-weight:700}
@@ -1177,7 +1303,10 @@ small.hintText{display:block}
 
 /* ---- Purchase list and cost dialog ---- */
 #purchaseListButton{width:100%}
-.finishAction+.finishAction{margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--line)}
+.finishAction+.finishAction{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}
+.finishAction[hidden]+.finishAction{margin-top:0;padding-top:0;border-top:0}
+#finishPanel .finishAction button{margin-top:0}
+#finishPanel .moreDetails{margin-top:var(--s3)}
 .finishAction .hintText{margin-top:var(--s2)}
 .capub-purchase-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:var(--s5);background:var(--scrim)}
 .capub-purchase-overlay.open{display:flex}
@@ -1229,13 +1358,11 @@ small.hintText{display:block}
     margin-right:var(--s2);
     font-size:var(--t-xs);
     font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.04em;
     color:var(--muted);
   }
   .capub-purchase-table td[data-label="Item"]::before{display:none}
   .capub-purchase-table td[data-label="Include"],.capub-purchase-table td[data-label="Own it"]{display:flex;align-items:center;min-height:44px}
-  .capub-purchase-table td[data-label="Include"] input,.capub-purchase-table td[data-label="Own it"] input{width:24px;height:24px;margin:0}
+  .capub-purchase-table td[data-label="Include"] input{width:24px;height:24px;margin:0}
 }
 .capub-purchase-rule>summary{cursor:pointer}
 
@@ -1251,12 +1378,16 @@ small.hintText{display:block}
 }
 /* A checkbox with its words is one control: the whole row is the target. */
 label.fieldNote:has(>input[type=checkbox]){display:flex;align-items:center;gap:var(--s2);min-height:44px}
+/* With its explanation: the box in the first column, the words and the hint stacked in the second. */
+label.fieldNote.optionWithHint:has(>input[type=checkbox]){display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:var(--s2);align-items:center}
+label.fieldNote.optionWithHint:has(>input[type=checkbox]) .optionHint{grid-column:2;padding-left:0}
 /* A folded section is a control, so its heading is a 44px target. */
 .modal details>summary{min-height:44px;box-sizing:border-box;padding-top:var(--s3);padding-bottom:var(--s3)}
 
 /* Access code box: covers the page until the code is entered (js/access-gate.js). */
 #accessGate{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--bg)}
 html[data-access="ok"] #accessGate{display:none}
+html[data-access="guest"] #accessGate{display:none}
 #accessGateForm{width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
 #accessGateForm h1{margin:0;font-size:1.4rem}
 #accessGateForm input{min-height:44px;font-size:16px}
@@ -1266,3 +1397,256 @@ html[data-access="ok"] #accessGate{display:none}
 .accessGateHint{font-size:.9rem}
 .accessGateHint summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--ink)}
 .accessGateHint p{margin:0 0 8px;color:var(--muted)}
+
+/* ---- Badge chooser (Badges panel): which badge to show where more are selected than a position takes ---- */
+.badgeChooser{display:grid;gap:var(--s3);margin-top:var(--s3)}
+.badgeChooser.hidden{display:none}
+.badgeChooserLead{margin:0}
+/* A group is a plain block under a heading row: the title on the left, how many badges are worn on the right, muted. */
+.badgeChooserGroup{margin:0;padding:var(--s3) 0 0;display:grid;gap:var(--s1);min-width:0;border-top:1px solid var(--line)}
+.badgeChooserHead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2)}
+.badgeChooserTitle{margin:0;font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.badgeChooserCount{flex:none;font-size:var(--t-xs);color:var(--muted)}
+.badgeChooserNote{margin:0}
+.badgeChooserList{display:grid;gap:var(--s2);min-width:0}
+.badgeChooserHead{margin-bottom:var(--s1)}
+.badgeChooserOption{display:flex;align-items:center;gap:var(--s2);min-height:44px;padding:0 var(--s1);
+  font-size:var(--t-sm);color:var(--ink);cursor:pointer;border-radius:var(--r)}
+.badgeChooserOption input{flex:none;width:20px;height:20px;margin:0;accent-color:var(--action)}
+.badgeChooserOption:focus-within{outline:2px solid var(--focus);outline-offset:2px}
+.badgeChooserName{min-width:0;overflow-wrap:anywhere}
+/* One place of several: a heading row of its own (its name on the left, whether a badge is shown there on the right, muted, as the group's
+   heading row has it), the same radio rows under it. */
+.badgeChooserSlot{display:grid;gap:var(--s1);min-width:0}
+.badgeChooserSlot + .badgeChooserSlot{padding-top:var(--s1)}
+.badgeChooserSlotHead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2)}
+.badgeChooserSlotName{margin:0;font-family:inherit;font-size:var(--t-sm);font-weight:700;line-height:1.3;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.badgeChooserTag{margin-left:auto;flex:none;text-align:right;font-size:var(--t-xs);color:var(--muted)}
+
+/* ---- What is chosen and where it sits (Badges and Patches cards), and the command insignia pin row ---- */
+.itemSummary{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s1);min-width:0}
+.itemSummary.hidden{display:none}
+.itemSummaryTitle{margin:0;font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.itemSummaryList{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2)}
+.itemSummaryRow{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 var(--s2);min-width:0;font-size:var(--t-sm);line-height:1.35}
+.itemSummaryName{flex:1 0 100%;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere}
+.itemSummaryPlace{flex:1 0 100%;font-size:var(--t-xs);color:var(--muted);min-width:0}
+.itemSummaryRow.notShown .itemSummaryWhy{color:var(--ink)}
+.itemSummaryWhy{flex:1 0 100%;margin-top:0;font-size:var(--t-xs);color:var(--muted)}
+/* The Patches card: a row of small patch pictures, each with its name and place under it; a patch with no place left is dimmed and takes the width, its reason beside it. */
+.itemSummaryList.withPictures{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s2);align-items:flex-start}
+.itemSummaryList.withPictures .itemSummaryRow{flex:0 1 104px;display:grid;justify-items:center;align-content:start;gap:2px;text-align:center}
+.itemSummaryPicture{display:flex;align-items:center;justify-content:center;width:100%;height:76px;min-width:0}
+.itemSummaryPicture img{max-width:100%;max-height:100%;object-fit:contain}
+.itemSummaryList.withPictures .itemSummaryName,.itemSummaryList.withPictures .itemSummaryPlace,.itemSummaryList.withPictures .itemSummaryWhy{flex:none;width:100%;font-size:var(--t-xs);line-height:1.25}
+.itemSummaryList.withPictures .itemSummaryRow.notShown{flex:1 0 100%;grid-template-columns:96px minmax(0,1fr);justify-items:start;text-align:left;column-gap:var(--s2)}
+.itemSummaryList.withPictures .itemSummaryRow.notShown .itemSummaryPicture{grid-row:1 / span 3;opacity:.4}
+.itemSummaryList.withPictures .itemSummaryRow.notShown .itemSummaryName{color:var(--muted)}
+/* Supplements: the section under "Your unit" in the Profile step (js/supplements.js). Rows follow the item lists of the Items step. */
+.supplementBlock{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s2);min-width:0}
+.supplementBlock:first-child{margin-top:0;padding-top:0;border-top:0}
+.supplementName{margin:0;font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.supplementDate{font-size:var(--t-xs);color:var(--muted)}
+.supplementItems{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3);min-width:0}
+.supplementRow{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s2);min-width:0;font-size:var(--t-sm);line-height:1.4}
+.supplementTag{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--muted)}
+.supplementText{flex:1 1 100%;min-width:0;color:var(--ink);overflow-wrap:anywhere}
+.supplementFound{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--ok)}
+.supplementWarn{flex:1 0 100%;font-size:var(--t-xs);font-weight:700;color:var(--warn)}
+.supplementWingPick{flex:0 0 140px;max-width:100%}
+.supplementPointer{display:grid;gap:var(--s2);margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line)}
+.supplementPointer .hintText{margin:0}
+.supplementGo{min-height:44px}
+#unitPanel #unitPatchSelect{margin-top:var(--s2)}
+.commandRow{margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--line);display:grid;gap:var(--s1);min-width:0}
+.commandRow.hidden{display:none}
+.commandRowHead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 var(--s2)}
+.commandRowLabel{font-family:var(--font-head);font-weight:700;font-size:var(--t-md);line-height:1.2;color:var(--ink)}
+.commandRowState{font-size:var(--t-xs);color:var(--muted);text-align:right;min-width:0}
+.commandRow .hintText{margin-top:var(--s1)}
+.commandRowLevel{display:grid;gap:var(--s1);min-width:0}
+.commandRowLevel.hidden{display:none}
+.commandRowLevel select{width:100%;min-width:0}
+
+/* Regulation references (js/citations.js). A reference is taken out of its text and waits behind the small question mark that ends the text; a
+   press opens it in a popover that floats over the page just above the mark, so nothing moves. The Regulation tab's switch sets data-cites="shown"
+   on the root: every reference is back in its text and the marks are gone. The mark is a span, not a button, so the page's button rules (full width,
+   44px tall) never reach it; the ring around it is the target. */
+:root:not([data-cites="shown"]) .citeRef{display:none}
+.citeBtn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;margin:0 0 0 var(--s1);padding:0;vertical-align:-2px;
+  border:1px solid var(--line-strong);border-radius:50%;background:transparent;
+  color:var(--muted);font-family:var(--font-body);font-size:11px;font-weight:700;font-style:normal;line-height:1;
+  letter-spacing:0;text-indent:0;text-transform:none;white-space:nowrap;
+  cursor:pointer;user-select:none;-webkit-user-select:none;
+  pointer-events:auto;
+}
+.citeBtn::before{content:"?"}
+.citeBtn::after{content:"";position:absolute;inset:-6px}
+.citeBtn:hover,.citeBtn[aria-expanded="true"]{color:var(--ink);border-color:var(--ink)}
+/* The popover: one element, fixed over the page, put by js/citations.js just above the mark (below it where there is no room above). The pointer's
+   place along the edge is --arrow. */
+.citePop{
+  position:fixed;left:0;top:0;z-index:26000;box-sizing:border-box;
+  width:max-content;max-width:min(300px,calc(100vw - 16px));
+  padding:var(--s2) var(--s3);
+  background:var(--panel);color:var(--ink);
+  border:1px solid var(--line-strong);border-radius:var(--r);box-shadow:var(--shadow);
+  font-family:var(--font-body);font-size:var(--t-sm);font-weight:700;font-style:normal;line-height:1.35;letter-spacing:0;
+  text-align:left;text-transform:none;white-space:normal;overflow-wrap:anywhere;
+}
+.citePopRef{display:block}
+/* A measurement's popover: its distance, then the paragraph under it, lighter. */
+.citePopRule{display:block}
+.citePopRule ~ .citePopRef{margin-top:2px;font-weight:400;color:var(--muted)}
+.citePop::after{content:"";position:absolute;left:calc(var(--arrow,50%) - 4px);width:8px;height:8px;background:var(--panel);border:1px solid var(--line-strong);transform:rotate(45deg)}
+.citePop[data-side="above"]::after{bottom:-5px;border-top:0;border-left:0}
+.citePop[data-side="below"]::after{top:-5px;border-bottom:0;border-right:0}
+.citeOfSelect>.citeRef{font-weight:400;color:var(--muted)}
+:root[data-cites="shown"] .citeBtn,:root[data-cites="shown"] .citeOfSelect{display:none}
+/* The list's marks stay when the Regulation tab's switch prints the references in the notes: there is no text in a row for a paragraph to go in. */
+:root[data-cites="shown"] .citeBtn.citeMeasure{display:inline-flex}
+/* A distance in the drawing that has a paragraph: its lines and label take a press, and the label shows a ring when the keyboard reaches it. Lengths in the drawing are
+   its own units (inches), so the ring is the label's edge drawn 3px wide on the screen whatever the zoom, not an outline. */
+.uniformSvg g.measure{cursor:pointer}
+.uniformSvg [data-cite-measure]:focus{outline:none}
+.uniformSvg rect[data-cite-measure]:focus-visible{stroke:var(--cap-red);stroke-width:3px;vector-effect:non-scaling-stroke}
+#citationsPanel .hintText{margin-top:0}
+.citeTable{margin-top:var(--s3)}
+.citeTable tbody th[scope="row"]{color:var(--muted)}
+.citeTable .regRef{min-width:9em;color:var(--ink)}
+@media (max-width:700px){
+  .citeBtn::after{inset:-12px}
+}
+
+/* ---- Visual pickers (js/visual-picker.js): options chosen by picture, the name beneath ----
+   A group of tiles shaped like the uniform cards. The picture sits on the preview's own white, in a box of fixed shape, so a navy cap reads on either theme.
+   The tile picked has a heavier edge, its own shade and a tick, so it does not rest on colour alone. The tiles wrap to the width they have (three to a row
+   at the sidebar's width, two at 'large'), never wider than their column. */
+.vp{margin:0}
+.vpLegend{margin-bottom:var(--s2)}
+.vpSection+.vpSection{margin-top:var(--s3)}
+.vpGroupHead{margin:0 0 var(--s1);font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.2;color:var(--muted)}
+.vpGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.vp[data-size="large"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.vpOption{
+  position:relative;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:var(--s1);
+  width:100%;min-width:0;min-height:44px;margin:0;padding:6px;
+  text-align:center;
+  background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:var(--r);
+  font-family:var(--font-body);font-size:var(--t-xs);font-weight:400;letter-spacing:0;line-height:1.2;
+}
+.vpOption:hover{border-color:var(--ink);background:var(--panel-2)}
+.vpOption:active{transform:none}
+.vpOption:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.vpOption[aria-checked="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
+.vpPicture{display:flex;align-items:center;justify-content:center;aspect-ratio:4 / 3;min-width:0;overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:4px;color:var(--line-strong)}
+.vp[data-size="large"] .vpPicture{aspect-ratio:3 / 2}
+.vp[data-shape="tall"] .vpPicture,.vp[data-size="large"][data-shape="tall"] .vpPicture{aspect-ratio:3 / 4}
+.vpPicture>svg,.vpPicture>img{display:block;width:100%;height:100%;object-fit:contain}
+.vpLabel{display:block;min-width:0;font-family:var(--font-head);font-size:var(--t-sm);font-weight:700;line-height:1.15;overflow-wrap:anywhere}
+.vpMark{display:block;align-self:center;max-width:100%;padding:0 6px;border:1px solid var(--line-strong);border-radius:999px;font-size:.6875rem;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
+.vpTick{position:absolute;top:4px;right:4px;display:none;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--select-line);color:var(--panel)}
+.vpOption[aria-checked="true"] .vpTick{display:flex}
+.vpTick svg{display:block;width:14px;height:14px}
+/* A badge or patch that is chosen and that the drawing leaves off: its picture is dim, its name stays; the status line says why when it is tapped. */
+.vpOption.isMuted .vpPicture{opacity:.4}
+.vpNote{margin-top:var(--s2)}
+.vpOption.noPicture{justify-content:center;min-height:56px}
+/* Boxed tiles (data-boxed, js/visual-picker.js): every switch tile (mode "toggle": a list of badges, ribbons or patches, any number on) and a choice whose options carry a line under
+   the name (the badge for each place). The cell is the box; the button in it is the picture and the name, and the line under the name (outside the button, so a reference in it can carry
+   its mark) and a switch tile's controls (the level, the count, the devices, shown while it is on) are inside the box. The box takes the picked edge and shade. */
+.vp[data-boxed] .vpCell{position:relative;display:flex;flex-direction:column;gap:var(--s1);min-width:0;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.vp[data-boxed] .vpCell:hover{border-color:var(--ink);background:var(--panel-2)}
+.vp[data-boxed] .vpCell:has(> .vpOption[aria-pressed="true"]),.vp[data-boxed] .vpCell:has(> .vpOption[aria-checked="true"]){border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
+.vp[data-boxed] .vpOption,.vp[data-boxed] .vpOption:hover{border:0;background:transparent;padding:0;min-height:0}
+/* A picture fills its frame as far as the frame's shape lets it (it is fitted whole, never cropped): a badge taller than the frame is wide fills the frame's height, and the frame's edge
+   and the outline of the art meet and read as a cut (the Historian Technician badge, a shield 1.25 by 1.43 in, in a frame 3 by 2). The frame keeps a margin all round, so what is fitted is
+   seen whole with room round it. */
+.vp[data-boxed] .vpPicture{padding:6px}
+.vpOption[aria-pressed="true"] .vpTick{display:flex}
+/* The tiles that choose badges, ribbons and patches are about two thirds of the size of the ones that choose the uniform: three to a row in the Badges panel and in the chooser
+   window at a phone's width, seven in the window on a desktop (six before). The name stays at 13 px under its picture, wrapping to a second line, and no tile is under 44 px. */
+.vp[data-mode="toggle"] .vpGrid,.vp[data-name^="badgeChooser-"] .vpGrid,.vp[data-name^="itemOpt-commandInsignia"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+@media (min-width:700px){.vp[data-mode="toggle"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+.vp[data-mode="toggle"] .vpLabel,.vp[data-name^="badgeChooser-"] .vpLabel,.vp[data-name^="itemOpt-commandInsignia"] .vpLabel{font-size:.8125rem}
+.vpCell[hidden],.vpSection[hidden],.vpControls[hidden]{display:none}
+/* Ribbons (shape "wide"): a ribbon is about 3.7 times as wide as it is high, so its picture box is wide and low and a row holds more of them; the drawn ribbon of one that is on has its devices. */
+.vp[data-shape="wide"] .vpPicture,.vp[data-size="large"][data-shape="wide"] .vpPicture{aspect-ratio:3 / 1;padding:4px}
+.vp[data-shape="wide"] .vpPicture>svg{overflow:visible}
+.vpControls .ribbonDeviceSummary{margin:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3}
+.vpControls .miniMedalPreview{margin:0}
+.vpControls .militarySpecialDeviceRow{margin:0}
+.vpControls .militarySpecialDeviceRow .vpSwitch{width:auto;min-height:32px}
+.militaryRibbonMenu .vpSwitch.militaryAdvancedMode{width:auto;min-height:32px;margin-left:var(--s2)}
+/* A row of tiles (layout "row"): a choice under a tile, one row that scrolls sideways where the choices run long (the count of a ribbon, a military badge's level, the order of a stack of
+   badges). Each tile is the item as the engine draws it at that choice; the one picked has the picked edge and is in the middle of what is seen. */
+.vp[data-layout="row"] .vpGrid{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;padding:2px 2px 6px;scroll-snap-type:x proximity}
+.vp[data-layout="row"] .vpOption,.vp[data-layout="row"] .vpCell{flex:0 0 var(--vpRowW,96px);width:var(--vpRowW,96px);scroll-snap-align:center}
+.vp[data-layout="row"] .vpOption{min-height:0;padding:4px;gap:2px}
+.vp[data-layout="row"] .vpOption[aria-checked="true"]{padding:3px}
+.vp[data-layout="row"][data-boxed] .vpOption,.vp[data-layout="row"][data-boxed] .vpOption:hover{padding:0}
+.vp[data-layout="row"] .vpPicture{aspect-ratio:auto;height:var(--vpRowPic,34px);padding:2px}
+.vp[data-layout="row"] .vpLabel{font-size:.75rem;line-height:1.15;font-weight:600}
+.vpRow{min-width:0}
+.vpControls .vpRow .vp{margin:0}
+.vpGroupNote{margin:calc(-1 * var(--s1)) 0 var(--s2);font-size:var(--t-xs);line-height:1.3;color:var(--muted)}
+.vpCaption{display:block;min-width:0;font-size:.75rem;font-weight:400;line-height:1.25;color:var(--muted);text-align:center;overflow-wrap:anywhere}
+.vpControls{display:grid;gap:var(--s1);min-width:0;padding:0 2px}
+.vpControls select{min-width:0;width:100%}
+.vpControlStack{display:grid;gap:var(--s1);min-width:0}
+/* A ribbon that is on and has a row of counts, services or devices takes the width of the list so that its row has room: the tile on the left and the row beside it, the row under
+   the tile at a phone's width. */
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow){grid-column:1/-1;display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);column-gap:var(--s3);align-items:start}
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpOption,.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpCaption{grid-column:1}
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpControls{grid-column:2;grid-row:1 / span 2}
+@media (max-width:699px){
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow){grid-template-columns:minmax(0,1fr)}
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpOption,.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpCaption{max-width:150px}
+  .vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpRow)>.vpControls{grid-column:1/-1;grid-row:auto}
+}
+.vpControlStack .ribbonAwardLabel{margin:0}
+.vpSwitch{width:100%;min-height:36px;padding:0 var(--s2);font-size:var(--t-xs)}
+.vpSwitch[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg)}
+/* Small tiles (data-size="small"): a group of many choices whose pictures are small, such as the grades' insignia, wrap to four or five to a row at the sidebar's width. */
+.vp[data-size="small"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:4px}
+.vp[data-size="small"] .vpOption{padding:4px;gap:2px}
+.vp[data-size="small"] .vpOption[aria-checked="true"]{padding:3px}
+.vp[data-size="small"] .vpPicture{aspect-ratio:1 / 1;padding:2px}
+.vp[data-size="small"] .vpLabel{font-size:var(--t-xs)}
+.vp[data-size="small"] .vpTick{top:2px;right:2px;width:16px;height:16px}
+.vp[data-size="small"] .vpTick svg{width:11px;height:11px}
+/* A grade's insignia (the grades and the first sergeant's diamond) is the device alone, as worn on the blues, with no cloth under it and no white box behind it
+   (js/profile-pickers.js): the grade tile is the dark surface (the --grade tokens, the same on either theme), the picture box has no ground of its own, and the silver, white and gold of the metal and thread read on it. */
+.vp[data-name="rank"] .vpOption,.vp[data-name="firstSergeant"] .vpOption{--panel:var(--grade-panel);--panel-2:var(--grade-panel-2);--ink:var(--grade-ink);--line:var(--grade-line);--line-strong:var(--grade-line-strong);--select-bg:var(--grade-select-bg);--select-line:var(--grade-select-line)}
+.vp[data-name="rank"] .vpPicture,.vp[data-name="firstSergeant"] .vpPicture{background:transparent;border-color:transparent}
+/* The Membership type and USAF weight standard pairs show a band of the coat (shoulders, collar and chest to just under the nameplate: js/profile-pictures.js), so each picture is a short box, never over 110 px high. */
+.vp[data-name="membership"] .vpPicture,.vp[data-name="adultCadet"] .vpPicture{aspect-ratio:2 / 1;max-height:110px}
+/* The unit's emblem beside its name (js/profile-pickers.js), for a unit that has one; the list stays words. */
+.unitRow{display:flex;align-items:center;gap:var(--s2)}
+.unitRow select{flex:1 1 auto;min-width:0}
+.unitEmblem{flex:0 0 auto;width:44px;height:44px;object-fit:contain}
+/* Action tiles (mode 'action'): they do something when pressed and keep no mark. One whose action is under way is dimmed and does not answer a second press. */
+.vp[data-mode="action"] .vpOption.isBusy{opacity:.6;cursor:progress}
+/* The Photos menu (js/photos-menu.js): each picture is of the part on the white ground (--paper) the downloaded PNG has. */
+#photosMenu .vpGrid{margin-top:var(--s2)}
+#photosMenu .hintText:empty{display:none}
+
+/* The Uniform options panel: the options are groups of their own. A group chosen by picture is set off from the rows around it by a line. */
+.garmentOption+.garmentOption{margin-top:var(--s3)}
+.garmentOption+.garmentOption:has(.vp),.garmentOption:has(.vp)+.garmentOption{padding-top:var(--s3);border-top:1px solid var(--line)}
+
+/* ---- Badge order (Badges card): which of two badges of equal standing is worn higher ---- */
+.badgeOrder{display:grid;gap:var(--s3);margin-top:var(--s3)}
+.badgeOrder.hidden{display:none}
+.badgeOrderGroup{margin:0;padding:var(--s3) 0 0;display:grid;gap:var(--s2);min-width:0;border-top:1px solid var(--line)}
+.badgeOrderNote,.badgeOrderWhy{margin:0}
+.badgeOrderChoice{min-width:0}
+.badgeOrderList{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);min-width:0}
+.badgeOrderRow{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);min-width:0;font-size:var(--t-sm);line-height:1.35}
+.badgeOrderName{flex:1 1 12rem;min-width:0;font-weight:700;color:var(--ink);overflow-wrap:anywhere}
+.badgeOrderPosition{flex:none;font-size:var(--t-xs);color:var(--muted)}
+.badgeOrderStatus{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}

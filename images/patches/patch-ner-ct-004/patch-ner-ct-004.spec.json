@@ -1,0 +1,72 @@
+{
+ "asset_id": "patch-ner-ct-004",
+ "label": "NER-CT-004",
+ "charter": "NER-CT-004",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-ner-ct-004.png",
+ "width_in": 3,
+ "height_in": 3.458,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   345.821
+  ],
+  "center": [
+   150,
+   172.911
+  ],
+  "left_edge": [
+   0,
+   172.911
+  ],
+  "right_edge": [
+   300,
+   172.911
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/ner-ct-004-103rd-composite-squadron.webp",
+ "unit_name": "103rd Composite Squadron",
+ "artwork": {
+  "format": "webp (VP8L lossless) -> png via dwebp",
+  "source_color_type": 2,
+  "source_px": [
+   1123,
+   1200
+  ],
+  "trim_bbox_px": [
+   41,
+   0,
+   1041,
+   1200
+  ],
+  "trimmed": true,
+  "px": [
+   1041,
+   1200
+  ],
+  "bytes": 500450,
+  "chunks_kept": [],
+  "white_ground_removed": {
+   "threshold": 250,
+   "px": 357042,
+   "edge_px": 3580
+  }
+ },
+ "provenance": "Unit emblem of 103rd Composite Squadron (NER-CT-004), digital artwork supplied by Ethan Hillard on 2026-11-10. Official digital artwork shipped as given: webp (VP8L lossless) -> png via dwebp; the file came without transparency on a plain white ground: the white outside the emblem's own outline was made transparent (connected from the image border, white at 250 or more of 255; 357042 px) and the 3580 edge pixels blended with that white were given their coverage as alpha; then trimmed to its alpha bounding box (1123 x 1200 px to 1041 x 1200 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the white ground outside the outline, made transparent so the emblem sits on the garment."
+}

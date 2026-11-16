@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-cap-membership-ribbon-miniature",
  "name": "Membership Award (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.7547,
  "size_in": {
   "w": 0.625,
-  "h": 0.8013
+  "h": 0.7547
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  80.13
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_member.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8013 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 205 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6439 x 0.778 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6439 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 311.2 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,69 +17,204 @@
   ],
   "bottom_center": [
    31.25,
-   80.13
+   75.47
   ],
   "center": [
    31.25,
-   40.07
+   37.73
   ],
   "left_edge": [
    0,
-   40.07
+   37.73
   ],
   "right_edge": [
    62.5,
-   40.07
+   37.73
   ],
   "ribbon_attach": [
-   29.14,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle -2.53 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "member",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-cap-membership-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Membership Award"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-cap-membership-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-cap-membership-ribbon",
   "spec": "../ribbons/ribbon-cap-membership-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-membership-award-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9791,
-  "threshold": 0.95,
-  "colour_mae_0_255": 31.5,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/membership.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js membership --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-membership-award-miniature-medal (civil air patrol membership award miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-membership-award-miniature-medal",
+  "title": "civil air patrol membership award miniature medal",
+  "px": [
+   600,
+   600
+  ],
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/membership-award.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "palette": [
-  "#292826",
-  "#544f4d",
-  "#8a8885",
-  "#bbbab8"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [],
-  "different_body": []
- },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-membership-award-miniature-medal",
-  "local_photo": "medals-work/ref-hires/membership-award.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "membership-award.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 311.2,
+   "disc_diameter_px": 194.5,
+   "origin_px": [
+    294.2,
+    504.1
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 193,
-   "h": 247
+  "hang_angle_removed_deg": -2.53,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0065,
+   "ridge": [
+    0.2905,
+    0.3015
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": 0.001,
+   "cy": -0.004,
+   "r": 0.2082,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0108,
+   "top_letters": 14,
+   "bottom_letters": 10,
+   "cap_height_top_in": 0.0521,
+   "cap_height_bottom_in": 0.0517
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.093,
+    "top": -0.441,
+    "neck": 0.067,
+    "shoulder": -0.328
+   },
+   "ring": {
+    "c": [
+     0.003,
+     -0.495
+    ],
+    "r": 0.147,
+    "w": 0.0125
+   }
+  },
+  "not_measurable": [
+   "chevron hatching: at 311 px per inch each engraved stripe is blurred; it is modelled as 3 stripes per quadrant (perpendicular offsets measured by a profile scan, line angle 42 deg), 0.0085 in wide in a mid tone, not as the several finer engraved lines it probably is",
+   "the small dots between some letters of MEMBERSHIP (about 0.003 in) and the casting speck at the lower left of the emblem field are not drawn (not resolved, not part of the design)",
+   "ring and bail: the ring is cut by the ribbon over its upper half, so its centre and radius are fitted to the visible arcs only; the bail is a plain barrel with the shared barrel shading (the photograph's faceted highlights are not modelled)",
+   "engraving grain, specular highlights and the dark pits of the cast metal are not drawn (flat tones)"
+  ],
+  "tones_luminance": {
+   "ground": 42,
+   "shadow": 18,
+   "base": 136,
+   "hi": 176,
+   "rim": 150,
+   "rim_hi": 200,
+   "metal": 105,
+   "metal_hi": 190,
+   "bail": 128,
+   "lip": 170
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 6.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#2b2a29",
+   "shadow": "#161513",
+   "base": "#898884",
+   "hi": "#afaeab",
+   "rim": "#969592",
+   "rim_hi": "#c5c4c2",
+   "lip": "#a9a8a5",
+   "metal": "#6c6a67",
+   "metal_hi": "#bcbbb8",
+   "bail": "#82807d"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9609,
+  "light_class_iou": 0.673,
+  "landmarks_checked": 29,
+  "landmark_max_dist_in": 0.005,
+  "landmark_worst": [
+   [
+    "letter L (top 67.4deg)",
+    0.005
+   ],
+   [
+    "letter T (top 36.5deg)",
+    0.0035
+   ],
+   [
+    "bottom bar",
+    0.0035
+   ],
+   [
+    "letter E (bottom 181.8deg)",
+    0.0032
+   ],
+   [
+    "letter M (bottom 228.4deg)",
+    0.0028
+   ]
+  ],
+  "edge_recall_0p006in": 0.927,
+  "edge_recall_0p012in": 0.951,
+  "edge_precision_0p012in": 0.978,
+  "tone_mae_luminance": 26.6,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.8
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9609,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from membership-award.jpeg (reference only, never shipped). Silver miniature: CAP command emblem (circle, triangle, three-blade propeller) on a chevron-hatched field, a curved wing band across the disc, lettering CIVIL AIR PATROL / MEMBERSHIP. Hang angle -2.53 deg of the photograph removed: the body hangs upright."
 }

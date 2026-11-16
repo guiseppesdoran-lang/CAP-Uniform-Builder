@@ -1,7 +1,8 @@
 {
  "asset_id": "patch-es-style-1",
+ "file": "patch-es-style-1.png",
  "width_in": 3.5,
- "height_in": 1.788,
+ "height_in": 1.858,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
  "size_basis": "estimated typical embroidered patch width 3.5 in; not in the regulation",
@@ -13,34 +14,48 @@
   ],
   "bottom_center": [
    175,
-   178.807
+   185.8
   ],
   "center": [
    175,
-   89.403
+   92.9
   ],
   "left_edge": [
    0,
-   89.403
+   92.9
   ],
   "right_edge": [
    350,
-   89.403
+   92.9
   ]
  },
  "dimensions": {
   "family": "patch",
   "colour": "full"
  },
- "data_source": "reference-art-measured",
- "generator": "artwork-samples/patches (out) + es-style-1",
- "reference": "refs-png/es-style-1.png",
- "source_bbox_user_units": [
-  24,
-  225.778,
-  780,
-  612
- ],
- "fit_score": null,
- "notes": "Full-colour patch redrawn as clean flat vector art (hand-constructed shapes, measured from the reference photo; lettering as paths); thread texture not reproduced; size estimated."
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
+ "reference": "UniformBuilder-svg/images/patches/plane_patch.webp",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   800,
+   800
+  ],
+  "px": [
+   1200,
+   637
+  ],
+  "bytes": 42868,
+  "colours": 4,
+  "palette": [
+   "#d23237",
+   "#f3eeef",
+   "#3243a4",
+   "#b2c4e7"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph plane_patch.webp (800 x 800 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
 }

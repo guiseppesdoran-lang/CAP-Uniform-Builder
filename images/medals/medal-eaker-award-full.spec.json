@@ -3,17 +3,17 @@
  "name": "Gen Ira C. Eaker Award (full-size medal body)",
  "size_in": {
   "w": 1.375,
-  "h": 1.5081
+  "h": 1.6706
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   137.5,
-  150.81
+  167.06
  ],
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/medals/ira_c_eaker.webp is 1.375 in wide (ribbon measured 62 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 62 x 68 source px = 1.375 x 1.508 in at that scale. Absolute size is an estimate.",
+ "size_basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
  "anchors": {
   "top_center": [
    68.75,
@@ -21,22 +21,22 @@
   ],
   "bottom_center": [
    68.75,
-   150.81
+   167.06
   ],
   "center": [
    68.75,
-   75.4
+   83.53
   ],
   "left_edge": [
    0,
-   75.4
+   98.31
   ],
   "right_edge": [
    137.5,
-   75.4
+   98.31
   ],
   "ribbon_attach": [
-   69.86,
+   68.75,
    0
   ]
  },
@@ -46,32 +46,24 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": {
-  "raster": "images/medals/ira_c_eaker.webp",
-  "body_top_row": 132,
-  "px_to_in": 0.022177,
-  "bbox_px": [
-   16,
-   0,
-   78,
-   68
-  ]
- },
- "fidelity": "silhouette_and_tone",
+ "source": "Designed and measured from the Vanguard miniature photograph ira-c-eaker.jpeg (reference only): each element is a modelled object in inches, the same model as the miniature drawn at 2.2x, upright (design/b-eaker-award.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "silhouette IoU vs source alpha at source resolution",
-  "score": 0.9597,
-  "threshold": 0.9,
-  "colour_mae_0_255": 28.7,
-  "outline": "circle",
-  "inner_ring_radius_px": null,
-  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall, ink coverage)",
+  "score": 0.9642,
+  "note": "Shape-built art at 2.2x; ring and bail are cut open at the box top (the drape passes through)."
  },
  "palette": {
-  "mid": "#5c5751",
-  "dark": "#342e29",
-  "light": "#a19b96",
-  "emblem": null
+  "ground": "#3b3837",
+  "shadow": "#151414",
+  "base": "#7f7a79",
+  "hi": "#bcb8b5",
+  "rim": "#a9a4a1",
+  "rim_hi": "#e1dedb",
+  "lip": "#c1bcb9",
+  "metal": "#7b7675",
+  "metal_hi": "#cfcbc8",
+  "bail": "#8b8684"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -79,5 +71,77 @@
   "different_body": [
    "eaker_s"
   ]
- }
+ },
+ "finish": "silver",
+ "size_in_previous": {
+  "w": 1.375,
+  "h": 1.5081
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "ira-c-eaker.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 188.9,
+   "body_centre_px": [
+    300.9,
+    507
+   ],
+   "ppi_in_frame": 302.3,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
+  },
+  "hang_angle_removed_deg": -1.2,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0022,
+   "ridge": [
+    0.3,
+    0.3105
+   ]
+  },
+  "inner_circle": {
+   "cx": 0.002,
+   "cy": -0.002,
+   "r": 0.2155,
+   "w": 0.0085
+  },
+  "lettering": {
+   "stroke_in": 0.0105,
+   "top_letters": 14,
+   "bottom_letters": 9,
+   "cap_height_top_in": 0.054,
+   "cap_height_bottom_in": 0.0475,
+   "letter_positions": "angle and radial extent of each letter, measured from the unwrapped annulus (generator, text.top / text.bottom)"
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.058,
+    "top": -0.43,
+    "neck": 0.058,
+    "shoulder": -0.325,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     0.005,
+     -0.51
+    ],
+    "r": 0.125,
+    "w": 0.012
+   }
+  },
+  "tones_luminance": {
+   "ground": 55,
+   "shadow": 12,
+   "base": 124,
+   "hi": 185,
+   "rim": 165,
+   "rim_hi": 225,
+   "metal": 120,
+   "metal_hi": 205,
+   "bail": 135,
+   "lip": 190
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/b-eaker-award.js"
 }

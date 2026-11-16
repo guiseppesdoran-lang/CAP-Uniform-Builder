@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-cap-a-scott-crossfield-ribbon-miniature",
  "name": "A. Scott Crossfield Award (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.7685,
  "size_in": {
   "w": 0.625,
-  "h": 0.7876
+  "h": 0.7685
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  78.76
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_crossf.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7876 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 180 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6875 x 0.8403 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6875 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 290.4 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,69 +17,206 @@
   ],
   "bottom_center": [
    31.25,
-   78.76
+   76.85
   ],
   "center": [
    31.25,
-   39.38
+   38.42
   ],
   "left_edge": [
    0,
-   39.38
+   38.42
   ],
   "right_edge": [
    62.5,
-   39.38
+   38.42
   ],
   "ribbon_attach": [
-   31.84,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle 1.28 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "crossf",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-cap-a-scott-crossfield-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "A. Scott Crossfield Award"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-cap-a-scott-crossfield-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-cap-a-scott-crossfield-ribbon",
   "spec": "../ribbons/ribbon-cap-a-scott-crossfield-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-crossfield-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9854,
-  "threshold": 0.95,
-  "colour_mae_0_255": 22.7,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/crossfield.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js crossfield --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-crossfield-miniature-medal (civil air patrol crossfield miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-crossfield-miniature-medal",
+  "title": "civil air patrol crossfield miniature medal",
+  "px": [
+   600,
+   600
+  ],
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/crossfield.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "palette": [
-  "#33302d",
-  "#4f4b48",
-  "#7c7975",
-  "#bcbab7"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [],
-  "different_body": []
- },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-crossfield-miniature-medal",
-  "local_photo": "medals-work/ref-hires/crossfield.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "crossfield.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 290.4,
+   "disc_diameter_px": 181.5,
+   "origin_px": [
+    297.7,
+    510.7
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 180,
-   "h": 226
+  "hang_angle_removed_deg": 1.28,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.003,
+   "ridge": [
+    0.2995,
+    0.3095
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": -0.003,
+   "cy": -0.007,
+   "r": 0.2261,
+   "w": 0.0075
+  },
+  "lettering": {
+   "stroke_in": 0.0098,
+   "top_letters": 17,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.039,
+   "cap_height_bottom_in": 0.049
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.08,
+    "top": -0.445,
+    "neck": 0.07,
+    "shoulder": -0.31
+   },
+   "ring": {
+    "c": [
+     -0.004,
+     -0.502
+    ],
+    "r": 0.131,
+    "w": 0.0085
+   }
+  },
+  "not_measurable": [
+   "The ground of the photograph is a coarse hammered texture (antiqued silver, grain about 0.004 in): not drawn (flat tones); this is why the lit-class IoU is low (0.41) and the edge recall at 0.006 in is 0.74: the grain makes edges everywhere.",
+   "The rocket plane: fuselage outline, canopy bump, underbody, pod, nose cap and three tail fins are placed by measurement but their inner engraving (the double outline of the fuselage, panel lines, the fin ribs, the canopy frame) is only partly resolved; the fins are polygon outlines, the plane is not identified further than a rocket plane (X-15 type) flying up and to the right.",
+   "The Earth: the limb arc, the inner circle as its lower edge, two land masses and 12 light spots are drawn at their measured places; the darker mottled surface, the cloud and the smaller specks inside the globe (and the second faint arc under the limb) are not resolved and not drawn; the two land masses are irregular shapes read at 3400 px/in, not continents.",
+   "The five sky stars are blobs of 0.02 in in the photograph: drawn as five-point stars of that size, the number of points is not resolved.",
+   "The ring: the drape hides its top; the full circle (r 0.131 in, fitted to the visible lower arcs) is the model. Hang angle 1.28 degrees from the bail axis; the inner circle line is centred 0.003 in left and 0.007 in above the silhouette centre (the same offset the lettering follows).",
+   "Letter positions of both arcs were read from polar strips (5-degree grid) because the textured ground defeats the automatic letter finder; letter widths are those of the strips; the radial extent is the band read from the strip (top 0.2425..0.2825, bottom 0.2285..0.2775)."
+  ],
+  "tones_luminance": {
+   "ground": 66,
+   "shadow": 34,
+   "base": 122,
+   "hi": 165,
+   "rim": 150,
+   "rim_hi": 190,
+   "metal": 90,
+   "metal_hi": 200,
+   "bail": 132,
+   "lip": 150
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 4.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#44403e",
+   "shadow": "#292523",
+   "base": "#7c7875",
+   "hi": "#a6a2a0",
+   "rim": "#989491",
+   "rim_hi": "#bebbb8",
+   "lip": "#989491",
+   "metal": "#5b5754",
+   "metal_hi": "#c7c5c2",
+   "bail": "#86827f"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9699,
+  "light_class_iou": 0.411,
+  "landmarks_checked": 42,
+  "landmark_max_dist_in": 0.0084,
+  "landmark_worst": [
+   [
+    "letter L (top 63.3deg)",
+    0.0084
+   ],
+   [
+    "limb",
+    0.0072
+   ],
+   [
+    "fin bottom",
+    0.0071
+   ],
+   [
+    "letter A (top -77.7deg)",
+    0.0068
+   ],
+   [
+    "letter T (top -30.3deg)",
+    0.0064
+   ]
+  ],
+  "edge_recall_0p006in": 0.744,
+  "edge_recall_0p012in": 0.844,
+  "edge_precision_0p012in": 0.972,
+  "tone_mae_luminance": 23.4,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.74
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9699,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from crossfield.jpeg (reference only, never shipped). A. Scott Crossfield medal: rim, inner circle, lettering on two arcs, two side stars, a rocket plane, five stars and the Earth segment; the reference shows this medal (A. SCOTT CROSSFIELD / CIVIL AIR PATROL). Hang angle 1.28 deg of the photograph removed: the body hangs upright."
 }

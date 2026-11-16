@@ -1,0 +1,176 @@
+{
+ "asset_id": "mil-ribbon-rotc-army-jrotc-drill-team",
+ "name": "Army JROTC Drill Team Ribbon",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "276e1a",
+    "fraction": 0.1284,
+    "x0_in": 0,
+    "x1_in": 0.1766
+   },
+   {
+    "index": 1,
+    "hex": "f6d00e",
+    "fraction": 0.0358,
+    "x0_in": 0.1766,
+    "x1_in": 0.2258
+   },
+   {
+    "index": 2,
+    "hex": "d88905",
+    "fraction": 0.2876,
+    "x0_in": 0.2258,
+    "x1_in": 0.6212
+   },
+   {
+    "index": 3,
+    "hex": "f6d00e",
+    "fraction": 0.0964,
+    "x0_in": 0.6212,
+    "x1_in": 0.7538
+   },
+   {
+    "index": 4,
+    "hex": "d88905",
+    "fraction": 0.2876,
+    "x0_in": 0.7538,
+    "x1_in": 1.1492
+   },
+   {
+    "index": 5,
+    "hex": "f6d00e",
+    "fraction": 0.0358,
+    "x0_in": 1.1492,
+    "x1_in": 1.1984
+   },
+   {
+    "index": 6,
+    "hex": "276e1a",
+    "fraction": 0.1284,
+    "x0_in": 1.1984,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "army-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [
+   "img/ribbons/2d9ab0832b94.jpeg"
+  ],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: N-3-4: AJROTC Drill Team",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-n34-ajrotc-drill-team-rotc-ribbon-unit",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 13.5,
+   "horizontal": 74,
+   "central_vertical": 4.5
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    216
+   ],
+   [
+    600,
+    216
+   ],
+   [
+    600,
+    384
+   ],
+   [
+    0,
+    384
+   ]
+  ],
+  "rectified_px": [
+   600,
+   168
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0.3,
+   0.2,
+   0,
+   0.3,
+   0.4,
+   0.2,
+   0
+  ]
+ },
+ "quality": {
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: N-3-4: AJROTC Drill Team",
+   "url": "https://www.vanguardmil.com/products/army-n34-ajrotc-drill-team-rotc-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.4,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

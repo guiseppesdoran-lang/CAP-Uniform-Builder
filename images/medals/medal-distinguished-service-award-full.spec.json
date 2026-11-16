@@ -3,17 +3,17 @@
  "name": "Distinguished Service Award (full-size medal body)",
  "size_in": {
   "w": 1.375,
-  "h": 1.5125
+  "h": 1.9291
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   137.5,
-  151.25
+  192.91
  ],
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_distin01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 55 source px = 1.375 x 1.512 in at that scale. Absolute size is an estimate.",
+ "size_basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
  "anchors": {
   "top_center": [
    68.75,
@@ -21,19 +21,19 @@
   ],
   "bottom_center": [
    68.75,
-   151.25
+   192.91
   ],
   "center": [
    68.75,
-   75.63
+   96.46
   ],
   "left_edge": [
    0,
-   75.63
+   113.52
   ],
   "right_edge": [
    137.5,
-   75.63
+   113.52
   ],
   "ribbon_attach": [
    68.75,
@@ -46,32 +46,23 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": {
-  "raster": "images/mini_medals/mcchord/m_distin01.webp",
-  "body_top_row": 121,
-  "px_to_in": 0.0275,
-  "bbox_px": [
-   0,
-   0,
-   50,
-   55
-  ]
- },
- "fidelity": "silhouette_and_tone",
+ "source": "Designed and measured from the Vanguard miniature photograph distinguished-service.jpeg (reference only): each element is a modelled object in inches, the same model as the miniature drawn at 2.2x, upright (design/b-distinguished-service-award.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "silhouette IoU vs source alpha at source resolution",
-  "score": 0.9867,
-  "threshold": 0.9,
-  "colour_mae_0_255": 43.1,
-  "outline": "polygon",
-  "inner_ring_radius_px": null,
-  "note": "Source medal is ~35-50 px across; engraving and lettering are not resolved. Vector = smoothed silhouette (true circle/ellipse where the outline is one) + mid tone + at most dark and light tone layers (sampled k-means colours) + rim."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall, ink coverage)",
+  "score": 0.9619,
+  "note": "Shape-built art at 2.2x; ring and bail are cut open at the box top (the drape passes through)."
  },
  "palette": {
-  "mid": "#7f6c40",
-  "dark": "#31240d",
-  "light": "#ccbc97",
-  "emblem": null
+  "ground": "#302105",
+  "shadow": "#271a05",
+  "base": "#c2a348",
+  "hi": "#f1dc80",
+  "rim": "#b19137",
+  "rim_hi": "#e6ce70",
+  "metal": "#a8872f",
+  "metal_hi": "#ecd679",
+  "bail": "#b29138"
  },
  "grade": "medal",
  "variants_share_body": {
@@ -95,5 +86,131 @@
    "distin21"
   ],
   "different_body": []
- }
+ },
+ "finish": "gold",
+ "size_in_previous": {
+  "w": 1.375,
+  "h": 1.5125
+ },
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "distinguished-service.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 172.3,
+   "body_centre_px": [
+    302.3,
+    514.8
+   ],
+   "ppi_in_frame": 275.7,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
+  },
+  "hang_angle_removed_deg": 0,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "shared_die": {
+   "source": "design/lib-b-hex-die.js (geometry of the Exceptional Service photograph, the clearest of the three struck from the same die)",
+   "fit_per_group": {
+    "wingL": {
+     "s": 1.0562,
+     "r": 0.84,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      -0.001,
+      0.0055
+     ]
+    },
+    "wingR": {
+     "s": 0.9587,
+     "r": -5.34,
+     "rows": 1,
+     "ext": 0.036,
+     "t": [
+      0.0081,
+      -0.0148
+     ]
+    },
+    "banL": {
+     "s": 1.0504,
+     "r": -1.03,
+     "t": [
+      0.0091,
+      0.009
+     ]
+    },
+    "banR": {
+     "s": 1.0575,
+     "r": -5.95,
+     "t": [
+      0.0084,
+      0.0037
+     ]
+    },
+    "tail": {
+     "s": 1.0075,
+     "r": -0.38,
+     "t": [
+      0.0058,
+      -0.0074
+     ]
+    },
+    "lawL": {
+     "s": 1.0645,
+     "r": -0.09,
+     "t": [
+      0,
+      -0.0003
+     ]
+    },
+    "lawR": {
+     "s": 0.985,
+     "r": 1.72,
+     "t": [
+      0.015,
+      -0.0083
+     ]
+    }
+   },
+   "fit_note": "s scale, a aspect, r turn in degrees clockwise, t shift of the group pivot in inches (hex frame); rows = feather rows inserted between the four nested rows of a wing, ext = feather rows continued along their end tangent",
+   "line_width_factors": {
+    "tail": 0.8
+   },
+   "lettering": {
+    "band": "DISTINGUISHED (13 letters, fitted to the measured text strip u -0.258 to 0.264, cap 0.050, stroke 0.011)",
+    "banners": {
+     "left": "SEMPER",
+     "right": "VIGILANS"
+    },
+    "status": "words from the award name and the shared die; lettering is present in the photograph, individual letters are not resolved"
+   }
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.093,
+    "top": -0.5015000000000001,
+    "neck": 0.042,
+    "shoulder": -0.38149999999999995,
+    "bottom": -0.36450000000000005
+   },
+   "ring": {
+    "c": [
+     -0.0087,
+     -0.5835
+    ],
+    "r": 0.163,
+    "w": 0.019
+   }
+  },
+  "tones_luminance": {
+   "ground": 34,
+   "shadow": 27.4,
+   "base": 162,
+   "hi": 216,
+   "rim": 144.5,
+   "rim_hi": 202.8,
+   "metal": 135,
+   "metal_hi": 210,
+   "bail": 145
+  }
+ },
+ "generator": "artwork-samples/assets/medals-work/design/b-distinguished-service-award.js"
 }

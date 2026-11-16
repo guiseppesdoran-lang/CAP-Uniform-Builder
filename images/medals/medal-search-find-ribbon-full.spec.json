@@ -3,17 +3,17 @@
  "name": "Search and Find Ribbon (full-size medal body)",
  "size_in": {
   "w": 1.375,
-  "h": 1.8508
+  "h": 1.6706
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   137.5,
-  185.08
+  167.06
  ],
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_find01.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.8508 in (was 1.4575).",
+ "size_basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
  "anchors": {
   "top_center": [
    68.75,
@@ -21,22 +21,22 @@
   ],
   "bottom_center": [
    68.75,
-   185.08
+   167.06
   ],
   "center": [
    68.75,
-   92.54
+   83.53
   ],
   "left_edge": [
    0,
-   92.54
+   98.31
   ],
   "right_edge": [
    137.5,
-   92.54
+   98.31
   ],
   "ribbon_attach": [
-   56.61,
+   68.75,
    0
   ]
  },
@@ -46,21 +46,25 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-rescue-find-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
+ "source": "Designed and measured from the Vanguard photograph rescue-find.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/find.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9909,
-  "threshold": 0.95,
-  "colour_mae_0_255": 25.7,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.957,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
- "palette": [
-  "#2c3230",
-  "#525857",
-  "#8b9398",
-  "#e9eae8"
- ],
+ "palette": {
+  "ground": "#383534",
+  "shadow": "#1e1c1b",
+  "base": "#8e8987",
+  "hi": "#c5c1be",
+  "rim": "#a6a19e",
+  "rim_hi": "#d5d2cf",
+  "lip": "#c5c1be",
+  "metal": "#6f6a69",
+  "metal_hi": "#e1dedb",
+  "bail": "#9a9593"
+ },
  "grade": "medal",
  "variants_share_body": {
   "same_body": [
@@ -99,24 +103,75 @@
   ],
   "different_body": []
  },
+ "finish": "silver",
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
  },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-rescue-find-miniature-medal",
-  "local_photo": "medals-work/ref-hires/rescue-find.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "rescue-find.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 279.6,
+   "disc_diameter_px": 174.8,
+   "origin_px": [
+    305.2,
+    514
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 173,
-   "h": 233
+  "hang_angle_removed_deg": -5.53,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0045,
+   "ridge": [
+    0.2915,
+    0.2995
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": 0.0021,
+   "cy": -0.0062,
+   "r": 0.2073,
+   "w": 0.0105
+  },
+  "lettering": {
+   "stroke_in": 0.0105,
+   "top_letters": 14,
+   "bottom_letters": 4,
+   "cap_height_top_in": 0.0526,
+   "cap_height_bottom_in": 0.044
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.082,
+    "top": -0.438,
+    "neck": 0.062,
+    "shoulder": -0.345
+   },
+   "ring": {
+    "c": [
+     0,
+     -0.539
+    ],
+    "r": 0.152,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [],
+  "tones_luminance": {
+   "ground": 52,
+   "shadow": 24,
+   "base": 138,
+   "hi": 195,
+   "rim": 162,
+   "rim_hi": 212,
+   "metal": 108,
+   "metal_hi": 225,
+   "bail": 150,
+   "lip": 195
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 2.2
+ "generator": "artwork-samples/assets/medals-work/design/find.js"
 }

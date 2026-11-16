@@ -1,0 +1,81 @@
+{
+ "asset_id": "patch-pcr-hi-066",
+ "label": "Hickam Composite Squadron",
+ "charter": "PCR-HI-066",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-pcr-hi-066.png",
+ "width_in": 3,
+ "height_in": 3.358,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   335.821
+  ],
+  "center": [
+   150,
+   167.911
+  ],
+  "left_edge": [
+   0,
+   167.911
+  ],
+  "right_edge": [
+   300,
+   167.911
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/pcr_hi_066/66_D427E0B81CBE6.png",
+ "unit_name": "Hickam Composite Squadron",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   6487,
+   7259
+  ],
+  "source_bytes": 1632275,
+  "source_sha256": "7d8e71f3187205d577f829df26290da06c6cf15ea6dfc1c23dff23f4f7dae038",
+  "trim_bbox_px": [
+   0,
+   0,
+   6487,
+   7259
+  ],
+  "trimmed": false,
+  "px": [
+   1072,
+   1200
+  ],
+  "bytes": 223628,
+  "resampled": {
+   "from_px": [
+    6487,
+    7259
+   ],
+   "to_px": [
+    1072,
+    1200
+   ],
+   "method": "area average, alpha premultiplied",
+   "long_edge_cap": 1200
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Hickam Composite Squadron (PCR-HI-066), published by Hawaii Wing (hiwg.cap.gov), heraldry page (page https://hiwg.cap.gov/about/heraldry-of-our-units; file address https://hiwg.cap.gov/media/cms/66_D427E0B81CBE6.png); fetched 2026-11-11 and kept unchanged in assets/refs/patches-official/pcr_hi_066/. Shipped as given: the PNG; reduced in size from 6487 x 7259 to 1072 x 1200 px (area average, alpha premultiplied; the long edge is held to 1200 px as the other digital patches are); no redrawing, no tracing, no colour change. Charter: the page lists it under Hickam Composite Squadron, PCR-HI-066; the emblem itself reads HICKAM COMPOSITE SQUADRON and PCR-HI-066; the unit's own site (hi066.cap.gov) is Hickam Composite Squadron, PCR-HI-066 (the builder's unit list calls PCR-HI-066 the 66th Composite Sqdn).",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the size, held to 1200 px on the long edge."
+}

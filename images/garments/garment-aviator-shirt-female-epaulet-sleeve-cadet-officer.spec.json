@@ -1,0 +1,156 @@
+{
+ "asset_id": "garment-aviator-shirt-female-epaulet-sleeve-cadet-officer",
+ "name": "Women's Aviator Shirt Uniform cadet officer epaulet sleeves (overlay, registered to garment-aviator-shirt-female; blank grade)",
+ "size_in": {
+  "w": 25.3352,
+  "h": 31.4042
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2533.52,
+  3140.42
+ ],
+ "size_source": "estimated",
+ "size_basis": "The slide-on epaulet sleeve as it lies on the shirt's strap: the strap's edge-on band (0.46 in thick, LIVE10-ART 2; the strap itself is 0.9 in wide), one axis from the armhole seam to the collar end, cut square across 0.5 in + the button + 0.06 in short of the strap's point so the button shows; same outer end, same two long edges, upper edge the shoulder line, so it covers the strap and nothing else (Fig 4.16: the gray sleeve is as wide as the strap, 0.88-0.94 in at the pocket's 5.25 in). The top-down view is the separate asset garment-aviator-epaulet-top-*. Colours are those of the top-down sleeve assets (rank-epaulet-sleeve-gray-* #5f5c5c, measured on CAPR 39-1 Fig A5-1; cadet officers the family grade-cloth blue #142347, assets/epaulet-sleeve-colours.js), as the Class B sleeves, so the strip on the shirt and the view from above show one sleeve; the regulation gives no shade or dimension.",
+ "anchors": {
+  "top_center": [
+   1266.76,
+   0
+  ],
+  "bottom_center": [
+   1266.76,
+   3140.42
+  ],
+  "center": [
+   1266.76,
+   1570.21
+  ],
+  "left_edge": [
+   0,
+   1570.21
+  ],
+  "right_edge": [
+   2533.52,
+   1570.21
+  ],
+  "rank_slot_right_center": [
+   496.83,
+   321.49
+  ],
+  "rank_slot_left_center": [
+   2025.06,
+   333.99
+  ],
+  "rank_rule_point_right": [
+   361.41,
+   358.19
+  ],
+  "rank_rule_point_left": [
+   2165.07,
+   373.17
+  ]
+ },
+ "landmarks": {
+  "epaulet_sleeve_right": {
+   "x": 291.27,
+   "y": 244.31,
+   "w": 411.13,
+   "h": 151.39
+  },
+  "rank_slot_right": {
+   "x": 291.27,
+   "y": 244.31,
+   "w": 411.13,
+   "h": 151.39
+  },
+  "epaulet_sleeve_poly_right": [
+   [
+    291.27,
+    353.37
+   ],
+   [
+    305.71,
+    351.63
+   ],
+   [
+    363.49,
+    329.79
+   ],
+   [
+    479.04,
+    296.23
+   ],
+   [
+    690.12,
+    244.31
+   ],
+   [
+    702.4,
+    289.63
+   ],
+   [
+    310.9,
+    395.7
+   ]
+  ],
+  "epaulet_sleeve_left": {
+   "x": 1815.05,
+   "y": 253.27,
+   "w": 420.01,
+   "h": 157.89
+  },
+  "rank_slot_left": {
+   "x": 1815.05,
+   "y": 253.27,
+   "w": 420.01,
+   "h": 157.89
+  },
+  "epaulet_sleeve_poly_left": [
+   [
+    2235.07,
+    368.87
+   ],
+   [
+    2148.4,
+    338.14
+   ],
+   [
+    2061.73,
+    312.06
+   ],
+   [
+    1931.74,
+    277.96
+   ],
+   [
+    1827.87,
+    253.27
+   ],
+   [
+    1815.05,
+    299.1
+   ],
+   [
+    2215.46,
+    411.16
+   ]
+  ]
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-aviator-shirt-female",
+ "documented": [
+  "blue epaulet sleeves, miniature grade (CAPR 39-1 4.2.5.1.1.4 / 4.2.6.2.4)",
+  "grade insignia centred 5/8 in from the outer end of the epaulet (DAFI 36-2903 4.5.1.1.1)"
+ ],
+ "assumed": [
+  "sleeve length (ends short of the strap button)",
+  "grade not drawn: placed by the rank insignia assets at rank_slot (centre of the sleeve, on the strap axis)"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

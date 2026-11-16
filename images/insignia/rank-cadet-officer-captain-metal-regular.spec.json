@@ -55,6 +55,12 @@
   "shape": "circle",
   "element_w_in": 0.75,
   "element_h_in": 0.75,
+  "grade_edge": {
+   "width_in": 0.018,
+   "colour": "#2c3037",
+   "placement": "inside the outline (regulation size unchanged), flat, no gradient",
+   "basis": "outline weight measured on CAPR 39-1 Fig A5-1 at 12 px/pt (0.014-0.017 in, tone 55-75/255); critique D20: silver grade nearly invisible on grey / blue boards"
+  },
   "centre_pitch_in": 0.75,
   "rim_width_in": 0.045,
   "overall_w_in": 2.25,

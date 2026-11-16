@@ -13,13 +13,14 @@
   384.3
  ],
  "size_source": "estimated",
- "size_basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built.",
- "provenance": "measured from CAPR 39-1 Fig A5-1 (gray) and A5-6 (blue); CAP lettering cleaned from traced glyphs; grade pieces are this family's own assets",
+ "size_basis": "CAPR 39-1 Fig A5-1 / A5-6 give no inch size. Scale 178 px per inch from the 1 in oak leaf on the Major sleeve in Fig A5-1; trapezoid (350 px bottom, 306 px top, 684 px tall at that scale) and all feature positions measured on the figure. Officer sleeves come in two sizes (standard / smaller); the figure shows no measurable difference, so one size is built. Cloth colours (the truth for every view of the sleeve): gray #5f5c5c, cadet-officer blue #142347, from assets/epaulet-sleeve-colours.js; the edge-on strips on the Class B shirt/blouse, aviator shirts and Class A coat sheets use the same two values (they were #6e6a69 / #072157). Flight Officer sleeves, measured on the vendor pictures (sleeve length = 100 %): CAP capitals FO 18.4-31.6 %, TFO 15.7-26.9 %, SFO 20.0-30.9 % from the top edge, word 0.90 / 1.01 / 0.98 in wide; white lace stripes 5.3 % (0.20 in) thick, the lowest one ending 10.7 % (FO), 8.1 % (TFO), 8.7 % (SFO) above the hem, stripes every 12.0 % (TFO) / 11.0 % (SFO); in the three pictures the lace and the lettering are the same white (the family CAP tone is used for both).",
+ "provenance": "Fig A5-1 gave the sleeve (trapezoid, scale) and the family lettering; the lettering size and place and the lace stripes of the Flight Officer sleeves are measured on the vendor product pictures of the gray FO, TFO and SFO sleeves (reference only, nothing of them is shipped); CAP glyphs cleaned from traced glyphs and scaled letter by letter to the measured boxes",
  "colours": {
   "gray": "#5f5c5c",
   "blue": "#142347",
   "cap": "#dddcdb",
-  "stripe": "#b3b3b3"
+  "stripe": "#b3b3b3",
+  "lace": "#dddcdb"
  },
  "anchors": {
   "top_center": [
@@ -44,7 +45,7 @@
   ],
   "cap_center": [
    98.3,
-   88.0943820224719
+   97.8
   ]
  },
  "dimensions": {
@@ -52,12 +53,22 @@
   "length_in": 3.843,
   "end_width_in": 1.966,
   "button_end_width_in": 1.719,
-  "cap_word_w_in": 0.997,
-  "cap_word_h_in": 0.34,
+  "cap_word_w_in": 0.976,
+  "cap_word_h_in": 0.419,
   "grade_bottom_from_end_in": 0.625,
   "grade_bottom_note": "DAFI 36-2903 7.1.5.1: 5/8 in from the end of the epaulet; figure shows 0.63-0.71 in",
+  "cap_top_from_end_in": 0.769,
+  "lace_stripes": 3,
+  "lace_thick_in": 0.204,
+  "lace_pitch_in": 0.423,
+  "lace_lowest_edge_from_hem_in": 0.334,
+  "lace_overhang_each_side_in": 0.02,
+  "grade_edge": {
+   "width_in": 0,
+   "placement": "none on the lace stripes: white on the gray cloth is 128 of 255 apart (the silver the edge was made for, critique D20, was 86), and the vendor pictures show no outline"
+  },
   "grade_orientation": "upright",
-  "grade_pieces": "3 silver stripe(s)"
+  "grade_pieces": "3 white lace stripe(s)"
  },
  "mounts": [
   {

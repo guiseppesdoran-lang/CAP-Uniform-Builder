@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-air-search-and-rescue-ribbon-miniature",
  "name": "Air Search and Rescue Ribbon (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6235,
  "size_in": {
   "w": 0.625,
-  "h": 0.795
+  "h": 0.6235
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  79.5
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_sar01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.795 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 185 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6801 x 0.6801 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6801 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 295.7 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,102 +17,205 @@
   ],
   "bottom_center": [
    31.25,
-   79.5
+   62.35
   ],
   "center": [
    31.25,
-   39.75
+   31.18
   ],
   "left_edge": [
    0,
-   39.75
+   31.18
   ],
   "right_edge": [
    62.5,
-   39.75
+   31.18
   ],
   "ribbon_attach": [
-   33.32,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle 2.02 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "sar01",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-air-search-and-rescue-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Air Search and Rescue Ribbon"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-air-search-and-rescue-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-air-search-and-rescue-ribbon",
   "spec": "../ribbons/ribbon-air-search-and-rescue-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-search-and-rescue-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9792,
-  "threshold": 0.95,
-  "colour_mae_0_255": 30.7,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
- },
- "palette": [
-  "#242122",
-  "#413d3e",
-  "#7e7b77",
-  "#a8a5a2"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "sar02",
-   "sar03",
-   "sar04",
-   "sar05",
-   "sar06",
-   "sar07",
-   "sar08",
-   "sar09",
-   "sar10",
-   "sar11",
-   "sar12",
-   "sar13",
-   "sar14",
-   "sar16",
-   "sar17",
-   "sar18",
-   "sar21",
-   "sarP01",
-   "sarP02",
-   "sarP03",
-   "sarP04",
-   "sarP05",
-   "sarP06",
-   "sarP07",
-   "sarP08",
-   "sarP09",
-   "sarP11",
-   "sarP12",
-   "sarP13",
-   "sarP16",
-   "sarP17",
-   "sarP21"
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/sar.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js sar --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-search-and-rescue-miniature-medal (civil air patrol search and rescue miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-search-and-rescue-miniature-medal",
+  "title": "civil air patrol search and rescue miniature medal",
+  "px": [
+   600,
+   600
   ],
-  "different_body": []
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/search-and-rescue.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-search-and-rescue-miniature-medal",
-  "local_photo": "medals-work/ref-hires/search-and-rescue.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "search-and-rescue.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 295.7,
+   "disc_diameter_px": 184.8,
+   "origin_px": [
+    298.1,
+    508
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 183,
-   "h": 231
+  "hang_angle_removed_deg": 2.02,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.2905,
+    0.3055
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": 0.0023,
+   "cy": -0.0028,
+   "r": 0.2017,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0125,
+   "top_letters": 14,
+   "bottom_letters": 15,
+   "cap_height_top_in": 0.0527,
+   "cap_height_bottom_in": 0.0539
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.086,
+    "top": -0.438,
+    "neck": 0.063,
+    "shoulder": -0.31
+   },
+   "ring": {
+    "c": [
+     0.011,
+     -0.479
+    ],
+    "r": 0.132,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "The suspension ring: the drape hides its top (and the ribbon its upper arc); the full circle (r 0.132 in, centre 0.011 in right of the disc axis, fitted to the visible lower two thirds) is the model, not a measurement of the hidden part.",
+   "Engraving grain, the pitted ground, specular highlights on the bail and the antique (darker) tone in the recesses of the letters are not drawn: flat tones only.",
+   "The S and R are drawn as tapered strokes and one polygon per bar: the serif details (the S beak is a plain vertical tick, the R foot serif a rounded slab, the R leg end a flat cut) are simplified at the photograph resolution (1 px = 0.0034 in).",
+   "The propeller of the CAP triangle (three blades inside) is resolved only as three ovals round a hub; blade shapes and the hub are blurred in the photograph.",
+   "The letters are the skeleton font stretched to each measured width and height; the reference face (a flared humanist capital) has stroke flare and serifs the stroked skeleton does not."
+  ],
+  "tones_luminance": {
+   "ground": 38,
+   "shadow": 16,
+   "base": 137,
+   "hi": 185,
+   "rim": 150,
+   "rim_hi": 195,
+   "metal": 75,
+   "metal_hi": 170,
+   "bail": 114,
+   "lip": 45
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 6.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#292524",
+   "shadow": "#181513",
+   "base": "#8c8885",
+   "hi": "#b9b5b2",
+   "rim": "#979491",
+   "rim_hi": "#c4c0bd",
+   "lip": "#2e2a29",
+   "metal": "#4c4947",
+   "metal_hi": "#a8a5a2",
+   "bail": "#76726f"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9886,
+  "light_class_iou": 0.71,
+  "landmarks_checked": 44,
+  "landmark_max_dist_in": 0.0049,
+  "landmark_worst": [
+   [
+    "letter V (top -51.3deg)",
+    0.0049
+   ],
+   [
+    "letter L (top 72.5deg)",
+    0.0032
+   ],
+   [
+    "letter T (top 40.8deg)",
+    0.0031
+   ],
+   [
+    "letter C (bottom 219.4deg)",
+    0.0031
+   ],
+   [
+    "R stem",
+    0.0031
+   ]
+  ],
+  "edge_recall_0p006in": 0.867,
+  "edge_recall_0p012in": 0.916,
+  "edge_precision_0p012in": 0.998,
+  "tone_mae_luminance": 21.3,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.19
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9886,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from search-and-rescue.jpeg (reference only, never shipped). Air Search and Rescue miniature: antiqued silver, rim ridge, one inner circle line, SR monogram with CAP triangle above and a star below, lettering on both arcs. The reference shows this medal (search-and-rescue.jpeg, CAP SR monogram), not a ribbon only. Hang angle 2.02 deg of the photograph removed: the body hangs upright."
 }

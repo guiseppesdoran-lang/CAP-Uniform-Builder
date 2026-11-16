@@ -23,7 +23,7 @@
    2
   ],
   "border": "gold",
-  "position": "1/2 in below the shoulder seam",
+  "position": "1/2 in below the shoulder seam, measured from the arched seam at the sleeve centre line (flat sleeve view)",
   "orientation": "normal: canton (union) toward the wearer's front / the viewer's left on the outer face of the left sleeve; the reversed flag is for the right sleeve, which this reg does not give a flag",
   "basis": "CAPR 39-1 8.2.4.4 / 8.3.4.4 (left sleeve only); orientation convention per DAFI 36-2903 (flag worn so the union leads forward; reversed on the right shoulder)",
   "loop_tape_left": "not drawn: the 3 1/2 in loop tape on the left is the same colour as the garment and invisible",
@@ -58,6 +58,10 @@
    2384.67,
    266.31
   ],
+  "hat_attach": [
+   2384.67,
+   266.31
+  ],
   "collar_apex": [
    2384.67,
    944.18
@@ -76,15 +80,15 @@
   ],
   "es_patch_center": [
    1806.68,
-   2474.14
+   2213.89
   ],
   "flag_left_center": [
    4345.62,
-   561.56
+   416.3
   ],
   "loop_square_right_center": [
    423.63,
-   647.09
+   491.3
   ]
  },
  "landmarks": {
@@ -102,7 +106,7 @@
   },
   "es_patch_zone": {
    "x": 1656.68,
-   "y": 2324.14,
+   "y": 2063.89,
    "w": 300,
    "h": 300
   },
@@ -132,44 +136,80 @@
   },
   "patch_flag_left": {
    "x": 4170.62,
-   "y": 461.56,
+   "y": 316.3,
    "w": 350,
    "h": 200
   },
   "patch_loop_square_right": {
    "x": 248.63,
-   "y": 472.09,
+   "y": 316.3,
    "w": 350,
    "h": 350
   },
   "sleeve_pocket_left": {
    "x": 4225.7,
-   "y": 835.24,
+   "y": 750.5,
    "w": 240,
    "h": 550
   },
   "pen_pocket_left": {
    "x": 4352.56,
-   "y": 883.66,
+   "y": 798.92,
    "w": 95,
    "h": 360
   },
   "chest_pocket_right": [
    [
-    1452.59,
-    1222.6
+    1537.32,
+    1392.06
    ],
    [
-    2160.73,
-    1755.21
+    2124.65,
+    1731.24
    ],
    [
-    2160.73,
-    2312.04
+    2124.65,
+    2051.78
    ],
    [
-    1513.11,
-    2312.04
+    1493.5,
+    2051.78
+   ],
+   [
+    1493.14,
+    2021.52
+   ],
+   [
+    1492.66,
+    1960.99
+   ],
+   [
+    1492.29,
+    1900.47
+   ],
+   [
+    1491.81,
+    1839.95
+   ],
+   [
+    1491.2,
+    1779.42
+   ],
+   [
+    1490.6,
+    1718.9
+   ],
+   [
+    1489.87,
+    1658.37
+   ],
+   [
+    1488.9,
+    1597.85
+   ],
+   [
+    1488.66,
+    1585.74
    ]
   ],
   "waist_tab_right": [
@@ -204,26 +244,62 @@
     3867.52
    ],
    [
-    1446.54,
+    1422.33,
     3867.52
    ]
   ],
   "chest_pocket_left": [
    [
-    3316.74,
-    1222.6
+    3232.01,
+    1392.06
    ],
    [
-    2608.61,
-    1755.21
+    2644.68,
+    1731.24
    ],
    [
-    2608.61,
-    2312.04
+    2644.68,
+    2051.78
    ],
    [
-    3256.22,
-    2312.04
+    3275.83,
+    2051.78
+   ],
+   [
+    3276.19,
+    2021.52
+   ],
+   [
+    3276.68,
+    1960.99
+   ],
+   [
+    3277.04,
+    1900.47
+   ],
+   [
+    3277.52,
+    1839.95
+   ],
+   [
+    3278.13,
+    1779.42
+   ],
+   [
+    3278.74,
+    1718.9
+   ],
+   [
+    3279.46,
+    1658.37
+   ],
+   [
+    3280.43,
+    1597.85
+   ],
+   [
+    3280.67,
+    1585.74
    ]
   ],
   "waist_tab_left": [
@@ -258,7 +334,7 @@
     3867.52
    ],
    [
-    3322.8,
+    3347.01,
     3867.52
    ]
   ],
@@ -279,7 +355,31 @@
     2371.35,
     3744.18
    ]
-  ]
+  ],
+  "shoulder_line": {
+   "right": {
+    "p1": [
+     1379.96,
+     550.77
+    ],
+    "p2": [
+     1839.95,
+     411.57
+    ],
+    "edge_thickness_in": 0.46
+   },
+   "left": {
+    "p1": [
+     3389.37,
+     550.77
+    ],
+    "p2": [
+     2929.39,
+     411.57
+    ],
+    "edge_thickness_in": 0.46
+   }
+  }
  },
  "optional_landmarks": {
   "pen_pocket_left": "pen/pencil pocket cover may be removed (8.1.2.5)",
@@ -291,7 +391,7 @@
  },
  "zipper_note": "8.1.2.4: the centerline zipper is closed to no lower than the middle of the nametag; anchors.zipper_min_closed is that height. The artwork shows it fully closed.",
  "views_note": "Front view plus a flat view of each sleeve: the figures (8.1, 8.3) foreshorten the sleeve patches, and 8.2.4.4 / 8.2.5.5 fix their sizes on the sleeve, so the flat views carry the true-size flag, pocket and loop-tape slot for placement. Decision, not a regulation requirement.",
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks.",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks. shoulder_line {right,left: {p1,p2,edge_thickness_in}} is the shoulder seen edge-on: p1 the shoulder point (where the armhole seam begins), p2 the neck end, both vertices of the silhouette, edge_thickness_in the thickness the grade is squeezed to (less 0.08 in) when it is drawn along it.",
  "dimensions": {
   "collar_to_hem_in": 37.53,
   "max_width_in": 29.9,
@@ -310,7 +410,18 @@
    3.5,
    3.5
   ],
-  "scale_factor_from_figure": 1.2105
+  "scale_factor_from_figure": 1.2105,
+  "sheet_alignment": {
+   "note": "Suit and both flat sleeve panels share one top line (collar tips = top of the arch) and one cuff line (suit cuff bottom = panel cuff bottom). Y in artwork-box inches. The hem is 1.25 figure in lower and is the suit's own bottom (a flat sleeve cannot reach it).",
+   "top_line_y_in": 2.663,
+   "panel_arch_top_y_in": 2.663,
+   "cuff_line_y_in": 38.675,
+   "panel_cuff_bottom_y_in": 38.675,
+   "hem_y_in": 40.188,
+   "flat_sleeve_length_in": 35.41,
+   "flat_sleeve_length_source": "ESTIMATE: from the suit cuff line up to the corner line under the arch; the suit outer sleeve edge measures 34.4 in along the edge in the figure (OUTER), the flat panel adds the cap arch",
+   "symmetry": "silhouette, sleeves, cuffs, collar leaves, pockets and waist tabs are one half mirrored about the zip line (audit-flight.js checks it to 0.05 in); only the patches differ side to side (flag and pocket left, loop square right, CAPR 39-1 8.2.4.4/8.2.4.5)"
+  }
  },
  "documented": [
   "navy blue one-piece suit, Nomex or cotton-polyester, of similar design to the USAF-style FDU (8.3.2, Figure 8.4)",
@@ -324,11 +435,13 @@
  ],
  "assumed": [
   "overall scale from ONE constraint (front opening 28 in, size 40R); widths and lengths otherwise follow the stylised figure",
-  "pocket panel sizes and positions (from Figure 8.1); only their zipper lengths are specified (6 1/2 in breast, 4 3/4 in sleeve)",
+  "chest pocket (measured on Figures 8.1 and 8.4, see POCKET in make-fdu.js): a zip welt slanted 30 degrees toward the front zipper, 1.3 figure in high with vertical ends, the zipper tape 6 1/2 in long (spec) in its middle, the bag below it ending 14.75 figure in below the collar tips (the figure draws it 2 in deeper; the ES patch zone is below it), its outer edge joining the sleeve seam; the pocket is drawn symmetric about the nametag centre; sleeve pocket size (the spec gives only the 4 3/4 in zipper)",
   "command patch size and simplified art",
   "ES patch zone size",
   "scarf is optional: its own asset (garment-cap-command-scarf), anchored bottom_center to this suit's collar_apex",
   "legs and thigh pockets omitted (nothing is sewn on them); hem cut just below the cuffs",
+  "sleeve inner edge from y 15 (figure in) down, the torso waist seen through the gap beside it, the hip below the cuffs and the cuff tab chevron (point to the outer edge) measured on Figure 8.1 at 51.1 px/in, left and right sides averaged (the figure is 0.2-0.6 in asymmetric); the hip emerges 0.85 in outboard of the cuff's inner corner as in the figure; the figure's cuff band is 1.85 in high (drawn 2.15, kept); the sleeve seam above y 11 keeps its earlier estimate (the figure's runs 1-2 in further out, see make-fdu.js)",
+  "shoulder grade seen edge-on is squeezed to the 0.46 in the other sheets state (epaulet_axis.edge_thickness_in): an estimate, no figure draws the shoulder from the side",
   "navy shade (Figure 8.4 is a small low-contrast figure)"
  ],
  "fit": {

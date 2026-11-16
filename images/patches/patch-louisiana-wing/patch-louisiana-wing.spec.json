@@ -1,0 +1,80 @@
+{
+ "asset_id": "patch-louisiana-wing",
+ "label": "Louisiana Wing",
+ "charter": "SWR-LA-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-louisiana-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.262,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   326.168
+  ],
+  "center": [
+   162.5,
+   163.084
+  ],
+  "left_edge": [
+   0,
+   163.084
+  ],
+  "right_edge": [
+   325,
+   163.084
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/laemblem.png",
+ "emblemoptions": {
+  "label": "Louisiana",
+  "type": "Wing",
+  "path": "wing/laemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 3,
+  "source_px": [
+   6000,
+   6000
+  ],
+  "trim_bbox_px": [
+   304,
+   330,
+   5591,
+   5636
+  ],
+  "trimmed": true,
+  "px": [
+   5287,
+   5306
+  ],
+  "bytes": 278648,
+  "chunks_kept": [],
+  "ground_removed": {
+   "detached_marks": {
+    "components": 375,
+    "px": 11250,
+    "note": "a dashed two pixel line of white and blue marks on the right edge, 400 px from the emblem, not part of it"
+   },
+   "px_made_clear": 11250
+  },
+  "ground": "transparent"
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Louisiana\" (Wing), path wing/laemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (6000 x 6000 px to 5694 x 5999 px), no resampling, no colour change. On 2026-11-12, at the owner's request, the detached marks that touched the picture's edge (a dashed two pixel line of white and blue marks down the right edge, 375 marks, 11250 px, not part of the emblem) were made clear and the picture was trimmed again to the emblem's box (5694 x 5999 px to 5287 x 5306 px); no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The detached marks along the right edge were made clear on 2026-11-12 (the owner: background removed from the patches), nothing else was changed."
+}

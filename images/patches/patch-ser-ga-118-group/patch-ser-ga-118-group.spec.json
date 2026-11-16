@@ -1,0 +1,75 @@
+{
+ "asset_id": "patch-ser-ga-118-group",
+ "label": "Georgia Group I",
+ "charter": "SER-GA-118",
+ "kind": "unit",
+ "echelon": "group",
+ "file": "patch-ser-ga-118-group.png",
+ "width_in": 3,
+ "height_in": 3.035,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   303.529
+  ],
+  "center": [
+   150,
+   151.764
+  ],
+  "left_edge": [
+   0,
+   151.764
+  ],
+  "right_edge": [
+   300,
+   151.764
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/ser-ga-118-georgia-group-i.svg",
+ "unit_name": "Georgia Group I",
+ "artwork": {
+  "format": "svg -> png rendered in a browser (Chrome headless, canvas)",
+  "source_svg": {
+   "px": [
+    2048,
+    2048
+   ],
+   "paths": 3293,
+   "bytes": 1977661,
+   "sha256": "7bad7ad7798eaebdcfd4a65ce8566d5f1d6eef20607a60cdca3f8e88fa14bfb1"
+  },
+  "rendered_px": [
+   1320,
+   1320
+  ],
+  "trim_bbox_px": [
+   65,
+   58,
+   1190,
+   1204
+  ],
+  "trimmed": true,
+  "px": [
+   1190,
+   1204
+  ],
+  "bytes": 378445,
+  "ground": "transparent: the outside of the emblem is the second path of the file (the black surround with the emblem cut out); its coverage gives the alpha, and the colours were divided by that alpha so no black rim is left at the edge (checked at 4x)"
+ },
+ "provenance": "Unit emblem of Georgia Group I (SER-GA-118), vector artwork supplied by the owner, 10 November 2026. Official digital artwork shipped as given: rendered from the supplied vector file (2048 x 2048, 3293 paths, no script, no raster) to a PNG of 1190 x 1204 px; nothing re-drawn, re-coloured or retouched. The one change is the ground: the file had a black square behind the emblem (its second path is the full-square surround with the emblem cut out, over a first path that is the full light blue square which is also the shield's sky); the surround was used as the outside mask, so the square is transparent and the sky stays; then trimmed to its alpha bounding box.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The source SVG (1.9 MB) is kept in assets/refs/unit-emblems-supplied/ and is too heavy for the page, so the page draws the PNG."
+}

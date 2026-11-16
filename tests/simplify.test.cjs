@@ -11,23 +11,33 @@ const html=read('index.html');
 const css=read('styles/app.css');
 const setup=read('js/setup.js');
 const patches=read('js/patches.js');
-const tools=html.slice(html.indexOf('id="stepGroup-tools"'),html.indexOf('</details>',html.indexOf('id="stepGroup-tools"')));
 const profile=html.slice(html.indexOf('id="stepGroup-profile"'),html.indexOf('id="stepGroup-uniform"'));
 const ribbons=html.slice(html.indexOf('id="groupRibbons"'),html.indexOf('id="groupBadges"'));
+const rack=html.slice(html.indexOf('id="rackLayoutMore"'),html.indexOf('</details>',html.indexOf('id="rackLayoutMore"')));
 
-test('membership and cut are two buttons side by side, with the select kept as the source of truth',()=>{
-  assert.match(html,/data-segments-for="membershipType"/);
-  assert.match(html,/data-segments-for="jacketSelect"/);
-  assert.match(html,/<select id="membershipType" class="segmentedSource"/);
-  assert.match(html,/<select id="jacketSelect" class="segmentedSource"/);
-  assert.match(css,/\.segmented\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
-  assert.match(css,/\.segmented button\{[^}]*min-height:44px/);
+test('membership, grade, cut, the weight standard and the name are chosen by picture, each with its select or box kept as the source of truth',()=>{
+  assert.doesNotMatch(html,/data-segments-for=/,'no two-button control is left: every one of these choices is pictures (js/profile-pickers.js)');
+  assert.match(html,/<div id="membershipPicker"><\/div>\s*<select id="membershipType" class="segmentedSource"/);
+  assert.match(html,/<div id="cutPicker"><\/div>\s*<select id="jacketSelect" class="segmentedSource"/);
+  assert.match(html,/<div id="rankSetupPicker" class="mt-10"><\/div>\s*<select id="rankSetupSelect" class="segmentedSource"/);
+  assert.match(html,/<input type="checkbox" id="adultCadetCheckbox" class="segmentedSource" tabindex="-1" aria-hidden="true">\s*<div id="adultCadetPicker"><\/div>/);
+  assert.match(html,/<input type="checkbox" id="capubV2ShowText" class="segmentedSource" tabindex="-1" aria-hidden="true" checked>\s*<div id="showNamePicker" class="mt-8"><\/div>/);
   assert.match(setup,/source\.dispatchEvent\(new Event\('change', \{bubbles:true\}\)\)/);
 });
 
-test('a uniform the member may not wear is not listed, in either view',()=>{
-  assert.match(css,/\.uniformOption\.locked\{display:none\}/);
-  assert.match(css,/html\[data-ux="2"\] \.uniformOption\.locked\{display:none\}/);
+test('a uniform the member may not wear is folded under one line at the end of the list, muted, with its reason',()=>{
+  assert.doesNotMatch(css,/\.uniformOption\.locked\{display:none\}/);
+  assert.match(html,/<details class="lockedFold" id="lockedUniforms" hidden>\s*<summary id="lockedUniformsSummary">/);
+  // Greyed by colours and a dashed edge, not by opacity (it would grey the question mark with the card), and the reason is a line of the card, not text the
+  // stylesheet draws from an attribute (the paragraph in it waits behind the question mark: js/citations.js).
+  assert.match(css,/\.uniformOption\.locked\{\s*cursor:not-allowed;\s*background:var\(--panel-2\);\s*border-style:dashed;/);
+  assert.match(css,/\.uniformOption\.locked \.uWhy\{\s*display:block;/);
+  assert.doesNotMatch(css,/data-locked-reason/);
+  assert.match(setup,/why\.className='uWhy'; opt\.appendChild\(why\);/);
+  assert.match(setup,/CAPUBUniformRules\.lockedReason\(opt\.dataset\.uniformId/);
+  const ui=read('js/workspace-ui.js');
+  assert.match(ui,/if\(locked && card\.parentNode!==grid\) grid\.appendChild\(card\);/);
+  assert.match(ui,/summary\.textContent=`Not for \$\{who\}: \$\{n\} uniform\$\{n===1\?'':'s'\}`;/);
   assert.doesNotMatch(html,/Grayed-out uniforms/);
 });
 
@@ -37,29 +47,31 @@ test('shoulder cords are for cadets on Class A and Class B only (CAPR 39-1 9.3, 
     assert.equal(rules.allowsShoulderCord(id,'cadet'),want,`${id} for a cadet`);
     assert.equal(rules.allowsShoulderCord(id,'senior'),false,`${id} for a senior member`);
   }
-  assert.match(patches,/panel\.classList\.toggle\('hidden', !usable\)/);
-  assert.match(patches,/CAPUBUniformRules\.allowsShoulderCord\(State\.uniform, State\.membership\)/);
+  assert.match(patches,/panel\.classList\.toggle\('hidden', !options\.length\)/);
+  // The Aide-de-camp cord is also worn by senior members (9.3.4), so the control asks per cord.
+  assert.match(patches,/CAPUBUniformRules\.allowsCord\(State\.uniform, State\.membership, id\)/);
 });
 
-test('the collar and lapel overlay is under More tools, not in the Uniform step',()=>{
-  assert.ok(tools.includes('id="garmentOverlayPanel"'));
-  const uniformStep=html.slice(html.indexOf('id="stepGroup-uniform"'),html.indexOf('id="stepGroup-items"'));
-  assert.ok(!uniformStep.includes('garmentOverlayPanel'));
+test('the collar and lapel mask editor is gone: the engine redraws the lapel from the artwork',()=>{
+  assert.ok(!html.includes('id="garmentOverlayPanel"'));
+  assert.ok(!html.includes('id="editGarmentMaskBtn"'));
 });
 
-test('the name is an optional, folded block in the Profile step',()=>{
-  assert.match(profile,/<details class="optionalName" id="optionalName">\s*<summary>Add your name \(optional\)<\/summary>/);
+test('the name block ends the Profile step, open by default, titled Your name (all three fields are asked of every member, so it is no longer called optional)',()=>{
+  assert.match(profile,/<details class="optionalName" id="optionalName" open>\s*<summary>Your name<\/summary>/);
   assert.ok(profile.includes('id="capubV2LastName"'));
-  assert.ok(!tools.includes('capubV2LastName'));
-  assert.doesNotMatch(profile.slice(profile.indexOf('id="optionalName"'),profile.indexOf('id="optionalName"')+60),/\bopen\b/);
+  assert.ok(profile.indexOf('id="genderBlock"')<profile.indexOf('id="optionalName"'),'the cut comes before the name');
+  assert.match(profile.slice(profile.indexOf('id="optionalName"'),profile.indexOf('id="optionalName"')+60),/\bopen\b/,'the name fold is open by default so the fields are in view');
 });
 
-test('the ribbon rack layout controls are one panel under More tools, off the Ribbons panel',()=>{
+test('the ribbon rack layout controls are folded under the Ribbons card as Advanced: rack layout',()=>{
+  assert.match(rack,/<summary>Advanced: rack layout<\/summary>\s*<div id="ribbonRackPanel">/);
   for(const id of ['ribbonRackColumns','ribbonRackArrangement','ribbonRowOverridePanel','ribbonRackColumnsHint']){
-    assert.ok(tools.includes(`id="${id}"`),`${id} is under More tools`);
-    assert.ok(!ribbons.includes(`id="${id}"`),`${id} is not on the Ribbons panel`);
+    assert.ok(rack.includes(`id="${id}"`),`${id} is under Advanced: rack layout`);
   }
-  assert.match(tools,/<section id="ribbonRackPanel"/);
+  assert.ok(ribbons.includes('id="rackLayoutMore"'),'the fold is on the Ribbons card');
+  // The fold's summary names it; the label inside is not repeated.
+  assert.equal((rack.match(/Ribbon rack layout/g)||[]).length,1);
 });
 
 test('ribbon devices are set in the ribbon picker, so the add-several tool is gone',()=>{
@@ -67,8 +79,7 @@ test('ribbon devices are set in the ribbon picker, so the add-several tool is go
     assert.ok(!html.includes(`id="${id}"`),`${id} removed`);
   }
   const core=read('js/render-core.js');
-  assert.match(core,/if\(!wrap\) return; \/\/ the multi-apply tool was removed/);
-  assert.match(core,/if\(!applyBtn \|\| !removeBtn \|\| !clearBtn\) return;/);
+  assert.doesNotMatch(core,/function wireDeviceUI|function buildDevicePicker/);
 });
 
 test('no badge tile carries a Rare Cadet Eligibility tag',()=>{
@@ -77,6 +88,9 @@ test('no badge tile carries a Rare Cadet Eligibility tag',()=>{
   }
 });
 
-test('the Start your uniform card stands alone: the canvas hides while it shows',()=>{
-  assert.match(css,/#previewArea:has\(> #previewEmptyState:not\(\[hidden\]\)\) #uniformCanvas\{visibility:hidden\}/);
+test('no Start your uniform card over the preview: before the setup is complete the stage is simply empty',()=>{
+  for(const f of ['index.html','styles/app.css','js/workspace-ui.js']) assert.doesNotMatch(read(f),/previewEmptyState|emptyChecklist|Start your uniform/,f);
+  // The renderer draws nothing until membership, cut and rank are chosen; the footer's reason line is the guidance.
+  assert.match(read('js/uniform-view.js'),/if\(!State\.membership \|\| !State\.gender \|\| !State\.rank \|\| !CAPUBEngine\.profiles\.PROFILES\[State\.uniform\]\)\{/);
+  assert.match(read('js/workspace-ui.js'),/return `Choose \$\{listWords\(getProfileGaps\(\)\.filter\(g=>!g\.ok\)\.map\(g=>g\.short\)\)\} to go on\.`;/);
 });

@@ -1,0 +1,58 @@
+{
+ "asset_id": "patch-check-pilot",
+ "label": "National Check Pilot",
+ "file": "patch-check-pilot.png",
+ "width_in": 3,
+ "height_in": 2.94,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   293.97
+  ],
+  "center": [
+   150,
+   146.985
+  ],
+  "left_edge": [
+   0,
+   146.985
+  ],
+  "right_edge": [
+   300,
+   146.985
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/check_pilot_patch/StanEval_Patch_1F18AD13DDE23.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   199,
+   195
+  ],
+  "trimmed": false,
+  "px": [
+   199,
+   195
+  ],
+  "bytes": 71533,
+  "source_bytes": 71533,
+  "source_sha256": "d50bc8209006fa33310c9f3d817305737b07021e5293e21181bd83af66202265",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of National Check Pilot, published by North Dakota Wing (ndwg.cap.gov), standardization and evaluation page (page https://ndwg.cap.gov/; file address https://ndwg.cap.gov/media/cms/StanEval_Patch_1F18AD13DDE23.png); fetched 2026-11-10 and kept in assets/refs/patches-official/check_pilot_patch/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

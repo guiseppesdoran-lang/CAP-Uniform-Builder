@@ -1,0 +1,213 @@
+{
+ "asset_id": "garment-blues-class-b-shirt-male-cord-national",
+ "name": "Men's Class B blue short-sleeve shirt and trousers (nametag position only): National CAC shoulder cord (gold) (overlay, registered to garment-blues-class-b-shirt-male)",
+ "size_in": {
+  "w": 26.8594,
+  "h": 29.5087
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2685.94,
+  2950.87
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-blues-class-b-shirt-male; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   1342.9676342368648,
+   0
+  ],
+  "bottom_center": [
+   1342.9676342368648,
+   2950.87
+  ],
+  "center": [
+   1342.9676342368648,
+   1475.435
+  ],
+  "left_edge": [
+   0,
+   1475.435
+  ],
+  "right_edge": [
+   2685.9352684737296,
+   1475.435
+  ],
+  "cord_start": [
+   2304.04,
+   315.29
+  ],
+  "cord_end": [
+   2089.31,
+   1562.93
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    2304.07,
+    315.3
+   ],
+   [
+    2285.67,
+    403.1
+   ],
+   [
+    2280.47,
+    428.2
+   ],
+   [
+    2274.37,
+    457.9
+   ],
+   [
+    2267.37,
+    491.2
+   ],
+   [
+    2259.97,
+    526.9
+   ],
+   [
+    2252.17,
+    564.1
+   ],
+   [
+    2244.17,
+    601.7
+   ],
+   [
+    2236.37,
+    638.5
+   ],
+   [
+    2228.77,
+    673.5
+   ],
+   [
+    2221.97,
+    702.9
+   ],
+   [
+    2214.97,
+    731.1
+   ],
+   [
+    2207.77,
+    758.6
+   ],
+   [
+    2200.47,
+    786.2
+   ],
+   [
+    2193.07,
+    814.5
+   ],
+   [
+    2185.67,
+    844.2
+   ],
+   [
+    2178.27,
+    876
+   ],
+   [
+    2170.87,
+    910.6
+   ],
+   [
+    2163.67,
+    948.6
+   ],
+   [
+    2156.67,
+    990.8
+   ],
+   [
+    2152.47,
+    1018.7
+   ],
+   [
+    2148.07,
+    1049.9
+   ],
+   [
+    2143.57,
+    1083.8
+   ],
+   [
+    2139.07,
+    1120
+   ],
+   [
+    2134.37,
+    1157.8
+   ],
+   [
+    2129.77,
+    1196.9
+   ],
+   [
+    2125.17,
+    1236.7
+   ],
+   [
+    2120.67,
+    1276.8
+   ],
+   [
+    2116.27,
+    1316.5
+   ],
+   [
+    2111.97,
+    1355.4
+   ],
+   [
+    2107.87,
+    1393
+   ],
+   [
+    2104.07,
+    1428.8
+   ],
+   [
+    2100.37,
+    1462.3
+   ],
+   [
+    2097.07,
+    1492.9
+   ],
+   [
+    2094.07,
+    1520.3
+   ],
+   [
+    2091.47,
+    1543.8
+   ],
+   [
+    2089.27,
+    1562.9
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-shirt-male",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.5 in (the engine draws the shoulder cord 0.5 in across)",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

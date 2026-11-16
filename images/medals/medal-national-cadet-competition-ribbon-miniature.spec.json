@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-national-cadet-competition-ribbon-miniature",
  "name": "National Cadet Competition Ribbon (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6559,
  "size_in": {
   "w": 0.625,
-  "h": 0.8134
+  "h": 0.6559
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  81.34
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_ncc.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8134 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 175 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7071 x 0.7386 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7071 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 182.7 px = 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,84 +17,226 @@
   ],
   "bottom_center": [
    31.25,
-   81.34
+   65.59
   ],
   "center": [
    31.25,
-   40.67
+   32.8
   ],
   "left_edge": [
    0,
-   40.67
+   32.8
   ],
   "right_edge": [
    62.5,
-   40.67
+   32.8
   ],
   "ribbon_attach": [
-   32.39,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the top centre of the suspension ring (or of the bail where the box cuts the ring away), on the body axis: the body is upright, the photograph's hang angle (0.6 deg) is removed; compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "ncc",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-national-cadet-competition-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "National Cadet Competition Ribbon"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-national-cadet-competition-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-national-cadet-competition-ribbon",
   "spec": "../ribbons/ribbon-national-cadet-competition-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-national-cadet-competition-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9874,
-  "threshold": 0.95,
-  "colour_mae_0_255": 23.3,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
- },
- "palette": [
-  "#1f1b18",
-  "#504d4d",
-  "#6d6967",
-  "#b5b4b4"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "ncc_b",
-   "ncc_bb",
-   "ncc_bbb",
-   "ncc_bbbb",
-   "ncc_s",
-   "ncc_sb",
-   "ncc_sbb",
-   "ncc_sbbb",
-   "ncc_ss",
-   "ncc_ssb",
-   "ncc_ssbb",
-   "ncc_sss",
-   "ncc_sssb",
-   "ncc_ssss"
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/b-national-cadet-competition.js (parameters in inches) over lib.js, common.js, font.js, emit.js, lib-b.js; gates: lib-b.js; npm-free, node make-b.js b-national-cadet-competition --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-national-cadet-competition-miniature-medal (civil air patrol national cadet competition miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-national-cadet-competition-miniature-medal",
+  "title": "civil air patrol national cadet competition miniature medal",
+  "px": [
+   600,
+   600
   ],
-  "different_body": []
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/national-cadet-competition.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-national-cadet-competition-miniature-medal",
-  "local_photo": "medals-work/ref-hires/national-cadet-competition.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "national-cadet-competition.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 182.7,
+   "body_centre_px": [
+    295.3,
+    510
+   ],
+   "ppi_in_frame": 292.4,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
   },
-  "body_px": {
-   "w": 181,
-   "h": 235
+  "hang_angle_removed_deg": 0.6,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0022,
+   "ridge": [
+    0.292,
+    0.3085
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": -0.0024,
+   "cy": -0.0047,
+   "r": 0.2215,
+   "w": 0
+  },
+  "lettering": {
+   "stroke_in": 0.0105,
+   "top_letters": 14,
+   "bottom_letters": 16,
+   "cap_height_top_in": 0.046,
+   "cap_height_bottom_in": 0.0447,
+   "letter_positions": "angle and radial extent of each letter, measured from the unwrapped annulus (generator, text.top / text.bottom)"
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.105,
+    "top": -0.4387,
+    "neck": 0.098,
+    "shoulder": -0.34,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     0.006,
+     -0.506
+    ],
+    "r": 0.1225,
+    "w": 0.013
+   }
+  },
+  "tones_luminance": {
+   "ground": 25,
+   "shadow": 8,
+   "base": 98,
+   "hi": 128,
+   "rim": 150,
+   "rim_hi": 205,
+   "metal": 105,
+   "metal_hi": 150,
+   "bail": 112,
+   "lip": 200
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 4.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "silver studio ramp (lib.js SILVER_RAMP)",
+  "tone_colours": {
+   "ground": "#1f1d1c",
+   "shadow": "#131111",
+   "base": "#65605f",
+   "hi": "#847f7d",
+   "rim": "#9a9593",
+   "rim_hi": "#cfcbc8",
+   "lip": "#cac6c3",
+   "metal": "#6c6766",
+   "metal_hi": "#9a9593",
+   "bail": "#736e6d"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph mask resampled into the same upright box)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ink_coverage": "lit-metal area of mine / reference between 0.85 and 1.15 (body and named zones): letters and emblem strokes as solid as the reference",
+   "ribbon_attach": "top centre of the ring (or of the bail where the box cuts the ring) at the box top, x on the body axis",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9875,
+  "light_class_iou": 0.809,
+  "ink_coverage": [
+   {
+    "zone": "body",
+    "ref_px": 70511,
+    "mine_px": 69217,
+    "ratio": 0.982
+   },
+   {
+    "zone": "lettering band",
+    "ref_px": 14079,
+    "mine_px": 15624,
+    "ratio": 1.11
+   },
+   {
+    "zone": "plate",
+    "ref_px": 51341,
+    "mine_px": 49124,
+    "ratio": 0.957
+   }
+  ],
+  "landmarks_checked": 39,
+  "landmark_max_dist_in": 0.0055,
+  "landmark_worst": [
+   [
+    "hub",
+    0.0055
+   ],
+   [
+    "letter L (top 64.3deg)",
+    0.0044
+   ],
+   [
+    "pale 1",
+    0.0042
+   ],
+   [
+    "blade 1",
+    0.0042
+   ],
+   [
+    "letter C (bottom 202.2deg)",
+    0.0041
+   ]
+  ],
+  "edge_recall_0p006in": 0.818,
+  "edge_recall_0p012in": 0.894,
+  "edge_precision_0p012in": 0.996,
+  "tone_mae_luminance": 18.2,
+  "ribbon_attach_units": {
+   "mine": 31.21,
+   "spec_new": [
+    31.25,
+    0
+   ],
+   "spec_old": [
+    31.25,
+    0
+   ]
+  },
+  "gate_pass": true,
+  "pass": true,
+  "not_measurable": [
+   "The two marks either side of the lettering are round blurred dots about 0.023 in across; the photograph does not resolve them as stars (the brief expected small stars), so they are modelled as dots",
+   "The plate and the lettering band are cast with a fine granular texture; drawn as flat tones. The thin light relief lines that run along the dark pales and the shield band are not drawn, except the 0.004 in light rim where the blades cross the pales",
+   "A small ogee notch in the shield point and the exact curvature of the lower sides are simplified to a smooth curve through eleven measured half-widths",
+   "The propeller blades are drawn as symmetric lenses from the hub centre at measured angles, lengths and widths; the slight twist of each blade is not resolved"
+  ],
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9875,
+  "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from national-cadet-competition.jpeg (reference only, never shipped). Hang angle 0.6 deg of the photograph removed."
 }

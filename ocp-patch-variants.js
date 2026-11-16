@@ -1,5 +1,5 @@
-/* OCP patch sprites and selection fix.
- * Each OCP asset contains a left-side sleeve crop plus a complete patch.
+/* OCP patch variants and selection fix.
+ * The OCP lists a patch under its own id, with the base patch's picture.
  */
 (function capubOcpPatchVariants(){
   const variants = {
@@ -25,34 +25,20 @@
     if(variantId !== 'pjoc_ocp_patch'){
       PATCH_META[variantId] = {
         ...base,
-        label:`${base.label} — OCP sleeve`,
+        label:base.label,
         w:200, h:100,
-        img:`patches/ocp/${variantId}.webp`,
+        img:base.img, asset:base.asset || null,
         authorizedUniforms:['ocp'],
         ocpVariant:true,
         basePatchId:baseId
       };
     }else{
       Object.assign(PATCH_META[variantId], {
-        label:'PJOC Patch — OCP sleeve', w:200, h:100,
+        label:base.label, w:200, h:100, img:base.img, asset:base.asset || null,
         authorizedUniforms:['ocp'], ocpVariant:true, basePatchId:baseId
       });
     }
     if(!patchList.includes(variantId)) patchList.push(variantId);
-  }
-
-  // Imported from CAPUB_coordinates_1785957149681.json (2026-08-05).
-  // The uploaded PJOC calibration defines the OCP male left-sleeve location;
-  // apply that same higher-headquarters/activity-patch anchor to every OCP
-  // variant whose authorized slot is the left shoulder. Chest patches retain
-  // their existing, independently calibrated chest anchors.
-  const ocpMaleHigherHeadquartersLocation = {x:690, y:212, w:200, h:100, r:0};
-  DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
-  for(const variantId of variantIds){
-    if(PATCH_META[variantId]?.slotHint !== 'L_SHOULDER') continue;
-    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male[`patch:${variantId}:L_SHOULDER:0`] = {
-      ...ocpMaleHigherHeadquartersLocation
-    };
   }
 
   const previousResolver = window.capubResolvePatchIdForUniform;
@@ -64,85 +50,8 @@
       : patchId;
   };
 
-  buildPatchGallery = function(){
-    const wrap = by('patchGallery');
-    if(!wrap) return;
-    normalizePatchSelections();
-    wrap.innerHTML = '';
-    const onOcp = uniformKey() === 'ocp';
-    const ids = patchList.filter(id => {
-      if(!PATCH_META[id] || FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) return false;
-      if(id === 'tn185_ocp_patch' || id === 'tn330_ocp_patch' || /^unitPatch:/i.test(id)) return false;
-      return onOcp ? variantIds.has(id) : !variantIds.has(id);
-    });
-    const shown = State.patchGalleryExpanded ? ids : ids.slice(0, 10);
-
-    for(const id of shown){
-      const meta = PATCH_META[id];
-      const sel = State.patchSelections[id] || (State.patchSelections[id] = {checked:false});
-      const authorized = isPatchAuthorizedForUniform(id);
-      const tile = document.createElement('div');
-      tile.className = `galleryTile${authorized ? '' : ' disabledBlock'}`;
-      tile.innerHTML = `
-        <img src="${ASSET(meta.img)}" alt="${escapeHtml(meta.label)}">
-        <div style="flex:1;min-width:0;">
-          <div class="title">${escapeHtml(meta.label)}</div>
-          <div class="sub">(${escapeHtml(id)})</div>
-          <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-          <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> &bull; Size: ${meta.w}&times;${meta.h} px</div>
-        </div>`;
-      const checkbox = tile.querySelector('.ptChk');
-      checkbox.checked = !!sel.checked && authorized;
-      checkbox.disabled = !authorized;
-      checkbox.onchange = () => {
-        sel.checked = authorized && checkbox.checked;
-        State.patchSelections[id] = sel;
-        rebuildPatchesFromGallery();
-        checkbox.checked = !!State.patchSelections[id]?.checked;
-      };
-      wrap.appendChild(tile);
-    }
-  };
-
-  // The legacy modal wired filtered tiles to patchList by array position. Read
-  // the explicit ID printed in each tile instead so PJOC is never mistaken for
-  // the first generic patch. Capture phase survives popup rebuilds.
-  if(!modalHost.dataset.ocpPatchIdWiring){
-    modalHost.dataset.ocpPatchIdWiring = '1';
-    modalHost.addEventListener('change', event => {
-      const checkbox = event.target.closest?.('.ptChk');
-      if(!checkbox) return;
-      const tile = checkbox.closest('.galleryTile');
-      const idText = [...(tile?.querySelectorAll('.sub') || [])]
-        .map(node => node.textContent || '')
-        .find(text => /^\([^)]+\)$/.test(text.trim()));
-      const id = idText?.trim().slice(1, -1);
-      if(!id || !PATCH_META[id]) return;
-      event.stopImmediatePropagation();
-      State.patchSelections[id] = {
-        ...(State.patchSelections[id] || {}),
-        checked:!checkbox.disabled && checkbox.checked
-      };
-      rebuildPatchesFromGallery();
-      checkbox.checked = !!State.patchSelections[id]?.checked;
-    }, true);
-  }
-
-  const previousOpenGalleryModal = openGalleryModal;
-  openGalleryModal = function(kind){
-    previousOpenGalleryModal(kind);
-    if(kind !== 'patches') return;
-    modalHost.querySelectorAll('.galleryTile').forEach(tile => {
-      const idText = [...tile.querySelectorAll('.sub')]
-        .map(node => node.textContent || '')
-        .find(text => /^\([^)]+\)$/.test(text.trim()));
-      const id = idText?.trim().slice(1, -1);
-      const checkbox = tile.querySelector('.ptChk');
-      if(!id || !checkbox || !PATCH_META[id]) return;
-      checkbox.checked = !!State.patchSelections[id]?.checked;
-      checkbox.disabled = !isPatchAuthorizedForUniform(id);
-    });
-  };
+  // The patch picker itself (the picture tiles of the Choose... window, the one-only Ranger tab group, the choice of places) is js/pick-lists.js patchList over
+  // js/catalog.js patchTileWords; this file only names the OCP's own patch forms above.
 
   const migrated = [];
   for(const rawId of State.patches || []){

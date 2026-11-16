@@ -1,0 +1,88 @@
+{
+ "asset_id": "patch-swr-tx-060-group",
+ "label": "TXWG Group 6",
+ "charter": "SWR-TX-060",
+ "kind": "unit",
+ "echelon": "group",
+ "file": "patch-swr-tx-060-group.png",
+ "width_in": 3,
+ "height_in": 3.015,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   301.478
+  ],
+  "center": [
+   150,
+   150.739
+  ],
+  "left_edge": [
+   0,
+   150.739
+  ],
+  "right_edge": [
+   300,
+   150.739
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/group/swrtx060.png",
+ "emblemoptions": {
+  "label": "TXWG Group 6",
+  "type": "Group",
+  "path": "group/swrtx060.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   239,
+   229
+  ],
+  "trim_bbox_px": [
+   16,
+   18,
+   219,
+   222
+  ],
+  "trimmed": true,
+  "px": [
+   203,
+   204
+  ],
+  "bytes": 57680,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "#ffffff",
+   "alpha": 128,
+   "flood": "4-neighbour flood from the picture's edge over pixels within 10 levels of the ground colour and the ground alpha",
+   "px": 25070,
+   "band": {
+    "depth_px": 3,
+    "px": 1310,
+    "outline_colours": [
+     "#fcb72c",
+     "#e1be4a"
+    ],
+    "rule": "alpha from the pixel colour's place between the ground colour and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 25072
+  },
+  "ground": "transparent"
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"TXWG Group 6\" (Group), path group/swrtx060.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (239 x 229 px to 239 x 229 px), no resampling, no colour change. On 2026-11-12, at the owner's request, the ground that came around the emblem (white at half opacity; 25070 px, found by a flood from the picture's edge) was made clear, and the 1310 px where the outline had been blended into it (up to 3 px deep) were given their alpha from where their colour lies between the ground colour and the outline's own solid colour (#fcb72c, #e1be4a) and took that colour, and the picture was trimmed again to the emblem's box (239 x 229 px to 203 x 204 px); no resampling, no redrawing, no other colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The ground around the emblem was made clear on 2026-11-12 (the owner: background removed from the patches), nothing else was changed."
+}

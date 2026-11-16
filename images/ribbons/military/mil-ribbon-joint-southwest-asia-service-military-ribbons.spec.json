@@ -1,0 +1,248 @@
+{
+ "asset_id": "mil-ribbon-joint-southwest-asia-service-military-ribbons",
+ "name": "southwest asia service",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "16151e",
+    "fraction": 0.0468,
+    "x0_in": 0,
+    "x1_in": 0.0644
+   },
+   {
+    "index": 1,
+    "hex": "e7cfa2",
+    "fraction": 0.0842,
+    "x0_in": 0.0644,
+    "x1_in": 0.1802
+   },
+   {
+    "index": 2,
+    "hex": "3a3789",
+    "fraction": 0.048,
+    "x0_in": 0.1802,
+    "x1_in": 0.2461
+   },
+   {
+    "index": 3,
+    "hex": "ffffff",
+    "fraction": 0.0468,
+    "x0_in": 0.2461,
+    "x1_in": 0.3105
+   },
+   {
+    "index": 4,
+    "hex": "b3202d",
+    "fraction": 0.046,
+    "x0_in": 0.3105,
+    "x1_in": 0.3738
+   },
+   {
+    "index": 5,
+    "hex": "e7cfa2",
+    "fraction": 0.1367,
+    "x0_in": 0.3738,
+    "x1_in": 0.5617
+   },
+   {
+    "index": 6,
+    "hex": "096e41",
+    "fraction": 0.0686,
+    "x0_in": 0.5617,
+    "x1_in": 0.6561
+   },
+   {
+    "index": 7,
+    "hex": "16151e",
+    "fraction": 0.0456,
+    "x0_in": 0.6561,
+    "x1_in": 0.7189
+   },
+   {
+    "index": 8,
+    "hex": "096e41",
+    "fraction": 0.0686,
+    "x0_in": 0.7189,
+    "x1_in": 0.8133
+   },
+   {
+    "index": 9,
+    "hex": "e7cfa2",
+    "fraction": 0.1367,
+    "x0_in": 0.8133,
+    "x1_in": 1.0012
+   },
+   {
+    "index": 10,
+    "hex": "b3202d",
+    "fraction": 0.046,
+    "x0_in": 1.0012,
+    "x1_in": 1.0645
+   },
+   {
+    "index": 11,
+    "hex": "ffffff",
+    "fraction": 0.0468,
+    "x0_in": 1.0645,
+    "x1_in": 1.1289
+   },
+   {
+    "index": 12,
+    "hex": "3a3789",
+    "fraction": 0.048,
+    "x0_in": 1.1289,
+    "x1_in": 1.1948
+   },
+   {
+    "index": 13,
+    "hex": "e7cfa2",
+    "fraction": 0.0842,
+    "x0_in": 1.1948,
+    "x1_in": 1.3106
+   },
+   {
+    "index": 14,
+    "hex": "16151e",
+    "fraction": 0.0468,
+    "x0_in": 1.3106,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Southwest Asia Service",
+   "url": "https://www.vanguardmil.com/products/southwest-asia-service-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
+  "source_images": [
+   "img/ribbons/adcb8ca47eae.jpg"
+  ],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Southwest Asia Service",
+  "vendor_product_url": "https://www.vanguardmil.com/products/southwest-asia-service-ribbon-unit",
+  "corners_px": [
+   [
+    71,
+    453.8
+   ],
+   [
+    1125.3,
+    455.4
+   ],
+   [
+    1123.8,
+    745.3
+   ],
+   [
+    71,
+    743.8
+   ]
+  ],
+  "rectified_px": [
+   1054,
+   290
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.6,
+   0.4,
+   0.6,
+   4.6,
+   0.5,
+   0.8,
+   0.3,
+   1.9,
+   0.3,
+   0.4,
+   0.3,
+   5.5,
+   0.8,
+   0.6,
+   0.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":15,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Southwest Asia Service Medal ribbon.svg (Public domain), boundary match 0.86\"}"
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "ARMY",
+  "COAST_GUARD",
+  "MARINE_CORPS",
+  "NAVY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/southwest_asia_service_military_ribbons.jpg",
+   "award_ids": [
+    "southwest_asia_service_military_ribbons"
+   ]
+  }
+ ],
+ "award_names": [
+  "southwest asia service"
+ ],
+ "fit": {
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 5.5,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

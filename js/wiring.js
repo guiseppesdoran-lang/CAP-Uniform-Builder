@@ -12,7 +12,14 @@ uniformListEl.addEventListener('click', e=>{
 
   const newUniform=btn.dataset.uniformId;
   const prevU=State.uniform;
-  State.uniform=newUniform;
+  const prevCard=State.ceremonial ? CAPUBUniformRules.CEREMONIAL.id : prevU;
+  // The Honor Guard Uniform is the Service Dress or the Blue Service uniform with the honor guard items put on: State.uniform stays the uniform it rides on (the coat's Class A
+  // unless the member is already on the shirt's Class B), so every rule and drawing of that uniform applies to it unchanged.
+  State.ceremonial=newUniform===CAPUBUniformRules.CEREMONIAL.id;
+  if(State.ceremonial){
+    if(!['blues_a','blues_b'].includes(State.uniform)) State.uniform=CAPUBUniformRules.ceremonialBase('coat');
+  }else State.uniform=newUniform;
+  if(prevCard!==newUniform) window.CAPUB_TELEMETRY?.track('uniform_switch', { from: prevCard, to: newUniform });
 
   fullRender(prevU);
   refreshUI();
@@ -21,37 +28,23 @@ uniformListEl.addEventListener('click', e=>{
 /* ===========================
    EVENT WIRING
    =========================== */
-const applyJacketBtn = by('applyJacket');
-if(applyJacketBtn){
-  applyJacketBtn.addEventListener('click', ()=>{
-    State.assetBase=(assetBaseInput?.value||'images').trim()||'images';
-    fullRender();
-    buildRibbonGallery();
-    buildBadgeGallery();
-    buildPatchGallery();
-  });
-}
-if(assetBaseInput){
-  assetBaseInput.addEventListener('change', ()=>{
-    State.assetBase=(assetBaseInput.value||'images').trim()||'images';
-    fullRender();
-    buildRibbonGallery();
-    buildBadgeGallery();
-    buildPatchGallery();
-  });
-}
-
-by('toggleMini').addEventListener('change', e=>{
-  State.forceMini = e.target.checked;
-  renderRack();
-  renderAllBadges();
-});
-
 const cadetHighestOnlyToggle = by('cadetHighestOnly');
 if(cadetHighestOnlyToggle){
   cadetHighestOnlyToggle.addEventListener('change', e=>{
     State.cadetHighestOnly = e.target.checked;
     rebuildRibbonsFromGallery();
+  });
+}
+
+// Remove ribbons (LIVE13, in place of the quick strip): on the shirts where ribbons are optional (CAPR 39-1 4.1.11.1.1.2.2,
+// 4.1.12.2.4.2; the aviator shirt 4.2.5.1.2.2, 4.2.6.2.6.2) the drawing leaves the rack off while the selections stay
+// (js/uniform-view.js buildRibbons). Saved with the setup; js/workspace-ui.js shows the box only where it applies.
+const removeRibbonsToggle = by('removeRibbons');
+if(removeRibbonsToggle){
+  removeRibbonsToggle.addEventListener('change', e=>{
+    State.hideRibbons = !!e.target.checked;
+    fullRender();
+    window.CAPUB_TELEMETRY?.track('remove_ribbons', { on: State.hideRibbons, uniform: State.uniform });
   });
 }
 
@@ -61,36 +54,18 @@ if(miniMountStyleSelect){
   miniMountStyleSelect.addEventListener('change', e=>{
     State.miniMountStyle = e.target.value === 'holding' ? 'holding' : 'mounting';
     renderRack();
-    renderMeasurementOverlay();
   });
 }
-
-const measurementOverlayToggle = by('toggleMeasurementOverlay');
-if(measurementOverlayToggle){
-  measurementOverlayToggle.dataset.measurementToggleWired = '1';
-  measurementOverlayToggle.addEventListener('change', e=>{
-    State.showMeasurementOverlay = !!e.target.checked;
-    if(State.showMeasurementOverlay){
-      renderMeasurementOverlay();
-    }else{
-      clearMeasurementOverlay();
-    }
-  });
-}
-
-buildDevicePicker();
-wireDeviceUI();
 
 /* Ribbon gallery buttons */
 by('clearRibbons').addEventListener('click', ()=>{
   State.ribbons=[];
   State.ribbonSelections={};
+  State.gradeRibbons=null;
   buildRibbonGallery();
   renderRack();
   renderAllBadges();
 });
-by('capSelectAllBasic')?.addEventListener('click',()=>selectAllCapUniformAwards({maximum:false}));
-by('capSelectAllMax')?.addEventListener('click',()=>selectAllCapUniformAwards({maximum:true}));
 
 /* Badge gallery buttons */
 by('clearBadges').addEventListener('click', ()=>{
@@ -100,92 +75,35 @@ by('clearBadges').addEventListener('click', ()=>{
   renderAllBadges();
 });
 
+// The Badges panel's one line for the selected badges the uniform does not wear (LIVE13 E67): they stay selected, are not offered or
+// drawn here, and the line says how many and by which paragraph (js/badge-rules.js capubBadgesNotWornLine).
+function capubSyncBadgesNotWornNote(){
+  const group = by('groupBadges');
+  if(!group) return;
+  let el = by('badgesNotWornNote');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'badgesNotWornNote';
+    el.className = 'hintText';
+    el.setAttribute('role', 'note');
+    const anchor = by('badgesPlannedNote');
+    if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(el, anchor.nextSibling);
+    else group.appendChild(el);
+  }
+  const line = [capubBadgesNotWornLine(), typeof capubBadgesNotShownLine === 'function' ? capubBadgesNotShownLine() : ''].filter(Boolean).join(' ');
+  el.textContent = line;
+  el.classList.toggle('hidden', !line);
+}
+
 /* Patch gallery buttons */
 by('clearPatches').addEventListener('click', ()=>{
   State.patches=[];
   State.patchSelections={};
-  State.unitPatchCharter='';
-  const unitSearch = by('unitPatchSearch');
-  if(unitSearch) unitSearch.value='';
+  // The unit is the member's, chosen in the Profile step: clearing the patches leaves it.
   buildPatchGallery();
-  if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   renderPatches();
 });
 
-
-const EXPORT_PADDING_X = 180;
-const EXPORT_PADDING_Y = 180;
-
-function buildCenteredExportStage(){
-  // Use the canvas's untransformed layout size. getBoundingClientRect() includes
-  // preview zoom and caused the cloned export canvas to be resized independently
-  // from its absolutely-positioned children.
-  const computed = getComputedStyle(uniformCanvas);
-  const srcW = Math.round(
-    uniformCanvas.offsetWidth ||
-    parseFloat(computed.width) ||
-    (State.uniform && ['ocp','abu','corporate_field','cfu','cfdu','fdu','flight_suit'].includes(State.uniform) ? 969.6 : 450)
-  );
-  const srcH = Math.round(
-    uniformCanvas.offsetHeight ||
-    parseFloat(computed.height) ||
-    (State.uniform && ['ocp','abu','corporate_field','cfu','cfdu','fdu','flight_suit'].includes(State.uniform) ? 707.52 : 600)
-  );
-  const exportW = srcW + (EXPORT_PADDING_X * 2);
-  const exportH = srcH + (EXPORT_PADDING_Y * 2);
-
-  const stage = document.createElement('div');
-  stage.id = 'capubExportStage';
-  stage.style.position = 'fixed';
-  stage.style.left = '-10000px';
-  stage.style.top = '0';
-  stage.style.width = `${exportW}px`;
-  stage.style.height = `${exportH}px`;
-  stage.style.background = '#ffffff';
-  stage.style.overflow = 'hidden';
-  stage.style.pointerEvents = 'none';
-  stage.style.zIndex = '-1';
-
-  const clone = uniformCanvas.cloneNode(true);
-  clone.id = 'capubExportUniformCanvas';
-  clone.classList.remove('calib-selectable','drag-mode-on');
-  clone.style.position = 'absolute';
-  clone.style.left = `${Math.round((exportW - srcW) / 2)}px`;
-  clone.style.top = `${Math.round((exportH - srcH) / 2)}px`;
-  clone.style.width = `${srcW}px`;
-  clone.style.height = `${srcH}px`;
-  clone.style.background = 'transparent';
-  clone.style.borderRadius = '0';
-  clone.style.transform = 'none';
-  clone.querySelectorAll('.calib-selected').forEach(el => el.classList.remove('calib-selected'));
-
-  stage.appendChild(clone);
-  document.body.appendChild(stage);
-  return stage;
-}
-
-function applyCssPolygonClipToCanvas(ctx, clipPath, width, height){
-  const match = /^polygon\((.*)\)$/i.exec(String(clipPath || '').trim());
-  if(!match) return false;
-
-  const points = match[1].split(',').map(pair => {
-    const values = pair.trim().split(/\s+/);
-    if(values.length < 2) return null;
-    const resolve = (token, size) => token.endsWith('%')
-      ? (parseFloat(token) / 100) * size
-      : parseFloat(token);
-    const x = resolve(values[0], width);
-    const y = resolve(values[1], height);
-    return Number.isFinite(x) && Number.isFinite(y) ? [x - width/2, y - height/2] : null;
-  }).filter(Boolean);
-
-  if(points.length < 3) return false;
-  ctx.beginPath();
-  points.forEach(([x,y], index) => index ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
-  ctx.closePath();
-  ctx.clip();
-  return true;
-}
 
 function syncRibbonRackColumnsControl(){
   const select = by('ribbonRackColumns');
@@ -194,19 +112,23 @@ function syncRibbonRackColumnsControl(){
   const arrangementHint = by('ribbonRackArrangementHint');
   if(!select) return;
 
-  const classA = State.uniform === 'blues_a';
+  // Four across is allowed only where 11.2.7 allows it (the Class A coat and the cadet semi-formal coat).
+  const classA = CAPUBUniformRules.allowsRackColumns(State.uniform, 4);
   const preferredLayout = ['3','4-left','4-center'].includes(String(State.ribbonRackLayout))
     ? String(State.ribbonRackLayout)
-    : '4-left';
+    : '3';
   select.disabled = !classA;
   select.value = classA ? preferredLayout : '3';
+  // The rack layout controls are the Class A coat's (and the cadet semi-formal coat's): they are not shown on a uniform that takes rows of three only.
+  const rackFold = by('rackLayoutMore');
+  if(rackFold) rackFold.classList.toggle('hidden', !classA);
 
   if(hint){
     hint.textContent = classA && preferredLayout === '4-center'
-      ? 'Visual realism option: the complete left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This option is not in accordance with CAPR 39-1.'
+      ? 'Display option: the left-aligned four-across rack is shifted as one unit until its rows of four are centered over the pocket. This arrangement is not in accordance with the regulation.'
       : classA
         ? 'Choose three across, or align a four-across rack with the wearer-left/outboard pocket edge. Rows have no spacing.'
-        : 'CAPR 39-1 requires rows of three on Class B and aviator shirts. Four-across is available only on Class A.';
+        : 'Rows of three are required on Class B and aviator shirts. Four-across is available only on Class A (CAPR 39-1, 11.2.7).';
   }
 
   if(arrangementSelect){
@@ -216,31 +138,15 @@ function syncRibbonRackColumnsControl(){
   }
   if(arrangementHint){
     arrangementHint.textContent = classA
-      ? 'Automatic mode uses the standard three-ribbon layout while every ribbon has 51% or less lapel coverage. It switches to four across only if a ribbon exceeds 51%; the rack-width selection controls that four-column fallback alignment.'
+      ? 'Automatic mode uses rows of three. Where the lapel would cover more than half of a ribbon, the upper rows hold fewer ribbons, aligned with the wearer\'s left edge (CAPR 39-1, 11.1.8).'
       : 'Lapel-avoidance ribbon arrangements apply only to the Class A service coat.';
   }
   syncRibbonRowOverrideControl();
 }
 
+// The rows the engine drew last, top row first: the starting point for a custom row grid.
 function getAutomaticRibbonRowCounts(){
-  const items=sortRibbons(State.ribbons || []);
-  if(!items.length) return [];
-  let layout=getRibbonLayout();
-  let useFourColumnLapelLayout=false;
-  if(State.uniform==='blues_a' && State.ribbonRackArrangement==='lapel'){
-    const decision=getAutomaticClassARibbonLayout(items);
-    layout=decision.layout;
-    useFourColumnLapelLayout=decision.useFourColumns;
-  }
-  if(useFourColumnLapelLayout && State.ribbonRackLayout==='4-center'){
-    // Row selection must match the left-aligned version exactly; centering is a
-    // render-only translation and must not change any upper-row composition.
-    layout=getRibbonLayout('blues_a','4-left');
-  }
-  const rows=useFourColumnLapelLayout
-    ? buildLapelAvoidanceRowsHighToLow(items,layout.columns,layout)
-    : buildRibbonRowsHighToLow(items,layout.columns);
-  return rows.map(row=>row.length);
+  return CAPUBUniformView.rackRowCounts();
 }
 
 function syncRibbonRowOverrideControl(){
@@ -256,7 +162,7 @@ function syncRibbonRowOverrideControl(){
   controls.classList.toggle('hidden',!checkbox.checked);
   if(!checkbox.checked){ grid.innerHTML=''; return; }
 
-  const columns=getRibbonLayout().columns;
+  const columns=4; // rows of four are authorized on the Class A coat (11.2.7)
   const selectedCount=(State.ribbons || []).length;
   let counts=Array.isArray(State.ribbonRowOverride)
     ? State.ribbonRowOverride.map(Number).filter(Number.isInteger)
@@ -287,7 +193,6 @@ function syncRibbonRowOverrideControl(){
         State.ribbonRowOverride[rowIndex]=choice;
         renderRack();
         renderAllBadges();
-        renderMeasurementOverlay();
       });
       row.appendChild(button);
     }
@@ -314,14 +219,13 @@ if(ribbonRackColumnsSelect){
   ribbonRackColumnsSelect.addEventListener('change', e=>{
     State.ribbonRackLayout = ['3','4-left','4-center'].includes(e.target.value)
       ? e.target.value
-      : '4-left';
+      : '3';
     if(State.ribbonRackLayout === '4-center'){
-      capubNotify('The 4 across, centered above welt/pocket option is more realistic for the preview, but it is not in accordance with CAPR 39-1.', 9000);
+      capubNotify('The four-across rack centered above the welt/pocket is a display option and is not in accordance with the regulation.', 9000);
     }
     syncRibbonRackColumnsControl();
     renderRack();
     renderAllBadges();
-    renderMeasurementOverlay();
   });
 }
 
@@ -332,7 +236,6 @@ if(ribbonRackArrangementSelect){
     syncRibbonRackColumnsControl();
     renderRack();
     renderAllBadges();
-    renderMeasurementOverlay();
   });
 }
 
@@ -346,487 +249,27 @@ if(ribbonRowOverrideEnabled){
     syncRibbonRowOverrideControl();
     renderRack();
     renderAllBadges();
-    renderMeasurementOverlay();
   });
 }
 
 const addRibbonOverrideRow=by('addRibbonOverrideRow');
 if(addRibbonOverrideRow){
   addRibbonOverrideRow.addEventListener('click',()=>{
-    State.ribbonRowOverride=[1,...normalizeRibbonRowOverride(State.ribbonRowOverride,getRibbonLayout().columns)];
+    State.ribbonRowOverride=[1,...normalizeRibbonRowOverride(State.ribbonRowOverride,4)];
     renderRack();
     renderAllBadges();
-    renderMeasurementOverlay();
   });
 }
 
 const removeRibbonOverrideRow=by('removeRibbonOverrideRow');
 if(removeRibbonOverrideRow){
   removeRibbonOverrideRow.addEventListener('click',()=>{
-    const counts=normalizeRibbonRowOverride(State.ribbonRowOverride,getRibbonLayout().columns);
+    const counts=normalizeRibbonRowOverride(State.ribbonRowOverride,4);
     if(counts.length>1) counts.shift();
     State.ribbonRowOverride=counts;
     renderRack();
     renderAllBadges();
-    renderMeasurementOverlay();
   });
-}
-
-async function composeUniformPngCanvas(source, outputScale = 2){
-  const width = Math.round(source.offsetWidth || parseFloat(getComputedStyle(source).width) || 450);
-  const height = Math.round(source.offsetHeight || parseFloat(getComputedStyle(source).height) || 600);
-  const canvas = document.createElement('canvas');
-  canvas.width = width * outputScale;
-  canvas.height = height * outputScale;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(outputScale, outputScale);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, width, height);
-
-  const layers = [...source.children]
-    .filter(el => el.classList?.contains('layer'))
-    .filter(el => !el.classList.contains('measurementOverlay') && !el.classList.contains('measurementArrowLayer'))
-    .map((el, order) => {
-      const style = getComputedStyle(el);
-      const z = Number.parseInt(style.zIndex, 10);
-      return { el, style, order, z:Number.isFinite(z) ? z : 0 };
-    })
-    .sort((a,b) => a.z - b.z || a.order - b.order);
-
-  await Promise.all(layers.map(({el}) => {
-    if(!(el instanceof HTMLImageElement)) return Promise.resolve();
-    if(el.complete) return el.decode?.().catch(() => undefined) || Promise.resolve();
-    return new Promise(resolve => {
-      el.addEventListener('load', resolve, {once:true});
-      el.addEventListener('error', resolve, {once:true});
-    });
-  }));
-
-  for(const {el,style} of layers){
-    if(style.display === 'none' || style.visibility === 'hidden') continue;
-    const x = parseFloat(el.style.left || style.left) || 0;
-    const y = parseFloat(el.style.top || style.top) || 0;
-    const cssW = parseFloat(el.style.width || style.width) || el.offsetWidth || 0;
-    const cssH = parseFloat(el.style.height || style.height) || el.offsetHeight || 0;
-    const borderLeft = parseFloat(style.borderLeftWidth) || 0;
-    const borderRight = parseFloat(style.borderRightWidth) || 0;
-    const borderTop = parseFloat(style.borderTopWidth) || 0;
-    const borderBottom = parseFloat(style.borderBottomWidth) || 0;
-    const paddingLeft = parseFloat(style.paddingLeft) || 0;
-    const paddingRight = parseFloat(style.paddingRight) || 0;
-    const paddingTop = parseFloat(style.paddingTop) || 0;
-    const paddingBottom = parseFloat(style.paddingBottom) || 0;
-    const contentBox = style.boxSizing !== 'border-box';
-    const horizontalChrome = borderLeft + borderRight + paddingLeft + paddingRight;
-    const verticalChrome = borderTop + borderBottom + paddingTop + paddingBottom;
-    const outerW = contentBox ? cssW + horizontalChrome : cssW;
-    const outerH = contentBox ? cssH + verticalChrome : cssH;
-    const contentW = contentBox ? cssW : Math.max(0, cssW - horizontalChrome);
-    const contentH = contentBox ? cssH : Math.max(0, cssH - verticalChrome);
-    if(outerW <= 0 || outerH <= 0 || contentW <= 0 || contentH <= 0) continue;
-
-    let rotation = 0;
-    if(style.transform && style.transform !== 'none'){
-      try{
-        const matrix = new DOMMatrixReadOnly(style.transform);
-        rotation = Math.atan2(matrix.b, matrix.a);
-      }catch(err){
-        const match = /rotate\(([-\d.]+)deg\)/i.exec(el.style.transform || '');
-        if(match) rotation = Number(match[1]) * Math.PI / 180;
-      }
-    }
-
-    ctx.save();
-    ctx.globalAlpha = Number.parseFloat(style.opacity) || 1;
-    // CSS left/top identifies the outer border-box origin. Preserve that box
-    // exactly so bordered badges do not shift when the DOM preview is painted
-    // into the downloaded PNG.
-    ctx.translate(x + outerW/2, y + outerH/2);
-    ctx.rotate(rotation);
-    applyCssPolygonClipToCanvas(ctx, style.clipPath || style.webkitClipPath, outerW, outerH);
-
-    const outerLeft = -outerW/2;
-    const outerTop = -outerH/2;
-    const contentLeft = outerLeft + borderLeft + paddingLeft;
-    const contentTop = outerTop + borderTop + paddingTop;
-    const contentCenterX = contentLeft + contentW/2;
-    const contentCenterY = contentTop + contentH/2;
-
-    if(style.backgroundColor && style.backgroundColor !== 'rgba(0, 0, 0, 0)'){
-      ctx.fillStyle = style.backgroundColor;
-      ctx.fillRect(outerLeft, outerTop, outerW, outerH);
-    }
-
-    if(el instanceof HTMLImageElement && el.naturalWidth && el.naturalHeight){
-      if(style.objectFit === 'contain'){
-        const ratio = Math.min(contentW / el.naturalWidth, contentH / el.naturalHeight);
-        const drawW = el.naturalWidth * ratio;
-        const drawH = el.naturalHeight * ratio;
-        ctx.drawImage(el, contentCenterX - drawW/2, contentCenterY - drawH/2, drawW, drawH);
-      }else{
-        ctx.drawImage(el, contentLeft, contentTop, contentW, contentH);
-      }
-    }else{
-      const label = String(el.innerText || el.textContent || '').trim();
-      if(label){
-        ctx.fillStyle = style.color || '#000000';
-        ctx.font = `${style.fontWeight || '400'} ${style.fontSize || '12px'} ${style.fontFamily || 'Arial'}`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(label, contentCenterX, contentCenterY, Math.max(1, contentW - 4));
-      }
-    }
-
-    // Paint each border edge separately. Besides matching asymmetric borders,
-    // this keeps the badge artwork centered inside the same content area used
-    // by the live browser preview.
-    if(borderTop && style.borderTopStyle !== 'none'){
-      ctx.fillStyle = style.borderTopColor;
-      ctx.fillRect(outerLeft, outerTop, outerW, borderTop);
-    }
-    if(borderBottom && style.borderBottomStyle !== 'none'){
-      ctx.fillStyle = style.borderBottomColor;
-      ctx.fillRect(outerLeft, outerTop + outerH - borderBottom, outerW, borderBottom);
-    }
-    if(borderLeft && style.borderLeftStyle !== 'none'){
-      ctx.fillStyle = style.borderLeftColor;
-      ctx.fillRect(outerLeft, outerTop, borderLeft, outerH);
-    }
-    if(borderRight && style.borderRightStyle !== 'none'){
-      ctx.fillStyle = style.borderRightColor;
-      ctx.fillRect(outerLeft + outerW - borderRight, outerTop, borderRight, outerH);
-    }
-    ctx.restore();
-  }
-
-  return canvas;
-}
-
-const toggleRibbonDragBtn = by('toggleRibbonDrag');
-const logRibbonCoordsBtn  = by('logRibbonCoords');
-
-toggleRibbonDragBtn.addEventListener('click', ()=>{
-  State.ribbonDragMode = !State.ribbonDragMode;
-  if(State.ribbonDragMode){
-    toggleRibbonDragBtn.textContent = 'Disable Drag Mode';
-    toggleRibbonDragBtn.classList.remove('ghost');
-    uniformCanvas.classList.add('drag-mode-on');
-  }else{
-    toggleRibbonDragBtn.textContent = 'Enable Drag Mode';
-    toggleRibbonDragBtn.classList.add('ghost');
-    uniformCanvas.classList.remove('drag-mode-on');
-  }
-});
-
-logRibbonCoordsBtn.addEventListener('click', ()=>{
-  const data=[];
-  uniformCanvas.querySelectorAll('.ribbonTile').forEach(tile=>{
-    data.push({
-      rid: tile.dataset.rid,
-      left: tile.style.left,
-      top: tile.style.top,
-      width: tile.style.width,
-      height: tile.style.height
-    });
-  });
-  console.log('RIBBON_COORD_REPORT', data);
-  capubNotify('Ribbon coordinates logged to console.');
-});
-
-/* ===========================
-   UNIVERSAL CALIBRATOR UI
-   =========================== */
-function initCalibratorUI(){
-  const tab   = by('calibratorTab');
-  const arrow = by('calibratorArrow');
-  const panel = by('calibratorPanel');
-
-  const btnMode = by('calibToggleMode');
-  const pillKey = by('calibKeyPill');
-
-  const calX  = by('calX'),  calXn = by('calXn');
-  const calY  = by('calY'),  calYn = by('calYn');
-  const calW  = by('calW'),  calWn = by('calWn');
-  const calH  = by('calH'),  calHn = by('calHn');
-  const calR  = by('calR'),  calRn = by('calRn');
-
-  const btnReset = by('calibReset');
-  const btnCopy  = by('calibCopy');
-  const btnSaveUniform = by('calibSaveUniform');
-  const btnExportAll = by('calibExportAll');
-  const btnMasterSession = by('calibMasterSession');
-  const btnMasterClear = by('calibMasterClear');
-
-  let open=false;
-  // The calibrator is a development tool: it is only reachable when the page is opened with ?dev=1.
-  function requireDevMode(){ return CAPUB_DEV; }
-  tab.addEventListener('click', ()=>{
-    if(!requireDevMode()) return;
-    open=!open;
-    panel.style.display=open?'block':'none';
-    arrow.textContent=open?'‹':'›';
-  });
-
-  function updateSelectedVisuals(){
-    uniformCanvas.querySelectorAll('.calib-selected').forEach(n=>n.classList.remove('calib-selected'));
-    getSelectedCalibKeys().forEach(key=>{
-      const el = findLayerByCalibKey(key);
-      if(el) el.classList.add('calib-selected');
-    });
-  }
-
-  function updateSelectionPill(){
-    const keys = getSelectedCalibKeys();
-    if(!keys.length){
-      pillKey.textContent = 'none';
-    }else if(keys.length === 1){
-      pillKey.textContent = keys[0];
-    }else{
-      pillKey.textContent = `${keys.length} assets selected`;
-      pillKey.title = keys.join('\n');
-    }
-  }
-
-  function loadControlsFromPrimary(){
-    const key = getSelectedCalibKeys()[0];
-    if(!key){
-      refreshCalibratorReadout();
-      return;
-    }
-
-    const el = findLayerByCalibKey(key);
-    if(!el){
-      refreshCalibratorReadout();
-      return;
-    }
-
-    const st = window.getComputedStyle(el);
-    const x = normalizeCalibNumber(st.left,0);
-    const y = normalizeCalibNumber(st.top,0);
-    const w = normalizeCalibNumber(st.width,0);
-    const h = normalizeCalibNumber(st.height,0);
-
-    const o = getCalib(key) || {};
-    const r = (o.r !== undefined) ? o.r : 0;
-
-    calX.value=formatCalibNumber(x); calXn.value=formatCalibNumber(x);
-    calY.value=formatCalibNumber(y); calYn.value=formatCalibNumber(y);
-    calW.value=formatCalibNumber(w); calWn.value=formatCalibNumber(w);
-    calH.value=formatCalibNumber(h); calHn.value=formatCalibNumber(h);
-    calR.value=formatCalibNumber(r); calRn.value=formatCalibNumber(r);
-
-    refreshCalibratorReadout();
-  }
-
-  function setSelected(key, additive=false){
-    if(!State.calib.selectedKeys) State.calib.selectedKeys = [];
-
-    if(!key){
-      State.calib.selectedKeys = [];
-      State.calib.selectedKey = null;
-      updateSelectedVisuals();
-      updateSelectionPill();
-      refreshCalibratorReadout();
-      return;
-    }
-
-    if(additive){
-      const exists = State.calib.selectedKeys.includes(key);
-      State.calib.selectedKeys = exists
-        ? State.calib.selectedKeys.filter(k=>k!==key)
-        : [...State.calib.selectedKeys, key];
-    }else{
-      State.calib.selectedKeys = [key];
-    }
-
-    State.calib.selectedKey = State.calib.selectedKeys[0] || null;
-    updateSelectedVisuals();
-    updateSelectionPill();
-    loadControlsFromPrimary();
-  }
-
-  function applyFromControls(){
-    const keys = getSelectedCalibKeys();
-    if(!keys.length) return;
-
-    const primary = keys[0];
-    const primaryEl = findLayerByCalibKey(primary);
-    const pst = primaryEl ? window.getComputedStyle(primaryEl) : null;
-    const oldPrimary = {
-      x: normalizeCalibNumber(pst?.left,0),
-      y: normalizeCalibNumber(pst?.top,0),
-      w: normalizeCalibNumber(pst?.width,1),
-      h: normalizeCalibNumber(pst?.height,1),
-      r: (getCalib(primary)?.r !== undefined) ? normalizeCalibNumber(getCalib(primary).r,0) : 0
-    };
-
-    const newPrimary = {
-      x: normalizeCalibNumber(calXn.value,0),
-      y: normalizeCalibNumber(calYn.value,0),
-      w: Math.max(.01,normalizeCalibNumber(calWn.value,1)),
-      h: Math.max(.01,normalizeCalibNumber(calHn.value,1)),
-      r: normalizeCalibNumber(calRn.value,0)
-    };
-
-    const dx = newPrimary.x - oldPrimary.x;
-    const dy = newPrimary.y - oldPrimary.y;
-    const sx = oldPrimary.w ? newPrimary.w / oldPrimary.w : 1;
-    const sy = oldPrimary.h ? newPrimary.h / oldPrimary.h : 1;
-    const dr = newPrimary.r - oldPrimary.r;
-
-    keys.forEach((key, index) => {
-      const el = findLayerByCalibKey(key);
-      const st = el ? window.getComputedStyle(el) : null;
-      const cur = getCalib(key) || {};
-      const current = {
-        x: (cur.x !== undefined) ? normalizeCalibNumber(cur.x,0) : normalizeCalibNumber(st?.left,0),
-        y: (cur.y !== undefined) ? normalizeCalibNumber(cur.y,0) : normalizeCalibNumber(st?.top,0),
-        w: (cur.w !== undefined) ? normalizeCalibNumber(cur.w,1) : normalizeCalibNumber(st?.width,1),
-        h: (cur.h !== undefined) ? normalizeCalibNumber(cur.h,1) : normalizeCalibNumber(st?.height,1),
-        r: (cur.r !== undefined) ? normalizeCalibNumber(cur.r,0) : 0
-      };
-
-      const next = index === 0 ? newPrimary : {
-        x: normalizeCalibNumber(current.x + dx,0),
-        y: normalizeCalibNumber(current.y + dy,0),
-        w: Math.max(.01,normalizeCalibNumber(current.w * sx,1)),
-        h: Math.max(.01,normalizeCalibNumber(current.h * sy,1)),
-        r: normalizeCalibNumber(current.r + dr,0)
-      };
-
-      setCalib(key, next);
-      if(el){
-        el.style.left = next.x+'px';
-        el.style.top  = next.y+'px';
-        el.style.width  = next.w+'px';
-        el.style.height = next.h+'px';
-        el.style.transform = `rotate(${next.r}deg)`;
-        el.style.transformOrigin='center center';
-      }
-    });
-
-    refreshCalibratorReadout();
-  }
-
-  function bindPair(rangeEl, numEl){
-    rangeEl.addEventListener('input', ()=>{ numEl.value = rangeEl.value; applyFromControls(); });
-    numEl.addEventListener('input', ()=>{ rangeEl.value = numEl.value; applyFromControls(); });
-  }
-  bindPair(calX, calXn);
-  bindPair(calY, calYn);
-  bindPair(calW, calWn);
-  bindPair(calH, calHn);
-  bindPair(calR, calRn);
-
-  btnMode.addEventListener('click', ()=>{
-    if(!requireDevMode()) return;
-    State.calib.enabled = !State.calib.enabled;
-    btnMode.textContent = State.calib.enabled ? 'Calibrate Mode: ON' : 'Calibrate Mode: OFF';
-    btnMode.classList.toggle('ghost', !State.calib.enabled);
-
-    if(State.calib.enabled){
-      uniformCanvas.classList.add('calib-selectable');
-    }else{
-      uniformCanvas.classList.remove('calib-selectable');
-      setSelected(null);
-    }
-  });
-
-  btnMasterSession?.addEventListener('click',()=>{
-    if(!requireDevMode()) return;
-    const session=ensureMasterCalibrationSession();
-    session.active=!session.active;
-    if(session.active && !session.startedAt) session.startedAt=new Date().toISOString();
-    updateMasterCalibrationStatus();
-  });
-
-  btnMasterClear?.addEventListener('click',()=>{
-    if(!requireDevMode()) return;
-    const session=ensureMasterCalibrationSession();
-    session.changesByUniform={};
-    session.contextByUniform={};
-    session.startedAt=session.active ? new Date().toISOString() : null;
-    updateMasterCalibrationStatus();
-  });
-
-  uniformCanvas.addEventListener('click', (e)=>{
-    if(!State.calib.enabled) return;
-    const layer = e.target.closest('.layer');
-    if(!layer) return;
-    const key = calibKeyFor(layer);
-    if(!key) return;
-    setSelected(key, e.ctrlKey || e.metaKey || e.shiftKey);
-    e.preventDefault();
-    e.stopPropagation();
-  });
-
-  document.addEventListener('keydown', (e)=>{
-    if(!State.calib.enabled) return;
-    if(!State.calib.selectedKey) return;
-
-    const step = e.shiftKey ? 10 : (e.ctrlKey || e.metaKey) ? 1 : e.altKey ? .01 : .1;
-    if(e.key==='ArrowLeft'){  nudgeSelected(-step,0); e.preventDefault(); }
-    if(e.key==='ArrowRight'){ nudgeSelected(step,0);  e.preventDefault(); }
-    if(e.key==='ArrowUp'){    nudgeSelected(0,-step); e.preventDefault(); }
-    if(e.key==='ArrowDown'){  nudgeSelected(0,step);  e.preventDefault(); }
-  });
-
-  btnReset.addEventListener('click', ()=>{
-    const keys = getSelectedCalibKeys();
-    if(!keys.length) return;
-    keys.forEach(clearCalib);
-
-    const keep = [...keys];
-    fullRender();
-    setTimeout(()=> {
-      State.calib.selectedKeys = keep;
-      State.calib.selectedKey = keep[0] || null;
-      updateSelectedVisuals();
-      updateSelectionPill();
-      loadControlsFromPrimary();
-    }, 0);
-  });
-
-  btnCopy.addEventListener('click', async ()=>{
-    if(!requireDevMode()) return;
-    const keys = getSelectedCalibKeys();
-    if(!keys.length) return;
-    const txt = keys.length === 1 ? buildCalibJson(keys[0]) : buildSelectedCalibJson();
-
-    try{
-      await navigator.clipboard.writeText(txt);
-      btnCopy.textContent = 'Copied!';
-      setTimeout(()=>btnCopy.textContent='Copy Selected', 700);
-    }catch{
-      const ta=document.createElement('textarea');
-      ta.value=txt;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-      btnCopy.textContent = 'Copied!';
-      setTimeout(()=>btnCopy.textContent='Copy Selected', 700);
-    }
-  });
-
-  if(btnSaveUniform){
-    btnSaveUniform.addEventListener('click', ()=>{
-      if(!requireDevMode()) return;
-      saveCalibrationToBrowser();
-      btnSaveUniform.textContent = 'Saved!';
-      setTimeout(()=>btnSaveUniform.textContent='Save Uniform Coords', 900);
-      capubNotify(`Coordinates saved in this browser for ${State.uniform || 'the current uniform'}.`);
-    });
-  }
-
-  if(btnExportAll){
-    btnExportAll.addEventListener('click', ()=>{
-      if(!requireDevMode()) return;
-      saveCalibrationToBrowser();
-      downloadCalibrationJson();
-    });
-  }
-  updateMasterCalibrationStatus();
 }
 
 /* ===========================
@@ -837,10 +280,7 @@ const modalEl      = by('galleryModal');
 const modalTitle   = by('galleryModalTitle');
 const modalHost    = by('galleryModalHost');
 const modalClose   = by('galleryModalCloseBtn');
-const modalMaxBtn  = by('galleryModalMaxBtn');
-const modalRestore = by('galleryModalRestoreBtn');
 
-let modalLast = null;
 
 // What the footer of the picker says is selected right now.
 let capubModalKind = null;
@@ -850,8 +290,11 @@ function capubModalCountText(kind){
     return `${count} ribbon${count === 1 ? '' : 's'} selected`;
   }
   if(kind === 'badges'){
-    const counted = typeof countBadgesForLimit === 'function' ? countBadgesForLimit() : (State.badges || []).length;
-    const cap = (CAPUBUniformRules.getUniformRule(State.uniform) || {}).badgeCap;
+    // The CAP badges and the U.S. military badges selected (the military ones are drawn among the badges over the left pocket).
+    const counted = (typeof countBadgesForLimit === 'function' ? countBadgesForLimit() : (State.badges || []).length) + (typeof countMilitaryBadgesSelected === 'function' ? countMilitaryBadgesSelected() : 0);
+    const rule = CAPUBUniformRules.getUniformRule(State.uniform) || {};
+    const cap = rule.badgeCap;
+    if(cap && counted > cap) return `${counted} of ${cap} badges selected. This uniform wears ${cap} (CAPR 39-1, ${(rule.refs || {}).badges}); choose which to show under Badges.`;
     return cap ? `${counted} of ${cap} badges selected` : `${counted} badge${counted === 1 ? '' : 's'} selected`;
   }
   if(kind === 'patches'){
@@ -866,23 +309,10 @@ function capubRefreshModalCount(){
 }
 function openGalleryModal(kind){
   capubModalKind = kind;
+  window.CAPUB_MODAL_PICKERS = [];   // the picture pickers of the window (a builder that has some lists them: the search reads them)
   modalHost.innerHTML = '';
 
   const host = document.createElement('div');
-
-  const header = document.createElement('div');
-  header.style.cssText = "display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;";
-  header.innerHTML = `
-    <div style="font-size:12px;color:var(--muted);line-height:1.3;">
-      
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      ${kind==='ribbons' ? '<button id="modalSelectAllBasic" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select all (basic)</button><button id="modalSelectAllMax" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Select max devices</button>' : ''}
-      <button id="modalShowLess" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show Less</button>
-      <button id="modalShowAll" class="ghost" type="button" style="width:auto;padding:8px 10px;border-radius:10px;">Show All</button>
-    </div>
-  `;
-  host.appendChild(header);
 
   const grid = document.createElement('div');
   grid.className = 'galleryGrid';
@@ -892,27 +322,13 @@ function openGalleryModal(kind){
 
   function syncFromSidebar(){
     if(kind==='ribbons'){
-      const hadMilitaryUI=!!grid.querySelector('details[data-military-section]');
-      if(hadMilitaryUI) captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-      const ui=getMilitaryUIState();
-      const modalSnapshot=hadMilitaryUI ? {
-        expandedSections:[...(ui.expandedSections || [])],
-        modalScrollTop:ui.modalScrollTop,
-        focusedControl:ui.focusedControl ? {...ui.focusedControl} : null
-      } : null;
+      // The ribbons as picture tiles of the picture picker (js/pick-lists.js ribbonLists): the CAP ribbons in the order of precedence under their headings, the JROTC / ROTC menu
+      // and the U.S. military ones by branch. All of them, in one list.
       State.ribbonGalleryExpanded = true;
-      buildRibbonGallery({capture:false});
-      if(modalSnapshot){
-        ui.expandedSections=modalSnapshot.expandedSections;
-        ui.modalScrollTop=modalSnapshot.modalScrollTop;
-        ui.focusedControl=modalSnapshot.focusedControl;
-      }
-      modalTitle.textContent = "Ribbons / Mini Medals";
-      const sidebar = by('ribbonGallery');
-      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
-      wireModalInteractions('ribbons');
-      restoreMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-      queueMicrotask(()=>window.CAPUB_refreshModalGallerySearch?.('ribbons'));
+      modalTitle.textContent = "Ribbons / miniature medals";
+      grid.innerHTML = '';
+      grid.className = '';
+      window.CAPUB_MODAL_PICKERS = CAPUBPickLists.ribbonLists(grid);
     }
 
     if(kind==='badges'){
@@ -923,12 +339,12 @@ function openGalleryModal(kind){
     }
 
     if(kind==='patches'){
+      // The patches the uniform takes, as picture tiles of the picture picker (js/pick-lists.js patchList): all of them, in one list.
       State.patchGalleryExpanded = true;
-      buildPatchGallery();
       modalTitle.textContent = "Patches";
-      const sidebar = by('patchGallery');
-      grid.innerHTML = sidebar ? sidebar.innerHTML : '';
-      wireModalInteractions('patches');
+      grid.innerHTML = '';
+      grid.className = '';
+      window.CAPUB_MODAL_PICKERS = [CAPUBPickLists.patchList(grid)];
     }
   }
 
@@ -936,73 +352,37 @@ function openGalleryModal(kind){
     rootGrid.innerHTML = '';
     normalizeBadgeSelections();
 
+    // Only the badges the selected uniform wears (js/badge-rules.js isBadgeWornOnCurrentUniform, LIVE13 E67).
     const eligibleSet = new Set(
-      getEligibleBadgeIdsForMembership(State.membership)
+      getEligibleBadgeIdsForMembership(State.membership).filter(id => isBadgeWornOnCurrentUniform(id))
     );
 
     // Clear host and rebuild with headings + subgrids (nice grouping)
     modalHost.innerHTML = '';
     modalHost.appendChild(host);
+    const notWornLine = capubBadgesNotWornLine();
+    if(notWornLine){
+      const note = document.createElement('div');
+      note.className = 'sub badgesNotWornNote';
+      note.setAttribute('role', 'note');
+      note.style.margin = '4px 0 8px';
+      note.textContent = notWornLine + ' They stay selected for the uniforms that wear them.';
+      modalHost.appendChild(note);
+    }
 
-    const buildTile = id => {
-        const sel = State.badgeSelections[id] || {checked:false};
-        const title = getBadgeDisplayName(id);
-
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${ASSET(getBadgeAssetPath(id))}" alt="${escapeHtml(title)}">
-          <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}</div>
-            <div class="miniRow">
-              <label><input type="checkbox" class="bdChk"> Add</label>
-            </div>
-            ${id==='squadron_commander_badge' ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            ${getBadgeTileMetaHtml(id)}
-          </div>
-        `;
-
-        const chk = tile.querySelector('.bdChk');
-        const gradChk = tile.querySelector('.cmdGradChk');
-        chk.checked = !!sel.checked;
-        if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
-        chk.onchange = ()=>{
-          sel.checked = chk.checked;
-          State.badgeSelections[id] = sel;
-          rebuildBadgesFromGallery();
-        };
-        if(gradChk){
-          gradChk.onchange = ()=>{
-            if(!State.commandInsignia) State.commandInsignia = {};
-            State.commandInsignia.graduatedCommander = gradChk.checked;
-            if(gradChk.checked){
-              sel.checked = true;
-              chk.checked = true;
-              State.badgeSelections[id] = sel;
-            }
-            rebuildBadgesFromGallery();
-          };
-        }
-
-        return tile;
-    };
-
+    // The badges are picture tiles of the picture picker (js/pick-lists.js, js/visual-picker.js toggle mode): each badge's own drawing with its name and the place it is worn
+    // under it; a tap turns the badge on or off and the tile shows it. `window.CAPUB_MODAL_PICKERS` lists the pickers of the open window (the search reads it) and
+    // `capubSyncBadgeTiles` puts every tile as the state says.
+    const pickers = [];
+    window.CAPUB_MODAL_PICKERS = pickers;
+    window.capubSyncBadgeTiles = () => pickers.forEach(entry => entry.refresh());
     const appendCategorizedBadges = (container, allowedIds) => {
       const allowedSet = new Set(allowedIds);
-      getBadgeCategoriesForCurrentMembership().forEach(cat=>{
-        const ids = cat.ids.filter(id => eligibleSet.has(id) && allowedSet.has(id));
-        if(!ids.length) return;
-
-        const h = document.createElement('div');
-        h.style.cssText = "margin:10px 0 6px;font-weight:800;color:var(--ink);font-size:13px;";
-        h.textContent = cat.key;
-
-        const subGrid = document.createElement('div');
-        subGrid.className = 'galleryGrid';
-        ids.forEach(id => subGrid.appendChild(buildTile(id)));
-        container.appendChild(h);
-        container.appendChild(subGrid);
-      });
+      // A command pin is not offered above the grade that wears one (CAPR 39-1, 10.2.5): the row of the Items step says so.
+      const groups = getBadgeCategoriesForCurrentMembership()
+        .map(cat => ({ key: cat.key, ids: cat.ids.filter(id => eligibleSet.has(id) && allowedSet.has(id) && (!isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))) }))
+        .filter(g => g.ids.length);
+      if(groups.length) pickers.push(CAPUBPickLists.badgeList(container, groups));
     };
 
     const eligibleIds = [...eligibleSet];
@@ -1014,13 +394,13 @@ function openGalleryModal(kind){
       const authorizedSet = new Set(importedAuthorized);
       const sections = [
         {
-          label:`Authorized by Member Report (${importedAuthorized.length})`,
+          label:`Authorized by member report (${importedAuthorized.length})`,
           open:true,
           ids:importedAuthorized,
           empty:'No authorized badges were detected in the imported report.'
         },
         {
-          label:'Other Possible Badges',
+          label:'Other possible badges',
           open:false,
           ids:eligibleIds.filter(id => !authorizedSet.has(id)),
           empty:'No other eligible badges are available.'
@@ -1050,20 +430,17 @@ function openGalleryModal(kind){
       appendCategorizedBadges(modalHost, eligibleIds);
     }
 
-    // U.S. military badges are not worn on Corporate-style uniforms (CAPR 39-1 4.2.5.1.3).
-    const militaryBadges=isMilitaryAwardWornOnUniform() ? getAllSelectableMilitaryBadges() : [];
+    // U.S. military badges are offered on the uniforms that wear U.S. military awards and that the builder draws them on (data/uniform-rules.js usafAwards, drawsMilitaryBadges); on the
+    // ABU, OCP, flight suit and Corporate Semi-Formal they are not offered at all, and a choice made on another uniform is kept (the Check says so).
+    const militaryBadges=isMilitaryAwardWornOnUniform() && CAPUBUniformRules.drawsMilitaryBadges(State.uniform) ? getAllSelectableMilitaryBadges() : [];
     if(militaryBadges.length){
       const militaryRoot=document.createElement('details');
       militaryRoot.dataset.militaryBadgeCatalog='true';
       militaryRoot.style.cssText='margin:14px 0 12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--panel);';
       const militarySummary=document.createElement('summary');
       militarySummary.style.cssText='cursor:pointer;font-weight:850;color:var(--ink);padding:4px 0;';
-      militarySummary.textContent=`U.S. Military Badges (${militaryBadges.length} with reviewed artwork)`;
+      militarySummary.textContent=`U.S. military badges (${militaryBadges.length})`;
       militaryRoot.appendChild(militarySummary);
-      const note=document.createElement('div');
-      note.className='sub'; note.style.margin='6px 0 8px';
-      note.textContent='Only badge variants with reviewed local artwork are selectable. Missing artwork is never substituted.';
-      militaryRoot.appendChild(note);
 
       for(const branch of MILITARY_BRANCH_ORDER){
         const records=militaryBadges.filter(badge=>{
@@ -1076,148 +453,26 @@ function openGalleryModal(kind){
         const summary=document.createElement('summary');
         summary.textContent=`${MILITARY_BRANCH_LABELS[branch]} (${records.length})`;
         details.appendChild(summary);
-        const branchGrid=document.createElement('div');
-        branchGrid.className='galleryGrid';
-        for(const badge of records){
-          const variants=getAvailableMilitaryBadgeVariants(badge);
-          const selected=State.militaryBadges?.[badge.id];
-          const activeVariant=selected?.variant || badge.representations?.metal?.defaultVariant || variants[0].id;
-          const representation=variants.find(item=>item.id===activeVariant)?.record || variants[0].record;
-          const tile=document.createElement('div');
-          tile.className='galleryTile militaryBadgeGalleryTile';
-          tile.dataset.militaryBadgeId=badge.id;
-          const preview=document.createElement('img');
-          preview.src=representation.asset; preview.alt=badge.officialName || badge.id;
-          const body=document.createElement('div'); body.style.cssText='flex:1;min-width:0;';
-          const title=document.createElement('div'); title.className='title'; title.textContent=badge.officialName || badge.id;
-          const sub=document.createElement('div'); sub.className='sub'; sub.textContent=`${badge.family || 'OTHER'} • ${(badge.authorizedServices || []).map(service=>MILITARY_BRANCH_LABELS[service] || service).join(' / ')}`;
-          const controls=document.createElement('div'); controls.className='miniRow';
-          const label=document.createElement('label');
-          const checkbox=document.createElement('input'); checkbox.type='checkbox'; checkbox.className='militaryBadgeCatalogCheck'; checkbox.checked=!!selected;
-          label.append(checkbox,document.createTextNode(' Add'));
-          controls.appendChild(label);
-          let variantSelect=null;
-          if(variants.length>1){
-            variantSelect=document.createElement('select'); variantSelect.className='militaryBadgeVariant'; variantSelect.title='Badge level or variant';
-            for(const variant of variants){
-              const option=document.createElement('option'); option.value=variant.id;
-              option.textContent=variant.id.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
-              variantSelect.appendChild(option);
-            }
-            variantSelect.value=activeVariant;
-            controls.appendChild(variantSelect);
-          }
-          checkbox.onchange=()=>{
-            if(!State.militaryBadges) State.militaryBadges={};
-            if(checkbox.checked) State.militaryBadges[badge.id]={selected:true,variant:variantSelect?.value || activeVariant};
-            else delete State.militaryBadges[badge.id];
-            fullRender();
-          };
-          if(variantSelect) variantSelect.onchange=()=>{
-            if(!State.militaryBadges) State.militaryBadges={};
-            checkbox.checked=true;
-            State.militaryBadges[badge.id]={selected:true,variant:variantSelect.value};
-            preview.src=getMilitaryBadgeRepresentation(badge).asset;
-            fullRender();
-          };
-          body.append(title,sub,controls); tile.append(preview,body); branchGrid.appendChild(tile);
-        }
-        details.appendChild(branchGrid); militaryRoot.appendChild(details);
+        pickers.push(CAPUBPickLists.militaryBadgeList(details, branch, records));
+        militaryRoot.appendChild(details);
       }
       modalHost.appendChild(militaryRoot);
     }
   }
 
-  function wireModalInteractions(k){
-    if(k==='ribbons'){
-      wireRibbonTileControls(grid);
-      grid.querySelectorAll('.militaryRibbonCatalogSearch').forEach(input=>{
-        input.oninput=()=>{
-          const ui=getMilitaryUIState();
-          ui.gallerySearchValue=input.value;
-          ui.focusedControl={ribbonId:'',deviceId:'',className:'militaryRibbonCatalogSearch',selectionStart:input.selectionStart};
-          clearTimeout(wireModalInteractions.searchTimer);
-          wireModalInteractions.searchTimer=setTimeout(()=>syncFromSidebar(),100);
-        };
-      });
-      grid.querySelectorAll('.militaryRibbonCatalogService,.militaryRibbonCatalogType').forEach(select=>{
-        select.onchange=()=>{
-          const ui=getMilitaryUIState();
-          if(select.classList.contains('militaryRibbonCatalogService')) ui.galleryServiceFilter=select.value || 'ALL';
-          else ui.galleryAwardTypeFilter=select.value || 'ALL';
-          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-          syncFromSidebar();
-        };
-      });
-      grid.querySelectorAll('details[data-military-section]').forEach(details=>{
-        details.addEventListener('toggle',()=>{
-          if(details.open && details.querySelector(':scope > [data-military-lazy="true"]')){
-            captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-            syncFromSidebar();
-          }
-        });
-      });
-      grid.querySelectorAll('.rbAwardSelect,.militaryServiceSelect,.militarySpecialDevice,.militaryNumeralDevice,.militaryAdvancedMode').forEach(control=>{
-        const original=control.onchange;
-        control.onchange=(event)=>{
-          captureMilitaryGalleryUI(grid,modalHost.parentElement,'modalScrollTop');
-          original?.call(control,event);
-          syncFromSidebar();
-        };
-      });
-    }
-
-    if(k==='patches'){
-      const showCount = State.patchGalleryExpanded ? patchList.length : Math.min(10, patchList.length);
-      const ids = patchList.slice(0, showCount);
-
-      const tiles = [...grid.querySelectorAll('.galleryTile')];
-      tiles.forEach((tile, i) => {
-        const id = ids[i];
-        if(!id) return;
-        const sel = State.patchSelections[id] || {checked:false};
-
-        const chk = tile.querySelector('.ptChk');
-        if(chk){
-          chk.checked = !!sel.checked;
-          chk.onchange = () => {
-            sel.checked = chk.checked;
-            rebuildPatchesFromGallery();
-            syncFromSidebar();
-          };
-        }
-      });
-    }
-  }
-
-  host.querySelector('#modalShowLess').onclick = ()=>{
-    if(kind==='ribbons'){ State.ribbonGalleryExpanded=false; buildRibbonGallery(); }
-    if(kind==='badges'){ State.badgeGalleryExpanded=false; buildBadgeGallery(); }
-    if(kind==='patches'){ State.patchGalleryExpanded=false; buildPatchGallery(); }
-    syncFromSidebar();
-  };
-  host.querySelector('#modalShowAll').onclick = ()=>{
-    if(kind==='ribbons'){ State.ribbonGalleryExpanded=true; buildRibbonGallery(); }
-    if(kind==='badges'){ State.badgeGalleryExpanded=true; buildBadgeGallery(); }
-    if(kind==='patches'){ State.patchGalleryExpanded=true; buildPatchGallery(); }
-    syncFromSidebar();
-  };
-  host.querySelector('#modalSelectAllBasic')?.addEventListener('click',()=>{
-    selectAllCapUniformAwards({maximum:false});
-    syncFromSidebar();
-  });
-  host.querySelector('#modalSelectAllMax')?.addEventListener('click',()=>{
-    selectAllCapUniformAwards({maximum:true});
-    syncFromSidebar();
-  });
-
   syncFromSidebar();
 
   // openGalleryModal is called twice (a later patch re-wraps it); only the first call knows the opener.
-  if(!modalOverlay.classList.contains('open')) modalOpener = document.activeElement;
+  const freshOpen = !modalOverlay.classList.contains('open');
+  if(freshOpen) modalOpener = document.activeElement;
   modalOverlay.classList.add('open');
   modalOverlay.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
+  // A chooser opens at its top, not where the one before it was left (the body scrolls, and keeps its position between choosers).
+  if(freshOpen){
+    if(modalHost.parentElement) modalHost.parentElement.scrollTop = 0;
+    if(typeof getMilitaryUIState === 'function') getMilitaryUIState().modalScrollTop = 0;
+  }
   modalClose.focus();
 }
 
@@ -1256,32 +511,6 @@ document.addEventListener('keydown', (e)=>{
   else if(!modalEl.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
 });
 
-modalMaxBtn.addEventListener('click', ()=>{
-  modalLast = {
-    w: modalEl.style.width,
-    h: modalEl.style.height,
-    resize: modalEl.style.resize
-  };
-  modalEl.style.width = '96vw';
-  modalEl.style.height = '90vh';
-  modalEl.style.resize = 'none';
-  modalMaxBtn.classList.add('hidden');
-  modalRestore.classList.remove('hidden');
-});
-modalRestore.addEventListener('click', ()=>{
-  if(modalLast){
-    modalEl.style.width = modalLast.w || '';
-    modalEl.style.height = modalLast.h || '';
-    modalEl.style.resize = modalLast.resize || 'both';
-  }else{
-    modalEl.style.width = '';
-    modalEl.style.height = '';
-    modalEl.style.resize = 'both';
-  }
-  modalRestore.classList.add('hidden');
-  modalMaxBtn.classList.remove('hidden');
-});
-
 /* IMPORTANT: Picker buttons open the popup */
 by('expandRibbons').addEventListener('click', ()=> openGalleryModal('ribbons'));
 by('expandBadges').addEventListener('click',  ()=> openGalleryModal('badges'));
@@ -1305,15 +534,13 @@ if(unitPatchSelectEl){
 if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
 
 
-
 /* ===========================
    CAPUB V2 FUNCTIONALITY PATCH
-   - Adds validation, status, search, save/load, generated text tapes,
-     rank fallback rendering, and missing-asset reporting.
+   - Adds validation, status, search, save/load and undo.
    =========================== */
 (function capubV2Patch(){
   const V2_VERSION = '2026-05-08-v2';
-  State.text = State.text || { lastName:'', capTape:'CIVIL AIR PATROL', show:true };
+  State.text = State.text || { lastName:'', show:true };
 
   const CAPUB_V2 = window.CAPUB_V2 = {
     version: V2_VERSION,
@@ -1323,16 +550,14 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   };
 
   function pretty(id){ return String(id||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
-  function safeRankFile(rank){ return String(rank||'').replace(/\//g,'_').replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_\-]/g,''); }
   // fix names the control that resolves the notice: {id, label}. A button is pressed; anything
   // else is scrolled to and focused. Notices without one just explain.
   function addNotice(type,msg,fix){ CAPUB_V2.notices.push({type,msg,fix:fix || null}); }
   function runNoticeFix(fix){
     const target = fix && by(fix.id);
     if(!target) return;
-    // Under the guided flow the control may sit in a step that is folded away.
-    const stepGroup = target.closest('.stepGroup');
-    if(stepGroup && !stepGroup.classList.contains('isActive')) stepGroup.querySelector('.guidedEdit')?.click();
+    // The control may sit in a step other than the one on screen (js/workspace-ui.js).
+    if(window.CAPUB_V3 && typeof CAPUB_V3.showStepFor === 'function') CAPUB_V3.showStepFor(target);
     if(target.tagName === 'BUTTON'){ target.click(); return; }
     setTimeout(()=>{
       target.scrollIntoView({behavior:'smooth', block:'center'});
@@ -1353,18 +578,26 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       membership: State.membership,
       gender: State.gender,
       uniform: State.uniform,
+      ceremonial: !!State.ceremonial,
       rank: State.rank,
       cadetFirstSergeant: State.cadetFirstSergeant,
       shoulderCord: State.shoulderCord || '',
+      shoulderCordColour: State.shoulderCordColour || '',
       unitPatchCharter: State.unitPatchCharter || '',
+      // What the member's report showed, which the setup carries so that Resume and a reload bring it back with the unit: the cords of a supplement it
+      // shows earned (js/supplements-import.js) and the badges it authorized (the badge list's own group).
+      supplementCordsEarned: Array.isArray(State.supplementCordsEarned) ? State.supplementCordsEarned : [],
+      reportAuthorizedBadgeIds: Array.isArray(State.reportAuthorizedBadgeIds) ? State.reportAuthorizedBadgeIds : null,
       assetBase: State.assetBase,
       ribbons: State.ribbons,
       badges: State.badges,
       patches: State.patches,
       ribbonSelections: State.ribbonSelections,
       badgeSelections: State.badgeSelections,
+      badgeChoices: State.badgeChoices || {},
+      badgeOrder: window.CAPUBBadgeCatalog.pruneEqual(State.badgeOrder, State.badges),
+      militaryBadges: State.militaryBadges || {},
       patchSelections: State.patchSelections,
-      forceMini: State.forceMini,
       cadetHighestOnly: State.cadetHighestOnly,
       adultCadet: State.adultCadet,
       miniMountStyle: State.miniMountStyle,
@@ -1372,11 +605,13 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       ribbonRackArrangement: State.ribbonRackArrangement,
       ribbonRowOverrideEnabled: State.ribbonRowOverrideEnabled,
       ribbonRowOverride: State.ribbonRowOverride,
-      garmentOverlayMode: State.garmentOverlayMode,
-      garmentMasks: State.garmentMasks,
       text: State.text,
+      garment: State.garment || {},
       commandInsignia: State.commandInsignia,
-      calib: State.calib
+      // The ribbons the cadet grade added (js/setup.js capubApplyGradeRibbons), so a later grade change takes off only those.
+      gradeRibbons: State.gradeRibbons || null,
+      // Remove ribbons (LIVE13): the shirt is drawn without its rack while the selections stay.
+      hideRibbons: !!State.hideRibbons
     };
   }
 
@@ -1386,6 +621,11 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     (known uniforms, ranks, ribbon/badge/patch ids, device ids and bounded counts) and
     drops everything else, so nothing outside those lists ever reaches State or the page.
   */
+  // The positions where the engine may ask which badge to show (scene.conflicts, js/engine/profiles-dress.js, profiles.js).
+  const BADGE_POSITIONS = ['aviation', 'over-pocket', 'service', 'pocket', 'polo', 'tag'];
+  // A position with several places keeps { slotKey: badgeId }, the slot keys the engine names ("left-pocket", "over-nametag", "left"...); a position
+  // with one place, and a setup saved before the places, keep one badge id, which the engine reads as the first place.
+  const SLOT_KEY = /^[a-z][a-z0-9-]{0,29}$/;
   const SAFE_TOKEN = /^[A-Za-z0-9_.:#-]{0,80}$/;
   const has = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
   function safeToken(value){ return typeof value === 'string' && SAFE_TOKEN.test(value) ? value : ''; }
@@ -1394,10 +634,17 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     out.membership = ['senior','cadet'].includes(p.membership) ? p.membership : '';
     out.gender = ['male','female'].includes(p.gender) ? p.gender : '';
     out.uniform = typeof p.uniform === 'string' && has(UNIFORMS, p.uniform) ? p.uniform : 'blues_a';
+    // The Honor Guard Uniform is Class A or Class B with the honor guard items, for cadets: a setup that names it for a senior member, or on any other uniform, loads without it.
+    out.ceremonial = p.ceremonial === true && ['blues_a','blues_b'].includes(out.uniform) && CAPUBUniformRules.CEREMONIAL.membership.includes(out.membership);
     out.rank = out.membership && RANKS[out.membership].includes(p.rank) ? p.rank : null;
     out.cadetFirstSergeant = !!p.cadetFirstSergeant;
-    out.shoulderCord = typeof p.shoulderCord === 'string' && has(SHOULDER_CORD_META, p.shoulderCord) ? p.shoulderCord : null;
+    // A cord the page offers: one of the seven by its key, or a supplement cord by its id (js/engine/cords.js); the colour only for a cord whose colour the unit commander picks.
+    out.shoulderCord = CAPUBEngine.cords.isKnown(p.shoulderCord) ? p.shoulderCord : null;
+    out.shoulderCordColour = out.shoulderCord && CAPUBEngine.cords.needsColour(out.shoulderCord) && CAPUBEngine.cords.isChosenColour(p.shoulderCordColour) ? p.shoulderCordColour : null;
     out.unitPatchCharter = typeof p.unitPatchCharter === 'string' && /^[A-Za-z0-9-]{0,24}$/.test(p.unitPatchCharter) ? p.unitPatchCharter : '';
+    // Cords by id as the cord list knows them, badges as the badge list does: nothing else is kept.
+    out.supplementCordsEarned = [...new Set(Array.isArray(p.supplementCordsEarned) ? p.supplementCordsEarned : [])].filter(id => typeof id === 'string' && CAPUBEngine.cords.isKnown(id)).slice(0, 40);
+    out.reportAuthorizedBadgeIds = Array.isArray(p.reportAuthorizedBadgeIds) ? [...new Set(p.reportAuthorizedBadgeIds)].filter(id => typeof id === 'string' && badgeList.includes(id)) : null;
 
     const ribbons = p.ribbonSelections && typeof p.ribbonSelections === 'object' ? p.ribbonSelections : {};
     out.ribbonSelections = {};
@@ -1411,8 +658,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
           if(has(deviceMeta, deviceId) && Number.isFinite(n) && n > 0 && n <= 99) devices[deviceId] = n;
         }
       }
-      // awardLabel and imageOverride are left out on purpose: normalizeRibbonSelections()
-      // recomputes both from the catalog instead of trusting the file.
+      // awardLabel is left out on purpose: normalizeRibbonSelections() recomputes it from the catalog instead of trusting the file.
       out.ribbonSelections[id] = {
         checked: !!sel.checked,
         devices,
@@ -1433,37 +679,80 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     const pick = (list, selections) => {
       const source = selections && typeof selections === 'object' ? selections : {};
       const kept = {};
-      for(const id of list) if(source[id] && typeof source[id] === 'object') kept[id] = { checked: !!source[id].checked };
+      for(const id of list){
+        if(!source[id] || typeof source[id] !== 'object') continue;
+        kept[id] = { checked: !!source[id].checked };
+        const levels = window.CAPUBBadgeCatalog?.levels(id);
+        if(levels && levels.some(l => l[0] === source[id].level)) kept[id].level = source[id].level;
+      }
       return kept;
     };
     out.badges = (Array.isArray(p.badges) ? p.badges : []).filter(id => typeof id === 'string' && badgeList.includes(id));
-    out.patches = (Array.isArray(p.patches) ? p.patches : []).filter(id => typeof id === 'string' && patchList.includes(id));
+    // An id no longer offered keeps its meaning (PATCH_ALIASES), so a setup saved before the change loads with the same patch.
+    const aliased = id => (typeof id === 'string' && Object.prototype.hasOwnProperty.call(PATCH_ALIASES, id)) ? PATCH_ALIASES[id] : id;
+    out.patches = [...new Set((Array.isArray(p.patches) ? p.patches : []).map(aliased))].filter(id => typeof id === 'string' && patchList.includes(id));
     out.badgeSelections = pick(badgeList, p.badgeSelections);
-    out.patchSelections = pick(patchList, p.patchSelections);
+    // The member's choice of badge per uniform and position (the Badges panel): known uniforms, known positions, known badge ids.
+    out.badgeChoices = {};
+    const choicesIn = p.badgeChoices && typeof p.badgeChoices === 'object' && !Array.isArray(p.badgeChoices) ? p.badgeChoices : {};
+    for(const u of Object.keys(choicesIn)){
+      if(!has(UNIFORMS, u) || !choicesIn[u] || typeof choicesIn[u] !== 'object') continue;
+      for(const position of BADGE_POSITIONS){
+        const id = choicesIn[u][position];
+        if(typeof id === 'string' && badgeList.includes(id)) (out.badgeChoices[u] = out.badgeChoices[u] || {})[position] = id;
+        else if(id && typeof id === 'object' && !Array.isArray(id)){
+          const slots = {};
+          for(const key of Object.keys(id)) if(has(id, key) && SLOT_KEY.test(key) && typeof id[key] === 'string' && badgeList.includes(id[key])) slots[key] = id[key];
+          if(Object.keys(slots).length) (out.badgeChoices[u] = out.badgeChoices[u] || {})[position] = slots;
+        }
+      }
+    }
+    // The order of badges of equal standing: the groups the catalog knows, badge ids of the group that this setup also holds, two or more.
+    out.badgeOrder = window.CAPUBBadgeCatalog.pruneEqual(p.badgeOrder, out.badges);
+    // U.S. military badges: known ids only, with a token-safe variant.
+    out.militaryBadges = {};
+    const milBadgeIds = new Set((window.CAPUBMilitaryData?.badges || []).map(b => b.id));
+    const milIn = p.militaryBadges && typeof p.militaryBadges === 'object' ? p.militaryBadges : {};
+    for(const id of Object.keys(milIn)){
+      const sel = milIn[id];
+      if(!milBadgeIds.has(id) || !sel || typeof sel !== 'object' || !sel.selected) continue;
+      out.militaryBadges[id] = { selected: true, variant: safeToken(sel.variant) || undefined };
+    }
+    const patchSelectionsIn = {};
+    for(const [id, sel] of Object.entries(p.patchSelections && typeof p.patchSelections === 'object' ? p.patchSelections : {})){
+      const to = aliased(id);
+      if(!(patchSelectionsIn[to] && patchSelectionsIn[to].checked)) patchSelectionsIn[to] = sel;
+    }
+    out.patchSelections = pick(patchList, patchSelectionsIn);
 
-    out.forceMini = !!p.forceMini;
     out.cadetHighestOnly = !!p.cadetHighestOnly;
     out.adultCadet = out.membership === 'cadet' && !!p.adultCadet;
     out.miniMountStyle = p.miniMountStyle === 'holding' ? 'holding' : 'mounting';
     out.ribbonRackLayout = ['3','4-left','4-center'].includes(String(p.ribbonRackLayout))
       ? String(p.ribbonRackLayout)
-      : (Number(p.ribbonRackColumns) === 3 ? '3' : '4-left');
+      : (Number(p.ribbonRackColumns) === 4 ? '4-left' : '3');
     out.ribbonRackArrangement = p.ribbonRackArrangement === 'standard' ? 'standard' : 'lapel';
     out.ribbonRowOverrideEnabled = !!p.ribbonRowOverrideEnabled;
     out.ribbonRowOverride = Array.isArray(p.ribbonRowOverride)
       ? p.ribbonRowOverride.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= 20).slice(0, 12)
       : [];
-    out.garmentOverlayMode = ['both','left','right','off'].includes(p.garmentOverlayMode) ? p.garmentOverlayMode : 'both';
-    out.garmentMasks = p.garmentMasks && typeof p.garmentMasks === 'object' ? p.garmentMasks : null;
     const text = p.text && typeof p.text === 'object' ? p.text : {};
+    out.garment = window.CAPUBGarmentOptions ? CAPUBGarmentOptions.sanitize(p.garment) : {};
     out.text = {
+      firstName: String(text.firstName || '').slice(0, 40),
       lastName: String(text.lastName || '').slice(0, 40),
-      capTape: String(text.capTape || 'CIVIL AIR PATROL').slice(0, 40),
+      plateLine: String(text.plateLine || '').slice(0, 40),
       show: text.show !== false
     };
     out.commandInsignia = { graduatedCommander: !!(p.commandInsignia && p.commandInsignia.graduatedCommander) };
-    // Calibration data is a developer tool; ignore it unless the page was opened with ?dev=1.
-    out.calib = CAPUB_DEV && p.calib && typeof p.calib === 'object' ? p.calib : null;
+    // The grade's record: a cadet grade and the ribbons some cadet grade implies (js/state.js CADET_GRADE_RIBBON_IDS), nothing else.
+    out.gradeRibbons = null;
+    const gr = p.gradeRibbons;
+    if(gr && typeof gr === 'object' && !Array.isArray(gr) && out.membership === 'cadet' && RANKS.cadet.includes(gr.rank) && Array.isArray(gr.ids)){
+      const ids = [...new Set(gr.ids.filter(id => typeof id === 'string' && CADET_GRADE_RIBBON_IDS.includes(id)))];
+      if(ids.length) out.gradeRibbons = { rank: gr.rank, ids };
+    }
+    out.hideRibbons = !!p.hideRibbons;
     return out;
   }
 
@@ -1473,19 +762,25 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.membership = p.membership;
     State.gender = p.gender;
     State.uniform = p.uniform;
+    State.ceremonial = p.ceremonial;
     State.rank = p.rank;
     State.cadetFirstSergeant = p.cadetFirstSergeant;
     if(!isCadetFirstSergeantEligible(State.rank)) State.cadetFirstSergeant = false;
     State.shoulderCord = p.shoulderCord;
+    State.shoulderCordColour = p.shoulderCordColour;
     State.unitPatchCharter = p.unitPatchCharter;
+    State.supplementCordsEarned = p.supplementCordsEarned;
+    State.reportAuthorizedBadgeIds = p.reportAuthorizedBadgeIds;
     State.assetBase = 'images';
     State.ribbons = [];
     State.badges = p.badges;
     State.patches = p.patches;
     State.ribbonSelections = p.ribbonSelections;
     State.badgeSelections = p.badgeSelections;
+    State.badgeChoices = p.badgeChoices || {};
+    State.badgeOrder = p.badgeOrder || {};
+    State.militaryBadges = p.militaryBadges || {};
     State.patchSelections = p.patchSelections;
-    State.forceMini = p.forceMini;
     State.cadetHighestOnly = p.cadetHighestOnly;
     State.adultCadet = p.adultCadet;
     State.miniMountStyle = p.miniMountStyle;
@@ -1493,15 +788,11 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.ribbonRackArrangement = p.ribbonRackArrangement;
     State.ribbonRowOverrideEnabled = p.ribbonRowOverrideEnabled;
     State.ribbonRowOverride = p.ribbonRowOverride;
-    State.garmentOverlayMode = p.garmentOverlayMode;
-    State.garmentMasks = p.garmentMasks || State.garmentMasks || {};
-    persistGarmentMasks();
     State.text = p.text;
+    State.garment = p.garment;
     State.commandInsignia = p.commandInsignia;
-    State.calib = p.calib || State.calib || {enabled:false, selectedKey:null, selectedKeys:[], map:{}, byUniform:{}};
-    if(!Array.isArray(State.calib.selectedKeys)) State.calib.selectedKeys = State.calib.selectedKey ? [State.calib.selectedKey] : [];
-    if(!State.calib.byUniform) State.calib.byUniform = {};
-    mergeCalibDefaults();
+    State.gradeRibbons = p.gradeRibbons;
+    State.hideRibbons = !!p.hideRibbons;
 
     populateRankSetup();
     syncCadetFirstSergeantControl();
@@ -1510,77 +801,34 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     rebuildRibbonsFromGallery();
     syncTextControls();
     buildRibbonGallery(); buildBadgeGallery(); buildPatchGallery();
-    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(by('unitPatchSearch')?.value || '');
+    // The unit's code goes in the search box, as it does after an import, so the list is narrowed to the unit and shows it (and its emblem) at once.
+    const unitSearch = by('unitPatchSearch');
+    if(unitSearch && State.unitPatchCharter) unitSearch.value = State.unitPatchCharter;
+    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(unitSearch?.value || '');
     fullRender();
   }
 
   function syncTextControls(){
+    const fn = by('capubV2FirstName');
     const ln = by('capubV2LastName');
-    const ct = by('capubV2CapTape');
+    const pl = by('capubV2PlateLine');
     const sh = by('capubV2ShowText');
+    if(fn) fn.value = State.text?.firstName || '';
+    if(pl) pl.value = State.text?.plateLine || '';
     if(ln) ln.value = State.text?.lastName || '';
-    if(ct) ct.value = State.text?.capTape || 'CIVIL AIR PATROL';
     if(sh) sh.checked = State.text?.show !== false;
-  }
-
-  function textLayer(key, label, x, y, w, h, cls='textTape', fontSize=8){
-    if(State.text?.show === false) return null;
-    const el = document.createElement('div');
-    el.className = 'layer '+cls;
-    el.textContent = label || '';
-    el.style.fontSize = fontSize+'px';
-    el.dataset.calibKey = key;
-    el.dataset.tooltipTitle = 'Generated text placeholder';
-    el.dataset.tooltipReg = 'Rendered as text because a final image/embroidered asset may not be present.';
-    el.dataset.tooltipWhy = 'Use the calibrator to tune placement. Replace with transparent PNG assets later if desired.';
-    applyCalibToElement(el,key,{x,y,w,h,r:0});
-    uniformCanvas.appendChild(el);
-    return el;
-  }
-
-  function renderGeneratedTextAccoutrements(){
-    // Name tapes, CAP tapes, AUX identifier, and U.S. flag are now part of the base field-uniform images.
-    // Do not generate custom text overlays or placeholders.
-    [...uniformCanvas.querySelectorAll('.layer.capub-v2-text')].forEach(n=>n.remove());
-    return;
-  }
-
-  function rankAssetCandidates(rank){
-    const f = safeRankFile(rank);
-    return [
-      `ranks/${f}.png`,
-      `ranks/${f}.webp`,
-      `ranks/${rank}.png`,
-      `ranks/${rank}.webp`
-    ];
-  }
-
-  function rankPlacement(){
-    const renderSize = getCanvasRenderSize();
-    const W = renderSize.w;
-    const H = renderSize.h;
-    if(State.uniform === 'ocp') return {x:W*.465,y:H*.245,w:34,h:34, shape:'square'};
-    if(State.uniform === 'abu') return {x:W*.485,y:H*.295,w:32,h:32, shape:'square'};
-    if(State.uniform === 'blues_b' || State.uniform === 'aviator') return {x:W*.49,y:H*.18,w:38,h:20, shape:'epaulet'};
-    if(State.uniform === 'blues_a') return {x:W*.47,y:H*.165,w:42,h:22, shape:'epaulet'};
-    return {x:W*.48,y:H*.24,w:34,h:26, shape:'square'};
-  }
-
-  function renderRankOverlay(){
-    // Separate rank overlays have been retired.
-    // All supported base uniform images are now expected to include the rank already built in.
-    [...uniformCanvas.querySelectorAll('.layer.rankOverlay,.layer.rankFallback')].forEach(n=>n.remove());
-    return;
   }
 
   function validateBuild(){
     CAPUB_V2.notices = [];
     if(!State.membership) addNotice('warn','Select membership type first.',{id:'membershipType',label:'Choose'});
-    if(!State.rank) addNotice('warn','Select rank before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
-    if(!State.gender) addNotice('warn','Select male/female cut before final placement tuning.',{id:'jacketSelect',label:'Choose'});
+    if(!State.rank) addNotice('warn','Select a grade before building the uniform.',{id:'rankSetupSelect',label:'Choose'});
+    if(!State.gender) addNotice('warn','Select the male or female cut so the uniform can be drawn.',{id:'jacketSelect',label:'Choose'});
     if(State.membership && !isUniformAllowedFor(State.uniform, State.membership)) addNotice('err','Selected uniform is not authorized for the selected membership type.');
-    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`Unit patch selected for ${getUnitPatchSelectionLabel(State.unitPatchCharter)}, but no patch image asset is available yet.`);
-    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`Unit patch ${getUnitPatchSelectionLabel(State.unitPatchCharter)} is not authorized on the current uniform.`);
+    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && !getSelectedUnitPatchId()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} patch picture is not available yet, so no unit patch is shown.`);
+    if(State.unitPatchCharter && typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && !isUnitPatchAuthorizedForCurrentUniform()) addNotice('warn',`The ${getUnitPatchSpokenName(State.unitPatchCharter)} unit patch is not worn on this uniform, so it is not shown.`);
+    // A wing patch a supplement of the member's unit requires on this uniform and the build does not have (a warning: the member may leave it off).
+    if(window.Supplements && typeof Supplements.warnings === 'function') for(const w of Supplements.warnings(State)) addNotice('warn',w.msg,w.fix);
     if(State.membership === 'cadet'){
       const bad = State.badges.filter(id=>!isCadetAuthorized(id));
       if(bad.length) addNotice('err','Cadet profile includes non-cadet badge(s): '+bad.map(pretty).join(', '),{id:'expandBadges',label:'Review badges'});
@@ -1592,29 +840,44 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     // Badge limits and award wear come from data/uniform-rules.js (CAPR 39-1).
     // Some uniforms count patches against the same limit as badges (ABU, Corporate Field).
     const patchTotal = (State.patches || []).length
-      + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
-    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges:countBadgesForLimit(), patches:patchTotal});
+      + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0)
+      + ((typeof getUnitHhqPlan === 'function' && getUnitHhqPlan()?.worn) ? 1 : 0);
+    // The limit is on badges worn: the ones the drawing puts on this uniform, command insignia excluded (js/badge-rules.js
+    // countBadgesWornForLimit). A badge the uniform does not wear (LIVE13 E67), or one selected beyond its positions, is not drawn
+    // and does not count (LIVE13 E77; Ethan: "the check thing says the uniform is wrong despite it being right when [you pick every one]
+    // of your badges but you only have 4 on").
+    const limit = CAPUBUniformRules.badgeLimit(State.uniform, {badges: countBadgesWornForLimit(), patches: patchTotal});
     if(limit.over){
       const what = limit.shared ? 'badges and patches together' : 'counted badges';
       addNotice('err',`This uniform allows ${limit.cap} ${what} and ${limit.counted} are selected. Command insignia does not count against this limit.`,{id:'expandBadges',label:'Review badges'});
     }
-    // Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1
-    // 4.2.3.1.1.3). Nothing is hidden or moved; the member is told which badges do not belong.
-    if(CAPUBUniformRules.allowsOnlyChaplainBadge(State.uniform)){
-      const chaplain = new Set(['christian_chaplin','buddist_chaplin','jewish_chaplin','muslim_chaplin']);
-      const notAuthorized = (State.badges || []).filter(id => {
-        if(chaplain.has(id) || isCommandInsigniaBadge(id)) return false;
-        const slot = String(badgeLocations[id] || '');
-        return slot.includes('OLP') || slot === 'LP,RP';
-      });
-      if(notAuthorized.length){
-        addNotice('warn',`This uniform authorizes only the chaplain badge (CAPR 39-1, 4.2.3.1.1.3). Not authorized here: ${notAuthorized.map(getBadgeDisplayName).join(', ')}.`,{id:'expandBadges',label:'Review badges'});
-      }
+    // The badges the selected uniform does not wear (data/uniform-rules.js BADGE_WEAR: the blazers take only the chaplain badge and
+    // the CSAG, Command Council, National Board or NEC badge, 4.2.3.1.1.1, 4.2.3.1.1.3; the polo one aviation, occupational or
+    // specialty track badge, 5.3.2.1.1; the field uniforms the genuine field set, 5.1.1.1.2.4, 5.2.1.1.2.6, 7.1.1.3.1, B6). They are
+    // not offered or drawn on it and stay selected for the others (LIVE13 E67).
+    const notWornLine = capubBadgesNotWornLine();
+    if(notWornLine){
+      const names = getSelectedBadgesNotWornOnCurrentUniform().map(getBadgeDisplayName).join(', ');
+      // Information, not a warning: the badges stay selected for the uniforms that wear them (LIVE13 E77).
+      addNotice('ok',`${notWornLine} Not shown here: ${names}. They come back on a uniform that wears them.`,{id:'expandBadges',label:'Review badges'});
     }
-    const unwornAwards = Object.entries(State.ribbonSelections || {})
-      .filter(([id,sel])=>sel && sel.checked && !isAwardWornOnUniform(id)).length;
-    if(unwornAwards){
-      addNotice('warn',`${unwornAwards} selected award${unwornAwards===1?' is':'s are'} not shown: U.S. military awards and the Air Force Organizational Excellence Award are not worn on Corporate-style uniforms (CAPR 39-1, 11.1.6 and 11.2.3). ${unwornAwards===1?'It comes':'They come'} back on a USAF-style uniform.`,{id:'expandRibbons',label:'Review ribbons'});
+    if(State.uniform === 'aviator_blazer' && capubBadgeWearOptions().underlayer === 'shirt'
+      && (State.badges || []).some(id => !isBadgeAuthorizedOnCurrentDressUniform(id))){
+      addNotice('ok','On the blazer itself only the chaplain badge and, in place of the CAP Crest, the Senior Advisory Group, Command Council, National Board or National Executive Committee badge are worn (CAPR 39-1, 4.2.3.1.1.1, 4.2.3.1.1.3); the other badges are shown on the aviator shirt drawn beside it.');
+    }
+    // Each award chosen that this uniform does not wear, named, with the paragraph that says so (the choice is kept for the uniforms that wear it).
+    for(const id of Object.entries(State.ribbonSelections || {}).filter(([k,sel])=>sel && sel.checked && !isAwardWornOnUniform(k)).map(([k])=>k)){
+      const name = typeof getRibbonDisplayName === 'function' ? getRibbonDisplayName(id) : pretty(id);
+      const why = (id === 'Air_Force_Organizational_Excellence_Award')
+        ? (State.uniform === 'mess_dress' ? 'is not worn on the Mess Dress (ICL 18-02, 4b)' : 'is not worn on the CAP Corporate uniforms (CAPR 39-1, 11.2.3)')
+        : 'is not worn on this uniform (CAPR 39-1, 11.1.6)';
+      addNotice('warn',`${name} ${why}, so it is not shown. It comes back on a uniform that wears it.`,{id:'expandRibbons',label:'Review ribbons'});
+    }
+    // Patches chosen that the drawing leaves off, each with its reason; badges likewise (the drawing's own words, js/uniform-view.js).
+    for(const c of capubPatchPlan().hidden) addNotice('ok',c.line,{id:'expandPatches',label:'Review patches'});
+    const milChosen = Object.keys(State.militaryBadges || {}).filter(id => State.militaryBadges[id] && State.militaryBadges[id].selected);
+    if(milChosen.length && !CAPUBUniformRules.drawsMilitaryBadges(State.uniform)){
+      addNotice('ok',`${milChosen.length} U.S. military badge${milChosen.length===1?' is':'s are'} chosen but not drawn on this uniform yet. ${milChosen.length===1?'It stays':'They stay'} chosen for the uniforms that show them.`,{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'ocp'){
       // U.S. flag and AUX duty identifier are mandatory but are now baked into the OCP base image.
@@ -1623,27 +886,45 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     if(['blues_a','blues_b','aviator','aviator_blazer'].includes(State.uniform)){
       if(State.gender === 'female' && State.uniform === 'blues_a'){
         const femaleSpecialtyCount = getFemaleClassASpecialtyBadgeIds().length;
-        if(femaleSpecialtyCount > 2) addNotice('err','Female Class A specialty-track badges above the nameplate are limited to two. Additional specialty badges will not render in that row.');
+        if(femaleSpecialtyCount > 2) addNotice('err','Female Class A specialty-track badges above the nameplate are limited to two. Additional specialty badges are not shown in that row.');
         if(State.membership === 'cadet' && femaleClassASpecialtyRowIsFull() && State.badges.includes('model_rocketry_badge')){
-          addNotice('ok','Female cadet Class A: with two specialty badges already above the nameplate, Model Rocketry renders in the same left-pocket zone used by the male uniform.');
+          addNotice('ok','Female cadet Class A: with two specialty badges already above the nameplate, Model Rocketry is shown in the left-pocket place used on the male uniform.');
         }
       }
-      if(State.badges.includes('squadron_commander_badge') && State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Graduated Commander and will render under the nameplate (UN); command insignia remains outside the normal four-badge count.');
-      if(State.badges.includes('squadron_commander_badge') && !State.commandInsignia?.graduatedCommander) addNotice('ok','Squadron Commander badge is marked as Current Commander and will render over the nameplate (ON); command insignia remains outside the normal four-badge count.');
+      const commandPin = getSelectedCommandInsigniaId();
+      if(commandPin){
+        addNotice('ok', State.commandInsignia?.graduatedCommander
+          ? `${getBadgeDisplayName(commandPin)}: worn as a graduated commander, below the name tag. It is not counted among the four badges (CAPR 39-1, 10.2.5).`
+          : `${getBadgeDisplayName(commandPin)}: worn as a current commander, above the name tag. It is not counted among the four badges (CAPR 39-1, 10.2.5).`);
+      }
       const aviation = State.badges.filter(id => ['OLP','OLPA','OLPU'].some(s => String(badgeLocations[id]||'').includes(s)));
       if(aviation.length > 2) addNotice('warn','More than two aviation/occupational-style badges are selected for the wearer’s left side.',{id:'expandBadges',label:'Review badges'});
     }
     if(State.uniform === 'mess_dress' && State.membership === 'cadet') addNotice('err','Mess Dress is not available to cadets in this builder.');
-    if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires CAPR 39-1 review and any applicable supplement.');
+    // The white parade gloves as the drawing shows them (9.6.7.7): on the hands, the top of the glove just above the wrist, on the coat and with long sleeves; folded under the belt, or under the flag
+    // sling's waist band for a flag bearer, with short sleeves, where no sleeve covers the wrists.
+    if(State.ceremonial && State.membership === 'cadet'){
+      const gm = State.garment || {};
+      const folded = State.uniform === 'blues_b' && gm.sleeve !== 'long';
+      const place = gm.cerRole === 'flag' ? 'the flag sling\'s waist band, palm out, the tops over its upper edge' : 'the belt, palm out, the tops over the belt';
+      addNotice('ok', folded
+        ? `White parade gloves are shown folded under ${place}, because no sleeve covers the wrists here (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`
+        : `White parade gloves are worn, the top of the glove just above the wrist (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.gloves}).`);
+    }
+    // What a woman wears with it, on the coat and on the blouse alike (9.6.7.3): only slacks.
+    if(State.ceremonial && State.membership === 'cadet' && State.gender === 'female') addNotice('ok',`Female members wear only slacks with this uniform (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.slacks}).`);
+    if(!CAPUB_V2.notices.length) addNotice('ok','No automatic validation issues found. Final approval still requires a review against the regulation and any applicable supplement.');
     return CAPUB_V2.notices;
   }
 
   function updateStatusPanel(){
     const notices = validateBuild();
+    capubSyncBadgesNotWornNote();
     const rc = by('capubV2RibbonCount'), bc = by('capubV2BadgeCount'), pc = by('capubV2PatchCount'), wc = by('capubV2WarningCount');
-    if(rc) rc.textContent = State.ribbons.length;
-    if(bc) bc.textContent = State.badges.length;
-    if(pc) pc.textContent = State.patches.length + ((typeof getSelectedUnitPatchId === 'function' && getSelectedUnitPatchId() && isUnitPatchAuthorizedForCurrentUniform()) ? 1 : 0);
+    // The tiles count what the drawing puts on the uniform (js/badge-rules.js), as the Items cards and the top bar do.
+    if(rc) rc.textContent = countRibbonsShown();
+    if(bc) bc.textContent = countBadgesShown();
+    if(pc) pc.textContent = countPatchesShown();
     if(wc) wc.textContent = notices.filter(n=>n.type !== 'ok').length;
     const ul = by('capubV2Notices');
     if(ul){
@@ -1662,52 +943,15 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
   }
 
-  function buildExpectedAssetList(){
-    const expected = [];
-    ribbonList.forEach(id=>expected.push({category:'Ribbon', item:pretty(id), id, path:`images/ribbons/${id}.png`, status:'required'}));
-    Object.entries(RIBBON_SPECIAL_IMAGE_OPTIONS || {}).forEach(([id,opts])=>{
-      opts.forEach(opt=>{
-        if(opt.image) expected.push({category:'Ribbon Variant', item:`${pretty(id)} - ${opt.label}`, id, path:`images/ribbons/${opt.image}`, status:'required'});
-      });
-    });
-    badgeList.forEach(id=>expected.push({category:'Badge', item:pretty(id), id, path:`images/${getBadgeAssetPath(id)}`, status:'required'}));
-    Object.entries(PATCH_META).filter(([id])=>!FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)).forEach(([id,m])=>expected.push({category:'Patch', item:pretty(id), id, path:`images/${m.img}`, status:'required'}));
-    Object.entries(deviceMeta).forEach(([id,m])=>expected.push({category:'Ribbon device', item:m.label||pretty(id), id, path:`images/${m.src}`, status:'required'}));
-    Object.entries(miniMedalImages).forEach(([id,p])=>expected.push({category:'Mini medal', item:pretty(id), id, path:`images/${p}`, status:'required when mini-medals used'}));
-    Object.keys(UNIFORMS).forEach(u=>['male','female'].forEach(g=>{ const p=UNIFORMS[u]?.[g]; if(p) expected.push({category:'Base uniform', item:`${u} ${g}`, id:`${u}_${g}`, path:`images/${p}`, status:'required'}); }));
-    Object.entries(CADET_COMBINED_CLASSB || {}).forEach(([gender,map])=>{
-      Object.entries(map).forEach(([rank,path])=>{
-        expected.push({category:'Cadet Class B base uniform', item:`${gender} ${rank}`, id:`cadet_class_b_${gender}_${safeRankFile(rank)}`, path:`images/${path}`, status:'required for cadet Class B rank-specific base'});
-      });
-    });
-    Object.entries(CADET_FIRST_SERGEANT_COMBINED_CLASSB || {}).forEach(([gender,map])=>{
-      Object.entries(map).forEach(([rank,path])=>{
-        expected.push({category:'Cadet Class B First Sergeant base uniform', item:`${gender} ${rank} First Sergeant`, id:`cadet_class_b_${gender}_${safeRankFile(rank)}_first_sergeant`, path:`images/${path}`, status:'required when Cadet First Sergeant is selected'});
-      });
-    });
-    [...rankListAll].forEach(r=>expected.push({category:'Rank', item:r, id:safeRankFile(r), path:`images/ranks/${safeRankFile(r)}.png`, status:'recommended'}));
-    // CAPR 39-1 / ICL additions the current asset set should eventually support.
-    [
-      ['sUAS badge','Cadet sUAS Badge','cadet_suas_badge','badges/cadet_suas_badge.png']
-    ].forEach(([category,item,id,path])=>expected.push({category,item,id,path:`images/${normalizeAssetSubpath(path)}`,status:'not yet in current catalog'}));
-    return expected;
-  }
-
-  function downloadMissingAssetList(){
-    const expected = buildExpectedAssetList();
-    const lines = [];
-    lines.push('Uniform Builder - Missing/Needed Image Asset List');
-    lines.push('Generated: '+new Date().toLocaleString());
-    lines.push('');
-    lines.push('Recommended rank filename rule: replace / with _, spaces with _, e.g., C/2d Lt -> images/ranks/C_2d_Lt.png');
-    lines.push('');
-    lines.push('CSV-style list:');
-    lines.push('Category,Item,ID,Expected Path,Status');
-    expected.forEach(e=>{
-      lines.push([e.category,e.item,e.id,e.path,e.status].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));
-    });
-    downloadText('CAP_Uniform_Builder_missing_assets_needed.txt', lines.join('\n'));
-  }
+  // The window's short status line, under the search: what a tap on a tile says (where the badge or patch is worn, or why it is left off, with its paragraph) when the tile itself shows
+  // only the picture and the name. js/pick-lists.js calls it; an empty text clears it.
+  window.capubModalSay = text => {
+    const line = by('capubV2ModalSay');
+    if(!line) return;
+    const t = String(text || '');
+    line.hidden = !t;
+    if(line.dataset.said !== t){ line.dataset.said = t; line.textContent = t; }
+  };
 
   function injectModalSearch(kind){
     const body = modalHost;
@@ -1719,7 +963,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category..."/><div class="sub"><span id="capubV2ModalCount"></span> visible. Tip: use this popup for fast selection; selected items stay checked.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category"/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div><div id="capubV2ModalSay" class="sub capubModalSay" role="status" aria-live="polite" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');
@@ -1728,14 +972,17 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       const q = input.value.trim().toLowerCase();
       State.modalGallerySearchValues[kind]=input.value;
       let visible = 0;
-      body.querySelectorAll('.galleryTile').forEach(tile=>{
+      // The chooser's picture tiles hide themselves, and a section with none left (js/visual-picker.js filter); a window still of the old cards filters those.
+      const pickers = window.CAPUB_MODAL_PICKERS || [];
+      pickers.forEach(entry => { visible += entry.picker.filter(q); });
+      if(!pickers.length) body.querySelectorAll('.galleryTile').forEach(tile=>{
         const show = !q || tile.textContent.toLowerCase().includes(q);
         tile.classList.toggle('isFilteredOut', !show);
         if(show) visible++;
       });
       if(count) count.textContent = visible;
       // A category heading with every tile filtered out would sit there on its own.
-      if(kind === 'badges'){
+      if(kind === 'badges' && !pickers.length){
         body.querySelectorAll('.galleryGrid').forEach(grid=>{
           const heading = grid.previousElementSibling;
           if(!heading || heading.tagName !== 'DIV' || heading.style.fontWeight !== '800') return;
@@ -1761,14 +1008,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
   // Override render pipeline to include V2 layers and live validation after original rendering.
   const originalFullRender = fullRender;
   fullRender = function capubV2FullRender(prevUniform){
-    originalFullRender(prevUniform);
-    renderGeneratedTextAccoutrements();
-    renderRankOverlay();
-    // The base renderer draws badge/ribbon arrows before V2 generated text layers.
-    // Redraw measurement lines here so the nameplate-to-commander and
-    // nameplate-to-RP arrows can use the actual rendered nameplate position.
-    renderMeasurementOverlay();
+    const out = originalFullRender(prevUniform);
     updateStatusPanel();
+    return out;
   };
 
   const originalOpenGalleryModal = openGalleryModal;
@@ -1840,28 +1082,48 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
       return result;
     };
   })();
+  // A pick in a chooser (a ribbon, a badge, a patch, a unit) redraws without a full render, so it was recorded only with the next full render and Undo took the
+  // pick and whatever came after it in one step. Every change or click in the page now records what it changed once the handler has run; captureHistory records
+  // nothing when the setup is the same as the last one, so a click that changes nothing adds no step.
+  ['change','click'].forEach(evt => document.addEventListener(evt, () => setTimeout(captureHistory, 30), true));
 
   function wireV2Controls(){
     syncTextControls();
-    const save = by('capubV2SaveLocal'), load = by('capubV2LoadLocal'), exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
-    const missing = by('capubV2MissingBtn'), reset = by('capubV2Reset');
-    const ln = by('capubV2LastName'), ct = by('capubV2CapTape'), sh = by('capubV2ShowText');
-    if(save) save.onclick = ()=>{ localStorage.setItem(CAPUB_V2.storageKey, JSON.stringify(collectProfile())); updateStatusPanel(); capubNotify('Uniform setup saved in this browser.'); };
-    if(load) load.onclick = ()=>{ const raw = localStorage.getItem(CAPUB_V2.storageKey); if(!raw){ capubNotify('No saved setup found in this browser.'); return; } applyProfile(JSON.parse(raw)); };
-    if(exp) exp.onclick = ()=>downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'json'), JSON.stringify(collectProfile(), null, 2));
+    const exp = by('capubV2ExportJson'), impBtn = by('capubV2ImportBtn'), impFile = by('capubV2ImportFile');
+    const reset = by('capubV2Reset');
+    const fn = by('capubV2FirstName'), ln = by('capubV2LastName'), pl = by('capubV2PlateLine'), sh = by('capubV2ShowText');
+    if(exp) exp.onclick = ()=>(window.CAPUB_TELEMETRY?.track('setup_file', { action: 'save' }), downloadText(CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.ceremonial ? 'honor_guard' : State.uniform},'json'), JSON.stringify(collectProfile(), null, 2)));
     if(impBtn && impFile) impBtn.onclick = ()=>impFile.click();
-    if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; };
-    if(missing) missing.onclick = downloadMissingAssetList;
-    if(reset) reset.onclick = ()=>{ if(!confirm('Reset the entire builder setup?')) return; localStorage.removeItem(CAPUB_V2.storageKey); location.reload(); };
-    [ln,ct,sh].forEach(el=>{ if(!el) return; el.addEventListener('input', ()=>{ State.text.lastName = ln?.value || ''; State.text.capTape = ct?.value || 'CIVIL AIR PATROL'; State.text.show = sh?.checked !== false; fullRender(); }); el.addEventListener('change', ()=>{ State.text.lastName = ln?.value || ''; State.text.capTape = ct?.value || 'CIVIL AIR PATROL'; State.text.show = sh?.checked !== false; fullRender(); }); });
+    if(impFile) impFile.onchange = async ()=>{ const f=impFile.files?.[0]; if(!f) return; applyProfile(JSON.parse(await f.text())); impFile.value=''; window.CAPUB_TELEMETRY?.track('setup_file', { action: 'open' }); };
+    if(reset) reset.onclick = async ()=>{ if(!await capubConfirm({ title: 'Reset the builder?', message: 'This clears your uniform, ribbons, badges, patches and name from this browser and starts again. A setup you saved to a file is not affected.', confirmLabel: 'Reset', cancelLabel: 'Keep my setup' })) return; try{ localStorage.removeItem(CAPUB_V2.storageKey); localStorage.removeItem('cap_uniform_builder_autosave_v1'); }catch(_){} location.reload(); };
+    const readText = ()=>{
+      State.text.firstName = fn?.value || '';
+      State.text.lastName = ln?.value || '';
+      State.text.plateLine = pl?.value || '';
+      State.text.show = sh?.checked !== false;
+    };
+    // Typing redraws the uniform only; leaving the field (change) runs the full update and saves.
+    [fn,ln,pl,sh].forEach(el=>{
+      if(!el) return;
+      el.addEventListener('input', ()=>{ readText(); CAPUBUniformView.scheduleRender(); });
+      el.addEventListener('change', ()=>{ readText(); fullRender(); });
+    });
   }
 
   // Make functions available for console debugging.
   CAPUB_V2.collectProfile = collectProfile;
   CAPUB_V2.applyProfile = applyProfile;
-  CAPUB_V2.buildExpectedAssetList = buildExpectedAssetList;
-  CAPUB_V2.downloadMissingAssetList = downloadMissingAssetList;
+  CAPUB_V2.validateBuild = validateBuild;
+
+  // The Check panel follows the drawing just made: which badges are worn is known once the engine has drawn them (LIVE13 E77).
+  document.addEventListener('capub:rendered', () => {
+    updateStatusPanel(); capubRefreshModalCount();
+    // The open chooser's lists put the line under each badge's name as the drawing just made has it (what it did with the badge: its place, or why it is left off).
+    const open = document.getElementById('galleryModalOverlay');
+    if(open && open.classList.contains('open')) (window.CAPUB_MODAL_PICKERS || []).forEach(entry => { if(entry && typeof entry.rendered === 'function') entry.rendered(); });
+  });
 
   // Wire once after this script block has loaded.
   setTimeout(()=>{ wireV2Controls(); updateStatusPanel(); },0);
 })();
+

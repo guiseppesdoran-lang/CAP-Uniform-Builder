@@ -8,32 +8,7 @@ const indexSource = readAppSource();
 const styleSource = fs.readFileSync(path.join(__dirname, '..', 'styles', 'app.css'), 'utf8');
 
 test('CAP miniature medal resolver uses canonical military representations', () => {
-  assert.match(indexSource, /getAwardRepresentation\?\.\(award,'MINIATURE_MEDAL'\)/);
-  assert.match(indexSource, /representation\?\.available && representation\.asset/);
-});
-
-test('CAP miniature medal rack applies military award devices', () => {
-  assert.match(indexSource, /militaryDevices:isMilitaryRibbonId\(r\.id\)/);
-  assert.match(indexSource, /applyMilitaryMedalVariant\(mimg,entry\.path,entry\.militaryDevices,'MINIATURE_MEDAL'\)/);
-});
-
-test('military miniature medal size calibration survives while rack positions stay dynamic', () => {
-  assert.match(indexSource, /if\(String\(key \|\| ''\)\.startsWith\('ribbon:'\) && over\)/);
-  assert.doesNotMatch(indexSource, /startsWith\('ribbon:'\) \|\| String\(key \|\| ''\)\.startsWith\('mini:'\)/);
-  assert.match(indexSource, /function applyMiniRackCalibToElement\(el, key, base\)/);
-  assert.match(indexSource, /\.\.\.\(over\.w !== undefined \? \{w:over\.w\} : \{\}\)/);
-  assert.match(indexSource, /\.\.\.\(over\.h !== undefined \? \{h:over\.h\} : \{\}\)/);
-  assert.match(indexSource, /applyMiniRackCalibToElement\(mimg, mimg\.dataset\.calibKey/);
-  assert.doesNotMatch(indexSource, /applyCalibToElement\(mimg, mimg\.dataset\.calibKey/);
-});
-
-test('CAP miniature medal rack centers rows using saved calibrated widths', () => {
-  assert.match(indexSource, /const medalRowGeometry = medalRowsTopFirst\.map/);
-  assert.match(indexSource, /getCalibratedLayerGeometry\(key,\{x:0,y:0,w:MINI_W,h:MINI_H,r:0\}\)/);
-  assert.match(indexSource, /MINI_RACK_CENTER_X - geometry\.rowWidth \/ 2/);
-  assert.match(indexSource, /geometry\.offsets\[i\]/);
-  assert.match(indexSource, /medalRowGeometry\[index\]\.suspensionHeight/);
-  assert.match(indexSource, /mimg\.style\.objectFit='fill'/);
+  assert.match(indexSource, /getAwardRepresentation\?\.\(award,'MINIATURE_MEDAL'\)\?\.status !== 'NOT_APPLICABLE'/);
 });
 
 test('calibrator stays within the visible viewport', () => {
@@ -42,10 +17,20 @@ test('calibrator stays within the visible viewport', () => {
   assert.match(styleSource, /#calibKeyPill\{[\s\S]*?overflow-wrap:anywhere/);
 });
 
-test('CAP uniform ribbon and medal UI exposes working basic and maximum bulk controls', () => {
-  assert.match(indexSource, /id="capSelectAllBasic"/);
-  assert.match(indexSource, /id="capSelectAllMax"/);
-  assert.match(indexSource, /function selectAllCapUniformAwards\(\{maximum=false\}=\{\}\)/);
+test('the ribbon picker has a Clear control and no select-all or select-max control (Ethan: remove the select all button for ribbons)', () => {
+  assert.match(indexSource, /id="clearRibbons"/);
+  assert.doesNotMatch(indexSource, /capSelectAllBasic|modalSelectAllBasic|selectAllCapUniformAwards|Select all \(basic\)/);
+  assert.doesNotMatch(indexSource, /SelectAllMax|Select max devices/);
   assert.match(indexSource, /getEligibleRibbonIds\(\)/);
-  assert.match(indexSource, /maximumRenderableMilitaryAwardCount\(award,'RIBBON'\)/);
+});
+
+test('no picker has a select-all, select-max or add-all control: ribbons, badges, patches, military badges and devices keep Clear only (Ethan: make sure that the select all buttons for everything are gone)', () => {
+  const sources = [indexSource];
+  const jsDir = path.join(__dirname, '..', 'js');
+  for(const f of fs.readdirSync(jsDir).filter(n => n.endsWith('.js'))) sources.push(fs.readFileSync(path.join(jsDir, f), 'utf8'));
+  const bulk = /select[\s_-]*all|select[\s_-]*max|add[\s_-]*all|check[\s_-]*all|tick[\s_-]*all|toggle[\s_-]*all|choose[\s_-]*all/i;
+  sources.forEach(src => assert.doesNotMatch(src, bulk));
+  for(const id of ['clearRibbons', 'clearBadges', 'clearPatches']) assert.match(indexSource, new RegExp(`id="${id}"`));
+  // The chooser window lists all it offers: it has no Show All / Show Less (they only widened the list; they selected nothing).
+  assert.doesNotMatch(indexSource, /modalShowAll|modalShowLess/);
 });

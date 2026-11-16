@@ -2,29 +2,29 @@
  "asset_id": "garment-mess-dress-male-general-officer-sleeve-braid",
  "name": "Men's USAF-style mess dress: general officer sleeve braid overlay (1 1/2 in, 3 in from the sleeve end)",
  "size_in": {
-  "w": 26.522,
+  "w": 28.522,
   "h": 33.68
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2652.2,
+  2852.2,
   3368
  ],
  "size_source": "estimated",
- "size_basis": "Same artwork box and scale as garment-mess-dress-male. Braid 1.5 in wide per CAPR 39-1 4.1.1.1 (the sleeve end is 3 in below its lower edge).",
+ "size_basis": "Same artwork box and scale as garment-mess-dress-male. Braid 1.5 in wide per CAPR 39-1 4.1.1.1 (the sleeve end is 3 in below its lower edge). Braid tone: sampled from CAPR 39-1 (3 Mar 2020) rendered at 3x, Fig 4.6 PDF p64 (p.36) braid 2.3,33.1,86.2 / 2.7,31.9,84.3; Fig 4.1 PDF p54 (p.26) 2.1,32.3,83.6; Fig 4.7a PDF p73 (p.45) 2.1,32.4,84.6 against coat 0,40,101 (the figures draw a tonal braid, ~0.72x the coat luminance); drawn in the figure's line structure, 0.04 in lines on a 0.1 in pitch, but lighter than the figure: the tonal band repeats C/Col Doran's \"too close to the jacket colour\" (mess dress braid #0b1f5e, 1.1x the coat luminance, 2026-10-12) and the flat #2149a0 (5.3x) was \"too light\" (2026-10-14), so lines #1e3c82 (3.6x), gaps #12286a (1.9x), edge #0a1740 on the coat #001c52, band mean 2.5x, the geometric mean of the two rated values.",
  "anchors": {
   "top_center": [
-   1326.1,
+   1426.1,
    0
   ],
   "bottom_center": [
-   1326.1,
+   1426.1,
    3368
   ],
   "center": [
-   1326.1,
+   1426.1,
    1684
   ],
   "left_edge": [
@@ -32,44 +32,44 @@
    1684
   ],
   "right_edge": [
-   2652.2,
+   2852.2,
    1684
   ]
  },
  "landmarks": {
   "sleeve_braid_right": [
    [
-    65.3,
+    165.3,
     2681.6
    ],
    [
-    444.5,
+    544.5,
     2653
    ],
    [
-    444.5,
+    544.5,
     2803
    ],
    [
-    65.3,
+    165.3,
     2831.6
    ]
   ],
   "sleeve_braid_left": [
    [
-    2198.3,
+    2298.3,
     2652.4
    ],
    [
-    2605.9,
+    2705.9,
     2681.3
    ],
    [
-    2605.9,
+    2705.9,
     2831.3
    ],
    [
-    2198.3,
+    2298.3,
     2802.4
    ]
   ]
@@ -80,7 +80,7 @@
   "1 1/2 in blue sleeve braid for general officers (4.1.1.1 / 4.1.2.1)"
  ],
  "assumed": [
-  "braid colour",
+  "braid colour: not specified as a shade; lighter blue from the dress's satin shawl collar so it can be seen on the coat, Doran D37 (see base-art/braid-art.js)",
   "1 1/2 in braid edge nearest the sleeve end set at the same distance as the 1/2 in braid"
  ],
  "fit": {

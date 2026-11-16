@@ -1,0 +1,63 @@
+{
+ "asset_id": "patch-national-staff",
+ "file": "patch-national-staff.png",
+ "width_in": 3,
+ "height_in": 3.056,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: drawn at the 3 in of the round sleeve patches because PATCH_META gives national_staff_ocp_patch the same 70 x 70 slot; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   305.6
+  ],
+  "center": [
+   150,
+   152.8
+  ],
+  "left_edge": [
+   0,
+   152.8
+  ],
+  "right_edge": [
+   300,
+   152.8
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
+ "reference": "UniformBuilder-svg/images/badges/utility/national_staff_badge.webp",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   240,
+   227
+  ],
+  "px": [
+   1178,
+   1200
+  ],
+  "bytes": 111641,
+  "colours": 6,
+  "palette": [
+   "#152c7a",
+   "#cf252f",
+   "#1a181a",
+   "#bdbbbe",
+   "#d6d4d9",
+   "#efedf1"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph national_staff_badge.webp (240 x 227 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
+}

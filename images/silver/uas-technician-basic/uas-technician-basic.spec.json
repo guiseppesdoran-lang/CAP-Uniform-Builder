@@ -13,19 +13,19 @@
   ],
   "bottom_center": [
    150,
-   78.333
+   78.334
   ],
   "center": [
    150,
-   39.166
+   39.167
   ],
   "left_edge": [
    0,
-   39.166
+   39.167
   ],
   "right_edge": [
    300,
-   39.166
+   39.167
   ],
   "hexagon_center": [
    150,
@@ -87,5 +87,5 @@
   "silhouette_iou_approx": 0.9,
   "note": "bbox-normalised mask IoU vs the OLD round-roundel product webp; expected to be lower, judged against the regulation figure (silver/uas-compare.png)"
  },
- "notes": "Hexagon-centre sUAS badge built from CAPR 39-1 Attachment 7 figure A7-1 (regulation figure wins over the round-roundel product photos). Parameter table: silver/suas-spec.json (written by make-suas.js)."
+ "notes": "Hexagon-centre sUAS badge built from CAPR 39-1 Attachment 7 figure A7-1 (regulation figure wins over the round-roundel product photos). Wing roots run under the hexagon so the wings connect to the centre (critique D38). Parameter table: silver/suas-spec.json (written by make-suas.js)."
 }

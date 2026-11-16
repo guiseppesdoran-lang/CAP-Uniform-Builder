@@ -1,0 +1,1018 @@
+// Uniform engine: lays out the measurement overlay.
+//
+// Each regulation distance is drawn the way a tailor's dimension drawing draws one (LIVE13 E97): a dimension line
+// spanning exactly the measured distance, arrowheads at its ends (inside the line, or outside it on tails when the
+// line is too short to hold them), witness lines from each measured edge out to the line where it is set off the
+// edges, and a pill with the length over a caption of what is measured ("badge to ribbons"), set off the cloth with
+// a leader to the line. Where the straight line from one edge to the other is clear it is drawn there, with a bar
+// across each end; where it would cross the artwork it moves off to the side. A distance to a badge's centre gets
+// a centre mark: an open crosshair (a ring with four ticks outside it, empty inside), never a solid cross over the
+// artwork. Each pill is set where it covers no cloth, no artwork and no other pill.
+// A distance to a piece's centre ends on a centre mark: since LIVE13 E101 a small, thin crosshair (0.12 in across on the garment, its middle
+// open) at the witness lines' weight, the dimension line ending on its centre; the pill's caption says the distance ends at the centre
+// ("cap front to the grade's centre").
+//
+// Positions are in scene inches. Sizes are in preview pixels (`px` inches each), so the overlay reads
+// the same on a coat and on a wide field sheet. Pure geometry: the renderer draws the result.
+(function(root, factory){
+  const node = typeof module === 'object' && module.exports;
+  const core = node ? require('./core.js') : root.CAPUBEngine.core;
+  const api = factory(core);
+  if(node) module.exports = api;
+  else { root.CAPUBEngine = root.CAPUBEngine || {}; root.CAPUBEngine.measureLayout = api; }
+})(typeof self !== 'undefined' ? self : this, function(core){
+  'use strict';
+
+  // Preview pixels.
+  const PX = {
+    // The pill: the length in `font`, the caption under it in `capFont`.
+    font: 11, capFont: 7.5, padX: 5, padY: 3, labelGap: 3,
+    // The dimension line's ends: the bar across an end drawn on the measured edge itself, the halfway tick's half length, the arrowhead (length, half width) and the tail an
+    // outside arrowhead rides on; the witness lines start extGap past the piece's edge and overshoot the dimension line by extOver.
+    bar: 10, tick: 3.2, arrow: 7, arrowHalf: 2.6, tail: 10, centre: 5, extGap: 1.5, extOver: 5,
+    // The centre mark (LIVE13 E101; Ethan on the flight cap's 1 1/2 in, drawn to a ring over the insignia: "so its to front yet you have
+    // something in the center?"): a small thin crosshair in garment inches, not preview pixels, so it stays quiet at any zoom: four arms from
+    // `gap` to `arm` inches out of the centre (the middle open, so the piece's own centre shows), 0.12 in across, no ring.
+    mark: { arm: 0.06, gap: 0.015 },
+    minOffset: 10, step: 4, maxOffset: 170
+  };
+
+  // How near a label stays to its own dimension line, in label heights (see labelDistance). Since LIVE13 E97 the pill is set off the cloth with a
+  // leader instead; the radius is kept for the tests that read a label's distance from its line.
+  const LABEL_RADIUS = 1;
+  const SLIDE_LINES = 3;
+  // The pill's search (placePill): distances from the dimension line's middle to the pill's near edge, in preview pixels, the directions tried
+  // at each, and the costs: a leader along the dimension's own axis (a leader runs square to its dimension when it can), a pill outside
+  // the drawing's own box (room is made for it, frameFor), a pill on the cloth (clothTouch flat, so a pill never sits a few pixels onto a
+  // sleeve's edge, plus clothCost per square pixel: a captioned pill on the cloth costs about as much as a 300 px leader, so the pill leaves
+  // the cloth whenever a clear side lies nearer than that and sits by its line on clear cloth otherwise), the leader's run over the cloth
+  // (per pixel), a dimension line past the drawing's edge (per pixel; the frame holds it). Captions wrap at `wrap`
+  // characters; capWidth scales the bold-face width table for the caption's lighter face.
+  const PILL = { search: [6, 10, 16, 24, 34, 46, 60, 76, 94, 114, 136, 160, 188, 220, 256, 296, 340, 390, 445, 505, 570, 640], angles: 24, alongCost: 240, outsideCost: 30, lineOutsideCost: 3, clothCost: 0.06, clothTouch: 60, leaderClothCost: 0.3, wrap: 26, refWrap: 26, capWidth: 0.92 };
+
+  // Placed pieces the overlay keeps clear of. Garment sheets and their overlays are the cloth itself;
+  // `clear` marks drawn-in pieces (a nametag on the sheet) that the profile asks to keep clear.
+  const SOLID = new Set(['badge', 'seal', 'grade', 'hat', 'hat-view', 'hat-device', 'sleeve-flat', 'epaulet-top', 'mini', 'mini-drape', 'mini-medal', 'nametag', 'patch', 'ribbon', 'device', 'text', 'clear']);
+
+  function obstaclesOf(scene){
+    return scene.layers
+      .filter(l => l.type !== 'measure' && SOLID.has(l.role))
+      .map(l => l.type === 'clear' ? { x: l.x, y: l.y, w: l.w, h: l.h } : (l.obstacle || core.layerBounds(l)))
+      .filter(b => b && b.w > 0 && b.h > 0);
+  }
+
+  // Pieces the garment sheets draw as part of a whole-sheet overlay layer (the lapel insignia: the cadet officers' CAP cutouts, the US pins, the NCO
+  // circle) have no box of their own in the scene, only the landmark rectangle their sheet states (lapel_cap_*, lapel_us_*, in the sheet's own inches).
+  // `landmarksOf(id)` returns a sheet's landmarks (in inches) or null; each placed overlay yields its pieces' boxes, moved to where the layer sits.
+  // An overlay shown for one side only (`onlyGroups`) yields that side's piece. Pass the result to `layout` as `view.pieces`.
+  function lapelPieces(scene, landmarksOf){
+    const out = [];
+    for(const l of scene.layers){
+      if(l.type !== 'asset' || l.role !== 'garment-layer' || !/-lapel-(cap|us|us-nco)$|-senior-nco-lapel$/.test(l.id || '') || (l.rotate || 0)) continue;
+      const lm = landmarksOf(l.id);
+      if(!lm) continue;
+      const sides = l.onlyGroups && l.onlyGroups.length ? ['right', 'left'].filter(sd => l.onlyGroups.some(g => new RegExp(`-${sd}$`).test(g))) : ['right', 'left'];
+      for(const name of Object.keys(lm)){
+        const m = /^lapel_(?:us|cap)_(right|left)$/.exec(name), r = lm[name];
+        if(!m || !sides.includes(m[1]) || !r || !(r.w > 0)) continue;
+        out.push({ x: r.x + l.x, y: r.y + l.y, w: r.w, h: r.h });
+      }
+    }
+    return out;
+  }
+
+  // The cap views: a seated cap (role 'hat') and the accessory views (role 'hat-view'), each one box.
+  function viewBoxes(scene){
+    return scene.layers
+      .filter(l => l.type !== 'measure' && (l.role === 'hat' || l.role === 'hat-view'))
+      .map(l => l.obstacle || core.layerBounds(l))
+      .filter(b => b && b.w > 0 && b.h > 0);
+  }
+
+  // ---- geometry ----
+  const add = (a, b) => ({ x: a.x + b.x, y: a.y + b.y });
+  const sub = (a, b) => ({ x: a.x - b.x, y: a.y - b.y });
+  const mul = (a, k) => ({ x: a.x * k, y: a.y * k });
+  const dot = (a, b) => a.x * b.x + a.y * b.y;
+  const len = a => Math.hypot(a.x, a.y);
+  const unit = a => { const l = len(a) || 1; return { x: a.x / l, y: a.y / l }; };
+
+  function grow(b, e){ return { x: b.x - e, y: b.y - e, w: b.w + 2 * e, h: b.h + 2 * e }; }
+  function contains(b, p){ return p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h; }
+  // Distance from a point to a box (0 inside it).
+  function pointBoxDistance(p, b){
+    return Math.hypot(Math.max(b.x - p.x, 0, p.x - b.x - b.w), Math.max(b.y - p.y, 0, p.y - b.y - b.h));
+  }
+  // Distance from the segment a-b to a box (0 where they meet).
+  function segBoxDistance(a, b, box){
+    if(contains(box, a) || contains(box, b) || insideLength(a, b, box) > 0) return 0;
+    const corners = [{ x: box.x, y: box.y }, { x: box.x + box.w, y: box.y }, { x: box.x + box.w, y: box.y + box.h }, { x: box.x, y: box.y + box.h }];
+    const toSeg = p => { const d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / (dot(d, d) || 1))); return len(sub(p, add(a, mul(d, t)))); };
+    return Math.min(pointBoxDistance(a, box), pointBoxDistance(b, box), ...corners.map(toSeg));
+  }
+  // How far a label is from its own dimension line (`a` to `b`, as drawn), in the same units as the points. A label rides along a line
+  // longer than SLIDE_LINES of its own lengths (so a long line past a chevron keeps it on clear cloth) and is measured from the line itself;
+  // on a shorter line it is measured from the line's middle. Both must come to LABEL_RADIUS label heights or less.
+  function labelDistance(a, b, box){
+    const u = unit(sub(b, a)), extent = Math.abs(u.x) * box.w + Math.abs(u.y) * box.h;
+    return len(sub(b, a)) > SLIDE_LINES * extent ? segBoxDistance(a, b, box) : pointBoxDistance(mul(add(a, b), 0.5), box);
+  }
+  function overlap(a, b){
+    const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+    const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+    return w > 0 && h > 0 ? w * h : 0;
+  }
+  // Length of the segment a-b inside box `r` (Liang-Barsky clipping).
+  function insideLength(a, b, r){
+    const d = sub(b, a);
+    let t0 = 0, t1 = 1;
+    const edges = [[-d.x, a.x - r.x], [d.x, r.x + r.w - a.x], [-d.y, a.y - r.y], [d.y, r.y + r.h - a.y]];
+    for(const [p, q] of edges){
+      if(p === 0){ if(q < 0) return 0; continue; }
+      const t = q / p;
+      if(p < 0){ if(t > t1) return 0; if(t > t0) t0 = t; }
+      else { if(t < t0) return 0; if(t < t1) t1 = t; }
+    }
+    return t1 > t0 ? (t1 - t0) * len(d) : 0;
+  }
+  // The parts of the segment a-b that lie outside every box, as segments (dropping slivers shorter than `min`).
+  function segmentsOutside(a, b, boxes, min){
+    const d = sub(b, a), L = len(d);
+    let spans = [[0, 1]];
+    for(const r of boxes){
+      let t0 = 0, t1 = 1, ok = true;
+      for(const [p, q] of [[-d.x, a.x - r.x], [d.x, r.x + r.w - a.x], [-d.y, a.y - r.y], [d.y, r.y + r.h - a.y]]){
+        if(p === 0){ if(q < 0){ ok = false; break; } continue; }
+        const t = q / p;
+        if(p < 0){ if(t > t1){ ok = false; break; } if(t > t0) t0 = t; } else { if(t < t0){ ok = false; break; } if(t < t1) t1 = t; }
+      }
+      if(!ok || t1 <= t0) continue;
+      spans = spans.flatMap(([s0, s1]) => (t1 <= s0 || t0 >= s1) ? [[s0, s1]] : [[s0, Math.min(s1, t0)], [Math.max(s0, t1), s1]].filter(([x, y]) => y > x));
+    }
+    return spans.filter(([x, y]) => (y - x) * L >= min).map(([x, y]) => [add(a, mul(d, x)), add(a, mul(d, y))]);
+  }
+  // Length of the segment a-b that lies outside box `r`.
+  const outsideLength = (a, b, r) => Math.max(0, len(sub(b, a)) - insideLength(a, b, r));
+  // How far from `p` along `v` until it leaves every piece it starts on (and any piece that piece
+  // runs into), so an extension line starts at the edge of the artwork, not across it.
+  function clearance(p, v, boxes, eps){
+    let t = 0;
+    for(let guard = 0; guard < 24; guard++){
+      const q = add(p, mul(v, t));
+      const hit = boxes.find(b => contains(grow(b, eps), q));
+      if(!hit) return t;
+      const g = grow(hit, eps);
+      const tx = v.x > 1e-9 ? (g.x + g.w - p.x) / v.x : v.x < -1e-9 ? (g.x - p.x) / v.x : Infinity;
+      const ty = v.y > 1e-9 ? (g.y + g.h - p.y) / v.y : v.y < -1e-9 ? (g.y - p.y) / v.y : Infinity;
+      t = Math.max(t, Math.min(tx, ty)) + eps * 0.01;
+    }
+    return t;
+  }
+
+  // Where a segment from a box's centre toward `p` leaves the box (`p` itself when it lies inside): the leader's end on the pill's rim.
+  function rimPoint(box, p){
+    const c = { x: box.x + box.w / 2, y: box.y + box.h / 2 }, v = sub(p, c);
+    if(len(v) < 1e-9) return c;
+    const t = Math.min(box.w / 2 / (Math.abs(v.x) || 1e-9), box.h / 2 / (Math.abs(v.y) || 1e-9));
+    return add(c, mul(v, Math.min(t, 1)));
+  }
+  // Whether the segments a-b and c-d cross (touching at an end does not count).
+  function segsCross(a, b, c, d){
+    const o = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
+    const o1 = o(a, b, c), o2 = o(a, b, d), o3 = o(c, d, a), o4 = o(c, d, b);
+    return ((o1 > 0) !== (o2 > 0)) && ((o3 > 0) !== (o4 > 0)) && o1 !== 0 && o2 !== 0 && o3 !== 0 && o4 !== 0;
+  }
+  // Words set in lines of at most `max` characters (a word longer than that stands alone).
+  function wrapWords(text, max){
+    const out = [];
+    for(const w of String(text || '').split(/\s+/).filter(Boolean)){
+      const last = out[out.length - 1];
+      if(last && (last + ' ' + w).length <= max) out[out.length - 1] = last + ' ' + w; else out.push(w);
+    }
+    return out;
+  }
+
+  // What a measure joins, for a pill with no caption of its own: the pieces at its two ends, named by their role ("badge to ribbons"). A
+  // sheet-drawn piece the profile keeps clear (a nametag) counts. Empty when either end lies on no piece.
+  const PIECE_NAMES = { badge: 'badge', ribbon: 'ribbons', nametag: 'nameplate', grade: 'grade', 'hat-device': 'cap device', patch: 'patch', mini: 'medals', 'mini-drape': 'medals', 'mini-medal': 'medals', seal: 'crest', device: 'device', text: 'name', hat: 'cap', 'hat-view': 'cap' };
+  function captionFor(scene, m){
+    const at = p => {
+      let hit = null;
+      for(const l of scene.layers){
+        if(l.type === 'measure') continue;
+        let name = PIECE_NAMES[l.role];
+        if(l.type === 'clear' && l.role === 'clear') name = /^clear:nametag/.test(l.key || '') ? 'nameplate' : null;
+        if(!name) continue;
+        const b = l.type === 'clear' ? { x: l.x, y: l.y, w: l.w, h: l.h } : (l.obstacle || core.layerBounds(l));
+        if(!b || !(b.w > 0) || !contains(grow(b, 0.03), p)) continue;
+        if(!hit || b.w * b.h < hit.area) hit = { name, area: b.w * b.h };
+      }
+      return hit && hit.name;
+    };
+    const a = at(m.from), b = at(m.to);
+    return a && b && a !== b ? a + ' to ' + b : '';
+  }
+
+  // The regulation paragraph each distance carries out, quoted on its callout (Ethan, 2 November 2026: every callout quotes the inch value and the paragraph). One row per
+  // measure the engine draws: [uniform, caption (the pill's or the magnified callout's words), label, paragraph]; the first row that matches wins. A paragraph is one string, a
+  // pair [men's cut, women's cut], or an object keyed by uniform where the uniforms that share the row cite different paragraphs. The uniform tests in
+  // tests/engine-measurement-refs.test.cjs fail for a measure no row names.
+  const SEAT = '4.1.5.2.2.4.1', SEATW = '4.1.9.4.4.1';
+  const REFS = [
+    // Field uniforms
+    [/^abu$|^corporate_field$/, /tape to the embroidery/, /./, { abu: '5.1.1.1.2.4', corporate_field: '5.2.1.1.2.6' }],
+    [/^ocp$/, /tape to the embroidery/, /^½ in$/, '7.1.1.3.1.1-2'],
+    [/^ocp$/, /tape to the blue edge/, /^⅛ in$/, '7.1.1.3.1.3-4'],
+    [/^ocp$/, /blue around/, /./, '7.1.1.3.1, 7.1.1.8'],
+    [/^abu$/, /blue around/, /./, '5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.2.4'],
+    [/^corporate_field$/, /blue around/, /./, '5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.2.6'],
+    [/^(corporate_)?flight_suit$/, /blue around/, /./, { flight_suit: '8.3.5.1', corporate_flight_suit: '8.3.5.1' }],
+    [/^abu$/, /collar bottom to grade/, /./, '5.1.1.1.1.1, 5.1.1.1.1.3, 5.1.1.1.1.4'],
+    [/^corporate_field$/, /collar bottom to grade/, /./, '5.2.1.1.1.1, 5.2.1.1.1.4, 5.2.1.1.1.6'],
+    [/^abu$|^corporate_field$/, /lower badge to upper badge|badge to badge/, /./, { abu: '5.1.1.1.2.4', corporate_field: '5.2.1.1.2.6' }],
+    [/^abu$|^corporate_field$/, /patch on the lower pocket/, /./, { abu: '5.1.1.1.2.3', corporate_field: '5.2.1.1.2.4-5' }],
+    [/^abu$|^corporate_field$/, /shoulder seam to patch/, /./, { abu: '5.1.1.1.2.2', corporate_field: '5.2.1.1.2.2-3' }],
+    [/^abu$|^corporate_field$/, /chevron's centre/, /./, { abu: '5.1.1.1.1.2', corporate_field: '5.2.1.1.1.3' }],
+    [/^abu$|^corporate_field$/, /(command pin|name tape) to (ES|command)|command pin to/, /./, { abu: '5.1.1.1.2.5', corporate_field: '5.2.1.1.2.9' }],
+    [/^corporate_field$/, /name tape to ES patch|command pin to ES patch/, /./, '5.2.1.1.2.8'],
+    [/^ocp$/, /badge to badge|between the badges|badge row|between the columns/, /./, '7.1.1.3.1.3-4'],
+    [/^ocp$/, /lower badge to upper badge/, /./, '7.1.1.3.1.2'],
+    [/^ocp$/, /grade square on the chest/, /./, '7.1.1.2.1, 7.1.1.2.2'],
+    [/^ocp$/, /command pin on the loop/, /./, '7.1.1.3.1.6'],
+    [/^ocp$/, /name tape to command pin|command pin to/, /./, '7.1.1.3.1.6'],
+    [/^ocp$/, /patch on the sleeve pocket|flag to the unit patch/, /./, '7.1.1.4.1.2'],
+    // The ICL states no inch for the flag, AUX or the HHQ patch: the 'centered' lines say what the paragraph says (centered, top of the field). The distance from the
+    // shoulder seam to the flag or to AUX is how the garment is drawn, not a rule: no row names it, so it carries no paragraph (refFor gives '', the Regulation tab says None).
+    [/^ocp$/, /flag centered/, /./, '7.1.1.4.1.1'],
+    [/^ocp$/, /AUX centered/, /./, '7.1.1.4.2'],
+    [/^ocp$/, /AUX to the higher headquarters patch/, /./, '7.1.1.4.2.1'],
+    [/^ocp$/, /visor to/, /./, '7.1.1.8, ICL 25-02 6.2.11.1'],
+    [/^abu$|^corporate_field$/, /visor to/, /./, 'ICL 25-02 6.2.11.1'],
+    // Flight duty uniforms
+    [/^(corporate_)?flight_suit$/, /ES patch on the pocket/, /./, { flight_suit: '8.2.4.3', corporate_flight_suit: '8.3.4.3' }],
+    [/^(corporate_)?flight_suit$/, /shoulder seam to flag/, /./, { flight_suit: '8.2.4.4', corporate_flight_suit: '8.3.4.4' }],
+    [/^(corporate_)?flight_suit$/, /shoulder seam to grade/, /./, { flight_suit: '8.2.3.2', corporate_flight_suit: '8.3.3.2' }],
+    [/^(corporate_)?flight_suit$|^blues_[ab]$|^aviator$|^ocp$|^abu$|^corporate_field$/, /cap front to the grade/, /./, '6.2.2.2.1-3'],
+    // Service dress (Class A)
+    [/^blues_a$/, /shoulder board on the seam/, /./, ['4.1.5.2.1.3', '4.1.9.3.4']],
+    [/^blues_a$|^semi_formal_usaf$|^blues_b$/, /under the board/, /./, { blues_a: '9.3, 9.3.4', semi_formal_usaf: '9.3, 9.3.4', blues_b: '9.3, 9.3.4' }],
+    [/^blues_a$/, /between the badges/, /./, ['4.1.5.2.2.4.2', '4.1.9.4.4.2']],
+    [/^blues_a$/, /chevron on the sleeve/, /./, ['4.1.5.2.1.2', '4.1.9.3.3']],
+    [/^blues_a$/, /insignia on the seam/, /./, ['4.1.5.2.2.1', '4.1.9.4.1']],
+    [/^blues_a$/, /nameplate between seam and lapel/, /./, ['4.1.5.2.2.2.1-2', '4.1.9.4.2.1-2']],
+    [/^blues_a$/, /nameplate bottom to ribbons bottom/, /./, ['4.1.5.2.2.2.1-2', '4.1.9.4.2.1-2']],
+    [/^blues_a$/, /nameplate to badge|pocket to badge/, /./, ['4.1.5.2.2.4.2', '4.1.9.4.4.2']],
+    [/^blues_a$/, /ribbons resting on the welt pocket/, /./, ['4.1.5.2.2.3', '4.1.9.4.3']],
+    [/^blues_a$/, /ribbons to badge/, /^1½ in$/, ['4.1.5.2.2.4.2', '4.1.9.4.4.2']],
+    [/^blues_a$/, /ribbons to badge/, /./, [SEAT, SEATW]],
+    [/^blues_a$/, /sleeve end to braid/, /./, ['4.1.5.2', '4.1.9.3']],
+    // The cadet semi-formal (4.1.3.2 men, 4.1.4 women) "is worn as for the Service Dress (Class A)" with its adjustments: a rule it does not change cites its own paragraph, and the badges,
+    // "worn in the same places as on the service dress uniform", the adjustment paragraphs 4.1.3.2.2 and 4.1.4.2.
+    [/^semi_formal_usaf$/, /shoulder board on the seam|chevron on the sleeve|insignia on the seam|ribbons resting on the welt pocket/, /./, ['4.1.3.2', '4.1.4']],
+    [/^semi_formal_usaf$/, /between the badges|nameplate to badge|pocket to badge|ribbons to badge|badge bottom to ribbons bottom/, /./, ['4.1.3.2.2', '4.1.4.2']],
+    // Service dress (Class B)
+    [/^blues_b$/, /badge on the lower pocket/, /./, '4.1.11.1.1.2.3.2'],
+    [/^blues_b$/, /between the badges|nameplate to badge/, /./, ['4.1.11.1.1.2.3.1', '4.1.12.2.5.2']],
+    [/^blues_b$/, /button to the nameplate/, /./, '4.1.12.2.4.1'],
+    [/^blues_b$/, /chevron on the sleeve/, /./, ['4.1.11.1.1.1.3', '4.1.12.2.3.3']],
+    [/^blues_b$/, /collar edge to grade/, /./, ['4.1.11.1.1.1.4', '4.1.12.2.3.5']],
+    [/^blues_b$/, /nameplate bottom to ribbons bottom/, /./, ['4.1.11.1.1.2.1', '4.1.12.2.4.2']],
+    [/^blues_b$/, /nameplate resting on the right pocket/, /./, '4.1.11.1.1.2.1'],
+    [/^blues_b$/, /pocket to badge|ribbons to badge/, /./, ['4.1.11.1.1.2.3.1', '4.1.12.2.5.1']],
+    [/^blues_b$/, /ribbons resting on the left pocket/, /./, '4.1.11.1.1.2.2'],
+    // Mess dress
+    [/^mess_dress$/, /chevron on the sleeve/, /./, ['4.1.1.1.1.4', '4.1.2.1.1.4']],
+    [/^mess_dress$/, /medals between shoulder/, /./, ['4.1.1.1.2.2', '4.1.2.1.2.2']],
+    [/^mess_dress$/, /medals to badge|badges to command|badge to command/, /./, ['4.1.1.1.2.3', '4.1.2.1.2.3']],
+    [/^mess_dress$/, /sleeve end to braid/, /^3 in$/, '4.1.1.1'],
+    [/^mess_dress$/, /sleeve end to braid/, /./, '4.1.2.1'],
+    // Aviator shirt and the corporate blazer
+    [/^aviator$|^aviator_blazer$/, /chevron on the sleeve/, /./, ['4.2.5.1.1.3', '4.2.6.2.3']],
+    [/^aviator$/, /collar edge to grade/, /./, ['4.2.5.1.1.5', '4.2.6.2.5']],
+    [/^aviator$|^aviator_blazer$/, /nameplate bottom to ribbons bottom/, /./, ['4.2.5.1.2.1-2', '4.2.6.2.6.2.2']],
+    [/^aviator$/, /nameplate to badge/, /./, ['4.2.5.1.3.2', '4.2.6.2.7.2']],
+    [/^aviator$|^aviator_blazer$/, /pocket to badge|ribbons to badge|badge to badge/, /./, ['4.2.5.1.3.1', '4.2.6.2.7.1']],
+    [/^aviator_blazer$/, /nameplate to chaplain badge/, /./, ['4.2.3.1.1.3', '4.2.4.1.1.3']],
+    [/^aviator_blazer$/, /nameplate top to pocket top/, /./, ['4.2.3.1.1.2', '4.2.4.1.1.2']],
+    [/^semi_formal$/, /crest to medals/, /./, '4.2.2.4'],
+    [/^semi_formal$/, /medals to chaplain badge/, /./, ['4.2.1.5', '4.2.2.5']],
+    [/^polo$/, /name to/, /./, '5.3.2.1.1']
+  ];
+  // How a paragraph is quoted on a callout: a CAPR 39-1 paragraph by its number, another document (an ICL) by the name it already carries.
+  const refText = ref => (/^\d/.test(ref) ? 'CAPR 39-1, ' : '') + ref;
+  // The paragraph(s) a measure carries out: its own (`opts.ref`) or the row above that names its uniform, caption and label. '' for a measure no row names.
+  function refFor(scene, m){
+    const o = m.opts || {};
+    if(o.ref) return o.ref;
+    if(m.ref) return m.ref;
+    const uniform = scene.uniform || '', women = scene.gender === 'female';
+    const caption = (o.caption != null ? o.caption : (o.callout && o.callout.caption)) || '';
+    for(const [u, c, l, ref] of REFS){
+      if(!u.test(uniform) || !c.test(caption) || !l.test(m.label || '')) continue;
+      return typeof ref === 'string' ? ref : Array.isArray(ref) ? ref[women ? 1 : 0] : (ref[uniform] || '');
+    }
+    return '';
+  }
+
+  // ---- the list of what the overlay draws: for the member's show/hide panel and the Regulation tab ----
+  //
+  // One entry per distinct measure, named by the caption the pill carries and its value ("Collar bottom to grade", 1 in); two callouts that read the same (the
+  // blue border on both badges, the insignia on each shoulder seam) are one entry that hides or shows both. The id is the caption with the value, so a choice
+  // made on one build still holds on another that draws the same distance; it is never shown.
+  const AREAS = ['Collar', 'Shoulders', 'Chest', 'Pockets', 'Sleeves', 'Badges', 'Headgear', 'Belt', 'Other'];
+  const AREA_RULES = [
+    ['Headgear', /\b(cap|visor|beret|hat|boonie)\b/], ['Collar', /collar/], ['Sleeves', /sleeve|chevron|braid|cuff/], ['Pockets', /pocket/],
+    ['Chest', /medals|ribbons|nameplate|crest|button|name to|grade square|chaplain/], ['Shoulders', /shoulder|epaulet|on the seam/],
+    ['Badges', /badge|embroidery|blue/], ['Belt', /belt|buckle/]
+  ];
+  const areaOf = caption => { const c = String(caption || '').toLowerCase(); for(const [a, re] of AREA_RULES) if(re.test(c)) return a; return 'Other'; };
+  // The caption a measure's pill (or its magnified callout) carries.
+  function captionOf(scene, m){
+    const o = m.opts || {};
+    return String(o.caption != null ? o.caption : (o.callout && o.callout.caption) || captionFor(scene, m) || '').trim();
+  }
+  // The caption as a list item: a callout's "of blue around the embroidery" starts mid-sentence, so its lead word goes; the first letter is capital.
+  const american = s => String(s).replace(/\bcentre\b/g, 'center').replace(/\bcentred\b/g, 'centered');
+  const nameOf = caption => { const c = american(String(caption || '').replace(/^(of|from the|from)\s+/i, '').trim() || 'Other distance'); return c[0].toUpperCase() + c.slice(1); };
+  // A value as a member reads it ("Centered", "Even with", "1½ in"): the first letter capital, the spelling American; its id keeps the engine's word.
+  const valueOf = label => { const v = american(String(label)); return v ? v[0].toUpperCase() + v.slice(1) : v; };
+  // The caption on a pill: as the list names the distance.
+  const pillCaption = caption => (String(caption || '').trim() ? nameOf(caption) : '');
+  const idOf = (caption, label) => (String(caption).toLowerCase() + '|' + String(label)).replace(/\s+/g, ' ');
+  // The ids of the distinct measures the scene carries, in the order they are drawn, as { id, name, value, area, ref, keys, count }; `groups` them by area in AREAS' order.
+  function catalogue(scene){
+    const byId = new Map();
+    for(const m of scene.layers){
+      if(m.type !== 'measure' || len(sub(m.to, m.from)) < 1e-6) continue;
+      const cap = captionOf(scene, m), id = idOf(cap, m.label);
+      let e = byId.get(id);
+      if(!e){ e = { id, name: nameOf(cap), value: valueOf(m.label), area: areaOf(cap), ref: m.ref || refFor(scene, m) || '', keys: [], count: 0 }; byId.set(id, e); }
+      e.keys.push(m.key); e.count++;
+    }
+    const entries = [...byId.values()];
+    const groups = AREAS.map(area => ({ area, entries: entries.filter(e => e.area === area) })).filter(g => g.entries.length);
+    return { entries, groups };
+  }
+  // The scene as the overlay should draw it: the measures whose id is in `hidden` left out (the rest are laid out over the room they free), and, unless `refs`,
+  // the paragraph taken off every callout.
+  function filterScene(scene, opts){
+    const o = opts || {}, hidden = new Set(o.hidden || []);
+    if(!hidden.size && o.refs) return scene;
+    const layers = [];
+    for(const l of scene.layers){
+      if(l.type !== 'measure'){ layers.push(l); continue; }
+      if(hidden.has(idOf(captionOf(scene, l), l.label))) continue;
+      layers.push(o.refs || !l.ref ? l : Object.assign({}, l, { ref: '' }));
+    }
+    return Object.assign({}, scene, { layers });
+  }
+  // A paragraph string as the Regulation tab quotes it: the CAPR 39-1 part and the ICL part, if the engine cites one ("7.1.1.8, ICL 25-02 6.2.11.1").
+  function refParts(ref){
+    const s = String(ref || ''), i = s.search(/(^|,\s*)ICL\s/);
+    if(i < 0) return { capr: s, icl: '' };
+    return { capr: s.slice(0, i).replace(/[,\s]+$/, ''), icl: s.slice(i).replace(/^,\s*/, '') };
+  }
+
+  // Label width in ems for Arial Bold (close enough to size the pill around the text).
+  const EM = { ' ': 0.278, i: 0.278, l: 0.278, j: 0.278, f: 0.333, t: 0.333, r: 0.389, m: 0.889, w: 0.778 };
+  function textWidth(text, size){
+    let w = 0;
+    for(const ch of String(text)){
+      if(/[0-9]/.test(ch)) w += 0.556;
+      else if(/[¼-¾⅛-⅞]/.test(ch)) w += 0.834;
+      else w += EM[ch] != null ? EM[ch] : 0.6;
+    }
+    return w * size;
+  }
+
+  // ---- where the cloth is: the footprint of each garment sheet ----
+  //
+  // The magnified callouts (and their captions) are set outside the garment: above the figure or beside it, never over the cloth, the hats or the
+  // flat sleeves (Ethan: "all magnifying glasses throughout the board shouldn't overlap with the uniform or hat, should be above or to the side";
+  // the leader line may cross cloth). The sheet's footprint is the cloth it draws (the figure, the flat sleeves beside it, the tapes), as horizontal
+  // bands 0.5 in high from the sheet's top, each a list of [start, end] cell pairs in 0.1 in cells from the sheet's left, grown by one cell; the cap
+  // views the engine hides and re-places are not in it (they are layers of their own). Generated by scripts/measure-garment-footprint.cjs and checked
+  // against the SVGs by tests/measure-layout.test.cjs.
+  // GARMENT_FOOTPRINT begin
+  const GARMENT_FOOTPRINT = {
+    'garment-abu-coat': [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[182,211],[165,228],[160,233],[10,60,155,238,333,383],[5,65,150,243,328,388],[5,65,138,254,328,388],[5,65,117,276,328,388],[4,66,106,287,327,389],[4,66,104,289,327,389],[4,66,102,291,327,389],[4,66,100,293,327,389],[4,66,98,295,327,389],[4,66,96,297,327,389],[4,66,94,299,327,389],[4,66,92,301,327,389],[3,67,90,303,326,390],[3,67,88,305,326,390],[3,67,87,306,326,390],[3,67,85,308,326,390],[3,67,84,310,326,390],[3,67,82,311,326,390],[3,67,81,312,326,390],[3,67,80,314,326,390],[3,67,78,315,326,390],[3,67,77,316,326,390],[3,67,76,317,326,390],[4,66,76,318,327,389],[4,66,75,318,327,389],[4,66,74,319,327,389],[5,65,74,319,328,388],[5,65,73,319,328,388],[5,65,73,320,328,388],[6,64,73,320,329,387],[6,64,73,320,329,387],[6,64,73,320,329,387],[6,64,73,320,329,387],[6,64,73,320,329,387],[7,63,73,320,330,386],[7,63,73,320,330,386],[7,63,73,320,330,386],[7,63,73,320,330,386],[8,62,74,319,331,385],[8,62,74,319,331,385],[8,62,74,319,331,385],[8,62,74,319,331,385],[8,62,75,318,331,385],[9,61,75,318,332,384],[9,61,75,318,332,384],[9,61,76,317,332,384],[9,61,76,317,332,384],[10,60,77,316,333,383],[10,60,78,315,333,383],[10,60,78,315,333,383],[10,60,78,315,333,383],[10,60,78,315,333,383],[11,59,79,314,334,382],[11,59,79,314,334,382],[11,59,78,315,334,382],[11,59,78,315,334,382],[78,315],[78,315],[78,315],[78,123,186,207,270,315]],
+    'garment-aviator-shirt-female': [[95,154],[90,160],[85,166],[79,172],[61,187],[42,206],[28,222],[25,228],[23,230],[21,232],[19,234],[18,235],[16,237],[15,238],[13,240],[12,241],[11,242],[10,243],[8,245],[7,245],[7,246],[6,247],[5,248],[4,249],[3,250],[3,250],[3,251],[2,251],[2,251],[1,252],[1,252],[1,252],[1,252],[1,252],[1,252],[1,252],[49,205,220,252],[50,204],[50,203],[51,202],[52,200],[53,200],[53,199],[53,199],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254]],
+    'garment-aviator-shirt-female-long': [[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254],[0,254]],
+    'garment-aviator-shirt-male': [[106,169],[101,173],[96,178],[86,188],[73,202],[59,216],[45,229],[36,239],[31,243],[27,247],[24,251],[21,254],[18,257],[15,260],[12,263],[10,264],[9,265],[8,267],[7,268],[5,269],[5,270],[4,270],[3,271],[3,272],[2,272],[2,273],[2,273],[2,273],[2,273],[1,273],[1,273],[1,273],[59,215],[60,215],[60,214],[61,213],[62,213],[62,212],[63,212],[64,211],[64,211],[64,210],[64,210],[65,210],[65,210],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275],[0,275]],
+    'garment-aviator-shirt-male-long': [[99,161],[94,166],[89,171],[79,181],[66,195],[52,209],[38,222],[29,232],[26,235],[23,237],[21,239],[19,242],[17,244],[15,246],[12,248],[11,250],[10,251],[8,252],[7,254],[5,255],[5,256],[4,256],[3,257],[3,258],[2,258],[2,259],[2,259],[2,259],[2,259],[1,259],[1,259],[1,259],[1,259],[2,259],[2,259],[2,53,54,206,208,259],[2,52,55,206,208,259],[2,52,55,205,208,258],[2,52,56,205,209,258],[2,52,57,204,209,258],[2,51,57,204,209,258],[3,51,57,203,210,258],[3,51,57,203,210,258],[3,50,58,203,210,258],[3,50,58,203,211,257],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261],[0,261]],
+    'garment-blues-class-a-coat': [[121,137],[103,155],[98,160],[89,168],[74,184],[55,202],[36,221],[33,225],[31,227],[29,229],[27,231],[25,232],[23,234],[22,236],[20,238],[18,239],[17,241],[15,242],[14,244],[13,245],[12,246],[10,248],[9,249],[8,250],[7,251],[6,251],[6,252],[5,253],[4,253],[4,254],[3,255],[2,255],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[3,255],[3,255],[3,255],[4,254],[4,254],[5,253],[5,253],[6,252],[6,252],[7,251],[7,251],[8,250],[8,250],[9,249],[9,249],[10,40,47,211,214,248],[48,210],[48,210],[48,210],[48,209],[48,209],[]],
+    'garment-blues-class-a-coat-female': [[93,151],[88,156],[82,162],[62,181],[41,203],[33,211],[31,213],[29,215],[27,217],[25,219],[23,221],[22,222],[20,224],[18,226],[17,227],[15,229],[14,230],[13,232],[11,233],[10,234],[9,235],[8,236],[7,237],[6,238],[5,239],[4,239],[4,240],[3,241],[3,241],[2,241],[2,242],[2,242],[1,242],[1,243],[1,243],[1,243],[1,243],[1,243],[1,243],[2,242],[2,242],[2,242],[2,241],[3,241],[3,241],[3,241],[4,240],[4,240],[5,240],[5,239],[6,239],[6,238],[6,238],[7,237],[7,237],[8,236],[8,235],[9,235],[39,205]],
+    'garment-blues-class-b-blouse-female': [[96,155],[92,160],[87,165],[82,170],[62,190],[38,215],[27,225],[25,227],[23,229],[21,231],[19,233],[17,235],[15,237],[13,238],[12,240],[11,241],[9,243],[8,244],[7,245],[6,246],[5,247],[4,248],[3,249],[3,249],[2,250],[2,250],[1,250],[1,250],[1,250],[1,250],[1,250],[1,250],[1,250],[1,31,55,197,221,250],[57,195],[60,192],[62,190],[64,188],[65,187],[67,185],[68,184],[68,183],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252],[0,252]],
+    'garment-blues-class-b-blouse-female-long': [[93,152],[88,158],[82,163],[67,179],[50,195],[33,212],[26,219],[23,222],[20,225],[18,228],[15,230],[14,232],[12,233],[11,235],[9,237],[8,238],[6,239],[6,239],[5,240],[4,241],[4,241],[3,242],[3,242],[3,242],[2,243],[2,243],[2,244],[1,244],[1,244],[2,243],[2,243],[3,243],[3,242],[3,242],[3,242],[4,242],[4,241],[4,241],[4,241],[5,240],[5,240],[5,240],[6,240],[6,239],[6,239],[7,239],[7,238],[7,238],[8,238],[8,238],[8,237],[9,237],[9,237],[9,236],[10,236],[10,42,44,201,203,235],[12,42,44,202,203,233],[13,42,43,202,203,232],[13,41,42,232],[41,204],[41,205],[40,205],[40,206],[39,206],[39,206],[39,206],[39,206],[39,206],[39,206],[40,205],[41,205],[41,204],[41,204]],
+    'garment-blues-class-b-shirt-male': [[103,166],[98,171],[93,176],[83,186],[70,199],[57,212],[44,225],[34,235],[30,239],[27,242],[23,245],[20,249],[16,252],[13,256],[11,258],[10,259],[8,261],[7,262],[6,263],[5,264],[4,265],[3,266],[2,266],[2,267],[1,267],[1,268],[1,268],[1,267],[1,267],[1,267],[1,267],[1,267],[57,212],[58,211],[58,210],[59,210],[59,209],[60,208],[61,208],[61,207],[62,207],[62,207],[62,206],[62,206],[63,206],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269],[0,269]],
+    'garment-blues-class-b-shirt-male-long': [[98,161],[93,166],[88,171],[75,184],[60,198],[46,213],[31,227],[22,237],[18,241],[15,244],[13,246],[11,248],[9,249],[8,251],[7,252],[6,253],[5,254],[4,255],[3,255],[3,256],[2,256],[2,257],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,258],[1,257],[2,257],[2,257],[2,256],[3,256],[3,255],[3,255],[4,255],[5,254],[5,253],[6,253],[7,252],[7,251],[8,251],[8,250],[9,249],[10,248],[11,247],[12,246],[13,245],[14,244],[15,244],[15,243],[16,243],[16,31,41,218,228,242],[40,218],[40,218]],
+    'garment-cfdu-flight-suit': [[],[],[],[],[],[14,70,196,281,407,462],[7,77,189,287,400,469],[7,77,184,293,400,469],[7,77,170,307,400,469],[7,77,153,324,400,469],[7,77,136,341,400,469],[7,77,124,353,400,469],[7,77,116,360,400,469],[7,77,112,365,400,469],[7,77,109,368,400,469],[7,77,106,371,400,469],[7,77,105,372,400,469],[7,77,104,373,400,469],[7,77,102,374,400,469],[7,77,101,376,400,469],[7,77,100,377,400,469],[7,77,99,378,400,469],[7,77,97,379,400,469],[8,77,96,381,400,469],[8,77,95,382,400,469],[8,77,94,382,400,469],[8,77,94,383,400,469],[8,76,93,384,401,469],[9,76,92,385,401,468],[9,76,91,385,401,468],[9,76,91,386,401,468],[9,76,90,386,401,468],[9,75,90,387,402,468],[10,75,90,387,402,467],[10,75,89,388,402,467],[10,75,89,388,402,467],[10,75,89,388,402,467],[10,74,88,389,403,467],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,73,88,389,403,466],[11,73,88,389,404,466],[12,73,88,151,152,325,326,389,404,465],[12,73,88,151,154,323,326,389,404,465],[12,73,88,151,155,322,326,389,404,465],[12,73,88,151,157,320,326,389,404,465],[12,73,88,151,158,319,326,388,404,465],[12,72,89,151,158,319,326,388,405,465],[13,72,89,151,156,320,326,388,405,464],[13,72,89,151,155,322,326,388,405,464],[13,72,89,151,154,323,326,388,405,464],[13,72,89,151,152,325,326,388,405,464],[13,72,89,388,405,464],[13,71,90,387,406,464],[14,71,90,387,406,463],[14,71,90,387,406,463],[14,71,91,386,406,463],[14,71,91,386,406,463],[14,71,92,385,406,463],[14,70,92,385,407,463],[14,70,93,384,407,462],[15,70,93,384,407,462],[15,70,93,384,407,462],[15,70,94,383,407,462],[15,70,94,383,407,462],[15,69,94,383,407,462],[15,69,95,382,408,462],[15,69,96,381,408,461],[16,69,96,381,408,461],[16,69,97,380,408,461],[16,69,98,379,408,461],[16,69,99,378,408,461],[16,69,99,378,408,461],[16,69,100,377,408,461],[16,69,100,377,408,461],[16,69,100,376,408,461],[131,346],[132,345],[132,345],[],[]],
+    'garment-cfu-coat': [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[194,199],[167,226],[162,231],[18,52,157,236,341,375],[5,65,152,241,328,388],[5,65,147,246,328,388],[5,65,125,267,328,388],[5,65,107,286,328,388],[4,66,105,288,327,389],[4,66,103,290,327,389],[4,66,101,292,327,389],[4,66,99,294,327,389],[4,66,97,296,327,389],[4,66,95,298,327,389],[4,66,93,300,327,389],[3,67,91,302,326,390],[3,67,89,304,326,390],[3,67,87,306,326,390],[3,67,86,307,326,390],[3,67,84,309,326,390],[3,67,83,310,326,390],[3,67,82,312,326,390],[3,67,80,313,326,390],[3,67,79,314,326,390],[3,67,78,316,326,390],[3,67,76,317,326,390],[3,67,76,317,326,390],[4,66,75,318,327,389],[4,66,75,319,327,389],[4,66,74,319,327,389],[5,65,73,319,328,388],[5,65,73,320,328,388],[5,65,73,320,328,388],[6,64,73,320,329,387],[6,64,73,320,329,387],[6,64,73,320,329,387],[6,64,73,320,329,387],[7,63,73,320,330,386],[7,63,73,320,330,386],[7,63,73,320,330,386],[7,63,73,320,330,386],[7,63,74,319,330,386],[8,62,74,319,331,385],[8,62,74,319,331,385],[8,62,74,319,331,385],[8,62,75,318,331,385],[9,61,75,318,332,384],[9,61,75,318,332,384],[9,61,76,317,332,384],[9,61,76,317,332,384],[10,60,77,316,333,383],[10,60,78,315,333,383],[10,60,78,315,333,383],[10,60,78,315,333,383],[10,60,78,315,333,383],[11,59,78,315,334,382],[11,59,79,314,334,382],[11,59,78,315,334,382],[11,59,78,315,334,382],[11,59,78,315,334,382],[78,315],[78,315],[78,123,186,207,270,315],[78,123,270,315]],
+    'garment-corporate-service-dress-blazer-female': [[104,161],[103,162],[97,168],[80,186],[58,207],[43,223],[30,236],[27,238],[23,242],[22,244],[21,245],[20,245],[19,247],[17,248],[16,249],[15,251],[13,252],[12,253],[11,254],[10,255],[9,256],[8,257],[8,258],[7,258],[6,259],[6,259],[5,260],[5,260],[5,261],[4,261],[4,261],[4,261],[4,261],[3,262],[3,262],[3,262],[3,262],[3,263],[2,263],[2,263],[2,264],[1,42,43,222,223,264],[1,41,43,222,224,264],[1,40,43,222,225,264],[1,40,43,222,225,264],[1,39,43,222,226,264],[1,39,43,222,227,264],[1,38,43,222,227,264],[1,38,43,222,227,264],[5,37,43,222,228,260],[26,36,43,222,229,239],[43,222],[43,222],[43,222],[43,222],[43,222],[43,222],[42,223],[42,224],[41,224],[40,225],[40,225],[39,226],[39,227],[38,227],[37,228],[37,228],[36,229],[36,230],[35,230],[34,231],[34,231],[34,231]],
+    'garment-corporate-service-dress-blazer-male': [[100,161],[99,163],[95,167],[91,170],[79,183],[50,211],[36,226],[27,234],[24,237],[22,239],[20,241],[18,244],[16,246],[14,248],[12,250],[10,251],[9,253],[7,254],[6,255],[5,257],[4,258],[4,258],[3,259],[2,259],[2,260],[1,260],[1,260],[1,260],[1,261],[1,261],[1,261],[1,261],[2,260],[2,260],[3,259],[3,259],[3,259],[4,258],[4,258],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[4,257],[5,257],[5,257],[5,257],[5,257],[6,256],[6,256],[6,38,43,219,224,256],[44,218],[44,218],[44,218],[44,218],[44,218],[49,213],[50,212],[50,211],[51,211],[52,210],[52,209],[53,209],[54,208],[54,207]],
+    'garment-fdu-flight-suit': [[],[],[],[],[],[14,70,196,281,407,462],[7,77,189,287,400,469],[7,77,184,293,400,469],[7,77,170,307,400,469],[7,77,153,324,400,469],[7,77,136,341,400,469],[7,77,124,353,400,469],[7,77,116,360,400,469],[7,77,112,365,400,469],[7,77,109,368,400,469],[7,77,106,371,400,469],[7,77,105,372,400,469],[7,77,104,373,400,469],[7,77,102,374,400,469],[7,77,101,376,400,469],[7,77,100,377,400,469],[7,77,99,378,400,469],[7,77,97,379,400,469],[8,77,96,381,400,469],[8,77,95,382,400,469],[8,77,94,382,400,469],[8,77,94,383,400,469],[8,76,93,384,401,469],[9,76,92,385,401,468],[9,76,91,385,401,468],[9,76,91,386,401,468],[9,76,90,386,401,468],[9,75,90,387,402,468],[10,75,90,387,402,467],[10,75,89,388,402,467],[10,75,89,388,402,467],[10,75,89,388,402,467],[10,74,88,389,403,467],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,73,88,389,403,466],[11,73,88,389,404,466],[12,73,88,151,152,325,326,389,404,465],[12,73,88,151,154,323,326,389,404,465],[12,73,88,151,155,322,326,389,404,465],[12,73,88,151,157,320,326,389,404,465],[12,73,88,151,158,319,326,388,404,465],[12,72,89,151,158,319,326,388,405,465],[13,72,89,151,156,320,326,388,405,464],[13,72,89,151,155,322,326,388,405,464],[13,72,89,151,154,323,326,388,405,464],[13,72,89,151,152,325,326,388,405,464],[13,72,89,388,405,464],[13,71,90,387,406,464],[14,71,90,387,406,463],[14,71,90,387,406,463],[14,71,91,386,406,463],[14,71,91,386,406,463],[14,71,92,385,406,463],[14,70,92,385,407,463],[14,70,93,384,407,462],[15,70,93,384,407,462],[15,70,93,384,407,462],[15,70,94,383,407,462],[15,70,94,383,407,462],[15,69,94,383,407,462],[15,69,95,382,408,462],[15,69,96,381,408,461],[16,69,96,381,408,461],[16,69,97,380,408,461],[16,69,98,379,408,461],[16,69,99,378,408,461],[16,69,99,378,408,461],[16,69,100,377,408,461],[16,69,100,377,408,461],[16,69,100,376,408,461],[131,346],[132,345],[132,345],[],[]],
+    'garment-flight-jacket-blue': [[],[22,63,213,264,414,455],[7,77,207,270,400,469],[7,77,205,272,400,469],[7,77,201,276,400,469],[7,77,179,298,400,469],[7,77,149,328,400,469],[7,77,128,348,400,469],[7,77,119,358,400,469],[7,77,114,363,400,469],[7,77,110,367,400,469],[7,77,108,369,400,469],[7,77,106,371,400,469],[7,77,104,373,400,469],[7,77,103,374,400,469],[7,77,102,375,400,469],[7,77,101,376,400,469],[7,77,99,378,400,469],[7,77,98,379,400,469],[8,77,97,380,400,469],[8,77,96,381,400,469],[8,77,95,382,400,469],[8,77,94,383,400,469],[8,76,93,384,401,469],[9,76,92,384,401,468],[9,76,92,385,401,468],[9,76,91,386,401,468],[9,76,91,386,401,468],[9,75,90,387,401,468],[9,75,90,387,402,467],[10,75,89,387,402,467],[10,75,89,388,402,467],[10,75,89,388,402,467],[10,74,89,388,402,467],[10,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,73,88,389,404,466],[12,73,88,389,404,465],[12,73,88,389,404,465],[12,73,88,389,404,465],[12,73,88,389,404,465],[12,73,88,388,404,465],[12,72,89,388,405,465],[12,72,89,388,405,464],[13,72,89,388,405,464],[13,72,89,388,405,464],[13,72,89,388,405,464],[13,72,89,388,405,464],[13,71,89,387,405,464],[13,71,90,150,152,325,327,387,406,463],[14,71,90,150,153,324,327,387,406,463],[14,71,90,149,155,322,328,387,406,463],[14,71,91,149,328,386,406,463],[14,71,91,149,328,386,406,463],[14,70,92,148,329,385,406,463],[14,70,92,148,329,385,407,463],[15,70,93,147,330,384,407,462],[15,70,93,147,330,384,407,462],[15,70,94,147,330,383,407,462],[15,70,94,146,331,383,407,462],[15,70,94,146,331,383,407,462],[15,69,95,146,331,382,408,462],[15,69,95,145,332,382,408,462],[15,69,96,145,332,381,408,461],[16,69,97,144,333,380,408,461],[16,69,98,144,333,379,408,461],[16,69,98,144,333,379,408,461],[16,69,99,144,333,378,408,461],[16,69,99,144,333,378,408,461],[16,69,100,143,333,377,408,461],[16,69,100,143,334,377,408,461],[],[]],
+    'garment-flight-jacket-green': [[],[22,63,213,264,414,455],[7,77,207,270,400,469],[7,77,205,272,400,469],[7,77,201,276,400,469],[7,77,179,298,400,469],[7,77,149,328,400,469],[7,77,128,348,400,469],[7,77,119,358,400,469],[7,77,114,363,400,469],[7,77,110,367,400,469],[7,77,108,369,400,469],[7,77,106,371,400,469],[7,77,104,373,400,469],[7,77,103,374,400,469],[7,77,102,375,400,469],[7,77,101,376,400,469],[7,77,99,378,400,469],[7,77,98,379,400,469],[8,77,97,380,400,469],[8,77,96,381,400,469],[8,77,95,382,400,469],[8,77,94,383,400,469],[8,76,93,384,401,469],[9,76,92,384,401,468],[9,76,92,385,401,468],[9,76,91,386,401,468],[9,76,91,386,401,468],[9,75,90,387,401,468],[9,75,90,387,402,467],[10,75,89,387,402,467],[10,75,89,388,402,467],[10,75,89,388,402,467],[10,74,89,388,402,467],[10,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,74,88,389,403,466],[11,73,88,389,404,466],[12,73,88,389,404,465],[12,73,88,389,404,465],[12,73,88,389,404,465],[12,73,88,389,404,465],[12,73,88,388,404,465],[12,72,89,388,405,465],[12,72,89,388,405,464],[13,72,89,388,405,464],[13,72,89,388,405,464],[13,72,89,388,405,464],[13,72,89,388,405,464],[13,71,89,387,405,464],[13,71,90,150,152,325,327,387,406,463],[14,71,90,150,153,324,327,387,406,463],[14,71,90,149,155,322,328,387,406,463],[14,71,91,149,328,386,406,463],[14,71,91,149,328,386,406,463],[14,70,92,148,329,385,406,463],[14,70,92,148,329,385,407,463],[15,70,93,147,330,384,407,462],[15,70,93,147,330,384,407,462],[15,70,94,147,330,383,407,462],[15,70,94,146,331,383,407,462],[15,70,94,146,331,383,407,462],[15,69,95,146,331,382,408,462],[15,69,95,145,332,382,408,462],[15,69,96,145,332,381,408,461],[16,69,97,144,333,380,408,461],[16,69,98,144,333,379,408,461],[16,69,98,144,333,379,408,461],[16,69,99,144,333,378,408,461],[16,69,99,144,333,378,408,461],[16,69,100,143,333,377,408,461],[16,69,100,143,334,377,408,461],[],[]],
+    'garment-mess-dress-female': [[100,162],[96,166],[91,170],[87,175],[63,200],[34,228],[26,236],[24,238],[22,240],[20,242],[18,244],[16,247],[14,248],[12,250],[11,252],[9,253],[8,254],[7,255],[6,256],[5,257],[5,258],[4,258],[4,259],[3,259],[3,260],[2,260],[2,260],[2,260],[2,261],[2,261],[3,261],[3,260],[3,260],[3,260],[3,259],[4,259],[4,259],[4,258],[4,258],[4,258],[5,258],[5,257],[5,257],[5,257],[5,257],[5,257],[5,119,143,257],[5,119,143,257],[5,119,143,257],[5,119,143,256],[5,119,143,256],[6,57,59,119,143,256],[6,56,60,119,143,256],[6,55,62,119,143,256],[6,54,199,257],[6,53,209,257],[5,52,210,257],[5,51,211,257],[5,50,212,257],[5,49,213,257],[5,48,214,257],[5,47,215,257],[5,46,216,257],[5,45,217,257],[5,44,218,257],[6,14,249,256],[]],
+    'garment-mess-dress-male': [[107,120,165,174,175,178],[101,125,160,184],[96,129,156,190],[84,134,151,202],[74,211],[60,225],[47,238],[34,251],[31,254],[29,256],[27,259],[24,261],[22,263],[20,266],[17,268],[15,270],[13,272],[10,274],[9,276],[8,277],[7,278],[6,279],[5,280],[5,281],[4,281],[3,282],[3,282],[2,283],[2,284],[2,284],[2,283],[2,283],[3,282],[3,282],[4,59,61,224,226,281],[5,59,61,224,227,281],[5,58,62,223,227,280],[6,57,63,223,228,280],[6,57,63,222,228,279],[7,56,63,222,229,279],[7,56,64,222,229,278],[8,56,64,221,230,277],[8,56,64,221,230,277],[9,56,65,220,230,276],[9,56,65,220,230,276],[10,56,66,220,230,275],[10,56,66,219,230,275],[11,56,66,219,230,274],[12,56,67,218,229,274],[12,56,69,216,229,273],[13,56,70,215,229,273],[13,57,70,215,229,272],[13,57,70,215,228,272],[14,57,71,215,228,272],[14,57,71,214,228,271],[14,58,71,214,228,271],[14,58,72,214,228,271],[14,58,72,213,227,271],[14,58,72,213,227,271],[15,58,72,213,227,271],[15,58,73,213,227,270],[15,58,73,212,227,270],[15,57,73,212,228,270],[74,212],[74,211],[74,211],[74,211],[]],
+    'garment-ocp-coat-abu-cut': [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[206,217],[190,233],[180,243],[11,59,176,247,364,412],[5,65,172,251,358,418],[5,65,158,265,358,418],[5,65,145,277,358,418],[5,65,134,288,357,418],[4,66,123,300,357,419],[4,66,111,311,357,419],[4,66,102,321,357,419],[4,66,100,323,357,419],[4,66,97,326,357,419],[4,66,93,330,357,419],[4,66,90,333,357,419],[3,67,89,334,356,420],[3,67,87,336,356,420],[3,67,85,338,356,420],[3,67,84,339,356,420],[3,67,83,340,356,420],[3,67,82,342,356,420],[3,67,80,343,356,420],[3,67,79,344,356,420],[3,67,78,346,356,420],[3,67,77,346,356,420],[3,67,76,347,356,420],[4,66,75,348,356,419],[4,66,75,348,357,419],[4,66,74,349,357,419],[5,65,74,349,357,418],[5,65,73,349,358,418],[5,65,73,350,358,418],[5,65,73,350,358,417],[6,64,73,350,359,417],[6,64,73,350,359,417],[6,64,73,350,359,417],[6,64,73,350,359,417],[7,63,73,350,360,416],[7,63,73,350,360,416],[7,63,73,350,360,416],[7,63,73,350,360,416],[8,62,73,350,361,415],[8,62,73,350,361,415],[8,62,74,349,361,415],[8,62,74,349,361,415],[8,62,75,348,361,415],[9,61,75,348,362,414],[9,61,75,348,362,414],[9,61,75,348,362,414],[9,61,76,347,362,414],[10,60,77,346,363,413],[10,60,77,346,363,413],[10,60,77,346,363,413],[10,60,77,346,363,413],[10,60,78,345,363,412],[11,59,78,345,364,412],[11,59,79,344,364,412],[11,59,78,345,364,412],[11,59,78,345,364,412],[78,345],[78,345],[78,345],[78,123,200,222,300,345]],
+    'garment-overblouse-female': [[110,119,155,164],[105,123,151,169],[92,127,147,181],[72,132,142,202],[64,209],[59,215],[54,220],[50,223],[47,227],[44,230],[40,234],[37,237],[33,240],[30,244],[27,247],[23,250],[20,254],[17,257],[13,260],[10,264],[6,267],[2,272],[0,274],[3,271],[8,265],[14,259],[20,254],[25,72,76,197,202,248],[32,67,77,197,206,242],[42,62,77,197,211,232],[77,197],[76,197],[76,198],[75,199],[75,199],[74,200],[74,200],[73,201],[72,201],[72,202],[71,202],[71,203],[70,203],[70,204],[69,204],[69,204],[69,204],[70,204],[71,203],[76,198],[75,198],[75,199],[74,200],[73,200],[73,201],[72,202],[71,203],[70,203],[70,204]],
+    'garment-polo-female': [[80,136],[77,139],[74,142],[60,156],[43,173],[26,190],[18,198],[16,200],[15,201],[14,202],[13,203],[12,204],[11,205],[10,206],[9,207],[8,208],[7,209],[6,210],[6,210],[5,211],[4,212],[3,213],[2,214],[2,214],[1,215],[1,215],[8,208],[18,198],[36,180],[44,172],[46,170],[47,169],[48,168],[49,167],[49,167],[48,168],[47,169],[46,170],[45,171],[44,172],[44,172],[43,173],[42,174],[42,174],[41,175],[40,176],[40,176],[39,177],[39,177],[38,178],[38,178],[37,179],[37,179],[37,179],[36,180],[36,180],[36,180],[36,180],[35,181],[35,181],[34,182],[33,183],[33,183],[32,184],[31,185],[31,185]],
+    'garment-polo-female-long': [[83,139],[80,142],[77,146],[63,159],[47,176],[29,193],[22,201],[20,203],[18,204],[17,205],[16,207],[15,208],[14,209],[13,210],[12,211],[11,211],[10,212],[10,213],[9,214],[8,214],[7,215],[7,216],[6,217],[5,218],[4,218],[4,219],[3,219],[3,220],[3,220],[2,175,176,220],[2,46,49,173,177,221],[2,45,50,172,178,221],[1,44,51,171,179,221],[1,43,52,170,180,221],[1,42,52,171,180,221],[1,42,51,171,181,221],[1,41,51,172,182,221],[1,41,49,173,182,221],[2,40,49,174,182,221],[2,40,48,175,183,221],[2,40,47,176,183,221],[2,39,46,176,183,220],[3,39,46,177,183,220],[3,39,45,178,184,220],[3,39,44,178,184,220],[3,38,44,179,184,219],[4,38,43,179,184,219],[4,38,43,180,185,219],[4,38,42,181,185,219],[4,37,42,181,185,219],[4,37,41,182,185,218],[4,37,41,182,186,218],[5,37,40,182,186,218],[5,37,40,183,186,218],[5,36,40,183,186,217],[6,36,39,183,187,216],[7,36,39,183,187,216],[8,36,39,183,187,215],[9,35,39,184,187,214],[38,185],[37,185],[37,186],[36,187],[35,187],[35,188],[34,188]],
+    'garment-polo-male': [[99,158],[95,161],[93,164],[83,174],[70,187],[59,198],[48,209],[40,217],[34,223],[31,226],[28,229],[26,231],[24,233],[21,236],[19,238],[17,240],[15,242],[14,243],[12,245],[11,246],[9,248],[7,250],[6,251],[4,253],[2,255],[1,256],[3,254],[11,246],[25,232],[50,207],[51,206],[52,205],[52,204],[53,204],[54,203],[54,203],[55,202],[55,202],[56,201],[56,201],[56,200],[57,200],[57,200],[57,200],[57,200],[56,201],[55,202],[54,203],[53,204],[52,205],[51,206],[50,207],[50,207],[49,208],[48,209],[48,209],[47,210],[46,211],[46,211]],
+    'garment-polo-male-long': [[99,158],[95,161],[93,164],[83,174],[70,187],[59,198],[48,209],[40,217],[34,223],[31,226],[28,229],[26,231],[24,233],[21,236],[19,238],[17,240],[15,242],[14,243],[12,245],[11,246],[9,248],[7,250],[6,251],[4,253],[3,254],[2,255],[2,255],[2,255],[2,255],[2,255],[2,255],[2,50,52,205,207,254],[3,50,52,204,207,254],[3,49,53,204,208,254],[3,49,54,203,208,254],[4,49,54,203,208,253],[4,49,55,202,208,253],[4,48,55,202,208,253],[4,48,56,201,208,252],[5,48,56,201,208,252],[5,48,56,200,208,252],[6,48,57,200,208,251],[6,48,57,200,208,251],[7,48,57,200,208,250],[7,48,57,200,208,250],[8,48,56,201,208,249],[8,48,55,202,208,249],[9,48,54,203,208,248],[9,48,53,204,208,248],[10,48,52,205,208,247],[10,48,51,206,209,247],[11,48,50,207,209,246],[11,48,50,207,209,246],[12,48,49,208,209,245],[13,47,48,209,210,244],[14,47,48,209,210,243],[15,46,47,210,211,242],[16,241],[17,45,46,211,212,240],[17,240],[18,239],[19,43,44,238],[19,238],[20,34,42,215,223,237],[42,215],[41,215]],
+    'garment-semiformal-class-a-coat-female': [[93,151],[88,156],[82,162],[62,181],[41,203],[33,211],[31,213],[29,215],[27,217],[25,219],[23,221],[22,222],[20,224],[18,226],[17,227],[15,229],[14,230],[13,232],[11,233],[10,234],[9,235],[8,236],[7,237],[6,238],[5,239],[4,239],[4,240],[3,241],[3,241],[2,241],[2,242],[2,242],[1,242],[1,243],[1,243],[1,243],[1,243],[1,243],[1,243],[2,242],[2,242],[2,242],[2,241],[3,241],[3,241],[3,241],[4,240],[4,240],[5,240],[5,239],[6,239],[6,238],[6,238],[7,237],[7,237],[8,236],[8,235],[9,235],[39,205]],
+    'garment-semiformal-class-a-coat-male': [[121,137],[103,155],[98,160],[89,168],[74,184],[55,202],[36,221],[33,225],[31,227],[29,229],[27,231],[25,232],[23,234],[22,236],[20,238],[18,239],[17,241],[15,242],[14,244],[13,245],[12,246],[10,248],[9,249],[8,250],[7,251],[6,251],[6,252],[5,253],[4,253],[4,254],[3,255],[2,255],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[2,256],[3,255],[3,255],[3,255],[4,254],[4,254],[5,253],[5,253],[6,252],[6,252],[7,251],[7,251],[8,250],[8,250],[9,249],[9,249],[10,40,47,211,214,248],[48,210],[48,210],[48,210],[48,209],[48,209],[]]
+  };
+  // GARMENT_FOOTPRINT end
+  const FOOT = { cell: 0.1, band: 0.5 };
+
+  // The cloth of every garment sheet in the scene as boxes in scene inches (a band's covered intervals, merged where two bands are alike).
+  function clothBoxes(scene){
+    const out = [];
+    for(const l of scene.layers){
+      if(l.type !== 'asset' || l.role !== 'garment') continue;
+      const bands = GARMENT_FOOTPRINT[l.id];
+      if(!bands) continue;
+      let open = new Map();
+      bands.forEach((spans, b) => {
+        const next = new Map();
+        for(let i = 0; i + 1 < spans.length; i += 2){
+          const key = spans[i] + ':' + spans[i + 1], box = open.get(key);
+          if(box){ box.h += FOOT.band; next.set(key, box); }
+          else {
+            const nb = { x: l.x + spans[i] * FOOT.cell, y: l.y + b * FOOT.band, w: (spans[i + 1] - spans[i]) * FOOT.cell, h: FOOT.band };
+            out.push(nb); next.set(key, nb);
+          }
+        }
+        open = next;
+      });
+    }
+    return out;
+  }
+
+  // ---- magnified callouts for small distances ----
+  //
+  // A distance of 1/8 in is a 2 to 5 px tick on the stage: it shows neither what it spans nor that it spans anything.
+  // A measure that carries `opts.callout` is drawn as a magnified inset instead: a circle beside the piece that shows
+  // the measured corner `mag` times larger, with the band highlighted and a proper dimension line across it, and a
+  // leader line from the circle to the corner. The same band is outlined on the piece itself.
+  //   opts.callout = { layer: key, border: inches, caption }   a cloth border (the blue backing past the embroidery): the
+  //                                                            band between the piece's cut edge and its embroidery edge,
+  //                                                            read from the piece's own frame (border inches in from the
+  //                                                            top-left corner of the placed layer `key`)
+  //   opts.callout = { gap: true, caption }                    a bare gap between two edges (the measure's own two ends)
+  //   opts.callout = { gap: true, span: true, caption, marks } the same for a longer distance (the 1/2 in from the CAP tape to a badge's
+  //                                                            embroidery): a larger circle and a magnification that lets the whole span show
+  //                                                            (up to `mag`, never less than spanMinMag); `marks` are further edges inside
+  //                                                            the span, as inches from the measure's first end toward the second (the
+  //                                                            badge's blue backing), drawn across the inset
+  // Sizes in preview pixels like the rest of the overlay.
+  const CO = { diameter: 84, spanDiameter: 120, spanFill: 0.6, spanMinMag: 1.5, mag: 4, rim: 2.2, gapOut: 9, over: 4, minLen: 0.5, leaderDot: 1.8, captionFont: 9, edgeLen: 0.5, search: [10, 18, 28, 40, 54, 70, 90, 115, 145, 180, 220, 265, 315, 370, 430, 500, 580, 680] };
+
+  // The frame of a placed layer: its top-left corner in the scene, and the scene directions of its own x (ex) and y (ey) axes
+  // (a piece turned or mirrored on the garment keeps its band where the piece's own edge is).
+  function pieceFrame(scene, key, near){
+    const cands = scene.layers.filter(l => l.type === 'asset' && l.key === key);
+    if(!cands.length) return null;
+    const centre = l => ({ x: l.x + l.w / 2, y: l.y + l.h / 2 });
+    const layer = cands.reduce((a, l) => (len(sub(centre(l), near)) < len(sub(centre(a), near)) ? l : a));
+    const o = layer.origin || { x: layer.x, y: layer.y }, deg = layer.rotate || 0, cx = layer.x + layer.w / 2;
+    const toScene = (x, y) => core.rotatePoint({ x: layer.flipX ? 2 * cx - x : x, y }, o, deg);
+    const p0 = toScene(layer.x, layer.y);
+    return { O: p0, ex: unit(sub(toScene(layer.x + 1, layer.y), p0)), ey: unit(sub(toScene(layer.x, layer.y + 1), p0)), w: layer.w, h: layer.h };
+  }
+
+  // Separating-axis test for two convex polygons.
+  function polysOverlap(A, B){
+    for(const poly of [A, B]){
+      for(let i = 0; i < poly.length; i++){
+        const e = sub(poly[(i + 1) % poly.length], poly[i]);
+        const ax = unit({ x: -e.y, y: e.x });
+        const pa = A.map(p => dot(p, ax)), pb = B.map(p => dot(p, ax));
+        if(Math.max(...pa) <= Math.min(...pb) + 1e-9 || Math.max(...pb) <= Math.min(...pa) + 1e-9) return false;
+      }
+    }
+    return true;
+  }
+  const rectPoly = r => [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }];
+
+  // How the band is shown inside the circle, relative to the circle's centre and measured in inches of the magnified view:
+  // the highlighted band, the dimension line across it with its extension lines and bars, and the label beside it. Tried
+  // with the band's corner at several offsets from the centre (the label needs room on the cloth side of the corner) and with
+  // the dimension on either of the corner's two edges; the first that keeps everything inside the circle and the label off the
+  // piece wins.
+  function insetArrangement(frame, b, lw, lh, P, M, r){
+    const mb = M * b, ex = frame.ex, ey = frame.ey;
+    const off = CO.gapOut * P, over = PX.extOver * P, gap = PX.extGap * P, bar = PX.bar * P;
+    const labelExt = v => Math.abs(v.x) * lw + Math.abs(v.y) * lh;
+    const inCircle = (p, m) => len(p) <= r - m;
+    let best = null;
+    for(const [along, across, penalty] of [[ex, ey, 0], [ey, ex, 3]]){
+      // `along`: the edge the dimension is offset from (away from the piece); `across`: the direction the band is measured in.
+      const out = mul(along, -1);
+      for(let gx = -0.45; gx <= 0.451; gx += 0.05) for(let gy = -0.45; gy <= 0.451; gy += 0.05){
+        const K = { x: gx * 2 * r, y: gy * 2 * r };
+        if(len(K) > 0.62 * 2 * r) continue;
+        // The piece's corner is the centre of the arrangement: its two edges run out from K along ex and ey.
+        const d0 = add(K, mul(out, off)), d1 = add(d0, mul(across, mb));
+        const midD = mul(add(d0, d1), 0.5);
+        const lc = add(midD, mul(out, bar / 2 + PX.labelGap * P + labelExt(out) / 2));
+        const label = { x: lc.x - lw / 2, y: lc.y - lh / 2, w: lw, h: lh };
+        const half = mul(along, bar / 2);
+        const ext = [[add(K, mul(out, gap)), add(d0, mul(out, over))], [add(add(K, mul(across, mb)), mul(out, gap)), add(d1, mul(out, over))]];
+        const pts = [d0, d1, ...ext.flat(), add(d0, half), sub(d0, half), add(d1, half), sub(d1, half), ...rectPoly(label)];
+        if(!pts.every(p => inCircle(p, 1.5 * P))) continue;
+        const quad = frame.w != null ? [K, add(K, mul(ex, M * frame.w)), add(add(K, mul(ex, M * frame.w)), mul(ey, M * frame.h)), add(K, mul(ey, M * frame.h))] : null;
+        if(quad && polysOverlap(rectPoly(grow(label, P)), quad)) continue;
+        const cost = len(K) / P + penalty;
+        if(!best || cost < best.cost) best = { cost, K, out, along, across, d0, d1, ext, label, bars: [[sub(d0, half), add(d0, half)], [sub(d1, half), add(d1, half)]] };
+      }
+    }
+    return best;
+  }
+
+  // A band's shapes in scene inches: the filled band, and the two outlines (the cut edge and the embroidery edge). `ax`/`ay` are
+  // how far the outlines run along the piece's two edges from the corner.
+  function bandShapes(frame, b, ax, ay){
+    const { O, ex, ey } = frame;
+    const at = (s, t) => add(O, add(mul(ex, s), mul(ey, t)));
+    if(frame.w == null){
+      // A gap between two edges: two lines along ex, `ax` long each way from O.
+      const l1 = [at(-ax, 0), at(ax, 0)], l2 = [at(-ax, b), at(ax, b)];
+      return { fill: [l1[0], l1[1], l2[1], l2[0]], lines: [l1, l2] };
+    }
+    return {
+      fill: [at(0, 0), at(ax, 0), at(ax, b), at(b, b), at(b, ay), at(0, ay)],
+      lines: [[at(ax, 0), at(0, 0), at(0, ay)], [at(ax, b), at(b, b), at(b, ay)]]
+    };
+  }
+
+  // A centre mark at `p`: a thin crosshair of four arms (scene inches), each from PX.mark.gap to PX.mark.arm out of the centre, so the middle
+  // is open and the piece's own centre shows through; no ring (r is 0, kept for readers of the drawing).
+  function centreMark(p){
+    const M = PX.mark, ticks = [];
+    for(const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) ticks.push([{ x: p.x + dx * M.gap, y: p.y + dy * M.gap }, { x: p.x + dx * M.arm, y: p.y + dy * M.arm }]);
+    return { x: p.x, y: p.y, r: 0, ticks };
+  }
+
+  // The room made for the callouts around a drawing (`vb` = [x, y, w, h] in inches): the box they may be set in, and then the frame that holds the drawing and
+  // the callouts that were set (a callout that fits inside the drawing leaves it as it was).
+  function calloutRoom(vb, px){
+    const m = (CO.spanDiameter + 90) * px;
+    return { x: vb[0] - m, y: vb[1] - m, w: vb[2] + 2 * m, h: vb[3] + 2 * m };
+  }
+  function frameFor(vb, drawings, px){
+    let x0 = vb[0], y0 = vb[1], x1 = vb[0] + vb[2], y1 = vb[1] + vb[3];
+    const m = 3 * px;
+    const hold = b => { x0 = Math.min(x0, b.x - m); y0 = Math.min(y0, b.y - m); x1 = Math.max(x1, b.x + b.w + m); y1 = Math.max(y1, b.y + b.h + m); };
+    for(const d of drawings){
+      if(!d) continue;
+      if(d.callout){ hold(d.callout.box); continue; }
+      // The pills are set off the cloth, past the drawing's edge when there is no room inside it, and a dimension line may lie past it too (LIVE13 E97).
+      if(d.label) hold(d.label);
+      for(const [p, q] of [d.dim, ...(d.ext || []), ...(d.tails || []), ...(d.leader ? [d.leader] : [])]) hold({ x: Math.min(p.x, q.x), y: Math.min(p.y, q.y), w: Math.abs(q.x - p.x), h: Math.abs(q.y - p.y) });
+    }
+    return [x0, y0, x1 - x0, y1 - y0];
+  }
+
+  // Lay out every measure layer of a scene. `view` = { px, area }: inches per preview pixel and the
+  // drawing's visible box. Returns one drawing per measure, in the scene's order.
+  function layout(scene, view){
+    const P = view.px;
+    const area = view.area;
+    // The callouts may lie past the drawing's edge (room is made for them, see frameFor); the labels and lines stay inside `area`.
+    const calloutArea = view.calloutArea || area;
+    const pieces = (view.pieces || []).filter(b => b && b.w > 0 && b.h > 0);
+    const solids = obstaclesOf(scene).concat(pieces);
+    const views = viewBoxes(scene);
+    const shrunk = solids.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0);
+    const placedLabels = [];
+    const placedLines = [];
+    const fontSize = PX.font * P;
+
+      // ---- a magnified callout (opts.callout): the inset beside the piece, laid out first so that every other label keeps clear of it ----
+      const placeCallout = (m, ci) => {
+        const A = m.from, B = m.to, o = m.opts.callout;
+        const lw = textWidth(valueOf(m.label), fontSize) + 2 * PX.padX * P, lh = fontSize * 1.25 + 2 * PX.padY * P;
+        const b = len(sub(B, A));
+        let frame = null;
+        if(o.layer){
+          frame = pieceFrame(scene, o.layer, A);
+          if(!frame) return null;
+        }else{
+          frame = { O: A, ex: { x: -unit(sub(B, A)).y, y: unit(sub(B, A)).x }, ey: unit(sub(B, A)), w: null, h: null };
+        }
+        const border = o.border != null ? o.border : b;
+        // A span (the 1/2 in from the CAP tape to a badge's embroidery) gets a larger circle and the magnification that shows all of it.
+        // (a span no longer than the 1/8 in border is drawn as the plain gap inset)
+        const span = !!o.span && border > 0.25;
+        const r = (span ? CO.spanDiameter : CO.diameter) * P / 2;
+        const M = span ? Math.max(CO.spanMinMag, Math.min(CO.mag, CO.spanFill * 2 * r / border)) : CO.mag;
+        const arr = insetArrangement(frame, border, lw, lh, P, M, r);
+        if(!arr) return null;
+        // The caption under the circle: the words split into lines of at most 15 characters.
+        const capSize = CO.captionFont * P;
+        const words = (pillCaption(o.caption) + (m.ref ? ' ' + refText(m.ref) : '')).split(/\s+/).filter(Boolean), capLines = [];
+        for(const w of words){ const last = capLines[capLines.length - 1]; if(last && (last + ' ' + w).length <= 15) capLines[capLines.length - 1] = last + ' ' + w; else capLines.push(w); }
+        const capW = capLines.length ? Math.max(...capLines.map(t => textWidth(t, capSize))) + 2 * PX.padX * P : 0;
+        const capH = capLines.length ? capLines.length * capSize * 1.2 + 2 * PX.padY * P : 0;
+        const capGap = 2 * P;
+        const C = frame.O;
+        // The own piece's polygon (so the leader and the circle do not run over it).
+        const own = frame.w != null ? [C, add(C, mul(frame.ex, frame.w)), add(add(C, mul(frame.ex, frame.w)), mul(frame.ey, frame.h)), add(C, mul(frame.ey, frame.h))] : null;
+        const ownBounds = own ? { x: Math.min(...own.map(p => p.x)), y: Math.min(...own.map(p => p.y)), w: Math.max(...own.map(p => p.x)) - Math.min(...own.map(p => p.x)), h: Math.max(...own.map(p => p.y)) - Math.min(...own.map(p => p.y)) } : null;
+        // The measured piece is the one solid the circle may touch (the cap view it sits on is not: the circle stays off it). The leader
+        // starts on the piece and may cross the cloth it lies on (the cap view's own box) but no other piece.
+        const isOwn = s => ownBounds && contains(grow(s, 0.03), C) && s.w * s.h <= 1.5 * ownBounds.w * ownBounds.h;
+        // The sheet's sleeve pocket and loop outlines (role 'surface') are not obstacles to labels, only to the circle and its caption.
+        const surfaces = scene.layers.filter(l => l.role === 'surface').map(l => ({ x: l.x, y: l.y, w: l.w, h: l.h }));
+        const others = solids.filter(s => !isOwn(s)).concat(surfaces);
+        // The leader is a hairline: it may cross a tape or patch the garment sheet draws (role 'clear'), which the circle and the captions
+        // keep clear of, but not a piece placed on the garment (a badge, a grade, a patch, a label).
+        const placedSolids = obstaclesOf({ layers: scene.layers.filter(l => l.role !== 'clear') });
+        const leaderSolids = (ownBounds ? placedSolids.filter(s => !contains(grow(s, 0.03), C)) : placedSolids).map(s => grow(s, -1.5 * P)).filter(s => s.w > 0 && s.h > 0);
+        // The cloth of the sheet(s): the circle and its caption lie outside it (above the figure or beside it); the leader may cross it.
+        const cloth = clothBoxes(scene);
+        let best = null;
+        // Passes: everything clear and the leader across no piece; the circle off the cloth with the leader allowed over pieces (a cost); the old
+        // least-bad search (a sheet with no footprint, or no room off the cloth inside the drawing).
+        for(const pass of ['hard', 'cloth', 'soft']){
+          const hard = pass === 'hard', offCloth = pass !== 'soft';
+          for(const d of CO.search){
+            for(let k = 0; k < 24; k++){
+              const ang = (k / 24) * 2 * Math.PI;
+              const dir = { x: Math.cos(ang), y: Math.sin(ang) };
+              const c = add(C, mul(dir, r + d * P));
+              const circ = { x: c.x - r, y: c.y - r, w: 2 * r, h: 2 * r };
+              const cap = capLines.length ? { x: c.x - capW / 2, y: c.y + r + capGap, w: capW, h: capH } : null;
+              const boxAll = cap ? core.unionBounds([circ, cap]) : circ;
+              if(calloutArea && overlap(boxAll, calloutArea) < boxAll.w * boxAll.h - 1e-9) continue;
+              // The leader leaves the circle toward the corner and must come to it from outside the piece.
+              const v = sub(C, c);
+              if(!(len(v) > r)) continue;
+              const vu = unit(v);
+              if(frame.w != null && dot(vu, frame.ex) < -1e-9 && dot(vu, frame.ey) < -1e-9) continue;
+              const rim = add(c, mul(vu, r));
+              let cost = d + k * 0.01;
+              const hit = (list, box) => list.some(s => overlap(box, s) > 0);
+              if(offCloth && cloth.some(s => overlap(boxAll, s) > 0)) continue;
+              if(pass !== 'soft'){
+                if(hit(others.map(s => grow(s, 0.25 * P)), boxAll)) continue;
+                if(ownBounds && overlap(boxAll, ownBounds) > 0) continue;
+                if(placedLabels.some(lab => overlap(boxAll, grow(lab, 2 * P)) > 0)) continue;
+                if(placedLines.some(([p, q]) => insideLength(p, q, boxAll) > 0)) continue;
+                if(hard){
+                  if(leaderSolids.some(s => insideLength(rim, C, s) > 0)) continue;
+                  if(placedLabels.some(lab => insideLength(rim, C, lab) > 0)) continue;
+                }else{
+                  for(const s of leaderSolids) cost += 4 * insideLength(rim, C, s) / P;
+                  for(const lab of placedLabels) cost += 4 * insideLength(rim, C, lab) / P;
+                }
+              }else{
+                for(const s of others) cost += 40 * overlap(boxAll, s) / (P * P);
+                if(ownBounds) cost += 40 * overlap(boxAll, ownBounds) / (P * P);
+                for(const lab of placedLabels) cost += 30 * overlap(boxAll, lab) / (P * P);
+                for(const [p, q] of placedLines) cost += 20 * insideLength(p, q, boxAll) / P;
+                for(const s of leaderSolids) cost += 60 * insideLength(rim, C, s) / P;
+              }
+              // A leader across a tape or patch the sheet draws is allowed but not liked.
+              for(const l of scene.layers) if(l.role === 'clear') cost += 2 * insideLength(rim, C, { x: l.x, y: l.y, w: l.w, h: l.h }) / P;
+              // Off the cloth when it can be (a sheet with no footprint, or no room off it, takes the cloth as the last choice).
+              for(const g of cloth) cost += 0.5 * overlap(boxAll, g) / (P * P);
+              if(!best || cost < best.cost) best = { cost, c, circ, cap, boxAll, rim, hard, offCloth };
+            }
+          }
+          if(best) break;
+        }
+        if(!best) return null;
+        const { c, cap, boxAll, rim } = best;
+        const W = sub(C, mul(arr.K, 1 / M));      // the scene point at the circle's centre
+        const toInset = p => add(c, mul(sub(p, W), M));
+        const shift = p => add(c, p);
+        // On the piece: the band along its corner, the way the member will see it when pinning.
+        const edge = Math.min(CO.edgeLen, 0.5 * (frame.w != null ? Math.min(frame.w, frame.h) : 2));
+        const real = bandShapes(frame, border, edge, edge);
+        const inset = bandShapes(frame, border, frame.w != null ? frame.w : 3 * r / M, frame.h != null ? frame.h : 0);
+        // Edges inside a span (the badge's blue backing), across the inset.
+        const marks = frame.w == null ? (o.marks || []).filter(t => t > 0 && t < border).map(t => { const q = bandShapes(frame, t, 3 * r / M, 0); return q.lines[1]; }) : [];
+        const lab = shift({ x: arr.label.x, y: arr.label.y });
+        const drawing = {
+          key: m.key,
+          label: { text: valueOf(m.label), x: lab.x, y: lab.y, w: lw, h: lh },
+          dim: [shift(arr.d0), shift(arr.d1)],
+          bars: arr.bars.map(([p, q]) => [shift(p), shift(q)]),
+          ext: arr.ext.map(([p, q]) => [shift(p), shift(q)]),
+          ticks: [], centres: [], reference: null,
+          callout: {
+            center: c, r, mag: M, focus: W,
+            window: { x: W.x - r / M, y: W.y - r / M, w: 2 * r / M, h: 2 * r / M },
+            box: boxAll,
+            leader: [rim, C],
+            real: { fill: real.fill, lines: real.lines },
+            inset: { fill: inset.fill.map(toInset), lines: inset.lines.map(l => l.map(toInset)), marks: marks.map(l => l.map(toInset)) },
+            caption: cap ? Object.assign({ lines: capLines, size: capSize }, cap) : null,
+            border, kind: o.layer ? 'band' : span ? 'span' : 'gap', hard: best.hard, offCloth: best.offCloth
+          }
+        };
+        placedLabels.push(boxAll);
+        placedLines.push([rim, C]);
+        return drawing;
+      };
+
+    // ---- the value pill (LIVE13 E97): the length and a caption of what is measured, set off the cloth with a leader to the dimension line ----
+    //
+    // Ethan, on the Class B: "these measurements need to be made clearer". The pill is placed the way the magnified callouts are: off the cloth of
+    // the sheet (clothBoxes) when a clear side lies near enough, off every piece, label and line already set, inside the room made around the
+    // drawing, and a leader runs from the pill's rim to the middle of the dimension line. Passes: everything clear, the cloth under the pill a cost
+    // (PILL.clothCost); then the least bad place. A leader may cross the cloth but no piece placed on it (a tape or patch the sheet draws itself costs it).
+    const cloth = clothBoxes(scene);
+    const surfaces = scene.layers.filter(l => l.role === 'surface').map(l => ({ x: l.x, y: l.y, w: l.w, h: l.h }));
+    const drawnClear = scene.layers.filter(l => l.role === 'clear').map(l => ({ x: l.x, y: l.y, w: l.w, h: l.h }));
+    const placedSolids = obstaclesOf({ layers: scene.layers.filter(l => l.role !== 'clear') }).concat(pieces).map(s => grow(s, -1.5 * P)).filter(s => s.w > 0 && s.h > 0);
+    const capSize = PX.capFont * P;
+    // `labels` and `lines`: the pills, callouts and lines already set that the pill and its leader keep off (the ones placed so far, or, in the
+    // fix-up pass, everything).
+    function placePill(mid, u, lw, lh, own, strict, others, labels, lines){
+      // The leader starts on the dimension line: a piece the line lies on (the cap a device is measured on, the flat sleeve under a chevron's
+      // 'halfway') is not one it crosses.
+      const leaderSolids = placedSolids.filter(s => !contains(s, mid));
+      let best = null;
+      for(const pass of ['clear', 'soft']){
+        for(const d of PILL.search){
+          for(let k = 0; k < PILL.angles; k++){
+            const ang = (k / PILL.angles) * 2 * Math.PI;
+            const dir = { x: Math.cos(ang), y: Math.sin(ang) };
+            const along = Math.abs(dot(dir, u));
+            // Never along its own dimension line (the leader would lie on the line), unless far out.
+            if(along > 0.94 && d < 60) continue;
+            // The pill's near edge lies d px from the dimension line's middle along dir.
+            const reach = (Math.abs(dir.x) * lw + Math.abs(dir.y) * lh) / 2;
+            const c = add(mid, mul(dir, d * P + reach));
+            const box = { x: c.x - lw / 2, y: c.y - lh / 2, w: lw, h: lh };
+            if(calloutArea && overlap(box, calloutArea) < lw * lh - 1e-9) continue;
+            const att = rimPoint(box, mid);
+            // Beside its line rather than along it: a leader across the dimension reads as another measure.
+            let cost = d + PILL.alongCost * along;
+            if(area && overlap(box, area) < lw * lh - 1e-9) cost += PILL.outsideCost;
+            const onCloth = cloth.reduce((sum, g) => sum + overlap(box, g), 0);
+            if(pass !== 'soft'){
+              if(solids.some(s => overlap(box, grow(s, 0.25 * P)) > 0)) continue;
+              if(surfaces.some(s => overlap(box, s) > 0)) continue;
+              if(labels.some(lab => overlap(box, grow(lab, 2 * P)) > 0)) continue;
+              if(lines.some(([p, q]) => insideLength(p, q, box) > 0)) continue;
+              if(own.some(([p, q]) => insideLength(p, q, box) > 0)) continue;
+              if(leaderSolids.some(s => insideLength(att, mid, s) > 0)) continue;
+              if(labels.some(lab => insideLength(att, mid, lab) > 0)) continue;
+              if(lines.some(([p, q]) => segsCross(att, mid, p, q))) continue;
+              if(strict && others.some(r => overlap(box, r) > 0 || insideLength(att, mid, r) > 0)) continue;
+              if(onCloth > 0) cost += PILL.clothTouch + PILL.clothCost * onCloth / (P * P);
+            }else{
+              for(const s of solids) cost += 40 * overlap(box, s) / (P * P);
+              for(const lab of labels) cost += 30 * overlap(box, lab) / (P * P);
+              for(const [p, q] of lines) cost += 20 * insideLength(p, q, box) / P;
+              for(const s of leaderSolids) cost += 60 * insideLength(att, mid, s) / P;
+              for(const lab of labels) cost += 40 * insideLength(att, mid, lab) / P;
+              if(strict) for(const r of others) cost += 60 * overlap(box, r) / (P * P);
+              if(onCloth > 0) cost += PILL.clothTouch + PILL.clothCost * onCloth / (P * P);
+            }
+            for(const l of drawnClear) cost += 2 * insideLength(att, mid, l) / P;
+            // The shorter its run over the cloth the better: a pill beside the pocket it measures, not across the whole chest.
+            for(const g of cloth) cost += PILL.leaderClothCost * insideLength(att, mid, g) / P;
+            if(!best || cost < best.cost) best = { cost, box, leader: [att, mid], pass: pass === 'soft' ? 'soft' : onCloth > 0 ? 'cloth' : 'off' };
+          }
+        }
+        if(best) break;
+      }
+      return best;
+    }
+
+    // The callouts go last: the plain dimensions keep the places they have always had, and each circle, which can sit a long way from its piece, finds room around them.
+    const measures = scene.layers.filter(l => l.type === 'measure');
+    const isCallout = m => !!(m.opts && m.opts.callout);
+    // A measure inside a cap view is laid out before the others: its dimension and pill stay beside that view, and the pills of the paragraphs under the collar and the chest, which can
+    // go further out, must not have taken the room by the cap first.
+    const inView = m => views.some(v => contains(v, mul(add(m.from, m.to), 0.5))) ? 0 : 1;
+    const order = measures.map((m, i) => i).sort((i, j) => ((isCallout(measures[i]) ? 2 : 0) + inView(measures[i])) - ((isCallout(measures[j]) ? 2 : 0) + inView(measures[j])));
+    const slots = new Array(measures.length).fill(null);
+
+    for(const mi of order){
+      const m = measures[mi];
+      const A = m.from, B = m.to;
+      const L = len(sub(B, A));
+      if(L < 1e-6) continue;
+      if(isCallout(m)){ const dc = placeCallout(m, mi); if(dc){ slots[mi] = dc; continue; } }
+      const u = unit(sub(B, A));
+      const n = { x: -u.y, y: u.x };
+      const o = m.opts || {};
+      const text = valueOf(m.label);
+      // The pill: the length over the caption of what is measured (the profile's words, else the two pieces the measure joins), the caption
+      // in lines of at most PILL.wrap characters.
+      // The paragraph the distance carries out is the last line of the pill (CAPR 39-1, 4.1.5.2.2.4.1).
+      const capLines = wrapWords(pillCaption(o.caption != null ? o.caption : captionFor(scene, m)), PILL.wrap).concat(m.ref ? wrapWords(refText(m.ref), PILL.refWrap) : []);
+      const lw = Math.max(textWidth(text, fontSize), ...capLines.map(t => textWidth(t, capSize) * PILL.capWidth)) + 2 * PX.padX * P;
+      const lh = fontSize * 1.25 + capLines.length * capSize * 1.2 + 2 * PX.padY * P;
+
+      let sides = [n, mul(n, -1)];
+      if(o.side){
+        const s = dot(o.side, n) >= 0 ? n : mul(n, -1);
+        sides = [s];
+      }
+
+      // A measure inside a cap view belongs to that view (the grade 1/2 in from the visor on the baseball cap
+      // front): its dimension stays beside that view and never lies over, or runs its extension lines across,
+      // another cap view, the drawing the label would then seem to measure (D26: every label sits at the
+      // distance it reports). When the views stand so close that no side is free, the dimension is drawn on the
+      // view's own cloth, next to the measured points: the view's box is then not an obstacle, the grade and the
+      // name tape in it still are.
+      const mid = mul(add(A, B), 0.5);
+      const owner = views.find(v => contains(v, mid)) || null;
+      const others = owner ? views.filter(v => v !== owner) : [];
+      const crossesOther = (p, q) => others.some(r => insideLength(p, q, r) > 0.005);
+      const atA = o.center === 'both' || o.center === 'from', atB = o.center === 'both' || o.center === 'to';
+      // The piece a centre end lies in (the smallest solid holding the point), for the room an arrowhead would need inside it.
+      const centreBox = p => solids.filter(b => contains(b, p)).sort((p1, p2) => p1.w * p1.h - p2.w * p2.h)[0] || null;
+      const boxA = atA ? centreBox(A) : null, boxB = atB ? centreBox(B) : null;
+
+      // The ends of a dimension line from a to b (LIVE13 E97): arrowheads inside the line where it is long enough to show them, else outside it,
+      // on tails past each end; a bar (tick) across each end of a line drawn on the measured edges themselves (a line set off the edges has
+      // its witness lines there instead). A line that ends at a centre mark ends on the crosshair's centre (LIVE13 E101) and carries neither bar
+      // nor tail there; its arrowhead is drawn only where the line has room for it inside the piece measured to its centre.
+      const ends = (a, b, inline) => {
+        const arrow = PX.arrow * P, half = mul(n, PX.arrowHalf * P), tail = PX.tail * P;
+        const Ld = len(sub(b, a)), v = unit(sub(b, a));
+        const inside = Ld >= (2 * PX.arrow + 6) * P || (inline && (atA || atB));
+        const arrows = [], tails = [], bars = [];
+        const room = box => !box || insideLength(a, b, box) >= arrow + 2 * P;
+        const okA = !atA || (inside && room(boxA)), okB = !atB || (inside && room(boxB));
+        if(inside && Ld >= 2 * arrow + 2 * P){
+          if(okA) arrows.push([a, add(add(a, mul(v, arrow)), half), sub(add(a, mul(v, arrow)), half)]);
+          if(okB) arrows.push([b, add(sub(b, mul(v, arrow)), half), sub(sub(b, mul(v, arrow)), half)]);
+        }else if(!inside){
+          if(!atA){ arrows.push([a, add(sub(a, mul(v, arrow)), half), sub(sub(a, mul(v, arrow)), half)]); tails.push([sub(a, mul(v, arrow)), sub(a, mul(v, arrow + tail))]); }
+          if(!atB){ arrows.push([b, add(add(b, mul(v, arrow)), half), sub(add(b, mul(v, arrow)), half)]); tails.push([add(b, mul(v, arrow)), add(b, mul(v, arrow + tail))]); }
+        }
+        if(inline){
+          const bh = mul(n, PX.bar * P / 2);
+          if(!atA) bars.push([sub(a, bh), add(a, bh)]);
+          if(!atB) bars.push([sub(b, bh), add(b, bh)]);
+        }
+        return { arrows, tails, bars };
+      };
+
+      // Where the dimension line goes. `hard`: no part of the drawing (the line, its witness lines, bars, tails, the halfway tick) crosses a piece or
+      // a label already set. Returns the best candidate of each kind (on the edges themselves, set off to either side): the pill then decides
+      // between them (placePill), since the side with room for the pill and a clear leader is the one to use.
+      const search = (solidsX, shrunkX, strict, hard, lineClear, bothSides) => {
+        // The lines are kept off a piece's box itself (to a third of a preview pixel), not off the box shrunk by the label margin.
+        const tight = solidsX.map(b => grow(b, -0.3 * P)).filter(b => b.w > 0 && b.h > 0);
+        // A line drawn on the measured edges themselves may lie on the cap view it belongs to and run into the ring of a piece measured to
+        // its centre (the flight cap's device, 'centered 1 1/2 inches from the front of the cap', drawn as Figure 6.2 draws it): those boxes
+        // do not block it; every other piece does.
+        const centres = (atA ? [A] : []).concat(atB ? [B] : []);
+        const same = (b, o) => Math.abs(b.x + b.w / 2 - o.x - o.w / 2) < 0.01 && Math.abs(b.y + b.h / 2 - o.y - o.h / 2) < 0.01 && Math.abs(b.w - o.w) < 4 * P && Math.abs(b.h - o.h) < 4 * P;
+        const ownBox = b => (owner && same(b, owner)) || centres.some(p => contains(b, p));
+        const tightInline = tight.filter(b => !ownBox(b)), shrunkInline = shrunkX.filter(b => !ownBox(b));
+        const candidates = [];
+        if(!o.offsetOnly) candidates.push({ side: sides[0], d: 0, inline: true });
+        // A side the profile asked for (opts.side) is kept while it has a clear place; the other side serves as the last resort before a line is drawn across a piece.
+        for(const s of bothSides ? [n, mul(n, -1)] : sides){
+          // Each witness line starts at the edge of its own piece.
+          const startA = clearance(A, s, solidsX, 1.5 * P), startB = clearance(B, s, solidsX, 1.5 * P);
+          // minOffsetIn: the line moves at least this many inches (a width measure that must lie past the Velcro it hangs on).
+          const first = Math.max(Math.max(startA, startB) + (o.offsetPx != null ? o.offsetPx : PX.minOffset) * P, o.minOffsetIn || 0);
+          for(let d = first; d <= first + PX.maxOffset * P; d += PX.step * P) candidates.push({ side: s, d, startA, startB });
+        }
+        const found = new Map();
+        for(const c of candidates){
+          const kind = c.inline ? 'inline' : (c.side === n ? 'n' : 's');
+          const a = add(A, mul(c.side, c.d)), b = add(B, mul(c.side, c.d));
+          const exts = [];
+          if(!c.inline){
+            // A witness line from a centre starts past the crosshair's arm.
+            const past = PX.mark.arm + PX.extGap * P;
+            const sA = add(A, mul(c.side, Math.max(c.startA + PX.extGap * P, atA ? past : 0))), sB = add(B, mul(c.side, Math.max(c.startB + PX.extGap * P, atB ? past : 0)));
+            const e = mul(c.side, PX.extOver * P);
+            exts.push([sA, add(a, e)], [sB, add(b, e)]);
+          }
+          // The whole run from the measured points to the dimension, not only the drawn part of the witness line:
+          // the witness lines start past any piece they leave, which would hide a view they cross.
+          if(strict && (crossesOther(a, b) || (!c.inline && (crossesOther(A, add(a, mul(c.side, PX.extOver * P))) || crossesOther(B, add(b, mul(c.side, PX.extOver * P))))))) continue;
+          // The line as drawn: it ends on a centre mark's centre (LIVE13 E101).
+          const da = a, db = b;
+          const E = ends(da, db, !!c.inline);
+
+          let lineCost = 0;
+          const shrunkC = c.inline ? shrunkInline : shrunkX;
+          for(const r of shrunkC) lineCost += 60 * insideLength(da, db, r) / P;
+          // A witness line over a patch hides it; one that runs out of the view is cut off.
+          for(const [p, q] of exts) for(const r of shrunkX) lineCost += 24 * insideLength(p, q, r) / P;
+          // A line past the drawing's edge is held by the frame (frameFor) but costs: inside the drawing when it can be.
+          if(area){
+            lineCost += PILL.lineOutsideCost * outsideLength(a, b, area) / P;
+            for(const [p, q] of exts) lineCost += PILL.lineOutsideCost * outsideLength(p, q, area) / P;
+            for(const [p, q] of E.tails) lineCost += PILL.lineOutsideCost * outsideLength(p, q, area) / P;
+          }
+          for(const lab of placedLabels) lineCost += 40 * insideLength(a, b, lab) / P;
+          if(hard && placedLabels.some(lab => insideLength(a, b, lab) > 0 || exts.some(([p, q]) => insideLength(p, q, lab) > 0) || E.tails.some(([p, q]) => insideLength(p, q, lab) > 0))) continue;
+          if(hard && placedLines.some(([p, q]) => segsCross(a, b, p, q))) continue;
+          lineCost += c.d / P;
+          // A measure inside a cap view keeps its dimension line within an inch of that view (D26: every label sits at the distance it reports); the pill, which a leader joins to the
+          // line, goes where there is room (the paragraph line makes the pills taller).
+          if(owner) lineCost += 400 * (Math.max(0, pointBoxDistance(a, owner) - 1) + Math.max(0, pointBoxDistance(b, owner) - 1)) / P;
+          // The bars, the tails and the halfway tick are part of the drawing: none crosses a piece either.
+          const barSegs = E.bars.concat(E.tails);
+          if(o.mid){ const tp = add(a, mul(u, dot(sub(o.mid, A), u))), tk = mul(n, PX.tick * P); barSegs.push([sub(tp, tk), add(tp, tk)]); }
+          const crossesPiece = (c.inline ? tightInline : tight).some(r => barSegs.some(([p, q]) => insideLength(p, q, r) > 0) || insideLength(da, db, r) > 0 || exts.some(([p, q]) => insideLength(p, q, r) > 0));
+          if((hard || lineClear) && crossesPiece) continue;
+          for(const [p, q] of barSegs) for(const r of shrunkC) lineCost += 60 * insideLength(p, q, r) / P;
+          if(!found.has(kind) || lineCost < found.get(kind).cost) found.set(kind, { cost: lineCost, c, a, b, da, db, exts, ends: E });
+        }
+        return [...found.values()];
+      };
+
+      // Passes, in order: everything clear; the line clear of every piece (and allowed on the other side of the measured edge); only then the old
+      // least-bad search, which can draw across a piece. A dimension line, its witness lines, bars and tails never cross a piece while any pass before
+      // the last finds a place. A measure in a cap view tries beside the view first, then on its cloth.
+      // The line and its pill are chosen together: of the lines a pass allows, the one whose line and pill cost least.
+      const withPill = cands => {
+        let best = null;
+        for(const cand of cands){
+          const ownLines = [[cand.a, cand.b], ...cand.exts, ...cand.ends.tails];
+          const pill = placePill(mul(add(cand.da, cand.db), 0.5), u, lw, lh, ownLines, !!owner, others, placedLabels, placedLines);
+          if(pill && (!best || cand.cost + pill.cost < best.cost + best.pill.cost)) best = Object.assign({ pill }, cand);
+        }
+        return best;
+      };
+      let best = null;
+      for(const [hard, lineClear, bothSides] of [[true, false, false], [false, true, false], [false, true, true], [false, false, false]]){
+        best = withPill(search(solids, shrunk, !!owner, hard, lineClear, bothSides));
+        if(best) break;
+      }
+      if(!best && owner){
+        const solids2 = solids.filter(b => !(b.x === owner.x && b.y === owner.y && b.w === owner.w && b.h === owner.h));
+        best = withPill(search(solids2, solids2.map(b => grow(b, -1.5 * P)).filter(b => b.w > 0 && b.h > 0), true, false, false, false));
+      }
+      if(!best) continue;
+
+      const { a, b, da, db, exts, pill } = best;
+      const drawing = {
+        key: m.key,
+        dim: [da, db],
+        bars: best.ends.bars,
+        arrows: best.ends.arrows,
+        tails: best.ends.tails,
+        ext: exts,
+        ticks: [],
+        centres: [],
+        // The edge being measured, when the artwork does not draw it (a seam): a dashed line.
+        reference: o.reference ? [A, B] : null
+      };
+      // The dashed edge is drawn only where it crosses no piece (the cadet officer's CAP cutouts rest on the seam it marks).
+      if(o.reference) drawing.referenceSegs = segmentsOutside(A, B, solids.map(r => grow(r, 0.5 * P)), 2 * P);
+      if(o.mid){
+        const t = dot(sub(o.mid, A), u);
+        const p = add(a, mul(u, t));
+        const tk = mul(n, PX.tick * P);
+        drawing.ticks.push([sub(p, tk), add(p, tk)]);
+      }
+      for(const p of o.center === 'both' ? [A, B] : o.center === 'from' ? [A] : o.center === 'to' ? [B] : []) drawing.centres.push(centreMark(p));
+      // The pill and its leader, off the cloth (the leader is dropped when the pill touches its line).
+      drawing.label = Object.assign({ text, caption: capLines, size: fontSize, captionSize: capSize }, pill.box);
+      drawing.leader = len(sub(pill.leader[0], pill.leader[1])) > 2 * P ? pill.leader : null;
+      drawing.labelMode = pill.pass;
+      placedLabels.push(pill.box);
+      placedLines.push([a, b], ...exts, ...drawing.tails);
+      if(drawing.leader) placedLines.push(drawing.leader);
+      slots[mi] = drawing;
+    }
+    // Fix-up: a line laid out later may run through a pill set earlier (the lower pocket's 'centered' line through the pill of the ribbons resting on
+    // that pocket). Such a pill is set again against every line and every other pill and callout; the lines stay where they are.
+    const linesOf = d => d.callout ? [d.callout.leader] : [d.dim, ...(d.ext || []), ...(d.tails || []), ...(d.leader ? [d.leader] : [])];
+    const boxOf = d => d.callout ? d.callout.box : d.label;
+    const all = slots.filter(Boolean);
+    for(const d of all){
+      if(d.callout) continue;
+      const otherLines = all.filter(e => e !== d).flatMap(linesOf);
+      if(!otherLines.some(([p, q]) => insideLength(p, q, d.label) > 0)) continue;
+      const m = measures.find(x => x.key === d.key), u = unit(sub(m.to, m.from));
+      const mid = mul(add(d.dim[0], d.dim[1]), 0.5), ownLines = [[d.dim[0], d.dim[1]], ...d.ext, ...d.tails, ...d.ticks];
+      const owner = views.find(v => contains(v, mul(add(m.from, m.to), 0.5))) || null;
+      const pill = placePill(mid, u, d.label.w, d.label.h, ownLines, !!owner, owner ? views.filter(v => v !== owner) : [], all.filter(e => e !== d).map(boxOf), otherLines);
+      if(!pill) continue;
+      Object.assign(d.label, pill.box);
+      d.leader = len(sub(pill.leader[0], pill.leader[1])) > 2 * P ? pill.leader : null;
+      d.labelMode = pill.pass;
+    }
+    return all;
+  }
+
+  // Inches per preview pixel for a viewBox shown on the builder's stage (640 px high, at most
+  // 1200 px wide; see sizeStage in js/uniform-view.js).
+  function previewPx(vb, stage){
+    const s = stage || { h: 640, maxW: 1200 };
+    return Math.max(vb[3] / s.h, vb[2] / s.maxW);
+  }
+
+  return { layout, refFor, refText, REFS, AREAS, areaOf, captionOf, nameOf, idOf, catalogue, filterScene, refParts, clothBoxes, GARMENT_FOOTPRINT, calloutRoom, frameFor, previewPx, obstaclesOf, lapelPieces, segmentsOutside, textWidth, centreMark, pointBoxDistance, labelDistance, rimPoint, segsCross, wrapWords, captionFor, PX, PILL, CALLOUT: CO, LABEL_RADIUS, SLIDE_LINES };
+});

@@ -1,0 +1,4 @@
+{
+  "export-names.js": "the name of the PNG a member downloads, in a comment; not a site image",
+  "patch-submission.js": "member uploads, the one exception: the file types a member may send"
+}

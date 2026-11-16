@@ -2,30 +2,29 @@
  "asset_id": "garment-flight-jacket-blue",
  "name": "CAP blue flight jacket (worn with the CFDU) with blank nametag",
  "size_in": {
-  "w": 55.8,
-  "h": 32.975
+  "w": 47.6933,
+  "h": 37.9121
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  5580,
-  3297.5
+  4769.33,
+  3791.21
  ],
  "size_source": "estimated",
- "size_basis": "CAPR 39-1 6.1.7 says the blue flight jacket is \"similar to the MA-1 or CWU-45/P or -36/P flight jackets in design and construction\" (Figure 6.6 shows it: navy, orange lining, gold zipper, knit collar/waist/cuffs, left sleeve pocket). The MIL-J-8279G size Medium dimensions of the MA-1 are carried over: an ASSUMPTION that the blue jacket is cut to the same finished measurements.",
+ "size_basis": "THE BODY IS THE CFDU'S (owner, 2026-11-10: \"jacket should be same size as the fdu\"): shoulder points, sleeves, cuff line and chest patch positions are the suit's (flight-body.js: CAPR 39-1 Figure 8.1 scaled so the front zipper is 28 in), so the same body is the same size in both; the jacket is the suit's upper body cut off at the waist with knit collar, waistband and cuffs. CAPR 39-1 6.1.7 says the blue flight jacket is \"similar to the MA-1 or CWU-45/P or -36/P flight jackets in design and construction\" (Figure 6.6: navy, orange lining, gold zipper, knit collar/waist/cuffs, left sleeve pocket); the MA-1 details are carried over: back length 22 1/2 in, flap 7 1/2 x 2 3/8 in, sleeve pocket 5 3/4 x 3 1/4 in (MIL-J-8279G size Medium, an ASSUMPTION for the blue jacket). The MIL-J chest 26, bottom 23 1/2 and sleeve inseam 16 3/8 in are not used. Collar and knit heights are estimates.",
  "dimension_sources": {
+  "body_shoulders_sleeves_cuff_line": "the Flight Duty Uniform body (flight-body.js, CAPR 39-1 Figure 8.1 x KF, owner instruction 2026-11-10)",
   "back_length_in": "assumed (MA-1 Medium)",
-  "half_chest_in": "assumed (MA-1 Medium)",
-  "half_bottom_in": "assumed (MA-1 Medium)",
-  "sleeve_inseam_in": "assumed (MA-1 Medium)",
   "flap_in": "assumed",
   "sleeve_pocket_in": "assumed",
   "nametag_in": "regulation CAPR 39-1 8.2.4.1",
   "flag_in": "regulation CAPR 39-1 8.2.4.4",
   "loop_square_in": "regulation CAPR 39-1 8.2.5.5",
-  "knit_heights_collar_armhole_shoulder_sleeve_girth": "estimated",
-  "command_patch_width": "estimated"
+  "knit_heights_and_collar": "estimated",
+  "command_patch_width": "estimated",
+  "cloth_colour": "measured: shell #182641 (24,38,65), knit collar, waistband and cuffs #0a1732 (10,23,50), from the product photograph of Vanguard's own listing of this jacket (vanguardmil.com, Civil Air Patrol Uniform: Reversible Nylon Flight Jacket - Blue, CAP1019F to CAP1019J): median of the medians of 7 evenly lit shell regions and of 5 knit regions (owner, 2026-11-12: pull the flight jacket color from vanguard); the regulation says only blue"
  },
  "flag": {
   "side": "wearer's left sleeve (image right)",
@@ -35,7 +34,7 @@
    2
   ],
   "border": "gold",
-  "position": "1/2 in below the shoulder seam",
+  "position": "1/2 in below the shoulder seam, measured from the arched seam at the sleeve centre line (flat sleeve view); front view: the foreshortened face (1.82 of its 3.5 in, as the FDU front view) is tilted with the sleeve centre line and hung so that the canton lies whole on the sleeve, 0.06 in clear of the armhole seam, its nearest corner 1/2 in from the seam top; the outer part wraps round the arm and is clipped by the outline (the loop square on the right sleeve is placed the same way)",
   "orientation": "normal: canton (union) toward the wearer's front / the viewer's left on the outer face of the left sleeve; the reversed flag is for the right sleeve, which this reg does not give a flag",
   "basis": "CAPR 39-1 8.2.4.4 / 8.3.4.4 (left sleeve only); orientation convention per DAFI 36-2903 (flag worn so the union leads forward; reversed on the right shoulder)",
   "loop_tape_left": "not drawn: the 3 1/2 in loop tape on the left is the same colour as the garment and invisible",
@@ -43,284 +42,284 @@
  },
  "anchors": {
   "top_center": [
-   2790,
+   2384.67,
    0
   ],
   "bottom_center": [
-   2790,
-   3297.5
+   2384.67,
+   3791.21
   ],
   "center": [
-   2790,
-   1648.75
+   2384.67,
+   1895.6
   ],
   "left_edge": [
    0,
-   1648.75
+   1895.6
   ],
   "right_edge": [
-   5580,
-   1648.75
+   4769.33,
+   1895.6
   ],
   "zipper_min_closed": [
-   2790,
+   2384.67,
    1645
   ],
   "centerline_top": [
-   2790,
+   2384.67,
    90
   ],
   "zip_top": [
-   2790,
+   2384.67,
    550
   ],
   "hem_center": [
-   2790,
+   2384.67,
    2740
   ],
   "name_tape_center": [
-   3440,
-   970
+   2962.67,
+   973.7
   ],
   "command_patch_center": [
-   2140,
-   970
+   1806.67,
+   973.7
   ],
   "es_patch_center": [
-   2140,
-   1304.5
+   1806.67,
+   1308.2
   ],
   "flag_left_center": [
-   5140,
-   300
+   4345.67,
+   240
   ],
   "loop_square_right_center": [
-   440,
-   375
+   423.67,
+   315
   ]
  },
  "landmarks": {
   "name_tape": {
-   "x": 3240,
-   "y": 870,
+   "x": 2762.67,
+   "y": 873.7,
    "w": 400,
    "h": 200
   },
   "patch_command_right_breast": {
-   "x": 1990,
-   "y": 825.5,
+   "x": 1656.67,
+   "y": 829.2,
    "w": 300,
    "h": 289
   },
   "es_patch_zone": {
-   "x": 1990,
-   "y": 1154.5,
+   "x": 1656.67,
+   "y": 1158.2,
    "w": 300,
    "h": 300
   },
   "grade_zone_left": {
-   "x": 3530,
-   "y": 422,
+   "x": 3179.37,
+   "y": 381.2,
    "w": 160,
    "h": 125
   },
   "grade_zone_right": {
-   "x": 1890,
-   "y": 422,
+   "x": 1429.97,
+   "y": 381.2,
    "w": 160,
    "h": 125
   },
   "grade_zone_go_left": {
-   "x": 3342.5,
-   "y": 388.7,
+   "x": 2964.57,
+   "y": 355.5,
    "w": 220,
    "h": 120
   },
   "grade_zone_go_right": {
-   "x": 2017.5,
-   "y": 388.7,
+   "x": 1584.87,
+   "y": 355.5,
    "w": 220,
    "h": 120
   },
   "patch_flag_left": {
-   "x": 4965,
-   "y": 200,
+   "x": 4170.67,
+   "y": 140,
    "w": 350,
    "h": 200
   },
   "patch_loop_square_right": {
-   "x": 265,
-   "y": 200,
+   "x": 248.67,
+   "y": 140,
    "w": 350,
    "h": 350
   },
   "sleeve_pocket_left": {
-   "x": 4977.5,
-   "y": 780,
+   "x": 4183.17,
+   "y": 765,
    "w": 325,
    "h": 575
   },
   "pen_pocket_left": {
-   "x": 5187.5,
-   "y": 820,
+   "x": 4393.17,
+   "y": 805,
    "w": 87.5,
    "h": 465
   },
   "flap_pocket_right": [
    [
-    2277.6,
-    1800.2
+    2102.27,
+    1820.2
    ],
    [
-    2062.4,
-    1699.8
+    1887.07,
+    1719.8
    ],
    [
-    1796.1,
-    2270.8
+    1620.77,
+    2290.8
    ],
    [
-    1853,
-    2429.7
+    1677.67,
+    2449.7
    ],
    [
-    2011.4,
-    2371.2
+    1836.07,
+    2391.2
    ]
   ],
   "cuff_right": [
    [
-    1570,
-    2977.5
+    1427.47,
+    3471.2
    ],
    [
-    1100,
-    2977.5
+    996.27,
+    3471.2
    ],
    [
-    1130,
-    3197.5
+    1016.77,
+    3691.2
    ],
    [
-    1580,
-    3197.5
+    1422.37,
+    3691.2
    ]
   ],
   "flap_pocket_left": [
    [
-    3302.4,
-    1800.2
+    2667.07,
+    1820.2
    ],
    [
-    3517.6,
-    1699.8
+    2882.27,
+    1719.8
    ],
    [
-    3783.9,
-    2270.8
+    3148.57,
+    2290.8
    ],
    [
-    3727,
-    2429.7
+    3091.67,
+    2449.7
    ],
    [
-    3568.6,
-    2371.2
+    2933.27,
+    2391.2
    ]
   ],
   "cuff_left": [
    [
-    4010,
-    2977.5
+    3341.87,
+    3471.2
    ],
    [
-    4480,
-    2977.5
+    3773.07,
+    3471.2
    ],
    [
-    4450,
-    3197.5
+    3752.57,
+    3691.2
    ],
    [
-    4000,
-    3197.5
+    3346.97,
+    3691.2
    ]
   ],
   "front_zipper": [
    [
-    2777,
+    2371.67,
     550
    ],
    [
-    2803,
+    2397.67,
     550
    ],
    [
-    2803,
+    2397.67,
     2740
    ],
    [
-    2777,
+    2371.67,
     2740
    ]
   ],
   "waistband": [
    [
-    1615,
+    1497.47,
     2500
    ],
    [
-    3965,
+    3271.87,
     2500
    ],
    [
-    3890,
+    3196.87,
     2740
    ],
    [
-    1690,
+    1572.47,
     2740
    ]
   ],
   "collar": [
    [
-    2504,
+    2098.67,
     110
    ],
    [
-    2650,
+    2244.67,
     90
    ],
    [
-    2930,
+    2524.67,
     90
    ],
    [
-    3076,
+    2670.67,
     110
    ],
    [
-    3123,
+    2717.67,
     220
    ],
    [
-    3180,
+    2774.67,
     280
    ],
    [
-    2890,
+    2484.67,
     550
    ],
    [
-    2690,
+    2284.67,
     550
    ],
    [
-    2400,
+    1994.67,
     280
    ],
    [
-    2457,
+    2051.67,
     220
    ]
   ]
@@ -338,13 +337,17 @@
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's. Zones with no artwork are invisible placement landmarks.",
  "dimensions": {
   "collar_to_waistband_in": 26.5,
-  "collar_to_cuff_in": 31.075,
-  "max_width_in": 37.2,
-  "size_nominal": "Medium",
-  "half_chest_in": 13,
-  "half_bottom_in": 11.75,
+  "collar_to_cuff_in": 36.01,
+  "max_width_in": 29.9,
+  "shoulder_width_in": 20.09,
+  "half_width_at_waistband_in": 8.872,
+  "body_scale_from_suit_figure": 1.2105,
   "back_length_in": 22.5,
-  "sleeve_inseam_in": 16.375,
+  "not_used_MIL_J_8279G_medium_in": {
+   "half_chest": 13,
+   "half_bottom": 11.75,
+   "sleeve_inseam": 16.375
+  },
   "flap_in": [
    7.5,
    2.375
@@ -364,7 +367,18 @@
   "loop_square_in": [
    3.5,
    3.5
-  ]
+  ],
+  "sheet_alignment": {
+   "note": "Jacket and both flat sleeve panels share one top line (collar top = top of the arch) and one bottom line (jacket cuff bottom = panel cuff bottom). Y in artwork-box inches.",
+   "top_line_y_in": 0.9,
+   "panel_arch_top_y_in": 0.9,
+   "cuff_line_y_in": 36.912,
+   "panel_cuff_bottom_y_in": 36.912,
+   "waistband_bottom_y_in": 27.4,
+   "flat_sleeve_length_in": 35.56,
+   "flat_sleeve_length_source": "ESTIMATE: jacket cuff bottom up to the corner line under the arch, the suit's flat sleeve (same width table and position); the sleeve outer edge measures 35.0 in along the edge (OUT, the suit's)",
+   "symmetry": "silhouette, sleeves, cuffs, collar, waistband and flap pockets are one half mirrored about the zip line (audit-flight.js checks it to 0.05 in); only the patches differ side to side"
+  }
  },
  "documented": [
   "blue flight jacket is an authorized outer garment with the CFDU (8.3.7) and is similar to the MA-1 / CWU-45/P / CWU-36/P in design and construction (6.1.7, Figure 6.6)",
@@ -373,10 +387,9 @@
   "grade for officers on top of each shoulder, bottom edge 1/2 in from the seam; general officer stars centred on the shoulder halfway between neck and seam (8.3.3.1, 8.3.3.2)"
  ],
  "assumed": [
-  "finished measurements of the blue jacket are not given: the green MA-1 Medium measurements are used (6.1.7 only says similar design and construction)",
-  "navy shade sampled from the Figure 6.6 illustration",
-  "knit band heights",
-  "collar and knit band heights, armhole depth, shoulder width, sleeve girth",
+  "finished measurements of the blue jacket are not given (6.1.7 only says similar design and construction): the body is the CFDU's and the MA-1 Medium back length, flap and sleeve pocket are used",
+  "lightness of the cloth colour: it is measured from one studio product photograph (Vanguard CAP1019F) whose hue and chroma are steady from region to region but whose lightness follows its lighting and the nylon's sheen (region medians L* 8.6 to 16.8); the Figure 6.6 navy (#0c2152) is no longer used",
+  "collar and knit band heights",
   "ES patch zone position (jacket has no breast pocket)",
   "command patch width"
  ],

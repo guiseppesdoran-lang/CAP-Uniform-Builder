@@ -1,0 +1,125 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-sleeve-flat-left",
+ "name": "Women's Class B blue short-sleeve blouse and skirt, left sleeve laid flat (outer arm facing)",
+ "size_in": {
+  "w": 8.3599,
+  "h": 14.0405
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  835.99,
+  1404.05
+ ],
+ "size_source": "estimated",
+ "size_basis": "Measured on the sleeve of the sheet garment-blues-class-b-blouse-female (traced short sleeve, widened as dimensions.sleeve_widening): the sleeve is the strip between the sheet's outline and its armhole seam; stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 1.97 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to hem along the outer edge: 13.80 in (the straight axis is 13.33 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 5.17 in at its widest, 5.17 in at the hem (0.4 in above the lower edge); flat widths: 8.12 in at its widest (the cap width, the width below the shoulder seam), 8.12 in at the hem, i.e. 16.24 in around at the widest and 16.24 in around at the hem (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.1.12.2.3.3: \"NCOs will wear 3 ½ or 4 inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 6.90 in below the shoulder seam (halfway to the hem). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the hem stitch line are schematic.",
+ "anchors": {
+  "top_center": [
+   418,
+   0
+  ],
+  "bottom_center": [
+   418,
+   1404.05
+  ],
+  "center": [
+   418,
+   702.03
+  ],
+  "left_edge": [
+   0,
+   702.03
+  ],
+  "right_edge": [
+   835.99,
+   702.03
+  ],
+  "shoulder_seam_center": [
+   418,
+   62
+  ],
+  "cuff_center": [
+   418,
+   1392.05
+  ],
+  "chevron_center": [
+   418,
+   702.03
+  ]
+ },
+ "landmarks": {
+  "shoulder_seam": {
+   "p1": [
+    622.99,
+    62
+   ],
+   "p2": [
+    213,
+    62
+   ]
+  },
+  "outer_edge": {
+   "p1": [
+    460.42,
+    14
+   ],
+   "p2": [
+    823.99,
+    1392.05
+   ]
+  },
+  "cuff": {
+   "p1": [
+    823.99,
+    1392.05
+   ],
+   "p2": [
+    12,
+    1392.05
+   ]
+  },
+  "chevron_center": {
+   "x": 418,
+   "y": 702.03
+  }
+ },
+ "landmarks_note": "points are [x,y] and {x,y} in user units (0.01 in), origin top-left of the artwork box; shoulder_seam is the cap edge 0.5 in below the top of the sleeve, outer_edge runs along the arm's outer edge from the seam to the hem, chevron_center is where the senior NCO chevron is centred",
+ "dimensions": {
+  "sleeve_length_in": 13.8,
+  "cap_width_in": 8.12,
+  "hanging_width_in": {
+   "cap": 5.17,
+   "cuff": 5.17
+  },
+  "flat_over_hanging": 1.5708,
+  "around_in": {
+   "cap": 16.24,
+   "cuff": 16.24
+  },
+  "max_width_in": 8.12,
+  "cuff_width_in": 8.12,
+  "axis_lean_deg_on_sheet": 1.97,
+  "chevron_center_from_seam_in": 6.9,
+  "chevron_3p5_fit": {
+   "side_clearance_in": 2.31,
+   "top_below_seam_in": 4.04,
+   "bottom_above_lower_edge_in": 3.96
+  }
+ },
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "documented": [
+  "chevron centred on the outer arm halfway between the shoulder seam and the elbow (long sleeve) or the bottom edge of the sleeve (short sleeve) (CAPR 39-1 4.1.12.2.3.3)",
+  "short sleeve, hemmed"
+ ],
+ "assumed": [
+  "sleeve width: the sheet's hanging, widened view straightened (no sleeve dimension in CAPR 39-1)",
+  "hem stitch line 1 in above the lower edge (schematic)",
+  "rounded cap (0.35 in) over the measured width profile"
+ ],
+ "fit": {
+  "method": "measured from the garment sheet",
+  "score": null
+ },
+ "grade": "accessory"
+}

@@ -1,31 +1,31 @@
 {
  "asset_id": "enamel-nra-sharpshooter",
- "width_in": 1.1,
- "height_in": 1.735,
+ "width_in": 1.23,
+ "height_in": 1.94,
  "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "estimated: nra class badge about 1.1 in wide; not from a regulation; verify against the supplier spec",
+ "size_basis": "estimated: no Vanguard listing found; no regulation size and no Vanguard listing. 1.23 in wide (1.4 x the 0.88 in of A4b): Doran, \"The NRA badge is too small\" (2026-10-25, screenshot 3804446621659690750), measured on that screenshot: the Marksman badge is 67 x 100 px next to the 1.5 in Aerospace Education pin at 80 px, i.e. about 1.25 in x 1.9 in; all six NRA levels scale together so their proportions stay",
  "citation": null,
  "anchors": {
   "top_center": [
-   55,
+   61.5,
    0
   ],
   "bottom_center": [
-   55,
-   173.547
+   61.5,
+   194
   ],
   "center": [
-   55,
-   86.773
+   61.5,
+   97.027
   ],
   "left_edge": [
    0,
-   86.773
+   97.027
   ],
   "right_edge": [
-   110,
-   86.773
+   123,
+   97.027
   ]
  },
  "dimensions": {
@@ -45,5 +45,5 @@
   "silhouette_iou_approx": null,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.1 x 1.735 in to 0.88 x 1.388 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.3977 (A4b) from 0.88 x 1.388 in to 1.23 x 1.94 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
 }

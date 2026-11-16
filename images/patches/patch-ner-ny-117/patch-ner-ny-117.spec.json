@@ -1,0 +1,69 @@
+{
+ "asset_id": "patch-ner-ny-117",
+ "label": "NER-NY-117",
+ "charter": "NER-NY-117",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-ner-ny-117.png",
+ "width_in": 3,
+ "height_in": 3.439,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   343.91
+  ],
+  "center": [
+   150,
+   171.955
+  ],
+  "left_edge": [
+   0,
+   171.955
+  ],
+  "right_edge": [
+   300,
+   171.955
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/ner-ny-117-col-francis-s-gabreski-cadet-squadron.png",
+ "unit_name": "Col Francis S. Gabreski Cadet Squadron",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   1417,
+   1417
+  ],
+  "trim_bbox_px": [
+   220,
+   149,
+   977,
+   1120
+  ],
+  "trimmed": true,
+  "px": [
+   977,
+   1120
+  ],
+  "bytes": 82448,
+  "chunks_kept": [
+   "sRGB"
+  ]
+ },
+ "provenance": "Unit emblem of Col Francis S. Gabreski Cadet Squadron (NER-NY-117), digital artwork supplied by Ethan Hillard on 2026-11-10. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (1417 x 1417 px to 977 x 1120 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

@@ -2,698 +2,987 @@
  "asset_id": "garment-overblouse-female",
  "name": "Women's White Overblouse: short-sleeve princess-line overblouse, pointed collar, gray skirt (blank slots)",
  "size_in": {
-  "w": 21.4,
-  "h": 24.7472
+  "w": 27.3589,
+  "h": 29.4881
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2140,
-  2474.72
+  2735.89,
+  2948.81
  ],
  "size_source": "estimated",
- "size_basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured.",
+ "size_basis": "Silhouette traced from Vanguard's product photo of the CAP women's white overblouse (smoothed, mirrored) and scaled to 21.0 in sleeve-to-sleeve (estimate); chest width then reads about 10 in flat. No real garment was measured. The sleeves are then widened (dimensions.sleeve_widening); the bodice keeps the 21.0 in scale. Then the whole sheet is scaled by 1.2037 (LIVE-ART2 item 1): the men's aviator shirt's traced pocket is 4.36 in wide and a USAF-style men's size-M short-sleeve shirt pocket is about 5.25 x 6 in (ESTIMATE: AF shirt pattern dimension supplied with the task, no CAPR 39-1 or DAFI 36-2903 dimension); the overblouse has no pocket and is the women's piece of the 4.2.6 aviator uniform, so it takes the aviator shirts' factor (sleeve to sleeve 21.0 in becomes 25.3 in before widening). The nametag slot (centre 1 1/2 in below the first button, 4.2.6.2.6.1.2) and ribbon slot keep their true size.",
  "anchors": {
   "top_center": [
-   1070,
+   1367.94,
    0
   ],
   "bottom_center": [
-   1070,
-   2474.72
+   1367.94,
+   2948.82
   ],
   "center": [
-   1070,
-   1237.36
+   1367.94,
+   1474.41
   ],
   "left_edge": [
    0,
-   1237.36
+   1474.41
   ],
   "right_edge": [
-   2140,
-   1237.36
+   2735.88,
+   1474.41
+  ],
+  "shoulder_seam_right": [
+   719,
+   686.67
+  ],
+  "sleeve_bottom_right": [
+   299.61,
+   1304.36
+  ],
+  "chevron_halfway_right": [
+   509.3,
+   995.51
+  ],
+  "shoulder_seam_left": [
+   2016.9,
+   686.67
+  ],
+  "sleeve_bottom_left": [
+   2436.27,
+   1304.36
+  ],
+  "chevron_halfway_left": [
+   2226.58,
+   995.51
   ],
   "hem_center": [
-   1070,
-   2062.72
+   1367.94,
+   2452.88
   ],
   "nameplate_slot_center": [
-   767.65,
-   444
+   1003.95,
+   474.67
   ],
   "ribbon_slot_center": [
-   1372.35,
-   406.5
+   1731.88,
+   437.18
   ],
   "button_1_center": [
-   1066.44,
-   294.61
+   1363.66,
+   324.63
   ],
   "badge_above_nametag_center": [
-   767.65,
-   356.5
+   1003.95,
+   387.18
   ],
   "command_pin_above_nametag_center": [
-   767.65,
-   356.5
+   1003.95,
+   387.18
   ],
   "command_pin_below_nametag_center": [
-   767.65,
-   531.5
+   1003.95,
+   562.17
   ],
   "badge_left_above_ribbons_center": [
-   1372.35,
-   281.5
+   1731.88,
+   312.19
   ],
   "nco_chevron_right_center": [
-   251.76,
-   1105.73
+   383.04,
+   1300.98
   ],
   "nco_chevron_left_center": [
-   1888.24,
-   1105.73
+   2352.85,
+   1300.98
   ],
   "collar_insignia_right_center": [
-   924.14,
-   187.88
+   1192.37,
+   196.18
   ],
   "collar_insignia_left_center": [
-   1215.86,
-   187.88
+   1543.51,
+   196.18
   ],
   "epaulet_right_center": [
-   635.45,
-   239.45
+   834.23,
+   227.8
   ],
   "epaulet_left_center": [
-   1504.55,
-   239.45
+   1901.66,
+   227.8
   ]
  },
  "landmarks": {
   "nameplate_slot": {
-   "x": 598.9,
-   "y": 406.5,
-   "w": 337.5,
-   "h": 75
+   "x": 835.19,
+   "y": 437.18,
+   "w": 337.51,
+   "h": 74.99
   },
   "ribbon_slot": {
-   "x": 1166.1,
-   "y": 331.5,
+   "x": 1525.62,
+   "y": 362.19,
    "w": 412.5,
-   "h": 150
+   "h": 149.98
   },
   "epaulet_right": [
    [
-    817.4,
-    120.3
+    1033.92,
+    131.92
    ],
    [
-    760.5,
-    141.6
+    995.4,
+    140.47
    ],
    [
-    704.1,
-    155.1
+    927.51,
+    156.72
    ],
    [
-    698.9,
-    156.1
+    921.25,
+    157.92
    ],
    [
-    693.7,
-    157
+    914.99,
+    159.01
    ],
    [
-    688.4,
-    157.9
+    908.61,
+    160.09
    ],
    [
-    683.2,
-    158.9
+    902.36,
+    161.29
    ],
    [
-    677.9,
-    159.8
+    895.98,
+    162.38
    ],
    [
-    672.7,
-    160.6
+    889.72,
+    163.34
    ],
    [
-    667.4,
-    161.5
+    883.34,
+    164.42
    ],
    [
-    662.2,
-    162.3
+    877.08,
+    165.39
    ],
    [
-    657,
-    163.2
+    870.82,
+    166.47
    ],
    [
-    651.7,
-    164
+    864.44,
+    167.43
    ],
    [
-    646.5,
-    164.8
+    858.18,
+    168.4
    ],
    [
-    641.3,
-    165.6
+    851.92,
+    169.36
    ],
    [
-    636.1,
-    166.5
+    845.66,
+    170.44
    ],
    [
-    630.9,
-    167.3
+    839.4,
+    171.4
    ],
    [
-    625.7,
-    168.2
+    833.14,
+    172.49
    ],
    [
-    620.5,
-    169.2
+    826.88,
+    173.69
    ],
    [
-    615.3,
-    170.2
+    820.63,
+    174.9
    ],
    [
-    610.2,
-    171.3
+    814.49,
+    176.22
    ],
    [
-    605.1,
-    172.4
+    808.35,
+    177.54
    ],
    [
-    600,
-    173.7
+    802.21,
+    179.11
    ],
    [
-    594.9,
-    175
+    796.07,
+    180.67
    ],
    [
-    589.9,
-    176.4
+    790.05,
+    182.36
    ],
    [
-    584.9,
-    177.9
+    784.03,
+    184.16
    ],
    [
-    579.9,
-    179.4
+    778.01,
+    185.97
    ],
    [
-    575,
-    181.1
+    772.12,
+    188.02
    ],
    [
-    570,
-    182.8
+    766.1,
+    190.06
    ],
    [
-    565.2,
-    184.6
+    760.32,
+    192.23
    ],
    [
-    560.3,
-    186.5
+    754.42,
+    194.52
    ],
    [
-    555.5,
-    188.5
+    748.64,
+    196.92
    ],
    [
-    550.7,
-    190.5
+    742.87,
+    199.33
    ],
    [
-    546,
-    192.7
+    737.21,
+    201.98
    ],
    [
-    541.3,
-    194.9
+    731.55,
+    204.63
    ],
    [
-    536.6,
-    197.2
+    725.9,
+    207.4
    ],
    [
-    532,
-    199.6
+    720.36,
+    210.28
    ],
    [
-    527.4,
-    202.1
+    714.82,
+    213.29
    ],
    [
-    522.8,
-    204.6
+    709.28,
+    216.3
    ],
    [
-    518.3,
-    207.3
+    703.87,
+    219.55
    ],
    [
-    513.9,
-    210
+    698.57,
+    222.8
    ],
    [
-    509.5,
-    212.8
+    693.28,
+    226.17
    ],
    [
-    505.1,
-    215.7
+    687.98,
+    229.54
    ],
    [
-    500.8,
-    218.6
+    682.8,
+    233.15
    ],
    [
-    496.6,
-    221.6
+    677.75,
+    236.77
    ],
    [
-    492.5,
-    224.7
+    672.81,
+    240.5
    ],
    [
-    488.4,
-    227.8
+    667.88,
+    244.23
    ],
    [
-    484.3,
-    231
+    662.94,
+    248.08
    ],
    [
-    480.3,
-    234.3
+    658.13,
+    252.05
    ],
    [
-    476.4,
-    237.6
+    653.43,
+    256.02
    ],
    [
-    472.5,
-    240.9
+    648.74,
+    260
    ],
    [
-    468.7,
-    244.3
+    644.16,
+    264.09
    ],
    [
-    464.9,
-    247.8
+    639.59,
+    268.3
    ],
    [
-    461.1,
-    251.3
+    635.02,
+    272.39
    ],
    [
-    457.3,
-    254.8
+    630.44,
+    276.73
    ],
    [
-    453.5,
-    258.3
+    625.87,
+    280.94
    ],
    [
-    493.7,
-    358.6
+    642.96,
+    323.67
    ],
    [
-    498.6,
-    354.9
+    645.37,
+    322.59
    ],
    [
-    508.3,
-    347.3
+    650.06,
+    320.06
    ],
    [
-    523,
-    336
+    656.56,
+    315.25
    ],
    [
-    542.6,
-    320.8
+    679.07,
+    294.66
    ],
    [
-    563.9,
-    306.2
+    709.77,
+    270.47
    ],
    [
-    587.1,
-    291.9
+    751.17,
+    246.27
    ],
    [
-    612,
-    278.2
+    792.22,
+    229.78
    ],
    [
-    638.6,
-    264.8
+    835.43,
+    218.83
    ],
    [
-    666.7,
-    252.6
+    872.14,
+    212.81
    ],
    [
-    696,
-    241.5
+    909.34,
+    206.67
    ],
    [
-    726.7,
-    231.5
+    940.63,
+    200.77
    ],
    [
-    758.7,
-    222.6
+    994.44,
+    186.45
    ],
    [
-    782.7,
-    215.9
+    1008.64,
+    184.53
    ],
    [
-    798.7,
-    211.4
+    1037.65,
+    177.78
    ],
    [
-    806.7,
-    209.2
+    1042.59,
+    177.18
    ]
   ],
   "epaulet_left": [
    [
-    1322.6,
-    120.3
+    1701.96,
+    131.92
    ],
    [
-    1379.5,
-    141.6
+    1740.48,
+    140.47
    ],
    [
-    1435.9,
-    155.1
+    1808.37,
+    156.72
    ],
    [
-    1441.1,
-    156.1
+    1814.63,
+    157.92
    ],
    [
-    1446.3,
-    157
+    1820.89,
+    159.01
    ],
    [
-    1451.6,
-    157.9
+    1827.27,
+    160.09
    ],
    [
-    1456.8,
-    158.9
+    1833.53,
+    161.29
    ],
    [
-    1462.1,
-    159.8
+    1839.91,
+    162.38
    ],
    [
-    1467.3,
-    160.6
+    1846.17,
+    163.34
    ],
    [
-    1472.6,
-    161.5
+    1852.55,
+    164.42
    ],
    [
-    1477.8,
-    162.3
+    1858.81,
+    165.39
    ],
    [
-    1483,
-    163.2
+    1865.06,
+    166.47
    ],
    [
-    1488.3,
-    164
+    1871.44,
+    167.43
    ],
    [
-    1493.5,
-    164.8
+    1877.7,
+    168.4
    ],
    [
-    1498.7,
-    165.6
+    1883.96,
+    169.36
    ],
    [
-    1503.9,
-    166.5
+    1890.22,
+    170.44
    ],
    [
-    1509.1,
-    167.3
+    1896.48,
+    171.4
    ],
    [
-    1514.3,
-    168.2
+    1902.74,
+    172.49
    ],
    [
-    1519.5,
-    169.2
+    1909,
+    173.69
    ],
    [
-    1524.7,
-    170.2
+    1915.26,
+    174.9
    ],
    [
-    1529.8,
-    171.3
+    1921.4,
+    176.22
    ],
    [
-    1534.9,
-    172.4
+    1927.54,
+    177.54
    ],
    [
-    1540,
-    173.7
+    1933.67,
+    179.11
    ],
    [
-    1545.1,
-    175
+    1939.81,
+    180.67
    ],
    [
-    1550.1,
-    176.4
+    1945.83,
+    182.36
    ],
    [
-    1555.1,
-    177.9
+    1951.85,
+    184.16
    ],
    [
-    1560.1,
-    179.4
+    1957.87,
+    185.97
    ],
    [
-    1565,
-    181.1
+    1963.77,
+    188.02
    ],
    [
-    1570,
-    182.8
+    1969.79,
+    190.06
    ],
    [
-    1574.8,
-    184.6
+    1975.56,
+    192.23
    ],
    [
-    1579.7,
-    186.5
+    1981.46,
+    194.52
    ],
    [
-    1584.5,
-    188.5
+    1987.24,
+    196.92
    ],
    [
-    1589.3,
-    190.5
+    1993.02,
+    199.33
    ],
    [
-    1594,
-    192.7
+    1998.67,
+    201.98
    ],
    [
-    1598.7,
-    194.9
+    2004.33,
+    204.63
    ],
    [
-    1603.4,
-    197.2
+    2009.99,
+    207.4
    ],
    [
-    1608,
-    199.6
+    2015.53,
+    210.28
    ],
    [
-    1612.6,
-    202.1
+    2021.06,
+    213.29
    ],
    [
-    1617.2,
-    204.6
+    2026.6,
+    216.3
    ],
    [
-    1621.7,
-    207.3
+    2032.02,
+    219.55
    ],
    [
-    1626.1,
-    210
+    2037.31,
+    222.8
    ],
    [
-    1630.5,
-    212.8
+    2042.61,
+    226.17
    ],
    [
-    1634.9,
-    215.7
+    2047.9,
+    229.54
    ],
    [
-    1639.2,
-    218.6
+    2053.08,
+    233.15
    ],
    [
-    1643.4,
-    221.6
+    2058.14,
+    236.77
    ],
    [
-    1647.5,
-    224.7
+    2063.07,
+    240.5
    ],
    [
-    1651.6,
-    227.8
+    2068.01,
+    244.23
    ],
    [
-    1655.7,
-    231
+    2072.94,
+    248.08
    ],
    [
-    1659.7,
-    234.3
+    2077.76,
+    252.05
    ],
    [
-    1663.6,
-    237.6
+    2082.45,
+    256.02
    ],
    [
-    1667.5,
-    240.9
+    2087.14,
+    260
    ],
    [
-    1671.3,
-    244.3
+    2091.72,
+    264.09
    ],
    [
-    1675.1,
-    247.8
+    2096.29,
+    268.3
    ],
    [
-    1678.9,
-    251.3
+    2100.87,
+    272.39
    ],
    [
-    1682.7,
-    254.8
+    2105.44,
+    276.73
    ],
    [
-    1686.5,
-    258.3
+    2110.01,
+    280.94
    ],
    [
-    1646.3,
-    358.6
+    2092.92,
+    323.67
    ],
    [
-    1641.4,
-    354.9
+    2090.51,
+    322.59
    ],
    [
-    1631.7,
-    347.3
+    2085.82,
+    320.06
    ],
    [
-    1617,
-    336
+    2079.32,
+    315.25
    ],
    [
-    1597.4,
-    320.8
+    2056.81,
+    294.66
    ],
    [
-    1576.1,
-    306.2
+    2026.12,
+    270.47
    ],
    [
-    1552.9,
-    291.9
+    1984.71,
+    246.27
    ],
    [
-    1528,
-    278.2
+    1943.67,
+    229.78
    ],
    [
-    1501.4,
-    264.8
+    1900.45,
+    218.83
    ],
    [
-    1473.3,
-    252.6
+    1863.74,
+    212.81
    ],
    [
-    1444,
-    241.5
+    1826.55,
+    206.67
    ],
    [
-    1413.3,
-    231.5
+    1795.25,
+    200.77
    ],
    [
-    1381.3,
-    222.6
+    1741.45,
+    186.45
    ],
    [
-    1357.3,
-    215.9
+    1727.24,
+    184.53
    ],
    [
-    1341.3,
-    211.4
+    1698.23,
+    177.78
    ],
    [
-    1333.3,
-    209.2
+    1693.3,
+    177.18
+   ]
+  ],
+  "epaulet_axis": {
+   "right": {
+    "p1": [
+     634.45,
+     302.31
+    ],
+    "p2": [
+     1038.24,
+     154.53
+    ],
+    "w_in": 1,
+    "edge_thickness_in": 0.46,
+    "length_in": 4.3
+   },
+   "left": {
+    "p1": [
+     2101.43,
+     302.31
+    ],
+    "p2": [
+     1697.66,
+     154.53
+    ],
+    "w_in": 1,
+    "edge_thickness_in": 0.46,
+    "length_in": 4.3
+   }
+  },
+  "collar_right": [
+   [
+    1145.26,
+    12.04
+   ],
+   [
+    1226.63,
+    114.83
+   ],
+   [
+    1282.24,
+    191.87
+   ],
+   [
+    1367.94,
+    234.72
+   ],
+   [
+    1136.71,
+    324.63
+   ],
+   [
+    1033.92,
+    131.92
+   ]
+  ],
+  "collar_left": [
+   [
+    1590.62,
+    12.04
+   ],
+   [
+    1509.25,
+    114.83
+   ],
+   [
+    1453.64,
+    191.87
+   ],
+   [
+    1367.94,
+    234.72
+   ],
+   [
+    1599.17,
+    324.63
+   ],
+   [
+    1701.96,
+    131.92
+   ]
+  ],
+  "sleeve_flat_view": {
+   "left": {
+    "x": 3375.27,
+    "y": 381.15
+   },
+   "right": {
+    "x": -639.37,
+    "y": 381.15
+   }
+  },
+  "armhole_seam_right": [
+   [
+    674.23,
+    393.15
+   ],
+   [
+    676.38,
+    404.93
+   ],
+   [
+    680.65,
+    428.48
+   ],
+   [
+    687.08,
+    463.8
+   ],
+   [
+    695.63,
+    510.92
+   ],
+   [
+    703.66,
+    562.3
+   ],
+   [
+    711.16,
+    617.97
+   ],
+   [
+    718.12,
+    677.92
+   ],
+   [
+    724.55,
+    742.16
+   ],
+   [
+    730.96,
+    805.05
+   ],
+   [
+    737.39,
+    866.61
+   ],
+   [
+    743.82,
+    926.83
+   ],
+   [
+    750.23,
+    985.7
+   ],
+   [
+    755.59,
+    1042.71
+   ],
+   [
+    759.88,
+    1097.85
+   ],
+   [
+    763.09,
+    1151.1
+   ],
+   [
+    765.22,
+    1202.48
+   ],
+   [
+    766.83,
+    1241.03
+   ],
+   [
+    767.9,
+    1266.72
+   ],
+   [
+    768.43,
+    1279.57
+   ]
+  ],
+  "armhole_seam_left": [
+   [
+    2061.66,
+    393.15
+   ],
+   [
+    2059.52,
+    404.93
+   ],
+   [
+    2055.23,
+    428.48
+   ],
+   [
+    2048.82,
+    463.8
+   ],
+   [
+    2040.25,
+    510.92
+   ],
+   [
+    2032.22,
+    562.3
+   ],
+   [
+    2024.72,
+    617.97
+   ],
+   [
+    2017.76,
+    677.92
+   ],
+   [
+    2011.35,
+    742.16
+   ],
+   [
+    2004.92,
+    805.05
+   ],
+   [
+    1998.49,
+    866.61
+   ],
+   [
+    1992.08,
+    926.83
+   ],
+   [
+    1985.65,
+    985.7
+   ],
+   [
+    1980.29,
+    1042.71
+   ],
+   [
+    1976.02,
+    1097.85
+   ],
+   [
+    1972.81,
+    1151.1
+   ],
+   [
+    1970.66,
+    1202.48
+   ],
+   [
+    1969.06,
+    1241.03
+   ],
+   [
+    1967.99,
+    1266.72
+   ],
+   [
+    1967.45,
+    1279.57
    ]
   ]
  },
- "landmarks_note": "rects/polygons in user units (0.01 in), origin top-left",
+ "landmarks_note": "rects/polygons in user units (0.01 in), origin top-left; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve assets <id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, its top at the shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
-  "length_in": 24.55,
-  "max_width_in": 21,
+  "scale": {
+   "k": 1.2037,
+   "note": "the sheet is drawn at the traced scale (21.0 in sleeve to sleeve) and scaled by k when written, the men's aviator shirt factor (pocket 5.25 in, ESTIMATE; see shirt-scale.js): the overblouse is the women's piece of the 4.2.6 aviator uniform registered to the aviator shirts"
+  },
+  "length_in": 29.25,
+  "max_width_in": 26.88,
   "nametag_slot_in": [
    3.375,
    0.75
-  ]
+  ],
+  "sleeve_widening": {
+   "outward_in": 0.8,
+   "method": "the sleeve run of the outline only (epaulet end S to armpit corner A) is swung outward about S: outer edge share grows linearly from S (stays straight), cuff moves rigidly by outward_in (keeps its traced width and slope), underside share falls linearly to 0 at A (stays straight); S, A, the shoulder, epaulet, collar, armhole seam, side seam, waist, hips and hem do not move",
+   "size_source": "estimated",
+   "note": "outward widening of the traced short sleeve so the regulation 3 1/2 in chevron (5.7 in tall) lies between the outline and the armhole seam; the regulation gives no sleeve width (CAPR 39-1 4.2.6.2.3). Chosen as the smallest step of 0.1 in that leaves the ink of every senior NCO chevron (SSgt to CMSgt) at least 0.1 in clear of the seam. The bodice is as traced (21.0 in scale applies to the unwidened sleeve-to-sleeve span; sleeve-to-sleeve is now 21.0 + 2 x outward_in).",
+   "visible_sleeve_axis_in": 6.2
+  }
  },
  "documented": [
   "white semi-form-fitting princess-line overblouse with two epaulets, long or short sleeves; long sleeves end 1/4 to 1/2 in below the wrist, rounded cuffs with buttonhole closures (CAPR 39-1 4.2.6.1.2)",
@@ -702,10 +991,11 @@
   "blue inverted-V tie tab (4.2.6.3 / 4.2.4.3)"
  ],
  "assumed": [
-  "21.0 in scale",
+  "21.0 in scale x the shirt factor (estimate)",
   "nametag / ribbon slot sizes",
   "gray skirt as drawn in the figure (slacks are a bottoms variant)",
-  "epaulet strap shape (plain; the figure draws gray officer sleeves)"
+  "epaulet strap shape (plain; the figure draws gray officer sleeves); drawn edge-on as a band 0.46 in thick on the shoulder line (the strap is 1.0 in wide, epaulet_axis.w_in), LIVE10-ART 2",
+  "sleeve widening of the short sleeve (see dimensions.sleeve_widening)"
  ],
  "fit": {
   "method": "traced from a Vanguard product photo",

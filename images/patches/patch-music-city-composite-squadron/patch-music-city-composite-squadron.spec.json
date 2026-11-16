@@ -1,0 +1,46 @@
+{
+ "asset_id": "patch-music-city-composite-squadron",
+ "width_in": 3.25,
+ "height_in": 3.513,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   351.298
+  ],
+  "center": [
+   162.5,
+   175.649
+  ],
+  "left_edge": [
+   0,
+   175.649
+  ],
+  "right_edge": [
+   325,
+   175.649
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/patches/g8 + tn-185",
+ "reference": "UniformBuilder-svg/images/patches/ocp/TN-185_ocp_patch.webp",
+ "source_bbox_user_units": [
+  0.8,
+  2.022,
+  479.2,
+  519.133
+ ],
+ "fit_score": null,
+ "notes": "Full-colour patch built from geometric construction (true circles and arcs, mirrored halves, generated repeats), measured from the reference; lettering as glyph paths; no thread texture; size estimated. Reference is one 48 x 52 px thumbnail; the ring lettering is unreadable there and is assumed (see the generator)."
+}

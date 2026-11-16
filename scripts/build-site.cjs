@@ -31,10 +31,6 @@ if (endpoint) {
   if (url.protocol !== 'https:') fail('The submission endpoint must be https.');
 }
 
-// Fail rather than ship a page whose asset hashes are stale.
-const check = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), '--check'], { encoding: 'utf8' });
-if (check.status !== 0) fail(check.stderr || check.stdout);
-
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const referenced = new Set();
 for (const match of html.matchAll(/(?:src|href)="([^"#?]+)/g)) {
@@ -43,7 +39,7 @@ for (const match of html.matchAll(/(?:src|href)="([^"#?]+)/g)) {
   referenced.add(value);
 }
 referenced.add('index.html');
-// The MIT license asks for its notice to travel with copies, so the published site carries both.
+// The copyright notice and the third-party notice are published with the site, so the page's rights and what it does not own are public.
 referenced.add('LICENSE');
 referenced.add('NOTICE.md');
 
@@ -57,14 +53,37 @@ for (const rel of referenced) {
 // Directories the code reads from at runtime without naming each file in the HTML.
 const runtimeDirs = ['images', 'vendor'];
 const skipFile = name => name.startsWith('.') || name.endsWith('.md') || name.endsWith('.keep');
+// No picture is a photo (LIVE13 E118): the raster directories the page stopped reading were deleted, images/military-mini-medals last
+// (the medal bodies are traced in the art tree from Vanguard references; the builder keeps only its names in data/military-medals.js).
+// A raster under images/ is published only while tests/no-raster-allowlist.json keeps it, for art still to come.
+const NOT_SHIPPED = [];
+const RASTER = /\.(png|jpe?g|webp|gif)$/i;
+const allowed = Object.keys(JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'no-raster-allowlist.json'), 'utf8')));
+const { isOfficialRaster } = require('./lib-official-art.cjs');
+// Official digital artwork taken as given (a patch's PNG whose spec says so) is published without being listed.
+const onAllowlist = rel => allowed.some(entry => entry.endsWith('/') ? rel.startsWith(entry) : rel === entry) || isOfficialRaster(ROOT, rel);
 function walk(dir, out) {
   for (const entry of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
     const rel = path.posix.join(dir.split(path.sep).join('/'), entry.name);
-    if (entry.isDirectory()) walk(rel, out);
-    else if (!skipFile(entry.name)) out.add(rel);
+    if (entry.isDirectory()) { if (!NOT_SHIPPED.includes(rel)) walk(rel, out); }
+    else if (!skipFile(entry.name) && !(rel.startsWith('images/') && RASTER.test(rel) && !onAllowlist(rel))) out.add(rel);
   }
 }
 for (const dir of runtimeDirs) walk(dir, runtimeFiles);
+
+// --list: the files a build would publish, and nothing else (tests/no-raster.test.cjs).
+if (process.argv.includes('--list')) {
+  // Written synchronously: process.exit would cut off what console.log still has queued for a pipe.
+  let list = Buffer.from([...runtimeFiles].sort().join('\n') + '\n');
+  while (list.length) {
+    try { list = list.subarray(fs.writeSync(1, list)); } catch (err) { if (err.code !== 'EAGAIN') throw err; }
+  }
+  process.exit(0);
+}
+
+// Fail rather than ship a page whose asset hashes are stale.
+const check = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), '--check'], { encoding: 'utf8' });
+if (check.status !== 0) fail(check.stderr || check.stdout);
 
 fs.rmSync(DIST, { recursive: true, force: true });
 let bytes = 0;
@@ -82,13 +101,23 @@ const distHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
 if (!distHtml.includes('Content-Security-Policy')) fail('Could not insert the Content-Security-Policy meta tag.');
 fs.writeFileSync(path.join(DIST, 'index.html'), distHtml);
 
-if (endpoint) {
-  const configPath = path.join(DIST, 'config.js');
-  const config = fs.readFileSync(configPath, 'utf8');
-  if (!/submissionEndpoint:\s*''/.test(config)) fail("config.js no longer has an empty submissionEndpoint to replace.");
-  fs.writeFileSync(configPath, config.replace(/submissionEndpoint:\s*''/, `submissionEndpoint: ${JSON.stringify(endpoint)}`));
-}
-const restamp = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), `--root=${DIST}`], { encoding: 'utf8' });
-if (restamp.status !== 0) fail(restamp.stderr || restamp.stdout);
+// The artwork packs (scripts/build-asset-packs.cjs): a slim manifest and one spec pack per uniform and cut, named in
+// dist/js/asset-packs.js, so the page draws a uniform from one request instead of a round trip per spec.
+const writePacks = () => require('./build-asset-packs.cjs').applyToSite(DIST).catch(err => fail(err.message));
 
-console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
+async function finish() {
+  const packs = await writePacks();
+  if (endpoint) {
+    const configPath = path.join(DIST, 'config.js');
+    const config = fs.readFileSync(configPath, 'utf8');
+    if (!/submissionEndpoint:\s*''/.test(config)) fail("config.js no longer has an empty submissionEndpoint to replace.");
+    fs.writeFileSync(configPath, config.replace(/submissionEndpoint:\s*''/, `submissionEndpoint: ${JSON.stringify(endpoint)}`));
+  }
+  const restamp = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), `--root=${DIST}`], { encoding: 'utf8' });
+  if (restamp.status !== 0) fail(restamp.stderr || restamp.stdout);
+  // Last, once every file in dist/ is final: brotli and gzip copies for Caddy's precompressed (scripts/precompress.cjs).
+  const packed = require('./precompress.cjs').precompress(DIST);
+
+  console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB, ${Object.keys(packs.uniforms).length} artwork packs, ${packed.files} precompressed (${(packed.br / 1024).toFixed(0)} KB brotli)${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
+}
+finish().catch(err => fail(err && err.stack || String(err)));

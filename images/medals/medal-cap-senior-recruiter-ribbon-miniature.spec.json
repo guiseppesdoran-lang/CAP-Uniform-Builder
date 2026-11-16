@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-cap-senior-recruiter-ribbon-miniature",
  "name": "Senior Recruiter Award (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6277,
  "size_in": {
   "w": 0.625,
-  "h": 0.7876
+  "h": 0.6277
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  78.76
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_senrec01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7876 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 177 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7069 x 0.7108 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7069 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 293.8 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,78 +17,208 @@
   ],
   "bottom_center": [
    31.25,
-   78.76
+   62.77
   ],
   "center": [
    31.25,
-   39.38
+   31.39
   ],
   "left_edge": [
    0,
-   39.38
+   31.39
   ],
   "right_edge": [
    62.5,
-   39.38
+   31.39
   ],
   "ribbon_attach": [
-   33.31,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle 0.7 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "senrec01",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-cap-senior-recruiter-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Senior Recruiter Award"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-cap-senior-recruiter-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-cap-senior-recruiter-ribbon",
   "spec": "../ribbons/ribbon-cap-senior-recruiter-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-senior-recruiter-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9816,
-  "threshold": 0.95,
-  "colour_mae_0_255": 36.7,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
- },
- "palette": [
-  "#38302d",
-  "#605753",
-  "#8b847f",
-  "#bfb8b3"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "senrec02",
-   "senrec03",
-   "senrec04",
-   "senrec05",
-   "senrec06",
-   "senrec11",
-   "senrec16",
-   "senrec21"
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/recruiter.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js recruiter --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-senior-recruiter-miniature-medal (civil air patrol senior recruiter miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-senior-recruiter-miniature-medal",
+  "title": "civil air patrol senior recruiter miniature medal",
+  "px": [
+   600,
+   600
   ],
-  "different_body": []
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/senior-recruiter.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-senior-recruiter-miniature-medal",
-  "local_photo": "medals-work/ref-hires/senior-recruiter.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "senior-recruiter.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 293.8,
+   "disc_diameter_px": 183.6,
+   "origin_px": [
+    299.4,
+    507.1
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 182,
-   "h": 227
+  "hang_angle_removed_deg": 0.7,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.006,
+   "ridge": [
+    0.2945,
+    0.3065
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": 0.0024,
+   "cy": 0.0015,
+   "r": 0.2049,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0092,
+   "top_letters": 14,
+   "bottom_letters": 10,
+   "cap_height_top_in": 0.0531,
+   "cap_height_bottom_in": 0.0517
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.0854,
+    "top": -0.4304,
+    "neck": 0.0667,
+    "shoulder": -0.349
+   },
+   "ring": {
+    "c": [
+     0.02,
+     -0.494
+    ],
+    "r": 0.143,
+    "w": 0.012
+   }
+  },
+  "not_measurable": [
+   "the pebbled (matte) ground of the lettering band and the worn, mottled field of the big star are texture; the band is drawn as flat ground and the star field as one mid tone (the top point is darker than the other four in the photograph: drawn as a second, darker tone)",
+   "the five-point lobes of the small stars are plump and their centres are dimmer; each star is drawn as a solid star with a small dimple (hole of r 0.0038 in), nothing finer",
+   "letter A of AIR: it merges with pebbles of the ground in the photograph (one component 23 degrees wide); its centre and width (-15.8, 12.4 degrees) are estimated from the strip, not from a clean component; the P-A-T-R-O-L letters are narrower in the photograph than the skeleton font and are fitted by width",
+   "EDGE-RECALL GATE NOT MET (0.728 at 0.012 in, needs 0.80; precision 0.995): the pebbled ground of the lettering band gives the photograph's lit-metal outline hundreds of small pebble contours that no designed shape can match; recall by region: inside r 0.2 0.927, top lettering arcs 0.93 to 0.96, bottom lettering arc 0.74 (pebbles beside the letters), the two pebbled sides of the band (70 to 110 and 250 to 290 deg) 0.18; no stipple was invented to raise it",
+   "the star carries a thin inner bevel line along its edges that the photograph shows only as a blur; it is not drawn",
+   "frame.js disc fit is biased by the photograph cutting the disc bottom (see FRAME NOTE); the rim-ridge circle fit is used instead",
+   "ring: cut by the ribbon over its upper half, centre (0.020 in right of the bail axis) and radius fitted to the visible arcs only; the bail is the shared barrel with the shared shading",
+   "engraving grain, specular highlights and dark pits of the cast metal are not drawn (flat tones)"
+  ],
+  "tones_luminance": {
+   "ground": 54,
+   "shadow": 22,
+   "base": 135,
+   "hi": 188,
+   "rim": 172,
+   "rim_hi": 222,
+   "metal": 100,
+   "metal_hi": 180,
+   "bail": 135,
+   "lip": 185
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 6.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#3a3531",
+   "shadow": "#1f1916",
+   "base": "#8c8580",
+   "hi": "#c0b8b4",
+   "rim": "#b1a9a5",
+   "rim_hi": "#e2d9d5",
+   "lip": "#beb5b1",
+   "metal": "#69625d",
+   "metal_hi": "#b9b0ac",
+   "bail": "#8c8580"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9665,
+  "light_class_iou": 0.504,
+  "landmarks_checked": 46,
+  "landmark_max_dist_in": 0.0105,
+  "landmark_worst": [
+   [
+    "letter L (top 67.1deg)",
+    0.0105
+   ],
+   [
+    "letter L (top -33.4deg)",
+    0.0095
+   ],
+   [
+    "R leg",
+    0.0054
+   ],
+   [
+    "small star 13",
+    0.005
+   ],
+   [
+    "small star 5",
+    0.0046
+   ]
+  ],
+  "edge_recall_0p006in": 0.656,
+  "edge_recall_0p012in": 0.728,
+  "edge_precision_0p012in": 0.995,
+  "tone_mae_luminance": 35.4,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.19
+  },
+  "gate_pass": false,
+  "pass": false,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9665,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from senior-recruiter.jpeg (reference only, never shipped). Silver miniature: CIVIL AIR PATROL / RECRUITING around a ring of 15 small stars and a large five-point star carrying an R in a medallion. Low-contrast photograph; the star field and the pebbled band are flat in the model. Hang angle 0.7 deg of the photograph removed: the body hangs upright."
 }

@@ -1,0 +1,266 @@
+{
+ "asset_id": "garment-blues-class-a-coat-female-lapel-foreground",
+ "name": "Women's Class A service dress coat collar and lapels (foreground overlay, registered to garment-blues-class-a-coat-female; also fits the semi-formal coat)",
+ "size_in": {
+  "w": 24.3883,
+  "h": 29.4756
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2438.83,
+  2947.56
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same artwork box and scale as garment-blues-class-a-coat-female; collar and lapel faces redrawn opaque so they cover the blouse collar and any badge or device that slides under them.",
+ "anchors": {
+  "top_center": [
+   1219.42,
+   0
+  ],
+  "bottom_center": [
+   1219.42,
+   2947.56
+  ],
+  "center": [
+   1219.42,
+   1473.78
+  ],
+  "left_edge": [
+   0,
+   1473.78
+  ],
+  "right_edge": [
+   2438.83,
+   1473.78
+  ]
+ },
+ "landmarks": {
+  "lapel_face_right": [
+   [
+    977.5,
+    17.42
+   ],
+   [
+    837.85,
+    166.32
+   ],
+   [
+    764.46,
+    335.9
+   ],
+   [
+    745.71,
+    379.28
+   ],
+   [
+    846.47,
+    414.13
+   ],
+   [
+    1017.98,
+    439.3
+   ],
+   [
+    846.47,
+    414.13
+   ],
+   [
+    770.7,
+    517.88
+   ],
+   [
+    801.68,
+    617.14
+   ],
+   [
+    921.8,
+    813.65
+   ],
+   [
+    1062.34,
+    1030.74
+   ],
+   [
+    1244.23,
+    1311.64
+   ],
+   [
+    1244.23,
+    1251.54
+   ],
+   [
+    1242.65,
+    1229.1
+   ],
+   [
+    1238.51,
+    1208.94
+   ],
+   [
+    1232.88,
+    1191.08
+   ],
+   [
+    1226.63,
+    1175.59
+   ],
+   [
+    1221,
+    1162.66
+   ],
+   [
+    1216.86,
+    1152.27
+   ],
+   [
+    1215.28,
+    1144.53
+   ],
+   [
+    1044.65,
+    534.42
+   ],
+   [
+    1018.78,
+    451.7
+   ],
+   [
+    981.55,
+    31.86
+   ]
+  ],
+  "notch_right": [
+   [
+    745.68,
+    379.28
+   ],
+   [
+    846.5,
+    414.12
+   ],
+   [
+    770.66,
+    517.88
+   ]
+  ],
+  "lapel_face_left": [
+   [
+    1461.33,
+    17.42
+   ],
+   [
+    1600.98,
+    166.32
+   ],
+   [
+    1674.38,
+    335.9
+   ],
+   [
+    1693.12,
+    379.28
+   ],
+   [
+    1592.36,
+    414.13
+   ],
+   [
+    1420.85,
+    439.3
+   ],
+   [
+    1592.36,
+    414.13
+   ],
+   [
+    1668.13,
+    517.88
+   ],
+   [
+    1637.15,
+    617.14
+   ],
+   [
+    1517.03,
+    813.65
+   ],
+   [
+    1376.5,
+    1030.74
+   ],
+   [
+    1243.44,
+    1236.14
+   ],
+   [
+    1240.45,
+    1217.13
+   ],
+   [
+    1235.87,
+    1199.97
+   ],
+   [
+    1230.5,
+    1184.83
+   ],
+   [
+    1224.96,
+    1171.63
+   ],
+   [
+    1220.03,
+    1160.46
+   ],
+   [
+    1216.6,
+    1151.39
+   ],
+   [
+    1215.28,
+    1144.53
+   ],
+   [
+    1394.18,
+    534.42
+   ],
+   [
+    1420.06,
+    451.7
+   ],
+   [
+    1457.28,
+    31.86
+   ]
+  ],
+  "notch_left": [
+   [
+    1693.16,
+    379.28
+   ],
+   [
+    1592.33,
+    414.12
+   ],
+   [
+    1668.17,
+    517.88
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat-female",
+ "documented": [
+  "badges and devices worn under the coat collar/lapel tuck beneath it (builder layering)"
+ ],
+ "assumed": [
+  "layer order: above badges"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

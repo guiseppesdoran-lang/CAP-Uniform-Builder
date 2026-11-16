@@ -15,11 +15,16 @@
       .replace(/-{2,}/g,'-')
       .replace(/^-+|-+$/g,'');
   }
+  // The uniforms that are known by their initials: ABU, OCP, and the USAF in Semi-Formal-USAF.
+  const INITIALS=new Set(['abu','ocp','usaf']);
+  // A name a uniform was saved under before it was renamed reads as its present name.
+  const RENAMED={ceremonials:'honor_guard',ceremonial:'honor_guard'};
   function uniformWords(uniformId){
-    return String(uniformId || '')
+    const id=String(uniformId || '');
+    return (RENAMED[id.toLowerCase()] || id)
       .split('_')
       .filter(Boolean)
-      .map(word=>word.length<=1 ? word.toUpperCase() : word[0].toUpperCase()+word.slice(1))
+      .map(word=>word.length<=1 || INITIALS.has(word.toLowerCase()) ? word.toUpperCase() : word[0].toUpperCase()+word.slice(1))
       .join('-');
   }
   function datePart(date){
@@ -28,9 +33,10 @@
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   }
 
-  // parts: {rank, uniform}; ext without the dot. Missing parts are left out.
-  function exportFileName({rank='',uniform=''}={},ext='png',date=new Date()){
-    const pieces=['CAP-Uniform',slug(rank),slug(uniformWords(uniform)),datePart(date)].filter(Boolean);
+  // parts: {rank, uniform, part}; ext without the dot. Missing parts are left out. `part` names the part of the uniform a picture shows (the Photos menu), in lower case
+  // with hyphens: CAP-Uniform_C-SSgt_Blues-A_ribbon-rack_2026-10-10.png; a picture of the whole uniform has none.
+  function exportFileName({rank='',uniform='',part=''}={},ext='png',date=new Date()){
+    const pieces=['CAP-Uniform',slug(rank),slug(uniformWords(uniform)),slug(part).toLowerCase(),datePart(date)].filter(Boolean);
     return `${pieces.join('_')}.${String(ext || 'png').replace(/^\./,'')}`;
   }
 

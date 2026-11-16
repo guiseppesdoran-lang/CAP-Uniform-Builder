@@ -1,0 +1,62 @@
+{
+ "asset_id": "patch-safety",
+ "file": "patch-safety.png",
+ "width_in": 3,
+ "height_in": 3.041,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; not in the regulation",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   304.1
+  ],
+  "center": [
+   150,
+   152.05
+  ],
+  "left_edge": [
+   0,
+   152.05
+  ],
+  "right_edge": [
+   300,
+   152.05
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "digital-image-from-reference-photograph",
+ "generator": "artwork-samples/patches/digital/make-digital.js",
+ "reference": "refs-png/safety.png",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   600,
+   600
+  ],
+  "px": [
+   1184,
+   1200
+  ],
+  "bytes": 62641,
+  "colours": 5,
+  "palette": [
+   "#6f82b4",
+   "#486d60",
+   "#1b1e1d",
+   "#ba322f",
+   "#e4e9ee"
+  ]
+ },
+ "provenance": "Digital picture made from the reference photograph safety.png (600 x 600 px): cropped to the patch with a 1 percent margin; stitch texture and jpeg noise smoothed with an edge-keeping filter in Lab; enlarged; every pixel set to the nearest of the patch's thread colours (the palette is fixed per patch from colours measured in the photograph, the metallic and textured threads at their middle tone); each colour's shape smoothed and speckle removed; boundaries anti-aliased; alpha taken from the photograph's own alpha, smoothed and anti-aliased the same way. Nothing traced or drawn.",
+ "notes": "Flat digital picture made from a photograph, not a redraw: no thread texture, lighting or sheen; every shape, letter and count is the photograph's."
+}

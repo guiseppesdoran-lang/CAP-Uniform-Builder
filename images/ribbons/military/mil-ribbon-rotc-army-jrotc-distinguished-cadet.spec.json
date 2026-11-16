@@ -1,0 +1,192 @@
+{
+ "asset_id": "mil-ribbon-rotc-army-jrotc-distinguished-cadet",
+ "name": "Army JROTC Distinguished Cadet Ribbon",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 / CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "441871",
+    "fraction": 0.078,
+    "x0_in": 0,
+    "x1_in": 0.1073
+   },
+   {
+    "index": 1,
+    "hex": "a6a6a6",
+    "fraction": 0.2218,
+    "x0_in": 0.1073,
+    "x1_in": 0.4123
+   },
+   {
+    "index": 2,
+    "hex": "2f6a29",
+    "fraction": 0.0987,
+    "x0_in": 0.4123,
+    "x1_in": 0.548
+   },
+   {
+    "index": 3,
+    "hex": "a6a6a6",
+    "fraction": 0.0498,
+    "x0_in": 0.548,
+    "x1_in": 0.6165
+   },
+   {
+    "index": 4,
+    "hex": "441871",
+    "fraction": 0.1033,
+    "x0_in": 0.6165,
+    "x1_in": 0.7585
+   },
+   {
+    "index": 5,
+    "hex": "a6a6a6",
+    "fraction": 0.0498,
+    "x0_in": 0.7585,
+    "x1_in": 0.827
+   },
+   {
+    "index": 6,
+    "hex": "2f6a29",
+    "fraction": 0.0986,
+    "x0_in": 0.827,
+    "x1_in": 0.9627
+   },
+   {
+    "index": 7,
+    "hex": "a6a6a6",
+    "fraction": 0.2218,
+    "x0_in": 0.9627,
+    "x1_in": 1.2677
+   },
+   {
+    "index": 8,
+    "hex": "441871",
+    "fraction": 0.078,
+    "x0_in": 1.2677,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "program": "ROTC/JROTC",
+ "service": "army-jrotc",
+ "authorized_note": "CAPR 39-1 11.2.5: up to three JROTC/ROTC ribbons awarded by military departments may be worn after CAP ribbons while enrolled",
+ "measurement": {
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
+  "fidelity": "measured_from_vendor_image",
+  "source_kind": "vendor-photo-measured",
+  "source_images": [
+   "img/ribbons/2a239d5d0b5f.jpeg"
+  ],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Army ROTC Ribbon Unit: N-1-1: AJROTC Distinguished Cadet",
+  "vendor_product_url": "https://www.vanguardmil.com/products/army-n11-ajrotc-scholastic-excellence-rotc-ribbon-unit",
+  "award_list_source": "https://en.wikipedia.org/wiki/Junior_Reserve_Officers%27_Training_Corps (ribbon tables)",
+  "residual": {
+   "vertical": 13,
+   "horizontal": 76.1,
+   "central_vertical": 5.4
+  },
+  "border_frame_detected": false,
+  "photographic_source": false,
+  "match_basis": "vendor product title names the award",
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured_from_vendor_image\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"vendor photo, snapped to the repo palette where within Lab distance 5\"}",
+  "corners_px": [
+   [
+    0,
+    218
+   ],
+   [
+    600,
+    218
+   ],
+   [
+    600,
+    382
+   ],
+   [
+    0,
+    382
+   ]
+  ],
+  "rectified_px": [
+   600,
+   164
+  ],
+  "symmetry": "mirror",
+  "stripe_distance_to_lit": [
+   0,
+   0,
+   0,
+   0,
+   0.2,
+   0,
+   0,
+   0,
+   0.2
+  ]
+ },
+ "quality": {
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Army ROTC Ribbon Unit: N-1-1: AJROTC Distinguished Cadet",
+   "url": "https://www.vanguardmil.com/products/army-n11-ajrotc-scholastic-excellence-rotc-ribbon-unit",
+   "image_px": [
+    600,
+    600
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "fit": {
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 0.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

@@ -45,7 +45,9 @@
   "nominal_width_in": 4,
   "height_in": 6.766,
   "aspect_h_over_w": 1.6915,
-  "navy_hex": "#292540",
+  "navy_hex": "#142347",
+  "navy_sampled_hex": "#292540",
+  "navy_basis": "the figure raster sampled #292540 (k-means over Fig A5-4); recoloured to the shared grade-cloth blue #142347 so the chevron matches the name tapes and the other grade cloth (CAPR 39-1 5.2.1.1.1.8, 5.1.1.1.1.2, 5.2.1.1.1.3)",
   "stripe_hex": "#dadadc",
   "letters": "none (star in place of CAP)",
   "emblem": "3-blade propeller"

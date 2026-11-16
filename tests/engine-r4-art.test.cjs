@@ -1,0 +1,252 @@
+'use strict';
+// FIX-ART-r4: artwork findings of review round 4, locked on the synced sheets.
+//   1. Model Rocketry badge: 3 in is the regulation size (CAPR 39-1 Attachment 7 Fig A7-2 prints a 3 in dimension arrow over the full height).
+//   2. NCO and cadet flight caps are plain blue (6.2.2.2.6): no lighter braid stroke on the flap edge.
+//   3. Women's overblouse: the collar leaves end on the first button's line (Figure 4.18), so the first badge (4.2.6.2.7.1) is not under them.
+//   6. Women's overblouse sleeve: the 3 1/2 in chevron lies between the outline and the armhole seam (4.2.6.2.3).
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.join(__dirname, '..');
+const core = require('../js/engine/core.js');
+const G = require('../js/engine/grades.js');
+const P = require('../js/engine/profiles.js');
+require('../js/engine/profiles-field.js');
+require('../js/engine/profiles-dress.js');
+
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'images', 'MANIFEST.json'), 'utf8'));
+const store = core.createSpecStore(manifest, p => Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'images', p), 'utf8'))));
+const assetPath = id => path.join(root, 'images', manifest.assets.find(a => a.id === id).path);
+const readSvg = id => fs.readFileSync(assetPath(id), 'utf8');
+const readSpec = id => JSON.parse(fs.readFileSync(assetPath(id).replace(/\.svg$/, '.spec.json'), 'utf8'));
+
+function build(uniform, gender, membership, rank, opt){
+  return {
+    uniform, gender, grade: G.gradeInfo(membership, rank, {}), opt: Object.assign({ headgear: 'auto' }, opt || {}), name: { first: 'Pat', last: 'Doe', show: true },
+    ribbons: [], medals: [], badges: [], command: null, militaryBadges: [], patches: [], cord: null
+  };
+}
+
+// ---- 1. Model Rocketry badge ------------------------------------------------------------------------------
+
+test('the Model Rocketry badge is 3 in tall by the regulation: its citation is Fig A7-2\'s dimension arrow, not the app table', () => {
+  const spec = readSpec('model-rocketry');
+  assert.equal(spec.height_in, 3);
+  assert.equal(spec.size_source, 'regulation');
+  assert.match(spec.citation, /Fig A7-2/);
+  assert.doesNotMatch(spec.citation, /not re-read/);
+});
+
+// ---- 2. NCO and cadet flight caps are plain blue -------------------------------------------------------------
+
+test('NCO / cadet flight caps (men\'s, women\'s, legacy alias) are plain blue: the flap edge is a seam in the body\'s dark tone, not a lighter braid stroke (6.2.2.2.6)', () => {
+  for(const id of ['hat-flight-cap-men-cadet', 'hat-flight-cap-cadet', 'hat-flight-cap-women-cadet']){
+    const svg = readSvg(id), spec = readSpec(id);
+    assert.match(spec.name, /\(plain blue\)$/, `${id}: name`);
+    assert.doesNotMatch(svg, /#14337f|#243f93/i, `${id}: no lighter blue stroke on the flap edge`);
+    // the body and the seam share one tone family: every stroke in the art is a dark outline tone
+    const strokes = [...svg.matchAll(/stroke="(#[0-9a-f]{6})"/gi)].map(m => m[1].toLowerCase());
+    for(const c of strokes) assert.ok(['#03112f', '#06143f'].includes(c), `${id}: stroke ${c}`);
+  }
+});
+
+// ---- 3. overblouse collar ----------------------------------------------------------------------------------
+
+test('the overblouse collar leaves end on the first button\'s line or above it, so the badge 1/2 in above the ribbons is not under them (Figure 4.18, 4.2.6.2.7.1)', async () => {
+  for(const garment of ['garment-overblouse-female', 'garment-overblouse-female-long']){
+    const spec = await store.load(garment);
+    const button = core.anchor(spec, 'button_1_center');
+    for(const side of ['left', 'right']){
+      const poly = core.landmark(spec, 'collar_' + side).points;
+      const lowest = Math.max(...poly.map(p => p.y));
+      assert.ok(lowest <= button.y + 0.02, `${garment} ${side}: leaf reaches y ${lowest.toFixed(2)} in, first button at ${button.y.toFixed(2)} in`);
+    }
+  }
+});
+
+test('the first badge on the overblouse is whole: no collar leaf polygon crosses the pilot wings\' ink box', async () => {
+  const b = build('aviator', 'female', 'senior', 'Col', { femaleTop: 'overblouse' });
+  b.badges = [{ id: 'CAPPilot1_FA9D33EA587D8' }];
+  const scene = await P.composeUniform(b, store);
+  const wings = scene.layers.find(l => l.role === 'badge');
+  assert.ok(wings, 'pilot badge drawn');
+  const spec = await store.load('garment-overblouse-female');
+  for(const side of ['left', 'right']){
+    const poly = core.landmark(spec, 'collar_' + side).points;
+    // the wings' lower-left/lower-right band: the inner 0.9 in of each wing at the height of the roundel's lower half
+    const near = poly.filter(p => p.x > wings.x && p.x < wings.x + wings.w && p.y > wings.y + 0.3 && p.y < wings.y + wings.h);
+    assert.equal(near.length, 0, `${side} leaf has a vertex inside the wings' lower box: ${JSON.stringify(near)}`);
+  }
+});
+
+// FIX-ART-r4 round 2: the leaf's lower tip lies on the first button's line (Figure 4.18's size); with the ribbon stack of a decorated officer (three rows) the nameplate is already at its
+// lowest allowed place (4.2.6.2.6.1.2) and the pilot wings (1/2 in above the top row, 4.2.6.2.7.1) reach into the leaf's wedge: the engine says so rather than hiding the wing tip silently.
+const HARNESS = require('../scripts/render-builds.cjs');
+const SEVEN = [['distinguished_service_award', null], ['exceptional_service_award', null], ['meritorious_service_award', null], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon', null], ['cap_membership_ribbon', null], ['cap_command_service_ribbon', null]];
+
+test('a badge box that meets a collar leaf polygon is reported in the scene notes, and the leaf lies over it (the overblouse pilot wings over seven ribbons, whose leaves are in its body, so the badge is drawn without the leaf polygon); a badge clear of the leaves is not (Ethan 2026-11-10, B1: the collar goes over the badges)', async () => {
+  const under = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: SEVEN, badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
+  const wings = under.layers.find(l => l.role === 'badge');
+  assert.ok(wings && wings.clipOut && wings.clipOut.length, 'the wings are drawn without the leaf polygon, which shows the body\'s own leaf over them');
+  assert.ok(under.notes.some(n => /collar lies over part of the Pilot Badge: it keeps its place 1\/2 in above the ribbons or the badge below it, under the collar \(CAPR 39-1 4\.1\.11\.1\.1\.2\.3\.1/.test(n)), `notes: ${JSON.stringify(under.notes)}`);
+  const clear = await P.composeUniform(HARNESS.makeBuild({ uniform: 'aviator', gender: 'female', membership: 'senior', rank: 'Col', ribbonSel: [], badgeIds: ['CAPPilot1_FA9D33EA587D8'], opt: { femaleTop: 'overblouse' } }), store);
+  assert.ok(!clear.layers.find(l => l.role === 'badge').clipOut, 'no ribbons: the wings sit below the leaves');
+  assert.ok(!clear.notes.some(n => /collar lies over/i.test(n)), `notes: ${JSON.stringify(clear.notes)}`);
+});
+
+// ---- 6. overblouse sleeve chevron -----------------------------------------------------------------------------
+
+function inkPoints(id){
+  return [...readSvg(id).matchAll(/[ML](-?[\d.]+),(-?[\d.]+)/g)].map(m => [Number(m[1]) / 100, Number(m[2]) / 100]);
+}
+
+// Round-4 review of ddb0e91f: the first widening warped every outline point beyond |x| > 5 in down to the hem (the bodice flared and the side seam stepped
+// outward 1 in at the waist). The widening moves the sleeve's own run of the outline only: nothing below the armpit.
+function silhouettePoints(id){
+  const svg = readSvg(id), d = svg.match(/id="[^"]*silhouette" d="([^"]+)"/)[1];
+  const n = d.match(/-?\d*\.?\d+/g).map(Number), pts = [];
+  for(let i = 0; i + 1 < n.length; i += 2) pts.push([n[i], n[i + 1]]);   // inches from the neck centre line, y from the sheet's top
+  return pts;
+}
+
+async function chevronClearance(garment, rank, sleeve){
+  const spec = await store.load(garment);
+  const seam = core.landmark(spec, 'armhole_seam_right').points;
+  const seamX = y => {
+    for(let i = 0; i < seam.length - 1; i++){
+      const a = seam[i], c = seam[i + 1];
+      if((a.y - y) * (c.y - y) <= 0 && a.y !== c.y) return a.x + (c.x - a.x) * (y - a.y) / (c.y - a.y);
+    }
+    return y > seam[seam.length - 1].y ? seam[seam.length - 1].x : seam[0].x;
+  };
+  const scene = await P.composeUniform(build('aviator', 'female', 'senior', rank, { sleeve, femaleTop: 'overblouse' }), store);
+  const l = scene.layers.find(x => x.role === 'grade' && x.key === 'grade:sleeve-right');
+  assert.ok(l, `${garment} ${rank}: right chevron`);
+  assert.equal(l.w, 3.5 * P.helpers.EDGE_SX, 'the 3 1/2 in chevron seen edge-on at half width (SLEEVE1)');
+  const cx = l.x + l.w / 2, cy = l.y + l.h / 2, r = l.rotate * Math.PI / 180;
+  let worst = -Infinity;
+  for(const [px, py] of inkPoints(l.id)){
+    const dx = px * l.w / 3.5 - l.w / 2, dy = py - l.h / 2;
+    worst = Math.max(worst, cx + dx * Math.cos(r) - dy * Math.sin(r) - seamX(cy + dx * Math.sin(r) + dy * Math.cos(r)));
+  }
+  return { scene, spec, layer: l, worst };
+}
+// Read against the engine's placement, the art side's 0.1 in clearance (re-derived at the true shirt scale, 1.2036) measures 0.052 in (short) and
+// 0.075 in (long), both C/CMSgt, at the least: no ink past the seam, 0.05 in to spare is the floor kept here (the earlier sheets held 0.1 to the last
+// hundredth; art follow-up in .scratch/FOLLOWUPS.md, POST-SYNC sleeve clearance). The mirrored turn is exact to 0.01 deg: the sheets' anchors are
+// rounded to 0.01 in.
+const SEAM_CLEAR = 0.05;
+
+test('the 3 1/2 in sleeve chevron on the short overblouse lies between the outline and the armhole seam: no ink past the seam onto the bodice (4.2.6.2.3, D8)', async () => {
+  for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
+    const { scene, spec, layer: l, worst } = await chevronClearance('garment-overblouse-female', rank, 'short');
+    assert.ok(worst <= -SEAM_CLEAR, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least ${SEAM_CLEAR} in clear)`);
+    // D8 (SLEEVE1): the turn follows the sleeve's outer edge there (the engine's table of the sheet's outline), centred on it
+    const edge = require('../scripts/measure-sleeve-edge.cjs').compute()['garment-overblouse-female'].right;
+    const turn = Math.atan2(-(edge[2][0] - edge[0][0]), edge[2][1] - edge[0][1]) * 180 / Math.PI;
+    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, outer edge ${turn.toFixed(2)}`);
+    assert.ok(Math.abs(l.x + l.w / 2 - edge[1][0]) < 0.01, `${rank}: centred on the outer edge`);
+    assert.equal(l.clipSil, 'garment-overblouse-female');
+  }
+});
+
+test('the long overblouse states its sleeve anchors and its 3 1/2 in chevron lies between the outline and the armhole seam; the engine keeps no literal points for it (4.2.6.2.3, D8)', async () => {
+  const spec = await store.load('garment-overblouse-female-long');
+  for(const side of ['right', 'left']) for(const k of ['shoulder_seam_', 'elbow_', 'sleeve_bottom_', 'chevron_halfway_']) assert.ok(core.anchor(spec, k + side), `long overblouse: ${k}${side}`);
+  const sh = core.anchor(spec, 'shoulder_seam_right'), el = core.anchor(spec, 'elbow_right'), half = core.anchor(spec, 'chevron_halfway_right');
+  assert.ok(Math.abs(half.y - (sh.y + el.y) / 2) < 0.01, 'chevron_halfway is halfway between the shoulder seam and the elbow');
+  for(const rank of ['SSgt', 'TSgt', 'MSgt', 'SMSgt', 'CMSgt']){
+    const { layer: l, worst } = await chevronClearance('garment-overblouse-female-long', rank, 'long');
+    assert.ok(worst <= -SEAM_CLEAR, `${rank}: chevron ink ${worst.toFixed(3)} in past the armhole seam (want at least ${SEAM_CLEAR} in clear)`);
+    // D8 (SLEEVE1): at the chevron_halfway height, centred on the sleeve's outer edge there, turned along it
+    const edge = require('../scripts/measure-sleeve-edge.cjs').compute()['garment-overblouse-female-long'].right;
+    assert.ok(Math.abs((l.x + l.w / 2) - edge[1][0]) < 0.01 && Math.abs((l.y + l.h / 2) - half.y) < 0.01, `${rank}: centred on the outer edge at the chevron_halfway height`);
+    const turn = Math.atan2(-(edge[2][0] - edge[0][0]), edge[2][1] - edge[0][1]) * 180 / Math.PI;
+    assert.ok(Math.abs(l.rotate - turn) < 0.05, `${rank}: rotate ${l.rotate}, outer edge ${turn.toFixed(2)} (the engine's literal 31 deg is gone)`);
+  }
+});
+
+test('the overblouse sheets state their sleeve widening as an estimate (the regulation gives no sleeve width)', () => {
+  for(const id of ['garment-overblouse-female', 'garment-overblouse-female-long']){
+    const w = readSpec(id).dimensions.sleeve_widening;
+    assert.ok(w && w.outward_in > 0 && w.size_source === 'estimated', id);
+  }
+});
+
+test('the short overblouse bodice is as traced: the widening moves the sleeve run only, so the side seam runs smoothly from the armpit to the hem and the hem is not wider than the traced one (round-4 review of ddb0e91f)', () => {
+  const pts = silhouettePoints('garment-overblouse-female');
+  const hemY = Math.max(...pts.map(p => p[1])) - 1;
+  const hem = pts.filter(p => p[1] > 14 && p[1] <= hemY + 1);
+  const hemWidth = Math.max(...hem.map(p => p[0])) - Math.min(...hem.map(p => p[0]));
+  assert.ok(Math.abs(hemWidth - 11.062) < 0.01, `hem width ${hemWidth.toFixed(3)} in (traced 11.062)`);
+  // the picture-left side seam, from under the cuff down to the hem corner: no step, no flare past the traced 5.6 in
+  const belowCuffY = 12.4;   // the sleeve's cuff ends at y 12.16 in, so everything lower is bodice
+  const side = pts.filter(p => p[0] < 0 && p[1] > belowCuffY && p[1] < 20.1);   // above the hem's flat bottom edge
+  assert.ok(side.length > 40, 'side seam points');
+  for(const p of side) assert.ok(Math.abs(p[0]) < 5.6, `side seam point ${p} flares past the traced bodice`);
+  for(let i = 1; i < side.length; i++) assert.ok(Math.abs(side[i][0] - side[i - 1][0]) < 0.15, `step in the side seam at ${side[i]}`);
+  // the widening reaches no point of the bodice
+  const widest = Math.max(...pts.filter(p => p[1] > belowCuffY).map(p => Math.abs(p[0])));
+  assert.ok(widest < 5.6, `widest bodice point ${widest.toFixed(2)} in`);
+});
+
+// ---- 4, 5. the aviator shirts' collar states, the tie in its own group under the leaves (4.2.5.1, 4.2.5.1.4, 4.2.6.3) --------------------------
+// Art bb1b47a0 (LIVE8-2): the long sheets no longer draw a separate closed collar (the old group `closed-collar` and the `-tie` / `-tie-tab` overlays clipped by the leaves). All four
+// sheets draw the same standard pointed collar, the tie (or the tab) in group `tie` and the leaves in group `collar` after it, so the leaves lie over the tie; the tie group is the only
+// place the tie is drawn and the engine hides it when the tie option is off.
+
+const AVIATOR_SHEETS = [['male', 'short', 'garment-aviator-shirt-male'], ['male', 'long', 'garment-aviator-shirt-male-long'], ['female', 'short', 'garment-aviator-shirt-female'], ['female', 'long', 'garment-aviator-shirt-female-long']];
+const tieOverlays = scene => scene.layers.filter(l => /-tie(-tab)?$/.test(l.id || ''));
+const shirtLayer = (scene, figure) => scene.layers.find(l => l.key === 'base:jacket' && (figure ? l.figure === figure : !l.figure || l.figure === 1));
+
+// Art 66518f14 (LIVE12-ART 1; Ducky: "why is the collar closed on the aviator shirt if theres no tie"; CAPR 39-1 4.2.5.1.4, 4.2.6.3, 4.2.5.1.9, 4.2.6.9): the SHORT sheets now draw two
+// states, as the short Class B sheets do: group `collar`, the open camp collar (the default), then the tie group, then group `collar-closed`, the pointed leaves they drew before (ids
+// collar-closed-back / -right / -left) over a cover of the open collar, so the closed leaves lie over the tie. The long sheets still draw the one pointed collar after the tie.
+test('the aviator sheets: the long ones draw one collar state, pointed leaves after the tie group; the short ones the open collar, the tie, then the closed leaves over it; the tie stated as a landmark', async () => {
+  for(const [gender, sleeve, id] of AVIATOR_SHEETS){
+    const spec = await store.load(id), svg = readSvg(id), short = sleeve === 'short';
+    assert.doesNotMatch(svg, /id="[^"]*closed-collar[^"]*"/, `${id}: no old closed-collar group`); // the sheet's basis text may name the form; only a group id counts
+    const leaf = short ? 'collar-closed' : 'collar';
+    for(const part of ['back', 'right', 'left']) assert.match(svg, new RegExp(`id="${id}__${leaf}-${part}"`), `${id}: ${leaf}-${part}`);
+    const tieAt = svg.indexOf(`id="${id}__tie"`), collarAt = svg.indexOf(`id="${id}__collar"`), closedAt = svg.indexOf(`id="${id}__collar-closed"`);
+    if(short){
+      assert.ok(collarAt > 0 && tieAt > collarAt && closedAt > tieAt, `${id}: the open collar, then the tie, then the closed collar, so the closed leaves lie over the tie`);
+      assert.deepEqual([spec.landmarks.collar_states.open, spec.landmarks.collar_states.closed], ['collar', 'collar-closed'], `${id}: collar_states`);
+    }else{
+      assert.ok(tieAt > 0 && collarAt > tieAt, `${id}: the tie group comes before the collar group, so the leaves lie over the tie`);
+      assert.equal(closedAt, -1, `${id}: one collar state`);
+      assert.equal(spec.landmarks.collar_states, undefined, `${id}: no collar_states`);
+    }
+    const tie = core.landmark(spec, 'tie');
+    assert.ok(tie && tie.kind === (gender === 'female' ? 'tab' : 'tie'), `${id}: tie landmark ${JSON.stringify(tie)}`);
+    // the tie sits at the front of the neck, where the (closed) leaves meet it: the knot is level with the collar's front-of-neck vertex on both leaves
+    const knot = { x: tie.knot.x / 100, y: tie.knot.y / 100 };   // the landmark states hundredths of an inch
+    for(const side of ['left', 'right']){
+      const poly = core.landmark(spec, (short ? 'collar_closed_' : 'collar_') + side).points;
+      const near = poly.reduce((m, p) => Math.abs(p.x - knot.x) < Math.abs(m.x - knot.x) ? p : m, poly[0]);
+      assert.ok(Math.hypot(near.x - knot.x, near.y - knot.y) < 0.35, `${id} ${side}: the leaf's front-of-neck vertex ${near.x.toFixed(2)},${near.y.toFixed(2)} is at the knot ${knot.x},${knot.y}`);
+    }
+    // both states: the sheet's own group is the tie; no overlay is added, and the group is hidden exactly when the member turns it off. On the short sheets the closed collar shows with the
+    // tie and the open one without it.
+    const on = await P.composeUniform(build('aviator', gender, 'senior', 'Capt', { sleeve, tie: true }), store);
+    const off = await P.composeUniform(build('aviator', gender, 'senior', 'Capt', { sleeve, tie: false }), store);
+    assert.deepEqual(shirtLayer(on).hideGroups, short ? ['collar'] : undefined, `${id}: tie on, the tie group is drawn${short ? ', the open collar hidden' : ''}`);
+    assert.deepEqual(shirtLayer(off).hideGroups, short ? ['tie', 'collar-closed'] : ['tie'], `${id}: tie off, the group is hidden${short ? ' and the closed collar with it' : ''}`);
+    assert.equal(tieOverlays(on).length + tieOverlays(off).length, 0, `${id}: no separate tie overlay in either state`);
+  }
+});
+
+test('the aviator beside the blazer and the plain long aviator both draw the long shirt with its tie group shown, under the collar leaves (4.2.3.4, 4.2.4.3, 4.2.5.1.4, 4.2.6.3)', async () => {
+  for(const [uniform, gender] of [['aviator', 'male'], ['aviator', 'female'], ['aviator_blazer', 'male'], ['aviator_blazer', 'female']]){
+    const scene = await P.composeUniform(build(uniform, gender, 'senior', 'Capt', { sleeve: 'long', femaleTop: 'shirt' }), store);
+    const shirt = shirtLayer(scene, uniform === 'aviator_blazer' ? 2 : 0);
+    assert.ok(shirt, `${uniform} ${gender}: the shirt`);
+    assert.match(shirt.id, /^garment-aviator-shirt-(male|female)-long$/, `${uniform} ${gender}: the long shirt`);
+    assert.ok(!(shirt.hideGroups || []).includes('tie'), `${uniform} ${gender}: tie group shown`);
+    assert.ok(core.landmark(await store.load(shirt.id), 'tie'), `${uniform} ${gender}: the sheet states the tie it draws`);
+    assert.equal(tieOverlays(scene).length, 0, `${uniform} ${gender}: the tie is the sheet's group, not an overlay`);
+  }
+});

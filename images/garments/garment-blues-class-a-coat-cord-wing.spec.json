@@ -1,0 +1,81 @@
+{
+ "asset_id": "garment-blues-class-a-coat-cord-wing",
+ "name": "Men's Class A service dress coat: Wing CAC shoulder cord (red) (overlay, registered to garment-blues-class-a-coat)",
+ "size_in": {
+  "w": 25.7745,
+  "h": 32.5595
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2577.45,
+  3255.95
+ ],
+ "size_source": "estimated",
+ "size_basis": "Same box as garment-blues-class-a-coat; 0.5 in braid following the wearer's left armhole seam, the braid of base-art/cord-braid.js (the cord of the CAP honor guard uniform guidance figures); colours from assets/cords/cords.json. The regulation gives no cord dimension.",
+ "anchors": {
+  "top_center": [
+   1288.72666,
+   0
+  ],
+  "bottom_center": [
+   1288.72666,
+   3255.9545999999996
+  ],
+  "center": [
+   1288.72666,
+   1627.9772999999998
+  ],
+  "left_edge": [
+   0,
+   1627.9772999999998
+  ],
+  "right_edge": [
+   2577.45332,
+   1627.9772999999998
+  ],
+  "cord_start": [
+   2169.704499830498,
+   362.91552513306186
+  ],
+  "cord_end": [
+   2030.46666,
+   1535.98
+  ]
+ },
+ "landmarks": {
+  "cord": [
+   [
+    2169.73,
+    362.9
+   ],
+   [
+    2171.93,
+    665.4
+   ],
+   [
+    2106.63,
+    1100.7
+   ],
+   [
+    2030.43,
+    1536
+   ]
+  ]
+ },
+ "landmarks_note": "polygons are [[x,y]...] in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-a-coat",
+ "documented": [
+  "shoulder cords are worn on the left shoulder aligned along the shoulder seam, underneath the epaulet (CAPR 39-1 9.3)"
+ ],
+ "assumed": [
+  "cord thickness 0.5 in (the engine draws the shoulder cord 0.5 in across)",
+  "path along the armhole seam"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

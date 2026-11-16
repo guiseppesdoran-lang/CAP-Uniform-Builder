@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-commander-commendation-award-miniature",
  "name": "Commander's Commendation Award (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6504,
  "size_in": {
   "w": 0.625,
-  "h": 0.7632
+  "h": 0.6504
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  76.32
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_cmdrco01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7632 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 190 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.6911 x 0.7201 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.6911 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 308.2 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,124 +17,202 @@
   ],
   "bottom_center": [
    31.25,
-   76.32
+   65.04
   ],
   "center": [
    31.25,
-   38.16
+   32.52
   ],
   "left_edge": [
    0,
-   38.16
+   32.52
   ],
   "right_edge": [
    62.5,
-   38.16
+   32.52
   ],
   "ribbon_attach": [
-   30.79,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle -1.06 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "cmdrco01",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-commander-commendation-award",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Commander's Commendation Award"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-commander-commendation-award-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-commander-commendation-award",
   "spec": "../ribbons/ribbon-commander-commendation-award.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-commander-commendation-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9855,
-  "threshold": 0.95,
-  "colour_mae_0_255": 31.3,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
- },
- "palette": [
-  "#25201c",
-  "#524945",
-  "#887a6c",
-  "#d0cac5"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "cmdrco01b",
-   "cmdrco01s",
-   "cmdrco02",
-   "cmdrco02b",
-   "cmdrco02s",
-   "cmdrco02sb",
-   "cmdrco03",
-   "cmdrco03b",
-   "cmdrco03s",
-   "cmdrco03sb",
-   "cmdrco04",
-   "cmdrco04b",
-   "cmdrco04s",
-   "cmdrco04sb",
-   "cmdrco05",
-   "cmdrco05b",
-   "cmdrco05s",
-   "cmdrco06",
-   "cmdrco06b",
-   "cmdrco06s",
-   "cmdrco06sb",
-   "cmdrco07",
-   "cmdrco07b",
-   "cmdrco07s",
-   "cmdrco07sb",
-   "cmdrco08",
-   "cmdrco08b",
-   "cmdrco08s",
-   "cmdrco08sb",
-   "cmdrco09",
-   "cmdrco09b",
-   "cmdrco10",
-   "cmdrco11",
-   "cmdrco11b",
-   "cmdrco11s",
-   "cmdrco11sb",
-   "cmdrco12",
-   "cmdrco12b",
-   "cmdrco12s",
-   "cmdrco12sb",
-   "cmdrco13",
-   "cmdrco13b",
-   "cmdrco13s",
-   "cmdrco14",
-   "cmdrco16",
-   "cmdrco16b",
-   "cmdrco16s",
-   "cmdrco16sb",
-   "cmdrco17",
-   "cmdrco17b",
-   "cmdrco17s",
-   "cmdrco18",
-   "cmdrco21",
-   "cmdrco21b"
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/commendation.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js commendation --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-commander-commendation-miniature-medal (civil air patrol commander commendation miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-commander-commendation-miniature-medal",
+  "title": "civil air patrol commander commendation miniature medal",
+  "px": [
+   600,
+   600
   ],
-  "different_body": []
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/commander-commendation.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-commander-commendation-miniature-medal",
-  "local_photo": "medals-work/ref-hires/commander-commendation.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "commander-commendation.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 308.2,
+   "disc_diameter_px": 192.6,
+   "origin_px": [
+    296.6,
+    505.2
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 191,
-   "h": 232
+  "hang_angle_removed_deg": -1.06,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0075,
+   "ridge": [
+    0.2865,
+    0.2985
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "lettering": {
+   "stroke_in": 0,
+   "top_letters": 0,
+   "bottom_letters": 0,
+   "cap_height_top_in": null,
+   "cap_height_bottom_in": null
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.083,
+    "top": -0.43,
+    "neck": 0.06,
+    "shoulder": -0.34
+   },
+   "ring": {
+    "c": [
+     0.005,
+     -0.505
+    ],
+    "r": 0.145,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "The matte stippled field (the dots, pits and speckle of the textured ground inside and outside the C) is texture: it is drawn as one flat ground tone, not as dots.",
+   "Mirror reflections in the polished surfaces (the dark faces of the C and of the triangle, the white and blue glints on the bail and the base bar) are drawn as flat tones: dark face 26 and 18, bright bevels 215.",
+   "The blades' matte interior carries a fine engraved pattern that the photograph barely resolves: drawn as one flat tone.",
+   "The rim: the photograph shows a bright outer lip, a thin groove and a raised ridge; their radii (0.303 to 0.3125, 0.298 to 0.302, 0.2865 to 0.2985 in) are read from radial profiles on the lit left side.",
+   "The right and lower bevels of the C are dim in the photograph (the light comes from the upper left); their radii and the two slanted end cuts are fitted from the lit left side and from the end views, the end-cut angles are good to about 2 degrees.",
+   "The suspension ring is hidden by the ribbon: its centre and radius (0.145 in outer) are fitted to the visible lower arcs; the bail is a polished barrel whose glints are not drawn.",
+   "The triangle is not exactly symmetric in the photograph (side bars 31.7 and 29.3 degrees off vertical, apex 0.008 in right of the base middle): the measured corners are used as they are.",
+   "This photograph is a miniature (the disc is 0.625 in); no lettering exists on this medal face."
+  ],
+  "tones_luminance": {
+   "ground": 58,
+   "shadow": 12,
+   "base": 159,
+   "hi": 238,
+   "rim": 212,
+   "rim_hi": 244,
+   "metal": 140,
+   "metal_hi": 235,
+   "bail": 150,
+   "lip": 235
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 4.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#403834",
+   "shadow": "#120f0c",
+   "base": "#a59d98",
+   "hi": "#f2ebe7",
+   "rim": "#dad2cd",
+   "rim_hi": "#f6f0ec",
+   "lip": "#f0e9e5",
+   "metal": "#928984",
+   "metal_hi": "#f0e9e5",
+   "bail": "#9c938e"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.984,
+  "light_class_iou": 0.375,
+  "landmarks_checked": 19,
+  "landmark_max_dist_in": 0.0122,
+  "landmark_worst": [
+   [
+    "C inner bevel 20deg",
+    0.0122
+   ],
+   [
+    "propeller blade 2",
+    0.0072
+   ],
+   [
+    "C inner bevel -60deg",
+    0.0069
+   ],
+   [
+    "C outer bevel 20deg",
+    0.006
+   ],
+   [
+    "C inner bevel -100deg",
+    0.0056
+   ]
+  ],
+  "edge_recall_0p006in": 0.678,
+  "edge_recall_0p012in": 0.82,
+  "edge_precision_0p012in": 0.857,
+  "tone_mae_luminance": 40.6,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": [
+    68.75,
+    0
+   ],
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.24
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.984,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from commander-commendation.jpeg (reference only, never shipped). Reference check: the photograph is the miniature (the disc shows a large C round the CAP triangle and three-blade propeller): the CAP Commander's Commendation medal. Hang angle -1.06 deg of the photograph removed: the body hangs upright."
 }

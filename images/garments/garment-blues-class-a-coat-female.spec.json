@@ -14,6 +14,9 @@
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette traced from images/base/jacket_female.webp (612x753 px) at 0.047 in/px, then scaled by 0.88 so the coat is as wide as the men's coat plus the women's cut (CAPR 39-1 Figures 4.6 and 4.7a show the two coats at about the same width); before this factor the box was 27.71 x 33.49 in. No real garment was measured. Coat 29.00 in long. Buttons, nametag and other hardware keep their true size.",
+ "dimension_sources": {
+  "lapel_notch": "measured: the V of the owner's own service coat (photograph, a reference only, four points per lapel on both lapels) and the Honor Guard guidance figure, as ratios (base-art/lapel-notch.js); the peak, throat and collar's outer edge are this sheet's own, the vertex moves out along the seam and the collar's tip is new"
+ },
  "anchors": {
   "top_center": [
    1219.42,
@@ -35,6 +38,38 @@
    2438.83,
    1473.78
   ],
+  "shoulder_seam_right": [
+   388.08,
+   265.58
+  ],
+  "sleeve_bottom_right": [
+   271.48,
+   2878.04
+  ],
+  "elbow_right": [
+   234.34,
+   1702.45
+  ],
+  "chevron_halfway_right": [
+   319.35,
+   984.02
+  ],
+  "shoulder_seam_left": [
+   2050.75,
+   265.58
+  ],
+  "sleeve_bottom_left": [
+   2167,
+   2878.04
+  ],
+  "elbow_left": [
+   2204.49,
+   1702.45
+  ],
+  "chevron_halfway_left": [
+   2119.83,
+   984.02
+  ],
   "centerline_top": [
    1219.42,
    21.56
@@ -44,20 +79,52 @@
    2921.16
   ],
   "welt_top_center": [
-   1619.29,
+   1627.92,
    1034.88
   ],
   "ribbon_row_bottom_center": [
-   1619.29,
+   1627.92,
    1034.88
   ],
+  "gorge_seam_right_p1": [
+   764.46,
+   367.07
+  ],
+  "gorge_seam_right_p2": [
+   1017.99,
+   404.3
+  ],
+  "gorge_seam_right_mid": [
+   891.22,
+   385.69
+  ],
+  "lapel_insignia_rest_right": [
+   891.22,
+   385.69
+  ],
   "lapel_insignia_right": [
-   892.94,
-   319
+   891.22,
+   360.69
+  ],
+  "gorge_seam_left_p1": [
+   1674.38,
+   367.07
+  ],
+  "gorge_seam_left_p2": [
+   1420.84,
+   404.3
+  ],
+  "gorge_seam_left_mid": [
+   1547.6,
+   385.69
+  ],
+  "lapel_insignia_rest_left": [
+   1547.6,
+   385.69
   ],
   "lapel_insignia_left": [
-   1537.98,
-   319
+   1547.6,
+   360.69
   ],
   "button_1_center": [
    1169.78,
@@ -84,10 +151,10 @@
    "h": 74.98
   },
   "welt_pocket": {
-   "x": 1434.49,
+   "x": 1447.42,
    "y": 1034.88,
-   "w": 369.6,
-   "h": 52.8
+   "w": 361,
+   "h": 80
   },
   "button_1": {
    "x": 1126.03,
@@ -109,12 +176,8 @@
   },
   "lapel_right": [
    [
-    1029.16,
-    439.3
-   ],
-   [
-    905.08,
-    484.79
+    846.47,
+    414.13
    ],
    [
     770.7,
@@ -125,26 +188,22 @@
     617.14
    ],
    [
-    936.06,
+    921.8,
     813.65
    ],
    [
-    1070.52,
+    1062.34,
     1030.74
    ],
    [
-    1215.28,
-    1144.53
+    1244.23,
+    1311.64
    ]
   ],
   "lapel_left": [
    [
-    1409.67,
-    439.3
-   ],
-   [
-    1533.75,
-    484.79
+    1592.36,
+    414.13
    ],
    [
     1668.13,
@@ -155,16 +214,16 @@
     617.14
    ],
    [
-    1502.78,
+    1517.03,
     813.65
    ],
    [
-    1368.31,
+    1376.5,
     1030.74
    ],
    [
-    1223.55,
-    1144.53
+    1243.44,
+    1236.14
    ]
   ],
   "shirt": [
@@ -203,63 +262,113 @@
   ],
   "tie_tab": [
    [
-    1212.2,
-    244.9
+    1219.42,
+    227.57
    ],
    [
-    1405.54,
-    447.57
+    1469.69,
+    508.38
    ],
    [
-    1380.72,
-    534.42
+    1445.66,
+    601.04
    ],
    [
-    1215.28,
-    344.17
+    1219.42,
+    327.62
    ],
    [
-    1044.65,
-    534.42
+    993.17,
+    601.04
    ],
    [
-    1023.97,
-    443.43
+    969.14,
+    508.38
    ]
   ],
+  "notch_right": [
+   [
+    745.68,
+    379.28
+   ],
+   [
+    846.5,
+    414.12
+   ],
+   [
+    770.66,
+    517.88
+   ]
+  ],
+  "notch_left": [
+   [
+    1693.16,
+    379.28
+   ],
+   [
+    1592.33,
+    414.12
+   ],
+   [
+    1668.17,
+    517.88
+   ]
+  ],
+  "sleeve_flat_view": {
+   "left": {
+    "x": 2889.92,
+    "y": 253.56
+   },
+   "right": {
+    "x": -451.09,
+    "y": 253.56
+   }
+  },
   "ribbon_slot": {
-   "x": 1413.03,
+   "x": 1421.68,
    "y": 884.88,
    "w": 412.5,
    "h": 150
   }
  },
- "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
+ "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box; sleeve_flat_view {left:{x,y},right:{x,y}} is where the top_center of the flat sleeve asset <this id>-sleeve-flat-left / -right sits beside the figure (outboard of each arm, the sleeve shoulder seam point at the figure shoulder seam height, 1 in clear of the sleeve outline; it lies outside this artwork box)",
  "dimensions": {
   "coat_length_in": 29,
   "max_width_in": 23.95,
   "welt_in": [
-   3.7,
-   0.53
+   3.61,
+   0.8
   ],
   "buttons": 3,
   "button_dia_in": 0.875,
   "nameplate_in": [
    3.375,
    0.75
-  ]
+  ],
+  "lapel_notch": {
+   "opening_deg": 72.9,
+   "depth_in": 0.93,
+   "mouth_in": 1.408,
+   "collar_arm_in": 1.067,
+   "lapel_arm_in": 1.285,
+   "depth_over_mouth": 0.661,
+   "mouth_over_lapel_width": 0.524,
+   "depth_over_lapel_width": 0.346
+  }
  },
  "documented": [
   "single breasted, three buttons (Wing and Star or CAP Crest), one welt pocket upper left, two lower pocket flaps (CAPR 39-1 4.1.9.2)",
   "right panel laps over the left on the women's coat (as in the base image)",
   "blouse collar shows above the coat collar; inverted-V tie tab mandatory (4.1.9.5, 4.1.4.4)",
+  "measured on CAPR 39-1 Fig 4.7a (PDF page 73 at 8x, 57.78 px/in from its 3 3/8 in nameplate; LIVE12-ART 3): welt pocket 3.61 x 0.80 in, 2.28 to 5.89 in from the centre line, top 10.13 in below y 0; lapel outer edge from l2 down a straight line |x| = 8.105 - 0.6475 y (both lapels traced, rms 0.03 in) to the front edge, the under (wearer's left) lapel ending there at y 12.15 in, the over (right) one at y 12.90 in beside the top button; front edge from the V's point curving to x 0.25 in by y 12.30 in",
+  "ribbon_slot: three across (4.125 x 1.5 in, 1 3/8 x 3/8 in ribbons, four rows), centred on the welt, its bottom on the welt top (4.1.9.4.3). Fig 4.7a itself draws a four-across rack 5.12 in wide over its 3.61 in welt, and its lapel edge crosses the rack's inner upper corner",
   "nameplate centred on wearer's right between sleeve seam and lapel, bottom even with the bottom of the ribbons (4.1.9.4.2)"
  ],
  "assumed": [
   "px-to-inch scale",
-  "welt size",
   "button diameter 7/8 in",
-  "lapel, blouse and tie-tab geometry read off the base image",
+  "notch, lapel peak, blouse and tie-tab geometry read off the base image",
+  "the notch is the owner's coat photograph's V (opening 72.9 deg, depth 0.66 of its mouth, collar arm 0.83 of the lapel arm) laid on this sheet's own lapel peak, throat and collar edge: it matches the photograph against the lapel's width (mouth 0.52 against 0.57, depth 0.35 against 0.37), but the seam falls 8 deg toward the throat here where every reference's rises, and the vertex sits at 0.71 of the way from the collar's top to the peak where the photograph's is 0.82",
   "lower pocket flaps are not drawn (barely visible in the base image)",
   "colours sampled from the base image",
   "nameplate size (3.375 x 0.75 in = Vanguard CAP0599M cadet name plate)"

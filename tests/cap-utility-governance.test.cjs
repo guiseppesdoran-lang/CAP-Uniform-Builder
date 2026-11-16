@@ -8,16 +8,14 @@ const source = readAppSource();
 
 test('National Staff uses a dedicated OCP sleeve patch selection', () => {
   assert.match(source, /'national_staff_ocp_patch'/);
-  assert.match(source, /img:'badges\/utility\/national_staff_badge\.(?:png|webp)'/);
+  assert.ok(require('../data/patch-art.js').national_staff_ocp_patch.img);
   assert.match(source, /authorizedUniforms:\['ocp'\]/);
   assert.match(source, /'national_staff_badge':'national_staff_ocp_patch'/);
 });
 
 test('utility uniforms expose both fabric badge and patch selection', () => {
-  assert.match(source, /<section id="groupBadges" class="panelBlock">/);
+  assert.match(source, /<section id="groupBadges" class="panelBlock itemCard" data-card="badges">/);
   assert.match(source, /by\('groupBadges'\)\.classList\.toggle\('hidden', !auth\.showBadges && !planned\)/);
-  assert.match(source, /badgeCommand\.classList\.toggle\('hidden', !auth\.showBadges\)/);
-  assert.match(source, /patchCommand\.classList\.toggle\('hidden', !auth\.showPatches\)/);
   for(const id of ['corporate_field','abu','ocp','flight_suit']){
     assert.match(source, new RegExp(`${id}:\\{ showBadges:true, showPatches:true \\}`));
   }
@@ -25,10 +23,12 @@ test('utility uniforms expose both fabric badge and patch selection', () => {
 
 test('utility badge picker previews and renders fabric-only badge assets', () => {
   assert.match(source, /function capubUtilityBadgePreviewUrl\(id\)/);
-  assert.match(source, /badges\/utility\/\$\{id\}\.png/);
-  assert.match(source, /class="utilityBadgePreview"/);
+  // Previews use the badge's field artwork from the badge catalog.
+  assert.match(source, /CAPUBBadgeCatalog\.art\(id, 'field'\)/);
+  // The chooser's tiles take the badge's picture from getBadgeAssetPath, which a field uniform answers with the field art (the sidebar list of cards is gone).
+  assert.match(source, /getBadgeAssetPath = function capubGetBadgeAssetPathUtilityAware\(id\)/);
   assert.match(source, /Never fall back to metal\/non-fabric artwork on a utility uniform/);
-  assert.match(source, /return \[`badges\/utility\/\$\{id\}\.png`\]/);
+  assert.match(source, /return \[capubFieldBadgePath\(id\)\]/);
   assert.match(source, /const selected = \[\.\.\.new Set\(State\.badges \|\| \[\]\)\]/);
   assert.doesNotMatch(source, /utilityBadgePatch:true/);
 });

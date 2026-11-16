@@ -1,0 +1,582 @@
+#!/usr/bin/env node
+'use strict';
+// Headless render harness for the SVG uniform engine (js/engine).
+//
+//   node scripts/render-builds.cjs --all --out /tmp/x [--ppi 40]
+//   node scripts/render-builds.cjs builds.json --out /tmp/x
+//
+// For every build it writes <out>/<name>.png (rendered by headless Chrome), <out>/<name>.scene.json
+// (the scene composeUniform makes in node: layers in inches, notes), plus <out>/index.html (contact
+// sheet) and <out>/summary.json. See scripts/render-builds.md. No npm dependencies.
+
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const http = require('node:http');
+const { spawn } = require('node:child_process');
+
+const ROOT = path.join(__dirname, '..');
+const req = p => require(path.join(ROOT, p));
+
+const core = req('js/engine/core.js');
+const G = req('js/engine/grades.js');
+const P = req('js/engine/profiles.js');
+req('js/engine/profiles-field.js');
+req('js/engine/profiles-dress.js');
+req('js/engine/profiles-polo.js');
+const RULES = req('data/uniform-rules.js');
+const RA = req('data/ribbon-awards.js');
+const BADGES = req('data/badge-catalog.js');
+const ROTC = req('data/rotc-ribbons.js');
+// An engine note that says a requested piece was left out of the picture because its drawing is missing: '<Piece> cannot be shown
+// on this uniform' (and the shorter forms of the same sentence), a crop of the old sleeve drawing, no full patch artwork (the harness's
+// own patch note). Notes that trim a selection by rule ('At most two badges ... the rest are not shown') are not missing art and do not match.
+const MISSING_ART = /\bcannot be shown\b/i;
+const NOT_DRAWN = /not drawn|only a crop|no full patch artwork|\bcannot be shown\b/i;
+
+const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
+const manifestIds = new Set(manifest.assets.map(a => a.id));
+// A manifest path can name a picture (the official unit emblems are PNGs the browser draws as pictures, never specs): reading one as a spec is a
+// rejected promise (the store then keeps the manifest's own record of it), not a JSON.parse exception thrown out of the loader.
+const nodeStore = () => core.createSpecStore(manifest, p => new Promise((resolve, reject) => {
+  try{
+    if(!/\.json$/i.test(p)) throw new Error(`${p} is a picture, not a spec`);
+    resolve(JSON.parse(fs.readFileSync(path.join(ROOT, 'images', p), 'utf8')));
+  }catch(e){ reject(e); }
+}));
+
+// ---- arguments ---------------------------------------------------------------------------------
+
+function parseArgs(argv){
+  const a = { all: false, out: null, ppi: 40, pad: 0.4, only: null, jobs: 4, file: null, measure: false, clip: null, svg: false };
+  for(let i = 0; i < argv.length; i++){
+    const t = argv[i];
+    if(t === '--all') a.all = true;
+    else if(t === '--measure') a.measure = true;
+    else if(t === '--svg') a.svg = true;
+    else if(t === '--clip'){ a.clip = String(argv[++i]).split(',').map(Number); if(a.clip.length !== 4 || a.clip.some(n => !Number.isFinite(n))) throw new Error('--clip x,y,w,h in inches'); }
+    else if(t === '--out') a.out = argv[++i];
+    else if(t === '--ppi') a.ppi = Number(argv[++i]);
+    else if(t === '--pad') a.pad = Number(argv[++i]);
+    else if(t === '--only') a.only = new RegExp(argv[++i]);
+    else if(t === '--jobs') a.jobs = Math.max(1, Number(argv[++i]));
+    else if(t === '-h' || t === '--help') a.help = true;
+    else if(t.startsWith('--')) throw new Error(`Unknown option ${t}`);
+    else a.file = t;
+  }
+  return a;
+}
+const USAGE = `Usage:
+  node scripts/render-builds.cjs --all --out DIR [--ppi 40] [--pad 0.4] [--only REGEX] [--jobs 4] [--measure]
+  node scripts/render-builds.cjs builds.json --out DIR [same options]
+  --clip x,y,w,h renders only that box of the scene (inches, scene coordinates) at --ppi, for close-ups of a large uniform sheet.
+  --svg also writes <name>.svg, the drawing as the page serializes it, its engraved font embedded (for another rasterizer: qlmanage -t renders it with WebKit).
+  --measure draws the measurement overlay (the page's Measurements button) on every build; a build with
+  opt.overlay: true gets it alone.`;
+
+// ---- turning a build spec into the engine's build ---------------------------------------------
+
+// The flight jacket is an optional add-on (8.2.7, 8.3.7; LIVE7-4): the harness starts it where the page does (GARMENT_DEFAULTS in js/uniform-view.js, off), so the matrix
+// shows what a member sees first; a build that wants the jacket states opt.jacket: true (the matrix keeps flight builds that do).
+const PAGE_GARMENT_DEFAULTS = (() => { const m = /const GARMENT_DEFAULTS = (\{[\s\S]*?\n  \});/.exec(fs.readFileSync(path.join(ROOT, 'js/uniform-view.js'), 'utf8')); if(!m) throw new Error('js/uniform-view.js: GARMENT_DEFAULTS not found'); return Function(`return ${m[1]}`)(); })();
+const GARMENT_DEFAULTS = { sleeve: 'short', femaleTop: 'shirt', underlayer: 'shirt', skirt: 'a-line', headgear: 'auto', chevron: '', scarf: false, jacket: PAGE_GARMENT_DEFAULTS.jacket === true, esPatch: 'none', noGradeTrack: 'officer', plateGrade: true };
+
+const dbg = (...a) => { if(process.env.RB_DEBUG) console.error('[render-builds]', ...a); };
+// A JROTC/ROTC ribbon is its own sheet (data/rotc-ribbons.js), not a 'ribbon-' sheet.
+const ribbonAsset = id => ROTC.isRotcRibbonId(id) ? ROTC.get(id).asset : 'ribbon-' + String(id).replace(/_/g, '-');
+
+// The order the page wears a selection in (js/render-core.js sortRibbons, CAPR 39-3 order of precedence,
+// highest first): federal awards (including the Air Medal and the Aerial Achievement Medal in the CAP
+// list), then the AFOEA, then the CAP awards in the catalog's ribbonList order. Military ribbons ('military:'
+// ids, MILITARY_RIBBON_PREFIX in js/catalog.js) go first, as sortRibbons puts them before the CAP and federal
+// CAP-list ribbons; their own order (compareAwardsUniversal, a browser-only module) is not available in node,
+// so they keep the order given. Other unknown ids go after the known CAP ribbons.
+const FEDERAL_IN_CAP_LIST = ['air_medal', 'air_force_aerial_achievement_medal'];
+function precedenceKey(id, prec){
+  if(String(id).startsWith('military:')) return [0, -1];
+  if(FEDERAL_IN_CAP_LIST.includes(id)) return [0, FEDERAL_IN_CAP_LIST.indexOf(id)];
+  if(id === 'Air_Force_Organizational_Excellence_Award') return [0.5, 0];
+  if(ROTC.isRotcRibbonId(id)) return [2, ROTC.ribbons.findIndex(r => r.id === id)]; // after the CAP awards, before foreign ones (39-1 11.2.1)
+  return prec.has(id) ? [1, prec.get(id)] : [1, 1e9];
+}
+function sortByPrecedence(sel){
+  const prec = precedenceIndex();
+  const entries = (sel || []).map((entry, i) => ({ entry, i, k: precedenceKey(Array.isArray(entry) ? entry[0] : entry, prec) }));
+  entries.sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.i - b.i);
+  return entries.map(e => e.entry);
+}
+
+// ribbonSel entries: [id, awardValue?, awardLabel?]. Same resolution the page makes (uniform-view.js),
+// which sorts the member's ribbons by precedence first: so does this, unless the build says
+// ribbonOrder: 'as-listed'.
+function ribbonsFrom(sel, membership, order){
+  const out = [];
+  for(const entry of order === 'as-listed' ? (sel || []) : sortByPrecedence(sel)){
+    const [id, awardValue, awardLabel] = Array.isArray(entry) ? entry : [entry];
+    RA.resolve(id, { awardValue, awardLabel, membership }).forEach((p, i) => out.push({
+      key: i ? `ribbon:${id}#${i}` : `ribbon:${id}`, id,
+      title: id + (i ? ' (additional ribbon)' : ''), asset: ribbonAsset(id), devices: p.devices, centered: p.centered
+    }));
+  }
+  return out;
+}
+// Patches as the page hands them to the engine (js/uniform-view.js buildPatches): a spec's `patchRefs` are
+// [{id, kind: 'unit'|'general', label?, slot?}]. A patch's picture is its row in data/patch-art.js, an OCP variant's the base patch's (OCP_BASE
+// for the ids that do not follow the name): its SVG (`asset`), or the picture of a patch waiting for its vector (`href`); a patch with neither is
+// left off with the page's note.
+function patchMeta(){
+  const src = fs.readFileSync(path.join(ROOT, 'js/catalog.js'), 'utf8');
+  const start = src.indexOf('const PATCH_META = ') + 'const PATCH_META = '.length;
+  let depth = 0, i = start;
+  for(; i < src.length; i++){ if(src[i] === '{') depth++; else if(src[i] === '}' && !--depth) break; }
+  return Function(`return ${src.slice(start, i + 1)}`)();
+}
+const OCP_BASE = { 'TN-330_ocp_patch': 'tn330_ocp_patch' };
+// A patch's picture: a row of data/patch-art.js (by patch id), else a unit emblem of data/unit-patch-art.js (by patch id or charter). An official emblem is a
+// PNG, handed over as a picture with its spec's size (the page does the same: js/uniform-view.js buildPatches); an SVG is handed over as its asset.
+let UNIT_ROWS = null;
+function unitRow(id){
+  UNIT_ROWS = UNIT_ROWS || req('data/unit-patch-art.js');
+  const key = String(id || '');
+  return UNIT_ROWS.find(r => r.patchId === key) || UNIT_ROWS.find(r => r.charter && r.charter.toUpperCase() === key.toUpperCase()) || null;
+}
+function patchesFrom(refs){
+  const art = req('data/patch-art.js'), meta = patchMeta();
+  const patches = [], notes = [];
+  for(const ref of refs || []){
+    const row = art[ref.id] || art[OCP_BASE[ref.id]] || art[String(ref.id).replace(/_ocp_patch$/, '_patch')];
+    const unit = row ? null : unitRow(ref.id);
+    const label = ref.label || (meta[ref.id] && meta[ref.id].label) || (unit && unit.label) || ref.id;
+    if(!row && !unit){ notes.push(`${label} has no full patch artwork yet, so it is not shown`); continue; }
+    if(unit){
+      const raster = /\.png$/i.test(unit.img);
+      patches.push({ id: unit.patchId, title: label, asset: raster ? null : unit.asset, href: raster ? '/images/' + unit.img : null, aspect: unit.w / unit.h, size: raster ? { w: unit.w, h: unit.h } : null,
+        slot: ref.kind === 'hhq' ? 'L_SHOULDER' : ref.kind === 'unit' || !ref.slot ? 'R_SHOULDER' : ref.slot, kind: ref.kind || 'unit', echelon: ref.echelon || (['wing', 'region', 'national'].includes(unit.echelon) ? unit.echelon : null) });
+      continue;
+    }
+    const raster = /\.png$/i.test(row.img);
+    patches.push({ id: ref.id, title: label, asset: raster ? null : (row.asset || null), href: raster || !row.asset ? '/images/' + row.img : null, aspect: raster ? row.w / row.h : 1, size: raster ? { w: row.w, h: row.h } : null,
+      slot: ref.kind === 'unit' ? 'R_SHOULDER' : (ref.slot || (meta[ref.id] && meta[ref.id].slotHint) || 'L_SHOULDER'), kind: ref.kind || 'general',
+      echelon: ref.echelon || (meta[ref.id] && meta[ref.id].echelon) || null });
+  }
+  return { patches, notes };
+}
+
+// One miniature medal per award; devices of the extra ribbons stay on the one medal (uniform-view.js).
+function medalsFrom(ribbons){
+  const list = [];
+  for(const r of ribbons.filter(r => !ROTC.isRotcRibbonId(r.id))){ // no miniature medal for a JROTC/ROTC ribbon
+    const prev = list.find(x => x.id === r.id);
+    if(prev){ prev.devices = [...prev.devices, ...(r.devices || [])]; continue; }
+    list.push(Object.assign({}, r, { devices: [...(r.devices || [])] }));
+  }
+  return list.map(r => ({ key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, ribbonAsset: r.asset, medal: `medal-${r.asset.replace(/^ribbon-/, '')}-miniature`, devices: r.devices, centered: r.centered }));
+}
+
+function makeBuild(spec){
+  const membership = spec.membership || 'senior';
+  const rank = spec.rank || 'Capt';
+  const b = {
+    uniform: spec.uniform || 'flight_suit',
+    gender: spec.gender === 'female' ? 'female' : 'male',
+    membership,
+    grade: G.gradeInfo(membership, rank, { firstSergeant: !!spec.firstSergeant, track: spec.track || (spec.opt && spec.opt.noGradeTrack), commandChief: !!spec.commandChief }),
+    opt: Object.assign({}, GARMENT_DEFAULTS, spec.opt || {}),
+    name: Object.assign({ first: 'Pat', last: 'Doe', show: true }, spec.name || {}),
+    ribbons: spec.ribbons || ribbonsFrom(spec.ribbonSel, membership, spec.ribbonOrder),
+    medals: spec.medals || [],
+    badgeChoices: spec.badgeChoices || {},
+    badges: spec.badges || (spec.badgeIds || []).map(id => ({ id, title: (BADGES.get && BADGES.get(id) && BADGES.get(id).name) || id, level: null })),
+    command: spec.command || null,
+    militaryBadges: spec.militaryBadges || [],
+    patches: spec.patches || [],
+    cord: spec.cord || null,
+    cordColour: spec.cordColour || null,
+    cordOnTop: !!spec.cordOnTop
+  };
+  // The member's order of badges of equal standing, as the page hands it over (State.badgeOrder, { occupational: [badge ids, highest first] }): a build that states none has no such field.
+  if(spec.badgeOrder) b.badgeOrder = spec.badgeOrder;
+  // The Honor Guard Uniform (js/engine/profiles-dress.js honorGuard): { role: 'guard' | 'flag', chinstrap: 'up' | 'down' }; a build without it has no such field.
+  if(spec.ceremonial) b.ceremonial = Object.assign({}, spec.ceremonial);
+  if(spec.patchRefs){ const r = patchesFrom(spec.patchRefs); b.patches = [...b.patches, ...r.patches]; b.harnessNotes = r.notes; }
+  if(spec.medalSel){ b.medals = medalsFrom(b.ribbons); b.ribbons = []; }
+  return b;
+}
+
+// ---- the standard matrix (--all) --------------------------------------------------------------
+
+const MEMBERS = [
+  { tag: 'cadet-C-SSgt', membership: 'cadet', rank: 'C/SSgt',
+    ribbons: [['wright_brothers_award'], ['hap_arnold_achievement'], ['curry_achievement'], ['cap_achievment_award', 'capub_total_7'], ['community_service_ribbon'], ['cadet_special_activity_ribbon'], ['encampment_ribbon']] },
+  { tag: 'cadet-C-Maj', membership: 'cadet', rank: 'C/Maj',
+    ribbons: [['mitchell_award', 'earned_cos_star'], ['armstrong_achievement'], ['rickenbacker_achievement'], ['wright_brothers_award'], ['curry_achievement'], ['cap_achievment_award', 'capub_total_7'], ['encampment_ribbon']] },
+  { tag: 'senior-SMSgt', membership: 'senior', rank: 'SMSgt',
+    ribbons: [['unit_citation_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_membership_ribbon'], ['cap_leadership_ribbon'], ['red_service_ribbon'], ['search_find_ribbon'], ['encampment_ribbon']] },
+  { tag: 'senior-Capt', membership: 'senior', rank: 'Capt',
+    ribbons: [['meritorious_service_award'], ['commander_commendation_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_leadership_ribbon'], ['cap_membership_ribbon'], ['red_service_ribbon'], ['search_find_ribbon']] },
+  { tag: 'senior-Col', membership: 'senior', rank: 'Col',
+    ribbons: [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_membership_ribbon']] },
+  // A general officer wears the general officer cap braid, epaulets, mess boards and belt buckle
+  // (6.2.2.2.4, 4.1.1.1.1.1, 4.1.11.1.1.5), none of which a Col build shows.
+  { tag: 'senior-MajGen', membership: 'senior', rank: 'Maj Gen',
+    ribbons: [['distinguished_service_award'], ['exceptional_service_award'], ['meritorious_service_award'], ['cap_achievment_award', 'capub_total_7'], ['cap_gill_robb_wilson_ribbon'], ['cap_command_service_ribbon'], ['cap_membership_ribbon']] }
+];
+const AVIATION_BADGE = { cadet: 'AirCrew1_DB3F0FCC3650F', senior: 'CAPPilot1_FA9D33EA587D8' };
+const SPECIALTY_BADGE = 'emergency_services_badge';
+// The OCP, ABU and Corporate Field Uniform wear only badges with genuine field artwork (data/badge-catalog.js, LIVE-FIELD B6): the Emergency
+// Services badge has none, so their matrix builds wear the Ground Team badge as the second badge.
+const FIELD_UNIFORMS = new Set(['ocp', 'abu', 'corporate_field']);
+// The flight suit name tag carries one badge by default and a second if the member adds it (Ethan, 2 November 2026, over his B8 cut to one; CAPR 39-1
+// 8.2.4.1, 8.3.4.1): the flight suits' matrix builds wear the aviation badge alone, the default.
+const OCCUPATIONAL_BADGE = 'ground_team_basic_badge';
+const FLIGHT_UNIFORMS = new Set(['flight_suit', 'corporate_flight_suit']);
+const CHAPLAIN_BADGE = 'christian_chaplin';
+const SHOULDER_CORD = 'wing';
+
+// Ribbon ids in CAPR 39-3 precedence order (the ribbonList in js/catalog.js), highest first.
+function precedenceIndex(){
+  const src = fs.readFileSync(path.join(ROOT, 'js/catalog.js'), 'utf8');
+  const m = /const ribbonList = (\[[\s\S]*?\n\]);/.exec(src);
+  if(!m) return new Map();
+  const list = Function(`return ${m[1]}`)();
+  return new Map(list.map((id, i) => [id, i]));
+}
+
+function matrix(){
+  const prec = precedenceIndex();
+  const ok = [], skipped = [], warnings = [];
+  const aliasOf = id => id.toLowerCase() === 'air_force_organizational_excellence_award' ? 'Air_Force_Organizational_Excellence_Award' : id;
+  for(const uniform of Object.keys(RULES.RULES)){
+    const rule = RULES.RULES[uniform];
+    for(const gender of ['male', 'female']){
+      for(const m of MEMBERS){
+        const name = `${uniform}-${gender}-${m.tag}`;
+        if(!RULES.isUniformAllowedFor(uniform, m.membership, { rank: m.rank })){
+          skipped.push({ name, reason: `${uniform} is not offered to ${m.membership} ${m.rank}` });
+          continue;
+        }
+        const spec = { uniform, gender, membership: m.membership, rank: m.rank, name: { first: 'Pat', last: 'Doe', show: true } };
+        spec.opt = { rackColumns: 3, rackArrangement: 'lapel', miniStyle: 'mounting' };
+        const mini = RULES.allowsMiniMedals(uniform);
+        if(RULES.allowsRibbons(uniform) || mini){
+          const sel = m.ribbons.map(r => [aliasOf(r[0]), r[1]]).filter(([id]) => {
+            const good = manifestIds.has(ribbonAsset(id)) && RA.resolve(id, {}).length;
+            if(!good) warnings.push(`${name}: ribbon ${id} has no artwork or no resolver; left out`);
+            return good;
+          }).sort((a, b) => (prec.has(a[0]) ? prec.get(a[0]) : 1e9) - (prec.has(b[0]) ? prec.get(b[0]) : 1e9));
+          spec.ribbonSel = sel;
+          if(mini) spec.medalSel = true;
+        }
+        if(rule.chaplainBadgeOnly){
+          if(m.membership === 'senior') spec.badgeIds = [CHAPLAIN_BADGE];
+        } else {
+          const cap = rule.badgeCap == null ? 2 : rule.badgeCap;
+          spec.badgeIds = [AVIATION_BADGE[m.membership], FIELD_UNIFORMS.has(uniform) ? OCCUPATIONAL_BADGE : SPECIALTY_BADGE].slice(0, FLIGHT_UNIFORMS.has(uniform) ? 1 : Math.max(cap, 0));
+        }
+        if(RULES.allowsShoulderCord(uniform, m.membership)) spec.cord = SHOULDER_CORD;
+        ok.push({ name, build: spec });
+      }
+    }
+  }
+  // The polo's other shirts and options (CAPR 39-1 5.3): the long sleeve, the tactical and the screen-printed shirt, the embroidered duty title in place of
+  // the badge, no name, and the women's choice of the men's cut. One senior Capt each, both cuts; a variant waits for the art it draws.
+  if(RULES.RULES.polo){
+    const POLO_VARIANTS = [
+      ['long', { sleeve: 'long' }],
+      ['tactical', { poloShirt: 'tactical' }],
+      ['tactical-long', { poloShirt: 'tactical', sleeve: 'long' }],
+      ['print', { poloShirt: 'print' }],
+      ['print-long', { poloShirt: 'print', sleeve: 'long' }],
+      ['title', { poloMark: 'title', dutyTitle: 'Squadron Commander' }],
+      ['no-name', { poloName: false }]
+    ];
+    for(const gender of ['male', 'female']){
+      for(const [tag, opt] of POLO_VARIANTS){
+        const name = `polo-${gender}-senior-Capt-${tag}`;
+        ok.push({ name, build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: Object.assign({ rackColumns: 3 }, opt), badgeIds: [AVIATION_BADGE.senior] } });
+      }
+      if(gender === 'female') ok.push({ name: 'polo-female-senior-Capt-mens-cut', build: { uniform: 'polo', gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { poloCut: 'male' }, badgeIds: [AVIATION_BADGE.senior] } });
+    }
+  }
+  // The flight jacket is an add-on that starts off, so the plain flight builds above show the suit alone; one build per flight uniform carries it (opt.jacket: true) so
+  // the jacket stays covered (CAPR 39-1 8.2.7, 8.3.7).
+  for(const uniform of ['flight_suit', 'corporate_flight_suit']){
+    if(!RULES.RULES[uniform]) continue;
+    ok.push({ name: `${uniform}-male-senior-Capt-jacket`, build: { uniform, gender: 'male', membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { jacket: true }, badgeIds: [AVIATION_BADGE.senior] } });
+  }
+  // The Class B and aviator shirts' tie (LIVE7-3; 4.1.11.1.1.3, 4.1.12.4, 4.2.5.1.4, 4.2.6.3): worn with the long sleeve (the default), optional with the short (off by default).
+  // A long-sleeved build with the tie on by default and a short-sleeved one with it explicitly off, both cuts, and on each aviator sheet a cadet NCO (the collar chevrons, Figure A5-5).
+  for(const uniform of ['blues_b', 'aviator']){
+    if(!RULES.RULES[uniform]) continue;
+    for(const gender of ['male', 'female']){
+      const base = { uniform, gender, membership: 'senior', rank: 'Capt', name: { first: 'Pat', last: 'Doe', show: true }, badgeIds: [AVIATION_BADGE.senior] };
+      ok.push({ name: `${uniform}-${gender}-long-tie-default-senior-Capt`, build: Object.assign({}, base, { opt: { sleeve: 'long' } }) });
+      ok.push({ name: `${uniform}-${gender}-short-tie-off-senior-Capt`, build: Object.assign({}, base, { opt: { sleeve: 'short', tie: false } }) });
+      if(uniform === 'aviator'){
+        for(const sleeve of ['short', 'long']) ok.push({ name: `aviator-${gender}-${sleeve}-cadet-NCO-C-MSgt`, build: { uniform, gender, membership: 'cadet', rank: 'C/MSgt', name: { first: 'Pat', last: 'Doe', show: true }, opt: { sleeve }, badgeIds: [AVIATION_BADGE.cadet] } });
+      }
+    }
+  }
+  return { builds: ok, skipped, warnings };
+}
+
+// ---- static server ----------------------------------------------------------------------------
+
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.css': 'text/css', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf' };
+
+const HARNESS = `<!doctype html><meta charset="utf-8"><title>render</title>
+<style>html,body{margin:0;padding:0;background:#fff}svg{display:block}</style>
+<div id="out"></div>
+${['core', 'cord-braid', 'cords', 'awards', 'grades', 'compose'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
+<script src="/data/cords.js"></script><script src="/data/uniform-rules.js"></script><script src="/data/ribbon-awards.js"></script><script src="/data/badge-catalog.js"></script><script src="/data/military-badge-sizes.js"></script>
+${['profiles', 'profiles-field', 'profiles-dress', 'profiles-polo', 'measure-layout', 'render-svg'].map(f => `<script src="/js/engine/${f}.js"></script>`).join('\n')}
+<script>
+window.__warnings = [];
+['warn', 'error'].forEach(k => { const o = console[k].bind(console); console[k] = (...a) => { window.__warnings.push(a.map(String).join(' ')); o(...a); }; });
+window.addEventListener('error', e => window.__warnings.push('error: ' + e.message));
+window.__ready = (async () => {
+  const E = CAPUBEngine; E.assetUrl = p => '/images/' + p; E.fontUrl = f => '/vendor/fonts/' + f;
+  const manifest = await fetch('/images/MANIFEST.json').then(r => r.json());
+  window.__store = E.core.createSpecStore(manifest, p => fetch('/images/' + p).then(r => r.json()));
+  return true;
+})();
+window.renderBuild = async function(build, ppi, pad, measure, clip, wantSvg){
+  const E = CAPUBEngine, store = window.__store;
+  window.__warnings.length = 0;
+  const scene = await E.profiles.composeUniform(build, store);
+  const b = scene.bounds;
+  const widthPx = Math.ceil((b.w + 2 * pad) * ppi);
+  const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad, widthPx, measure: !!measure, measureRefs: true });   // the harness shows every paragraph; the page leaves them off until asked
+  if(wantSvg) await E.renderSvg.embedFonts(svg);   // the saved markup stands alone, as the PNG export's does
+  const heightPx = Math.ceil((b.h + 2 * pad) * ppi);
+  svg.setAttribute('width', widthPx); svg.setAttribute('height', heightPx);
+  let outW = widthPx, outH = heightPx;
+  if(clip){ // a close-up: only this box of the scene (inches), at ppi
+    outW = Math.ceil(clip[2] * ppi); outH = Math.ceil(clip[3] * ppi);
+    svg.setAttribute('viewBox', clip.join(' ')); svg.setAttribute('width', outW); svg.setAttribute('height', outH);
+  }
+  const o = document.getElementById('out'); o.innerHTML = ''; o.append(svg);
+  const imgs = [...svg.querySelectorAll('image')];
+  await Promise.all(imgs.map(im => im.decode ? im.decode().catch(() => {}) : null));
+  await (document.fonts && document.fonts.ready);
+  await new Promise(r => setTimeout(r, 30)); // not rAF: it never fires in a background tab
+  return { w: outW, h: outH, layers: scene.layers.length, notes: scene.notes, warnings: window.__warnings.slice(), svg: wantSvg ? new XMLSerializer().serializeToString(svg) : null };
+};
+</script>`;
+
+function startServer(){
+  return new Promise((resolve, reject) => {
+    const server = http.createServer((rq, rs) => {
+      let p = decodeURIComponent(new URL(rq.url, 'http://x').pathname);
+      if(p === '/__harness.html'){ rs.writeHead(200, { 'content-type': MIME['.html'], 'cache-control': 'no-store' }); return rs.end(HARNESS); }
+      const file = path.normalize(path.join(ROOT, p));
+      if(file !== ROOT && !file.startsWith(ROOT + path.sep)){ rs.writeHead(403); return rs.end(); }
+      fs.readFile(file, (err, data) => {
+        if(err){ rs.writeHead(404); return rs.end('not found'); }
+        rs.writeHead(200, { 'content-type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream', 'cache-control': 'no-store' });
+        rs.end(data);
+      });
+    });
+    server.on('error', reject);
+    server.listen(0, '127.0.0.1', () => resolve(server));
+  });
+}
+
+// ---- one Chrome, driven over the DevTools protocol ---------------------------------------------
+
+class Cdp {
+  constructor(ws){
+    this.ws = ws; this.id = 0; this.pending = new Map();
+    ws.addEventListener('message', ev => {
+      const m = JSON.parse(ev.data);
+      if(m.id && this.pending.has(m.id)){
+        const { res, rej } = this.pending.get(m.id); this.pending.delete(m.id);
+        m.error ? rej(new Error(`${m.error.message}`)) : res(m.result);
+      }
+    });
+    ws.addEventListener('close', () => { for(const { rej } of this.pending.values()) rej(new Error('Chrome connection closed')); this.pending.clear(); });
+  }
+  send(method, params, sessionId){
+    const id = ++this.id;
+    return new Promise((res, rej) => {
+      const timer = setTimeout(() => { this.pending.delete(id); rej(new Error(`Chrome did not answer ${method} within 60 s`)); }, 60000);
+      this.pending.set(id, { res: v => { clearTimeout(timer); res(v); }, rej: e => { clearTimeout(timer); rej(e); } });
+      this.ws.send(JSON.stringify(Object.assign({ id, method, params: params || {} }, sessionId ? { sessionId } : {})));
+    });
+  }
+}
+
+async function launchChrome(){
+  if(!fs.existsSync(CHROME)) throw new Error(`Chrome not found at ${CHROME} (set CHROME=/path/to/chrome)`);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'render-builds-chrome-'));
+  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--no-default-browser-check', '--mute-audio', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
+  let stderr = '';
+  proc.stderr.on('data', d => { stderr += d; });
+  const portFile = path.join(dir, 'DevToolsActivePort');
+  const t0 = Date.now();
+  while(!fs.existsSync(portFile)){
+    if(proc.exitCode != null) throw new Error(`Chrome exited early: ${stderr.slice(-500)}`);
+    if(Date.now() - t0 > 20000) throw new Error('Timed out waiting for Chrome');
+    await new Promise(r => setTimeout(r, 25));
+  }
+  await new Promise(r => setTimeout(r, 25));
+  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
+  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
+  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', () => rej(new Error('Could not connect to Chrome DevTools'))); });
+  return { proc, dir, cdp: new Cdp(ws), ws };
+}
+
+async function openPage(cdp, url){
+  const { targetId } = await cdp.send('Target.createTarget', { url });
+  const { sessionId } = await cdp.send('Target.attachToTarget', { targetId, flatten: true });
+  const ev = async (expression) => {
+    const r = await cdp.send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true, timeout: 60000 }, sessionId);
+    if(r.exceptionDetails) throw new Error((r.exceptionDetails.exception && r.exceptionDetails.exception.description) || r.exceptionDetails.text);
+    return r.result.value;
+  };
+  for(let i = 0; i < 400; i++){
+    const ready = await ev('typeof window.__ready').catch(() => 'undefined');
+    if(ready === 'object') break;
+    await new Promise(r => setTimeout(r, 25));
+  }
+  dbg('page script ready');
+  await ev('window.__ready');
+  return { targetId, sessionId, ev };
+}
+
+// ---- output ------------------------------------------------------------------------------------
+
+const safe = s => String(s).replace(/[^A-Za-z0-9._-]+/g, '-');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function contactSheet(summary){
+  const byUniform = new Map();
+  for(const b of summary.builds){
+    const u = (b.build && b.build.uniform) || 'other';
+    if(!byUniform.has(u)) byUniform.set(u, []);
+    byUniform.get(u).push(b);
+  }
+  const card = b => {
+    const notes = (b.notes || []).map(n => `<li class="${NOT_DRAWN.test(n) ? 'bad' : /artwork/i.test(n) ? 'warn' : ''}">${esc(n)}</li>`).join('');
+    const warn = (b.warnings || []).map(n => `<li class="warn">${esc(n)}</li>`).join('');
+    const img = b.error ? `<div class="err">${esc(b.error)}</div>` : `<a href="${esc(b.png)}"><img loading="lazy" src="${esc(b.png)}" alt="${esc(b.name)}"></a>`;
+    return `<figure class="${b.error || b.missingArtwork.length || (b.notDrawn || []).length ? 'flag' : ''}" data-name="${esc(b.name)}"><figcaption><b>${esc(b.name)}</b> <a href="${esc(b.scene)}">scene.json</a> <span>${b.px ? b.px.join('x') + 'px' : ''}</span></figcaption>${img}<ul>${notes}${warn}</ul></figure>`;
+  };
+  const sections = [...byUniform].map(([u, list]) => `<section><h2>${esc(u)} <small>${list.length}</small></h2><div class="grid">${list.map(card).join('')}</div></section>`).join('\n');
+  return `<!doctype html><meta charset="utf-8"><title>Uniform renders</title>
+<style>
+body{font:13px system-ui,sans-serif;margin:16px;background:#eef0f4;color:#1b2430}
+h1{font-size:18px;margin:0 0 4px}h2{font-size:15px;margin:24px 0 8px;border-bottom:1px solid #c5ccd8}h2 small{color:#667}
+.meta{color:#556;margin-bottom:8px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+figure{margin:0;background:#fff;border:1px solid #d3d9e3;border-radius:6px;padding:8px}figure.flag{border-color:#c0392b}
+figcaption{margin-bottom:6px;word-break:break-all}figcaption span{color:#889}
+img{width:100%;height:340px;object-fit:contain;background:#fff;display:block}
+ul{margin:6px 0 0;padding-left:16px;font-size:11px;color:#445}li.bad{color:#c0392b;font-weight:600}li.warn{color:#a86a00}
+.err{color:#c0392b;white-space:pre-wrap}input{padding:4px 8px;width:260px}
+</style>
+<h1>Uniform renders</h1>
+<div class="meta">${summary.count} builds, ${summary.failed} failed, ${summary.withMissingArtwork} with missing artwork, ${summary.withNotDrawn} with a piece not drawn, ${summary.ppi} px/in, ${summary.elapsedMs} ms. <input id="f" placeholder="filter by name"></div>
+${sections}
+<script>document.getElementById('f').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('figure').forEach(f=>{f.style.display=f.dataset.name.toLowerCase().includes(q)?'':'none'})})</script>`;
+}
+
+// ---- main --------------------------------------------------------------------------------------
+
+async function main(){
+  const args = parseArgs(process.argv.slice(2));
+  if(args.help || (!args.all && !args.file) || !args.out){ console.log(USAGE); process.exit(args.help ? 0 : 2); }
+  const started = Date.now();
+  fs.mkdirSync(args.out, { recursive: true });
+
+  let builds, skipped = [], warnings = [];
+  if(args.all){
+    ({ builds, skipped, warnings } = matrix());
+  } else {
+    builds = JSON.parse(fs.readFileSync(args.file, 'utf8'));
+    if(!Array.isArray(builds)) throw new Error('The builds file must be a JSON array of {name, build}');
+  }
+  builds = builds.map((b, i) => ({ name: safe(b.name || `build-${i + 1}`), build: b.build || {} }));
+  if(args.only) builds = builds.filter(b => args.only.test(b.name));
+  const names = new Set();
+  for(const b of builds){ if(names.has(b.name)) throw new Error(`Duplicate build name ${b.name}`); names.add(b.name); }
+
+  const store = nodeStore();
+  const server = await startServer();
+  const url = `http://127.0.0.1:${server.address().port}/__harness.html`;
+  let chrome = null;
+  const cleanup = () => {
+    try{ if(chrome){ chrome.ws.close(); chrome.proc.kill('SIGKILL'); fs.rmSync(chrome.dir, { recursive: true, force: true }); } }catch(e){ /* best effort */ }
+    try{ server.close(); server.closeAllConnections && server.closeAllConnections(); }catch(e){ /* best effort */ }
+  };
+  process.on('SIGINT', () => { cleanup(); process.exit(130); });
+
+  const results = new Array(builds.length);
+  try{
+    chrome = await launchChrome();
+    dbg('chrome up');
+    const pages = [];
+    dbg('server', url);
+    for(let i = 0; i < Math.min(args.jobs, builds.length || 1); i++) pages.push(await openPage(chrome.cdp, url));
+    let next = 0;
+    const worker = async page => {
+      for(;;){
+        const i = next++;
+        if(i >= builds.length) return;
+        const { name, build: spec } = builds[i];
+        const t0 = Date.now();
+        const r = { name, build: spec, png: `${name}.png`, scene: `${name}.scene.json`, notes: [], missingArtwork: [], notDrawn: [], warnings: [], error: null };
+        try{
+          const build = makeBuild(spec);
+          const scene = await P.composeUniform(build, store);
+          const b = scene.bounds;
+          for(const n of build.harnessNotes || []) if(!scene.notes.includes(n)) scene.notes.push(n);
+          r.notes = scene.notes.slice();
+          r.missingArtwork = r.notes.filter(n => MISSING_ART.test(n));
+          r.notDrawn = r.notes.filter(n => NOT_DRAWN.test(n));
+          fs.writeFileSync(path.join(args.out, r.scene), JSON.stringify({
+            name, build: spec, title: scene.title, unit: 'inches (scene x right, y down, origin at the garment top-left)',
+            bounds: b, ppi: args.ppi, pad: args.pad,
+            viewBox: [b.x - args.pad, b.y - args.pad, b.w + 2 * args.pad, b.h + 2 * args.pad].map(n => +n.toFixed(4)),
+            notes: scene.notes, conflicts: scene.conflicts || [], layers: scene.layers
+          }, null, 1));
+          const shot = await page.ev(`renderBuild(${JSON.stringify(build)}, ${args.ppi}, ${args.pad}, ${!!(args.measure || (build.opt && build.opt.overlay))}, ${JSON.stringify(args.clip)}, ${!!args.svg})`);
+          r.px = [shot.w, shot.h];
+          if(args.svg && shot.svg){ r.svg = `${name}.svg`; fs.writeFileSync(path.join(args.out, r.svg), shot.svg); }
+          r.warnings = shot.warnings;
+          if(shot.layers !== scene.layers.length) r.warnings.push(`browser composed ${shot.layers} layers, node ${scene.layers.length}`);
+          await chrome.cdp.send('Emulation.setDeviceMetricsOverride', { width: shot.w, height: shot.h, deviceScaleFactor: 1, mobile: false }, page.sessionId);
+          const png = await chrome.cdp.send('Page.captureScreenshot', { format: 'png', clip: { x: 0, y: 0, width: shot.w, height: shot.h, scale: 1 }, captureBeyondViewport: false }, page.sessionId);
+          fs.writeFileSync(path.join(args.out, r.png), Buffer.from(png.data, 'base64'));
+        }catch(e){
+          r.error = (e && e.stack || String(e)).split('\n').slice(0, 4).join('\n');
+          r.png = null;
+        }
+        r.ms = Date.now() - t0;
+        results[i] = r;
+        process.stderr.write(`${r.error ? 'FAIL' : r.missingArtwork.length ? 'GAP ' : r.notDrawn.length ? 'SKIP' : 'ok  '} ${name} ${r.ms}ms\n`);
+      }
+    };
+    await Promise.all(pages.map(worker));
+  } finally {
+    cleanup();
+  }
+
+  const elapsedMs = Date.now() - started;
+  const summary = {
+    generated: new Date().toISOString(), command: process.argv.slice(1).join(' '), ppi: args.ppi, pad: args.pad,
+    count: results.length, failed: results.filter(r => r.error).length,
+    withMissingArtwork: results.filter(r => r.missingArtwork.length).length,
+    withNotDrawn: results.filter(r => r.notDrawn.length).length,
+    elapsedMs, skipped, matrixWarnings: warnings,
+    builds: results.map(r => ({ name: r.name, build: r.build, png: r.png, scene: r.scene, px: r.px, notes: r.notes, missingArtwork: r.missingArtwork, notDrawn: r.notDrawn, artworkNotes: r.notes.filter(n => /artwork/i.test(n) && !MISSING_ART.test(n)), warnings: r.warnings, error: r.error, ms: r.ms }))
+  };
+  fs.writeFileSync(path.join(args.out, 'summary.json'), JSON.stringify(summary, null, 1));
+  fs.writeFileSync(path.join(args.out, 'index.html'), contactSheet(summary));
+  console.log(`${summary.count} builds in ${(elapsedMs / 1000).toFixed(1)}s (${summary.count ? Math.round(elapsedMs / summary.count) : 0} ms/build): ${summary.failed} failed, ${summary.withMissingArtwork} with a piece that "cannot be shown", ${summary.withNotDrawn} with a piece "not drawn", ${skipped.length} combinations skipped (uniform not offered).`);
+  console.log(`Wrote ${path.join(args.out, 'index.html')} and summary.json`);
+  process.exitCode = summary.failed ? 1 : 0;
+}
+
+if(require.main === module) main().catch(e => { console.error(e.stack || e); process.exit(1); });
+module.exports = { ribbonsFrom, sortByPrecedence, matrix, MEMBERS, makeBuild, patchesFrom, NOT_DRAWN, MISSING_ART, nodeStore };

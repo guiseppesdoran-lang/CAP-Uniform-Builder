@@ -1,0 +1,187 @@
+{
+ "asset_id": "cord-wv-honor-society-twice",
+ "name": "Wing Honor Society, inducted before and again after the Mitchell Award",
+ "size_in": {
+  "w": 1.1,
+  "h": 4.22
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  110,
+  422
+ ],
+ "size_source": "estimated",
+ "size_basis": "Not dimensioned in CAPR 39-1. Length 4.1 in = the Class B shirt shoulder seam (~4.1 in on garment-blues-class-b-shirt-male) and 0.3 in longer than the 3.8 in epaulet strap on the Class A coat (seam 5.04 in), so the cord stays inside the coat silhouette; 0.5 in across, the width the engine draws a shoulder cord at (it was 0.40 before the guidance's cord). The braid is the cord of the CAP honor guard uniform guidance figures, measured on the Class A figure (link pitch 28.0 px on a braid 38.65 px across: 0.36 in a link at 0.5 in across; the Class B figure agrees within 4 percent): see CordBraid.LOOK in base-art/cord-braid.js. Colours are the palette of assets/cords/cords.json. The thin strand hangs from the shoulder end, straight down: 0.16 of the braid width thick, ending in a metal tip 3 braid widths long (3.40 in from the shoulder end to the point); proportions read on the Georgia supplement's cord figure (photographs, reference only). The picture is wider than the plain cords by the strip they hang in. The strand carries the wrapped knot of the 9 inch single strand with silver tip that Vanguard sells (CAP0650J), the knot a little under a quarter of the way down from the pinned end.",
+ "provenance": "in-house vector: the braid is the cord of the CAP honor guard uniform guidance figures, its link, lobe, strip, outline and cap proportions measured on the figure (base-art/cord-braid.js); colours from the palette of assets/cords/cords.json (the regulation cords keep the colours they had)",
+ "colours": {
+  "main": "#0527a5",
+  "groove": "#000b68",
+  "interwoven": [
+   {
+    "name": "blue",
+    "main": "#0527a5",
+    "groove": "#000b68"
+   },
+   {
+    "name": "gold",
+    "main": "#f1be16",
+    "groove": "#cf7009"
+   }
+  ],
+  "style": "interwoven",
+  "strand": {
+   "colour": "gold",
+   "main": "#f1be16",
+   "groove": "#cf7009",
+   "tip": "silver",
+   "tip_main": "#c9ccd2",
+   "tip_edge": "#2e3036",
+   "knot": true
+  }
+ },
+ "anchors": {
+  "top_center": [
+   55.00000000000001,
+   0
+  ],
+  "bottom_center": [
+   55.00000000000001,
+   422
+  ],
+  "center": [
+   55.00000000000001,
+   211
+  ],
+  "left_edge": [
+   0,
+   211
+  ],
+  "right_edge": [
+   110.00000000000001,
+   211
+  ],
+  "shoulder_seam_attach": [
+   51,
+   6
+  ],
+  "shoulder_seam_attach_neck_end": [
+   51,
+   6
+  ],
+  "shoulder_seam_attach_arm_end": [
+   51,
+   416
+  ],
+  "cord_mid": [
+   26,
+   211
+  ],
+  "strand_attach": [
+   96,
+   6
+  ],
+  "strand_tip": [
+   96,
+   346
+  ]
+ },
+ "dimensions": {
+  "form": "braided shoulder cord (box braid, a chain of links of two barrelled lobes and a two-cell centre strip)",
+  "style": "interwoven",
+  "length_in": 4.1,
+  "thickness_in": 0.5,
+  "sagitta_in": 0.25,
+  "link_pitch_in": 0.3622,
+  "outline_in": 0.0285,
+  "cap_length_in": 0.1358,
+  "orientation": "drawn vertically: top = neck end of the shoulder seam, bottom = sleeve (arm) end; the bow (0.25 in) falls toward the body, i.e. down the garment front when the cord lies on the shoulder",
+  "attach": "align cord_start (neck end) with the neck end of the wearer's LEFT shoulder seam and run it down the seam toward the shoulder point; rotate to the seam angle",
+  "strand": {
+   "thickness_in": 0.08,
+   "tip_length_in": 1.5,
+   "drop_in": 3.4,
+   "count": 1,
+   "knot": true,
+   "tip": "silver"
+  }
+ },
+ "garment_fit": {
+  "note": "strap axis = line from the neck end to the arm end of the garment's left epaulet strap / shoulder strip (garment user units, 0.01 in; wearer's left shoulder is on the viewer's right). Place: centre the cord on the axis with shoulder_seam_attach_neck_end at the neck end, rotate so the neck->arm anchors follow the axis, shift the chord 0.125 in toward the neck side so the 0.25 in bow is centred on the strap; draw order garment, layers, cord, then the epaulet sleeve/strip over it",
+  "class_a_coat": {
+   "asset": "garment-blues-class-a-coat",
+   "left_shoulder_seam_in": 5.48,
+   "strap_axis": [
+    [
+     1796.1,
+     262.9
+    ],
+    [
+     2198.7,
+     368.7
+    ]
+   ],
+   "strap_len_in": 4.16,
+   "note": "strap from the garment-blues-class-a-cadet-officer-insignia shoulder-strip-left"
+  },
+  "class_a_coat_female": {
+   "asset": "garment-blues-class-a-coat-female",
+   "strap_axis": [
+    [
+     1656.5,
+     191
+    ],
+    [
+     2008.5,
+     265
+    ]
+   ],
+   "strap_len_in": 3.6,
+   "note": "strap from garment-blues-class-a-cadet-officer-insignia-female shoulder-strip-left"
+  },
+  "class_b_shirt": {
+   "asset": "garment-blues-class-b-shirt-male",
+   "left_shoulder_seam_in": 4.1,
+   "strap_axis": [
+    [
+     1368.2,
+     193.3
+    ],
+    [
+     1775.4,
+     345
+    ]
+   ],
+   "strap_len_in": 4.35,
+   "note": "epaulet_left landmark: pointed neck end to the mid of the arm end"
+  },
+  "class_b_blouse_female": {
+   "asset": "garment-blues-class-b-blouse-female",
+   "strap_axis": [
+    [
+     1332.6,
+     203.8
+    ],
+    [
+     1777.9,
+     305.9
+    ]
+   ],
+   "strap_len_in": 4.57,
+   "note": "epaulet_left landmark: pointed neck end to the mid of the arm end"
+  }
+ },
+ "mounts": [
+  {
+   "uniform": "Class A (service dress) and Class B (blue service), cadets only",
+   "rule": "worn on the left shoulder, aligned along the shoulder seam, underneath the epaulet if present; one cord at a time; who may wear it and where is the wing or region supplement's rule (CAPR 39-1 9.4.1)"
+  }
+ ],
+ "regulation": "CAPR 39-1 9.4.1 and the wing or region supplement that names it",
+ "grade": "cord",
+ "fit": {
+  "method": "n/a",
+  "score": null
+ }
+}

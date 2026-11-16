@@ -1,0 +1,72 @@
+{
+ "asset_id": "patch-connecticut-wing",
+ "label": "Connecticut Wing",
+ "charter": "NER-CT-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-connecticut-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.192,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   319.196
+  ],
+  "center": [
+   162.5,
+   159.598
+  ],
+  "left_edge": [
+   0,
+   159.598
+  ],
+  "right_edge": [
+   325,
+   159.598
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/ner-ct-001-connecticut-wing.webp",
+ "unit_name": "Connecticut Wing",
+ "artwork": {
+  "format": "webp (VP8L lossless) -> png via dwebp",
+  "source_color_type": 2,
+  "source_px": [
+   554,
+   554
+  ],
+  "trim_bbox_px": [
+   24,
+   24,
+   504,
+   495
+  ],
+  "trimmed": true,
+  "px": [
+   504,
+   495
+  ],
+  "bytes": 226340,
+  "chunks_kept": [],
+  "white_ground_removed": {
+   "threshold": 238,
+   "px": 131383,
+   "edge_px": 2339
+  }
+ },
+ "provenance": "Unit emblem of Connecticut Wing (NER-CT-001), digital artwork supplied by Ethan Hillard on 2026-11-10. Official digital artwork shipped as given: webp (VP8L lossless) -> png via dwebp; the file came without transparency on a plain white ground: the white outside the emblem's own outline was made transparent (connected from the image border, white at 238 or more of 255; 131383 px) and the 2339 edge pixels blended with that white were given their coverage as alpha; then trimmed to its alpha bounding box (554 x 554 px to 504 x 495 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the white ground outside the outline, made transparent so the emblem sits on the garment."
+}

@@ -1,0 +1,746 @@
+// Uniform engine, part 4: draws a composed scene as one inline <svg> and exports it as a PNG.
+//
+// Each asset is fetched once, turned into a <symbol> (its ids are already namespaced with the asset
+// id, so they cannot collide) and drawn with <use>. Raster pieces (military art, patches) are
+// <image> elements. The viewBox is in inches, so the drawing is resolution independent and the PNG
+// export simply rasterizes the same markup at the chosen pixels per inch.
+(function(root){
+  'use strict';
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const XLINK_NS = 'http://www.w3.org/1999/xlink';
+  const symbolCache = new Map();   // asset id -> Promise<{viewBox, inner}>
+  const rasterCache = new Map();   // url -> Promise<dataURL>
+
+  // The engraved lettering's face (LIVE13 E121, Ethan: "the uniform generation shouldn't differ between mobile and PC. the name on the nameplate is
+  // shifted up on mobile but normal on PC"): Ubuntu Bold, bundled (vendor/fonts, the CAP Brand Guide kit, Ubuntu Font Licence 1.0 beside it), declared
+  // by the drawing itself in a <style> in its defs so the page draws the plate with it wherever the page's own stylesheet is not loaded (the render
+  // harness), and embedded as a data: URL in the PNG export (embedFonts): an SVG rasterized through an <img> loads no external file, so without the
+  // embedding the export fell back to the system face. Every engraved <text> is laid out on its baseline (cap-height arithmetic, below), never on
+  // dominant-baseline, which Safari computes from the substituted face's ascent and descent.
+  // capHeight: OS/2 sCapHeight over unitsPerEm of the file (scripts/font-metrics.cjs; a test compares it with compose.CAP_HEIGHT).
+  const ENGRAVED_FONT = { family: 'Ubuntu', weight: 700, file: 'Ubuntu-Bold.woff2', fallback: 'Arial, Helvetica, sans-serif', capHeight: 0.693 };
+  const ENGRAVED_FAMILY = `${ENGRAVED_FONT.family}, ${ENGRAVED_FONT.fallback}`;
+  function fontUrl(file){
+    const E = root.CAPUBEngine || {};
+    return typeof E.fontUrl === 'function' ? E.fontUrl(file) : 'vendor/fonts/' + file;
+  }
+  const fontFaceCss = src => `@font-face{font-family:"${ENGRAVED_FONT.family}";font-weight:${ENGRAVED_FONT.weight};font-style:normal;src:url("${src}") format("woff2");}`;
+  const fontDataCache = new Map();  // file -> Promise<data URL>
+  function fontDataUrl(file){
+    if(fontDataCache.has(file)) return fontDataCache.get(file);
+    const p = fetch(fontUrl(file)).then(r => { if(!r.ok) throw new Error(`${r.status} ${file}`); return r.arrayBuffer(); }).then(buf => {
+      const bytes = new Uint8Array(buf);
+      let bin = '';
+      for(let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      return 'data:font/woff2;base64,' + btoa(bin);
+    });
+    fontDataCache.set(file, p);
+    p.catch(() => fontDataCache.delete(file));
+    return p;
+  }
+  // Replace the drawing's font declaration with one that carries the font's bytes, so the markup stands alone (the PNG export, a saved SVG).
+  async function embedFonts(svg){
+    const style = svg.querySelector('style.engraved-fonts');
+    if(!style) return svg;
+    try{ style.textContent = fontFaceCss(await fontDataUrl(ENGRAVED_FONT.file)); }
+    catch(e){ console.warn('[render] engraved font not embedded', e); }
+    return svg;
+  }
+
+  function assetUrl(path){
+    const E = root.CAPUBEngine || {};
+    if(typeof E.assetUrl === 'function') return E.assetUrl(path);
+    return (typeof ASSET === 'function') ? ASSET(path) : `images/${path}`;
+  }
+
+  function loadSymbol(id, path){
+    if(symbolCache.has(id)) return symbolCache.get(id);
+    const p = fetch(assetUrl(path), { cache: 'no-cache' }) // artwork is updated in place
+      .then(r => { if(!r.ok) throw new Error(`${r.status} ${path}`); return r.text(); })
+      .then(text => {
+        const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+        const svg = doc.documentElement;
+        if(!svg || svg.nodeName.toLowerCase() !== 'svg') throw new Error('Not an SVG: ' + path);
+        const widthIn = /^([\d.]+)in$/.exec(svg.getAttribute('width') || '');
+        return { viewBox: svg.getAttribute('viewBox'), inner: svg.innerHTML, widthIn: widthIn ? Number(widthIn[1]) : null };
+      });
+    symbolCache.set(id, p);
+    p.catch(() => symbolCache.delete(id));
+    return p;
+  }
+
+  // A symbol's markup without its paint servers (pattern, linearGradient, radialGradient), and their ids: what a variant symbol copies (buildSvg). Worked
+  // out once per symbol and kept with it.
+  const PAINT = /^(pattern|linearGradient|radialGradient)$/;
+  function leanInner(s){
+    if(s.lean) return s.lean;
+    const doc = new DOMParser().parseFromString(`<svg xmlns="${SVG_NS}" xmlns:xlink="${XLINK_NS}">${s.inner}</svg>`, 'image/svg+xml');
+    const shared = new Set();
+    const root = doc.documentElement;
+    if(!root || root.nodeName.toLowerCase() !== 'svg' || root.getElementsByTagName('parsererror').length){
+      s.lean = { inner: s.inner, shared };
+      return s.lean;
+    }
+    const servers = [...root.querySelectorAll('*')].filter(n => PAINT.test(n.localName) && n.getAttribute('id'));
+    for(const n of servers){ shared.add(n.getAttribute('id')); n.remove(); }
+    s.lean = { inner: shared.size ? root.innerHTML : s.inner, shared };
+    return s.lean;
+  }
+
+  // A variant that draws only some groups of a sheet (the cap views, the collar over the badges) drops the rest of the sheet instead of carrying
+  // it hidden: the groups, the groups that hold them (for their transforms), every definition (clip paths, masks, markers, filters, styles) and
+  // whatever a kept element refers to by url(#id) or href="#id" stay; every other element goes. The OCP drawing's three such copies of its sheet were
+  // laid out and renamed on every drawing (LIVE13 E85).
+  const RESOURCE = /^(defs|clipPath|mask|marker|symbol|style|filter|pattern|linearGradient|radialGradient)$/;
+  function pruneToGroups(sym, targets){
+    if(!targets.length) return;
+    const keep = new Set(), path = new Set();
+    const markPath = n => { for(let q = n.parentNode; q && q !== sym; q = q.parentNode) path.add(q); };
+    const kept = n => { for(let q = n; q && q !== sym; q = q.parentNode) if(keep.has(q)) return true; return false; };
+    const add = n => { if(kept(n)) return false; keep.add(n); markPath(n); return true; };
+    targets.forEach(add);
+    sym.querySelectorAll('*').forEach(n => { if(RESOURCE.test(n.localName)) add(n); });
+    const index = new Map();
+    sym.querySelectorAll('[id]').forEach(n => index.set(n.getAttribute('id'), n));
+    const ref = /url\(\s*['"]?#([^)'"\s]+)/g;
+    const queue = [...keep], seen = new Set();
+    while(queue.length){
+      const n = queue.pop();
+      for(const e of [n, ...n.querySelectorAll('*')]){
+        if(seen.has(e)) continue;
+        seen.add(e);
+        for(const a of Array.from(e.attributes)){
+          const ids = [];
+          if(a.localName === 'href' && a.value.charAt(0) === '#') ids.push(a.value.slice(1));
+          if(a.value.indexOf('url(') >= 0){ let m; ref.lastIndex = 0; while((m = ref.exec(a.value))) ids.push(m[1]); }
+          for(const id of ids){ const r = index.get(id); if(r && add(r)) queue.push(r); }
+        }
+      }
+    }
+    const sweep = parent => { for(const c of Array.from(parent.children)){ if(keep.has(c)) continue; if(path.has(c)) sweep(c); else c.remove(); } };
+    sweep(sym);
+  }
+
+  // Raster images are inlined as data URLs so the exported SVG has no external references.
+  function loadRaster(url){
+    if(rasterCache.has(url)) return rasterCache.get(url);
+    const p = fetch(url)
+      .then(r => { if(!r.ok) throw new Error(`${r.status} ${url}`); return r.blob(); })
+      .then(blob => new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+      }));
+    rasterCache.set(url, p);
+    p.catch(() => rasterCache.delete(url));
+    return p;
+  }
+
+  // An asset whose file is not an SVG is a flat picture shipped as given (the two Emergency Services patches): the engine places it by id like any
+  // piece, at the size and place its profile works out, and it is drawn as the picture it is by the loader every other picture uses (loadRaster).
+  // The layer in the scene is left as the engine made it; only the drawing sees it as a raster layer.
+  function pictureLayer(layer, manifestPath){
+    if(layer.type !== 'asset' || /\.svg$/i.test(manifestPath(layer.id))) return layer;
+    return Object.assign({}, layer, { type: 'raster', href: assetUrl(manifestPath(layer.id)) });
+  }
+
+  function el(name, attrs){
+    const node = document.createElementNS(SVG_NS, name);
+    if(attrs) for(const k of Object.keys(attrs)) if(attrs[k] !== undefined && attrs[k] !== null) node.setAttribute(k, String(attrs[k]));
+    return node;
+  }
+
+  function fmt(n){ return Number.isFinite(n) ? String(Math.round(n * 10000) / 10000) : '0'; }
+
+  // Short stable text for a variant symbol's id.
+  function hashText(t){
+    let h = 5381;
+    for(let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+  }
+
+  // The braid of a cord layer: CordBraid (js/engine/cord-braid.js) lays the cord's look, from the cord list (layer.cordLook: which cord, the member's colour for a cord
+  // whose colour the unit commander picks, and `pendant` for the aiguillette's braid in place of the cord itself), along the fitted path the engine gave the layer
+  // (layer.cordPath.pieces, sheet inches). tx, ty and s are the sheet's art transform (translate(tx ty) scale(s), 0.01 in units): the markup comes out in the art
+  // group's own units, `unit` of them to the inch. Returns { run, extras } or null when the drawing function or the cord is not there, and the sheet's own strokes are
+  // drawn instead.
+  function cordBraid(layer, tx, ty, s, idPrefix){
+    const look = layer.cordLook, E = root.CAPUBEngine || {}, CB = root.CordBraid, CS = E.cords;
+    if(!look || !CB || !CS || !E.core || !layer.cordPath || !layer.cordPath.pieces) return null;
+    const cord = look.pendant ? CS.pendantCord(look.id, look.colour) : CS.resolve(look.id, look.colour);
+    if(!cord) return null;
+    const points = E.core.samplePath(layer.cordPath.pieces, 0.02).map(p => [(p[0] * 100 - tx) / s, (p[1] * 100 - ty) / s]);
+    const opts = { unit: 100 / s, width: layer.cordPath.width, idPrefix, cap: !look.pendant };
+    const out = CB.draw(points, cord, opts);
+    // The strand, knot and tip a cord may hang from its shoulder end hang from the point the cord comes out from under the epaulet at (cordPath.top), not from the far end of the run's carried-up path.
+    let extras = look.pendant ? '' : out && out.extras;
+    const top = layer.cordPath.top;
+    if(extras && top) extras = CB.draw([[(top[0] * 100 - tx) / s, (top[1] * 100 - ty) / s]], cord, opts).extras;
+    return out && out.run ? { run: out.run, extras } : null;
+  }
+
+  function transformFor(layer){
+    const parts = [];
+    // `squeeze` { at, deg, kx, ky }: scaled by kx along the direction deg and ky across it, about `at`, in scene inches, after everything else (the edge-on mess dress board).
+    if(layer.squeeze){
+      const q = layer.squeeze;
+      parts.push(`translate(${fmt(q.at.x)} ${fmt(q.at.y)}) rotate(${fmt(q.deg)}) scale(${fmt(q.kx)} ${fmt(q.ky)}) rotate(${fmt(-q.deg)}) translate(${fmt(-q.at.x)} ${fmt(-q.at.y)})`);
+    }
+    // `shear` { at, deg, b }: in the frame whose x axis runs along the direction deg through `at` (y down), every point moves along y by b times its x, in scene inches, after everything else (the end of
+    // the Class A boards seen from the front, whose point narrows from the lower edge only).
+    if(layer.shear){
+      const q = layer.shear;
+      parts.push(`translate(${fmt(q.at.x)} ${fmt(q.at.y)}) rotate(${fmt(q.deg)}) matrix(1 ${fmt(q.b)} 0 1 0 0) rotate(${fmt(-q.deg)}) translate(${fmt(-q.at.x)} ${fmt(-q.at.y)})`);
+    }
+    if(layer.rotate) parts.push(`rotate(${fmt(layer.rotate)} ${fmt(layer.origin.x)} ${fmt(layer.origin.y)})`);
+    if(layer.flipX){
+      const cx = layer.x + layer.w / 2;
+      parts.push(`translate(${fmt(2 * cx)} 0) scale(-1 1)`);
+    }
+    return parts.join(' ') || null;
+  }
+
+  // The measurement overlay, laid out by js/engine/measure-layout.js: gold lines on a soft dark
+  // halo (they read on light shirts and dark coats alike), each length with its caption on a dark pill
+  // joined to its dimension line by a leader (LIVE13 E97). Widths are in preview pixels (`px` inches
+  // each): the dimension line heavier than its witness lines and leader, as on a tailor's drawing.
+  const MEASURE = { color: '#ffd24a', caption: '#f6e6b0', halo: '#0b1020', line: 1.7, ext: 1.1, leader: 1.1, haloExtra: 2.2, labelStroke: 0.9, leaderDot: 1.8 };
+  // A magnified callout (measure-layout.js, opts.callout): the band outlined on the piece, a leader to the circle, and the circle
+  // itself, a copy of every placed layer that reaches the window, drawn `mag` times larger and clipped to the circle, with the band
+  // outlined again over it. `copies(window)` returns copies of the scene's layers (in drawing order) that reach the window.
+  function calloutNodes(d, px, defs, copies, fontPx){
+    const co = d.callout, nodes = [];
+    const pts = a => a.map(p => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
+    const line = (g, a, stroke, width, extra) => g.appendChild(el('polyline', Object.assign({ points: pts(a), fill: 'none', stroke, 'stroke-width': fmt(width), 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, extra || {})));
+    // On the piece: the band, highlighted along one corner, and the leader from the circle to that corner.
+    const real = el('g', { class: 'measure-callout-piece' });
+    real.appendChild(el('polygon', { points: pts(co.real.fill), fill: MEASURE.color, 'fill-opacity': 0.45, stroke: 'none' }));
+    for(const l of co.real.lines){ line(real, l, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 }); line(real, l, MEASURE.color, MEASURE.ext * px); }
+    const [rim, tip] = co.leader;
+    for(const [stroke, width, extra] of [[MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 }], [MEASURE.color, MEASURE.ext * px, {}]]){
+      real.appendChild(el('line', Object.assign({ x1: fmt(rim.x), y1: fmt(rim.y), x2: fmt(tip.x), y2: fmt(tip.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }, extra)));
+    }
+    real.appendChild(el('circle', { cx: fmt(tip.x), cy: fmt(tip.y), r: fmt(1.8 * px), fill: MEASURE.color, stroke: MEASURE.halo, 'stroke-width': fmt(0.8 * px) }));
+    nodes.push(real);
+    // The circle.
+    const clipId = 'callout-clip-' + (calloutNodes.count = (calloutNodes.count || 0) + 1);
+    const cp = el('clipPath', { id: clipId, clipPathUnits: 'userSpaceOnUse' });
+    cp.appendChild(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r) }));
+    defs.appendChild(cp);
+    const lens = el('g', { class: 'measure-callout', 'clip-path': `url(#${clipId})` });
+    lens.appendChild(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: '#e9edf3' }));
+    const mag = el('g', { transform: `translate(${fmt(co.center.x)} ${fmt(co.center.y)}) scale(${fmt(co.mag)}) translate(${fmt(-co.focus.x)} ${fmt(-co.focus.y)})` });
+    copies(co.window).forEach(n => mag.appendChild(n));
+    lens.appendChild(mag);
+    // A span (CAP tape to the embroidery) is a long band: lighter, so the tape, the backing and the embroidery read through it.
+    lens.appendChild(el('polygon', { points: pts(co.inset.fill), fill: MEASURE.color, 'fill-opacity': co.kind === 'span' ? 0.22 : 0.55, stroke: 'none' }));
+    for(const l of co.inset.lines) line(lens, l, MEASURE.color, 1.1 * px);
+    for(const l of co.inset.marks || []) line(lens, l, MEASURE.color, 0.8 * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2 * px)}` });
+    nodes.push(lens);
+    nodes.push(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'none', stroke: MEASURE.halo, 'stroke-width': fmt((MEASURE.line + MEASURE.haloExtra + 1) * px), 'stroke-opacity': 0.6 }));
+    nodes.push(el('circle', { cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'none', stroke: MEASURE.color, 'stroke-width': fmt(1.6 * px) }));
+    if(co.caption){
+      const c = co.caption, g = el('g', { class: 'measure-callout-caption' });
+      g.appendChild(el('rect', { x: fmt(c.x), y: fmt(c.y), width: fmt(c.w), height: fmt(c.h), rx: fmt(Math.min(c.h / 2, 3 * px)), fill: MEASURE.halo, 'fill-opacity': 0.88, stroke: MEASURE.color, 'stroke-width': fmt(0.7 * px) }));
+      c.lines.forEach((t, i) => {
+        const text = el('text', { x: fmt(c.x + c.w / 2), y: fmt(c.y + c.h / 2 + (i - (c.lines.length - 1) / 2) * c.size * 1.2 + ENGRAVED_FONT.capHeight * c.size / 2), 'text-anchor': 'middle', 'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(c.size), fill: MEASURE.color });
+        text.textContent = t;
+        g.appendChild(text);
+      });
+      nodes.push(g);
+    }
+    return nodes;
+  }
+
+  // A tap on a distance opens its paragraph (js/citations.js): the distances that have one (`cites`: measure key -> { id, label }, built from the catalogue) get a
+  // transparent band of this many preview pixels over their lines and a press-sensitive label (and circle); the rest take no press and stay out of the tab order.
+  const CITE_HIT = 16;
+  function measureNodes(drawings, px, fontPx, defs, copies, cites){
+    const out = [];
+    const seg = (g, [a, b], stroke, width, extra) => g.appendChild(el('line', Object.assign({ x1: fmt(a.x), y1: fmt(a.y), x2: fmt(b.x), y2: fmt(b.y), stroke, 'stroke-width': fmt(width), 'stroke-linecap': 'round' }, extra || {})));
+    for(const d of drawings){
+      const g = el('g', { class: 'measure', 'data-calib-key': d.key || null, 'pointer-events': 'none' });
+      const cite = cites && cites.get(d.key);
+      const hit = cite ? { 'data-cite-measure': cite.id, 'pointer-events': 'all' } : null;
+      if(d.callout && copies) calloutNodes(d, px, defs, copies, fontPx).forEach(n => g.appendChild(n));
+      const marks = d.centres || [], arrows = d.arrows || [], ext = d.ext || [];
+      const main = [d.dim, ...(d.bars || []), ...(d.ticks || []), ...(d.tails || [])];
+      // A centre mark is a small thin crosshair at the witness lines' weight, its middle open (LIVE13 E101): quiet over the piece, never a ring.
+      const cross = marks.flatMap(m => m.ticks);
+      const pts = a => a.map(p => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
+      for(const s of main) seg(g, s, MEASURE.halo, (MEASURE.line + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const s of [...ext, ...cross]) seg(g, s, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      if(d.leader) seg(g, d.leader, MEASURE.halo, (MEASURE.leader + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+      for(const a of arrows) g.appendChild(el('polygon', { points: pts(a), fill: MEASURE.halo, stroke: MEASURE.halo, 'stroke-width': fmt(MEASURE.haloExtra * px), 'stroke-linejoin': 'round', 'stroke-opacity': 0.5 }));
+      if(d.reference){
+        // Only the parts of the edge that cross no piece are drawn (measure-layout referenceSegs).
+        for(const r of d.referenceSegs || [d.reference]){
+          seg(g, r, MEASURE.halo, (MEASURE.ext + MEASURE.haloExtra) * px, { 'stroke-opacity': 0.5 });
+          seg(g, r, MEASURE.color, MEASURE.ext * px, { 'stroke-dasharray': `${fmt(3 * px)} ${fmt(2.5 * px)}`, 'stroke-linecap': 'butt' });
+        }
+      }
+      // Witness lines from the measured edges to the dimension line, then the dimension line itself with its bars, tails and arrowheads.
+      for(const s of ext) seg(g, s, MEASURE.color, MEASURE.ext * px);
+      for(const s of main) seg(g, s, MEASURE.color, MEASURE.line * px);
+      for(const a of arrows) g.appendChild(el('polygon', { class: 'arrow', points: pts(a), fill: MEASURE.color, stroke: MEASURE.color, 'stroke-width': fmt(0.6 * px), 'stroke-linejoin': 'round' }));
+      for(const s of cross) seg(g, s, MEASURE.color, MEASURE.ext * px, { class: 'centre-mark' });
+      // The leader from the pill's rim to the middle of the dimension line, with a dot on the line.
+      if(d.leader){
+        seg(g, d.leader, MEASURE.color, MEASURE.leader * px);
+        g.appendChild(el('circle', { cx: fmt(d.leader[1].x), cy: fmt(d.leader[1].y), r: fmt(MEASURE.leaderDot * px), fill: MEASURE.color, stroke: MEASURE.halo, 'stroke-width': fmt(0.8 * px) }));
+      }
+      // The pill: the length, and under it the caption of what is measured. With a paragraph it is the one stop of the drawing's measure for the keyboard.
+      const L = d.label, size = L.size || fontPx * px, capSize = L.captionSize || size * 0.8, caption = L.caption || [], padY = (L.h - size * 1.25 - caption.length * capSize * 1.2) / 2;
+      g.appendChild(el('rect', Object.assign({ x: fmt(L.x), y: fmt(L.y), width: fmt(L.w), height: fmt(L.h), rx: fmt(Math.min(L.h / 2, 5 * px)), fill: MEASURE.halo, 'fill-opacity': 0.9, stroke: MEASURE.color, 'stroke-width': fmt(MEASURE.labelStroke * px) },
+        hit ? Object.assign({ role: 'button', tabindex: 0, 'aria-expanded': 'false', 'aria-label': 'Regulation reference: ' + cite.label }, hit) : null)));
+      const text = el('text', {
+        x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 / 2 + ENGRAVED_FONT.capHeight * size / 2), 'text-anchor': 'middle',
+        'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(size), fill: MEASURE.color
+      });
+      text.textContent = L.text;
+      g.appendChild(text);
+      caption.forEach((t, i) => {
+        const c = el('text', {
+          class: 'caption', x: fmt(L.x + L.w / 2), y: fmt(L.y + padY + size * 1.25 + (i + 0.5) * capSize * 1.2 + ENGRAVED_FONT.capHeight * capSize / 2), 'text-anchor': 'middle',
+          'font-family': ENGRAVED_FAMILY, 'font-weight': 700, 'font-size': fmt(capSize), fill: MEASURE.caption
+        });
+        c.textContent = t;
+        g.appendChild(c);
+      });
+      if(hit){
+        // Over everything else of this distance: its lines (witness lines, dimension line, leader), the magnified circle and its caption.
+        for(const s of [...main, ...ext, ...(d.leader ? [d.leader] : [])]) seg(g, s, 'transparent', CITE_HIT * px, hit);
+        if(d.callout){
+          const co = d.callout;
+          g.appendChild(el('circle', Object.assign({ cx: fmt(co.center.x), cy: fmt(co.center.y), r: fmt(co.r), fill: 'transparent', stroke: 'none' }, hit)));
+          if(co.caption) g.appendChild(el('rect', Object.assign({ x: fmt(co.caption.x), y: fmt(co.caption.y), width: fmt(co.caption.w), height: fmt(co.caption.h), fill: 'transparent', stroke: 'none' }, hit)));
+        }
+      }
+      out.push(g);
+    }
+    return out;
+  }
+
+  // Every id in a built drawing (the symbols, the patterns, gradients and clip paths inside them, the clips the engine adds) is renamed with a suffix that
+  // belongs to that drawing alone, and every reference to it (href, xlink:href, url(#...) in any attribute, style included) follows. Ids inside an asset are
+  // namespaced with the asset's id, so within one drawing they cannot clash, but a document holds more than one drawing (the uniform, the ribbon previews, the
+  // exported copy), and a url(#id) is resolved against the whole document: when another drawing earlier in it (a hidden preview, a stale copy) carries the same id,
+  // the reference goes there, and a pattern or gradient that lives in a drawing the browser does not paint paints nothing: the mess dress bullion eagle came out as
+  // the board's blue with its grey outline (LIVE10-5). Reproduced in Chrome with a hidden decoy pattern of the same id ahead of the uniform; tests/bullion-browser.cjs.
+  let drawingCount = 0;
+  function scopeIds(svg){
+    const suffix = '--d' + (++drawingCount).toString(36);
+    const ids = new Set();
+    svg.querySelectorAll('[id]').forEach(n => ids.add(n.getAttribute('id')));
+    if(!ids.size) return suffix;
+    const refUrl = /url\(\s*(['"]?)#([^)'"\s]+)\1\s*\)/g;
+    // Only the elements that can carry an id or a reference are visited (the OCP camouflage pattern's thousands of plain shapes carry neither;
+    // LIVE13 E85): an id, an href, or one of the attributes that take url(#id).
+    const REFS = '[id],[href],[*|href],[fill*="url("],[stroke*="url("],[clip-path],[mask],[filter],[style*="url("],[marker-start],[marker-mid],[marker-end]';
+    for(const n of [svg, ...svg.querySelectorAll(REFS)]){
+      for(const a of Array.from(n.attributes)){
+        const v = a.value;
+        if(a.name === 'id'){ if(ids.has(v)) a.value = v + suffix; continue; }
+        if((a.localName === 'href') && v.charAt(0) === '#'){ if(ids.has(v.slice(1))) a.value = v + suffix; continue; }
+        if(v.indexOf('url(') >= 0){
+          const w = v.replace(refUrl, (m, q, id) => ids.has(id) ? `url(${q}#${id}${suffix}${q})` : m);
+          if(w !== v) a.value = w;
+        }
+      }
+    }
+    return suffix;
+  }
+
+  // Build the <svg> for a scene. `manifestPath(id)` resolves an asset id to its path.
+  async function buildSvg(scene, manifestPath, opts){
+    const options = opts || {};
+    const pad = options.pad != null ? options.pad : 0.4;
+    const b = scene.bounds;
+    const vb = [b.x - pad, b.y - pad, b.w + 2 * pad, b.h + 2 * pad];
+    const svg = el('svg', {
+      xmlns: SVG_NS,
+      viewBox: vb.map(fmt).join(' '),
+      width: options.widthPx ? fmt(options.widthPx) : null,
+      height: options.widthPx ? fmt(options.widthPx * vb[3] / vb[2]) : null,
+      class: 'uniformSvg',
+      role: 'img',
+      'aria-label': scene.title || 'Uniform preview'
+    });
+    svg.setAttribute('xmlns:xlink', XLINK_NS);
+    const defs = el('defs');
+    svg.appendChild(defs);
+    const fontStyle = el('style', { class: 'engraved-fonts' });
+    fontStyle.textContent = fontFaceCss(fontUrl(ENGRAVED_FONT.file));
+    defs.appendChild(fontStyle);
+
+    // Ribbon and medal devices are drawn from a copy with an opaque metal base, darker metal and a thin dark edge
+    // (awards.deviceInner), so they read on any ribbon colour. The copy is a separate symbol; overflow is visible
+    // because the edge lies outside the artwork's own box.
+    const AW = root.CAPUBEngine && root.CAPUBEngine.awards;
+    const deviceSyms = new Set();
+    // Variants of a symbol with named groups hidden, or with only named groups shown.
+    // The metal an aiguillette's tip is drawn in (js/engine/cords.js tipMetal): the sheet draws the silver one, a gold aiguillette's tip takes the list's gold. The variant is keyed by it.
+    const tipMetalOf = layer => {
+      const CS = root.CAPUBEngine && root.CAPUBEngine.cords;
+      return layer.cordLook && layer.cordLook.tip && CS ? CS.tipMetal(layer.cordLook.id) : null;
+    };
+    const SHEET_TIP = { main: '#c9ccd2', dark: '#2e3036' };   // the metal the aide de camp sheets draw their tips in
+    const variantKey = layer => {
+      const m = tipMetalOf(layer);
+      return baseVariantKey(layer) + (m && (m.main.toLowerCase() !== SHEET_TIP.main || m.dark.toLowerCase() !== SHEET_TIP.dark) ? '--tip-' + hashText(m.main + m.dark) : '');
+    };
+    function baseVariantKey(layer){
+      return baseKey(layer) + (layer.showGroups && layer.showGroups.length ? '--show-' + layer.showGroups.join('-').replace(/[^a-z0-9-]/gi, '') : '');
+    }
+    function baseKey(layer){
+      if(layer.cordPath && layer.cordPath.d) return layer.id + '--cord-' + hashText(layer.cordPath.d + (layer.cordLook ? '|' + JSON.stringify(layer.cordLook) + '|' + layer.cordPath.width : '') + (layer.clipPlus ? '|' + JSON.stringify(layer.clipPlus) : ''));
+      // Both: the named groups only, less the hidden ones inside them (a collar group redrawn without its cover).
+      if(layer.onlyGroups && layer.onlyGroups.length && layer.hideGroups && layer.hideGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '') + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
+      if(layer.hideGroups && layer.hideGroups.length) return layer.id + '--hide-' + layer.hideGroups.join('-').replace(/[^a-z0-9-]/gi, '');
+      if(layer.onlyGroups && layer.onlyGroups.length) return layer.id + '--only-' + layer.onlyGroups.join('-').replace(/[^a-z0-9-]/gi, '');
+      return layer.id;
+    }
+    const drawing = scene.layers.map(l => pictureLayer(l, manifestPath));
+    const assetIds = [...new Set(drawing.filter(l => l.type === 'asset').map(l => l.id))];
+    const symbols = await Promise.all(assetIds.map(id => loadSymbol(id, manifestPath(id)).then(s => [id, s]).catch(err => {
+      console.warn('[uniform] could not load', id, err);
+      return [id, null];
+    })));
+    const loaded = new Map();
+    const symbolData = new Map();
+    symbols.forEach(([id, s]) => {
+      if(!s) return;
+      symbolData.set(id, s);
+      // Parsed once per symbol and cloned for each drawing (LIVE13 E85: the OCP sheet is 377 KB of markup, parsed again on every drawing).
+      if(!s.node){
+        s.node = el('symbol', { id: 'sym-' + id, viewBox: s.viewBox, preserveAspectRatio: 'none' });
+        s.node.innerHTML = s.inner;
+      }
+      defs.appendChild(s.node.cloneNode(true));
+      loaded.set(id, true);
+    });
+    if(AW && AW.deviceInner){
+      for(const id of new Set(scene.layers.filter(l => l.type === 'asset' && l.role === 'device').map(l => l.id))){
+        const s = symbolData.get(id);
+        if(!s) continue;
+        const vb = s.viewBox.split(/\s+/).map(Number);
+        const sym = el('symbol', { id: 'sym-' + id + '--dev', viewBox: s.viewBox, preserveAspectRatio: 'none', overflow: 'visible' });
+        sym.innerHTML = AW.deviceInner(s.inner, s.widthIn ? vb[2] / s.widthIn : 100, '--dev');
+        defs.appendChild(sym);
+        deviceSyms.add(id);
+      }
+    }
+    // Variant symbols. Their own ids get a suffix so they cannot clash with the original's.
+    for(const layer of drawing){
+      if(layer.type !== 'asset') continue;
+      const key = variantKey(layer);
+      if(key === layer.id || loaded.get(key) || !symbolData.get(layer.id)) continue;
+      const s = symbolData.get(layer.id);
+      // A variant is made once per symbol and key and cloned for each drawing; its suffix comes from its key, so the copy is the same in
+      // every drawing (LIVE13 E85).
+      s.variants = s.variants || new Map();
+      if(s.variants.has(key)){
+        defs.appendChild(s.variants.get(key).cloneNode(true));
+        loaded.set(key, true);
+        continue;
+      }
+      const suffix = '--v' + hashText(key);
+      const sym = el('symbol', { id: 'sym-' + key, viewBox: s.viewBox, preserveAspectRatio: 'none' });
+      // The paint servers (patterns, gradients) are not copied into a variant: it paints with the plain symbol's, which every drawing holds
+      // (above), so their references keep the plain ids. The OCP sheet's camouflage pattern alone is 288 KB of its 377 KB, and an OCP drawing
+      // makes four variants of the sheet (the figure without its cap views, the cap front, the cap back, the collar over the badges): each copy
+      // was parsed, its ids renamed and laid out on every drawing, the lag Ethan saw switching badges on the OCP (LIVE13 E85).
+      const lean = leanInner(s);
+      sym.innerHTML = lean.inner.replace(/\bid="([^"]+)"/g, (m, v) => `id="${v}${suffix}"`).replace(/url\(#([^)]+)\)/g, (m, v) => lean.shared.has(v) ? m : `url(#${v}${suffix})`).replace(/href="#([^"]+)"/g, (m, v) => lean.shared.has(v) ? m : `href="#${v}${suffix}"`);
+      const byId = name => sym.querySelector(`[id="${layer.id}__${name}${suffix}"]`);
+      if(layer.cordPath && layer.cordPath.d){
+        // The fitted cord path (engine: core.fitCord); the art group's own translate and scale take it from sheet inches to the sheet's drawing units.
+        const art = byId('art'), cord = byId('cord'), t = art && /translate\(([-\d.]+)[ ,]+([-\d.]+)\)\s*scale\(([-\d.]+)\)/.exec(art.getAttribute('transform') || '');
+        // Every cord is the one braid, drawn by CordBraid along the fitted path: the braid the sheet draws along its own polyline gives way to it, whatever the cord. A sheet whose braid
+        // cannot be drawn (no drawing function loaded, a cord the list does not know) keeps the braid it draws.
+        const braid = cord && t ? cordBraid(layer, Number(t[1]), Number(t[2]), Number(t[3]), 'cb' + hashText(key) + '-') : null;
+        if(braid){
+          for(const n of [...cord.childNodes]) if(n.nodeName !== 'title') cord.removeChild(n);
+          const holder = el('g');
+          holder.innerHTML = braid.run + braid.extras;
+          while(holder.firstChild) cord.appendChild(holder.firstChild);
+          // The sheet cuts its braid to its own silhouette, the gap between arm and body a hole in it; the engine cuts the cord (clipSil, clipOuter, and layer.clipPlus's window round the armpit, where the
+          // cord's end lies over that gap), so the sheet's own cut is taken off: it would notch the cord there.
+          const own = layer.clipPlus && cord.parentNode;
+          if(own && /cordClip/.test(own.getAttribute('clip-path') || '')) own.removeAttribute('clip-path');
+        }
+        // A cord sheet that draws more than the braid (the Aide de Camp aiguillette's loops and thin cords) has those groups left off here.
+        if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
+      }else if(!(layer.onlyGroups && layer.onlyGroups.length)){
+        if(layer.hideGroups) layer.hideGroups.forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
+        if(layer.showGroups) layer.showGroups.forEach(g => { const n = byId(g); if(n) n.removeAttribute('display'); });
+      }else{
+        // Draw nothing but the named groups: the rest of the sheet is dropped (pruneToGroups keeps what they need), then what is left
+        // is hidden and those groups shown.
+        pruneToGroups(sym, layer.onlyGroups.map(byId).filter(Boolean));
+        const wrap = el('g', { visibility: 'hidden' });
+        [...sym.childNodes].forEach(n => { if(n.nodeName !== 'defs') wrap.appendChild(n); });
+        sym.appendChild(wrap);
+        // A clip path, mask or pattern inside the hidden wrapper inherits 'hidden' for its own shapes,
+        // which makes it empty, so everything it clips would vanish (the blazer's lapel foreground was
+        // clipped to the silhouette and drew nothing): they stay visible.
+        wrap.querySelectorAll('clipPath, mask, pattern, marker').forEach(n => n.setAttribute('visibility', 'visible'));
+        layer.onlyGroups.forEach(g => { const n = byId(g); if(n){ n.setAttribute('visibility', 'visible'); if(layer.showGroups && layer.showGroups.includes(g)) n.removeAttribute('display'); } });
+        (layer.hideGroups || []).forEach(g => { const n = byId(g); if(n) n.setAttribute('display', 'none'); });
+        // The tip of a gold aiguillette is the sheet's tip in the list's gold metal: its fill and its edge, the two values the sheet draws the silver tip with.
+        const metal = tipMetalOf(layer);
+        if(metal) for(const n of sym.querySelectorAll('[fill], [stroke]')){
+          for(const attr of ['fill', 'stroke']){
+            const v = (n.getAttribute(attr) || '').toLowerCase();
+            if(v === SHEET_TIP.main) n.setAttribute(attr, metal.main); else if(v === SHEET_TIP.dark) n.setAttribute(attr, metal.dark);
+          }
+        }
+      }
+      s.variants.set(key, sym.cloneNode(true));
+      defs.appendChild(sym);
+      loaded.set(key, true);
+    }
+
+    const rasterUrls = [...new Set(drawing.filter(l => l.type === 'raster').map(l => l.href))];
+    const rasters = new Map();
+    await Promise.all(rasterUrls.map(u => loadRaster(u).then(d => rasters.set(u, d)).catch(err => console.warn('[uniform] could not load', u, err))));
+
+    const layers = [...drawing].sort((a, b2) => (a.z || 0) - (b2.z || 0));
+    const clipIds = new Map();
+    const silIds = new Map();
+    // The sheet's silhouette path with only its largest subpath (by the area of its M/L vertices): the garment's outer outline without the holes
+    // between arm and body (`clipOuter`, the shoulder cord: LIVE13 E120).
+    function outerSubpath(d){
+      const subs = String(d).split(/(?=[Mm])/).filter(x => /^[Mm]/.test(x));
+      if(subs.length < 2) return d;
+      const area = sub => { const pts = [...sub.matchAll(/[ML]\s*(-?[\d.]+)[ ,](-?[\d.]+)/g)].map(m => [Number(m[1]), Number(m[2])]); let a = 0; for(let i = 0; i < pts.length; i++){ const q = pts[(i + 1) % pts.length]; a += pts[i][0] * q[1] - q[0] * pts[i][1]; } return Math.abs(a); };
+      return subs.reduce((b, sub) => area(sub) > area(b) ? sub : b, subs[0]);
+    }
+    // `plus`: a polygon in scene inches (points { x, y }) drawn through as well as the outline, the clip being their union (the window round a shoulder cord's end, over the gap between arm and body:
+    // layer.clipPlus).
+    function silhouetteClip(garmentId, outer, plus){
+      const extra = plus && plus.length ? plus.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' ') : '';
+      const key = garmentId + (outer ? ':outer' : '') + (extra ? ':plus ' + extra : '');
+      if(silIds.has(key)) return silIds.get(key);
+      let cid = null;
+      const base = scene.layers.find(l => l.type === 'asset' && l.id === garmentId && l.role === 'garment');
+      const data = symbolData.get(garmentId);
+      const path = defs.querySelector(`[id="${garmentId}__clipSil"] path`), art = defs.querySelector(`[id="${garmentId}__art"]`);
+      if(base && data && path && art){
+        const vbox = data.viewBox.split(/\s+/).map(Number);
+        const cp = el('clipPath', { id: 'clipsil-' + silIds.size, clipPathUnits: 'userSpaceOnUse' });
+        const copy = el('path', { d: outer ? outerSubpath(path.getAttribute('d')) : path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null,
+          transform: `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}` });
+        cp.appendChild(copy);
+        if(extra) cp.appendChild(el('polygon', { points: extra }));
+        defs.appendChild(cp);
+        cid = cp.getAttribute('id');
+      }
+      silIds.set(key, cid);
+      return cid;
+    }
+    const drawn = [];
+    for(const layer of layers){
+      let node = null;
+      if(layer.type === 'asset'){
+        const key = layer.role === 'device' && deviceSyms.has(layer.id) ? layer.id + '--dev' : variantKey(layer);
+        if(!loaded.get(layer.role === 'device' ? layer.id : key)) continue;
+        node = el('use', { href: '#sym-' + key, x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h) });
+        node.setAttributeNS(XLINK_NS, 'xlink:href', '#sym-' + key);
+      }else if(layer.type === 'raster'){
+        const data = rasters.get(layer.href);
+        if(!data) continue;
+        if(Array.isArray(layer.crop) && layer.crop.length === 4){
+          // Only the box layer.crop = [x0, y0, x1, y1] (fractions of the image) is drawn, filling the layer's rectangle: a badge
+          // PNG with margin or cloth around it, drawn at the badge's own size (a nested svg whose viewBox is that box of a unit image).
+          const c = layer.crop;
+          node = el('svg', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), viewBox: `${c[0]} ${c[1]} ${c[2] - c[0]} ${c[3] - c[1]}`, preserveAspectRatio: 'none', overflow: 'hidden' });
+          const im = el('image', { x: 0, y: 0, width: 1, height: 1, preserveAspectRatio: 'none' });
+          im.setAttribute('href', data);
+          im.setAttributeNS(XLINK_NS, 'xlink:href', data);
+          node.appendChild(im);
+        }else{
+          node = el('image', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), preserveAspectRatio: layer.fit === 'stretch' ? 'none' : 'xMidYMid meet' });
+          node.setAttribute('href', data);
+          node.setAttributeNS(XLINK_NS, 'xlink:href', data);
+        }
+      }else if(layer.type === 'rect'){
+        node = el('rect', { x: fmt(layer.x), y: fmt(layer.y), width: fmt(layer.w), height: fmt(layer.h), rx: layer.rx ? fmt(layer.rx) : null, fill: layer.fill || 'none', 'fill-opacity': layer.fillOpacity != null ? layer.fillOpacity : null, stroke: layer.stroke || null, 'stroke-width': layer.strokeWidth ? fmt(layer.strokeWidth) : null });
+      }else if(layer.type === 'polygon'){
+        // A flat-filled polygon in scene inches (the slide-on epaulet sleeve over its strap and its two shading bands).
+        node = el('polygon', { points: layer.points.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' '), fill: layer.fill || 'none', 'fill-opacity': layer.fillOpacity != null ? layer.fillOpacity : null, stroke: layer.stroke || null, 'stroke-width': layer.stroke ? fmt(layer.strokeWidth || 0.02) : null, 'stroke-linejoin': 'round' });
+      }else if(layer.type === 'text'){
+        // The layer's y is the capitals' middle; the text sits on its baseline, half a cap height lower (E121). No dominant-baseline: Safari
+        // computes that from the ascent and descent of whatever face it substitutes.
+        node = el('text', {
+          x: fmt(layer.x), y: fmt(layer.y + ENGRAVED_FONT.capHeight * layer.size / 2),
+          'text-anchor': layer.anchor || 'middle',
+          'font-family': layer.font || ENGRAVED_FAMILY,
+          'font-weight': layer.weight || 700,
+          'font-size': fmt(layer.size),
+          fill: layer.color || '#d8dbe0',
+          'letter-spacing': layer.letterSpacing ? fmt(layer.letterSpacing) : null,
+          textLength: layer.fitWidth ? fmt(layer.fitWidth) : null,
+          lengthAdjust: layer.fitWidth ? 'spacingAndGlyphs' : null
+        });
+        node.textContent = layer.text;
+      }
+      if(!node) continue;
+      let t = transformFor(layer);
+      // Condensed lettering (the tapes): squeeze horizontally about the text's centre.
+      if(layer.type === 'text' && layer.condense) t = [t, `translate(${fmt(layer.x)} 0) scale(${fmt(layer.condense)} 1) translate(${fmt(-layer.x)} 0)`].filter(Boolean).join(' ');
+      if(t) node.setAttribute('transform', t);
+      if(layer.clip){
+        // A clip polygon in scene inches (used to tuck a cord under an epaulet, etc.).
+        const key = layer.clip.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' ');
+        let cid = clipIds.get(key);
+        if(!cid){
+          cid = 'clip-' + clipIds.size;
+          const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
+          cp.appendChild(el('polygon', { points: key }));
+          defs.appendChild(cp);
+          clipIds.set(key, cid);
+        }
+        const g = el('g', { 'clip-path': `url(#${cid})` });
+        g.appendChild(node);
+        node = g;
+      }
+      if(layer.clipOut && layer.clipOut.length){
+        // Everything except the polygons in scene inches (a collar leaf lying over a badge pinned under it, the armpit's cut of a shoulder cord): each polygon is cut away by its own clip path of a
+        // rectangle larger than the scene and the polygon, filled even-odd, one group inside the other, so polygons that overlap are cut once, not twice.
+        for(const poly of layer.clipOut){
+          const d = 'M-1000 -1000H2000V2000H-1000Z M' + poly.map(p => fmt(p.x) + ' ' + fmt(p.y)).join('L') + 'Z';
+          let cid = clipIds.get('out:' + d);
+          if(!cid){
+            cid = 'clip-' + clipIds.size;
+            const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
+            cp.appendChild(el('path', { d, 'clip-rule': 'evenodd' }));
+            defs.appendChild(cp);
+            clipIds.set('out:' + d, cid);
+          }
+          const g = el('g', { 'clip-path': `url(#${cid})` });
+          g.appendChild(node);
+          node = g;
+        }
+      }
+      if(layer.clipSil){
+        // Clipped to the garment sheet's own silhouette (its `clipSil` path, in the sheet's art frame): a
+        // copy of the path carried into the scene by the same transform the sheet's symbol is drawn with.
+        const sil = silhouetteClip(layer.clipSil, !!layer.clipOuter, layer.clipPlus);
+        if(sil){
+          const g = el('g', { 'clip-path': `url(#${sil})` });
+          g.appendChild(node);
+          node = g;
+        }
+      }
+      if(layer.cutBelow != null){
+        // The picture ends at this line in scene inches (js/engine/compose.js FRAME_CUT): nothing of the layer is drawn below it.
+        const key = 'below:' + fmt(layer.cutBelow);
+        let cid = clipIds.get(key);
+        if(!cid){
+          cid = 'clip-' + clipIds.size;
+          const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
+          cp.appendChild(el('rect', { x: -1000, y: -1000, width: 3000, height: fmt(1000 + layer.cutBelow) }));
+          defs.appendChild(cp);
+          clipIds.set(key, cid);
+        }
+        const g = el('g', { 'clip-path': `url(#${cid})` });
+        g.appendChild(node);
+        node = g;
+      }
+      const wrap = el('g', {
+        class: 'layer ' + (layer.className || ''),
+        'data-calib-key': layer.key || null,
+        'data-role': layer.role || null
+      });
+      if(layer.title){
+        const title = el('title');
+        title.textContent = layer.title;
+        wrap.appendChild(title);
+      }
+      wrap.appendChild(node);
+      svg.appendChild(wrap);
+      drawn.push({ layer, wrap });
+    }
+    // The measurements go over everything, sized for the preview stage unless told otherwise.
+    const ML = root.CAPUBEngine && root.CAPUBEngine.measureLayout;
+    if(options.measure && ML){
+      const px = options.measurePx || ML.previewPx(vb);
+      // The lapel insignia are whole-sheet overlays: their sheets state where the pieces lie (landmarks), which the overlay keeps its lines off.
+      const CORE0 = root.CAPUBEngine && root.CAPUBEngine.core;
+      const lapelIds = [...new Set(scene.layers.filter(l => l.type === 'asset' && /-lapel-(cap|us|us-nco)$|-senior-nco-lapel$/.test(l.id || '')).map(l => l.id))];
+      const landmarks = new Map();
+      await Promise.all(lapelIds.map(id => fetch(assetUrl(manifestPath(id).replace(/\.svg$/, '.spec.json')), { cache: 'no-cache' })
+        .then(r => (r.ok ? r.json() : null)).then(raw => { if(raw && CORE0) landmarks.set(id, CORE0.normalizeSpec({ id }, raw).landmarks); }).catch(() => null)));
+      const pieces = ML.lapelPieces(scene, id => landmarks.get(id) || null);
+      // The member's choices: measurements hidden (ids from measure-layout's catalogue), and whether each callout quotes its paragraph.
+      const shown = ML.filterScene ? ML.filterScene(scene, { hidden: options.measureHide, refs: !!options.measureRefs }) : scene;
+      const drawings = ML.layout(shown, { px, area: { x: vb[0], y: vb[1], w: vb[2], h: vb[3] }, calloutArea: ML.calloutRoom(vb, px), pieces });
+      // The magnified insets are set outside the garment, above the figure or beside it: the frame grows to hold the ones that do not fit in it.
+      const frame = ML.frameFor(vb, drawings, px);
+      if(frame.some((v, i) => Math.abs(v - vb[i]) > 1e-9)){
+        svg.setAttribute('viewBox', frame.map(fmt).join(' '));
+        if(options.widthPx){ svg.setAttribute('width', fmt(options.widthPx)); svg.setAttribute('height', fmt(options.widthPx * frame[3] / frame[2])); }
+      }
+      // A picture of one distance (js/profile-pictures.js callouts): the caller is handed what was laid out and cuts the drawing to the window it wants, [x, y, w, h].
+      if(typeof options.measureView === 'function'){
+        const view = options.measureView(drawings, frame);
+        if(Array.isArray(view) && view.length === 4 && view.every(Number.isFinite) && view[2] > 0 && view[3] > 0){
+          svg.setAttribute('viewBox', view.map(fmt).join(' '));
+          if(options.widthPx){ svg.setAttribute('width', fmt(options.widthPx)); svg.setAttribute('height', fmt(options.widthPx * view[3] / view[2])); }
+        }
+      }
+      // The magnified insets draw copies of the layers that reach their window, as the page draws them but not as layers of their own.
+      const CORE = root.CAPUBEngine && root.CAPUBEngine.core;
+      const copies = win => drawn.filter(({ layer }) => layer.role !== 'measure' && layer.role !== 'clear' && (() => {
+        const bb = CORE ? CORE.layerBounds(layer) : null;
+        return !bb || (bb.x < win.x + win.w && bb.x + bb.w > win.x && bb.y < win.y + win.h && bb.y + bb.h > win.y);
+      })()).map(({ wrap }) => {
+        const c = wrap.cloneNode(true);
+        c.setAttribute('class', 'calloutLayer');
+        c.removeAttribute('data-calib-key');
+        c.removeAttribute('data-role');
+        c.querySelectorAll('title').forEach(t => t.remove());
+        return c;
+      });
+      // The distances that have a paragraph can be tapped (js/citations.js): the catalogue of the whole scene says which, by measure key.
+      const cites = new Map();
+      for(const e of ML.catalogue(scene).entries) if(e.ref) for(const k of e.keys) cites.set(k, { id: e.id, label: e.name + ', ' + e.value });
+      measureNodes(drawings, px, ML.PX.font, defs, copies, cites).forEach(n => svg.appendChild(n));
+    }
+    scopeIds(svg);
+    return svg;
+  }
+
+  // Rasterize an <svg> to a canvas. An SVG drawn through an <img> loads no file, so the engraved face travels inside the markup (embedFonts).
+  async function svgToCanvas(svg, widthPx){
+    const vb = svg.getAttribute('viewBox').split(/\s+/).map(Number);
+    const w = Math.round(widthPx), h = Math.round(widthPx * vb[3] / vb[2]);
+    const clone = svg.cloneNode(true);
+    await embedFonts(clone);   // the <img> an SVG is rasterized through loads no external font (E121)
+    clone.setAttribute('width', w);
+    clone.setAttribute('height', h);
+    const markup = new XMLSerializer().serializeToString(clone);
+    const blob = new Blob([markup], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        resolve(canvas);
+      };
+      img.onerror = err => { URL.revokeObjectURL(url); reject(err); };
+      img.src = url;
+    });
+  }
+
+  root.CAPUBEngine = root.CAPUBEngine || {};
+  root.CAPUBEngine.renderSvg = { buildSvg, svgToCanvas, embedFonts, ENGRAVED_FONT, loadSymbol, pictureLayer, measureNodes, cordBraid, hashText, scopeIds };
+})(typeof self !== 'undefined' ? self : this);

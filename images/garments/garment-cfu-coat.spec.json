@@ -35,6 +35,14 @@
    3930,
    2228
   ],
+  "seam_top_center_right": [
+   350,
+   1490
+  ],
+  "seam_top_center_left": [
+   3580,
+   1490
+  ],
   "collar_apex": [
    1965,
    1910
@@ -67,6 +75,225 @@
    1580,
    2500
   ]
+ },
+ "collar_slots": {
+  "left": {
+   "cadet_officer": {
+    "center": [
+     2314,
+     1671.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 2226.5,
+     "y": 1596.5,
+     "w": 175,
+     "h": 150
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     2291.8,
+     1662.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 2236.8,
+     "y": 1575,
+     "w": 110,
+     "h": 175
+    }
+   },
+   "officer": {
+    "center": [
+     2269.9,
+     1707
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 2189.9,
+     "y": 1642,
+     "w": 160,
+     "h": 130
+    }
+   },
+   "front_edge": {
+    "p1": [
+     2221,
+     1377
+    ],
+    "p2": [
+     1965,
+     1910
+    ],
+    "dir_down": [
+     -0.433,
+     0.9014
+    ],
+    "angle_deg": 25.7
+   },
+   "leading_edge": {
+    "points": [
+     [
+      2221,
+      1377
+     ],
+     [
+      1965,
+      1910
+     ]
+    ],
+    "angle_deg": 25.7,
+    "note": "the leaf and lapel front edge, tip to apex (one straight line); grade is 1 in from it and parallel (CAPR 39-1 5.1.1.1.1.4, 5.2.1.1.1)"
+   },
+   "bottom_edge": {
+    "p1": [
+     2463,
+     1807
+    ],
+    "p2": [
+     2193,
+     1807
+    ],
+    "mid": [
+     2328,
+     1807
+    ],
+    "points": [
+     [
+      2463,
+      1807
+     ],
+     [
+      2193,
+      1807
+     ]
+    ],
+    "angle_deg": 0,
+    "note": "the leaf's lower seam (the stitched bottom edge under the grade), outer corner to notch; HORIZONTAL (parallel to the ground). Every grade piece's bottom edge is parallel to it; officer grade is centred 1 in above it (CAPR 39-1 5.1.1.1.1.1, 5.2.1.1.1.1)"
+   }
+  },
+  "right": {
+   "cadet_officer": {
+    "center": [
+     1616,
+     1671.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.5
+    },
+    "bbox": {
+     "x": 1528.5,
+     "y": 1596.5,
+     "w": 175,
+     "h": 150
+    }
+   },
+   "cadet_nco": {
+    "center": [
+     1638.2,
+     1662.5
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.75,
+     "across": 1.1
+    },
+    "bbox": {
+     "x": 1583.2,
+     "y": 1575,
+     "w": 110,
+     "h": 175
+    }
+   },
+   "officer": {
+    "center": [
+     1660.1,
+     1707
+    ],
+    "angle_deg": 0,
+    "size_in": {
+     "along": 1.3,
+     "across": 1.6
+    },
+    "bbox": {
+     "x": 1580.1,
+     "y": 1642,
+     "w": 160,
+     "h": 130
+    }
+   },
+   "front_edge": {
+    "p1": [
+     1709,
+     1377
+    ],
+    "p2": [
+     1965,
+     1910
+    ],
+    "dir_down": [
+     0.433,
+     0.9014
+    ],
+    "angle_deg": -25.7
+   },
+   "leading_edge": {
+    "points": [
+     [
+      1709,
+      1377
+     ],
+     [
+      1965,
+      1910
+     ]
+    ],
+    "angle_deg": -25.7,
+    "note": "the leaf and lapel front edge, tip to apex (one straight line); grade is 1 in from it and parallel (CAPR 39-1 5.1.1.1.1.4, 5.2.1.1.1)"
+   },
+   "bottom_edge": {
+    "p1": [
+     1467,
+     1807
+    ],
+    "p2": [
+     1737,
+     1807
+    ],
+    "mid": [
+     1602,
+     1807
+    ],
+    "points": [
+     [
+      1467,
+      1807
+     ],
+     [
+      1737,
+      1807
+     ]
+    ],
+    "angle_deg": 0,
+    "note": "the leaf's lower seam (the stitched bottom edge under the grade), outer corner to notch; HORIZONTAL (parallel to the ground). Every grade piece's bottom edge is parallel to it; officer grade is centred 1 in above it (CAPR 39-1 5.1.1.1.1.1, 5.2.1.1.1.1)"
+   }
+  },
+  "note": "angle_deg: SVG rotate() convention (clockwise positive) to apply to an insignia whose long axis is vertical. cadet_* slots: cadet officer grade (nominal 1.75 x 1.5 in, the regular C/Lt Col cloth) / cadet NCO metal chevron (1.1 x 1.75 in), NEAR CORNER 1 in from the collar FRONT edge (front_edge) and centred on the leaf along it, NOT turned: every grade piece stands on the leaf's horizontal lower seam (bottom_edge, angle_deg), so angle_deg of every slot is the seam's angle (0); the engine places each cadet officer grade by the same rule with its own size (CAPR 39-1 5.1.1.1.1.3-4, 5.2.1.1.1.4). bottom_edge: the leaf's lower seam, two points (p1, p2, also points), horizontal, with its angle_deg; also the landmark collar_bottom_edge_<side>. officer: officer grade centred 1 in from the collar BOTTOM edge on the centre line of the leaf there (the midpoint of the chord that parallel line cuts across the leaf), long axis perpendicular to the edge; its 1.6 x 1.3 in box lies inside the leaf (collar_left / collar_right). size_in.along is measured along the long axis. bbox is the axis-aligned box of the rotated slot, also exposed as landmarks collar_*_zone_*. Right/left = wearer's."
  },
  "landmarks": {
   "name_tape": {
@@ -183,51 +410,95 @@
     4416
    ]
   ],
+  "collar_right": [
+   [
+    1709,
+    1377
+   ],
+   [
+    1525,
+    1562
+   ],
+   [
+    1467,
+    1807
+   ],
+   [
+    1737,
+    1807
+   ],
+   [
+    1854.5,
+    1680
+   ]
+  ],
   "collar_officer_zone_right": {
-   "x": 1655,
-   "y": 1685,
+   "x": 1580.1,
+   "y": 1642,
    "w": 160,
    "h": 130
   },
   "collar_cadet_officer_zone_right": {
-   "x": 1621,
-   "y": 1614,
-   "w": 250,
+   "x": 1528.5,
+   "y": 1596.5,
+   "w": 175,
    "h": 150
   },
   "collar_cadet_nco_zone_right": {
-   "x": 1691,
-   "y": 1601.5,
+   "x": 1583.2,
+   "y": 1575,
    "w": 110,
    "h": 175
   },
+  "collar_left": [
+   [
+    2221,
+    1377
+   ],
+   [
+    2405,
+    1562
+   ],
+   [
+    2463,
+    1807
+   ],
+   [
+    2193,
+    1807
+   ],
+   [
+    2075.5,
+    1680
+   ]
+  ],
   "collar_officer_zone_left": {
-   "x": 2115,
-   "y": 1685,
+   "x": 2189.9,
+   "y": 1642,
    "w": 160,
    "h": 130
   },
   "collar_cadet_officer_zone_left": {
-   "x": 2059,
-   "y": 1614,
-   "w": 250,
+   "x": 2226.5,
+   "y": 1596.5,
+   "w": 175,
    "h": 150
   },
   "collar_cadet_nco_zone_left": {
-   "x": 2129,
-   "y": 1601.5,
+   "x": 2236.8,
+   "y": 1575,
    "w": 110,
    "h": 175
   },
   "wing_patch_zone_left": {
    "x": 3430,
-   "y": 1590,
+   "y": 1540,
    "w": 300,
    "h": 295
   },
   "activity_patch_zone_right": {
    "x": 200,
-   "y": 1590,
+   "y": 1540,
    "w": 300,
    "h": 300
   },
@@ -302,7 +573,83 @@
    "y": 40,
    "w": 1120,
    "h": 520
-  }
+  },
+  "collar_lapel_right": [
+   [
+    1854.53,
+    1680
+   ],
+   [
+    1737,
+    1807
+   ],
+   [
+    1660,
+    1880
+   ],
+   [
+    1965,
+    1910
+   ]
+  ],
+  "collar_leading_edge_right": [
+   [
+    1709,
+    1377
+   ],
+   [
+    1965,
+    1910
+   ]
+  ],
+  "collar_bottom_edge_right": [
+   [
+    1467,
+    1807
+   ],
+   [
+    1737,
+    1807
+   ]
+  ],
+  "collar_lapel_left": [
+   [
+    2075.47,
+    1680
+   ],
+   [
+    2193,
+    1807
+   ],
+   [
+    2270,
+    1880
+   ],
+   [
+    1965,
+    1910
+   ]
+  ],
+  "collar_leading_edge_left": [
+   [
+    2221,
+    1377
+   ],
+   [
+    1965,
+    1910
+   ]
+  ],
+  "collar_bottom_edge_left": [
+   [
+    2463,
+    1807
+   ],
+   [
+    2193,
+    1807
+   ]
+  ]
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; user units (0.01 in), origin top-left of the artwork box. Right/left = wearer's.",
  "dimensions": {
@@ -326,6 +673,7 @@
   ]
  },
  "documented": [
+  "crew-neck t-shirt worn under the CFU coat, black or tan (5.2.1.3.1, 5.2.1.3.2): black drawn in the open V, colour estimated",
   "Blue Field Cap (patrol design), CAP baseball / navy tactical cap and Blue Boonie Hat may be worn (CAPR 39-1 5.2.1.2.3, 6.2.9, 6.2.10); boonie headgear insignia as for the Blue Field Cap",
   "button front, hip length (CAPR 39-1 5.2.1.1: single-breasted, four bellows pockets with flaps, straight-cut sleeve tabs)",
   "last-name tape above wearer's right upper pocket, CAP tape above left, folded to pocket width, silver on dark blue (5.2.1.1.2.1)",

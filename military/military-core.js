@@ -1,7 +1,9 @@
 (function militaryCoreModule(root, factory){
   const api = factory();
   if(typeof module === 'object' && module.exports) module.exports = api;
-  if(root) root.CAPUBMilitary = Object.assign(root.CAPUBMilitary || {}, api);
+  if(root){
+    root.CAPUBMilitary = Object.assign(root.CAPUBMilitary || {}, api);
+  }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function(){
   'use strict';
 
@@ -145,7 +147,8 @@
           ...award,
           id:key,
           canonicalId:key,
-          sourceIds:unique([award.id]),
+          // legacyCanonicalIds: ids a saved setup may hold from before the award's name was corrected (LIVE13 E103).
+          sourceIds:unique([award.id, ...(award.legacyCanonicalIds || [])]),
           aliases:unique([...(award.aliases || []), award.name, award.officialName]),
           authorizedServices:unique((award.authorizedServices || []).map(normalizeService)),
           precedence:{...(award.precedence || {})},
@@ -155,7 +158,7 @@
         });
         continue;
       }
-      existing.sourceIds=unique([...(existing.sourceIds || []), award.id]);
+      existing.sourceIds=unique([...(existing.sourceIds || []), award.id, ...(award.legacyCanonicalIds || [])]);
       existing.aliases=unique([...(existing.aliases || []), ...(award.aliases || []), award.name, award.officialName]);
       existing.authorizedServices=unique([...(existing.authorizedServices || []), ...(award.authorizedServices || [])].map(normalizeService));
       existing.precedence=Object.assign({}, existing.precedence, award.precedence || {});
@@ -419,13 +422,11 @@
     ].join('::');
   }
 
-  function resolveBadgeRepresentation(badge,{service,uniformFamily,preferred='AUTO',assetProfiles=null,variant=null}={}){
+  function resolveBadgeRepresentation(badge,{service,preferred='metal',assetProfiles=null,variant=null}={}){
     const reps=badge?.representations || {};
     const serviceKey=normalizeService(service);
-    const family=String(uniformFamily || '').trim().toUpperCase();
-    const utility=/OCP|ABU|ODU|NWU|MCCUU|UTILITY/.test(family);
-    const requested=String(preferred || 'AUTO').trim().toLowerCase();
-    const representationName=requested === 'auto' ? (utility ? 'embroidered' : 'metal') : requested;
+    const requested=String(preferred || 'metal').trim().toLowerCase();
+    const representationName=requested === 'auto' ? 'metal' : requested;
     const configured=reps[representationName] || {
       status:'NOT_APPLICABLE',available:false,asset:null
     };

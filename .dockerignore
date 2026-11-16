@@ -1,0 +1,9 @@
+# The site image (deploy/Dockerfile) builds from the repository root. Keep the API's data and secrets, and
+# anything else not needed for the build, out of the build context.
+.git
+node_modules
+dist
+.scratch
+deploy/var
+deploy/.env
+deploy/api

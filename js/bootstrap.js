@@ -62,17 +62,19 @@ function capubRepairCriticalButtons(){
     if(downloadButton) downloadButton.dataset.exportBusy = '1';
 
     try{
-      const original = by('uniformCanvas');
-      if(!original) throw new Error('No uniform preview was found.');
-      const canvas = await composeUniformPngCanvas(original, 2);
+      // The same SVG as the preview, rasterized at 60 pixels per inch.
+      const canvas = await CAPUBUniformView.exportCanvas(60);
+      if(!canvas) throw new Error('No uniform preview was found.');
 
       const link = document.createElement('a');
-      link.download = CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.uniform},'png');
+      link.download = CAPUBExportNames.exportFileName({rank:State.rank,uniform:State.ceremonial ? 'honor_guard' : State.uniform},'png');
       link.href = canvas.toDataURL('image/png');
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.CAPUB_TELEMETRY?.track('png_download', { uniform: State.uniform, ok: true });
     }catch(err){
+      window.CAPUB_TELEMETRY?.track('png_download', { uniform: State.uniform, ok: false });
       console.error('PNG EXPORT ERROR:', err);
       capubNotify(`PNG export failed: ${err?.message || err}`, 8000);
     }finally{
@@ -80,33 +82,6 @@ function capubRepairCriticalButtons(){
     }
   });
 
-  const measurementToggle=by('toggleMeasurementOverlay');
-  if(measurementToggle && measurementToggle.dataset.measurementToggleWired !== '1'){
-    measurementToggle.dataset.measurementToggleWired='1';
-    measurementToggle.addEventListener('change', evt => {
-      State.showMeasurementOverlay = !!evt.target.checked;
-      if(State.showMeasurementOverlay){
-        if(typeof renderMeasurementOverlay === 'function') renderMeasurementOverlay();
-      }else if(typeof clearMeasurementOverlay === 'function'){
-        clearMeasurementOverlay();
-      }
-    });
-  }
-
-  capubSafeWire('toggleMini','change', evt => {
-    State.forceMini = !!evt.target.checked;
-    if(typeof renderRack === 'function') renderRack();
-    if(typeof renderAllBadges === 'function') renderAllBadges();
-  });
-
-  // Make sure arrows never block normal UI/preview interaction unless calibrate mode is on.
-  const styleId = 'capubDynamicArrowPointerMode';
-  if(!by(styleId)){
-    const st = document.createElement('style');
-    st.id = styleId;
-    st.textContent = `.measurementArrowLayer{pointer-events:none!important}.calib-selectable .measurementArrowLayer{pointer-events:auto!important}`;
-    document.head.appendChild(st);
-  }
 }
 
 // Run once immediately and again after bootstrap/dynamic UI creation.
@@ -119,10 +94,8 @@ window.addEventListener('load', () => { try{ capubRepairCriticalButtons(); }catc
    CAPUB PATCH — COMMAND DATES + ES/VU BADGE SLOT FIX
    Added 2026-05-12
    =========================== */
-const CAPUB_COUNTED_BADGE_LIMIT = 5;
-
-
-
+// At most four badges, command insignia not counted (4.1.5.2.2.4, ICL 25-02 4.2.5.1.3).
+const CAPUB_COUNTED_BADGE_LIMIT = 4;
 
 
 function getRenderableCountedBadgeIds(){
@@ -203,7 +176,6 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
 /* ===========================
    V3.2 USER PATCHES
    - Female Class A current/graduated commander pin default moved 5px left.
-   - Senior Aerospace Education badge asset mapped to images/badges/aerospace_senior_badge.webp.
    - v3.3: Command Service Ribbon now requires 365 days at the command level and maps Wing command to silver star; commander pin is blocked for Col and above with manual-selection warning.
    - Specialty-track import continues to use only the Specialty Tracks table.
    =========================== */
@@ -212,27 +184,16 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
    BOOTSTRAP
    =========================== */
 (function init(){
+  // Older builds kept hand-calibrated coordinates in this browser; the engine places everything
+  // from the artwork's anchors now, so they are cleared.
   try{
-    // Use a versioned storage key. Older builds used a shared key that may contain
-    // female coordinates in the base blues_a bucket, which causes placement drift.
-    const savedCal = localStorage.getItem(CAPUB_CALIBRATION_STORAGE_KEY);
-    if(savedCal){
-      const parsed = JSON.parse(savedCal);
-      State.calib.byUniform = normalizeCalibrationBucketsFromPayload(parsed);
-      if(parsed.legacyCoordinates) State.calib.map = parsed.legacyCoordinates;
+    for(const key of Object.keys(localStorage)){
+      if(/^capub_admin_calibration_by_uniform/.test(key)) localStorage.removeItem(key);
     }
-    // Clear stale calibration from previous generated files that changed Class A placement.
-    try{ localStorage.removeItem(CAPUB_LEGACY_CALIBRATION_STORAGE_KEY); }catch(err){}
-    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix2'); }catch(err){}
-    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_fix1'); }catch(err){}
-    try{ localStorage.removeItem('capub_admin_calibration_by_uniform_v20260512_female_a_shift_down26_left6_rightbadges_left15'); }catch(err){}
-    // Older builds kept a copy of each generated setup in this browser; it is no longer used.
-    try{ localStorage.removeItem('CAPUB_ADMIN_HISTORY_V1'); localStorage.removeItem('CAPUB_ADMIN_HISTORY_CLOUD_MIGRATED_V1'); sessionStorage.removeItem('CAPUB_ADMIN_AUTH_V1'); }catch(err){}
-  }catch(err){ console.warn('Could not load saved calibration coordinates', err); }
+    localStorage.removeItem('capub_garment_alpha_masks_v1');
+    localStorage.removeItem('CAPUB_ADMIN_HISTORY_V1'); localStorage.removeItem('CAPUB_ADMIN_HISTORY_CLOUD_MIGRATED_V1'); sessionStorage.removeItem('CAPUB_ADMIN_AUTH_V1');
+  }catch(err){}
 
-  
-
-mergeCalibDefaults();
 
   applyMemberTypeToUniformOptions();
   populateRankSetup();
@@ -245,5 +206,12 @@ mergeCalibDefaults();
   buildPatchGallery();
 
   fullRender();
-  initCalibratorUI();
+  // The scripts are deferred, so the page shows (and the access gate answers) before they run; this marks the
+  // moment the controls work, for styling a loading state (LIVE13 E65).
+  document.documentElement.setAttribute('data-app', 'ready');
+  // The artwork manifest is needed for the first drawing, which waits for a setup; fetch it while the member reads the
+  // page, so choosing a setup does not wait for it too (LIVE13 E65).
+  const warmArtwork = () => { try{ CAPUBUniformView.warm(); }catch(err){} };
+  if(typeof requestIdleCallback === 'function') requestIdleCallback(warmArtwork, { timeout: 2000 });
+  else setTimeout(warmArtwork, 500);
 })();

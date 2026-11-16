@@ -1,0 +1,58 @@
+{
+ "asset_id": "patch-northeast-region",
+ "label": "Northeast Region",
+ "file": "patch-northeast-region.png",
+ "width_in": 3,
+ "height_in": 3.083,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in; the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   308.333
+  ],
+  "center": [
+   150,
+   154.167
+  ],
+  "left_edge": [
+   0,
+   154.167
+  ],
+  "right_edge": [
+   300,
+   154.167
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/ner_patch/Official_NER_seal_large.gif",
+ "artwork": {
+  "format": "gif -> png via sips (palette decoded to RGBA, pixels unchanged)",
+  "source_px": [
+   1800,
+   1850
+  ],
+  "trimmed": false,
+  "px": [
+   1800,
+   1850
+  ],
+  "bytes": 1039049,
+  "source_bytes": 409896,
+  "source_sha256": "2d5e1d39cdb0531f72642819b0978d12403eef2f46f48ad2afc10916b37361af",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Northeast Region, published by Northeast Region, Civil Air Patrol (legacy members site members.ner.cap.gov, the region's own CAP Graphics page) (page https://members.ner.cap.gov/index.php/northeast-region/cap-graphics; file address https://members.ner.cap.gov/images/graphics/Official%20NER%20seal%20large.gif); fetched 2026-11-10 and kept in assets/refs/patches-official/ner_patch/. Shipped as given: palette GIF converted to PNG with sips, pixels unchanged; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

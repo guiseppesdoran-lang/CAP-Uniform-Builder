@@ -1,7 +1,7 @@
 {
  "asset_id": "master-ground-team-field",
  "width_in": 1.375,
- "height_in": 1.21723,
+ "height_in": 1.35457,
  "unit": "1 user unit = 0.01 in",
  "size_source": "regulation",
  "size_basis": "regulation: width 1.125 in | art size unchanged (regular/miniature size per Attachment 7); backing adds 1/8 in each side",
@@ -13,55 +13,71 @@
   ],
   "bottom_center": [
    68.75,
-   121.723
+   135.457
   ],
   "center": [
    68.75,
-   60.8615
+   67.7285
   ],
   "left_edge": [
    0,
-   60.8615
+   67.7285
   ],
   "right_edge": [
    137.5,
-   60.8615
+   67.7285
   ],
   "disc_center": [
-   68.312,
-   65.219
+   68.751,
+   77.3
   ],
   "disc_top": [
-   68.312,
-   37.728
+   68.751,
+   48.414
   ],
   "triangle_apex": [
-   67.779,
-   42.002
+   68.191,
+   52.905
   ],
   "triangle_base_center": [
-   67.779,
-   79.849
+   68.191,
+   92.672
   ],
   "ribbon_tail_left": [
-   59.956,
-   108.286
+   59.92,
+   120.664
   ],
   "ribbon_tail_right": [
-   76.668,
-   108.286
+   77.582,
+   120.664
   ],
   "wreath_bottom": [
-   68.312,
-   100.685
+   68.751,
+   122.872
+  ],
+  "wreath_center": [
+   68.751,
+   81.66
+  ],
+  "wreath_inner_bottom": [
+   68.751,
+   106.185
   ],
   "device_center": [
-   69.074,
-   26.461
+   68.751,
+   31.562
   ],
   "device_base": [
-   69.074,
-   41.156
+   68.751,
+   49.592
+  ],
+  "device_top": [
+   68.751,
+   13.531
+  ],
+  "device_post_bottom": [
+   68.751,
+   53.639
   ],
   "art_top_center": [
    68.75,
@@ -69,7 +85,7 @@
   ],
   "art_bottom_center": [
    68.75,
-   109.223
+   122.957
   ]
  },
  "dimensions": {
@@ -79,30 +95,39 @@
   "size_class": "gt",
   "family": "ground-team",
   "variant": "master",
-  "wreath_nodes_per_branch": 12,
-  "wreath_leaf_rows": 2,
-  "disc_radius_in": 0.2749,
-  "disc_rim_radius_in": 0.2458,
-  "triangle_height_in": 0.3785,
-  "triangle_base_width_in": 0.3686,
-  "wreath_band_width_in": 0.0295,
-  "wreath_leaf_length_in": 0.1633,
-  "wreath_leaf_width_in": 0.1047,
+  "wreath_leaf_rows": 3,
+  "wreath_nodes_per_branch": 28,
+  "wreath_hug_leaves_per_branch": 3,
+  "wreath_closure_deg_from_bottom": 150,
+  "wreath_lift_emt_px": 31.3,
+  "wreath_construction": "EMT badge wreath (enamel/g5/make-emt.js GEO.wreath), lens leaves on three scaled superellipses + disc-hugging row",
+  "device_star_inner_ratio": 0.44,
+  "device_leaves_per_side": 11,
+  "emt_scale_k": 0.35624,
+  "disc_radius_in": 0.2889,
+  "disc_rim_radius_in": 0.2582,
+  "triangle_height_in": 0.3977,
+  "triangle_base_width_in": 0.3873,
+  "wreath_semi_axis_x_in": 0.4972,
+  "wreath_semi_axis_up_in": 0.3298,
+  "wreath_semi_axis_low_in": 0.36,
+  "wreath_band_width_in": 0.1885,
+  "wreath_leaf_length_in": 0.1545,
+  "wreath_leaf_width_in": 0.0632,
   "ribbon_width_in": 0.0442,
-  "ribbon_length_in": 0.2451,
-  "wreath_semi_axis_x_in": 0.4748,
-  "wreath_semi_axis_up_in": 0.1837,
-  "wreath_semi_axis_low_in": 0.2888,
-  "device_wreath_outer_radius_in": 0.1469
+  "ribbon_length_in": 0.2427,
+  "device_wreath_outer_radius_in": 0.1932,
+  "device_wreath_outer_radius_y_in": 0.1803,
+  "device_star_radius_in": 0.1233
  },
  "data_source": "reference-art-measured",
  "generator": "artwork-samples/silver (make-*.js, kit.js) + master_ground_team_badge",
  "reference": "ALL/ref/master_ground_team_badge.png",
  "source_bbox_user_units": [
-  5.537,
-  0.98,
-  234.415,
-  197.76
+  10.167,
+  -17.236,
+  228,
+  196.641
  ],
  "notes": "ABU/OCP version: the finished badge art recoloured to light silver thread on dark blue (colours mapped by luminance), gradients flattened, 1/8 in blue margin. Derived from master-ground-team.",
  "field_uniform": {
@@ -122,7 +147,7 @@
   "backing_minus_art_in": 0.25,
   "scale_from_backing": "art width/height = backing width/height - 0.25 in (1/8 in of blue each side)",
   "art_width_in": 1.125,
-  "art_height_in": 0.96723,
+  "art_height_in": 1.10457,
   "source_asset": "master-ground-team",
   "kind": "chest-badge"
  },

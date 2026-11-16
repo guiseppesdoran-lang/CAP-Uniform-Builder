@@ -1,0 +1,88 @@
+{
+ "asset_id": "cap-device-nco-senior",
+ "name": "CAP Senior Member NCO cap device (service cap and flight cap)",
+ "size_in": {
+  "w": 1.25,
+  "h": 1.25
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  125,
+  125
+ ],
+ "colours": {
+  "silver": "#bcc1c8",
+  "silverL": "#e6e9ed",
+  "silverD": "#8f969e",
+  "disc": "#d8dce1",
+  "navyField": "#0f1f78",
+  "rimSilver": "#dfe2e5",
+  "red": "#d40f19",
+  "redL": "#ec2a33"
+ },
+ "grade": "accessory",
+ "anchors": {
+  "top_center": [
+   62.5,
+   0
+  ],
+  "bottom_center": [
+   62.5,
+   125
+  ],
+  "center": [
+   62.5,
+   62.5
+  ],
+  "left_edge": [
+   0,
+   62.5
+  ],
+  "right_edge": [
+   125,
+   62.5
+  ],
+  "mount_center": [
+   62.5,
+   62.5
+  ]
+ },
+ "size_source": "estimated",
+ "fit": {
+  "method": "silhouette IoU against the Vanguard listing photo (ink = not white background and not the grey background seen through the openings; 600 x 623 px frame)",
+  "score": 0.95
+ },
+ "size_basis": "Diameter 1.25 in, estimated: neither CAPR 39-1, ICL 25-02 nor the Vanguard product page (\"Civil Air Patrol Cap Device: NCO Cap Device\", SKU CAP0748R) prints a size. The listed shipping weight, 18 g, equals the officer flight cap device (SKU CAP0748OA, 18 g), which Vanguard prints at 1 1/4 x 1 1/4 in, so the NCO device is drawn 1.25 in across. It is round: the outer ring of the listing photo fits a true circle (radius 294.6 px, residual within 5 px), so height = width (the photo frame is 600 x 623 px only because of its white margins)",
+ "provenance": "Traced by measurement from the Vanguard listing photo of the real device (https://www.vanguardmil.com/products/civil-air-patrol-cap-device-nco-cap-device, SKU CAP0748R; reference only, never embedded, scratch copy outside the repo); ref-frame positions: ring circle centre (301,313.8) r 294.6, groove r 276, inner edge r 253; CAP disc centre (301,140) r 83, triangle apex y 61 base y 168 half-width 56, propeller hub (301,139); openings outlined from the photo (background grey seen through the piece); wing primaries pivot (205,265), secondaries pivot (255,335); scroll band (132,146)->(246,208), loop opening centre (250,266) r 15 (mirror-averaged); laurel stem arc r 226 from 95 to 172 deg; left half measured, right half mirrored about x = 301. Cross-checked against ICL 25-02 (Fig A5-8 / A5-9 images of the NCO device)",
+ "dimensions": {
+  "diameter_in": 1.25,
+  "form": "round pin-on device, openwork",
+  "ring": "polished silver, outer band and inner lip",
+  "emblem": "CAP disc (ribbed field, triangle, propeller) over a spread-wing eagle holding a scroll, laurel branches below"
+ },
+ "mounts": [
+  {
+   "uniform": "Men's and women's service caps, Senior Member NCOs",
+   "rule": "centred on the front of the cap in device_slot_center; no clouds and darts on the visor for NCOs (6.2.1.1.1 and 6.2.1.2.1 as changed by ICL 25-02; 6.2.1.3.3)"
+  },
+  {
+   "uniform": "USAF-style flight cap (Class A / Class B / FDU), Senior Member NCOs",
+   "rule": "front left flap, centred halfway between the top and bottom of the flap, 1 1/2 in back from the front of the cap (placement of 6.2.2.2.1-3; ICL 25-02 (g) authorizes the NCO device on the flight cap)"
+  }
+ ],
+ "documented": [
+  "Senior Member NCOs wear the NCO device centred on the front of the service cap (6.2.1.1.1, 6.2.1.2.1 as changed by ICL 25-02)",
+  "ICL 25-02 (g) authorizes the CAP NCO Cap Device for wear on the service and flight cap",
+  "flight cap devices sit on the front left flap, centred halfway between the top and bottom of the flap, 1 1/2 in from the front (6.2.2.2.1-3)"
+ ],
+ "assumed": [
+  "diameter 1.25 in (by weight against the 1 1/4 in officer flight device; no printed size)",
+  "ICL 25-02 item 8 rewrites 6.2.1.1.1 and 6.2.1.2.1 but leaves the 6.2.2.2.1 sentence \"Senior Member NCOs do not wear a hat device on the flight cap\" in place; the ICL summary (g) authorizes the device on the flight cap, so the ICL is followed (R4) and the officer flight cap placement is used",
+  "flat colours: the real piece is polished silver, drawn in two flat silver tones with a thin grey outline",
+  "feathers, coverts, breast rows, talons, head and leaves are stylised geometry placed at measured positions, not the relief; leaf count 13 pairs a side",
+  "the scroll carries SEMPER VIGILANS on the real piece; drawn as a plain band (no lettering in the art)",
+  "the photo is slightly turned and lit from the right; openings measured on the left half and mirrored"
+ ]
+}

@@ -27,8 +27,26 @@ test('hint text is a line, not a paragraph',()=>{
   assert.ok(long.length<=4,`these hints are long: ${long.map(t=>t.slice(0,60)).join(' | ')}`);
 });
 
+test('what is and is not collected is said at the gate, under the import button and in About (LIVE13, Ethan)',()=>{
+  assert.match(visible,/<p class="accessGateNote">Anonymous usage counts only, to improve this tool\. Names are kept out and member searches are never stored\.<\/p>/);
+  assert.match(visible,/<div class="hintText" id="memberReportImportHint">Your Member Search report, saved as a PDF\. It stays on this device\.<\/div>/);
+  assert.match(visible,/<div id="memberReportImportStatus" class="hintText" aria-live="polite"><\/div>/,'no line says nothing is imported: the status stays empty until a report is read');
+  const about=visible.slice(visible.indexOf('<dialog id="aboutDialog"'),visible.indexOf('</dialog>'));
+  assert.match(about,/<b>Privacy:<\/b> Usage counts are collected only to improve this tool\./);
+  assert.match(about,/ever leave your browser, member report searches are never stored, and with Do Not Track on/);
+  // The visitor number (js/telemetry.js, kept in this browser unless Do Not Track is on) is said too, and the grade that a build count carries.
+  assert.match(about,/which uniforms are built and for which grade,/);
+  assert.match(about,/A random number kept in this browser tells a returning visit from a first one; it is not linked to you\./);
+  assert.match(about,/only plain visit and build counts are sent and no number is kept\./);
+  // The clear button shows once a report has been read, whichever idle line the status carries.
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/\/\^No report imported yet\\\.\?\$\/\.test\(t\)/);
+});
+
 test('controls name the thing, not the implementation',()=>{
-  assert.match(visible,/<label class="fieldLabel" id="cutLabel" for="jacketSelect">Cut<\/label>/);
-  assert.match(visible,/Show miniature medals/);
+  // The cut is two pictures of the member's uniform under the word Cut (js/profile-pickers.js), over the hidden select.
+  assert.match(fs.readFileSync(path.join(__dirname,'..','js','profile-pickers.js'),'utf8'),/name: 'cut', legend: 'Cut'/);
+  assert.match(visible,/<div id="cutPicker"><\/div>/);
+  assert.match(visible,/Miniature medal mounting method/);
   assert.match(visible,/Saved setups/);
 });

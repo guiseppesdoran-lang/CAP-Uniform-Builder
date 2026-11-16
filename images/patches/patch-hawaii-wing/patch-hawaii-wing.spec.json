@@ -1,0 +1,70 @@
+{
+ "asset_id": "patch-hawaii-wing",
+ "label": "Hawaii Wing",
+ "charter": "PCR-HI-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-hawaii-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.278,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered wing patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   327.818
+  ],
+  "center": [
+   162.5,
+   163.909
+  ],
+  "left_edge": [
+   0,
+   163.909
+  ],
+  "right_edge": [
+   325,
+   163.909
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-supplied/pcr-hi-001-hawaii-wing.webp",
+ "unit_name": "Hawaii Wing",
+ "artwork": {
+  "format": "webp (VP8L lossless) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   694,
+   700
+  ],
+  "source_bytes": 113216,
+  "source_sha256": "66aa54aa8bf71e6098e821419af452e21d6a3a04e26f363050356af1d5018725",
+  "trim_bbox_px": [
+   0,
+   0,
+   692,
+   698
+  ],
+  "trimmed": true,
+  "px": [
+   692,
+   698
+  ],
+  "bytes": 191912,
+  "chunks_kept": [],
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Hawaii Wing (PCR-HI-001), digital artwork supplied by Ethan Hillard on 2026-11-11. Official digital artwork shipped as given: webp (VP8L lossless) -> png via dwebp; trimmed to its alpha bounding box (694 x 700 px to 692 x 698 px); no redrawing, no tracing, no colour change. Charter: PCR-HI-001 is the Hawaii Wing headquarters (the wing patch's charter, as every wing's -001); Hawaii Wing's heraldry page (https://hiwg.cap.gov/about/heraldry-of-our-units) lists this patch under Hawaii Wing, PCR-HI-001, at 1356 x 1368 px, the same design as the supplied file.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the empty margin, trimmed."
+}

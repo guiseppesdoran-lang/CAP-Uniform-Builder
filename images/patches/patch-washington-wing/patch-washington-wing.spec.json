@@ -1,0 +1,73 @@
+{
+ "asset_id": "patch-washington-wing",
+ "label": "Washington Wing",
+ "charter": "PCR-WA-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-washington-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.198,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   319.8
+  ],
+  "center": [
+   162.5,
+   159.9
+  ],
+  "left_edge": [
+   0,
+   159.9
+  ],
+  "right_edge": [
+   325,
+   159.9
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/waemblem.png",
+ "emblemoptions": {
+  "label": "Washington",
+  "type": "Wing",
+  "path": "wing/waemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   1250,
+   1230
+  ],
+  "trim_bbox_px": [
+   0,
+   0,
+   1250,
+   1230
+  ],
+  "trimmed": false,
+  "px": [
+   1250,
+   1230
+  ],
+  "bytes": 243626,
+  "chunks_kept": [
+   "pHYs"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Washington\" (Wing), path wing/waemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (1250 x 1230 px to 1250 x 1230 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

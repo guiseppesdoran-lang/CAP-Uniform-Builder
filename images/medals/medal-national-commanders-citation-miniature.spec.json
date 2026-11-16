@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-national-commanders-citation-miniature",
  "name": "National Commander's Citation (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6246,
  "size_in": {
   "w": 0.625,
-  "h": 0.8053
+  "h": 0.6246
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  80.53
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_natcmdrcom.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8053 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 170 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7077 x 0.7077 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7077 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 176.9 px = 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,69 +17,236 @@
   ],
   "bottom_center": [
    31.25,
-   80.53
+   62.46
   ],
   "center": [
    31.25,
-   40.27
+   31.23
   ],
   "left_edge": [
    0,
-   40.27
+   31.23
   ],
   "right_edge": [
    62.5,
-   40.27
+   31.23
   ],
   "ribbon_attach": [
-   30.05,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the top centre of the suspension ring (or of the bail where the box cuts the ring away), on the body axis: the body is upright, the photograph's hang angle (-1.2 deg) is removed; compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "natcmdrcom",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-national-commanders-citation",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "National Commander's Citation"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-national-commanders-citation-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-national-commanders-citation",
   "spec": "../ribbons/ribbon-national-commanders-citation.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-national-commander-citation-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.987,
-  "threshold": 0.95,
-  "colour_mae_0_255": 27.1,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/b-national-commanders-citation.js (parameters in inches) over lib.js, common.js, font.js, emit.js, lib-b.js; gates: lib-b.js; npm-free, node make-b.js b-national-commanders-citation --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-national-commander-citation-miniature-medal (civil air patrol national commander citation miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-national-commander-citation-miniature-medal",
+  "title": "civil air patrol national commander citation miniature medal",
+  "px": [
+   600,
+   600
+  ],
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/national-commander-citation.jpg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "palette": [
-  "#312e2d",
-  "#63605e",
-  "#98938c",
-  "#dbd7d0"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [],
-  "different_body": []
- },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-national-commander-citation-miniature-medal",
-  "local_photo": "medals-work/ref-hires/national-commander-citation.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "national-commander-citation.jpg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 176.9,
+   "body_centre_px": [
+    294,
+    506.3
+   ],
+   "ppi_in_frame": 283,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
   },
-  "body_px": {
-   "w": 175,
-   "h": 225
+  "hang_angle_removed_deg": -1.2,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0022,
+   "ridge": [
+    0.2925,
+    0.3105
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": 0.0026,
+   "cy": -0.0082,
+   "r": 0.2075,
+   "w": 0.0085
+  },
+  "lettering": {
+   "stroke_in": 0.0092,
+   "top_letters": 14,
+   "bottom_letters": 18,
+   "cap_height_top_in": 0.0516,
+   "cap_height_bottom_in": 0.0495,
+   "letter_positions": "angle and radial extent of each letter, measured from the unwrapped annulus (generator, text.top / text.bottom)"
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.0725,
+    "top": -0.44,
+    "neck": 0.0625,
+    "shoulder": -0.3425,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     0.0025,
+     -0.5416
+    ],
+    "r": 0.156,
+    "w": 0.012
+   }
+  },
+  "tones_luminance": {
+   "ground": 45,
+   "shadow": 14,
+   "base": 140,
+   "hi": 190,
+   "rim": 175,
+   "rim_hi": 232,
+   "metal": 130,
+   "metal_hi": 215,
+   "bail": 140,
+   "lip": 200
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 4.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "silver studio ramp (lib.js SILVER_RAMP)",
+  "tone_colours": {
+   "ground": "#312f2e",
+   "shadow": "#161515",
+   "base": "#908b89",
+   "hi": "#c1bcb9",
+   "rim": "#b3aeab",
+   "rim_hi": "#e7e5e2",
+   "lip": "#cac6c3",
+   "metal": "#86817f",
+   "metal_hi": "#d8d4d1",
+   "bail": "#908b89"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph mask resampled into the same upright box)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ink_coverage": "lit-metal area of mine / reference between 0.85 and 1.15 (body and named zones): letters and emblem strokes as solid as the reference",
+   "ribbon_attach": "top centre of the ring (or of the bail where the box cuts the ring) at the box top, x on the body axis",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9803,
+  "light_class_iou": 0.677,
+  "ink_coverage": [
+   {
+    "zone": "body",
+    "ref_px": 48538,
+    "mine_px": 49433,
+    "ratio": 1.018
+   },
+   {
+    "zone": "lettering band",
+    "ref_px": 15417,
+    "mine_px": 16508,
+    "ratio": 1.071
+   },
+   {
+    "zone": "left field",
+    "ref_px": 7647,
+    "mine_px": 8392,
+    "ratio": 1.097
+   },
+   {
+    "zone": "central band",
+    "ref_px": 10069,
+    "mine_px": 9776,
+    "ratio": 0.971
+   },
+   {
+    "zone": "right field",
+    "ref_px": 11135,
+    "mine_px": 10949,
+    "ratio": 0.983
+   }
+  ],
+  "landmarks_checked": 48,
+  "landmark_max_dist_in": 0.0049,
+  "landmark_worst": [
+   [
+    "letter T (top 35.6deg)",
+    0.0049
+   ],
+   [
+    "letter L (top 63.3deg)",
+    0.0048
+   ],
+   [
+    "letter C (bottom 266.9deg)",
+    0.0043
+   ],
+   [
+    "letter M (bottom 245.5deg)",
+    0.0041
+   ],
+   [
+    "letter M (bottom 233.3deg)",
+    0.004
+   ]
+  ],
+  "edge_recall_0p006in": 0.974,
+  "edge_recall_0p012in": 0.989,
+  "edge_precision_0p012in": 0.999,
+  "tone_mae_luminance": 26.3,
+  "ribbon_attach_units": {
+   "mine": 31.14,
+   "spec_new": [
+    31.25,
+    0
+   ],
+   "spec_old": [
+    31.25,
+    0
+   ]
+  },
+  "gate_pass": true,
+  "pass": true,
+  "not_measurable": [
+   "the engraving grain and pits of the antique finish, the specular glints on the rim (flat tones only)",
+   "the thin concentric lines of the rim lip beside the lettering ring (a single rim ridge is drawn)"
+  ],
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9803,
+  "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from national-commander-citation.jpg (reference only, never shipped). Hang angle -1.2 deg of the photograph removed."
 }

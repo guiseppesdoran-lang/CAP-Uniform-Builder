@@ -11,7 +11,9 @@ const day=new Date(2026,9,10,15,30);
 test('a download names the rank, the uniform and the day',()=>{
   assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a'},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
   assert.equal(exportFileName({rank:'Lt Col',uniform:'aviator_blazer'},'json',day),'CAP-Uniform_Lt-Col_Aviator-Blazer_2026-10-10.json');
-  assert.equal(exportFileName({rank:'C/Capt',uniform:'ocp'},'.png',day),'CAP-Uniform_C-Capt_Ocp_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Capt',uniform:'ocp'},'.png',day),'CAP-Uniform_C-Capt_OCP_2026-10-10.png');
+  assert.equal(exportFileName({rank:'Maj',uniform:'abu'},'png',day),'CAP-Uniform_Maj_ABU_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'semi_formal_usaf'},'json',day),'CAP-Uniform_C-Maj_Semi-Formal-USAF_2026-10-10.json');
 });
 
 test('missing parts are left out rather than printed as null or undefined',()=>{
@@ -28,6 +30,28 @@ test('the name is safe for any file system',()=>{
 test('PNG and setup-file exports both use it',()=>{
   const boot=fs.readFileSync(path.join(__dirname,'..','js','bootstrap.js'),'utf8');
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  assert.match(boot,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.uniform\},'png'\)/);
-  assert.match(wiring,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.uniform\},'json'\)/);
+  // The Honor Guard Uniform rides on Class A or Class B: its downloads are named for it, not for the uniform under it.
+  assert.match(boot,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'honor_guard' : State\.uniform\},'png'\)/);
+  assert.match(wiring,/CAPUBExportNames\.exportFileName\(\{rank:State\.rank,uniform:State\.ceremonial \? 'honor_guard' : State\.uniform\},'json'\)/);
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'honor_guard'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.png');
+  // The page-side callers of the file name (the placement template) say the same.
+  const templates=fs.readFileSync(path.join(__dirname,'..','js','placement-templates.js'),'utf8');
+  assert.match(templates,/S\.ceremonial \? 'honor_guard' : S\.uniform/);
+  assert.doesNotMatch(boot+wiring+templates,/'ceremonials'/,'no download is named for the old word');
+});
+
+test('a uniform saved under the name it had before it was renamed still names the file, with the present name',()=>{
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonials'},'png',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'ceremonial'},'json',new Date(2026,9,10)),'CAP-Uniform_C-Maj_Honor-Guard_2026-10-10.json');
+});
+
+test('a picture of one part of the uniform says the part, in lower case with hyphens, after the uniform and before the day',()=>{
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a',part:'ribbon-rack'},'png',day),'CAP-Uniform_C-SSgt_Blues-A_ribbon-rack_2026-10-10.png');
+  assert.equal(exportFileName({rank:'Lt Col',uniform:'aviator_blazer',part:'left-chest-shirt'},'png',day),'CAP-Uniform_Lt-Col_Aviator-Blazer_left-chest-shirt_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/Maj',uniform:'honor_guard',part:'Collar and Shoulders'},'png',day),'CAP-Uniform_C-Maj_Honor-Guard_collar-and-shoulders_2026-10-10.png');
+  assert.match(exportFileName({rank:'C/Capt',uniform:'ocp',part:'left sleeve (jacket)'},'png',day),/^[A-Za-z0-9_.-]+$/,'safe for any file system');
+  // The whole uniform has no part and is named as it always was.
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a'},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a',part:''},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
+  assert.equal(exportFileName({rank:'C/SSgt',uniform:'blues_a',part:null},'png',day),'CAP-Uniform_C-SSgt_Blues-A_2026-10-10.png');
 });

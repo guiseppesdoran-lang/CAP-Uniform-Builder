@@ -1,0 +1,232 @@
+{
+ "asset_id": "mil-ribbon-joint-european-african-middle-eastern-campaign",
+ "name": "european african middle eastern campaign",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "603524",
+    "fraction": 0.1395,
+    "x0_in": 0,
+    "x1_in": 0.1918
+   },
+   {
+    "index": 1,
+    "hex": "e8e3de",
+    "fraction": 0.0464,
+    "x0_in": 0.1918,
+    "x1_in": 0.2556
+   },
+   {
+    "index": 2,
+    "hex": "151419",
+    "fraction": 0.046,
+    "x0_in": 0.2556,
+    "x1_in": 0.3189
+   },
+   {
+    "index": 3,
+    "hex": "e8e3de",
+    "fraction": 0.0474,
+    "x0_in": 0.3189,
+    "x1_in": 0.3841
+   },
+   {
+    "index": 4,
+    "hex": "0e7f55",
+    "fraction": 0.1674,
+    "x0_in": 0.3841,
+    "x1_in": 0.6143
+   },
+   {
+    "index": 5,
+    "hex": "8e3030",
+    "fraction": 0.0465,
+    "x0_in": 0.6143,
+    "x1_in": 0.6783
+   },
+   {
+    "index": 6,
+    "hex": "e8e3de",
+    "fraction": 0.0308,
+    "x0_in": 0.6783,
+    "x1_in": 0.7207
+   },
+   {
+    "index": 7,
+    "hex": "142172",
+    "fraction": 0.0296,
+    "x0_in": 0.7207,
+    "x1_in": 0.7613
+   },
+   {
+    "index": 8,
+    "hex": "0e7f55",
+    "fraction": 0.1811,
+    "x0_in": 0.7613,
+    "x1_in": 1.0103
+   },
+   {
+    "index": 9,
+    "hex": "b51725",
+    "fraction": 0.0454,
+    "x0_in": 1.0103,
+    "x1_in": 1.0728
+   },
+   {
+    "index": 10,
+    "hex": "e8e3de",
+    "fraction": 0.0454,
+    "x0_in": 1.0728,
+    "x1_in": 1.1352
+   },
+   {
+    "index": 11,
+    "hex": "0e7f55",
+    "fraction": 0.0455,
+    "x0_in": 1.1352,
+    "x1_in": 1.1977
+   },
+   {
+    "index": 12,
+    "hex": "603524",
+    "fraction": 0.129,
+    "x0_in": 1.1977,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: European African Middle Eastern Campaigns",
+   "url": "https://www.vanguardmil.com/products/european-african-middle-eastern-campaigns-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
+  "source_images": [
+   "img/ribbons/d777bd7698f9.jpg"
+  ],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: European African Middle Eastern Campaigns",
+  "vendor_product_url": "https://www.vanguardmil.com/products/european-african-middle-eastern-campaigns-ribbon-unit",
+  "corners_px": [
+   [
+    67,
+    445.9
+   ],
+   [
+    1130.4,
+    454.5
+   ],
+   [
+    1133.8,
+    752.9
+   ],
+   [
+    67,
+    738.8
+   ]
+  ],
+  "rectified_px": [
+   1065,
+   296
+  ],
+  "symmetry": "none",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   1.1,
+   0.9,
+   0,
+   0.5,
+   0.4,
+   0,
+   0.4,
+   0,
+   0.3,
+   0,
+   0.7,
+   0.8,
+   1.3
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+ },
+ "authorized_services": [
+  "AIR_FORCE",
+  "ARMY",
+  "COAST_GUARD",
+  "MARINE_CORPS",
+  "NAVY"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/european_african_middle_eastern_campaign.jpg",
+   "award_ids": [
+    "european_african_middle_eastern_campaign"
+   ]
+  }
+ ],
+ "award_names": [
+  "european african middle eastern campaign"
+ ],
+ "fit": {
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 1.3,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

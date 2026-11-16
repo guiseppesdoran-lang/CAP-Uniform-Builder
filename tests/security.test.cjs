@@ -64,7 +64,7 @@ test('application code requests nothing from other origins at load time', () => 
   const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/') && !rel.startsWith('google-apps-script/'));
   // purchase-catalog.js only holds vendor links shown to the user and military-data.js cites where
   // each award came from; neither is requested. Namespaces are not requests.
-  const allowed = [/w3\.org\/2000\/svg/, /^purchase-catalog\.js$/, /^military\/military-data\.js$/];
+  const allowed = [/w3\.org\/2000\/svg/, /w3\.org\/1999\/xlink/, /^purchase-catalog\.js$/, /^military\/military-data\.js$/];
   for (const rel of sources) {
     for (const match of read(rel).matchAll(/https?:\/\/[A-Za-z0-9./_-]+/g)) {
       const ok = allowed.some(rule => rule.test(rel) || rule.test(match[0]));
@@ -99,8 +99,8 @@ test('the page asks for an access code and stays out of search', () => {
   const page = read('index.html');
   assert.match(page, /<meta name="robots" content="noindex/);
   assert.match(page, /<script src="js\/access-gate\.js/);
-  assert.match(page, /<label for="accessGateInput">Access Code<\/label>/);
-  assert.match(page.split('</form>')[0], /Developed by C\/Col\. Guiseppe Doran and C\/Lt Col\. Ethan Hillard/);
+  assert.match(page, /<label for="accessGateInput">Access code<\/label>/);
+  assert.match(page.split('</form>')[0], /Developed by C\/Col Guiseppe Doran and C\/Lt Col Ethan Hillard/);
   assert.match(page, /<details class="accessGateHint"><summary>Need a hint\?<\/summary>/);
   assert.match(read('styles/app.css'), /html\[data-access="ok"\] #accessGate\{display:none\}/);
   for (const file of ['deploy/nginx.conf.example', 'deploy/Caddyfile.example']) {
@@ -133,6 +133,9 @@ test('the site build publishes only runtime files and carries the policy', () =>
   assert.match(fs.readFileSync(path.join(dist, 'config.js'), 'utf8'), /submissionEndpoint:\s*''/);
   const stamps = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'stamp-assets.cjs'), `--root=${dist}`, '--check'], { encoding: 'utf8' });
   assert.equal(stamps.status, 0, stamps.stderr || stamps.stdout);
+  // No photo is published (tests/no-raster.test.cjs).
+  const noRaster = require('./helpers/no-raster.cjs');
+  assert.deepEqual(noRaster.strayRasters(noRaster.walk(path.join(dist, 'images')).map(f => path.relative(dist, f).split(path.sep).join('/'))), []);
 });
 
 test('a build with an endpoint enables submissions and widens the policy to that origin only', () => {

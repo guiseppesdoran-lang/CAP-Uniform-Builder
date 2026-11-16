@@ -1,0 +1,161 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-honor-guard-flag-sling",
+ "name": "Women's Class B blue blouse, short sleeve: Honor Guard flag sling (white; the flag bearer's, worn instead of the pistol belt) (overlay, registered to garment-blues-class-b-blouse-female)",
+ "size_in": {
+  "w": 25.1882,
+  "h": 32.9532
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2518.82,
+  3295.32
+ ],
+ "size_source": "measured",
+ "size_basis": "Not dimensioned in CAPR 39-1. Read from the Class A flag bearer figure of the Honor Guard guidance at the hardware scale (the figure's own 2 1/16 in pistol belt = 96 px, 46.5 px/in): waist band 1.66 in, shoulder straps 1.82 in across at 14.55 degrees from the vertical, cup 4.02 x 4.35 in with a 2.71 x 3.03 in nickel plate. Placed on the body by landmarks: the cup on the centre line, its top 0.67 in above the band's centre, the straps from 0.69 of the way from the centre line to the shoulder point (the figure: 239.5 px of 347 px) to the cup's top corners. Same box as garment-blues-class-b-blouse-female.",
+ "provenance": "in-house vector. Measured on the Class A flag bearer figure of \"CAP Honor Guard Uniform Guidance\" (page 4, 6x render, crop origin 1850,2530): strap edges by row scans (left strap's white run 263..350 px at y 560 and 387..475 px at y 1040, right strap mirrored about the body centre line x 525), band 76.8 and 77.8 px of white (+3.2 px of outline) = 1.65 and 1.67 in, cup white 432..616 x 1062..1261 px (+outline 187 x 202 px = 4.02 x 4.35 in), nickel plate 461..584 x 1093..1231 px, slot outline 491..554 x 1131..1221 px. Height of the band: the waist (centre of the sheet's blue belt, y 22.35 in). The straps are cut where they go under the epaulet strip's lower edge (landmark epaulet_right / epaulet_left). The guidance draws the sling on the Class A coat only; on this cut it is the same sling placed by the same landmarks.",
+ "anchors": {
+  "top_center": [
+   1259.41,
+   0
+  ],
+  "bottom_center": [
+   1259.41,
+   3295.32
+  ],
+  "center": [
+   1259.41,
+   1647.66
+  ],
+  "left_edge": [
+   0,
+   1647.66
+  ],
+  "right_edge": [
+   2518.82,
+   1647.66
+  ],
+  "cup_center": [
+   1259.41,
+   2385.2
+  ],
+  "cup_top_center": [
+   1259.41,
+   2167.7
+  ],
+  "band_center": [
+   1259.41,
+   2234.7
+  ],
+  "strap_left_top": [
+   615.99,
+   304.87
+  ],
+  "strap_right_top": [
+   1902.84,
+   304.07
+  ],
+  "strap_left_foot": [
+   1068.41,
+   2167.7
+  ],
+  "strap_right_foot": [
+   1450.41,
+   2167.7
+  ]
+ },
+ "landmarks": {
+  "band": {
+   "x": 638.77,
+   "y": 2151.7,
+   "w_in": 12.413,
+   "h_in": 1.66
+  },
+  "cup": {
+   "x": 1058.41,
+   "y": 2167.7,
+   "w_in": 4.02,
+   "h_in": 4.35
+  },
+  "cup_plate": {
+   "x": 1123.91,
+   "y": 2233.7,
+   "w_in": 2.71,
+   "h_in": 3.03
+  },
+  "strap_left": [
+   [
+    526.76,
+    323.08
+   ],
+   [
+    1001.22,
+    2276.63
+   ],
+   [
+    1178.08,
+    2233.68
+   ],
+   [
+    705.21,
+    286.65
+   ]
+  ],
+  "strap_right": [
+   [
+    1813.53,
+    286.19
+   ],
+   [
+    1340.75,
+    2233.69
+   ],
+   [
+    1517.61,
+    2276.63
+   ],
+   [
+    1992.14,
+    321.94
+   ]
+  ]
+ },
+ "landmarks_note": "rects are {x,y,w_in,h_in}; strap_left / strap_right are polygons [[x,y]...]; user units (0.01 in); left and right are the viewer's",
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "dimensions": {
+  "form": "flag sling: waist band, two shoulder straps, cup",
+  "band_in": 1.66,
+  "strap_in": 1.82,
+  "strap_angle_deg": -13.7,
+  "cup_in": [
+   4.02,
+   4.35
+  ],
+  "cup_plate_in": [
+   2.71,
+   3.03
+  ],
+  "band_y_in": 22.347,
+  "layering": "draw over the sheet; the straps stop at the lower edge of the sheet's epaulet strips, so they are under them without a second drawing",
+  "base_groups_to_hide": [
+   "belt",
+   "belt-buckle"
+  ],
+  "pistol_belt": "worn instead of garment-*-honor-guard-belt, never with it (9.6.1.2, 9.6.3)"
+ },
+ "documented": [
+  "flag bearers wear white flag slings instead of the white pistol belts (CAPR 39-1 9.6.1.2, 9.6.3)",
+  "the flag sling shoulder straps will go under the epaulets (9.6.3)"
+ ],
+ "assumed": [
+  "every dimension: the regulation gives none; read from the figure at its hardware scale",
+  "the cup is drawn as the figure draws it (a white square with a nickel plate and a slot outline); how it is made is not described",
+  "the figure draws the sling on the Class A coat only; on the shirt and blouse the same sling is placed by landmarks (waist, shoulder point)"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}

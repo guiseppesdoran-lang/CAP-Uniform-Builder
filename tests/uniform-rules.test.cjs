@@ -12,17 +12,22 @@ test('every sidebar uniform has a rule and agrees with it on who may wear it',()
   const buttons=[...html.matchAll(/data-uniform-id="([^"]+)"\s+data-allowed-for="([^"]+)"/g)];
   assert.ok(buttons.length>=10,'found the uniform buttons');
   for(const [,id,allowed] of buttons){
+    // Honor Guard is Class A or Class B with the honor guard items put on: who is offered it is rules.CEREMONIAL's.
+    if(id===rules.CEREMONIAL.id){
+      assert.deepEqual(rules.CEREMONIAL.membership,allowed.split(',').map(s=>s.trim()),`${id} membership`);
+      continue;
+    }
     assert.ok(rules.getUniformRule(id),`${id} has a rule`);
     assert.deepEqual(rules.allowedMemberships(id),allowed.split(',').map(s=>s.trim()),`${id} membership`);
   }
-  assert.equal(buttons.length,Object.keys(rules.RULES).length,'no rule without a button');
+  assert.equal(buttons.length,Object.keys(rules.RULES).length+1,'no rule without a button, and the one card of Honor Guard');
 });
 
 test('ribbons: required on Class A, optional on Class B and Aviator, none elsewhere (39-1 11.1.2, 11.1.3)',()=>{
   assert.equal(rules.ribbonPolicy('blues_a'),'required');
   assert.equal(rules.ribbonPolicy('blues_b'),'optional');
   assert.equal(rules.ribbonPolicy('aviator'),'optional');
-  for(const id of ['aviator_blazer','corporate_field','abu','ocp','flight_suit','polo','mess_dress','semi_formal']){
+  for(const id of ['aviator_blazer','corporate_field','abu','ocp','flight_suit','corporate_flight_suit','mess_dress','semi_formal']){
     assert.equal(rules.ribbonPolicy(id),'none',id);
     assert.equal(rules.allowsRibbons(id),false,id);
   }
@@ -40,22 +45,28 @@ test('miniature medals only on Mess Dress and Corporate Semi-Formal (39-1 11.1.4
   assert.deepEqual(withMini,['mess_dress','semi_formal']);
 });
 
-test('four-across ribbon rows are only authorized on Class A (39-1 11.2.7)',()=>{
+test('four-across ribbon rows are only authorized on the Class A coat (39-1 11.2.7)',()=>{
   const four=Object.keys(rules.RULES).filter(id=>rules.allowsRackColumns(id,4));
-  assert.deepEqual(four,['blues_a']);
+  // The cadet semi-formal is the Class A coat worn with the changes of 4.1.3.2 and 4.1.4.
+  assert.deepEqual(four,['blues_a','semi_formal_usaf']);
   assert.equal(rules.allowsRackColumns('blues_b',3),true);
   assert.equal(rules.allowsRackColumns('aviator',3),true);
 });
 
-test('U.S. military awards and the AF Organizational Excellence Award stay off Corporate-style uniforms (39-1 11.1.6, 11.2.3)',()=>{
+test('U.S. military awards stay off Corporate-style uniforms except where ICL 25-02 allows them (39-1 11.1.6, 11.2.3)',()=>{
+  // ICL 25-02 allows military ribbons on the aviator shirt (4.2.5.1.2.2, 4.2.6.2.6.2) and
+  // military miniature medals on the Corporate Semi-Formal (4.2.2.4).
+  const iclCorporate=['aviator','semi_formal'];
   for(const id of Object.keys(rules.RULES)){
-    const corporate=rules.getUniformRule(id).style==='corporate';
-    assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),!corporate,id);
-    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),!corporate,id);
+    const allowed=rules.getUniformRule(id).style==='usaf' || iclCorporate.includes(id);
+    assert.equal(rules.isAwardAllowedOnUniform('x',id,{isMilitary:true}),allowed,id);
+    // The AFOEA: USAF-style uniforms only, not the mess dress (11.2.3, ICL 18-02 4b).
+    assert.equal(rules.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award',id),rules.getUniformRule(id).style==='usaf' && id!=='mess_dress',id);
   }
-  assert.equal(rules.isAwardAllowedOnUniform('silver_medal_of_valor','aviator'),true,'CAP awards are not restricted');
+  assert.equal(rules.isAwardAllowedOnUniform('silver_medal_of_valor','aviator_blazer'),true,'CAP awards are not restricted');
   assert.equal(rules.isAwardAllowedOnUniform('x','blues_a',{isMilitary:true}),true);
-  assert.equal(rules.isAwardAllowedOnUniform('x','aviator',{isMilitary:true}),false);
+  assert.equal(rules.isAwardAllowedOnUniform('x','aviator',{isMilitary:true}),true);
+  assert.equal(rules.isAwardAllowedOnUniform('x','aviator_blazer',{isMilitary:true}),false);
 });
 
 test('minimum uniforms are Class B and the Aviator Shirt (39-1 1.2.2, 1.2.3)',()=>{
@@ -91,11 +102,11 @@ test('the Air Force Organizational Excellence Award is a senior award (39-3 Atta
   assert.match(senior,/Air_Force_Organizational_Excellence_Award/);
 });
 
-test('U.S. military badges are kept off Corporate-style uniforms in both the gallery and the render (39-1 4.2.5.1.3)',()=>{
-  const placement=fs.readFileSync(path.join(__dirname,'..','js','placement.js'),'utf8');
+test('U.S. military badges follow the uniform\'s award rule in both the gallery and the render (39-1 4.2.5.1.3, ICL 25-02)',()=>{
+  const view=fs.readFileSync(path.join(__dirname,'..','js','uniform-view.js'),'utf8');
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  assert.match(placement,/function renderSelectedMilitaryBadgesOnCap\(\)\{[\s\S]{0,260}isMilitaryAwardWornOnUniform\(\)/);
-  assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
+  assert.match(view,/function buildMilitaryBadges\(\)\{[\s\S]{0,200}isAwardAllowedOnUniform\('', State\.uniform, \{ isMilitary: true \}\)/);
+  assert.match(wiring,/isMilitaryAwardWornOnUniform\(\) && CAPUBUniformRules\.drawsMilitaryBadges\(State\.uniform\) \? getAllSelectableMilitaryBadges\(\) : \[\]/);
 });
 
 test('Corporate Service Dress and Corporate Semi-Formal authorize only the chaplain badge (39-1 4.2.3.1.1.3, 4.2.1)',()=>{
@@ -103,9 +114,18 @@ test('Corporate Service Dress and Corporate Semi-Formal authorize only the chapl
   assert.deepEqual(only,['aviator_blazer','semi_formal']);
   assert.equal(rules.allowsOnlyChaplainBadge('aviator'),false,'the Aviator Shirt allows more');
   assert.equal(rules.allowsOnlyChaplainBadge('blues_a'),false);
+  // The blazers' badges: the chaplain badge and the four crest substitutes, nothing else (LIVE13 E67 moved the notice to the one
+  // generic not-worn line, which reads data/uniform-rules.js BADGE_WEAR).
+  for(const u of ['semi_formal','aviator_blazer']){
+    const wear=rules.badgeWear(u,{underlayer:'turtleneck'});
+    assert.deepEqual(wear.families,['chaplain','service'],u);
+    assert.equal(rules.isBadgeWornOn(u,{id:'national_staff_badge',family:'national-staff'},{underlayer:'turtleneck'}),false,u);
+    assert.equal(rules.isBadgeWornOn(u,{id:'command_council_badge',family:'service'},{underlayer:'turtleneck'}),true,u);
+    assert.equal(rules.isBadgeWornOn(u,{id:'volunteer_university_instructor_badge',family:'service'},{underlayer:'turtleneck'}),false,u);
+  }
   const wiring=fs.readFileSync(path.join(__dirname,'..','js','wiring.js'),'utf8');
-  assert.match(wiring,/allowsOnlyChaplainBadge\(State\.uniform\)/);
-  assert.match(wiring,/Not authorized here:/);
+  assert.match(wiring,/capubBadgesNotWornLine\(\)/);
+  assert.match(wiring,/Not shown here:/);
 });
 
 /* ---- Every value in the table, stated against its paragraph of CAPR 39-1 ----
@@ -118,10 +138,12 @@ const REG={
     para:'1.2.2 (minimum uniform), 4.1.11.1.1.2.2 (ribbons optional), 11.2.7 (rows of three), 4.1.11.1.1.2.3 (four badges)'},
   mess_dress:{style:'usaf',who:['senior'],adultCadet:false,ribbons:'none',mini:true,usafAwards:true,rack:[],badges:4,shared:false,
     para:'4.1.1 and 4.1.2 (officers and NCOs only), 11.1.4 (miniature medals), 4.1.1.1.3 and 4.1.2.1.2.4 (four badges)'},
-  semi_formal:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:true,usafAwards:false,rack:[],badges:null,shared:false,chaplainOnly:true,
-    para:'4.2.1 and 4.2.2 (Corporate Semi-Formal, 18 and older, only CAP miniature medals), 4.2.3.1.1.3 via "worn as for Corporate Service Dress"'},
-  aviator:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'optional',mini:false,usafAwards:false,rack:[3],badges:4,shared:false,minimum:true,
-    para:'1.2.3 (minimum Corporate uniform), 4.2.5.1.2.2 (CAP ribbons optional, military not authorized), 11.2.7, 4.2.5.1.3 (four badges, no military)'},
+  semi_formal:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:true,usafAwards:true,rack:[],badges:null,shared:false,chaplainOnly:true,
+    para:'4.2.1 and 4.2.2 (Corporate Semi-Formal, 18 and older), ICL 25-02 (4.2.2.4: CAP and military miniature medals), 4.2.3.1.1.3 via "worn as for Corporate Service Dress"'},
+  semi_formal_usaf:{style:'usaf',who:['cadet'],adultCadet:false,ribbons:'required',mini:false,usafAwards:true,rack:[3,4],badges:4,shared:false,
+    para:'4.1.3 and 4.1.4 (cadets only, worn as the Class A coat), 11.1.2 (ribbons mandatory), 11.2.7'},
+  aviator:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'optional',mini:false,usafAwards:true,rack:[3],badges:4,shared:false,minimum:true,
+    para:'1.2.3 (minimum Corporate uniform), ICL 25-02 (4.2.5.1.2.2: military and CAP ribbons optional), 11.2.7, 4.2.5.1.3 (four badges)'},
   aviator_blazer:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:null,shared:false,chaplainOnly:true,
     para:'11.1.3 (no ribbons), 4.2.3.1.1.3 (chaplain badge is the only occupational badge); the regulation states no badge total'},
   corporate_field:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:8,shared:true,
@@ -129,11 +151,13 @@ const REG={
   abu:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:4,shared:true,
     para:'5.1.1.1.2 (badges and patches together not more than four; military badges count toward it)'},
   ocp:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:4,shared:false,
-    para:'ICL 25-06 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
+    para:'ICL 26-14 7.1.1.3.1 (four badges above the CAP tape; military badges per DAFI 36-2903)'},
   flight_suit:{style:'usaf',who:['cadet','senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:true,rack:[],badges:2,shared:false,
-    para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 (up to two badges on the nametag, military aviation badges allowed)'},
+    para:'8.2.1 (active members), 11.1.3 (no ribbons), 8.2.4.1 ("up to two badges" on the nametag; Ethan, 2 November 2026: "default of 1 badge for the fdu\'s with the option for 2")'},
+  corporate_flight_suit:{style:'corporate',who:['senior'],adultCadet:true,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:2,shared:false,
+    para:'8.3.1 (active members), 1.2.5.2 (cadets only as adult cadets over the weight standard), 11.1.3 (no ribbons), 8.3.4.1 (one aeronautical rating and one occupational badge; Ethan, 2 November 2026: "default of 1 badge for the fdu\'s with the option for 2")'},
   polo:{style:'corporate',who:['senior'],adultCadet:false,ribbons:'none',mini:false,usafAwards:false,rack:[],badges:1,shared:false,
-    para:'5.3.2 (no grade insignia), 1.2.5.2 (cadets excluded from the Working Uniform), 5.3.2.1.1 (one badge)'}
+    para:'5.3 (Corporate Working Uniform), 1.2.5.2 (no adult cadets: it allows no grade insignia), 11.1.3 (no ribbons), 5.3.2.1.1 (one badge or duty title)'}
 };
 
 test('every value in the table is the one the regulation states',()=>{
@@ -166,12 +190,15 @@ test('every rule that states a limit or a restriction carries its paragraph',()=
 });
 
 test('a cadet reaches Corporate uniforms only as an adult cadet, and never the Working Uniform (39-1 1.2.5.2)',()=>{
-  for(const id of ['semi_formal','aviator','aviator_blazer','corporate_field']){
+  for(const id of ['semi_formal','aviator','aviator_blazer','corporate_field','corporate_flight_suit']){
     assert.equal(rules.isUniformAllowedFor(id,'cadet'),false,`${id}: a cadet by default`);
     assert.equal(rules.isUniformAllowedFor(id,'cadet',{adultCadet:true}),true,`${id}: an adult cadet`);
     assert.equal(rules.isUniformAllowedFor(id,'senior'),true,`${id}: a senior member`);
   }
   assert.equal(rules.isUniformAllowedFor('polo','cadet',{adultCadet:true}),false);
+  assert.equal(rules.isUniformAllowedFor('polo','cadet'),false);
+  assert.equal(rules.isUniformAllowedFor('polo','senior'),true);
+  assert.equal(rules.isUniformAllowedFor('polo','senior',{rank:'SM'}),true,'a senior member without grade wears it too: it carries none (5.3.2)');
   // The option never widens anything for a senior member, or onto USAF-only uniforms.
   assert.equal(rules.isUniformAllowedFor('mess_dress','cadet',{adultCadet:true}),false);
   assert.equal(rules.isUniformAllowedFor('blues_a','cadet'),true);
@@ -187,11 +214,64 @@ test('badge limits: patches count with badges on the ABU and Corporate Field onl
   assert.equal(rules.badgeLimit('aviator_blazer',{badges:9}).over,false,'no total is stated for the blazer');
 });
 
+test('the Corporate Working Uniform (polo): senior members only, no grade, no awards, one badge of three families (39-1 5.3, 1.2.5.2, 11.1.3)',()=>{
+  const polo=rules.getUniformRule('polo');
+  assert.deepEqual(rules.allowedMemberships('polo'),['senior']);
+  assert.equal(rules.allowsGrade('polo'),false,'5.3.2: no grade insignia is authorized');
+  assert.equal(rules.allowsGrade('blues_b'),true);
+  assert.equal(rules.allowsRibbons('polo'),false);
+  assert.equal(rules.allowsMiniMedals('polo'),false);
+  assert.equal(rules.allowsShoulderCord('polo','cadet'),false);
+  assert.equal(rules.allowsCord('polo','senior','aide_de_camp'),false);
+  assert.equal(rules.isAwardAllowedOnUniform('x','polo',{isMilitary:true}),false,'11.1.6');
+  assert.equal(rules.badgeLimit('polo',{badges:1}).over,false);
+  assert.equal(rules.badgeLimit('polo',{badges:2}).over,true,'5.3.2.1.1: one badge or duty title');
+  for(const f of ['service','aviation','occupational','chaplain','specialty']) assert.equal(rules.allowsBadgeFamily('polo',f),true,f);
+  for(const f of ['national-staff','rocketry','marksmanship','cadet-specialty','command']) assert.equal(rules.allowsBadgeFamily('polo',f),false,f);
+  assert.equal(rules.allowsBadgeFamily('blues_a','service'),true,'a uniform that names no families allows them all');
+  assert.match(rules.lockedReason('polo','cadet',{adultCadet:true}),/adult cadets included.*no grade insignia.*1\.2\.5\.2/);
+  assert.match(rules.lockedReason('polo','cadet'),/1\.2\.5\.2/);
+  assert.equal(polo.refs.screenPrint,'5.3.2.1.2');
+  assert.equal(polo.refs.badges,'5.3.2.1.1');
+});
+
 test('uniforms the regulation allows but the builder does not draw are listed, not offered',()=>{
-  assert.ok(rules.NOT_MODELLED.semi_formal_usaf_cadet);
-  assert.ok(rules.NOT_MODELLED.corporate_flight_duty);
+  assert.equal(rules.getUniformRule('polo').group,'everyday','the polo is drawn now, so it is no longer only listed');
   for(const id of Object.keys(rules.NOT_MODELLED)){
     assert.equal(rules.getUniformRule(id),null,`${id} is not an offered uniform`);
     assert.ok(rules.NOT_MODELLED[id].why);
   }
+});
+
+test('the AFOEA stays off Corporate-style uniforms and the mess dress (11.2.3, ICL 18-02)', () => {
+  const R = require('../data/uniform-rules.js');
+  for(const u of ['aviator', 'semi_formal', 'mess_dress']) assert.equal(R.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award', u), false, u);
+  for(const u of ['blues_a', 'blues_b']) assert.equal(R.isAwardAllowedOnUniform('Air_Force_Organizational_Excellence_Award', u), true, u);
+  assert.equal(R.isAwardAllowedOnUniform('x', 'aviator', { isMilitary: true }), true, 'ICL 25-02');
+});
+
+// Ethan, 2 November 2026 (after Doran): "default of 1 badge for the fdu's with the option for 2". The flight suits' name tag draws what the member picked, one by default
+// and a second if he adds it, so the page's limit is two, the panel says one by default, and a third is over it.
+test('both flight suits: one badge is under the limit, two are at it, three are over it, and the panel line says "1 by default, up to 2 on this uniform"',()=>{
+  for(const u of ['flight_suit','corporate_flight_suit']){
+    assert.deepEqual(rules.badgeLimit(u,{badges:1}),{cap:2,counted:1,shared:false,over:false},u);
+    assert.equal(rules.badgeLimit(u,{badges:2}).over,false,u+': two is allowed');
+    assert.equal(rules.badgeLimit(u,{badges:3}).over,true,u+': three is over');
+    assert.equal(rules.getUniformRule(u).badgeDefault,1,u+': one by default');
+  }
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/`\$\{dflt\} by default, up to \$\{cap\} on this uniform, each where the regulation puts it\.`/,'the panel line says the default and the cap');
+  assert.equal(ui.includes('badgeDefault'),true);
+});
+
+// CAPR 39-1 8.2.4.1 and 8.3.4.1: "Cloth nametag for Officers will include name (first and last) and may include one badge". An officer's tag is the cloth one.
+test('both flight suits: an officer\'s cloth name tag takes one badge, and the panel says so with the paragraph',()=>{
+  for(const u of ['flight_suit','corporate_flight_suit']){
+    const rule=rules.getUniformRule(u);
+    assert.equal(rule.officerBadgeCap,1,u);
+    assert.ok(rule.refs.badges,u+': cites the paragraph');
+  }
+  assert.equal(rules.getUniformRule('flight_suit').refs.badges,'8.2.4.1');
+  const ui=fs.readFileSync(path.join(__dirname,'..','js','workspace-ui.js'),'utf8');
+  assert.match(ui,/The officer's cloth name tag may include one badge \(CAPR 39-1 \$\{/,'the panel line states the rule and the paragraph');
 });

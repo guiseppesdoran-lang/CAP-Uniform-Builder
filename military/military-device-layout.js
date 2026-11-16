@@ -80,5 +80,34 @@
     });
   }
 
-  return {DEFAULT_CONTEXTS,normalizedSlots,layoutDevices};
+  // The artwork of each catalog device on a ribbon: the manifest id, and the scale that reproduces the size the device had on the
+  // catalog's precomposed ribbons (assets/ribbons/military-variants.json device_assets, scale_to_match_raster).
+  const RIBBON_DEVICE_ART=Object.freeze({
+    BRONZE_OLC:{asset:'mil-device-olc-bronze',scale:0.924},SILVER_OLC:{asset:'mil-device-olc-silver',scale:0.924},
+    BRONZE_SERVICE_STAR:{asset:'device-star-bronze',scale:1.208},SILVER_SERVICE_STAR:{asset:'device-star-silver',scale:1.208},
+    GOLD_AWARD_STAR:{asset:'device-star-gold',scale:1},SILVER_AWARD_STAR:{asset:'device-star-silver',scale:1},
+    V_DEVICE:{asset:'device-v',scale:1},C_DEVICE:{asset:'mil-device-letter-c',scale:1},R_DEVICE:{asset:'mil-device-letter-r',scale:1},
+    M_DEVICE:{asset:'mil-device-letter-m',scale:1.345},N_DEVICE:{asset:'mil-device-letter-n',scale:1.295},
+    BRONZE_HOURGLASS:{asset:'mil-device-hourglass-bronze',scale:1},SILVER_HOURGLASS:{asset:'mil-device-hourglass-silver',scale:1},
+    GOLD_HOURGLASS:{asset:'mil-device-hourglass-gold',scale:1},ARROWHEAD_DEVICE:{asset:'mil-device-arrowhead',scale:1}
+  });
+  function ribbonDeviceArt(deviceId){
+    if(RIBBON_DEVICE_ART[deviceId]) return RIBBON_DEVICE_ART[deviceId];
+    const numeral=/^NUMERAL_(\d+)$/.exec(String(deviceId));
+    return numeral ? {asset:`mil-device-numeral-${Number(numeral[1])}`,scale:1} : null;
+  }
+
+  // Where a ribbon's devices go in inches from its top-left: the 'ribbon' slots above on the real ribbon, device centres (the recipes of
+  // assets/ribbons/military-variants.json are this rule; tests/military-ribbon-art.test.cjs compares all 344). The engine draws the plan.
+  function ribbonDevicePlan(devices,{ribbonW=1.375,ribbonH=0.375}={}){
+    const config=DEFAULT_CONTEXTS.ribbon;
+    const known=[...(devices || [])].filter(ribbonDeviceArt);
+    const slots=normalizedSlots(known.length,config);
+    return known.map((deviceId,index)=>{
+      const art=ribbonDeviceArt(deviceId);
+      return {deviceId,id:art.asset,x:ribbonW*slots[index],y:ribbonH*config.centerY,scale:art.scale};
+    });
+  }
+
+  return {DEFAULT_CONTEXTS,normalizedSlots,layoutDevices,ribbonDeviceArt,ribbonDevicePlan};
 });

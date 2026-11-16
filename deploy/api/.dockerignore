@@ -1,0 +1,4 @@
+# Only the service's own files go into the image.
+Dockerfile
+.dockerignore
+*.md

@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-red-service-ribbon-miniature",
  "name": "Red Service Ribbon (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6308,
  "size_in": {
   "w": 0.625,
-  "h": 0.8099
+  "h": 0.6308
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  80.99
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_redser-02yr.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.8099 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 179 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.676 x 0.6837 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.676 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 179.2 px = 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,83 +17,223 @@
   ],
   "bottom_center": [
    31.25,
-   80.99
+   63.08
   ],
   "center": [
    31.25,
-   40.5
+   31.54
   ],
   "left_edge": [
    0,
-   40.5
+   31.54
   ],
   "right_edge": [
    62.5,
-   40.5
+   31.54
   ],
   "ribbon_attach": [
-   32.04,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the top centre of the suspension ring (or of the bail where the box cuts the ring away), on the body axis: the body is upright, the photograph's hang angle (0.2 deg) is removed; compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "redser-02yr",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-red-service-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Red Service Ribbon"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-red-service-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-red-service-ribbon",
   "spec": "../ribbons/ribbon-red-service-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-service-red-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9754,
-  "threshold": 0.95,
-  "colour_mae_0_255": 31.2,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
- },
- "palette": [
-  "#2d2825",
-  "#4d403d",
-  "#8b8683",
-  "#b7b3b0"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "redser-05yr",
-   "redser-10yr",
-   "redser-15yr",
-   "redser-20yr",
-   "redser-25yr",
-   "redser-30yr",
-   "redser-35yr",
-   "redser-40yr",
-   "redser-45yr",
-   "redser-50yr",
-   "redser-55yr",
-   "redser-60yr",
-   "redser-65yr"
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/b-service-red.js (parameters in inches) over lib.js, common.js, font.js, emit.js, lib-b.js; gates: lib-b.js; npm-free, node make-b.js b-service-red --write",
+ "source_raster": "vanguardmil.com product civil-air-patrol-service-red-miniature-medal (civil air patrol service red miniature medal), 600 x 600 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "civil-air-patrol-service-red-miniature-medal",
+  "title": "civil air patrol service red miniature medal",
+  "px": [
+   600,
+   600
   ],
-  "different_body": []
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/service-red.jpeg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-service-red-miniature-medal",
-  "local_photo": "medals-work/ref-hires/service-red.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "measured": {
+  "photo": "service-red.jpeg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 179.2,
+   "body_centre_px": [
+    296.5,
+    511.6
+   ],
+   "ppi_in_frame": 286.7,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
   },
-  "body_px": {
-   "w": 177,
-   "h": 228
+  "hang_angle_removed_deg": 0.2,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.003,
+   "ridge": [
+    0.2965,
+    0.3105
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": 0.0038,
+   "cy": -0.0064,
+   "r": 0.2053,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.01,
+   "top_letters": 14,
+   "bottom_letters": 7,
+   "cap_height_top_in": 0.0528,
+   "cap_height_bottom_in": 0.05,
+   "letter_positions": "angle and radial extent of each letter, measured from the unwrapped annulus (generator, text.top / text.bottom)"
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.092,
+    "top": -0.442,
+    "neck": 0.071,
+    "shoulder": -0.335,
+    "bottom": -0.3
+   },
+   "ring": {
+    "c": [
+     0.005,
+     -0.504
+    ],
+    "r": 0.14,
+    "w": 0.0125
+   }
+  },
+  "tones_luminance": {
+   "ground": 38,
+   "shadow": 14,
+   "base": 148,
+   "hi": 195,
+   "rim": 178,
+   "rim_hi": 235,
+   "metal": 125,
+   "metal_hi": 215,
+   "bail": 140,
+   "lip": 200
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 6.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "silver studio ramp (lib.js SILVER_RAMP)",
+  "tone_colours": {
+   "ground": "#2b2828",
+   "shadow": "#161515",
+   "base": "#989391",
+   "hi": "#c5c1be",
+   "rim": "#b5b1ae",
+   "rim_hi": "#eae8e6",
+   "lip": "#cac6c3",
+   "metal": "#817c7a",
+   "metal_hi": "#d8d4d1",
+   "bail": "#908b89"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph mask resampled into the same upright box)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ink_coverage": "lit-metal area of mine / reference between 0.85 and 1.15 (body and named zones): letters and emblem strokes as solid as the reference",
+   "ribbon_attach": "top centre of the ring (or of the bail where the box cuts the ring) at the box top, x on the body axis",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9797,
+  "light_class_iou": 0.713,
+  "ink_coverage": [
+   {
+    "zone": "body",
+    "ref_px": 32627,
+    "mine_px": 33101,
+    "ratio": 1.015
+   },
+   {
+    "zone": "lettering band",
+    "ref_px": 12859,
+    "mine_px": 13810,
+    "ratio": 1.074
+   },
+   {
+    "zone": "inside circle",
+    "ref_px": 13309,
+    "mine_px": 12616,
+    "ratio": 0.948
+   }
+  ],
+  "landmarks_checked": 29,
+  "landmark_max_dist_in": 0.0053,
+  "landmark_worst": [
+   [
+    "letter L (top 73.1deg)",
+    0.0053
+   ],
+   [
+    "letter V (top -51.3deg)",
+    0.0035
+   ],
+   [
+    "letter T (top 40deg)",
+    0.0034
+   ],
+   [
+    "letter R (top 50.1deg)",
+    0.0026
+   ],
+   [
+    "letter V (bottom 176.8deg)",
+    0.0024
+   ]
+  ],
+  "edge_recall_0p006in": 0.927,
+  "edge_recall_0p012in": 0.935,
+  "edge_precision_0p012in": 1,
+  "tone_mae_luminance": 22.9,
+  "ribbon_attach_units": {
+   "mine": 31.17,
+   "spec_new": [
+    31.25,
+    0
+   ],
+   "spec_old": [
+    31.25,
+    0
+   ]
+  },
+  "gate_pass": true,
+  "pass": true,
+  "not_measurable": [
+   "The cast surface texture of the ground inside the circle (pitted, not a drawn feature)."
+  ],
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9797,
+  "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from service-red.jpeg (reference only, never shipped). Hang angle 0.2 deg of the photograph removed."
 }

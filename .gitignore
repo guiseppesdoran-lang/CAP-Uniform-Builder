@@ -9,3 +9,8 @@ scripts/optimize-images.manifest.json
 
 # Output of npm run build.
 dist/
+
+# The API's data and secrets live on the server only (deploy/README.md). Never create these locally: the deploy
+# rsync copies every local file, so a local deploy/var would overwrite the server's events and feedback.
+deploy/var/
+deploy/.env

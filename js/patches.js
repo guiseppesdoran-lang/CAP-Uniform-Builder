@@ -41,14 +41,6 @@ function capubHasDisqualifyingCommanderPrefix(source, index){
   return /(?:^|\s)(Deputy|Assistant|Asst\.?|Vice|Cadet|Incident|Mission|Deputy\s+Commander|Assistant\s+Deputy)\s*$/i.test(before);
 }
 
-function capubIsCommanderDutyTitleSegment(segment){
-  const s = String(segment || '').replace(/\s+/g, ' ').trim();
-  if(!/\bCommander\b/i.test(s)) return false;
-  if(/\b(?:Deputy|Vice|Assistant|Asst\.?|Cadet|Incident|Mission)\s+Commander\b/i.test(s)) return false;
-  if(/\bCommander(?:'s|s)?\s+Commendation\b/i.test(s)) return false;
-  if(/\bCommand\s+Council\b/i.test(s)) return false;
-  return capubIsExactCommanderDutyTitle(s);
-}
 
 function capubExtractCommanderDutyWindows(section){
   const source = String(section || '').replace(/\s+/g, ' ').trim();
@@ -72,6 +64,12 @@ function capubExtractCommanderDutyWindows(section){
     const title = m[1] || '';
     if(!capubIsExactCommanderDutyTitle(title)) continue;
     if(capubHasDisqualifyingCommanderPrefix(source, m.index)) continue;
+    // Only the unit commander's own title qualifies: "Commander", or Squadron, Group, Wing, Region or National Commander, as a cell of its own
+    // (the text before it is the previous row's date or the table's heading). A Flight, Encampment, Honor Guard, Ground Team, Drill Team or
+    // Acting Commander is another position.
+    if(!/(?:\b\d{4}|End\s+Date|Duty\s+(?:Positions|Assignments))\s*$/i.test(source.slice(0, m.index))) continue;
+    // The Asst column: Yes is an assistant's row, never the commander's.
+    if(/^yes$/i.test(m[4])) continue;
 
     rows.push({
       title,
@@ -87,22 +85,43 @@ function capubExtractCommanderDutyWindows(section){
   return rows;
 }
 
+// The duty tables of the member report. A "Current Duty Positions" table ends where the past table (under any of
+// its headings) or the next report section begins, and a row that carries an end date is a past assignment
+// whichever table it is printed in; only what the current table lists, with no end date, is a current duty.
+const CAPUB_PAST_DUTY_HEADING = '(?:(?:Cadet\\s+)?(?:Past|Previous|Prior|Former|Historical|Completed|Ended)\\s+Duty\\s+(?:Positions|Assignments)|Duty\\s+(?:Positions|Assignments)\\s+History|Duty\\s+History)';
+const CAPUB_AFTER_CURRENT_DUTY = [CAPUB_PAST_DUTY_HEADING, 'Current\\s+Committees', 'Transfer\\s+History', 'Professional\\s+Development',
+  'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Cadet\\s+Achievements', 'Awards', 'Promotions', 'Decorations'];
+const CAPUB_AFTER_PAST_DUTY = ['Current\\s+Duty\\s+(?:Positions|Assignments)', 'Current\\s+Committees', 'Transfer\\s+History', 'Level',
+  'Professional\\s+Development', 'Specialty\\s+Tracks', 'Cadet\\s+Training', 'Encampments', 'Awards', 'Promotions'];
+
+function capubCurrentDutySection(text){
+  return getReportSectionUntilAny(text, 'Current\\s+Duty\\s+(?:Positions|Assignments)', CAPUB_AFTER_CURRENT_DUTY);
+}
+
+function capubCurrentCadetDutySection(text){
+  return getReportSectionUntilAny(text, 'Cadet\\s+Duty\\s+(?:Positions|Assignments)', CAPUB_AFTER_CURRENT_DUTY);
+}
+
+function capubPastDutySection(text){
+  return getReportSectionUntilAny(text, CAPUB_PAST_DUTY_HEADING, CAPUB_AFTER_PAST_DUTY);
+}
+
 function hasCurrentCommanderDutyPosition(text){
-  const current = getReportSection(text, 'Current Duty Positions', 'Past Duty Positions');
+  const current = capubCurrentDutySection(text);
   if(!current) return false;
-  return capubExtractCommanderDutyWindows(current).some(row => capubIsExactCommanderDutyTitle(row.title));
+  // An End Date still to come is a term's end: the member commands today (CAPR 39-1, 10.2.5: "graduated" is no longer in a command position).
+  const today = new Date();
+  return capubExtractCommanderDutyWindows(current).some(row => capubIsExactCommanderDutyTitle(row.title) && (!row.end || row.end > today));
 }
 
 function hasGraduatedCommanderDutyPosition(text){
-  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
-    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
-    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
-  ]);
+  // Rows with an end date are past assignments wherever they are printed.
+  const past = [capubPastDutySection(text), capubCurrentDutySection(text)].filter(Boolean).join(' ');
   if(!past) return false;
 
   return capubExtractCommanderDutyWindows(past).some(row => {
     if(!capubIsExactCommanderDutyTitle(row.title)) return false;
-    if(!row.start || !row.end) return false;
+    if(!row.start || !row.end || row.end > new Date()) return false;
     const days = (row.end - row.start) / (1000 * 60 * 60 * 24);
     return days >= 365;
   });
@@ -112,14 +131,11 @@ function extractCommandServiceCommanderAssignments(text){
   const sections = [
     {
       current:true,
-      text:getReportSection(text, 'Current Duty Positions', 'Past Duty Positions')
+      text:capubCurrentDutySection(text)
     },
     {
       current:false,
-      text:getReportSectionUntilAny(text, 'Past Duty Positions', [
-        'Current Committees', 'Transfer History', 'Level', 'Professional Development',
-        'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
-      ])
+      text:capubPastDutySection(text)
     }
   ];
 
@@ -127,7 +143,8 @@ function extractCommandServiceCommanderAssignments(text){
   for(const section of sections){
     for(const row of capubExtractCommanderDutyWindows(section.text)){
       if(!row.start) continue;
-      const end = row.end || (section.current ? new Date() : null);
+      const now = new Date();
+      const end = row.end ? new Date(Math.min(row.end, now)) : (section.current ? now : null);
       if(!end) continue;
       const days = Math.floor((end - row.start) / (1000 * 60 * 60 * 24));
       rows.push({
@@ -158,30 +175,104 @@ function extractCommandServiceCommanderAssignments(text){
        images/cords/wing
        images/cords/region
        images/cords/national
-     The renderer tries .png, .webp, .jpg, then the extensionless path.
    - Assistant/alternate CAC reps, recorders, members, chairs, and vice chairs do not auto-render the cord.
    ========================================================== */
 State.shoulderCord = State.shoulderCord || null;
 
-function syncShoulderCordControl(){
-  const sel = by('shoulderCordSelect');
-  if(!sel) return;
-  sel.value = State.shoulderCord || '';
-  // Cadets only, on Class A and Class B (CAPR 39-1, 9.3 and 9.4.1). Anyone else is not shown it.
-  const usable = CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership);
-  sel.disabled = false;
-  const panel = by('shoulderCordPanel');
-  if(panel) panel.classList.toggle('hidden', !usable);
+// The cord choice, by picture (js/visual-picker.js): the cords of the regulation first, then one group for each supplement the member's unit brings in (Supplements.cords: the
+// ones the member's report shows earned come first and carry a mark), each drawn as a short piece of the cord itself (CAPUBEngine.cords.sampleSvg, drawn by CordBraid). The
+// control is not shown to anyone who cannot wear a cord on this uniform. A cord whose colour the unit commander picks adds a second choice, of the colour by swatch.
+const SHOULDER_CORD_GROUP = 'Regulation cords';
+let shoulderCordPicker = null, shoulderCordColourPicker = null, shoulderCordKey = '';
+const shoulderCordPictures = new Map();   // cord and colour -> the markup of its picture
+
+function capubCordColour(id){
+  const cords = CAPUBEngine.cords;
+  if(!cords.needsColour(id)) return null;
+  return cords.isChosenColour(State.shoulderCordColour) ? State.shoulderCordColour : cords.chosenColours()[0].name;
 }
 
+function capubCordPicture(id){
+  const colour = capubCordColour(id), key = id + '|' + (colour || '');
+  if(!shoulderCordPictures.has(key)) shoulderCordPictures.set(key, CAPUBEngine.cords.sampleSvg(id, colour));
+  return shoulderCordPictures.get(key);
+}
+
+// The Honor Guard Uniform (CAPR 39-1 9.6), wears the metallic silver shoulder cord and no other (9.6.7.5): the picker shows it as worn and offers nothing else, and the
+// member's own choice of cord is kept, unchanged, for the uniforms that take one.
+const capubCordIsFixed = () => !!State.ceremonial && State.membership === 'cadet' && CAPUBUniformRules.allowsCeremonial(State.membership);
+
+// The options of the cord picker for this member on this uniform: none when no cord may be worn (the control is then hidden).
+function capubShoulderCordOptions(){
+  if(capubCordIsFixed()){
+    const id = CAPUBUniformRules.CEREMONIAL.cord;
+    return [{ value: id, label: SHOULDER_CORD_META[id].tile, picture: capubCordPicture(id), mark: 'Worn with this uniform', group: SHOULDER_CORD_GROUP,
+      note: `Metallic silver, Army-style, worn on the left shoulder at the seam on top of the epaulet (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.cord}).` }];
+  }
+  const allowed = id => CAPUBUniformRules.allowsCord(State.uniform, State.membership, id);
+  const regulation = SHOULDER_CORD_IDS.filter(allowed);
+  if(!regulation.length) return [];
+  const options = [{ value: '', label: 'No cord', picture: VisualPicker.emptyMark(), group: SHOULDER_CORD_GROUP }];
+  for(const id of regulation) options.push({ value: id, label: SHOULDER_CORD_META[id].tile, picture: capubCordPicture(id), note: SHOULDER_CORD_META[id].note || '', group: SHOULDER_CORD_GROUP });
+  const offered = window.Supplements && typeof Supplements.cords === 'function' ? Supplements.cords(State) : [];
+  for(const c of offered) if(allowed(c.id)) options.push({ value: c.id, label: c.label, picture: capubCordPicture(c.id), note: c.note, mark: c.earned ? 'In your report' : '', group: c.group });
+  return options;
+}
+
+const capubCordSwatch = c => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 36" focusable="false" aria-hidden="true"><rect x="7" y="5" width="34" height="26" rx="6" fill="${c.main}" stroke="${c.dark}" stroke-width="3"/></svg>`;
+
+function capubPickShoulderCord(value){
+  if(capubCordIsFixed()) return;   // the Honor Guard Uniform's cord is not a choice
+  State.shoulderCord = value || null;
+  State.shoulderCordColour = CAPUBEngine.cords.needsColour(State.shoulderCord) ? capubCordColour(State.shoulderCord) : null;
+  renderCACShoulderCord();
+  fullRender();
+}
+
+function capubPickShoulderCordColour(name){
+  State.shoulderCordColour = CAPUBEngine.cords.isChosenColour(name) ? name : null;
+  syncShoulderCordControl();
+  fullRender();
+}
+
+function syncShoulderCordControl(){
+  const host = by('shoulderCordPicker');
+  if(!host || typeof VisualPicker === 'undefined') return;
+  const options = capubShoulderCordOptions();
+  // The cord the member chose, when it is on offer (a supplement cord the unit does not offer is not shown as chosen).
+  const value = capubCordIsFixed() ? CAPUBUniformRules.CEREMONIAL.cord : State.shoulderCord && options.some(o => o.value === State.shoulderCord) ? State.shoulderCord : '';
+  const key = JSON.stringify(options.map(o => [o.value, o.label, o.note, o.mark, o.group, o.picture ? o.picture.length : 0]));
+  if(!shoulderCordPicker){
+    shoulderCordPicker = VisualPicker.render(host, { name: 'shoulderCord', legend: 'Shoulder cord', options, value, size: 'large', onChange: capubPickShoulderCord });
+    shoulderCordKey = key;
+  }else{
+    if(key !== shoulderCordKey){ shoulderCordPicker.setOptions(options); shoulderCordKey = key; }
+    shoulderCordPicker.setValue(value);
+  }
+  const panel = by('shoulderCordPanel');
+  if(panel) panel.classList.toggle('hidden', !options.length);
+  // A cord whose colour the unit commander picks: the member's colour, from the colours that are not a regulation cord's.
+  const colourHost = by('shoulderCordColour');
+  if(colourHost){
+    const colours = CAPUBEngine.cords.needsColour(value) ? CAPUBEngine.cords.chosenColours() : [];
+    colourHost.hidden = !colours.length;
+    if(colours.length){
+      const colourOptions = colours.map(c => ({ value: c.name, label: c.name.charAt(0).toUpperCase() + c.name.slice(1), picture: capubCordSwatch(c) }));
+      if(!shoulderCordColourPicker) shoulderCordColourPicker = VisualPicker.render(colourHost, { name: 'shoulderCordColour', legend: 'Cord color', options: colourOptions, value: capubCordColour(value), onChange: capubPickShoulderCordColour });
+      else shoulderCordColourPicker.setValue(capubCordColour(value));
+    }
+  }
+  const note = by('shoulderCordNote');
+  if(note) note.textContent = State.membership === 'senior' && options.length ? 'Senior members wear only the Aide de Camp cord; the other shoulder cords are for cadets (CAPR 39-1, 9.3).' : '';
+}
+
+// The picker is drawn again when the unit, or the cords the member's report shows earned, change what is on offer (js/supplements.js); the drawing follows a cord that is no longer offered.
 function wireShoulderCordControl(){
-  const sel = by('shoulderCordSelect');
-  if(!sel || sel.dataset.wired === 'true') return;
-  sel.dataset.wired = 'true';
-  sel.addEventListener('change', () => {
-    State.shoulderCord = sel.value || null;
-    renderCACShoulderCord();
-    if(typeof updateStatusPanel === 'function') updateStatusPanel();
+  if(wireShoulderCordControl.wired) return;
+  wireShoulderCordControl.wired = true;
+  document.addEventListener('capub:supplements-changed', () => {
+    syncShoulderCordControl();
+    if(State.shoulderCord) fullRender();
   });
 }
 
@@ -199,12 +290,20 @@ const CAC_CORD_LABEL_BY_LEVEL = {
   national: 'National CAC shoulder cord - gold'
 };
 const SHOULDER_CORD_META = {
-  group:       { label:'Group CAC shoulder cord - green',    srcBase:'cords/group',       imported:true  },
-  wing:        { label:'Wing CAC shoulder cord - red',       srcBase:'cords/wing',        imported:true  },
-  region:      { label:'Region CAC shoulder cord - blue',    srcBase:'cords/region',      imported:true  },
-  national:    { label:'National CAC shoulder cord - gold',  srcBase:'cords/national',    imported:true  },
-  color_guard: { label:'Color Guard shoulder cord',          srcBase:'cords/color_guard', imported:false },
-  honor_guard: { label:'Honor Guard shoulder cord',          srcBase:'cords/honor_guard', imported:false }
+  group:       { label:'Group CAC shoulder cord - green',    tile:'Group council, green',    srcBase:'cords/group',       imported:true,
+                 note:'Kelly green cord for the current primary members of a group Cadet Advisory Council (CAPR 39-1, 9.3.1.4).' },
+  wing:        { label:'Wing CAC shoulder cord - red',       tile:'Wing council, red',       srcBase:'cords/wing',        imported:true,
+                 note:'Red cord for the current primary members of a wing Cadet Advisory Council (CAPR 39-1, 9.3.1.3).' },
+  region:      { label:'Region CAC shoulder cord - blue',    tile:'Region council, blue',    srcBase:'cords/region',      imported:true,
+                 note:'Blue cord for the current primary members of a region Cadet Advisory Council (CAPR 39-1, 9.3.1.2).' },
+  national:    { label:'National CAC shoulder cord - gold',  tile:'National council, gold',  srcBase:'cords/national',    imported:true,
+                 note:'Gold cord for the current primary members of the National Cadet Advisory Council (CAPR 39-1, 9.3.1.1).' },
+  color_guard: { label:'Color Guard shoulder cord - white',  tile:'Color Guard, white',      srcBase:'cords/color_guard', imported:false,
+                 note:'White cord for cadets on a drill or color guard competition team, or acting as a color guard (CAPR 39-1, 9.3.2).' },
+  honor_guard: { label:'Honor Guard shoulder cord - silver', tile:'Honor Guard, silver',     srcBase:'cords/honor_guard', imported:false,
+                 note:'Silver cord: worn for good by graduates of the former National or a Region Honor Guard Academy; members of a unit honor guard who are not graduates wear it only while taking part in an honor guard activity (CAPR 39-1, 9.3.3).' },
+  aide_de_camp: { label:'Aide de Camp shoulder cord',        tile:'Aide de Camp',            srcBase:'cords/aide_de_camp', imported:false,
+                 note:'Worn by senior members and cadets serving as an aide to a general officer, only while acting as an aide, on the Class A and Class B (CAPR 39-1, 9.3.4).' }
 };
 const SHOULDER_CORD_IDS = Object.keys(SHOULDER_CORD_META);
 
@@ -222,7 +321,6 @@ function capubLooksLikeCACDutySegment(segment){
 }
 
 
-
 function capubCACLevelFromText(segment, rowEchelon=''){
   const s = capubNormalizeCACSource(segment);
   const echelon = String(rowEchelon || '').toUpperCase();
@@ -236,6 +334,12 @@ function capubCACLevelFromText(segment, rowEchelon=''){
   // without clearer text, treat generic past CAC duty as group/basic ribbon.
   if(echelon === 'UNIT') return 'group';
   return null;
+}
+
+// The token's own row, from the token to its first date, ends in "Yes <date>" when the Asst column says assistant.
+function capubCACRowIsAssistant(source, index){
+  const ownRow = /^[\s\S]{0,160}?\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/.exec(String(source || '').slice(index));
+  return !!ownRow && /\bYes\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}$/i.test(ownRow[0]);
 }
 
 function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
@@ -260,6 +364,8 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
     const echelon = m[3] || '';
     const raw = m[0] || title;
     if(!capubLooksLikeCACDutySegment(raw)) continue;
+    // The Asst column: Yes is an assistant's row.
+    if(/\bYes\s+\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}/i.test(raw)) continue;
     const level = capubCACLevelFromText(raw, echelon);
     if(!level) continue;
     rows.push({
@@ -271,6 +377,7 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
       echelon:String(echelon || '').toUpperCase(),
       start: parseCapReportDate(m[4]),
       end: parseCapReportDate(m[5]) || (isCurrent ? new Date() : null),
+      endGiven: !!m[5],
       raw
     });
   }
@@ -281,6 +388,7 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
   while((m = tokenRe.exec(source))){
     const ctx = source.slice(Math.max(0, m.index - 90), Math.min(source.length, m.index + 180));
     if(!capubLooksLikeCACDutySegment(ctx)) continue;
+    if(capubCACRowIsAssistant(source, m.index)) continue;
     const echelonMatch = ctx.match(/\b(UNIT|GROUP|WING|REGION|NATIONAL)\b/i);
     const level = capubCACLevelFromText(ctx, echelonMatch ? echelonMatch[1] : '');
     if(!level) continue;
@@ -295,9 +403,8 @@ function capubExtractCACDutyAssignmentsFromSection(section, isCurrent=false){
 
 function capubGetCurrentCACDutyAssignments(text){
   const sections = [
-    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
-    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
-    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+    capubCurrentCadetDutySection(text),
+    capubCurrentDutySection(text)
   ].filter(Boolean);
 
   const rows = [];
@@ -315,12 +422,15 @@ function capubGetCurrentCACDutyAssignments(text){
   });
 }
 
+// A row of a current table whose End Date has passed is a term served, as a row of the past table is (a row that carries an end date is a past
+// assignment whichever table prints it).
+function capubEndedCurrentCACDutyAssignments(text){
+  const now = new Date();
+  return capubGetCurrentCACDutyAssignments(text).filter(row => row.endGiven && row.end < now).map(row => ({ ...row, current:false }));
+}
+
 function capubGetPastCACDutyAssignments(text){
-  const past = getReportSectionUntilAny(text, 'Past Duty Positions', [
-    'Current Committees', 'Transfer History', 'Level', 'Professional Development',
-    'Specialty Tracks', 'Cadet Training', 'Encampments', 'Awards', 'Promotions'
-  ]);
-  return capubExtractCACDutyAssignmentsFromSection(past, false);
+  return [...capubExtractCACDutyAssignmentsFromSection(capubPastDutySection(text), false), ...capubEndedCurrentCACDutyAssignments(text)];
 }
 
 function capubChooseHighestCACLevel(rows){
@@ -350,78 +460,11 @@ function capubIsCompletedCACRibbonTerm(row){
 }
 
 
-
-function capubShoulderCordAssetCandidates(cordId){
-  const meta = SHOULDER_CORD_META[cordId] || null;
-  const base = meta?.srcBase || `cords/${cordId}`;
-  return [`${base}.png`, `${base}.webp`, `${base}.jpg`, `${base}.jpeg`, base];
-}
-
-// Backward-compatible helper name used by older CAC-specific code.
-function capubCACCordAssetCandidates(level){
-  return capubShoulderCordAssetCandidates(level);
-}
-
-function capubSetImageWithFallback(img, candidates){
-  const list = (candidates || []).filter(Boolean);
-  let idx = 0;
-  function tryNext(){
-    if(idx >= list.length){ img.remove(); return; }
-    img.src = ASSET(list[idx++]);
-  }
-  img.onerror = tryNext;
-  tryNext();
-}
-
-function getShoulderCordCalibrationKey(cordId){
-  return `shoulderCord:${cordId}`;
-}
-
-function getShoulderCordDefaultPlacement(
-  uniform = State.uniform,
-  gender = State.gender,
-  cordId = State.shoulderCord
-){
-  const bucket = `${uniform}_${gender || 'male'}`;
-  const cordDefaults = SHOULDER_CORD_DEFAULTS[bucket] || {};
-  return {
-    ...(cordDefaults[cordId] || { x:96, y:86, w:52, h:160, r:0 })
-  };
-}
-
+// The cord itself is drawn by the uniform engine (js/engine/profiles-dress.js); this keeps the
+// selector in step with the member's selection.
 function renderCACShoulderCord(){
   wireShoulderCordControl();
   syncShoulderCordControl();
-  [...uniformCanvas.querySelectorAll('.layer.cacShoulderCord,.layer.shoulderCord')].forEach(n => n.remove());
-
-  const cordId = State.shoulderCord;
-  const cordMeta = SHOULDER_CORD_META[cordId] || null;
-  if(!cordId || !cordMeta) return;
-  if(!CAPUBUniformRules.allowsShoulderCord(State.uniform, State.membership)) return;
-
-  const img = document.createElement('img');
-  img.className = 'layer shoulderCord cacShoulderCord';
-  img.dataset.calibKey = getShoulderCordCalibrationKey(cordId);
-  img.alt = cordMeta.label || `${cordId} shoulder cord`;
-  img.style.display = 'block';
-
-  // Each cord ID has its own key inside each uniform/gender calibration bucket:
-  //   blues_a_male.shoulderCord:group
-  //   blues_a_female.shoulderCord:color_guard
-  //   blues_b_male.shoulderCord:honor_guard
-  //   blues_b_female.shoulderCord:wing
-  // Use the calibrator to fine tune each one independently.
-  const base = getShoulderCordDefaultPlacement(State.uniform, State.gender, cordId);
-  applyCalibToElement(img, img.dataset.calibKey, base);
-
-  img.dataset.tooltipTitle = cordMeta.label || `${cordId.toUpperCase()} shoulder cord`;
-  img.dataset.tooltipReg = cordMeta.imported ? 'CAPR 60-1 CAC shoulder cord' : 'Manual shoulder cord selection';
-  img.dataset.tooltipWhy = cordMeta.imported
-    ? 'Rendered only from a current CAC primary representative duty assignment. The CAC ribbon is imported only from past CAC duty assignments.'
-    : 'Manual cord selection. Coordinates are stored separately for each cadet Class A/Class B male/female uniform bucket.';
-
-  capubSetImageWithFallback(img, capubShoulderCordAssetCandidates(cordId));
-  uniformCanvas.appendChild(img);
 }
 
 // Wrap member report parsing so old broad CAC text matching cannot auto-award the CAC ribbon.
@@ -456,8 +499,10 @@ parseCapMemberReport = function capubParseCapMemberReportCACPatch(textRaw){
 const capubOriginalApplyCapMemberReportImport_CACPatch = applyCapMemberReportImport;
 applyCapMemberReportImport = function capubApplyCapMemberReportImportCACPatch(parsed){
   State.shoulderCord = parsed?.shoulderCord || null;
+  State.shoulderCordColour = null;
   capubOriginalApplyCapMemberReportImport_CACPatch(parsed);
   State.shoulderCord = parsed?.shoulderCord || null;
+  State.shoulderCordColour = CAPUBEngine.cords.needsColour(State.shoulderCord) ? capubCordColour(State.shoulderCord) : null;
   syncShoulderCordControl();
   renderCACShoulderCord();
 };
@@ -481,24 +526,6 @@ fullRender = function capubFullRenderCACPatch(){
   return out;
 };
 
-// Add the CAC cord images to the downloadable asset-needed list when that helper is available.
-if(window.CAPUB_V2 && typeof window.CAPUB_V2.buildExpectedAssetList === 'function'){
-  const capubOriginalExpectedAssets_CACPatch = window.CAPUB_V2.buildExpectedAssetList;
-  window.CAPUB_V2.buildExpectedAssetList = function capubExpectedAssetsCACPatch(){
-    const expected = capubOriginalExpectedAssets_CACPatch();
-    ['group','wing','region','national'].forEach(level => {
-      expected.push({
-        category:'CAC shoulder cord',
-        item:CAC_CORD_LABEL_BY_LEVEL[level],
-        id:`cac_cord_${level}`,
-        path:`images/cords/${level}.png`,
-        status:'required when current CAC duty imports shoulder cord'
-      });
-    });
-    return expected;
-  };
-}
-
 // Refresh once after installing the patch so a saved/current state can show its cord.
 try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(err){ console.warn('CAC shoulder cord patch refresh failed', err); }
 
@@ -511,6 +538,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
    - CAC ribbon level now imports from the highest qualifying CAC service found
      in Current or Past Duty Positions, so current RCAC Chair imports Region
      CAC ribbon/cord and current WCAC Vice Chair imports Wing CAC ribbon/cord.
+     (Since 2026-11-12 the ribbon and its star come from past positions only: a
+     position held now gives the cord and not the star.)
    - Assistant, Alternate, Recorder, and Member are still not treated as cord/ribbon
      level-authorizing roles unless you manually select the item.
    ========================================================== */
@@ -535,17 +564,13 @@ function capubIsPrimaryCACRepresentativeSegment(segment){
   return capubIsEligibleCACLevelDutySegment(segment);
 }
 
+// The ribbon and its star are for a term that has been served (CAPR 39-3, 21j: the ribbon is a permanent award, the shoulder cord marks a current
+// member): only a past position counts here. A position held now gives the shoulder cord and never the ribbon's star.
 function capubGetQualifyingCACRibbonRows(text){
-  const currentRows = capubGetCurrentCACDutyAssignments(text)
-    .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''))
-    .map(row => ({ ...row, source:'current CAC duty' }));
-
-  const pastRows = capubGetPastCACDutyAssignments(text)
+  return capubGetPastCACDutyAssignments(text)
     .filter(row => row && capubIsEligibleCACLevelDutySegment(row.raw || row.title || ''))
     .filter(capubIsCompletedCACRibbonTerm)
     .map(row => ({ ...row, source:'completed past CAC duty' }));
-
-  return [...currentRows, ...pastRows];
 }
 
 function capubGetCACRibbonFromDutyAssignments(text){
@@ -647,6 +672,7 @@ function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
     let m;
     while((m = spec.re.exec(s))){
       const ctx = s.slice(Math.max(0, m.index - 45), Math.min(s.length, m.index + 95));
+      if(capubCACRowIsAssistant(s, m.index)) continue;
       if(capubCACWindowLooksEligibleFinal(ctx)) found.push({ level:spec.level, raw:ctx });
     }
   }
@@ -654,6 +680,7 @@ function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
   let gm;
   while((gm = genericRe.exec(s))){
     const ctx = s.slice(Math.max(0, gm.index - 45), Math.min(s.length, gm.index + 130));
+    if(capubCACRowIsAssistant(s, gm.index)) continue;
     if(!capubCACWindowLooksEligibleFinal(ctx)) continue;
     const level = capubCACLevelFromText(ctx, (ctx.match(/\b(NATIONAL|REGION|WING|GROUP|UNIT)\b/i)||[])[1] || '');
     if(level) found.push({ level, raw:ctx });
@@ -663,10 +690,8 @@ function capubFindExplicitEligibleCACLevelsInSectionFinal(section){
 
 function capubGetCurrentCACSectionFinal(text){
   return [
-    getReportSection(text, 'Cadet Duty Positions', 'Cadet Past Duty Positions'),
-    getReportSection(text, 'Cadet Duty Positions', 'Professional Development'),
-    getReportSection(text, 'Current Duty Positions', 'Past Duty Positions'),
-    getReportSection(text, 'Current Duty Positions', 'Professional Development')
+    capubCurrentCadetDutySection(text),
+    capubCurrentDutySection(text)
   ].filter(Boolean).join(' ');
 }
 
@@ -677,10 +702,11 @@ function capubGetBestExplicitCurrentCACLevelFinal(text){
 }
 
 function capubGetBestExplicitAnyCACLevelFinal(text){
+  // The past tables, and the rows of a current table that have ended: the ribbon's star is for a term served, a position held now is the cord's.
   const sections = [
-    capubGetCurrentCACSectionFinal(text),
     getReportSectionUntilAny(text, 'Cadet Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons']),
-    getReportSectionUntilAny(text, 'Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons'])
+    getReportSectionUntilAny(text, 'Past Duty Positions', ['Transfer History','Professional Development','Specialty Tracks','Cadet Training','Encampments','Promotions','Decorations','Ribbons']),
+    ...capubEndedCurrentCACDutyAssignments(text).map(row => row.raw)
   ].filter(Boolean).join(' ');
   const levels = capubFindExplicitEligibleCACLevelsInSectionFinal(sections);
   return capubChooseHighestCACLevel(levels) || null;
@@ -702,7 +728,16 @@ capubGetCACRibbonFromDutyAssignments = function capubGetCACRibbonFinalFixed(text
     explicitAny ? { level:explicitAny } : null,
     oldLevel ? { level:oldLevel } : null
   ].filter(Boolean));
-  if(!winningLevel) return old || null;
+  if(!winningLevel){
+    if(old) return old;
+    // The Activity/Service Ribbon rows of the report list the ribbon itself ("Cadet Advisory Council Ribbon"):
+    // that is the exact label, not the broad CAC wording the duty rules guard against. The row carries no level,
+    // so the basic ribbon is selected; a Wing, Region or National CAC term in the duty positions raises it above.
+    if(/Cadet\s+Advisory\s+Council\s+Ribbon/i.test(removeLocalActivitiesFromMemberReport(text))){
+      return { id:'cadet_advisory_council_ribbon', value:CAC_RIBBON_VALUE_BY_LEVEL.group, reason:'Cadet Advisory Council Ribbon listed in the report (no level shown; basic ribbon)' };
+    }
+    return null;
+  }
   return { id:'cadet_advisory_council_ribbon', value:CAC_RIBBON_VALUE_BY_LEVEL[winningLevel], reason:`Highest qualifying CAC level found in duty assignments: ${winningLevel.toUpperCase()}` };
 };
 
@@ -714,7 +749,11 @@ parseCapMemberReport = function capubParseCapMemberReportCACFinalFix(textRaw){
   const finalCord = capubGetCACShoulderCordFromCurrentDutyAssignments(normalized);
   const finalRibbon = capubGetCACRibbonFromDutyAssignments(normalized);
   result.shoulderCord = finalCord || null;
-  if(finalRibbon) result.ribbons.push(finalRibbon);
+  if(finalRibbon){
+    result.ribbons.push(finalRibbon);
+    // The earlier wrappers each noted 'CAC ribbon not imported' before this check found one; drop those lines.
+    result.notes = (result.notes || []).filter(n => !/^CAC text found, but/.test(n));
+  }
   if(finalCord) result.notes.push(`CAC final check: ${CAC_CORD_LABEL_BY_LEVEL[finalCord]} selected from current CAC duty.`);
   if(finalRibbon) result.notes.push(`CAC final check: CAC ribbon set to ${finalRibbon.value}.`);
   result.ribbons = dedupeImportedRibbons(result.ribbons);
@@ -761,17 +800,31 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(!badgeList.includes(id)) badgeList.push(id);
     });
     const CAPUB_UTILITY_BADGE_LABELS = {
-      basic_incident_commander_badge: 'Basic Incident Commander Badge (IC3)',
-      incident_commander_1_badge: 'Master Incident Commander Badge (IC1)',
-      incident_commander_2_badge: 'Senior Incident Commander Badge (IC2)'
+      basic_incident_commander_badge: 'Basic Incident Commander Badge',
+      incident_commander_1_badge: 'Master Incident Commander Badge',
+      incident_commander_2_badge: 'Senior Incident Commander Badge'
     };
     const CAPUB_INCIDENT_COMMANDER_BADGE_IDS = new Set([
       'basic_incident_commander_badge','incident_commander_1_badge','incident_commander_2_badge'
     ]);
     const CAPUB_UTILITY_BADGE_PREVIEW_REVISION = 'capr-fabric-20260826-v6';
 
+    // The badge's field (silver on blue) artwork from images/field, via the badge catalog.
+    function capubFieldBadgePath(id){
+      const art = window.CAPUBBadgeCatalog && CAPUBBadgeCatalog.art(id, 'field');
+      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || '';
+    }
+    // The picker's thumbnail on a field uniform: the field form, or for a badge with no field form (STEM,
+    // Cyber, Model Rocketry, NRA, the service badges) its dress, then cloth, artwork rather than a broken
+    // image. The engine still draws only what a field uniform wears and notes the rest.
+    function capubBadgeThumbnailPath(id){
+      const cat = window.CAPUBBadgeCatalog;
+      const level = State.badgeSelections?.[id]?.level;
+      const art = cat && (cat.art(id, 'field') || cat.art(id, 'dress', level) || cat.art(id, 'cloth'));
+      return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || '';
+    }
     function capubUtilityBadgePreviewUrl(id){
-      return `${ASSET(`badges/utility/${id}.png`)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`;
+      return ASSET(capubFieldBadgePath(id));
     }
 
     function capubPatchIsUnitPatchId(patchId){
@@ -784,7 +837,47 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return /^unitPatch:/i.test(id);
     }
 
+    // LIVE13 E84 (Ethan: "add the ranger tabs as patches similar to the NCSAs"), as corrected by his ruling of 2026-10-29 over the regulation's text
+    // ("the ranger tabs arent authorized on ABUs!!! only on OCPs unfortunately in lieu of an hhq patch"; CAPR 39-1 5.1.2.3.7 and 5.2.1.1.2.7 put
+    // the tab on the BDU and CFU above the CAP tape): the ten Hawk Mountain Ranger qualification tabs of Figure A8-2 are a patch group of the OCP
+    // only, worn in lieu of the HHQ patch in its place on the left sleeve under AUX (7.1.1.4.2, 7.1.1.4.2.1), one at a time (picking one replaces
+    // another), for Hawk Mountain graduates. Off the OCP they are not offered and a saved selection is dropped (isPatchAuthorizedForUniform,
+    // clearUnauthorizedPatchesForCurrentUniform). The id is the tab's sheet (images/patches/patch-ranger-tab-<grade>), which the engine places
+    // (js/engine/profiles-field.js rangerTabInHhqSlot) and the shopping list prices by order form.
+    const CAPUB_RANGER_TAB_GROUP = 'Hawk Mountain Ranger tabs';
+    const CAPUB_RANGER_TAB_LABELS = {
+      'ranger-3rd-class': 'Ranger 3rd Class', 'ranger-2nd-class': 'Ranger 2nd Class', 'ranger': 'Ranger', 'advanced-ranger': 'Advanced Ranger',
+      'expert-ranger-black': 'Expert Ranger (black)', 'expert-ranger-red': 'Expert Ranger (red)', 'medic-gray': 'Medic (green)', 'medic-red': 'Medic (red)',
+      'senior-medic': 'Senior Medic', 'instructor': 'Instructor'
+    };
+    const CAPUB_RANGER_TABS = Object.keys(CAPUB_RANGER_TAB_LABELS).map(grade => 'patch-ranger-tab-' + grade);
+    const capubIsRangerTabId = patchId => PATCH_META?.[patchId]?.kind === 'ranger-tab';
+    if(typeof PATCH_META === 'object' && Array.isArray(patchList)){
+      for(const id of CAPUB_RANGER_TABS){
+        const grade = id.replace('patch-ranger-tab-', '');
+        // w x h: the tab's 5.0 x 0.815 in at the gallery's 14 px to the inch (the patches' own 70 px for a 5 in patch).
+        PATCH_META[id] = PATCH_META[id] || { label: `CAP Ranger tab: ${CAPUB_RANGER_TAB_LABELS[grade]}`, slotHint: 'L_SHOULDER', w: 70, h: 11,
+          img: `patches/${id}/${id}.svg`, authorizedUniforms: ['ocp'], kind: 'ranger-tab', group: CAPUB_RANGER_TAB_GROUP, oneOnly: true,
+          note: 'Hawk Mountain Ranger School graduates: one tab, worn on the OCP in lieu of the higher headquarters patch, in its place on the left sleeve under AUX (CAPR 39-1, 7.1.1.4.2)' };
+        // A tab whose art is the school's own tab graphic (a PNG taken as given, data/patch-art.js) is a picture at the size its spec gives.
+        const official = window.CAPUBPatchArt && window.CAPUBPatchArt[id];
+        if(official && !/\.svg$/i.test(official.img)) Object.assign(PATCH_META[id], { img: official.img, asset: null, w: official.w, h: official.h, sizeIn: { w: official.w, h: official.h } });
+        if(!patchList.includes(id)) patchList.push(id);
+      }
+    }
+    // Picking a tab drops any other tab (one_only); the patch picker (ocp-patch-variants.js) calls it.
+    function capubKeepOneRangerTab(keepId){
+      for(const id of CAPUB_RANGER_TABS){
+        if(id === keepId) continue;
+        if(State.patchSelections?.[id]) State.patchSelections[id].checked = false;
+      }
+      State.patches = (State.patches || []).filter(id => id === keepId || !CAPUB_RANGER_TABS.includes(id));
+    }
+    window.capubKeepOneRangerTab = capubKeepOneRangerTab;
+
     function capubPatchHasOcpAsset(patchId){
+      // A Ranger tab's sheet is drawn on the OCP (its one uniform), so the OCP's "OCP files only" filter lets it through.
+      if(capubIsRangerTabId(patchId)) return true;
       const id = String(patchId || '').toLowerCase();
       const meta = PATCH_META?.[patchId] || {};
       const img = String(meta.img || '').toLowerCase();
@@ -798,6 +891,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         // Unit patches remain handled by the separate Unit Patch dropdown.
         return capubPatchHasOcpAsset(patchId);
       }
+      // The OCP's own listing of a patch (ocp-patch-variants.js, ocpVariant) is not shown on the other uniforms, which list the patch itself.
+      if(PATCH_META[patchId]?.ocpVariant) return false;
       return true;
     }
 
@@ -808,13 +903,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // Treat these two OCP patch assets as calibrated tall sleeve patches until final
     // natural dimensions are supplied. Each rendered layer remains editable in CAL.
     if(PATCH_META?.pjoc_ocp_patch){
-      PATCH_META.pjoc_ocp_patch.img = 'patches/ocp/pjoc_ocp_patch.webp';
       PATCH_META.pjoc_ocp_patch.w = Number(PATCH_META.pjoc_ocp_patch.w) || 100;
       PATCH_META.pjoc_ocp_patch.h = Number(PATCH_META.pjoc_ocp_patch.h) || 200;
       PATCH_META.pjoc_ocp_patch.authorizedUniforms = ['ocp'];
     }
     if(PATCH_META?.tn185_ocp_patch){
-      PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.webp';
       PATCH_META.tn185_ocp_patch.w = Number(PATCH_META.tn185_ocp_patch.w) || 100;
       PATCH_META.tn185_ocp_patch.h = Number(PATCH_META.tn185_ocp_patch.h) || 200;
       PATCH_META.tn185_ocp_patch.authorizedUniforms = ['abu','ocp','corporate_field','cfdu','flight_suit'];
@@ -823,13 +916,14 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     // Keep SER-TN-185 as the logical unit identity and let the renderer resolve the file.
     if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
-      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
+      // The hand entries are the fallback: a unit emblem row of data/unit-patch-art.js already filed the charter wins.
+      if(!UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185']) UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
+      if(!UNIT_PATCH_IMAGE_BY_CHARTER['TN-185']) UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'];
     }
 
     const capubPreviousGetBadgeAssetPath = getBadgeAssetPath;
     getBadgeAssetPath = function capubGetBadgeAssetPathUtilityAware(id){
-      if(capubIsUtilityUniform()) return `badges/${id}.webp`;
+      if(capubIsUtilityUniform()) return capubBadgeThumbnailPath(id);
       return capubPreviousGetBadgeAssetPath(id);
     };
 
@@ -838,11 +932,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(capubIsUtilityUniform()){
         // Never fall back to metal/non-fabric artwork on a utility uniform.
         if(!CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id)) return [];
-        return [`badges/utility/${id}.png`];
+        return [capubFieldBadgePath(id)];
       }
-      const current = [];
-      (capubPreviousGetBadgeAssetCandidates(id) || []).forEach(path => addAssetCandidate(current, path));
-      return current;
+      return capubPreviousGetBadgeAssetCandidates(id);
     };
 
     const capubPreviousIsPatchAuthorizedForUniform = isPatchAuthorizedForUniform;
@@ -859,75 +951,29 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     getPatchAuthorizationReason = function capubGetPatchAuthorizationReasonOcpFiltered(patchId, uniformId = State.uniform, membership = State.membership){
       const uniformKey = capubFieldUniformKey(uniformId);
       if(uniformKey === 'ocp' && !capubPatchIsUnitPatchId(patchId) && !capubPatchHasOcpAsset(patchId)){
-        return 'OCP patch picker only displays/renders general patches with OCP in the file name/path. Unit patches use the separate Unit Patch selector.';
+        return 'On the OCP this patch is listed in its OCP sleeve form; the unit patch is chosen in the Unit patch list.';
       }
       return capubPreviousGetPatchAuthorizationReason(patchId, uniformId, membership);
     };
 
+    // The general patches the picker lists on the selected uniform: not the two the sheets draw (flag, AUX), not the unit patches (the
+    // Unit patch list has them), on the OCP its own listings only, elsewhere the patches themselves; a patch group of its own (the Hawk
+    // Mountain Ranger tabs) only where it is authorized, listed last under its heading.
     function capubVisiblePatchIdsForGallery(){
+      const grouped = id => !!PATCH_META[id]?.group;
       return (patchList || []).filter(id => {
         if(!PATCH_META[id]) return false;
         if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) return false;
         if(capubPatchIsUnitPatchId(id)) return false; // unit patches stay in the Unit Patch dropdown
+        if(grouped(id)) return isPatchAuthorizedForUniform(id);
         if(!capubGeneralPatchVisibleForCurrentUniform(id)) return false;
         return true;
-      });
+      }).sort((a, b) => grouped(a) - grouped(b));
     }
 
-    buildPatchGallery = function capubBuildPatchGalleryOcpAware(){
-      const wrap = by('patchGallery');
-      if(!wrap) return;
-
-      normalizePatchSelections();
-      wrap.innerHTML = '';
-
-      const visibleIds = capubVisiblePatchIdsForGallery();
-      const showCount = State.patchGalleryExpanded ? visibleIds.length : Math.min(10, visibleIds.length);
-
-      if(!visibleIds.length){
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.innerHTML = `<div style="flex:1;min-width:0;"><div class="title">No general patches available</div><div class="sub">For OCP, only general patch files with OCP in the name/path are shown. Unit patches are selected below in the Unit Patch dropdown.</div></div>`;
-        wrap.appendChild(tile);
-        return;
-      }
-
-      for(let idx=0; idx<showCount; idx++){
-        const id = visibleIds[idx];
-        const meta = PATCH_META[id];
-        const sel = State.patchSelections[id] || (State.patchSelections[id] = { checked:false });
-        const authorized = isPatchAuthorizedForUniform(id);
-        const title = meta.label || id.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${ASSET(meta.img)}" alt="${escapeHtml(title)}">
-          <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}</div>
-            <div class="sub">(${escapeHtml(id)})</div>
-            <div class="miniRow"><label><input type="checkbox" class="ptChk"> Add</label></div>
-            <div class="sub">Slot hint: <b>${escapeHtml(meta.slotHint)}</b> • Size: ${meta.w}×${meta.h} px • Path: images/${meta.img}</div>
-          </div>`;
-
-        const chk = tile.querySelector('.ptChk');
-        chk.checked = !!sel.checked && authorized;
-        chk.disabled = !authorized;
-        if(!authorized){
-          tile.classList.add('disabledBlock');
-          const sub = tile.querySelector('.sub:last-child');
-          const reason = getPatchAuthorizationReason(id);
-          if(sub) sub.innerHTML += ` • <b>${escapeHtml(reason || 'Not authorized on current uniform')}</b>`;
-        }
-        chk.onchange = () => {
-          if(!authorized){ chk.checked = false; sel.checked = false; return; }
-          sel.checked = chk.checked;
-          State.patchSelections[id] = sel;
-          rebuildPatchesFromGallery();
-        };
-        wrap.appendChild(tile);
-      }
-    };
+    // The Choose… window lists these as picture tiles (js/pick-lists.js patchList, called from js/wiring.js openGalleryModal); picking one of a one-only group (a Ranger tab)
+    // drops the others there (capubKeepOneRangerTab). The sidebar's own list is not drawn: buildPatchGallery (js/galleries.js) leaves its container empty.
+    window.capubVisiblePatchIdsForGallery = capubVisiblePatchIdsForGallery;
 
     const capubPreviousClearUnauthorizedPatchesForCurrentUniform = clearUnauthorizedPatchesForCurrentUniform;
     clearUnauthorizedPatchesForCurrentUniform = function capubClearUnauthorizedPatchesUtilityAware(){
@@ -955,106 +1001,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         .filter(id => isBadgeEligibleForMembership(id, State.membership));
     }
 
+    // The badges are chosen in the chooser window (js/wiring.js openGalleryModal), from picture tiles; the sidebar keeps no list of its own.
     buildBadgeGallery = function capubBuildBadgeGalleryUtilityAware(){
       const wrap = by('badgeGallery');
-      if(!wrap) return;
-
-      normalizeBadgeSelections();
-      wrap.innerHTML = '';
-
-      const utilityMode = capubIsUtilityUniform();
-      const eligible = utilityMode
-        ? capubGetUtilityBadgeIds()
-        : getEligibleBadgeIdsForMembership(State.membership).filter(id => !CAPUB_UTILITY_ONLY_BADGE_IDS.has(id));
-      // The document-defined utility set is intentionally small; show the
-      // complete reviewed fabric-insignia catalog without an expansion step.
-      const showCount = utilityMode ? eligible.length : (State.badgeGalleryExpanded ? eligible.length : Math.min(12, eligible.length));
-
-      for(let idx=0; idx<showCount; idx++){
-        const id = eligible[idx];
-        const sel = State.badgeSelections[id] || (State.badgeSelections[id] = { checked:false });
-        const title = CAPUB_UTILITY_BADGE_LABELS[id] || getBadgeDisplayName(id);
-        const utilityCandidates = utilityMode ? getBadgeAssetCandidates(id) : [];
-        const previewPath = utilityMode ? (utilityCandidates[0] || `badges/utility/${id}.png`) : getBadgeAssetPath(id);
-        const fallbackPath = utilityMode ? '' : `badges/${id}.webp`;
-
-        const tile = document.createElement('div');
-        tile.className = 'galleryTile';
-        tile.innerHTML = `
-          <img loading="lazy" decoding="async" src="${utilityMode ? capubUtilityBadgePreviewUrl(id) : ASSET(previewPath)}" alt="${escapeHtml(title)}"${utilityMode ? ' class="utilityBadgePreview"' : ''}>
-          <div style="flex:1;min-width:0;">
-            <div class="title">${escapeHtml(title)}</div>
-            ${utilityMode ? '<div class="sub">Silver-on-blue utility badge</div>' : ''}
-            <div class="miniRow"><label><input type="checkbox" class="bdChk"> Add</label></div>
-            ${id==='squadron_commander_badge' && !utilityMode ? `<div class="miniRow"><label><input type="checkbox" class="cmdGradChk"> Graduated commander</label></div>` : ``}
-            ${getBadgeTileMetaHtml(id, utilityMode ? 'In its set position on the field uniform' : '')}
-          </div>`;
-
-        const chk = tile.querySelector('.bdChk');
-        const gradChk = tile.querySelector('.cmdGradChk');
-        const previewImg = tile.querySelector('img');
-        if(previewImg){
-          const previewCandidates = utilityMode
-            ? utilityCandidates.slice(1).map(path => `${ASSET(path)}?v=${CAPUB_UTILITY_BADGE_PREVIEW_REVISION}`)
-            : [fallbackPath];
-          let previewCandidateIndex = 0;
-          previewImg.onerror = () => {
-            if(previewCandidateIndex >= previewCandidates.length){
-              previewImg.onerror = null;
-              return;
-            }
-            previewImg.src = utilityMode
-              ? previewCandidates[previewCandidateIndex++]
-              : ASSET(previewCandidates[previewCandidateIndex++]);
-          };
-        }
-        chk.checked = !!sel.checked;
-        if(gradChk) gradChk.checked = !!State.commandInsignia?.graduatedCommander;
-
-        chk.onchange = () => {
-          if(isCommandInsigniaBadge(id) && chk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-            chk.checked = false;
-            sel.checked = false;
-            State.badgeSelections[id] = sel;
-            rebuildBadgesFromGallery();
-            return;
-          }
-          if(chk.checked && CAPUB_INCIDENT_COMMANDER_BADGE_IDS.has(id)){
-            CAPUB_INCIDENT_COMMANDER_BADGE_IDS.forEach(otherId => {
-              if(otherId === id) return;
-              if(State.badgeSelections[otherId]) State.badgeSelections[otherId].checked = false;
-              State.badges = (State.badges || []).filter(selectedId => selectedId !== otherId);
-            });
-          }
-          if(chk.checked && GOVERNANCE_SERVICE_BADGE_IDS.has(id)){
-            GOVERNANCE_SERVICE_BADGE_IDS.forEach(otherId => {
-              if(otherId === id) return;
-              if(State.badgeSelections[otherId]) State.badgeSelections[otherId].checked = false;
-              State.badges = (State.badges || []).filter(selectedId => selectedId !== otherId);
-            });
-          }
-          sel.checked = chk.checked;
-          State.badgeSelections[id] = sel;
-          rebuildBadgesFromGallery();
-        };
-        if(gradChk){
-          gradChk.onchange = () => {
-            if(gradChk.checked && !canSelectCommandInsigniaForCurrentRank(true)){
-              gradChk.checked = false;
-              sel.checked = false;
-              chk.checked = false;
-              State.badgeSelections[id] = sel;
-              rebuildBadgesFromGallery();
-              return;
-            }
-            if(!State.commandInsignia) State.commandInsignia = {};
-            State.commandInsignia.graduatedCommander = gradChk.checked;
-            if(gradChk.checked){ sel.checked = true; chk.checked = true; State.badgeSelections[id] = sel; }
-            rebuildBadgesFromGallery();
-          };
-        }
-        wrap.appendChild(tile);
-      }
+      if(wrap) wrap.innerHTML = '';
     };
 
     const capubPreviousGetRenderableCountedBadgeIds = getRenderableCountedBadgeIds;
@@ -1067,44 +1017,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     getRenderableCommandBadgeIds = function capubGetRenderableCommandBadgeIdsUtilityAware(){
       if(!capubIsUtilityUniform()) return capubPreviousGetRenderableCommandBadgeIds();
       return capubUtilityBadgeIds().filter(id => isCommandInsigniaBadge(id));
-    };
-
-    /*
-      CAPR 39-1, OCP occupational/qualification badge layout.
-
-      The utility-uniform artwork is rendered at roughly 44 px per inch (the
-      five-inch CAP tape is about 220 px wide), so six pixels represents the
-      required 1/8-inch exposed dark-blue fabric margin.  Badge artwork keeps
-      its natural aspect ratio; only its longest dimension is normalized.
-    */
-    // The OCP artwork's five-inch CAP tape is about 110 canvas pixels wide.
-    // That makes the actual garment scale approximately 22 px/in, not 44.
-    const CAPUB_UTILITY_PX_PER_INCH = 22;
-    const CAPUB_UTILITY_BLUE_MARGIN = Math.round(CAPUB_UTILITY_PX_PER_INCH / 8);
-    const CAPUB_UTILITY_CAP_TAPE = {
-      ocp: { centerX:580, topY:180 },
-      abu: { centerX:360, topY:180 },
-      corporate_field: { centerX:360, topY:180 },
-      cfdu: { centerX:360, topY:180 },
-      flight_suit: { centerX:360, topY:180 }
-    };
-    const CAPUB_UTILITY_NAME_TAPE = {
-      ocp: { centerX:380, topY:180 },
-      abu: { centerX:360, topY:180 },
-      corporate_field: { centerX:360, topY:180 },
-      cfdu: { centerX:360, topY:180 },
-      flight_suit: { centerX:360, topY:180 }
-    };
-    // Imported from the user's OCP positioning example. Placement is keyed by
-    // badge identity, not click order, so precedence cannot move these badges.
-    const CAPUB_UTILITY_THREE_BADGE_TEMPLATE = {
-      // Imported from CAPUB setup (14): aviation wings centered on the upper
-      // row, with the two occupational badges aligned beneath them.
-      ocp: [
-        { centerX:580, topY:99 },
-        { centerX:562, topY:128 },
-        { centerX:596, topY:131 }
-      ]
     };
 
     const CAPUB_UTILITY_BADGE_PRECEDENCE = [
@@ -1134,185 +1046,13 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
         .filter(id => CAPUB_DOCUMENT_UTILITY_BADGE_ID_SET.has(id))
         .filter(id => !isCommandInsigniaBadge(id) || isCommandInsigniaGradeEligible(State.rank))
         .sort((a, b) => capubUtilityBadgePriority(a) - capubUtilityBadgePriority(b));
-      // Qualification badges form the one-to-four-badge arrangement over the
-      // CIVIL AIR PATROL tape. A single cloth command insignia is a separate
-      // item centered over the wearer's name tape and must not consume a slot
-      // or participate in the qualification grid.
-      // OCP supports three selected embroidered aviation/occupational badges.
-      // The renderer already provides the required one-over-two arrangement.
-      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 3);
+      // Qualification badges form the one-to-four-badge arrangement over the CIVIL AIR PATROL
+      // tape (ICL 26-14 7.1.1.3.1). A cloth command insignia is a separate item over the name
+      // tape and does not take a badge position.
+      const qualifications = selected.filter(id => !isCommandInsigniaBadge(id)).slice(0, 4);
       const command = selected.filter(id => isCommandInsigniaBadge(id)).slice(0, 1);
       return [...qualifications, ...command];
     }
-
-    function capubUtilityBadgeSize(img){
-      const naturalW = Number(img.naturalWidth) || 1;
-      const naturalH = Number(img.naturalHeight) || 1;
-      const id = img.dataset.badgeId;
-      let targetW;
-      let targetH;
-      if(isCommandInsigniaBadge(id)){
-        targetH = CAPUB_UTILITY_PX_PER_INCH * (id === 'squadron_commander_badge' ? 0.875 : 1.125);
-      }else if(AIRCREW_BADGE_IDS?.has?.(id)){
-        // Figure A7-1: regular aviation insignia is three inches wide.
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 3;
-      }else if(CAPUB_INCIDENT_COMMANDER_BADGE_IDS.has(id)){
-        // Figure A7-3: regular Incident Commander insignia is 1 5/8 inches wide.
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.625;
-      }else if(GROUND_EMT_BADGE_IDS?.has?.(id)){
-        // Figures A7-3/A7-4: regular Ground Team and EMT insignia is 1 1/8 inches wide.
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
-      }else if(id === 'national_staff_badge'){
-        // IMG_1098 shows the embroidered emblem about 14% wider than the
-        // corresponding full-size metal badge (34 px versus 30 px here).
-        targetW = 34;
-      }else{
-        targetW = CAPUB_UTILITY_PX_PER_INCH * 1.125;
-      }
-      const scale = targetW
-        ? targetW / naturalW
-        : targetH / naturalH;
-      return {
-        w: Math.max(1, Math.round(naturalW * scale)),
-        h: Math.max(1, Math.round(naturalH * scale))
-      };
-    }
-
-    function capubLayoutUtilityBadges(){
-      const allBadges = [...uniformCanvas.querySelectorAll('.capubUtilityBadge')];
-      if(!allBadges.length) return;
-
-      const fieldKey = capubFieldUniformKey();
-      const tape = CAPUB_UTILITY_CAP_TAPE[fieldKey] || CAPUB_UTILITY_CAP_TAPE.ocp;
-      const nameTape = CAPUB_UTILITY_NAME_TAPE[fieldKey] || CAPUB_UTILITY_NAME_TAPE.ocp;
-      const halfInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 2);
-      const quarterInch = Math.round(CAPUB_UTILITY_PX_PER_INCH / 4);
-      const eighthInch = CAPUB_UTILITY_BLUE_MARGIN;
-      const commandBadges = allBadges.filter(img => isCommandInsigniaBadge(img.dataset.badgeId));
-      const badges = allBadges.filter(img => !isCommandInsigniaBadge(img.dataset.badgeId));
-
-      // Cloth command insignia is centered above the wearer's name tape. It is
-      // intentionally outside the occupational/qualification badge array.
-      commandBadges.forEach(img => {
-        const size = capubUtilityBadgeSize(img);
-        const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
-        const x = Number.isFinite(Number(saved?.x)) ? Number(saved.x) : nameTape.centerX - size.w / 2;
-        const y = Number.isFinite(Number(saved?.y)) ? Number(saved.y) : nameTape.topY - halfInch - size.h;
-        const w = Math.min(Number(saved?.w) || size.w, size.w);
-        const h = Math.min(Number(saved?.h) || size.h, size.h);
-        img.style.left = `${x}px`;
-        img.style.top = `${y}px`;
-        img.style.width = `${w}px`;
-        img.style.height = `${h}px`;
-        img.style.transform = `rotate(${Number(saved?.r || 0)}deg)`;
-      });
-
-      if(!badges.length) return;
-      const sizes = badges.map(img => capubUtilityBadgeSize(img));
-      const threeBadgeTemplate = CAPUB_UTILITY_THREE_BADGE_TEMPLATE[fieldKey];
-
-      // One/two badges use the 1/2-inch tape clearance. Three/four use 1/8 inch.
-      const lowerBottom = tape.topY - (badges.length <= 2 ? halfInch : eighthInch);
-      const positions = [];
-
-      if(badges.length === 1){
-        const size = sizes[0];
-        positions.push({ x:tape.centerX - size.w/2, y:lowerBottom - size.h });
-      }else if(badges.length === 2){
-        // The array is in wear precedence. Put the first (aviation wings when
-        // present) in the upper position and the second nearest the CAP tape.
-        const upper = sizes[0];
-        const lower = sizes[1];
-        positions.push({
-          x:tape.centerX - upper.w/2,
-          y:lowerBottom - lower.h - halfInch - upper.h
-        });
-        positions.push({ x:tape.centerX - lower.w/2, y:lowerBottom - lower.h });
-      }else if(badges.length === 3 && threeBadgeTemplate){
-        threeBadgeTemplate.forEach((template, index) => {
-          positions.push({
-            x:template.centerX - sizes[index].w / 2,
-            y:template.topY
-          });
-        });
-      }else if(badges.length === 3){
-        // Highest-precedence badge is centered on the upper row. The next two
-        // are placed left-to-right on the lower row, matching the supplied OCP example.
-        const lowerGap = Math.max(3, eighthInch / 2);
-        const lowerWidth = sizes[1].w + lowerGap + sizes[2].w;
-        const lowerLeft = tape.centerX - lowerWidth / 2;
-        positions.push({ x:tape.centerX - sizes[0].w/2, y:lowerBottom - Math.max(sizes[1].h, sizes[2].h) - quarterInch - sizes[0].h });
-        positions.push({ x:lowerLeft, y:lowerBottom - sizes[1].h });
-        positions.push({ x:lowerLeft + sizes[1].w + lowerGap, y:lowerBottom - sizes[2].h });
-      }else{
-        // Four-badge approved option: two side-by-side vertical stacks of two.
-        const horizontalGap = halfInch;
-        const leftColumnW = Math.max(sizes[0].w, sizes[2].w);
-        const rightColumnW = Math.max(sizes[1].w, sizes[3].w);
-        const totalW = leftColumnW + horizontalGap + rightColumnW;
-        const leftCenter = tape.centerX - totalW/2 + leftColumnW/2;
-        const rightCenter = tape.centerX + totalW/2 - rightColumnW/2;
-        const centers = [leftCenter, rightCenter, leftCenter, rightCenter];
-        for(let i=0; i<4; i++){
-          const size = sizes[i];
-          const rowBottom = i < 2
-            ? lowerBottom
-            : lowerBottom - Math.max(sizes[0].h, sizes[1].h) - quarterInch;
-          positions.push({ x:centers[i] - size.w/2, y:rowBottom - size.h });
-        }
-      }
-
-      badges.forEach((img, i) => {
-        const size = sizes[i];
-        const saved = typeof getCalib === 'function' ? getCalib(img.dataset.calibKey) : null;
-        const placement = saved;
-        img.style.left = `${Number(placement?.x ?? positions[i].x)}px`;
-        img.style.top = `${Number(placement?.y ?? positions[i].y)}px`;
-        // Preserve calibrated position, but cap stale saved dimensions at the
-        // current regulation-scaled size so old 44-px/in data cannot double badges.
-        img.style.width = `${Math.min(Number(placement?.w) || size.w, size.w)}px`;
-        img.style.height = `${Math.min(Number(placement?.h) || size.h, size.h)}px`;
-        img.style.transform = `rotate(${Number(placement?.r || 0)}deg)`;
-      });
-    }
-
-    function capubRenderUtilityBadges(){
-      capubUtilityBadgeIds().forEach((id, index) => {
-        const img = new Image();
-        img.className = 'layer badge capubUtilityBadge';
-        img.dataset.badgeId = id;
-        // New key prevents legacy 44-px/in and mixed command-grid coordinates
-        // from overriding the regulation-based automatic layout.
-        img.dataset.calibKey = `utilityBadgeRegV5:${id}:${index}`;
-        img.dataset.tooltipTitle = (CAPUB_UTILITY_BADGE_LABELS[id] || id.replace(/_/g,' ')).toUpperCase();
-        img.dataset.tooltipReg = 'CAPR 39-1, paragraph 5.1.2.3.6';
-        img.dataset.tooltipWhy = 'One of no more than three embroidered aviation/occupational badges centered above the CAP tape.';
-        img.style.display = 'block';
-        img.style.objectFit = 'contain';
-        // CAPR cloth insignia is worn on a dark-blue rectangular background
-        // with 1/8 inch of blue showing around the embroidered device. Keep
-        // that field explicit and uniform instead of depending on the varying
-        // transparent/blue margins baked into the source PNG files.
-        img.style.backgroundColor = '#132140';
-        img.style.border = `${CAPUB_UTILITY_BLUE_MARGIN}px solid #132140`;
-        img.style.boxSizing = 'content-box';
-        img.style.zIndex = '28';
-        img.onload = capubLayoutUtilityBadges;
-        applyBadgeAssetWithFallback(img, id);
-        uniformCanvas.appendChild(img);
-      });
-      capubLayoutUtilityBadges();
-    }
-
-    const capubPreviousRenderAllBadges = renderAllBadges;
-    renderAllBadges = function capubRenderAllBadgesUtilityAware(){
-      if(!capubIsUtilityUniform()) return capubPreviousRenderAllBadges();
-      clearMeasurementOverlay();
-      [...uniformCanvas.querySelectorAll('.layer.badge')].forEach(node => node.remove());
-      resetBadgeSlots();
-      if(UI_AUTHZ[State.uniform]?.showBadges) capubRenderUtilityBadges();
-      renderMeasurementOverlay();
-    };
 
     const capubPreviousGetBadgeSlotSpec = getBadgeSlotSpec;
     getBadgeSlotSpec = function capubGetBadgeSlotSpecUtilityAware(id){
@@ -1326,37 +1066,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return capubPreviousGetBadgeSlotSpec(id);
     };
 
-    // Fills in one default patch box per field uniform from the slot tables. Field-uniform badges
-    // need no stored boxes: capubLayoutUtilityBadges() places them by rule.
-    function capubEnsureFieldCalibrationDefaults(){
-      if(!State.calib.byUniform) State.calib.byUniform = {};
-      const patchIds = Object.keys(PATCH_META || {}).filter(id => !FIELD_BASE_BUILT_IN_PATCH_IDS.has(id));
-
-      FIELD_CALIBRATION_BUCKETS.forEach(bucketId => {
-        if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId]) DEFAULT_CALIBRATION_BY_UNIFORM[bucketId] = {};
-        if(!State.calib.byUniform[bucketId]) State.calib.byUniform[bucketId] = {};
-
-        const patchLayout = FIELD_UNIFORM_PATCH_LAYOUTS?.[bucketId] || FIELD_UNIFORM_PATCH_LAYOUTS?.ocp || {};
-        patchIds.forEach(patchId => {
-          const meta = PATCH_META[patchId];
-          const slot = meta?.slotHint || 'L_SHOULDER';
-          const anchor = patchLayout[slot] || patchLayout.L_SHOULDER || {x:120,y:210,dy:76};
-          const w = Number(meta?.w) || 70;
-          const h = Number(meta?.h) || 70;
-          const key = `patch:${patchId}:${slot}:0`;
-          if(!DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key]){
-            DEFAULT_CALIBRATION_BY_UNIFORM[bucketId][key] = {
-              x: Math.round(Number(anchor.x || 0) - w/2),
-              y: Math.round(Number(anchor.y || 0) - h/2),
-              w, h,
-              r: Number(anchor.r) || 0
-            };
-          }
-        });
-      });
-      if(typeof mergeCalibDefaults === 'function') mergeCalibDefaults();
-    }
-
     const NCSA_PATCH_MATCHERS = [
       { id:'pjoc_ocp_patch', fallbackId:'pjoc_patch', terms:[/\bPJOC\b/i,/Pararescue\s+Orientation\s+Course/i] },
       { id:'nesa_patch', terms:[/\bNESA\b/i,/National\s+Emergency\s+Services\s+Academy/i] },
@@ -1368,7 +1077,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       { id:'nbb_patch', terms:[/\bNBB\b/i,/National\s+Blue\s+Beret/i] },
       { id:'undergrad_pilot_training_patch', terms:[/Undergraduate\s+Pilot\s+Training/i] },
       { id:'model_rocketry_patch', terms:[/Model\s+Rocketry/i] },
-      { id:'orientation_pilot_patch', terms:[/Orientation\s+Pilot/i,/Cadet\s+Orientation\s+Pilot/i] }
+      { id:'orientation_pilot_patch', terms:[/Orientation\s+Pilot(?!\s+Ribbon)/i] }
     ];
 
     function capubPatchIdForUniform(matcher, uniformId = State.uniform){
@@ -1388,22 +1097,31 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       });
       return found;
     }
+    // The member report import asks which patch a credited activity stands for (js/member-report-import.js: an activity with none is told in the panel's fold).
+    window.CAPUBDetectNcsaPatches = capubDetectNCSAPatchesFromReport;
 
     function capubDetectUnitCharterFromReport(text){
       const t = String(text || '').replace(/\s+/g, ' ');
-      const explicit = t.match(/\b([A-Z]{2,3}-[A-Z]{2}-\d{3})\b/);
-      if(explicit && CAP_UNIT_OPTIONS?.some?.(u => u.code === explicit[1])) return explicit[1];
+      // The member's own unit is the Unit column of the General Information row, the first charter in the report. A charter in a duty,
+      // transfer or committee row is another unit (the wing's, the group's) and is never the member's: with the member's unit missing
+      // from the list, the old scan of the whole report chose the wing's patch. The report may be in lower case.
+      // The print of the member search today names it under "Organization" in its first table (headed "General Info"): "... LSCode: General Info Organization
+      // NER-NY-109 Gender ..."; the older print's row ends with it, after the General Information heading.
+      const organization = t.match(/\bOrganization\s+([A-Za-z]{2,3}-[A-Za-z]{2,3}-\d{3})\b/i);
+      if(organization && CAP_UNIT_OPTIONS?.some?.(u => u.code === organization[1].toUpperCase())) return organization[1].toUpperCase();
+      const info = t.search(/General\s+Information/i);
+      const head = t.slice(Math.max(0, info), Math.max(0, info) + 400);
+      const explicit = head.match(/\b([A-Za-z]{2,3}-[A-Za-z]{2,3}-\d{3})\b/);
+      if(explicit && CAP_UNIT_OPTIONS?.some?.(u => u.code === explicit[1].toUpperCase())) return explicit[1].toUpperCase();
 
-      const short = t.match(/\b([A-Z]{2}-\d{3})\b/);
+      const short = head.match(/\b([A-Za-z]{2}-\d{3})\b/);
       if(short){
-        const hit = CAP_UNIT_OPTIONS?.find?.(u => String(u.code || '').endsWith(`-${short[1]}`));
+        const code = short[1].toUpperCase();
+        const hit = CAP_UNIT_OPTIONS?.find?.(u => String(u.code || '').endsWith(`-${code}`));
         if(hit) return hit.code;
-        if(short[1] === 'TN-185') return 'SER-TN-185';
+        if(code === 'TN-185') return 'SER-TN-185';
       }
-
-      // Slower but very reliable fallback: scan known charters that appear in the report.
-      const hit = CAP_UNIT_OPTIONS?.find?.(u => new RegExp(`\\b${String(u.code).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`).test(t));
-      return hit?.code || null;
+      return null;
     }
 
     const capubPreviousParseCapMemberReport = parseCapMemberReport;
@@ -1426,7 +1144,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const ncsaPatches = capubDetectNCSAPatchesFromReport(normalized);
       if(ncsaPatches.length){
         result.patches = [...new Set([...(result.patches || []), ...ncsaPatches])];
-        result.notes.push(`NCSA/activity patch match(es): ${ncsaPatches.join(', ')}.`);
+        result.notes.push(`NCSA/activity patch match(es): ${ncsaPatches.map(id => PATCH_META[id]?.label || id.replace(/_/g, ' ')).join(', ')}.`);
       }
       return result;
     };
@@ -1436,6 +1154,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       const charter = parsed?.unitPatchCharter || '';
       const result = capubPreviousApplyCapMemberReportImport(parsed);
 
+      // The unit is the one the report gives; a report that gives none leaves none (the panel says so), not the unit of the member before.
       State.unitPatchCharter = charter;
       const unitSearch = by('unitPatchSearch');
       if(unitSearch && charter) unitSearch.value = charter;
@@ -1470,7 +1189,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       });
     });
 
-    capubEnsureFieldCalibrationDefaults();
     if(typeof buildBadgeGallery === 'function') buildBadgeGallery();
     if(typeof buildPatchGallery === 'function') buildPatchGallery();
     if(typeof fullRender === 'function') fullRender();
@@ -1503,28 +1221,19 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       if(Array.isArray(patchList) && !patchList.includes(id)) patchList.push(id);
     }
 
-    // Unit patch asset for Sequoyah Cadet Squadron.
-    // File convention matches TN-185:
-    //   images/patches/ocp/TN-330_ocp_patch.webp
+    // Unit patch for Sequoyah Cadet Squadron.
     PATCH_META.tn330_ocp_patch = {
       label:'SER-TN-330 Sequoyah Cadet Squadron Unit Patch',
       slotHint:'R_SHOULDER',
       w:200,
       h:100,
-      img:'patches/ocp/TN-330_ocp_patch.webp',
+      img:window.CAPUBPatchArt?.tn330_ocp_patch?.img,
+      asset:window.CAPUBPatchArt?.tn330_ocp_patch?.asset || null,
       authorizedUniforms:['abu','ocp','corporate_field','cfdu','flight_suit']
-    };
-
-    // Imported from CAPUB_coordinates_1786941245605.json. This positions the
-    // complete/adjusted OCP sprite on the male right-sleeve reference view.
-    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male ||= {};
-    DEFAULT_CALIBRATION_BY_UNIFORM.ocp_male['patch:tn330_ocp_patch:R_SHOULDER:0'] = {
-      x:170, y:229, w:120, h:60, r:-16
     };
 
     // Keep the TN-185 metadata normalized and available for the same resolver.
     if(PATCH_META.tn185_ocp_patch){
-      PATCH_META.tn185_ocp_patch.img = 'patches/ocp/TN-185_ocp_patch.webp';
       PATCH_META.tn185_ocp_patch.slotHint = 'R_SHOULDER';
       PATCH_META.tn185_ocp_patch.authorizedUniforms = ['abu','ocp','corporate_field','cfdu','flight_suit'];
       PATCH_META.tn185_ocp_patch.w = Number(PATCH_META.tn185_ocp_patch.w) || 100;
@@ -1533,7 +1242,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 
     // Keep OCP PJOC normalized.
     if(PATCH_META.pjoc_ocp_patch){
-      PATCH_META.pjoc_ocp_patch.img = 'patches/ocp/pjoc_ocp_patch.webp';
       PATCH_META.pjoc_ocp_patch.slotHint = 'L_SHOULDER';
       PATCH_META.pjoc_ocp_patch.authorizedUniforms = ['ocp'];
       PATCH_META.pjoc_ocp_patch.w = Number(PATCH_META.pjoc_ocp_patch.w) || 100;
@@ -1543,10 +1251,11 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // Make the new unit patch known to the unit-patch dropdown while keeping
     // generic unit patches out of the general patch picker.
     if(typeof UNIT_PATCH_IMAGE_BY_CHARTER === 'object'){
-      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-185'] = 'tn185_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['TN-185'] = 'tn185_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['SER-TN-330'] = 'tn330_ocp_patch';
-      UNIT_PATCH_IMAGE_BY_CHARTER['TN-330'] = 'tn330_ocp_patch';
+      for(const [code, id] of [['SER-TN-185', 'tn185_ocp_patch'], ['SER-TN-330', 'tn330_ocp_patch']]){
+        if(!UNIT_PATCH_IMAGE_BY_CHARTER[code]) UNIT_PATCH_IMAGE_BY_CHARTER[code] = id;
+        const short = code.replace(/^SER-/, '');
+        if(!UNIT_PATCH_IMAGE_BY_CHARTER[short]) UNIT_PATCH_IMAGE_BY_CHARTER[short] = UNIT_PATCH_IMAGE_BY_CHARTER[code];
+      }
     }
 
     // Rebuild the selector because this mapping is installed after its initial
@@ -1643,46 +1352,6 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     // Variant-aware render planning. This is the piece that prevents a selected
     // generic PJOC patch from being dropped on OCP; it resolves to pjoc_ocp_patch
     // before authorization/filtering.
-    planPatches = function capubPlanPatchesVariantAware(ids){
-      resetPatchSlots();
-      const capsPerUniform = {
-        blues_a:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
-        blues_b:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
-        aviator:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1},
-        aviator_blazer:{L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:0,CHEST_RIGHT:0},
-        corporate_field:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
-        abu:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
-        ocp:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:1,CHEST_RIGHT:1},
-        flight_suit:{L_SHOULDER:2,R_SHOULDER:2,CHEST_LEFT:2,CHEST_RIGHT:2},
-        semi_formal:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0},
-        mess_dress:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0},
-        polo:{L_SHOULDER:0,R_SHOULDER:0,CHEST_LEFT:0,CHEST_RIGHT:0}
-      }[State.uniform] || {L_SHOULDER:1,R_SHOULDER:1,CHEST_LEFT:1,CHEST_RIGHT:1};
-
-      const plannedIds = [];
-      const selectedUnitPatchId = (typeof getSelectedUnitPatchId === 'function') ? getSelectedUnitPatchId() : null;
-      if(selectedUnitPatchId && isPatchAuthorizedForUniform(selectedUnitPatchId)){
-        plannedIds.push(selectedUnitPatchId);
-      }
-
-      (ids || []).forEach(rawId => {
-        const id = window.capubResolvePatchIdForUniform(rawId);
-        if(id && id !== selectedUnitPatchId && !plannedIds.includes(id)) plannedIds.push(id);
-      });
-
-      for(const id of plannedIds){
-        if(FIELD_BASE_BUILT_IN_PATCH_IDS.has(id)) continue;
-        const meta = PATCH_META[id];
-        if(!meta) continue;
-        if(!isPatchAuthorizedForUniform(id)) continue;
-
-        const hint = meta.slotHint || 'L_SHOULDER';
-        const cap = capsPerUniform[hint] ?? 0;
-        if(cap === 0) continue;
-        if(patchSlots[hint].length >= cap) continue;
-        patchSlots[hint].push(id);
-      }
-    };
 
     // Rebuild UI/render once the hotfix is loaded.
     capubSyncPatchVariantSelectionsForUniform();
@@ -1697,14 +1366,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
 })();
 
 
-
 /* ==========================================================
    CAPUB PATCH — Community Service Ribbon through 4,800 hours
-   Requires these files in images/ribbons/:
-   commun01.png, commun02.png, commun03.png, commun04.png,
-   commun05.png, commun06.png, commun07.png, commun08.png,
-   commun09.png, commun11.png, commun12.png, commun13.png,
-   commun16.png, commun17.png, commun21.png
    ========================================================== */
 (function capubCommunityService4800Patch(){
   try{
@@ -1712,34 +1375,10 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     const HOURS_PER_AWARD = 60;
     const MAX_COMMUNITY_HOURS = 4800;
 
-    // Each number is the TOTAL number of 60-hour awards represented by one
-    // physical ribbon. The image already contains the correct clasps.
-    const COMMUNITY_IMAGE_BY_AWARDS = Object.freeze({
-      1:  'commun01.png', // Basic ribbon
-      2:  'commun02.png', // 1 bronze
-      3:  'commun03.png', // 2 bronze
-      4:  'commun04.png', // 3 bronze
-      5:  'commun05.png', // 4 bronze
-      6:  'commun06.png', // 1 silver
-      7:  'commun07.png', // 1 silver + 1 bronze
-      8:  'commun08.png', // 1 silver + 2 bronze
-      9:  'commun09.png', // 1 silver + 3 bronze
-      11: 'commun11.png', // 2 silver
-      12: 'commun12.png', // 2 silver + 1 bronze
-      13: 'commun13.png', // 2 silver + 2 bronze
-      16: 'commun16.png', // 3 silver
-      17: 'commun17.png', // 3 silver + 1 bronze
-      21: 'commun21.png'  // 4 silver — full ribbon
-    });
-
-    // Highest-device ribbon first. A ribbon with fewer devices follows it at
-    // lower precedence. Greedy decomposition also produces the fewest ribbons
-    // for every supported total under these device rules.
-    const COMMUNITY_VALID_AWARD_COUNTS = Object.freeze(
-      Object.keys(COMMUNITY_IMAGE_BY_AWARDS)
-        .map(Number)
-        .sort((a,b) => b-a)
-    );
+    // Each number is the TOTAL number of 60-hour awards one physical ribbon can show (up to four clasps, a silver clasp for five bronze),
+    // highest first. A ribbon with fewer devices follows it at lower precedence. Greedy decomposition also produces the fewest ribbons for
+    // every supported total under these device rules.
+    const COMMUNITY_VALID_AWARD_COUNTS = Object.freeze([21, 17, 16, 13, 12, 11, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
 
     function splitCommunityAwards(totalAwards){
       let remaining = Math.max(1, Math.floor(Number(totalAwards) || 1));
@@ -1760,7 +1399,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     function makeCommunityOption(hours){
       const totalAwards = Math.floor(hours / HOURS_PER_AWARD);
       const ribbonAwardCounts = splitCommunityAwards(totalAwards);
-      const [primaryAwards, ...lowerPrecedenceAwards] = ribbonAwardCounts;
+      const [, ...lowerPrecedenceAwards] = ribbonAwardCounts;
       const ribbonCountText = ribbonAwardCounts.length > 1
         ? ` / ${ribbonAwardCounts.length} Ribbons`
         : '';
@@ -1768,10 +1407,8 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return {
         label: `${hours.toLocaleString()} Hours${ribbonCountText}`,
         value: `hours_${hours}`,
-        image: COMMUNITY_IMAGE_BY_AWARDS[primaryAwards],
         devices: {},
         duplicates: lowerPrecedenceAwards.map((awardCount, index) => ({
-          image: COMMUNITY_IMAGE_BY_AWARDS[awardCount],
           awardLabel: `Additional Community Service Ribbon ${index + 2}`
         }))
       };

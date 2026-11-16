@@ -3,17 +3,17 @@
  "name": "Gill Robb Wilson Award (full-size medal body)",
  "size_in": {
   "w": 1.375,
-  "h": 1.7916
+  "h": 1.6706
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
   137.5,
-  179.16
+  167.06
  ],
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_wilson.webp is 1.375 in wide (ribbon measured 50 px in the source raster) (full size 1 3/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 1.375 x 1.458 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 1.7916 in (was 1.4575).",
+ "size_basis": "Body width 1.375 in = the standard ribbon width for this size (1 3/8 in full, 5/8 in miniature; DoDM 1348.33 as relayed by the coordination chat, not verified locally); proportions from the McChord rasters (disc = ribbon width); CAPR 39-3 gives no medal dimensions. Height is the constructed body plus suspension ring.",
  "anchors": {
   "top_center": [
    68.75,
@@ -21,22 +21,22 @@
   ],
   "bottom_center": [
    68.75,
-   179.16
+   167.06
   ],
   "center": [
    68.75,
-   89.58
+   83.53
   ],
   "left_edge": [
    0,
-   89.58
+   98.31
   ],
   "right_edge": [
    137.5,
-   89.58
+   98.31
   ],
   "ribbon_attach": [
-   69.83,
+   68.75,
    0
   ]
  },
@@ -46,21 +46,25 @@
   "attach_anchor": "ribbon_attach",
   "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
  },
- "source": "https://vanguardmil.com/products/civil-air-patrol-gill-robb-wilson-miniature-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
+ "source": "Designed and measured from the Vanguard photograph gill-robb-wilson.jpeg (reference only): disc, rim, lettering, emblem, bail and ring are parametric shapes in inches, the same model as the miniature drawn at 2.2x (design/gillrobb.js). Previously constructed from the McChord rasters.",
+ "fidelity": "designed_measured",
  "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9937,
-  "threshold": 0.95,
-  "colour_mae_0_255": 22.1,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+  "metric": "same model as the miniature body, which is gated against the photograph (silhouette IoU, landmarks within 0.02 in, edge recall)",
+  "score": 0.9765,
+  "note": "Shape-built art at 2.2x, upright; ring and bail are cut open at the box top where the box cuts them."
  },
- "palette": [
-  "#2d2825",
-  "#615b56",
-  "#95908d",
-  "#ebe9e6"
- ],
+ "palette": {
+  "ground": "#2e2b2a",
+  "shadow": "#181616",
+  "base": "#8a8583",
+  "hi": "#b5b1ae",
+  "rim": "#9a9593",
+  "rim_hi": "#cac6c3",
+  "lip": "#b3aeab",
+  "metal": "#7b7675",
+  "metal_hi": "#cac6c3",
+  "bail": "#908b89"
+ },
  "grade": "medal",
  "variants_share_body": {
   "same_body": [
@@ -70,24 +74,79 @@
   ],
   "different_body": []
  },
+ "finish": "silver",
  "size_in_previous": {
   "w": 1.375,
   "h": 1.4575
  },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/civil-air-patrol-gill-robb-wilson-miniature-medal",
-  "local_photo": "medals-work/ref-hires/gill-robb-wilson.*",
-  "photo_px": {
-   "w": 600,
-   "h": 600
+ "data_source": "reference-art-measured",
+ "measured": {
+  "photo": "gill-robb-wilson.jpeg (Vanguard photograph, 600 x 600 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 289.9,
+   "disc_diameter_px": 181.2,
+   "origin_px": [
+    299.5,
+    510.9
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 180,
-   "h": 234
+  "hang_angle_removed_deg": -0.33,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.0055,
+   "ridge": [
+    0.292,
+    0.3035
+   ]
   },
-  "work_scale_1_over": 1,
-  "photo_shows": "miniature medal"
+  "inner_circle": {
+   "cx": -0.0012,
+   "cy": -0.0097,
+   "r": 0.2071,
+   "w": 0.0095
+  },
+  "lettering": {
+   "stroke_in": 0.0098,
+   "top_letters": 14,
+   "bottom_letters": 14,
+   "cap_height_top_in": 0.0535,
+   "cap_height_bottom_in": 0.0522
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.088,
+    "top": -0.445,
+    "neck": 0.07,
+    "shoulder": -0.335
+   },
+   "ring": {
+    "c": [
+     0.008,
+     -0.5
+    ],
+    "r": 0.146,
+    "w": 0.013
+   }
+  },
+  "not_measurable": [
+   "the engraving grain (dark pits, crystalline texture) of the ground and of the wing face: flat tones are drawn",
+   "the exact curvature of the wing's trailing edge (a shallow convex curve of 0.006 in sag is drawn through 3 read points)",
+   "the dot after AIR is read as an interpunct of 0.0033 in radius (a 22 px blob in the photograph)"
+  ],
+  "tones_luminance": {
+   "ground": 41,
+   "shadow": 17,
+   "base": 134,
+   "hi": 178,
+   "rim": 150,
+   "rim_hi": 200,
+   "metal": 120,
+   "metal_hi": 200,
+   "bail": 140,
+   "lip": 175
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 2.2
+ "generator": "artwork-samples/assets/medals-work/design/gillrobb.js"
 }

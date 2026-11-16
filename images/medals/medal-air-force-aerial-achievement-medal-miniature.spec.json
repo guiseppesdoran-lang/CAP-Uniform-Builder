@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-air-force-aerial-achievement-medal-miniature",
  "name": "Air Force Aerial Achievement Medal (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.5685,
  "size_in": {
   "w": 0.625,
-  "h": 0.7583
+  "h": 0.5685
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  75.83
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_usaf_aam01.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.7583 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 446 px taken as 1.375 in (the full-size suspension ribbon, 1 3/8 in, DoDM 1348.33 as relayed in ASSET_NOTES.md and not verified in the repo): body 1.6833 x 1.5291 in in the photograph, halved for the miniature (DoDM 1348.33: miniature medals are one-half the size of the full-size medal). Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.8416 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body scale 875.2 px per in, body width 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,87 +17,198 @@
   ],
   "bottom_center": [
    31.25,
-   75.83
+   56.85
   ],
   "center": [
    31.25,
-   37.91
+   28.43
   ],
   "left_edge": [
    0,
-   37.91
+   28.43
   ],
   "right_edge": [
    62.5,
-   37.91
+   28.43
   ],
   "ribbon_attach": [
-   31.41,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the bail axis at the box top (the box cuts the ring away) (upright body, hang angle 1.1 deg removed); compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "usaf_aam01",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-air-force-aerial-achievement-medal",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Air Force Aerial Achievement Medal"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-air-force-aerial-achievement-medal-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-air-force-aerial-achievement-medal",
   "spec": "../ribbons/ribbon-air-force-aerial-achievement-medal.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/usaf-aerial-achievement-full-size-medal; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9883,
-  "threshold": 0.95,
-  "colour_mae_0_255": 40.9,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
- },
- "palette": [
-  "#6b5445",
-  "#569bcc",
-  "#b79a7d",
-  "#e8d2b0"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [
-   "usaf_aam02",
-   "usaf_aam03",
-   "usaf_aam04",
-   "usaf_aam05",
-   "usaf_aam06",
-   "usaf_aam07",
-   "usaf_aam08",
-   "usaf_aam09",
-   "usaf_aam10",
-   "usaf_aam11",
-   "usaf_aam12",
-   "usaf_aam13",
-   "usaf_aam14",
-   "usaf_aam16",
-   "usaf_aam17",
-   "usaf_aam18",
-   "usaf_aam21"
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/aam.js (parameters in inches) over lib.js, common.js, font.js, emit.js; gates: kitA.js; node makeA.js aam --write",
+ "source_raster": "vanguardmil.com product usaf-aerial-achievement-full-size-medal (usaf aerial achievement full size medal), 1200 x 1200 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "usaf-aerial-achievement-full-size-medal",
+  "title": "usaf aerial achievement full size medal",
+  "px": [
+   1200,
+   1200
   ],
-  "different_body": []
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/usaf-aerial-achievement-full-size-medal.jpg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/usaf-aerial-achievement-full-size-medal",
-  "local_photo": "medals-work/ref-hires/usaf-aerial-achievement-full-size-medal.*",
-  "photo_px": {
-   "w": 1200,
-   "h": 1200
+ "measured": {
+  "photo": "usaf-aerial-achievement-full-size-medal.jpg (Vanguard photograph, 1200 x 1200 px, reference only)",
+  "frame": {
+   "body_scale_px_per_in": 875.2,
+   "disc_diameter_px": 547,
+   "origin_px": [
+    597.8,
+    851.3
+   ],
+   "note": "body width 0.625 in (the spec width) sets the scale; every length below is inches in the medal frame (origin = disc centre, +y down, UPRIGHT: the photograph is rotated by the measured hang angle into this frame)"
   },
-  "body_px": {
-   "w": 547,
-   "h": 664
+  "hang_angle_removed_deg": 1.1,
+  "hang_angle_note": "measured from the bail axis against the disc centre in the photograph (frame.js); the drawing hangs upright (bail and disc axis vertical)",
+  "disc": {
+   "R": 0.2625,
+   "lipW": 0.0035,
+   "ridge": [
+    0.2425,
+    0.2595
+   ]
   },
-  "work_scale_1_over": 2,
-  "photo_shows": "full-size medal"
+  "lettering": {
+   "top_letters": 0,
+   "bottom_letters": 0,
+   "cap_height_top_in": null,
+   "cap_height_bottom_in": null
+  },
+  "suspension": {
+   "bail": {
+    "w": 0.093,
+    "top": -0.375,
+    "neck": 0.093,
+    "shoulder": -0.3,
+    "bottom": -0.28
+   },
+   "ring": {
+    "c": [
+     0,
+     -0.41
+    ],
+    "r": 0.125,
+    "w": 0.012
+   }
+  },
+  "not_measurable": [
+   "Photograph: the gates are run against the 1200 px full-size photograph (hang angle 1.1 deg removed, from mirror symmetry of the body mask 1.0 to 1.2 deg; the bail axis alone gives 0.45 deg), because the 600 px miniature photograph has different body proportions (taller by 8 percent relative to its width) than the spec box 0.625 x 0.5685 in; the same model against the miniature photograph: silhouette IoU 0.916, edge recall 0.926 at 0.012 in, 57 landmarks with the worst 0.0207 in.",
+   "Feather rows are counted from the groove minima along transects (pitch 0.0105 to 0.012 in): 8 primaries, 13 secondaries and 11 coverts per wing. Each wing is one filled mass (arm bar, covert band, secondaries, primaries) with the rows drawn as grooves; the vane, rachis line and barbs of single feathers are not drawn, and the lower primaries and covert tips are placed within about 0.01 in only.",
+   "Eagle: the head is one profile shape (crown, brow groove, eye dot, hooked beak), the neck ruff one shape scalloped by five feather tips with five strand grooves, the torso one tapered shape with five rows of scalloped chest feathers, each thigh one rounded shape with four strand grooves, each foot three toes with claws. The diamond scales of the breast, the nostril, the ankle joints and the shoulder feathers are simplified or not drawn. The tail is hidden behind the legs in the photograph and is not drawn.",
+   "The right wing is measured separately (it is not the mirror of the left: its wrist lies 0.045 in nearer the body); its covert band and the groove between coverts and secondaries are read from the photograph at about 0.01 in. The six lightning bolts, the two lower bars (two strips each) and the V-bar barbs of the right side are mirrors of the measured left side, and the two crossed bands are drawn as two strips each, mirrored about the axis; their continuation behind the eagle is not drawn.",
+   "Ring and bail are measured from the miniature photograph (ring centre 0.41 in above the disc centre, outer radius 0.125 in, wire 0.012 in; bail 0.093 in wide) but lie wholly above the miniature box, so they are not drawn into it (draw with AAM_SUSP=1).",
+   "Engraving grain, patina, the specular highlights and the shading of the metal are not drawn (flat tones); the tone MAE against the full-size photograph is high (63) because that photograph is exposed much brighter than the miniature photograph the tones are fitted to (ground 76, base 156 against the miniature medians 75 and 158).",
+   "Run-time adaptations in design/aam.js only (the shared tools are untouched): spec-box.boxes() is stubbed because this id has no -full spec; ref.ribbonMask() is replaced by a row cut (the saturated bronze lets the original flood eat the body); the edge and landmark gates look at the body interior (0.012 in inside this model's own outline) so that the silhouette, which has its own gate, does not count as interior edges."
+  ],
+  "tones_luminance": {
+   "ground": 76,
+   "shadow": 24,
+   "base": 156,
+   "hi": 210,
+   "rim": 135,
+   "rim_hi": 205,
+   "metal": 120,
+   "metal_hi": 200,
+   "bail": 128,
+   "lip": 120
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 4.5
+ "palette": {
+  "metal": "bronze",
+  "ramp": "ramp measured from the reference metal (ramp.js)",
+  "tone_colours": {
+   "ground": "#5b492f",
+   "shadow": "#251a10",
+   "base": "#b19b5d",
+   "hi": "#e2d391",
+   "rim": "#9f8749",
+   "rim_hi": "#dece8b",
+   "lip": "#8f7742",
+   "metal": "#8f7742",
+   "metal_hi": "#dac986",
+   "bail": "#977f46"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph body mask rotated into the upright frame)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ribbon_attach": "top centre of the ring (bail axis at the box top where the box cuts the ring)",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9822,
+  "light_class_iou": 0.56,
+  "landmarks_checked": 57,
+  "landmark_max_dist_in": 0.0097,
+  "landmark_worst": [
+   [
+    "coverts L",
+    0.0097
+   ],
+   [
+    "thigh R",
+    0.0095
+   ],
+   [
+    "thigh L",
+    0.0082
+   ],
+   [
+    "secondaries L",
+    0.0075
+   ],
+   [
+    "star 12",
+    0.0068
+   ]
+  ],
+  "edge_recall_0p006in": 0.843,
+  "edge_recall_0p012in": 0.954,
+  "edge_precision_0p012in": 0.983,
+  "tone_mae_luminance": 65.2,
+  "ribbon_attach_units": {
+   "mini_units": [
+    31.25,
+    0
+   ],
+   "full_units": null,
+   "basis": "bail axis at the box top (the box cuts the ring away)",
+   "mini_render_x_units": 31.19
+  },
+  "gate_pass": true,
+  "pass": true,
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 25/26): every object (disc, rim, lettering, emblem parts, bail, ring) is modelled as what it is, from measured parameters, not traced; flat tones with a lit and a shadow edge. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9822,
+  "note": "IoU of the shipped upright miniature against the photograph body mask rotated into the upright frame (design/kitA.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26). Measured from usaf-aerial-achievement-full-size-medal.jpg (reference only, never shipped). USAF Aerial Achievement Medal (bronze): round medal with a rim, an arc of 13 stars (10 small + 3 large), two crossed curved bands, an eagle with spread wings (head in profile to the left with a hooked beak, neck ruff, chest with five rows of scalloped feathers, two broad wings each a filled mass of arm bar, covert band, 13 secondaries and 8 primaries with the feather rows as grooves, two thighs, two feet with three claws each) holding six lightning bolts, and a lens-shaped plaque below the two crossing bolts. Modelled from the 1200 px full-size photograph of the same design (its body aspect 0.912 matches the spec box 0.9096); the 600 px miniature photograph is 8 percent taller relative to its width, so it is used as a cross-check only (silhouette IoU 0.916, edge recall 0.926 at 0.012 in, 57 landmarks, worst 0.0207 in); colours (ramp) are measured from the miniature photograph. Hang angle 1.1 deg of the photograph removed: the body hangs upright."
 }

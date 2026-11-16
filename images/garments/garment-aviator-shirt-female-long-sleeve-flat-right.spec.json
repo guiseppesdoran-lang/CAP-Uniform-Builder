@@ -1,0 +1,134 @@
+{
+ "asset_id": "garment-aviator-shirt-female-long-sleeve-flat-right",
+ "name": "Women's Aviator Shirt Uniform: white long-sleeve aviator shirt, right sleeve laid flat (outer arm facing)",
+ "size_in": {
+  "w": 7.2561,
+  "h": 29.7332
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  725.61,
+  2973.32
+ ],
+ "size_source": "estimated",
+ "size_basis": "Measured on the sleeve of the sheet garment-aviator-shirt-female-long (long sleeve: the traced short sleeve and its extension to the wrist; widened as dimensions.sleeve_widening; sheet scale k 1.2037): the sleeve is the strip between the sheet's outline and its armhole seam (below the seam, between the outline and the arm/body gap); stations run along the outer edge and widths are taken square to the sleeve's axis (the axis leans 0.70 deg on the sheet), smoothed over 1.6 in before the pi / 2 (the traced edges are polylines, and the inner edge changes from the armhole seam to the arm/body gap part-way down). Length, shoulder seam to cuff along the outer edge: 29.49 in (the straight axis is 29.00 in). Width: the sheet draws the sleeve hanging, so the width it shows is the sleeve's diameter (circumference / pi); laid flat the sleeve is circumference / 2 wide, so every hanging width is multiplied by pi / 2 = 1.571. Hanging widths on the sheet: 4.47 in at its widest, 3.99 in at the elbow, 2.61 in at the cuff (0.4 in above the lower edge); flat widths: 7.02 in at its widest (the cap width, the width below the shoulder seam), 6.27 in at the elbow, 4.11 in at the cuff, i.e. 14.03 in around at the widest and 8.21 in around at the cuff (a real men's shirt sleeve is roughly 15 to 17 in around at the bicep and a short sleeve hem 14 to 16 in around: the sheet's sleeve was widened so the chevron fits, see its sleeve_widening). The flat opens to its widest width over a rounded cap (a half ellipse 0.45 x that width deep) and keeps at least that width until the measured profile narrows. Chevron: CAPR 39-1 4.2.6.2.3: \"NCOs will wear 3 ½ inch chevron grade centered on the outer arm halfway between the shoulder seam and elbow when bent at a 90-degree angle (long sleeved-shirt) or bottom edge of the sleeve (short sleeved-shirt)\", so chevron_center is on the centre line 8.11 in below the shoulder seam (halfway to the elbow, which is taken at 55 % of the length as on the sheet, an anatomical estimate). ESTIMATED: the sheet's sleeve is a hanging front view that was widened so the 3 1/2 in chevron fits (its sleeve_widening, an estimate), and the regulation gives no sleeve dimension; the cuff band and button are schematic.",
+ "anchors": {
+  "top_center": [
+   362.8,
+   0
+  ],
+  "bottom_center": [
+   362.8,
+   2973.32
+  ],
+  "center": [
+   362.8,
+   1486.66
+  ],
+  "left_edge": [
+   0,
+   1486.66
+  ],
+  "right_edge": [
+   725.61,
+   1486.66
+  ],
+  "shoulder_seam_center": [
+   362.8,
+   62
+  ],
+  "cuff_center": [
+   362.8,
+   2961.32
+  ],
+  "chevron_center": [
+   362.8,
+   823.06
+  ],
+  "elbow_center": [
+   362.8,
+   1634.13
+  ]
+ },
+ "landmarks": {
+  "shoulder_seam": {
+   "p1": [
+    173.35,
+    62
+   ],
+   "p2": [
+    552.26,
+    62
+   ]
+  },
+  "outer_edge": {
+   "p1": [
+    289.6,
+    14
+   ],
+   "p2": [
+    157.45,
+    2961.32
+   ]
+  },
+  "elbow": {
+   "y": 1634.13
+  },
+  "cuff": {
+   "p1": [
+    157.45,
+    2961.32
+   ],
+   "p2": [
+    568.16,
+    2961.32
+   ]
+  },
+  "chevron_center": {
+   "x": 362.8,
+   "y": 823.06
+  }
+ },
+ "landmarks_note": "points are [x,y] and {x,y} in user units (0.01 in), origin top-left of the artwork box; shoulder_seam is the cap edge 0.5 in below the top of the sleeve, outer_edge runs along the arm's outer edge from the seam to the hem, chevron_center is where the senior NCO chevron is centred",
+ "dimensions": {
+  "sleeve_length_in": 29.49,
+  "cap_width_in": 7.02,
+  "hanging_width_in": {
+   "cap": 4.47,
+   "cuff": 2.61
+  },
+  "flat_over_hanging": 1.5708,
+  "around_in": {
+   "cap": 14.03,
+   "cuff": 8.21
+  },
+  "max_width_in": 7.02,
+  "cuff_width_in": 4.11,
+  "axis_lean_deg_on_sheet": 0.7,
+  "elbow_from_seam_in": 16.22,
+  "elbow_fraction": 0.55,
+  "chevron_center_from_seam_in": 8.11,
+  "chevron_3p5_fit": {
+   "side_clearance_in": 1.758,
+   "top_below_seam_in": 5.25,
+   "bottom_above_lower_edge_in": 18.44
+  }
+ },
+ "overlay_of": "garment-aviator-shirt-female-long",
+ "documented": [
+  "chevron centred on the outer arm halfway between the shoulder seam and the elbow (long sleeve) or the bottom edge of the sleeve (short sleeve) (CAPR 39-1 4.2.6.2.3)",
+  "long-sleeve shirt, cuff with a button"
+ ],
+ "assumed": [
+  "sleeve width: the sheet's hanging, widened view straightened (no sleeve dimension in CAPR 39-1)",
+  "elbow at 55 % of the sleeve length (anatomical estimate, as on the sheet); cuff band 2.2 in tall as the sheet draws it",
+  "rounded cap (half ellipse 0.45 x the width) over the measured width profile"
+ ],
+ "fit": {
+  "method": "measured from the garment sheet",
+  "score": null
+ },
+ "grade": "accessory"
+}

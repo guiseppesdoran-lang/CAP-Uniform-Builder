@@ -1,0 +1,196 @@
+{
+ "asset_id": "mil-ribbon-marine-corps-selected-reserve",
+ "name": "Selected Marine Corps Reserve",
+ "size_in": {
+  "w": 1.375,
+  "h": 0.375
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  137.5,
+  37.5
+ ],
+ "size_source": "regulation",
+ "size_citation": "Ribbon bar 1 3/8 in x 3/8 in (11:3): DoDM 1348.33 (military decorations, ribbons and devices) and CAPR 39-1 as carried in js/state.js RIBBON_HEIGHT; paragraph numbers to be confirmed against the current publications",
+ "anchors": {
+  "top_center": [
+   68.75,
+   0
+  ],
+  "bottom_center": [
+   68.75,
+   37.5
+  ],
+  "center": [
+   68.75,
+   18.75
+  ],
+  "left_edge": [
+   0,
+   18.75
+  ],
+  "right_edge": [
+   137.5,
+   18.75
+  ]
+ },
+ "dimensions": {
+  "ribbon_width_in": 1.375,
+  "ribbon_height_in": 0.375,
+  "aspect": "11:3",
+  "orientation": "vertical-stripes",
+  "stripes": [
+   {
+    "index": 0,
+    "hex": "f24a53",
+    "fraction": 0.0595,
+    "x0_in": 0,
+    "x1_in": 0.0818
+   },
+   {
+    "index": 1,
+    "hex": "ffffff",
+    "fraction": 0.0657,
+    "x0_in": 0.0818,
+    "x1_in": 0.1721
+   },
+   {
+    "index": 2,
+    "hex": "434579",
+    "fraction": 0.0633,
+    "x0_in": 0.1721,
+    "x1_in": 0.2592
+   },
+   {
+    "index": 3,
+    "hex": "eecd55",
+    "fraction": 0.2149,
+    "x0_in": 0.2592,
+    "x1_in": 0.5546
+   },
+   {
+    "index": 4,
+    "hex": "f24a53",
+    "fraction": 0.1933,
+    "x0_in": 0.5546,
+    "x1_in": 0.8204
+   },
+   {
+    "index": 5,
+    "hex": "eecd55",
+    "fraction": 0.2149,
+    "x0_in": 0.8204,
+    "x1_in": 1.1158
+   },
+   {
+    "index": 6,
+    "hex": "434579",
+    "fraction": 0.0633,
+    "x0_in": 1.1158,
+    "x1_in": 1.2028
+   },
+   {
+    "index": 7,
+    "hex": "ffffff",
+    "fraction": 0.0657,
+    "x0_in": 1.2028,
+    "x1_in": 1.2932
+   },
+   {
+    "index": 8,
+    "hex": "f24a53",
+    "fraction": 0.0595,
+    "x0_in": 1.2932,
+    "x1_in": 1.375
+   }
+  ],
+  "stars": [],
+  "frame": null
+ },
+ "classification": "stripes",
+ "quality": {
+  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
+  "snap": null,
+  "reference": {
+   "title": "Ribbon Unit: Marine Corps Selected Marine Corps Reserve",
+   "url": "https://www.vanguardmil.com/products/usmc-organized-reserve-ribbon-unit",
+   "image_px": [
+    1200,
+    1200
+   ]
+  },
+  "superseded_photo_by_clean_variant": false,
+  "min_stripe_in": "1/64"
+ },
+ "measurement": {
+  "method": "Rectified from the Vanguard product photograph; stripes segmented along the width by a dynamic programme on one thread colour per column; each stripe's colour read from its inner threads (tools/military/ribbon-lit.js), equal colours clustered, mirrored boundaries snapped. Measured by script; the photograph is a measurement reference only and is not shipped",
+  "source_images": [
+   "img/ribbons/bb983c7af439.jpg"
+  ],
+  "vendor": "Vanguard Industries (vanguardmil.com)",
+  "vendor_product": "Ribbon Unit: Marine Corps Selected Marine Corps Reserve",
+  "vendor_product_url": "https://www.vanguardmil.com/products/usmc-organized-reserve-ribbon-unit",
+  "corners_px": [
+   [
+    58,
+    453.1
+   ],
+   [
+    1140.8,
+    457
+   ],
+   [
+    1142.9,
+    752
+   ],
+   [
+    58,
+    742.8
+   ]
+  ],
+  "rectified_px": [
+   1084,
+   292
+  ],
+  "symmetry": "mirror",
+  "photographic_source": false,
+  "border_frame_detected": false,
+  "fidelity": "measured",
+  "source_kind": "vendor-photo-measured",
+  "stripe_distance_to_lit": [
+   3.1,
+   2.5,
+   4.2,
+   0.4,
+   1.8,
+   0.3,
+   3.7,
+   1.6,
+   2.7
+  ],
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Selected Marine Corps Reserve Medal ribbon.svg (Public domain), boundary match 1\"}"
+ },
+ "authorized_services": [
+  "MARINE_CORPS"
+ ],
+ "aliases": [
+  {
+   "image": "images/military-ribbons/selected_marine_corps_reserve.jpg",
+   "award_ids": [
+    "selected_marine_corps_reserve"
+   ]
+  }
+ ],
+ "award_names": [
+  "Selected Marine Corps Reserve"
+ ],
+ "fit": {
+  "method": "CIEDE2000, stripe hex against the stripe's own lit reference colour; score = worst stripe",
+  "score": 4.2,
+  "threshold": null
+ },
+ "grade": "ribbon"
+}

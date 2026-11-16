@@ -1,19 +1,15 @@
 {
  "asset_id": "medal-crisis-ribbon-miniature",
  "name": "Crisis Service Ribbon (miniature medal body)",
+ "width_in": 0.625,
+ "height_in": 0.6287,
  "size_in": {
   "w": 0.625,
-  "h": 0.765
+  "h": 0.6287
  },
- "units": "1 user unit = 0.01 in",
- "viewBox": [
-  0,
-  0,
-  62.5,
-  76.5
- ],
+ "unit": "1 user unit = 0.01 in",
  "size_source": "estimated",
- "size_basis": "Raster proportion: the ribbon in images/mini_medals/mcchord/m_crisis.webp is 0.625 in wide (ribbon measured 50 px in the source raster) (miniature 5/8 in; coordination chat citing DoDM 1348.33; CAPR 39-3 gives no medal dimensions); the medal body is measured at 50 x 53 source px = 0.625 x 0.662 in at that scale. Width kept from the previous asset; the product photo shows the medal disc and suspension ring, height now 0.765 in (was 0.6625).",
+ "size_basis": "estimated: the body measured in the Vanguard product photograph against the suspension ribbon's width, 317 px taken as 0.6875 in (the miniature suspension ribbon, 11/16 in, CAPR 39-1 11.3 as compose.js MINI_DRAPE): body 0.7938 x 0.7959 in in the photograph. Height follows the body's own aspect. The width is the existing CAP asset's (0.625 in, assets/medals, kept as the brief asks; the photo measures 0.7938 in). The drawing keeps the width and the box; it is built from the photograph's own measured proportions (body width 367.4 px = 0.625 in).",
  "anchors": {
   "top_center": [
    31.25,
@@ -21,69 +17,213 @@
   ],
   "bottom_center": [
    31.25,
-   76.5
+   62.87
   ],
   "center": [
    31.25,
-   38.25
+   31.43
   ],
   "left_edge": [
    0,
-   38.25
+   31.43
   ],
   "right_edge": [
    62.5,
-   38.25
+   31.43
   ],
   "ribbon_attach": [
-   30.7,
+   31.25,
    0
   ]
  },
+ "ribbon_attach_note": "ribbon_attach is the top centre of the suspension ring (or of the bail where the box cuts the ring away), on the body axis: the body is upright, the photograph's hang angle (1.1 deg) is removed; compose.js hangs it at the drape's V point",
+ "dimensions": {
+  "organization": "cap",
+  "stem": "crisis",
+  "variant": "miniature",
+  "ribbon_asset": "ribbon-crisis-ribbon",
+  "ribbon_note": "medal body only; the ribbon asset supplies the stripes and devices (ribbon_ref as the previous asset)"
+ },
+ "awards": [],
+ "award_titles": [
+  "Crisis Service Ribbon"
+ ],
+ "reference": null,
+ "match_note": "CAP body: the existing asset id and width of assets/medals/medal-crisis-ribbon-miniature; ribbon_ref as that asset",
  "ribbon_ref": {
   "asset_id": "ribbon-crisis-ribbon",
   "spec": "../ribbons/ribbon-crisis-ribbon.spec.json",
   "attach_anchor": "ribbon_attach",
-  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is where the ribbon meets the suspension loop."
+  "note": "medal body only; the ribbon asset supplies the stripes and devices. ribbon_attach is the top of the suspension ring."
  },
- "source": "https://vanguardmil.com/products/copy-of-civil-air-patrol-miniature-medal-life-saving; vendor product photograph (Vanguard Military Products), used only as a measurement reference; licence not stated by the vendor",
- "fidelity": "traced_from_public_reference",
- "fit": {
-  "metric": "silhouette IoU vs photo foreground mask at working resolution",
-  "score": 0.9869,
-  "threshold": 0.95,
-  "colour_mae_0_255": 21.4,
-  "note": "Posterised to 5 flat sampled tones (smoothed, Chaikin + RDP, specks dropped); 4 nested tone layers over the traced silhouette."
+ "data_source": "reference-art-measured",
+ "generator": "artwork-samples/assets/medals-work/design/b-crisis-ribbon.js (parameters in inches) over lib.js, common.js, font.js, emit.js, lib-b.js; gates: lib-b.js; npm-free, node make-b.js b-crisis-ribbon --write",
+ "source_raster": "vanguardmil.com product copy-of-civil-air-patrol-miniature-medal-life-saving (copy of civil air patrol miniature medal life saving), 2000 x 2000 px, measurement reference only",
+ "source_product": {
+  "vendor": "vanguardmil.com",
+  "handle": "copy-of-civil-air-patrol-miniature-medal-life-saving",
+  "title": "copy of civil air patrol miniature medal life saving",
+  "px": [
+   2000,
+   2000
+  ],
+  "file": "/Users/ethan/UniformBuilder/artwork-samples/assets/medals-work/ref-hires/copy-of-life-saving.jpg",
+  "replaced_pick": null,
+  "why": null,
+  "note": "measurement reference only: never shipped, never committed"
  },
- "palette": [
-  "#322e2f",
-  "#676059",
-  "#8b8a80",
-  "#a9a8a0"
- ],
- "grade": "medal",
- "variants_share_body": {
-  "same_body": [],
-  "different_body": []
- },
- "size_in_previous": {
-  "w": 0.625,
-  "h": 0.6625
- },
- "source_detail": {
-  "page": "https://vanguardmil.com/products/copy-of-civil-air-patrol-miniature-medal-life-saving",
-  "local_photo": "medals-work/ref-hires/copy-of-life-saving.*",
-  "photo_px": {
-   "w": 2000,
-   "h": 2000
+ "measured": {
+  "photo": "copy-of-life-saving.jpg (Vanguard miniature photograph, reference only)",
+  "frame": {
+   "body_width_px": 367.4,
+   "body_centre_px": [
+    1007.8,
+    1395.2
+   ],
+   "ppi_in_frame": 587.8,
+   "note": "body width 0.625 in (the spec width); every length below is inches in the medal frame (origin = body centre, +y down, upright)"
   },
-  "body_px": {
-   "w": 366,
-   "h": 445
+  "hang_angle_removed_deg": 1.1,
+  "hang_angle_note": "angle (clockwise, degrees) at which the photographed medal hangs, from the bail axis; measured, removed: the shipped body is upright and ribbon_attach is the top centre of the ring (or of the bail where the box cuts the ring)",
+  "disc": {
+   "R": 0.3125,
+   "lipW": 0.003,
+   "ridge": [
+    0.3015,
+    0.3105
+   ]
   },
-  "work_scale_1_over": 2,
-  "photo_shows": "miniature medal"
+  "inner_circle": null,
+  "suspension": {
+   "bail": {
+    "w": 0.0717,
+    "top": -0.39,
+    "neck": 0.068,
+    "shoulder": -0.335,
+    "bottom": -0.314
+   },
+   "ring": {
+    "c": [
+     0.005,
+     -0.476
+    ],
+    "r": 0.138,
+    "w": 0.013
+   }
+  },
+  "tones_luminance": {
+   "ground": 52,
+   "shadow": 22,
+   "base": 150,
+   "hi": 190,
+   "rim": 140,
+   "rim_hi": 235,
+   "metal": 130,
+   "metal_hi": 200,
+   "bail": 135,
+   "lip": 110
+  }
  },
- "tone_layers": 4,
- "detail_reduction": 4.5
+ "palette": {
+  "metal": "silver",
+  "ramp": "silver studio ramp (lib.js SILVER_RAMP)",
+  "tone_colours": {
+   "ground": "#383534",
+   "shadow": "#1c1a1a",
+   "base": "#9a9593",
+   "hi": "#c1bcb9",
+   "rim": "#908b89",
+   "rim_hi": "#eae8e6",
+   "lip": "#716c6b",
+   "metal": "#86817f",
+   "metal_hi": "#cac6c3",
+   "bail": "#8b8684"
+  }
+ },
+ "fidelity": {
+  "method": "designed",
+  "gates": {
+   "silhouette_iou": ">= 0.95 (shipped upright miniature vs the photograph mask resampled into the same upright box)",
+   "landmarks": "every named feature centroid within 0.02 in of the reference",
+   "edge_recall": "lit-metal outline recall >= 0.80 within 0.012 in (0.006 in reported)",
+   "ink_coverage": "lit-metal area of mine / reference between 0.85 and 1.15 (body and named zones): letters and emblem strokes as solid as the reference",
+   "ribbon_attach": "top centre of the ring (or of the bail where the box cuts the ring) at the box top, x on the body axis",
+   "size": "miniature <= 25 KB, full <= 60 KB"
+  },
+  "silhouette_iou": 0.9889,
+  "light_class_iou": 0.733,
+  "ink_coverage": [
+   {
+    "zone": "body",
+    "ref_px": 87051,
+    "mine_px": 91115,
+    "ratio": 1.047
+   },
+   {
+    "zone": "wreath band",
+    "ref_px": 74041,
+    "mine_px": 76275,
+    "ratio": 1.03
+   },
+   {
+    "zone": "central device",
+    "ref_px": 13010,
+    "mine_px": 14840,
+    "ratio": 1.141
+   }
+  ],
+  "landmarks_checked": 44,
+  "landmark_max_dist_in": 0.0123,
+  "landmark_worst": [
+   [
+    "banner letters right",
+    0.0123
+   ],
+   [
+    "leaf 24",
+    0.004
+   ],
+   [
+    "leaf 22",
+    0.0033
+   ],
+   [
+    "leaf 13",
+    0.003
+   ],
+   [
+    "leaf 8",
+    0.0029
+   ]
+  ],
+  "edge_recall_0p006in": 0.95,
+  "edge_recall_0p012in": 0.991,
+  "edge_precision_0p012in": 0.922,
+  "tone_mae_luminance": 29.9,
+  "ribbon_attach_units": {
+   "mine": 31.14,
+   "spec_new": [
+    31.25,
+    0
+   ],
+   "spec_old": [
+    31.25,
+    0
+   ]
+  },
+  "gate_pass": true,
+  "pass": true,
+  "not_measurable": [
+   "the field of the photograph is lit unevenly (darker toward the left edge and in a soft halo round the banner and the shield); the drawing uses one flat field tone and models the halo only as a dark recess round the banner, so the light-class gate is met by the seams, not by the lighting gradient",
+   "the photograph shows the pewter finish texture and the leaf veins as fine grain; each leaf is one pointed face with one recessed midrib (a straight line), not the two half-leaf planes of the engraving",
+   "the eagle device (0.22 in wide) is drawn from lib-b-eagle.js: a head in profile with a hooked beak turned left, a chest/neck body, two mirror-symmetric wings each of 5 primary blades, 6 secondary blades and 6 covert blades fanning from a shoulder point (blade tips, angles and lengths read off the 6500 px/in view: the scalloped lower edge shows about 11 feather tips per wing), two legs with 3 toes each, a lobed cloud behind the head (its 3 lobes are approximate) and a bar of 12 beads; the blade widths, the covert row and the toes are not separable in the photograph and are drawn at plausible sizes",
+   "the three words of the banner are read as CIVIL AIR on the left arm and PATROL on the right arm (the photograph prints no marks between them); the letter forms are the skeleton font, the engraved letters are slightly bolder and tilted"
+  ],
+  "note": "Redrawn as clean parametric vector (LIVE13-ART 26, batch B): every element is modelled as the object it is (letters, stars, wreath leaves, banner, aircraft ...) with its proportions measured from the photograph and placed by measurement; flat tones with a lit and a shadow edge; upright. Replaces the traced body (LIVE13-ART 20)."
+ },
+ "fit_score": {
+  "silhouette_iou": 0.9889,
+  "note": "IoU of the shipped upright miniature against the photograph mask in the same box (lib-b.js)"
+ },
+ "notes": "Designed miniature medal body (LIVE13-ART 26, batch B), upright. Measured from copy-of-life-saving.jpg (reference only, never shipped). Hang angle 1.1 deg of the photograph removed."
 }

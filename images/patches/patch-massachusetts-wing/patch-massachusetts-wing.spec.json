@@ -1,0 +1,62 @@
+{
+ "asset_id": "patch-massachusetts-wing",
+ "label": "Massachusetts Wing",
+ "charter": "NER-MA-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-massachusetts-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.299,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered wing patch width 3.25 in (as the other wing emblems); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   329.949
+  ],
+  "center": [
+   162.5,
+   164.975
+  ],
+  "left_edge": [
+   0,
+   164.975
+  ],
+  "right_edge": [
+   325,
+   164.975
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/ner_wing_ma/wing__maemblem.png",
+ "artwork": {
+  "format": "png",
+  "source_px": [
+   985,
+   1000
+  ],
+  "trimmed": false,
+  "px": [
+   985,
+   1000
+  ],
+  "bytes": 863802,
+  "source_bytes": 863802,
+  "source_sha256": "0149b34c54345693975bf92b5b5eea09a2d7f31616162b19a24abcc3b1d7d892",
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Massachusetts Wing, published by CAP national Marketing & Communication (MAC) team: the Brand Tools app linked from the CAP Brand Portal (brand.gocivilairpatrol.com); hosted at cap-brand-tools.netlify.app, not a cap.gov domain (page https://cap-brand-tools.netlify.app/logo-generator/; file address https://cap-brand-tools.netlify.app/logo-generator/wing/wing__maemblem.png); fetched 2026-11-10 and kept in assets/refs/patches-official/ner_wing_ma/. Shipped as given: the PNG byte for byte; no resampling, no cropping, no retouching, no colour change. It replaces the redraw that stood under this asset id.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured.",
+ "unit_name": "Massachusetts Wing"
+}

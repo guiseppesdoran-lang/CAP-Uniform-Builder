@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-oklahoma-wing",
+ "label": "Oklahoma Wing",
+ "charter": "SWR-OK-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-oklahoma-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.245,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   324.474
+  ],
+  "center": [
+   162.5,
+   162.237
+  ],
+  "left_edge": [
+   0,
+   162.237
+  ],
+  "right_edge": [
+   325,
+   162.237
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/wing/okemblem.png",
+ "emblemoptions": {
+  "label": "Oklahoma",
+  "type": "Wing",
+  "path": "wing/okemblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   619,
+   622
+  ],
+  "trim_bbox_px": [
+   0,
+   3,
+   618,
+   617
+  ],
+  "trimmed": true,
+  "px": [
+   618,
+   617
+  ],
+  "bytes": 96247,
+  "chunks_kept": [
+   "sRGB",
+   "pHYs"
+  ]
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"Oklahoma\" (Wing), path wing/okemblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (619 x 622 px to 618 x 617 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

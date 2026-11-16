@@ -2,29 +2,29 @@
  "asset_id": "garment-mess-dress-female",
  "name": "Women's USAF-style mess dress (blank: no grade or medals; CAP seal on the right side)",
  "size_in": {
-  "w": 25.528,
+  "w": 26.2099,
   "h": 33.26
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  2552.8,
+  2620.99,
   3326
  ],
  "size_source": "estimated",
  "size_basis": "Silhouette traced from images/base/mess_dress_female.webp (581x719 px) at 0.0474 in/px (same canvas and scale assumption as the Class A coat; 32.71 in tall). No real garment was measured.",
  "anchors": {
   "top_center": [
-   1276.4,
+   1310.5,
    0
   ],
   "bottom_center": [
-   1276.4,
+   1310.5,
    3326
   ],
   "center": [
-   1276.4,
+   1310.5,
    1663
   ],
   "left_edge": [
@@ -32,353 +32,492 @@
    1663
   ],
   "right_edge": [
-   2552.8,
+   2620.99,
    1663
   ],
+  "shoulder_seam_right": [
+   298.5,
+   304.7
+  ],
+  "sleeve_bottom_right": [
+   318.8,
+   3229.5
+  ],
+  "elbow_right": [
+   318.9,
+   1913.3
+  ],
+  "chevron_halfway_right": [
+   287.7,
+   1109
+  ],
+  "shoulder_seam_left": [
+   2322.5,
+   304.7
+  ],
+  "sleeve_bottom_left": [
+   2302.9,
+   3229.5
+  ],
+  "elbow_left": [
+   2303.7,
+   1913.3
+  ],
+  "chevron_halfway_left": [
+   2334.1,
+   1109
+  ],
   "hem_center": [
-   1276.4,
+   1310.5,
    3296
   ],
   "cap_seal_center": [
-   899.6,
+   933.7,
    2110.6
   ],
   "miniature_medals_center": [
-   1844.61,
+   1878.71,
    1067.8
   ],
   "shoulder_right_center": [
-   264.4,
+   298.5,
    304.7
   ],
   "shoulder_left_center": [
-   2278.9,
+   2313,
    328.4
   ]
  },
  "landmarks": {
   "miniature_medal_slot": {
-   "x": 1694.61,
+   "x": 1728.71,
    "y": 1005.3,
    "w": 300,
    "h": 125
   },
   "cap_seal": {
-   "x": 774.6,
+   "x": 808.7,
    "y": 1985.6,
    "w": 250,
    "h": 250
   },
   "shoulder_mark_right": {
-   "x": 244.4,
+   "x": 278.5,
    "y": 284.7,
    "w": 40,
    "h": 40
   },
   "shoulder_mark_left": {
-   "x": 2258.9,
+   "x": 2293,
    "y": 308.4,
    "w": 40,
    "h": 40
   },
   "shawl_right": [
    [
-    1003.9,
+    1038,
     25
    ],
    [
-    842.7,
+    876.8,
     205.1
    ],
    [
-    861.7,
+    895.8,
     304.7
    ],
    [
-    868.8,
+    902.9,
     660.2
    ],
    [
-    892.5,
+    926.6,
     1015.7
    ],
    [
-    937.5,
+    971.6,
     1323.8
    ],
    [
-    1022.8,
+    1056.9,
     1608.2
    ],
    [
-    1127.1,
+    1161.2,
     1821.5
    ],
    [
-    1174.5,
+    1208.6,
     1854.6
    ],
    [
-    1174.5,
+    1208.6,
     1854.6
    ],
    [
-    1136.6,
+    1170.7,
     1537.1
    ],
    [
-    1098.7,
+    1132.8,
     1252.7
    ],
    [
-    1070.2,
+    1104.3,
     778.7
    ],
    [
-    1034.7,
+    1068.8,
     423.2
    ],
    [
-    1018.1,
+    1052.2,
     67.7
    ],
    [
-    1018.1,
+    1052.2,
     25
    ]
   ],
   "shawl_left": [
    [
-    1548.9,
+    1583,
     25
    ],
    [
-    1695.9,
+    1730,
     205.1
    ],
    [
-    1686.4,
+    1720.5,
     423.2
    ],
    [
-    1648.5,
+    1682.6,
     778.7
    ],
    [
-    1615.3,
+    1649.4,
     1086.8
    ],
    [
-    1544.2,
+    1578.3,
     1371.2
    ],
    [
-    1449.4,
+    1483.5,
     1655.6
    ],
    [
-    1402,
+    1436.1,
     1821.5
    ],
    [
-    1392.5,
+    1426.6,
     1854.6
    ],
    [
-    1392.5,
+    1426.6,
     1854.6
    ],
    [
-    1421,
+    1455.1,
     1537.1
    ],
    [
-    1449.4,
+    1483.5,
     1252.7
    ],
    [
-    1473.1,
+    1507.2,
     897.2
    ],
    [
-    1515.8,
+    1549.9,
     423.2
    ],
    [
-    1532.4,
+    1566.5,
     67.7
    ],
    [
-    1534.7,
+    1568.8,
     25
    ]
   ],
   "shirt": [
    [
-    1018.1,
+    1052.2,
     67.7
    ],
    [
-    1018.1,
+    1052.2,
     67.7
    ],
    [
-    1034.7,
+    1068.8,
     423.2
    ],
    [
-    1070.2,
+    1104.3,
     778.7
    ],
    [
-    1098.7,
+    1132.8,
     1252.7
    ],
    [
-    1136.6,
+    1170.7,
     1537.1
    ],
    [
-    1174.5,
+    1208.6,
     1854.6
    ],
    [
-    1174.5,
+    1208.6,
     1854.6
    ],
    [
-    1392.5,
+    1426.6,
     1854.6
    ],
    [
-    1392.5,
+    1426.6,
     1854.6
    ],
    [
-    1421,
+    1455.1,
     1537.1
    ],
    [
-    1449.4,
+    1483.5,
     1252.7
    ],
    [
-    1473.1,
+    1507.2,
     897.2
    ],
    [
-    1515.8,
+    1549.9,
     423.2
    ],
    [
-    1532.4,
+    1566.5,
     67.7
    ],
    [
-    1532.4,
+    1566.5,
     67.7
    ]
   ],
   "cummerbund": [
    [
-    1174.5,
+    1208.6,
     1854.6
    ],
    [
-    1278.8,
+    1312.9,
     1854.6
    ],
    [
-    1383.1,
+    1417.2,
     1854.6
    ],
    [
-    1383.1,
+    1417.2,
     2257.5
    ],
    [
-    1174.5,
+    1208.6,
     2257.5
    ]
   ],
   "tie_tab": [
    [
-    1079.7,
-    669.6
+    1260.5,
+    280
    ],
    [
-    1226.6,
-    281
+    1360.5,
+    280
    ],
    [
-    1383.1,
-    281
+    1445.5,
+    440
    ],
    [
-    1530,
-    660.2
+    1375.5,
+    440
    ],
    [
-    1416.2,
-    707.6
+    1310.5,
+    375
    ],
    [
-    1302.5,
-    442.1
+    1245.5,
+    440
    ],
    [
-    1193.5,
-    707.6
+    1175.5,
+    440
    ]
   ],
   "button_right_1": {
-   "x": 835.87,
+   "x": 869.97,
    "y": 1757.76,
    "w": 80,
    "h": 80
   },
   "button_right_2": {
-   "x": 859.57,
+   "x": 893.67,
    "y": 2070.6,
    "w": 80,
    "h": 80
   },
   "button_right_3": {
-   "x": 812.17,
+   "x": 846.27,
    "y": 2416.62,
    "w": 80,
    "h": 80
   },
   "button_left_1": {
-   "x": 1646.41,
+   "x": 1680.51,
    "y": 1767.24,
    "w": 80,
    "h": 80
   },
   "button_left_2": {
-   "x": 1670.11,
+   "x": 1704.21,
    "y": 2099.04,
    "w": 80,
    "h": 80
   },
   "button_left_3": {
-   "x": 1674.85,
+   "x": 1708.95,
    "y": 2426.1,
    "w": 80,
    "h": 80
-  }
+  },
+  "button_designs": {
+   "wing-star": [
+    "button-right-1-wing-star",
+    "button-right-2-wing-star",
+    "button-right-3-wing-star",
+    "button-left-1-wing-star",
+    "button-left-2-wing-star",
+    "button-left-3-wing-star"
+   ],
+   "cap-crest": [
+    "button-right-1-cap-crest",
+    "button-right-2-cap-crest",
+    "button-right-3-cap-crest",
+    "button-left-1-cap-crest",
+    "button-left-2-cap-crest",
+    "button-left-3-cap-crest"
+   ]
+  },
+  "button_design_default": "wing-star"
  },
  "landmarks_note": "rects are {x,y,w,h}; polygons are [[x,y]...]; all in user units (0.01 in), origin top-left of the artwork box",
  "dimensions": {
   "height_in": 32.71,
-  "max_width_in": 25.03,
+  "max_width_in": 25.71,
   "buttons_per_side": 3,
-  "button_dia_in": 0.8
+  "button_dia_in": 0.8,
+  "button_designs": {
+   "rule": "CAPR 39-1 4.1.1.1 / 4.1.2.1: three \"wing and star\", CAP coat of arms or USAF coat of arms buttons each side; the men's two closure buttons have the coat buttons' design; 4.1.1.1.1.1: the shoulder board button matches the jacket's",
+   "drawn": {
+    "wing-star": "hapArnold: Vanguard SKU 2900705 \"Hap Arnold\" wing and star button (photo proportions), as the Class A coat's buttons",
+    "cap-crest": "CAP coat of arms in relief: the arms of the measured CAP Crest (base-art/crest-art.js, Fig A6-4) at 0.002 button radius per crest unit, shield 0.80 across with its point 0.79 below the centre, inside the CAP0807 ring of 13 stars (Vanguard photo proportions); patch border and lettered scroll left off"
+   },
+   "not_drawn": {
+    "usaf-crest": "USAF coat of arms: no measured in-house drawing in the art tree; blocked for a reference (LIVE12-ART 2)"
+   },
+   "default": "wing-star",
+   "order_note": "within each button group the default is drawn last, on top, so a viewer that hides nothing shows it",
+   "size_source": "estimated",
+   "dia_note": "the disc the sheet already drew; the design fits inside it"
+  },
+  "tie_tab": {
+   "size_source": "estimated",
+   "w_in": 2.7,
+   "h_in": 1.6,
+   "leg_width_in": 0.7,
+   "top_width_in": 1,
+   "apex_below_top_in": 0.95,
+   "top_y_in": 2.55,
+   "basis": "the house women's tie tab (accessories/tie-tab-inverted-v: 2.7 x 1.6 in, 0.7 in legs), centred, its top edge under the blouse collar leaves; the regulation (CAPR 39-1 4.1.2.2.1) gives the colour, the inverted V and the self-fastening tails but no dimension; the earlier traced tab was 4.27 x 4.5 in and off-centre",
+   "draw_order": "tab first, the blouse collar leaves over it (as the blazer and the semi-formal, 4d6678dd)"
+  },
+  "front_hems": {
+   "size_source": "traced",
+   "panels_note": "the traced front hems of the two jacket fronts in artwork-box inches (x from the box left, y down from the box top); the figure below them, and between the fronts under the cummerbund, is the skirt (garment-mess-dress-skirt-female-*), registered to this sheet",
+   "panels": [
+    {
+     "side": "image_left",
+     "x_in": [
+      6.303,
+      11.754
+     ],
+     "y_in": 26.604
+    },
+    {
+     "side": "image_right",
+     "x_in": [
+      14.456,
+      20.917
+     ],
+     "y_in": 26.841
+    }
+   ],
+   "gap_between_fronts_in": 2.7,
+   "gap_citation": "CAPR 39-1 4.1.2.1: the front opening leaves a gap of 2 to 3 in at the bottom",
+   "cummerbund_bottom_y_in": 22.575,
+   "cummerbund_citation": "CAPR 39-1 4.1.2.2.4: the cummerbund is worn halfway between the blouse and the skirt, so the skirt starts at its lower edge",
+   "back_note": "the back extends only 2 1/2 to 3 in below the natural waist (4.1.2.1), so it is hidden behind the fronts and not drawn"
+  },
+  "sleeve_widening": {
+   "size_source": "estimated",
+   "outward_in": 0.35,
+   "ramp_from_y_in": 2.8,
+   "full_by_y_in": 9,
+   "fades_out_between_y_in": [
+    14,
+    20
+   ],
+   "chevron_fit": {
+    "right": {
+     "4": {
+      "outer_clearance_in": 0.345,
+      "seam_clearance_in": 0.112
+     },
+     "turn_deg": -0.73,
+     "3p5": {
+      "outer_clearance_in": 0.616,
+      "seam_clearance_in": 0.395
+     }
+    },
+    "left": {
+     "4": {
+      "outer_clearance_in": 0.329,
+      "seam_clearance_in": 0.129
+     },
+     "turn_deg": 0.67,
+     "3p5": {
+      "outer_clearance_in": 0.601,
+      "seam_clearance_in": 0.411
+     }
+    }
+   },
+   "chevron_fit_note": "worst clearance over every ink row of the six white chevrons (4 in; 3p5 = the 3 1/2 in option at 7/8 scale), chevron visual centre on chevron_halfway, turned by the line shoulder_seam to elbow; positive = on the sleeve"
+  }
  },
  "documented": [
   "women's mess dress jacket and skirt with satin shawl collar (CAPR 39-1 4.1.2)",
   "CAP seal worn over the middle button on the right side of the jacket (as on the men's, 4.1.1.1.2.3)",
-  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset"
+  "sleeve braid 1/2 in (1 1/2 in for general officers), 3 in from the sleeve end: separate overlay asset",
+  "the jacket ends at the traced front hems; the front opening leaves a gap of 2 to 3 in at the bottom and the back extends only 2 1/2 to 3 in below the natural waist, so below the hems and between the fronts under the cummerbund the figure is the skirt, which starts at the cummerbund's lower edge (4.1.2.1, 4.1.2.2.4, 4.1.2.3)"
  ],
  "assumed": [
   "px-to-inch scale",
@@ -386,7 +525,9 @@
   "seal drawn at the 2 1/2 in diameter dimensioned in CAPR 39-1 Fig A6-4 (blue-background version); eagle/shield is the measured CAP Crest redraw, ring lettering set in Arial Bold outlines",
   "shawl collar, shirt, cummerbund and cut-away geometry read off the base image",
   "satin sheen colours sampled from the base image",
-  "sleeve braid colour"
+  "sleeve braid colour",
+  "tie tab size (the regulation gives none): the house 2.7 x 1.6 in tab, tails not drawn",
+  "sleeve width: the traced hanging sleeve is widened outward by up to 0.35 in between the shoulder end and the elbow (one warp of the part between the armhole seam and the outer edge) so the true-size white chevron lies on it; the regulation gives no sleeve width (ESTIMATE)"
  ],
  "fit": {
   "method": "traced from the raster",

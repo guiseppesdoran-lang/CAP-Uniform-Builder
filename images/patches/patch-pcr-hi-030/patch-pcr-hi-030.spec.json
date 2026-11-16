@@ -1,0 +1,81 @@
+{
+ "asset_id": "patch-pcr-hi-030",
+ "label": "Maryknoll Cadet Squadron",
+ "charter": "PCR-HI-030",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-pcr-hi-030.png",
+ "width_in": 3,
+ "height_in": 3.358,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   335.821
+  ],
+  "center": [
+   150,
+   167.911
+  ],
+  "left_edge": [
+   0,
+   167.911
+  ],
+  "right_edge": [
+   300,
+   167.911
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/patches-official/pcr_hi_030/SQD_Templates_3EBF7FA793B28.png",
+ "unit_name": "Maryknoll Cadet Squadron",
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   6487,
+   7259
+  ],
+  "source_bytes": 2154384,
+  "source_sha256": "58af6097776410a496505b31e8e871db5db238ea2a8e30ff0497a4757770907a",
+  "trim_bbox_px": [
+   0,
+   0,
+   6487,
+   7259
+  ],
+  "trimmed": false,
+  "px": [
+   1072,
+   1200
+  ],
+  "bytes": 307654,
+  "resampled": {
+   "from_px": [
+    6487,
+    7259
+   ],
+   "to_px": [
+    1072,
+    1200
+   ],
+   "method": "area average, alpha premultiplied",
+   "long_edge_cap": 1200
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Official digital artwork of Maryknoll Cadet Squadron (PCR-HI-030), published by Hawaii Wing (hiwg.cap.gov), heraldry page (page https://hiwg.cap.gov/about/heraldry-of-our-units; file address https://hiwg.cap.gov/media/cms/SQD_Templates_3EBF7FA793B28.png and on the unit's heraldry page https://hiwg.cap.gov/about/heraldry-of-our-units/maryknoll-heraldry-hi030/ (Maryknoll Cadet Squadron, PCR-HI-030)); fetched 2026-11-11 and kept unchanged in assets/refs/patches-official/pcr_hi_030/. Shipped as given: the PNG; reduced in size from 6487 x 7259 to 1072 x 1200 px (area average, alpha premultiplied; the long edge is held to 1200 px as the other digital patches are); no redrawing, no tracing, no colour change. Charter: the page lists it under Maryknoll Cadet Squadron, PCR-HI-030, as does the unit's own heraldry page; the emblem's banner reads MARYKNOLL CADET SQUADRON; PCR-HI-030 is Maryknoll Cadet Squadron in the builder's unit list.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the size, held to 1200 px on the long edge."
+}

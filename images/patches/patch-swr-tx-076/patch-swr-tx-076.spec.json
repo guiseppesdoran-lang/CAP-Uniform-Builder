@@ -1,0 +1,71 @@
+{
+ "asset_id": "patch-swr-tx-076",
+ "label": "SWR-TX-076",
+ "charter": "SWR-TX-076",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-swr-tx-076.png",
+ "width_in": 3,
+ "height_in": 3.43,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   343.041
+  ],
+  "center": [
+   150,
+   171.52
+  ],
+  "left_edge": [
+   0,
+   171.52
+  ],
+  "right_edge": [
+   300,
+   171.52
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "reference": "assets/refs/unit-emblems-vitanza/squadron/tx076emblem.png",
+ "emblemoptions": {
+  "label": "SWR-TX-076",
+  "type": "Squadron",
+  "path": "squadron/tx076emblem.png"
+ },
+ "artwork": {
+  "format": "png",
+  "source_color_type": 6,
+  "source_px": [
+   467,
+   534
+  ],
+  "trim_bbox_px": [
+   0,
+   0,
+   467,
+   534
+  ],
+  "trimmed": false,
+  "px": [
+   467,
+   534
+  ],
+  "bytes": 314611,
+  "chunks_kept": []
+ },
+ "provenance": "CAP Brand Tools repository (CAP subordinate graphic generator), Roman Vitanza; emblemoptions.js entry \"SWR-TX-076\" (Squadron), path squadron/tx076emblem.png. Official digital artwork shipped as given: png; trimmed to its alpha bounding box only (467 x 534 px to 467 x 534 px), no resampling, no colour change.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured."
+}

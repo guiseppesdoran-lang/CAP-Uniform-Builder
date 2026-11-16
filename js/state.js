@@ -1,14 +1,37 @@
 // Developer tools (the calibrator) exist only when the page is opened with ?dev=1.
 const CAPUB_DEV = new URLSearchParams(location.search).has('dev');
 if(CAPUB_DEV) document.documentElement.dataset.dev = '1';
-// ?ux=2 turns on the guided flow (one step at a time). Without it the page is unchanged.
-const CAPUB_GUIDED = new URLSearchParams(location.search).get('ux') === '2';
-if(CAPUB_GUIDED) document.documentElement.dataset.ux = '2';
 
 // Short messages go to the page's toast; the browser alert is only the fallback before it exists.
 function capubNotify(message, ms){
   if(typeof window.capubToastShow === 'function') window.capubToastShow(message, ms);
   else alert(message);
+}
+
+// A yes-or-no question in the page's own dialog (index.html #confirmDialog): resolves true on the confirm button and false on Cancel, Escape or a click outside.
+// The browser's confirm box is only the fallback where the dialog is missing.
+function capubConfirm({ title = 'Are you sure?', message = '', confirmLabel = 'OK', cancelLabel = 'Cancel' } = {}){
+  const dialog = document.getElementById('confirmDialog');
+  if(!dialog || typeof dialog.showModal !== 'function') return Promise.resolve(window.confirm(message || title));
+  return new Promise(resolve => {
+    const ok = document.getElementById('confirmOk'), cancel = document.getElementById('confirmCancel');
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    ok.textContent = confirmLabel; cancel.textContent = cancelLabel;
+    let answer = false;
+    const onOk = () => { answer = true; dialog.close(); };
+    const onCancel = () => dialog.close();
+    const onBackdrop = event => { if(event.target === dialog) dialog.close(); };
+    const done = () => {
+      ok.removeEventListener('click', onOk); cancel.removeEventListener('click', onCancel);
+      dialog.removeEventListener('click', onBackdrop); dialog.removeEventListener('close', done);
+      resolve(answer);
+    };
+    ok.addEventListener('click', onOk); cancel.addEventListener('click', onCancel);
+    dialog.addEventListener('click', onBackdrop); dialog.addEventListener('close', done);
+    dialog.showModal();
+    cancel.focus();
+  });
 }
 
 // Extracted verbatim from index.html: global state, membership/rank data and the base placement
@@ -37,34 +60,37 @@ const State = {
   membership:'',
   gender:'',
   uniform:'blues_a',
+  // The Honor Guard Uniform (CAPR 39-1 9.6): the Service Dress or the Blue Service uniform with the honor guard items put on, so State.uniform stays the
+  // uniform it rides on ('blues_a' or 'blues_b') and every rule and drawing of that uniform applies to it unchanged. Cadets only (data/uniform-rules.js CEREMONIAL); its own
+  // choices (guard or flag bearer, the chinstrap) are State.garment.cerRole and State.garment.chinstrap. Saved with the setup; false for every setup saved before it existed.
+  ceremonial:false,
   assetBase:'images',
 
   ribbons:[], // array of {id, devices:{}}
   badges:[],  // array of badge ids
   patches:[], // array of patch ids
   shoulderCord:null,
+  shoulderCordColour:null, // the colour of a cord the unit commander chooses (js/engine/cords.js chosenColours); null for every other cord
   unitPatchCharter:'',
 
   rank:null,
   cadetFirstSergeant:false,
 
-  deviceApplyMode:false,
-  deviceRemoveMode:false,
-  selectedDevices:{},
-  ribbonDragMode:false,
-  forceMini:false,
   cadetHighestOnly:false,
   adultCadet:false,
   miniMountStyle:'mounting',
-  ribbonRackLayout:'4-left',
+  ribbonRackLayout:'3', // rows of three unless the member picks four where 11.2.7 allows it
   ribbonRackArrangement:'lapel',
   ribbonRowOverrideEnabled:false,
   ribbonRowOverride:[],
-  showMeasurementOverlay:false,
-  garmentOverlayMode:'both',
-  garmentMasks:{},
+  // Garment choices (sleeves, skirt, headgear...): see js/garment-options.js.
+  garment:{},
 
   ribbonSelections:{}, 
+  // The ribbons the setup's Rank select added for a cadet grade (js/setup.js capubApplyGradeRibbons): null, or
+  // { rank, ids }. Only these come off again when the grade goes down; a ribbon the member checked or changed by hand
+  // is never in it, and a member report import clears it (the import's selections win). Saved with the setup.
+  gradeRibbons:null,
   ribbonGalleryExpanded:false,
   militaryUIState:{
     selectorOpen:true,
@@ -79,6 +105,15 @@ const State = {
   },
 
   badgeSelections:{},
+  // Which badge goes where, for the positions that have more badges to place than one: { [uniformId]: { [position]: badgeId | { [slotKey]: badgeId } } }.
+  // A position with one place (the one aviation badge) keeps a badge id; one with several places (left pocket, right pocket, over the nametag...)
+  // keeps one badge id per place; an id alone, as saved before the places, is the first place. The engine reports the positions
+  // (scene.conflicts); the Badges panel asks. Saved with the setup.
+  badgeChoices:{},
+  // Which badge is worn higher where the regulation leaves two badges of equal standing in the wearer's order (two occupational badges over the left pocket or
+  // above the CAP tape): { [group]: [badge ids, highest first] }, the same on every uniform. Empty is the drawing's own order. Only badges still selected
+  // stay in it (data/badge-catalog.js pruneEqual). The engine reports the stacks (scene.badgeOrders); the Badges card offers the swap. Saved with the setup.
+  badgeOrder:{},
   badgeGalleryExpanded:false,
   // Null until a member report is imported. Once populated, the badge picker
   // separates report-authorized badges from the remaining eligible catalog.
@@ -91,45 +126,62 @@ const State = {
     graduatedCommander:false
   },
 
+  // Remove ribbons (LIVE13): the shirts where ribbons are optional are drawn without the rack while the selections stay
+  // (js/uniform-view.js buildRibbons reads it only where data/uniform-rules.js makes ribbons optional). Saved with the setup.
+  hideRibbons:false,
+
   // UNIVERSAL calibration (per-layer key)
-  calib:{
-    enabled:false,
-    selectedKey:null,
-    selectedKeys:[], // multi-select layer keys for admin calibration
-    map:{}, // legacy/global fallback: key -> {x,y,w,h,r}
-    byUniform:{}, // uniformId -> { layerKey -> {x,y,w,h,r} }
-    masterSession:{
-      active:false,
-      startedAt:null,
-      changesByUniform:{},
-      contextByUniform:{}
-    }
-  }
 };
 
 // Make State globally visible so later patch modules and popup/tooling code can
 // safely read/write State without failing on window.State checks.
 window.State = State;
 
-const CAPUB_GARMENT_MASK_STORAGE_KEY = 'capub_garment_alpha_masks_v1';
-try{
-  const savedGarmentMasks = JSON.parse(localStorage.getItem(CAPUB_GARMENT_MASK_STORAGE_KEY) || '{}');
-  if(savedGarmentMasks && typeof savedGarmentMasks === 'object') State.garmentMasks = savedGarmentMasks;
-}catch(err){
-  State.garmentMasks = {};
-}
-
-let currentDrag = null;
-let dragOffsetX = 0;
-let dragOffsetY = 0;
-
 /* ===========================
    MEMBERSHIP/RANK DATA
    =========================== */
 const RANKS = {
-  senior: ["SM","SSgt","TSgt","MSgt","SMSgt","CMSgt","2d Lt","1st Lt","Capt","Maj","Lt Col","Col","Brig Gen","Maj Gen"],
+  senior: ["SM","SSgt","TSgt","MSgt","SMSgt","CMSgt","FO","TFO","SFO","2d Lt","1st Lt","Capt","Maj","Lt Col","Col","Brig Gen","Maj Gen"],
   cadet: ["C/AB","C/Amn","C/A1C","C/SrA","C/SSgt","C/TSgt","C/MSgt","C/SMSgt","C/CMSgt","C/2d Lt","C/1st Lt","C/Capt","C/Maj","C/Lt Col","C/Col"]
 };
+
+// The ribbons a cadet grade implies (LIVE13 E66, Ethan: "if someone selects a grade, it goes along with the ribbons
+// required to get it. like for C/Lt Col, if selected, it selects all ach ribbons except spaatz and the encampment ribbon").
+// The cadet program's achievements and milestones in the order they are earned, as js/catalog.js CADET_ACHIEVEMENT_RIBBONS
+// and the member report importer's achievement map order them (Curry 1, Arnold 2, Feik 3, the Wright Brothers Award after
+// Achievement 3, Rickenbacker 4 to Armstrong 8, the Mitchell Award after Achievement 8, then Earhart, Eaker, Spaatz),
+// each beside the grade it earns under CAPR 60-1: Achievements 1-3 make C/Amn, C/A1C and C/SrA; the Wright Brothers
+// Award, which closes Phase I, makes C/SSgt; Achievements 4-7 make C/TSgt to C/CMSgt; Achievement 8 (Armstrong) brings
+// no new grade, and the Mitchell Award, which needs it and an encampment, makes C/2d Lt; Achievements 9-11 have no ribbon
+// (C/1st Lt) and the Earhart Award, closing Phase III, makes C/Capt; Achievements 12-15 have none (C/Maj); the Eaker Award,
+// closing Phase IV, makes C/Lt Col, and the Spaatz Award C/Col. CAPR 60-1 is not in this repository and CAPR 39-1 does not
+// state the grades, so the grade beside each step is CAPR 60-1 as read outside it (see the E66 commit). A grade implies
+// every step up to and including its own. A senior member's grade implies no ribbon: promotion is not tied to one.
+const CADET_GRADE_RIBBON_STEPS = Object.freeze([
+  ['C/AB', []],
+  ['C/Amn', ['curry_achievement']],
+  ['C/A1C', ['hap_arnold_achievement']],
+  ['C/SrA', ['mary_feik_achievement']],
+  ['C/SSgt', ['wright_brothers_award']],
+  ['C/TSgt', ['rickenbacker_achievement']],
+  ['C/MSgt', ['lindbergh_achievement']],
+  ['C/SMSgt', ['doolittle_achievement']],
+  ['C/CMSgt', ['goddard_achievement']],
+  ['C/2d Lt', ['armstrong_achievement','mitchell_award','encampment_ribbon']],
+  ['C/1st Lt', []],
+  ['C/Capt', ['earhart_award']],
+  ['C/Maj', []],
+  ['C/Lt Col', ['eaker_award']],
+  ['C/Col', ['spaatz_award']]
+]);
+// Every ribbon some cadet grade implies, lowest grade first.
+const CADET_GRADE_RIBBON_IDS = Object.freeze(CADET_GRADE_RIBBON_STEPS.flatMap(([,ids])=>ids));
+// The ribbons the grade implies, in the order they are earned; [] for a senior grade, C/AB or no grade.
+function capubGradeImpliedRibbons(rank){
+  const at = CADET_GRADE_RIBBON_STEPS.findIndex(([grade])=>grade === rank);
+  if(at < 0) return [];
+  return CADET_GRADE_RIBBON_STEPS.slice(0, at + 1).flatMap(([,ids])=>ids);
+}
 
 const SENIOR_NCO_RANKS = new Set(["SSgt","TSgt","MSgt","SMSgt","CMSgt"]);
 const OFFICER_RANKS = new Set([
@@ -137,103 +189,3 @@ const OFFICER_RANKS = new Set([
   "C/2d Lt","C/1st Lt","C/Capt","C/Maj","C/Lt Col","C/Col"
 ]);
 
-/* ===========================
-   BASE PLACEMENT CONSTANTS
-   =========================== */
-let rackBaseX = 259; // LEFT EDGE of a 3-wide rack
-let rackBaseY = 206; // TOP of bottom row
-
-const RIBBON_WIDTH  = 23;
-// CAPR 39-1 gives the service ribbon as 1 3/8 by 3/8 inches. Keep that
-// physical 11:3 aspect ratio instead of stretching the artwork vertically.
-const RIBBON_HEIGHT = RIBBON_WIDTH * (0.375 / 1.375);
-const RIBBON_GAP_X  = 0;
-const RIBBON_GAP_Y  = 0;
-
-/*
-  Per-uniform ribbon rack geometry.
-  Male Class B intentionally reuses the male Class A rack geometry for both cadet and senior modes.
-  This keeps all rendered image asset sizes and locations consistent between male Class A and male Class B.
-*/
-const RIBBON_LAYOUT_BY_UNIFORM = {
-  // Men's Class A senior-member calibration: x columns 259/282/305 and top/bottom rows from the latest export.
-  // Class A alone permits rows of four. The calibrated three-across origin is
-  // converted at render time to either the wearer-left/outboard edge alignment
-  // or the pocket-centered four-across placement authorized by CAPR 39-1.
-  blues_a: { baseX: 259, bottomY: 206, columns: 4, w: RIBBON_WIDTH, h: RIBBON_HEIGHT, gapX: 0, gapY: 0 },
-  // Class B and aviator-shirt racks remain rows of three.
-  blues_b: { baseX: 259, bottomY: 206, columns: 3, w: RIBBON_WIDTH, h: RIBBON_HEIGHT, gapX: 0, gapY: 0 }
-};
-const MINI_MEDAL_LAYOUT_BY_UNIFORM = {
-  // Male Mess Dress imported from CAPUB_coordinates_1786074847808.json.
-  // The rack is centered at x=335 and its bottom row begins at y=184.
-  // Vertical overlap is computed from the regulated miniature-medal scale.
-  mess_dress_male: { centerX:335, bottomY:184 },
-
-  // Female Mess Dress imported from CAPUB_coordinates_1786003225794.json.
-  mess_dress_female: { centerX:317, bottomY:196 },
-
-  // Corporate Semi-Formal has a lower, more inboard breast pocket than Mess
-  // Dress. Center the rack on that pocket and keep its lower edge 1/2 inch
-  // above the built-in CAP crest/service-badge position.
-  semi_formal_male: { centerX:318, bottomY:198 },
-  semi_formal_female: { centerX:317, bottomY:196 }
-};
-function getRibbonLayout(uniformId = State.uniform, rackLayoutOverride=null){
-  const baseUniformId = uniformId || State.uniform || '';
-  const genderBucketId = State.gender ? `${baseUniformId}_${State.gender}` : baseUniformId;
-  const override = RIBBON_LAYOUT_BY_UNIFORM[genderBucketId] || RIBBON_LAYOUT_BY_UNIFORM[baseUniformId] || {};
-  const w = override.w ?? RIBBON_WIDTH;
-  const h = override.h ?? RIBBON_HEIGHT;
-  const gapX = override.gapX ?? RIBBON_GAP_X;
-  const gapY = override.gapY ?? RIBBON_GAP_Y;
-  // CAPR 39-1 authorizes four-across ribbon rows only on the USAF-style
-  // Service Dress (Class A). All Class B and aviator-shirt racks are
-  // unconditionally limited to rows of three, even if a saved profile carries
-  // a Class A four-across preference.
-  const layoutPreference = rackLayoutOverride ?? State.ribbonRackLayout;
-  const requestedRackLayout = ['3','4-left','4-center'].includes(String(layoutPreference))
-    ? String(layoutPreference)
-    : '4-left';
-  const requestedColumns = requestedRackLayout === '3' ? 3 : 4;
-  const columns = baseUniformId === 'blues_a' ? requestedColumns : 3;
-  const configuredBaseX = override.baseX ?? rackBaseX;
-  // The calibrated three-across rack is centered over the pocket. In a
-  // front-facing preview, the wearer's left/outboard pocket edge is the
-  // screen-right edge. Preserve that edge for the CAPR-authorized edge-aligned
-  // four-across option; preserve the pocket centerline for the centered option.
-  const threeAcrossWidth = (w*3) + (gapX*2);
-  const requestedRackWidth = (w*columns) + (gapX*(columns-1));
-  const pocketCenterX = configuredBaseX + threeAcrossWidth/2;
-  const pocketOutboardX = configuredBaseX + threeAcrossWidth;
-  let baseX = configuredBaseX;
-  if(baseUniformId === 'blues_a' && requestedRackLayout === '4-center'){
-    baseX = pocketCenterX - requestedRackWidth/2;
-  }else if(baseUniformId === 'blues_a' && requestedRackLayout === '4-left'){
-    baseX = pocketOutboardX - requestedRackWidth;
-  }
-  const bottomY = override.bottomY ?? rackBaseY;
-  return {
-    baseX,
-    bottomY,
-    columns,
-    w,
-    h,
-    gapX,
-    gapY,
-    centerX: baseX + requestedRackWidth/2,
-    wearerLeftPocketEdgeX: pocketOutboardX
-  };
-}
-
-function rackSpanW(){
-  const m = getRibbonLayout();
-  return (m.w*m.columns) + (m.gapX*(m.columns-1));
-}
-function rackCenterX(){
-  return getRibbonLayout().centerX;
-}
-function getRackOrigin(){
-  const m = getRibbonLayout();
-  return { x:m.baseX, y:m.bottomY };
-}

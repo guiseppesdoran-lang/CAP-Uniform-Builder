@@ -1,0 +1,842 @@
+// Uniform engine, part 3: composes a uniform from what the member wears.
+//
+// compose(build, store) returns a scene: { layers, bounds, notes } in inches, with the base garment's
+// box as the origin. Every uniform is a short profile (js/engine/profiles.js) that names its garment,
+// its layers and its slots; the shared helpers here do the placing, so a rule such as "badges 1/2 in
+// above the top row of ribbons" is written once and used by every uniform that has the slot.
+(function(root, factory){
+  const deps = (typeof module === 'object' && module.exports)
+    ? { core: require('./core.js'), awards: require('./awards.js') }
+    : { core: root.CAPUBEngine.core, awards: root.CAPUBEngine.awards };
+  const api = factory(deps.core, deps.awards);
+  if(typeof module === 'object' && module.exports) module.exports = api;
+  else { root.CAPUBEngine = root.CAPUBEngine || {}; root.CAPUBEngine.compose = api; }
+})(typeof self !== 'undefined' ? self : this, function(core, awards){
+  'use strict';
+
+  // Draw order. Later layers cover earlier ones.
+  const Z = {
+    under: -5, garment: 0, garmentLayer: 2, tape: 4, patch: 6, cord: 7, epauletLayer: 8,
+    insignia: 10, ribbon: 12, device: 13, medal: 14, badge: 16, text: 20, hat: 30, hatDevice: 31,
+    // Epaulet and shoulder-board views from above lie over the cap's corners where the cap is as wide as
+    // the neck opening: the cap is seated on the collar (6.2.2) and must not cover their grade or CAP lettering (R7).
+    epauletTop: 32, epauletTopGrade: 32.5
+  };
+
+  // Pieces a garment sheet draws itself, which the measurement overlay's callouts, captions and labels keep clear of like any placed
+  // piece (ctx.keepClear). A sheet states some of them as landmarks, but not all (the flag and AUX patches, the sleeve pocket and loop
+  // outlines, the CFDU crest) and the landmark is a zone, not the drawn group, so these are the bounding boxes of the sheet's own groups
+  // `<sheet id>__<name>`, MEASURED FROM THE SHEET'S SVG (headless Chrome getBoundingClientRect, 1 viewBox unit = 1 px, so sheet
+  // units: 100 = 1 in): [group, x, y, w, h]. Re-measure after an art sync that moves a sheet (the tapes and name-tape equal the
+  // sheet's own landmarks to 0.01 in). LIVE13 E83: the OCP sheet grew 5.218 in at the top for the beret row and every one of its 32 landmarks moved
+  // down 521.8 units, so its rows moved by the same 521.8. The cap views' tapes are not listed: they travel with the cap view, whose box is already kept clear.
+  const DRAWN_PIECES = {};
+  const DRAWN_0 = [
+    ['sleeve-pocket-edge-right', 738.78, 1701.16, 444.8, 1073.82],
+    ['patch-flag-edge-right', 872.49, 2086.37, 197.57, 211.86],
+    ['sleeve-pocket-edge-left', 3046.13, 1701.16, 444.8, 1073.82],
+    ['patch-aux-edge-left', 3159.65, 2086.37, 197.57, 211.86],
+    ['sleeve-pocket-right', 124.96, 1549.3, 450, 1050],
+    ['patch-flag-right', 187.46, 1936.8, 325, 181.25],
+    ['sleeve-pocket-left', 3654.75, 1549.3, 450, 1050],
+    ['patch-aux-left', 3717.25, 1936.8, 325, 181.25],
+    ['name-tape', 1352.35, 2059.6, 525, 100],
+    ['cap-tape', 2352.35, 2059.6, 525, 100],
+    ['cap-tape-lettering', 2388.65, 2079.63, 453.38, 59.96]
+  ];
+  DRAWN_PIECES['garment-ocp-coat-abu-cut'] = DRAWN_0;
+  const DRAWN_1 = [
+    ['name-tape', 1330, 1605, 500, 90],
+    ['cap-tape', 2100, 1605, 500, 90],
+    ['cap-tape-lettering', 2134.6, 1620.03, 431.88, 59.96]
+  ];
+  DRAWN_PIECES['garment-abu-coat'] = DRAWN_1;
+  const DRAWN_2 = [
+    ['name-tape', 1330, 2175, 500, 90],
+    ['cap-tape', 2100, 2175, 500, 90],
+    ['cap-tape-lettering', 2134.6, 2190.03, 431.88, 59.96]
+  ];
+  DRAWN_PIECES['garment-cfu-coat'] = DRAWN_2;
+  const DRAWN_3 = [
+    ['name-tape', 2762.7, 1049.98, 400, 200],
+    ['patch-command', 1656.68, 1005.43, 299.96, 289.06],
+    ['sleeve-front-loop-right', 971.6, 596.8, 325.57, 394.21],
+    ['sleeve-front-flag-left', 3464.92, 584.43, 265.32, 268.98],
+    ['sleeve-front-pocket-left', 3596.77, 1247.14, 300.48, 573.59],
+    ['patch-flag-left', 4170.62, 316.3, 350, 200],
+    ['sleeve-pocket-left', 4225.69, 750.5, 240, 550]
+  ];
+  DRAWN_PIECES['garment-cfdu-flight-suit'] = DRAWN_3;
+  DRAWN_PIECES['garment-fdu-flight-suit'] = DRAWN_3;
+  const DRAWN_4 = [
+    ['name-tape', 2762.67, 873.7, 400, 200],
+    ['patch-command', 1656.67, 829.2, 300, 289],
+    ['sleeve-front-loop-right', 1028.09, 447.21, 238.16, 375.58],
+    ['sleeve-front-flag-left', 3469.53, 438.63, 230.46, 242.74],
+    ['sleeve-front-pocket-left', 3505.32, 1073.96, 385.88, 607.07],
+    ['patch-flag-left', 4170.66, 140, 350, 200],
+    ['sleeve-pocket-left', 4183.16, 765, 325, 575]
+  ];
+  DRAWN_PIECES['garment-flight-jacket-blue'] = DRAWN_4;
+  DRAWN_PIECES['garment-flight-jacket-green'] = DRAWN_4;
+
+  function createContext(build, store){
+    const ctx = {
+      build, store,
+      layers: [],
+      notes: [],
+      base: null,
+      async spec(id){ return store.load(id); },
+      has(id){ return !!id && store.has(id); },
+
+      async garment(id, opts){
+        const s = await store.load(id);
+        ctx.base = s;
+        ctx.layers.push(Object.assign(core.registerAtOrigin(s, Z.garment, 'garment'), { key: 'base:jacket', className: 'jacket' }, opts || {}));
+        // The patches and tapes are pieces like any other (labels and callouts keep off them); the sleeve pocket and loop outlines are the
+        // surfaces the engine's own patches and measures lie on, so only the callouts' circles and captions keep off those (`surface`).
+        for(const [name, x, y, w, h] of DRAWN_PIECES[id] || []) ctx.keepClear({ x: x / 100, y: y / 100, w: w / 100, h: h / 100 }, 'drawn:' + name, /^(sleeve-pocket|sleeve-front)/.test(name));
+        return s;
+      },
+      // Redraw named groups of the base garment above everything placed so far (a lapel that may
+      // cover part of the ribbons, 11.1.8; collar leaves over badges).
+      // `except`: groups inside those that stay hidden (a closed collar redrawn without its cover).
+      foreground(groups, z, except){
+        if(!ctx.base) return;
+        ctx.layers.push(Object.assign(core.registerAtOrigin(ctx.base, z == null ? Z.badge + 1 : z, 'garment-foreground'), { key: 'layer:foreground', onlyGroups: groups }, except && except.length ? { hideGroups: except } : {}));
+      },
+      // A layer drawn to share the base garment's box (nametag, epaulet sleeves, braid).
+      async overlay(id, z){
+        if(!ctx.has(id)){ ctx.note('A part of this uniform cannot be shown'); return null; }
+        const s = await store.load(id);
+        ctx.layers.push(Object.assign(core.registerAtOrigin(s, z == null ? Z.garmentLayer : z, 'garment-layer'), { key: 'layer:' + id }));
+        ctx.overlays = ctx.overlays || [];
+        ctx.overlays.push(s);
+        return s;
+      },
+      // A point on the garment: anchor names are looked up on the base, then on the overlays.
+      point(name){
+        const specs = [ctx.base, ...(ctx.overlays || [])];
+        const sh = ctx.landmarkShift && ctx.landmarkShift[name];
+        for(const s of specs){ const a = s && core.anchor(s, name); if(a) return sh ? { x: a.x * (sh.k || 1) + sh.dx, y: a.y * (sh.k || 1) + sh.dy } : { x: a.x, y: a.y }; }
+        return null;
+      },
+      // `landmarkShift` {name: {dx, dy, k}}: a landmark of a view the profile has moved on the scene (the cap views
+      // seated on the figure or set beside it at a reduced size k, profiles-field.js) is read where the view now is.
+      rect(name){
+        const specs = [ctx.base, ...(ctx.overlays || [])];
+        const sh = ctx.landmarkShift && ctx.landmarkShift[name];
+        for(const s of specs){ const r = s && core.landmarkBounds(s, name); if(r) return sh ? { x: r.x * (sh.k || 1) + sh.dx, y: r.y * (sh.k || 1) + sh.dy, w: r.w * (sh.k || 1), h: r.h * (sh.k || 1) } : r; }
+        return null;
+      },
+      landmark(name){
+        const specs = [ctx.base, ...(ctx.overlays || [])];
+        for(const s of specs){ const l = s && core.landmark(s, name); if(l) return l; }
+        return null;
+      },
+      async place(id, opts){
+        if(!ctx.has(id)){ ctx.note(`${(opts && opts.title) || 'A piece of this uniform'} cannot be shown`); return null; }
+        const s = await store.load(id);
+        const layer = core.placeAsset(s, Object.assign({ z: Z.insignia }, opts));
+        ctx.layers.push(layer);
+        return layer;
+      },
+      raster(opts){
+        // The patches/ocp images are crops of the old sleeve drawing (a small patch and a sliver of the next),
+        // not patches: nothing draws them, whoever asks. The page hands the engine the patch's full artwork.
+        if(/(^|\/)patches\/ocp\//.test(String(opts.href || ''))){
+          ctx.note(`${opts.title || 'A patch'} cannot be shown on this uniform`);
+          return null;
+        }
+        const layer = Object.assign({ type: 'raster', rotate: 0, origin: { x: opts.x, y: opts.y }, z: Z.patch }, opts);
+        ctx.layers.push(layer);
+        return layer;
+      },
+      text(opts){
+        const layer = Object.assign({ type: 'text', rotate: 0, z: Z.text, role: 'text' }, opts);
+        layer.origin = layer.origin || { x: layer.x, y: layer.y };
+        ctx.layers.push(layer);
+        return layer;
+      },
+      note(message){ if(!ctx.notes.includes(message)) ctx.notes.push(message); },
+      // More badges are selected for a position than it takes (the one CAP aviation badge, the two over the left pocket, the one service badge,
+      // the pocket badges): the scene says which compete and which are shown, so the page can ask the member (scene.conflicts, see
+      // reportBadgeConflict).
+      conflicts: [],
+      // The stacks of badges of equal standing (js/engine/profiles-dress.js, profiles-field.js): where the member may put either badge higher
+      // (scene.badgeOrders, see reportBadgeOrder).
+      badgeOrders: [],
+      // A regulation distance shown on the measurement overlay, from `from` to `to` (points on the
+      // edges it measures, in scene inches), labelled with its length or with `label`. `opts`:
+      //   center: 'to' | 'from' | 'both'   that end is a centre (drawn with a centre mark)
+      //   mid: point                       a tick where the halfway point falls ("halfway" labels)
+      //   side: {x, y}                     the side the line moves to when it cannot stay put
+      //   offsetOnly: true                 always move it to that side (the edge is drawn art)
+      //   offsetPx: n                      how far it moves at least, in preview pixels
+      //   reference: true                  also draw the measured edge, dashed (an undrawn seam)
+      //   caption: text                    what is measured, under the length on the pill ("badge to ribbons"); without one the pill names the
+      //                                    pieces at the two ends (measure-layout captionFor), or carries the length alone
+      // js/engine/measure-layout.js decides where the line and its label go.
+      measure(from, to, label, opts){
+        if(!from || !to) return null;
+        const len = Math.hypot(to.x - from.x, to.y - from.y);
+        if(len < 0.05) return null;
+        const layer = { type: 'measure', from: { x: from.x, y: from.y }, to: { x: to.x, y: to.y }, label: label || inchesLabel(len),
+          x: Math.min(from.x, to.x), y: Math.min(from.y, to.y), w: Math.abs(to.x - from.x), h: Math.abs(to.y - from.y),
+          origin: { x: from.x, y: from.y }, rotate: 0, z: 100, role: 'measure', key: 'measure:' + ctx.layers.length, noBounds: true };
+        if(opts) layer.opts = opts;
+        ctx.layers.push(layer);
+        return layer;
+      },
+      // A piece the garment sheet draws itself (a nametag, a tape) that the measurement labels keep
+      // clear of, like the pieces placed on top. Not drawn.
+      keepClear(rect, key, surface){
+        if(!rect) return;
+        ctx.layers.push({ type: 'clear', x: rect.x, y: rect.y, w: rect.w, h: rect.h, rotate: 0, origin: { x: rect.x, y: rect.y }, z: 0, role: surface ? 'surface' : 'clear', key: 'clear:' + (key || ctx.layers.length), noBounds: true });
+      }
+    };
+    return ctx;
+  }
+
+  // 0.5 -> "½ in", 1.5 -> "1½ in"; eighths as fractions, anything else to two decimals.
+  const EIGHTHS = ['', '⅛', '¼', '⅜', '½', '⅝', '¾', '⅞'];
+  function inchesLabel(len){
+    const eighths = Math.round(len * 8);
+    if(Math.abs(eighths / 8 - len) < 0.01){
+      const whole = Math.floor(eighths / 8), part = EIGHTHS[eighths % 8];
+      return `${whole || !part ? whole : ''}${part} in`;
+    }
+    return `${len.toFixed(2)} in`;
+  }
+
+  // ---- Placement rules shared by every uniform ----------------------------------------------
+
+  // Stack pieces upward from a line: the first piece's bottom edge sits `gap` above `bottomY`,
+  // centred on `x`; each next piece sits `gap` above the one before (the "centred 1/2 inch above"
+  // rule of 4.1.5.2.2.4.1 and its equivalents). Returns the top of the stack.
+  async function stackUp(ctx, ids, x, bottomY, gap, opts){
+    let y = bottomY;
+    const placed = [];
+    for(const id of ids){
+      const s = await ctx.spec(id);
+      const layer = await ctx.place(id, Object.assign({ pieceAnchor: 'bottom_center', at: { x, y: y - gap } }, opts, { key: (opts && opts.keyFor ? opts.keyFor(id) : 'badge:' + id) }));
+      if(layer){ placed.push(layer); y = y - gap - s.h; }
+    }
+    return { top: y, placed };
+  }
+
+  // Centre one piece on a point.
+  async function centerOn(ctx, id, at, opts){
+    return ctx.place(id, Object.assign({ pieceAnchor: 'center', at }, opts));
+  }
+
+  // Fit a piece inside a rectangle (keeping its proportions), centred. For patches with no
+  // regulation size: they may not extend past their Velcro or zone (ICL 26-14 7.1.1.4).
+  async function fitIn(ctx, id, rect, opts){
+    const s = await ctx.spec(id);
+    const scale = Math.min(1, rect.w / s.w, rect.h / s.h) * ((opts && opts.fill) || 1);
+    return ctx.place(id, Object.assign({ pieceAnchor: 'center', at: core.rectCenter(rect), scale }, opts));
+  }
+
+  function fitRaster(ctx, href, rect, aspect, opts, size){
+    // aspect = w / h of the image; fit inside rect, centred. `size` ({ w, h } in inches, a patch whose spec gives its size): drawn at that size, shrunk only where it would pass the rect.
+    let w = rect.w, h = w / aspect;
+    if(size && size.w > 0 && size.h > 0){ const k = Math.min(1, rect.w / size.w, rect.h / size.h); w = size.w * k; h = size.h * k; }
+    else if(h > rect.h){ h = rect.h; w = h * aspect; }
+    return ctx.raster(Object.assign({ href, x: rect.x + (rect.w - w) / 2, y: rect.y + (rect.h - h) / 2, w, h }, opts));
+  }
+
+  // Name text on a tape or plate. `zone` is a rect in scene inches. Upper case block letters, centred,
+  // at most `maxH` tall and shrunk to fit the zone's width.
+  function nameText(ctx, text, zone, opts){
+    const o = opts || {};
+    const str = String(text || '').trim();
+    if(!str) return null;
+    const value = o.upper === false ? str : str.toUpperCase();
+    // `o.capHeight`: the capitals' height in inches (the field name tapes match the sheet's own CAP tape lettering); else `o.size`, the em; else the zone.
+    const size = o.capHeight ? o.capHeight / CAP_HEIGHT : (o.size || Math.min(o.maxH || zone.h * 0.8, zone.h * 0.9));
+    // The lettering's natural width from the face's own advances (E121; it was a guessed 0.68 em per capital), times any horizontal condensing (the
+    // tape lettering is condensed); shrink to fit.
+    const natural = textAdvance(value) * size * (o.condense || 1);
+    const fitWidth = natural > zone.w ? zone.w : null;
+    return ctx.text({
+      text: value,
+      x: zone.x + zone.w / 2,
+      // The capitals' middle on the zone's middle; the renderer sets the baseline from the face's metrics (E121).
+      y: zone.y + zone.h / 2,
+      size,
+      w: Math.min(natural, zone.w),
+      h: size,
+      color: o.color || '#d8dbe0',
+      weight: o.weight || 700,
+      font: o.font,
+      fitWidth: fitWidth && o.condense ? fitWidth / o.condense : fitWidth,
+      condense: o.condense || null,
+      key: o.key || 'text:name',
+      role: 'text',
+      className: 'nameText'
+    });
+  }
+
+  // Engraved lettering on a nameplate (D30; LIVE13 E121). Ethan: "the uniform generation shouldn't differ between mobile and PC. the name on the
+  // nameplate is shifted up on mobile but normal on PC." The lettering was Arial through 'dominant-baseline: central', and Safari on iOS lays that
+  // baseline out from the ascent and descent of whatever face it substitutes for Arial, so the name rode high on phones. Now every engraved text is
+  // one bundled face, Ubuntu Bold (vendor/fonts/Ubuntu-Bold.woff2, the CAP Brand Guide kit; the other bundled face, Rajdhani, is condensed and
+  // squared, unlike the regular-width block capitals engraved on a CAP plate), declared in the drawing itself and embedded in the PNG export
+  // (render-svg). The layer's y stays the capitals' MIDDLE (the engine's frame: bounds, measurements, tests); the renderer draws the text on its
+  // BASELINE (no dominant-baseline), baseline = middle + CAP_HEIGHT * size / 2, so the capitals' middle lands on the zone's middle by arithmetic
+  // every renderer agrees on. The metrics are the font file's own (scripts/font-metrics.cjs reads them; a test compares): 1000 units per em,
+  // capitals 693 units tall, the advance of each glyph below.
+  const ENGRAVED_FONT = 'Ubuntu';   // the family the renderer declares (render-svg ENGRAVED_FONT: Ubuntu Bold from vendor/fonts)
+  const GLYPH_ADV = {
+    0: 568, 1: 568, 2: 568, 3: 568, 4: 568, 5: 568, 6: 568, 7: 568, 8: 568, 9: 568, A: 721, B: 672, C: 648,
+    D: 737, E: 606, F: 574, G: 702, H: 734, I: 316, J: 529, K: 684, L: 563, M: 897, N: 756, O: 790, P: 644,
+    Q: 790, R: 667, S: 582, T: 614, U: 707, V: 722, W: 948, X: 675, Y: 661, Z: 610,
+    " ": 240, "-": 340, "'": 247, ".": 246, ",": 246
+  };
+  const CAP_HEIGHT = 0.693;        // capital letters, in em (OS/2 sCapHeight 693 of 1000)
+  const GLYPH_FALLBACK = 721;      // accented and other capitals: the A
+  // The baseline that puts the capitals' middle on `middleY` at `size` em.
+  function baselineFor(middleY, size){ return middleY + CAP_HEIGHT * size / 2; }
+
+  function textAdvance(text){
+    let sum = 0;
+    for(const ch of String(text)) sum += GLYPH_ADV[ch] != null ? GLYPH_ADV[ch] : GLYPH_FALLBACK;
+    return sum / 1000;
+  }
+
+  // Size the name for a plate. `zone` is the plate spec's name landmark in scene inches. The capitals
+  // fill `fill` (default 0.9) of the zone's height; a name too wide for the zone is first squeezed
+  // horizontally (the condensed lettering of the field name tapes, down to `minCondense`, default
+  // 0.6) and, if that is still too wide, made smaller in proportion. Returns the sizing and the layer.
+  function plateName(ctx, text, zone, opts){
+    const o = opts || {};
+    const str = String(text || '').trim();
+    if(!str || !zone) return null;
+    const value = o.upper === false ? str : str.toUpperCase();
+    const adv = textAdvance(value);
+    const fill = o.fill || 0.9;
+    const minCondense = o.minCondense || 0.6;
+    let size = zone.h * fill / CAP_HEIGHT;
+    let condense = 1;
+    if(adv * size > zone.w){
+      condense = Math.max(minCondense, zone.w / (adv * size));
+      if(adv * size * condense > zone.w) size = zone.w / (adv * condense);
+    }
+    const width = adv * size;               // before condensing
+    const capH = size * CAP_HEIGHT;
+    const layer = ctx.text({
+      text: value,
+      x: zone.x + zone.w / 2,
+      // The capitals' middle on the zone's middle; the renderer sets the baseline from the face's metrics (E121).
+      y: zone.y + zone.h / 2,
+      size,
+      w: width * condense,
+      h: capH,
+      color: o.color || '#d8dbe0',
+      weight: 700,
+      font: o.font || null,
+      fitWidth: width,
+      condense: condense < 1 ? condense : null,
+      key: o.key || 'text:name',
+      role: 'text',
+      className: 'nameText'
+    });
+    return { layer, size, capH, condense, width: width * condense };
+  }
+
+  // ---- Ribbons --------------------------------------------------------------------------------
+
+  // The size each ribbon device is drawn at, by asset id: its spec size, except that a star is drawn as tall as
+  // the CAP tri-blade propeller on the same ribbon (Ethan: "the stars are a little small. should be the same size
+  // of the triblade"), keeping its own aspect. The star's own 3/16 in point-to-point (0.173 in tall, spec
+  // device-star-*) is an estimate; the bronze propeller is 0.262 in tall, so a star is drawn at 1.51 times its
+  // spec size. The art and the manifest keep their sizes; this is the one place the factor is applied.
+  async function deviceSizes(ctx, ids){
+    const sizes = {};
+    const propId = awards.DEVICE.propeller_bronze;
+    const prop = ctx.has(propId) ? await ctx.spec(propId) : null;
+    for(const d of [...new Set(ids)]){
+      if(!ctx.has(d)) continue;
+      const s = await ctx.spec(d);
+      const k = prop && /^device-star-/.test(d) && s.h > 0 ? prop.h / s.h : 1;
+      sizes[d] = { w: s.w * k, h: s.h * k };
+    }
+    return sizes;
+  }
+
+  // Draw a rack. `ribbons` are resolved ribbons in precedence order, each
+  // { key, title, asset, devices:[ids], centered }. `slot` gives centerX, bottomY and the wearer's-left (outboard) edge.
+  // A ribbon with `devicePlan` ([{ id, x, y, scale }], centres in inches from the ribbon's top-left) has its devices where the plan
+  // puts them instead (a military ribbon's chooser tile, military/military-device-layout.js ribbonDevicePlan). Returns the rack's bounding box.
+  async function drawRack(ctx, ribbons, slot, opts){
+    if(!ribbons.length) return null;
+    const o = opts || {};
+    const sizes = await deviceSizes(ctx, ribbons.flatMap(r => r.devices || []));
+    const rack = awards.layoutRack(ribbons, {
+      perRow: o.perRow || 3,
+      centerX: slot.centerX,
+      bottomY: slot.bottomY,
+      outboardX: slot.outboardX,
+      outboardSign: slot.outboardSign,
+      align: o.align,
+      lapel: o.lapel,
+      arrangement: o.arrangement,
+      countsBottomFirst: o.countsBottomFirst
+    });
+    if(rack.customDeclined) ctx.note('The rows you set are not a layout the regulation allows (rows of three, or of four on the Service Dress, all full but the top row), so the regular rows are shown (CAPR 39-1, 11.2.7)');
+    if(rack.lapelDeclined) ctx.note('The lapel covers the bottom row, so no row is shortened to keep it clear; the lapel may cover a portion of the ribbons (CAPR 39-1, 11.1.8)');
+    for(const p of rack.placements){
+      const r = p.item;
+      if(r.asset && ctx.has(r.asset)){
+        const s = await ctx.spec(r.asset);
+        ctx.layers.push({ type: 'asset', id: r.asset, x: p.x, y: p.y, w: p.w, h: p.h, rotate: 0, origin: { x: p.x, y: p.y }, z: Z.ribbon, role: 'ribbon', key: r.key, title: r.title, className: 'ribbonTile', sw: s.w });
+      }else{
+        ctx.note(`The ribbon for ${r.title || r.key} cannot be shown`);
+        continue;
+      }
+      if(r.devicePlan){
+        for(const [i, d] of r.devicePlan.entries()){
+          if(!ctx.has(d.id)) continue;
+          const s = await ctx.spec(d.id), k = d.scale || 1;
+          const sz = { w: s.w * k, h: s.h * k };
+          ctx.layers.push({ type: 'asset', id: d.id, x: p.x + d.x - sz.w / 2, y: p.y + d.y - sz.h / 2, w: sz.w, h: sz.h, rotate: 0, origin: { x: p.x + d.x, y: p.y + d.y }, z: Z.device, role: 'device', key: `${r.key}:device:${i}`, className: 'ribbonDevice' });
+        }
+        continue;
+      }
+      const devs = (r.devices || []).filter(d => sizes[d]);
+      const placed = awards.layoutDevices(r.centered ? devs : awards.sortRun(devs), sizes, { centered: r.centered, ribbonW: p.w, ribbonH: p.h });
+      // Devices that cannot all fit at full size are drawn smaller by one factor (awards.layoutDevices: the gap closes first).
+      const k = placed.scale || 1;
+      if(k < 1) ctx.note(`${r.title || r.key}: ${placed.length} devices do not fit the ribbon at full size; drawn at ${k.toFixed(2)} of their size, ${awards.DEVICE_END_MARGIN} in inside each end (CAPR 39-3 6b)`);
+      placed.forEach((d, i) => {
+        const sz = { w: sizes[d.id].w * k, h: sizes[d.id].h * k };
+        ctx.layers.push({ type: 'asset', id: d.id, x: p.x + d.x - sz.w / 2, y: p.y + d.y - sz.h / 2, w: sz.w, h: sz.h, rotate: 0, origin: { x: p.x + d.x, y: p.y + d.y }, z: Z.device, role: 'device', key: `${r.key}:device:${i}`, className: 'ribbonDevice' });
+      });
+    }
+    const box = core.unionBounds(rack.placements.map(p => ({ x: p.x, y: p.y, w: p.w, h: p.h })));
+    // The highest row (row 0 of the layout): the first badge is centred over it, not over the whole rack (CAPR 39-1 4.1.5.2.2.4.1,
+    // 4.1.9.4.4.1, 4.2.6.2.7.1). A shortened top row lies off the rack's centre line.
+    const topRow = core.unionBounds(rack.placements.filter(p => p.row === 0).map(p => ({ x: p.x, y: p.y, w: p.w, h: p.h })));
+    return Object.assign(box, { mode: rack.mode, rows: rack.rows.map(r => r.length), topRow });
+  }
+
+  // Miniature medals: medal body under a vertical ribbon drape (devices turned vertical with
+  // precedence at the top, CAPR 39-1 11.4.2).
+  // Miniature suspension ribbon: 11/16 in wide (11.3), straight sides of about 1.39 in, then a V
+  // point of about 0.15 in into the medal's ring (measured on the McChord miniatures).
+  const MINI_DRAPE = { w: 0.6875, h: 1.54, point: 0.15 };
+  // CAPR 39-1 11.2.8: 'Upper rows will be placed to cover approximately 50% of the ribbon portion of the medals in the row below.'
+  // On the worn jacket (Doran's photo L1837: four rows of four, each medal hanging almost directly under the one above, the lower
+  // ribbons showing only as short bands between the medals and at their edges) the rows are one medal body apart plus a short band
+  // of ribbon, so the upper pendants hang over the whole ribbon below but its lowest part; Ethan: the rows were 'spaced way too far
+  // apart' (1.65 in, the old 50% of the drape). The pitch is the tallest body that hangs below a drape plus a band of the lower
+  // ribbon left in view: MINI_ROW_BAND (0.05 in) where no lower row carries a device, else enough for the half-size device and its
+  // gaps above the drape's V point (a device on a lower row stays in view, 11.4.2), never under MINI_ROW_MIN.
+  const MINI_ROW_MIN = 0.5, MINI_ROW_BAND = 0.05, MINI_DEVICE_BAND = 0.5;
+  // 11.3: 'Miniature medals are approximately 1/2 the size of regular medals': the attachments on a miniature medal's ribbon
+  // (11.4.2, 'either full size or miniature attachments') are drawn at that half size, on the 11/16 in drape.
+  const MINI_DEVICE_SCALE = 0.5;
+  // True when the rectangle and the polygon (points {x, y}, or [x, y] pairs) share any area or edge.
+  function rectHitsPolygon(r, poly){
+    const pts = poly.map(q => Array.isArray(q) ? { x: q[0], y: q[1] } : q);
+    const inRect = q => q.x >= r.x && q.x <= r.x + r.w && q.y >= r.y && q.y <= r.y + r.h;
+    const inPoly = q => { let c = false; for(let i = 0, j = pts.length - 1; i < pts.length; j = i++){ const a = pts[i], b = pts[j]; if(((a.y > q.y) !== (b.y > q.y)) && (q.x < (b.x - a.x) * (q.y - a.y) / (b.y - a.y) + a.x)) c = !c; } return c; };
+    if(pts.some(inRect)) return true;
+    const corners = [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }];
+    if(corners.some(inPoly)) return true;
+    const cross = (a, b, c) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    const seg = (a, b, c, d) => (cross(a, b, c) > 0) !== (cross(a, b, d) > 0) && (cross(c, d, a) > 0) !== (cross(c, d, b) > 0);
+    for(let i = 0; i < pts.length; i++){
+      const a = pts[i], b = pts[(i + 1) % pts.length];
+      for(let k = 0; k < 4; k++) if(seg(a, b, corners[k], corners[(k + 1) % 4])) return true;
+    }
+    return false;
+  }
+  async function drawMiniMedals(ctx, medals, slot, opts){
+    // Only medals are worn as miniatures (11.2.8, Table 11-1): an award with no medal is a ribbon-only
+    // award, so it gets no suspension drape; say so rather than hang a ribbon with nothing on it. A U.S. military
+    // medal whose body has no art yet (`pendingMedal`) is a medal: its drape hangs in its place, the room for the body kept,
+    // with no body and a note, so nothing moves when the art lands.
+    medals = (medals || []).filter(m => {
+      if(m.pendingMedal || !m.ribbonAsset || (m.medal && ctx.has(m.medal))) return true;
+      ctx.note(`${m.title}: ribbon-only award, not worn as a miniature medal (CAPR 39-1 11.2.8)`);
+      return false;
+    });
+    if(!medals.length) return null;
+    const pending = medals.filter(m => m.pendingMedal).map(m => m.title);
+    if(pending.length) ctx.note(`The medal for ${pending.join(', ')} cannot be shown: only the ribbon is drawn`);
+    const o = opts || {};
+    let maxBodyH = 0;
+    for(const m of medals){ if(m.medal && ctx.has(m.medal)){ const s = await ctx.spec(m.medal); maxBodyH = Math.max(maxBodyH, s.h); } }
+    const totalH = MINI_DRAPE.h + (maxBodyH || 0.9);
+    // Row spacing uses the tallest body in the set; the group is then placed from the medals actually
+    // drawn. How far each medal's body hangs below its drape comes from its own spec: the body's
+    // height less the ribbon_attach anchor's depth.
+    const hang = new Map(), reach = new Map();
+    for(const m of medals){
+      let below = 0, left = 0, right = MINI_DRAPE.w;
+      if(m.pendingMedal) below = totalH - MINI_DRAPE.h;
+      else if(m.medal && ctx.has(m.medal)){
+        const s = await ctx.spec(m.medal);
+        const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
+        below = s.h - attach.y;
+        left = Math.min(0, MINI_DRAPE.w / 2 - attach.x); right = Math.max(MINI_DRAPE.w, MINI_DRAPE.w / 2 - attach.x + s.w);
+      }
+      hang.set(m, below); reach.set(m, { left, right });
+    }
+    // The rows lie one medal body and a band of ribbon apart (MINI_ROW_BAND, MINI_DEVICE_BAND): the upper row's pendants hang over the ribbons of the row below, as on
+    // the worn jacket (Doran's photo, thread L1837: row to row about 0.65 in against the ribbons' 11/16 in width; 11.2.8, 11.3).
+    const rows = awards.miniMedalRows(medals, o.style || 'mounting', o.perRow);
+    const lowerDevices = rows.slice(1).some(row => row.some(m => (m.devices || []).length));
+    const rowPitch = Math.max(MINI_ROW_MIN, Math.max(...[...hang.values()]) + (lowerDevices ? MINI_DEVICE_BAND : MINI_ROW_BAND));
+    const out = awards.layoutMiniMedals(medals, {
+      rowPitch,
+      style: o.style, perRow: o.perRow, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
+      slotW: slot.w, centerX: slot.centerX, bottomY: 0
+    });
+    // The lowest row's medal bodies end exactly on the line the slot names (1/2 in above the service
+    // badge or crest, CAPR 39-1 4.2.2.4 with ICL 25-02; the men's copy is printed as 4.1.2.4 and corrected to 4.2.2.4), or the group is centred on the
+    // slot's point (the mess dress, 4.1.1.1.2.2): measured from the lowest drawn body, not the
+    // tallest body of the whole set, so a taller medal in an upper row cannot leave a gap.
+    const lowRow = out.rows.length - 1;
+    const drawnBottom = Math.max(...out.placements.filter(p => p.row === lowRow).map(p => p.y + MINI_DRAPE.h + (hang.get(p.item) || 0)));
+    const drawnTop = Math.min(...out.placements.map(p => p.y));
+    const shift = slot.centerY != null ? slot.centerY - (drawnTop + drawnBottom) / 2 : slot.bottomY - drawnBottom;
+    for(const p of out.placements) p.y += shift;
+    // The rack never lies under a part of the garment that would cover it (the blazer's lapel, 11.2.8: the medal
+    // nearest the lapel is fully exposed): when `avoid` polygons are given, the whole rack slides toward
+    // `avoidDir` (+1 toward larger x) in 0.02 in steps until no drape or body touches one, at most `maxShift`
+    // (rows keep their alignment, the lowest row keeps its line).
+    // `report` (an object the caller passes) gets `blocked` (a drape or body still touches an `avoid` polygon after
+    // the slide), `slide`, and `boxes` (each medal's drape and body box, x0/x1/y0/y1, as drawn), so the caller can
+    // try a narrower rack and measure how far the rack lies from the rest of the garment.
+    let slide = 0;
+    const gap = o.avoidGap != null ? o.avoidGap : 0.03;
+    const boxOf = p => { const r = reach.get(p.item) || { left: 0, right: MINI_DRAPE.w }; return { x0: p.x + r.left, x1: p.x + r.right, y0: p.y, y1: p.y + MINI_DRAPE.h + (hang.get(p.item) || 0) }; };
+    if(o.report) o.report.blocked = false;
+    if(o.avoid && o.avoid.length){
+      const dir = o.avoidDir < 0 ? -1 : 1, maxShift = o.maxShift != null ? o.maxShift : 2.5;
+      const boxes = out.placements.map(boxOf);
+      const hits = d => boxes.some(b => o.avoid.some(poly => rectHitsPolygon({ x: b.x0 - gap + d, y: b.y0, w: b.x1 - b.x0 + 2 * gap, h: b.y1 - b.y0 }, poly)));
+      while(slide < maxShift && hits(dir * slide)) slide += 0.02;
+      if(o.report) o.report.blocked = hits(dir * slide);
+      else if(hits(dir * slide)) ctx.note('The miniature medals reach the lapel: there is no room to move them clear of it');
+      slide *= dir;
+      for(const p of out.placements) p.x += slide;
+    }
+    if(o.report){ o.report.slide = slide; o.report.boxes = out.placements.map(boxOf); }
+    const sizes = await deviceSizes(ctx, medals.flatMap(m => m.devices || []));
+    for(const d of Object.keys(sizes)) sizes[d] = { w: sizes[d].w * MINI_DEVICE_SCALE, h: sizes[d].h * MINI_DEVICE_SCALE };
+    // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the
+    // rows above leave exposed: the upper rows' bodies hang over the drapes below them (11.2.8).
+    const covers = new Map();
+    for(const p of out.placements){
+      const m = p.item;
+      let x0 = p.x, x1 = p.x + MINI_DRAPE.w;
+      if(m.medal && ctx.has(m.medal)){
+        const s = await ctx.spec(m.medal);
+        const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
+        x0 = Math.min(x0, p.x + MINI_DRAPE.w / 2 - attach.x); x1 = Math.max(x1, p.x + MINI_DRAPE.w / 2 - attach.x + s.w);
+      }
+      covers.set(p, { x0, x1, bottom: p.y + MINI_DRAPE.h + (hang.get(m) || 0) });
+    }
+    const DEVICE_GAP = 0.04;
+    for(const p of out.placements){
+      const m = p.item;
+      // Upper rows hang over the drapes of the rows below them, so they draw later.
+      const zBase = Z.medal + (out.rows.length - 1 - p.row) * 0.1 + p.z * 0.001;
+      // Ribbon drape: the ribbon artwork as a vertical strip, cut to its V point.
+      if(m.ribbonAsset && ctx.has(m.ribbonAsset)){
+        const D = MINI_DRAPE;
+        const clip = [{ x: p.x, y: p.y }, { x: p.x + D.w, y: p.y }, { x: p.x + D.w, y: p.y + D.h - D.point }, { x: p.x + D.w / 2, y: p.y + D.h }, { x: p.x, y: p.y + D.h - D.point }];
+        ctx.layers.push({ type: 'asset', id: m.ribbonAsset, x: p.x, y: p.y, w: D.w, h: D.h, rotate: 0, origin: { x: p.x, y: p.y }, z: zBase, role: 'mini-drape', key: m.key, title: m.title, className: 'ribbonMini', clip });
+      }
+      if(m.medal && ctx.has(m.medal)){
+        const s = await ctx.spec(m.medal);
+        const attach = core.anchor(s, 'ribbon_attach') || { x: s.w / 2, y: 0 };
+        const at = { x: p.x + MINI_DRAPE.w / 2, y: p.y + MINI_DRAPE.h };
+        ctx.layers.push(Object.assign(core.placeAsset(s, { pieceAnchor: attach, at, z: zBase + 0.0005, role: 'mini-medal', key: m.key + ':medal', title: m.title }), { className: 'ribbonMini' }));
+      }
+      // Devices on the drape, turned clockwise to lie vertical, precedence at the top (11.4.2). A device worn centred on
+      // the ribbon (propeller, lifesaving star) is centred vertically, its clasps below and above it.
+      const own = (m.devices || []).filter(d => sizes[d]);
+      const devs = m.centered ? own : awards.sortRun(own);
+      // The devices go in the exposed part of the drape: from just below the lowest body of an upper
+      // row that overlaps their column (plus a small gap) down to the drape's V point. With nothing
+      // above, that is the whole drape.
+      const colHalf = Math.max(0, ...devs.map(d => sizes[d].h)) / 2, colX = p.x + MINI_DRAPE.w / 2;
+      let exposedTop = p.y;
+      for(const q of out.placements){
+        if(q.row >= p.row) continue;
+        const c = covers.get(q);
+        if(c.x1 > colX - colHalf && c.x0 < colX + colHalf) exposedTop = Math.max(exposedTop, c.bottom + DEVICE_GAP);
+      }
+      const exposedBottom = p.y + MINI_DRAPE.h - MINI_DRAPE.point;
+      // The devices lie along that exposed length by the bar's rule turned clockwise (awards.layoutDevicesAlong, 11.4.2): centred, touching,
+      // a single device or a centred one at the middle, the first clasp beside a centred device on the bottom side. Each is turned 90 degrees, so
+      // its width runs down the drape. Where less is exposed than they need, they nest rather than shrink (one size on the whole rack).
+      const spanTop = Math.min(exposedTop, exposedBottom);
+      const lengths = {};
+      for(const d of devs) lengths[d] = sizes[d].w;
+      const placed = awards.layoutDevicesAlong(devs, lengths, exposedBottom - spanTop, { centered: m.centered, gap: 0.04 * MINI_DEVICE_SCALE });
+      placed.forEach((d, i) => {
+        const sz = sizes[d.id];
+        const cx = p.x + MINI_DRAPE.w / 2, cy = spanTop + d.y;
+        ctx.layers.push({ type: 'asset', id: d.id, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 90, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
+      });
+    }
+    const miniBox = core.unionBounds(out.placements.map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: p.row === lowRow ? drawnBottom + shift - p.y : MINI_DRAPE.h + (hang.get(p.item) || 0) })));
+    // The highest row of medals (row 0): the first badge is centred over it, ½ inch above (4.1.1.1.3.1, 4.1.2.1.2.5).
+    miniBox.topRow = core.unionBounds(out.placements.filter(p => p.row === 0).map(p => ({ x: p.x, y: p.y, w: MINI_DRAPE.w, h: MINI_DRAPE.h })));
+    return miniBox;
+  }
+
+  // ---- The scene ---------------------------------------------------------------------------------
+
+  // ---- Where the picture ends ----
+  //
+  // The picture shows the top (the owner, 2026-11-12: "you only have to show the top, not the skirt. thats why the female mess dress (and others) look like a ... witch robe. it
+  // should cut off where the rest of the uniforms cut off. the only reaosn class b includes some of the pants is because includes the belt"). The women's sheets draw a skirt or slacks
+  // far longer than the trousers the men's sheets draw, so a picture ends a short strip under the top's own lowest point: the sheet's reference line (the lower edge of the belt where
+  // one is drawn, else the lowest point of the top, hem and cuffs, whichever is lower). The strip is the one rule of scripts/measure-frame-cut.cjs: a figure with a belt drawn shows the
+  // men's strip of the same uniform, a figure with no belt drawn (a coat, a blazer, an overblouse, the women's polo) shows the Class A coat's 0.288 in; the mess dress keeps the men's own.
+  // FRAME_CUT is that line and that strip per sheet, generated from the sheets by that script and checked against them by tests/engine-frame-cut.test.cjs. A sheet with no entry
+  // (the men's coat, mess dress and belted shirts, the field coats, the flight suits) ends where its sheet does. The sheet's inches run from its top, the scene's origin, so the cut
+  // is scene inches too.
+  // GARMENT FRAME_CUT begin
+  const FRAME_CUT = {
+    'garment-blues-class-a-coat-female': { line: 29.147, strip: 0.288 },
+    'garment-semiformal-class-a-coat-female': { line: 29.147, strip: 0.288 },
+    'garment-mess-dress-female': { line: 32.458, strip: 2.227 },
+    'garment-corporate-service-dress-blazer-female': { line: 28.382, strip: 0.288 },
+    'garment-blues-class-b-blouse-female': { line: 23.172, strip: 4.446 },
+    'garment-blues-class-b-blouse-female-long': { line: 29.207, strip: 1.354 },
+    'garment-aviator-shirt-female': { line: 24.944, strip: 3.535 },
+    'garment-aviator-shirt-female-long': { line: 33.222, strip: 0.409 },
+    'garment-overblouse-female': { line: 24.529, strip: 0.288 },
+    'garment-overblouse-female-long': { line: 24.914, strip: 0.288 },
+    'garment-polo-female': { line: 28.794, strip: 0.288 },
+    'garment-polo-female-long': { line: 29.183, strip: 0.288 },
+    'garment-corporate-service-dress-blazer-male': { line: 33.73, strip: 0.288 }
+  };
+  // GARMENT FRAME_CUT end
+  // The flat sleeves drawn beside the figure for the patches are no part of the lower garment: they count whole, and the frame grows to hold them. The Honor Guard uniform's white gloves
+  // hang past the cuff and, on three sheets, past the sheet's lower edge (the sheet draws them as an overlay taller than itself): they stay whole too, so the line they are held to is the
+  // lower of the cut and the gloves' own lowest edge (the overlay is a whole sheet, and its box says nothing of where the hands end).
+  const CUT_WHOLE = ['sleeve-flat'];
+  const GLOVES = 'honor-guard-gloves', GLOVE_EDGE = 0.1;
+  // The lowest point the gloves overlay's landmarks give (outlines of the hands, in the sheet's units of 0.01 in), in inches.
+  function glovesBottom(spec){
+    let low = -Infinity;
+    const walk = v => {
+      if(Array.isArray(v)){ if(v.length === 2 && v.every(Number.isFinite)) low = Math.max(low, v[1]); else v.forEach(walk); }
+      else if(v && typeof v === 'object') Object.keys(v).forEach(k => { if(k !== 'groups' && k !== 'sheet_box') walk(v[k]); });
+    };
+    walk(spec && spec.raw && spec.raw.landmarks);
+    return low / core.UNITS_PER_INCH;
+  }
+  // The scene's y of the line the base sheet's picture ends at, or null for a sheet that is cut nowhere.
+  function frameCutOf(base){
+    const e = base && FRAME_CUT[base.id];
+    return e ? e.line + e.strip : null;
+  }
+  // A box held to a line: what lies above it, or null for a box wholly below.
+  function heldTo(box, y){
+    if(box.y >= y) return null;
+    return box.y + box.h > y ? { x: box.x, y: box.y, w: box.w, h: y - box.y } : box;
+  }
+  // Marks every layer that reaches below the line (`cutBelow`, scene inches; the renderer draws nothing of it below that line and the scene's bounds count nothing of it there) and
+  // gives the line, or null.
+  function cutFrame(ctx){
+    const y = frameCutOf(ctx.base);
+    if(y == null) return null;
+    for(const l of ctx.layers){
+      if(l.type === 'measure' || l.type === 'clear' || CUT_WHOLE.includes(l.role)) continue;
+      const b = core.layerBounds(l), bottom = b.y + b.h;
+      let line = y;
+      if(l.role === GLOVES){
+        let low = -Infinity;
+        try{ low = glovesBottom(ctx.store.get(l.id)); }catch(e){ /* the spec is not loaded: the whole box counts */ }
+        line = Math.max(y, Math.min(bottom, low + GLOVE_EDGE));
+      }
+      if(bottom > line + 1e-6) l.cutBelow = line;
+    }
+    return y;
+  }
+
+  // The scene frame is what is shown (LIVE9-3; Ethan: "the corporate field is significantly smaller than the abus for some reason. should be the same size"). A garment
+  // sheet's box is larger than its cloth: the field coats stack the cap views in a top margin (the CFU's boonie hats above its ball and patrol caps, 12.7 in, the ABU's
+  // 7.0 in) which the engine hides and re-places on the figure, so the whole box made the CFU frame 5.7 in taller than the ABU's for the same coat, and the page fits
+  // the frame to its stage. The sheet, and every overlay drawn to its box, count as the cloth the sheet draws (measure-layout's GARMENT_FOOTPRINT: the figure, the flat
+  // sleeves, the tapes) within the box; the cap views the build wears are layers of their own (hat-view-bounds), the sleeve views and every other piece count as before.
+  function measureLayoutModule(){
+    if(typeof module === 'object' && module.exports) return require('./measure-layout.js');
+    const g = typeof self !== 'undefined' ? self : globalThis;
+    return g.CAPUBEngine && g.CAPUBEngine.measureLayout;
+  }
+  function shownBounds(ctx){
+    const ML = measureLayoutModule(), base = ctx.base;
+    let cloth = null;
+    if(ML && ML.clothBoxes && base){
+      const g = ctx.layers.find(l => l.type === 'asset' && l.role === 'garment' && l.id === base.id);
+      const boxes = g ? ML.clothBoxes({ layers: [g] }) : [];
+      if(boxes.length){
+        const u = core.unionBounds(boxes);
+        const x0 = Math.max(g.x, u.x), y0 = Math.max(g.y, u.y), x1 = Math.min(g.x + g.w, u.x + u.w), y1 = Math.min(g.y + g.h, u.y + u.h);
+        cloth = { sheet: g, box: { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } };
+      }
+    }
+    const sameBox = l => cloth && l.type === 'asset' && (l.role === 'garment' || l.role === 'garment-layer' || l.role === 'garment-foreground') && !(l.rotate || 0)
+      && Math.abs(l.x - cloth.sheet.x) < 1e-6 && Math.abs(l.y - cloth.sheet.y) < 1e-6 && Math.abs(l.w - cloth.sheet.w) < 1e-6 && Math.abs(l.h - cloth.sheet.h) < 1e-6;
+    return core.unionBounds(ctx.layers.filter(l => !l.noBounds).map(l => {
+      const b = sameBox(l) ? cloth.box : core.layerBounds(l);
+      return l.cutBelow != null ? heldTo(b, l.cutBelow) : b;
+    }));
+  }
+
+  // A polygon moved out along its edges by `d` (inches): each vertex along the sum of its two edges' outward normals, the corner's reach held to a bevel at the sharpest turns.
+  function growPolygon(pts, d){
+    const n = pts.length;
+    let area = 0;
+    for(let i = 0; i < n; i++){ const p = pts[i], q = pts[(i + 1) % n]; area += p.x * q.y - q.x * p.y; }
+    const sgn = area > 0 ? 1 : -1;
+    const norm = (p, q) => { const dx = q.x - p.x, dy = q.y - p.y, len = Math.hypot(dx, dy) || 1; return { x: sgn * dy / len, y: -sgn * dx / len }; };
+    return pts.map((p, i) => {
+      const a = norm(pts[(i + n - 1) % n], p), b = norm(p, pts[(i + 1) % n]);
+      const k = Math.max(0.35, 1 + a.x * b.x + a.y * b.y);
+      return { x: p.x + (a.x + b.x) / k * d, y: p.y + (a.y + b.y) / k * d };
+    });
+  }
+
+  // Nothing pinned to a coat is drawn inside its opening, over the shirt, the tie, the tab or the ascot: a rack the member made wide enough passes under the lapel, and what would lie
+  // beyond the lapel's inner edge is not seen (the owner, 2026-11-12). The opening is the sheet's own outline of it (its `shirt` landmark); every ribbon, device, miniature medal, drape
+  // and badge that reaches it is drawn without it (`clipOut`, which the renderer already cuts a collar leaf over a badge with), and the lapel that lies over the rest stays over it. A sheet
+  // with no such landmark (the corporate blazers, whose shirt is a group of the sheet only) is left as it is. It adds to a layer's own cuts and runs once, after everything is placed.
+  const OPENING_ROLES = new Set(['ribbon', 'device', 'mini-medal', 'mini-drape', 'badge']);
+  const OPENING_EDGE = 0.15;
+  function cutOpening(ctx){
+    const lm = ctx.base ? ctx.landmark('shirt') : null;
+    // The lapel's front edge (the edge line and its shadow the sheets draw) lies up to 0.13 in outside the shirt's outline, the coat's cloth showing in that strip, so the cut is the outline moved
+    // out by OPENING_EDGE: it takes in the strip and goes no further than the lapel, which lies over what is beyond it.
+    const opening = lm && Array.isArray(lm.points) && lm.points.length >= 3 ? growPolygon(lm.points, OPENING_EDGE) : null;
+    if(!opening) return;
+    const ob = core.polygonBounds(opening);
+    for(const l of ctx.layers){
+      if(!OPENING_ROLES.has(l.role) || (l.type !== 'asset' && l.type !== 'raster') || (l.rotate || 0)) continue;
+      const b = core.layerBounds(l);
+      if(!b || b.x > ob.x + ob.w || b.x + b.w < ob.x || b.y > ob.y + ob.h || b.y + b.h < ob.y || !rectHitsPolygon(b, opening)) continue;
+      l.clipOut = (l.clipOut || []).concat([opening]);
+    }
+  }
+
+  function finish(ctx, title){
+    settleConflicts(ctx);
+    cutOpening(ctx);
+    const cut = cutFrame(ctx);
+    const bounds = shownBounds(ctx);
+    const scene = { title, layers: ctx.layers, bounds, frameCut: cut, notes: ctx.notes, conflicts: ctx.conflicts || [], badgeOrders: settleBadgeOrders(ctx), garment: ctx.base && ctx.base.id, uniform: ctx.build && ctx.build.uniform, gender: ctx.build && ctx.build.gender };
+    // Every callout quotes the regulation paragraph it carries out (measure-layout.js refFor).
+    const ML = measureLayoutModule();
+    if(ML && ML.refFor) for(const l of ctx.layers) if(l.type === 'measure') l.ref = ML.refFor(scene, l);
+    return scene;
+  }
+
+  // ---- Badge conflicts and the member's choice ------------------------------------------------------------------------------------
+
+  // A position with more than one place holds the member's badges slot by slot: build.badgeChoices[position] is { [slotKey]: badgeId }, one
+  // entry per place ("left-pocket", "right-pocket", "over-nametag", "left", "right"...). The older form, a single badge id, reads as the first slot.
+  // `list` is the candidates in the order the engine shows them by default, `slots` the places [{ key, label }] in the order the layout fills them
+  // (one slot for a position that takes one badge). The slot's own pick goes there, a badge in no slot twice (a later slot that names a badge
+  // already placed is ignored); the slots nobody picked take the unplaced candidates in the default order. Returns the badge for each slot, in
+  // slot order, and reports the position to the page: { position, label, limit, candidates: [{ id, title, family }], shown: [ids], choice: id | null
+  // (the first slot's pick), slots: [{ key, label, choice, badge, shown }], note }. finish() later sets `shown` from the badges actually drawn.
+  function chooseBadges(ctx, position, label, list, slots, opts){
+    const raw = ctx.build && ctx.build.badgeChoices && ctx.build.badgeChoices[position];
+    // A slot may carry `accepts(item)`: the kind of badge the place takes (the name tag's place for the aeronautical rating takes only a rating). A
+    // single saved id reads as the first slot that accepts it.
+    const takes = (sl, item) => !sl.accepts || sl.accepts(item);
+    let picks = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+    if(typeof raw === 'string'){
+      const held = list.find(x => x.id === raw);
+      const sl = slots.find(s => held && takes(s, held)) || slots[0];
+      picks = sl ? { [sl.key]: raw } : {};
+    }
+    const used = new Set(), picked = {};
+    for(const sl of slots){
+      const item = typeof picks[sl.key] === 'string' ? list.find(x => x.id === picks[sl.key]) : null;
+      if(item && !used.has(item.id) && takes(sl, item)){ picked[sl.key] = item; used.add(item.id); }
+    }
+    const spare = list.filter(x => !used.has(x.id));
+    const ordered = slots.map(sl => {
+      if(picked[sl.key]) return picked[sl.key];
+      const i = spare.findIndex(x => takes(sl, x));
+      return i >= 0 ? spare.splice(i, 1)[0] : null;
+    });
+    const first = picked[slots[0] && slots[0].key];
+    const c = {
+      position, label, limit: slots.length,
+      candidates: list.map(x => ({ id: x.id, title: x.title || x.id, family: x.family || null })),
+      shown: ordered.filter(Boolean).map(x => x.id),
+      choice: first ? first.id : null,
+      slots: slots.map((sl, i) => ({ key: sl.key, label: sl.label, choice: picked[sl.key] ? picked[sl.key].id : null, badge: ordered[i] ? ordered[i].id : null, shown: !!ordered[i] })),
+      note: (opts && opts.note) || '',
+      // Why the candidates that are not shown are left off, in words with the paragraph (the page lists it under the badge).
+      why: (opts && opts.why) || ''
+    };
+    const key = JSON.stringify([c.position, c.candidates.map(x => x.id)]);
+    ctx.conflicts = ctx.conflicts || [];
+    if(!ctx.conflicts.some(x => JSON.stringify([x.position, x.candidates.map(y => y.id)]) === key)) ctx.conflicts.push(c);
+    return ordered.filter(Boolean);
+  }
+
+  // The one-place form the profiles used before the slots (a position that takes one badge): `preferred` moves the member's pick to the front of
+  // the list, `reportBadgeConflict` reports the position with its one place. Both read build.badgeChoices[position] as a badge id or as { only: id }.
+  function preferred(list, id){
+    const i = id ? list.findIndex(x => x.id === id) : -1;
+    return i > 0 ? [list[i], ...list.slice(0, i), ...list.slice(i + 1)] : list;
+  }
+  function reportBadgeConflict(ctx, position, label, list, ordered, limit){
+    const slots = Array.from({ length: limit || 1 }, (_, i) => ({ key: limit > 1 ? 'slot' + (i + 1) : 'only', label }));
+    chooseBadges(ctx, position, label, list, slots);
+  }
+
+  // ---- Badges of equal standing -----------------------------------------------------------------------------------------------
+
+  // A stack whose badges the regulation leaves in the wearer's order (data/badge-catalog.js arrangeEqual) is reported so the page can offer the swap:
+  // { group, label, place, ref, badges: [{ id, title }] highest first as drawn, swap: true | false, why }. `swap` is false, with the reason in
+  // `why`, where the other order would not fit the garment; the page then offers no swap and says why. `ref` is the paragraph that sets the stack.
+  function reportBadgeOrder(ctx, group, label, place, items, opts){
+    const o = opts || {};
+    ctx.badgeOrders = ctx.badgeOrders || [];
+    ctx.badgeOrders.push({
+      group, label, place, ref: o.ref || '',
+      badges: items.map(x => ({ id: x.id, title: x.title || x.id })),
+      swap: o.swap !== false, why: o.swap === false ? (o.why || '') : ''
+    });
+  }
+
+  // Only a badge the drawing placed is in the stack the member sees (a badge the layout had no place for is not), and a stack of fewer than two has
+  // nothing to swap.
+  function settleBadgeOrders(ctx){
+    const drawn = new Set();
+    for(const l of ctx.layers) if(l.role === 'badge' && /^badge:/.test(l.key || '')) drawn.add(l.key.split(':')[1]);
+    return (ctx.badgeOrders || [])
+      .map(e => Object.assign({}, e, { badges: e.badges.filter(x => drawn.has(x.id)) }))
+      .filter(e => e.badges.length >= 2);
+  }
+
+  // What the drawing shows of each reported position: a badge counts as shown when a badge layer for it was drawn (a badge the layout had no
+  // place for, or whose art is missing, is not shown). Left as planned when the scene drew no badge at all.
+  function settleConflicts(ctx){
+    const drawn = new Set();
+    for(const l of ctx.layers) if(l.role === 'badge' && /^badge:/.test(l.key || '')) drawn.add(l.key.split(':')[1]);
+    if(!drawn.size) return;
+    for(const c of ctx.conflicts || []){
+      for(const sl of c.slots || []) sl.shown = !!sl.badge && drawn.has(sl.badge);
+      c.shown = (c.slots || []).filter(sl => sl.shown).map(sl => sl.badge);
+    }
+  }
+
+  return { Z, createContext, growPolygon, inchesLabel, stackUp, centerOn, fitIn, fitRaster, nameText, plateName, textAdvance, baselineFor, ENGRAVED_FONT, GLYPH_ADV, CAP_HEIGHT, drawRack, drawMiniMedals, rectHitsPolygon, finish, FRAME_CUT, frameCutOf, MINI_DRAPE, chooseBadges, preferred, reportBadgeConflict, reportBadgeOrder };
+});

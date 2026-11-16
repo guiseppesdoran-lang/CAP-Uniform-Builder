@@ -1,0 +1,195 @@
+#!/usr/bin/env node
+'use strict';
+// The armpit of the wearer's left arm (the right of the sheet as the viewer sees it) on every garment sheet that offers a shoulder cord,
+// in sheet inches, read from the sheet's own silhouette (its clipSil path), for ARMPIT in js/engine/profiles-dress.js.
+// The sheets state the shoulder seam (shoulder_seam_left) but no armpit. Where the arm hangs apart from the body (the Class A coats, the long
+// sleeves) the silhouette has a hole between arm and body and the armpit is that hole's highest point; where a short sleeve lies against the
+// body (the Class B short shirt and blouse) it is the inner end of the sleeve's hem, the first reflex (concave) vertex of the outline below
+// the sleeve's outer corner.
+//   node scripts/measure-armpit.cjs            prints the ARMPIT, BODY_SIDE and ARM_SEAM tables
+// It also prints BODY_SIDE (LIVE10-MASTER-4): from the armpit, the silhouette's edge on the body's side of the gap (the left edge of the hole between arm and
+// body, or on a short sleeve the body's side edge below the sleeve's hem), about 1.6 in of its vertices, which the shoulder cord's braid follows under the arm.
+// tests/engine-live-cord-joins.test.cjs compares the tables in the engine with this output, so an art sync that redraws a sheet fails
+// the test until the tables are regenerated. Retire the tables when the art states an armpit anchor and a body edge of its own (FOLLOWUPS).
+const fs = require('node:fs');
+const path = require('node:path');
+const { silhouette, flatten } = require('./lib-svg-ink.cjs');
+
+const ROOT = path.join(__dirname, '..');
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images', 'MANIFEST.json'), 'utf8'));
+const r = n => Math.round(n * 1000) / 1000;
+const IDS = [
+  'garment-blues-class-a-coat', 'garment-blues-class-a-coat-female',
+  'garment-blues-class-b-shirt-male', 'garment-blues-class-b-shirt-male-long',
+  'garment-blues-class-b-blouse-female', 'garment-blues-class-b-blouse-female-long'
+];
+const area = p => { let a = 0; for(let i = 0; i < p.length; i++){ const q = p[(i + 1) % p.length]; a += p[i][0] * q[1] - q[0] * p[i][1]; } return Math.abs(a) / 2; };
+const signed = p => { let a = 0; for(let i = 0; i < p.length; i++){ const q = p[(i + 1) % p.length]; a += p[i][0] * q[1] - q[0] * p[i][1]; } return a / 2; };
+
+function armpitOf(subs){
+  const rings = subs.slice().sort((p, q) => area(q) - area(p));
+  const outer = rings[0], xs = outer.map(p => p[0]), cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+  // An arm apart from the body: the hole on the sheet's right, its highest vertex.
+  const hole = rings.slice(1).find(h => h.reduce((s, p) => s + p[0], 0) / h.length > cx);
+  if(hole) return hole.reduce((a, b) => (b[1] < a[1] ? b : a));
+  // A short sleeve against the body: from the outermost vertex on the right, the first reflex vertex further down.
+  const n = outer.length, orient = Math.sign(signed(outer));
+  let imax = 0;
+  for(let i = 0; i < n; i++) if(outer[i][0] > outer[imax][0]) imax = i;
+  const step = outer[(imax + 1) % n][1] > outer[imax][1] ? 1 : -1;
+  for(let k = 1; k < n; k++){
+    const i = (imax + step * k + n) % n, a = outer[(i - step + n) % n], b = outer[i], c = outer[(i + step + n) % n];
+    const u = [b[0] - a[0], b[1] - a[1]], v = [c[0] - b[0], c[1] - b[1]];
+    const turn = u[0] * v[1] - u[1] * v[0];
+    const angle = Math.abs(Math.atan2(turn, u[0] * v[0] + u[1] * v[1])) * 180 / Math.PI;
+    // A corner of more than 25 degrees that turns the opposite way to the outline, at least an inch in from the sleeve's outer edge.
+    if(Math.sign(turn) === -orient * step && angle > 25 && b[0] < outer[imax][0] - 1) return b;
+  }
+  return null;
+}
+
+// The body's side edge from the armpit: of the two ways round the ring from the armpit vertex, the one whose vertex 1 in of arc away lies farther toward the
+// body's centre line (smaller x, the garment's right side being the wearer's left arm); its vertices until 1.6 in of arc are passed, armpit first.
+const SIDE_ARC = 1.6;
+function bodySideOf(subs, armpit){
+  const rings = subs.slice().sort((p, q) => area(q) - area(p)), outer = rings[0];
+  const cx = (Math.min(...outer.map(p => p[0])) + Math.max(...outer.map(p => p[0]))) / 2;
+  const hole = rings.slice(1).find(h => h.reduce((s, p) => s + p[0], 0) / h.length > cx);
+  const ring = hole || outer, n = ring.length;
+  const at = ring.findIndex(p => p[0] === armpit[0] && p[1] === armpit[1]);
+  if(at < 0) return null;
+  const walk = step => {
+    const pts = [ring[at]]; let arc = 0;
+    for(let k = 1; k < n && arc < SIDE_ARC; k++){
+      const a = pts[pts.length - 1], b = ring[(at + step * k + 2 * n) % n];
+      arc += Math.hypot(b[0] - a[0], b[1] - a[1]); pts.push(b);
+    }
+    return pts;
+  };
+  const xAt = (pts, d) => { let arc = 0; for(let i = 1; i < pts.length; i++){ const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if(arc + l >= d){ const t = (d - arc) / l; return pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t; } arc += l; } return pts[pts.length - 1][0]; };
+  const a = walk(1), b = walk(-1);
+  return (xAt(a, 1) <= xAt(b, 1) ? a : b).map(p => [r(p[0]), r(p[1])]);
+}
+
+// The open gap at the armpit, as a polygon the cord's end piece is tested against (js/engine/profiles-dress.js GAP): where the sleeve hangs apart from the body it is the hole between arm and
+// body (the sheet's own ring, from the armpit down); where a short sleeve lies against the body there is no hole, and it is the open space below the sleeve's hem and outside the body: bounded by the
+// body's side edge from the armpit down GAP_ARC in of outline, the hem from the armpit out GAP_ARC in of outline, and a margin GAP_FAR in to the right of both ends, so a point of it is in the open.
+const GAP_ARC = 6, GAP_FAR = 20;
+function gapOf(subs, armpit){
+  const rings = subs.slice().sort((p, q) => area(q) - area(p)), outer = rings[0];
+  const cx = (Math.min(...outer.map(p => p[0])) + Math.max(...outer.map(p => p[0]))) / 2;
+  const hole = rings.slice(1).find(h => h.reduce((s, p) => s + p[0], 0) / h.length > cx);
+  if(hole) return hole.map(p => [r(p[0]), r(p[1])]);
+  const n = outer.length, at = outer.findIndex(p => p[0] === armpit[0] && p[1] === armpit[1]);
+  if(at < 0) return null;
+  const walk = step => {
+    const pts = [outer[at]]; let arc = 0;
+    for(let k = 1; k < n && arc < GAP_ARC; k++){
+      const a = pts[pts.length - 1], b = outer[(at + step * k + 2 * n) % n];
+      arc += Math.hypot(b[0] - a[0], b[1] - a[1]); pts.push(b);
+    }
+    return pts;
+  };
+  const xAt = (pts, d) => { let arc = 0; for(let i = 1; i < pts.length; i++){ const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); if(arc + l >= d){ const t = (d - arc) / l; return pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t; } arc += l; } return pts[pts.length - 1][0]; };
+  const a = walk(1), b = walk(-1), bodyIsA = xAt(a, 1) <= xAt(b, 1), body = bodyIsA ? a : b, hem = bodyIsA ? b : a;
+  const bl = body[body.length - 1], hl = hem[hem.length - 1];
+  const poly = body.concat([[bl[0] + GAP_FAR, bl[1]], [hl[0] + GAP_FAR, hl[1]]], hem.slice(1).reverse());
+  return poly.map(p => [r(p[0]), r(p[1])]);
+}
+function computeGap(){
+  const out = {};
+  for(const id of IDS){
+    const a = manifest.assets.find(x => x.id === id);
+    const subs = silhouette(fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8'));
+    const p = armpitOf(subs), g = p && gapOf(subs, p);
+    if(!g) throw new Error('no gap found on ' + id);
+    out[id] = g;
+  }
+  return out;
+}
+
+function compute(){
+  const out = {};
+  for(const id of IDS){
+    const a = manifest.assets.find(x => x.id === id);
+    const svg = fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8');
+    const subs = silhouette(svg);
+    if(!subs) throw new Error('no silhouette in ' + id);
+    const p = armpitOf(subs);
+    if(!p) throw new Error('no armpit found on ' + id);
+    out[id] = [r(p[0]), r(p[1])];
+  }
+  return out;
+}
+
+function computeSide(){
+  const out = {};
+  for(const id of IDS){
+    const a = manifest.assets.find(x => x.id === id);
+    const subs = silhouette(fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8'));
+    const p = armpitOf(subs), side = p && bodySideOf(subs, p);
+    if(!side) throw new Error('no body side edge found on ' + id);
+    out[id] = side;
+  }
+  return out;
+}
+
+// The armhole seam of the wearer's left arm as the sheet DRAWS it (LIVE13 E120, Ethan: "I dont think you understand how cords work. they follow
+// the seam (the line) exactly"): the stroke of the seam line on the sheet, a fill-less path on the sheet's right half that starts up at the shoulder
+// (within SEAM_TOP of the outline) and ends at the armpit (within SEAM_END of it; the women's coat's seam ends 0.31 in out from the apex of the
+// gap, the shirts' cubic seams end on it), flattened to a polyline in sheet inches with no two vertices nearer than SEAM_STEP. The shoulder cord's
+// braid is drawn on this line (js/engine/profiles-dress.js ARM_SEAM, core.fitCord with `exact`). A sheet that draws no seam line (the men's
+// Class A coat: its coat body has no armhole stroke) has no entry, and the engine follows the cord overlay's own `cord` landmark there.
+const SEAM_END = 0.5, SEAM_TOP = 0.35, SEAM_STEP = 0.1;
+function seamOf(svg, armpit, outer){
+  const art = /<g id="[^"]*__art" transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([-\d.]+)\)"/.exec(svg);
+  if(!art) return null;
+  const [ax, ay, sc] = [+art[1], +art[2], +art[3]];
+  const M = [sc / 100, 0, 0, sc / 100, ax / 100, ay / 100];
+  const W = Math.max(...outer.map(p => p[0]));
+  const segDist = (p, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1]; const t = Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / (dx * dx + dy * dy || 1))); return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy); };
+  const ringDist = p => Math.min(...outer.map((a, i) => segDist(p, a, outer[(i + 1) % outer.length])));
+  const body = svg.replace(/<metadata>[\s\S]*?<\/metadata>/, '').replace(/<defs>[\s\S]*?<\/defs>/g, '');
+  let best = null;
+  for(const m of body.matchAll(/<path\b([^>]*)>/g)){
+    const a = m[1];
+    if(!/fill="none"/.test(a) || !/stroke="/.test(a)) continue;
+    const d = /\bd="([^"]*)"/.exec(a);
+    if(!d || /[Zz]/.test(d[1])) continue;
+    const pts = flatten(d[1], M)[0];
+    if(!pts || pts.length < 2) continue;
+    const p0 = pts[0], p1 = pts[pts.length - 1];
+    if(p0[0] < W / 2 || p1[0] < W / 2) continue;                       // the wearer's left arm is the sheet's right
+    const endGap = Math.hypot(p1[0] - armpit[0], p1[1] - armpit[1]);
+    if(endGap > SEAM_END || p1[1] - p0[1] < 3 || ringDist(p0) > SEAM_TOP) continue;
+    if(!best || endGap < best.endGap) best = { pts, endGap };
+  }
+  if(!best) return null;
+  const out = [best.pts[0]];
+  for(const p of best.pts.slice(1, -1)){ const q = out[out.length - 1]; if(Math.hypot(p[0] - q[0], p[1] - q[1]) >= SEAM_STEP) out.push(p); }
+  out.push(best.pts[best.pts.length - 1]);
+  return out.map(p => [r(p[0]), r(p[1])]);
+}
+function computeSeam(){
+  const out = {};
+  for(const id of IDS){
+    const a = manifest.assets.find(x => x.id === id);
+    const svg = fs.readFileSync(path.join(ROOT, 'images', a.path), 'utf8');
+    const subs = silhouette(svg), outer = subs.slice().sort((p, q) => area(q) - area(p))[0];
+    const seam = seamOf(svg, armpitOf(subs), outer);
+    if(seam) out[id] = seam;
+  }
+  return out;
+}
+
+module.exports = { compute, computeSide, computeSeam, computeGap, IDS, armpitOf, bodySideOf, seamOf, gapOf };
+if(require.main === module){
+  const t = compute();
+  console.log('  const ARMPIT = {\n' + Object.keys(t).map(k => `    '${k}': [${t[k][0]}, ${t[k][1]}]`).join(',\n') + '\n  };');
+  const b = computeSide();
+  console.log('\n  const BODY_SIDE = {\n' + Object.keys(b).map(k => `    '${k}': [${b[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
+  const gp = computeGap();
+  console.log('\n  const GAP = {\n' + Object.keys(gp).map(k => `    '${k}': [${gp[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
+  const sm = computeSeam();
+  console.log('\n  const ARM_SEAM = {\n' + Object.keys(sm).map(k => `    '${k}': [${sm[k].map(q => `[${q[0]}, ${q[1]}]`).join(', ')}]`).join(',\n') + '\n  };');
+}

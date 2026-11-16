@@ -17,10 +17,9 @@ for(const [id,prefix] of [
   test(`${id} remains eligible and has all McChord device levels`,()=>{
     assert.match(indexSource,new RegExp(`['\"]${id}['\"]`));
     assert.match(variantsSource,new RegExp(`['\"]${id}['\"]\\s*:\\s*\\[`));
-    for(const suffix of ['', '-b', '-s', '-bb', '-sb', '-ss', '-bbb', '-sbb', '-ssb', '-sss', '-bbbb', '-sbbb', '-ssbb', '-sssb', '-ssss']){
-      const base=prefix==='ncgc' && suffix==='' ? 'ncgc01' : `${prefix}${suffix}`;
-      assert.match(variantsSource,new RegExp(`${base.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\.png`));
-    }
+    const start=variantsSource.indexOf(`"${id}": [`);
+    const levels=variantsSource.slice(start,variantsSource.indexOf('\n  ]',start)).match(/"value": "mcchord_/g) || [];
+    assert.equal(levels.length,15);
   });
 }
 

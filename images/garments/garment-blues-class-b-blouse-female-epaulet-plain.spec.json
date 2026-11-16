@@ -1,0 +1,78 @@
+{
+ "asset_id": "garment-blues-class-b-blouse-female-epaulet-plain",
+ "name": "Women's Class B blue short-sleeve blouse and skirt (nametag position only) plain epaulet straps (overlay, registered to garment-blues-class-b-blouse-female; no grade)",
+ "size_in": {
+  "w": 25.1882,
+  "h": 32.9532
+ },
+ "units": "1 user unit = 0.01 in",
+ "viewBox": [
+  0,
+  0,
+  2518.82,
+  3295.32
+ ],
+ "size_source": "estimated",
+ "size_basis": "The garment epaulet strap landmark polygons (epaulet_right / epaulet_left of garment-blues-class-b-blouse-female, the edge-on band 0.46 in thick of a 1.0 in strap, LIVE10-ART 2, Fig 4.8): the band itself in the shirt colour with the shirt's line tones, topstitching and a button. The regulation gives no strap dimension.",
+ "anchors": {
+  "top_center": [
+   1259.4099999999999,
+   0
+  ],
+  "bottom_center": [
+   1259.4099999999999,
+   3295.32
+  ],
+  "center": [
+   1259.4099999999999,
+   1647.66
+  ],
+  "left_edge": [
+   0,
+   1647.66
+  ],
+  "right_edge": [
+   2518.8199999999997,
+   1647.66
+  ],
+  "epaulet_plain_right_center": [
+   562.36,
+   296.4
+  ],
+  "epaulet_plain_left_center": [
+   1956.31,
+   295.25
+  ]
+ },
+ "landmarks": {
+  "epaulet_plain_right": {
+   "x": 324.91,
+   "y": 231.3,
+   "w": 474.9,
+   "h": 130.2
+  },
+  "epaulet_plain_left": {
+   "x": 1718.11,
+   "y": 230.8,
+   "w": 476.4,
+   "h": 128.9
+  }
+ },
+ "landmarks_note": "rects are {x,y,w,h} in user units (0.01 in)",
+ "overlay_of": "garment-blues-class-b-blouse-female",
+ "documented": [
+  "the shirt and blouse have epaulets for every member (CAPR 39-1 4.1.11.1.1 / 4.1.12.2)",
+  "shoulder cords are worn along the shoulder seam and, if the garment has an epaulet, underneath it (9.3, 9.4.1)",
+  "no grade goes on the strap itself: officers slip a gray or blue epaulet sleeve over it, NCOs and airmen wear chevrons or collar insignia"
+ ],
+ "assumed": [
+  "strap size and shape (the traced base image does not draw it)",
+  "button size and position",
+  "topstitch inset"
+ ],
+ "fit": {
+  "method": "original",
+  "score": null
+ },
+ "grade": "accessory"
+}
