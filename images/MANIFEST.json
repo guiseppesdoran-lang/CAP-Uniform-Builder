@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1834,
+ "count": 1828,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -763,52 +763,6 @@
    "issues": []
   },
   {
-   "id": "tie-af-blue",
-   "path": "accessories/tie-af-blue.svg",
-   "category": "accessories",
-   "w_in": 3.2388,
-   "h_in": 12.7032,
-   "size_source": "estimated",
-   "basis": "Same visible shape as the blazer base tie; plain blue (the regulation: blue polyester or silk, herringbone twill; no pattern). Blue shade is an estimate. The tip must cover part of the belt buckle but not extend below it (4.2.5.1.4); the tie is shown cropped like the blazer base.",
-   "anchors": {
-    "top_center": [
-     161.94,
-     0
-    ],
-    "bottom_center": [
-     161.94,
-     1270.32
-    ],
-    "center": [
-     161.94,
-     635.16
-    ],
-    "left_edge": [
-     0,
-     635.16
-    ],
-    "right_edge": [
-     323.88,
-     635.16
-    ],
-    "knot_top_center": [
-     161.94,
-     0
-    ],
-    "tip_visible_center": [
-     161.94,
-     1270.32
-    ],
-    "tie_tack_center": [
-     161.94,
-     670.16
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "tie-bow-black",
    "path": "accessories/tie-bow-black.svg",
    "category": "accessories",
@@ -840,86 +794,6 @@
     "knot_center": [
      262.5,
      100
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "tie-cap-regimental",
-   "path": "accessories/tie-cap-regimental.svg",
-   "category": "accessories",
-   "w_in": 3.2388,
-   "h_in": 12.7032,
-   "size_source": "estimated",
-   "basis": "Visible portion of the necktie as drawn on the blazer base (same half-widths); stripe pattern read by eye from the Vanguard CAP0977F product photo (red on navy, single thin stripes). Stripe pitch, thickness and angle are estimates.",
-   "anchors": {
-    "top_center": [
-     161.94,
-     0
-    ],
-    "bottom_center": [
-     161.94,
-     1270.32
-    ],
-    "center": [
-     161.94,
-     635.16
-    ],
-    "left_edge": [
-     0,
-     635.16
-    ],
-    "right_edge": [
-     323.88,
-     635.16
-    ],
-    "knot_top_center": [
-     161.94,
-     0
-    ],
-    "tip_visible_center": [
-     161.94,
-     1270.32
-    ],
-    "tie_tack_center": [
-     161.94,
-     670.16
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "tie-clasp-gold",
-   "path": "accessories/tie-clasp-gold.svg",
-   "category": "accessories",
-   "w_in": 2,
-   "h_in": 0.3,
-   "size_source": "estimated",
-   "basis": "Typical commercial tie bar, 2.0 x 0.3 in; not dimensioned in the regulation.",
-   "anchors": {
-    "top_center": [
-     100,
-     0
-    ],
-    "bottom_center": [
-     100,
-     30
-    ],
-    "center": [
-     100,
-     15
-    ],
-    "left_edge": [
-     0,
-     15
-    ],
-    "right_edge": [
-     200,
-     15
     ]
    },
    "landmarks": [],
@@ -996,108 +870,6 @@
     "apex_center": [
      135,
      95
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "tie-tack-cap-crest",
-   "path": "accessories/tie-tack-cap-crest.svg",
-   "category": "accessories",
-   "w_in": 0.7481,
-   "h_in": 0.9,
-   "size_source": "estimated",
-   "basis": "The same CAP Crest art as the blazer pocket crest (crest-art.js: clean geometry measured on CAPR 39-1 Fig A6-4, see insignia-cap-crest), at 0.9 in tall (estimate; the regulation gives no tack size).",
-   "anchors": {
-    "top_center": [
-     37.41,
-     0
-    ],
-    "bottom_center": [
-     37.41,
-     90
-    ],
-    "center": [
-     37.4,
-     45
-    ],
-    "left_edge": [
-     0,
-     45
-    ],
-    "right_edge": [
-     74.81,
-     45
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "tie-tack-wing-and-star-gold",
-   "path": "accessories/tie-tack-wing-and-star-gold.svg",
-   "category": "accessories",
-   "w_in": 0.62,
-   "h_in": 0.62,
-   "size_source": "estimated",
-   "basis": "Round tie tack carrying the same Hap Arnold wing-and-star art as the Class A service coat button (proportions from the Vanguard 36 ligne button); tack diameter 0.62 in is an estimate, the regulation gives none.",
-   "anchors": {
-    "top_center": [
-     31,
-     0
-    ],
-    "bottom_center": [
-     31,
-     62
-    ],
-    "center": [
-     31,
-     31
-    ],
-    "left_edge": [
-     0,
-     31
-    ],
-    "right_edge": [
-     62,
-     31
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "tie-tack-wing-and-star",
-   "path": "accessories/tie-tack-wing-and-star.svg",
-   "category": "accessories",
-   "w_in": 0.62,
-   "h_in": 0.62,
-   "size_source": "estimated",
-   "basis": "Round tie tack carrying the same Hap Arnold wing-and-star art as the Class A service coat button (proportions from the Vanguard 36 ligne button); tack diameter 0.62 in is an estimate, the regulation gives none.",
-   "anchors": {
-    "top_center": [
-     31,
-     0
-    ],
-    "bottom_center": [
-     31,
-     62
-    ],
-    "center": [
-     31,
-     31
-    ],
-    "left_edge": [
-     0,
-     31
-    ],
-    "right_edge": [
-     62,
-     31
     ]
    },
    "landmarks": [],

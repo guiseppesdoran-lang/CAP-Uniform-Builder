@@ -1802,15 +1802,9 @@
     "solo-field": "field/solo-field/solo-field.svg",
     "squadron-commander": "silver/squadron-commander/squadron-commander.svg",
     "squadron-commander-field": "field/squadron-commander-field/squadron-commander-field.svg",
-    "tie-af-blue": "accessories/tie-af-blue.svg",
     "tie-bow-black": "accessories/tie-bow-black.svg",
-    "tie-cap-regimental": "accessories/tie-cap-regimental.svg",
-    "tie-clasp-gold": "accessories/tie-clasp-gold.svg",
     "tie-clasp-silver": "accessories/tie-clasp-silver.svg",
     "tie-tab-inverted-v": "accessories/tie-tab-inverted-v.svg",
-    "tie-tack-cap-crest": "accessories/tie-tack-cap-crest.svg",
-    "tie-tack-wing-and-star": "accessories/tie-tack-wing-and-star.svg",
-    "tie-tack-wing-and-star-gold": "accessories/tie-tack-wing-and-star-gold.svg",
     "uas-pilot-master": "silver/uas-pilot-master/uas-pilot-master.svg",
     "uas-pilot-master-field": "field/uas-pilot-master-field/uas-pilot-master-field.svg",
     "uas-pilot-master-mini": "mini/uas-pilot-master-mini/uas-pilot-master-mini.svg",
@@ -1836,7 +1830,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "aec29a1f92", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "afedbbbc5d", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "aec29a1f92"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "afedbbbc5d"; }
 })(typeof self !== 'undefined' ? self : this);
