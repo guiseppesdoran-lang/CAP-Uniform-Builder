@@ -9,13 +9,11 @@
 // shirt landmark of the coat sheet is the opening; every point of a ribbon that lies in it is read off the screenshot and compared with the pixel at the same place on the same coat with no
 // ribbons: they must be the same (the shirt), and a point of a ribbon outside the opening and outside the lapel must differ (the ribbons are drawn).
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
-const { spawn } = require('node:child_process');
+const { launchChrome } = require('../scripts/lib-chrome.cjs');
 
 const ROOT = path.join(__dirname, '..');
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
 const opt = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : null; };
 const OUT = opt('--out');
@@ -39,15 +37,8 @@ class Cdp {
 }
 
 async function launch(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ribbon-picker-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await new Promise(r => setTimeout(r, 25)); }
-  await new Promise(r => setTimeout(r, 50));
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', rej); });
-  return { proc, cdp: new Cdp(ws), ws };
+  const chrome = await launchChrome({ prefix: 'rack-opening' });
+  return { cdp: new Cdp(chrome.ws), ws: chrome.ws, chrome };
 }
 
 
@@ -56,7 +47,7 @@ const IDS = ['air_force_aerial_achievement_medal', 'silver_medal_of_valor', 'bro
 
 (async () => {
   const srv = await serve();
-  const { proc, cdp, ws } = await launch();
+  const { chrome, cdp, ws } = await launch();
   let code = 0;
   const fails = [];
   try {
@@ -129,5 +120,5 @@ const IDS = ['air_force_aerial_achievement_medal', 'silver_medal_of_valor', 'bro
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS');
     if(fails.length) code = 1;
   } catch (e) { console.error(e); code = 2; }
-  finally { try { ws.close(); } catch {} proc.kill(); srv.close(); process.exit(code); }
+  finally { try { ws.close(); } catch {} await chrome.close(); srv.close(); process.exit(code); }
 })();

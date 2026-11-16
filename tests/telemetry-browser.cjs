@@ -10,13 +10,11 @@
 // right event names and fields and that no posted byte holds the name. With --out, screenshots of the dialog: empty, filled,
 // thank-you and error.
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
-const { spawn } = require('node:child_process');
+const { launchChrome, tempDir } = require('../scripts/lib-chrome.cjs');
 
 const ROOT = path.join(__dirname, '..');
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
 const opt = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : null; };
 const OUT = opt('--out');
@@ -54,22 +52,15 @@ class Cdp {
   constructor(ws){ this.ws = ws; this.id = 0; this.pending = new Map(); ws.addEventListener('message', m => { const d = JSON.parse(m.data); const p = this.pending.get(d.id); if(p){ this.pending.delete(d.id); d.error ? p.rej(new Error(d.error.message)) : p.res(d.result); } }); }
   send(method, params, sessionId){ const id = ++this.id; return new Promise((res, rej) => { this.pending.set(id, { res, rej }); this.ws.send(JSON.stringify({ id, method, params: params || {}, ...(sessionId ? { sessionId } : {}) })); }); }
 }
-async function launch(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'telemetry-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await new Promise(r => setTimeout(r, 25)); }
-  await new Promise(r => setTimeout(r, 50));
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', rej); });
-  return { proc, cdp: new Cdp(ws), ws };
+async function launch(extraDirs){
+  const chrome = await launchChrome({ prefix: 'telemetry', extraDirs });
+  return { cdp: new Cdp(chrome.ws), ws: chrome.ws, chrome };
 }
 
 (async () => {
   const srv = await serve();
-  const { proc, cdp, ws } = await launch();
-  const downloads = fs.mkdtempSync(path.join(os.tmpdir(), 'telemetry-dl-'));
+  const downloads = tempDir('telemetry-dl');
+  const { cdp, ws, chrome } = await launch([downloads]);
   const fails = [];
   const check = (ok, msg) => { if(!ok) fails.push(msg); };
   let code = 0;
@@ -172,5 +163,5 @@ async function launch(){
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS telemetry and feedback in the browser');
     if(fails.length) code = 1;
   }catch(e){ console.error(e); code = 2; }
-  finally{ try{ ws.close(); }catch{} proc.kill(); srv.close(); fs.rmSync(downloads, { recursive: true, force: true }); process.exit(code); }
+  finally{ try{ ws.close(); }catch{} await chrome.close(); srv.close(); process.exit(code); }
 })();

@@ -10,10 +10,9 @@
 // sheet) and <out>/summary.json. See scripts/render-builds.md. No npm dependencies.
 
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
-const { spawn } = require('node:child_process');
+const { launchChrome: startChrome } = require('./lib-chrome.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const req = p => require(path.join(ROOT, p));
@@ -34,7 +33,6 @@ const ROTC = req('data/rotc-ribbons.js');
 const MISSING_ART = /\bcannot be shown\b/i;
 const NOT_DRAWN = /not drawn|only a crop|no full patch artwork|\bcannot be shown\b/i;
 
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'images/MANIFEST.json'), 'utf8'));
 const manifestIds = new Set(manifest.assets.map(a => a.id));
 // A manifest path can name a picture (the official unit emblems are PNGs the browser draws as pictures, never specs): reading one as a spec is a
@@ -408,23 +406,8 @@ class Cdp {
 }
 
 async function launchChrome(){
-  if(!fs.existsSync(CHROME)) throw new Error(`Chrome not found at ${CHROME} (set CHROME=/path/to/chrome)`);
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'render-builds-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--no-default-browser-check', '--mute-audio', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
-  let stderr = '';
-  proc.stderr.on('data', d => { stderr += d; });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  const t0 = Date.now();
-  while(!fs.existsSync(portFile)){
-    if(proc.exitCode != null) throw new Error(`Chrome exited early: ${stderr.slice(-500)}`);
-    if(Date.now() - t0 > 20000) throw new Error('Timed out waiting for Chrome');
-    await new Promise(r => setTimeout(r, 25));
-  }
-  await new Promise(r => setTimeout(r, 25));
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', () => rej(new Error('Could not connect to Chrome DevTools'))); });
-  return { proc, dir, cdp: new Cdp(ws), ws };
+  const c = await startChrome({ prefix: 'render-builds', flags: ['--no-default-browser-check'], stderr: true });
+  return { proc: c.proc, dir: c.dir, cdp: new Cdp(c.ws), ws: c.ws, close: c.close };
 }
 
 async function openPage(cdp, url){
@@ -505,11 +488,11 @@ async function main(){
   const server = await startServer();
   const url = `http://127.0.0.1:${server.address().port}/__harness.html`;
   let chrome = null;
-  const cleanup = () => {
-    try{ if(chrome){ chrome.ws.close(); chrome.proc.kill('SIGKILL'); fs.rmSync(chrome.dir, { recursive: true, force: true }); } }catch(e){ /* best effort */ }
+  // The browser and its profile folder are also removed by scripts/lib-chrome.cjs when this process ends any other way (an error, SIGINT, SIGTERM, a kill).
+  const cleanup = async () => {
+    try{ if(chrome) await chrome.close(); }catch(e){ /* best effort */ }
     try{ server.close(); server.closeAllConnections && server.closeAllConnections(); }catch(e){ /* best effort */ }
   };
-  process.on('SIGINT', () => { cleanup(); process.exit(130); });
 
   const results = new Array(builds.length);
   try{
@@ -559,7 +542,7 @@ async function main(){
     };
     await Promise.all(pages.map(worker));
   } finally {
-    cleanup();
+    await cleanup();
   }
 
   const elapsedMs = Date.now() - started;

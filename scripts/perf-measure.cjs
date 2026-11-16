@@ -21,12 +21,12 @@
 // Also: bytes and requests by type, long tasks, long animation frames with their scripts and, with --trace, each
 // script's compile and evaluate time from a DevTools trace.
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http2 = require('node:http2');
 const zlib = require('node:zlib');
 const crypto = require('node:crypto');
-const { spawn, spawnSync } = require('node:child_process');
+const { spawnSync } = require('node:child_process');
+const { launchChrome, tempDir } = require('./lib-chrome.cjs');
 
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
@@ -37,7 +37,6 @@ const CACHE = opt('--cache', 'disabled');
 const HEADERS = opt('--headers', 'before');
 const TRACE = args.includes('--trace');
 const JSON_OUT = opt('--json', null);
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
 const PROFILES = {
   none: null,
@@ -52,7 +51,7 @@ const COMPRESSIBLE = /^(text\/|application\/json|image\/svg\+xml|application\/ja
 const policy = HEADERS === 'policy' ? require('./cache-policy.cjs') : null;
 
 function cert(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'perf-cert-'));
+  const dir = tempDir('perf-cert');
   const key = path.join(dir, 'key.pem'), crt = path.join(dir, 'crt.pem');
   const r = spawnSync('openssl', ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', key, '-out', crt, '-days', '1', '-subj', '/CN=127.0.0.1', '-addext', 'subjectAltName=IP:127.0.0.1'], { encoding: 'utf8' });
   if(r.status !== 0) throw new Error('openssl failed: ' + r.stderr);
@@ -60,7 +59,9 @@ function cert(){
   // it does not keep responses that came with a certificate error in its HTTP cache, which would spoil a warm visit.
   const der = spawnSync('openssl', ['x509', '-in', crt, '-pubkey', '-noout'], { encoding: 'utf8' }).stdout;
   const spki = crypto.createHash('sha256').update(crypto.createPublicKey(der).export({ type: 'spki', format: 'der' })).digest('base64');
-  return { key: fs.readFileSync(key), cert: fs.readFileSync(crt), spki };
+  const out = { key: fs.readFileSync(key), cert: fs.readFileSync(crt), spki };
+  fs.rmSync(dir, { recursive: true, force: true });
+  return out;
 }
 const CERT = cert();
 
@@ -118,15 +119,8 @@ class Cdp {
 }
 
 async function launch(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'perf-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', `--ignore-certificate-errors-spki-list=${CERT.spki}`, '--disable-background-networking', '--disable-extensions', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await sleep(25); }
-  await sleep(50);
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', rej); });
-  return { proc, cdp: new Cdp(ws), ws };
+  const chrome = await launchChrome({ prefix: 'perf', flags: [`--ignore-certificate-errors-spki-list=${CERT.spki}`, '--disable-background-networking', '--disable-extensions'] });
+  return { cdp: new Cdp(chrome.ws), ws: chrome.ws, chrome };
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -298,7 +292,7 @@ const median = xs => { const s = xs.filter(x => x != null).sort((a, b) => a - b)
 
 (async () => {
   const srv = await serve();
-  const { proc, cdp, ws } = await launch();
+  const { chrome, cdp, ws } = await launch();
   const url = `https://127.0.0.1:${srv.address().port}/index.html`;
   const results = { profile: PROFILE, cache: CACHE, headers: HEADERS, root: ROOT, runs: [] };
   try {
@@ -314,7 +308,7 @@ const median = xs => { const s = xs.filter(x => x != null).sort((a, b) => a - b)
       }
     }
   } catch (e) { console.error(e); process.exitCode = 2; }
-  finally { try { ws.close(); } catch {} proc.kill(); srv.close(); }
+  finally { try { ws.close(); } catch {} await chrome.close(); srv.close(); }
 
   const once = results.runs.filter(r => r.setupMode === 'once');
   const settled = results.runs.filter(r => r.setupMode === 'settled');

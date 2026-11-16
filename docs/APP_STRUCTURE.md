@@ -99,4 +99,4 @@ Every local `<script src>` and the stylesheet link in `index.html` carry `?v=<co
 
 ## Tests
 
-`npm test` runs `tests/*.test.cjs` with Node's built-in runner. Tests that assert on source text read `index.html` and every file directly in `js/` through `tests/helpers/app-source.cjs`, so moving code between those files does not break them. `tests/*-browser.cjs` need headless Chrome and are not part of `npm test`.
+`npm test` runs `tests/*.test.cjs` with Node's built-in runner. Tests that assert on source text read `index.html` and every file directly in `js/` through `tests/helpers/app-source.cjs`, so moving code between those files does not break them. `tests/*-browser.cjs` need headless Chrome: a test of the same area spawns most of them (and skips when Chrome is not installed), the rest are run by hand. Every script that starts Chrome (these, `scripts/render-builds.cjs`, `scripts/perf-measure.cjs`) does it through `scripts/lib-chrome.cjs`, which kills the browser and removes its profile folder on every way out (a normal close, an error, a timeout, SIGINT, SIGTERM, a kill); `tests/lib-chrome.test.cjs` pins that.

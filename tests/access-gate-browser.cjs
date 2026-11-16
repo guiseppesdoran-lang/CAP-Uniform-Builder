@@ -9,13 +9,11 @@
 // stays open) and the builder takes input. A fresh browser context (a new session) sees the gate again. The code path
 // still sets data-access="ok" and remembers the code in localStorage (LIVE12 E55, Ethan: "also add a continue as guest thing").
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
-const { spawn } = require('node:child_process');
+const { launchChrome } = require('../scripts/lib-chrome.cjs');
 
 const ROOT = path.join(__dirname, '..');
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
 const OUT = args.includes('--out') ? args[args.indexOf('--out') + 1] : null;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
@@ -37,22 +35,15 @@ class Cdp {
 }
 
 async function launch(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'access-gate-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await new Promise(r => setTimeout(r, 25)); }
-  await new Promise(r => setTimeout(r, 50));
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', rej); });
-  return { proc, cdp: new Cdp(ws), ws };
+  const chrome = await launchChrome({ prefix: 'access-gate' });
+  return { cdp: new Cdp(chrome.ws), ws: chrome.ws, chrome };
 }
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 (async () => {
   const srv = await serve();
-  const { proc, cdp, ws } = await launch();
+  const { chrome, cdp, ws } = await launch();
   const url = `http://127.0.0.1:${srv.address().port}/index.html`;
   const fails = [];
   let code = 0;
@@ -156,5 +147,5 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS: guest opens the builder for the session (data-access=guest); the code still sets ok and is remembered');
     if(fails.length) code = 1;
   } catch (e) { console.error(e); code = 2; }
-  finally { try { ws.close(); } catch {} proc.kill(); srv.close(); process.exit(code); }
+  finally { try { ws.close(); } catch {} await chrome.close(); srv.close(); process.exit(code); }
 })();

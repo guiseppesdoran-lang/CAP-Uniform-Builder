@@ -13,14 +13,12 @@
 // then switches to the ABU and checks its sides are paper-only sewing guides with no 3D aligner. Until index.html loads js/placement-stl.js and
 // js/placement-templates.js, the test server adds the two script tags before js/workspace-ui.js (the page itself is not changed).
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
-const { spawn } = require('node:child_process');
+const { launchChrome, tempDir } = require('../scripts/lib-chrome.cjs');
 const STL = require('../js/placement-stl.js');
 
 const ROOT = path.join(__dirname, '..');
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
 const OUT = args.indexOf('--out') >= 0 ? args[args.indexOf('--out') + 1] : null;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
@@ -47,22 +45,15 @@ class Cdp {
   send(method, params, sessionId){ const id = ++this.id; return new Promise((res, rej) => { this.pending.set(id, { res, rej }); this.ws.send(JSON.stringify({ id, method, params: params || {}, ...(sessionId ? { sessionId } : {}) })); }); }
 }
 
-async function launch(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'templates-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', '--lang=en-US', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await new Promise(r => setTimeout(r, 25)); }
-  await new Promise(r => setTimeout(r, 50));
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', rej); });
-  return { proc, cdp: new Cdp(ws), ws, dir };
+async function launch(extraDirs){
+  const chrome = await launchChrome({ prefix: 'templates', flags: ['--lang=en-US'], extraDirs });
+  return { cdp: new Cdp(chrome.ws), ws: chrome.ws, chrome };
 }
 
 (async () => {
   const srv = await serve();
-  const { proc, cdp, ws, dir } = await launch();
-  const downloads = fs.mkdtempSync(path.join(os.tmpdir(), 'templates-dl-'));
+  const downloads = tempDir('templates-dl');
+  const { cdp, ws, chrome } = await launch([downloads]);
   const fails = [];
   const expect = (ok, msg) => { if(!ok) fails.push(msg); };
   let code = 0;
@@ -149,9 +140,8 @@ async function launch(){
     fails.push(e.stack || String(e));
   } finally {
     try{ ws.close(); }catch(e){ /* closing */ }
-    proc.kill('SIGKILL');
+    await chrome.close();
     srv.close();
-    try{ fs.rmSync(dir, { recursive: true, force: true }); fs.rmSync(downloads, { recursive: true, force: true }); }catch(e){ /* temp */ }
   }
   if(fails.length){ console.error('FAIL\n  ' + fails.join('\n  ')); code = 1; } else console.log('PASS placement templates in the browser');
   process.exit(code);

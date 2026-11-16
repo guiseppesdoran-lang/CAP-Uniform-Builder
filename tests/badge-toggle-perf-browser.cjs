@@ -9,13 +9,11 @@
 // on and off through its picture tile in the badge chooser window (a tap), timing from the tap to the drawing on screen (capub:rendered, then a frame).
 // The page's composeUniform and buildSvg are wrapped to split the time; --profile writes a CPU profile of the OCP toggles for DevTools.
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const http = require('node:http');
-const { spawn } = require('node:child_process');
+const { launchChrome } = require('../scripts/lib-chrome.cjs');
 
 const ROOT = path.join(__dirname, '..');
-const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const args = process.argv.slice(2);
 const opt = n => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : null; };
 const RUNS = Number(opt('--runs')) || 6;
@@ -45,21 +43,14 @@ class Cdp {
   send(method, params, sessionId){ const id = ++this.id; return new Promise((res, rej) => { this.pending.set(id, { res, rej }); this.ws.send(JSON.stringify({ id, method, params: params || {}, ...(sessionId ? { sessionId } : {}) })); }); }
 }
 async function launch(){
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'badge-perf-chrome-'));
-  const proc = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--mute-audio', '--remote-debugging-port=0', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-  const portFile = path.join(dir, 'DevToolsActivePort');
-  for(let i = 0; !fs.existsSync(portFile); i++){ if(i > 800) throw new Error('Chrome did not start'); await new Promise(r => setTimeout(r, 25)); }
-  await new Promise(r => setTimeout(r, 50));
-  const [port, wsPath] = fs.readFileSync(portFile, 'utf8').trim().split('\n');
-  const ws = new WebSocket(`ws://127.0.0.1:${port}${wsPath}`);
-  await new Promise((res, rej) => { ws.addEventListener('open', res); ws.addEventListener('error', rej); });
-  return { proc, cdp: new Cdp(ws), ws };
+  const chrome = await launchChrome({ prefix: 'badge-perf' });
+  return { cdp: new Cdp(chrome.ws), ws: chrome.ws, chrome };
 }
 const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : NaN; };
 
 (async () => {
   const srv = await serve();
-  const { proc, cdp, ws } = await launch();
+  const { chrome, cdp, ws } = await launch();
   let code = 0;
   try {
     const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
@@ -140,5 +131,5 @@ const median = a => { const s = [...a].sort((x, y) => x - y); return s.length ? 
       if(args.includes('--urls')) console.log('  ' + runs[runs.length - 1].urls.map(u => u.replace(/^https?:\/\/[^/]+/, '')).join('\n  '));
     }
   } catch (e) { console.error(e); code = 2; }
-  finally { try { ws.close(); } catch {} proc.kill(); srv.close(); process.exit(code); }
+  finally { try { ws.close(); } catch {} await chrome.close(); srv.close(); process.exit(code); }
 })();
