@@ -95,14 +95,12 @@ test('the deploy examples carry the exact policy and headers the page is tested 
   }
 });
 
-test('the page asks for an access code and stays out of search', () => {
+test('the page opens directly and stays out of search', () => {
   const page = read('index.html');
   assert.match(page, /<meta name="robots" content="noindex/);
-  assert.match(page, /<script src="js\/access-gate\.js/);
-  assert.match(page, /<label for="accessGateInput">Access code<\/label>/);
-  assert.match(page.split('</form>')[0], /Developed by C\/Col Guiseppe Doran and C\/Lt Col Ethan Hillard/);
-  assert.match(page, /<details class="accessGateHint"><summary>Need a hint\?<\/summary>/);
-  assert.match(read('styles/app.css'), /html\[data-access="ok"\] #accessGate\{display:none\}/);
+  assert.doesNotMatch(page, /accessGate|access-gate/);
+  assert.match(page, /<html lang="en" data-access="guest">/);
+  assert.match(page, /Developed by C\/Col Guiseppe Doran and C\/Lt Col Ethan Hillard/);
   for (const file of ['deploy/nginx.conf.example', 'deploy/Caddyfile.example']) {
     assert.match(read(file), /X-Robots-Tag "noindex/, `${file} does not send noindex`);
   }
