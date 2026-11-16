@@ -242,7 +242,6 @@
     "basic-incident-commander": "silver/basic-incident-commander/basic-incident-commander.svg",
     "basic-incident-commander-field": "field/basic-incident-commander-field/basic-incident-commander-field.svg",
     "basic-incident-commander-mini": "mini/basic-incident-commander-mini/basic-incident-commander-mini.svg",
-    "cadet-suas": "silver/cadet-suas/cadet-suas.svg",
     "cap-device-cadet-officer-service": "accessories/cap-device-cadet-officer-service.svg",
     "cap-device-nco-flight": "accessories/cap-device-nco-flight.svg",
     "cap-device-nco-senior": "accessories/cap-device-nco-senior.svg",
@@ -1607,7 +1606,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "599ce58cff", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "7beb5f39fd", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "599ce58cff"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "7beb5f39fd"; }
 })(typeof self !== 'undefined' ? self : this);

@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1605,
+ "count": 1604,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -29141,72 +29141,6 @@
     "right_edge": [
      162.5,
      36.715
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "cadet-suas",
-   "path": "silver/cadet-suas/cadet-suas.svg",
-   "category": "silver",
-   "w_in": 2,
-   "h_in": 0.607,
-   "size_source": "regulation",
-   "basis": "regulation: width 2 in",
-   "anchors": {
-    "top_center": [
-     100,
-     0
-    ],
-    "bottom_center": [
-     100,
-     60.694
-    ],
-    "center": [
-     100,
-     30.347
-    ],
-    "left_edge": [
-     0,
-     30.347
-    ],
-    "right_edge": [
-     200,
-     30.347
-    ],
-    "hexagon_center": [
-     100,
-     30.042
-    ],
-    "hexagon_top": [
-     100,
-     7.833
-    ],
-    "hexagon_bottom": [
-     100,
-     52.25
-    ],
-    "apex": [
-     100,
-     60.333
-    ],
-    "arm_tip_left": [
-     0,
-     3.208
-    ],
-    "arm_tip_right": [
-     200,
-     3.208
-    ],
-    "hexagon_vertex_left": [
-     73.667,
-     30.042
-    ],
-    "hexagon_vertex_right": [
-     126.333,
-     30.042
     ]
    },
    "landmarks": [],
