@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1766,
+ "count": 1761,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -7575,40 +7575,6 @@
    "issues": []
   },
   {
-   "id": "enamel-cadet-programs-master",
-   "path": "enamel/enamel-cadet-programs-master/enamel-cadet-programs-master.svg",
-   "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
-   "size_source": "estimated",
-   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
-   "anchors": {
-    "top_center": [
-     62.5,
-     0
-    ],
-    "bottom_center": [
-     62.5,
-     160.6
-    ],
-    "center": [
-     62.5,
-     80.309
-    ],
-    "left_edge": [
-     0,
-     80.309
-    ],
-    "right_edge": [
-     125,
-     80.309
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "enamel-cadet-programs-senior-badge-v2",
    "path": "enamel/enamel-cadet-programs-senior-badge-v2/enamel-cadet-programs-senior-badge-v2.svg",
    "category": "enamel",
@@ -7643,76 +7609,8 @@
    "issues": []
   },
   {
-   "id": "enamel-cadet-programs-senior",
-   "path": "enamel/enamel-cadet-programs-senior/enamel-cadet-programs-senior.svg",
-   "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
-   "size_source": "estimated",
-   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
-   "anchors": {
-    "top_center": [
-     62.5,
-     0
-    ],
-    "bottom_center": [
-     62.5,
-     160.6
-    ],
-    "center": [
-     62.5,
-     80.309
-    ],
-    "left_edge": [
-     0,
-     80.309
-    ],
-    "right_edge": [
-     125,
-     80.309
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "enamel-cadet-programs-technician-badge-v2",
    "path": "enamel/enamel-cadet-programs-technician-badge-v2/enamel-cadet-programs-technician-badge-v2.svg",
-   "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.606,
-   "size_source": "estimated",
-   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-cadet-programs-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
-   "anchors": {
-    "top_center": [
-     62.5,
-     0
-    ],
-    "bottom_center": [
-     62.5,
-     160.6
-    ],
-    "center": [
-     62.5,
-     80.309
-    ],
-    "left_edge": [
-     0,
-     80.309
-    ],
-    "right_edge": [
-     125,
-     80.309
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "enamel-cadet-programs-technician",
-   "path": "enamel/enamel-cadet-programs-technician/enamel-cadet-programs-technician.svg",
    "category": "enamel",
    "w_in": 1.25,
    "h_in": 1.606,
@@ -8078,40 +7976,6 @@
     "right_edge": [
      125,
      66.419
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "enamel-communications-technician",
-   "path": "enamel/enamel-communications-technician/enamel-communications-technician.svg",
-   "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.338,
-   "size_source": "estimated",
-   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-communications-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
-   "anchors": {
-    "top_center": [
-     62.5,
-     0
-    ],
-    "bottom_center": [
-     62.5,
-     133.8
-    ],
-    "center": [
-     62.5,
-     66.911
-    ],
-    "left_edge": [
-     0,
-     66.911
-    ],
-    "right_edge": [
-     125,
-     66.911
     ]
    },
    "landmarks": [],
@@ -8860,40 +8724,6 @@
     "right_edge": [
      125,
      66.76
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "enamel-information-technology-technician",
-   "path": "enamel/enamel-information-technology-technician/enamel-information-technology-technician.svg",
-   "category": "enamel",
-   "w_in": 1.25,
-   "h_in": 1.461,
-   "size_source": "estimated",
-   "basis": "estimated: Vanguard listing https://www.vanguardmil.com/products/civil-air-patrol-information-technology-badge prints no dimensions; no regulation size. Back at the previous class size (the A4b x 0.8, made so the specialty badge sat in proportion to a 1.5 in governance badge (Vanguard hang-card photo (Doran, thread L2076): NEC badge about 1.3x the height of the Aerospace Education oval), is removed). Ethan, 2026-10-26: \"the specialty badges (like ES and STEM) are a bit too small\"",
-   "anchors": {
-    "top_center": [
-     62.5,
-     0
-    ],
-    "bottom_center": [
-     62.5,
-     146.053
-    ],
-    "center": [
-     62.5,
-     73.026
-    ],
-    "left_edge": [
-     0,
-     73.026
-    ],
-    "right_edge": [
-     125,
-     73.026
     ]
    },
    "landmarks": [],

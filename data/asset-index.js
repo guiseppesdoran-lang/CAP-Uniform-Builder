@@ -335,13 +335,10 @@
     "enamel-buddist-chaplin-field": "field/enamel-buddist-chaplin-field/enamel-buddist-chaplin-field.svg",
     "enamel-cadet-programs": "enamel/enamel-cadet-programs/enamel-cadet-programs.svg",
     "enamel-cadet-programs-field": "field/enamel-cadet-programs-field/enamel-cadet-programs-field.svg",
-    "enamel-cadet-programs-master": "enamel/enamel-cadet-programs-master/enamel-cadet-programs-master.svg",
     "enamel-cadet-programs-master-badge-v2": "enamel/enamel-cadet-programs-master-badge-v2/enamel-cadet-programs-master-badge-v2.svg",
     "enamel-cadet-programs-master-badge-v2-field": "field/enamel-cadet-programs-master-badge-v2-field/enamel-cadet-programs-master-badge-v2-field.svg",
-    "enamel-cadet-programs-senior": "enamel/enamel-cadet-programs-senior/enamel-cadet-programs-senior.svg",
     "enamel-cadet-programs-senior-badge-v2": "enamel/enamel-cadet-programs-senior-badge-v2/enamel-cadet-programs-senior-badge-v2.svg",
     "enamel-cadet-programs-senior-badge-v2-field": "field/enamel-cadet-programs-senior-badge-v2-field/enamel-cadet-programs-senior-badge-v2-field.svg",
-    "enamel-cadet-programs-technician": "enamel/enamel-cadet-programs-technician/enamel-cadet-programs-technician.svg",
     "enamel-cadet-programs-technician-badge-v2": "enamel/enamel-cadet-programs-technician-badge-v2/enamel-cadet-programs-technician-badge-v2.svg",
     "enamel-cadet-programs-technician-badge-v2-field": "field/enamel-cadet-programs-technician-badge-v2-field/enamel-cadet-programs-technician-badge-v2-field.svg",
     "enamel-cap-national-command-board": "enamel/enamel-cap-national-command-board/enamel-cap-national-command-board.svg",
@@ -360,7 +357,6 @@
     "enamel-comms-senior-field": "field/enamel-comms-senior-field/enamel-comms-senior-field.svg",
     "enamel-comms-tech": "enamel/enamel-comms-tech/enamel-comms-tech.svg",
     "enamel-comms-tech-field": "field/enamel-comms-tech-field/enamel-comms-tech-field.svg",
-    "enamel-communications-technician": "enamel/enamel-communications-technician/enamel-communications-technician.svg",
     "enamel-cyber-advanced": "enamel/enamel-cyber-advanced/enamel-cyber-advanced.svg",
     "enamel-cyber-basic": "enamel/enamel-cyber-basic/enamel-cyber-basic.svg",
     "enamel-cyber-master": "enamel/enamel-cyber-master/enamel-cyber-master.svg",
@@ -403,7 +399,6 @@
     "enamel-ig-senior-gold": "enamel/enamel-ig-senior-gold/enamel-ig-senior-gold.svg",
     "enamel-ig-tech": "enamel/enamel-ig-tech/enamel-ig-tech.svg",
     "enamel-ig-tech-field": "field/enamel-ig-tech-field/enamel-ig-tech-field.svg",
-    "enamel-information-technology-technician": "enamel/enamel-information-technology-technician/enamel-information-technology-technician.svg",
     "enamel-it-master": "enamel/enamel-it-master/enamel-it-master.svg",
     "enamel-it-master-field": "field/enamel-it-master-field/enamel-it-master-field.svg",
     "enamel-it-senior": "enamel/enamel-it-senior/enamel-it-senior.svg",
@@ -1768,7 +1763,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "5c77cdcc68", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "510a84fcc0", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "5c77cdcc68"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "510a84fcc0"; }
 })(typeof self !== 'undefined' ? self : this);
