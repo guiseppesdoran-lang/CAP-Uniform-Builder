@@ -251,8 +251,6 @@
     "cap-suas-pilot": "silver/cap-suas-pilot/cap-suas-pilot.svg",
     "cap-suas-pilot-field": "field/cap-suas-pilot-field/cap-suas-pilot-field.svg",
     "cap-suas-pilot-mini": "mini/cap-suas-pilot-mini/cap-suas-pilot-mini.svg",
-    "captape-cloth-blank-dark-blue": "nameplates/captape-cloth-blank-dark-blue.svg",
-    "captape-cloth-blank-ultramarine": "nameplates/captape-cloth-blank-ultramarine.svg",
     "cloth-aircrew-basic": "cloth/cloth-aircrew-basic/cloth-aircrew-basic.svg",
     "cloth-aircrew-master": "cloth/cloth-aircrew-master/cloth-aircrew-master.svg",
     "cloth-aircrew-senior": "cloth/cloth-aircrew-senior/cloth-aircrew-senior.svg",
@@ -1196,10 +1194,6 @@
     "nameplate-blazer-adult": "nameplates/nameplate-blazer-adult.svg",
     "nameplate-blazer-cadet": "nameplates/nameplate-blazer-cadet.svg",
     "nametag-flight-embroidered-blank": "nameplates/nametag-flight-embroidered-blank.svg",
-    "nametag-flight-jacket-leather-blank": "nameplates/nametag-flight-jacket-leather-blank.svg",
-    "nametag-flight-leather-blank": "nameplates/nametag-flight-leather-blank.svg",
-    "nametape-cloth-blank-dark-blue": "nameplates/nametape-cloth-blank-dark-blue.svg",
-    "nametape-cloth-blank-ultramarine": "nameplates/nametape-cloth-blank-ultramarine.svg",
     "national-staff": "silver/national-staff/national-staff.svg",
     "navy-astronaut-default": "military-badges/navy/navy_astronaut_insignia/default.svg",
     "navy-aviation-observer-default": "military-badges/navy/navy_aviation_observer_insignia/default.svg",
@@ -1613,7 +1607,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "608c0e735b", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "599ce58cff", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "608c0e735b"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "599ce58cff"; }
 })(typeof self !== 'undefined' ? self : this);
