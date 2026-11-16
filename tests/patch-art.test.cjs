@@ -111,7 +111,3 @@ test('no patch is left on a crop of the OCP sleeve: the last ones draw their who
   assert.doesNotMatch(String(layer.href || ''), /\/ocp\//, 'not a crop of the OCP sleeve');
   assert.match(String(layer.asset || layer.href || layer.id || layer.key || ''), /patch-es-style-2|dog_ocp_patch/);
 });
-
-test('member uploads stay as they were', () => {
-  assert.match(fs.readFileSync(path.join(ROOT, 'patch-submission.js'), 'utf8'), /ALLOWED_TYPES = new Set\(\['image\/png','image\/jpeg','image\/webp','image\/svg\+xml'\]\)/);
-});

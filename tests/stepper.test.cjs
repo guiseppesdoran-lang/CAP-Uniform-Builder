@@ -80,7 +80,6 @@ test('the Items step is three cards, each one row of name and count (the button 
     assert.match(card,new RegExp(`<div class="cardRow">\\s*<button type="button" class="cardToggle" id="toggle${Key}" aria-expanded="true">\\s*<span class="cardChevron" aria-hidden="true"></span>\\s*<span class="cardHead">\\s*<span class="fieldLabel">${Key}</span>\\s*<span class="countChip" data-count="${key}" data-short="0" aria-live="polite">0 selected</span>\\s*</span>\\s*</button>\\s*<button id="expand${Key}" type="button" aria-label="Choose ${key}">Choose…</button>\\s*<button id="clear${Key}" class="ghost" type="button" aria-label="Clear ${key}">Clear</button>\\s*</div>\\s*<div class="hintText cardRule" data-rule="${key}">`));
   }
   assert.match(css,/\.cardRow\{display:grid;grid-template-columns:minmax\(0,1fr\) auto auto;/);
-  assert.match(css,/#capubSubmitPatchButton\{grid-column:1 \/ -1;/,'the patch submission button wraps under the row');
   assert.match(aside,/<summary>Advanced: rack layout<\/summary>/);
 });
 

@@ -481,9 +481,6 @@ header h1::after{
 .importRow>.citeBtn{flex:0 0 auto;margin-left:0}
 :root[data-cites="shown"] .citeBtn.citeHelp{display:inline-flex}
 #memberReportImportStatus:empty{margin-top:0}
-/* The patch submission button (patch-submission.js adds it under Choose patches) reads as secondary. */
-#capubSubmitPatchButton{grid-column:1 / -1;margin-top:0;background:transparent;color:var(--ink);border-color:var(--line-strong);font-size:var(--t-md)}
-#capubSubmitPatchButton:hover{background:var(--panel-2);border-color:var(--ink)}
 
 /* Uniforms: one grid, two cards to a row, in the regulation's order. */
 .uniformList{display:flex;flex-direction:column;gap:var(--s2)}

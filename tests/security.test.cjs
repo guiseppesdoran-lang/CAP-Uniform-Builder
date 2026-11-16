@@ -74,6 +74,18 @@ test('application code requests nothing from other origins at load time', () => 
   assert.match(read('config.js'), /submissionEndpoint:\s*''/, 'the committed config leaves submissions off');
 });
 
+test('the page holds no code that sends a member\'s picture anywhere: no submission script, no submit button, no form posted to another origin', () => {
+  const page = read('index.html');
+  assert.doesNotMatch(page, /patch-submission|capubSubmitPatch|google-apps-script/, 'index.html loads or names submission code');
+  const sources = trackedTextFiles().filter(rel => /\.(js|css)$/.test(rel) && !/^(scripts|tests|deploy)\//.test(rel));
+  for (const rel of sources) {
+    assert.doesNotMatch(read(rel), /CAPUB_PATCH_SUBMISSION|capubSubmitPatch|capubPatchSubmit|script\.google(usercontent)?\.com/, `${rel} holds submission code`);
+  }
+  assert.equal(fs.existsSync(path.join(ROOT, 'patch-submission.js')), false);
+  // The page's own forms (the access gate, the feedback box) post to its own origin or to nothing.
+  assert.doesNotMatch(page, /<form\b[^>]*\baction="(?:https?:)?\/\//i, 'a form posts to another origin');
+});
+
 test('pdf.js is vendored with its license and loaded from the same origin', () => {
   for (const file of ['pdf.min.js', 'pdf.worker.min.js', 'LICENSE']) {
     assert.ok(fs.existsSync(path.join(ROOT, 'vendor', 'pdfjs', file)), `vendor/pdfjs/${file}`);

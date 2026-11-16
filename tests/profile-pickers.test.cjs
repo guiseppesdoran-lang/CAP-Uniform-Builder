@@ -488,9 +488,6 @@ test('the unit field shows REG-WG-UN while it is empty, and keeps its accessible
   assert.match(input, /aria-label="Search your unit"/, 'the label a screen reader reads is as it was');
   assert.match(input, /type="search"/);
   assert.doesNotMatch(html, /Search charter number/, 'the old placeholder is gone');
-  // The only other place a unit is typed is the patch submission form, which asks for a unit or an activity by name, not a charter.
-  const submit = read('patch-submission.js');
-  assert.match(submit, /<label for="capubPatchUnit">Unit \/ activity<\/label>/);
   assert.equal([...html.matchAll(/placeholder="REG-WG-UN"/g)].length, 1, 'one input of the page takes a unit charter');
   assert.equal([...html.matchAll(/placeholder="[^"]*charter[^"]*"/gi)].length, 0);
 });
