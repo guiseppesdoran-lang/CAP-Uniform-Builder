@@ -236,7 +236,6 @@
     "army-space-senior": "military-badges/army/army_space_badge/senior.svg",
     "army-staff-identification-default": "military-badges/army/army_staff_identification_badge/default.svg",
     "army-tomb-guard-identification-default": "military-badges/army/army_tomb_guard_identification_badge/default.svg",
-    "badge-senior-ground-team": "badges/badge-senior-ground-team.svg",
     "balloon-pilot": "silver/balloon-pilot/balloon-pilot.svg",
     "balloon-pilot-field": "field/balloon-pilot-field/balloon-pilot-field.svg",
     "balloon-pilot-mini": "mini/balloon-pilot-mini/balloon-pilot-mini.svg",
@@ -1830,7 +1829,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "afedbbbc5d", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "cd95be4864", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "afedbbbc5d"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "cd95be4864"; }
 })(typeof self !== 'undefined' ? self : this);

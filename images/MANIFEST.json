@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1828,
+ "count": 1827,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -870,60 +870,6 @@
     "apex_center": [
      135,
      95
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "badge-senior-ground-team",
-   "path": "badges/badge-senior-ground-team.svg",
-   "category": "badges",
-   "w_in": 1.75,
-   "h_in": 1.5044,
-   "size_source": "estimated",
-   "basis": "No CAP regulation size located. 1.75 in overall width assumed (typical CAP metal-badge pin width); reference art is 240x203 px with no stated scale. Replace with a measured physical badge.",
-   "anchors": {
-    "top_center": [
-     87.5,
-     0
-    ],
-    "bottom_center": [
-     87.5,
-     150.44
-    ],
-    "center": [
-     87.5,
-     75.22
-    ],
-    "left_edge": [
-     0,
-     75.22
-    ],
-    "right_edge": [
-     175,
-     75.22
-    ],
-    "wreath_center": [
-     87.5,
-     80.59
-    ],
-    "disc_center": [
-     86.73,
-     80.59
-    ],
-    "star_center": [
-     87.12,
-     22.57
-    ],
-    "triangle_apex": [
-     85.96,
-     44.52
-    ],
-    "ribbon_tails_y": [
-     87.5,
-     148.14
     ]
    },
    "landmarks": [],
