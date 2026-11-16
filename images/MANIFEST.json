@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1827,
+ "count": 1824,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -1251,40 +1251,6 @@
    "issues": []
   },
   {
-   "id": "cloth-group-commander-with-hook",
-   "path": "cloth/cloth-group-commander-with-hook/cloth-group-commander-with-hook.svg",
-   "category": "cloth",
-   "w_in": 1,
-   "h_in": 1.197,
-   "size_source": "estimated",
-   "basis": "backing width 1 in",
-   "anchors": {
-    "top_center": [
-     50,
-     0
-    ],
-    "bottom_center": [
-     50,
-     119.701
-    ],
-    "center": [
-     50,
-     59.85
-    ],
-    "left_edge": [
-     0,
-     59.85
-    ],
-    "right_edge": [
-     100,
-     59.85
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "cloth-group-commander",
    "path": "cloth/cloth-group-commander/cloth-group-commander.svg",
    "category": "cloth",
@@ -1795,40 +1761,6 @@
    "issues": []
   },
   {
-   "id": "cloth-squadron-commander-with-hook-insignia",
-   "path": "cloth/cloth-squadron-commander-with-hook-insignia/cloth-squadron-commander-with-hook-insignia.svg",
-   "category": "cloth",
-   "w_in": 1,
-   "h_in": 0.943,
-   "size_source": "estimated",
-   "basis": "backing width 1 in",
-   "anchors": {
-    "top_center": [
-     50,
-     0
-    ],
-    "bottom_center": [
-     50,
-     94.336
-    ],
-    "center": [
-     50,
-     47.168
-    ],
-    "left_edge": [
-     0,
-     47.168
-    ],
-    "right_edge": [
-     100,
-     47.168
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
    "id": "cloth-squadron-commander",
    "path": "cloth/cloth-squadron-commander/cloth-squadron-commander.svg",
    "category": "cloth",
@@ -1992,40 +1924,6 @@
     "right_edge": [
      300,
      79.808
-    ]
-   },
-   "landmarks": [],
-   "has_spec": true,
-   "issues": []
-  },
-  {
-   "id": "cloth-suas-pre-solo",
-   "path": "cloth/cloth-suas-pre-solo/cloth-suas-pre-solo.svg",
-   "category": "cloth",
-   "w_in": 3,
-   "h_in": 1.676,
-   "size_source": "regulation",
-   "basis": "embroidered art width 3 in",
-   "anchors": {
-    "top_center": [
-     150,
-     0
-    ],
-    "bottom_center": [
-     150,
-     167.556
-    ],
-    "center": [
-     150,
-     83.778
-    ],
-    "left_edge": [
-     0,
-     83.778
-    ],
-    "right_edge": [
-     300,
-     83.778
     ]
    },
    "landmarks": [],

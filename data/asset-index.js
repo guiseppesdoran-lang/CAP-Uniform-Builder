@@ -266,7 +266,6 @@
     "cloth-ground-team-master": "cloth/cloth-ground-team-master/cloth-ground-team-master.svg",
     "cloth-ground-team-senior": "cloth/cloth-ground-team-senior/cloth-ground-team-senior.svg",
     "cloth-group-commander": "cloth/cloth-group-commander/cloth-group-commander.svg",
-    "cloth-group-commander-with-hook": "cloth/cloth-group-commander-with-hook/cloth-group-commander-with-hook.svg",
     "cloth-incident-commander-basic": "cloth/cloth-incident-commander-basic/cloth-incident-commander-basic.svg",
     "cloth-incident-commander-master": "cloth/cloth-incident-commander-master/cloth-incident-commander-master.svg",
     "cloth-incident-commander-senior": "cloth/cloth-incident-commander-senior/cloth-incident-commander-senior.svg",
@@ -282,12 +281,10 @@
     "cloth-pre-solo-wings": "cloth/cloth-pre-solo-wings/cloth-pre-solo-wings.svg",
     "cloth-solo-wings": "cloth/cloth-solo-wings/cloth-solo-wings.svg",
     "cloth-squadron-commander": "cloth/cloth-squadron-commander/cloth-squadron-commander.svg",
-    "cloth-squadron-commander-with-hook-insignia": "cloth/cloth-squadron-commander-with-hook-insignia/cloth-squadron-commander-with-hook-insignia.svg",
     "cloth-suas-basic-pilot": "cloth/cloth-suas-basic-pilot/cloth-suas-basic-pilot.svg",
     "cloth-suas-basic-technician": "cloth/cloth-suas-basic-technician/cloth-suas-basic-technician.svg",
     "cloth-suas-command-pilot": "cloth/cloth-suas-command-pilot/cloth-suas-command-pilot.svg",
     "cloth-suas-master-technician": "cloth/cloth-suas-master-technician/cloth-suas-master-technician.svg",
-    "cloth-suas-pre-solo": "cloth/cloth-suas-pre-solo/cloth-suas-pre-solo.svg",
     "cloth-suas-senior-pilot": "cloth/cloth-suas-senior-pilot/cloth-suas-senior-pilot.svg",
     "cloth-suas-senior-technician": "cloth/cloth-suas-senior-technician/cloth-suas-senior-technician.svg",
     "cloth-volunteer-university-instructor": "cloth/cloth-volunteer-university-instructor/cloth-volunteer-university-instructor.svg",
@@ -1829,7 +1826,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "cd95be4864", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "816ed8174e", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "cd95be4864"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "816ed8174e"; }
 })(typeof self !== 'undefined' ? self : this);
