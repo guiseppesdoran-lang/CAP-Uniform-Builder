@@ -333,6 +333,20 @@ const COMMAND_INSIGNIA_BADGE_IDS = new Set([
 function isCommandInsigniaBadge(id){
   return COMMAND_INSIGNIA_BADGE_IDS.has(id);
 }
+// The grade rule of the command insignia pin lives here, with the pin's other rules: js/galleries.js and js/option-pictures.js (through it) call it while the page is still loading,
+// before js/member-report-import.js has run, so it cannot be defined there.
+function isCommandInsigniaGradeEligible(rank){
+  const r = String(rank || '').replace(/\s+/g, ' ').trim().toUpperCase();
+  // CAPR 39-1 10.2.5: current/graduated commanders wear the Command Insignia Pin
+  // only in the grade of lieutenant colonel and below. Colonels and above do not wear it.
+  // Use an explicit allow-list so a missing, malformed, or not-yet-parsed rank
+  // can never cause the pin to render during a personnel-report import.
+  // ICL 26-14 (7.1.1.3.1.6, was .7) names officers and NCOs who are graduated commanders, so flight officers
+  // and NCOs are included. The aviator shirt alone limits the pin to officers (4.2.5.1.3.3).
+  return ['2D LT','SECOND LIEUTENANT','1ST LT','FIRST LIEUTENANT','CAPT','CAPTAIN','MAJ','MAJOR','LT COL','LIEUTENANT COLONEL',
+    'FO','FLIGHT OFFICER','TFO','TECHNICAL FLIGHT OFFICER','SFO','SENIOR FLIGHT OFFICER',
+    'SSGT','STAFF SERGEANT','TSGT','TECHNICAL SERGEANT','MSGT','MASTER SERGEANT','SMSGT','SENIOR MASTER SERGEANT','CMSGT','CHIEF MASTER SERGEANT'].includes(r);
+}
 // The command pin chosen (squadron or group; only one is worn, 10.2.5), or '' when none is.
 function getSelectedCommandInsigniaId(){
   return (State.badges || []).find(id => isCommandInsigniaBadge(id)) || '';
