@@ -46,7 +46,6 @@ The files named `tests/*-browser.cjs`, `scripts/render-builds.cjs` and `scripts/
 | `military/` | The U.S. military award and badge catalog and its rules. |
 | `config.js` | Per-deployment settings. Nothing secret belongs in it. |
 | `deploy/` | Web server examples, the container files, and `api/`, the small Node service for usage counts, feedback and the `/admin` page. |
-| `google-apps-script/` | An optional endpoint for patch image submissions. |
 | `scripts/` | Build, stamp, sync and measuring tools. Not part of the page. |
 | `tests/` | The test suite. |
 | `vendor/` | pdf.js (for member report PDFs) and the fonts. |

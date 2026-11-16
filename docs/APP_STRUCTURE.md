@@ -82,8 +82,6 @@ It answers `POST /api/events` (from `js/telemetry.js`), `POST /api/feedback` (fr
 
 `js/telemetry.js` sends events named `visit`, `build`, `png_download`, `import`, `remove_ribbons`, `templates`, `shopping_open`, `feedback_sent`, `uniform_switch`, `setup_file` and `error`. It never sends a name, CAPID, nameplate text, unit charter or member report contents or file names.
 
-The optional `google-apps-script/Code.gs` is a separate endpoint for patch image submissions. See `PATCH_SUBMISSION_SETUP.md`.
-
 ## What the page stores
 
 The setup is autosaved to localStorage a moment after each change (`cap_uniform_builder_autosave_v1`, in `js/workspace-ui.js`) and offered back with a Resume prompt on the next visit. It is never loaded silently. A setup can be saved to and opened from a JSON file. Setups loaded from storage or a file pass through `sanitizeProfile()` in `js/wiring.js`, and values that go into HTML pass through `escapeHtml()` in `js/dom-assets.js`. A member report is read in the browser and not sent anywhere.

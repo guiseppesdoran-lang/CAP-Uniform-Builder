@@ -42,7 +42,7 @@ test('no 64-character hex constants (password hashes, keys) are committed', () =
 });
 
 test('the page ships no admin login, native prompts or client-side password checks', () => {
-  const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/') && !rel.startsWith('google-apps-script/'));
+  const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/'));
   for (const rel of sources) {
     // bootstrap.js deletes the keys older builds left in localStorage; that is the only allowed mention.
     const text = read(rel).replace(/localStorage\.removeItem\('CAPUB_ADMIN_HISTORY[A-Z_0-9]*'\);?|sessionStorage\.removeItem\('CAPUB_ADMIN_AUTH_V1'\);?/g, '');
@@ -61,7 +61,7 @@ test('index.html has no inline script, inline event handlers or third-party scri
 });
 
 test('application code requests nothing from other origins at load time', () => {
-  const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/') && !rel.startsWith('google-apps-script/'));
+  const sources = trackedTextFiles().filter(rel => /\.js$/.test(rel) && !rel.startsWith('scripts/') && !rel.startsWith('tests/'));
   // purchase-catalog.js only holds vendor links shown to the user and military-data.js cites where
   // each award came from; neither is requested. Namespaces are not requests.
   const allowed = [/w3\.org\/2000\/svg/, /w3\.org\/1999\/xlink/, /^purchase-catalog\.js$/, /^military\/military-data\.js$/];

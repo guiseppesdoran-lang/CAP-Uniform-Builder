@@ -46,7 +46,7 @@ test('the notices mention MIT only for the versions published before 10 November
 });
 
 test('no hand-written file calls the code MIT, open source or free to reuse', () => {
-  const dirs = ['js', 'styles', 'scripts', 'deploy', 'docs', 'google-apps-script', 'tests'];
+  const dirs = ['js', 'styles', 'scripts', 'deploy', 'docs', 'tests'];
   const files = fs.readdirSync(ROOT).filter(n => /\.(html|js|cjs|md|txt|json|css|svg)$/.test(n));
   const walk = dir => fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })
     .flatMap(e => e.isDirectory() ? walk(`${dir}/${e.name}`) : [`${dir}/${e.name}`]);
