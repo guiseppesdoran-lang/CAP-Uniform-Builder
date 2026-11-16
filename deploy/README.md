@@ -6,15 +6,8 @@ service, `uniform-api` (`deploy/api`), for the anonymous usage counts, the feedb
 `/admin` dashboard; see [The API and /admin](#the-api-and-admin).
 
 ```bash
-npm run build                  # dist/ with submissions off (the default)
+npm run build                  # dist/
 npm run serve:dist             # preview it locally at http://127.0.0.1:8780 with the real headers
-```
-
-To enable the optional patch/calibration submissions for a deployment, give the build an endpoint
-(see `PATCH_SUBMISSION_SETUP.md`); the page's policy then allows exactly that origin:
-
-```bash
-CAPUB_SUBMISSION_ENDPOINT='https://script.google.com/macros/s/.../exec' npm run build
 ```
 
 ## Server configuration

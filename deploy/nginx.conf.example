@@ -3,8 +3,6 @@
 #
 # The Content-Security-Policy below is the one in scripts/csp.cjs
 # (buildCsp({ forHeader: true })); tests/security.test.cjs fails if they differ.
-# If you build with an endpoint for submissions, use that variant of the policy instead:
-#   node -e "console.log(require('./scripts/csp.cjs').buildCsp({forHeader:true,endpoint:'https://...'}))"
 
 server {
     listen 80;

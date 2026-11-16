@@ -43,7 +43,7 @@ Every other engine file also loads in Node, which is how the tests compose scene
 | `mcchord-ribbon-variants.js` | Ribbon option labels and values mirrored from McChord's senior rack builder. See `docs/MCCHORD_ASSET_STANDARD.md`. |
 | `purchase-catalog.js` | Vendor product links, item numbers and prices for the shopping list. `purchase-feature-core.js` builds the list from the drawn uniform and reads this file. |
 | `member-report-rules.js`, `js/member-report-import.js` | Reading a CAP member report (PDF or text). pdf.js loads from `vendor/pdfjs/` on the first PDF import. |
-| `config.js` | Per-deployment settings: `submissionEndpoint` (empty means patch submissions are off), `metrics` and `feedback`. It is served to every visitor, so it holds no secrets. |
+| `config.js` | Per-deployment settings: `metrics` and `feedback`. It is served to every visitor, so it holds no secrets. |
 
 ## Artwork (`images/`)
 

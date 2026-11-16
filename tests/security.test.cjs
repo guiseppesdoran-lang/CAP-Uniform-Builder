@@ -71,7 +71,12 @@ test('application code requests nothing from other origins at load time', () => 
       assert.ok(ok, `${rel} mentions ${match[0]}`);
     }
   }
-  assert.match(read('config.js'), /submissionEndpoint:\s*''/, 'the committed config leaves submissions off');
+  // Replaces "the committed config leaves submissions off": the setting itself is gone, so the config is checked to hold the page's two settings and no address.
+  const config = read('config.js');
+  assert.doesNotMatch(config, /submission|endpoint|https?:/i, 'config.js names no endpoint and no address');
+  const sandbox = { window: {} };
+  require('node:vm').runInNewContext(config, sandbox);
+  assert.deepEqual(Object.keys(sandbox.window.CAPUB_CONFIG), ['metrics', 'feedback']);
 });
 
 test('the page holds no code that sends a member\'s picture anywhere: no submission script, no submit button, no form posted to another origin', () => {
@@ -126,8 +131,13 @@ test('the policy allows no inline script, no framing and no outside origin by de
   assert.match(csp, /frame-ancestors 'none'/);
   assert.doesNotMatch(csp, /https?:/);
   assert.doesNotMatch(csp, /unsafe-eval/);
-  const withEndpoint = buildCsp({ forHeader: true, endpoint: 'https://script.google.com/macros/s/x/exec' });
-  assert.match(withEndpoint, /connect-src 'self' https:\/\/script\.google\.com https:\/\/script\.googleusercontent\.com/);
+  // Replaces the check that an endpoint adds its origins to connect-src: the policy is pinned word for word and no argument can add an origin.
+  const exact = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'";
+  assert.equal(buildCsp(), exact);
+  assert.equal(buildCsp({ forHeader: true }), `${exact}; frame-ancestors 'none'`);
+  assert.equal(buildCsp({ forHeader: true, endpoint: 'https://script.google.com/macros/s/x/exec' }), buildCsp({ forHeader: true }), 'no argument widens the policy');
+  assert.match(buildCsp(), /frame-src 'none'/);
+  assert.match(buildCsp(), /form-action 'self'(;|$)/);
 });
 
 test('the site build publishes only runtime files and carries the policy', () => {
@@ -142,7 +152,8 @@ test('the site build publishes only runtime files and carries the policy', () =>
   }
   const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
   assert.ok(html.includes(`content="${buildCsp()}"`), 'dist/index.html is missing the policy meta tag');
-  assert.match(fs.readFileSync(path.join(dist, 'config.js'), 'utf8'), /submissionEndpoint:\s*''/);
+  // Replaces "dist/config.js leaves submissions off": the build writes nothing into config.js, so the published copy is the committed one.
+  assert.equal(fs.readFileSync(path.join(dist, 'config.js'), 'utf8'), read('config.js'));
   const stamps = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'stamp-assets.cjs'), `--root=${dist}`, '--check'], { encoding: 'utf8' });
   assert.equal(stamps.status, 0, stamps.stderr || stamps.stdout);
   // No photo is published (tests/no-raster.test.cjs).
@@ -150,19 +161,21 @@ test('the site build publishes only runtime files and carries the policy', () =>
   assert.deepEqual(noRaster.strayRasters(noRaster.walk(path.join(dist, 'images')).map(f => path.relative(dist, f).split(path.sep).join('/'))), []);
 });
 
-test('a build with an endpoint enables submissions and widens the policy to that origin only', () => {
+// Replaces "a build with an endpoint enables submissions and widens the policy to that origin only" and "an http endpoint must be refused": the build has no endpoint
+// option any more, so an endpoint handed to it by argument or by the environment changes nothing: the policy and config.js are the ones of a plain build.
+test('a build is not widened by an endpoint offered to it: the policy and config.js are those of a plain build', () => {
   const endpoint = 'https://script.google.com/macros/s/AKexample/exec';
-  const built = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-site.cjs'), `--endpoint=${endpoint}`], { encoding: 'utf8' });
+  const dist = path.join(ROOT, 'dist');
   try {
-    assert.equal(built.status, 0, built.stderr || built.stdout);
-    const dist = path.join(ROOT, 'dist');
-    assert.ok(fs.readFileSync(path.join(dist, 'config.js'), 'utf8').includes(JSON.stringify(endpoint)));
-    assert.ok(fs.readFileSync(path.join(dist, 'index.html'), 'utf8').includes(buildCsp({ endpoint })));
+    for (const [args, env] of [[[`--endpoint=${endpoint}`], {}], [['--endpoint=http://insecure.example/exec'], {}], [[], { CAPUB_SUBMISSION_ENDPOINT: endpoint }]]) {
+      const built = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-site.cjs'), ...args], { encoding: 'utf8', env: Object.assign({}, process.env, env) });
+      assert.equal(built.status, 0, built.stderr || built.stdout);
+      const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+      assert.ok(html.includes(`content="${buildCsp()}"`), 'the policy of the page is the plain one');
+      assert.doesNotMatch(html, /script\.google/);
+      assert.equal(fs.readFileSync(path.join(dist, 'config.js'), 'utf8'), read('config.js'));
+    }
   } finally {
-    // Leave the default (submissions off) build behind for anyone serving dist/ afterwards.
     spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-site.cjs')], { encoding: 'utf8' });
   }
-  const refused = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-site.cjs'), '--endpoint=http://insecure.example/exec'], { encoding: 'utf8' });
-  assert.notEqual(refused.status, 0, 'an http endpoint must be refused');
-  spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-site.cjs')], { encoding: 'utf8' });
 });

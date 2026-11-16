@@ -1,15 +1,14 @@
 'use strict';
 // Builds dist/: only the files the page needs at runtime, ready to serve from any static
-// web server. Everything else in the repository (tests, scripts, docs, the Apps Script
-// source, package files, git data) stays out of the web root.
+// web server. Everything else in the repository (tests, scripts, docs, package files,
+// git data) stays out of the web root.
 //
 //   node scripts/build-site.cjs                    build dist/
-//   node scripts/build-site.cjs --endpoint=URL     also enable submissions against URL
-//   CAPUB_SUBMISSION_ENDPOINT=URL node scripts/build-site.cjs   same, from the environment
 //
 // No bundler or transform is involved: files are copied as they are, plus a
-// Content-Security-Policy <meta> fallback in dist/index.html and, when an endpoint is
-// given, that endpoint in dist/config.js (then asset hashes are recomputed).
+// Content-Security-Policy <meta> fallback in dist/index.html and the artwork packs
+// (then asset hashes are recomputed). The page asks nothing of any other origin, so the
+// build takes no option that could widen its policy.
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
@@ -21,14 +20,6 @@ const DIST = path.join(ROOT, 'dist');
 function fail(message) {
   console.error(message);
   process.exit(1);
-}
-
-const endpointArg = process.argv.find(arg => arg.startsWith('--endpoint='));
-const endpoint = (endpointArg ? endpointArg.slice('--endpoint='.length) : process.env.CAPUB_SUBMISSION_ENDPOINT || '').trim();
-if (endpoint) {
-  let url;
-  try { url = new URL(endpoint); } catch (_) { fail(`Not a valid URL: ${endpoint}`); }
-  if (url.protocol !== 'https:') fail('The submission endpoint must be https.');
 }
 
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -95,7 +86,7 @@ for (const rel of [...runtimeFiles].sort()) {
 }
 
 // CSP fallback for hosts that cannot set headers; the real headers are in deploy/.
-const csp = buildCsp({ endpoint });
+const csp = buildCsp();
 const distHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
   .replace(/(<meta charset="[^"]*"\s*\/?>)/i, `$1\n<meta http-equiv="Content-Security-Policy" content="${csp}">`);
 if (!distHtml.includes('Content-Security-Policy')) fail('Could not insert the Content-Security-Policy meta tag.');
@@ -107,17 +98,11 @@ const writePacks = () => require('./build-asset-packs.cjs').applyToSite(DIST).ca
 
 async function finish() {
   const packs = await writePacks();
-  if (endpoint) {
-    const configPath = path.join(DIST, 'config.js');
-    const config = fs.readFileSync(configPath, 'utf8');
-    if (!/submissionEndpoint:\s*''/.test(config)) fail("config.js no longer has an empty submissionEndpoint to replace.");
-    fs.writeFileSync(configPath, config.replace(/submissionEndpoint:\s*''/, `submissionEndpoint: ${JSON.stringify(endpoint)}`));
-  }
   const restamp = spawnSync(process.execPath, [path.join(__dirname, 'stamp-assets.cjs'), `--root=${DIST}`], { encoding: 'utf8' });
   if (restamp.status !== 0) fail(restamp.stderr || restamp.stdout);
   // Last, once every file in dist/ is final: brotli and gzip copies for Caddy's precompressed (scripts/precompress.cjs).
   const packed = require('./precompress.cjs').precompress(DIST);
 
-  console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB, ${Object.keys(packs.uniforms).length} artwork packs, ${packed.files} precompressed (${(packed.br / 1024).toFixed(0)} KB brotli)${endpoint ? `, submissions enabled for ${new URL(endpoint).origin}` : ', submissions off'}`);
+  console.log(`dist/: ${runtimeFiles.size} files, ${(bytes / 1048576).toFixed(1)} MB, ${Object.keys(packs.uniforms).length} artwork packs, ${packed.files} precompressed (${(packed.br / 1024).toFixed(0)} KB brotli)`);
 }
 finish().catch(err => fail(err && err.stack || String(err)));

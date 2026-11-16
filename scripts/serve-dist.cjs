@@ -3,7 +3,6 @@
 // built site can be checked in a browser before it goes on a real server.
 //
 //   node scripts/serve-dist.cjs [port]        (default 8780, 127.0.0.1 only)
-//   CAPUB_SUBMISSION_ENDPOINT=URL node scripts/serve-dist.cjs   to match a build with submissions on
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
@@ -11,7 +10,6 @@ const { buildCsp, SECURITY_HEADERS } = require('./csp.cjs');
 
 const DIST = path.join(__dirname, '..', 'dist');
 const PORT = Number(process.argv[2]) || 8780;
-const endpoint = (process.env.CAPUB_SUBMISSION_ENDPOINT || '').trim();
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -20,7 +18,7 @@ const TYPES = {
 };
 
 const headers = {
-  'Content-Security-Policy': buildCsp({ endpoint, forHeader: true }),
+  'Content-Security-Policy': buildCsp({ forHeader: true }),
   'Strict-Transport-Security': 'max-age=63072000; includeSubDomains',
   ...SECURITY_HEADERS
 };

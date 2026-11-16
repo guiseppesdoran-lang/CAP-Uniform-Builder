@@ -56,13 +56,11 @@ The files named `tests/*-browser.cjs`, `scripts/render-builds.cjs` and `scripts/
 
 `npm run build` writes `dist/`. It holds only the files the page needs, adds a Content-Security-Policy tag to `index.html`, writes the artwork packs, and writes brotli and gzip copies. `npm run serve:dist` serves `dist/` on port 8780, reachable from this machine only, with the real security headers. `deploy/README.md` covers the web server, the API and its data.
 
-Patch image submissions are off unless `config.js` names an endpoint (see `PATCH_SUBMISSION_SETUP.md`). The privacy note in the page does not cover them, so a deployment that turns them on should tell visitors what the form sends.
-
 ## What the page stores and sends
 
 The setup is saved in the browser's localStorage as you work and offered back with a Resume prompt on the next visit. A member report is read in the browser and is not sent anywhere.
 
-The page sends two things to its own origin. One is anonymous usage counts (`js/telemetry.js`): which uniform, cut and grade, how many items, which buttons. It never sends a name, CAPID, nameplate text or report contents. With Do Not Track on, only visit and build counts go, without an id. The other is feedback that a member chooses to send (`js/feedback.js`). The Content-Security-Policy of a built site allows requests to the page's own origin, plus the submission endpoint when one is set. The Privacy paragraph in the About dialog in `index.html` says the same.
+The page sends two things to its own origin. One is anonymous usage counts (`js/telemetry.js`): which uniform, cut and grade, how many items, which buttons. It never sends a name, CAPID, nameplate text or report contents. With Do Not Track on, only visit and build counts go, without an id. The other is feedback that a member chooses to send (`js/feedback.js`). The Content-Security-Policy of a built site allows requests to the page's own origin and no other. The Privacy paragraph in the About dialog in `index.html` says the same.
 
 ## Look and feel
 
