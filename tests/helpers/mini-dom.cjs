@@ -88,9 +88,24 @@ class Node {
     const out = [];
     const walk = n => { for(const c of n.children){ if(c.matches(sel)) out.push(c); walk(c); } };
     walk(this);
-    return out;
+    return NODELISTS ? new NodeList(out) : out;
   }
   querySelector(sel){ return this.querySelectorAll(sel)[0] || null; }
+}
+
+// Off by default: about thirty test files call array methods on what querySelectorAll returns. A test that wants a browser's list turns it on with strictLists() and gets back the call that turns it off.
+let NODELISTS = false;
+function strictLists(){ NODELISTS = true; return () => { NODELISTS = false; }; }
+
+// What querySelectorAll returns in a browser: indexed, with length, item, forEach, entries, keys, values and iteration, and none of the array methods (no find, map, filter, slice).
+class NodeList {
+  constructor(items){ items.forEach((n, i) => { this[i] = n; }); Object.defineProperty(this, 'length', { value: items.length }); }
+  item(i){ return this[i] || null; }
+  forEach(fn, self){ for(let i = 0; i < this.length; i++) fn.call(self, this[i], i, this); }
+  *entries(){ for(let i = 0; i < this.length; i++) yield [i, this[i]]; }
+  *keys(){ for(let i = 0; i < this.length; i++) yield i; }
+  *values(){ for(let i = 0; i < this.length; i++) yield this[i]; }
+  [Symbol.iterator](){ return this.values(); }
 }
 
 class Text {
@@ -136,4 +151,4 @@ function createDocument(){
 
 const keydown = (key, extra) => Object.assign({ type: 'keydown', key, bubbles: true }, extra);
 
-module.exports = { createDocument, keydown, Node };
+module.exports = { createDocument, keydown, Node, strictLists };

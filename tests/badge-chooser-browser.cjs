@@ -141,6 +141,60 @@ async function launch(){
     if(new Set(Object.values(moved)).size !== 3) fails.push('after the arrow key a badge sits in two places');
     if(c.groups.find(g => g.position === 'aviation').own.options.filter(o => o.checked).length !== 1) fails.push('the aviation pick was disturbed');
     await shot('2-arrow');
+    // The picker windows keep the focus: with the focus on a tile under a tile (a level of a badge, an award option of a ribbon) a pick makes the list again, which must not throw, and
+    // the focus must come back to the same tile; with the focus on a level tile, picking the Model Rocketry Badge writes the window's status line. (Live crash: a NodeList has no find.)
+    await ev(`(async () => {
+      window.__errs = []; window.addEventListener('error', e => window.__errs.push(String(e.message)));
+      State.membership = 'cadet'; State.gender = 'male'; State.rank = 'C/Capt'; State.uniform = 'blues_a';
+      State.badges = []; State.badgeChoices = {}; State.badgeSelections = {}; State.ribbonSelections = {};
+      await CAPUBUniformView.render();
+      CAPUB_V3.showStep('items');
+    })()`);
+    await sleep(1200);
+    const pickCell = id => `document.querySelector('.vpCell[data-value="${id}"]')`;
+    const focusClick = sel => ev(`(() => { const t = ${sel}; if(!t) return 'missing'; t.focus(); t.click(); return 'ok'; })()`);
+    const focusOn = () => ev(`(() => { const a = document.activeElement; const c = a && a.closest && a.closest('.vpCell'); return a ? { cell: c ? c.dataset.value : null, option: a.dataset ? a.dataset.value : null, cls: a.className } : null; })()`);
+    await ev(`openGalleryModal('badges')`);
+    await sleep(800);
+    if(await ev(`!${pickCell('stem_badges')}`)) fails.push('the Badges window has no Cadet STEM Badge tile');
+    else {
+      await ev(`${pickCell('stem_badges')}.querySelector('.vpOption').click()`);
+      await sleep(300);
+      const level = `${pickCell('stem_badges')}.querySelector('.vpRow .vpOption[data-value="advanced"]')`;
+      if(await focusClick(level) !== 'ok') fails.push('the STEM badge has no Advanced level tile');
+      await sleep(300);
+      const f1 = await focusOn();
+      console.log('focus after the level pick:', JSON.stringify(f1));
+      if(!f1 || f1.cell !== 'stem_badges' || f1.option !== "advanced") fails.push('after picking a level the focus is not on the same level tile: ' + JSON.stringify(f1));
+      await ev(`${pickCell('stem_badges')}.querySelector('.vpRow .vpOption[data-value="advanced"]').focus()`);
+      await ev(`${pickCell('model_rocketry_badge')}.querySelector('.vpOption').click()`);
+      await sleep(300);
+      const say = await ev(`(() => { const n = document.getElementById('capubV2ModalSay'); return n ? { hidden: n.hidden, text: n.textContent } : null; })()`);
+      console.log('status line after the Model Rocketry Badge:', JSON.stringify(say));
+      if(!say || say.hidden || !/Model Rocketry/.test(say.text)) fails.push('the status line was not written for the Model Rocketry Badge: ' + JSON.stringify(say));
+    }
+    await ev(`typeof closeGalleryModal === 'function' ? closeGalleryModal() : 0`);
+    await ev(`openGalleryModal('ribbons')`);
+    await sleep(800);
+    if(await ev(`!${pickCell('goddard_achievement')}`)) fails.push('the Ribbons window has no Goddard tile');
+    else {
+      await ev(`${pickCell('goddard_achievement')}.querySelector('.vpOption').click()`);
+      await sleep(300);
+      const awards = await ev(`[...${pickCell('goddard_achievement')}.querySelectorAll('.vpRow .vpOption')].map(t => t.dataset.value)`);
+      console.log('Goddard options:', JSON.stringify(awards));
+      if(awards.length < 2) fails.push('the Goddard ribbon has no award options under its tile');
+      else {
+        const want = awards[awards.length - 1];
+        await focusClick(`${pickCell('goddard_achievement')}.querySelector('.vpRow .vpOption[data-value="${want}"]')`);
+        await sleep(300);
+        const f2 = await focusOn();
+        console.log('focus after the award pick:', JSON.stringify(f2));
+        if(!f2 || f2.cell !== 'goddard_achievement' || f2.option !== want) fails.push('after picking an award the focus is not on the same option: ' + JSON.stringify(f2));
+      }
+    }
+    const errs = await ev('window.__errs');
+    console.log('page errors:', JSON.stringify(errs));
+    if(errs.length) fails.push('the page threw: ' + errs.join(' | '));
     console.log(fails.length ? `FAIL:\n  ${fails.join('\n  ')}` : 'PASS');
     if(fails.length) code = 1;
   } catch (e) { console.error(e); code = 2; }

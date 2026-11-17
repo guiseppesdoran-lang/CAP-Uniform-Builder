@@ -428,11 +428,12 @@
       ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], option: inside.dataset ? inside.dataset.value : '', row: row && row.dataset ? row.dataset.name : '' } : null;
     rebuild();
     if(!keep) return;
-    const again = root.querySelectorAll('.vpCell').find(c => c.dataset.value === keep.value);
-    const rowAgain = again && keep.row ? again.querySelectorAll('.vp').find(v => v.dataset.name === keep.row) : null;
+    const all = (node, sel) => Array.from(node.querySelectorAll(sel)); // a NodeList has no find
+    const again = all(root, '.vpCell').find(c => c.dataset.value === keep.value);
+    const rowAgain = again && keep.row ? all(again, '.vp').find(v => v.dataset.name === keep.row) : null;
     const target = rowAgain
-      ? rowAgain.querySelectorAll('.vpOption').find(n => n.dataset.value === keep.option)
-      : again && again.querySelectorAll('.' + keep.className).find(n => n !== again.querySelector('.vpOption'));
+      ? all(rowAgain, '.vpOption').find(n => n.dataset.value === keep.option)
+      : again && all(again, '.' + keep.className).find(n => n !== again.querySelector('.vpOption'));
     if(target && target.focus) target.focus();
   }
 
