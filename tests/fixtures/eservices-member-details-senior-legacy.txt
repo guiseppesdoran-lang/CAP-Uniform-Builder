@@ -1,0 +1,150 @@
+Personnel Information For: Maj Gen Example Member 000001 Commander LSCode: A
+General Info
+Organization NHQ-NHQ-001
+Gender Type Rank Date of Rank Joined Expires Profession
+FEMALE SENIOR Maj Gen 19 Aug 2024 02 Feb 1993 31 Mar 2027 Education - Teaching
+Achievements
+Achievements Functional Area Completed Expires
+Achievement 1 (Curry) Cadet_Programs 01 Feb 1991 Does not Expire
+Level 1 ET-Senior 01 Jan 1993 Does not Expire
+CAP Senior Aircrew Rating OPS-CAPPilot 14 Aug 2019 Does not Expire
+CAP Master Ground Team Badge OPS-Emergency_Services 14 Aug 2019 Does not Expire
+CAP Senior Emergency Services Qualification Badge OPS-Emergency_Services 14 Aug 2019 Does not Expire
+Current Duty Positions
+Duty Position Wing-Unit Scope Assistant Assign Date
+Commander NHQ-001 NATIONAL No 19 Aug 2024
+Past Duty Positions
+Duty Position Wing-Unit Scope Assistant Assign Date End Date
+Commander NCR-001 REGION No 28 May 2016 25 May 2020
+Commander NHQ-001 NATIONAL No 25 Jul 2022 01 Aug 2022
+Commander NHQ-001 NATIONAL No 27 Mar 2023 05 Apr 2023
+Commander NHQ-001 NATIONAL No 19 Aug 2024 03 Jun 2025
+Transfer History
+From To Date Transferred
+NCR-NCR-001 NHQ-NHQ-001 5/26/2020 12:00:00 AM
+Level
+Level Completed
+LV1 01 Jan 1993
+LV2 30 Apr 2002
+LV3 31 May 2002
+LV4 30 Apr 2003
+LV5 26 May 2004
+Professional Development
+Printer Friendly View - Member Details https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDet...
+3 of 12 10/26/2026, 8:02 PM
+Training How Completed Completed
+Cadet Protection - Advanced Course LMS 04 Mar 2026
+National Safety Officer College - SMS (NSOC-SMS) Online 10 Nov 2020
+Master Rating Exam: Safety Online 04 Nov 2020
+Master Rating Exam: AE Online 29 Jun 2015
+Technician Rating Exam: Communications ONLINE 26 Sep 2001
+NSC AIR COMMAND AND STAFF COLLEGE 26 May 2004
+Printer Friendly View - Member Details https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDet...
+5 of 12 10/26/2026, 8:02 PM
+Training How Completed Completed
+ACSC Course 05 Apr 2004
+Master Rating Exam: Cadet Program ONLINE 07 Oct 2003
+Senior Rating Exam: Cadet Program ONLINE 07 Oct 2003
+Technician Rating Exam: Cadet Program ONLINE 07 Oct 2003
+SOS Course 02 Dec 2002
+Yeager 05 Aug 2001
+Specialty Tracks
+Specialty Track Level Completed
+CADET PROGRAMS MASTER 02 Nov 2001
+AEROSPACE TECHNICIAN 02 May 2003
+EMERGENCY SERVICES SENIOR 22 Sep 2004
+ADMINISTRATION MASTER 11 Feb 2007
+PROFESSIONAL DEVELOPMENT MASTER 20 Jul 2007
+PERSONNEL MASTER 24 Dec 2008
+DRUG DEMAND REDUCTION MASTER 30 Dec 2008
+PUBLIC AFFAIRS NONE 27 Mar 2009
+ORGANIZATIONAL EXCELLENCE TECHNICIAN 24 Oct 2010
+INSPECTOR GENERAL TECHNICIAN 23 Jun 2012
+COMMAND MASTER 19 Mar 2014
+INFORMATION TECHNOLOGY OFFICER NONE 29 Jul 2015
+HISTORIAN MASTER 28 Jul 2020
+SAFETY MASTER 10 Nov 2020
+Cadet Training
+Type Location Date Completed
+RCLS Example Wing 15 Jun 1991
+PJOC Example, KS 26 Jul 1991
+ECI-13 03 Apr 2002
+NBB Example, WI 04 Aug 2003
+NBB Example, WI 03 Aug 2004
+NBB NCSA 20 Jul 2005
+NBB Example, WI 02 Aug 2005
+NBB Example, WI 20 Aug 2007
+NBB Example, WI 04 Aug 2008
+NBB Staff Example WI 03 Aug 2009
+NBB Staff Example WI 02 Aug 2010
+RCLS Example Wing 02 Jan 2012
+RCLS Example Wing 02 Jan 2013
+NBB Staff Example WI 04 Aug 2013
+RCLS Example, KS 24 May 2015
+NBB Staff Example WI 27 Jul 2015
+NBB Staff Example WI 01 Aug 2016
+Encampments
+Location Date Completed
+Camp Example, Iowa 13 Jul 2002
+Example Wing 27 Oct 2002
+Camp Example, Nebraska 21 Jun 2003
+Example, KS 03 Oct 2003
+Camp Example, IA 09 Jul 2004
+North Central 800 Encampment 10 Apr 2005
+Example Wing HQ, KS 31 Dec 2005
+Camp Example, IA 07 Jul 2006
+Example, KS 31 Dec 2006
+Example, KS 31 Dec 2008
+Example, KS 02 Jan 2010
+Printer Friendly View - Member Details https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDet...
+7 of 12 10/26/2026, 8:02 PM Location Date Completed
+Example, KS 02 Jan 2011
+Example Training Base, KS 31 Dec 2011
+Cadet Achievements
+Acheivement/Award Award Number Completed
+Achievement 1 0 01 Feb 1991
+Billy Mitchell 10001 01 Feb 1991
+Amelia Earhart 10002 01 Oct 1991
+Gen Carl A Spaatz 10003 01 Nov 1992
+Gen Ira C Eaker 0 01 Nov 1992
+Awards
+Award Award Number Completed
+MBRRBN 0 01 Jan 1993
+YEAGER 0 05 Aug 2001
+DAVIS 0 30 Apr 2002
+LOENING 0 31 May 2002
+GARBER 0 30 Apr 2003
+WILSON 10004 26 May 2004
+Promotions
+Rank Date of Rank Criteria
+Maj Gen 19 Aug 2024 Commander Promotion
+Brig Gen 26 Aug 2021 Commander Promotion
+Col 31 May 2008 Commander Promotion
+C/Col 01 Nov 1992
+Decorations
+Decoration Date of Decoration Approval Date
+Commander's Commendation Award (Region) 01 Jul 2020 to 31 Jul 2020 12 Apr 2022
+Crisis Service Award 01 Mar 2020 to 31 Oct 2022 01 Dec 2021
+Commander's Commendation Award (Wing) 09 Nov 2019 to 09 Nov 2019 17 Nov 2019
+Air Force Organizational Excellence Award 01 Oct 2012 to 31 Aug 2016 02 Mar 2018
+Commander's Commendation Award (Wing) 30 May 2014 to 01 Jun 2014 01 Jan 2014
+D - Distinguished Service Medal (Legacy Entry) 31 May 2008 to 26 May 2012 09 May 2012
+Exceptional Service Medal (Legacy Entry) 17 Jul 2007 to 31 Jul 2007 25 Jul 2007
+Distinguished Service Award 15 Jun 2020 to 31 Jul 2021
+Distinguished Service Award 26 Aug 2021 to 17 Aug 2024
+Distinguished Service Award 28 May 2016 to 23 May 2020
+Ribbons
+Activity/Service Ribbon Type Date Earned
+Encampment Ribbon Cadet 11/18/1990 12:00:00 AM
+Cadet Special Activity Ribbon Cadet 7/14/1991 12:00:00 AM
+IACE Ribbon Cadet 7/31/1992 12:00:00 AM
+Disaster Relief Ribbon Cadet 4/27/1991 12:00:00 AM
+Cadet Advisory Council Ribbon Cadet 4/30/1992 12:00:00 AM
+Air Search and Rescue Ribbon Senior 7/31/2002 12:00:00 AM
+Search “Find” Ribbon Senior 7/31/2002 12:00:00 AM
+Senior Recruiter Ribbon Senior 8/27/2003 12:00:00 AM
+National Color Guard Competition Ribbon Senior 5/17/2003 12:00:00 AM
+Community Service Ribbon Senior 4/19/2005 12:00:00 AM
+Red Service Ribbon Cadet 2/28/1991 12:00:00 AM
+Local Activities
+Spaatz Award Presentation 01 Jan 2025

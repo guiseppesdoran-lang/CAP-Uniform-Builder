@@ -1980,3 +1980,79 @@ test('Awards-table milestones import but presentation titles do not award a mile
   const ceremony = runImport(SENIOR_RIBBON_REGRESSION.replace('Spaatz Award 1142 01 Jan 1994', 'Spaatz Award Presentation 01 Jan 1994'));
   assert.equal(ceremony.ribbon('spaatz_award'), undefined);
 });
+
+  
+// Legacy printed senior report field formats, with fictitious identity and locations.
+// Exercise the real gallery rebuild and the state-to-renderer conversion as well as parsing.
+const PRINTED_SENIOR = fs.readFileSync(path.join(__dirname, 'fixtures', 'eservices-member-details-senior-legacy.txt'), 'utf8');
+function runPrintedSeniorReport(text = PRINTED_SENIOR){
+  const { context, referenceErrors } = loadPageScripts();
+  assert.deepEqual(referenceErrors, []);
+  return JSON.parse(vm.runInContext(`text => {
+    for(const n of ['buildRibbonGallery','buildBadgeGallery','fullRender','refreshUI','populateRankSetup','updateSetupGates',
+      'highlightActiveUniformButton','applyMemberTypeToUniformOptions','syncCadetFirstSergeantControl','renderCACShoulderCord',
+      'syncShoulderCordControl','clearUnauthorizedPatchesForCurrentUniform','renderRack','renderAllBadges']) globalThis[n] = function(){};
+    State.uniform = 'blues_a';
+    const parsed = parseCapMemberReport(text);
+    applyCapMemberReportImport(parsed);
+    return JSON.stringify({ parsed, selections:State.ribbonSelections,
+      tracks:parseMemberReportSpecialtyTracks(normalizeMemberReportText(text)),
+      build:CAPUBUniformView.buildFromState(), normalized:normalizeMemberReportText(text) });
+  }`, context)(text));
+}
+const printedDevices = (r, id) => r.build.ribbons.filter(row => row.id === id).map(row => row.devices.map(short));
+
+test('printed senior legacy fields reach the renderer as all 24 ribbon types, with only the highest cadet ribbon', () => {
+  const r = runPrintedSeniorReport();
+  const expected = ['Air_Force_Organizational_Excellence_Award', 'distinguished_service_award', 'exceptional_service_award',
+    'commander_commendation_award', 'cap_gill_robb_wilson_ribbon', 'cap_paul_e_garber_ribbon', 'cap_grover_loening_aerospace_ribbon',
+    'cap_leadership_ribbon', 'cap_membership_ribbon', 'cap_bridgadier_general_charles_yaeger_ribbon', 'spaatz_award',
+    'cap_command_service_ribbon', 'crisis_ribbon', 'red_service_ribbon', 'search_find_ribbon', 'air_search_and_rescue_ribbon',
+    'disaster_relief_ribbon', 'community_service_ribbon', 'iace_ribbon', 'national_color_guard_competition_ribbon',
+    'cadet_advisory_council_ribbon', 'cadet_special_activity_ribbon', 'encampment_ribbon', 'cap_senior_recruiter_ribbon'];
+  assert.deepEqual([...new Set(r.build.ribbons.map(row => row.id))].sort(), expected.sort());
+  assert.equal(r.build.ribbons.length, 25, '14 encampments use a second physical ribbon');
+  assert.deepEqual(printedDevices(r, 'distinguished_service_award'), [['clasp-bronze','clasp-bronze','clasp-bronze']]);
+  assert.deepEqual(printedDevices(r, 'exceptional_service_award'), [[]]);
+  assert.deepEqual(printedDevices(r, 'commander_commendation_award'), [['star-bronze','clasp-bronze','clasp-bronze']]);
+  assert.deepEqual(printedDevices(r, 'cap_gill_robb_wilson_ribbon'), [['star-silver']]);
+  assert.deepEqual(printedDevices(r, 'cap_paul_e_garber_ribbon'), [['star-bronze']]);
+  assert.deepEqual(printedDevices(r, 'cap_leadership_ribbon'), [['star-silver','star-silver','star-silver']]);
+  assert.deepEqual(printedDevices(r, 'cap_command_service_ribbon'), [['star-gold','star-gold']]);
+  for(const id of ['cadet_advisory_council_ribbon','national_color_guard_competition_ribbon','disaster_relief_ribbon',
+    'air_search_and_rescue_ribbon','search_find_ribbon']) assert.deepEqual(printedDevices(r, id), [[]], id);
+});
+
+test('a Professional Development specialty row does not end the Specialty Tracks table', () => {
+  const r = runPrintedSeniorReport();
+  assert.equal(r.tracks.length, 14);
+  assert.equal(r.tracks.filter(row => row.level === 'MASTER').length, 8);
+  assert.ok(r.tracks.some(row => row.name === 'SAFETY' && row.level === 'MASTER'));
+});
+
+test('LV1-LV5 completion rows and dated Awards codes each independently import the senior awards', () => {
+  const ids = ['cap_membership_ribbon','cap_leadership_ribbon','cap_grover_loening_aerospace_ribbon',
+    'cap_paul_e_garber_ribbon','cap_gill_robb_wilson_ribbon'];
+  const withoutLevels = PRINTED_SENIOR.replace(/LV[1-5] [^\n]+\n/g, '');
+  const withoutCodes = PRINTED_SENIOR.replace(/(?:MBRRBN|DAVIS|LOENING|GARBER|WILSON) \d+ [^\n]+\n/g, '');
+  for(const text of [withoutLevels, withoutCodes]){
+    const r = runPrintedSeniorReport(text);
+    for(const id of ids) assert.ok(r.build.ribbons.some(row => row.id === id), id);
+  }
+  const neither = runPrintedSeniorReport(withoutLevels.replace(/(?:MBRRBN|DAVIS|LOENING|GARBER|WILSON) \d+ [^\n]+\n/g, '')
+    .replace('Example Member', 'Example Wilson').replace('Yeager 05 Aug 2001', 'Wilson Training 05 Aug 2001'));
+  assert.ok(!neither.build.ribbons.some(row => row.id === 'cap_gill_robb_wilson_ribbon'), 'a surname or course is not an award code');
+});
+
+test('midnight earned dates survive print cleanup and join the Encampments table; ECI-13 earns no NCSA credit', () => {
+  const r = runPrintedSeniorReport();
+  assert.match(r.normalized, /Encampment Ribbon Cadet 18 Nov 1990/);
+  assert.match(r.normalized, /Disaster Relief Ribbon Cadet 27 Apr 1991/);
+  assert.ok(!r.normalized.includes('10/26/2026'), 'browser print time removed');
+  for(const [id, count] of [['cadet_special_activity_ribbon',11],['encampment_ribbon',14]]){
+    const s = r.selections[id];
+    assert.equal(RA.readCount(id, s.awardValue, s.awardLabel), count, id);
+  }
+  const noEci = runPrintedSeniorReport(PRINTED_SENIOR.replace('ECI-13 03 Apr 2002\n',''));
+  assert.deepEqual(printedDevices(noEci, 'cadet_special_activity_ribbon'), printedDevices(r, 'cadet_special_activity_ribbon'));
+});
