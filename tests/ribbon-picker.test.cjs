@@ -49,7 +49,7 @@ test('the picker is grouped, drops raw ids, and shows mini medals only where the
   assert.match(ribbonCode,/ribbonGroups\(capIds\)/);
   assert.match(lists,/CAPUBUniformRules\.allowsMiniMedals\(State\.uniform\)/);
   assert.doesNotMatch(ribbonCode,/Not selected/);
-  assert.doesNotMatch(ribbonCode,/- Select -/,'off is the tile\'s tap, not a choice in the select');
+  assert.match(ribbonCode,/- Select -/,'the dropdown can also clear a selection');
   assert.doesNotMatch(ribbonCode,/escapeHtml\(id\)|\(\$\{id\}\)/,'no raw id in the text');
 });
 
@@ -84,20 +84,20 @@ const rule=sel=>{
   return css.slice(i,css.indexOf('}',i));
 };
 
-test('a ribbon\'s picture box is wide and low (a ribbon is 3.7 times as wide as high), its controls are under the tile only while it is on, and its picked line is clamped to three lines',()=>{
+test('a ribbon\'s picture box is wide and low (a ribbon is 3.7 times as wide as high), its compact controls stay under the tile, and its picked line is clamped to three lines',()=>{
   assert.match(rule('.vp[data-size="large"][data-shape="wide"] .vpPicture'),/aspect-ratio:3 \/ 1/);
   const summary=rule('.vpControls .ribbonDeviceSummary');
   assert.match(summary,/overflow:hidden/);
   assert.match(summary,/-webkit-line-clamp:3/);
-  // The controls are made only for a ribbon that is on.
-  assert.match(ribbonCode,/controls: isOn => isOn \? ribbonControls\(d, id, military, after\) : null/);
+  // Selection controls remain available before selecting the ribbon.
+  assert.match(ribbonCode,/controls: \(\) => ribbonControls\(d, id, military, after\)/);
   assert.match(ribbonCode,/name: spec\.name, ariaLabel: spec\.ariaLabel, mode: 'toggle', size: 'large', shape: 'wide'/);
 });
 
 // LIVE14 E71 (Ethan: "you can remove those question mark things by some of the service ribbons").
-test('no "?" counting-rule button: the rule is in the title of the picked line and of the row of counts',()=>{
+test('no "?" counting-rule button: the rule is in the title of the picked line and of the award dropdown',()=>{
   assert.doesNotMatch(galleries+lists,/ribbonRuleBtn|ribbonRulePop|hasRule/);
-  assert.match(ribbonCode,/if\(hint\) row\.host\.setAttribute\('title', hint\);/);
+  assert.match(ribbonCode,/select\.setAttribute\('title', military \? '' : d\.ribbonHint\(id\)\);/);
   assert.match(ribbonCode,/const title = \[`Selected: \$\{picked\.label\}\$\{picked\.rest\}`, hint\]\.filter\(Boolean\)\.join\('[^']+'\);\s*line\.setAttribute\('title', title\);/);
   const ra=require('../data/ribbon-awards.js');
   for(const id of ['cadet_recruiter_ribbon','cap_senior_recruiter_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','iace_ribbon','crisis_ribbon'])

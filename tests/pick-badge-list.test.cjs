@@ -276,7 +276,7 @@ test('the list is wired in: the chooser window builds it with the picker, the ol
     assert.doesNotMatch(src, /class="bdChk"|class="cmdGradChk"/, `${f}: no badge tile with a box`);
   }
   const lists = read('js/pick-lists.js');
-  assert.doesNotMatch(lists.replace(/\/\/.*$/gm, ''), /checkbox|type = 'radio'|createElement\('input'\)/);
+  assert.doesNotMatch(lists.slice(0, lists.indexOf('// ---- ribbons')).replace(/\/\/.*$/gm, ''), /checkbox|type = 'radio'|createElement\('input'\)/, 'badge controls remain separate from ribbon checkboxes');
 });
 
 // The owner (2026-11-13): "remove these lower letters": a badge tile is the picture and the name. What the drawing did with a badge the member turns on (the place it takes, or why it is left off,

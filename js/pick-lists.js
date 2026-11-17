@@ -1,5 +1,5 @@
 // The lists the chooser window offers (badges, ribbons, patches) as picture tiles of the picture picker (js/visual-picker.js, toggle mode): the item's own drawing, its name under
-// it, a tap turns it on or off and the tile shows it. No checkbox and no radio button is in them. What an item needs besides on and off (the level of a badge, its Graduated commander
+// it, a tap turns it on or off and the tile shows it. Ribbons use a Select checkbox for a single choice and a dropdown for award counts / levels. What a badge needs besides on and off (its level, its Graduated commander
 // switch) is a control under its tile that shows while the tile is on.
 //
 // Each builder takes the container, the list and `deps` (the page's own functions and state, by default the page's globals read when it is called; the tests give their own).
@@ -63,6 +63,7 @@
       ribbonName: id => getRibbonDisplayName(id),
       ribbonArt: id => getRibbonImagePath(id),
       ribbonOptions: id => getRibbonAwardOptions(id),
+      ribbonSelectionOption: (id, value) => getRibbonSelectionOption(id, value),
       firstOption: id => capubFirstRibbonOptionValue(id),
       setRibbon: (id, value) => setRibbonSelectionFromDropdown(id, value),
       normalizeRibbons: () => normalizeRibbonSelections(),
@@ -428,17 +429,34 @@
       ? { value: cell.dataset.value, className: String(inside.className || '').split(' ')[0], option: inside.dataset ? inside.dataset.value : '', row: row && row.dataset ? row.dataset.name : '' } : null;
     rebuild();
     if(!keep) return;
-    const again = root.querySelectorAll('.vpCell').find(c => c.dataset.value === keep.value);
-    const rowAgain = again && keep.row ? again.querySelectorAll('.vp').find(v => v.dataset.name === keep.row) : null;
+    const again = Array.from(root.querySelectorAll('.vpCell')).find(c => c.dataset.value === keep.value);
+    const rowAgain = again && keep.row ? Array.from(again.querySelectorAll('.vp')).find(v => v.dataset.name === keep.row) : null;
     const target = rowAgain
-      ? rowAgain.querySelectorAll('.vpOption').find(n => n.dataset.value === keep.option)
-      : again && again.querySelectorAll('.' + keep.className).find(n => n !== again.querySelector('.vpOption'));
+      ? Array.from(rowAgain.querySelectorAll('.vpOption')).find(n => n.dataset.value === keep.option)
+      : again && Array.from(again.querySelectorAll('.' + keep.className)).find(n => n !== again.querySelector('.vpOption'));
     if(target && target.focus) target.focus();
   }
 
   // ---- ribbons ------------------------------------------------------------------------------------------------------------------------------
 
   const chosenRibbon = (d, id) => !!(d.State.ribbonSelections[id] && d.State.ribbonSelections[id].checked);
+
+  // Display text only: keep the catalog labels and values used by imports and device rules intact.
+  function ribbonOptionLabel(id, option){
+    if(id === 'cap_gill_robb_wilson_ribbon' || id === 'cap_paul_e_garber_ribbon'){
+      const schools = { 'Bronze Star': 'Squadron Officer School', 'Silver Star': 'Air Command and Staff College', 'Gold Star': 'Air War College' };
+      if(schools[option.label]) return `${option.label} - ${schools[option.label]}`;
+    }
+    return option.label;
+  }
+
+  function ribbonSelectOnly(d, id, options){
+    // Offer the current Crisis Service period as a simple checkbox. A saved later-period award
+    // still gets the full dropdown, preserving its value and devices without changing award rules.
+    const sel = d.State.ribbonSelections[id] || {};
+    const current = sel.checked ? d.ribbonSelectionOption(id, sel.awardValue) : null;
+    return options.length === 1 || (id === 'crisis_ribbon' && (!current || current.value === options[0]?.value));
+  }
 
   // What a tap does: the ribbon on at its first choice (its basic award, or "earned") or off, the page's rules after it (the shared slot, the exclusions, the three JROTC / ROTC
   // ribbons at most, which refuses a fourth with the reason). Returns whether the ribbon is on afterwards.
@@ -459,18 +477,47 @@
     return { label: sel.awardLabel || 'Earned', rest: `${devices ? ` • ${devices}` : ''}${warnings}` };
   }
 
-  // The controls under the tile of a ribbon that is on: for a U.S. military ribbon the service, for every ribbon its count or level (where it has more than one), the devices a
+  // Compact selection controls are always visible. Under a selected U.S. military ribbon, keep the service and the devices a
   // military award allows (a button each, pressed when worn; the member's own numeral when devices are chosen by hand), then what was selected and the miniature medal where the
   // uniform wears them. `after()` redraws the lists once something changed.
   function ribbonControls(d, id, military, after){
     const sel = d.State.ribbonSelections[id] || {};
     const box = el('div', 'vpControlStack');
+    const options = d.ribbonOptions(id).filter(opt => opt && opt.value);
+    if(ribbonSelectOnly(d, id, options)){
+      const label = el('label', 'ribbonSelectLabel');
+      const input = el('input', 'ribbonSelect');
+      input.setAttribute('type', 'checkbox');
+      input.setAttribute('aria-label', `Select ${d.ribbonName(id)}`);
+      input.checked = !!sel.checked;
+      input.addEventListener('change', () => { selectRibbon(id, input.checked, d); after(); });
+      label.append(input, ' Select');
+      box.append(label);
+    }else if(options.length > 1){
+      const label = el('label', 'ribbonAwardLabel', 'Award / level ');
+      const select = el('select', 'ribbonAwardSelect');
+      select.setAttribute('aria-label', `${d.ribbonName(id)} award / level`);
+      select.setAttribute('title', military ? '' : d.ribbonHint(id));
+      const empty = el('option', null, '- Select -');
+      empty.value = '';
+      select.append(empty);
+      for(const option of options){
+        const item = el('option', null, ribbonOptionLabel(id, option));
+        item.value = option.value;
+        select.append(item);
+      }
+      const current = sel.checked ? d.ribbonSelectionOption(id, sel.awardValue) : null;
+      select.value = current?.value || '';
+      select.addEventListener('change', () => { d.setRibbon(id, select.value); after(); });
+      label.append(select);
+      box.append(label);
+    }
+    if(!sel.checked) return box;
     const hint = military ? '' : d.ribbonHint(id);
     const ui = military ? d.ui() : null;
     const award = military ? d.militaryAward(id) : null;
     const redo = () => { d.setRibbon(id, sel.awardValue || `military_award_${sel.awardCount || 1}`); };
-    // The drawing of the ribbon at a choice: the member's own selection with the choice in place of its own, military devices worked out by the rule the drawing follows.
-    const countOf = value => Math.max(1, Number(String(value || '').match(/military_award_(\d+)/)?.[1]) || 1);
+    // Service and special-device pictures keep using the existing military device calculation.
     const art = d.ribbonArt(id) ? d.asset(d.ribbonArt(id)) : undefined;
     const services = military && award ? (award.authorizedServices || []) : [];
     // More than one service wears the award: a tile for each, the ribbon as that service wears it at the count chosen. One service is no choice and is not offered.
@@ -488,20 +535,6 @@
           after();
         }
       }).host);
-    }
-    // The count or the level: a tile for each, the ribbon drawn at it with its devices; a long list scrolls in the one row and the one picked is in the middle.
-    const options = d.ribbonOptions(id).filter(opt => opt && opt.value);
-    if(options.length > 1){
-      const row = pictureRow(d, {
-        name: `ribbonCount-${id}`, label: 'Award count / earned level', value: sel.awardValue || options[0].value, pictureHeight: '30px',
-        options: options.map(opt => ({ value: opt.value, label: opt.label, picture: art,
-          draw: img => d.drawRibbon(img, id, Object.assign({}, sel, military
-            ? { awardValue: opt.value, awardLabel: opt.label, awardCount: countOf(opt.value), devices: d.militaryDevices(id, sel, { count: countOf(opt.value) }) }
-            : { awardValue: opt.value, awardLabel: opt.label, devices: opt.devices || {} })) })),
-        onChange: value => { d.setRibbon(id, value); after(); }
-      });
-      if(hint) row.host.setAttribute('title', hint);
-      box.append(row.host);
     }
     if(military){
       const rules = d.militaryRules(award, d.militaryService(id, sel), ui.advancedMode);
@@ -587,7 +620,7 @@
     const option = (id, group, note) => ({
       value: id, label: d.ribbonName(id), picture: d.ribbonArt(id) ? d.asset(d.ribbonArt(id)) : undefined,
       caption: spec.caption ? spec.caption(id) : undefined, group, groupNote: note, search: spec.search ? spec.search(id) : (group || ''),
-      controls: isOn => isOn ? ribbonControls(d, id, military, after) : null
+      controls: () => ribbonControls(d, id, military, after)
     });
     const options = () => spec.groups
       ? spec.groups().flatMap(g => g.ids.map(id => option(id, g.key, g.note)))
