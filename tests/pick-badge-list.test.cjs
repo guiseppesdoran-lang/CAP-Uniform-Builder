@@ -280,12 +280,13 @@ test('the list is wired in: the chooser window builds it with the picker, the ol
 });
 
 // The owner (2026-11-13): "remove these lower letters": a badge tile is the picture and the name. What the drawing did with a badge the member turns on (the place it takes, or why it is left off,
-// with the paragraph) is said once in the window's status line; a badge that is chosen and left off is dim; nothing is said for a badge turned off.
-test('a tap says in the window\'s status line where the badge is worn or why it is left off, and a chosen badge the drawing leaves off is dim; the tiles carry no line of their own', () => {
+// with the paragraph) is said once in the window's status line; a badge that is chosen and left off carries the not-worn mark in the tick's place and its picture is never dimmed; nothing is said for a badge turned off.
+test('a tap says in the window\'s status line where the badge is worn or why it is left off, and a chosen badge the drawing leaves off carries the not-worn mark, never a dim picture; the tiles carry no line of their own', () => {
   const p = make();
   ROWS = []; SAID.length = 0;
-  const muted = id => p.button(id).classList.contains('isMuted');
-  assert.ok(p.host.querySelectorAll('.vpOption').every(b => !b.classList.contains('isMuted')), 'none dim to begin with');
+  const muted = id => p.button(id).classList.contains('isNotWorn');
+  const never = () => assert.ok(p.host.querySelectorAll('.vpOption').every(b => !b.classList.contains('isMuted')), 'no tile is ever dimmed');
+  never();
   p.button(OBSERVER).click();
   assert.deepEqual(SAID, [''], 'the drawing has not been made yet: nothing to say');
   const WHY = 'Only one CAP aviation badge is worn (CAPR 39-1, 7.1.1.3.1)';
@@ -298,8 +299,11 @@ test('a tap says in the window\'s status line where the badge is worn or why it 
   SAID.length = 0;
   p.entry.rendered();
   assert.deepEqual(SAID, [`Pilot Badge is not shown. ${WHY}`], 'chosen and left off: why, with the paragraph (the page puts it behind a question mark)');
-  assert.ok(muted(PILOT), 'the tile looks unavailable: its picture is dim');
-  assert.ok(!muted(OBSERVER), 'a badge the drawing wears is not dim');
+  assert.ok(muted(PILOT), 'chosen and left off: the not-worn mark takes the tick\'s place');
+  assert.ok(!muted(OBSERVER), 'a badge the drawing wears keeps its tick');
+  assert.equal(p.button(PILOT).querySelector('.vpOffWords').hidden, false, 'said to assistive technology');
+  assert.equal(p.button(OBSERVER).querySelector('.vpOffWords').hidden, true);
+  never();
   assert.equal(p.tile(PILOT).querySelector('.vpLabel').textContent, 'Pilot Badge', 'its name stays');
   // The tile itself has no line, however it is shaded.
   assert.ok(p.host.querySelectorAll('.vpCell').every(c => c.querySelector('.vpCaption') === null));
@@ -309,7 +313,8 @@ test('a tap says in the window\'s status line where the badge is worn or why it 
   assert.equal(SAID[SAID.length - 1], '', 'the status line is cleared');
   ROWS = [{ id: OBSERVER, name: NAMES[OBSERVER], shown: true, place: 'above the ribbons', why: '' }];
   p.entry.rendered();
-  assert.ok(!muted(PILOT));
+  assert.ok(!muted(PILOT), 'a badge turned off has no mark');
+  never();
   assert.equal(SAID[SAID.length - 1], '', 'a badge that is off says nothing');
   // The sentence is the drawing's own: the place as it stands, the reason with its first letter capital and a stop where it has none.
   assert.equal(Lists.badgeNote([{ id: 'x', shown: false, why: 'it cannot be shown on this uniform' }], 'x', 'The X'), 'The X is not shown. It cannot be shown on this uniform.');

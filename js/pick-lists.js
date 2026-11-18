@@ -128,7 +128,7 @@
     if(row.shown) return row.place ? `${name}: ${row.place}.` : '';
     return row.why ? `${name} is not shown. ${stopped(sentence(row.why))}` : '';
   }
-  // A badge or patch that is chosen and that the drawing leaves off looks unavailable: its picture is dim, its name stays.
+  // A badge or patch that is chosen and that the drawing leaves off: its tile carries the not-worn mark in the tick's place (the picture is never dimmed).
   const leftOff = (rows, id, name, on) => { const row = rows.find(r => r.id === id || (name && r.name === name)); return !!on && !!row && !row.pending && !row.shown; };
 
   // What a tap does: the badge on or off, the page's rules after it (one command pin, the exclusive badges, the order: rebuildBadgesFromGallery). A command pin above the grade that
@@ -212,8 +212,10 @@
     // The controls of a badge that has levels are made for every tile and shown while it is on; a command pin's are made only while it is on (the pin as drawn depends on which pin is held),
     // so the list is made again when the pin held changes.
     const pinsOn = () => ids.filter(id => d.isCommand(id) && d.State.badgeSelections[id] && d.State.badgeSelections[id].checked).join();
+    // What a tile's controls were made from: a badge's own level row keeps its own state (a tap on a level tile moves it), a command pin's row depends on the pin held and on how it is worn.
+    const controlsKeyOf = id => d.isCommand(id) ? `pin:${pinsOn()}:${graduatedNow(d)}` : 'levels';
     let built = '';
-    const options = () => { built = pinsOn(); const rows = d.badgeRows(), on = new Set(selectedIn(d, ids)); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), muted: leftOff(rows, id, d.name(id), on.has(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null }))); };
+    const options = () => { built = pinsOn(); const rows = d.badgeRows(), on = new Set(selectedIn(d, ids)); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), notWorn: leftOff(rows, id, d.name(id), on.has(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null, controlsKey: controlsKeyOf(id) }))); };
     // The last badge the member turned on: the window's status line says what the drawing did with it, as soon as the drawing has been made.
     let tapped = null;
     const say = () => { if(tapped) d.say(badgeNote(d.badgeRows(), tapped, d.name(tapped))); };
@@ -254,7 +256,7 @@
     const nameOf = badge => badge.officialName || badge.id;
     let tapped = null;
     const options = () => { const rows = d.badgeRows(), on = new Set(chosen()); return records.map(badge => ({
-      value: badge.id, label: nameOf(badge), picture: pictureOf(badge), muted: leftOff(rows, badge.id, nameOf(badge), on.has(badge.id)), search: `${branch} ${badge.family || ''}`,
+      value: badge.id, label: nameOf(badge), picture: pictureOf(badge), notWorn: leftOff(rows, badge.id, nameOf(badge), on.has(badge.id)), search: `${branch} ${badge.family || ''}`, controlsKey: `variants:${variantOf(badge).variants.map(v => v.id).join()}`,
       controls: () => {
         const { variants, active } = variantOf(badge);
         if(variants.length < 2) return null;
@@ -317,7 +319,7 @@
     // The patches that are on and have places to choose from: their tiles carry the choice, so the list is made again when these change.
     const placed = () => listed().filter(id => patchOn(d, id) && d.patchWords(id).places.length > 1).join();
     let built = '';
-    // A patch chosen that the drawing leaves off looks unavailable (its picture is dim); a tap on a tile says in the window's status line where the patch is worn, or why it is left off.
+    // A patch chosen that the drawing leaves off carries the not-worn mark; a tap on a tile says in the window's status line where the patch is worn, or why it is left off.
     const rowOf = id => { const title = d.patchWords(id).title; return (d.patchRows() || []).find(r => r.id === id || r.name === title); };
     const leftOffPatch = id => { const row = rowOf(id); return patchOn(d, id) && !!row && !row.shown; };
     let tapped = null;
@@ -331,7 +333,7 @@
       return listed().map(id => {
         const meta = d.patchMeta(id), words = d.patchWords(id);
         return {
-          value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, muted: leftOffPatch(id),
+          value: id, label: words.title, picture: meta.img ? d.asset(meta.img) : undefined, notWorn: leftOffPatch(id), controlsKey: `places:${words.places.map(place => place.slot).join()}`,
           group: meta.group || undefined, groupNote: meta.group ? meta.note : undefined, search: meta.group || '',
           controls: isOn => isOn ? placeChoice(id) : null
         };
@@ -383,7 +385,7 @@
         if(placed() !== built) keepingFocus(picker.el, () => picker.setOptions(options()));
       },
       setOptions(){ keepingFocus(picker.el, () => { picker.setValues(listed().filter(id => patchOn(d, id))); picker.setOptions(options()); }); },
-      // The drawing has been made again: a patch it left off is dim, and the last tap says where the patch is worn or why it is not.
+      // The drawing has been made again: a patch it left off carries the not-worn mark, and the last tap says where the patch is worn or why it is not.
       rendered(){ entry.setOptions(); say(); }
     };
     return entry;

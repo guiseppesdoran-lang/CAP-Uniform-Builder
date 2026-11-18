@@ -156,14 +156,14 @@ test('each place of a patch is the uniform as the engine draws it with the patch
   await late; await Promise.resolve(); await Promise.resolve();
   assert.equal(p.cell(id).querySelector('.vpPlaceChoice').hidden, false);
   assert.equal(tiles().length, 3);
-  // A tile turned off takes its row away, and the other patch turned on has its own.
+  // A tile turned off hides its row (it is kept, with the pictures it has, for the next time it is turned on).
   p.cell(id).querySelector('.vpOption').click();
-  assert.ok(p.cell(id).querySelector('.vpControls') === null);
+  assert.ok(p.cell(id).querySelector('.vpControls') === null || p.cell(id).querySelector('.vpControls').hidden === true);
 });
 
 // The owner (2026-11-13): "remove these lower letters". A patch tile is the picture and the name; where the patch is worn, or why the drawing leaves it off, is said once in the window's status
-// line when the member turns it on, and a patch that is chosen and left off is dim.
-test('a tap says in the window\'s status line where the patch is worn or why the drawing leaves it off, and a patch it leaves off is dim; the tile carries no line', () => {
+// line when the member turns it on, and a patch that is chosen and left off carries the not-worn mark.
+test('a tap says in the window\'s status line where the patch is worn or why the drawing leaves it off, and a patch it leaves off carries the not-worn mark, never a dim picture; the tile carries no line', () => {
   setup('abu');
   ROWS = []; SAID.length = 0;
   const p = make();
@@ -181,8 +181,9 @@ test('a tap says in the window\'s status line where the patch is worn or why the
   SAID.length = 0;
   p.entry.rendered();
   assert.deepEqual(SAID, [`${title(pilot)} is not shown. ${WHY}`], 'why, with the paragraph');
-  assert.ok(p.button(pilot).classList.contains('isMuted'), 'the tile looks unavailable');
-  assert.ok(!p.button(comms).classList.contains('isMuted'));
+  assert.ok(p.button(pilot).classList.contains('isNotWorn'), 'chosen and left off: the not-worn mark');
+  assert.ok(!p.button(comms).classList.contains('isNotWorn'));
+  assert.ok(p.host.querySelectorAll('.vpOption').every(b => !b.classList.contains('isMuted')), 'no tile is ever dimmed');
   assert.equal(p.cell(pilot).querySelector('.vpLabel').textContent, title(pilot), 'its name stays');
   assert.ok(p.host.querySelectorAll('.vpCell').every(c => c.querySelector('.vpCaption') === null));
   assert.doesNotMatch(p.host.textContent, /not shown|Worn:|breast pocket takes/i);

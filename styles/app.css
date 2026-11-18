@@ -579,7 +579,9 @@ header h1::after{
 .capubV2Search input{margin:0}
 .militaryBadgeGalleryTile select{width:100%;min-width:0;font-size:var(--t-sm)}
 .capubV2Search .sub{font-size:var(--t-xs);color:var(--muted);margin-top:var(--s2)}
-.capubV2Search .capubModalSay{color:var(--ink)}
+/* The window's status line (what a tap on a badge or patch tile says): between the list and the footer, one line always kept for it (hidden text still takes the line), so it never moves a tile. */
+.capubModalSay{flex:0 0 auto;box-sizing:border-box;min-height:calc(1.35em + var(--s2) * 2);max-height:6.5em;overflow:auto;padding:var(--s2) var(--s4);border-top:1px solid var(--line);background:var(--panel);font-size:var(--t-xs);line-height:1.35;color:var(--ink)}
+.capubModalSay[hidden]{display:block;visibility:hidden}
 .badgeChooserSay{margin:var(--s2) 0 0;font-size:var(--t-xs);color:var(--ink)}
 
 /* ---- Preview ---- */
@@ -1549,8 +1551,14 @@ html[data-access="guest"] #accessGate{display:none}
 .vpTick{position:absolute;top:4px;right:4px;display:none;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--select-line);color:var(--panel)}
 .vpOption[aria-checked="true"] .vpTick{display:flex}
 .vpTick svg{display:block;width:14px;height:14px}
-/* A badge or patch that is chosen and that the drawing leaves off: its picture is dim, its name stays; the status line says why when it is tapped. */
-.vpOption.isMuted .vpPicture{opacity:.4}
+/* A badge or patch that is chosen and that the drawing leaves off: the picture is never dimmed (it read as a shadow stuck on the tile); the tick's place holds a hollow ring with a bar
+   instead (same place, same size), and the status line says why when the tile is tapped. */
+.vpTick .vpNotWornMark{display:none}
+.vpOption.isNotWorn .vpTick svg:not(.vpNotWornMark){display:none}
+.vpOption.isNotWorn .vpTick{background:var(--panel);box-shadow:inset 0 0 0 2px var(--select-line);color:var(--select-line)}
+.vpOption.isNotWorn .vpTick .vpNotWornMark{display:block}
+.vpOffWords{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.vpOffWords[hidden]{display:none}
 .vpNote{margin-top:var(--s2)}
 .vpOption.noPicture{justify-content:center;min-height:56px}
 /* Boxed tiles (data-boxed, js/visual-picker.js): every switch tile (mode "toggle": a list of badges, ribbons or patches, any number on) and a choice whose options carry a line under

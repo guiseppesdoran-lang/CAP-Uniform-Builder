@@ -963,8 +963,24 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     }
     const wrap = document.createElement('div');
     wrap.className = 'capubV2Search';
-    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category"/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div><div id="capubV2ModalSay" class="sub capubModalSay" role="status" aria-live="polite" hidden></div>`;
+    wrap.innerHTML = `<input id="capubV2ModalSearch" placeholder="Search ${kind} by name or category"/><div class="sub"><span id="capubV2ModalCount"></span> visible.</div><div id="capubV2ModalEmpty" class="sub" role="status" hidden></div>`;
     body.insertBefore(wrap, body.firstChild);
+    // The status line of the lists that say something when a tile is tapped (badges, patches) sits between the scrolling list and the footer, one line always kept for it: a line that
+    // appears or goes inside the list pushed every tile under it down or up by its height whenever a badge was turned on or off.
+    const scroller = body.parentNode;
+    if(scroller && scroller.parentNode){
+      const old = document.getElementById('capubV2ModalSay');
+      if(old && old.parentNode) old.parentNode.removeChild(old);
+      if(kind === 'badges' || kind === 'patches'){
+        const say = document.createElement('div');
+        say.id = 'capubV2ModalSay';
+        say.className = 'capubModalSay';
+        say.setAttribute('role', 'status');
+        say.setAttribute('aria-live', 'polite');
+        say.hidden = true;
+        scroller.parentNode.insertBefore(say, scroller.nextSibling);
+      }
+    }
     const input = wrap.querySelector('input');
     const count = wrap.querySelector('#capubV2ModalCount');
     input.value=State.modalGallerySearchValues[kind] || '';

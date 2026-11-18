@@ -23,15 +23,20 @@
 // A picture that is an image URL is loaded lazily, so a long list loads the pictures that come into view.
 //
 // Toggle mode (mode: 'toggle'): the options are switches, any number on at once, the way a list of badges, ribbons or patches is chosen: each tile is a button with aria-pressed,
-// the ones on carry a tick and the picked shade. `values` is the list of the values on; onToggle(value, on) is called when the member turns one (not by setValues or
+// the ones on carry a tick and the picked shade. A tile is never dimmed: an option that is on and carries `notWorn: true` (a badge chosen that the drawing leaves off) shows a small hollow
+// ring with a bar in the tick's place (and says "Chosen, not worn on this uniform" to assistive technology). `values` is the list of the values on; onToggle(value, on) is called when the member turns one (not by setValues or
 // setOptions). An option may carry a `caption` (a small line under its name, in the tile's box outside the button, so a reference in it carries its question mark; a choice whose options carry
 // one is drawn as boxed tiles too, or says `boxed: true`), a `search` (more words the filter reads) and `controls` (a node or a function(on) that returns one: the
-// level, the count or the devices of the item; it is shown under the tile only while the tile is on) and a `groupNote` (a line under the heading of its group). p.setValues(list); p.values; p.filter(text) hides the tiles whose name, caption
+// level, the count or the devices of the item; it is shown under the tile only while the tile is on; `controlsKey`, a string, says what the controls were made from, so that a list set
+// again with the same key keeps the controls it has, and one with another key makes them again) and a `groupNote` (a line under the heading of its group). p.setValues(list); p.values; p.filter(text) hides the tiles whose name, caption
 // or search words do not contain the text, and the sections left with none, and returns how many tiles are shown. The keys are the same: arrows move, Enter or the space bar turns one.
 //
 // To assistive technology it is a radio group (role="radiogroup"; each option role="radio" with aria-checked). It is one stop of the Tab key: the
 // arrow keys move from option to option (the left and up keys back, the right and down keys on, Home and End to the ends), Enter or the space bar picks
 // the option the focus is on, and so does a press. The option picked is marked by a heavier edge, a tick and its own shade, never by colour alone.
+// setOptions(list) with the same tiles in the same order and headings (same values, groups, captions and marks) changes the tiles it has: a picture that is another picture, a name, the
+// not-worn mark, and the controls of a tile whose `controlsKey` is not the one they were made from (or of a tile that has no key and is on): the tiles, their pictures and the focus stay
+// where they are, so a list set again after every drawing does not rebuild, reload or move anything. Any other list is drawn whole.
 // render() replaces what is in the host. The look is styles/app.css, "Visual pickers".
 //
 // Action mode (mode: 'action'): the tiles do something when pressed (download a picture) and are no choice, so none is ever picked: no radio, no tick, nothing stays pressed.
@@ -50,6 +55,10 @@
   // The tick on the option picked, and the plain empty mark ("no headgear", "no cord"): a dashed outline with nothing in it. Both draw in the colour
   // the page's text takes (currentColor), so they read on either theme.
   const TICK = `<svg xmlns="${SVG_NS}" viewBox="0 0 16 16" width="16" height="16" focusable="false" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  // The mark that takes the tick's place on a tile that is on but that the drawing leaves off (a badge chosen that this uniform does not wear): a hollow ring with a bar across it, never a
+  // filled disc with a tick, so it differs by shape and by fill, in either theme and for a member who does not see colour.
+  const NOT_WORN = `<svg class="vpNotWornMark" xmlns="${SVG_NS}" viewBox="0 0 16 16" width="16" height="16" focusable="false" aria-hidden="true"><path d="M4 8h8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+  const NOT_WORN_WORDS = 'Chosen, not worn on this uniform';
   function emptyMark(){
     return `<svg xmlns="${SVG_NS}" viewBox="0 0 48 36" focusable="false" aria-hidden="true"><rect x="9" y="5" width="30" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3"/></svg>`;
   }
@@ -249,6 +258,50 @@
 
     const indexOfValue = v => tiles.findIndex(t => t.option.value === v);
 
+    // What decides whether a list set again can be patched where it stands: the tiles in the order shown, each with its group, the lines that are not patched (group note, caption, mark), and the
+    // kind of picture it has (none, markup or an address).
+    let drawn = null;
+    const kindOf = p => !p ? 'n' : isMarkup(p) ? 'm' : 'u';
+    const signature = list => sections(list).flatMap(s => s.items).map(o => [o.value, o.group || '', o.groupNote || '', o.caption || '', o.mark || '', kindOf(o.picture), o.controls ? 1 : 0].join('\u0001')).join('\u0002');
+    // The list set again with the same tiles: each tile takes what changed (its picture, its name, the not-worn mark, its controls when their key changed). Returns false when the list is not the one drawn.
+    function patch(){
+      if(drawn === null || signature(options) !== drawn) return false;
+      const next = sections(options).flatMap(s => s.items);
+      next.forEach((o, i) => {
+        const t = tiles[i], was = t.option;
+        t.option = o;
+        const label = o.label != null ? o.label : String(o.value);
+        const labelEl = t.button.querySelector('.vpLabel');
+        if(labelEl && labelEl.textContent !== label) labelEl.textContent = label;
+        if(o.title !== was.title){ if(o.title) t.button.setAttribute('title', String(o.title)); else t.button.removeAttribute('title'); }
+        if(o.picture && o.picture !== was.picture){
+          const box = t.button.querySelector('.vpPicture');
+          if(box){
+            const img = box.querySelector('img');
+            if(isMarkup(o.picture)) box.innerHTML = clean(o.picture);
+            else if(img) img.setAttribute('src', String(o.picture));
+          }
+        }
+        if(!t.cell || !o.controls) return;
+        const on = selected.has(o.value);
+        const keyed = o.controlsKey !== undefined;
+        if(typeof o.controls !== 'function' || (keyed ? o.controlsKey === t.controlsKey && (t.controls || !on) : !on && !t.controls)) return;
+        const node = o.controls(on);
+        t.controlsKey = o.controlsKey;
+        if(!node){
+          if(t.controls){ t.controls.parentNode.removeChild(t.controls); t.controls = null; }
+          return;
+        }
+        if(!t.controls){
+          t.controls = make('div', 'vpControls');
+          t.cell.append(t.controls);
+        }else t.controls.textContent = '';
+        t.controls.append(node);
+        t.controls.hidden = !on;
+      });
+      return true;
+    }
+
     function paint(){
       const picked = toggle ? -1 : indexOfValue(value);
       if(stop < 0 || stop >= tiles.length) stop = 0;
@@ -257,6 +310,11 @@
         t.button.setAttribute(toggle ? 'aria-pressed' : 'aria-checked', on ? 'true' : 'false');
         t.button.tabIndex = i === stop ? 0 : -1;
         t.button.classList.toggle('isPicked', on);
+        // Toggle mode: chosen and left off by the drawing (option.notWorn) shows the not-worn mark in the tick's place, only while the tile is on.
+        const away = toggle && on && !!t.option.notWorn;
+        t.button.classList.toggle('isNotWorn', away);
+        const words = t.button.querySelector('.vpOffWords');
+        if(words) words.hidden = !away;
         if(t.controls) t.controls.hidden = !on;
       });
       const text = picked >= 0 && tiles[picked].option.note ? String(tiles[picked].option.note) : '';
@@ -303,7 +361,6 @@
       b.dataset.value = String(o.value);
       if(describedBy) b.setAttribute('aria-describedby', describedBy);
       if(o.title) b.setAttribute('title', String(o.title));
-      if(o.muted) b.classList.add('isMuted');   // chosen but left off by the drawing: the picture is dim, the name stays
       if(o.picture){
         const box = make('span', 'vpPicture');
         box.setAttribute('aria-hidden', 'true');
@@ -324,8 +381,12 @@
       if(o.mark) b.append(make('span', 'vpMark', o.mark));
       const tick = make('span', 'vpTick');
       tick.setAttribute('aria-hidden', 'true');
-      tick.innerHTML = TICK;
+      tick.innerHTML = TICK + NOT_WORN;
       b.append(tick);
+      // Said to assistive technology, not drawn: the tile's picture is never dimmed, so the mark in the tick's place is the whole telling.
+      const off = make('span', 'vpOffWords', NOT_WORN_WORDS);
+      off.hidden = true;
+      b.append(off);
       b.addEventListener('click', () => pick(tiles.findIndex(t => t.button === b)));
       b.addEventListener('keydown', e => {
         const at = tiles.findIndex(t => t.button === b);
@@ -344,6 +405,7 @@
     function draw(){
       boxed = toggle || !!cfg.boxed || options.some(o => o && o.caption);
       if(boxed) rootEl.dataset.boxed = '1'; else delete rootEl.dataset.boxed;
+      drawn = signature(options);
       const focused = document.activeElement;
       const had = tiles.find(t => t.button === focused);
       const hadValue = had ? had.option.value : undefined;
@@ -382,7 +444,7 @@
             controls.append(node);
             cell.append(controls);
           }
-          tiles.push({ option: o, button: b, cell, controls, section: sec });
+          tiles.push({ option: o, button: b, cell, controls, section: sec, controlsKey: o.controlsKey });
           grid.append(cell);
         }
         sec.append(grid);
@@ -436,7 +498,7 @@
       },
       setOptions(next){
         options = Array.isArray(next) ? next.filter(o => o && typeof o === 'object') : [];
-        draw();
+        if(patch()) paint(); else draw();
         if(query) api.filter(query);
       }
     };

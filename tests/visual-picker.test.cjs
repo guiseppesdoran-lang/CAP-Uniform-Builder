@@ -453,3 +453,36 @@ test('action mode: the radio and switch modes are as they were, and the styles d
   assert.equal(p.el.dataset.mode, undefined);
   assert.ok(p.el.querySelector('[role="radiogroup"]'));
 });
+
+// The owner (2026-11-18): a chosen tile's picture looked like a shadow stuck on it; a list set again after every drawing threw the window around.
+test('toggle mode: a tile that is on and carries notWorn shows the not-worn mark in the tick\'s place, never a dim picture; the styles have no dimming of a tile', () => {
+  const host = doc.createElement('div'); doc.body.append(host);
+  const p = VisualPicker.render(host, { name: 'veil', mode: 'toggle', options: [{ value: 'a', label: 'A', picture: SQUARE, notWorn: true }, { value: 'b', label: 'B', picture: SQUARE }], values: ['a', 'b'] });
+  const [a, b] = p.el.querySelectorAll('.vpOption');
+  assert.ok(a.classList.contains('isNotWorn') && !b.classList.contains('isNotWorn'));
+  assert.equal(a.querySelector('.vpOffWords').hidden, false);
+  assert.equal(b.querySelector('.vpOffWords').hidden, true);
+  p.setValues(['b']);
+  assert.ok(!a.classList.contains('isNotWorn'), 'off: no mark');
+  assert.ok(![a, b].some(x => x.classList.contains('isMuted')));
+  assert.doesNotMatch(read('styles/app.css'), /isMuted|\.vpOption[^{]*\.vpPicture\{opacity/);
+});
+
+test('toggle mode: a list set again with the same tiles is patched in place (same nodes, new picture, notWorn, controls by key); another list is drawn whole', () => {
+  const host = doc.createElement('div'); doc.body.append(host);
+  let made = 0;
+  const opts = (pic, key, worn) => [{ value: 'a', label: 'A', picture: pic, notWorn: worn, controls: () => { made++; return doc.createElement('span'); }, controlsKey: key }, { value: 'b', label: 'B', picture: SQUARE }];
+  const p = VisualPicker.render(host, { name: 'patchme', mode: 'toggle', options: opts('images/one.svg', 'k1', false), values: ['a'] });
+  const cell = p.el.querySelector('.vpCell'), button = cell.querySelector('.vpOption');
+  assert.equal(made, 1);
+  p.setOptions(opts('images/two.svg', 'k1', true));
+  assert.equal(p.el.querySelector('.vpCell'), cell, 'same cell');
+  assert.equal(cell.querySelector('img').getAttribute('src'), 'images/two.svg');
+  assert.ok(button.classList.contains('isNotWorn'));
+  assert.equal(made, 1, 'same key: controls kept');
+  p.setOptions(opts('images/two.svg', 'k2', true));
+  assert.equal(made, 2, 'new key: controls made again');
+  assert.equal(p.el.querySelector('.vpCell'), cell);
+  p.setOptions(opts('images/two.svg', 'k2', true).reverse());
+  assert.notEqual(p.el.querySelector('.vpCell'), cell, 'another order: drawn whole');
+});
