@@ -1324,7 +1324,9 @@
     "patch-honor-guard": "patches/patch-honor-guard/patch-honor-guard.png",
     "patch-honor-guard-academy": "patches/patch-honor-guard-academy/patch-honor-guard-academy.png",
     "patch-iowa-wing": "patches/patch-iowa-wing/patch-iowa-wing.png",
+    "patch-langley-composite-squadron": "patches/patch-langley-composite-squadron/patch-langley-composite-squadron.png",
     "patch-louisiana-wing": "patches/patch-louisiana-wing/patch-louisiana-wing.png",
+    "patch-lynchburg-composite-squadron": "patches/patch-lynchburg-composite-squadron/patch-lynchburg-composite-squadron.png",
     "patch-maine-wing": "patches/patch-maine-wing/patch-maine-wing.png",
     "patch-mar-dc-026": "patches/patch-mar-dc-026/patch-mar-dc-026.png",
     "patch-mar-dc-033": "patches/patch-mar-dc-033/patch-mar-dc-033.png",
@@ -1361,6 +1363,7 @@
     "patch-pcr-hi-073": "patches/patch-pcr-hi-073/patch-pcr-hi-073.png",
     "patch-pcr-hi-075": "patches/patch-pcr-hi-075/patch-pcr-hi-075.png",
     "patch-pennsylvania-wing": "patches/patch-pennsylvania-wing/patch-pennsylvania-wing.png",
+    "patch-prince-william-composite-squadron": "patches/patch-prince-william-composite-squadron/patch-prince-william-composite-squadron.png",
     "patch-proficient-pilot": "patches/patch-proficient-pilot/patch-proficient-pilot.png",
     "patch-ranger-tab-advanced-ranger": "patches/patch-ranger-tab-advanced-ranger/patch-ranger-tab-advanced-ranger.png",
     "patch-ranger-tab-expert-ranger-black": "patches/patch-ranger-tab-expert-ranger-black/patch-ranger-tab-expert-ranger-black.png",
@@ -1387,7 +1390,10 @@
     "patch-tennessee-wing": "patches/patch-tennessee-wing/patch-tennessee-wing.png",
     "patch-texas-wing": "patches/patch-texas-wing/patch-texas-wing.png",
     "patch-vermont-wing": "patches/patch-vermont-wing/patch-vermont-wing.png",
+    "patch-virginia-legislative-squadron": "patches/patch-virginia-legislative-squadron/patch-virginia-legislative-squadron.png",
+    "patch-virginia-wing": "patches/patch-virginia-wing/patch-virginia-wing.png",
     "patch-washington-wing": "patches/patch-washington-wing/patch-washington-wing.png",
+    "patch-william-p-knight-composite-squadron": "patches/patch-william-p-knight-composite-squadron/patch-william-p-knight-composite-squadron.png",
     "pilot": "silver/pilot/pilot.svg",
     "pilot-field": "field/pilot-field/pilot-field.svg",
     "pilot-mini": "mini/pilot-mini/pilot-mini.svg",
@@ -1665,7 +1671,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "b6ca71c8bc", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "ef8e27f9b9", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "b6ca71c8bc"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "ef8e27f9b9"; }
 })(typeof self !== 'undefined' ? self : this);

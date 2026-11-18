@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1663,
+ "count": 1669,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -74474,6 +74474,210 @@
     "art_bottom_center": [
      62.5,
      154.7
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-langley-composite-squadron",
+   "path": "patches/patch-langley-composite-squadron/patch-langley-composite-squadron.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.584,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     358.4
+    ],
+    "center": [
+     150,
+     179.2
+    ],
+    "left_edge": [
+     0,
+     179.2
+    ],
+    "right_edge": [
+     300,
+     179.2
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-lynchburg-composite-squadron",
+   "path": "patches/patch-lynchburg-composite-squadron/patch-lynchburg-composite-squadron.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.621,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     362.1
+    ],
+    "center": [
+     150,
+     181.05
+    ],
+    "left_edge": [
+     0,
+     181.05
+    ],
+    "right_edge": [
+     300,
+     181.05
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-prince-william-composite-squadron",
+   "path": "patches/patch-prince-william-composite-squadron/patch-prince-william-composite-squadron.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.473,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     347.3
+    ],
+    "center": [
+     150,
+     173.65
+    ],
+    "left_edge": [
+     0,
+     173.65
+    ],
+    "right_edge": [
+     300,
+     173.65
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-virginia-legislative-squadron",
+   "path": "patches/patch-virginia-legislative-squadron/patch-virginia-legislative-squadron.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.423,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     342.3
+    ],
+    "center": [
+     150,
+     171.15
+    ],
+    "left_edge": [
+     0,
+     171.15
+    ],
+    "right_edge": [
+     300,
+     171.15
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-virginia-wing",
+   "path": "patches/patch-virginia-wing/patch-virginia-wing.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3.25,
+   "h_in": 3.284,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     162.5,
+     0
+    ],
+    "bottom_center": [
+     162.5,
+     328.4
+    ],
+    "center": [
+     162.5,
+     164.2
+    ],
+    "left_edge": [
+     0,
+     164.2
+    ],
+    "right_edge": [
+     325,
+     164.2
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-william-p-knight-composite-squadron",
+   "path": "patches/patch-william-p-knight-composite-squadron/patch-william-p-knight-composite-squadron.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.501,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     350.1
+    ],
+    "center": [
+     150,
+     175.05
+    ],
+    "left_edge": [
+     0,
+     175.05
+    ],
+    "right_edge": [
+     300,
+     175.05
     ]
    },
    "landmarks": []

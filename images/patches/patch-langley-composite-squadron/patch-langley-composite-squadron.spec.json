@@ -1,0 +1,87 @@
+{
+ "asset_id": "patch-langley-composite-squadron",
+ "label": "Langley Composite Squadron",
+ "charter": "MAR-VA-025",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-langley-composite-squadron.png",
+ "width_in": 3,
+ "height_in": 3.584,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   358.4
+  ],
+  "center": [
+   150,
+   179.2
+  ],
+  "left_edge": [
+   0,
+   179.2
+  ],
+  "right_edge": [
+   300,
+   179.2
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "png (8-bit RGBA)",
+  "source_color_type": 6,
+  "source_px": [
+   261,
+   287
+  ],
+  "source_bytes": 114619,
+  "source_sha256": "939d8be19cc79d9d046e9faf9543cb7e97c6693d604f6fe45735b13fb5a20dce",
+  "trim_bbox_px": [
+   17,
+   7,
+   243,
+   277
+  ],
+  "trimmed": true,
+  "px": [
+   226,
+   270
+  ],
+  "bytes": 98698,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear (alpha 3 or less, white or black colour under it)",
+   "alpha": 0,
+   "flood": "4-neighbour flood from the picture's edge over pixels with alpha 3 or less",
+   "band": {
+    "depth_px": 6,
+    "px": 1456,
+    "outline_colours": [
+     "#08266f"
+    ],
+    "rule": "alpha from the pixel colour's place between white and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 348,
+   "stray_marks_removed": {
+    "components": 5,
+    "px": 16,
+    "rule": "detached marks outside the outline, none touching the emblem"
+   }
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Langley Composite Squadron (MAR-VA-025), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: png (8-bit RGBA), 261 x 287 px, 8-bit RGBA; the file came with its ground already clear but with a pale fringe: the edge pixels were blended with white (alpha rose over a few pixels while the colour was pale). The 1456 px of that edge were given their alpha from where their colour lies between white and the outline's own solid colour (#08266f) and took that colour (348 of them are clear), and 16 px in 5 detached stray marks outside the outline were cleared; the picture was trimmed to the emblem's box (261 x 287 px to 226 x 270 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. The picture is small (226 x 270 px after trimming) and ships at its own pixel size, not enlarged; a larger picture from the unit would print and show sharper. Charter: MAR-VA-025 is printed on the emblem (VA-025) and is listed as MAR-VA-025 Langley Composite Squadron on the Virginia Wing's own news page of Quality Cadet Unit awards.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the pale edge made a clean outline, the stray marks outside it removed, and the trim to the emblem's box."
+}

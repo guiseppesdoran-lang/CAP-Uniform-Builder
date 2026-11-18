@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-virginia-wing",
+ "label": "Virginia Wing",
+ "charter": "MAR-VA-001",
+ "kind": "unit",
+ "echelon": "wing",
+ "file": "patch-virginia-wing.png",
+ "width_in": 3.25,
+ "height_in": 3.284,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3.25 in (wings 3.25 in, as patch-new-york-wing); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   162.5,
+   0
+  ],
+  "bottom_center": [
+   162.5,
+   328.4
+  ],
+  "center": [
+   162.5,
+   164.2
+  ],
+  "left_edge": [
+   0,
+   164.2
+  ],
+  "right_edge": [
+   325,
+   164.2
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "webp (lossy, with alpha) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   1424,
+   1424
+  ],
+  "source_bytes": 145192,
+  "source_sha256": "fef1947990521339ec01903aeecf0d6afda77cb5e6d9b1000e823547a52bfd0f",
+  "trim_bbox_px": [
+   43,
+   47,
+   1364,
+   1382
+  ],
+  "trimmed": true,
+  "px": [
+   1321,
+   1335
+  ],
+  "bytes": 768727,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear",
+   "alpha": 0,
+   "band": null,
+   "px_made_clear": 0
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Virginia Wing (MAR-VA-001), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: webp (lossy, with alpha), 1424 x 1424 px, 8-bit RGBA after decoding; the file came with its ground already clear and a clean edge (no pale fringe: 2 and 16 band pixels lighter than both the surface and the outline on navy and on the OCP), so no pixel was changed; the picture was trimmed to the emblem's box (1424 x 1424 px to 1321 x 1335 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: MAR-VA-001 is the Virginia Wing headquarters in the builder's unit list (a wing's emblem carries the code of its headquarters); the Mid-Atlantic Region code MAR for Virginia units is confirmed by the wing's own news page, which lists its squadrons as MAR-VA-nnn.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the trim to the emblem's box."
+}

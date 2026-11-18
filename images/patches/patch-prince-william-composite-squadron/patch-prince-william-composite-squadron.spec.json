@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-prince-william-composite-squadron",
+ "label": "Prince William Composite Squadron",
+ "charter": "MAR-VA-102",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-prince-william-composite-squadron.png",
+ "width_in": 3,
+ "height_in": 3.473,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   347.3
+  ],
+  "center": [
+   150,
+   173.65
+  ],
+  "left_edge": [
+   0,
+   173.65
+  ],
+  "right_edge": [
+   300,
+   173.65
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "png (8-bit RGBA)",
+  "source_color_type": 6,
+  "source_px": [
+   813,
+   934
+  ],
+  "source_bytes": 172557,
+  "source_sha256": "fed0e015fb1efbb9a44e06fcc5eca1b0cc5e4036e47b5aac7d5d6e1a31b9f14c",
+  "trim_bbox_px": [
+   18,
+   14,
+   798,
+   917
+  ],
+  "trimmed": true,
+  "px": [
+   780,
+   903
+  ],
+  "bytes": 147366,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear",
+   "alpha": 0,
+   "band": null,
+   "px_made_clear": 0
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Prince William Composite Squadron (MAR-VA-102), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: png (8-bit RGBA), 813 x 934 px, 8-bit RGBA; the file came with its ground already clear and a clean edge (no band pixel lighter than both the surface and the outline), so no pixel was changed; the picture was trimmed to the emblem's box (813 x 934 px to 780 x 903 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: MAR-VA-102 is listed for Prince William Composite Squadron on the Virginia Wing's own news page of Quality Cadet Unit awards, and the unit's own page on the wing site reads Join VA-102.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the trim to the emblem's box."
+}

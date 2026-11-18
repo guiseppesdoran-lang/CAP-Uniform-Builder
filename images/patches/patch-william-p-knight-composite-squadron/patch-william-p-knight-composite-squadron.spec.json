@@ -1,0 +1,82 @@
+{
+ "asset_id": "patch-william-p-knight-composite-squadron",
+ "label": "William P. Knight Composite Squadron",
+ "charter": "MAR-VA-007",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-william-p-knight-composite-squadron.png",
+ "width_in": 3,
+ "height_in": 3.501,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   350.1
+  ],
+  "center": [
+   150,
+   175.05
+  ],
+  "left_edge": [
+   0,
+   175.05
+  ],
+  "right_edge": [
+   300,
+   175.05
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "webp (lossy, with alpha) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   1424,
+   1662
+  ],
+  "source_bytes": 158814,
+  "source_sha256": "6ce2c234b86cfcef0f382cbe3e7458edb8bb1fe4b7a0e9cbdbdd8ac5e14303d0",
+  "trim_bbox_px": [
+   0,
+   0,
+   1424,
+   1662
+  ],
+  "trimmed": false,
+  "px": [
+   1424,
+   1662
+  ],
+  "bytes": 959256,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear (alpha 3 or less, white or black colour under it)",
+   "alpha": 0,
+   "flood": "4-neighbour flood from the picture's edge over pixels with alpha 3 or less",
+   "band": {
+    "depth_px": 6,
+    "px": 19918,
+    "outline_colours": [
+     "#ffd701"
+    ],
+    "rule": "alpha from the pixel colour's place between white and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 547
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of William P. Knight Composite Squadron (MAR-VA-007), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: webp (lossy, with alpha), 1424 x 1662 px, 8-bit RGBA after decoding; the file came with its ground already clear but with a pale fringe: the edge pixels were blended with white (alpha rose over a few pixels while the colour was pale). The 19918 px of that edge were given their alpha from where their colour lies between white and the outline's own solid colour (#ffd701) and took that colour (547 of them are clear); the picture was not trimmed (the emblem fills its box); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: MAR-VA-007 William P Knight Composite Squadron is listed on the Virginia Wing's own news page of Quality Cadet Unit awards, and the unit's own page on the wing site carries its patch picture under the name MERVA007.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the pale edge made a clean outline."
+}

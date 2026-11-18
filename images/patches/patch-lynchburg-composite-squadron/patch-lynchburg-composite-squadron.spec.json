@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-lynchburg-composite-squadron",
+ "label": "Lynchburg Composite Squadron",
+ "charter": "MAR-VA-017",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-lynchburg-composite-squadron.png",
+ "width_in": 3,
+ "height_in": 3.621,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   362.1
+  ],
+  "center": [
+   150,
+   181.05
+  ],
+  "left_edge": [
+   0,
+   181.05
+  ],
+  "right_edge": [
+   300,
+   181.05
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "webp (lossy, with alpha) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   1424,
+   1724
+  ],
+  "source_bytes": 243256,
+  "source_sha256": "e5bc3cd21de314ddb44def83f968e7df3fc13001a3199169b3b88c095a68c828",
+  "trim_bbox_px": [
+   70,
+   63,
+   1374,
+   1637
+  ],
+  "trimmed": true,
+  "px": [
+   1304,
+   1574
+  ],
+  "bytes": 1360342,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear",
+   "alpha": 0,
+   "band": null,
+   "px_made_clear": 0
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Lynchburg Composite Squadron (MAR-VA-017), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: webp (lossy, with alpha), 1424 x 1724 px, 8-bit RGBA after decoding; the file came with its ground already clear and a clean edge (1 and 9 band pixels lighter than both the surface and the outline on navy and on the OCP), so no pixel was changed; the picture was trimmed to the emblem's box (1424 x 1724 px to 1304 x 1574 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: MAR-VA-017 is listed for Lynchburg Composite Squadron on the Virginia Wing's own news page of Quality Cadet Unit awards, and the squadron's own site states \"Our official unit number is MAR-VA-017\".",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the trim to the emblem's box."
+}

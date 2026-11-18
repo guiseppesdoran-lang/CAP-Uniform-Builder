@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-virginia-legislative-squadron",
+ "label": "Virginia State Legislative Squadron",
+ "charter": "MAR-VA-999",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-virginia-legislative-squadron.png",
+ "width_in": 3,
+ "height_in": 3.423,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   342.3
+  ],
+  "center": [
+   150,
+   171.15
+  ],
+  "left_edge": [
+   0,
+   171.15
+  ],
+  "right_edge": [
+   300,
+   171.15
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "png (8-bit RGBA)",
+  "source_color_type": 6,
+  "source_px": [
+   562,
+   577
+  ],
+  "source_bytes": 254392,
+  "source_sha256": "a09b4e9b822350a49c3618fd5f7eb8aec96e1226c71ec88c45f6170ef4a214ae",
+  "trim_bbox_px": [
+   40,
+   7,
+   522,
+   557
+  ],
+  "trimmed": true,
+  "px": [
+   482,
+   550
+  ],
+  "bytes": 225078,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear",
+   "alpha": 0,
+   "band": null,
+   "px_made_clear": 0
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Virginia State Legislative Squadron (MAR-VA-999), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: png (8-bit RGBA), 562 x 577 px, 8-bit RGBA; the file came with its ground already clear and a hard edge with no semi-transparent pixel at all, so no pixel was changed; the picture was trimmed to the emblem's box (562 x 577 px to 482 x 550 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: 999 is printed on the emblem (VA-999) and is the builder's unit list number of the Virginia State Legislative Squadron, MAR-VA-999; the wing site has a page for the Legislative Squadron.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the trim to the emblem's box."
+}
