@@ -39,7 +39,7 @@ test('a badge the drawing leaves off says why: the position\'s own reason, the d
 
 test('a badge the uniform does not wear is named with the paragraph; military badges where the uniform does not draw them yet', () => {
   const rows = summary({ uniform: 'polo', notes: [], conflicts: [], layers: [] },
-    `State.uniform = 'polo'; State.badges = ['communications_technician_badge']; State.militaryBadges = { army_air_assault_badge: { selected: true } }`);
+    `State.uniform = 'polo'; State.badges = ['national_staff_badge']; State.militaryBadges = { army_air_assault_badge: { selected: true } }`);
   assert.equal(rows.length, 2);
   assert.match(rows[0].why, /^This uniform does not wear it \(CAPR 39-1, /);
   assert.equal(rows[1].why, 'U.S. military badges are not drawn on this uniform yet');

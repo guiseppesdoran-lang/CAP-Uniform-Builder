@@ -110,7 +110,8 @@
   //   families   the families the uniform's badge paragraphs name, read with the regulation open;
   //   fieldArt   only a badge with GENUINE field artwork is worn (Ethan's ruling LIVE-FIELD B6: the original silver-on-dark-blue set;
   //              dress enamel art never appears on a field uniform, so the specialty track, Emergency Services and service badges,
-  //              which have none, are not offered on the OCP, ABU and CFU, and the polo's embroidered badge is the same art, POLO-ENG-4);
+  //              which have none, are not offered on the OCP, ABU and CFU; the polo, which embroiders the badge into the cloth, also takes the specialty track
+  //              badges' embroidered twins, 5.3.2.1.1);
   //   serviceIds the service badges worn, where only some are (the blazers: the CSAG, Command Council, National Board or NEC badge in
   //              place of the CAP Crest, 4.2.3.1.1.1; Attachment 4 keeps the National Staff badge off);
   //   ref        the paragraphs, men's then women's where they differ.
@@ -151,9 +152,10 @@
     flight_suit:{families:LEFT_BREAST_FAMILIES,ref:'8.2.4.1'},
     // 8.3.4.1: one CAP aeronautical rating and one CAP occupational badge, or the Command Insignia Pin.
     corporate_flight_suit:{families:LEFT_BREAST_FAMILIES,ref:'8.3.4.1'},
-    // 5.3.1.1, 5.3.1.3, 5.3.2.1.1: one service, aviation, occupational or specialty track badge (RULES.polo.badgeFamilies), embroidered,
-    // so the field set only (POLO-ENG-4): no specialty track, Emergency Services or service badge has that art.
-    polo:{families:['service','aviation','occupational','chaplain','specialty'],fieldArt:true,ref:'5.3.1.1, 5.3.1.3, 5.3.2.1.1'}
+    // 5.3.1.1, 5.3.1.3, 5.3.2.1.1: one service, aviation, occupational or specialty track badge (RULES.polo.badgeFamilies), embroidered
+    // into the cloth: a badge with field art, or an embroidered twin (badge-catalog `embroidered`, the specialty track badges'), so
+    // a service badge, which has neither, is still not drawn. The field uniforms read field art alone.
+    polo:{families:['service','aviation','occupational','chaplain','specialty'],fieldArt:true,embroidered:true,ref:'5.3.1.1, 5.3.1.3, 5.3.2.1.1'}
   });
   // What the uniform wears, for this view: the aviator blazer drawn with the shirt under it beside it (underlayer 'shirt', the
   // default) wears the blazer's badges on the blazer and the aviator shirt's on the shirt (4.2.5.1.3), so it offers both; with the
@@ -163,17 +165,17 @@
     if(!wear) return null;
     if(wear.withShirt && (underlayer||'shirt')==='shirt'){
       const shirt=BADGE_WEAR[wear.withShirt];
-      return {families:[...new Set([...wear.families,...shirt.families])],fieldArt:false,serviceIds:null,ref:`${wear.ref}; on the aviator shirt beside it, ${shirt.ref}`};
+      return {families:[...new Set([...wear.families,...shirt.families])],fieldArt:false,embroidered:false,serviceIds:null,ref:`${wear.ref}; on the aviator shirt beside it, ${shirt.ref}`};
     }
-    return {families:[...wear.families],fieldArt:!!wear.fieldArt,serviceIds:wear.serviceIds ? [...wear.serviceIds] : null,ref:wear.ref};
+    return {families:[...wear.families],fieldArt:!!wear.fieldArt,embroidered:!!wear.embroidered,serviceIds:wear.serviceIds ? [...wear.serviceIds] : null,ref:wear.ref};
   }
-  // Whether the uniform wears this badge. `badge` is { id, family, field } as data/badge-catalog.js holds it (field: the field art id
+  // Whether the uniform wears this badge. `badge` is { id, family, field, embroidered } as data/badge-catalog.js holds it (field, embroidered: the art id
   // or null). A uniform without a row, or a badge without a family, is not decided here (true).
   function isBadgeWornOn(uniformId,badge,opts={}){
     const wear=badgeWear(uniformId,opts);
     if(!wear || !badge || !badge.family) return true;
     if(!wear.families.includes(badge.family)) return false;
-    if(wear.fieldArt && !badge.field) return false;
+    if(wear.fieldArt && !badge.field && !(wear.embroidered && badge.embroidered)) return false;
     if(badge.family==='service' && wear.serviceIds && !wear.serviceIds.includes(badge.id)) return false;
     return true;
   }

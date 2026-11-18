@@ -79,7 +79,7 @@
       ctx.note(`${sel.title || (B.get(sel.id) || {}).name || sel.id} is not worn on the polo: only a CAP aviation, occupational or specialty track badge, or a duty title (CAPR 39-1, 5.3.2.1.1)`);
       return false;
     });
-    const set = H.badgeSet(ctx, Object.assign({}, b, { badges: wearable }), 'field');
+    const set = H.badgeSet(ctx, Object.assign({}, b, { badges: wearable }), 'embroidered');
     const allowed = BADGE_ORDER.flatMap(key => set[key] || []);
     if(allowed.length > 1){
       ctx.note('Only one badge or duty title is worn on the polo; the others are not shown (CAPR 39-1, 5.3.2.1.1)');

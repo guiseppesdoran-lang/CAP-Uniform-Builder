@@ -17,6 +17,7 @@ const read = f => fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
 const ALL = Object.keys(catalog.BADGES);
 const fam = f => ALL.filter(id => catalog.family(id) === f);
 const field = ids => ids.filter(id => catalog.hasField(id));
+const embroidered = ids => ids.filter(id => catalog.hasEmbroidered(id));
 const offered = (u, opts) => ALL.filter(id => rules.isBadgeWornOn(u, Object.assign({ id }, catalog.get(id)), opts)).sort();
 const sorted = ids => [...new Set(ids)].sort();
 
@@ -39,8 +40,8 @@ const TABLE = {
   ocp: { families: LEFT_BREAST, fieldArt: true, refs: ['7.1.1.3.1', '7.1.1.3.1.5', '7.1.1.3.1.6'], ids: field(LEFT_BREAST.flatMap(fam)) },
   flight_suit: { families: LEFT_BREAST, refs: ['8.2.4.1'], ids: LEFT_BREAST.flatMap(fam) },
   corporate_flight_suit: { families: LEFT_BREAST, refs: ['8.3.4.1'], ids: LEFT_BREAST.flatMap(fam) },
-  polo: { families: ['service', 'aviation', 'occupational', 'chaplain', 'specialty'], fieldArt: true, refs: ['5.3.2.1.1'],
-    ids: field(['service', 'aviation', 'occupational', 'chaplain', 'specialty'].flatMap(fam)) }
+  polo: { families: ['service', 'aviation', 'occupational', 'chaplain', 'specialty'], fieldArt: true, embroidered: true, refs: ['5.3.2.1.1'],
+    ids: embroidered(['service', 'aviation', 'occupational', 'chaplain', 'specialty'].flatMap(fam)) }
 };
 
 test('every uniform of the rules table has a badge row, and nothing else does', () => {
@@ -85,12 +86,14 @@ test('the Class B offers the ES badges; the flight suits do not (8.2.4.1, 8.3.4.
   }
 });
 
-test('the polo offers only badges with embroidered (field) art of its families: no command pin, no specialty track badge (5.3.2.1.1, POLO-ENG-4)', () => {
+test('the polo offers the badges of its families that have embroidered art, every specialty track badge among them; no command pin, service, National Staff, cadet or marksmanship badge (5.3.2.1.1)', () => {
   const got = offered('polo');
   assert.ok(!got.includes('squadron_commander_badge'));
-  assert.ok(!got.includes('emergency_services_badge'));
   assert.ok(got.includes('CAPPilot1_FA9D33EA587D8'));
-  assert.ok(got.every(id => catalog.hasField(id)));
+  for(const id of fam('specialty')) assert.ok(got.includes(id), `the polo offers ${id}`);
+  for(const f of ['service', 'national-staff', 'command', 'rocketry', 'marksmanship', 'cadet-specialty']) for(const id of fam(f)) assert.ok(!got.includes(id), `the polo hides ${id}`);
+  assert.ok(got.every(id => catalog.hasEmbroidered(id)));
+  assert.equal(got.length, field([...fam('aviation'), ...fam('occupational'), ...fam('chaplain')]).length + fam('specialty').length);
 });
 
 test('the aviator blazer with the shirt beside it offers the shirt\'s badges too (the engine draws them on it, 4.2.5.1.3); with a turtleneck only the blazer\'s', () => {
@@ -101,7 +104,8 @@ test('the aviator blazer with the shirt beside it offers the shirt\'s badges too
 });
 
 test('the offered set never holds a badge the engine refuses for want of art on a field uniform (badgeSet: no field art, not shown)', () => {
-  for(const u of ['abu', 'corporate_field', 'ocp', 'polo']) for(const id of offered(u)) assert.ok(catalog.art(id, 'field'), `${u} ${id}`);
+  for(const u of ['abu', 'corporate_field', 'ocp']) for(const id of offered(u)) assert.ok(catalog.art(id, 'field'), `${u} ${id}`);
+  for(const id of offered('polo')) assert.ok(catalog.art(id, 'embroidered'), `polo ${id}`);
 });
 
 // ---- the page --------------------------------------------------------------------------------------------------------

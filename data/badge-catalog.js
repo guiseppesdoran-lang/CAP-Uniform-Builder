@@ -24,6 +24,9 @@
 // ESTIMATED-size recolour of the enamel dress art (assets/field/<dress>-field, 'finished badge art
 // recoloured ... Derived from <dress>'), which is not field artwork: their field is null, so a field
 // uniform does not offer or draw them, and they stay on the dress uniforms.
+// embroidered is the art for a badge worked into the cloth itself (the polo, 5.3.2.1.1: one CAP aviation, occupational or specialty
+// track badge over the name): the field twin where the badge has one, so a specialty track badge carries that recolour here and
+// only here (art(id, 'embroidered') is embroidered, else field); the field uniforms keep reading field alone.
 (function(root, factory){
   const api = factory();
   if(typeof module === 'object' && module.exports) module.exports = api;
@@ -50,9 +53,9 @@
     "uas_technician_basic_badge": { family: "aviation", name: "sUAS Technician Badge", dress: "uas-technician-basic", field: "uas-technician-basic-field", cloth: "cloth-suas-basic-technician", mini: "uas-technician-basic-mini" },
     "uas_technician_senior_badge": { family: "aviation", name: "Senior sUAS Technician Badge", dress: "uas-technician-senior", field: "uas-technician-senior-field", cloth: "cloth-suas-senior-technician", mini: "uas-technician-senior-mini" },
     "uas_technician_master_badge": { family: "aviation", name: "Master sUAS Technician Badge", dress: "uas-technician-master", field: "uas-technician-master-field", cloth: "cloth-suas-master-technician", mini: "uas-technician-master-mini" },
-    "emergency_services_badge": { family: "specialty", name: "Emergency Services Badge", dress: "enamel-emergency-services", field: null, cloth: null, mini: null },
-    "senior_emergency_services_badge": { family: "specialty", name: "Senior Emergency Services Badge", dress: "enamel-senior-es", field: null, cloth: null, mini: null },
-    "master_emergency_services_badge": { family: "specialty", name: "Master Emergency Services Badge", dress: "enamel-master-es", field: null, cloth: null, mini: null },
+    "emergency_services_badge": { family: "specialty", name: "Emergency Services Badge", dress: "enamel-emergency-services", field: null, embroidered: "enamel-emergency-services-field", cloth: null, mini: null },
+    "senior_emergency_services_badge": { family: "specialty", name: "Senior Emergency Services Badge", dress: "enamel-senior-es", field: null, embroidered: "enamel-senior-es-field", cloth: null, mini: null },
+    "master_emergency_services_badge": { family: "specialty", name: "Master Emergency Services Badge", dress: "enamel-master-es", field: null, embroidered: "enamel-master-es-field", cloth: null, mini: null },
     "ground_team_basic_badge": { family: "occupational", name: "Ground Team Badge", dress: "ground-team-basic", field: "ground-team-basic-field", cloth: "cloth-ground-team-basic", mini: "ground-team-basic-mini" },
     "senior_ground_team_badge": { family: "occupational", name: "Senior Ground Team Badge", dress: "senior-ground-team", field: "senior-ground-team-field", cloth: "cloth-ground-team-senior", mini: "senior-ground-team-mini" },
     "master_ground_team_badge": { family: "occupational", name: "Master Ground Team Badge", dress: "master-ground-team", field: "master-ground-team-field", cloth: "cloth-ground-team-master", mini: "master-ground-team-mini" },
@@ -76,67 +79,67 @@
     "command_council_badge": { family: "service", name: "Command Council Badge", dress: "enamel-command-council", field: null, cloth: null, mini: null },
     "cap_national_command_board_badge": { family: "service", name: "CAP National Command Board Badge", dress: "enamel-cap-national-command-board", field: null, cloth: null, mini: null },
     "national_staff_badge": { family: "national-staff", name: "National Staff Badge", dress: "national-staff", field: null, cloth: null, mini: null },
-    "communications_technician_badge": { family: "specialty", name: "Communications Technician Badge", dress: "enamel-comms-tech", field: null, cloth: null, mini: null },
-    "communications_senior_badge": { family: "specialty", name: "Communications Senior Badge", dress: "enamel-comms-senior", field: null, cloth: null, mini: null },
-    "communications_master_badge": { family: "specialty", name: "Communications Master Badge", dress: "enamel-comms-master", field: null, cloth: null, mini: null },
-    "information_technology_technician_badge": { family: "specialty", name: "Information Technology Technician Badge", dress: "enamel-it-tech", field: null, cloth: null, mini: null },
-    "information_technology_senior_badge": { family: "specialty", name: "Information Technology Senior Badge", dress: "enamel-it-senior", field: null, cloth: null, mini: null },
-    "information_technology_master_badge": { family: "specialty", name: "Information Technology Master Badge", dress: "enamel-it-master", field: null, cloth: null, mini: null },
-    "historian_technicianIbadge": { family: "specialty", name: "Historian Technician Badge", dress: "enamel-historian-tech", field: null, cloth: null, mini: null },
-    "historian_senior_badge": { family: "specialty", name: "Historian Senior Badge", dress: "enamel-historian-senior", field: null, cloth: null, mini: null },
-    "historian_master_badge": { family: "specialty", name: "Historian Master Badge", dress: "enamel-historian-master", field: null, cloth: null, mini: null },
-    "administration_technician_badge": { family: "specialty", name: "Administration Technician Badge", dress: "enamel-admin-tech", field: null, cloth: null, mini: null },
-    "administration_senior_badge": { family: "specialty", name: "Administration Senior Badge", dress: "enamel-admin-senior", field: null, cloth: null, mini: null },
-    "administration_master_badge": { family: "specialty", name: "Administration Master Badge", dress: "enamel-admin-master", field: null, cloth: null, mini: null },
-    "aerospace_education_technician_badge": { family: "specialty", name: "Aerospace Education Technician Badge", dress: "enamel-aerospace-education-technician", field: null, cloth: null, mini: null },
-    "aerospace_education_senior_badge": { family: "specialty", name: "Aerospace Education Senior Badge", dress: "enamel-aerospace-senior", field: null, cloth: null, mini: null },
-    "aerospace_education_master_badge": { family: "specialty", name: "Aerospace Education Master Badge", dress: "enamel-aerospace-education-master", field: null, cloth: null, mini: null },
-    "finance_technician_badge": { family: "specialty", name: "Finance Technician Badge", dress: "enamel-finance-technician", field: null, cloth: null, mini: null },
-    "finance_senior_badge": { family: "specialty", name: "Finance Senior Badge", dress: "enamel-finance-senior", field: null, cloth: null, mini: null },
-    "finance_master_badge": { family: "specialty", name: "Finance Master Badge", dress: "enamel-finance-master", field: null, cloth: null, mini: null },
+    "communications_technician_badge": { family: "specialty", name: "Communications Technician Badge", dress: "enamel-comms-tech", field: null, embroidered: "enamel-comms-tech-field", cloth: null, mini: null },
+    "communications_senior_badge": { family: "specialty", name: "Communications Senior Badge", dress: "enamel-comms-senior", field: null, embroidered: "enamel-comms-senior-field", cloth: null, mini: null },
+    "communications_master_badge": { family: "specialty", name: "Communications Master Badge", dress: "enamel-comms-master", field: null, embroidered: "enamel-comms-master-field", cloth: null, mini: null },
+    "information_technology_technician_badge": { family: "specialty", name: "Information Technology Technician Badge", dress: "enamel-it-tech", field: null, embroidered: "enamel-it-tech-field", cloth: null, mini: null },
+    "information_technology_senior_badge": { family: "specialty", name: "Information Technology Senior Badge", dress: "enamel-it-senior", field: null, embroidered: "enamel-it-senior-field", cloth: null, mini: null },
+    "information_technology_master_badge": { family: "specialty", name: "Information Technology Master Badge", dress: "enamel-it-master", field: null, embroidered: "enamel-it-master-field", cloth: null, mini: null },
+    "historian_technicianIbadge": { family: "specialty", name: "Historian Technician Badge", dress: "enamel-historian-tech", field: null, embroidered: "enamel-historian-tech-field", cloth: null, mini: null },
+    "historian_senior_badge": { family: "specialty", name: "Historian Senior Badge", dress: "enamel-historian-senior", field: null, embroidered: "enamel-historian-senior-field", cloth: null, mini: null },
+    "historian_master_badge": { family: "specialty", name: "Historian Master Badge", dress: "enamel-historian-master", field: null, embroidered: "enamel-historian-master-field", cloth: null, mini: null },
+    "administration_technician_badge": { family: "specialty", name: "Administration Technician Badge", dress: "enamel-admin-tech", field: null, embroidered: "enamel-admin-tech-field", cloth: null, mini: null },
+    "administration_senior_badge": { family: "specialty", name: "Administration Senior Badge", dress: "enamel-admin-senior", field: null, embroidered: "enamel-admin-senior-field", cloth: null, mini: null },
+    "administration_master_badge": { family: "specialty", name: "Administration Master Badge", dress: "enamel-admin-master", field: null, embroidered: "enamel-admin-master-field", cloth: null, mini: null },
+    "aerospace_education_technician_badge": { family: "specialty", name: "Aerospace Education Technician Badge", dress: "enamel-aerospace-education-technician", field: null, embroidered: "enamel-aerospace-education-technician-field", cloth: null, mini: null },
+    "aerospace_education_senior_badge": { family: "specialty", name: "Aerospace Education Senior Badge", dress: "enamel-aerospace-senior", field: null, embroidered: "enamel-aerospace-senior-field", cloth: null, mini: null },
+    "aerospace_education_master_badge": { family: "specialty", name: "Aerospace Education Master Badge", dress: "enamel-aerospace-education-master", field: null, embroidered: "enamel-aerospace-education-master-field", cloth: null, mini: null },
+    "finance_technician_badge": { family: "specialty", name: "Finance Technician Badge", dress: "enamel-finance-technician", field: null, embroidered: "enamel-finance-technician-field", cloth: null, mini: null },
+    "finance_senior_badge": { family: "specialty", name: "Finance Senior Badge", dress: "enamel-finance-senior", field: null, embroidered: "enamel-finance-senior-field", cloth: null, mini: null },
+    "finance_master_badge": { family: "specialty", name: "Finance Master Badge", dress: "enamel-finance-master", field: null, embroidered: "enamel-finance-master-field", cloth: null, mini: null },
     "volunteer_university_instructor_badge": { family: "service", name: "Volunteer University Instructor Badge", dress: "enamel-vol-u", field: null, cloth: "cloth-volunteer-university-instructor", mini: "enamel-vol-u-mini" },
-    "cadet_programs_technician_badge": { family: "specialty", name: "Cadet Programs Technician Badge", dress: "enamel-cadet-programs-technician-badge-v2", field: null, cloth: null, mini: null },
-    "cadet_programs_senior_badge": { family: "specialty", name: "Cadet Programs Senior Badge", dress: "enamel-cadet-programs-senior-badge-v2", field: null, cloth: null, mini: null },
-    "cadet_programs_master_badge": { family: "specialty", name: "Cadet Programs Master Badge", dress: "enamel-cadet-programs-master-badge-v2", field: null, cloth: null, mini: null },
-    "cadet_programs_badge": { family: "specialty", name: "Cadet Programs Badge", dress: "enamel-cadet-programs", field: null, cloth: null, mini: null },
-    "logistics_technician_badge": { family: "specialty", name: "Logistics Technician Badge", dress: "enamel-logistics-tech", field: null, cloth: null, mini: null },
-    "logistics_senior_badge": { family: "specialty", name: "Logistics Senior Badge", dress: "enamel-logistics-senior", field: null, cloth: null, mini: null },
-    "logistics_master_badge": { family: "specialty", name: "Logistics Master Badge", dress: "enamel-logistics-master", field: null, cloth: null, mini: null },
-    "operations_technician_badge": { family: "specialty", name: "Operations Technician Badge", dress: "enamel-ops-tech", field: null, cloth: null, mini: null },
-    "operations_senior_badge": { family: "specialty", name: "Operations Senior Badge", dress: "enamel-ops-senior", field: null, cloth: null, mini: null },
-    "operations_master_badge": { family: "specialty", name: "Operations Master Badge", dress: "enamel-ops-master", field: null, cloth: null, mini: null },
-    "personnel_technician_badge": { family: "specialty", name: "Personnel Technician Badge", dress: "enamel-personnel-tech", field: null, cloth: null, mini: null },
-    "personnel_senior_badge": { family: "specialty", name: "Personnel Senior Badge", dress: "enamel-personnel-senior", field: null, cloth: null, mini: null },
-    "personnel_master_badge": { family: "specialty", name: "Personnel Master Badge", dress: "enamel-personnel-master", field: null, cloth: null, mini: null },
-    "professional_development_technician_badge": { family: "specialty", name: "Professional Development Technician Badge", dress: "enamel-professional-development-tech", field: null, cloth: null, mini: null },
-    "professional_development_senior_badge": { family: "specialty", name: "Professional Development Senior Badge", dress: "enamel-professional-development-senior", field: null, cloth: null, mini: null },
-    "professional_development_master_badge": { family: "specialty", name: "Professional Development Master Badge", dress: "enamel-professional-development-master", field: null, cloth: null, mini: null },
-    "public_affairs_technician_badge": { family: "specialty", name: "Public Affairs Technician Badge", dress: "enamel-public-affairs-tech", field: null, cloth: null, mini: null },
-    "public_affairs_senior_badge": { family: "specialty", name: "Public Affairs Senior Badge", dress: "enamel-public-affairs-senior", field: null, cloth: null, mini: null },
-    "public_affairs_master_badge": { family: "specialty", name: "Public Affairs Master Badge", dress: "enamel-public-affairs-master", field: null, cloth: null, mini: null },
-    "recruiting_retention_technician_badge": { family: "specialty", name: "Recruiting and Retention Technician Badge", dress: "enamel-recruiter-tech", field: null, cloth: null, mini: null },
-    "recruiting_retention_senior_badge": { family: "specialty", name: "Recruiting and Retention Senior Badge", dress: "enamel-recruiter-senior", field: null, cloth: null, mini: null },
-    "recruiting_retention_master_badge": { family: "specialty", name: "Recruiting and Retention Master Badge", dress: "enamel-recruiter-master", field: null, cloth: null, mini: null },
-    "safety_technician_badge": { family: "specialty", name: "Safety Technician Badge", dress: "enamel-safety-tech", field: null, cloth: null, mini: null },
-    "safety_senior_badge": { family: "specialty", name: "Safety Senior Badge", dress: "enamel-safety-senior", field: null, cloth: null, mini: null },
-    "safety_master_badge": { family: "specialty", name: "Safety Master Badge", dress: "enamel-safety-master", field: null, cloth: null, mini: null },
-    "inspector_general_technician_badge": { family: "specialty", name: "Inspector General Technician Badge", dress: "enamel-ig-tech", field: null, cloth: null, mini: null },
+    "cadet_programs_technician_badge": { family: "specialty", name: "Cadet Programs Technician Badge", dress: "enamel-cadet-programs-technician-badge-v2", field: null, embroidered: "enamel-cadet-programs-technician-badge-v2-field", cloth: null, mini: null },
+    "cadet_programs_senior_badge": { family: "specialty", name: "Cadet Programs Senior Badge", dress: "enamel-cadet-programs-senior-badge-v2", field: null, embroidered: "enamel-cadet-programs-senior-badge-v2-field", cloth: null, mini: null },
+    "cadet_programs_master_badge": { family: "specialty", name: "Cadet Programs Master Badge", dress: "enamel-cadet-programs-master-badge-v2", field: null, embroidered: "enamel-cadet-programs-master-badge-v2-field", cloth: null, mini: null },
+    "cadet_programs_badge": { family: "specialty", name: "Cadet Programs Badge", dress: "enamel-cadet-programs", field: null, embroidered: "enamel-cadet-programs-field", cloth: null, mini: null },
+    "logistics_technician_badge": { family: "specialty", name: "Logistics Technician Badge", dress: "enamel-logistics-tech", field: null, embroidered: "enamel-logistics-tech-field", cloth: null, mini: null },
+    "logistics_senior_badge": { family: "specialty", name: "Logistics Senior Badge", dress: "enamel-logistics-senior", field: null, embroidered: "enamel-logistics-senior-field", cloth: null, mini: null },
+    "logistics_master_badge": { family: "specialty", name: "Logistics Master Badge", dress: "enamel-logistics-master", field: null, embroidered: "enamel-logistics-master-field", cloth: null, mini: null },
+    "operations_technician_badge": { family: "specialty", name: "Operations Technician Badge", dress: "enamel-ops-tech", field: null, embroidered: "enamel-ops-tech-field", cloth: null, mini: null },
+    "operations_senior_badge": { family: "specialty", name: "Operations Senior Badge", dress: "enamel-ops-senior", field: null, embroidered: "enamel-ops-senior-field", cloth: null, mini: null },
+    "operations_master_badge": { family: "specialty", name: "Operations Master Badge", dress: "enamel-ops-master", field: null, embroidered: "enamel-ops-master-field", cloth: null, mini: null },
+    "personnel_technician_badge": { family: "specialty", name: "Personnel Technician Badge", dress: "enamel-personnel-tech", field: null, embroidered: "enamel-personnel-tech-field", cloth: null, mini: null },
+    "personnel_senior_badge": { family: "specialty", name: "Personnel Senior Badge", dress: "enamel-personnel-senior", field: null, embroidered: "enamel-personnel-senior-field", cloth: null, mini: null },
+    "personnel_master_badge": { family: "specialty", name: "Personnel Master Badge", dress: "enamel-personnel-master", field: null, embroidered: "enamel-personnel-master-field", cloth: null, mini: null },
+    "professional_development_technician_badge": { family: "specialty", name: "Professional Development Technician Badge", dress: "enamel-professional-development-tech", field: null, embroidered: "enamel-professional-development-tech-field", cloth: null, mini: null },
+    "professional_development_senior_badge": { family: "specialty", name: "Professional Development Senior Badge", dress: "enamel-professional-development-senior", field: null, embroidered: "enamel-professional-development-senior-field", cloth: null, mini: null },
+    "professional_development_master_badge": { family: "specialty", name: "Professional Development Master Badge", dress: "enamel-professional-development-master", field: null, embroidered: "enamel-professional-development-master-field", cloth: null, mini: null },
+    "public_affairs_technician_badge": { family: "specialty", name: "Public Affairs Technician Badge", dress: "enamel-public-affairs-tech", field: null, embroidered: "enamel-public-affairs-tech-field", cloth: null, mini: null },
+    "public_affairs_senior_badge": { family: "specialty", name: "Public Affairs Senior Badge", dress: "enamel-public-affairs-senior", field: null, embroidered: "enamel-public-affairs-senior-field", cloth: null, mini: null },
+    "public_affairs_master_badge": { family: "specialty", name: "Public Affairs Master Badge", dress: "enamel-public-affairs-master", field: null, embroidered: "enamel-public-affairs-master-field", cloth: null, mini: null },
+    "recruiting_retention_technician_badge": { family: "specialty", name: "Recruiting and Retention Technician Badge", dress: "enamel-recruiter-tech", field: null, embroidered: "enamel-recruiter-tech-field", cloth: null, mini: null },
+    "recruiting_retention_senior_badge": { family: "specialty", name: "Recruiting and Retention Senior Badge", dress: "enamel-recruiter-senior", field: null, embroidered: "enamel-recruiter-senior-field", cloth: null, mini: null },
+    "recruiting_retention_master_badge": { family: "specialty", name: "Recruiting and Retention Master Badge", dress: "enamel-recruiter-master", field: null, embroidered: "enamel-recruiter-master-field", cloth: null, mini: null },
+    "safety_technician_badge": { family: "specialty", name: "Safety Technician Badge", dress: "enamel-safety-tech", field: null, embroidered: "enamel-safety-tech-field", cloth: null, mini: null },
+    "safety_senior_badge": { family: "specialty", name: "Safety Senior Badge", dress: "enamel-safety-senior", field: null, embroidered: "enamel-safety-senior-field", cloth: null, mini: null },
+    "safety_master_badge": { family: "specialty", name: "Safety Master Badge", dress: "enamel-safety-master", field: null, embroidered: "enamel-safety-master-field", cloth: null, mini: null },
+    "inspector_general_technician_badge": { family: "specialty", name: "Inspector General Technician Badge", dress: "enamel-ig-tech", field: null, embroidered: "enamel-ig-tech-field", cloth: null, mini: null },
     // 10.5.1: the Inspector General badge may carry a gold star while the member serves as a National
     // Complaints Resolution Officer or a National Compliance Inspection Officer; one device only.
-    "inspector_general_senior_badge": { family: "specialty", name: "Inspector General Senior Badge", dress: "enamel-ig-senior", field: null, cloth: null, mini: null,
+    "inspector_general_senior_badge": { family: "specialty", name: "Inspector General Senior Badge", dress: "enamel-ig-senior", field: null, embroidered: "enamel-ig-senior-field", cloth: null, mini: null,
       levels: [["standard", "No device", "enamel-ig-senior"], ["gold-star", "Gold star (National Complaints Resolution or Compliance Inspection Officer)", "enamel-ig-senior-gold"]] },
-    "inspector_general_master_badge": { family: "specialty", name: "Inspector General Master Badge", dress: "enamel-ig-master", field: null, cloth: null, mini: null,
+    "inspector_general_master_badge": { family: "specialty", name: "Inspector General Master Badge", dress: "enamel-ig-master", field: null, embroidered: "enamel-ig-master-field", cloth: null, mini: null,
       levels: [["standard", "No device", "enamel-ig-master"], ["gold-star", "Gold star (National Complaints Resolution or Compliance Inspection Officer)", "enamel-ig-master-gold"]] },
-    "stan_eval_tech_badge": { family: "specialty", name: "Standardization/Evaluation Technician Badge", dress: "enamel-stan-eval-tech", field: null, cloth: null, mini: null },
-    "stan_eval_senior_badge": { family: "specialty", name: "Standardization/Evaluation Senior Badge", dress: "enamel-stan-eval-senior", field: null, cloth: null, mini: null },
-    "stan_eval_master_badge": { family: "specialty", name: "Standardization/Evaluation Master Badge", dress: "enamel-stan-eval-master", field: null, cloth: null, mini: null },
-    "cdi_technician_badge": { family: "specialty", name: "Character Development Instructor Technician Badge", dress: "enamel-cdi-tech", field: null, cloth: null, mini: null },
-    "cdi_senior_badge": { family: "specialty", name: "Character Development Instructor Senior Badge", dress: "enamel-cdi-senior", field: null, cloth: null, mini: null },
-    "cdi_master_badge": { family: "specialty", name: "Character Development Instructor Master Badge", dress: "enamel-cdi-master", field: null, cloth: null, mini: null },
-    "drug_demand_reduction_basic_badge": { family: "specialty", name: "Drug Demand Reduction Basic Badge", dress: "enamel-drug-demand-reduction-basic", field: null, cloth: null, mini: null },
-    "drug_demand_reduction_technician_badge": { family: "specialty", name: "Drug Demand Reduction Technician Badge", dress: "enamel-drug-demand-reduction-technician", field: null, cloth: null, mini: null },
-    "drug_demand_reduction_senior_badge": { family: "specialty", name: "Drug Demand Reduction Senior Badge", dress: "enamel-drug-demand-reduction-senior", field: null, cloth: null, mini: null },
-    "drug_demand_reduction_master_badge": { family: "specialty", name: "Drug Demand Reduction Master Badge", dress: "enamel-drug-demand-reduction-master", field: null, cloth: null, mini: null },
+    "stan_eval_tech_badge": { family: "specialty", name: "Standardization/Evaluation Technician Badge", dress: "enamel-stan-eval-tech", field: null, embroidered: "enamel-stan-eval-tech-field", cloth: null, mini: null },
+    "stan_eval_senior_badge": { family: "specialty", name: "Standardization/Evaluation Senior Badge", dress: "enamel-stan-eval-senior", field: null, embroidered: "enamel-stan-eval-senior-field", cloth: null, mini: null },
+    "stan_eval_master_badge": { family: "specialty", name: "Standardization/Evaluation Master Badge", dress: "enamel-stan-eval-master", field: null, embroidered: "enamel-stan-eval-master-field", cloth: null, mini: null },
+    "cdi_technician_badge": { family: "specialty", name: "Character Development Instructor Technician Badge", dress: "enamel-cdi-tech", field: null, embroidered: "enamel-cdi-tech-field", cloth: null, mini: null },
+    "cdi_senior_badge": { family: "specialty", name: "Character Development Instructor Senior Badge", dress: "enamel-cdi-senior", field: null, embroidered: "enamel-cdi-senior-field", cloth: null, mini: null },
+    "cdi_master_badge": { family: "specialty", name: "Character Development Instructor Master Badge", dress: "enamel-cdi-master", field: null, embroidered: "enamel-cdi-master-field", cloth: null, mini: null },
+    "drug_demand_reduction_basic_badge": { family: "specialty", name: "Drug Demand Reduction Basic Badge", dress: "enamel-drug-demand-reduction-basic", field: null, embroidered: "enamel-drug-demand-reduction-basic-field", cloth: null, mini: null },
+    "drug_demand_reduction_technician_badge": { family: "specialty", name: "Drug Demand Reduction Technician Badge", dress: "enamel-drug-demand-reduction-technician", field: null, embroidered: "enamel-drug-demand-reduction-technician-field", cloth: null, mini: null },
+    "drug_demand_reduction_senior_badge": { family: "specialty", name: "Drug Demand Reduction Senior Badge", dress: "enamel-drug-demand-reduction-senior", field: null, embroidered: "enamel-drug-demand-reduction-senior-field", cloth: null, mini: null },
+    "drug_demand_reduction_master_badge": { family: "specialty", name: "Drug Demand Reduction Master Badge", dress: "enamel-drug-demand-reduction-master", field: null, embroidered: "enamel-drug-demand-reduction-master-field", cloth: null, mini: null },
     "stem_badges": { family: "cadet-specialty", name: "Cadet STEM Badge", dress: "enamel-stem-basic", field: null, cloth: null, mini: null,
       levels: [["basic", "Basic", "enamel-stem-basic"], ["advanced", "Advanced", "enamel-stem-advanced"], ["master", "Master", "enamel-stem-master"]] },
     "cyber_badges": { family: "cadet-specialty", name: "Cadet Cyber Badge", dress: "enamel-cyber-basic", field: null, cloth: null, mini: null,
@@ -262,11 +265,14 @@
     if(!b) return null;
     const lv = level(id, levelKey);
     if(lv && (form === 'dress' || (form === 'mini' && !b.mini))) return form === 'dress' ? lv[2] : null;
+    if(form === 'embroidered') return b.embroidered || b.field || null;
     return b[form] || null;
   }
   // The badges that have genuine field artwork, i.e. the only ones offered and drawn on the OCP, ABU
   // and Corporate Field Uniform (7.1.1.3.1, 5.1.1.1.2.4, 5.2.1.1.2.6).
   function hasField(id){ const b = BADGES[id]; return !!(b && b.field); }
+  // The badges the polo can embroider: field art, or an embroidered twin.
+  function hasEmbroidered(id){ const b = BADGES[id]; return !!(b && (b.embroidered || b.field)); }
   function fieldIds(){ return Object.keys(BADGES).filter(hasField); }
   // Who wears what (CAPR 39-1 4.1.5.2.2.4.2, 4.1.9.4.4.2, Attachment 4). The STEM, Cyber, Model Rocketry
   // and NRA Marksmanship badges are worn by cadets only; a cadet wears only the badges the chart
@@ -283,5 +289,5 @@
     if(membership === 'senior') return !cadetOnlySet.has(id);
     return true;
   }
-  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, setEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, fieldIds };
+  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, setEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, hasEmbroidered, fieldIds };
 });

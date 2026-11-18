@@ -106,7 +106,7 @@ function capubBadgeWearOptions(){
 function isBadgeWornOnCurrentUniform(id, uniformId = State.uniform){
   const badge = window.CAPUBBadgeCatalog?.get(id);
   if(!badge || !window.CAPUBUniformRules?.isBadgeWornOn) return true;
-  return CAPUBUniformRules.isBadgeWornOn(uniformId, { id, family: badge.family, field: badge.field }, capubBadgeWearOptions());
+  return CAPUBUniformRules.isBadgeWornOn(uniformId, { id, family: badge.family, field: badge.field, embroidered: badge.embroidered }, capubBadgeWearOptions());
 }
 // The member's selected badges (eligible for the membership) that the selected uniform does not wear, in selection order.
 function getSelectedBadgesNotWornOnCurrentUniform(ids = State.badges){

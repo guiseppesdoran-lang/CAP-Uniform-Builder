@@ -172,7 +172,7 @@ test('only one badge is worn: the choice goes to the member, the rest are noted 
   assert.equal(chosen.layers.find(l => l.role === 'badge').id, 'ground-team-basic-field');
 });
 
-test('only service, aviation, occupational (chaplain included) and specialty track badges are worn; a badge without embroidered art is refused with a note (5.3.2.1.1)', async () => {
+test('only service, aviation, occupational (chaplain included) and specialty track badges are worn; a badge of another kind, or without embroidered art, is refused with a note (5.3.2.1.1)', async () => {
   const staff = await compose(build({ badgeIds: ['national_staff_badge'] }));
   assert.equal(staff.layers.filter(l => l.role === 'badge').length, 0);
   assert.ok(staff.notes.some(n => /not worn on the polo/.test(n) && /5\.3\.2\.1\.1/.test(n)), staff.notes.join('|'));
@@ -180,8 +180,7 @@ test('only service, aviation, occupational (chaplain included) and specialty tra
   assert.equal(service.layers.filter(l => l.role === 'badge').length, 0, 'a service badge is named by 5.3.1.1 but has no embroidered art');
   assert.ok(service.notes.some(n => /cannot be shown on this uniform/.test(n)), service.notes.join('|'));
   const es = await compose(build({ badgeIds: ['emergency_services_badge'] }));
-  assert.equal(es.layers.filter(l => l.role === 'badge').length, 0);
-  assert.ok(es.notes.some(n => /cannot be shown on this uniform/.test(n)), 'a specialty badge with no embroidered form is refused');
+  assert.equal(es.layers.filter(l => l.role === 'badge').length, 1, 'a specialty track badge is worn (5.3.2.1.1)');
   const chaplain = await compose(build({ badgeIds: ['christian_chaplin'] }));
   assert.equal(chaplain.layers.filter(l => l.role === 'badge').length, 1);
 });
