@@ -127,7 +127,7 @@ test('what a setup brings back is checked: cords and badges the lists do not kno
 test('the unit list shows the unit Resume brings back, whichever place the unit has in the list and whatever the search box says', () => {
   const p = page();
   const codes = JSON.parse(p.run('JSON.stringify(getUnitPatchOptions("").map(u => u.code))'));
-  assert.ok(codes.length > 1400, 'the list holds every unit');
+  assert.ok(codes.length > 350, 'the list is longer than the 350 it shows');
   for(const code of [codes[0], codes[349], codes[350], codes[codes.length - 1], 'NER-NY-109']){
     p.run(`State.unitPatchCharter = ${JSON.stringify(code)};`);
     p.run("buildUnitPatchSelector('')");

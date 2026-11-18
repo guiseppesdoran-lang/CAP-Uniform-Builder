@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1680,
+ "count": 1677,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -74950,108 +74950,6 @@
     "right_edge": [
      123,
      172.505
-    ]
-   },
-   "landmarks": []
-  },
-  {
-   "id": "patch-fullerton-composite-squadron-56",
-   "path": "patches/patch-fullerton-composite-squadron-56/patch-fullerton-composite-squadron-56.png",
-   "category": "patches",
-   "has_spec": true,
-   "issues": [],
-   "w_in": 3,
-   "h_in": 2.981,
-   "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
-   "anchors": {
-    "top_center": [
-     150,
-     0
-    ],
-    "bottom_center": [
-     150,
-     298.1
-    ],
-    "center": [
-     150,
-     149.05
-    ],
-    "left_edge": [
-     0,
-     149.05
-    ],
-    "right_edge": [
-     300,
-     149.05
-    ]
-   },
-   "landmarks": []
-  },
-  {
-   "id": "patch-saddleback-composite-squadron-68",
-   "path": "patches/patch-saddleback-composite-squadron-68/patch-saddleback-composite-squadron-68.png",
-   "category": "patches",
-   "has_spec": true,
-   "issues": [],
-   "w_in": 3,
-   "h_in": 3.426,
-   "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
-   "anchors": {
-    "top_center": [
-     150,
-     0
-    ],
-    "bottom_center": [
-     150,
-     342.6
-    ],
-    "center": [
-     150,
-     171.3
-    ],
-    "left_edge": [
-     0,
-     171.3
-    ],
-    "right_edge": [
-     300,
-     171.3
-    ]
-   },
-   "landmarks": []
-  },
-  {
-   "id": "patch-south-coast-group-7",
-   "path": "patches/patch-south-coast-group-7/patch-south-coast-group-7.png",
-   "category": "patches",
-   "has_spec": true,
-   "issues": [],
-   "w_in": 3,
-   "h_in": 2.879,
-   "size_source": "estimated",
-   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
-   "anchors": {
-    "top_center": [
-     150,
-     0
-    ],
-    "bottom_center": [
-     150,
-     287.9
-    ],
-    "center": [
-     150,
-     143.95
-    ],
-    "left_edge": [
-     0,
-     143.95
-    ],
-    "right_edge": [
-     300,
-     143.95
     ]
    },
    "landmarks": []
