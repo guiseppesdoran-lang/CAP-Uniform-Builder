@@ -67,3 +67,14 @@ test('a tile that is on with a row of choices under it takes the width of the li
   // A row only takes the width while its controls are shown: a badge that is off keeps its place in the grid.
   assert.doesNotMatch(css, /\.vpCell:has\(> \.vpControls \.vpRow\)/);
 });
+
+test('a picker tile draws its picture inside an even margin on all four sides (the box keeps its size, border-box), so a picture that reaches its own edge, such as the Cyber triangle, is not cut by the border or the rounded corners', () => {
+  const box = rule('.vpPicture');
+  const pad = /padding:(\d+)px/.exec(box);
+  assert.ok(pad && Number(pad[1]) >= 4, 'the base picture box has an even inner margin of at least the corner radius');
+  assert.ok(/border-radius:4px/.test(box));
+  assert.ok(/aspect-ratio:4 \/ 3/.test(box), 'the outer size comes from the aspect ratio, which border-box padding does not change');
+  assert.ok(/\*\{box-sizing:border-box\}/.test(css));
+  const image = rule('.vpPicture>svg,.vpPicture>img');
+  assert.ok(/width:100%;height:100%;object-fit:contain/.test(image), 'the picture fills the margin box, whole');
+});

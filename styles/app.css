@@ -1542,7 +1542,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpOption:active{transform:none}
 .vpOption:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .vpOption[aria-checked="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
-.vpPicture{display:flex;align-items:center;justify-content:center;aspect-ratio:4 / 3;min-width:0;overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:4px;color:var(--line-strong)}
+.vpPicture{display:flex;align-items:center;justify-content:center;padding:4px;aspect-ratio:4 / 3;min-width:0;overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:4px;color:var(--line-strong)}
 .vp[data-size="large"] .vpPicture{aspect-ratio:3 / 2}
 .vp[data-shape="tall"] .vpPicture,.vp[data-size="large"][data-shape="tall"] .vpPicture{aspect-ratio:3 / 4}
 .vpPicture>svg,.vpPicture>img{display:block;width:100%;height:100%;object-fit:contain}
