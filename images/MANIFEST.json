@@ -8,7 +8,7 @@
   "epaulet_sleeves": "Use the garment-*-epaulet-sleeve-* layers for sleeve shape on the shirts and put grade insignia at rank_slot; rank-epaulet-sleeve-* are standalone graded sleeves (1.97 x 3.84 in) and are wider than the drawn strap.",
   "size_source": "regulation = dimension from a regulation or purchase description; measured = measured from a reference at a stated scale; estimated = assumed (see basis)."
  },
- "count": 1669,
+ "count": 1680,
  "by_category": {
   "accessories": 33,
   "badges": 1,
@@ -74678,6 +74678,380 @@
     "right_edge": [
      300,
      175.05
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-nobar",
+   "path": "enamel/enamel-nra-distinguished-expert-nobar/enamel-nra-distinguished-expert-nobar.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 2.346,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     234.645
+    ],
+    "center": [
+     61.5,
+     117.323
+    ],
+    "left_edge": [
+     0,
+     117.323
+    ],
+    "right_edge": [
+     123,
+     117.323
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-r",
+   "path": "enamel/enamel-nra-distinguished-expert-r/enamel-nra-distinguished-expert-r.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 2.714,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     271.433
+    ],
+    "center": [
+     61.5,
+     135.716
+    ],
+    "left_edge": [
+     0,
+     135.716
+    ],
+    "right_edge": [
+     123,
+     135.716
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-p",
+   "path": "enamel/enamel-nra-distinguished-expert-p/enamel-nra-distinguished-expert-p.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 2.714,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     271.433
+    ],
+    "center": [
+     61.5,
+     135.716
+    ],
+    "left_edge": [
+     0,
+     135.716
+    ],
+    "right_edge": [
+     123,
+     135.716
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-s",
+   "path": "enamel/enamel-nra-distinguished-expert-s/enamel-nra-distinguished-expert-s.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 2.714,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     271.433
+    ],
+    "center": [
+     61.5,
+     135.716
+    ],
+    "left_edge": [
+     0,
+     135.716
+    ],
+    "right_edge": [
+     123,
+     135.716
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-rp",
+   "path": "enamel/enamel-nra-distinguished-expert-rp/enamel-nra-distinguished-expert-rp.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 3.082,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     308.221
+    ],
+    "center": [
+     61.5,
+     154.111
+    ],
+    "left_edge": [
+     0,
+     154.111
+    ],
+    "right_edge": [
+     123,
+     154.111
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-rs",
+   "path": "enamel/enamel-nra-distinguished-expert-rs/enamel-nra-distinguished-expert-rs.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 3.082,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     308.221
+    ],
+    "center": [
+     61.5,
+     154.111
+    ],
+    "left_edge": [
+     0,
+     154.111
+    ],
+    "right_edge": [
+     123,
+     154.111
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-ps",
+   "path": "enamel/enamel-nra-distinguished-expert-ps/enamel-nra-distinguished-expert-ps.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 3.082,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     308.221
+    ],
+    "center": [
+     61.5,
+     154.111
+    ],
+    "left_edge": [
+     0,
+     154.111
+    ],
+    "right_edge": [
+     123,
+     154.111
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "enamel-nra-distinguished-expert-rps",
+   "path": "enamel/enamel-nra-distinguished-expert-rps/enamel-nra-distinguished-expert-rps.svg",
+   "category": "enamel",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 1.23,
+   "h_in": 3.45,
+   "size_source": "estimated",
+   "basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+   "anchors": {
+    "top_center": [
+     61.5,
+     0
+    ],
+    "bottom_center": [
+     61.5,
+     345.009
+    ],
+    "center": [
+     61.5,
+     172.505
+    ],
+    "left_edge": [
+     0,
+     172.505
+    ],
+    "right_edge": [
+     123,
+     172.505
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-fullerton-composite-squadron-56",
+   "path": "patches/patch-fullerton-composite-squadron-56/patch-fullerton-composite-squadron-56.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.981,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     298.1
+    ],
+    "center": [
+     150,
+     149.05
+    ],
+    "left_edge": [
+     0,
+     149.05
+    ],
+    "right_edge": [
+     300,
+     149.05
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-saddleback-composite-squadron-68",
+   "path": "patches/patch-saddleback-composite-squadron-68/patch-saddleback-composite-squadron-68.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 3.426,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     342.6
+    ],
+    "center": [
+     150,
+     171.3
+    ],
+    "left_edge": [
+     0,
+     171.3
+    ],
+    "right_edge": [
+     300,
+     171.3
+    ]
+   },
+   "landmarks": []
+  },
+  {
+   "id": "patch-south-coast-group-7",
+   "path": "patches/patch-south-coast-group-7/patch-south-coast-group-7.png",
+   "category": "patches",
+   "has_spec": true,
+   "issues": [],
+   "w_in": 3,
+   "h_in": 2.879,
+   "size_source": "estimated",
+   "basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+   "anchors": {
+    "top_center": [
+     150,
+     0
+    ],
+    "bottom_center": [
+     150,
+     287.9
+    ],
+    "center": [
+     150,
+     143.95
+    ],
+    "left_edge": [
+     0,
+     143.95
+    ],
+    "right_edge": [
+     300,
+     143.95
     ]
    },
    "landmarks": []

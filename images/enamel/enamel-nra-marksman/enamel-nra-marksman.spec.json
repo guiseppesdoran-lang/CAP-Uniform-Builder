@@ -45,5 +45,5 @@
   "silhouette_iou_approx": 0.881,
   "note": "bbox-normalised 96x96 mask IoU (check-asset.js)"
  },
- "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.1 x 1.735 in to 0.88 x 1.388 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.3977 (A4b) from 0.88 x 1.388 in to 1.23 x 1.94 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image."
+ "notes": "Geometry is script-generated; parameters live in the generator tables. Silhouette fit measured against the reference art. Rescaled uniformly x0.8 (A4b) from 1.1 x 1.735 in to 0.88 x 1.388 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. Rescaled uniformly x1.3977 (A4b) from 0.88 x 1.388 in to 1.23 x 1.94 in; art, aspect and ids unchanged. source_bbox_user_units still refers to the reference image. The plate's and the banner bar's ramps (light to dark across the field) are one colour each, the mean of the ramp, as on the shields (enamel/flat-ramps.js; LIVE13-ART 65)."
 }

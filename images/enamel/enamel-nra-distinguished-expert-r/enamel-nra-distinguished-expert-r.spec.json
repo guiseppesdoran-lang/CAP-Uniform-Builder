@@ -1,0 +1,52 @@
+{
+ "asset_id": "enamel-nra-distinguished-expert-r",
+ "width_in": 1.23,
+ "height_in": 2.714,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated: no Vanguard listing found; no regulation size. The scale of the present enamel-nra-distinguished-expert (1.23 in wide), which this piece is drawn on",
+ "citation": null,
+ "anchors": {
+  "top_center": [
+   61.5,
+   0
+  ],
+  "bottom_center": [
+   61.5,
+   271.433
+  ],
+  "center": [
+   61.5,
+   135.716
+  ],
+  "left_edge": [
+   0,
+   135.716
+  ],
+  "right_edge": [
+   123,
+   135.716
+  ]
+ },
+ "dimensions": {
+  "size_class": "nra",
+  "level": "none",
+  "bars": [
+   "RIFLE"
+  ],
+  "bar_count": 1,
+  "hanger_design_units": 52,
+  "placement_anchor": "top_center"
+ },
+ "data_source": "original",
+ "generator": "artwork-samples/enamel (g6/make-nra-family.js, emit-nra-de.js) + nra_distinguished_expert_r",
+ "reference": null,
+ "source_bbox_user_units": [
+  14.497,
+  11.674,
+  126.303,
+  258.404
+ ],
+ "fit_score": null,
+ "notes": "The Distinguished Expert badge with rifle bar, a whole badge. Bars hang in the order rifle, pistol, shotgun from the top, one per group the Distinguished Expert was earned in. The hanger (the arched bar's lower edge to the shield's top edge) is 52 design units: 14 with no bar, the short hanger of the NRA Program Materials Center picture of the plain badge (0.139 of the banner's width measured on it, 17.4 units; the present art's own first gap is 14), and one pitch of 38 (the present art's: a bar of 16 and a gap of 22) more for each bar, so the present two-bar badge is exactly what two bars give. The arched bar, the sunburst and the shield are the present badge's, at the same width (1.23 in); the shield and everything under it hang 38 design units higher, and the art box follows. The chain is drawn as links of the present size and spacing (13 units), one straight chain a side from the arched bar's corner to the shield's shoulder. The top_center anchor, the point the builder places the badge by, is at the top of the sunburst, the same point of the art in all eight, so the badge hangs from the same place whatever its length. Plate and banner ramps are flat (LIVE13-ART 65)."
+}
