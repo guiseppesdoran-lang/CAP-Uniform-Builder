@@ -148,7 +148,9 @@
     "nra_marksman_badge": { family: "marksmanship", name: "NRA Marksmanship Badge", dress: "enamel-nra-pro-marksman", field: null, cloth: null, mini: null,
       levels: [["pro-marksman", "Pro-Marksman", "enamel-nra-pro-marksman"], ["marksman", "Marksman", "enamel-nra-marksman"],
         ["marksman-first-class", "Marksman First Class", "enamel-nra-marksman-first-class"], ["sharpshooter", "Sharpshooter", "enamel-nra-sharpshooter"],
-        ["expert", "Expert", "enamel-nra-expert"], ["distinguished-expert", "Distinguished Expert", "enamel-nra-distinguished-expert"]] }
+        ["expert", "Expert", "enamel-nra-expert"], ["distinguished-expert", "Distinguished Expert", "enamel-nra-distinguished-expert-nobar"]],
+      // The groups a Distinguished Expert was earned in: one bar for each, hung from the top in this order; the badge is one drawing for each combination (suffix letters in this order).
+      bars: { level: "distinguished-expert", base: "enamel-nra-distinguished-expert", list: [["rifle", "Rifle", "r"], ["pistol", "Pistol", "p"], ["shotgun", "Shotgun", "s"]] } }
   };
   // Precedence of the families on the wearer's left (4.1.5.2.2.4.1): chaplain highest, then CAP
   // aviation, then occupational.
@@ -258,12 +260,34 @@
     if(!list) return null;
     return list.find(l => l[0] === key) || list[0];
   }
+  // The bars a badge can carry at a level ([key, label, letter], in the order they hang), or null when that level has none.
+  function bars(id, levelKey){
+    const b = BADGES[id];
+    if(!b || !b.bars) return null;
+    const lv = level(id, levelKey);
+    return lv && lv[0] === b.bars.level ? b.bars.list : null;
+  }
+  // The keys of the bars that are on, in the order they hang and each once; anything that is not a bar of the badge is dropped.
+  function barsOn(id, keys){
+    const b = BADGES[id];
+    if(!b || !b.bars || !Array.isArray(keys)) return [];
+    return b.bars.list.map(x => x[0]).filter(k => keys.includes(k));
+  }
+  // The drawing of the badge with those bars (one drawing for each combination), or null for a badge with no bars.
+  function barArt(id, keys){
+    const b = BADGES[id];
+    if(!b || !b.bars) return null;
+    const on = barsOn(id, keys);
+    const letters = b.bars.list.filter(x => on.includes(x[0])).map(x => x[2]).join('');
+    return `${b.bars.base}-${letters || 'nobar'}`;
+  }
   // The artwork for a badge on a kind of uniform; null when none exists in that form. A level picks
   // its own dress art.
-  function art(id, form, levelKey){
+  function art(id, form, levelKey, barKeys){
     const b = BADGES[id];
     if(!b) return null;
     const lv = level(id, levelKey);
+    if(lv && form === 'dress' && b.bars && lv[0] === b.bars.level) return barArt(id, barKeys) || lv[2];
     if(lv && (form === 'dress' || (form === 'mini' && !b.mini))) return form === 'dress' ? lv[2] : null;
     if(form === 'embroidered') return b.embroidered || b.field || null;
     return b[form] || null;
@@ -289,5 +313,5 @@
     if(membership === 'senior') return !cadetOnlySet.has(id);
     return true;
   }
-  return { BADGES, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, setEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, hasEmbroidered, fieldIds };
+  return { BADGES, bars, barsOn, barArt, LEFT_STACK_ORDER, OCCUPATIONAL_PRECEDENCE, occupationalRank, EQUAL_STANDING, equalGroup, arrangeEqual, equalStacks, moveEqual, setEqual, pruneEqual, CADET_ONLY, CADET_AUTHORIZED, get, family, art, levels, level, eligibleFor, hasField, hasEmbroidered, fieldIds };
 });

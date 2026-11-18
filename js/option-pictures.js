@@ -593,7 +593,7 @@
     }));
     return out;
   }
-  const badgeOrderKey = build => [build.uniform, build.gender, build.membership, build.grade && (build.grade.key || build.grade.rank), (build.badges || []).map(b => [b.id, b.variant, b.level]),
+  const badgeOrderKey = build => [build.uniform, build.gender, build.membership, build.grade && (build.grade.key || build.grade.rank), (build.badges || []).map(b => [b.id, b.variant, b.level, b.bars]),
     (build.ribbons || []).map(r => r && (r.id || r.key || r)), build.opt, build.command, build.name && [build.name.first, build.name.last, build.name.show]];
 
   const RECIPES = {

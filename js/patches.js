@@ -820,7 +820,7 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     function capubBadgeThumbnailPath(id){
       const cat = window.CAPUBBadgeCatalog;
       const level = State.badgeSelections?.[id]?.level;
-      const art = cat && (cat.art(id, 'field') || cat.art(id, 'dress', level) || cat.art(id, 'cloth'));
+      const art = cat && (cat.art(id, 'field') || cat.art(id, 'dress', level, State.badgeSelections?.[id]?.bars) || cat.art(id, 'cloth'));
       return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || '';
     }
     function capubUtilityBadgePreviewUrl(id){

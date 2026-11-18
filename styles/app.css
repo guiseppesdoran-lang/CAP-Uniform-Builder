@@ -1630,6 +1630,8 @@ html[data-access="guest"] #accessGate{display:none}
 .ribbonControlRow .ribbonToggle[disabled]{cursor:default;opacity:.55}
 .ribbonControlRow .ribbonToggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .ribbonToggleArt{display:block;flex:0 0 auto;width:20px;height:20px;object-fit:contain}
+.vpBarRow .ribbonToggle{min-height:48px}
+.vpBarRow .ribbonToggleArt{width:24px;height:42px}
 .ribbonControlRow .ribbonNumeral{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs)}
 .ribbonControlRow .ribbonNumeral input{width:64px;min-height:36px;font-size:var(--t-xs)}
 .ribbonAutoNote{margin:0;font-size:var(--t-xs);line-height:1.3}

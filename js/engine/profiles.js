@@ -446,7 +446,7 @@
           : `${label} is worn by cadets only (CAPR 39-1, ${cadetOnlyPara(b)})`);
         continue;
       }
-      const art = B.art(sel.id, form, sel.level) || (form === 'mini' ? B.art(sel.id, 'dress', sel.level) : null);
+      const art = B.art(sel.id, form, sel.level, sel.bars) || (form === 'mini' ? B.art(sel.id, 'dress', sel.level) : null);
       if(!art){ ctx.note(`${sel.title || (B.get(sel.id) || {}).name || sel.id} cannot be shown on this uniform`); continue; }
       const item = { id: sel.id, art, family: fam, title: sel.title || sel.id };
       const key = { 'national-staff': 'nationalStaff', 'cadet-specialty': 'cadetSpecialty' }[fam] || fam;

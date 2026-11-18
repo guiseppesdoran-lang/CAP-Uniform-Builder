@@ -29,8 +29,12 @@
       isCommand: id => isCommandInsigniaBadge(id),
       levels: id => typeof CAPUBBadgeCatalog !== 'undefined' ? CAPUBBadgeCatalog.levels(id) : null,
       level: (id, level) => CAPUBBadgeCatalog.level(id, level)[0],
+      // The bars a badge carries at a level ([key, label, letter]) and the drawing of the badge with only that bar (the picture of its switch).
+      hasBars: id => typeof CAPUBBadgeCatalog !== 'undefined' && !!(CAPUBBadgeCatalog.BADGES[id] && CAPUBBadgeCatalog.BADGES[id].bars),
+      bars: (id, level) => typeof CAPUBBadgeCatalog !== 'undefined' && CAPUBBadgeCatalog.bars ? CAPUBBadgeCatalog.bars(id, level) : null,
+      barArt: (id, key) => { const art = CAPUBBadgeCatalog.barArt(id, [key]); return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || ''; },
       // The drawing of a badge at a level (the path the page loads it from), for the tile of that level.
-      levelArt: (id, level) => { const art = CAPUBBadgeCatalog.art(id, 'dress', level); return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || ''; },
+      levelArt: (id, level) => { const art = CAPUBBadgeCatalog.art(id, 'dress', level, State.badgeSelections && State.badgeSelections[id] && State.badgeSelections[id].bars); return (art && window.CAPUBAssetIndex && CAPUBAssetIndex[art]) || ''; },
       // The command pin as the engine draws it worn each way (`values`: 'current', 'graduated'): { now, ready, settled }, a picture for each or false where the uniform does not draw it.
       commandPictures: values => typeof CAPUBOptionPictures !== 'undefined' ? CAPUBOptionPictures.pictures('commandWorn', values) : null,
       canCommand: () => canSelectCommandInsigniaForCurrentRank(true),
@@ -152,6 +156,15 @@
     sel(d, id).level = level;
     d.rebuild();
   }
+  // The groups a Distinguished Expert was earned in: a bar for each one on (kept in the member's selection whatever the level, so they are there when the level comes back).
+  function setBadgeBar(id, key, on, deps){
+    const d = withDeps(deps);
+    const s = sel(d, id);
+    const keys = new Set(s.bars || []);
+    if(on) keys.add(key); else keys.delete(key);
+    s.bars = [...keys];
+    d.rebuild();
+  }
   // The command pin as a graduated commander (under the name tag), or as a current one.
   function setGraduated(id, on, deps){
     const d = withDeps(deps);
@@ -209,6 +222,32 @@
           onChange: key => { setBadgeLevel(id, key, deps); entry.setOptions(); }
         }).host);
       }
+      // The bars of a Distinguished Expert: one small switch for each group it was earned in, none on at first, under the level row only at that level.
+      const own = d.State.badgeSelections[id] || {};
+      const barList = d.bars ? d.bars(id, own.level) : null;
+      if(barList){
+        const row = el('div', 'ribbonControlRow vpBarRow');
+        row.setAttribute('role', 'group');
+        row.setAttribute('aria-label', `Groups the ${d.name(id)} was earned in`);
+        for(const [key, label] of barList){
+          const on = (own.bars || []).includes(key);
+          const b = el('button', 'ribbonToggle');
+          b.setAttribute('type', 'button');
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          b.dataset.value = key;
+          const src = d.barArt ? d.barArt(id, key) : '';
+          if(src){
+            const img = el('img', 'ribbonToggleArt');
+            img.setAttribute('alt', '');
+            img.setAttribute('src', d.asset(src));
+            b.append(img);
+          }
+          b.append(el('span', null, label));
+          b.addEventListener('click', () => { setBadgeBar(id, key, !on, deps); entry.setOptions(); });
+          row.append(b);
+        }
+        box.append(row);
+      }
       if(d.isCommand(id)) box.append(commandRow(d, id, deps, () => entry.setOptions()));
       return box.childNodes.length ? box : null;
     };
@@ -216,7 +255,7 @@
     // so the list is made again when the pin held changes.
     const pinsOn = () => ids.filter(id => d.isCommand(id) && d.State.badgeSelections[id] && d.State.badgeSelections[id].checked).join();
     // What a tile's controls were made from: a badge's own level row keeps its own state (a tap on a level tile moves it), a command pin's row depends on the pin held and on how it is worn.
-    const controlsKeyOf = id => d.isCommand(id) ? `pin:${pinsOn()}:${graduatedNow(d)}` : 'levels';
+    const controlsKeyOf = id => d.isCommand(id) ? `pin:${pinsOn()}:${graduatedNow(d)}` : (d.hasBars && d.hasBars(id) ? `levels:${(d.State.badgeSelections[id] || {}).level || ''}:${((d.State.badgeSelections[id] || {}).bars || []).join()}` : 'levels');
     let built = '';
     const options = () => { built = pinsOn(); const rows = d.badgeRows(), on = new Set(selectedIn(d, ids)); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), notWorn: leftOff(rows, id, d.name(id), on.has(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null, controlsKey: controlsKeyOf(id) }))); };
     // The last badge the member turned on: the window's status line says what the drawing did with it, as soon as the drawing has been made.
@@ -865,5 +904,5 @@
     };
   }
 
-  return { badgeList, militaryBadgeList, badgeNote, selectBadge, setBadgeLevel, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pictureRow, pageDeps };
+  return { badgeList, militaryBadgeList, badgeNote, selectBadge, setBadgeLevel, setBadgeBar, setGraduated, patchList, selectPatch, selectRibbon, ribbonLists, ribbonPicker, pictureRow, pageDeps };
 });

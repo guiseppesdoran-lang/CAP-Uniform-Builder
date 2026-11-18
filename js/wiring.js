@@ -683,6 +683,9 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         kept[id] = { checked: !!source[id].checked };
         const levels = window.CAPUBBadgeCatalog?.levels(id);
         if(levels && levels.some(l => l[0] === source[id].level)) kept[id].level = source[id].level;
+        // The bars of a Distinguished Expert (kept whatever the level now, so they are there when the member comes back to it); a setup saved without them has none.
+        const barKeys = window.CAPUBBadgeCatalog?.barsOn(id, source[id].bars) || [];
+        if(barKeys.length) kept[id].bars = barKeys;
       }
       return kept;
     };

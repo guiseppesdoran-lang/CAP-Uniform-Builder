@@ -134,7 +134,7 @@
         if(!command) command = { id, title, graduated: !!State.commandInsignia?.graduatedCommander };
         continue;
       }
-      badges.push({ id, title, level: State.badgeSelections?.[id]?.level || null });
+      badges.push({ id, title, level: State.badgeSelections?.[id]?.level || null, bars: State.badgeSelections?.[id]?.bars || null });
     }
     return { badges, command };
   }
