@@ -2135,14 +2135,10 @@ function parseCapMemberReport(textRaw){
   // National Staff outranks every other specialty badge.
   if(/\bCommand\s+Council\s+Badge\b/i.test(text)) result.badges.push('command_council_badge');
   if(/\bSenior\s+Advisory\s+Group\s+Badge\b|\bSAG\s+Badge\b/i.test(text)) result.badges.push('senior_advisory_group_badge');
+  // The National Staff Badge is never turned on by the import: the member picks it in the badge list. The record only brings a note that it may be worn.
   const nationalStaffEligibility = window.CAPUBMemberReportRules?.evaluateNationalStaffEligibility(text);
   if(nationalStaffEligibility?.eligible){
-    result.badges.push('national_staff_badge');
-    if(nationalStaffEligibility.reason === 'CURRENT_APPOINTMENT'){
-      result.notes.push('A current National Staff appointment was found: the National Staff Badge may be worn (CAPR 39-1, 10.2.3).');
-    }else if(nationalStaffEligibility.reason === 'PAST_APPOINTMENT_ONE_CALENDAR_YEAR'){
-      result.notes.push('A National Staff appointment of one full year or more was found: the National Staff Badge is worn permanently (CAPR 39-1, 10.2.3).');
-    }
+    result.notes.push('The report shows a National Staff appointment, so the National Staff Badge may be worn. It is not chosen for you: choose it in the badge list (CAPR 39-1, 10.2.3).');
   }else if(nationalStaffEligibility?.reason === 'PAST_APPOINTMENT_TOO_SHORT'){
     result.notes.push('A past National Staff appointment was found, but it ran less than one year, so the badge is not worn permanently (CAPR 39-1, 10.2.3).');
   }
@@ -2304,6 +2300,9 @@ function applyCapMemberReportImport(parsed){
   normalizeRibbonSelections();
   normalizeBadgeSelections();
 
+  // The National Staff Badge is the member's own pick, never the report's: one chosen by hand before the import is still chosen after it.
+  const keepsNationalStaff = (State.badges || []).includes('national_staff_badge') || !!State.badgeSelections?.national_staff_badge?.checked;
+
   // Clear current imported-selectable items so the report can populate a clean rack.
   for(const id of Object.keys(State.ribbonSelections)){
     State.ribbonSelections[id].checked = false;
@@ -2345,6 +2344,10 @@ function applyCapMemberReportImport(parsed){
     if(!isBadgeEligibleForMembership(id, State.membership)) continue;
     if(!State.badges.includes(id)) State.badges.push(id);
     if(State.badgeSelections[id]) State.badgeSelections[id].checked = true;
+  }
+  if(keepsNationalStaff && isBadgeEligibleForMembership('national_staff_badge', State.membership)){
+    if(!State.badges.includes('national_staff_badge')) State.badges.push('national_staff_badge');
+    if(State.badgeSelections.national_staff_badge) State.badgeSelections.national_staff_badge.checked = true;
   }
   // Which of two badges of equal standing is worn higher stays for the badges the report keeps; a pair the report does not keep loses its choice.
   State.badgeOrder = CAPUBBadgeCatalog.pruneEqual(State.badgeOrder, State.badges);
@@ -2482,7 +2485,7 @@ const MEMBER_REPORT_NOTES_IN_SIGHT = [
   /add it under Ribbons if it applies/,
   /^.+: taken from the .+ qualifications?, since the report names no /,
   /^The report names these aviation badges: /,
-  /^A (?:current )?National Staff appointment(?: of one full year or more)? was found: /,
+  /^The report shows a National Staff appointment, so the National Staff Badge may be worn\./,
   /^(?:Current commander duty found: the|Past commander duty of a year or more found: the) .+ command insignia pin/,
   /^Shoulder cords: (?:more than one supplement cord|the .+ cord from the report is chosen|the .+ cord is worn only at|the .+ cord \(.+\) is chosen)/,
   /^The .+ patch, which a supplement requires on this uniform, is chosen\./,

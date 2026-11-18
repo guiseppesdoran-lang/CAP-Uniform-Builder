@@ -1761,7 +1761,7 @@ const NOTE_KINDS = [
   [/^Garber and Gill Robb Wilson Awards: /, 'sight', 'Garber and Gill Robb Wilson Awards: the report does not show Squadron Officer School, Air Command and Staff College or Air War College, so no star is added; add it under Ribbons if it applies.'],
   [/^.+: taken from the .+ qualifications?, since the report names no /, 'sight', 'Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.'],
   [/^The report names these aviation badges: /, 'sight', 'The report names these aviation badges: Solo Badge and Observer Badge. One CAP aviation badge is worn at a time (CAPR 39-1, 4.1.5.2.2.4.1); the others are listed under Authorized by member report in the badge list.'],
-  [/^A (?:current )?National Staff appointment/, 'sight', 'A current National Staff appointment was found: the National Staff Badge may be worn (CAPR 39-1, 10.2.3).'],
+  [/^The report shows a National Staff appointment/, 'sight', 'The report shows a National Staff appointment, so the National Staff Badge may be worn. It is not chosen for you: choose it in the badge list (CAPR 39-1, 10.2.3).'],
   [/^(?:Current commander duty found|Past commander duty of a year or more found): the .+ command insignia pin/, 'sight', 'Current commander duty found: the Group Commander command insignia pin is worn over the name tag (CAPR 39-1, 10.2.5).'],
   [/^Shoulder cords: (?:more than one|the .+ cord from the report is chosen|the .+ cord is worn only at|the .+ cord \(.+\) is chosen)/, 'sight', 'Shoulder cords: the Cadet Advisory Council cord from the report is chosen, so the Region Cadet Leadership School cord is marked and not chosen.'],
   [/^The .+ patch, which a supplement requires on this uniform, is chosen\./, 'sight', 'The Wing patch, which a supplement requires on this uniform, is chosen. You can take it off under Supplements.'],
@@ -2023,4 +2023,38 @@ test('the patches the report brings are found by the same table', () => {
   assert.equal([...detect(ncsaRow('AF Advanced Pararescue & Survival Orientation Course'))].length, 1);
   assert.deepEqual([...detect(ncsaRow('Advanced Technology Academy'))], [], 'on the list and no patch of its own');
   assert.deepEqual([...detect(ncsaRow('Advanced Aviation Academy'))], []);
+});
+
+// ---- The National Staff Badge is the member's pick: the import never turns it on --------------------------------------------------------------
+const staffReport = block => SENIOR.replace('Cadet Training', `${block}\nCadet Training`);
+const STAFF_CURRENT = "National Staff Appointments Appointment Date Assigned Staff Member, Commander's Action Group 01 Apr 2025\nCurrent Committees";
+const STAFF_PAST_YEAR = 'Past National Staff Appointments Appointment Date Assigned End Date National Recruiting Specialist 16 Feb 2022 01 Apr 2024\nCurrent Committees';
+const STAFF_PAST_SHORT = 'Past National Staff Appointments Appointment Date Assigned End Date Staff Member 01 Apr 2025 31 Mar 2026\nCurrent Committees';
+const STAFF_NOTE = 'The report shows a National Staff appointment, so the National Staff Badge may be worn. It is not chosen for you: choose it in the badge list (CAPR 39-1, 10.2.3).';
+
+test('a current appointment, a past one of a full year, and a short one: none turns the National Staff Badge on; the first two bring the note to pick it', () => {
+  for(const [what, block, noted] of [['current', STAFF_CURRENT, true], ['past, a full year', STAFF_PAST_YEAR, true], ['past, too short', STAFF_PAST_SHORT, false]]){
+    const r = runImport(staffReport(block), "State.membership = 'senior';");
+    assert.ok(!r.badges.includes('national_staff_badge'), `${what}: not on`);
+    assert.ok(!r.parsed.badges.includes('national_staff_badge'), `${what}: not in the parsed badges`);
+    assert.ok(!r.parsed.authorizedBadges.includes('national_staff_badge'), `${what}: not authorized by the report either`);
+    assert.equal(r.parsed.notes.includes(STAFF_NOTE), noted, `${what}: the note`);
+    assert.equal(r.parsed.notes.some(n => /ran less than one year/.test(n)), what === 'past, too short');
+  }
+  // A report that names nothing of the kind, and one that prints the badge's own name, bring nothing on either.
+  assert.ok(!runImport(SENIOR, "State.membership = 'senior';").badges.includes('national_staff_badge'));
+  const named = runImport(staffReport('Awards National Staff Badge 01 Apr 2024'), "State.membership = 'senior';");
+  assert.ok(!named.badges.includes('national_staff_badge'), 'a row that prints the badge\'s name: still the member\'s pick');
+});
+
+test('a National Staff Badge the member picked by hand is still on after an import, with or without an appointment in the report; another badge is not kept', () => {
+  const before = "State.membership = 'senior'; State.badges = ['national_staff_badge', 'emt_basic_badge'];";
+  for(const block of [STAFF_CURRENT, STAFF_PAST_SHORT, '']){
+    const r = runImport(staffReport(block), before);
+    assert.ok(r.badges.includes('national_staff_badge'), `kept: ${block.slice(0, 30)}`);
+    assert.equal(r.badges.filter(id => id === 'national_staff_badge').length, 1, 'once');
+    assert.ok(!r.badges.includes('emt_basic_badge'), 'the rest is the report\'s, as before');
+  }
+  const alone = runImport(staffReport(STAFF_CURRENT), "State.membership = 'senior';");
+  assert.ok(!alone.badges.includes('national_staff_badge'), 'and not picked before: not on');
 });
