@@ -1066,16 +1066,18 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
       return capubPreviousGetBadgeSlotSpec(id);
     };
 
+    // `activity` is the credit an activity of National Headquarters' list counts for (member-report-rules.js, NCSA_ACTIVITY_LIST): a report that names any
+    // place or name of it brings the patch. `terms` are words for patches of things that are not on that list.
     const NCSA_PATCH_MATCHERS = [
-      { id:'pjoc_ocp_patch', fallbackId:'pjoc_patch', terms:[/\bPJOC\b/i,/Pararescue\s+Orientation\s+Course/i] },
+      { id:'pjoc_ocp_patch', fallbackId:'pjoc_patch', activity:'PJOC', terms:[] },
       { id:'nesa_patch', terms:[/\bNESA\b/i,/National\s+Emergency\s+Services\s+Academy/i] },
-      { id:'civil_engineering_academy_patch', terms:[/Civil\s+Engineering\s+Academy/i,/Air\s+Force\s+Civil\s+Engineering\s+Academy/i] },
-      { id:'cos_patch', terms:[/\bCOS\b/i,/Cadet\s+Officer\s+School/i] },
-      { id:'honor_guard_academy_patch', terms:[/Honor\s+Guard\s+Academy/i] },
-      { id:'nfa_patch', terms:[/\bNFA\b/i,/National\s+Flight\s+Academy/i] },
-      { id:'cla_patch', terms:[/\bCLA\b/i,/Civic\s+Leadership\s+Academy/i] },
-      { id:'nbb_patch', terms:[/\bNBB\b/i,/National\s+Blue\s+Beret/i] },
-      { id:'undergrad_pilot_training_patch', terms:[/Undergraduate\s+Pilot\s+Training/i] },
+      { id:'civil_engineering_academy_patch', activity:'AFCEA', terms:[] },
+      { id:'cos_patch', activity:'COS', terms:[] },
+      { id:'honor_guard_academy_patch', activity:'HONOR GUARD ACADEMY', terms:[] },
+      { id:'nfa_patch', activity:'NATIONAL FLIGHT ACADEMY', terms:[] },
+      { id:'cla_patch', activity:'CLA', terms:[] },
+      { id:'nbb_patch', activity:'NATIONAL BLUE BERET', terms:[] },
+      { id:'undergrad_pilot_training_patch', activity:'SUPT FAMILIARIZATION COURSE', terms:[] },
       { id:'model_rocketry_patch', terms:[/Model\s+Rocketry/i] },
       { id:'orientation_pilot_patch', terms:[/Orientation\s+Pilot(?!\s+Ribbon)/i] }
     ];
@@ -1089,8 +1091,9 @@ try{ wireShoulderCordControl(); syncShoulderCordControl(); fullRender(); }catch(
     function capubDetectNCSAPatchesFromReport(text){
       const found = [];
       const t = String(text || '');
+      const listed = new Set((window.CAPUBMemberReportRules?.ncsaActivitiesIn?.(t) || []).map(entry => entry.activity));
       NCSA_PATCH_MATCHERS.forEach(matcher => {
-        if(matcher.terms.some(re => re.test(t))){
+        if((matcher.activity && listed.has(matcher.activity)) || matcher.terms.some(re => re.test(t))){
           const id = capubPatchIdForUniform(matcher);
           if(PATCH_META[id] && !found.includes(id)) found.push(id);
         }

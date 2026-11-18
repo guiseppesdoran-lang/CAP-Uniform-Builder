@@ -829,30 +829,20 @@ function getCadetTrainingSection(text){
   ]);
 }
 
-// National Cadet Special Activities a record may list without the "NCSA" word (the NCSA catalogue and CAPR 39-1
-// Figure A8-2). IACE is left out: it has its own
-// ribbon. Each pattern names one parent activity, so a student row and a staff row of the same year are one credit.
-const IMPORTED_NCSA_ACTIVITY_PATTERNS = [
-  ['PJOC', /Pararescue|\bPJOC\b/i],
-  ['CYBER DEFENSE', /Cyber\s*Defense|\bCDTA\b/i],
-  ['NATIONAL FLIGHT ACADEMY', /National\s+Flight\s+Academy|\bNFA\b/i],
-  ['NATIONAL BLUE BERET', /Blue\s+Beret|\bNBB\b/i],
-  ['NATIONAL EMERGENCY SERVICES ACADEMY', /National\s+Emergency\s+Services\s+Academy|\bNESA\b/i],
-  ['ADVANCED TECHNOLOGIES ACADEMY', /Advanced\s+Technolog(?:y|ies)\s+Academy/i],
-  ['ENGINEERING TECHNOLOGIES ACADEMY', /Engineering\s+Technolog(?:y|ies)\s+Academy/i],
-  ['HONOR GUARD ACADEMY', /Honor\s+Guard\s+Academy|\bNHGA\b/i],
-  // CAPR 39-1 Figure A8-2 (NCSA attendance patches) also names these.
-  ['SPACE FAMILIARIZATION COURSE', /Space\s+(?:Command|Force)\s+Familiarization/i],
-  ['SUPT FAMILIARIZATION COURSE', /Undergraduate\s+Pilot\s+Training|\bSUPT\b/i],
-  ['ENGINEERING ACADEMY', /\bEngineering\s+Academy\b/i]
-];
+// The National Cadet Special Activities are the ones on National Headquarters' list (CAPUBMemberReportRules.NCSA_ACTIVITY_LIST, member-report-rules.js,
+// generated from that list by scripts/generate-ncsa-activity-list.cjs): a row that names one of them, by the name the list prints or one of the
+// other names it goes by, is a credit for that activity. Each entry names the activity it counts for, so the places of one activity (a student row
+// and a staff row, or two flight academies) are one credit in a year.
+const importedNcsaListEntry = title => (typeof window !== 'undefined' && window.CAPUBMemberReportRules?.ncsaActivityForTitle?.(title)) || null;
+// A row the list does not have earns a credit only when the record itself calls it a National Cadet Special Activity.
+const IMPORTED_NCSA_NAMED = /\bNCSA\b|National\s+Cadet\s+Special\s+Activit/i;
 
 // The Cadet Training table lists what a cadet has completed: its Type, Location and Date Completed (an older print: Activity and Date Completed).
-// A row of it is one National Cadet Special Activity credit, for that activity in that year, unless it is a kind of row that earns none. The
-// table is followed, not a list of the activities known: an activity this importer has never heard of (a new academy, a college program) is a
-// credit all the same. The kinds that earn none are the region and wing schools (RCLS and NCOLS, and the schools the supplements name:
-// data/supplements.js), Required Staff Training, an encampment, an orientation flight, and the International Air Cadet Exchange, which has
-// its own ribbon.
+// A row of it is one National Cadet Special Activity credit, for that activity in that year, when it names an activity on the list above (or the
+// record calls it a National Cadet Special Activity itself) and is not a kind of row that earns none. The kinds that earn none are checked first:
+// the region and wing schools (RCLS and NCOLS, and the schools the supplements name: data/supplements.js), Required Staff Training, an
+// encampment, an orientation flight, and the International Air Cadet Exchange, which has its own ribbon. A row the list does not have earns none
+// and is told to the member as a row not understood.
 const IMPORTED_TRAINING_NO_CREDIT = [
   ['a region or wing school', /\bRCLS\b|Region(?:al)?\s+Cadet\s+Leadership\s+School|\bNCOLS\b|Non-?\s?commissioned\s+Officer\s+Leadership\s+(?:School|Academy)|(?<![A-Za-z])NCO\s+Leadership\s+Academy|\bSNCO\s+Leadership\s+Academy|\bCCC\s+Leadership\s+Academy|Cadet\s+Command(?:er)?(?:'?s)?\s+(?:Course|Leadership\s+Academy)|Pathfinders?\s+Technical\s+School|Medical\s+Orientation\s+Training|Honor\s+Guard\s+College/i],
   ['Required Staff Training', /Required\s+Staff\s+Training|\bRST\b/i],
@@ -864,19 +854,11 @@ const IMPORTED_TRAINING_DESCRIPTORS = /\b(?:Cadet|Student|Staff|Cadre|Air Staff|
 
 // The activity a credit is of, so that a student row and a staff row, or two sessions, of one activity in one year are one credit.
 function importedTrainingActivity(title){
-  if(/Hawk Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i.test(title)) return 'HMRS';
-  if(/Civic Leadership Academy|\bCLA\b/i.test(title)) return 'CLA';
-  if(/Air Force Civil Engineering Academy|\bAFCEA\b/i.test(title)) return 'AFCEA';
-  if(/Cadet Officers? School|\bCOS\b/i.test(title)) return 'COS';
-  if(/Military Operations Training School|\bMOTS\b/i.test(title)) return 'MOTS';
-  const known = IMPORTED_NCSA_ACTIVITY_PATTERNS.find(([, re]) => re.test(title));
-  if(known) return known[0];
-  const ncsa = title.search(/\bNCSA\b|National Cadet Special Activit/i);
+  const entry = importedNcsaListEntry(title);
+  if(entry) return entry.activity;
+  const ncsa = title.search(IMPORTED_NCSA_NAMED);
   // Keyed on the text from the NCSA word on, so table headings run into the first row do not split one activity into two credits.
-  if(ncsa >= 0) return title.slice(ncsa).replace(IMPORTED_TRAINING_DESCRIPTORS, ' ').replace(/\s+/g, ' ').trim().toUpperCase();
-  // An activity not named above: by the code the row leads with ("MKSABA Lewis University, Romeoville, IL"), else by its words up to the place.
-  const code = /^[A-Z][A-Z0-9]{1,9}\b/.exec(title);
-  return (code ? code[0] : title.split(',')[0].replace(IMPORTED_TRAINING_DESCRIPTORS, ' ').replace(/\s+/g, ' ').trim()).toUpperCase();
+  return title.slice(Math.max(0, ncsa)).replace(IMPORTED_TRAINING_DESCRIPTORS, ' ').replace(/\s+/g, ' ').trim().toUpperCase();
 }
 
 // The rows of the Cadet Training table as read: the words of the row, its year, whether it is a credit and why, and the activity it is a credit of.
@@ -894,7 +876,11 @@ function memberReportCadetTrainingRows(text){
     if(!/[A-Za-z]{2}/.test(title)) continue;
     const year = /\d{4}$/.exec(m[0])[0];
     const none = IMPORTED_TRAINING_NO_CREDIT.find(([, kind]) => kind.test(title));
-    rows.push(none ? { title, year, credit:false, why:`${none[0]}: no credit` } : { title, year, credit:true, activity:importedTrainingActivity(title), why:'a row of the table that is not one of the kinds that earn none' });
+    const date = m[0];
+    if(none) rows.push({ title, year, date, credit:false, why:`${none[0]}: no credit` });
+    else if(importedNcsaListEntry(title)) rows.push({ title, year, date, credit:true, activity:importedTrainingActivity(title), why:'an activity on the list of National Cadet Special Activities' });
+    else if(IMPORTED_NCSA_NAMED.test(title)) rows.push({ title, year, date, credit:true, activity:importedTrainingActivity(title), why:'the record calls it a National Cadet Special Activity' });
+    else rows.push({ title, year, date, credit:false, unlisted:true, why:'not on the list of National Cadet Special Activities: no credit' });
   }
   return rows;
 }
@@ -1738,7 +1724,7 @@ const MEMBER_REPORT_KNOWN_ROWS = [
 // the national activities, Cadet Officers School, the IACE, and what is left out on purpose (the region schools and Required Staff Training, which
 // earn no ribbon of their own, the encampments and orientation flights, which have their own tables).
 const MEMBER_REPORT_TRAINING_KNOWN_ROWS = [
-  ...IMPORTED_NCSA_ACTIVITY_PATTERNS.map(([, re]) => re), /Hawk\s+Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i, /Civic\s+Leadership\s+Academy|\bCLA\b/i,
+  { test: words => !!importedNcsaListEntry(words) }, /Hawk\s+Mountain|\bHMRS\b|\bHawk\s+Cadet\s+Cadre\b/i, /Civic\s+Leadership\s+Academy|\bCLA\b/i,
   /Air Force Civil Engineering Academy|\bAFCEA\b/i, /Cadet\s+Officers?\s+School|\bCOS\b/i, /Military\s+Operations\s+Training\s+School|\bMOTS\b/i,
   /\bNCSA\b|National\s+Cadet\s+Special\s+Activit/i, /\bRCLS\b|Required\s+Staff\s+Training|\bRST\b|Region(?:al)?\s+Cadet\s+Leadership\s+School/i,
   /\bIACE\b|International\s+Air\s+Cadet\s+Exchange/i, /Encampment/i, /Orientation\s+Flights?/i, /Cadet\s+Special\s+Activit(?:y|ies)/i
@@ -1778,6 +1764,11 @@ function memberReportUnreadRows(text){
   };
   scan(getReportSectionUntilAny(source, 'Decorations', ['Local\\s+Activities']), MEMBER_REPORT_KNOWN_ROWS);
   scan(getCadetTrainingSection(source), MEMBER_REPORT_TRAINING_KNOWN_ROWS, true);
+  // A dated row of the Cadet Training table that is on no list earns nothing, and the member is told which it was.
+  for(const row of memberReportCadetTrainingRows(source).filter(r => r.unlisted)){
+    const words = `${row.title.slice(0, 90)} ${row.date}`;
+    if(!rows.includes(words)) rows.push(words);
+  }
   return rows.slice(0, 200);
 }
 

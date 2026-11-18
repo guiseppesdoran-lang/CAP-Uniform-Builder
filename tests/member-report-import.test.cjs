@@ -300,9 +300,11 @@ test('the fixture NCSAs (PJOC 2022, Cyber Defense 2023) and COS put two bronze s
   assert.deepEqual(noCos.devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze'], centered: false }]);
   // The PDF path joins each page's text with spaces: one line.
   assert.deepEqual(runImport(FIXTURE.replace(/\n/g, ' ')).devices('cadet_special_activity_ribbon'), stars2, 'PDF text on one line');
-  // Rows that name the activity without the word NCSA.
-  const bare = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC)', 'Pararescue Orientation Course').replace('NCSA Cyber Defense', 'Cyber Defense Training Academy');
+  // A row that names an activity of the list without the word NCSA is a credit; one the list does not have, and the record does not call an NCSA, is none.
+  const bare = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC)', 'Pararescue Orientation Course').replace('NCSA Cyber Defense', 'Civic Leadership Academy');
   assert.deepEqual(runImport(bare).devices('cadet_special_activity_ribbon'), stars2, 'activity names without NCSA');
+  const unlisted = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC)', 'Pararescue Orientation Course').replace('NCSA Cyber Defense', 'Cyber Defense Training Academy');
+  assert.deepEqual(runImport(unlisted).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze'], centered: false }], 'a row of no list earns none');
   // A report with no Encampments table: the Cadet Training table still ends at the next heading.
   const noEncampments = FIXTURE.replace(/Encampments\n(?:.*Encampment.*\n)+/, '');
   assert.deepEqual(runImport(noEncampments).devices('cadet_special_activity_ribbon'), stars2, 'no Encampments section');
@@ -394,10 +396,12 @@ test('the LIVE12 fixture imports every case Ducky raised', () => {
   assert.ok(r.parsed.notes.some(n => /^CADET PROGRAMS TECHNICIAN is in the Specialty Tracks table/.test(n)));
 });
 
-test('the activities CAPR 39-1 Figure A8-2 names count without the word NCSA (E46)', () => {
+test('the activities of the list count without the word NCSA, and the ones Figure A8-2 names that the list does not have earn none (E46)', () => {
   const rows = FIXTURE.replace('NCSA Pararescue Orientation Course (PJOC) 10 Jul 2022\nNCSA Cyber Defense 12 Jul 2023',
     'Air Force Space Command Familiarization Course 10 Jul 2022\nSpecialized Undergraduate Pilot Training Familiarization Course 12 Jul 2023\nEngineering Academy 14 Jul 2024');
-  assert.deepEqual(runImport(rows).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze', 'star-bronze'], centered: false }], 'COS and three activities');
+  assert.deepEqual(runImport(rows).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze'], centered: false }], 'COS and the pilot training: two credits');
+  const told = runImport(rows).parsed.unreadRows;
+  assert.deepEqual(told, ['Air Force Space Command Familiarization Course 10 Jul 2022', 'Engineering Academy 14 Jul 2024']);
 });
 
 // LIVE13 E62: the grade in the General Information row is any CAP grade (js/state.js RANKS), read whole: "C/1st Lt"
@@ -1380,10 +1384,12 @@ test('the rows not understood are counted past twelve, a Cadet Training row is c
   const unread = groupOf(result.lines, 'Not understood');
   assert.equal(unread.filter(l => /no ribbon or badge matches this row\.$/.test(l)).length, 12);
   assert.equal(unread[unread.length - 1], '4 more rows were not understood.');
-  // A Cadet Training row is read by the table it is in: an activity the importer has never heard of is a credit, a region school is not, and neither is listed.
-  const training = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('Cadet Training\nActivity Date Completed\n', 'Cadet Training\nActivity Date Completed\nCadet Competition Team 05 May 2024\nRegion Cadet Leadership School 06 May 2024\n')));
-  assert.equal(groupOf(training.result.lines, 'Not understood'), null);
-  assert.deepEqual(runImport(FIXTURE.replace('Cadet Training\nActivity Date Completed\n', 'Cadet Training\nActivity Date Completed\nCadet Competition Team 05 May 2024\nRegion Cadet Leadership School 06 May 2024\n')).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze', 'star-bronze'], centered: false }], 'COS, PJOC, a cyber NCSA and the competition team: four activities, the school none');
+  // A Cadet Training row is read by the table it is in: an activity of the list, or one the record calls an NCSA, is a credit; a region school is none and is not
+  // listed; a row of no list is none and is listed.
+  const rows = 'Cadet Training\nActivity Date Completed\nNCSA Cadet Competition Team 05 May 2024\nCadet Competition Team 05 May 2024\nRegion Cadet Leadership School 06 May 2024\n';
+  const training = await importFile(fileLike('member.txt', 'text/plain', FIXTURE.replace('Cadet Training\nActivity Date Completed\n', rows)));
+  assert.deepEqual(groupOf(training.result.lines, 'Not understood'), ['Cadet Competition Team 05 May 2024: no ribbon or badge matches this row.']);
+  assert.deepEqual(runImport(FIXTURE.replace('Cadet Training\nActivity Date Completed\n', rows)).devices('cadet_special_activity_ribbon'), [{ devices: ['star-bronze', 'star-bronze', 'star-bronze'], centered: false }], 'COS, PJOC, a cyber NCSA and the competition team the record calls an NCSA: four activities, the row of no list and the school none');
   // A long unbroken file name wraps inside the panel.
   const { context } = loadPageScripts();
   const panel = { style: {}, children: [], appendChild(c){ this.children.push(c); }, textContent: '' };
@@ -1625,15 +1631,15 @@ function trainingRows(text){
 }
 const withTraining = (text, rows) => text.replace('Encampments Location', rows.join('\n') + '\nEncampments Location');
 
-test('every row of the Cadet Training table is a credit for its activity and year unless it is a kind that earns none: six in the member search print, whatever their names', () => {
+test('a row of the Cadet Training table is a credit for its activity and year when the list has the activity and it is not a kind that earns none: six in the member search print', () => {
   const rows = trainingRows(PERSONNEL);
   assert.deepEqual(rows.map(r => [r.title.split(/\s+/)[0], r.year, r.credit]), [
-    ['RCLS', '2022', false], ['NESA', '2022', true], ['HMRS', '2022', true], ['RCLS', '2023', false], ['COS', '2023', true], ['MKSABA', '2023', true],
-    ['RCLS', '2023', false], ['NBB', '2024', true], ['RCLS', '2024', false], ['NFAP', '2025', true], ['RCLS', '2025', false]
+    ['RCLS', '2022', false], ['Civil', '2022', true], ['HMRS', '2022', true], ['RCLS', '2023', false], ['COS', '2023', true], ['Model', '2023', true],
+    ['RCLS', '2023', false], ['NBB', '2024', true], ['RCLS', '2024', false], ['NFA', '2025', true], ['RCLS', '2025', false]
   ]);
   assert.deepEqual([...new Set(rows.filter(r => !r.credit).map(r => r.why))], ['a region or wing school: no credit']);
-  // The two activities the importer did not know by name (the old reading counted five of the six): each is its own credit, under the code the row leads with.
-  assert.deepEqual(rows.filter(r => /^(?:MKSABA|NFAP)\b/.test(r.title)).map(r => [r.activity, r.year]), [['MKSABA', '2023'], ['NFAP', '2025']]);
+  // Each credit is for the activity the list gives the row, whatever place or name the row uses.
+  assert.deepEqual(rows.filter(r => r.credit).map(r => [r.activity, r.year]), [['CIVIL AIR PATROL NATIONAL CYBER ACADEMY', '2022'], ['HMRS', '2022'], ['COS', '2023'], ['MODEL AIRCRAFT & REMOTE CONTROL FLIGHT ACADEMY', '2023'], ['NATIONAL BLUE BERET', '2024'], ['NATIONAL FLIGHT ACADEMY', '2025']]);
   const r = runImport(PERSONNEL);
   assert.equal(r.ribbon('cadet_special_activity_ribbon').value, 'silver_star_1', 'six activities: five additional ones are one silver star');
   assert.deepEqual(r.devices('cadet_special_activity_ribbon'), [{ devices: ['star-silver'], centered: false }]);
@@ -1643,12 +1649,16 @@ test('every row of the Cadet Training table is a credit for its activity and yea
 
 test('an activity and a year is one credit however many of its rows; the same activity in another year, or another activity in the year, is another', () => {
   const read = rows => runImport(withTraining(PERSONNEL, rows)).ribbon('cadet_special_activity_ribbon').value;
-  assert.equal(read(['NFAP   Staff, Tulsa, OK   05 Jul 2025']), 'silver_star_1', 'a staff row beside the student row of the year: still six');
-  assert.equal(read(['NESA   Fort Pickett, VA   08 Jul 2022', 'NESA Cadre   Fort Pickett, VA   09 Jul 2022']), 'silver_star_1', 'three rows of one activity in one year: still six');
-  assert.equal(read(['NESA   Fort Pickett, VA   01 Jul 2024']), 'silver_star_1_bronze_star_1', 'the same activity a year later: a seventh');
-  assert.equal(read(['QZLK Leadership Academy   Dayton, OH   01 Jul 2024']), 'silver_star_1_bronze_star_1', 'a new activity in a year of its own: a seventh');
-  assert.equal(read(['QZLK Leadership Academy   Dayton, OH   02 Jul 2025']), 'silver_star_1_bronze_star_1', 'a new activity in the year of another: a seventh');
-  assert.equal(read(['QZLK Leadership Academy   Dayton, OH   02 Jul 2025', 'QZLK Staff   Dayton, OH   03 Jul 2025']), 'silver_star_1_bronze_star_1', 'and its staff row the same year: one');
+  const NFA = 'NFA – TX Wing Flight Academy (Glider)', CYBER = 'Civil Air Patrol National Cyber Academy – VA', AVIATION = 'Aviation and Aeronautics Business Academy';
+  assert.equal(read([`${NFA} Staff   Tulsa, OK   05 Jul 2025`]), 'silver_star_1', 'a staff row beside the student row of the year: still six');
+  assert.equal(read([`${CYBER}   Fort Pickett, VA   08 Jul 2022`, `${CYBER} Cadre   Fort Pickett, VA   09 Jul 2022`]), 'silver_star_1', 'three rows of one activity in one year: still six');
+  assert.equal(read([`${CYBER}   Fort Pickett, VA   01 Jul 2024`]), 'silver_star_1_bronze_star_1', 'the same activity a year later: a seventh');
+  assert.equal(read([`${AVIATION}   Dayton, OH   01 Jul 2024`]), 'silver_star_1_bronze_star_1', 'a new activity in a year of its own: a seventh');
+  assert.equal(read([`${AVIATION}   Dayton, OH   02 Jul 2025`]), 'silver_star_1_bronze_star_1', 'a new activity in the year of another: a seventh');
+  assert.equal(read([`${AVIATION}   Dayton, OH   02 Jul 2025`, `${AVIATION} Staff   Dayton, OH   03 Jul 2025`]), 'silver_star_1_bronze_star_1', 'and its staff row the same year: one');
+  // Two places of one academy in a year are one credit, as the places of the flight academy have always been.
+  assert.equal(read([`${CYBER}   Fort Pickett, VA   08 Jul 2024`, 'Civil Air Patrol National Cyber Academy – TX   Waco, TX   09 Jul 2024']), 'silver_star_1_bronze_star_1', 'two places of one academy in a year: one');
+  assert.equal(read(['NFA – NY Wing Powered Flight Academy   Rome, NY   09 Jul 2025']), 'silver_star_1', 'two flight academies in the year of the first: still six');
 });
 
 test('what the table lists that earns no credit: region and wing schools, Required Staff Training, an encampment, an orientation flight, the exchange with its own ribbon', () => {
@@ -1663,6 +1673,7 @@ test('what the table lists that earns no credit: region and wing schools, Requir
   for(const row of none){
     assert.equal(runImport(withTraining(PERSONNEL, [row])).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1', `${row}: still six`);
     assert.equal(trainingRows(withTraining(PERSONNEL, [row])).filter(r => r.credit).length, 6, row);
+    assert.ok(!runImport(withTraining(PERSONNEL, [row])).parsed.unreadRows.some(w => w.includes(row.split(/\s{2,}/)[0])), `${row}: a kind that earns none is not told as unread`);
   }
   // Every cord of the supplements that is earned at an activity names a school this list leaves out.
   const { SUPPLEMENTS } = require('../data/supplements.js');
@@ -1673,12 +1684,12 @@ test('what the table lists that earns no credit: region and wing schools, Requir
 
 test('the table reads the same on the line a PDF makes, with its column headings repeated by a page break, and the old print (Activity, Date Completed) is read as before', async () => {
   assert.equal(runImport(PERSONNEL.replace(/\n/g, ' ')).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
-  const broken = PERSONNEL.replace('MKSABA   Vaughn', 'Type   Location   Date Completed MKSABA   Vaughn');
-  assert.deepEqual(trainingRows(broken).filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['NESA', 'HMRS', 'COS', 'MKSABA', 'NBB', 'NFAP']);
+  const broken = PERSONNEL.replace('Model Aircraft & Remote Control Flight Academy   Lewis', 'Type   Location   Date Completed Model Aircraft & Remote Control Flight Academy   Lewis');
+  assert.deepEqual(trainingRows(broken).filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['Civil', 'HMRS', 'COS', 'Model', 'NBB', 'NFA']);
   assert.equal(runImport(FIXTURE).ribbon('cadet_special_activity_ribbon').value, 'bronze_star_2', 'COS, PJOC and the cyber NCSA of the old print');
   // Neither of the two rows is listed as not understood any more, and nothing else is in the table's way.
   const { result } = await importFile(fileLike('member.txt', 'text/plain', PERSONNEL));
-  assert.ok(!(groupOf(result.lines, 'Not understood') || []).some(l => /MKSABA|NFAP/.test(l)), JSON.stringify(groupOf(result.lines, 'Not understood')));
+  assert.ok(!(groupOf(result.lines, 'Not understood') || []).some(l => /Model Aircraft|NFA/.test(l)), JSON.stringify(groupOf(result.lines, 'Not understood')));
 });
 
 // ---- The council ribbon's star is for a term served; the cord is for the position held now -----------------------------------------------
@@ -1727,9 +1738,9 @@ test('a row of the current table whose End Date has passed is a term served, one
 
 test('a page break inside the Cadet Training table, as a PDF prints it (the time stamp with its colon set apart, the end of the address), leaves no mark on a row', () => {
   const header = '03/05/25, 9 : 41   AM Printer Friendly View - Member Details Page 4 of 9 https://www.capnhq.gov/CAP.MemberSearch.Web/Reports/MemberDetails ? CAPID=123456\n';
-  const broken = PERSONNEL.replace('COS   Scott AFB IL', header + 'COS   Scott AFB IL').replace('NFAP Student', header + 'NFAP Student');
+  const broken = PERSONNEL.replace('COS   Scott AFB IL', header + 'COS   Scott AFB IL').replace('NFA – TX Wing', header + 'NFA – TX Wing');
   const rows = trainingRows(broken);
-  assert.deepEqual(rows.filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['NESA', 'HMRS', 'COS', 'MKSABA', 'NBB', 'NFAP']);
+  assert.deepEqual(rows.filter(r => r.credit).map(r => r.title.split(/\s+/)[0]), ['Civil', 'HMRS', 'COS', 'Model', 'NBB', 'NFA']);
   assert.ok(rows.every(r => !/CAPID|AM\b|\d : \d/.test(r.title)), JSON.stringify(rows.map(r => r.title)));
   assert.equal(runImport(broken).ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
 });
@@ -1773,7 +1784,7 @@ const NOTE_KINDS = [
   [/shoulder cord: the report shows a position on the council held now/, 'more', "National Cadet Advisory Council shoulder cord: the report shows a position on the council held now, which gives the cord and not the ribbon's star (CAPR 39-3, 21j)."],
   [/^No unit patch is offered for |^The unit patch for .+ is chosen/, 'more', 'No unit patch is offered for GLR-IL-049 yet.'],
   [/^Supplements: |^Shoulder cords: the report shows |^Shoulder cords: the other cords of these supplements/, 'more', 'Supplements: Finger Lakes Group brings in Northeast Region Supplement 1.'],
-  [/^No patch is offered yet for /, 'more', 'No patch is offered yet for HMRS, MKSABA and NFAP.']
+  [/^No patch is offered yet for /, 'more', 'No patch is offered yet for Civil Air Patrol National Cyber Academy, HMRS and Model Aircraft & Remote Control Flight Academy.']
 ];
 const notesOf = lines => [...(groupOf(lines, 'Notes') || []), ...(foldOf(lines) || [])];
 
@@ -1900,16 +1911,116 @@ test('an exam is not a rating: no Communications patch comes from a Rating Exam 
   assert.ok(runImport(PERSONNEL.replace('Cadet Training Type', 'Communications Technician 05 May 2024 Cadet Training Type')).parsed.patches.includes('comms_patch'));
 });
 
-test('an activity the table credits that no patch stands for is said once, in the fold: NFAP matches no patch (the catalog has the plain National Flight Academy patch only)', async () => {
+test('an activity the table credits that no patch stands for is said once, in the fold; the patches of the activities of the list are chosen from the same rows', async () => {
   const { result } = await importFile(fileLike('m.txt', 'text/plain', PERSONNEL));
   const fold = foldOf(result.lines);
-  assert.ok(fold.includes('No patch is offered yet for HMRS, MKSABA and NFAP.'), JSON.stringify(fold));
+  assert.ok(fold.includes('No patch is offered yet for Civil Air Patrol National Cyber Academy, HMRS and Model Aircraft & Remote Control Flight Academy.'), JSON.stringify(fold));
   assert.ok(!(groupOf(result.lines, 'Notes') || []).some(n => /No patch is offered yet/.test(n)), 'not in sight');
-  // The patches of the activities that have one are chosen from the same rows: NESA, Cadet Officer School and National Blue Beret.
+  // The patches of the activities that have one are chosen from the same rows: the flight academy, Cadet Officer School and National Blue Beret.
   const { context } = loadPageScripts();
   const detect = vm.runInContext('window.CAPUBDetectNcsaPatches', context);
   assert.deepEqual([...detect('NFAP Student Graduate Lancaster, TX')], []);
   assert.deepEqual([...detect('NESA Fort Pickett, VA')], ['nesa_patch']);
   assert.deepEqual([...detect('National Flight Academy Powered')], ['nfa_patch'], 'the plain academy has its patch');
-  assert.deepEqual([...runImport(PERSONNEL).parsed.patches].sort(), ['cos_patch', 'nbb_patch', 'nesa_patch']);
+  assert.deepEqual([...runImport(PERSONNEL).parsed.patches].sort(), ['cos_patch', 'nbb_patch', 'nfa_patch']);
+  assert.deepEqual([...detect('NFA – TX Wing Flight Academy (Glider) Student Graduate Lancaster, TX')], ['nfa_patch'], 'a place of the academy, by the name the list prints');
+  assert.deepEqual([...detect('AF Pararescue & Survival Orientation Course')].length, 1, 'the list\'s name of the pararescue course');
+  assert.deepEqual([...detect('Mid-Atlantic Region (MAR) Honor Guard Academy')], ['honor_guard_academy_patch']);
+  assert.deepEqual([...detect('AF Civil Engineering Academy')], ['civil_engineering_academy_patch']);
+  assert.deepEqual([...detect('Aviation and Aeronautics Business Academy')], [], 'on the list, no patch of its own');
+});
+
+// ---- The list of National Cadet Special Activities is the table (National Headquarters' "Current and Past Special Activity Ribbon List") --------------------
+// Every row below is made up: an activity name from the list, a place and a date that are no member's.
+const NCSA_RULES = require('../member-report-rules.js');
+const NCSA_LIST = NCSA_RULES.NCSA_ACTIVITY_LIST;
+// Names the list prints for region and wing schools that the importer has always kept out as schools (IMPORTED_TRAINING_NO_CREDIT). The list and the
+// rule disagree about these; the rule is kept until the owner rules.
+const NCSA_KEPT_AS_SCHOOLS = ['Mid Atlantic Region Cadet Leadership School', 'TX Medical Orientation Training School'];
+const ncsaRow = (name, date = '05 Jul 2024') => `${name}   Anytown, ZZ   ${date}`;
+
+test('the table holds every activity of the list, each once, with the list\'s own spelling, the years it was held and whether it is current', () => {
+  assert.equal(NCSA_LIST.length, 67);
+  assert.equal(new Set(NCSA_LIST.map(e => e.name)).size, 67, 'no name twice');
+  for(const e of NCSA_LIST){
+    assert.ok(e.years.length > 0 && e.years.every(y => y >= 2014 && y <= 2025), e.name);
+    assert.equal(e.current, e.years.includes(2025), `${e.name}: current is held in the newest year`);
+  }
+  const by = name => NCSA_LIST.find(e => e.name === name);
+  assert.equal(by('Advanced Technology Academy').current, false, 'a past activity');
+  assert.equal(by('CyberPatriot Finals').current, true);
+  assert.deepEqual(by('Advanced Technology Academy').years, [2016, 2015, 2014]);
+  // The list's slips are printed as they are and matched by their right spelling.
+  assert.ok(by('NER Honor Acedemy') && by('Aircraft Manufacuring Academy') && by('NFA – Pacfic Coast Region Flight Academy (Glider)'));
+  assert.ok(by('Aircraft Manufacuring Academy').others.includes('Aircraft Manufacturing Academy'));
+});
+
+test('every activity of the list, by the name the list prints, is a credit for its activity in the year of its row', () => {
+  const read = trainingRows(withTraining(PERSONNEL, NCSA_LIST.map(e => ncsaRow(e.name))));
+  for(const e of NCSA_LIST){
+    const row = read.find(r => r.title === `${e.name} Anytown, ZZ`);
+    assert.ok(row, e.name);
+    if(NCSA_KEPT_AS_SCHOOLS.includes(e.name)){ assert.equal(row.credit, false, `${e.name}: a school the rule keeps out`); continue; }
+    assert.equal(row.credit, true, e.name);
+    assert.equal(row.activity, e.activity, e.name);
+    assert.equal(row.year, '2024');
+  }
+});
+
+test('the other names of the list\'s activities are the same credit: the place left off, a corrected spelling, an abbreviation, a past name', () => {
+  const activityOf = title => { const row = trainingRows(withTraining(PERSONNEL, [ncsaRow(title)])).find(r => r.title.startsWith(title)); return row.credit ? row.activity : null; };
+  assert.equal(activityOf('Space Force Operations Academy'), 'SPACE FORCE OPERATIONS ACADEMY', 'the place left off');
+  assert.equal(activityOf('Aircraft Manufacturing Academy'), 'AIRCRAFT MANUFACTURING ACADEMY', 'the list\'s slip corrected');
+  assert.equal(activityOf('NER Honor Academy'), 'NER HONOR ACADEMY');
+  assert.equal(activityOf('Hawk Mountain Ranger School'), 'HMRS', 'without (Full Week)');
+  assert.equal(activityOf('HMRS Dist. Graduate'), 'HMRS');
+  assert.equal(activityOf('PJOC'), 'PJOC');
+  assert.equal(activityOf('Pararescue Orientation Course'), 'PJOC', 'the past name');
+  assert.equal(activityOf('Air Force Civil Engineering Academy'), 'AFCEA');
+  assert.equal(activityOf('Cadet Officers School'), 'COS');
+  assert.equal(activityOf('National Flight Academy'), 'NATIONAL FLIGHT ACADEMY');
+  assert.equal(activityOf('NBB'), 'NATIONAL BLUE BERET');
+  assert.equal(activityOf('Engineering Technology Academy'), 'ENGINEERING TECHNOLOGIES ACADEMY');
+  assert.equal(activityOf('Specialized Undergraduate Pilot Training'), 'SUPT FAMILIARIZATION COURSE');
+});
+
+test('a past activity of the list is a credit, and a look-alike that is not on the list is none unless the record calls it a National Cadet Special Activity', () => {
+  const credit = title => !!trainingRows(withTraining(PERSONNEL, [ncsaRow(title)])).find(r => r.title.startsWith(title)).credit;
+  assert.equal(credit('Advanced Technology Academy', '05 Jul 2015'), true, 'past: last held in 2016');
+  for(const lookAlike of ['Advanced Aviation Academy', 'Cadet Flight Academy', 'National Emergency Services Academy', 'NESA', 'Cyber Defense Training Academy', 'Space Command Familiarization Course', 'Engineering Academy', 'Cadet Competition Team', 'MKSABA', 'NFAP Student Graduate']){
+    assert.equal(credit(lookAlike), false, `${lookAlike}: not on the list`);
+    assert.equal(credit(`NCSA ${lookAlike}`), true, `NCSA ${lookAlike}: the record calls it one`);
+    assert.equal(credit(`National Cadet Special Activity ${lookAlike}`), true, `${lookAlike}: called one in words`);
+  }
+  assert.equal(NCSA_RULES.ncsaActivityForTitle('Advanced Aviation Academy'), null);
+  // A row of no list is told as not understood, so that nothing is lost without a word.
+  const told = runImport(withTraining(PERSONNEL, [ncsaRow('Advanced Aviation Academy')])).parsed.unreadRows;
+  assert.deepEqual(told, ['Advanced Aviation Academy   Anytown, ZZ 05 Jul 2024'.replace(/\s{3}/, ' ')]);
+});
+
+test('on the ribbon: the same activity in two years is two credits, twice in one year is one, an activity not on the list is none', () => {
+  const activities = rows => runImport(withTraining(PERSONNEL, rows)).parsed.activities;
+  const credits = rows => new Set(activities(rows).map(a => `${a.activity}:${a.year}`)).size;
+  assert.equal(credits([]), 6, 'the member search print');
+  assert.equal(credits([ncsaRow('StellarXplorers', '05 Jul 2024')]), 7, 'a new activity');
+  assert.equal(credits([ncsaRow('StellarXplorers', '05 Jul 2023'), ncsaRow('StellarXplorers', '05 Jul 2024')]), 8, 'the same activity in two years');
+  assert.equal(activities([ncsaRow('StellarXplorers', '05 Jul 2023'), ncsaRow('StellarXplorers Staff', '09 Jul 2023')]).length, 8, 'both rows of one year are read');
+  assert.equal(credits([ncsaRow('StellarXplorers', '05 Jul 2023'), ncsaRow('StellarXplorers Staff', '09 Jul 2023')]), 7, 'twice in one year: one credit');
+  assert.equal(credits([ncsaRow('Advanced Aviation Academy', '05 Jul 2024')]), 6, 'a look-alike is no credit');
+  const ribbon = rows => runImport(withTraining(PERSONNEL, rows)).ribbon('cadet_special_activity_ribbon').value;
+  assert.equal(ribbon([ncsaRow('StellarXplorers', '05 Jul 2023'), ncsaRow('StellarXplorers', '05 Jul 2024')]), 'silver_star_1_bronze_star_2', 'eight credits: a silver star and two bronze');
+});
+
+test('the patches the report brings are found by the same table', () => {
+  const { context } = loadPageScripts();
+  const detect = vm.runInContext('window.CAPUBDetectNcsaPatches', context);
+  const cases = [
+    ['AF Civil Engineering Academy', 'civil_engineering_academy_patch'], ['Cadet Officer School', 'cos_patch'], ['Civic Leadership Academy', 'cla_patch'],
+    ['National Blue Beret', 'nbb_patch'], ['NFA – NY Wing Powered Flight Academy', 'nfa_patch'], ['MER Honor Guard Academy', 'honor_guard_academy_patch'],
+    ['AF Specialized Undergraduate Pilot Training – TX', 'undergrad_pilot_training_patch']
+  ];
+  for(const [title, id] of cases) assert.deepEqual([...detect(ncsaRow(title))], [id], title);
+  assert.equal([...detect(ncsaRow('AF Advanced Pararescue & Survival Orientation Course'))].length, 1);
+  assert.deepEqual([...detect(ncsaRow('Advanced Technology Academy'))], [], 'on the list and no patch of its own');
+  assert.deepEqual([...detect(ncsaRow('Advanced Aviation Academy'))], []);
 });

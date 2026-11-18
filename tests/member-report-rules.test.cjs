@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {evaluateNationalStaffEligibility,hasFullCalendarYear,parseDate}=require('../member-report-rules.js');
+const {evaluateNationalStaffEligibility,hasFullCalendarYear,parseDate,ncsaActivityForTitle,ncsaActivitiesIn}=require('../member-report-rules.js');
 
 test('current National Staff appointment authorizes the badge',()=>{
   const result=evaluateNationalStaffEligibility('National Staff Appointments Appointment Date Assigned Staff Member, Commander\'s Action Group 01 Apr 2025 Current Committees');
@@ -74,4 +74,13 @@ test('a Deputy Commander row is not read as a commander duty',()=>{
   assert.equal(context.hasCurrentCommanderDutyPosition(deputy),false);
   const parsed=context.parseCapMemberReport('SMITH, JANE MALE SENIOR MEMBER Capt '+deputy);
   assert.ok(!parsed.badges.includes('squadron_commander_badge'));
+});
+
+test('an activity of the list is found by its words, whole words only, the longest name first',()=>{
+  assert.equal(ncsaActivityForTitle('NFA - TX Wing Flight Academy (Glider) Student').activity,'NATIONAL FLIGHT ACADEMY');
+  assert.equal(ncsaActivityForTitle('Engineering Technologies Academy (Robotics) Camp').name,'Engineering Technologies Academy (Robotics)');
+  assert.equal(ncsaActivityForTitle('Cosmos Camp'),null,'COS is a word of its own');
+  assert.equal(ncsaActivityForTitle('Cadet Cosmetology Course'),null);
+  assert.equal(ncsaActivityForTitle(''),null);
+  assert.deepEqual(ncsaActivitiesIn('Awards. COS 2023. Civic Leadership Academy. COS again. Nothing else.').map(e=>e.activity).sort(),['CLA','COS']);
 });
