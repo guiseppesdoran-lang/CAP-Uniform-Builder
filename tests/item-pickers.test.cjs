@@ -249,11 +249,6 @@ test('miniature medals: a blank drape and a blank body for every medal the membe
   for(const uniform of ['mess_dress', 'semi_formal']){
     assert.equal(medalsOf({ uniform, ribbons: 12 }), 12);
     const pics = await picturesOf('miniMount', ['mounting', 'holding']);
-    if(uniform === 'semi_formal'){
-      // The blazer's lapel (CAPR 39-1 11.2.8: nothing of the rack lies under it) arranges the rows by the same rule whichever way the medals are mounted: the two hang alike, so the choice is not offered.
-      assert.deepEqual(pics, { mounting: false, holding: false }, 'the lapel gives both mountings the same rows');
-      continue;
-    }
     assert.equal(typeof pics.mounting, 'string', uniform);
     assert.equal(viewBox(pics.mounting), viewBox(pics.holding), `${uniform}: one frame`);
     for(const style of ['mounting', 'holding']){

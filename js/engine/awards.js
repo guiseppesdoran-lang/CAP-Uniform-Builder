@@ -354,96 +354,36 @@
     return rackRows(list, 7, countsBottomFirst);
   }
 
-  // The rows of a miniature rack, top row first. A row of four or fewer lies edge to edge (no overlap); a longer row, or one wider than the slot, overlaps
-  // equally, each medal over its neighbour toward the wearer's left, never above half a drape's width (11.2.8). `step` is the distance from one medal to the next.
-  function miniStep(count, medalW, slotW){
-    if(count > 4 || count * medalW > slotW) return Math.max(medalW * 0.5, Math.min(medalW, (slotW - medalW) / Math.max(1, count - 1)));
-    return medalW;
-  }
-  // `opts.blocked(item, x, y)` (true when a medal of the rack placed with its drape's top left corner at x, y lies under a part of the garment that must stay clear, the
-  // lapel; 11.2.8: "the medal nearest the lapel will be fully exposed") makes the arrangement the one 11.2.7 gives the full-size rack: from the bottom up each row holds as many
-  // medals as stay clear of it, never more than the row below, a shortened row centred over the row below when it is the top row and that is clear, else aligned with the
-  // outboard edge of the bottom row (`opts.outboardSign`, +1 when the wearer's left edge is to the viewer's right). The bottom row keeps its place: where the lapel reaches it
-  // the result is the regular rows, `lapelDeclined`. The medals of a row, left to right from the lapel, are numbered `z` from the top so the one nearest the lapel lies over the rest.
   function layoutMiniMedals(items, opts){
     const style = opts.style || 'mounting';
+    const rows = miniMedalRows(items, style, opts.perRow);
     const medalW = opts.medalW;            // width of one medal (ribbon drape width)
     const totalH = opts.medalH;            // drape + body
     const drapeH = opts.drapeH;
     const slotW = opts.slotW;              // available width (lapel to arm seam)
-    const rowY = (fromBottom, bottomY) => {
-      // y of the top of the drapes of the row `fromBottom` rows above the bottom one
-      let y = bottomY;
-      for(let k = 0; k <= fromBottom; k++){
-        const top = y - totalH;
-        if(k === fromBottom) return top;
-        y = opts.rowPitch != null ? top - opts.rowPitch + totalH : top + drapeH * 0.5;
+    const out = [];
+    const n = rows.length;
+    let y = opts.bottomY;                  // bottom of the bottom row
+    for(let r = n - 1; r >= 0; r--){
+      const row = rows[r];
+      const count = row.length;
+      // Fully exposed when they fit; otherwise overlap equally, at most 50%.
+      let step = medalW;
+      if(count > 4 || count * medalW > slotW){
+        step = Math.max(medalW * 0.5, Math.min(medalW, (slotW - medalW) / Math.max(1, count - 1)));
       }
-      return y;
-    };
-    const place = rows => {
-      const out = [];
-      const n = rows.length;
-      for(let r = n - 1; r >= 0; r--){
-        const row = rows[r];
-        const count = row.length;
-        const step = miniStep(count, medalW, slotW);
-        const rowW = medalW + step * (count - 1);
-        const left = rows.lefts && rows.lefts[n - 1 - r] != null ? rows.lefts[n - 1 - r] : opts.centerX - rowW / 2;
-        const top = rowY(n - 1 - r, opts.bottomY);
-        // Draw order: the medal nearest the lapel (viewer's left on the wearer's left breast) is fully
-        // exposed, so later medals in the row go under it: z decreases toward the viewer's right.
-        row.forEach((item, i) => out.push({ item, x: left + i * step, y: top, row: r, z: count - i }));
-      }
-      return out;
-    };
-    const standardRows = miniMedalRows(items, style, opts.perRow);
-    const standard = place(standardRows);
-    const shift = opts.yShift || 0;
-    const clear = p => !opts.blocked || !opts.blocked(p.item, p.x, p.y + shift);
-    if(!opts.blocked || standard.every(clear)) return { placements: standard, rows: standardRows, lapelBlocked: 0 };
-    // The bottom row is the last items; the rows above take the ones before, as rackRows lays them.
-    const cap = style === 'holding' ? Math.max(1, Math.min(7, opts.perRow || 7)) : Math.max(1, Math.min(4, opts.perRow || 4));
-    const list = items.slice(0, style === 'holding' ? 28 : 24);
-    const sign = opts.outboardSign || 1;
-    const counts = [], lefts = [];
-    let left = list.length, rowCap = cap, belowCenter = null, edge = null, blocked = 0;
-    for(let k = 0; left > 0 && k < 40; k++){
-      const y = rowY(k, opts.bottomY);
-      let fit = 0, fitLeft = null;
-      for(let c = Math.min(rowCap, left); c >= 1 && !fit; c--){
-        const step = miniStep(c, medalW, slotW), rowW = medalW + step * (c - 1);
-        const cands = [];
-        if(k === 0) cands.push(opts.centerX - rowW / 2);
-        else{
-          const centred = belowCenter - rowW / 2, aligned = sign > 0 ? edge - rowW : edge;
-          cands.push(...(c === cap ? [centred] : c === left ? [centred, aligned] : [aligned]));
-        }
-        for(const x0 of cands){
-          // the items this row would hold: the c just before those already laid from the bottom
-          const row = list.slice(left - c, left);
-          if(row.every((item, i) => !opts.blocked(item, x0 + i * step, y + shift))){ fit = c; fitLeft = x0; break; }
-        }
-      }
-      if(!fit){
-        blocked++;
-        fit = 1;
-        const rowW = medalW;
-        fitLeft = k === 0 ? opts.centerX - rowW / 2 : (sign > 0 ? edge - rowW : edge);
-      }
-      if(k === 0 && fit < Math.min(cap, left)) return { placements: standard, rows: standardRows, lapelBlocked: standard.filter(p => !clear(p)).length, lapelDeclined: true };
-      const step = miniStep(fit, medalW, slotW), rowW = medalW + step * (fit - 1);
-      if(k === 0) edge = sign > 0 ? fitLeft + rowW : fitLeft;
-      counts.push(fit); lefts.push(fitLeft);
-      belowCenter = fitLeft + rowW / 2;
-      rowCap = Math.min(rowCap, fit);
-      left -= fit;
+      const rowW = medalW + step * (count - 1);
+      const left = opts.centerX - rowW / 2;
+      const top = y - totalH;
+      // Draw order: the medal nearest the lapel (viewer's left on the wearer's left breast) is fully
+      // exposed, so later medals in the row go under it: z decreases toward the viewer's right.
+      row.forEach((item, i) => out.push({ item, x: left + i * step, y: top, row: r, z: count - i }));
+      // The next row up covers about half of this row's ribbon drape, or, with `rowPitch` (the rows' spacing, top to top), lies
+      // that far above this row.
+      y = opts.rowPitch != null ? top - opts.rowPitch + totalH : top + drapeH * 0.5;
     }
-    const rows = rackRowsFrom(list, counts);
-    rows.lefts = lefts;
-    return { placements: place(rows), rows, lapelBlocked: blocked };
+    return { placements: out, rows };
   }
-  function rackRowsFrom(list, countsBottomFirst){ return rackRows(list, 4, countsBottomFirst); }
 
 
   // ---- Device legibility (Doran: "it's still making the devices blend in") -------------------------------------

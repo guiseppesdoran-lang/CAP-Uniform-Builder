@@ -488,51 +488,45 @@
     }
     // The rows lie one medal body and a band of ribbon apart (MINI_ROW_BAND, MINI_DEVICE_BAND): the upper row's pendants hang over the ribbons of the row below, as on
     // the worn jacket (Doran's photo, thread L1837: row to row about 0.65 in against the ribbons' 11/16 in width; 11.2.8, 11.3).
-    const pitchOf = rs => Math.max(MINI_ROW_MIN, Math.max(...[...hang.values()]) + (rs.slice(1).some(row => row.some(m => (m.devices || []).length)) ? MINI_DEVICE_BAND : MINI_ROW_BAND));
-    const layout = extra => awards.layoutMiniMedals(medals, Object.assign({
+    const rows = awards.miniMedalRows(medals, o.style || 'mounting', o.perRow);
+    const lowerDevices = rows.slice(1).some(row => row.some(m => (m.devices || []).length));
+    const rowPitch = Math.max(MINI_ROW_MIN, Math.max(...[...hang.values()]) + (lowerDevices ? MINI_DEVICE_BAND : MINI_ROW_BAND));
+    const out = awards.layoutMiniMedals(medals, {
       rowPitch,
       style: o.style, perRow: o.perRow, medalW: MINI_DRAPE.w, medalH: totalH, drapeH: MINI_DRAPE.h,
       slotW: slot.w, centerX: slot.centerX, bottomY: 0
-    }, extra));
-    let rowPitch = pitchOf(awards.miniMedalRows(medals, o.style || 'mounting', o.perRow));
-    let out = layout();
+    });
     // The lowest row's medal bodies end exactly on the line the slot names (1/2 in above the service
     // badge or crest, CAPR 39-1 4.2.2.4 with ICL 25-02; the men's copy is printed as 4.1.2.4 and corrected to 4.2.2.4), or the group is centred on the
     // slot's point (the mess dress, 4.1.1.1.2.2): measured from the lowest drawn body, not the
     // tallest body of the whole set, so a taller medal in an upper row cannot leave a gap.
-    const shiftOf = res => {
-      const low = res.rows.length - 1;
-      const bottom = Math.max(...res.placements.filter(p => p.row === low).map(p => p.y + MINI_DRAPE.h + (hang.get(p.item) || 0)));
-      const top = Math.min(...res.placements.map(p => p.y));
-      return slot.centerY != null ? slot.centerY - (top + bottom) / 2 : slot.bottomY - bottom;
-    };
-    let shift = shiftOf(out);
-    // Nothing of the rack lies under the part of the garment that would cover it (the blazer's lapel; 11.2.8: "the medal nearest the lapel will be fully
-    // exposed"): when `avoid` polygons are given, the rows are arranged as the full-size rack's are (awards.layoutMiniMedals): the rows the lapel reaches hold fewer
-    // medals and lie against the outboard edge, `avoidDir` (+1 when that is toward larger x), the lowest row keeps its line and its place. A box is a drape and its medal body,
-    // grown by `avoidGap`. `report` (an object the caller passes) gets `blocked` (a medal still touches an `avoid` polygon: no arrangement the paragraph allows clears it),
-    // `blockedCount`, and `boxes` (each medal's drape and body box, x0/x1/y0/y1, as drawn), so the caller can try a narrower rack and measure how far the rack lies from the rest.
-    const gap = o.avoidGap != null ? o.avoidGap : 0.03;
-    const reachOf = m => reach.get(m) || { left: 0, right: MINI_DRAPE.w };
-    const boxAt = (m, x, y) => ({ x0: x + reachOf(m).left, x1: x + reachOf(m).right, y0: y, y1: y + MINI_DRAPE.h + (hang.get(m) || 0) });
-    const boxOf = p => boxAt(p.item, p.x, p.y);
-    let lapelBlocked = 0;
-    if(o.avoid && o.avoid.length && slot.centerY == null){
-      const blocked = (m, x, y) => { const b = boxAt(m, x, y); return o.avoid.some(poly => rectHitsPolygon({ x: b.x0 - gap, y: b.y0, w: b.x1 - b.x0 + 2 * gap, h: b.y1 - b.y0 }, poly)); };
-      for(let pass = 0; pass < 4; pass++){
-        out = layout({ blocked, yShift: shift, outboardSign: o.avoidDir < 0 ? -1 : 1 });
-        const next = pitchOf(out.rows);
-        if(Math.abs(next - rowPitch) < 1e-9) break;
-        rowPitch = next;
-      }
-      shift = shiftOf(out);
-      lapelBlocked = out.placements.filter(p => blocked(p.item, p.x, p.y + shift)).length;
-    }
     const lowRow = out.rows.length - 1;
     const drawnBottom = Math.max(...out.placements.filter(p => p.row === lowRow).map(p => p.y + MINI_DRAPE.h + (hang.get(p.item) || 0)));
     const drawnTop = Math.min(...out.placements.map(p => p.y));
+    const shift = slot.centerY != null ? slot.centerY - (drawnTop + drawnBottom) / 2 : slot.bottomY - drawnBottom;
     for(const p of out.placements) p.y += shift;
-    if(o.report){ o.report.blocked = lapelBlocked > 0; o.report.blockedCount = lapelBlocked; o.report.declined = !!out.lapelDeclined; o.report.boxes = out.placements.map(boxOf); }
+    // The rack never lies under a part of the garment that would cover it (the blazer's lapel, 11.2.8: the medal
+    // nearest the lapel is fully exposed): when `avoid` polygons are given, the whole rack slides toward
+    // `avoidDir` (+1 toward larger x) in 0.02 in steps until no drape or body touches one, at most `maxShift`
+    // (rows keep their alignment, the lowest row keeps its line).
+    // `report` (an object the caller passes) gets `blocked` (a drape or body still touches an `avoid` polygon after
+    // the slide), `slide`, and `boxes` (each medal's drape and body box, x0/x1/y0/y1, as drawn), so the caller can
+    // try a narrower rack and measure how far the rack lies from the rest of the garment.
+    let slide = 0;
+    const gap = o.avoidGap != null ? o.avoidGap : 0.03;
+    const boxOf = p => { const r = reach.get(p.item) || { left: 0, right: MINI_DRAPE.w }; return { x0: p.x + r.left, x1: p.x + r.right, y0: p.y, y1: p.y + MINI_DRAPE.h + (hang.get(p.item) || 0) }; };
+    if(o.report) o.report.blocked = false;
+    if(o.avoid && o.avoid.length){
+      const dir = o.avoidDir < 0 ? -1 : 1, maxShift = o.maxShift != null ? o.maxShift : 2.5;
+      const boxes = out.placements.map(boxOf);
+      const hits = d => boxes.some(b => o.avoid.some(poly => rectHitsPolygon({ x: b.x0 - gap + d, y: b.y0, w: b.x1 - b.x0 + 2 * gap, h: b.y1 - b.y0 }, poly)));
+      while(slide < maxShift && hits(dir * slide)) slide += 0.02;
+      if(o.report) o.report.blocked = hits(dir * slide);
+      else if(hits(dir * slide)) ctx.note('The miniature medals reach the lapel: there is no room to move them clear of it');
+      slide *= dir;
+      for(const p of out.placements) p.x += slide;
+    }
+    if(o.report){ o.report.slide = slide; o.report.boxes = out.placements.map(boxOf); }
     const sizes = await deviceSizes(ctx, medals.flatMap(m => m.devices || []));
     for(const d of Object.keys(sizes)) sizes[d] = { w: sizes[d].w * MINI_DEVICE_SCALE, h: sizes[d].h * MINI_DEVICE_SCALE };
     // Where each medal's drape and body lie, so the devices of a lower row go in the part of the drape the

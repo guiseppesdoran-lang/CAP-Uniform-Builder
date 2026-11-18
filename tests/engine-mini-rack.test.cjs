@@ -1,9 +1,6 @@
 'use strict';
-// The miniature medal rack (CAPR 39-1 11.2.8): (owner, 2026-11-18) nothing of it lies under the lapel, "the medal nearest the lapel will be fully
-// exposed"; four or fewer in a row lie edge to edge, more than four overlap each by the same amount, never above half, each over the one toward the
-// wearer's left, so the medal nearest the lapel is whole and on top; the bodies of one row hang level. The rack is arranged the way 11.2.7 arranges the
-// full-size rack to keep the lapel clear (js/engine/awards.js layoutMiniMedals): the rows the lapel reaches hold fewer medals and lie against the
-// outboard edge of the bottom row. Where no such arrangement keeps the rack under the shoulder line (counts listed in STUCK) the lapel lies over it, and says so.
+// The miniature medal rack (CAPR 39-1 11.2.8): four or fewer in a row lie edge to edge, more than four overlap each by the same amount, never above half, each over
+// the one toward the wearer's left, so the medal nearest the lapel is whole and on top; the bodies of one row hang level; no device lies under a neighbouring medal.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -13,7 +10,6 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const core = require('../js/engine/core.js');
 const C = require('../js/engine/compose.js');
-const A = require('../js/engine/awards.js');
 const P = require('../js/engine/profiles.js');
 require('../js/engine/profiles-field.js');
 require('../js/engine/profiles-dress.js');
@@ -28,35 +24,8 @@ const medals = n => HARNESS.ribbonsFrom(POOL, 'senior').filter(r => manifestText
   .map(r => ({ key: r.key.replace(/^ribbon:/, 'mini:'), title: r.title, ribbonAsset: r.asset, medal: `medal-${r.asset.replace(/^ribbon-/, '')}-miniature`, devices: r.devices, centered: r.centered }));
 const compose = (uniform, gender, n, style) => P.composeUniform(HARNESS.makeBuild({ uniform, gender, membership: 'senior', rank: 'Col', medals: medals(n), opt: { rackColumns: 4, rackArrangement: 'lapel', miniStyle: style } }), store);
 
-// The wearer's left lapel: the blazers' drawn lapel path (the sheet's `lapel-left`), the mess dress's shawl collar landmark, in inches.
-const blazerLapel = sex => {
-  const svg = fs.readFileSync(path.join(root, 'images', 'garments', `garment-corporate-service-dress-blazer-${sex}.svg`), 'utf8');
-  const f = /__art"[^>]*transform="translate\(([-\d.]+) ([-\d.]+)\) scale\(([-\d.]+)\)"/.exec(svg), d = new RegExp(`${sex}__lapel-left" d="([^"]+)"`).exec(svg);
-  return [...d[1].matchAll(/(-?[\d.]+),(-?[\d.]+)/g)].map(m => ({ x: (Number(f[1]) + Number(m[1]) * Number(f[3])) / 100, y: (Number(f[2]) + Number(m[2]) * Number(f[3])) / 100 }));
-};
-const messShawl = sex => JSON.parse(fs.readFileSync(path.join(root, 'images', 'garments', `garment-mess-dress-${sex}.spec.json`), 'utf8')).landmarks.shawl_left.map(q => ({ x: q[0] / 100, y: q[1] / 100 }));
-const CUTS = [['mess_dress', 'male', messShawl('male')], ['mess_dress', 'female', messShawl('female')], ['semi_formal', 'male', blazerLapel('male')], ['semi_formal', 'female', blazerLapel('female')]];
-// The counts no arrangement of rows keeps clear of the lapel and under the shoulder line (the fewer-column racks that would clear it lie 3 in or more above the line).
-const STUCK = { 'semi_formal male': [10, 11, 12], 'semi_formal female': [12] };
-const isRack = l => ['mini-drape', 'mini-medal'].includes(l.role) || (l.role === 'device' && /^mini:/.test(l.key));
+const CUTS = [['mess_dress', 'male'], ['mess_dress', 'female'], ['semi_formal', 'male'], ['semi_formal', 'female']];
 const D = C.MINI_DRAPE;
-
-test('for every count from 1 to 12, in both mounting styles, nothing of the miniature rack lies under the lapel on the Mess Dress and the Semi-Formal, men\'s and women\'s (11.2.8), except the counts listed as stuck, where the lapel lies over it and says so', async () => {
-  let stuck = 0;
-  for(const [uniform, sex, lapel] of CUTS) for(const style of ['mounting', 'holding']) for(let n = 1; n <= 12; n++){
-    const scene = await compose(uniform, sex, n, style);
-    assert.equal(scene.layers.filter(l => l.role === 'mini-drape').length, n, `${uniform} ${sex} ${style} ${n}: the medals are drawn`);
-    const hits = scene.layers.filter(l => isRack(l) && C.rectHitsPolygon(core.layerBounds(l), lapel));
-    const tag = `${uniform} ${sex} ${style} ${n}`;
-    if((STUCK[`${uniform} ${sex}`] || []).includes(n)){
-      stuck++;
-      assert.ok(hits.length > 0, `${tag}: listed as stuck, but nothing is under the lapel: take it off the list`);
-      assert.ok(scene.notes.some(t => /lapel lies over part of the miniature medals/.test(t)), `${tag}: the lapel over the rack is noted`);
-      assert.ok(!scene.notes.some(t => /past the sleeve limit or the shoulder line/.test(t)), `${tag}: and the rack is not forced past the shoulder line`);
-    }else assert.deepEqual(hits.map(l => l.key), [], `${tag}: no layer of the rack under the lapel`);
-  }
-  assert.equal(stuck, 8, 'the stuck counts: three on the men\'s blazer and one on the women\'s, in two styles');
-});
 
 test('a row of five or more overlaps equally, never above half a drape, each medal over the one toward the wearer\'s left; the medal nearest the lapel is whole and on top; four or fewer do not overlap; bodies of a row hang level', async () => {
   let longRows = 0;
@@ -89,24 +58,6 @@ test('a row of five or more overlaps equally, never above half a drape, each med
     }
   }
   assert.ok(longRows > 0, 'rows of more than four are exercised');
-});
-
-test('layoutMiniMedals keeps the bottom row, shortens the rows the lapel reaches and lies them against the bottom row\'s outboard edge, centring a top row over the row below when that is clear', () => {
-  const items = Array.from({ length: 10 }, (_, i) => ({ id: i }));
-  const geo = { style: 'mounting', medalW: 0.6875, medalH: 2, drapeH: 1.54, slotW: 3.4, centerX: 10, bottomY: 0, rowPitch: 1 };
-  const plain = A.layoutMiniMedals(items, geo);
-  assert.deepEqual(plain.rows.map(r => r.length), [2, 4, 4], 'regular rows, the short one on top');
-  // a wall to the viewer's left that moves inward higher up: it leaves the bottom row alone and reaches 0.5 in further in for every row above
-  const blocked = (item, x, y) => x < 8.5 + (-y - 2) * 0.5;
-  const arranged = A.layoutMiniMedals(items, Object.assign({ blocked, outboardSign: 1 }, geo));
-  const counts = arranged.rows.map(r => r.length).reverse();
-  assert.ok(counts[0] <= 4 && counts.every((c, i) => i === 0 || c <= counts[i - 1]), `no row holds more than the row below (${counts})`);
-  assert.deepEqual(counts, [4, 3, 2, 1], 'the rows above the bottom one shorten as the wall comes in');
-  assert.equal(counts.reduce((a, c) => a + c, 0), 10, 'every medal is placed');
-  assert.ok(arranged.placements.every(p => !blocked(p.item, p.x, p.y)), 'nothing lies against the wall');
-  assert.equal(arranged.lapelDeclined, undefined, 'the bottom row was clear and kept');
-  const bottomEdge = Math.max(...arranged.placements.filter(p => p.row === arranged.rows.length - 1).map(p => p.x + 0.6875));
-  for(const p of arranged.placements) assert.ok(p.x + 0.6875 <= bottomEdge + 1e-9, 'no row lies past the bottom row\'s outboard edge');
 });
 
 test('no device of a miniature drape lies under a neighbouring medal of its row or of a row above, on any cut, count or style', async () => {
