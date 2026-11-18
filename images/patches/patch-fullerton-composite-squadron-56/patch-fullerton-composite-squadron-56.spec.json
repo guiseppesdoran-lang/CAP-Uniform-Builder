@@ -1,0 +1,82 @@
+{
+ "asset_id": "patch-fullerton-composite-squadron-56",
+ "label": "Fullerton Composite Squadron 56",
+ "charter": "PCR-CA-295",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-fullerton-composite-squadron-56.png",
+ "width_in": 3,
+ "height_in": 2.981,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   298.1
+  ],
+  "center": [
+   150,
+   149.05
+  ],
+  "left_edge": [
+   0,
+   149.05
+  ],
+  "right_edge": [
+   300,
+   149.05
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "png (8-bit RGBA)",
+  "source_color_type": 6,
+  "source_px": [
+   485,
+   486
+  ],
+  "source_bytes": 114082,
+  "source_sha256": "c6cd927eaf43b169e649e232ab2cbabb0afc48d39758ae7c84d5f0ba105c6a25",
+  "trim_bbox_px": [
+   0,
+   1,
+   484,
+   482
+  ],
+  "trimmed": true,
+  "px": [
+   484,
+   481
+  ],
+  "bytes": 91887,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear (alpha 3 or less, white or black colour under it)",
+   "alpha": 0,
+   "flood": "4-neighbour flood from the picture's edge over pixels with alpha 3 or less",
+   "band": {
+    "depth_px": 4,
+    "px": 2618,
+    "outline_colours": [
+     "#ff7f00"
+    ],
+    "rule": "alpha from the pixel colour's place between white and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 233
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Fullerton Composite Squadron 56 (PCR-CA-295), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: png (8-bit RGBA), 485 x 486 px, 8-bit RGBA; the file came with its ground already clear but with a pale fringe: the edge pixels were blended with white (alpha rose over a few pixels while the colour was pale; 1764 of 2656 edge pixels lighter than both the surface and the outline on the OCP, 0 on navy). The 2618 px of that edge were given their alpha from where their colour lies between white and the outline's own solid colour (#ff7f00) and took that colour (233 of them are clear; 12 lighter than both on the OCP and 0 on navy afterwards); the picture was trimmed to the emblem's box (485 x 486 px to 484 x 481 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: PCR-CA-295 is the unit the owner named for this emblem, which reads FULLERTON COMP SQ 56; the builder's unit list names it FULLERTON COMPOSITE SQDN 56.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the pale edge made a clean outline, and the trim to the emblem's box."
+}

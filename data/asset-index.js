@@ -1324,6 +1324,7 @@
     "patch-engineering-academy": "patches/patch-engineering-academy/patch-engineering-academy.png",
     "patch-es-style-1": "patches/patch-es-style-1/patch-es-style-1.png",
     "patch-es-style-2": "patches/patch-es-style-2/patch-es-style-2.png",
+    "patch-fullerton-composite-squadron-56": "patches/patch-fullerton-composite-squadron-56/patch-fullerton-composite-squadron-56.png",
     "patch-georgia-wing": "patches/patch-georgia-wing/patch-georgia-wing.png",
     "patch-glr-il-189": "patches/patch-glr-il-189/patch-glr-il-189.png",
     "patch-glr-in-002": "patches/patch-glr-in-002/patch-glr-in-002.png",
@@ -1384,9 +1385,11 @@
     "patch-ranger-tab-ranger-3rd-class": "patches/patch-ranger-tab-ranger-3rd-class/patch-ranger-tab-ranger-3rd-class.png",
     "patch-ranger-tab-senior-medic": "patches/patch-ranger-tab-senior-medic/patch-ranger-tab-senior-medic.png",
     "patch-rhode-island-wing": "patches/patch-rhode-island-wing/patch-rhode-island-wing.png",
+    "patch-saddleback-composite-squadron-68": "patches/patch-saddleback-composite-squadron-68/patch-saddleback-composite-squadron-68.png",
     "patch-safety": "patches/patch-safety/patch-safety.png",
     "patch-sequoyah-cadet-squadron": "patches/patch-sequoyah-cadet-squadron/patch-sequoyah-cadet-squadron.svg",
     "patch-ser-ga-118-group": "patches/patch-ser-ga-118-group/patch-ser-ga-118-group.png",
+    "patch-south-coast-group-7": "patches/patch-south-coast-group-7/patch-south-coast-group-7.png",
     "patch-southwest-region": "patches/patch-southwest-region/patch-southwest-region.png",
     "patch-supt-familiarization": "patches/patch-supt-familiarization/patch-supt-familiarization.png",
     "patch-swr-tx-030-group": "patches/patch-swr-tx-030-group/patch-swr-tx-030-group.png",
@@ -1679,7 +1682,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "d05b0685a6", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "c845a18c8a", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "d05b0685a6"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "c845a18c8a"; }
 })(typeof self !== 'undefined' ? self : this);

@@ -1,0 +1,82 @@
+{
+ "asset_id": "patch-saddleback-composite-squadron-68",
+ "label": "Saddleback Composite Squadron 68",
+ "charter": "PCR-CA-384",
+ "kind": "unit",
+ "echelon": "squadron",
+ "file": "patch-saddleback-composite-squadron-68.png",
+ "width_in": 3,
+ "height_in": 3.426,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   342.6
+  ],
+  "center": [
+   150,
+   171.3
+  ],
+  "left_edge": [
+   0,
+   171.3
+  ],
+  "right_edge": [
+   300,
+   171.3
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "png (8-bit RGBA)",
+  "source_color_type": 6,
+  "source_px": [
+   180,
+   208
+  ],
+  "source_bytes": 63380,
+  "source_sha256": "5fb0e6152a3d04f1f80cb3cfe960fd1c28fc5e2911af62ba53ad4ead6cb7dea5",
+  "trim_bbox_px": [
+   3,
+   5,
+   179,
+   206
+  ],
+  "trimmed": true,
+  "px": [
+   176,
+   201
+  ],
+  "bytes": 53134,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear (alpha 3 or less, white or black colour under it)",
+   "alpha": 0,
+   "flood": "4-neighbour flood from the picture's edge over pixels with alpha 3 or less",
+   "band": {
+    "depth_px": 3,
+    "px": 602,
+    "outline_colours": [
+     "#ffc822"
+    ],
+    "rule": "alpha from the pixel colour's place between white and the outline's solid colour, colour taken from the outline"
+   },
+   "px_made_clear": 111
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of Saddleback Composite Squadron 68 (PCR-CA-384), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: png (8-bit RGBA), 180 x 208 px, 8-bit RGBA; the file came with its ground already clear but with a pale fringe: the edge pixels were blended with white (alpha rose over a few pixels while the colour was pale; 53 of 556 edge pixels lighter than both the surface and the outline on the OCP, 29 on navy). The 602 px of that edge were given their alpha from where their colour lies between white and the outline's own solid colour (#ffc822) and took that colour (111 of them are clear; 38 lighter than both on the OCP and 29 on navy afterwards); the picture was trimmed to the emblem's box (180 x 208 px to 176 x 201 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. The picture is very small (176 x 201 px after trimming) and ships at its own pixel size, not enlarged; a larger picture from the unit would print and show sharper. Charter: PCR-CA-384 is the unit the owner named for this emblem, which reads SADDLEBACK COMPOSITE SQ 68; the builder's unit list names it SADDLEBACK COMPOSITE SQDN 68.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only changes are the pale edge made a clean outline, and the trim to the emblem's box."
+}

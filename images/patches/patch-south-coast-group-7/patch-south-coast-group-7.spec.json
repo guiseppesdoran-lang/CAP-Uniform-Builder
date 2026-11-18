@@ -1,0 +1,74 @@
+{
+ "asset_id": "patch-south-coast-group-7",
+ "label": "South Coast Group 7",
+ "charter": "PCR-CA-006",
+ "kind": "unit",
+ "echelon": "group",
+ "file": "patch-south-coast-group-7.png",
+ "width_in": 3,
+ "height_in": 2.879,
+ "unit": "1 user unit = 0.01 in",
+ "size_source": "estimated",
+ "size_basis": "estimated typical embroidered patch width 3 in (group, squadron and activity patches 3 in); the official digital artwork carries no physical size; height follows the artwork's own aspect",
+ "citation": "CAPR 39-1 para 10.9 / Attachment 8 define the patch but give no dimensions",
+ "anchors": {
+  "top_center": [
+   150,
+   0
+  ],
+  "bottom_center": [
+   150,
+   287.9
+  ],
+  "center": [
+   150,
+   143.95
+  ],
+  "left_edge": [
+   0,
+   143.95
+  ],
+  "right_edge": [
+   300,
+   143.95
+  ]
+ },
+ "dimensions": {
+  "family": "patch",
+  "colour": "full"
+ },
+ "data_source": "official-digital-artwork-as-given",
+ "generator": "none: artwork as given",
+ "artwork": {
+  "format": "webp (lossy, with alpha) -> png via dwebp",
+  "source_color_type": 6,
+  "source_px": [
+   1023,
+   996
+  ],
+  "source_bytes": 87206,
+  "source_sha256": "f541e9650f0f42328c68588ee79c16e61431175d3985f4ee344a8e35b6a37d9e",
+  "trim_bbox_px": [
+   5,
+   12,
+   1018,
+   984
+  ],
+  "trimmed": true,
+  "px": [
+   1013,
+   972
+  ],
+  "bytes": 729322,
+  "chunks_kept": [],
+  "ground_removed": {
+   "colour": "none: the ground was already clear",
+   "alpha": 0,
+   "band": null,
+   "px_made_clear": 0
+  },
+  "ground": "transparent"
+ },
+ "provenance": "Unit emblem of South Coast Group 7 (PCR-CA-006), digital artwork sent by the owner, 2026-11-18, as the unit's official digital emblem. Official digital artwork shipped as given: webp (lossy, with alpha), 1023 x 996 px, 8-bit RGBA after decoding; the file came with its ground already clear and a hard edge with no semi-transparent pixel at all, so no pixel was changed; the picture was trimmed to the emblem's box (1023 x 996 px to 1013 x 972 px); every pixel inside the emblem's outline is untouched; no resampling, no redrawing, no tracing, no other colour change. Charter: PCR-CA-006 is the unit the owner named for this emblem, which reads SOUTH COAST GROUP SEVEN; the builder's unit list names it SOUTH COAST GROUP 7. A group headquarters, so its echelon is group.",
+ "notes": "Official digital artwork as given, not a redraw: no thread texture added, nothing re-drawn or re-coloured. The only change is the trim to the emblem's box."
+}
