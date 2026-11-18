@@ -587,9 +587,15 @@
       const lengths = {};
       for(const d of devs) lengths[d] = sizes[d].h;
       const placed = awards.layoutDevicesAlong(devs, lengths, exposedBottom - spanTop, { centered: m.centered, gap: 0.04 * MINI_DEVICE_SCALE });
+      // In a row whose medals overlap, the neighbour toward the lapel lies over the drape's left part: the column keeps the drape's centre unless that would put a
+      // device under the neighbour, and then lies in the part of the drape left in view.
+      let coverEnd = -Infinity;
+      for(const q of out.placements) if(q.row === p.row && q.z > p.z && q.x < p.x + MINI_DRAPE.w && q.x + MINI_DRAPE.w > p.x) coverEnd = Math.max(coverEnd, q.x + MINI_DRAPE.w);
+      const colW = Math.max(0, ...devs.map(d => sizes[d].w));
+      const colCx = Math.min(p.x + MINI_DRAPE.w - colW / 2, Math.max(p.x + MINI_DRAPE.w / 2, coverEnd + DEVICE_GAP / 2 + colW / 2));
       placed.forEach((d, i) => {
         const sz = sizes[d.id];
-        const cx = p.x + MINI_DRAPE.w / 2, cy = spanTop + d.y;
+        const cx = colCx, cy = spanTop + d.y;
         ctx.layers.push({ type: 'asset', id: d.id, x: cx - sz.w / 2, y: cy - sz.h / 2, w: sz.w, h: sz.h, rotate: 0, origin: { x: cx, y: cy }, z: zBase + 0.0007, role: 'device', key: `${m.key}:device:${i}` });
       });
     }

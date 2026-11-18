@@ -108,3 +108,19 @@ test('layoutMiniMedals keeps the bottom row, shortens the rows the lapel reaches
   const bottomEdge = Math.max(...arranged.placements.filter(p => p.row === arranged.rows.length - 1).map(p => p.x + 0.6875));
   for(const p of arranged.placements) assert.ok(p.x + 0.6875 <= bottomEdge + 1e-9, 'no row lies past the bottom row\'s outboard edge');
 });
+
+test('no device of a miniature drape lies under a neighbouring medal of its row or of a row above, on any cut, count or style', async () => {
+  const hit = (a, b) => a.x < b.x + b.w - 1e-6 && b.x < a.x + a.w - 1e-6 && a.y < b.y + b.h - 1e-6 && b.y < a.y + a.h - 1e-6;
+  let devices = 0;
+  for(const [uniform, sex] of CUTS) for(const style of ['mounting', 'holding']) for(let n = 1; n <= 12; n++){
+    const scene = await compose(uniform, sex, n, style);
+    const rack = scene.layers.filter(l => ['mini-drape', 'mini-medal'].includes(l.role));
+    for(const d of scene.layers.filter(l => l.role === 'device' && /^mini:/.test(l.key))){
+      devices++;
+      const own = d.key.split(':device')[0];
+      const over = rack.filter(l => l.key !== own && !l.key.startsWith(own + ':') && l.z > d.z && hit(d, l));
+      assert.deepEqual(over.map(l => l.key), [], `${uniform} ${sex} ${style} ${n}: ${d.key} is in view`);
+    }
+  }
+  assert.ok(devices > 50);
+});
