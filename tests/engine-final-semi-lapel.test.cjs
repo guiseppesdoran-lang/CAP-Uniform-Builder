@@ -52,11 +52,10 @@ function sleeveEdgeFromSheet(sex, y){
 const worn = l => ['mini-drape', 'mini-medal', 'mini', 'device', 'badge'].includes(l.role);
 
 // ICL 25-02 rewrote 4.2.2.4: the miniatures are "centered above the pocket" with the bottom row 1/2 in above the crest. The
-// rack is therefore centred on the pocket (the crest's x, the slot's centre) and never slid toward the arm to clear the lapel
-// (Doran, on the build that did: "the medals need to move left"); where the lapel edge crosses the rack's inner corner the
-// lapel lies over the medals (11.1.8: the collar is worn over awards), so the lapel foreground is drawn above every medal and
-// badge layer; the chaplain badge keeps its place 1/2 in above the top row (4.2.1.5, 4.2.2.5). D8: this replaces the test that
-// required every box to be clear of the lapel.
+// lowest row is therefore centred on the pocket (the crest's x, the slot's centre) and the rack is never slid toward the arm; to keep the lapel clear (11.2.8,
+// the owner, 2026-11-18) the rows it reaches hold fewer medals and lie against the lowest row's outboard edge (tests/engine-mini-rack.test.cjs). Where no such
+// arrangement keeps the rack under the shoulder line the lapel lies over the medals (11.1.8), so the lapel foreground is drawn above every medal and
+// badge layer; the chaplain badge keeps its place 1/2 in above the top row (4.2.1.5, 4.2.2.5).
 for(const sex of ['male', 'female']){
   test(`semi_formal ${sex}: with 1 to 12 miniatures and the chaplain badge the rack is centred on the pocket, the lapel lies over any medal or badge it meets, the rack stays 1 in inside the left sleeve's edge, for every grade (4.2.2.4 as rewritten by ICL 25-02, 4.2.1.5, 11.1.8, 11.2.8)`, async () => {
     const lapel = lapelFromSheet(sex);
@@ -122,7 +121,7 @@ test('semi_formal men: the rack keeps rows of four and the lowest row its line, 
   const fg = scene.layers.filter(l => l.key === 'layer:foreground' && l.clip);
   assert.equal(fg.length, 1, 'the lapel lies over the rack');
   assert.ok(fg[0].z > Math.max(...drapes.map(l => l.z)), 'the lapel foreground is above the medals');
-  assert.ok(scene.notes.some(n => /lapel lies over the inner corner of the miniature medals/.test(n)), 'the lapel over the medals is noted');
+  assert.ok(scene.notes.some(n => /lapel lies over part of the miniature medals/.test(n)), 'the lapel over the medals is noted');
 });
 
 // LIVE13 E68: on the rebuilt women's blazer (art edfbe78c, 4489f057) the drawn arm seam is about 5.4 to 5.5 in out at chest height and held the rack to two

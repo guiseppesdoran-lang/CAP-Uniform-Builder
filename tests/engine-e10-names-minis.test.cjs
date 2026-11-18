@@ -191,12 +191,11 @@ for(const sex of ['male', 'female']){
     const rows = new Map();
     drapes.forEach(l => { const k = l.y.toFixed(3); rows.set(k, [...(rows.get(k) || []), l]); });
     const ys = [...rows.keys()].map(Number).sort((a, b) => b - a);
-    // Both coats have room for rows of four beside the lapel, 1 in inside the left sleeve's edge (11.2.8; LIVE13 E68: on the rebuilt women's blazer the drawn
-    // arm seam, about 5.4 in out at chest height, is not a limit, Ethan's ruling DECISIONS LIVE13-MASTER-4/5). The rack is centred above the pocket
-    // (4.2.2.4 as rewritten by ICL 25-02) and is not narrowed to clear the lapel, which lies over its inner corner instead (11.1.8).
-    // The women's blazer traced from the product photo was narrow enough to force rows of three (D8; Doran: "the medals need to
-    // move left"); rebuilt from Figure 4.15 (art 2e084dbc, LIVE12-ART 4) its lapel ends above the medal slot and four fit, as the men's.
-    assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), [4, 4, 1], 'rows of four, then the remainder');
+    // The rack is centred above the pocket (4.2.2.4 as rewritten by ICL 25-02) and keeps the lapel clear (11.2.8; the owner, 2026-11-18): the rows the lapel reaches
+    // hold fewer medals, so the rows run from the lowest, never longer than the row below (the whole rack under the lapel is tests/engine-mini-rack.test.cjs).
+    const perRow = ys.map(y => rows.get(y.toFixed(3)).length);
+    assert.equal(perRow.reduce((a, c) => a + c, 0), medals.length, 'every medal is drawn');
+    assert.ok(perRow.every((c, i) => c <= 4 && (i === 0 || c <= perRow[i - 1])), `no row longer than the row below, none above four (${perRow})`);
     const sheet = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const lowest = rows.get(ys[0].toFixed(3));
     near((Math.min(...lowest.map(l => l.x)) + Math.max(...lowest.map(l => l.x + l.w))) / 2, core.anchor(sheet, 'crest_center').x, 0.02, 'the rack is centred above the pocket, not slid toward the arm (4.2.2.4, ICL 25-02)');
@@ -230,8 +229,9 @@ for(const sex of ['male', 'female']){
 
 test('semi_formal: with four or fewer medals none overlaps; with more than four they overlap by at most half', async () => {
   const four = await P.composeUniform(build('semi_formal', 'male', 'senior', 'Col', 'Doe', { medals: medalsOf(IDS.slice(0, 4)) }), store);
-  const xs = four.layers.filter(l => l.role === 'mini-drape').map(l => l.x).sort((a, b) => a - b);
-  for(let i = 1; i < xs.length; i++) assert.ok(xs[i] - xs[i - 1] >= 11 / 16 - 1e-6, 'fully exposed');
+  const byRow = new Map();
+  four.layers.filter(l => l.role === 'mini-drape').forEach(l => byRow.set(l.y.toFixed(3), [...(byRow.get(l.y.toFixed(3)) || []), l.x]));
+  for(const xs of byRow.values()){ xs.sort((a, b) => a - b); for(let i = 1; i < xs.length; i++) assert.ok(xs[i] - xs[i - 1] >= 11 / 16 - 1e-6, 'fully exposed'); }
 });
 
 // ---- aviator blazer shows the shirt too ---------------------------------------------------------

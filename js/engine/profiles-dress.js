@@ -3200,7 +3200,7 @@
     for(let cols = widest; cols >= 1; cols--){
       const snap = { layers: ctx.layers.length, notes: ctx.notes.length };
       const report = {};
-      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, report });
+      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, report, avoid: lapelPoly.length ? [lapelPoly] : null, avoidDir: 1 });
       if(!bx) break;
       let over = report.boxes.map(q => blazerOvershoot(ctx, q)).reduce(worseOver, { seam: 0, shoulder: 0 });
       let badgeAt = null;
@@ -3210,20 +3210,25 @@
         badgeAt = { x, y };
         over = worseOver(over, blazerOvershoot(ctx, { x0: x - cs.w / 2, x1: x + cs.w / 2, y0: y - cs.h, y1: y }));
       }
-      tries.push({ cols, over, badgeAt });
+      tries.push({ cols, over, badgeAt, lapel: report.blockedCount || 0 });
       ctx.layers.length = snap.layers; ctx.notes.length = snap.notes;
-      if(overScore(over) <= TOLERANCE) break;
+      if(overScore(over) <= TOLERANCE && !report.blocked) break;
     }
-    // The winner: the first try within the tolerance of the seam and the shoulder line, else the one that overshoots
-    // least (more columns on a tie).
-    const win = tries.find(t => overScore(t.over) <= TOLERANCE) || tries.slice().sort((p, q) => overScore(p.over) - overScore(q.over) || q.cols - p.cols)[0] || null;
+    // Nothing of the rack may lie under the lapel (11.2.8; the owner, 2026-11-18), and nothing of it past the sleeve limit or the shoulder line: among the tries inside both, the one
+    // that leaves the fewest medals under the lapel (more columns on a tie); where none is inside both, the one that strays least. A rack that cannot be kept clear of the lapel and
+    // under the shoulder line is not forced past the line: the lapel then lies over what it meets, and the note says so.
+    const inside = tries.filter(t => overScore(t.over) <= TOLERANCE);
+    const win = (inside.length ? inside.slice().sort((p, q) => p.lapel - q.lapel || q.cols - p.cols) : tries.slice().sort((p, q) => overScore(p.over) - overScore(q.over) || p.lapel - q.lapel || q.cols - p.cols))[0] || null;
     let cols = widest;
     if(tries.length){
       if(win){
         cols = win.cols;
-        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols });
+        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, avoid: lapelPoly.length ? [lapelPoly] : null, avoidDir: 1 });
         if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit 1 in inside the sleeve\'s edge and under the shoulder line on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the sleeve limit or the shoulder line (CAPR 39-1 11.2.8)');
-        if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: 1 in inside the sleeve's edge there is no room for more (CAPR 39-1 11.2.8)`);
+        if(cols < Math.min(widest, (b.medals || []).length)){
+          const forLapel = tries.some(t => t.cols > cols && overScore(t.over) <= TOLERANCE && t.lapel);
+          ctx.note(forLapel ? `The miniature medals are worn ${cols} to a row: more would lie under the lapel, and the medal nearest it is worn fully exposed (CAPR 39-1 11.2.8)` : `The miniature medals are worn ${cols} to a row: 1 in inside the sleeve's edge there is no room for more (CAPR 39-1 11.2.8)`);
+        }
       }
     }
     if(box && bottomY === ruleBottom) ctx.measure({ x: box.x + box.w / 2, y: crestTop }, { x: box.x + box.w / 2, y: crestTop - 0.5 }, null, { caption: 'crest to medals' });
@@ -3249,7 +3254,7 @@
       ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
       ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
     }
-    if(touching.some(l => RACK_ROLES.includes(l.role))) ctx.note('The lapel lies over the inner corner of the miniature medals: the rack is centered above the pocket (CAPR 39-1 4.2.2.4, ICL 25-02) and the collar is worn over awards (11.1.8)');
+    if(touching.some(l => RACK_ROLES.includes(l.role))) ctx.note('The lapel lies over part of the miniature medals: no arrangement of the rows keeps them clear of it (CAPR 39-1 11.2.8)');
     for(const l of touching.filter(l => l.role === 'badge')) ctx.note(`The lapel lies over part of the ${l.title || 'badge'}: it is worn under the collar there (CAPR 39-1 11.1.8)`);
   }
 
