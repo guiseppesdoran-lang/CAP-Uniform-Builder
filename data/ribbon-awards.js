@@ -309,8 +309,9 @@
         const devices = [], why = [];
         const honor = HONOR_CREDIT_RIBBONS.has(id) &&
           (sel.honorCredit || /honor_credit|earned_both_devices/.test(value) || /honor credit/i.test(label));
+        // The page sets the value when the Model Rocketry Badge is chosen and the Mitchell is earned (syncGoddardRocketryStar), so the value alone says it.
         const rocketry = id === 'goddard_achievement' &&
-          (/rocketry/i.test(text) || sel.rocketryCredit || /earned_(both_)?devices?$/.test(value));
+          (/rocketry/i.test(text) || /earned_(both_)?devices?$/.test(value));
         const cosAllowed = id === 'mitchell_award' || (sel.membership !== 'cadet' && COS_MOVES_TO.has(id));
         if(honor){ devices.push(D.starS); why.push('honor credit'); }
         if(rocketry){ devices.push(D.starS); why.push('Model Rocketry Badge'); }

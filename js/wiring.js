@@ -663,8 +663,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         checked: !!sel.checked,
         devices,
         awardValue: safeToken(sel.awardValue),
-        honorCredit: !!sel.honorCredit,
-        rocketryCredit: !!sel.rocketryCredit
+        honorCredit: !!sel.honorCredit
       };
       if(isMilitaryRibbonId(id)){
         // getMilitarySelectionService() still checks the service against the award's own list.
