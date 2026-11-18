@@ -9,7 +9,7 @@ The notice in `LICENSE` covers the source code and documentation written for thi
 `index.html`, `config.js`, `favicon.svg`, the scripts at the top level, and the files in `js/`,
 `styles/`, `scripts/`, `tests/`, `deploy/`, `google-apps-script/` and `docs/`. It reserves all rights
 in them. The code is published so it can be read; no license is granted, and copying, modifying,
-hosting, distributing, selling or building on it needs written permission from Guiseppe Doran.
+hosting, distributing, selling or building on it needs written permission from Ethan Hillard.
 Versions published before 10 November 2026 were offered under the MIT license, and that offer
 stands for those versions only.
 
