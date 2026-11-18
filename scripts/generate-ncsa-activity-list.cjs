@@ -52,6 +52,13 @@ const ALSO_NAMED = [
   [/^Engineering Technologies Academy/i, ['Engineering Technology Academy']]
 ];
 
+// Codes a record prints for an activity of the list, not yet ruled on, so empty: the importer counts a row given only by a code as it always did and tells
+// the member which codes it counted. When the owner says what a code is, add one line: [code, the activity's name as the list prints it], for example
+//   ['ABCD', 'Civic Leadership Academy'],
+// and rerun this script: the code becomes one of that activity's other names, and its rows are credits of the list.
+const CODE_NAMES = [
+];
+
 async function readList(pdfPath){
   const lib = path.join(ROOT, 'vendor', 'pdfjs');
   const ctx = { ReadableStream, WritableStream, TransformStream, structuredClone, console, setTimeout, clearTimeout, TextDecoder, TextEncoder, URL, Uint8Array, ArrayBuffer, Promise };
@@ -106,6 +113,7 @@ function build(list){
     const bare = /^(.*\S)\s+[–-]\s+[A-Z]{2}$/.exec(noParen);
     if(bare) add(bare[1]);
     for(const [when, names] of ALSO_NAMED) if(when.test(fixed)) names.forEach(add);
+    for(const [code, printed] of CODE_NAMES) if(printed === e.name) add(code);
     const family = FAMILIES.find(([, re]) => re.test(noParen));
     const activity = family ? family[0] : (bare ? bare[1] : noParen).toUpperCase();
     return { name: e.name, others, activity, current: e.years.includes(list.newest), years: e.years };

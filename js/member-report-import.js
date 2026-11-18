@@ -836,6 +836,10 @@ function getCadetTrainingSection(text){
 const importedNcsaListEntry = title => (typeof window !== 'undefined' && window.CAPUBMemberReportRules?.ncsaActivityForTitle?.(title)) || null;
 // A row the list does not have earns a credit only when the record itself calls it a National Cadet Special Activity.
 const IMPORTED_NCSA_NAMED = /\bNCSA\b|National\s+Cadet\s+Special\s+Activit/i;
+// Until it is ruled what the codes eServices prints stand for, a row given only by a code (one upper-case word of 3 to 8 letters, with an optional hyphen part:
+// "NFAP Student Graduate", "NESA-GSAR") keeps the credit it always had, one per code per year, and the member is told which codes were counted so. A code
+// that is ruled to be a listed activity is made one of its other names in scripts/generate-ncsa-activity-list.cjs (CODE_NAMES) and is a credit of the list.
+const IMPORTED_TRAINING_CODE = /^([A-Z]{3,8})(?:-[A-Za-z0-9]+)?(?=\s|$)/;
 
 // The Cadet Training table lists what a cadet has completed: its Type, Location and Date Completed (an older print: Activity and Date Completed).
 // A row of it is one National Cadet Special Activity credit, for that activity in that year, when it names an activity on the list above (or the
@@ -856,6 +860,8 @@ const IMPORTED_TRAINING_DESCRIPTORS = /\b(?:Cadet|Student|Staff|Cadre|Air Staff|
 function importedTrainingActivity(title){
   const entry = importedNcsaListEntry(title);
   if(entry) return entry.activity;
+  const code = IMPORTED_TRAINING_CODE.exec(title);
+  if(code && !IMPORTED_NCSA_NAMED.test(title)) return code[1];
   const ncsa = title.search(IMPORTED_NCSA_NAMED);
   // Keyed on the text from the NCSA word on, so table headings run into the first row do not split one activity into two credits.
   return title.slice(Math.max(0, ncsa)).replace(IMPORTED_TRAINING_DESCRIPTORS, ' ').replace(/\s+/g, ' ').trim().toUpperCase();
@@ -880,6 +886,7 @@ function memberReportCadetTrainingRows(text){
     if(none) rows.push({ title, year, date, credit:false, why:`${none[0]}: no credit` });
     else if(importedNcsaListEntry(title)) rows.push({ title, year, date, credit:true, activity:importedTrainingActivity(title), why:'an activity on the list of National Cadet Special Activities' });
     else if(IMPORTED_NCSA_NAMED.test(title)) rows.push({ title, year, date, credit:true, activity:importedTrainingActivity(title), why:'the record calls it a National Cadet Special Activity' });
+    else if(IMPORTED_TRAINING_CODE.test(title)) rows.push({ title, year, date, credit:true, byCode:true, activity:importedTrainingActivity(title), why:'a code the list does not give by that name, counted as before' });
     else rows.push({ title, year, date, credit:false, unlisted:true, why:'not on the list of National Cadet Special Activities: no credit' });
   }
   return rows;
@@ -2053,6 +2060,10 @@ function parseCapMemberReport(textRaw){
     });
   }
 
+  // The rows counted by a code the list does not give by that name: the member checks them.
+  const byCode = [...new Set(memberReportCadetTrainingRows(text).filter(row => row.byCode).map(row => row.activity))];
+  if(byCode.length) result.notes.push(`Counted as special activities by their code, which the national list does not give by that name: ${memberReportNameList(byCode)}. Check ${byCode.length === 1 ? 'it' : 'them'}.`);
+
   // Duty-position badge mapping. Look at both current and past duty positions.
   // Current commanders wear the current command pin. Past commanders only import as
   // graduated commanders if they served at least one year, and only Lt Col and below.
@@ -2485,6 +2496,7 @@ const MEMBER_REPORT_NOTES_IN_SIGHT = [
   /add it under Ribbons if it applies/,
   /^.+: taken from the .+ qualifications?, since the report names no /,
   /^The report names these aviation badges: /,
+  /^Counted as special activities by their code, /,
   /^The report shows a National Staff appointment, so the National Staff Badge may be worn\./,
   /^(?:Current commander duty found: the|Past commander duty of a year or more found: the) .+ command insignia pin/,
   /^Shoulder cords: (?:more than one supplement cord|the .+ cord from the report is chosen|the .+ cord is worn only at|the .+ cord \(.+\) is chosen)/,

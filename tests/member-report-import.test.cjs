@@ -1761,6 +1761,7 @@ const NOTE_KINDS = [
   [/^Garber and Gill Robb Wilson Awards: /, 'sight', 'Garber and Gill Robb Wilson Awards: the report does not show Squadron Officer School, Air Command and Staff College or Air War College, so no star is added; add it under Ribbons if it applies.'],
   [/^.+: taken from the .+ qualifications?, since the report names no /, 'sight', 'Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.'],
   [/^The report names these aviation badges: /, 'sight', 'The report names these aviation badges: Solo Badge and Observer Badge. One CAP aviation badge is worn at a time (CAPR 39-1, 4.1.5.2.2.4.1); the others are listed under Authorized by member report in the badge list.'],
+  [/^Counted as special activities by their code, /, 'sight', 'Counted as special activities by their code, which the national list does not give by that name: NFAP and MKSABA. Check them.'],
   [/^The report shows a National Staff appointment/, 'sight', 'The report shows a National Staff appointment, so the National Staff Badge may be worn. It is not chosen for you: choose it in the badge list (CAPR 39-1, 10.2.3).'],
   [/^(?:Current commander duty found|Past commander duty of a year or more found): the .+ command insignia pin/, 'sight', 'Current commander duty found: the Group Commander command insignia pin is worn over the name tag (CAPR 39-1, 10.2.5).'],
   [/^Shoulder cords: (?:more than one|the .+ cord from the report is chosen|the .+ cord is worn only at|the .+ cord \(.+\) is chosen)/, 'sight', 'Shoulder cords: the Cadet Advisory Council cord from the report is chosen, so the Region Cadet Leadership School cord is marked and not chosen.'],
@@ -1987,7 +1988,7 @@ test('the other names of the list\'s activities are the same credit: the place l
 test('a past activity of the list is a credit, and a look-alike that is not on the list is none unless the record calls it a National Cadet Special Activity', () => {
   const credit = title => !!trainingRows(withTraining(PERSONNEL, [ncsaRow(title)])).find(r => r.title.startsWith(title)).credit;
   assert.equal(credit('Advanced Technology Academy', '05 Jul 2015'), true, 'past: last held in 2016');
-  for(const lookAlike of ['Advanced Aviation Academy', 'Cadet Flight Academy', 'National Emergency Services Academy', 'NESA', 'Cyber Defense Training Academy', 'Space Command Familiarization Course', 'Engineering Academy', 'Cadet Competition Team', 'MKSABA', 'NFAP Student Graduate']){
+  for(const lookAlike of ['Advanced Aviation Academy', 'Cadet Flight Academy', 'National Emergency Services Academy', 'Cyber Defense Training Academy', 'Space Command Familiarization Course', 'Engineering Academy', 'Cadet Competition Team']){
     assert.equal(credit(lookAlike), false, `${lookAlike}: not on the list`);
     assert.equal(credit(`NCSA ${lookAlike}`), true, `NCSA ${lookAlike}: the record calls it one`);
     assert.equal(credit(`National Cadet Special Activity ${lookAlike}`), true, `${lookAlike}: called one in words`);
@@ -2057,4 +2058,32 @@ test('a National Staff Badge the member picked by hand is still on after an impo
   }
   const alone = runImport(staffReport(STAFF_CURRENT), "State.membership = 'senior';");
   assert.ok(!alone.badges.includes('national_staff_badge'), 'and not picked before: not on');
+});
+
+// ---- A row given only by a code keeps the credit it had until it is ruled what the code is ---------------------------------------------------------
+const CODE_NOTE = /^Counted as special activities by their code, which the national list does not give by that name: /;
+test('rows given only by a code are counted as before, one per code per year, and the member is told which codes; a spelled-out look-alike is none', () => {
+  const rows = ['ZQXA Student Graduate   Anytown, ZZ   05 Jul 2023', 'ZQXA Staff   Anytown, ZZ   09 Jul 2023', 'ZQXB-GSAR   Anytown, ZZ   05 Jul 2024'];
+  const r = runImport(withTraining(PERSONNEL, rows));
+  assert.deepEqual(r.parsed.activities.filter(a => /^ZQX/.test(a.title)).map(a => [a.activity, a.year]), [['ZQXA', '2023'], ['ZQXA', '2023'], ['ZQXB', '2024']]);
+  assert.equal(new Set(r.parsed.activities.map(a => `${a.activity}:${a.year}`)).size, 8, 'six, and two more: the code twice in a year is one');
+  assert.deepEqual(r.parsed.notes.filter(n => CODE_NOTE.test(n)), ['Counted as special activities by their code, which the national list does not give by that name: ZQXA and ZQXB. Check them.']);
+  assert.ok(!r.parsed.unreadRows.some(w => /ZQX/.test(w)), 'not under not understood');
+  // A spelled-out name that is not on the list is still none, and is still told.
+  const spelled = runImport(withTraining(PERSONNEL, ['Zqxa Leadership Academy   Anytown, ZZ   05 Jul 2023']));
+  assert.equal(new Set(spelled.parsed.activities.map(a => `${a.activity}:${a.year}`)).size, 6);
+  assert.ok(spelled.parsed.unreadRows.some(w => /Zqxa/.test(w)));
+  assert.ok(!spelled.parsed.notes.some(n => CODE_NOTE.test(n)));
+  // The report's own rows: no code row, no note; the schools stay out.
+  assert.ok(!runImport(PERSONNEL).parsed.notes.some(n => CODE_NOTE.test(n)));
+  assert.ok(!runImport(withTraining(PERSONNEL, ['RCLS   GLR   04 Jan 2026'])).parsed.notes.some(n => CODE_NOTE.test(n)));
+});
+
+test('the owner\'s print shape: NESA, MKSABA and NFAP rows keep their credit, six in all, with the note naming them', () => {
+  const text = PERSONNEL.replace('Civil Air Patrol National Cyber Academy – VA   Fort Pickett', 'NESA   Fort Pickett').replace('Model Aircraft & Remote Control Flight Academy   Lewis', 'MKSABA   Lewis').replace('NFA – TX Wing Flight Academy (Glider) Student', 'NFAP Student');
+  assert.notEqual(text, PERSONNEL);
+  const r = runImport(text);
+  assert.equal(new Set(r.parsed.activities.map(a => `${a.activity}:${a.year}`)).size, 6);
+  assert.equal(r.ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
+  assert.deepEqual(r.parsed.notes.filter(n => CODE_NOTE.test(n)), ['Counted as special activities by their code, which the national list does not give by that name: NESA, MKSABA and NFAP. Check them.']);
 });

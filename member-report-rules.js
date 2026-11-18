@@ -55,7 +55,7 @@
   const NCSA_ACTIVITY_LIST=[
     {name:'Advanced Technology Academy',others:['Advanced Technologies Academy'],activity:'ADVANCED TECHNOLOGIES ACADEMY',current:false,years:[2016,2015,2014]},
     {name:'AF Advanced Pararescue & Survival Orientation Course',others:['PJOC','Pararescue Orientation Course'],activity:'PJOC',current:false,years:[2023,2021,2019,2017]},
-    {name:'AF Civil Engineering Academy',others:['Air Force Civil Engineering Academy','AFCEA'],activity:'AFCEA',current:true,years:[2025,2024,2023,2022,2021,2020,2019,2017,2016,2015,2014]},
+    {name:'AF Civil Engineering Academy',others:['Air Force Civil Engineering Academy','Civil Engineering Academy','AFCEA'],activity:'AFCEA',current:true,years:[2025,2024,2023,2022,2021,2020,2019,2017,2016,2015,2014]},
     {name:'AF Pararescue & Survival Orientation Course',others:['PJOC','Pararescue Orientation Course'],activity:'PJOC',current:true,years:[2025,2023,2022,2019,2018,2017]},
     {name:'AF Specialized Undergraduate Pilot Training – MS',others:['AF Specialized Undergraduate Pilot Training','SUPT','Specialized Undergraduate Pilot Training','Undergraduate Pilot Training'],activity:'SUPT FAMILIARIZATION COURSE',current:true,years:[2025,2024,2023,2022,2021,2019,2018]},
     {name:'AF Specialized Undergraduate Pilot Training – TX',others:['AF Specialized Undergraduate Pilot Training','SUPT','Specialized Undergraduate Pilot Training','Undergraduate Pilot Training'],activity:'SUPT FAMILIARIZATION COURSE',current:true,years:[2025,2024,2023,2022,2021,2019,2018]},
