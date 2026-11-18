@@ -1510,7 +1510,8 @@ function memberReportAwardRowSays(text, pattern, says){
 const MEMBER_REPORT_ROW_MEANING_UNSURE = new Set(['cap_counterdrug_ribbon', 'homeland_security_ribbon', 'air_search_and_rescue_ribbon']);
 const memberReportRepeatedRowNote = (name, rows) => `The report lists the ${name} ${rows} times and does not say what a repeated row stands for: check its device under Ribbons.`;
 const MEMBER_REPORT_COUNTED_AWARDS = [
-  { id:'silver_medal_of_valor', name:'Silver Medal of Valor', re:/\bSilver\s+Medal\s+of\s+Valor\b/i },
+  { id:'silver_medal_of_valor', name:'Silver Medal of Valor', re:/\bSilver\s+Medal\s+of\s+Valor\b/i, once:true,
+    note:'Silver Medal of Valor: shown as the plain ribbon, with no device, however many times the report lists it.' },
   { id:'bronze_medal_of_valor', name:'Bronze Medal of Valor', re:/\bBronze\s+Medal\s+of\s+Valor\b/i },
   { id:'distinguished_service_award', name:'Distinguished Service Award', re:/\bDistinguished\s+Service\s+Award\b/i },
   { id:'national_commander_unit_citation_award', name:"National Commander's Unit Citation Award", re:/\bNational\s+Commander[’'‘`´]?s?[’']?\s+Unit\s+Citation\b/i },
@@ -1959,7 +1960,7 @@ function parseCapMemberReport(textRaw){
       value:award.once ? 'earned' : importedCountedAwardValue(count, aircrew),
       reason:`${count} ${award.name} record(s)${aircrew ? ' (aircrew)' : ''}`
     });
-    if(award.note) result.notes.push(award.note);
+    if(award.note && (rows > 1 || award.id !== 'silver_medal_of_valor')) result.notes.push(award.note);
     if(rows > 1 && MEMBER_REPORT_ROW_MEANING_UNSURE.has(award.id)) result.notes.push(memberReportRepeatedRowNote(award.name, rows));
   }
 

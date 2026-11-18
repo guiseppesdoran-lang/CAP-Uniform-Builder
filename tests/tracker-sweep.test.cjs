@@ -132,43 +132,46 @@ test('the IACE ribbon takes a bronze clasp for each later award, a silver clasp 
   assert.deepEqual(devices(7), ['device-clasp-silver', 'device-clasp-bronze']);
 });
 
-// 39-3 6b: "Subsequent awards of the same decoration or ribbon are denoted by the CAP bronze triangular clasp, worn on the ribbon of the original award." The Silver Medal of Valor
-// is a decoration like the Bronze: its second award is one bronze clasp, its third two, on the one ribbon. It was drawn as a ribbon for each award.
-test('the Silver Medal of Valor repeats by the bronze clasp on one ribbon, as the Bronze Medal of Valor does (39-3 6b)', () => {
-  assert.equal(RA.FAMILIES.silver_medal_of_valor.devices, 'clasps');
-  assert.deepEqual(RA.FAMILIES.silver_medal_of_valor, RA.FAMILIES.bronze_medal_of_valor);
+// 39-3 6b: "Subsequent awards of the same decoration or ribbon are denoted by the CAP bronze triangular clasp, worn on the ribbon of the original award." The Bronze Medal of Valor
+// repeats that way: its second award is one bronze clasp, its third two, on the one ribbon. The Silver Medal of Valor wears no device at all, whatever count it carries (the owner,
+// 2026-11-18: "the SMOV cannot have any devices on top of it"); 6b names no exception, so this follows his word, not the paragraph.
+test('the Bronze Medal of Valor repeats by the bronze clasp on one ribbon (39-3 6b); the Silver Medal of Valor is always the plain ribbon', () => {
+  assert.equal(RA.FAMILIES.bronze_medal_of_valor.devices, 'clasps');
+  assert.ok(!RA.FAMILIES.bronze_medal_of_valor.once);
+  assert.equal(RA.FAMILIES.silver_medal_of_valor.once, true);
   assert.ok(!Object.values(RA.FAMILIES).some(f => f.devices === 'separate'), 'no award is drawn as a separate ribbon for each award');
   assert.equal(ev("typeof getRibbonDuplicateCountForSelection"), 'undefined', 'the page has no separate-ribbon count');
   ev("State.membership = 'cadet'");
   const parts = id => Array.from(ev(`getRibbonAwardOptions('${id}').filter(o => o.value).map(o => ({ value: o.value, label: o.label }))`))
     .map(o => RA.resolve(id, { awardValue: o.value, awardLabel: o.label }).map(p => p.devices));
-  const silver = parts('silver_medal_of_valor');
-  assert.deepEqual(silver, [[[]], [['device-clasp-bronze']], [['device-clasp-bronze', 'device-clasp-bronze']]], 'basic, 2nd, 3rd: one ribbon each');
-  assert.deepEqual(silver, parts('bronze_medal_of_valor'), 'the same devices as the Bronze Medal of Valor');
-  // Five bronze clasps are the silver clasp (6b); past four devices on a ribbon a second one is worn, which counts one award.
-  const awards = n => RA.resolve('silver_medal_of_valor', { awardValue: 'capub_total_' + n, awardLabel: n + 'th Award' }).map(p => p.devices);
+  assert.deepEqual(parts('bronze_medal_of_valor'), [[[]], [['device-clasp-bronze']], [['device-clasp-bronze', 'device-clasp-bronze']]], 'basic, 2nd, 3rd: one ribbon each');
+  assert.deepEqual(parts('silver_medal_of_valor'), [[[]]], 'one choice, the plain ribbon');
+  for(const [value, label] of [['mcchord_38210', '2nd Award'], ['capub_total_6', '6th Award'], ['silver_valor_3', '3 Silver Medals of Valor'], ['', '4th Award']]){
+    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: value, awardLabel: label }).map(p => p.devices), [[]], `${value || label}: no device`);
+  }
+  // Five bronze clasps are the silver clasp (6b); past four devices on a ribbon a second one is worn, which counts one award: the Bronze keeps all of that.
+  const awards = n => RA.resolve('bronze_medal_of_valor', { awardValue: 'capub_total_' + n, awardLabel: n + 'th Award' }).map(p => p.devices);
   assert.deepEqual(awards(5), [Array(4).fill('device-clasp-bronze')]);
   assert.deepEqual(awards(6), [['device-clasp-silver']]);
   assert.deepEqual(awards(22), [Array(4).fill('device-clasp-silver'), []]);
 });
 
-// A setup saved when the repeats were separate ribbons holds 'silver_valor_2' or 'silver_valor_3' (labelled "2 Silver Medals of Valor"). It keeps its number of awards: one bronze
-// clasp for the second, two for the third, on one ribbon.
-test('a saved Silver Medal of Valor with the old separate-ribbon value is the same number of awards as clasps on one ribbon (39-3 6b)', () => {
-  const clasps = n => Array(n).fill('device-clasp-bronze');
-  for(const [value, label, awards] of [['silver_valor_1', '1 Silver Medal of Valor', 1], ['silver_valor_2', '2 Silver Medals of Valor', 2], ['silver_valor_3', '3 Silver Medals of Valor', 3]]){
-    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: value, awardLabel: label }).map(p => p.devices), [clasps(awards - 1)], value);
-    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: value }).map(p => p.devices), [clasps(awards - 1)], `${value} with no label`);
-    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: '', awardLabel: label }).map(p => p.devices), [clasps(awards - 1)], `${label} with no value`);
-    // The setup is brought to the picker's own choice for that many awards, and the rack holds the one ribbon.
+// A setup saved when the repeats were separate ribbons holds 'silver_valor_2' or 'silver_valor_3' (labelled "2 Silver Medals of Valor"), one saved with a count holds a McChord value
+// ('mcchord_38210'): each is the plain Silver Medal of Valor now, the one choice of the picker, and the rack holds the one ribbon.
+test('a saved Silver Medal of Valor with a count or the old separate-ribbon value becomes the plain ribbon', () => {
+  for(const [value, label] of [['silver_valor_1', '1 Silver Medal of Valor'], ['silver_valor_2', '2 Silver Medals of Valor'], ['silver_valor_3', '3 Silver Medals of Valor'], ['mcchord_38220', '3rd Award'], ['earned', 'Earned']]){
     ev("State.membership = 'cadet'; State.uniform = 'blues_a'; State.ribbonSelections = {}; normalizeRibbonSelections();");
-    ev(`State.ribbonSelections.silver_medal_of_valor = { checked:true, devices:{}, awardValue:${JSON.stringify(value)}, awardLabel:${JSON.stringify(label)} }; rebuildRibbonsFromGallery();`);
+    ev(`State.ribbonSelections.silver_medal_of_valor = { checked:true, devices:{ '1_Bronze_Star_Device': 2 }, awardValue:${JSON.stringify(value)}, awardLabel:${JSON.stringify(label)} }; rebuildRibbonsFromGallery();`);
     const chosen = ev("State.ribbonSelections.silver_medal_of_valor");
-    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: chosen.awardValue, awardLabel: chosen.awardLabel }).map(p => p.devices), [clasps(awards - 1)], `${value}: the picker's choice`);
-    assert.match(chosen.awardLabel, awards === 1 ? /^Basic Award/ : new RegExp(`^${['', '', '2nd', '3rd'][awards]} Award`), `${value}: the choice is an option of the picker`);
-    assert.ok(Array.from(ev("getRibbonAwardOptions('silver_medal_of_valor')")).some(o => o.value === chosen.awardValue), `${value}: a value the select offers`);
-    assert.equal(Array.from(ev("State.ribbons.filter(r => r.id === 'silver_medal_of_valor')")).length, 1, `${value}: one ribbon on the rack, not one for each award`);
+    assert.equal(chosen.awardValue, 'award_1', `${value}: the plain ribbon`);
+    assert.match(chosen.awardLabel, /^Basic Award/);
+    assert.deepEqual(Object.keys(chosen.devices), [], `${value}: no device kept`);
+    assert.deepEqual(RA.resolve('silver_medal_of_valor', { awardValue: chosen.awardValue, awardLabel: chosen.awardLabel }).map(p => p.devices), [[]]);
+    assert.equal(Array.from(ev("State.ribbons.filter(r => r.id === 'silver_medal_of_valor')")).length, 1, `${value}: one ribbon on the rack`);
   }
+  // Picking a count by the old API lands on the plain ribbon too.
+  ev("State.ribbonSelections = {}; normalizeRibbonSelections(); setRibbonSelectionFromDropdown('silver_medal_of_valor', 'mcchord_38210', { deferRender: true });");
+  assert.equal(ev("State.ribbonSelections.silver_medal_of_valor.awardValue"), 'award_1');
 });
 
 // 39-3 6b allows four devices on a ribbon "unless otherwise stated"; the Lifesaving ribbon says otherwise (9h: "A maximum of three devices (one silver star and two clasps)", and above three a

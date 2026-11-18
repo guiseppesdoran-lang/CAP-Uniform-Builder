@@ -510,13 +510,8 @@ function getRibbonSelectionOption(id, value){
     if(found) return found;
   }
 
-  // A setup saved when repeated Silver Medals of Valor were separate ribbons ("silver_valor_2", "silver_valor_3") takes the choice with
-  // that many awards: the later awards are the bronze clasp on the one ribbon now (CAPR 39-3, 6b).
-  const legacyValor = id === 'silver_medal_of_valor' && /^silver_valor_(\d+)$/.exec(String(value || ''));
-  if(legacyValor){
-    const found = awardOption(Number(legacyValor[1]));
-    if(found) return found;
-  }
+  // The Silver Medal of Valor has one choice, the plain ribbon: a count from a saved setup, a report or the old separate-ribbon values ("silver_valor_2") is that ribbon.
+  if(id === 'silver_medal_of_valor' && value) return usable[0] || options[0];
 
   if(id === 'cadet_advisory_council_ribbon'){
     if(value === 'group') return labelMatch(/^Basic Award$/i) || usable[0];
@@ -666,7 +661,7 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=fal
   const sel = State.ribbonSelections[id] || { checked:false, devices:{} };
   const option = getRibbonSelectionOption(id, value);
 
-  sel.awardValue = value || '';
+  sel.awardValue = id === 'silver_medal_of_valor' && value ? option.value : (value || '');
   sel.awardLabel = option.label || '';
   sel.checked = !!value;
   sel.devices = value ? { ...(option.devices || {}) } : {};
@@ -789,14 +784,11 @@ function normalizeRibbonSelections(){
           }
         }
       }
-      // A setup saved when repeated Silver Medals of Valor were separate ribbons keeps its number of awards: it takes the choice for
-      // that many (one bronze clasp for the second, two for the third, CAPR 39-3, 6b).
-      if(id === 'silver_medal_of_valor' && /^silver_valor_\d+$/.test(String(State.ribbonSelections[id].awardValue || ''))){
-        const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);
-        if(opt?.value){
-          State.ribbonSelections[id].awardValue = opt.value;
-          State.ribbonSelections[id].awardLabel = opt.label || '';
-        }
+      // The Silver Medal of Valor is worn plain: a setup saved with a count (or with the old separate-ribbon value) becomes the plain ribbon.
+      if(id === 'silver_medal_of_valor' && State.ribbonSelections[id].checked && State.ribbonSelections[id].awardValue !== 'award_1'){
+        State.ribbonSelections[id].awardValue = 'award_1';
+        State.ribbonSelections[id].awardLabel = 'Basic Award';
+        State.ribbonSelections[id].devices = {};
       }
       if(State.ribbonSelections[id].awardLabel === undefined){
         const opt = getRibbonSelectionOption(id, State.ribbonSelections[id].awardValue);

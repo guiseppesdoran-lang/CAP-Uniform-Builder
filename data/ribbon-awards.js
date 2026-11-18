@@ -31,8 +31,9 @@
     cap_achievment_award: { devices: 'clasps' },
     national_commander_unit_citation_award: { devices: 'clasps' },
     unit_citation_award: { devices: 'clasps' },
-    // 6b: a repeated Medal of Valor, Silver or Bronze, is the bronze clasp on the ribbon of the first award, not a ribbon for each award.
-    silver_medal_of_valor: { devices: 'clasps' },
+    // 6b: a repeated Bronze Medal of Valor is the bronze clasp on the ribbon of the first award, not a ribbon for each award. The Silver Medal of Valor is worn plain, whatever the
+    // count a saved setup or a report carries (the owner, 2026-11-18: "the SMOV cannot have any devices on top of it"); 6b itself names no exception.
+    silver_medal_of_valor: { devices: 'clasps', once: true },
     bronze_medal_of_valor: { devices: 'clasps' },
     encampment_ribbon: { devices: 'clasps', per: { encampment: 1 } },
     cap_counterdrug_ribbon: { devices: 'clasps', per: { sortie: 10 } },

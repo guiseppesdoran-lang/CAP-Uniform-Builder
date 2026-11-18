@@ -482,9 +482,9 @@ test('mess dress miniatures: 11/16 in drapes, one medal per award, centred on th
   }
 });
 
-// 39-3 6b: the Silver Medal of Valor repeats by the bronze clasp as the Bronze does. On the mess dress that is one miniature medal with the clasps on its drape (11.4.2), not
-// a medal for each award.
-test('a repeated Silver Medal of Valor is one miniature medal carrying the bronze clasps on the mess dress, as a repeated Bronze Medal of Valor (39-3 6b, 39-1 11.4.2)', async () => {
+// 39-3 6b: the Bronze Medal of Valor repeats by the bronze clasp. On the mess dress that is one miniature medal with the clasps on its drape (11.4.2), not a medal for each award.
+// The Silver Medal of Valor wears no device whatever count it carries (the owner, 2026-11-18): one medal, a bare drape.
+test('a repeated Bronze Medal of Valor is one miniature medal carrying the bronze clasps on the mess dress; the Silver Medal of Valor is one medal with no device (39-3 6b, 39-1 11.4.2)', async () => {
   const third = id => ribbons([[id, id === 'silver_medal_of_valor' ? 'mcchord_38220' : 'mcchord_10700', '3rd Award']]);
   const seen = {};
   for(const id of ['silver_medal_of_valor', 'bronze_medal_of_valor']){
@@ -498,11 +498,9 @@ test('a repeated Silver Medal of Valor is one miniature medal carrying the bronz
       assert.equal(layersBy(scene, l => l.role === 'mini-drape').length, 1, `${id} ${gender}: one drape`);
       assert.equal(layersBy(scene, l => l.role === 'mini-medal').length, 1, `${id} ${gender}: one medal body`);
       const devs = layersBy(scene, l => l.role === 'device' && l.key.startsWith(`mini:${id}:device:`));
-      assert.deepEqual(devs.map(d => d.id), ['device-clasp-bronze', 'device-clasp-bronze'], `${id} ${gender}: two bronze clasps for the third award`);
-      (seen[gender] = seen[gender] || []).push(devs.map(d => [d.w, d.h, d.rotate]));
+      assert.deepEqual(devs.map(d => d.id), id === 'silver_medal_of_valor' ? [] : ['device-clasp-bronze', 'device-clasp-bronze'], `${id} ${gender}: two bronze clasps for the third award, none on the Silver`);
     }
   }
-  assert.deepEqual(seen.male[0], seen.male[1], 'the Silver\'s clasps are drawn as the Bronze\'s');
 });
 
 test('more than four in a row overlap equally toward the wearer\'s left, never past half, the medal at the lapel fully exposed (11.2.8)', async () => {
