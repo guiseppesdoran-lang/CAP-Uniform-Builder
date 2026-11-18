@@ -54,7 +54,7 @@ test('miniature medals: the devices on a miniature ribbon are half the size of t
     const twin = regular.layers.find(l => l.role === 'device' && l.id === d.id);
     assert.ok(twin, `${d.id} is also on the ribbon rack`);
     assert.ok(Math.abs(d.w - twin.w * 0.5) < 0.002 && Math.abs(d.h - twin.h * 0.5) < 0.002, `${d.id}: ${d.w.toFixed(3)} x ${d.h.toFixed(3)} is half of ${twin.w.toFixed(3)} x ${twin.h.toFixed(3)}`);
-    assert.equal(d.rotate, 90, 'turned vertical on the drape (11.4.2)');
+    assert.equal(d.rotate, 0, 'upright on the drape (owner, 2026-11-18)');
   }
 });
 

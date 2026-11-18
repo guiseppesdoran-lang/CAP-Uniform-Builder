@@ -1,8 +1,8 @@
 'use strict';
-// Devices on a miniature medal's ribbon (CAPR 39-1 11.4.2): the ribbon-bar rule of CAPR 39-3 6b "except the devices will be rotated clockwise to be
-// worn vertically rather than horizontally. ... Precedence will be to the top of the miniature medal ribbon (rather than to the right), and devices
-// worn centered horizontally will be centered vertically." So on a drape a single device is centred, several lie in a column turned 90 degrees with
-// the highest precedence on top, a centred device keeps the middle with its clasps beside it, and the ribbon bar keeps its horizontal row.
+// Devices on a miniature medal's ribbon (CAPR 39-1 11.4.2): the ribbon-bar rule of CAPR 39-3 6b with precedence "to the top of the miniature medal ribbon (rather
+// than to the right), and devices worn centered horizontally will be centered vertically." The paragraph also says the devices are rotated clockwise; the owner
+// (2026-11-18) says a device on a miniature medal is upright, as on a ribbon, and his word stands. So on a drape a single device is centred, several lie
+// one under another, upright, the highest precedence on top, a centred device keeps the middle with its clasps beside it, and the ribbon bar keeps its horizontal row.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -32,30 +32,30 @@ const centre = l => ({ x: l.x + l.w / 2, y: l.y + l.h / 2 });
 const D2 = C.MINI_DRAPE;
 
 for(const sex of ['male', 'female']){
-  test(`${sex}: one device on a miniature drape is centred on the ribbon and turned a quarter (11.4.2)`, async () => {
+  test(`${sex}: one device on a miniature drape is centred on the ribbon and upright (11.4.2)`, async () => {
     const scene = await compose([medal([D.clasp_bronze])], sex);
     const drape = drapeOf(scene), devs = devicesOf(scene);
     assert.equal(devs.length, 1);
     const c = centre(devs[0]);
-    assert.equal(devs[0].rotate, 90, 'rotated clockwise');
+    assert.equal(devs[0].rotate, 0, 'upright');
     assert.ok(Math.abs(c.x - (drape.x + D2.w / 2)) < 1e-6, 'centred across the drape');
     assert.ok(Math.abs(c.y - (drape.y + (D2.h - D2.point) / 2)) < 1e-6, `centred along the straight part of the drape (${(c.y - drape.y).toFixed(3)} in from its top)`);
   });
 
-  test(`${sex}: three oak leaf clusters on a miniature drape stack vertically, turned, touching, centred (11.4.2)`, async () => {
+  test(`${sex}: three oak leaf clusters on a miniature drape stack vertically, upright, touching, centred (11.4.2)`, async () => {
     const scene = await compose([medal([OLC, OLC, OLC])], sex);
     const drape = drapeOf(scene), devs = devicesOf(scene);
     assert.equal(devs.length, 3);
-    assert.ok(devs.every(d => d.rotate === 90), 'every cluster turned 90 degrees');
+    assert.ok(devs.every(d => d.rotate === 0), 'every cluster upright');
     const cs = devs.map(centre);
     assert.ok(cs.every(c => Math.abs(c.x - cs[0].x) < 1e-6), 'one column, not a row across the drape');
     assert.ok(Math.abs(cs[0].x - (drape.x + D2.w / 2)) < 1e-6, 'the column is centred on the drape');
     for(let i = 1; i < 3; i++){
       const pitch = cs[i].y - cs[i - 1].y;
-      const len = devs[i].w;                        // the length the cluster runs down the drape (it is turned)
+      const len = devs[i].h;                        // the length the cluster runs down the drape (it stands upright)
       assert.ok(pitch >= len - 1e-6 && pitch <= len + 0.02 * 0.5 + 1e-6, `clusters touch, a gap of at most the miniature's (${pitch.toFixed(3)} in pitch, ${len.toFixed(3)} in long)`);
     }
-    const top = cs[0].y - devs[0].w / 2, bottom = cs[2].y + devs[2].w / 2;
+    const top = cs[0].y - devs[0].h / 2, bottom = cs[2].y + devs[2].h / 2;
     assert.ok(Math.abs((top + bottom) / 2 - (drape.y + (D2.h - D2.point) / 2)) < 1e-6, 'the stack is centred along the drape');
     // the same size as a half-size ribbon-bar device (11.3, ICL 25-02 4.2.2.4)
     const bar = await P.composeUniform(HARNESS.makeBuild({ uniform: 'blues_a', gender: sex, membership: 'senior', rank: 'Col', ribbons: [{ key: 'ribbon:x', title: 'x', asset: BASE.asset, devices: [OLC] }], opt: { rackColumns: 3, rackArrangement: 'lapel' } }), store);
@@ -72,15 +72,15 @@ test('mixed devices on a miniature drape run top to bottom in precedence order (
   assert.ok(ys.every((y, i) => i === 0 || y > ys[i - 1]), 'top to bottom');
 });
 
-test('a centred device keeps the middle of the miniature ribbon, its first clasp below it and the second above, halfway to each end (39-3 21c, 21d turned by 11.4.2)', async () => {
+test('a centred device keeps the middle of the miniature ribbon, its first clasp below it and the second above, halfway to each end (39-3 21c, 21d run down the drape by 11.4.2)', async () => {
   const scene = await compose([medal([D.propeller_bronze, D.clasp_bronze, D.clasp_bronze], true)]);
   const drape = drapeOf(scene), devs = devicesOf(scene);
   assert.equal(devs.length, 3);
   const [prop, first, second] = devs.map(centre);
   const mid = drape.y + (D2.h - D2.point) / 2, end = drape.y + D2.h - D2.point;
   assert.ok(Math.abs(prop.y - mid) < 1e-6 && Math.abs(prop.x - (drape.x + D2.w / 2)) < 1e-6, 'the propeller is centred both ways');
-  assert.ok(first.y > prop.y && second.y < prop.y, 'the first clasp lies toward the bottom (the wearer\'s left turned clockwise), the second opposite');
-  const half = devs[0].w / 2;
+  assert.ok(first.y > prop.y && second.y < prop.y, 'the first clasp lies toward the bottom (the wearer\'s left, run down the drape), the second opposite');
+  const half = devs[0].h / 2;
   assert.ok(Math.abs(first.y - (mid + half + end) / 2) < 1e-6, 'halfway between the propeller and the lower end');
   assert.ok(Math.abs(second.y - (drape.y + (mid - half)) / 2) < 1e-6, 'halfway between the propeller and the upper end');
 });
@@ -105,4 +105,32 @@ test('the ribbon bar keeps its horizontal row, devices unturned and touching (39
   assert.ok(cs.every(c => Math.abs(c.y - cs[0].y) < 1e-9), 'one row');
   assert.ok(cs.every((c, i) => i === 0 || c.x > cs[i - 1].x), 'left to right');
   assert.ok(Math.abs(cs[1].x - cs[0].x - (devs[0].w + 0.01)) < 1e-6, 'a 0.01 in gap between three');
+});
+
+// Owner, 2026-11-18: no device on a miniature medal is turned; the devices of one drape do not overlap and lie inside its width.
+const keysOf = scene => [...new Set(scene.layers.filter(l => l.role === 'mini-drape').map(l => l.key))];
+test('no device layer on any miniature medal carries a rotation, nor overlaps another of its drape, and each lies inside the drape width', async () => {
+  const sets = [[D.clasp_bronze], [OLC, OLC, OLC], [D.v_silver, D.star_silver, D.star_bronze, D.clasp_silver, D.clasp_bronze], [D.propeller_bronze, D.clasp_bronze, D.clasp_bronze]];
+  for(const sex of ['male', 'female']) for(const devices of sets){
+    const scene = await compose([medal(devices, devices[0] === D.propeller_bronze)], sex);
+    const drape = drapeOf(scene), devs = devicesOf(scene);
+    assert.equal(devs.length, devices.length);
+    for(const d of devs){
+      assert.equal(d.rotate || 0, 0, `${sex} ${d.id}: upright`);
+      assert.ok(d.x >= drape.x - 1e-9 && d.x + d.w <= drape.x + D2.w + 1e-9, `${sex} ${d.id}: inside the drape's width`);
+    }
+    for(let i = 0; i < devs.length; i++) for(let j = i + 1; j < devs.length; j++){
+      const a = devs[i], b = devs[j];
+      assert.ok(a.y + a.h <= b.y + 1e-9 || b.y + b.h <= a.y + 1e-9, `${sex}: ${a.id} and ${b.id} do not overlap`);
+    }
+  }
+  assert.ok(keysOf(await compose([medal([D.clasp_bronze])])).length === 1);
+});
+
+test('no device on a miniature drape is wider than the drape at the miniature size', async () => {
+  for(const id of [D.v_silver, D.star_gold, D.propeller_silver, D.clasp_silver, OLC, 'device-years-55']){
+    const scene = await compose([medal([id])]);
+    const d = devicesOf(scene)[0];
+    assert.ok(d.w < D2.w, `${id}: ${d.w.toFixed(3)} in against the drape's ${D2.w} in`);
+  }
 });
