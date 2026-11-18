@@ -1481,19 +1481,33 @@ function renderUnitPatchStatus(){
   }
 }
 
-// The units the Unit patch list offers for a search, the ones whose patch artwork exists first, each with its line of text.
+// Charter order: region, then wing, then the number as a number (GLR-IL-001, GLR-IL-189, GLR-IN-002); a code that ends in letters sorts after the numbered ones of its wing.
+function compareUnitCharters(a, b){
+  const pa = String(a).split('-'), pb = String(b).split('-');
+  for(let i = 0; i < 2; i++){ const c = (pa[i] || '').localeCompare(pb[i] || ''); if(c) return c; }
+  const na = /^\d+$/.test(pa[2] || ''), nb = /^\d+$/.test(pb[2] || '');
+  if(na && nb) return Number(pa[2]) - Number(pb[2]) || String(a).localeCompare(String(b));
+  if(na !== nb) return na ? -1 : 1;
+  return String(pa[2] || '').localeCompare(String(pb[2] || ''));
+}
+
+// Every unit in charter order with its search text, built once.
+let capubUnitListCache = null;
+function capubUnitList(){
+  if(!capubUnitListCache){
+    capubUnitListCache = CAP_UNIT_OPTIONS.slice().sort((a, b) => compareUnitCharters(a.code, b.code))
+      .map(unit => ({ unit, key: `${unit.code} ${unit.name} ${unit.raw}`.toLowerCase() }));
+  }
+  return capubUnitListCache;
+}
+
+// The units the Unit patch list offers for a search, every unit in charter order whatever has artwork (a search only filters), each with its line of text.
 function getUnitPatchOptions(filterText=''){
   const normalized = String(filterText || '').trim().toLowerCase();
-  const found = CAP_UNIT_OPTIONS.filter(unit => {
-    if(!normalized) return true;
-    return `${unit.code} ${unit.name} ${unit.raw}`.toLowerCase().includes(normalized);
-  });
-  const rows = found.map(unit => {
+  return capubUnitList().filter(e => !normalized || e.key.includes(normalized)).map(({ unit }) => {
     const hasArtwork = unitCharterHasArtwork(unit.code);
     return { code: unit.code, hasArtwork, text: `${unit.code} - ${unit.name}${hasArtwork ? '  ✓ artwork available' : ''}` };
   });
-  // The units whose patch artwork exists come first, so a member finds them without searching.
-  return [...rows.filter(r => r.hasArtwork), ...rows.filter(r => !r.hasArtwork)];
 }
 
 function buildUnitPatchSelector(filterText=''){
@@ -1509,9 +1523,8 @@ function buildUnitPatchSelector(filterText=''){
   none.textContent = 'No unit chosen';
   sel.appendChild(none);
 
-  // The list shows the first 350; the unit the member has chosen is on it whatever the search says, or after the others (a setup brought back by Resume
-  // names a unit that may lie beyond the first 350 of an empty search).
-  const shown = matches.slice(0, 350);
+  // The list shows every unit that matches; the unit the member has chosen is on it whatever the search says, or after the others.
+  const shown = matches;
   shown.forEach(unit => {
     const opt = document.createElement('option');
     opt.value = unit.code;

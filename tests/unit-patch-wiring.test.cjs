@@ -112,14 +112,14 @@ test('places: a squadron\'s patch is on the right pocket of the ABU and the CFU 
   assert.deepEqual(places('unit_mar_dc_001', 'flight_suit'), ['R_SHOULDER']);
 });
 
-test('the Unit patch list marks a charter whose artwork exists with "artwork available", lists those first, and says it in words', () => {
+test('the Unit patch list marks a charter whose artwork exists with "artwork available", in charter order whatever has artwork, and says it in words', () => {
   ev(`State.uniform = 'ocp'; State.membership = 'senior'`);
   const all = ev('getUnitPatchOptions()');
   assert.ok(all.length > 1000);
   const marked = all.filter(o => o.hasArtwork).map(o => o.code);
   for(const code of ['MAR-DC-026', 'MAR-DC-001', 'MAR-DC-000', 'MAR-MAR-001', 'SWR-TX-030', 'SER-TN-185', 'SER-TN-330']) assert.ok(marked.includes(code), code);
   assert.ok(!marked.includes('MAR-DC-033'));
-  assert.deepEqual(all.slice(0, marked.length).map(o => o.code).sort(), marked.slice().sort(), 'the charters with artwork come first');
+  assert.notDeepEqual(all.slice(0, marked.length).map(o => o.code).sort(), marked.slice().sort(), 'the charters with artwork are not put first');
   const line = all.find(o => o.code === 'MAR-DC-026').text;
   assert.equal(line, 'MAR-DC-026 - Arlington Composite Squadron  ✓ artwork available');
   assert.doesNotMatch(all.find(o => o.code === 'MAR-DC-033').text, /artwork/);
