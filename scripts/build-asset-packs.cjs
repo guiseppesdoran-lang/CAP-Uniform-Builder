@@ -82,7 +82,7 @@ async function build({ imagesDir = path.join(ROOT, 'images') } = {}){
               uniform, gender, membership, grade: G.gradeInfo(membership, rank, { track: defaults.noGradeTrack }),
               opt: Object.assign({}, defaults, { rackColumns: 3, rackArrangement: 'lapel', rackCounts: null, miniStyle: 'mounting' }),
               name: { first: '', last: '', state: '', show: true },
-              ribbons: [], medals: [], badges: [], badgeChoices: {}, command: null, militaryBadges: [], patches: [], cord: rules.CEREMONIAL.cord, cordOnTop: true,
+              ribbons: [], medals: [], badges: [], badgeChoices: {}, command: null, militaryBadges: [], patches: [], cord: rules.CEREMONIAL.cord,
               ceremonial: { role, chinstrap }
             };
             try { await P.composeUniform(build, store); } catch (err) { /* a combination the page would not offer */ }

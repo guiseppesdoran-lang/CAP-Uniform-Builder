@@ -1402,8 +1402,7 @@
   }
   // The shoulder cord comes out flush with the epaulet's outside end edge: above the epaulet's lower edge it is drawn only on the neck side of the line of that edge (through the lower edge's outer end,
   // square to the strap), and only down to `tuck` above the lower edge; below the lower edge it is not cut. (In the frame of the strap: u along it toward the neck, v down from the lower edge, the
-  // outer end at the origin: the polygon is the half plane v >= 0 and the strip of v from -tuck to 0 with u >= 0.) Under the epaulet the tuck is CORD_TUCK (the epaulet is drawn over what is left);
-  // worn over it (the Honor Guard uniform), a tuck as long as the shoulder, so the cord runs up over the epaulet to the outline but not past its outside end. Scene inches, a polygon.
+  // outer end at the origin: the polygon is the half plane v >= 0 and the strip of v from -tuck to 0 with u >= 0.) Under the epaulet the tuck is CORD_TUCK (the epaulet is drawn over what is left). Scene inches, a polygon.
   function cordEndClip(e, tuck){
     const n = { x: e.dir.y, y: -e.dir.x }, down = n.y > 0 ? n : { x: -n.x, y: -n.y }, B = 60, d = e.dir;
     const at = (u, v) => ({ x: e.at.x + d.x * u + down.x * v, y: e.at.y + d.y * u + down.y * v });
@@ -1548,7 +1547,7 @@
   // all cords to look like that"), drawn by CordBraid in the cord's colours along the path the engine fits to the garment's armhole seam, wholly under the epaulet. The regulation cords
   // keep their per-garment sheets as carriers of that geometry; a supplement cord has no sheet and rides the honor guard cord's. The cord list (data/cords.js) says how each is drawn: its
   // style, its colours, a thin strand with a knot and a metal tip hung from the shoulder end, an aiguillette; a cord whose colour the unit commander picks takes the member's (b.cordColour).
-  // b.cordOnTop: the cord lies over the epaulet instead of under it (the Honor Guard uniform, 9.6.7.5); off for every other uniform.
+  // The cord lies under the epaulet or the board and under everything pinned over it on every uniform, the Honor Guard uniform too (owner, 2026-11-18).
   async function shoulderCord(ctx, b, axis){
     if(!b.cord) return;
     // The cadet cords are for cadets (9.3); the Aide de Camp cord is also worn by senior members (9.3.4).
@@ -1589,13 +1588,6 @@
       if(hung) runLayer.key = 'layer:' + carrier + ':run';
     }
     cordUnderBoard(ctx, runLayer, 'shoulder cord');
-    if(b.cordOnTop){
-      // over the epaulet whatever it is drawn at (a Class A board's strip and its shading lie higher than a shirt's slide): above every left epaulet layer
-      runLayer.z = Math.max(Z.epauletLayer + 0.5, ...ctx.layers.filter(l => /^epaulet(-shade:[a-z]+|-tip)?:left$/.test(l.key || '')).map(l => l.z + 0.1));
-      delete runLayer.clip;
-      const e = ctx.epauletEdge && ctx.epauletEdge.left, cp = runLayer.cordPath;
-      if(e) runLayer.clip = cordEndClip(cp && cp.edge ? { at: { x: cp.edge[0], y: cp.edge[1] }, dir: e.dir } : e, 60);   // over the epaulet, still not past its outside end edge
-    }
   }
 
   // Ribbons resting on a line, with an optional lapel that may cover part of them (11.1.8).
@@ -2123,7 +2115,7 @@
   //   the white pistol belt (9.6.7.6) or the white flag sling (9.6.3), never both: over the garment body, under the shoulder boards, the nameplate, the ribbons and the badges, so they
   //     stay readable, and under the cord.
   //   the white ascot (9.6.7.8) in place of the tie or tab, over the body and under the lapel foreground, and the Honor Guard patch centred on it.
-  //   the metallic silver shoulder cord on top of the epaulet (9.6.7.5): build.cord and build.cordOnTop, which the page sets with this build and nothing else sets.
+  //   the metallic silver shoulder cord (9.6.7.5): build.cord, drawn under the epaulet like every cord.
   //   the male service cap with the Cadet Officer cap device and the rear chinstrap (9.6.7.9), lifted until its lowest ink clears the patch.
   //   on the shirt and blouse the collar worn open and laid back (the sheet's group collar-honor-guard) in place of the collar and the tie or tab the sheet draws.
   //   the white parade gloves (9.6.7.7): a gloved hand at each cuff on the coats and the long sleeves, the pair folded under the belt (or the sling's band) on the short sleeves, where no sleeve covers the wrists.

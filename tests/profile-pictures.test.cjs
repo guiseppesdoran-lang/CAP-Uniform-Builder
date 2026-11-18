@@ -53,7 +53,7 @@ const rolesOf = scene => new Set(scene.layers.map(l => l.role));
 
 test('a picture is the member bare: their cut, grade and garment choices stay, what they chose elsewhere goes', () => {
   const base = member({ gender: 'female', rank: 'C/Capt', opt: { sleeve: 'long' }, ribbonSel: [['curry_achievement']], badgeIds: ['observer_badge'], patches: [], command: null })();
-  base.badgeChoices = { x: 1 }; base.badgeOrder = { occupational: ['a', 'b'] }; base.ceremonial = { role: 'flag', chinstrap: 'up' }; base.cordOnTop = true; base.cord = 'honor_guard';
+  base.badgeChoices = { x: 1 }; base.badgeOrder = { occupational: ['a', 'b'] }; base.ceremonial = { role: 'flag', chinstrap: 'up' }; base.cord = 'honor_guard';
   assert.ok(base.ribbons.length && base.badges.length && base.name.show, 'the member has chosen items');
   const b = PP.bare(RULES, base, { uniform: 'blues_b' });
   assert.equal(b.uniform, 'blues_b', 'the card\'s uniform');
@@ -71,7 +71,6 @@ test('a picture is the member bare: their cut, grade and garment choices stay, w
   assert.deepEqual(b.badgeChoices, {});
   assert.deepEqual(b.badgeOrder, {});
   assert.equal('ceremonial' in b, false, 'the member\'s honor guard items are not on the other uniforms\' pictures');
-  assert.equal('cordOnTop' in b, false);
   for(const k of ['rackColumns', 'rackAlign', 'rackArrangement', 'rackCounts', 'miniStyle']) assert.equal(k in b.opt, false, `the ribbon rack's ${k} does not change a bare garment`);
   assert.equal(base.opt.headgear, 'auto', 'the member\'s own build is not changed');
   assert.equal(base.ribbons.length > 0, true);
@@ -82,7 +81,6 @@ test('Honor Guard is the coat or the shirt with the honor guard items: the guard
   assert.equal(coat.uniform, 'blues_a', 'the coat when the member is not on the shirt');
   assert.deepEqual(coat.ceremonial, { role: 'guard', chinstrap: 'down' });
   assert.equal(coat.cord, 'honor_guard');
-  assert.equal(coat.cordOnTop, true);
   const shirt = PP.bare(RULES, member({ uniform: 'blues_b', opt: { sleeve: 'short' } })(), { ceremonial: true });
   assert.equal(shirt.uniform, 'blues_b', 'the shirt when that is where the member is');
   assert.deepEqual(shirt.ceremonial, { role: 'guard', chinstrap: 'up' }, 'the chinstrap the guidance figure has with short sleeves');
@@ -364,7 +362,7 @@ test('the cut is shown by the member\'s own uniform in each cut: the engine\'s p
 test('Honor Guard is pictured for the cut as the uniform it rides on, without its items: the cut is the garment\'s', async () => {
   const env = envOf(member({ uniform: 'blues_a' }));
   const base = env.build();
-  env.build = () => Object.assign(base, { ceremonial: { role: 'flag', chinstrap: 'up' }, cordOnTop: true, cord: 'honor_guard' });
+  env.build = () => Object.assign(base, { ceremonial: { role: 'flag', chinstrap: 'up' }, cord: 'honor_guard' });
   await PP.create(env).cuts().ready;
   for(const d of env.log.drawn) assert.equal(idsOf(d.scene).some(id => /honor-guard/.test(id)), false, 'no belt, sling or ascot');
 });

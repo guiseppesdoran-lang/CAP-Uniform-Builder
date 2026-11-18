@@ -224,18 +224,17 @@ test('the words: each rule sentence states the rule and ends with its paragraph,
 const { context, referenceErrors } = loadPageScripts();
 const ev = code => { const out = vm.runInContext(`JSON.stringify((function(){ ${code} })())`, context); return out === undefined ? undefined : JSON.parse(out); };
 const member = (extra = '') => ev(`State.membership = 'cadet'; State.gender = 'female'; State.rank = 'C/Maj'; State.uniform = 'blues_a'; State.ceremonial = false; State.garment = {}; State.shoulderCord = null; ${extra} return true;`);
-const built = () => ev('const b = CAPUBUniformView.buildFromState(); return { uniform: b.uniform, ceremonial: b.ceremonial, cord: b.cord, cordColour: b.cordColour, cordOnTop: b.cordOnTop, keys: Object.keys(b), opt: { sleeve: b.opt.sleeve, headgear: b.opt.headgear } };');
+const built = () => ev('const b = CAPUBUniformView.buildFromState(); return { uniform: b.uniform, ceremonial: b.ceremonial, cord: b.cord, cordColour: b.cordColour, keys: Object.keys(b), opt: { sleeve: b.opt.sleeve, headgear: b.opt.headgear } };');
 
 test('the page loads', () => assert.deepEqual(referenceErrors, []));
 
-test('Honor Guard hands the engine the role, the chinstrap, the silver cord and the switch that lays it over the epaulet; no other uniform does', () => {
+test('Honor Guard hands the engine the role, the chinstrap, the silver cord; no other uniform does', () => {
   member('State.ceremonial = true;');
   let b = built();
   assert.equal(b.uniform, 'blues_a', 'the uniform it rides on');
   assert.deepEqual(b.ceremonial, { role: 'guard', chinstrap: 'down' });
   assert.equal(b.cord, 'honor_guard');
   assert.equal(b.cordColour, null);
-  assert.equal(b.cordOnTop, true);
   member('State.ceremonial = true; State.uniform = "blues_b"; State.garment = { sleeve: "short" };');
   assert.deepEqual(built().ceremonial, { role: 'guard', chinstrap: 'up' }, 'up with short sleeves');
   member('State.ceremonial = true; State.uniform = "blues_b"; State.garment = { sleeve: "short", chinstrap: "down", cerRole: "flag" };');
@@ -247,19 +246,9 @@ test('Honor Guard hands the engine the role, the chinstrap, the silver cord and 
   member('State.shoulderCord = "wing";');
   b = built();
   assert.equal(b.cord, 'wing', 'the cord of the member outside Honor Guard');
-  assert.ok(!b.keys.includes('ceremonial') && !b.keys.includes('cordOnTop'), 'no honor guard field, no switch');
-  // every other uniform, cadet or senior: never the switch
-  for(const uniform of ['blues_a', 'blues_b', 'semi_formal_usaf', 'abu', 'ocp', 'flight_suit']){
-    member(`State.uniform = '${uniform}'; State.shoulderCord = 'honor_guard';`);
-    assert.equal(built().cordOnTop, undefined, `${uniform}: the switch is off`);
-  }
-  for(const uniform of ['mess_dress', 'semi_formal', 'aviator', 'aviator_blazer', 'polo', 'corporate_field', 'corporate_flight_suit']){
-    member(`State.membership = 'senior'; State.rank = 'Capt'; State.uniform = '${uniform}'; State.shoulderCord = 'aide_de_camp';`);
-    assert.equal(built().cordOnTop, undefined, `${uniform}: the switch is off`);
-  }
-  const view = read('js/uniform-view.js');
-  assert.equal([...view.matchAll(/cordOnTop/g)].length, 1, 'the page writes the switch in one place');
-  assert.match(view, /ceremonial \? \{\s*\/\/[^\n]*\n\s*ceremonial,\s*cordOnTop: true\s*\} : \{\}/, 'and only beside the ceremonial build');
+  assert.ok(!b.keys.includes('ceremonial'), 'no honor guard field');
+  // the page never sets a switch that lays the cord over the epaulet: the cord is under it on every uniform
+  assert.doesNotMatch(read('js/uniform-view.js'), /cordOnTop/, 'no such switch');
 });
 
 test('a senior member, a uniform that is not Class A or B, or no Honor Guard: the engine is asked for none of it', () => {
@@ -358,7 +347,7 @@ test('the cord picker shows the silver cord as worn and offers no other, and the
   assert.deepEqual(options.map(o => o.value), ['honor_guard'], 'one cord, no "no cord", no supplement cords, no colours');
   assert.match(options[0].mark, /Worn with this uniform/);
   assert.match(options[0].picture, /^<svg /, 'a picture of the cord');
-  assert.match(options[0].note, /^Metallic silver, Army-style, worn on the left shoulder at the seam on top of the epaulet \(CAPR 39-1, 9\.6\.7\.5\)\.$/);
+  assert.match(options[0].note, /^Metallic silver, Army-style, worn on the left shoulder at the seam \(CAPR 39-1, 9\.6\.7\.5\)\.$/);
   assert.equal(ev('return capubCordIsFixed();'), true);
   ev('capubPickShoulderCord("group"); return true;');
   assert.equal(ev('return State.shoulderCord;'), 'wing', 'a pick does not change the member\'s cord');
@@ -375,7 +364,7 @@ const penv = { core, build: () => { throw new Error('the tests give the build');
 const cadet = (uniform, gender, extra) => Object.assign({
   uniform, gender, membership: 'cadet', grade: G.gradeInfo('cadet', 'C/Maj', {}), opt: { headgear: 'auto' },
   name: { first: 'Pat', last: 'Doe', show: true }, ribbons: [], medals: [], badges: [], command: null, militaryBadges: [], patches: [], cord: null,
-  ceremonial: { role: 'guard', chinstrap: 'down' }, cordOnTop: true
+  ceremonial: { role: 'guard', chinstrap: 'down' }
 }, extra || {});
 const idsOf = spec => spec.scene.layers.filter(l => l.type === 'asset').map(l => l.id);
 

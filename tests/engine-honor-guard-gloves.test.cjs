@@ -42,7 +42,7 @@ const build = (cut, o) => HARNESS.makeBuild(Object.assign({
   uniform: cut.uniform, gender: cut.gender, membership: 'cadet', rank: 'C/Maj', name: { first: 'Pat', last: 'Doe', show: true },
   opt: Object.assign({ headgear: 'auto' }, cut.opt)
 }, o || {}));
-const guard = (cut, role) => build(cut, { ceremonial: { role, chinstrap: 'down' }, cord: 'honor_guard', cordOnTop: true });
+const guard = (cut, role) => build(cut, { ceremonial: { role, chinstrap: 'down' }, cord: 'honor_guard' });
 const glovesOf = scene => scene.layers.filter(l => l.role === 'honor-guard-gloves');
 const round = n => Math.round(n * 10000) / 10000;
 // A scene as text, for comparing two drawings (a measurement's key counts the layers before it, so it is left out). The assertion says only that they differ: the text is long.

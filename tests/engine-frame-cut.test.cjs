@@ -213,7 +213,7 @@ test('the pieces of the honor guard uniform that lie on the sheet are above the 
     ['blues_b', 'female', 'short', 'garment-blues-class-b-blouse-female'], ['blues_b', 'female', 'long', 'garment-blues-class-b-blouse-female-long']
   ];
   for(const [uniform, gender, sleeve, sheet] of SHEETS) for(const role of ['guard', 'flag']){
-    const spec = { uniform, gender, membership: 'cadet', rank: 'C/Maj', opt: Object.assign({ headgear: 'auto' }, sleeve ? { sleeve } : {}), ceremonial: { role, chinstrap: 'down' }, cord: 'honor_guard', cordOnTop: true };
+    const spec = { uniform, gender, membership: 'cadet', rank: 'C/Maj', opt: Object.assign({ headgear: 'auto' }, sleeve ? { sleeve } : {}), ceremonial: { role, chinstrap: 'down' }, cord: 'honor_guard' };
     const name = `${sheet} ${role}`;
     const before = await uncut(() => compose(spec)), after = await compose(spec);
     const gloves = after.layers.find(l => l.role === 'honor-guard-gloves');

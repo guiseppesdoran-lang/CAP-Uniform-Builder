@@ -177,23 +177,19 @@ test('the cord is one straight line from T to E: it leaves the drawn seam by no 
   }
 });
 
-test('the top: cut flush at the epaulet\'s end edge, a few hundredths under the epaulet at its lower edge, over the epaulet on the Honor Guard uniform; the epaulet is drawn over the cord', async () => {
+test('the top: cut flush at the epaulet\'s end edge, a few hundredths under the epaulet at its lower edge, on the Honor Guard uniform too; the epaulet is drawn over the cord', async () => {
   const src = fs.readFileSync(path.join(root, 'js', 'engine', 'profiles-dress.js'), 'utf8');
   const TUCK = Number(/const CORD_TUCK = ([\d.]+);/.exec(src)[1]);
-  for(const sheet of SHEETS) for(const rank of ['C/Maj', 'C/Col']) for(const extra of [{}, { cordOnTop: true }]){
+  for(const sheet of SHEETS) for(const rank of ['C/Maj', 'C/Col']){
+    const extra = {};
     const scene = await compose(sheet, 'wing', extra, { rank }), cl = runOf(scene), cp = cl.cordPath, tag = `${sheet[0]} ${rank} ${JSON.stringify(extra)}`;
     assert.ok(Array.isArray(cl.clip) && cl.clip.length === 6, `${tag}: the cut`);
     // the cut's corner is the epaulet's corner the cord is laid on
     assert.ok(Math.hypot(cl.clip[5].x - cp.edge[0], cl.clip[5].y - cp.edge[1]) < 1e-9, `${tag}: it is cut at the line of the end edge through that corner`);
     const tuck = Math.hypot(cl.clip[0].x - cl.clip[5].x, cl.clip[0].y - cl.clip[5].y);
-    if(extra.cordOnTop){
-      assert.ok(tuck > 59, `${tag}: over the epaulet, not cut at its lower edge`);
-      const over = Math.max(...scene.layers.filter(l => /^epaulet(-shade:[a-z]+|-tip)?:left$/.test(l.key || '')).map(l => l.z)); assert.ok(cl.z > over, `${tag}: above the epaulet and its shading (${over})`);
-    }else{
-      assert.ok(Math.abs(tuck - TUCK) < 1e-9, `${tag}: under it, cut ${TUCK} in above its lower edge`);
-      const over = scene.layers.find(l => l.key === 'epaulet:left' && l.role === 'epaulet');
-      assert.ok(over && over.z > cl.z, `${tag}: the epaulet is drawn over the cord`);
-    }
+    assert.ok(Math.abs(tuck - TUCK) < 1e-9, `${tag}: under it, cut ${TUCK} in above its lower edge`);
+    const over = scene.layers.find(l => l.key === 'epaulet:left' && l.role === 'epaulet');
+    assert.ok(over && over.z > cl.z, `${tag}: the epaulet is drawn over the cord`);
     // the sleeve side of the cord is not cut: a point of the cord's sleeve-side edge a little below the corner is kept
     const n = sleeveNormal(cp.heading), p = [cp.top[0] + n[0] * cp.width / 2 + cp.heading[0] * 0.3, cp.top[1] + n[1] * cp.width / 2 + cp.heading[1] * 0.3];
     assert.ok(inside(cl.clip, p), `${tag}: the edge of the cord below the epaulet is not cut`);

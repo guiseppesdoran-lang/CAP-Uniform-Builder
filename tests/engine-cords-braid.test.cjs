@@ -117,13 +117,12 @@ test('a cord the list does not know is not drawn, and says so; senior members we
   assert.ok(runOf(aide) && pendantOf(aide), 'the aide cord is worn by senior members too');
 });
 
-test('the cord lies under the epaulet unless the cord layer\'s switch says on top: off by default, on puts it over the epaulet layer, cut only at the line of the epaulet\'s outside end edge', async () => {
+test('the cord lies under the epaulet on every uniform, the Honor Guard uniform too: a build that asks for it on top is not obeyed', async () => {
   for(const cut of CUTS){
-    const off = runOf(await compose(cut, 'honor_guard')), on = runOf(await compose(cut, 'honor_guard', { cordOnTop: true }));
-    assert.ok(off.z < 8 && Array.isArray(off.clip), `${cut[0]}: under by default`);
-    assert.ok(on.z > 8 && Array.isArray(on.clip) && Math.hypot(on.clip[0].x - on.clip[5].x, on.clip[0].y - on.clip[5].y) > 59, `${cut[0]}: on top when asked (z ${on.z}), cut only at the epaulet's outside end edge`);
-    assert.equal(on.cordPath.d, off.cordPath.d, `${cut[0]}: the same path either way`);
-    assert.deepEqual(on.cordLook, off.cordLook);
+    const plain = runOf(await compose(cut, 'honor_guard')), asked = runOf(await compose(cut, 'honor_guard', { cordOnTop: true }));
+    assert.ok(plain.z < 8 && Array.isArray(plain.clip), `${cut[0]}: under`);
+    assert.ok(asked.z < 8 && Math.hypot(asked.clip[0].x - asked.clip[5].x, asked.clip[0].y - asked.clip[5].y) < 1, `${cut[0]}: no switch puts it over the epaulet (z ${asked.z})`);
+    assert.equal(asked.cordPath.d, plain.cordPath.d, `${cut[0]}: the same path`);
   }
 });
 

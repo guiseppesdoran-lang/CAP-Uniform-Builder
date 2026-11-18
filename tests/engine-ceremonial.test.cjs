@@ -2,7 +2,7 @@
 // CER (owner, 2026-11-11: "Ceremonials. Add that as a selectable uniform, and generate all applicable artwork"): the Honor Guard Uniform of CAPR 39-1 9.6, the Service Dress coat
 // (9.6.5) or the Blue Service shirt or blouse (9.6.6) with the honor guard items put on. It is not a second drawing: the engine draws Class A or Class B as it always does and
 // adds the white pistol belt (9.6.7.6) or, for a flag bearer, the white flag sling (9.6.3) and never both, the white ascot with the Honor Guard patch (9.6.7.8) in place of the tie or
-// tab, the metallic silver shoulder cord on top of the epaulet (9.6.7.5), and the male service cap with the Cadet Officer device and the rear chinstrap (9.6.7.9), lifted until it
+// tab, the metallic silver shoulder cord (9.6.7.5), under the epaulet like every cord, and the male service cap with the Cadet Officer device and the rear chinstrap (9.6.7.9), lifted until it
 // clears the patch; on the shirt and blouse the collar is worn open and laid back (the sheet's group collar-honor-guard).
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -34,7 +34,7 @@ const CADETS = ['C/SSgt', 'C/Maj'];
 
 const build = (cut, o) => HARNESS.makeBuild(Object.assign({
   uniform: cut.uniform, gender: cut.gender, membership: 'cadet', rank: 'C/Maj', name: { first: 'Pat', last: 'Doe', show: true },
-  opt: Object.assign({ headgear: 'auto' }, cut.opt), cord: 'honor_guard', cordOnTop: true
+  opt: Object.assign({ headgear: 'auto' }, cut.opt), cord: 'honor_guard'
 }, o || {}));
 const guard = (cut, role, chinstrap, o) => build(cut, Object.assign({ ceremonial: { role, chinstrap } }, o || {}));
 const compose = b => P.composeUniform(b, store);
@@ -144,30 +144,35 @@ test('outside Honor Guard the cap sits where it always did: no lift, no honor gu
   }
 });
 
-test('the silver cord lies on top of the epaulet in this uniform and under it everywhere else', async () => {
-  for(const cut of CUTS){
-    const on = await compose(guard(cut, 'guard', 'down'));
-    const off = await compose(build(cut, { cordOnTop: false }));
+test('the silver cord lies under everything in this uniform, as on the plain Class A and Class B (owner, 2026-11-18)', async () => {
+  for(const cut of CUTS) for(const rank of ['C/Maj', 'C/Col']){
+    const on = await compose(guard(cut, 'guard', 'down', { rank }));
+    const flag = await compose(guard(cut, 'flag', 'down', { rank }));
+    const plain = await compose(build(cut, { rank }));
     const run = scene => scene.layers.find(l => l.cordLook && !l.cordLook.pendant && !l.cordLook.tip);
-    assert.equal(run(on).id, `${cut.sheet}-cord-honor-guard`);
-    assert.deepEqual(run(on).cordLook, { id: 'honor_guard', colour: null }, `${cut.name}: the silver cord`);
-    const over = Math.max(8, ...on.layers.filter(l => /^epaulet(-shade:[a-z]+|-tip)?:left$/.test(l.key || '')).map(l => l.z));
-    assert.ok(run(on).z >= 8.5 && run(on).z > over, `${cut.name}: above the epaulet and its shading (${over}): ${run(on).z}`);
-    // over the epaulet the cord is cut only at the line of the epaulet's outside end edge (tuck as long as the shoulder), not at its lower edge: its cut line lies 60 in above the edge
-    assert.ok(Array.isArray(run(on).clip) && Math.hypot(run(on).clip[0].x - run(on).clip[5].x, run(on).clip[0].y - run(on).clip[5].y) > 59, `${cut.name}: not cut away under the epaulet`);
-    assert.equal(run(off).z, 7.5, `${cut.name}: under it when the switch is off`);
-    assert.ok(run(off).clip, `${cut.name}: cut away under the epaulet when the switch is off`);
-    assert.equal(run(on).cordPath.d, run(off).cordPath.d, `${cut.name}: the path is the same`);
+    for(const [tag, scene] of [['guard', on], ['flag', flag]]){
+      const r = run(scene), tagged = `${cut.name} ${rank} ${tag}`;
+      assert.equal(r.id, `${cut.sheet}-cord-honor-guard`);
+      assert.deepEqual(r.cordLook, { id: 'honor_guard', colour: null }, `${tagged}: the silver cord`);
+      const over = scene.layers.filter(l => /^epaulet(-shade:[a-z]+|-tip)?:left$/.test(l.key || '') || l.role === 'epaulet' || l.role === 'epaulet-edge');
+      assert.ok(over.length, `${tagged}: an epaulet or board is drawn`);
+      assert.ok(over.every(l => l.z > r.z), `${tagged}: every epaulet layer lies over the cord (${r.z})`);
+      assert.ok(scene.layers.filter(l => l.role === 'badge' || l.role === 'ribbon' || l.role === 'nameplate').every(l => l.z > r.z), `${tagged}: and what is pinned on`);
+      assert.equal(r.z, 7.5, `${tagged}: at the plain uniform's height`);
+      assert.ok(Array.isArray(r.clip) && Math.hypot(r.clip[0].x - r.clip[5].x, r.clip[0].y - r.clip[5].y) < 1, `${tagged}: cut away under the epaulet, as on the plain uniform`);
+      assert.equal(r.cordPath.d, run(plain).cordPath.d, `${tagged}: the same path as on the plain uniform`);
+    }
+    assert.equal(run(plain).z, 7.5);
   }
 });
 
-test('no uniform and no profile sets cordOnTop: the engine reads it and never writes it, and the harness leaves it off', () => {
+test('nothing sets or reads a switch that lays the cord over the epaulet: the harness and the engine have none', () => {
   const engineDir = path.join(root, 'js', 'engine');
   for(const f of fs.readdirSync(engineDir).filter(f => f.endsWith('.js'))){
     const src = fs.readFileSync(path.join(engineDir, f), 'utf8');
-    assert.doesNotMatch(src, /\.cordOnTop\s*=(?!=)|cordOnTop:\s*(true|false|!!)/, `${f} does not set it`);
+    assert.doesNotMatch(src, /cordOnTop/, `${f} has no such switch`);
   }
-  assert.equal(HARNESS.makeBuild({ uniform: 'blues_a', membership: 'cadet', rank: 'C/Maj' }).cordOnTop, false, 'the harness default is off');
+  assert.equal('cordOnTop' in HARNESS.makeBuild({ uniform: 'blues_a', membership: 'cadet', rank: 'C/Maj' }), false, 'the harness has none');
   assert.equal(HARNESS.makeBuild({ uniform: 'blues_a', membership: 'cadet', rank: 'C/Maj' }).ceremonial, undefined, 'and it has no honor guard unless a build asks');
 });
 
@@ -318,7 +323,7 @@ function inside(p, ring){
 
 test('a build without ceremonial, or one for a senior member, draws none of it; every grade of cadet wears the same items', async () => {
   for(const cut of CUTS){
-    const plain = await compose(build(cut, { cord: null, cordOnTop: false }));
+    const plain = await compose(build(cut, { cord: null }));
     assert.equal(plain.layers.filter(l => /honor-guard-(belt|flag-sling|ascot)/.test(l.id || '') || l.id === 'patch-honor-guard').length, 0, `${cut.name}: no honor guard items`);
     const senior = await compose(guard(cut, 'guard', 'up', { membership: 'senior', rank: 'Capt', cord: null }));
     assert.equal(senior.layers.filter(l => /honor-guard/.test(l.id || '')).length, 0, `${cut.name}: a senior member is not drawn it`);

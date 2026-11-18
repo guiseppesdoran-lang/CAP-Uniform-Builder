@@ -300,9 +300,8 @@
       cord: cord.cord,
       cordColour: cord.cordColour
     }, ceremonial ? {
-      // The honor guard items, and the cord lying on top of the epaulet (9.6.7.5); no other uniform sets either.
-      ceremonial,
-      cordOnTop: true
+      // The honor guard items; no other uniform sets them.
+      ceremonial
     } : {});
   }
 

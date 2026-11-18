@@ -133,7 +133,6 @@
       name: o.name || { first: '', last: '', state: '', show: false }
     });
     delete build.ceremonial;
-    delete build.cordOnTop;
     build.opt = Object.assign({}, base.opt, { headgear: 'none' });
     for(const k of RACK) delete build.opt[k];
     if(o.ceremonial){
@@ -141,7 +140,6 @@
       build.uniform = c.uniform;
       build.ceremonial = c.ceremonial;
       build.cord = rules.CEREMONIAL.cord;
-      build.cordOnTop = true;
     }
     return build;
   }

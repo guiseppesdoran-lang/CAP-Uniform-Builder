@@ -341,7 +341,7 @@
   //   wornOn:     the garment it is worn on, by the uniform it rides on: the Service Dress coat ('coat', Class A) or the blue shirt or blouse ('shirt', Class B,
   //               short or long sleeves, the sleeve choice the Class B already has).
   //   roles:      every member wears the white pistol belt except flag bearers, who wear the white flag sling instead (9.6.1.2, 9.6.3, 9.6.7.6): the two never together.
-  //   cord:       the metallic silver shoulder cord, worn on top of the epaulet (9.6.7.5).
+  //   cord:       the metallic silver shoulder cord, worn under the epaulet like every cord (9.6.7.5).
   //   cap:        the male service cap with the Cadet Officer cap device and the rear chinstrap, for every member, men and women (9.6.7.9).
   //   ascot:      the white ascot with the Honor Guard patch, in place of the tie or tab (9.6.7.8); the white parade gloves are drawn on the hands at the cuffs (coat, long sleeves) or folded under the belt (short sleeves) (9.6.7.7).
   const CEREMONIAL=Object.freeze({

@@ -207,7 +207,7 @@ function capubShoulderCordOptions(){
   if(capubCordIsFixed()){
     const id = CAPUBUniformRules.CEREMONIAL.cord;
     return [{ value: id, label: SHOULDER_CORD_META[id].tile, picture: capubCordPicture(id), mark: 'Worn with this uniform', group: SHOULDER_CORD_GROUP,
-      note: `Metallic silver, Army-style, worn on the left shoulder at the seam on top of the epaulet (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.cord}).` }];
+      note: `Metallic silver, Army-style, worn on the left shoulder at the seam (CAPR 39-1, ${CAPUBUniformRules.CEREMONIAL.refs.cord}).` }];
   }
   const allowed = id => CAPUBUniformRules.allowsCord(State.uniform, State.membership, id);
   const regulation = SHOULDER_CORD_IDS.filter(allowed);

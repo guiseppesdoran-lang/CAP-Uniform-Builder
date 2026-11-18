@@ -176,7 +176,7 @@ test('the cord is cut flush with the board\'s outer end and its top edge is the 
 // what stands above it, a sliver (the photograph of a colonel's board: its third diamond is a sliver 0.2 of the top face above the far edge), BOARD_CROSS. The row is centred on the board's centre line; a row of three is
 // wider than the top face and moves back, over the ridge, until its front form is BOARD_FRONT_MARGIN of the top face short of the front edge, as a row of two lies.
 const GRADES = ['C/2d Lt', 'C/1st Lt', 'C/Capt', 'C/Maj', 'C/Lt Col', 'C/Col'], FORMS = { 'C/2d Lt': 1, 'C/1st Lt': 2, 'C/Capt': 3, 'C/Maj': 1, 'C/Lt Col': 2, 'C/Col': 3 };
-const HONOR_GUARD = { cord: 'honor_guard', cordOnTop: true, ceremonial: { role: 'guard', chinstrap: 'up' } };
+const HONOR_GUARD = { cord: 'honor_guard', ceremonial: { role: 'guard', chinstrap: 'up' } };
 
 // Every form of the grade on each side, front form first, with how far its centre lies below the board's centre line (inches).
 async function gradeForms(build){

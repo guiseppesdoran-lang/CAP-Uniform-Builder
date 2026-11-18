@@ -7,13 +7,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const HARNESS = require('../scripts/render-builds.cjs');
 
-test('a harness build carries the cord, its colour and the on-top switch, with no colour and the switch off unless asked', () => {
+test('a harness build carries the cord and its colour, with no colour unless asked', () => {
   const plain = HARNESS.makeBuild({ uniform: 'blues_b', gender: 'male', membership: 'cadet', rank: 'C/Capt', cord: 'wing' });
   assert.equal(plain.cord, 'wing');
   assert.equal(plain.cordColour, null);
-  assert.equal(plain.cordOnTop, false);
-  const asked = HARNESS.makeBuild({ uniform: 'blues_b', gender: 'male', membership: 'cadet', rank: 'C/Capt', cord: 'de-unit-award', cordColour: 'orange', cordOnTop: true });
-  assert.deepEqual([asked.cord, asked.cordColour, asked.cordOnTop], ['de-unit-award', 'orange', true]);
+  const asked = HARNESS.makeBuild({ uniform: 'blues_b', gender: 'male', membership: 'cadet', rank: 'C/Capt', cord: 'de-unit-award', cordColour: 'orange' });
+  assert.deepEqual([asked.cord, asked.cordColour], ['de-unit-award', 'orange']);
+  assert.equal('cordOnTop' in asked, false, 'there is no on-top switch');
 });
 
 test('the harness page loads the braid function and the cord list with the engine, so the figure it draws has the braid', () => {
