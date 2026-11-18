@@ -44,49 +44,49 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "e9c95d",
+    "hex": "ffc90e",
     "fraction": 0.102,
     "x0_in": 0,
     "x1_in": 0.1402
    },
    {
     "index": 1,
-    "hex": "274ab0",
+    "hex": "0024aa",
     "fraction": 0.1697,
     "x0_in": 0.1402,
     "x1_in": 0.3735
    },
    {
     "index": 2,
-    "hex": "e9c95d",
+    "hex": "ffc90e",
     "fraction": 0.047,
     "x0_in": 0.3735,
     "x1_in": 0.4381
    },
    {
     "index": 3,
-    "hex": "efe9df",
-    "fraction": 0.3627,
+    "hex": "ffffff",
+    "fraction": 0.3628,
     "x0_in": 0.4381,
     "x1_in": 0.9369
    },
    {
     "index": 4,
-    "hex": "e9c95d",
+    "hex": "ffc90e",
     "fraction": 0.047,
     "x0_in": 0.9369,
     "x1_in": 1.0015
    },
    {
     "index": 5,
-    "hex": "274ab0",
+    "hex": "0024aa",
     "fraction": 0.1697,
     "x0_in": 1.0015,
     "x1_in": 1.2348
    },
    {
     "index": 6,
-    "hex": "e9c95d",
+    "hex": "ffc90e",
     "fraction": 0.102,
     "x0_in": 1.2348,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,34 @@
    0.3,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "gold",
+    "ultramarine",
+    "gold",
+    "white",
+    "gold",
+    "ultramarine",
+    "gold"
+   ],
+   "measured_hex": [
+    "e9c95d",
+    "274ab0",
+    "e9c95d",
+    "efe9df",
+    "e9c95d",
+    "274ab0",
+    "e9c95d"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "wide white centre, thin old gold, wide ultramarine blue, narrow old gold edge",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

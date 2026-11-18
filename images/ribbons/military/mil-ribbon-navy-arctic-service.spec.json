@@ -44,21 +44,21 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "258fd6",
+    "hex": "0080ff",
     "fraction": 0.217,
     "x0_in": 0,
     "x1_in": 0.2984
    },
    {
     "index": 1,
-    "hex": "77a0dd",
-    "fraction": 0.0501,
+    "hex": "20c0ff",
+    "fraction": 0.05,
     "x0_in": 0.2984,
     "x1_in": 0.3672
    },
    {
     "index": 2,
-    "hex": "d9e9f0",
+    "hex": "80c0ff",
     "fraction": 0.0433,
     "x0_in": 0.3672,
     "x1_in": 0.4267
@@ -72,49 +72,49 @@
    },
    {
     "index": 4,
-    "hex": "d9e9f0",
+    "hex": "80c0ff",
     "fraction": 0.0225,
     "x0_in": 0.5593,
     "x1_in": 0.5903
    },
    {
     "index": 5,
-    "hex": "77a0dd",
-    "fraction": 0.0227,
+    "hex": "20c0ff",
+    "fraction": 0.0226,
     "x0_in": 0.5903,
     "x1_in": 0.6214
    },
    {
     "index": 6,
-    "hex": "258fd6",
+    "hex": "0080ff",
     "fraction": 0.0254,
     "x0_in": 0.6214,
     "x1_in": 0.6563
    },
    {
     "index": 7,
-    "hex": "2c3570",
-    "fraction": 0.0453,
+    "hex": "000000",
+    "fraction": 0.0454,
     "x0_in": 0.6563,
     "x1_in": 0.7187
    },
    {
     "index": 8,
-    "hex": "258fd6",
+    "hex": "0080ff",
     "fraction": 0.0254,
     "x0_in": 0.7187,
     "x1_in": 0.7536
    },
    {
     "index": 9,
-    "hex": "77a0dd",
-    "fraction": 0.0227,
+    "hex": "20c0ff",
+    "fraction": 0.0226,
     "x0_in": 0.7536,
     "x1_in": 0.7847
    },
    {
     "index": 10,
-    "hex": "d9e9f0",
+    "hex": "80c0ff",
     "fraction": 0.0225,
     "x0_in": 0.7847,
     "x1_in": 0.8157
@@ -128,21 +128,21 @@
    },
    {
     "index": 12,
-    "hex": "d9e9f0",
+    "hex": "80c0ff",
     "fraction": 0.0433,
     "x0_in": 0.9483,
     "x1_in": 1.0078
    },
    {
     "index": 13,
-    "hex": "77a0dd",
+    "hex": "20c0ff",
     "fraction": 0.05,
     "x0_in": 1.0078,
     "x1_in": 1.0766
    },
    {
     "index": 14,
-    "hex": "258fd6",
+    "hex": "0080ff",
     "fraction": 0.217,
     "x0_in": 1.0766,
     "x1_in": 1.375
@@ -153,7 +153,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -219,7 +219,51 @@
    0.6,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "azure",
+    "light blue",
+    "pale blue",
+    "white",
+    "pale blue",
+    "light blue",
+    "azure",
+    "black",
+    "azure",
+    "light blue",
+    "pale blue",
+    "white",
+    "pale blue",
+    "light blue",
+    "azure"
+   ],
+   "measured_hex": [
+    "258fd6",
+    "77a0dd",
+    "d9e9f0",
+    "ffffff",
+    "d9e9f0",
+    "77a0dd",
+    "258fd6",
+    "2c3570",
+    "258fd6",
+    "77a0dd",
+    "d9e9f0",
+    "ffffff",
+    "d9e9f0",
+    "77a0dd",
+    "258fd6"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "white, forget-me-not, blue turquoise, grotto blue, bluebird and black; the reverse of the Antarctica Service ribbon",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "MARINE_CORPS",

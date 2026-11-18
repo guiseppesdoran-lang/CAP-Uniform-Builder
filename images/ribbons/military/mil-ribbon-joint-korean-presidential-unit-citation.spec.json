@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "3f5c32",
+    "hex": "008000",
     "fraction": 0.1717,
     "x0_in": 0,
     "x1_in": 0.2361
@@ -52,13 +52,13 @@
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0098,
+    "fraction": 0.0097,
     "x0_in": 0.2361,
     "x1_in": 0.2495
    },
    {
     "index": 2,
-    "hex": "bf3343",
+    "hex": "ff0000",
     "fraction": 0.0097,
     "x0_in": 0.2495,
     "x1_in": 0.2629
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "bf3343",
+    "hex": "ff0000",
     "fraction": 0.0085,
     "x0_in": 0.2782,
     "x1_in": 0.2899
@@ -86,7 +86,7 @@
    },
    {
     "index": 6,
-    "hex": "3f5c32",
+    "hex": "008000",
     "fraction": 0.0081,
     "x0_in": 0.3042,
     "x1_in": 0.3153
@@ -100,7 +100,7 @@
    },
    {
     "index": 8,
-    "hex": "3f5c32",
+    "hex": "008000",
     "fraction": 0.0081,
     "x0_in": 1.0597,
     "x1_in": 1.0708
@@ -114,7 +114,7 @@
    },
    {
     "index": 10,
-    "hex": "bf3343",
+    "hex": "ff0000",
     "fraction": 0.0085,
     "x0_in": 1.0851,
     "x1_in": 1.0968
@@ -128,7 +128,7 @@
    },
    {
     "index": 12,
-    "hex": "bf3343",
+    "hex": "ff0000",
     "fraction": 0.0097,
     "x0_in": 1.1121,
     "x1_in": 1.1255
@@ -136,13 +136,13 @@
    {
     "index": 13,
     "hex": "ffffff",
-    "fraction": 0.0098,
+    "fraction": 0.0097,
     "x0_in": 1.1255,
     "x1_in": 1.1389
    },
    {
     "index": 14,
-    "hex": "3f5c32",
+    "hex": "008000",
     "fraction": 0.1717,
     "x0_in": 1.1389,
     "x1_in": 1.375
@@ -150,12 +150,11 @@
   ],
   "stars": [],
   "frame": {
-   "color_hex": "d4b073",
-   "light_hex": "fae7bd",
-   "dark_hex": "8d6b48",
+   "color_hex": "ffc90e",
+   "light_hex": "f5deb3",
    "thickness_in": {
-    "top": 0.0659,
-    "bottom": 0.0605,
+    "top": 0.0632,
+    "bottom": 0.0632,
     "left": 0.0724,
     "right": 0.0724
    },
@@ -163,7 +162,7 @@
     "period_in": 0.0743,
     "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
    },
-   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+   "note": "thickness measured from the rectified photograph, made equal left and right and top and bottom; one gold for the frame, one pale gold for the laurel, no shading"
   },
   "emblems": [
    {
@@ -174,15 +173,15 @@
     ],
     "radius_in": 0.1035,
     "tilt_deg": 177,
-    "red_hex": "e6444b",
-    "blue_hex": "385793",
+    "red_hex": "ff0000",
+    "blue_hex": "0024aa",
     "fit_share": 0.956
    }
   ]
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, a unit citation frame is one gold with a pale gold laurel (the owner, 2026-11-18, \"a frame is a frame of one gold\") settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -249,7 +248,70 @@
    4.3
   ],
   "mirrored_from_left": "the photographed unit sits off centre in its frame; the mirrored design is built from its uncut left half",
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "green",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "green",
+    "white",
+    "green",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "green"
+   ],
+   "measured_hex": [
+    "3f5c32",
+    "ffffff",
+    "bf3343",
+    "ffffff",
+    "bf3343",
+    "ffffff",
+    "3f5c32",
+    "ffffff",
+    "3f5c32",
+    "ffffff",
+    "bf3343",
+    "ffffff",
+    "bf3343",
+    "ffffff",
+    "3f5c32"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "basis": "a unit citation frame is one gold with a pale gold laurel (the owner, 2026-11-18, \"a frame is a frame of one gold\")",
+   "repairs": [
+    {
+     "kind": "taeguk-centred",
+     "shift_units": [
+      0,
+      0
+     ]
+    },
+    {
+     "kind": "frame-symmetric",
+     "thickness_was_in": {
+      "top": 0.0632,
+      "bottom": 0.0632,
+      "left": 0.0724,
+      "right": 0.0724
+     },
+     "thickness_now_in": {
+      "top": 0.0632,
+      "left": 0.0724
+     }
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

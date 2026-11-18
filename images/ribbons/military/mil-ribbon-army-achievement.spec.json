@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "5b874b",
+    "hex": "008000",
     "fraction": 0.0847,
     "x0_in": 0,
     "x1_in": 0.1165
@@ -58,8 +58,8 @@
    },
    {
     "index": 2,
-    "hex": "5b874b",
-    "fraction": 0.0918,
+    "hex": "008000",
+    "fraction": 0.0919,
     "x0_in": 0.181,
     "x1_in": 0.3073
    },
@@ -72,22 +72,22 @@
    },
    {
     "index": 4,
-    "hex": "1c36a3",
-    "fraction": 0.1872,
+    "hex": "0024aa",
+    "fraction": 0.1873,
     "x0_in": 0.3961,
     "x1_in": 0.6536
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0494,
+    "fraction": 0.0493,
     "x0_in": 0.6536,
     "x1_in": 0.7214
    },
    {
     "index": 6,
-    "hex": "1c36a3",
-    "fraction": 0.1872,
+    "hex": "0024aa",
+    "fraction": 0.1873,
     "x0_in": 0.7214,
     "x1_in": 0.9789
    },
@@ -100,8 +100,8 @@
    },
    {
     "index": 8,
-    "hex": "5b874b",
-    "fraction": 0.0918,
+    "hex": "008000",
+    "fraction": 0.0919,
     "x0_in": 1.0677,
     "x1_in": 1.194
    },
@@ -114,7 +114,7 @@
    },
    {
     "index": 10,
-    "hex": "5b874b",
+    "hex": "008000",
     "fraction": 0.0847,
     "x0_in": 1.2585,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,40 @@
    4.6,
    2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Army Achievement Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Army Achievement Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "green",
+    "white",
+    "green",
+    "white",
+    "ultramarine",
+    "white",
+    "ultramarine",
+    "white",
+    "green",
+    "white",
+    "green"
+   ],
+   "measured_hex": [
+    "5b874b",
+    "ffffff",
+    "5b874b",
+    "ffffff",
+    "1c36a3",
+    "ffffff",
+    "1c36a3",
+    "ffffff",
+    "5b874b",
+    "ffffff",
+    "5b874b"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "ARMY"

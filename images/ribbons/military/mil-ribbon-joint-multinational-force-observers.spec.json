@@ -44,14 +44,14 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "fd8b3c",
+    "hex": "ff8040",
     "fraction": 0.2801,
     "x0_in": 0,
     "x1_in": 0.3852
    },
    {
     "index": 1,
-    "hex": "8f866a",
+    "hex": "808000",
     "fraction": 0.0882,
     "x0_in": 0.3852,
     "x1_in": 0.5065
@@ -65,14 +65,14 @@
    },
    {
     "index": 3,
-    "hex": "8f866a",
+    "hex": "808000",
     "fraction": 0.0882,
     "x0_in": 0.8685,
     "x1_in": 0.9898
    },
    {
     "index": 4,
-    "hex": "fd8b3c",
+    "hex": "ff8040",
     "fraction": 0.2801,
     "x0_in": 0.9898,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,31 @@
    0.8,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "orange",
+    "olive",
+    "white",
+    "olive",
+    "orange"
+   ],
+   "measured_hex": [
+    "fd8b3c",
+    "8f866a",
+    "ffffff",
+    "8f866a",
+    "fd8b3c"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "orange edges and orange, olive pinstripes, a white centre",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

@@ -44,114 +44,79 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "191418",
-    "fraction": 0.1253,
+    "hex": "000000",
+    "fraction": 0.1227,
     "x0_in": 0,
-    "x1_in": 0.1723
+    "x1_in": 0.1687
    },
    {
     "index": 1,
-    "hex": "629cc3",
-    "fraction": 0.0211,
-    "x0_in": 0.1723,
-    "x1_in": 0.2013
+    "hex": "0080ff",
+    "fraction": 0.0891,
+    "x0_in": 0.1687,
+    "x1_in": 0.2912
    },
    {
     "index": 2,
-    "hex": "69a5c4",
-    "fraction": 0.0227,
-    "x0_in": 0.2013,
-    "x1_in": 0.2324
+    "hex": "00ffff",
+    "fraction": 0.1038,
+    "x0_in": 0.2912,
+    "x1_in": 0.4339
    },
    {
     "index": 3,
-    "hex": "629cc3",
-    "fraction": 0.0494,
-    "x0_in": 0.2324,
-    "x1_in": 0.3003
+    "hex": "20c0ff",
+    "fraction": 0.058,
+    "x0_in": 0.4339,
+    "x1_in": 0.5136
    },
    {
     "index": 4,
-    "hex": "74b3be",
-    "fraction": 0.1048,
-    "x0_in": 0.3003,
-    "x1_in": 0.4444
+    "hex": "80c0ff",
+    "fraction": 0.0732,
+    "x0_in": 0.5136,
+    "x1_in": 0.6142
    },
    {
     "index": 5,
-    "hex": "95bfc5",
-    "fraction": 0.059,
-    "x0_in": 0.4444,
-    "x1_in": 0.5255
+    "hex": "ffffff",
+    "fraction": 0.1067,
+    "x0_in": 0.6142,
+    "x1_in": 0.7609
    },
    {
     "index": 6,
-    "hex": "d5e3e7",
-    "fraction": 0.0244,
-    "x0_in": 0.5255,
-    "x1_in": 0.5591
+    "hex": "80c0ff",
+    "fraction": 0.0732,
+    "x0_in": 0.7609,
+    "x1_in": 0.8615
    },
    {
     "index": 7,
-    "hex": "d4d9dd",
-    "fraction": 0.05,
-    "x0_in": 0.5591,
-    "x1_in": 0.6278
+    "hex": "20c0ff",
+    "fraction": 0.0579,
+    "x0_in": 0.8615,
+    "x1_in": 0.9411
    },
    {
     "index": 8,
-    "hex": "ffffff",
-    "fraction": 0.1067,
-    "x0_in": 0.6278,
-    "x1_in": 0.7745
+    "hex": "00ffff",
+    "fraction": 0.1039,
+    "x0_in": 0.9411,
+    "x1_in": 1.0839
    },
    {
     "index": 9,
-    "hex": "d4d9dd",
-    "fraction": 0.0481,
-    "x0_in": 0.7745,
-    "x1_in": 0.8407
+    "hex": "0080ff",
+    "fraction": 0.089,
+    "x0_in": 1.0839,
+    "x1_in": 1.2063
    },
    {
     "index": 10,
-    "hex": "d5e3e7",
-    "fraction": 0.0238,
-    "x0_in": 0.8407,
-    "x1_in": 0.8734
-   },
-   {
-    "index": 11,
-    "hex": "95bfc5",
-    "fraction": 0.0569,
-    "x0_in": 0.8734,
-    "x1_in": 0.9516
-   },
-   {
-    "index": 12,
-    "hex": "74b3be",
-    "fraction": 0.1028,
-    "x0_in": 0.9516,
-    "x1_in": 1.093
-   },
-   {
-    "index": 13,
-    "hex": "629cc3",
-    "fraction": 0.042,
-    "x0_in": 1.093,
-    "x1_in": 1.1507
-   },
-   {
-    "index": 14,
-    "hex": "69a5c4",
-    "fraction": 0.043,
-    "x0_in": 1.1507,
-    "x1_in": 1.2099
-   },
-   {
-    "index": 15,
-    "hex": "191418",
-    "fraction": 0.1201,
-    "x0_in": 1.2099,
+    "hex": "000000",
+    "fraction": 0.1227,
+    "x0_in": 1.2063,
     "x1_in": 1.375
    }
   ],
@@ -160,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) and Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified",
   "snap": null,
   "reference": {
@@ -227,7 +192,93 @@
    0.5,
    0.9
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "black",
+    "azure",
+    "cyan",
+    "light blue",
+    "pale blue",
+    "white",
+    "pale blue",
+    "light blue",
+    "cyan",
+    "azure",
+    "black"
+   ],
+   "measured_hex": [
+    "191418",
+    "629cc3+69a5c4+629cc3",
+    "74b3be",
+    "95bfc5",
+    "d5e3e7+d4d9dd",
+    "ffffff",
+    "d4d9dd+d5e3e7",
+    "95bfc5",
+    "74b3be",
+    "629cc3+69a5c4",
+    "191418"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed) and Air Force Personnel Center fact sheet (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed) and Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "black edges, a white centre graded through pale blue, light blue, greenish blue and medium blue",
+   "repairs": [
+    {
+     "kind": "split-merged",
+     "at_x": 20.13,
+     "colour": "azure",
+     "from": [
+      "629cc3",
+      "69a5c4"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 23.24,
+     "colour": "azure",
+     "from": [
+      "629cc3",
+      "629cc3"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 55.91,
+     "colour": "pale blue",
+     "from": [
+      "d5e3e7",
+      "d4d9dd"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 84.07,
+     "colour": "pale blue",
+     "from": [
+      "d4d9dd",
+      "d5e3e7"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 115.07,
+     "colour": "azure",
+     "from": [
+      "629cc3",
+      "69a5c4"
+     ]
+    },
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 1.365
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

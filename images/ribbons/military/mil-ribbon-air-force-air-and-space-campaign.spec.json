@@ -44,42 +44,42 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "b8c9d6",
-    "fraction": 0.0525,
+    "hex": "20c0ff",
+    "fraction": 0.0524,
     "x0_in": 0,
     "x1_in": 0.0721
    },
    {
     "index": 1,
-    "hex": "ec3843",
+    "hex": "ff0000",
     "fraction": 0.0439,
     "x0_in": 0.0721,
     "x1_in": 0.1324
    },
    {
     "index": 2,
-    "hex": "1e40b3",
-    "fraction": 0.1699,
+    "hex": "0024aa",
+    "fraction": 0.17,
     "x0_in": 0.1324,
     "x1_in": 0.3661
    },
    {
     "index": 3,
-    "hex": "b8c9d6",
+    "hex": "20c0ff",
     "fraction": 0.0414,
     "x0_in": 0.3661,
-    "x1_in": 0.4229
+    "x1_in": 0.423
    },
    {
     "index": 4,
     "hex": "ffffff",
-    "fraction": 0.0754,
-    "x0_in": 0.4229,
+    "fraction": 0.0753,
+    "x0_in": 0.423,
     "x1_in": 0.5266
    },
    {
     "index": 5,
-    "hex": "b8c9d6",
+    "hex": "20c0ff",
     "fraction": 0.234,
     "x0_in": 0.5266,
     "x1_in": 0.8484
@@ -89,33 +89,33 @@
     "hex": "ffffff",
     "fraction": 0.0754,
     "x0_in": 0.8484,
-    "x1_in": 0.952
+    "x1_in": 0.9521
    },
    {
     "index": 7,
-    "hex": "b8c9d6",
-    "fraction": 0.0414,
-    "x0_in": 0.952,
+    "hex": "20c0ff",
+    "fraction": 0.0413,
+    "x0_in": 0.9521,
     "x1_in": 1.0089
    },
    {
     "index": 8,
-    "hex": "1e40b3",
-    "fraction": 0.1699,
+    "hex": "0024aa",
+    "fraction": 0.17,
     "x0_in": 1.0089,
     "x1_in": 1.2426
    },
    {
     "index": 9,
-    "hex": "ec3843",
+    "hex": "ff0000",
     "fraction": 0.0439,
     "x0_in": 1.2426,
     "x1_in": 1.3029
    },
    {
     "index": 10,
-    "hex": "b8c9d6",
-    "fraction": 0.0525,
+    "hex": "20c0ff",
+    "fraction": 0.0524,
     "x0_in": 1.3029,
     "x1_in": 1.375
    }
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: Military Medals and Military Ribbons Info; the fact sheet of the Personnel Center carries no ribbon text (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,48 @@
    0.2,
    3.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Air and Space Campaign Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Air and Space Campaign Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "red",
+    "ultramarine",
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "light blue",
+    "ultramarine",
+    "red",
+    "light blue"
+   ],
+   "measured_hex": [
+    "b8c9d6",
+    "ec3843",
+    "1e40b3",
+    "b8c9d6",
+    "ffffff",
+    "b8c9d6",
+    "ffffff",
+    "b8c9d6",
+    "1e40b3",
+    "ec3843",
+    "b8c9d6"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: Military Medals and Military Ribbons Info; the fact sheet of the Personnel Center carries no ribbon text (no first-source text found)"
+   ],
+   "basis": "second source, viewed: Military Medals and Military Ribbons Info; the fact sheet of the Personnel Center carries no ribbon text (no first-source text found)",
+   "said": "light blue centre, thin white and light blue, a thicker dark blue, thin red, light blue at the edge",
+   "repairs": [
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 0.005
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

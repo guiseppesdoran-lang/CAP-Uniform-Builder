@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "c9195a",
+    "hex": "c02040",
     "fraction": 0.1969,
     "x0_in": 0,
     "x1_in": 0.2707
@@ -58,21 +58,21 @@
    },
    {
     "index": 2,
-    "hex": "0f257b",
-    "fraction": 0.1985,
+    "hex": "000080",
+    "fraction": 0.1984,
     "x0_in": 0.5511,
     "x1_in": 0.8239
    },
    {
     "index": 3,
-    "hex": "a4960b",
+    "hex": "ffc90e",
     "fraction": 0.2039,
     "x0_in": 0.8239,
     "x1_in": 1.1043
    },
    {
     "index": 4,
-    "hex": "15644b",
+    "hex": "008000",
     "fraction": 0.1969,
     "x0_in": 1.1043,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: Military Ribbons Info: red, white, blue, yellow and green stripes (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,31 @@
    0,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "crimson",
+    "white",
+    "navy",
+    "gold",
+    "green"
+   ],
+   "measured_hex": [
+    "c9195a",
+    "ffffff",
+    "0f257b",
+    "a4960b",
+    "15644b"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: Military Ribbons Info: red, white, blue, yellow and green stripes (no first-source text found)"
+   ],
+   "basis": "second source, viewed: Military Ribbons Info: red, white, blue, yellow and green stripes (no first-source text found)",
+   "said": "a red, white, blue, yellow and green striped ribbon",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

@@ -137,7 +137,7 @@
  },
  "classification": "polygons",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, the ribbon's published colour description as recalled from the awarding service's pages (not re-viewed in this pass): the colours of the Kuwaiti flag settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified",
   "snap": null,
   "reference": {
@@ -191,7 +191,29 @@
    0,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": {
+    "ground": "white",
+    "panel-red": "red",
+    "panel-green": "green",
+    "panel-white": "white",
+    "panel-black": "black"
+   },
+   "decided_by": [
+    "description"
+   ],
+   "basis": "the ribbon's published colour description as recalled from the awarding service's pages (not re-viewed in this pass): the colours of the Kuwaiti flag",
+   "repairs": [
+    {
+     "kind": "kuwait-panels-mirrored",
+     "red_inner_x_was": 46.41,
+     "green_inner_x_was": 92.84,
+     "inner_x_now": 45.53
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

@@ -44,21 +44,21 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "3b97d5",
+    "hex": "0080ff",
     "fraction": 0.293,
     "x0_in": 0,
     "x1_in": 0.4029
    },
    {
     "index": 1,
-    "hex": "fb7f71",
+    "hex": "ff0000",
     "fraction": 0.0645,
     "x0_in": 0.4029,
     "x1_in": 0.4916
    },
    {
     "index": 2,
-    "hex": "3255cd",
+    "hex": "0000ff",
     "fraction": 0.0743,
     "x0_in": 0.4916,
     "x1_in": 0.5937
@@ -72,21 +72,21 @@
    },
    {
     "index": 4,
-    "hex": "3255cd",
+    "hex": "0000ff",
     "fraction": 0.0743,
     "x0_in": 0.7813,
     "x1_in": 0.8834
    },
    {
     "index": 5,
-    "hex": "fb7f71",
+    "hex": "ff0000",
     "fraction": 0.0645,
     "x0_in": 0.8834,
     "x1_in": 0.9721
    },
    {
     "index": 6,
-    "hex": "3b97d5",
+    "hex": "0080ff",
     "fraction": 0.293,
     "x0_in": 0.9721,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,32 @@
    0.2,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "azure",
+    "red",
+    "blue",
+    "white",
+    "blue",
+    "red",
+    "azure"
+   ],
+   "measured_hex": [
+    "3b97d5",
+    "fb7f71",
+    "3255cd",
+    "ffffff",
+    "3255cd",
+    "fb7f71",
+    "3b97d5"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [],
  "aliases": [

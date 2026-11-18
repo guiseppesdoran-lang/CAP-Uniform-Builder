@@ -44,22 +44,22 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "16151e",
+    "hex": "000000",
     "fraction": 0.0468,
     "x0_in": 0,
     "x1_in": 0.0644
    },
    {
     "index": 1,
-    "hex": "e7cfa2",
+    "hex": "f5deb3",
     "fraction": 0.0842,
     "x0_in": 0.0644,
     "x1_in": 0.1802
    },
    {
     "index": 2,
-    "hex": "3a3789",
-    "fraction": 0.048,
+    "hex": "0024aa",
+    "fraction": 0.0479,
     "x0_in": 0.1802,
     "x1_in": 0.2461
    },
@@ -72,49 +72,49 @@
    },
    {
     "index": 4,
-    "hex": "b3202d",
+    "hex": "ff0000",
     "fraction": 0.046,
     "x0_in": 0.3105,
     "x1_in": 0.3738
    },
    {
     "index": 5,
-    "hex": "e7cfa2",
+    "hex": "f5deb3",
     "fraction": 0.1367,
     "x0_in": 0.3738,
     "x1_in": 0.5617
    },
    {
     "index": 6,
-    "hex": "096e41",
-    "fraction": 0.0686,
+    "hex": "008000",
+    "fraction": 0.0687,
     "x0_in": 0.5617,
     "x1_in": 0.6561
    },
    {
     "index": 7,
-    "hex": "16151e",
-    "fraction": 0.0456,
+    "hex": "000000",
+    "fraction": 0.0457,
     "x0_in": 0.6561,
     "x1_in": 0.7189
    },
    {
     "index": 8,
-    "hex": "096e41",
-    "fraction": 0.0686,
+    "hex": "008000",
+    "fraction": 0.0687,
     "x0_in": 0.7189,
     "x1_in": 0.8133
    },
    {
     "index": 9,
-    "hex": "e7cfa2",
+    "hex": "f5deb3",
     "fraction": 0.1367,
     "x0_in": 0.8133,
     "x1_in": 1.0012
    },
    {
     "index": 10,
-    "hex": "b3202d",
+    "hex": "ff0000",
     "fraction": 0.046,
     "x0_in": 1.0012,
     "x1_in": 1.0645
@@ -128,21 +128,21 @@
    },
    {
     "index": 12,
-    "hex": "3a3789",
-    "fraction": 0.048,
+    "hex": "0024aa",
+    "fraction": 0.0479,
     "x0_in": 1.1289,
     "x1_in": 1.1948
    },
    {
     "index": 13,
-    "hex": "e7cfa2",
+    "hex": "f5deb3",
     "fraction": 0.0842,
     "x0_in": 1.1948,
     "x1_in": 1.3106
    },
    {
     "index": 14,
-    "hex": "16151e",
+    "hex": "000000",
     "fraction": 0.0468,
     "x0_in": 1.3106,
     "x1_in": 1.375
@@ -153,7 +153,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -219,7 +219,51 @@
    0.6,
    0.7
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":15,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Southwest Asia Service Medal ribbon.svg (Public domain), boundary match 0.86\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":15,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Southwest Asia Service Medal ribbon.svg (Public domain), boundary match 0.86\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "black",
+    "buff",
+    "ultramarine",
+    "white",
+    "red",
+    "buff",
+    "green",
+    "black",
+    "green",
+    "buff",
+    "red",
+    "white",
+    "ultramarine",
+    "buff",
+    "black"
+   ],
+   "measured_hex": [
+    "16151e",
+    "e7cfa2",
+    "3a3789",
+    "ffffff",
+    "b3202d",
+    "e7cfa2",
+    "096e41",
+    "16151e",
+    "096e41",
+    "e7cfa2",
+    "b3202d",
+    "ffffff",
+    "3a3789",
+    "e7cfa2",
+    "16151e"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "chamois field with black edges and centre, myrtle green, Old Glory blue, white, Old Glory red",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

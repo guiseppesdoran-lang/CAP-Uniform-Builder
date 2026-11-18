@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a0b4c5",
+    "hex": "20c0ff",
     "fraction": 0.1065,
     "x0_in": 0,
     "x1_in": 0.1465
@@ -58,8 +58,8 @@
    },
    {
     "index": 2,
-    "hex": "a0b4c5",
-    "fraction": 0.0426,
+    "hex": "20c0ff",
+    "fraction": 0.0425,
     "x0_in": 0.2178,
     "x1_in": 0.2763
    },
@@ -72,8 +72,8 @@
    },
    {
     "index": 4,
-    "hex": "a0b4c5",
-    "fraction": 0.0423,
+    "hex": "20c0ff",
+    "fraction": 0.0424,
     "x0_in": 0.3485,
     "x1_in": 0.4068
    },
@@ -86,7 +86,7 @@
    },
    {
     "index": 6,
-    "hex": "273ba3",
+    "hex": "0024aa",
     "fraction": 0.3094,
     "x0_in": 0.4748,
     "x1_in": 0.9002
@@ -100,8 +100,8 @@
    },
    {
     "index": 8,
-    "hex": "a0b4c5",
-    "fraction": 0.0423,
+    "hex": "20c0ff",
+    "fraction": 0.0424,
     "x0_in": 0.9682,
     "x1_in": 1.0265
    },
@@ -114,7 +114,7 @@
    },
    {
     "index": 10,
-    "hex": "a0b4c5",
+    "hex": "20c0ff",
     "fraction": 0.0425,
     "x0_in": 1.0987,
     "x1_in": 1.1572
@@ -128,7 +128,7 @@
    },
    {
     "index": 12,
-    "hex": "a0b4c5",
+    "hex": "20c0ff",
     "fraction": 0.1065,
     "x0_in": 1.2285,
     "x1_in": 1.375
@@ -140,15 +140,15 @@
    {
     "kind": "dots",
     "columns_in": [
-     0.5803,
-     0.6784,
-     0.7777
+     0.5888,
+     0.6875,
+     0.7862
     ],
     "rows_in": [
-     0.0452,
-     0.1403,
-     0.2348,
-     0.328
+     0.0461,
+     0.1404,
+     0.2346,
+     0.3289
     ],
     "rx_in": 0.012,
     "ry_in": 0.0243
@@ -157,7 +157,7 @@
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: medals.org.uk; the vector drawing of the ribbon on Wikimedia Commons agrees: a light turquoise-blue, white, a dark blue centre (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -221,7 +221,55 @@
    5.4,
    1.7
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":19,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":19,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "ultramarine",
+    "white",
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "light blue"
+   ],
+   "measured_hex": [
+    "a0b4c5",
+    "ffffff",
+    "a0b4c5",
+    "ffffff",
+    "a0b4c5",
+    "ffffff",
+    "273ba3",
+    "ffffff",
+    "a0b4c5",
+    "ffffff",
+    "a0b4c5",
+    "ffffff",
+    "a0b4c5"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: medals.org.uk; the vector drawing of the ribbon on Wikimedia Commons agrees: a light turquoise-blue, white, a dark blue centre (no first-source text found)"
+   ],
+   "basis": "second source, viewed: medals.org.uk; the vector drawing of the ribbon on Wikimedia Commons agrees: a light turquoise-blue, white, a dark blue centre (no first-source text found)",
+   "said": "light blue with a dark blue central stripe and white stripes",
+   "repairs": [
+    {
+     "kind": "dots-regularised",
+     "columns": 3,
+     "rows": 4,
+     "cols_shift": 0.87,
+     "rows_shift": 0.04
+    }
+   ]
+  }
  },
  "authorized_services": [],
  "aliases": [

@@ -44,51 +44,37 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "6577c5",
-    "fraction": 0.0199,
+    "hex": "0024aa",
+    "fraction": 0.2613,
     "y0_in": 0,
-    "y1_in": 0.0075
-   },
-   {
-    "index": 1,
-    "hex": "2843ba",
-    "fraction": 0.2414,
-    "y0_in": 0.0075,
     "y1_in": 0.098
    },
    {
-    "index": 2,
+    "index": 1,
     "hex": "ffffff",
-    "fraction": 0.1078,
+    "fraction": 0.1077,
     "y0_in": 0.098,
     "y1_in": 0.1384
    },
    {
-    "index": 3,
-    "hex": "b6202e",
+    "index": 2,
+    "hex": "ff0000",
     "fraction": 0.2619,
     "y0_in": 0.1384,
     "y1_in": 0.2366
    },
    {
-    "index": 4,
+    "index": 3,
     "hex": "ffffff",
-    "fraction": 0.1078,
+    "fraction": 0.1077,
     "y0_in": 0.2366,
     "y1_in": 0.277
    },
    {
-    "index": 5,
-    "hex": "2843ba",
-    "fraction": 0.2414,
+    "index": 4,
+    "hex": "0024aa",
+    "fraction": 0.2613,
     "y0_in": 0.277,
-    "y1_in": 0.3675
-   },
-   {
-    "index": 6,
-    "hex": "6577c5",
-    "fraction": 0.0199,
-    "y0_in": 0.3675,
     "y1_in": 0.375
    }
   ],
@@ -97,7 +83,7 @@
  },
  "classification": "hstripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +141,50 @@
    1.1,
    6.6
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"horizontal-bands\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"horizontal-bands\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "white",
+    "red",
+    "white",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "6577c5+2843ba",
+    "ffffff",
+    "b6202e",
+    "ffffff",
+    "2843ba+6577c5"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "Ultramarine Blue with a centre Old Glory Red stripe edged white",
+   "repairs": [
+    {
+     "kind": "split-merged",
+     "at_x": 0.75,
+     "colour": "ultramarine",
+     "from": [
+      "6577c5",
+      "2843ba"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 36.75,
+     "colour": "ultramarine",
+     "from": [
+      "2843ba",
+      "6577c5"
+     ]
+    }
+   ]
+  }
  },
  "authorized_services": [
   "ARMY"

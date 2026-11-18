@@ -44,289 +44,177 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "6d4492",
-    "fraction": 0.0272,
+    "hex": "5f347f",
+    "fraction": 0.0288,
     "x0_in": 0,
-    "x1_in": 0.0374
+    "x1_in": 0.0396
    },
    {
     "index": 1,
-    "hex": "414eab",
-    "fraction": 0.0133,
-    "x0_in": 0.0374,
-    "x1_in": 0.0557
+    "hex": "0000ff",
+    "fraction": 0.029,
+    "x0_in": 0.0396,
+    "x1_in": 0.0795
    },
    {
     "index": 2,
-    "hex": "1d53ab",
-    "fraction": 0.0163,
-    "x0_in": 0.0557,
-    "x1_in": 0.078
+    "hex": "0080ff",
+    "fraction": 0.0084,
+    "x0_in": 0.0795,
+    "x1_in": 0.091
    },
    {
     "index": 3,
-    "hex": "5392c0",
-    "fraction": 0.0087,
-    "x0_in": 0.078,
-    "x1_in": 0.0901
+    "hex": "008000",
+    "fraction": 0.0121,
+    "x0_in": 0.091,
+    "x1_in": 0.1076
    },
    {
     "index": 4,
-    "hex": "6cc161",
-    "fraction": 0.012,
-    "x0_in": 0.0901,
-    "x1_in": 0.1066
+    "hex": "ffc90e",
+    "fraction": 0.0444,
+    "x0_in": 0.1076,
+    "x1_in": 0.1687
    },
    {
     "index": 5,
-    "hex": "e4d12d",
-    "fraction": 0.0081,
-    "x0_in": 0.1066,
-    "x1_in": 0.1177
+    "hex": "ff8040",
+    "fraction": 0.014,
+    "x0_in": 0.1687,
+    "x1_in": 0.188
    },
    {
     "index": 6,
-    "hex": "f1d03a",
-    "fraction": 0.0178,
-    "x0_in": 0.1177,
-    "x1_in": 0.1422
+    "hex": "ffc90e",
+    "fraction": 0.0457,
+    "x0_in": 0.188,
+    "x1_in": 0.2508
    },
    {
     "index": 7,
-    "hex": "f2a929",
-    "fraction": 0.0191,
-    "x0_in": 0.1422,
-    "x1_in": 0.1685
+    "hex": "008000",
+    "fraction": 0.013,
+    "x0_in": 0.2508,
+    "x1_in": 0.2687
    },
    {
     "index": 8,
-    "hex": "f47a35",
-    "fraction": 0.0139,
-    "x0_in": 0.1685,
-    "x1_in": 0.1876
+    "hex": "0080ff",
+    "fraction": 0.0094,
+    "x0_in": 0.2687,
+    "x1_in": 0.2816
    },
    {
     "index": 9,
-    "hex": "f2a929",
-    "fraction": 0.0188,
-    "x0_in": 0.1876,
-    "x1_in": 0.2135
+    "hex": "0000ff",
+    "fraction": 0.0344,
+    "x0_in": 0.2816,
+    "x1_in": 0.3289
    },
    {
     "index": 10,
-    "hex": "f1d03a",
-    "fraction": 0.0191,
-    "x0_in": 0.2135,
-    "x1_in": 0.2398
+    "hex": "5f347f",
+    "fraction": 0.0275,
+    "x0_in": 0.3289,
+    "x1_in": 0.3667
    },
    {
     "index": 11,
-    "hex": "e4d12d",
-    "fraction": 0.0076,
-    "x0_in": 0.2398,
-    "x1_in": 0.2503
+    "hex": "ffffff",
+    "fraction": 0.0257,
+    "x0_in": 0.3667,
+    "x1_in": 0.402
    },
    {
     "index": 12,
-    "hex": "6cc161",
-    "fraction": 0.0132,
-    "x0_in": 0.2503,
-    "x1_in": 0.2684
+    "hex": "ff0000",
+    "fraction": 0.4153,
+    "x0_in": 0.402,
+    "x1_in": 0.9731
    },
    {
     "index": 13,
-    "hex": "5392c0",
-    "fraction": 0.0093,
-    "x0_in": 0.2684,
-    "x1_in": 0.2812
+    "hex": "ffffff",
+    "fraction": 0.0257,
+    "x0_in": 0.9731,
+    "x1_in": 1.0084
    },
    {
     "index": 14,
-    "hex": "265cb0",
-    "fraction": 0.0219,
-    "x0_in": 0.2812,
-    "x1_in": 0.3113
+    "hex": "5f347f",
+    "fraction": 0.0275,
+    "x0_in": 1.0084,
+    "x1_in": 1.0462
    },
    {
     "index": 15,
-    "hex": "605ebf",
-    "fraction": 0.0131,
-    "x0_in": 0.3113,
-    "x1_in": 0.3293
+    "hex": "0000ff",
+    "fraction": 0.0344,
+    "x0_in": 1.0462,
+    "x1_in": 1.0935
    },
    {
     "index": 16,
-    "hex": "6c46ac",
-    "fraction": 0.013,
-    "x0_in": 0.3293,
-    "x1_in": 0.3471
+    "hex": "0080ff",
+    "fraction": 0.0094,
+    "x0_in": 1.0935,
+    "x1_in": 1.1064
    },
    {
     "index": 17,
-    "hex": "784f8e",
-    "fraction": 0.0148,
-    "x0_in": 0.3471,
-    "x1_in": 0.3675
+    "hex": "008000",
+    "fraction": 0.013,
+    "x0_in": 1.1064,
+    "x1_in": 1.1243
    },
    {
     "index": 18,
-    "hex": "ffffff",
-    "fraction": 0.025,
-    "x0_in": 0.3675,
-    "x1_in": 0.4019
+    "hex": "ffc90e",
+    "fraction": 0.0457,
+    "x0_in": 1.1243,
+    "x1_in": 1.1871
    },
    {
     "index": 19,
-    "hex": "b82232",
-    "fraction": 0.4105,
-    "x0_in": 0.4019,
-    "x1_in": 0.9663
+    "hex": "ff8040",
+    "fraction": 0.014,
+    "x0_in": 1.1871,
+    "x1_in": 1.2063
    },
    {
     "index": 20,
-    "hex": "cf444d",
-    "fraction": 0.0049,
-    "x0_in": 0.9663,
-    "x1_in": 0.973
+    "hex": "ffc90e",
+    "fraction": 0.0444,
+    "x0_in": 1.2063,
+    "x1_in": 1.2674
    },
    {
     "index": 21,
-    "hex": "ffffff",
-    "fraction": 0.0263,
-    "x0_in": 0.973,
-    "x1_in": 1.0092
+    "hex": "008000",
+    "fraction": 0.0121,
+    "x0_in": 1.2674,
+    "x1_in": 1.2841
    },
    {
     "index": 22,
-    "hex": "784f8e",
-    "fraction": 0.014,
-    "x0_in": 1.0092,
-    "x1_in": 1.0284
+    "hex": "0080ff",
+    "fraction": 0.0083,
+    "x0_in": 1.2841,
+    "x1_in": 1.2955
    },
    {
     "index": 23,
-    "hex": "6c46ac",
-    "fraction": 0.0133,
-    "x0_in": 1.0284,
-    "x1_in": 1.0466
+    "hex": "0000ff",
+    "fraction": 0.029,
+    "x0_in": 1.2955,
+    "x1_in": 1.3354
    },
    {
     "index": 24,
-    "hex": "414eab",
-    "fraction": 0.0151,
-    "x0_in": 1.0466,
-    "x1_in": 1.0674
-   },
-   {
-    "index": 25,
-    "hex": "265cb0",
-    "fraction": 0.0187,
-    "x0_in": 1.0674,
-    "x1_in": 1.0931
-   },
-   {
-    "index": 26,
-    "hex": "5392c0",
-    "fraction": 0.0094,
-    "x0_in": 1.0931,
-    "x1_in": 1.106
-   },
-   {
-    "index": 27,
-    "hex": "7fca70",
-    "fraction": 0.0129,
-    "x0_in": 1.106,
-    "x1_in": 1.1238
-   },
-   {
-    "index": 28,
-    "hex": "e4d12d",
-    "fraction": 0.0062,
-    "x0_in": 1.1238,
-    "x1_in": 1.1324
-   },
-   {
-    "index": 29,
-    "hex": "f1d03a",
-    "fraction": 0.021,
-    "x0_in": 1.1324,
-    "x1_in": 1.1613
-   },
-   {
-    "index": 30,
-    "hex": "f2a929",
-    "fraction": 0.0185,
-    "x0_in": 1.1613,
-    "x1_in": 1.1867
-   },
-   {
-    "index": 31,
-    "hex": "f47a35",
-    "fraction": 0.0141,
-    "x0_in": 1.1867,
-    "x1_in": 1.2061
-   },
-   {
-    "index": 32,
-    "hex": "f2a929",
-    "fraction": 0.0185,
-    "x0_in": 1.2061,
-    "x1_in": 1.2316
-   },
-   {
-    "index": 33,
-    "hex": "f1d03a",
-    "fraction": 0.0191,
-    "x0_in": 1.2316,
-    "x1_in": 1.2579
-   },
-   {
-    "index": 34,
-    "hex": "e4d12d",
-    "fraction": 0.0062,
-    "x0_in": 1.2579,
-    "x1_in": 1.2664
-   },
-   {
-    "index": 35,
-    "hex": "6cc161",
-    "fraction": 0.0122,
-    "x0_in": 1.2664,
-    "x1_in": 1.2832
-   },
-   {
-    "index": 36,
-    "hex": "5392c0",
-    "fraction": 0.0078,
-    "x0_in": 1.2832,
-    "x1_in": 1.294
-   },
-   {
-    "index": 37,
-    "hex": "265cb0",
-    "fraction": 0.0156,
-    "x0_in": 1.294,
-    "x1_in": 1.3155
-   },
-   {
-    "index": 38,
-    "hex": "3c53a9",
-    "fraction": 0.0129,
-    "x0_in": 1.3155,
-    "x1_in": 1.3332
-   },
-   {
-    "index": 39,
-    "hex": "6e4a9f",
-    "fraction": 0.0156,
-    "x0_in": 1.3332,
-    "x1_in": 1.3547
-   },
-   {
-    "index": 40,
-    "hex": "78538a",
-    "fraction": 0.0147,
-    "x0_in": 1.3547,
+    "hex": "5f347f",
+    "fraction": 0.0288,
+    "x0_in": 1.3354,
     "x1_in": 1.375
    }
   ],
@@ -335,7 +223,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified",
   "snap": null,
   "reference": {
@@ -427,7 +315,251 @@
    0,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":22,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":22,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "violet",
+    "blue",
+    "azure",
+    "green",
+    "gold",
+    "orange",
+    "gold",
+    "green",
+    "azure",
+    "blue",
+    "violet",
+    "white",
+    "red",
+    "white",
+    "violet",
+    "blue",
+    "azure",
+    "green",
+    "gold",
+    "orange",
+    "gold",
+    "green",
+    "azure",
+    "blue",
+    "violet"
+   ],
+   "measured_hex": [
+    "6d4492",
+    "414eab+1d53ab",
+    "5392c0",
+    "6cc161",
+    "e4d12d+f1d03a+f2a929",
+    "f47a35",
+    "f2a929+f1d03a+e4d12d",
+    "6cc161",
+    "5392c0",
+    "265cb0+605ebf",
+    "6c46ac+784f8e",
+    "ffffff",
+    "b82232+cf444d",
+    "ffffff",
+    "784f8e+6c46ac",
+    "414eab+265cb0",
+    "5392c0",
+    "7fca70",
+    "e4d12d+f1d03a+f2a929",
+    "f47a35",
+    "f2a929+f1d03a+e4d12d",
+    "6cc161",
+    "5392c0",
+    "265cb0+3c53a9",
+    "6e4a9f+78538a"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": [
+    {
+     "kind": "split-merged",
+     "at_x": 5.57,
+     "colour": "blue",
+     "from": [
+      "414eab",
+      "1d53ab"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 11.77,
+     "colour": "gold",
+     "from": [
+      "e4d12d",
+      "f1d03a"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 14.22,
+     "colour": "gold",
+     "from": [
+      "e4d12d",
+      "f2a929"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 21.35,
+     "colour": "gold",
+     "from": [
+      "f2a929",
+      "f1d03a"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 23.98,
+     "colour": "gold",
+     "from": [
+      "f2a929",
+      "e4d12d"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 31.13,
+     "colour": "blue",
+     "from": [
+      "265cb0",
+      "605ebf"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 34.71,
+     "colour": "violet",
+     "from": [
+      "6c46ac",
+      "784f8e"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 96.63,
+     "colour": "red",
+     "from": [
+      "b82232",
+      "cf444d"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 102.84,
+     "colour": "violet",
+     "from": [
+      "784f8e",
+      "6c46ac"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 106.74,
+     "colour": "blue",
+     "from": [
+      "414eab",
+      "265cb0"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 113.24,
+     "colour": "gold",
+     "from": [
+      "e4d12d",
+      "f1d03a"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 116.13,
+     "colour": "gold",
+     "from": [
+      "e4d12d",
+      "f2a929"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 123.16,
+     "colour": "gold",
+     "from": [
+      "f2a929",
+      "f1d03a"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 125.79,
+     "colour": "gold",
+     "from": [
+      "f2a929",
+      "e4d12d"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 131.55,
+     "colour": "blue",
+     "from": [
+      "265cb0",
+      "3c53a9"
+     ]
+    },
+    {
+     "kind": "split-merged",
+     "at_x": 135.47,
+     "colour": "violet",
+     "from": [
+      "6e4a9f",
+      "78538a"
+     ]
+    },
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 0.22
+    }
+   ],
+   "doubtful": [
+    {
+     "measured": "414eab",
+     "chosen": "blue",
+     "candidates": [
+      "blue",
+      "ultramarine"
+     ]
+    },
+    {
+     "measured": "1d53ab",
+     "chosen": "blue",
+     "candidates": [
+      "blue",
+      "ultramarine"
+     ]
+    },
+    {
+     "measured": "f2a929",
+     "chosen": "gold",
+     "candidates": [
+      "gold",
+      "amber"
+     ]
+    },
+    {
+     "measured": "6c46ac",
+     "chosen": "violet",
+     "candidates": [
+      "violet",
+      "blue"
+     ]
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

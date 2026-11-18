@@ -44,35 +44,35 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "4183d2",
+    "hex": "0080ff",
     "fraction": 0.2611,
     "x0_in": 0,
     "x1_in": 0.359
    },
    {
     "index": 1,
-    "hex": "f8cd24",
+    "hex": "ffc90e",
     "fraction": 0.1926,
     "x0_in": 0.359,
     "x1_in": 0.6238
    },
    {
     "index": 2,
-    "hex": "e23235",
+    "hex": "ff0000",
     "fraction": 0.0927,
     "x0_in": 0.6238,
     "x1_in": 0.7512
    },
    {
     "index": 3,
-    "hex": "f8cd24",
+    "hex": "ffc90e",
     "fraction": 0.1926,
     "x0_in": 0.7512,
     "x1_in": 1.016
    },
    {
     "index": 4,
-    "hex": "4183d2",
+    "hex": "0080ff",
     "fraction": 0.2611,
     "x0_in": 1.016,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,28 @@
    0.1,
    0.1
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Defense Distinguished Service Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Defense Distinguished Service Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "azure",
+    "gold",
+    "red",
+    "gold",
+    "azure"
+   ],
+   "measured_hex": [
+    "4183d2",
+    "f8cd24",
+    "e23235",
+    "f8cd24",
+    "4183d2"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

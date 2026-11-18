@@ -44,49 +44,49 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "9c1e2f",
+    "hex": "ff0000",
     "fraction": 0.0472,
     "x0_in": 0,
     "x1_in": 0.0649
    },
    {
     "index": 1,
-    "hex": "d2cec9",
+    "hex": "ffffff",
     "fraction": 0.0471,
     "x0_in": 0.0649,
     "x1_in": 0.1297
    },
    {
     "index": 2,
-    "hex": "9fb6c0",
+    "hex": "20c0ff",
     "fraction": 0.3255,
     "x0_in": 0.1297,
     "x1_in": 0.5772
    },
    {
     "index": 3,
-    "hex": "9c1e2f",
+    "hex": "ff0000",
     "fraction": 0.1604,
     "x0_in": 0.5772,
     "x1_in": 0.7978
    },
    {
     "index": 4,
-    "hex": "9fb6c0",
+    "hex": "20c0ff",
     "fraction": 0.3255,
     "x0_in": 0.7978,
     "x1_in": 1.2453
    },
    {
     "index": 5,
-    "hex": "d2cec9",
+    "hex": "ffffff",
     "fraction": 0.0471,
     "x0_in": 1.2453,
     "x1_in": 1.3101
    },
    {
     "index": 6,
-    "hex": "9c1e2f",
+    "hex": "ff0000",
     "fraction": 0.0472,
     "x0_in": 1.3101,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Not sold by Vanguard. Widths from the public-domain vector, colours read with the thread method from the repo fabric raster.",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Wikimedia Commons File:Air Force Recognition Ribbon.svg (public domain, cached) for widths; repo fabric raster for colours, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -136,7 +136,35 @@
    0,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "light blue",
+    "red",
+    "light blue",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "9c1e2f",
+    "d2cec9",
+    "9fb6c0",
+    "9c1e2f",
+    "9fb6c0",
+    "d2cec9",
+    "9c1e2f"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "predominantly light blue, a narrow red centre, wide light blue, thin white and red at the edge",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

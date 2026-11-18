@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "7bafd4",
+    "hex": "20c0ff",
     "fraction": 1,
     "x0_in": 0,
     "x1_in": 1.375
@@ -54,7 +54,7 @@
    {
     "index": 0,
     "center_in": [
-     0.4159,
+     0.4164,
      0.1614
     ],
     "outer_radius_in": 0.0565,
@@ -64,7 +64,7 @@
    {
     "index": 1,
     "center_in": [
-     0.9581,
+     0.9586,
      0.1614
     ],
     "outer_radius_in": 0.0565,
@@ -74,7 +74,7 @@
    {
     "index": 2,
     "center_in": [
-     0.687,
+     0.6875,
      0.1928
     ],
     "outer_radius_in": 0.0565,
@@ -84,7 +84,7 @@
    {
     "index": 3,
     "center_in": [
-     0.1449,
+     0.1454,
      0.2242
     ],
     "outer_radius_in": 0.0565,
@@ -94,7 +94,7 @@
    {
     "index": 4,
     "center_in": [
-     1.2292,
+     1.2296,
      0.2242
     ],
     "outer_radius_in": 0.0565,
@@ -106,7 +106,7 @@
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Not sold by Vanguard. Field fill and the five stars from the cached public-domain vector; its black rib lines are texture and are dropped.",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, white stars settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Wikimedia Commons File:Medal of Honor ribbon.svg (public domain, cached in ribbons/military/references.cache.json), mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,21 @@
   "stripe_distance_to_lit": [
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":1,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":1,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue"
+   ],
+   "measured_hex": [
+    "7bafd4"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "basis": "white stars",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

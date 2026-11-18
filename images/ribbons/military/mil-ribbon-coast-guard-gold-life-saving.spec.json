@@ -44,36 +44,36 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a81529",
-    "fraction": 0.1162,
+    "hex": "ff0000",
+    "fraction": 0.1161,
     "x0_in": 0,
     "x1_in": 0.1597
    },
    {
     "index": 1,
-    "hex": "e8d0d0",
+    "hex": "ffffff",
     "fraction": 0.0285,
     "x0_in": 0.1597,
     "x1_in": 0.1989
    },
    {
     "index": 2,
-    "hex": "dfa934",
+    "hex": "ffc90e",
     "fraction": 0.7107,
     "x0_in": 0.1989,
     "x1_in": 1.1761
    },
    {
     "index": 3,
-    "hex": "e8d0d0",
+    "hex": "ffffff",
     "fraction": 0.0285,
     "x0_in": 1.1761,
     "x1_in": 1.2153
    },
    {
     "index": 4,
-    "hex": "a81529",
-    "fraction": 0.1162,
+    "hex": "ff0000",
+    "fraction": 0.1161,
     "x0_in": 1.2153,
     "x1_in": 1.375
    }
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,31 @@
    0.5,
    0.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "gold",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "a81529",
+    "e8d0d0",
+    "dfa934",
+    "e8d0d0",
+    "a81529"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "a broad old gold centre, Old Glory red stripes, white pinstripes",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

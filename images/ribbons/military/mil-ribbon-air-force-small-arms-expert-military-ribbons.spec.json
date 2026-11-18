@@ -44,35 +44,35 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "9fb4c7",
+    "hex": "20c0ff",
     "fraction": 0.177,
     "x0_in": 0,
     "x1_in": 0.2434
    },
    {
     "index": 1,
-    "hex": "f0cd32",
-    "fraction": 0.0608,
+    "hex": "ffc90e",
+    "fraction": 0.0607,
     "x0_in": 0.2434,
     "x1_in": 0.3269
    },
    {
     "index": 2,
-    "hex": "427841",
-    "fraction": 0.5244,
+    "hex": "008000",
+    "fraction": 0.5245,
     "x0_in": 0.3269,
     "x1_in": 1.0481
    },
    {
     "index": 3,
-    "hex": "f0cd32",
-    "fraction": 0.0608,
+    "hex": "ffc90e",
+    "fraction": 0.0607,
     "x0_in": 1.0481,
     "x1_in": 1.1316
    },
    {
     "index": 4,
-    "hex": "9fb4c7",
+    "hex": "20c0ff",
     "fraction": 0.177,
     "x0_in": 1.1316,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,31 @@
    0.4,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "gold",
+    "green",
+    "gold",
+    "light blue"
+   ],
+   "measured_hex": [
+    "9fb4c7",
+    "f0cd32",
+    "427841",
+    "f0cd32",
+    "9fb4c7"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "very wide laurel green centre, thin yellow stripes, a wide light blue stripe at each edge",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

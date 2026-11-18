@@ -44,29 +44,29 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "8cced8",
+    "hex": "20c0ff",
     "fraction": 0.0946,
     "x0_in": 0,
     "x1_in": 0.1301
    },
    {
     "index": 1,
-    "hex": "373a73",
-    "fraction": 0.185,
+    "hex": "0024aa",
+    "fraction": 0.1849,
     "x0_in": 0.1301,
     "x1_in": 0.3844
    },
    {
     "index": 2,
-    "hex": "f8cd2f",
+    "hex": "ffc90e",
     "fraction": 0.0498,
     "x0_in": 0.3844,
     "x1_in": 0.4529
    },
    {
     "index": 3,
-    "hex": "ef3d3f",
-    "fraction": 0.1157,
+    "hex": "ff0000",
+    "fraction": 0.1156,
     "x0_in": 0.4529,
     "x1_in": 0.6119
    },
@@ -79,7 +79,7 @@
    },
    {
     "index": 5,
-    "hex": "373a73",
+    "hex": "0024aa",
     "fraction": 0.0225,
     "x0_in": 0.672,
     "x1_in": 0.703
@@ -93,28 +93,28 @@
    },
    {
     "index": 7,
-    "hex": "ef3d3f",
-    "fraction": 0.1157,
+    "hex": "ff0000",
+    "fraction": 0.1156,
     "x0_in": 0.7631,
     "x1_in": 0.9221
    },
    {
     "index": 8,
-    "hex": "f8cd2f",
+    "hex": "ffc90e",
     "fraction": 0.0498,
     "x0_in": 0.9221,
     "x1_in": 0.9906
    },
    {
     "index": 9,
-    "hex": "373a73",
-    "fraction": 0.185,
+    "hex": "0024aa",
+    "fraction": 0.1849,
     "x0_in": 0.9906,
     "x1_in": 1.2449
    },
    {
     "index": 10,
-    "hex": "8cced8",
+    "hex": "20c0ff",
     "fraction": 0.0946,
     "x0_in": 1.2449,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,40 @@
    0.4,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "ultramarine",
+    "gold",
+    "red",
+    "white",
+    "ultramarine",
+    "white",
+    "red",
+    "gold",
+    "ultramarine",
+    "light blue"
+   ],
+   "measured_hex": [
+    "8cced8",
+    "373a73",
+    "f8cd2f",
+    "ef3d3f",
+    "ffffff",
+    "373a73",
+    "ffffff",
+    "ef3d3f",
+    "f8cd2f",
+    "373a73",
+    "8cced8"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

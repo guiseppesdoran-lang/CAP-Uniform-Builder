@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "029dbb",
+    "hex": "0080ff",
     "fraction": 0.1641,
     "x0_in": 0,
     "x1_in": 0.2257
@@ -52,13 +52,13 @@
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0472,
+    "fraction": 0.0471,
     "x0_in": 0.2257,
     "x1_in": 0.2905
    },
    {
     "index": 2,
-    "hex": "e73a44",
+    "hex": "ff0000",
     "fraction": 0.0314,
     "x0_in": 0.2905,
     "x1_in": 0.3337
@@ -72,8 +72,8 @@
    },
    {
     "index": 4,
-    "hex": "eede2d",
-    "fraction": 0.4255,
+    "hex": "ffc90e",
+    "fraction": 0.4256,
     "x0_in": 0.3949,
     "x1_in": 0.9801
    },
@@ -86,7 +86,7 @@
    },
    {
     "index": 6,
-    "hex": "e73a44",
+    "hex": "ff0000",
     "fraction": 0.0314,
     "x0_in": 1.0413,
     "x1_in": 1.0845
@@ -94,13 +94,13 @@
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0472,
+    "fraction": 0.0471,
     "x0_in": 1.0845,
     "x1_in": 1.1493
    },
    {
     "index": 8,
-    "hex": "029dbb",
+    "hex": "0080ff",
     "fraction": 0.1641,
     "x0_in": 1.1493,
     "x1_in": 1.375
@@ -112,20 +112,20 @@
    {
     "kind": "taeguk",
     "center_in": [
-     0.6914,
-     0.1869
+     0.6875,
+     0.1875
     ],
     "radius_in": 0.1264,
     "tilt_deg": 186,
-    "red_hex": "c24a35",
-    "blue_hex": "32465e",
+    "red_hex": "ff0000",
+    "blue_hex": "0024aa",
     "fit_share": 0.984
    }
   ]
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, the taeguk of the Korean flag, red over blue settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -185,7 +185,55 @@
    4.8,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "azure",
+    "white",
+    "red",
+    "white",
+    "gold",
+    "white",
+    "red",
+    "white",
+    "azure"
+   ],
+   "measured_hex": [
+    "029dbb",
+    "ffffff",
+    "e73a44",
+    "ffffff",
+    "eede2d",
+    "ffffff",
+    "e73a44",
+    "ffffff",
+    "029dbb"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "basis": "the taeguk of the Korean flag, red over blue",
+   "repairs": [
+    {
+     "kind": "taeguk-centred",
+     "shift_units": [
+      -0.39,
+      0.06
+     ]
+    }
+   ],
+   "doubtful": [
+    {
+     "measured": "eede2d",
+     "chosen": "gold",
+     "candidates": [
+      "gold",
+      "yellow"
+     ]
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

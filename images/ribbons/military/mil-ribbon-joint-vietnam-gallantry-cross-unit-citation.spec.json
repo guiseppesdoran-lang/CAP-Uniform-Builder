@@ -44,266 +44,265 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a71b29",
-    "fraction": 0.2612,
+    "hex": "ff0000",
+    "fraction": 0.2705,
     "x0_in": 0,
-    "x1_in": 0.3592
+    "x1_in": 0.372
    },
    {
     "index": 1,
-    "hex": "e6a11c",
-    "fraction": 0.0278,
-    "x0_in": 0.3592,
-    "x1_in": 0.3975
+    "hex": "ffc90e",
+    "fraction": 0.0279,
+    "x0_in": 0.372,
+    "x1_in": 0.4103
    },
    {
     "index": 2,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0047,
-    "x0_in": 0.3975,
-    "x1_in": 0.404
+    "x0_in": 0.4103,
+    "x1_in": 0.4168
    },
    {
     "index": 3,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0118,
-    "x0_in": 0.404,
-    "x1_in": 0.4202
+    "x0_in": 0.4168,
+    "x1_in": 0.433
    },
    {
     "index": 4,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0052,
-    "x0_in": 0.4202,
-    "x1_in": 0.4273
+    "x0_in": 0.433,
+    "x1_in": 0.4401
    },
    {
     "index": 5,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0329,
-    "x0_in": 0.4273,
-    "x1_in": 0.4726
+    "x0_in": 0.4401,
+    "x1_in": 0.4854
    },
    {
     "index": 6,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0041,
-    "x0_in": 0.4726,
-    "x1_in": 0.4782
+    "x0_in": 0.4854,
+    "x1_in": 0.491
    },
    {
     "index": 7,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.012,
-    "x0_in": 0.4782,
-    "x1_in": 0.4947
+    "x0_in": 0.491,
+    "x1_in": 0.5075
    },
    {
     "index": 8,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0049,
-    "x0_in": 0.4947,
-    "x1_in": 0.5015
+    "x0_in": 0.5075,
+    "x1_in": 0.5143
    },
    {
     "index": 9,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0334,
-    "x0_in": 0.5015,
-    "x1_in": 0.5474
+    "x0_in": 0.5143,
+    "x1_in": 0.5602
    },
    {
     "index": 10,
-    "hex": "be4827",
-    "fraction": 0.0046,
-    "x0_in": 0.5474,
-    "x1_in": 0.5538
+    "hex": "ff0000",
+    "fraction": 0.0047,
+    "x0_in": 0.5602,
+    "x1_in": 0.5666
    },
    {
     "index": 11,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0119,
-    "x0_in": 0.5538,
-    "x1_in": 0.5702
+    "x0_in": 0.5666,
+    "x1_in": 0.583
    },
    {
     "index": 12,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0055,
-    "x0_in": 0.5702,
-    "x1_in": 0.5778
+    "x0_in": 0.583,
+    "x1_in": 0.5906
    },
    {
     "index": 13,
-    "hex": "e6a11c",
-    "fraction": 0.0331,
-    "x0_in": 0.5778,
-    "x1_in": 0.6234
+    "hex": "ffc90e",
+    "fraction": 0.0332,
+    "x0_in": 0.5906,
+    "x1_in": 0.6362
    },
    {
     "index": 14,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0048,
-    "x0_in": 0.6234,
-    "x1_in": 0.63
+    "x0_in": 0.6362,
+    "x1_in": 0.6428
    },
    {
     "index": 15,
-    "hex": "e6a11c",
-    "fraction": 0.0118,
-    "x0_in": 0.63,
-    "x1_in": 0.6463
+    "hex": "ffc90e",
+    "fraction": 0.0119,
+    "x0_in": 0.6428,
+    "x1_in": 0.6591
    },
    {
     "index": 16,
-    "hex": "be4827",
-    "fraction": 0.0045,
-    "x0_in": 0.6463,
-    "x1_in": 0.6524
+    "hex": "ff0000",
+    "fraction": 0.0044,
+    "x0_in": 0.6591,
+    "x1_in": 0.6652
    },
    {
     "index": 17,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0324,
-    "x0_in": 0.6524,
-    "x1_in": 0.697
+    "x0_in": 0.6652,
+    "x1_in": 0.7098
    },
    {
     "index": 18,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0045,
-    "x0_in": 0.697,
-    "x1_in": 0.7032
+    "x0_in": 0.7098,
+    "x1_in": 0.716
    },
    {
     "index": 19,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0118,
-    "x0_in": 0.7032,
-    "x1_in": 0.7194
+    "x0_in": 0.716,
+    "x1_in": 0.7322
    },
    {
     "index": 20,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0048,
-    "x0_in": 0.7194,
-    "x1_in": 0.726
+    "x0_in": 0.7322,
+    "x1_in": 0.7388
    },
    {
     "index": 21,
-    "hex": "e6a11c",
-    "fraction": 0.0331,
-    "x0_in": 0.726,
-    "x1_in": 0.7716
+    "hex": "ffc90e",
+    "fraction": 0.0332,
+    "x0_in": 0.7388,
+    "x1_in": 0.7844
    },
    {
     "index": 22,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0055,
-    "x0_in": 0.7716,
-    "x1_in": 0.7792
+    "x0_in": 0.7844,
+    "x1_in": 0.792
    },
    {
     "index": 23,
-    "hex": "e6a11c",
-    "fraction": 0.0119,
-    "x0_in": 0.7792,
-    "x1_in": 0.7957
+    "hex": "ffc90e",
+    "fraction": 0.012,
+    "x0_in": 0.792,
+    "x1_in": 0.8085
    },
    {
     "index": 24,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0046,
-    "x0_in": 0.7957,
-    "x1_in": 0.802
+    "x0_in": 0.8085,
+    "x1_in": 0.8148
    },
    {
     "index": 25,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0334,
-    "x0_in": 0.802,
-    "x1_in": 0.848
+    "x0_in": 0.8148,
+    "x1_in": 0.8607
    },
    {
     "index": 26,
-    "hex": "be4827",
-    "fraction": 0.0049,
-    "x0_in": 0.848,
-    "x1_in": 0.8548
+    "hex": "ff0000",
+    "fraction": 0.005,
+    "x0_in": 0.8607,
+    "x1_in": 0.8676
    },
    {
     "index": 27,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.012,
-    "x0_in": 0.8548,
-    "x1_in": 0.8713
+    "x0_in": 0.8676,
+    "x1_in": 0.8841
    },
    {
     "index": 28,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0041,
-    "x0_in": 0.8713,
-    "x1_in": 0.8769
+    "x0_in": 0.8841,
+    "x1_in": 0.8897
    },
    {
     "index": 29,
-    "hex": "e6a11c",
+    "hex": "ffc90e",
     "fraction": 0.0329,
-    "x0_in": 0.8769,
-    "x1_in": 0.9221
+    "x0_in": 0.8897,
+    "x1_in": 0.9349
    },
    {
     "index": 30,
-    "hex": "be4827",
+    "hex": "ff0000",
     "fraction": 0.0052,
-    "x0_in": 0.9221,
-    "x1_in": 0.9293
+    "x0_in": 0.9349,
+    "x1_in": 0.9421
    },
    {
     "index": 31,
-    "hex": "e6a11c",
-    "fraction": 0.0118,
-    "x0_in": 0.9293,
-    "x1_in": 0.9455
+    "hex": "ffc90e",
+    "fraction": 0.0117,
+    "x0_in": 0.9421,
+    "x1_in": 0.9582
    },
    {
     "index": 32,
-    "hex": "be4827",
-    "fraction": 0.0047,
-    "x0_in": 0.9455,
-    "x1_in": 0.952
+    "hex": "ff0000",
+    "fraction": 0.0048,
+    "x0_in": 0.9582,
+    "x1_in": 0.9648
    },
    {
     "index": 33,
-    "hex": "e6a11c",
-    "fraction": 0.0278,
-    "x0_in": 0.952,
-    "x1_in": 0.9903
+    "hex": "ffc90e",
+    "fraction": 0.0279,
+    "x0_in": 0.9648,
+    "x1_in": 1.0031
    },
    {
     "index": 34,
-    "hex": "a71b29",
-    "fraction": 0.2798,
-    "x0_in": 0.9903,
+    "hex": "ff0000",
+    "fraction": 0.2705,
+    "x0_in": 1.0031,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": {
-   "color_hex": "cead6e",
-   "light_hex": "fae8b8",
-   "dark_hex": "916d44",
+   "color_hex": "ffc90e",
+   "light_hex": "f5deb3",
    "thickness_in": {
-    "top": 0.0636,
-    "bottom": 0.0669,
-    "left": 0.0613,
-    "right": 0.0869
+    "top": 0.0653,
+    "bottom": 0.0653,
+    "left": 0.0741,
+    "right": 0.0741
    },
    "laurel": {
     "period_in": 0.0741,
     "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
    },
-   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+   "note": "thickness measured from the rectified photograph, made equal left and right and top and bottom; one gold for the frame, one pale gold for the laurel, no shading"
   },
   "emblems": [
    {
@@ -314,15 +313,14 @@
     ],
     "length_in": 0.514,
     "tilt_deg": 9,
-    "base_hex": "b7876d",
-    "relief_hex": "67412e",
+    "base_hex": "804000",
     "source": "silhouette traced from the unmounted device in the Vanguard photograph; placement and size from the mounted device in the framed citation"
    }
   ]
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -408,7 +406,113 @@
    0.6,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red"
+   ],
+   "measured_hex": [
+    "a71b29",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "be4827",
+    "e6a11c",
+    "a71b29"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "Old Glory Red edges, a Golden Yellow centre with sixteen red strands",
+   "repairs": [
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 1.28
+    },
+    {
+     "kind": "palm-one-colour",
+     "note": "relief tone dropped; silhouette as traced"
+    },
+    {
+     "kind": "frame-symmetric",
+     "thickness_was_in": {
+      "top": 0.0653,
+      "bottom": 0.0653,
+      "left": 0.0741,
+      "right": 0.0741
+     },
+     "thickness_now_in": {
+      "top": 0.0653,
+      "left": 0.0741
+     }
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

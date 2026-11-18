@@ -44,103 +44,102 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "1f191a",
-    "fraction": 0.0927,
+    "hex": "000000",
+    "fraction": 0.0911,
     "x0_in": 0,
-    "x1_in": 0.1275
+    "x1_in": 0.1252
    },
    {
     "index": 1,
-    "hex": "f8ebe5",
+    "hex": "ffffff",
     "fraction": 0.1315,
-    "x0_in": 0.1275,
-    "x1_in": 0.3084
+    "x0_in": 0.1252,
+    "x1_in": 0.306
    },
    {
     "index": 2,
-    "hex": "1f191a",
-    "fraction": 0.0442,
-    "x0_in": 0.3084,
-    "x1_in": 0.3692
+    "hex": "000000",
+    "fraction": 0.0443,
+    "x0_in": 0.306,
+    "x1_in": 0.3669
    },
    {
     "index": 3,
-    "hex": "f74f1d",
-    "fraction": 0.049,
-    "x0_in": 0.3692,
-    "x1_in": 0.4366
+    "hex": "ff8040",
+    "fraction": 0.0489,
+    "x0_in": 0.3669,
+    "x1_in": 0.4342
    },
    {
     "index": 4,
-    "hex": "f8ebe5",
+    "hex": "ffffff",
     "fraction": 0.137,
-    "x0_in": 0.4366,
-    "x1_in": 0.6249
+    "x0_in": 0.4342,
+    "x1_in": 0.6226
    },
    {
     "index": 5,
-    "hex": "2e2598",
-    "fraction": 0.0944,
-    "x0_in": 0.6249,
-    "x1_in": 0.7548
+    "hex": "0024aa",
+    "fraction": 0.0945,
+    "x0_in": 0.6226,
+    "x1_in": 0.7525
    },
    {
     "index": 6,
-    "hex": "f8ebe5",
-    "fraction": 0.137,
-    "x0_in": 0.7548,
-    "x1_in": 0.9432
+    "hex": "ffffff",
+    "fraction": 0.1369,
+    "x0_in": 0.7525,
+    "x1_in": 0.9408
    },
    {
     "index": 7,
-    "hex": "f74f1d",
+    "hex": "ff8040",
     "fraction": 0.049,
-    "x0_in": 0.9432,
-    "x1_in": 1.0105
+    "x0_in": 0.9408,
+    "x1_in": 1.0082
    },
    {
     "index": 8,
-    "hex": "1f191a",
+    "hex": "000000",
     "fraction": 0.0442,
-    "x0_in": 1.0105,
-    "x1_in": 1.0714
+    "x0_in": 1.0082,
+    "x1_in": 1.069
    },
    {
     "index": 9,
-    "hex": "f8ebe5",
-    "fraction": 0.1315,
-    "x0_in": 1.0714,
-    "x1_in": 1.2522
+    "hex": "ffffff",
+    "fraction": 0.1316,
+    "x0_in": 1.069,
+    "x1_in": 1.2499
    },
    {
     "index": 10,
-    "hex": "1f191a",
-    "fraction": 0.0893,
-    "x0_in": 1.2522,
+    "hex": "000000",
+    "fraction": 0.091,
+    "x0_in": 1.2499,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": {
-   "color_hex": "f5c266",
-   "light_hex": "fdeac0",
-   "dark_hex": "c6883f",
+   "color_hex": "ffc90e",
+   "light_hex": "f5deb3",
    "thickness_in": {
-    "top": 0.0671,
-    "bottom": 0.0681,
-    "left": 0.0805,
-    "right": 0.0758
+    "top": 0.0676,
+    "bottom": 0.0676,
+    "left": 0.0781,
+    "right": 0.0781
    },
    "laurel": {
     "period_in": 0.0734,
     "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
    },
-   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+   "note": "thickness measured from the rectified photograph, made equal left and right and top and bottom; one gold for the frame, one pale gold for the laurel, no shading"
   }
  },
  "classification": "stripes_framed",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: Military Medals (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -202,7 +201,61 @@
    0.5,
    0.9
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "black",
+    "white",
+    "black",
+    "orange",
+    "white",
+    "ultramarine",
+    "white",
+    "orange",
+    "black",
+    "white",
+    "black"
+   ],
+   "measured_hex": [
+    "1f191a",
+    "f8ebe5",
+    "1f191a",
+    "f74f1d",
+    "f8ebe5",
+    "2e2598",
+    "f8ebe5",
+    "f74f1d",
+    "1f191a",
+    "f8ebe5",
+    "1f191a"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: Military Medals (no first-source text found)"
+   ],
+   "basis": "second source, viewed: Military Medals (no first-source text found)",
+   "said": "a white ribbon with a dark blue centre stripe, orange stripes and black",
+   "repairs": [
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 0.24
+    },
+    {
+     "kind": "frame-symmetric",
+     "thickness_was_in": {
+      "top": 0.0676,
+      "bottom": 0.0676,
+      "left": 0.0781,
+      "right": 0.0781
+     },
+     "thickness_now_in": {
+      "top": 0.0676,
+      "left": 0.0781
+     }
+    }
+   ]
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

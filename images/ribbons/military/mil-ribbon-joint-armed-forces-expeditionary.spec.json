@@ -44,42 +44,42 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "4f7c4b",
+    "hex": "008000",
     "fraction": 0.0668,
     "x0_in": 0,
     "x1_in": 0.0919
    },
    {
     "index": 1,
-    "hex": "f4c926",
+    "hex": "ffc90e",
     "fraction": 0.0698,
     "x0_in": 0.0919,
     "x1_in": 0.1879
    },
    {
     "index": 2,
-    "hex": "6e4432",
+    "hex": "804000",
     "fraction": 0.0631,
     "x0_in": 0.1879,
     "x1_in": 0.2747
    },
    {
     "index": 3,
-    "hex": "16151d",
-    "fraction": 0.0611,
+    "hex": "000000",
+    "fraction": 0.0612,
     "x0_in": 0.2747,
     "x1_in": 0.3588
    },
    {
     "index": 4,
-    "hex": "589acc",
+    "hex": "20c0ff",
     "fraction": 0.1646,
     "x0_in": 0.3588,
     "x1_in": 0.5851
    },
    {
     "index": 5,
-    "hex": "da2c3d",
+    "hex": "ff0000",
     "fraction": 0.0533,
     "x0_in": 0.5851,
     "x1_in": 0.6584
@@ -93,42 +93,42 @@
    },
    {
     "index": 7,
-    "hex": "10329c",
+    "hex": "0024aa",
     "fraction": 0.0533,
     "x0_in": 0.7166,
     "x1_in": 0.7899
    },
    {
     "index": 8,
-    "hex": "589acc",
+    "hex": "20c0ff",
     "fraction": 0.1646,
     "x0_in": 0.7899,
     "x1_in": 1.0162
    },
    {
     "index": 9,
-    "hex": "16151d",
-    "fraction": 0.0611,
+    "hex": "000000",
+    "fraction": 0.0612,
     "x0_in": 1.0162,
     "x1_in": 1.1003
    },
    {
     "index": 10,
-    "hex": "6e4432",
+    "hex": "804000",
     "fraction": 0.0631,
     "x0_in": 1.1003,
     "x1_in": 1.1871
    },
    {
     "index": 11,
-    "hex": "f4c926",
+    "hex": "ffc90e",
     "fraction": 0.0698,
     "x0_in": 1.1871,
     "x1_in": 1.2831
    },
    {
     "index": 12,
-    "hex": "4f7c4b",
+    "hex": "008000",
     "fraction": 0.0668,
     "x0_in": 1.2831,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): green, golden yellow, spice brown, black, bluebird, ultramarine, white, scarlet settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,46 @@
    0.3,
    3.6
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "green",
+    "gold",
+    "brown",
+    "black",
+    "light blue",
+    "red",
+    "white",
+    "ultramarine",
+    "light blue",
+    "black",
+    "brown",
+    "gold",
+    "green"
+   ],
+   "measured_hex": [
+    "4f7c4b",
+    "f4c926",
+    "6e4432",
+    "16151d",
+    "589acc",
+    "da2c3d",
+    "ffffff",
+    "10329c",
+    "589acc",
+    "16151d",
+    "6e4432",
+    "f4c926",
+    "4f7c4b"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): green, golden yellow, spice brown, black, bluebird, ultramarine, white, scarlet"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): green, golden yellow, spice brown, black, bluebird, ultramarine, white, scarlet",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

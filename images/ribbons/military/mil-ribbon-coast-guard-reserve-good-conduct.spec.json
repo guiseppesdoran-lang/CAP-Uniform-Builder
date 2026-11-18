@@ -44,28 +44,28 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2038a4",
+    "hex": "0024aa",
     "fraction": 0.0425,
     "x0_in": 0,
     "x1_in": 0.0585
    },
    {
     "index": 1,
-    "hex": "ecb61e",
+    "hex": "ffc90e",
     "fraction": 0.0196,
     "x0_in": 0.0585,
     "x1_in": 0.0855
    },
    {
     "index": 2,
-    "hex": "e02a3a",
+    "hex": "ff0000",
     "fraction": 0.3532,
     "x0_in": 0.0855,
     "x1_in": 0.5712
    },
    {
     "index": 3,
-    "hex": "2038a4",
+    "hex": "0024aa",
     "fraction": 0.0491,
     "x0_in": 0.5712,
     "x1_in": 0.6387
@@ -79,29 +79,29 @@
    },
    {
     "index": 5,
-    "hex": "2038a4",
+    "hex": "0024aa",
     "fraction": 0.0491,
     "x0_in": 0.7363,
     "x1_in": 0.8038
    },
    {
     "index": 6,
-    "hex": "e02a3a",
+    "hex": "ff0000",
     "fraction": 0.3532,
     "x0_in": 0.8038,
     "x1_in": 1.2895
    },
    {
     "index": 7,
-    "hex": "ecb61e",
+    "hex": "ffc90e",
     "fraction": 0.0196,
     "x0_in": 1.2895,
     "x1_in": 1.3165
    },
    {
     "index": 8,
-    "hex": "2038a4",
-    "fraction": 0.0426,
+    "hex": "0024aa",
+    "fraction": 0.0425,
     "x0_in": 1.3165,
     "x1_in": 1.375
    }
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,36 @@
    0.5,
    1.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "gold",
+    "red",
+    "ultramarine",
+    "white",
+    "ultramarine",
+    "red",
+    "gold",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "2038a4",
+    "ecb61e",
+    "e02a3a",
+    "2038a4",
+    "ffffff",
+    "2038a4",
+    "e02a3a",
+    "ecb61e",
+    "2038a4"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

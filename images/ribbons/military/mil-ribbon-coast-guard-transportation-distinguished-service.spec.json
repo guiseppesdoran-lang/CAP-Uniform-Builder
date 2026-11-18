@@ -44,35 +44,35 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "121d48",
+    "hex": "000080",
     "fraction": 0.1472,
     "x0_in": 0,
     "x1_in": 0.2024
    },
    {
     "index": 1,
-    "hex": "cb311d",
+    "hex": "ff0000",
     "fraction": 0.1281,
     "x0_in": 0.2024,
     "x1_in": 0.3786
    },
    {
     "index": 2,
-    "hex": "121d48",
-    "fraction": 0.4494,
+    "hex": "000080",
+    "fraction": 0.4493,
     "x0_in": 0.3786,
     "x1_in": 0.9964
    },
    {
     "index": 3,
-    "hex": "cb311d",
+    "hex": "ff0000",
     "fraction": 0.1281,
     "x0_in": 0.9964,
     "x1_in": 1.1726
    },
    {
     "index": 4,
-    "hex": "121d48",
+    "hex": "000080",
     "fraction": 0.1472,
     "x0_in": 1.1726,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "repo raster images/military-ribbons/transportation_distinguished_service.jpg, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "repo raster images/military-ribbons/transportation_distinguished_service.jpg, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -137,7 +137,28 @@
    0,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "navy",
+    "red",
+    "navy",
+    "red",
+    "navy"
+   ],
+   "measured_hex": [
+    "121d48",
+    "cb311d",
+    "121d48",
+    "cb311d",
+    "121d48"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

@@ -44,64 +44,64 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "f1222c",
-    "fraction": 0.1186,
+    "hex": "ff0000",
+    "fraction": 0.1185,
     "x0_in": 0,
     "x1_in": 0.163
    },
    {
     "index": 1,
-    "hex": "f6e6d6",
+    "hex": "ffffff",
     "fraction": 0.0521,
     "x0_in": 0.163,
     "x1_in": 0.2346
    },
    {
     "index": 2,
-    "hex": "f1222c",
-    "fraction": 0.2131,
+    "hex": "ff0000",
+    "fraction": 0.2132,
     "x0_in": 0.2346,
     "x1_in": 0.5277
    },
    {
     "index": 3,
-    "hex": "2d45a8",
-    "fraction": 0.0741,
+    "hex": "0024aa",
+    "fraction": 0.074,
     "x0_in": 0.5277,
     "x1_in": 0.6295
    },
    {
     "index": 4,
-    "hex": "f1222c",
-    "fraction": 0.0843,
+    "hex": "ff0000",
+    "fraction": 0.0844,
     "x0_in": 0.6295,
     "x1_in": 0.7455
    },
    {
     "index": 5,
-    "hex": "2d45a8",
-    "fraction": 0.0741,
+    "hex": "0024aa",
+    "fraction": 0.074,
     "x0_in": 0.7455,
     "x1_in": 0.8473
    },
    {
     "index": 6,
-    "hex": "f1222c",
-    "fraction": 0.2131,
+    "hex": "ff0000",
+    "fraction": 0.2132,
     "x0_in": 0.8473,
     "x1_in": 1.1404
    },
    {
     "index": 7,
-    "hex": "f6e6d6",
+    "hex": "ffffff",
     "fraction": 0.0521,
     "x0_in": 1.1404,
     "x1_in": 1.212
    },
    {
     "index": 8,
-    "hex": "f1222c",
-    "fraction": 0.1186,
+    "hex": "ff0000",
+    "fraction": 0.1185,
     "x0_in": 1.212,
     "x1_in": 1.375
    }
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: Military Medals and Military Ribbons Info (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,39 @@
    0.9,
    0.7
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "red",
+    "ultramarine",
+    "red",
+    "ultramarine",
+    "red",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "f1222c",
+    "f6e6d6",
+    "f1222c",
+    "2d45a8",
+    "f1222c",
+    "2d45a8",
+    "f1222c",
+    "f6e6d6",
+    "f1222c"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: Military Medals and Military Ribbons Info (no first-source text found)"
+   ],
+   "basis": "second source, viewed: Military Medals and Military Ribbons Info (no first-source text found)",
+   "said": "red with two thin dark blue stripes near the centre and thin white stripes toward the edges",
+   "repairs": []
+  }
  },
  "authorized_services": [],
  "aliases": [

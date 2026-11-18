@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "f24a53",
+    "hex": "ff0000",
     "fraction": 0.0595,
     "x0_in": 0,
     "x1_in": 0.0818
@@ -54,53 +54,53 @@
     "hex": "ffffff",
     "fraction": 0.0657,
     "x0_in": 0.0818,
-    "x1_in": 0.1721
+    "x1_in": 0.1722
    },
    {
     "index": 2,
-    "hex": "434579",
+    "hex": "0024aa",
     "fraction": 0.0633,
-    "x0_in": 0.1721,
+    "x0_in": 0.1722,
     "x1_in": 0.2592
    },
    {
     "index": 3,
-    "hex": "eecd55",
-    "fraction": 0.2149,
+    "hex": "ffc90e",
+    "fraction": 0.2148,
     "x0_in": 0.2592,
     "x1_in": 0.5546
    },
    {
     "index": 4,
-    "hex": "f24a53",
+    "hex": "ff0000",
     "fraction": 0.1933,
     "x0_in": 0.5546,
     "x1_in": 0.8204
    },
    {
     "index": 5,
-    "hex": "eecd55",
-    "fraction": 0.2149,
+    "hex": "ffc90e",
+    "fraction": 0.2148,
     "x0_in": 0.8204,
     "x1_in": 1.1158
    },
    {
     "index": 6,
-    "hex": "434579",
+    "hex": "0024aa",
     "fraction": 0.0633,
     "x0_in": 1.1158,
-    "x1_in": 1.2028
+    "x1_in": 1.2029
    },
    {
     "index": 7,
     "hex": "ffffff",
     "fraction": 0.0657,
-    "x0_in": 1.2028,
+    "x0_in": 1.2029,
     "x1_in": 1.2932
    },
    {
     "index": 8,
-    "hex": "f24a53",
+    "hex": "ff0000",
     "fraction": 0.0595,
     "x0_in": 1.2932,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,41 @@
    1.6,
    2.7
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Selected Marine Corps Reserve Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Selected Marine Corps Reserve Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "ultramarine",
+    "gold",
+    "red",
+    "gold",
+    "ultramarine",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "f24a53",
+    "ffffff",
+    "434579",
+    "eecd55",
+    "f24a53",
+    "eecd55",
+    "434579",
+    "ffffff",
+    "f24a53"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": [
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 0.005
+    }
+   ]
+  }
  },
  "authorized_services": [
   "MARINE_CORPS"

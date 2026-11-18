@@ -44,49 +44,49 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "153391",
+    "hex": "0024aa",
     "fraction": 0.0833,
     "x0_in": 0,
     "x1_in": 0.1146
    },
    {
     "index": 1,
-    "hex": "f6c731",
-    "fraction": 0.0913,
+    "hex": "ffc90e",
+    "fraction": 0.0912,
     "x0_in": 0.1146,
     "x1_in": 0.24
    },
    {
     "index": 2,
-    "hex": "b32b37",
-    "fraction": 0.0938,
+    "hex": "ff0000",
+    "fraction": 0.0939,
     "x0_in": 0.24,
-    "x1_in": 0.369
+    "x1_in": 0.3691
    },
    {
     "index": 3,
-    "hex": "12764b",
-    "fraction": 0.4632,
-    "x0_in": 0.369,
+    "hex": "008000",
+    "fraction": 0.4631,
+    "x0_in": 0.3691,
     "x1_in": 1.0059
    },
    {
     "index": 4,
-    "hex": "b32b37",
-    "fraction": 0.0938,
+    "hex": "ff0000",
+    "fraction": 0.0939,
     "x0_in": 1.0059,
     "x1_in": 1.135
    },
    {
     "index": 5,
-    "hex": "f6c731",
-    "fraction": 0.0913,
+    "hex": "ffc90e",
+    "fraction": 0.0912,
     "x0_in": 1.135,
     "x1_in": 1.2604
    },
    {
     "index": 6,
-    "hex": "153391",
+    "hex": "0024aa",
     "fraction": 0.0833,
     "x0_in": 1.2604,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,32 @@
    0,
    0.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Navy Unit Commendation ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Navy Unit Commendation ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "gold",
+    "red",
+    "green",
+    "red",
+    "gold",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "153391",
+    "f6c731",
+    "b32b37",
+    "12764b",
+    "b32b37",
+    "f6c731",
+    "153391"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "MARINE_CORPS",

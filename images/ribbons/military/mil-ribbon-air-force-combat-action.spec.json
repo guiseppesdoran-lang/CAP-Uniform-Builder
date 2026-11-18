@@ -102,7 +102,7 @@
  },
  "classification": "diagonal",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, red ground with gold diagonal bands settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -156,7 +156,19 @@
    0,
    0.6
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":1,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster (diagonal fit), snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":1,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster (diagonal fit), snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": {
+    "ground": "red",
+    "diag": "gold"
+   },
+   "decided_by": [
+    "description"
+   ],
+   "basis": "red ground with gold diagonal bands",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

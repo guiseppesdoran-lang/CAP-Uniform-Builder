@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "e32e3c",
+    "hex": "ff0000",
     "fraction": 0.1042,
     "x0_in": 0,
     "x1_in": 0.1433
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "55884a",
+    "hex": "008000",
     "fraction": 0.0227,
     "x0_in": 0.2031,
     "x1_in": 0.2343
@@ -72,22 +72,22 @@
    },
    {
     "index": 4,
-    "hex": "18171e",
+    "hex": "000000",
     "fraction": 0.1167,
     "x0_in": 0.2993,
     "x1_in": 0.4597
    },
    {
     "index": 5,
-    "hex": "edd5a4",
-    "fraction": 0.3314,
+    "hex": "f5deb3",
+    "fraction": 0.3313,
     "x0_in": 0.4597,
     "x1_in": 0.9153
    },
    {
     "index": 6,
-    "hex": "18171e",
-    "fraction": 0.1166,
+    "hex": "000000",
+    "fraction": 0.1167,
     "x0_in": 0.9153,
     "x1_in": 1.0757
    },
@@ -100,7 +100,7 @@
    },
    {
     "index": 8,
-    "hex": "55884a",
+    "hex": "008000",
     "fraction": 0.0227,
     "x0_in": 1.1407,
     "x1_in": 1.1719
@@ -114,7 +114,7 @@
    },
    {
     "index": 10,
-    "hex": "e32e3c",
+    "hex": "ff0000",
     "fraction": 0.1042,
     "x0_in": 1.2317,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,43 @@
    5.1,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Iraq Campaign Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Iraq Campaign Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "green",
+    "white",
+    "black",
+    "buff",
+    "black",
+    "white",
+    "green",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "e32e3c",
+    "ffffff",
+    "55884a",
+    "ffffff",
+    "18171e",
+    "edd5a4",
+    "18171e",
+    "ffffff",
+    "55884a",
+    "ffffff",
+    "e32e3c"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "scarlet edges, white, green pinstripe, black, a wide chamois centre",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

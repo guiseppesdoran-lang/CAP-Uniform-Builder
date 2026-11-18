@@ -44,91 +44,91 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "262f65",
+    "hex": "000080",
     "fraction": 0.0527,
     "x0_in": 0,
     "x1_in": 0.0725
    },
    {
     "index": 1,
-    "hex": "e33145",
-    "fraction": 0.1093,
+    "hex": "ff0000",
+    "fraction": 0.1092,
     "x0_in": 0.0725,
     "x1_in": 0.2227
    },
    {
     "index": 2,
-    "hex": "debd44",
+    "hex": "ffc90e",
     "fraction": 0.1156,
     "x0_in": 0.2227,
     "x1_in": 0.3817
    },
    {
     "index": 3,
-    "hex": "3e6991",
+    "hex": "0080ff",
     "fraction": 0.078,
     "x0_in": 0.3817,
     "x1_in": 0.489
    },
    {
     "index": 4,
-    "hex": "7bc2d6",
+    "hex": "20c0ff",
     "fraction": 0.0913,
     "x0_in": 0.489,
     "x1_in": 0.6145
    },
    {
     "index": 5,
-    "hex": "951e31",
-    "fraction": 0.0394,
+    "hex": "ff0000",
+    "fraction": 0.0393,
     "x0_in": 0.6145,
     "x1_in": 0.6686
    },
    {
     "index": 6,
-    "hex": "debd44",
+    "hex": "ffc90e",
     "fraction": 0.0275,
     "x0_in": 0.6686,
     "x1_in": 0.7064
    },
    {
     "index": 7,
-    "hex": "951e31",
-    "fraction": 0.0394,
+    "hex": "ff0000",
+    "fraction": 0.0393,
     "x0_in": 0.7064,
     "x1_in": 0.7605
    },
    {
     "index": 8,
-    "hex": "7bc2d6",
+    "hex": "20c0ff",
     "fraction": 0.0913,
     "x0_in": 0.7605,
     "x1_in": 0.886
    },
    {
     "index": 9,
-    "hex": "3e6991",
+    "hex": "0080ff",
     "fraction": 0.078,
     "x0_in": 0.886,
     "x1_in": 0.9933
    },
    {
     "index": 10,
-    "hex": "debd44",
+    "hex": "ffc90e",
     "fraction": 0.1156,
     "x0_in": 0.9933,
     "x1_in": 1.1523
    },
    {
     "index": 11,
-    "hex": "e33145",
-    "fraction": 0.1093,
+    "hex": "ff0000",
+    "fraction": 0.1092,
     "x0_in": 1.1523,
     "x1_in": 1.3025
    },
    {
     "index": 12,
-    "hex": "262f65",
+    "hex": "000080",
     "fraction": 0.0527,
     "x0_in": 1.3025,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,46 @@
    0.4,
    0.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Army Sea Duty Ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Army Sea Duty Ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "navy",
+    "red",
+    "gold",
+    "azure",
+    "light blue",
+    "red",
+    "gold",
+    "red",
+    "light blue",
+    "azure",
+    "gold",
+    "red",
+    "navy"
+   ],
+   "measured_hex": [
+    "262f65",
+    "e33145",
+    "debd44",
+    "3e6991",
+    "7bc2d6",
+    "951e31",
+    "debd44",
+    "951e31",
+    "7bc2d6",
+    "3e6991",
+    "debd44",
+    "e33145",
+    "262f65"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "ARMY"

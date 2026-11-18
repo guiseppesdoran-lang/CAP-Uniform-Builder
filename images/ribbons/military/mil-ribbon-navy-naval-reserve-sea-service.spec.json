@@ -44,64 +44,64 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "73bcd2",
+    "hex": "20c0ff",
     "fraction": 0.1217,
     "x0_in": 0,
     "x1_in": 0.1674
    },
    {
     "index": 1,
-    "hex": "de2c3d",
+    "hex": "ff0000",
     "fraction": 0.0986,
     "x0_in": 0.1674,
     "x1_in": 0.303
    },
    {
     "index": 2,
-    "hex": "73bcd2",
+    "hex": "20c0ff",
     "fraction": 0.135,
     "x0_in": 0.303,
     "x1_in": 0.4886
    },
    {
     "index": 3,
-    "hex": "f0c51f",
+    "hex": "ffc90e",
     "fraction": 0.0563,
     "x0_in": 0.4886,
     "x1_in": 0.566
    },
    {
     "index": 4,
-    "hex": "252e66",
+    "hex": "000080",
     "fraction": 0.1767,
     "x0_in": 0.566,
     "x1_in": 0.809
    },
    {
     "index": 5,
-    "hex": "f0c51f",
+    "hex": "ffc90e",
     "fraction": 0.0563,
     "x0_in": 0.809,
     "x1_in": 0.8864
    },
    {
     "index": 6,
-    "hex": "73bcd2",
+    "hex": "20c0ff",
     "fraction": 0.135,
     "x0_in": 0.8864,
     "x1_in": 1.072
    },
    {
     "index": 7,
-    "hex": "de2c3d",
+    "hex": "ff0000",
     "fraction": 0.0986,
     "x0_in": 1.072,
     "x1_in": 1.2076
    },
    {
     "index": 8,
-    "hex": "73bcd2",
-    "fraction": 0.1218,
+    "hex": "20c0ff",
+    "fraction": 0.1217,
     "x0_in": 1.2076,
     "x1_in": 1.375
    }
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,38 @@
    1.1,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "red",
+    "light blue",
+    "gold",
+    "navy",
+    "gold",
+    "light blue",
+    "red",
+    "light blue"
+   ],
+   "measured_hex": [
+    "73bcd2",
+    "de2c3d",
+    "73bcd2",
+    "f0c51f",
+    "252e66",
+    "f0c51f",
+    "73bcd2",
+    "de2c3d",
+    "73bcd2"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "NAVY"

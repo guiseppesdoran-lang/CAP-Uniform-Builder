@@ -412,14 +412,6 @@
     "enamel-muslim-chaplin-field": "field/enamel-muslim-chaplin-field/enamel-muslim-chaplin-field.svg",
     "enamel-national-executive-committee": "enamel/enamel-national-executive-committee/enamel-national-executive-committee.svg",
     "enamel-nra-distinguished-expert": "enamel/enamel-nra-distinguished-expert/enamel-nra-distinguished-expert.svg",
-    "enamel-nra-distinguished-expert-nobar": "enamel/enamel-nra-distinguished-expert-nobar/enamel-nra-distinguished-expert-nobar.svg",
-    "enamel-nra-distinguished-expert-p": "enamel/enamel-nra-distinguished-expert-p/enamel-nra-distinguished-expert-p.svg",
-    "enamel-nra-distinguished-expert-ps": "enamel/enamel-nra-distinguished-expert-ps/enamel-nra-distinguished-expert-ps.svg",
-    "enamel-nra-distinguished-expert-r": "enamel/enamel-nra-distinguished-expert-r/enamel-nra-distinguished-expert-r.svg",
-    "enamel-nra-distinguished-expert-rp": "enamel/enamel-nra-distinguished-expert-rp/enamel-nra-distinguished-expert-rp.svg",
-    "enamel-nra-distinguished-expert-rps": "enamel/enamel-nra-distinguished-expert-rps/enamel-nra-distinguished-expert-rps.svg",
-    "enamel-nra-distinguished-expert-rs": "enamel/enamel-nra-distinguished-expert-rs/enamel-nra-distinguished-expert-rs.svg",
-    "enamel-nra-distinguished-expert-s": "enamel/enamel-nra-distinguished-expert-s/enamel-nra-distinguished-expert-s.svg",
     "enamel-nra-expert": "enamel/enamel-nra-expert/enamel-nra-expert.svg",
     "enamel-nra-marksman": "enamel/enamel-nra-marksman/enamel-nra-marksman.svg",
     "enamel-nra-marksman-first-class": "enamel/enamel-nra-marksman-first-class/enamel-nra-marksman-first-class.svg",
@@ -1679,7 +1671,7 @@
     "usmc-naval-aviation-observer-default": "military-badges/marine-corps/marine_corps_naval_aviation_observer_insignia/default.svg",
     "usmc-special-operator-default": "military-badges/marine-corps/marine_corps_special_operator_insignia/default.svg"
   };
-  Object.defineProperty(index, 'version', { value: "59d33956ef", enumerable: false });
+  Object.defineProperty(index, 'version', { value: "8cbcfd897e", enumerable: false });
   if(typeof module === 'object' && module.exports) module.exports = index;
-  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "59d33956ef"; }
+  else { root.CAPUBAssetIndex = index; root.CAPUBAssetVersion = "8cbcfd897e"; }
 })(typeof self !== 'undefined' ? self : this);

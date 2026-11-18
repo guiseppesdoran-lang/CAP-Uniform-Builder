@@ -44,14 +44,14 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "f0c61c",
+    "hex": "ffc90e",
     "fraction": 0.1393,
     "x0_in": 0,
     "x1_in": 0.1916
    },
    {
     "index": 1,
-    "hex": "6495c6",
+    "hex": "0080ff",
     "fraction": 0.1725,
     "x0_in": 0.1916,
     "x1_in": 0.4288
@@ -65,8 +65,8 @@
    },
    {
     "index": 3,
-    "hex": "ce202b",
-    "fraction": 0.1026,
+    "hex": "ff0000",
+    "fraction": 0.1027,
     "x0_in": 0.6169,
     "x1_in": 0.7581
    },
@@ -79,14 +79,14 @@
    },
    {
     "index": 5,
-    "hex": "6495c6",
-    "fraction": 0.1726,
+    "hex": "0080ff",
+    "fraction": 0.1725,
     "x0_in": 0.9462,
     "x1_in": 1.1834
    },
    {
     "index": 6,
-    "hex": "f0c61c",
+    "hex": "ffc90e",
     "fraction": 0.1393,
     "x0_in": 1.1834,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,32 @@
    0.4,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "gold",
+    "azure",
+    "white",
+    "red",
+    "white",
+    "azure",
+    "gold"
+   ],
+   "measured_hex": [
+    "f0c61c",
+    "6495c6",
+    "ffffff",
+    "ce202b",
+    "ffffff",
+    "6495c6",
+    "f0c61c"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

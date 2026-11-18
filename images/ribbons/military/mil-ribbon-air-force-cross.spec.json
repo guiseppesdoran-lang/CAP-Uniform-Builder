@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "bc222e",
+    "hex": "ff0000",
     "fraction": 0.1014,
     "x0_in": 0,
     "x1_in": 0.1394
@@ -52,13 +52,13 @@
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0474,
+    "fraction": 0.0475,
     "x0_in": 0.1394,
     "x1_in": 0.2047
    },
    {
     "index": 2,
-    "hex": "b8d7e7",
+    "hex": "20c0ff",
     "fraction": 0.7023,
     "x0_in": 0.2047,
     "x1_in": 1.1703
@@ -66,13 +66,13 @@
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0474,
+    "fraction": 0.0475,
     "x0_in": 1.1703,
     "x1_in": 1.2356
    },
    {
     "index": 4,
-    "hex": "bc222e",
+    "hex": "ff0000",
     "fraction": 0.1014,
     "x0_in": 1.2356,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): brittany blue centre, red edges, a narrow white stripe inside each settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,30 @@
    3.7,
    0.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "light blue",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "bc222e",
+    "ffffff",
+    "b8d7e7",
+    "ffffff",
+    "bc222e"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): brittany blue centre, red edges, a narrow white stripe inside each"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): brittany blue centre, red edges, a narrow white stripe inside each",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

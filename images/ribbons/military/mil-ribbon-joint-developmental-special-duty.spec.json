@@ -44,36 +44,36 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "1a1a1a",
+    "hex": "000000",
     "fraction": 0.0325,
     "x0_in": 0,
     "x1_in": 0.0447
    },
    {
     "index": 1,
-    "hex": "b8b8b8",
-    "fraction": 0.0358,
+    "hex": "c0c0c0",
+    "fraction": 0.0359,
     "x0_in": 0.0447,
     "x1_in": 0.094
    },
    {
     "index": 2,
-    "hex": "162a6c",
+    "hex": "000080",
     "fraction": 0.1275,
     "x0_in": 0.094,
     "x1_in": 0.2693
    },
    {
     "index": 3,
-    "hex": "b8b8b8",
-    "fraction": 0.0507,
+    "hex": "c0c0c0",
+    "fraction": 0.0506,
     "x0_in": 0.2693,
     "x1_in": 0.3389
    },
    {
     "index": 4,
-    "hex": "e1051b",
-    "fraction": 0.0376,
+    "hex": "ff0000",
+    "fraction": 0.0377,
     "x0_in": 0.3389,
     "x1_in": 0.3907
    },
@@ -86,8 +86,8 @@
    },
    {
     "index": 6,
-    "hex": "162a6c",
-    "fraction": 0.0798,
+    "hex": "000080",
+    "fraction": 0.0799,
     "x0_in": 0.6326,
     "x1_in": 0.7424
    },
@@ -100,35 +100,35 @@
    },
    {
     "index": 8,
-    "hex": "e1051b",
-    "fraction": 0.0376,
+    "hex": "ff0000",
+    "fraction": 0.0377,
     "x0_in": 0.9843,
     "x1_in": 1.0361
    },
    {
     "index": 9,
-    "hex": "b8b8b8",
-    "fraction": 0.0507,
+    "hex": "c0c0c0",
+    "fraction": 0.0506,
     "x0_in": 1.0361,
     "x1_in": 1.1057
    },
    {
     "index": 10,
-    "hex": "162a6c",
+    "hex": "000080",
     "fraction": 0.1275,
     "x0_in": 1.1057,
     "x1_in": 1.281
    },
    {
     "index": 11,
-    "hex": "b8b8b8",
-    "fraction": 0.0358,
+    "hex": "c0c0c0",
+    "fraction": 0.0359,
     "x0_in": 1.281,
     "x1_in": 1.3303
    },
    {
     "index": 12,
-    "hex": "1a1a1a",
+    "hex": "000000",
     "fraction": 0.0325,
     "x0_in": 1.3303,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): graphite blue, silver gray, ultramarine, scarlet settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,46 @@
    0,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "black",
+    "silver",
+    "navy",
+    "silver",
+    "red",
+    "white",
+    "navy",
+    "white",
+    "red",
+    "silver",
+    "navy",
+    "silver",
+    "black"
+   ],
+   "measured_hex": [
+    "1a1a1a",
+    "b8b8b8",
+    "162a6c",
+    "b8b8b8",
+    "e1051b",
+    "ffffff",
+    "162a6c",
+    "ffffff",
+    "e1051b",
+    "b8b8b8",
+    "162a6c",
+    "b8b8b8",
+    "1a1a1a"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): graphite blue, silver gray, ultramarine, scarlet"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): graphite blue, silver gray, ultramarine, scarlet",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

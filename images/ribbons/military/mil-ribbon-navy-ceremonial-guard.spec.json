@@ -44,14 +44,14 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "353683",
+    "hex": "0024aa",
     "fraction": 0.151,
     "x0_in": 0,
     "x1_in": 0.2076
    },
    {
     "index": 1,
-    "hex": "fac41b",
+    "hex": "ffc90e",
     "fraction": 0.1721,
     "x0_in": 0.2076,
     "x1_in": 0.4442
@@ -59,20 +59,20 @@
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.3538,
+    "fraction": 0.3539,
     "x0_in": 0.4442,
     "x1_in": 0.9308
    },
    {
     "index": 3,
-    "hex": "fac41b",
+    "hex": "ffc90e",
     "fraction": 0.1721,
     "x0_in": 0.9308,
     "x1_in": 1.1674
    },
    {
     "index": 4,
-    "hex": "353683",
+    "hex": "0024aa",
     "fraction": 0.151,
     "x0_in": 1.1674,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,28 @@
    0.3,
    1.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "gold",
+    "white",
+    "gold",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "353683",
+    "fac41b",
+    "ffffff",
+    "fac41b",
+    "353683"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "NAVY"

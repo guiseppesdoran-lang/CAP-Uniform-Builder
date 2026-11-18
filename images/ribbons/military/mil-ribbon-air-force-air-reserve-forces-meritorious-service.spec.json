@@ -44,78 +44,78 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "bdcfcd",
-    "fraction": 0.0512,
+    "hex": "20c0ff",
+    "fraction": 0.0511,
     "x0_in": 0,
     "x1_in": 0.0703
    },
    {
     "index": 1,
-    "hex": "f2ecde",
+    "hex": "ffffff",
     "fraction": 0.0779,
     "x0_in": 0.0703,
     "x1_in": 0.1774
    },
    {
     "index": 2,
-    "hex": "3b53ab",
-    "fraction": 0.0632,
+    "hex": "0024aa",
+    "fraction": 0.0633,
     "x0_in": 0.1774,
     "x1_in": 0.2644
    },
    {
     "index": 3,
-    "hex": "f0d348",
-    "fraction": 0.0418,
+    "hex": "ffc90e",
+    "fraction": 0.0417,
     "x0_in": 0.2644,
     "x1_in": 0.3218
    },
    {
     "index": 4,
-    "hex": "3b53ab",
+    "hex": "0024aa",
     "fraction": 0.0743,
     "x0_in": 0.3218,
     "x1_in": 0.424
    },
    {
     "index": 5,
-    "hex": "bdcfcd",
-    "fraction": 0.3832,
+    "hex": "20c0ff",
+    "fraction": 0.3833,
     "x0_in": 0.424,
     "x1_in": 0.951
    },
    {
     "index": 6,
-    "hex": "3b53ab",
+    "hex": "0024aa",
     "fraction": 0.0743,
     "x0_in": 0.951,
     "x1_in": 1.0532
    },
    {
     "index": 7,
-    "hex": "f0d348",
-    "fraction": 0.0418,
+    "hex": "ffc90e",
+    "fraction": 0.0417,
     "x0_in": 1.0532,
     "x1_in": 1.1106
    },
    {
     "index": 8,
-    "hex": "3b53ab",
-    "fraction": 0.0632,
+    "hex": "0024aa",
+    "fraction": 0.0633,
     "x0_in": 1.1106,
     "x1_in": 1.1976
    },
    {
     "index": 9,
-    "hex": "f2ecde",
+    "hex": "ffffff",
     "fraction": 0.0779,
     "x0_in": 1.1976,
     "x1_in": 1.3047
    },
    {
     "index": 10,
-    "hex": "bdcfcd",
-    "fraction": 0.0512,
+    "hex": "20c0ff",
+    "fraction": 0.0511,
     "x0_in": 1.3047,
     "x1_in": 1.375
    }
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,42 @@
    0,
    2.1
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"clean-variant\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art), award air_reserve_forces_meritorious_service\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"clean-variant\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art), award air_reserve_forces_meritorious_service\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "white",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "light blue",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "white",
+    "light blue"
+   ],
+   "measured_hex": [
+    "bdcfcd",
+    "f2ecde",
+    "3b53ab",
+    "f0d348",
+    "3b53ab",
+    "bdcfcd",
+    "3b53ab",
+    "f0d348",
+    "3b53ab",
+    "f2ecde",
+    "bdcfcd"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "very wide light blue centre, narrow blue, thin gold, narrow blue, a wide white stripe, thin white edge",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

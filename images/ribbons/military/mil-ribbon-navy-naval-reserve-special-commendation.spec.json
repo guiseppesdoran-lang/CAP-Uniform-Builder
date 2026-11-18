@@ -44,49 +44,49 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "066739",
+    "hex": "008000",
     "fraction": 0.054,
     "x0_in": 0,
     "x1_in": 0.0742
    },
    {
     "index": 1,
-    "hex": "fdd804",
+    "hex": "ffc90e",
     "fraction": 0.0263,
     "x0_in": 0.0742,
     "x1_in": 0.1103
    },
    {
     "index": 2,
-    "hex": "ed2025",
-    "fraction": 0.3339,
+    "hex": "ff0000",
+    "fraction": 0.334,
     "x0_in": 0.1103,
     "x1_in": 0.5695
    },
    {
     "index": 3,
-    "hex": "066739",
-    "fraction": 0.1717,
+    "hex": "008000",
+    "fraction": 0.1716,
     "x0_in": 0.5695,
     "x1_in": 0.8055
    },
    {
     "index": 4,
-    "hex": "ed2025",
+    "hex": "ff0000",
     "fraction": 0.334,
     "x0_in": 0.8055,
     "x1_in": 1.2647
    },
    {
     "index": 5,
-    "hex": "fdd804",
-    "fraction": 0.0262,
+    "hex": "ffc90e",
+    "fraction": 0.0263,
     "x0_in": 1.2647,
     "x1_in": 1.3008
    },
    {
     "index": 6,
-    "hex": "066739",
+    "hex": "008000",
     "fraction": 0.054,
     "x0_in": 1.3008,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "repo raster images/military-ribbons/naval_reserve_special_commendation.jpg, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "repo raster images/military-ribbons/naval_reserve_special_commendation.jpg, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -153,7 +153,32 @@
    0,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "green",
+    "gold",
+    "red",
+    "green",
+    "red",
+    "gold",
+    "green"
+   ],
+   "measured_hex": [
+    "066739",
+    "fdd804",
+    "ed2025",
+    "066739",
+    "ed2025",
+    "fdd804",
+    "066739"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "NAVY"

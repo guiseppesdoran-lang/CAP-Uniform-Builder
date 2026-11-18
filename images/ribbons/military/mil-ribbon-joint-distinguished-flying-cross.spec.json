@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2041b7",
+    "hex": "0024aa",
     "fraction": 0.0758,
     "x0_in": 0,
     "x1_in": 0.1042
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "2041b7",
+    "hex": "0024aa",
     "fraction": 0.2598,
     "x0_in": 0.2396,
     "x1_in": 0.5968
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "c52434",
+    "hex": "ff0000",
     "fraction": 0.0617,
     "x0_in": 0.6451,
     "x1_in": 0.7299
@@ -86,7 +86,7 @@
    },
    {
     "index": 6,
-    "hex": "2041b7",
+    "hex": "0024aa",
     "fraction": 0.2598,
     "x0_in": 0.7782,
     "x1_in": 1.1354
@@ -94,13 +94,13 @@
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0984,
+    "fraction": 0.0985,
     "x0_in": 1.1354,
     "x1_in": 1.2708
    },
    {
     "index": 8,
-    "hex": "2041b7",
+    "hex": "0024aa",
     "fraction": 0.0758,
     "x0_in": 1.2708,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,36 @@
    2.9,
    1.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "white",
+    "ultramarine",
+    "white",
+    "red",
+    "white",
+    "ultramarine",
+    "white",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "2041b7",
+    "ffffff",
+    "2041b7",
+    "ffffff",
+    "c52434",
+    "ffffff",
+    "2041b7",
+    "ffffff",
+    "2041b7"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

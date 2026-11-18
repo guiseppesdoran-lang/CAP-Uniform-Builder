@@ -44,63 +44,63 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2f3774",
+    "hex": "0024aa",
     "fraction": 0.1073,
     "x0_in": 0,
     "x1_in": 0.1475
    },
    {
     "index": 1,
-    "hex": "e43342",
+    "hex": "ff0000",
     "fraction": 0.1093,
     "x0_in": 0.1475,
     "x1_in": 0.2978
    },
    {
     "index": 2,
-    "hex": "e4c044",
+    "hex": "ffc90e",
     "fraction": 0.1212,
     "x0_in": 0.2978,
     "x1_in": 0.4645
    },
    {
     "index": 3,
-    "hex": "5183a9",
+    "hex": "0080ff",
     "fraction": 0.0697,
     "x0_in": 0.4645,
     "x1_in": 0.5603
    },
    {
     "index": 4,
-    "hex": "7cc3d8",
+    "hex": "20c0ff",
     "fraction": 0.185,
     "x0_in": 0.5603,
     "x1_in": 0.8147
    },
    {
     "index": 5,
-    "hex": "5183a9",
+    "hex": "0080ff",
     "fraction": 0.0697,
     "x0_in": 0.8147,
     "x1_in": 0.9105
    },
    {
     "index": 6,
-    "hex": "e4c044",
+    "hex": "ffc90e",
     "fraction": 0.1212,
     "x0_in": 0.9105,
     "x1_in": 1.0772
    },
    {
     "index": 7,
-    "hex": "e43342",
+    "hex": "ff0000",
     "fraction": 0.1093,
     "x0_in": 1.0772,
     "x1_in": 1.2275
    },
    {
     "index": 8,
-    "hex": "2f3774",
+    "hex": "0024aa",
     "fraction": 0.1073,
     "x0_in": 1.2275,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,36 @@
    1.1,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Navy and Marine Corps Sea Service Deployment Ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Navy and Marine Corps Sea Service Deployment Ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "red",
+    "gold",
+    "azure",
+    "light blue",
+    "azure",
+    "gold",
+    "red",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "2f3774",
+    "e43342",
+    "e4c044",
+    "5183a9",
+    "7cc3d8",
+    "5183a9",
+    "e4c044",
+    "e43342",
+    "2f3774"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "MARINE_CORPS",

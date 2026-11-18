@@ -51,44 +51,44 @@
    },
    {
     "index": 1,
-    "hex": "a4bdc5",
-    "fraction": 0.1286,
+    "hex": "20c0ff",
+    "fraction": 0.1287,
     "x0_in": 0.1138,
     "x1_in": 0.2907
    },
    {
     "index": 2,
-    "hex": "efc52d",
-    "fraction": 0.1437,
+    "hex": "ffc90e",
+    "fraction": 0.1436,
     "x0_in": 0.2907,
     "x1_in": 0.4882
    },
    {
     "index": 3,
-    "hex": "2b3c9e",
-    "fraction": 0.2898,
+    "hex": "0024aa",
+    "fraction": 0.2899,
     "x0_in": 0.4882,
     "x1_in": 0.8868
    },
    {
     "index": 4,
-    "hex": "efc52d",
-    "fraction": 0.1437,
+    "hex": "ffc90e",
+    "fraction": 0.1436,
     "x0_in": 0.8868,
     "x1_in": 1.0843
    },
    {
     "index": 5,
-    "hex": "a4bdc5",
-    "fraction": 0.1286,
+    "hex": "20c0ff",
+    "fraction": 0.1287,
     "x0_in": 1.0843,
-    "x1_in": 1.2611
+    "x1_in": 1.2612
    },
    {
     "index": 6,
     "hex": "ffffff",
     "fraction": 0.0828,
-    "x0_in": 1.2611,
+    "x0_in": 1.2612,
     "x1_in": 1.375
    }
   ],
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,35 @@
    0.7,
    5.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:USAF Basic Military Training Honor Graduate Ribbon.svg (Public domain), boundary match 0.83\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:USAF Basic Military Training Honor Graduate Ribbon.svg (Public domain), boundary match 0.83\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "white",
+    "light blue",
+    "gold",
+    "ultramarine",
+    "gold",
+    "light blue",
+    "white"
+   ],
+   "measured_hex": [
+    "ffffff",
+    "a4bdc5",
+    "efc52d",
+    "2b3c9e",
+    "efc52d",
+    "a4bdc5",
+    "ffffff"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "wide ultramarine centre flanked by yellow, brittany blue and white",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

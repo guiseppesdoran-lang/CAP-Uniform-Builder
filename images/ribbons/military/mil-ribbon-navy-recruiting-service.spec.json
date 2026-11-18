@@ -44,91 +44,91 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "f6d245",
+    "hex": "ffc90e",
     "fraction": 0.0535,
     "x0_in": 0,
     "x1_in": 0.0735
    },
    {
     "index": 1,
-    "hex": "373e7f",
+    "hex": "0024aa",
     "fraction": 0.127,
     "x0_in": 0.0735,
     "x1_in": 0.2481
    },
    {
     "index": 2,
-    "hex": "f6d245",
+    "hex": "ffc90e",
     "fraction": 0.1401,
     "x0_in": 0.2481,
     "x1_in": 0.4408
    },
    {
     "index": 3,
-    "hex": "60ca70",
+    "hex": "008000",
     "fraction": 0.0754,
     "x0_in": 0.4408,
     "x1_in": 0.5445
    },
    {
     "index": 4,
-    "hex": "f6d245",
+    "hex": "ffc90e",
     "fraction": 0.046,
     "x0_in": 0.5445,
     "x1_in": 0.6077
    },
    {
     "index": 5,
-    "hex": "373e7f",
-    "fraction": 0.0472,
+    "hex": "0024aa",
+    "fraction": 0.0473,
     "x0_in": 0.6077,
-    "x1_in": 0.6726
+    "x1_in": 0.6727
    },
    {
     "index": 6,
-    "hex": "de3d4f",
-    "fraction": 0.0216,
-    "x0_in": 0.6726,
-    "x1_in": 0.7024
+    "hex": "ff0000",
+    "fraction": 0.0215,
+    "x0_in": 0.6727,
+    "x1_in": 0.7023
    },
    {
     "index": 7,
-    "hex": "373e7f",
-    "fraction": 0.0472,
-    "x0_in": 0.7024,
+    "hex": "0024aa",
+    "fraction": 0.0473,
+    "x0_in": 0.7023,
     "x1_in": 0.7673
    },
    {
     "index": 8,
-    "hex": "f6d245",
+    "hex": "ffc90e",
     "fraction": 0.046,
     "x0_in": 0.7673,
     "x1_in": 0.8305
    },
    {
     "index": 9,
-    "hex": "60ca70",
+    "hex": "008000",
     "fraction": 0.0754,
     "x0_in": 0.8305,
     "x1_in": 0.9342
    },
    {
     "index": 10,
-    "hex": "f6d245",
+    "hex": "ffc90e",
     "fraction": 0.1401,
     "x0_in": 0.9342,
     "x1_in": 1.1269
    },
    {
     "index": 11,
-    "hex": "373e7f",
+    "hex": "0024aa",
     "fraction": 0.127,
     "x0_in": 1.1269,
     "x1_in": 1.3015
    },
    {
     "index": 12,
-    "hex": "f6d245",
+    "hex": "ffc90e",
     "fraction": 0.0535,
     "x0_in": 1.3015,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,44 @@
    3.4,
    1.8
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Navy Recruiting Service Ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Navy Recruiting Service Ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "gold",
+    "ultramarine",
+    "gold",
+    "green",
+    "gold",
+    "ultramarine",
+    "red",
+    "ultramarine",
+    "gold",
+    "green",
+    "gold",
+    "ultramarine",
+    "gold"
+   ],
+   "measured_hex": [
+    "f6d245",
+    "373e7f",
+    "f6d245",
+    "60ca70",
+    "f6d245",
+    "373e7f",
+    "de3d4f",
+    "373e7f",
+    "f6d245",
+    "60ca70",
+    "f6d245",
+    "373e7f",
+    "f6d245"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "NAVY"

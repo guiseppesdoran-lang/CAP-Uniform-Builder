@@ -44,61 +44,60 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "f84449",
-    "fraction": 0.394,
+    "hex": "ff0000",
+    "fraction": 0.3927,
     "x0_in": 0,
-    "x1_in": 0.5418
+    "x1_in": 0.5399
    },
    {
     "index": 1,
-    "hex": "fad953",
+    "hex": "ffc90e",
     "fraction": 0.0241,
-    "x0_in": 0.5418,
-    "x1_in": 0.5749
+    "x0_in": 0.5399,
+    "x1_in": 0.573
    },
    {
     "index": 2,
-    "hex": "63995c",
+    "hex": "008000",
     "fraction": 0.1666,
-    "x0_in": 0.5749,
-    "x1_in": 0.804
+    "x0_in": 0.573,
+    "x1_in": 0.8021
    },
    {
     "index": 3,
-    "hex": "fad953",
-    "fraction": 0.0241,
-    "x0_in": 0.804,
-    "x1_in": 0.8371
+    "hex": "ffc90e",
+    "fraction": 0.024,
+    "x0_in": 0.8021,
+    "x1_in": 0.8351
    },
    {
     "index": 4,
-    "hex": "f84449",
-    "fraction": 0.3912,
-    "x0_in": 0.8371,
+    "hex": "ff0000",
+    "fraction": 0.3927,
+    "x0_in": 0.8351,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": {
-   "color_hex": "d5b57c",
-   "light_hex": "fbedc6",
-   "dark_hex": "9c7b59",
+   "color_hex": "ffc90e",
+   "light_hex": "f5deb3",
    "thickness_in": {
-    "top": 0.0591,
-    "bottom": 0.0583,
-    "left": 0.0985,
-    "right": 0.0947
+    "top": 0.0587,
+    "bottom": 0.0587,
+    "left": 0.0966,
+    "right": 0.0966
    },
    "laurel": {
     "period_in": 0.0819,
     "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
    },
-   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+   "note": "thickness measured from the rectified photograph, made equal left and right and top and bottom; one gold for the frame, one pale gold for the laurel, no shading"
   }
  },
  "classification": "stripes_framed",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, a unit citation frame is one gold with a pale gold laurel (the owner, 2026-11-18, \"a frame is a frame of one gold\") settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -154,7 +153,47 @@
    0.1,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":8,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":8,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "gold",
+    "green",
+    "gold",
+    "red"
+   ],
+   "measured_hex": [
+    "f84449",
+    "fad953",
+    "63995c",
+    "fad953",
+    "f84449"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "basis": "a unit citation frame is one gold with a pale gold laurel (the owner, 2026-11-18, \"a frame is a frame of one gold\")",
+   "repairs": [
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 0.195
+    },
+    {
+     "kind": "frame-symmetric",
+     "thickness_was_in": {
+      "top": 0.0587,
+      "bottom": 0.0587,
+      "left": 0.0966,
+      "right": 0.0966
+     },
+     "thickness_now_in": {
+      "top": 0.0587,
+      "left": 0.0966
+     }
+    }
+   ]
+  }
  },
  "authorized_services": [
   "ARMY"

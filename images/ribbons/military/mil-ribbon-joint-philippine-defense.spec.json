@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "d0242d",
+    "hex": "ff0000",
     "fraction": 0.1777,
     "x0_in": 0,
     "x1_in": 0.2443
@@ -58,8 +58,8 @@
    },
    {
     "index": 2,
-    "hex": "d0242d",
-    "fraction": 0.428,
+    "hex": "ff0000",
+    "fraction": 0.4281,
     "x0_in": 0.3932,
     "x1_in": 0.9818
    },
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "d0242d",
+    "hex": "ff0000",
     "fraction": 0.1777,
     "x0_in": 1.1307,
     "x1_in": 1.375
@@ -82,31 +82,31 @@
    {
     "index": 0,
     "center_in": [
-     0.703,
+     0.6875,
      0.0792
     ],
-    "outer_radius_in": 0.0589,
-    "point_to_point_in": 0.1177,
+    "outer_radius_in": 0.0594,
+    "point_to_point_in": 0.1187,
     "rotation_deg": 51
    },
    {
     "index": 1,
     "center_in": [
-     0.6028,
+     0.5881,
      0.2316
     ],
-    "outer_radius_in": 0.059,
-    "point_to_point_in": 0.118,
+    "outer_radius_in": 0.0594,
+    "point_to_point_in": 0.1187,
     "rotation_deg": 54
    },
    {
     "index": 2,
     "center_in": [
-     0.8017,
+     0.7869,
      0.239
     ],
-    "outer_radius_in": 0.0602,
-    "point_to_point_in": 0.1205,
+    "outer_radius_in": 0.0594,
+    "point_to_point_in": 0.1187,
     "rotation_deg": 54
    }
   ],
@@ -114,7 +114,7 @@
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, white stars settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -170,7 +170,34 @@
    5.3,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "red",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "d0242d",
+    "ffffff",
+    "d0242d",
+    "ffffff",
+    "d0242d"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "basis": "white stars",
+   "repairs": [
+    {
+     "kind": "stars-centred",
+     "group_centre_was": 70.23
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

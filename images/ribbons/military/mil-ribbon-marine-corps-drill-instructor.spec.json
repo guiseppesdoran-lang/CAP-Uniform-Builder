@@ -44,21 +44,21 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "908b71",
+    "hex": "808000",
     "fraction": 0.3817,
     "x0_in": 0,
     "x1_in": 0.5249
    },
    {
     "index": 1,
-    "hex": "f7e5c4",
+    "hex": "f5deb3",
     "fraction": 0.2365,
     "x0_in": 0.5249,
     "x1_in": 0.8501
    },
    {
     "index": 2,
-    "hex": "908b71",
+    "hex": "808000",
     "fraction": 0.3817,
     "x0_in": 0.8501,
     "x1_in": 1.375
@@ -69,7 +69,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: a Marine Corps ribbon article (green with a central khaki stripe); the pale centre is the khaki settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -123,7 +123,27 @@
    0,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "olive",
+    "buff",
+    "olive"
+   ],
+   "measured_hex": [
+    "908b71",
+    "f7e5c4",
+    "908b71"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: a Marine Corps ribbon article (green with a central khaki stripe); the pale centre is the khaki"
+   ],
+   "basis": "second source, viewed: a Marine Corps ribbon article (green with a central khaki stripe); the pale centre is the khaki",
+   "said": "green with a central khaki stripe",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "MARINE_CORPS"

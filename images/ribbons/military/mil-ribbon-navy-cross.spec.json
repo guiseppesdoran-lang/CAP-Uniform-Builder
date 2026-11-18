@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "292b64",
+    "hex": "000080",
     "fraction": 0.405,
     "x0_in": 0,
     "x1_in": 0.5569
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "292b64",
+    "hex": "000080",
     "fraction": 0.405,
     "x0_in": 0.8181,
     "x1_in": 1.375
@@ -69,7 +69,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): navy blue with a white centre stripe settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -123,7 +123,26 @@
    3.5,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "navy",
+    "white",
+    "navy"
+   ],
+   "measured_hex": [
+    "292b64",
+    "ffffff",
+    "292b64"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): navy blue with a white centre stripe"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): navy blue with a white centre stripe",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD",

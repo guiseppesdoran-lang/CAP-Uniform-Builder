@@ -44,64 +44,64 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "addc85",
-    "fraction": 0.0614,
+    "hex": "00ff00",
+    "fraction": 0.0615,
     "x0_in": 0,
     "x1_in": 0.0845
    },
    {
     "index": 1,
-    "hex": "643f2c",
+    "hex": "804000",
     "fraction": 0.1884,
     "x0_in": 0.0845,
     "x1_in": 0.3435
    },
    {
     "index": 2,
-    "hex": "efdd63",
+    "hex": "ffff00",
     "fraction": 0.0514,
     "x0_in": 0.3435,
     "x1_in": 0.4142
    },
    {
     "index": 3,
-    "hex": "71bed3",
+    "hex": "20c0ff",
     "fraction": 0.1011,
     "x0_in": 0.4142,
     "x1_in": 0.5532
    },
    {
     "index": 4,
-    "hex": "2585cc",
+    "hex": "0080ff",
     "fraction": 0.1953,
     "x0_in": 0.5532,
     "x1_in": 0.8218
    },
    {
     "index": 5,
-    "hex": "71bed3",
+    "hex": "20c0ff",
     "fraction": 0.1011,
     "x0_in": 0.8218,
     "x1_in": 0.9608
    },
    {
     "index": 6,
-    "hex": "efdd63",
+    "hex": "ffff00",
     "fraction": 0.0514,
     "x0_in": 0.9608,
     "x1_in": 1.0315
    },
    {
     "index": 7,
-    "hex": "643f2c",
+    "hex": "804000",
     "fraction": 0.1884,
     "x0_in": 1.0315,
     "x1_in": 1.2905
    },
    {
     "index": 8,
-    "hex": "addc85",
-    "fraction": 0.0614,
+    "hex": "00ff00",
+    "fraction": 0.0615,
     "x0_in": 1.2905,
     "x1_in": 1.375
    }
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: military-ranks.org and Military Medals (turquoise centre, light blue, yellow and other stripes) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,39 @@
    0.3,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "lime",
+    "brown",
+    "yellow",
+    "light blue",
+    "azure",
+    "light blue",
+    "yellow",
+    "brown",
+    "lime"
+   ],
+   "measured_hex": [
+    "addc85",
+    "643f2c",
+    "efdd63",
+    "71bed3",
+    "2585cc",
+    "71bed3",
+    "efdd63",
+    "643f2c",
+    "addc85"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: military-ranks.org and Military Medals (turquoise centre, light blue, yellow and other stripes)"
+   ],
+   "basis": "second source, viewed: military-ranks.org and Military Medals (turquoise centre, light blue, yellow and other stripes)",
+   "said": "a thick turquoise centre, thin light blue and yellow stripes",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

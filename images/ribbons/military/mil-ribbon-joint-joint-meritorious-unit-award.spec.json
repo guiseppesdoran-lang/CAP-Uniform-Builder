@@ -44,89 +44,88 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "75aeda",
-    "fraction": 0.1453,
+    "hex": "20c0ff",
+    "fraction": 0.1401,
     "x0_in": 0,
-    "x1_in": 0.1998
+    "x1_in": 0.1927
    },
    {
     "index": 1,
-    "hex": "fcd131",
-    "fraction": 0.0908,
-    "x0_in": 0.1998,
-    "x1_in": 0.3247
+    "hex": "ffc90e",
+    "fraction": 0.0909,
+    "x0_in": 0.1927,
+    "x1_in": 0.3177
    },
    {
     "index": 2,
-    "hex": "75aeda",
-    "fraction": 0.1328,
-    "x0_in": 0.3247,
-    "x1_in": 0.5072
+    "hex": "20c0ff",
+    "fraction": 0.1327,
+    "x0_in": 0.3177,
+    "x1_in": 0.5002
    },
    {
     "index": 3,
     "hex": "ffffff",
     "fraction": 0.0919,
-    "x0_in": 0.5072,
-    "x1_in": 0.6337
+    "x0_in": 0.5002,
+    "x1_in": 0.6266
    },
    {
     "index": 4,
-    "hex": "c90867",
+    "hex": "c02040",
     "fraction": 0.0886,
-    "x0_in": 0.6337,
-    "x1_in": 0.7554
+    "x0_in": 0.6266,
+    "x1_in": 0.7484
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0919,
-    "x0_in": 0.7554,
-    "x1_in": 0.8819
+    "fraction": 0.092,
+    "x0_in": 0.7484,
+    "x1_in": 0.8749
    },
    {
     "index": 6,
-    "hex": "75aeda",
-    "fraction": 0.1328,
-    "x0_in": 0.8819,
-    "x1_in": 1.0644
+    "hex": "20c0ff",
+    "fraction": 0.1327,
+    "x0_in": 0.8749,
+    "x1_in": 1.0574
    },
    {
     "index": 7,
-    "hex": "fcd131",
+    "hex": "ffc90e",
     "fraction": 0.0908,
-    "x0_in": 1.0644,
-    "x1_in": 1.1893
+    "x0_in": 1.0574,
+    "x1_in": 1.1823
    },
    {
     "index": 8,
-    "hex": "75aeda",
-    "fraction": 0.1351,
-    "x0_in": 1.1893,
+    "hex": "20c0ff",
+    "fraction": 0.1401,
+    "x0_in": 1.1823,
     "x1_in": 1.375
    }
   ],
   "stars": [],
   "frame": {
-   "color_hex": "d3b57d",
-   "light_hex": "fbebc4",
-   "dark_hex": "977c59",
+   "color_hex": "ffc90e",
+   "light_hex": "f5deb3",
    "thickness_in": {
-    "top": 0.0548,
-    "bottom": 0.0603,
-    "left": 0.0782,
-    "right": 0.0641
+    "top": 0.0576,
+    "bottom": 0.0576,
+    "left": 0.0712,
+    "right": 0.0712
    },
    "laurel": {
     "period_in": 0.0743,
     "note": "leaf pairs at the period measured from the frame, running from the bottom centre up both sides to the top centre"
    },
-   "note": "thickness and colours measured from the rectified photograph, each side against the outer rectangle"
+   "note": "thickness measured from the rectified photograph, made equal left and right and top and bottom; one gold for the frame, one pale gold for the laurel, no shading"
   }
  },
  "classification": "stripes_framed",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, a unit citation frame is one gold with a pale gold laurel (the owner, 2026-11-18, \"a frame is a frame of one gold\") settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -186,7 +185,55 @@
    0.4,
    0.6
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "gold",
+    "light blue",
+    "white",
+    "crimson",
+    "white",
+    "light blue",
+    "gold",
+    "light blue"
+   ],
+   "measured_hex": [
+    "75aeda",
+    "fcd131",
+    "75aeda",
+    "ffffff",
+    "c90867",
+    "ffffff",
+    "75aeda",
+    "fcd131",
+    "75aeda"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "basis": "a unit citation frame is one gold with a pale gold laurel (the owner, 2026-11-18, \"a frame is a frame of one gold\")",
+   "repairs": [
+    {
+     "kind": "mirrored",
+     "max_boundary_shift_units": 0.705
+    },
+    {
+     "kind": "frame-symmetric",
+     "thickness_was_in": {
+      "top": 0.0576,
+      "bottom": 0.0576,
+      "left": 0.0712,
+      "right": 0.0712
+     },
+     "thickness_now_in": {
+      "top": 0.0576,
+      "left": 0.0712
+     }
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

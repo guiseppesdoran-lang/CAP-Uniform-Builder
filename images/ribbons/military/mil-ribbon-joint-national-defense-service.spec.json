@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "eb2d33",
+    "hex": "ff0000",
     "fraction": 0.3121,
     "x0_in": 0,
     "x1_in": 0.4292
@@ -52,13 +52,13 @@
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0269,
+    "fraction": 0.0268,
     "x0_in": 0.4292,
     "x1_in": 0.4661
    },
    {
     "index": 2,
-    "hex": "4040a0",
+    "hex": "0024aa",
     "fraction": 0.016,
     "x0_in": 0.4661,
     "x1_in": 0.4881
@@ -72,22 +72,22 @@
    },
    {
     "index": 4,
-    "hex": "eb2d33",
+    "hex": "ff0000",
     "fraction": 0.0241,
     "x0_in": 0.5204,
     "x1_in": 0.5536
    },
    {
     "index": 5,
-    "hex": "eeb240",
-    "fraction": 0.1947,
+    "hex": "ffc90e",
+    "fraction": 0.1948,
     "x0_in": 0.5536,
     "x1_in": 0.8214
    },
    {
     "index": 6,
-    "hex": "eb2d33",
-    "fraction": 0.0242,
+    "hex": "ff0000",
+    "fraction": 0.0241,
     "x0_in": 0.8214,
     "x1_in": 0.8546
    },
@@ -100,7 +100,7 @@
    },
    {
     "index": 8,
-    "hex": "4040a0",
+    "hex": "0024aa",
     "fraction": 0.016,
     "x0_in": 0.8869,
     "x1_in": 0.9089
@@ -108,13 +108,13 @@
    {
     "index": 9,
     "hex": "ffffff",
-    "fraction": 0.0269,
+    "fraction": 0.0268,
     "x0_in": 0.9089,
     "x1_in": 0.9458
    },
    {
     "index": 10,
-    "hex": "eb2d33",
+    "hex": "ff0000",
     "fraction": 0.3121,
     "x0_in": 0.9458,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,40 @@
    3.5,
    0
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:National Defense Service Medal ribbon, 2nd award.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:National Defense Service Medal ribbon, 2nd award.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "ultramarine",
+    "white",
+    "red",
+    "gold",
+    "red",
+    "white",
+    "ultramarine",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "eb2d33",
+    "ffffff",
+    "4040a0",
+    "ffffff",
+    "eb2d33",
+    "eeb240",
+    "eb2d33",
+    "ffffff",
+    "4040a0",
+    "ffffff",
+    "eb2d33"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

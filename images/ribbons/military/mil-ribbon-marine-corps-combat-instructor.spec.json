@@ -44,35 +44,35 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "8b7867",
+    "hex": "808000",
     "fraction": 0.0789,
     "x0_in": 0,
     "x1_in": 0.1085
    },
    {
     "index": 1,
-    "hex": "fbe3af",
-    "fraction": 0.3283,
+    "hex": "f5deb3",
+    "fraction": 0.3284,
     "x0_in": 0.1085,
     "x1_in": 0.56
    },
    {
     "index": 2,
-    "hex": "19131a",
-    "fraction": 0.1854,
+    "hex": "000000",
+    "fraction": 0.1855,
     "x0_in": 0.56,
     "x1_in": 0.815
    },
    {
     "index": 3,
-    "hex": "fbe3af",
-    "fraction": 0.3283,
+    "hex": "f5deb3",
+    "fraction": 0.3284,
     "x0_in": 0.815,
     "x1_in": 1.2665
    },
    {
     "index": 4,
-    "hex": "8b7867",
+    "hex": "808000",
     "fraction": 0.0789,
     "x0_in": 1.2665,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: a fandom article of the Marine Corps ribbons: chamois with olive green edges and a black centre stripe (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,30 @@
    0.5,
    0.9
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "olive",
+    "buff",
+    "black",
+    "buff",
+    "olive"
+   ],
+   "measured_hex": [
+    "8b7867",
+    "fbe3af",
+    "19131a",
+    "fbe3af",
+    "8b7867"
+   ],
+   "decided_by": [
+    "second source, viewed: a fandom article of the Marine Corps ribbons: chamois with olive green edges and a black centre stripe (no first-source text found)"
+   ],
+   "basis": "second source, viewed: a fandom article of the Marine Corps ribbons: chamois with olive green edges and a black centre stripe (no first-source text found)",
+   "said": "chamois, olive green edges, a black centre stripe",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "MARINE_CORPS"

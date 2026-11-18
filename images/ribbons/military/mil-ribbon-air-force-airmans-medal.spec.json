@@ -44,105 +44,105 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "bbcbd9",
+    "hex": "20c0ff",
     "fraction": 0.1943,
     "x0_in": 0,
     "x1_in": 0.2671
    },
    {
     "index": 1,
-    "hex": "f9d234",
-    "fraction": 0.0525,
+    "hex": "ffc90e",
+    "fraction": 0.0526,
     "x0_in": 0.2671,
     "x1_in": 0.3394
    },
    {
     "index": 2,
-    "hex": "3442bf",
+    "hex": "0024aa",
     "fraction": 0.0452,
     "x0_in": 0.3394,
     "x1_in": 0.4015
    },
    {
     "index": 3,
-    "hex": "f9d234",
-    "fraction": 0.0405,
+    "hex": "ffc90e",
+    "fraction": 0.0404,
     "x0_in": 0.4015,
     "x1_in": 0.4571
    },
    {
     "index": 4,
-    "hex": "3442bf",
-    "fraction": 0.0474,
+    "hex": "0024aa",
+    "fraction": 0.0475,
     "x0_in": 0.4571,
     "x1_in": 0.5224
    },
    {
     "index": 5,
-    "hex": "f9d234",
-    "fraction": 0.0491,
+    "hex": "ffc90e",
+    "fraction": 0.049,
     "x0_in": 0.5224,
     "x1_in": 0.5898
    },
    {
     "index": 6,
-    "hex": "3442bf",
+    "hex": "0024aa",
     "fraction": 0.0514,
     "x0_in": 0.5898,
     "x1_in": 0.6605
    },
    {
     "index": 7,
-    "hex": "f9d234",
+    "hex": "ffc90e",
     "fraction": 0.0393,
     "x0_in": 0.6605,
     "x1_in": 0.7145
    },
    {
     "index": 8,
-    "hex": "3442bf",
+    "hex": "0024aa",
     "fraction": 0.0514,
     "x0_in": 0.7145,
     "x1_in": 0.7852
    },
    {
     "index": 9,
-    "hex": "f9d234",
-    "fraction": 0.0491,
+    "hex": "ffc90e",
+    "fraction": 0.049,
     "x0_in": 0.7852,
     "x1_in": 0.8526
    },
    {
     "index": 10,
-    "hex": "3442bf",
-    "fraction": 0.0474,
+    "hex": "0024aa",
+    "fraction": 0.0475,
     "x0_in": 0.8526,
     "x1_in": 0.9179
    },
    {
     "index": 11,
-    "hex": "f9d234",
-    "fraction": 0.0405,
+    "hex": "ffc90e",
+    "fraction": 0.0404,
     "x0_in": 0.9179,
     "x1_in": 0.9735
    },
    {
     "index": 12,
-    "hex": "3442bf",
+    "hex": "0024aa",
     "fraction": 0.0452,
     "x0_in": 0.9735,
     "x1_in": 1.0356
    },
    {
     "index": 13,
-    "hex": "f9d234",
+    "hex": "ffc90e",
     "fraction": 0.0526,
     "x0_in": 1.0356,
     "x1_in": 1.1079
    },
    {
     "index": 14,
-    "hex": "bbcbd9",
+    "hex": "20c0ff",
     "fraction": 0.1943,
     "x0_in": 1.1079,
     "x1_in": 1.375
@@ -153,7 +153,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -219,7 +219,50 @@
    0.4,
    0.7
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":18,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":18,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "gold",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "gold",
+    "ultramarine",
+    "gold",
+    "light blue"
+   ],
+   "measured_hex": [
+    "bbcbd9",
+    "f9d234",
+    "3442bf",
+    "f9d234",
+    "3442bf",
+    "f9d234",
+    "3442bf",
+    "f9d234",
+    "3442bf",
+    "f9d234",
+    "3442bf",
+    "f9d234",
+    "3442bf",
+    "f9d234",
+    "bbcbd9"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "seven yellow and six ultramarine stripes in the centre, wide brittany blue at the edges",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.0442,
     "x0_in": 0,
     "x1_in": 0.0608
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.0455,
     "x0_in": 0.1163,
     "x1_in": 0.1788
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.0464,
     "x0_in": 0.2432,
     "x1_in": 0.307
@@ -80,13 +80,13 @@
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0493,
+    "fraction": 0.0492,
     "x0_in": 0.307,
     "x1_in": 0.3747
    },
    {
     "index": 6,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.455,
     "x0_in": 0.3747,
     "x1_in": 1.0003
@@ -94,13 +94,13 @@
    {
     "index": 7,
     "hex": "ffffff",
-    "fraction": 0.0493,
+    "fraction": 0.0492,
     "x0_in": 1.0003,
     "x1_in": 1.068
    },
    {
     "index": 8,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.0464,
     "x0_in": 1.068,
     "x1_in": 1.1318
@@ -114,7 +114,7 @@
    },
    {
     "index": 10,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.0455,
     "x0_in": 1.1962,
     "x1_in": 1.2587
@@ -128,7 +128,7 @@
    },
    {
     "index": 12,
-    "hex": "961a2a",
+    "hex": "ff0000",
     "fraction": 0.0442,
     "x0_in": 1.3142,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,44 @@
    5.5,
    1.1
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Army Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Army Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "961a2a",
+    "ffffff",
+    "961a2a",
+    "ffffff",
+    "961a2a",
+    "ffffff",
+    "961a2a",
+    "ffffff",
+    "961a2a",
+    "ffffff",
+    "961a2a",
+    "ffffff",
+    "961a2a"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "ARMY"

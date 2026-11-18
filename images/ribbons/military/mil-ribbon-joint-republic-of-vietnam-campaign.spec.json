@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "7ac064",
+    "hex": "008000",
     "fraction": 0.0454,
     "x0_in": 0,
     "x1_in": 0.0624
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "7ac064",
+    "hex": "008000",
     "fraction": 0.2212,
     "x0_in": 0.2532,
     "x1_in": 0.5574
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "7ac064",
+    "hex": "008000",
     "fraction": 0.2212,
     "x0_in": 0.8176,
     "x1_in": 1.1218
@@ -86,7 +86,7 @@
    },
    {
     "index": 6,
-    "hex": "7ac064",
+    "hex": "008000",
     "fraction": 0.0454,
     "x0_in": 1.3126,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,32 @@
    1.6,
    2.6
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"simplified\",\"stripes\":0,\"orientation\":\"traced-polygons\",\"color_source\":\"measured (vendor raster)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "green",
+    "white",
+    "green",
+    "white",
+    "green",
+    "white",
+    "green"
+   ],
+   "measured_hex": [
+    "7ac064",
+    "ffffff",
+    "7ac064",
+    "ffffff",
+    "7ac064",
+    "ffffff",
+    "7ac064"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

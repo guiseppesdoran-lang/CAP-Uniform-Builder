@@ -44,63 +44,63 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "296bc1",
+    "hex": "0000ff",
     "fraction": 0.1705,
     "x0_in": 0,
     "x1_in": 0.2344
    },
    {
     "index": 1,
-    "hex": "e0e8e6",
+    "hex": "008080",
     "fraction": 0.0466,
     "x0_in": 0.2344,
     "x1_in": 0.2985
    },
    {
     "index": 2,
-    "hex": "f1d6ab",
-    "fraction": 0.1406,
+    "hex": "f5deb3",
+    "fraction": 0.1407,
     "x0_in": 0.2985,
     "x1_in": 0.4919
    },
    {
     "index": 3,
-    "hex": "e0e8e6",
+    "hex": "008080",
     "fraction": 0.0253,
     "x0_in": 0.4919,
     "x1_in": 0.5267
    },
    {
     "index": 4,
-    "hex": "fab839",
+    "hex": "ff8040",
     "fraction": 0.2339,
     "x0_in": 0.5267,
     "x1_in": 0.8483
    },
    {
     "index": 5,
-    "hex": "e0e8e6",
+    "hex": "008080",
     "fraction": 0.0253,
     "x0_in": 0.8483,
     "x1_in": 0.8831
    },
    {
     "index": 6,
-    "hex": "f1d6ab",
-    "fraction": 0.1406,
+    "hex": "f5deb3",
+    "fraction": 0.1407,
     "x0_in": 0.8831,
     "x1_in": 1.0765
    },
    {
     "index": 7,
-    "hex": "e0e8e6",
+    "hex": "008080",
     "fraction": 0.0466,
     "x0_in": 1.0765,
     "x1_in": 1.1406
    },
    {
     "index": 8,
-    "hex": "296bc1",
+    "hex": "0000ff",
     "fraction": 0.1705,
     "x0_in": 1.1406,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,38 @@
    0.6,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "blue",
+    "teal",
+    "buff",
+    "teal",
+    "orange",
+    "teal",
+    "buff",
+    "teal",
+    "blue"
+   ],
+   "measured_hex": [
+    "296bc1",
+    "e0e8e6",
+    "f1d6ab",
+    "e0e8e6",
+    "fab839",
+    "e0e8e6",
+    "f1d6ab",
+    "e0e8e6",
+    "296bc1"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "blue, teal, sand and orange",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "ARMY",

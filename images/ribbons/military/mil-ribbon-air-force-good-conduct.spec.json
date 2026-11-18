@@ -44,14 +44,14 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "dae4ea",
+    "hex": "20c0ff",
     "fraction": 0.1297,
     "x0_in": 0,
     "x1_in": 0.1783
    },
    {
     "index": 1,
-    "hex": "ef3946",
+    "hex": "ff0000",
     "fraction": 0.0473,
     "x0_in": 0.1783,
     "x1_in": 0.2434
@@ -65,21 +65,21 @@
    },
    {
     "index": 3,
-    "hex": "2345b9",
+    "hex": "0024aa",
     "fraction": 0.046,
     "x0_in": 0.3084,
     "x1_in": 0.3717
    },
    {
     "index": 4,
-    "hex": "dae4ea",
+    "hex": "20c0ff",
     "fraction": 0.4593,
     "x0_in": 0.3717,
     "x1_in": 1.0033
    },
    {
     "index": 5,
-    "hex": "2345b9",
+    "hex": "0024aa",
     "fraction": 0.046,
     "x0_in": 1.0033,
     "x1_in": 1.0666
@@ -93,14 +93,14 @@
    },
    {
     "index": 7,
-    "hex": "ef3946",
+    "hex": "ff0000",
     "fraction": 0.0473,
     "x0_in": 1.1316,
     "x1_in": 1.1967
    },
    {
     "index": 8,
-    "hex": "dae4ea",
+    "hex": "20c0ff",
     "fraction": 0.1297,
     "x0_in": 1.1967,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) and Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,39 @@
    0.9,
    0.8
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Air Force Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Air Force Good Conduct Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "red",
+    "white",
+    "ultramarine",
+    "light blue",
+    "ultramarine",
+    "white",
+    "red",
+    "light blue"
+   ],
+   "measured_hex": [
+    "dae4ea",
+    "ef3946",
+    "ffffff",
+    "2345b9",
+    "dae4ea",
+    "2345b9",
+    "ffffff",
+    "ef3946",
+    "dae4ea"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed) and Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed) and Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "predominantly light blue with thin dark blue, white, red and light blue stripes",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

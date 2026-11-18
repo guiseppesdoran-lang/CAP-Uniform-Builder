@@ -44,63 +44,63 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "26233b",
+    "hex": "000080",
     "fraction": 0.1512,
     "x0_in": 0,
     "x1_in": 0.2079
    },
    {
     "index": 1,
-    "hex": "e6d9d5",
-    "fraction": 0.039,
+    "hex": "c0c0c0",
+    "fraction": 0.0391,
     "x0_in": 0.2079,
     "x1_in": 0.2616
    },
    {
     "index": 2,
-    "hex": "eb2833",
+    "hex": "ff0000",
     "fraction": 0.0553,
     "x0_in": 0.2616,
     "x1_in": 0.3376
    },
    {
     "index": 3,
-    "hex": "aab5be",
+    "hex": "20c0ff",
     "fraction": 0.0457,
     "x0_in": 0.3376,
     "x1_in": 0.4005
    },
    {
     "index": 4,
-    "hex": "26233b",
+    "hex": "000080",
     "fraction": 0.4175,
     "x0_in": 0.4005,
     "x1_in": 0.9745
    },
    {
     "index": 5,
-    "hex": "aab5be",
+    "hex": "20c0ff",
     "fraction": 0.0457,
     "x0_in": 0.9745,
     "x1_in": 1.0374
    },
    {
     "index": 6,
-    "hex": "eb2833",
+    "hex": "ff0000",
     "fraction": 0.0553,
     "x0_in": 1.0374,
     "x1_in": 1.1134
    },
    {
     "index": 7,
-    "hex": "e6d9d5",
-    "fraction": 0.039,
+    "hex": "c0c0c0",
+    "fraction": 0.0391,
     "x0_in": 1.1134,
     "x1_in": 1.1671
    },
    {
     "index": 8,
-    "hex": "26233b",
+    "hex": "000080",
     "fraction": 0.1512,
     "x0_in": 1.1671,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Air Force Personnel Center fact sheet (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,39 @@
    0.9,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"clean-variant\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art), award air_force_military_training_instructor\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"clean-variant\",\"stripes\":10,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art), award air_force_military_training_instructor\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "navy",
+    "silver",
+    "red",
+    "light blue",
+    "navy",
+    "light blue",
+    "red",
+    "silver",
+    "navy"
+   ],
+   "measured_hex": [
+    "26233b",
+    "e6d9d5",
+    "eb2833",
+    "aab5be",
+    "26233b",
+    "aab5be",
+    "eb2833",
+    "e6d9d5",
+    "26233b"
+   ],
+   "decided_by": [
+    "Air Force Personnel Center fact sheet (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Air Force Personnel Center fact sheet (first source, viewed)",
+   "said": "dark blue background, silver outside stripes, red middle stripes, light blue inside stripes",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE"

@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "191721",
+    "hex": "000000",
     "fraction": 0.1999,
     "x0_in": 0,
     "x1_in": 0.2748
@@ -58,35 +58,35 @@
    },
    {
     "index": 2,
-    "hex": "41739a",
-    "fraction": 0.2086,
+    "hex": "008080",
+    "fraction": 0.2087,
     "x0_in": 0.3403,
     "x1_in": 0.6272
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0306,
+    "fraction": 0.0307,
     "x0_in": 0.6272,
     "x1_in": 0.6694
    },
    {
     "index": 4,
-    "hex": "ec3742",
-    "fraction": 0.0264,
+    "hex": "ff0000",
+    "fraction": 0.0263,
     "x0_in": 0.6694,
     "x1_in": 0.7056
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.0306,
+    "fraction": 0.0307,
     "x0_in": 0.7056,
     "x1_in": 0.7478
    },
    {
     "index": 6,
-    "hex": "41739a",
+    "hex": "008080",
     "fraction": 0.2087,
     "x0_in": 0.7478,
     "x1_in": 1.0347
@@ -100,7 +100,7 @@
    },
    {
     "index": 8,
-    "hex": "191721",
+    "hex": "000000",
     "fraction": 0.1999,
     "x0_in": 1.1002,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): teal blue with black edges, thin white stripes, a red stripe in the centre settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,38 @@
    3.3,
    1
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "black",
+    "white",
+    "teal",
+    "white",
+    "red",
+    "white",
+    "teal",
+    "white",
+    "black"
+   ],
+   "measured_hex": [
+    "191721",
+    "ffffff",
+    "41739a",
+    "ffffff",
+    "ec3742",
+    "ffffff",
+    "41739a",
+    "ffffff",
+    "191721"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): teal blue with black edges, thin white stripes, a red stripe in the centre"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): teal blue with black edges, thin white stripes, a red stripe in the centre",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

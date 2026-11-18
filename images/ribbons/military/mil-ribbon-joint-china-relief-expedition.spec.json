@@ -44,21 +44,21 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "283c92",
+    "hex": "0024aa",
     "fraction": 0.0472,
     "x0_in": 0,
     "x1_in": 0.0649
    },
    {
     "index": 1,
-    "hex": "f6c80e",
-    "fraction": 0.9057,
+    "hex": "ffc90e",
+    "fraction": 0.9056,
     "x0_in": 0.0649,
     "x1_in": 1.3101
    },
    {
     "index": 2,
-    "hex": "283c92",
+    "hex": "0024aa",
     "fraction": 0.0472,
     "x0_in": 1.3101,
     "x1_in": 1.375
@@ -69,7 +69,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "vendor SVG (exact)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "vendor SVG (exact)",
   "snap": null,
   "reference": null,
@@ -90,7 +90,24 @@
   "fidelity": "exact",
   "fallback_central_stripes_only": false,
   "source_kind": "svg",
-  "note": ""
+  "note": "",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "gold",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "283c92",
+    "f6c80e",
+    "283c92"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [],
  "aliases": [

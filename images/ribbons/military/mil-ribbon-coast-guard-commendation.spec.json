@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "06734a",
+    "hex": "008000",
     "fraction": 0.0848,
     "x0_in": 0,
     "x1_in": 0.1166
@@ -52,41 +52,41 @@
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.1386,
+    "fraction": 0.1385,
     "x0_in": 0.1166,
     "x1_in": 0.3071
    },
    {
     "index": 2,
-    "hex": "06734a",
-    "fraction": 0.2428,
+    "hex": "008000",
+    "fraction": 0.2429,
     "x0_in": 0.3071,
     "x1_in": 0.6411
    },
    {
     "index": 3,
     "hex": "ffffff",
-    "fraction": 0.0676,
+    "fraction": 0.0675,
     "x0_in": 0.6411,
     "x1_in": 0.7339
    },
    {
     "index": 4,
-    "hex": "06734a",
-    "fraction": 0.2428,
+    "hex": "008000",
+    "fraction": 0.2429,
     "x0_in": 0.7339,
     "x1_in": 1.0679
    },
    {
     "index": 5,
     "hex": "ffffff",
-    "fraction": 0.1386,
+    "fraction": 0.1385,
     "x0_in": 1.0679,
     "x1_in": 1.2584
    },
    {
     "index": 6,
-    "hex": "06734a",
+    "hex": "008000",
     "fraction": 0.0848,
     "x0_in": 1.2584,
     "x1_in": 1.375
@@ -97,7 +97,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -155,7 +155,32 @@
    4.7,
    2.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Coast Guard Commendation Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Coast Guard Commendation Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "green",
+    "white",
+    "green",
+    "white",
+    "green",
+    "white",
+    "green"
+   ],
+   "measured_hex": [
+    "06734a",
+    "ffffff",
+    "06734a",
+    "ffffff",
+    "06734a",
+    "ffffff",
+    "06734a"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

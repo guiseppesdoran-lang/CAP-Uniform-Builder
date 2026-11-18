@@ -44,245 +44,245 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "b6121e",
+    "hex": "ff0000",
     "fraction": 0.2535,
     "x0_in": 0,
     "x1_in": 0.3486
    },
    {
     "index": 1,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0306,
     "x0_in": 0.3486,
     "x1_in": 0.3907
    },
    {
     "index": 2,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0054,
     "x0_in": 0.3907,
     "x1_in": 0.3981
    },
    {
     "index": 3,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0127,
     "x0_in": 0.3981,
     "x1_in": 0.4155
    },
    {
     "index": 4,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0057,
     "x0_in": 0.4155,
     "x1_in": 0.4234
    },
    {
     "index": 5,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0346,
     "x0_in": 0.4234,
     "x1_in": 0.471
    },
    {
     "index": 6,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.471,
     "x1_in": 0.4785
    },
    {
     "index": 7,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0122,
     "x0_in": 0.4785,
     "x1_in": 0.4953
    },
    {
     "index": 8,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0056,
     "x0_in": 0.4953,
     "x1_in": 0.503
    },
    {
     "index": 9,
-    "hex": "efaa1d",
-    "fraction": 0.0349,
+    "hex": "ffc90e",
+    "fraction": 0.035,
     "x0_in": 0.503,
     "x1_in": 0.5511
    },
    {
     "index": 10,
-    "hex": "c93e1c",
-    "fraction": 0.0056,
+    "hex": "ff0000",
+    "fraction": 0.0055,
     "x0_in": 0.5511,
     "x1_in": 0.5587
    },
    {
     "index": 11,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0124,
     "x0_in": 0.5587,
     "x1_in": 0.5758
    },
    {
     "index": 12,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.5758,
     "x1_in": 0.5833
    },
    {
     "index": 13,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0352,
     "x0_in": 0.5833,
     "x1_in": 0.6317
    },
    {
     "index": 14,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.6317,
     "x1_in": 0.6392
    },
    {
     "index": 15,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0123,
     "x0_in": 0.6392,
     "x1_in": 0.6561
    },
    {
     "index": 16,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.6561,
     "x1_in": 0.6636
    },
    {
     "index": 17,
-    "hex": "efaa1d",
-    "fraction": 0.0347,
+    "hex": "ffc90e",
+    "fraction": 0.0348,
     "x0_in": 0.6636,
     "x1_in": 0.7114
    },
    {
     "index": 18,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.7114,
     "x1_in": 0.7189
    },
    {
     "index": 19,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0123,
     "x0_in": 0.7189,
     "x1_in": 0.7358
    },
    {
     "index": 20,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.7358,
     "x1_in": 0.7433
    },
    {
     "index": 21,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0352,
     "x0_in": 0.7433,
     "x1_in": 0.7917
    },
    {
     "index": 22,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.7917,
     "x1_in": 0.7992
    },
    {
     "index": 23,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0124,
     "x0_in": 0.7992,
     "x1_in": 0.8163
    },
    {
     "index": 24,
-    "hex": "c93e1c",
-    "fraction": 0.0056,
+    "hex": "ff0000",
+    "fraction": 0.0055,
     "x0_in": 0.8163,
     "x1_in": 0.8239
    },
    {
     "index": 25,
-    "hex": "efaa1d",
-    "fraction": 0.0349,
+    "hex": "ffc90e",
+    "fraction": 0.035,
     "x0_in": 0.8239,
     "x1_in": 0.872
    },
    {
     "index": 26,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0056,
     "x0_in": 0.872,
     "x1_in": 0.8797
    },
    {
     "index": 27,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0122,
     "x0_in": 0.8797,
     "x1_in": 0.8965
    },
    {
     "index": 28,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0055,
     "x0_in": 0.8965,
     "x1_in": 0.904
    },
    {
     "index": 29,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0346,
     "x0_in": 0.904,
     "x1_in": 0.9516
    },
    {
     "index": 30,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0057,
     "x0_in": 0.9516,
     "x1_in": 0.9595
    },
    {
     "index": 31,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0127,
     "x0_in": 0.9595,
     "x1_in": 0.9769
    },
    {
     "index": 32,
-    "hex": "c93e1c",
+    "hex": "ff0000",
     "fraction": 0.0054,
     "x0_in": 0.9769,
     "x1_in": 0.9843
    },
    {
     "index": 33,
-    "hex": "efaa1d",
+    "hex": "ffc90e",
     "fraction": 0.0306,
     "x0_in": 0.9843,
     "x1_in": 1.0264
    },
    {
     "index": 34,
-    "hex": "b6121e",
+    "hex": "ff0000",
     "fraction": 0.2535,
     "x0_in": 1.0264,
     "x1_in": 1.375
@@ -299,15 +299,14 @@
     ],
     "length_in": 0.514,
     "tilt_deg": 9,
-    "base_hex": "b7876d",
-    "relief_hex": "67412e",
+    "base_hex": "804000",
     "source": "silhouette traced from the unmounted device in the Vanguard photograph; placement and size from the mounted device in the framed citation"
    }
   ]
  },
  "classification": "stripes_emblem",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -393,7 +392,96 @@
    0.3,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":13,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold",
+    "red"
+   ],
+   "measured_hex": [
+    "b6121e",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "c93e1c",
+    "efaa1d",
+    "b6121e"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)",
+    "rule"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "Old Glory Red edges, a Golden Yellow centre with sixteen red strands",
+   "repairs": [
+    {
+     "kind": "palm-one-colour",
+     "note": "relief tone dropped; silhouette as traced"
+    }
+   ]
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

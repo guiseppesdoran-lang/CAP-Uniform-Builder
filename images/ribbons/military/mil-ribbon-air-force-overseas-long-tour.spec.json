@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "a5b9c8",
+    "hex": "20c0ff",
     "fraction": 0.1253,
     "x0_in": 0,
     "x1_in": 0.1723
@@ -58,7 +58,7 @@
    },
    {
     "index": 2,
-    "hex": "a5b9c8",
+    "hex": "20c0ff",
     "fraction": 0.0416,
     "x0_in": 0.2435,
     "x1_in": 0.3007
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "a5b9c8",
+    "hex": "20c0ff",
     "fraction": 0.0417,
     "x0_in": 0.37,
     "x1_in": 0.4273
@@ -86,8 +86,8 @@
    },
    {
     "index": 6,
-    "hex": "1f37a7",
-    "fraction": 0.2788,
+    "hex": "0024aa",
+    "fraction": 0.2787,
     "x0_in": 0.4959,
     "x1_in": 0.8791
    },
@@ -100,7 +100,7 @@
    },
    {
     "index": 8,
-    "hex": "a5b9c8",
+    "hex": "20c0ff",
     "fraction": 0.0417,
     "x0_in": 0.9477,
     "x1_in": 1.005
@@ -114,7 +114,7 @@
    },
    {
     "index": 10,
-    "hex": "a5b9c8",
+    "hex": "20c0ff",
     "fraction": 0.0416,
     "x0_in": 1.0743,
     "x1_in": 1.1315
@@ -128,7 +128,7 @@
    },
    {
     "index": 12,
-    "hex": "a5b9c8",
+    "hex": "20c0ff",
     "fraction": 0.1253,
     "x0_in": 1.2027,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: medals.org.uk and Super Thin Ribbons (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,47 @@
    4.8,
    1
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":14,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":14,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "ultramarine",
+    "white",
+    "light blue",
+    "white",
+    "light blue",
+    "white",
+    "light blue"
+   ],
+   "measured_hex": [
+    "a5b9c8",
+    "ffffff",
+    "a5b9c8",
+    "ffffff",
+    "a5b9c8",
+    "ffffff",
+    "1f37a7",
+    "ffffff",
+    "a5b9c8",
+    "ffffff",
+    "a5b9c8",
+    "ffffff",
+    "a5b9c8"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: medals.org.uk and Super Thin Ribbons (no first-source text found)"
+   ],
+   "basis": "second source, viewed: medals.org.uk and Super Thin Ribbons (no first-source text found)",
+   "said": "light blue with a dark blue central stripe and white stripes",
+   "repairs": []
+  }
  },
  "authorized_services": [],
  "aliases": [

@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "67171f",
+    "hex": "800000",
     "fraction": 0.4305,
     "x0_in": 0,
     "x1_in": 0.592
@@ -58,8 +58,8 @@
    },
    {
     "index": 2,
-    "hex": "67171f",
-    "fraction": 0.4306,
+    "hex": "800000",
+    "fraction": 0.4305,
     "x0_in": 0.783,
     "x1_in": 1.375
    }
@@ -69,7 +69,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: Super Thin Ribbons (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -123,7 +123,27 @@
    4.6,
    0.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "maroon",
+    "white",
+    "maroon"
+   ],
+   "measured_hex": [
+    "67171f",
+    "ffffff",
+    "67171f"
+   ],
+   "decided_by": [
+    "rule",
+    "second source, viewed: Super Thin Ribbons (no first-source text found)"
+   ],
+   "basis": "second source, viewed: Super Thin Ribbons (no first-source text found)",
+   "said": "dark red with a thin white stripe at the centre",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

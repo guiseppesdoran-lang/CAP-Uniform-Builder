@@ -44,77 +44,77 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "66a3d1",
+    "hex": "20c0ff",
     "fraction": 0.0832,
     "x0_in": 0,
     "x1_in": 0.1144
    },
    {
     "index": 1,
-    "hex": "f5d589",
+    "hex": "ffc90e",
     "fraction": 0.0932,
     "x0_in": 0.1144,
     "x1_in": 0.2425
    },
    {
     "index": 2,
-    "hex": "66a3d1",
+    "hex": "20c0ff",
     "fraction": 0.1391,
     "x0_in": 0.2425,
     "x1_in": 0.4338
    },
    {
     "index": 3,
-    "hex": "52834a",
-    "fraction": 0.0446,
+    "hex": "008000",
+    "fraction": 0.0445,
     "x0_in": 0.4338,
     "x1_in": 0.495
    },
    {
     "index": 4,
-    "hex": "f5d589",
+    "hex": "ffc90e",
     "fraction": 0.1177,
     "x0_in": 0.495,
     "x1_in": 0.6569
    },
    {
     "index": 5,
-    "hex": "52834a",
+    "hex": "008000",
     "fraction": 0.0445,
     "x0_in": 0.6569,
     "x1_in": 0.7181
    },
    {
     "index": 6,
-    "hex": "f5d589",
+    "hex": "ffc90e",
     "fraction": 0.1177,
     "x0_in": 0.7181,
     "x1_in": 0.88
    },
    {
     "index": 7,
-    "hex": "52834a",
+    "hex": "008000",
     "fraction": 0.0445,
     "x0_in": 0.88,
     "x1_in": 0.9412
    },
    {
     "index": 8,
-    "hex": "66a3d1",
+    "hex": "20c0ff",
     "fraction": 0.1391,
     "x0_in": 0.9412,
     "x1_in": 1.1325
    },
    {
     "index": 9,
-    "hex": "f5d589",
+    "hex": "ffc90e",
     "fraction": 0.0932,
     "x0_in": 1.1325,
     "x1_in": 1.2606
    },
    {
     "index": 10,
-    "hex": "66a3d1",
+    "hex": "20c0ff",
     "fraction": 0.0832,
     "x0_in": 1.2606,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): bluebird, golden light and green stripes settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,42 @@
    1.1,
    1.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "gold",
+    "light blue",
+    "green",
+    "gold",
+    "green",
+    "gold",
+    "green",
+    "light blue",
+    "gold",
+    "light blue"
+   ],
+   "measured_hex": [
+    "66a3d1",
+    "f5d589",
+    "66a3d1",
+    "52834a",
+    "f5d589",
+    "52834a",
+    "f5d589",
+    "52834a",
+    "66a3d1",
+    "f5d589",
+    "66a3d1"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): bluebird, golden light and green stripes"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): bluebird, golden light and green stripes",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

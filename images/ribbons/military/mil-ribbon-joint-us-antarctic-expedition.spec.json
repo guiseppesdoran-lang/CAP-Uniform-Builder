@@ -44,63 +44,63 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "d8dde5",
+    "hex": "ffffff",
     "fraction": 0.0263,
     "x0_in": 0,
     "x1_in": 0.0361
    },
    {
     "index": 1,
-    "hex": "b0c5d7",
+    "hex": "20c0ff",
     "fraction": 0.2869,
     "x0_in": 0.0361,
     "x1_in": 0.4306
    },
    {
     "index": 2,
-    "hex": "d8dde5",
+    "hex": "ffffff",
     "fraction": 0.0334,
     "x0_in": 0.4306,
     "x1_in": 0.4765
    },
    {
     "index": 3,
-    "hex": "b93d4f",
+    "hex": "ff0000",
     "fraction": 0.0245,
     "x0_in": 0.4765,
     "x1_in": 0.5102
    },
    {
     "index": 4,
-    "hex": "d8dde5",
+    "hex": "ffffff",
     "fraction": 0.2579,
     "x0_in": 0.5102,
     "x1_in": 0.8648
    },
    {
     "index": 5,
-    "hex": "b93d4f",
+    "hex": "ff0000",
     "fraction": 0.0245,
     "x0_in": 0.8648,
     "x1_in": 0.8985
    },
    {
     "index": 6,
-    "hex": "d8dde5",
+    "hex": "ffffff",
     "fraction": 0.0334,
     "x0_in": 0.8985,
     "x1_in": 0.9444
    },
    {
     "index": 7,
-    "hex": "b0c5d7",
+    "hex": "20c0ff",
     "fraction": 0.2869,
     "x0_in": 0.9444,
     "x1_in": 1.3389
    },
    {
     "index": 8,
-    "hex": "d8dde5",
+    "hex": "ffffff",
     "fraction": 0.0263,
     "x0_in": 1.3389,
     "x1_in": 1.375
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, second source, viewed: medals.org.uk: pale blue with a white central stripe bearing two narrow red edge stripes (no first-source text found) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,38 @@
    0.5,
    1.7
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":7,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "white",
+    "light blue",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "light blue",
+    "white"
+   ],
+   "measured_hex": [
+    "d8dde5",
+    "b0c5d7",
+    "d8dde5",
+    "b93d4f",
+    "d8dde5",
+    "b93d4f",
+    "d8dde5",
+    "b0c5d7",
+    "d8dde5"
+   ],
+   "decided_by": [
+    "second source, viewed: medals.org.uk: pale blue with a white central stripe bearing two narrow red edge stripes (no first-source text found)"
+   ],
+   "basis": "second source, viewed: medals.org.uk: pale blue with a white central stripe bearing two narrow red edge stripes (no first-source text found)",
+   "said": "pale blue with a white centre carrying two narrow red stripes",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD",

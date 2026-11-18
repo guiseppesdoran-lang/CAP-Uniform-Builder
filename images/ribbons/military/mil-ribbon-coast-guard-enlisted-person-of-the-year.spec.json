@@ -51,7 +51,7 @@
    },
    {
     "index": 1,
-    "hex": "312fbd",
+    "hex": "0024aa",
     "fraction": 0.0315,
     "x0_in": 0.0915,
     "x1_in": 0.1348
@@ -65,8 +65,8 @@
    },
    {
     "index": 3,
-    "hex": "b91e1e",
-    "fraction": 0.153,
+    "hex": "ff0000",
+    "fraction": 0.1529,
     "x0_in": 0.269,
     "x1_in": 0.4793
    },
@@ -79,8 +79,8 @@
    },
    {
     "index": 5,
-    "hex": "b91e1e",
-    "fraction": 0.153,
+    "hex": "ff0000",
+    "fraction": 0.1529,
     "x0_in": 0.8957,
     "x1_in": 1.106
    },
@@ -93,7 +93,7 @@
    },
    {
     "index": 7,
-    "hex": "312fbd",
+    "hex": "0024aa",
     "fraction": 0.0315,
     "x0_in": 1.2402,
     "x1_in": 1.2835
@@ -111,7 +111,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -171,7 +171,36 @@
    1.5,
    6.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":9,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "white",
+    "ultramarine",
+    "white",
+    "red",
+    "white",
+    "red",
+    "white",
+    "ultramarine",
+    "white"
+   ],
+   "measured_hex": [
+    "ffffff",
+    "312fbd",
+    "ffffff",
+    "b91e1e",
+    "ffffff",
+    "b91e1e",
+    "ffffff",
+    "312fbd",
+    "ffffff"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

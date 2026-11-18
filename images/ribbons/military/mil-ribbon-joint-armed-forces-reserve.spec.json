@@ -44,91 +44,91 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0461,
     "x0_in": 0,
     "x1_in": 0.0634
    },
    {
     "index": 1,
-    "hex": "f4ecd8",
+    "hex": "f5deb3",
     "fraction": 0.0185,
     "x0_in": 0.0634,
     "x1_in": 0.0888
    },
    {
     "index": 2,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0405,
     "x0_in": 0.0888,
     "x1_in": 0.1445
    },
    {
     "index": 3,
-    "hex": "f4ecd8",
+    "hex": "f5deb3",
     "fraction": 0.0233,
     "x0_in": 0.1445,
     "x1_in": 0.1765
    },
    {
     "index": 4,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0466,
     "x0_in": 0.1765,
     "x1_in": 0.2406
    },
    {
     "index": 5,
-    "hex": "eed7a5",
-    "fraction": 0.2808,
+    "hex": "f5deb3",
+    "fraction": 0.2807,
     "x0_in": 0.2406,
     "x1_in": 0.6266
    },
    {
     "index": 6,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0886,
     "x0_in": 0.6266,
     "x1_in": 0.7484
    },
    {
     "index": 7,
-    "hex": "eed7a5",
-    "fraction": 0.2808,
+    "hex": "f5deb3",
+    "fraction": 0.2807,
     "x0_in": 0.7484,
     "x1_in": 1.1344
    },
    {
     "index": 8,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0466,
     "x0_in": 1.1344,
     "x1_in": 1.1985
    },
    {
     "index": 9,
-    "hex": "f4ecd8",
+    "hex": "f5deb3",
     "fraction": 0.0233,
     "x0_in": 1.1985,
     "x1_in": 1.2305
    },
    {
     "index": 10,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0405,
     "x0_in": 1.2305,
     "x1_in": 1.2862
    },
    {
     "index": 11,
-    "hex": "f4ecd8",
+    "hex": "f5deb3",
     "fraction": 0.0185,
     "x0_in": 1.2862,
     "x1_in": 1.3116
    },
    {
     "index": 12,
-    "hex": "599bc7",
+    "hex": "20c0ff",
     "fraction": 0.0461,
     "x0_in": 1.3116,
     "x1_in": 1.375
@@ -139,7 +139,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, Institute of Heraldry catalog entry (first source, viewed) settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -203,7 +203,46 @@
    1.1,
    3.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"measured\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"McChord-style precomposed variant (flat art)\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "light blue",
+    "buff",
+    "light blue",
+    "buff",
+    "light blue",
+    "buff",
+    "light blue",
+    "buff",
+    "light blue",
+    "buff",
+    "light blue",
+    "buff",
+    "light blue"
+   ],
+   "measured_hex": [
+    "599bc7",
+    "f4ecd8",
+    "599bc7",
+    "f4ecd8",
+    "599bc7",
+    "eed7a5",
+    "599bc7",
+    "eed7a5",
+    "599bc7",
+    "f4ecd8",
+    "599bc7",
+    "f4ecd8",
+    "599bc7"
+   ],
+   "decided_by": [
+    "Institute of Heraldry catalog entry (first source, viewed)"
+   ],
+   "basis": "Institute of Heraldry catalog entry (first source, viewed)",
+   "said": "Bluebird stripes on a Chamois ribbon",
+   "repairs": []
+  }
  },
  "authorized_services": [],
  "aliases": [

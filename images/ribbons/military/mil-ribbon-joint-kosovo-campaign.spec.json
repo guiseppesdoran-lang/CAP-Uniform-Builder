@@ -44,14 +44,14 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "2c2b86",
+    "hex": "0024aa",
     "fraction": 0.3553,
     "x0_in": 0,
     "x1_in": 0.4885
    },
    {
     "index": 1,
-    "hex": "da2936",
+    "hex": "ff0000",
     "fraction": 0.0825,
     "x0_in": 0.4885,
     "x1_in": 0.6019
@@ -59,20 +59,20 @@
    {
     "index": 2,
     "hex": "ffffff",
-    "fraction": 0.1244,
+    "fraction": 0.1245,
     "x0_in": 0.6019,
     "x1_in": 0.7731
    },
    {
     "index": 3,
-    "hex": "2c2b86",
+    "hex": "0024aa",
     "fraction": 0.0825,
     "x0_in": 0.7731,
     "x1_in": 0.8865
    },
    {
     "index": 4,
-    "hex": "da2936",
+    "hex": "ff0000",
     "fraction": 0.3553,
     "x0_in": 0.8865,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored boundaries snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,28 @@
    0.3,
    0.3
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Kosovo Campaign Medal ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Kosovo Campaign Medal ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "red",
+    "white",
+    "ultramarine",
+    "red"
+   ],
+   "measured_hex": [
+    "2c2b86",
+    "da2936",
+    "ffffff",
+    "2c2b86",
+    "da2936"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "AIR_FORCE",

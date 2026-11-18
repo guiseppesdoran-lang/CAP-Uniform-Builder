@@ -44,29 +44,29 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "38329a",
+    "hex": "0024aa",
     "fraction": 0.2135,
     "x0_in": 0,
     "x1_in": 0.2936
    },
    {
     "index": 1,
-    "hex": "f8d672",
-    "fraction": 0.057,
+    "hex": "ffc90e",
+    "fraction": 0.0569,
     "x0_in": 0.2936,
     "x1_in": 0.3719
    },
    {
     "index": 2,
-    "hex": "4f8345",
-    "fraction": 0.0494,
+    "hex": "008000",
+    "fraction": 0.0495,
     "x0_in": 0.3719,
     "x1_in": 0.4399
    },
    {
     "index": 3,
-    "hex": "6d9dc9",
-    "fraction": 0.1386,
+    "hex": "0080ff",
+    "fraction": 0.1385,
     "x0_in": 0.4399,
     "x1_in": 0.6304
    },
@@ -79,7 +79,7 @@
    },
    {
     "index": 5,
-    "hex": "f0353b",
+    "hex": "ff0000",
     "fraction": 0.0204,
     "x0_in": 0.6735,
     "x1_in": 0.7015
@@ -93,28 +93,28 @@
    },
    {
     "index": 7,
-    "hex": "6d9dc9",
-    "fraction": 0.1386,
+    "hex": "0080ff",
+    "fraction": 0.1385,
     "x0_in": 0.7446,
     "x1_in": 0.9351
    },
    {
     "index": 8,
-    "hex": "4f8345",
-    "fraction": 0.0494,
+    "hex": "008000",
+    "fraction": 0.0495,
     "x0_in": 0.9351,
     "x1_in": 1.0031
    },
    {
     "index": 9,
-    "hex": "f8d672",
-    "fraction": 0.057,
+    "hex": "ffc90e",
+    "fraction": 0.0569,
     "x0_in": 1.0031,
     "x1_in": 1.0814
    },
    {
     "index": 10,
-    "hex": "38329a",
+    "hex": "0024aa",
     "fraction": 0.2135,
     "x0_in": 1.0814,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,40 @@
    0.4,
    0.2
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "ultramarine",
+    "gold",
+    "green",
+    "azure",
+    "white",
+    "red",
+    "white",
+    "azure",
+    "green",
+    "gold",
+    "ultramarine"
+   ],
+   "measured_hex": [
+    "38329a",
+    "f8d672",
+    "4f8345",
+    "6d9dc9",
+    "ffffff",
+    "f0353b",
+    "ffffff",
+    "6d9dc9",
+    "4f8345",
+    "f8d672",
+    "38329a"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

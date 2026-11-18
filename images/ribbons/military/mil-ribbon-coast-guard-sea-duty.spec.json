@@ -44,35 +44,35 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "273168",
+    "hex": "000080",
     "fraction": 0.1009,
     "x0_in": 0,
     "x1_in": 0.1388
    },
    {
     "index": 1,
-    "hex": "e23140",
-    "fraction": 0.1226,
+    "hex": "ff0000",
+    "fraction": 0.1225,
     "x0_in": 0.1388,
     "x1_in": 0.3073
    },
    {
     "index": 2,
-    "hex": "e2bf44",
+    "hex": "ffc90e",
     "fraction": 0.1114,
     "x0_in": 0.3073,
     "x1_in": 0.4605
    },
    {
     "index": 3,
-    "hex": "4a7ca1",
-    "fraction": 0.0722,
+    "hex": "0080ff",
+    "fraction": 0.0721,
     "x0_in": 0.4605,
     "x1_in": 0.5597
    },
    {
     "index": 4,
-    "hex": "8bc8dc",
+    "hex": "20c0ff",
     "fraction": 0.0695,
     "x0_in": 0.5597,
     "x1_in": 0.6552
@@ -86,35 +86,35 @@
    },
    {
     "index": 6,
-    "hex": "8bc8dc",
+    "hex": "20c0ff",
     "fraction": 0.0695,
     "x0_in": 0.7198,
     "x1_in": 0.8153
    },
    {
     "index": 7,
-    "hex": "4a7ca1",
-    "fraction": 0.0722,
+    "hex": "0080ff",
+    "fraction": 0.0721,
     "x0_in": 0.8153,
     "x1_in": 0.9145
    },
    {
     "index": 8,
-    "hex": "e2bf44",
+    "hex": "ffc90e",
     "fraction": 0.1114,
     "x0_in": 0.9145,
     "x1_in": 1.0677
    },
    {
     "index": 9,
-    "hex": "e23140",
-    "fraction": 0.1226,
+    "hex": "ff0000",
+    "fraction": 0.1225,
     "x0_in": 1.0677,
     "x1_in": 1.2362
    },
    {
     "index": 10,
-    "hex": "273168",
+    "hex": "000080",
     "fraction": 0.1009,
     "x0_in": 1.2362,
     "x1_in": 1.375
@@ -125,7 +125,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to, stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet settling the close calls; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -187,7 +187,42 @@
    1,
    0.9
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Coast Guard Sea Service Ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":11,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:U.S. Coast Guard Sea Service Ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "navy",
+    "red",
+    "gold",
+    "azure",
+    "light blue",
+    "white",
+    "light blue",
+    "azure",
+    "gold",
+    "red",
+    "navy"
+   ],
+   "measured_hex": [
+    "273168",
+    "e23140",
+    "e2bf44",
+    "4a7ca1",
+    "8bc8dc",
+    "ffffff",
+    "8bc8dc",
+    "4a7ca1",
+    "e2bf44",
+    "e23140",
+    "273168"
+   ],
+   "decided_by": [
+    "rule",
+    "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet"
+   ],
+   "basis": "stripe table of the decoration in the Institute of Heraldry colour names, read in the decoration's Wikipedia article (viewed, nothing saved): a sea-service ribbon of navy blue bordered by scarlet",
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD"

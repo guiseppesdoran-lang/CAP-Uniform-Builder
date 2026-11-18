@@ -44,7 +44,7 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "c12433",
+    "hex": "ff0000",
     "fraction": 0.0785,
     "x0_in": 0,
     "x1_in": 0.108
@@ -52,13 +52,13 @@
    {
     "index": 1,
     "hex": "ffffff",
-    "fraction": 0.0479,
+    "fraction": 0.0478,
     "x0_in": 0.108,
     "x1_in": 0.1737
    },
    {
     "index": 2,
-    "hex": "1663c5",
+    "hex": "0000ff",
     "fraction": 0.7473,
     "x0_in": 0.1737,
     "x1_in": 1.2013
@@ -72,7 +72,7 @@
    },
    {
     "index": 4,
-    "hex": "c12433",
+    "hex": "ff0000",
     "fraction": 0.0785,
     "x0_in": 1.267,
     "x1_in": 1.375
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,28 @@
    3.8,
    0.5
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Distinguished Service Cross ribbon.svg (Public domain), boundary match 1\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"reference\",\"stripes\":5,\"orientation\":\"vertical-stripes\",\"color_source\":\"public reference: Wikimedia Commons File:Distinguished Service Cross ribbon.svg (Public domain), boundary match 1\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "red",
+    "white",
+    "blue",
+    "white",
+    "red"
+   ],
+   "measured_hex": [
+    "c12433",
+    "ffffff",
+    "1663c5",
+    "ffffff",
+    "c12433"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "ARMY"

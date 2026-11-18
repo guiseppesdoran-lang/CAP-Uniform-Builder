@@ -44,36 +44,36 @@
   "stripes": [
    {
     "index": 0,
-    "hex": "fcce2f",
-    "fraction": 0.065,
+    "hex": "ffc90e",
+    "fraction": 0.0649,
     "x0_in": 0,
     "x1_in": 0.0893
    },
    {
     "index": 1,
-    "hex": "ca3641",
+    "hex": "ff0000",
     "fraction": 0.087,
     "x0_in": 0.0893,
     "x1_in": 0.2089
    },
    {
     "index": 2,
-    "hex": "fcce2f",
+    "hex": "ffc90e",
     "fraction": 0.6961,
     "x0_in": 0.2089,
     "x1_in": 1.1661
    },
    {
     "index": 3,
-    "hex": "ca3641",
+    "hex": "ff0000",
     "fraction": 0.087,
     "x0_in": 1.1661,
     "x1_in": 1.2857
    },
    {
     "index": 4,
-    "hex": "fcce2f",
-    "fraction": 0.065,
+    "hex": "ffc90e",
+    "fraction": 0.0649,
     "x0_in": 1.2857,
     "x1_in": 1.375
    }
@@ -83,7 +83,7 @@
  },
  "classification": "stripes",
  "quality": {
-  "color_source": "Vanguard product photograph, thread colour of each stripe, equal colours clustered (tools/military/ribbon-lit.js)",
+  "color_source": "clean palette colour per stripe (ribbon-palette.json), the named colour each stripe's measured thread colour belongs to; the thread colours of the product photograph (tools/military/ribbon-lit.js) are the earlier measurement and are kept in measurement.restyle.measured_hex, geometry unchanged except as listed in measurement.restyle.repairs",
   "geometry_source": "Vanguard product photograph, rectified, mirrored stripes snapped",
   "snap": null,
   "reference": {
@@ -139,7 +139,28 @@
    0.2,
    1.4
   ],
-  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}"
+  "note": "colours are the thread colour of the stripe, not the mean of the photo; the first pass measured low-resolution photos: {\"fidelity\":\"approximate\",\"stripes\":3,\"orientation\":\"vertical-stripes\",\"color_source\":\"measured raster, snapped to the repo palette\"}",
+  "restyle": {
+   "palette": "ribbon-palette.json",
+   "names": [
+    "gold",
+    "red",
+    "gold",
+    "red",
+    "gold"
+   ],
+   "measured_hex": [
+    "fcce2f",
+    "ca3641",
+    "fcce2f",
+    "ca3641",
+    "fcce2f"
+   ],
+   "decided_by": [
+    "rule"
+   ],
+   "repairs": []
+  }
  },
  "authorized_services": [
   "COAST_GUARD",
