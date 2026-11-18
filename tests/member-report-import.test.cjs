@@ -1657,7 +1657,7 @@ test('an activity and a year is one credit however many of its rows; the same ac
   assert.equal(read([`${AVIATION}   Dayton, OH   02 Jul 2025`]), 'silver_star_1_bronze_star_1', 'a new activity in the year of another: a seventh');
   assert.equal(read([`${AVIATION}   Dayton, OH   02 Jul 2025`, `${AVIATION} Staff   Dayton, OH   03 Jul 2025`]), 'silver_star_1_bronze_star_1', 'and its staff row the same year: one');
   // Two places of one academy in a year are one credit, as the places of the flight academy have always been.
-  assert.equal(read([`${CYBER}   Fort Pickett, VA   08 Jul 2024`, 'Civil Air Patrol National Cyber Academy – TX   Waco, TX   09 Jul 2024']), 'silver_star_1_bronze_star_1', 'two places of one academy in a year: one');
+  assert.equal(read([`${CYBER}   Fort Pickett, VA   12 Aug 2024`, 'Civil Air Patrol National Cyber Academy – TX   Waco, TX   14 Aug 2024']), 'silver_star_1_bronze_star_1', 'two places of one academy in a year: one');
   assert.equal(read(['NFA – NY Wing Powered Flight Academy   Rome, NY   09 Jul 2025']), 'silver_star_1', 'two flight academies in the year of the first: still six');
 });
 
@@ -2029,7 +2029,7 @@ test('the patches the report brings are found by the same table', () => {
 // ---- The National Staff Badge is the member's pick: the import never turns it on --------------------------------------------------------------
 const staffReport = block => SENIOR.replace('Cadet Training', `${block}\nCadet Training`);
 const STAFF_CURRENT = "National Staff Appointments Appointment Date Assigned Staff Member, Commander's Action Group 01 Apr 2025\nCurrent Committees";
-const STAFF_PAST_YEAR = 'Past National Staff Appointments Appointment Date Assigned End Date National Recruiting Specialist 16 Feb 2022 01 Apr 2024\nCurrent Committees';
+const STAFF_PAST_YEAR = 'Past National Staff Appointments Appointment Date Assigned End Date National Recruiting Specialist 21 Sep 2021 17 Nov 2023\nCurrent Committees';
 const STAFF_PAST_SHORT = 'Past National Staff Appointments Appointment Date Assigned End Date Staff Member 01 Apr 2025 31 Mar 2026\nCurrent Committees';
 const STAFF_NOTE = 'The report shows a National Staff appointment, so the National Staff Badge may be worn. It is not chosen for you: choose it in the badge list (CAPR 39-1, 10.2.3).';
 
@@ -2044,7 +2044,7 @@ test('a current appointment, a past one of a full year, and a short one: none tu
   }
   // A report that names nothing of the kind, and one that prints the badge's own name, bring nothing on either.
   assert.ok(!runImport(SENIOR, "State.membership = 'senior';").badges.includes('national_staff_badge'));
-  const named = runImport(staffReport('Awards National Staff Badge 01 Apr 2024'), "State.membership = 'senior';");
+  const named = runImport(staffReport('Awards National Staff Badge 23 Oct 2024'), "State.membership = 'senior';");
   assert.ok(!named.badges.includes('national_staff_badge'), 'a row that prints the badge\'s name: still the member\'s pick');
 });
 
