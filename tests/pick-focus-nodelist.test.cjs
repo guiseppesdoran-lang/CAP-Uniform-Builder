@@ -44,7 +44,7 @@ test('a badge level picked with the focus on its tile: the list is made again, n
   assert.ok(doc.activeElement === levels()[2], 'the member is still on that tile');
 });
 
-test('a ribbon award option picked with the focus on it: the list is made again, nothing throws, the same option has the focus', () => {
+test('a ribbon award picked in its dropdown, and a switch pressed, with the focus on it: the list is made again, nothing throws, the same field has the focus', () => {
   const { context } = loadPageScripts();
   const ev = src => vm.runInContext(src, context);
   const State = ev('State');
@@ -57,11 +57,20 @@ test('a ribbon award option picked with the focus on it: the list is made again,
   const id = 'lifesaving_award';
   const cell = () => all(host, '.vpCell').find(c => c.dataset.value === id);
   cell().querySelector('.vpOption').click();
-  const tiles = () => all(cell().querySelector('.vpRow'), '.vpOption');
-  const last = tiles()[tiles().length - 1];
-  const value = last.dataset.value;
-  last.focus();
-  assert.doesNotThrow(() => tiles()[tiles().length - 1].click());
+  const select = () => all(cell(), 'select')[0];
+  const options = all(select(), 'option');
+  const value = options[options.length - 1].value;
+  select().focus();
+  select().value = value;
+  assert.doesNotThrow(() => select().dispatchEvent({ type: 'change', target: select() }));
   assert.equal(State.ribbonSelections[id].awardValue, value);
-  assert.ok(doc.activeElement === tiles()[tiles().length - 1] && doc.activeElement.dataset.value === value, 'the member is still on that option');
+  assert.ok(doc.activeElement === select() && select().value === value, 'the member is still on the dropdown, at that line');
+  // The star of the lifesaving ribbon is a switch: pressed with the focus on it, the same switch has the focus afterwards.
+  const star = () => all(cell(), '.ribbonToggle')[0];
+  select().value = options[1].value;
+  select().dispatchEvent({ type: 'change', target: select() });
+  star().focus();
+  assert.doesNotThrow(() => star().click());
+  assert.match(State.ribbonSelections[id].awardLabel, /with Star/);
+  assert.ok(doc.activeElement === star() && star().getAttribute('aria-pressed') === 'true', 'the member is still on the switch, now pressed');
 });

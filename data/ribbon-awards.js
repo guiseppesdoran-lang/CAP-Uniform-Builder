@@ -388,5 +388,127 @@
     return order.indexOf(a) - order.indexOf(b);
   }
 
-  return { DEVICES: D, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, hint, readCount, starsFromText, spread, clasps };
+  // ---- the controls under a chosen ribbon -------------------------------------------------------------------------------------------------
+  // The choices of a ribbon (its option list in js/galleries.js, which saved setups and the report import keep using) read as one dropdown for how many awards and one switch for each
+  // separate fact: the option list spells out combinations ("2nd with Star", "Earned with Honor Credit"), and a combination is a count and the facts on it. `controls` splits an option
+  // into its count and its facts and gives back, for every control, the option a press stores, so the stored values are the ones they always were.
+  const MODS = {
+    lifesaving_award: [{ key: 'star', label: 'Silver star', device: D.starS, title: 'A silver star for lifesaving other than blood or organ transport (CAPR 39-3, 9h).', test: o => /with Star/i.test(o.label), strip: /\s+with Star/i }],
+    commander_commendation_award: [
+      { key: 'region', label: 'Region commander star', device: D.starB, title: 'A bronze star when the region commander authorized it (CAPR 39-3, 9f).', test: o => /\((?:Region Cmdr|Region\+Natl)\)/i.test(o.label), strip: /\s*\((?:Region Cmdr|Region\+Natl)\)/i },
+      { key: 'national', label: 'National commander star', device: D.starS, title: 'A silver star when the National Commander authorized it (CAPR 39-3, 9f).', test: o => /\((?:National Cmdr|Region\+Natl)\)/i.test(o.label), strip: /\s*\((?:National Cmdr|Region\+Natl)\)/i }
+    ],
+    search_find_ribbon: [{ key: 'aircrew', label: 'Aircrew', device: D.propB, title: 'A propeller marks a find made as aircrew (CAPR 39-3, 21d).', test: o => /w\/Prop|\(Aircrew\)/i.test(o.label), strip: /\s+w\/Prop|\s+\(Aircrew\)/i }],
+    air_search_and_rescue_ribbon: [{ key: 'aircrew', label: 'Aircrew', device: D.propB, title: 'The propeller marks aircrew sorties (CAPR 39-3, 21c).', test: o => /w\/Prop|\(Aircrew\)/i.test(o.label), strip: /\s+w\/Prop|\s+\(Aircrew\)/i }],
+    disaster_relief_ribbon: [{ key: 'v', label: 'V device', device: D.vS, title: 'A V device marks a Presidentially declared disaster (CAPR 39-3, 21g).', test: o => /V-Device/i.test(o.label), strip: /\s+(?:w\/|with )V-Device/i }]
+  };
+  function modsFor(id){
+    const fam = FAMILIES[id] || {};
+    if(MODS[id]) return MODS[id];
+    if(HONOR_CREDIT_RIBBONS.has(id)){
+      const out = [{ key: 'honor', label: 'Honor credit', device: D.starS, title: 'A silver star for honor credit.', test: o => /honor_credit/.test(o.value) }];
+      // The Goddard's rocketry star is not asked: the page wears it while the Model Rocketry Badge is chosen and the Mitchell is earned (CAPR 39-3, 14h).
+      if(id === 'goddard_achievement') out.push({ key: 'rocketry', hidden: true, test: o => /rocketry/.test(o.value) });
+      return out;
+    }
+    if(fam.devices === 'cadet' && (id === 'mitchell_award' || COS_MOVES_TO.has(id))){
+      return [{ key: 'cos', label: id === 'mitchell_award' ? 'Cadet Officer School star' : 'Cadet Officer School star, moved', device: D.starS,
+        title: 'A silver star on the Mitchell shows Cadet Officer School; a senior member who wears the highest cadet ribbon may move it there (CAPR 39-3, 14j).', test: o => o.value === 'earned_cos_star' }];
+    }
+    return [];
+  }
+
+  const LOWER_WORDS = /\b(Award|Hours|Sorties|Flights|Activities|Encampments|Years|Members|Stars?|Level)\b/g;
+  const sentenceCase = t => { const x = String(t || '').replace(LOWER_WORDS, w => w.toLowerCase()); return x.charAt(0).toUpperCase() + x.slice(1); };
+  const plural = (name, n) => n > 1 ? `${n} ${name}s` : name;
+  // Devices in words, "silver clasp, 3 bronze clasps": the same names the picker's summary has always used.
+  function deviceWords(devices){
+    const runs = [];
+    for(const d of devices || []){
+      const text = deviceName(d), last = runs[runs.length - 1];
+      if(last && last.text === text) last.n++; else runs.push({ text, n: 1 });
+    }
+    return runs.map(r => plural(r.text, r.n)).join(', ');
+  }
+  // What one dropdown line says about its option: the count, then the devices the rule gives it, "2nd award: bronze clasp". A count that needs a second ribbon says so.
+  function linePieces(id, opt, ctx, drop, strip){
+    const fam = FAMILIES[id] || {};
+    const label = (strip || []).reduce((t, re) => t.replace(re, ''), String(opt.label || ''));
+    if(ctx.military){
+      const [head, ...rest] = label.split(/\s-\s/);
+      const short = sentenceCase(head);
+      return { short, words: rest.join(' - ').toLowerCase(), text: sentenceCase(label.replace(/\s-\s/g, ': ')) };
+    }
+    const counted = fam.devices === 'clasps' || fam.devices === 'stars' || fam.devices === 'olc';
+    const name = counted && /^Basic\b/i.test(label) ? '1st award' : sentenceCase(label);
+    const parts = resolve(id, { awardValue: opt.value, awardLabel: opt.label, membership: ctx.membership });
+    // A count that only has options with a switch on (the finds past the 21st with the propeller) is worded without that switch's device.
+    for(const d of drop || []){ const at = parts[0].devices.indexOf(d); if(at >= 0) parts[0] = Object.assign({}, parts[0], { devices: parts[0].devices.filter((x, i) => i !== at) }); }
+    // A count that needs a second ribbon says so with what each carries; past two ribbons only how many.
+    const words = parts.length > 1
+      ? `${parts.length} ribbons${parts.length === 2 ? ` (${parts.map(p => deviceWords(p.devices) || 'plain').join('; ')})` : ''}`
+      : deviceWords(parts[0].devices);
+    // The short form is what the closed dropdown shows, short enough for a phone's narrow tile: the count, a star's metal, a combination's letters, "members" for recruits.
+    let short = name.replace(/ recruited$/, '').replace(/ encampments$/, ' encamp.');
+    const single = /^(bronze|silver|gold) star$/i.exec(name), combo = /^([bsg](?:-[bsg])+) stars?$/i.exec(name);
+    if(single) short = sentenceCase(single[1]);
+    else if(combo) short = combo[1].toUpperCase();
+    else if(/^\d+ (?:bronze|silver|gold) stars$/i.test(name)) short = name.replace(/^(\d+) (\w)\w+ stars$/i, (m, n, c) => Array(Number(n)).fill(c.toUpperCase()).join('-'));
+    const star = !!(single || combo);
+    const text = !words ? name : star ? sentenceCase(words) : `${name}: ${words}`;
+    return { short, words, text };
+  }
+  function lineText(id, opt, ctx, drop, strip){ return linePieces(id, opt, ctx, drop, strip).text; }
+
+  // The controls of ribbon `id` with its option list `options`, the selection's own option `current` and ctx { membership, military }:
+  //   lines   [{ value, text, short, words, enabled, id }]  `short` is the count alone (what the closed dropdown shows), `words` the devices in words, `text` both  one per count, each the option a pick stores (the facts now on stay on where an option for them exists; `enabled` is false where none does)
+  //   selected  the line the selection is on
+  //   toggles [{ key, label, device, title, on, next }]  one per separate fact; `next` is the option a press stores, null where no option has that combination
+  //   label   what the dropdown counts, for assistive technology ('Number of awards', 'Hours', 'Years of service', 'Level')
+  function controls(id, options, current, ctx){
+    const c = ctx || {}, fam = FAMILIES[id] || {};
+    const real = (options || []).filter(o => o && o.value);
+    const cur = current || real[0] || null;
+    const mods = c.military ? [] : modsFor(id).filter(m => real.some(o => m.test(o)));
+    const flagsOf = o => mods.filter(m => m.test(o)).map(m => m.key).sort();
+    const identity = o => {
+      if(c.military) return o.value;
+      if(fam.devices === 'cadet') return '1';
+      const n = readCount(id, o.value, String(o.label || ''));
+      return String(n == null ? o.value : n);
+    };
+    // Each option once: its count, its facts, and the first option of every count-and-facts pair.
+    const info = new Map(), first = new Map();
+    for(const o of real){
+      const rec = { idn: identity(o), key: flagsOf(o).join('+') };
+      info.set(o, rec);
+      const k = rec.idn + '\u0001' + rec.key;
+      if(!first.has(k)) first.set(k, o);
+    }
+    const find = (idn, flags) => first.get(idn + '\u0001' + flags);
+    const curId = cur ? (info.get(cur) || { idn: identity(cur) }).idn : '', curKey = cur ? (info.get(cur) || { key: flagsOf(cur).join('+') }).key : '';
+    const lines = [], seen = new Set();
+    for(const o of real){
+      const idn = info.get(o).idn;
+      if(seen.has(idn)) continue;
+      const base = find(idn, '') || o, kept = find(idn, curKey);
+      seen.add(idn);
+      const piece = linePieces(id, base, c, mods.filter(m => m.device && m.test(base)).map(m => m.device), mods.filter(m => m.strip && m.test(base)).map(m => m.strip));
+      lines.push({ value: (kept || base).value, text: piece.text, short: piece.short, words: piece.words, enabled: !!kept, id: idn });
+    }
+    let selected = (lines.find(l => l.id === curId) || {}).value || '';
+    if(!selected && cur && lines.length){ const piece = linePieces(id, cur, c); lines.unshift({ value: cur.value, text: piece.text, short: piece.short, words: piece.words, enabled: true, id: curId }); selected = cur.value; }
+    const have = new Set(cur ? flagsOf(cur) : []);
+    const toggles = mods.filter(m => !m.hidden).map(m => {
+      const next = new Set(have);
+      if(next.has(m.key)) next.delete(m.key); else next.add(m.key);
+      const target = find(curId, [...next].sort().join('+'));
+      return { key: m.key, label: m.label, device: m.device, title: m.title, on: have.has(m.key), next: target ? target.value : null };
+    });
+    const unit = fam.per ? { hour: 'Hours', sortie: 'Sorties', flight: 'Flights', find: 'Finds', encampment: 'Encampments', activit: 'Activities' }[Object.keys(fam.per)[0]] : '';
+    const label = c.military || ['clasps', 'stars', 'olc'].includes(fam.devices) ? (unit || 'Number of awards') : fam.devices === 'years' ? 'Years of service' : fam.devices === 'recruiter' ? 'Members recruited' : 'Level';
+    return { lines, selected, toggles, label };
+  }
+
+  return { DEVICES: D, controls, deviceWords, lineText, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, hint, readCount, starsFromText, spread, clasps };
 });

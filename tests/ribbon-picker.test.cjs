@@ -95,16 +95,15 @@ test('a ribbon\'s picture box is wide and low (a ribbon is 3.7 times as wide as 
 });
 
 // LIVE14 E71 (Ethan: "you can remove those question mark things by some of the service ribbons").
-test('no "?" counting-rule button: the rule is in the title of the picked line and of the row of counts',()=>{
+test('no "?" counting-rule button: the rule is in the title of the count dropdown',()=>{
   assert.doesNotMatch(galleries+lists,/ribbonRuleBtn|ribbonRulePop|hasRule/);
-  assert.match(ribbonCode,/if\(hint\) row\.host\.setAttribute\('title', hint\);/);
-  assert.match(ribbonCode,/const title = \[`Selected: \$\{picked\.label\}\$\{picked\.rest\}`, hint\]\.filter\(Boolean\)\.join\('[^']+'\);\s*line\.setAttribute\('title', title\);/);
+  assert.match(ribbonCode,/if\(hint\) select\.setAttribute\('title', hint\);/);
   const ra=require('../data/ribbon-awards.js');
   for(const id of ['cadet_recruiter_ribbon','cap_senior_recruiter_ribbon','search_find_ribbon','air_search_and_rescue_ribbon','iace_ribbon','crisis_ribbon'])
     assert.ok(ra.hint(id),`${id} has a rule note`);
 });
 
-test('in a real browser, the ribbons are picture tiles, a tap turns one on with its controls under it, and the rule is kept in the picked line (needs Chrome)',{timeout:180000},t=>{
+test('in a real browser, the ribbons are picture tiles, a tap turns one on with its dropdown and switches under it, and the rule is kept in the dropdown\'s title (needs Chrome)',{timeout:180000},t=>{
   const chrome=process.env.CHROME||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
   if(!fs.existsSync(chrome)) return t.skip('Chrome not installed');
   const r=require('node:child_process').spawnSync(process.execPath,[path.join(__dirname,'ribbon-picker-browser.cjs')],{encoding:'utf8',timeout:150000});

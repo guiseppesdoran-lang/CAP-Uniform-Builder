@@ -646,6 +646,15 @@ function capubFirstRibbonOptionValue(id){
   return (getRibbonAwardOptions(id).find(opt => opt?.value) || {}).value || '';
 }
 
+// The controls under a chosen ribbon (data/ribbon-awards.js controls): the count as lines of one dropdown and each separate fact as a switch, from the ribbon's option list and the
+// option its selection is on. Every line and switch carries the option value a pick stores, so what is saved is what it always was.
+function getRibbonControls(id){
+  const sel = State.ribbonSelections?.[id] || {};
+  const options = getRibbonAwardOptions(id);
+  const found = sel.awardValue ? (options.find(o => o.value === sel.awardValue) || getRibbonSelectionOption(id, sel.awardValue)) : null;
+  return CAPUBRibbonAwards.controls(id, options, found && found.value ? found : null, { membership: State.membership, military: isMilitaryRibbonId(id) });
+}
+
 function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=false}={}){
   normalizeRibbonSelections();
   // A ribbon the cadet grade adds is its select's first real choice, looked up, whatever the caller passed (LIVE14 E73,
