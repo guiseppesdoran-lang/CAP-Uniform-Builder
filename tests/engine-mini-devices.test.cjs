@@ -1,8 +1,8 @@
 'use strict';
 // Devices on a miniature medal's ribbon (CAPR 39-1 11.4.2): the ribbon-bar rule of CAPR 39-3 6b with precedence "to the top of the miniature medal ribbon (rather
-// than to the right), and devices worn centered horizontally will be centered vertically." The paragraph also says the devices are rotated clockwise; the owner
-// (2026-11-18) says a device on a miniature medal is upright, as on a ribbon, and his word stands. So on a drape a single device is centred, several lie
-// one under another, upright, the highest precedence on top, a centred device keeps the middle with its clasps beside it, and the ribbon bar keeps its horizontal row.
+// than to the right), and devices worn centered horizontally will be centered vertically." The paragraph also says the devices are rotated clockwise; the owner's
+// reading (2026-11-18), which stands: it is the row of devices that turns, each device keeps its own upright orientation. So on a drape a single device is centred,
+// several lie one under another, upright, the highest precedence on top, a centred device keeps the middle with its clasps beside it, and the ribbon bar keeps its horizontal row.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');

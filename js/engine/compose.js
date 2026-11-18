@@ -421,8 +421,9 @@
     return Object.assign(box, { mode: rack.mode, rows: rack.rows.map(r => r.length), topRow });
   }
 
-  // Miniature medals: medal body under a vertical ribbon drape (devices upright, one under another with
-  // precedence at the top, CAPR 39-1 11.4.2; upright as on a ribbon, owner, 2026-11-18).
+  // Miniature medals: medal body under a vertical ribbon drape. CAPR 39-1 11.4.2 says the devices are "rotated clockwise to be worn vertically": the owner's reading
+  // (2026-11-18), which stands, is that the ROW of devices turns (they run down the drape, precedence at the top, a device worn centred horizontally centred vertically)
+  // and each device keeps its own upright orientation, as on a ribbon. No device on a drape is drawn turned.
   // Miniature suspension ribbon: 11/16 in wide (11.3), straight sides of about 1.39 in, then a V
   // point of about 0.15 in into the medal's ring (measured on the McChord miniatures).
   const MINI_DRAPE = { w: 0.6875, h: 1.54, point: 0.15 };
@@ -558,7 +559,7 @@
         const at = { x: p.x + MINI_DRAPE.w / 2, y: p.y + MINI_DRAPE.h };
         ctx.layers.push(Object.assign(core.placeAsset(s, { pieceAnchor: attach, at, z: zBase + 0.0005, role: 'mini-medal', key: m.key + ':medal', title: m.title }), { className: 'ribbonMini' }));
       }
-      // Devices on the drape, upright as on a ribbon (owner, 2026-11-18: devices are not turned), one under another, precedence at the top (11.4.2). A device worn centred on
+      // Devices on the drape: the row turns, each device stays upright (11.4.2, owner's reading 2026-11-18), one under another, precedence at the top. A device worn centred on
       // the ribbon (propeller, lifesaving star) is centred vertically, its clasps below and above it.
       const own = (m.devices || []).filter(d => sizes[d]);
       const devs = m.centered ? own : awards.sortRun(own);
@@ -574,8 +575,8 @@
       }
       const exposedBottom = p.y + MINI_DRAPE.h - MINI_DRAPE.point;
       // The devices lie along that exposed length by the bar's rule run down the drape (awards.layoutDevicesAlong, 11.4.2): centred, touching,
-      // a single device or a centred one at the middle, the first clasp beside a centred device on the bottom side. Each stands upright, so
-      // its height runs down the drape. Where less is exposed than they need, they nest rather than shrink (one size on the whole rack).
+      // a single device or a centred one at the middle, the first clasp beside a centred device on the bottom side. Each stays upright (it is
+      // the row that turns), so its height is the length it takes down the drape. Where less is exposed than they need, they nest rather than shrink (one size on the whole rack).
       const spanTop = Math.min(exposedTop, exposedBottom);
       const lengths = {};
       for(const d of devs) lengths[d] = sizes[d].h;
