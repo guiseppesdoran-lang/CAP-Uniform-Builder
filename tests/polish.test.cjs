@@ -30,7 +30,8 @@ test('the controls and the preview are labelled regions, and the preview says wh
 });
 
 test('the scaled uniform is centered in the room beside the panel, on a phone and on a desktop',()=>{
-  assert.match(ui,/area\.style\.marginLeft=free>0 \? Math\.round\(free\/2\)\+'px' : ''/);
+  assert.match(ui,/l:\(wrap && free>0\) \? Math\.round\(free\/2\)\+'px' : ''/);
+  assert.match(ui,/area\.style\.marginLeft=next\.l/);
 });
 
 test('the member-report importer is one button, one hint line and a question mark that holds the steps, and the clear button appears with a result',()=>{

@@ -546,24 +546,27 @@
     V3.zoom=Math.round(z*100)/100;
     const area=safeBy('previewArea');
     if(area){
-      area.style.transform=`scale(${V3.zoom})`;
-      // transform scales what is painted but not the layout box, so a zoomed-out
-      // preview kept reserving its full 450x600 and forced sideways scrolling in
-      // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
-      area.style.marginRight=((V3.zoom-1)*area.offsetWidth)+'px';
-      area.style.marginBottom=((V3.zoom-1)*area.offsetHeight)+'px';
-      // Center the scaled uniform in the room beside it instead of hugging the left, on a phone and beside the panel alike.
+      // Everything is read before anything is written: a read after a write makes the browser work out the style and layout of the whole page again
+      // (the picture lists included), twice in a row here before.
       const wrap=safeBy('previewWrapper');
+      const aw=area.offsetWidth, ah=area.offsetHeight;
+      let free=0;
       if(wrap){
         const style=getComputedStyle(wrap);
         const inner=wrap.clientWidth - parseFloat(style.paddingLeft||0) - parseFloat(style.paddingRight||0);
-        const free=inner - area.offsetWidth*V3.zoom;
-        area.style.marginLeft=free>0 ? Math.round(free/2)+'px' : '';
-      }else{
-        area.style.marginLeft='';
+        free=inner - aw*V3.zoom;
       }
+      // transform scales what is painted but not the layout box, so a zoomed-out
+      // preview kept reserving its full 450x600 and forced sideways scrolling in
+      // a narrow workspace. Pull the box in by the amount it shrank (or grow it).
+      // Center the scaled uniform in the room beside it instead of hugging the left, on a phone and beside the panel alike.
+      const next={ t:`scale(${V3.zoom})`, r:((V3.zoom-1)*aw)+'px', b:((V3.zoom-1)*ah)+'px', l:(wrap && free>0) ? Math.round(free/2)+'px' : '' };
+      area.style.transform=next.t;
+      area.style.marginRight=next.r;
+      area.style.marginBottom=next.b;
+      area.style.marginLeft=next.l;
     }
-    const ro=safeBy('zoomReadout'); if(ro) ro.textContent=Math.round(V3.zoom*100)+'%';
+    const ro=safeBy('zoomReadout'); if(ro && ro.textContent!==Math.round(V3.zoom*100)+'%') ro.textContent=Math.round(V3.zoom*100)+'%';
   }
   // The header can wrap and the footer is two lines on a phone, so the shell is sized from what
   // they measure, not from a fixed number: the sidebar always reaches exactly from one to the other.
