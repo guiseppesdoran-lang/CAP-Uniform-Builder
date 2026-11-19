@@ -16,6 +16,12 @@ function capubSafeWire(id, eventName, handler){
   });
 }
 
+// The window of that list is already open: the page's own listener of the button (js/wiring.js) ran first in the same tap, and this repair must not build the lists a second time
+// (about 110 ms of a phone's tap, and the first drawing of the tiles thrown away).
+function capubWindowOpenFor(kind){
+  return typeof modalOverlay !== 'undefined' && modalOverlay && modalOverlay.classList.contains('open') && typeof capubModalKind !== 'undefined' && capubModalKind === kind;
+}
+
 function capubRepairCriticalButtons(){
   const menuButton=by('hamburgerBtn');
   if(menuButton && menuButton.dataset.sidebarToggleWired !== '1'){
@@ -24,13 +30,13 @@ function capubRepairCriticalButtons(){
   }
 
   capubSafeWire('expandRibbons','click', () => {
-    if(typeof openGalleryModal === 'function') openGalleryModal('ribbons');
+    if(typeof openGalleryModal === 'function' && !capubWindowOpenFor('ribbons')) openGalleryModal('ribbons');
   });
   capubSafeWire('expandBadges','click', () => {
-    if(typeof openGalleryModal === 'function') openGalleryModal('badges');
+    if(typeof openGalleryModal === 'function' && !capubWindowOpenFor('badges')) openGalleryModal('badges');
   });
   capubSafeWire('expandPatches','click', () => {
-    if(typeof openGalleryModal === 'function') openGalleryModal('patches');
+    if(typeof openGalleryModal === 'function' && !capubWindowOpenFor('patches')) openGalleryModal('patches');
   });
 
   capubSafeWire('clearRibbons','click', () => {
