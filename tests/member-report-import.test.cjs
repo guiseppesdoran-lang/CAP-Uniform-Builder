@@ -1921,7 +1921,7 @@ test('an activity the table credits that no patch stands for is said once, in th
   // The patches of the activities that have one are chosen from the same rows: the flight academy, Cadet Officer School and National Blue Beret.
   const { context } = loadPageScripts();
   const detect = vm.runInContext('window.CAPUBDetectNcsaPatches', context);
-  assert.deepEqual([...detect('NFAP Student Graduate Lancaster, TX')], []);
+  assert.deepEqual([...detect('NFAP Student Graduate Lancaster, TX')], ['nfa_patch'], 'NFAP is the flight academy');
   assert.deepEqual([...detect('NESA Fort Pickett, VA')], ['nesa_patch']);
   assert.deepEqual([...detect('National Flight Academy Powered')], ['nfa_patch'], 'the plain academy has its patch');
   assert.deepEqual([...runImport(PERSONNEL).parsed.patches].sort(), ['cos_patch', 'nbb_patch', 'nfa_patch']);
@@ -1989,7 +1989,7 @@ test('the other names of the list\'s activities are the same credit: the place l
 test('a past activity of the list is a credit, and a look-alike that is not on the list is none unless the record calls it a National Cadet Special Activity', () => {
   const credit = title => !!trainingRows(withTraining(PERSONNEL, [ncsaRow(title)])).find(r => r.title.startsWith(title)).credit;
   assert.equal(credit('Advanced Technology Academy', '05 Jul 2015'), true, 'past: last held in 2016');
-  for(const lookAlike of ['Advanced Aviation Academy', 'Cadet Flight Academy', 'National Emergency Services Academy', 'Cyber Defense Training Academy', 'Space Command Familiarization Course', 'Engineering Academy', 'Cadet Competition Team']){
+  for(const lookAlike of ['Advanced Aviation Academy', 'Cadet Flight Academy', 'Cyber Defense Training Academy', 'Space Command Familiarization Course', 'Engineering Academy', 'Cadet Competition Team']){
     assert.equal(credit(lookAlike), false, `${lookAlike}: not on the list`);
     assert.equal(credit(`NCSA ${lookAlike}`), true, `NCSA ${lookAlike}: the record calls it one`);
     assert.equal(credit(`National Cadet Special Activity ${lookAlike}`), true, `${lookAlike}: called one in words`);
@@ -2080,11 +2080,29 @@ test('rows given only by a code are counted as before, one per code per year, an
   assert.ok(!runImport(withTraining(PERSONNEL, ['RCLS   GLR   04 Jan 2026'])).parsed.notes.some(n => CODE_NOTE.test(n)));
 });
 
-test('the owner\'s print shape: NESA, MKSABA and NFAP rows keep their credit, six in all, with the note naming them', () => {
+test('NFAP, MKSABA and NESA rows are credits with no note: six in all in the shape of the owner\'s print, one per activity per year', () => {
   const text = PERSONNEL.replace('Civil Air Patrol National Cyber Academy – VA   Fort Pickett', 'NESA   Fort Pickett').replace('Model Aircraft & Remote Control Flight Academy   Lewis', 'MKSABA   Lewis').replace('NFA – TX Wing Flight Academy (Glider) Student', 'NFAP Student');
   assert.notEqual(text, PERSONNEL);
   const r = runImport(text);
   assert.equal(new Set(r.parsed.activities.map(a => `${a.activity}:${a.year}`)).size, 6);
   assert.equal(r.ribbon('cadet_special_activity_ribbon').value, 'silver_star_1');
-  assert.deepEqual(r.parsed.notes.filter(n => CODE_NOTE.test(n)), ['Counted as special activities by their code, which the national list does not give by that name: NESA, MKSABA and NFAP. Check them.']);
+  assert.ok(!r.parsed.notes.some(n => CODE_NOTE.test(n)), 'no note asks the member to check them');
+  assert.ok(!r.parsed.unreadRows.some(w => /NESA|MKSABA|NFAP/.test(w)));
+});
+
+test('each of the three codes is a credit by itself, once per activity per year, and its spelled-out name is the same activity', () => {
+  const credits = rows => new Set(runImport(withTraining(PERSONNEL, rows)).parsed.activities.map(a => `${a.activity}:${a.year}`)).size;
+  for(const [code, other] of [['NFAP', 'National Flight Academy'], ['MKSABA', null], ['NESA', 'National Emergency Services Academy']]){
+    assert.equal(credits([`${code} Student Graduate   Anytown, ZZ   05 Jul 2023`]), 7, `${code}: a credit`);
+    assert.equal(credits([`${code}   Anytown, ZZ   05 Jul 2023`, `${code} Staff   Anytown, ZZ   09 Aug 2023`]), 7, `${code}: twice in a year is one`);
+    assert.equal(credits([`${code}   Anytown, ZZ   05 Jul 2023`, `${code}   Anytown, ZZ   05 Jul 2024`]), 8, `${code}: two years are two`);
+    const row = trainingRows(withTraining(PERSONNEL, [`${code}-GSAR Cadre   Anytown, ZZ   05 Jul 2023`])).find(r => r.title.startsWith(code));
+    assert.ok(row.credit && !row.byCode, `${code}-GSAR: a credit of its own, not counted by code`);
+    if(other) assert.equal(trainingRows(withTraining(PERSONNEL, [`${other}   Anytown, ZZ   05 Jul 2023`])).find(r => r.title.startsWith(other)).activity, row.activity, `${other}: the same activity`);
+  }
+  // NFAP is the list's flight academy activity: one credit with a flight academy of the list in the same year.
+  assert.equal(credits(['NFAP   Anytown, ZZ   05 Jul 2023', 'NFA – NY Wing Powered Flight Academy   Rome, NY   09 Jul 2023']), 7);
+  // Any other code still brings the note.
+  const other = runImport(withTraining(PERSONNEL, ['ZQXA   Anytown, ZZ   05 Jul 2023', 'NFAP   Anytown, ZZ   05 Jul 2023']));
+  assert.deepEqual(other.parsed.notes.filter(n => CODE_NOTE.test(n)), ['Counted as special activities by their code, which the national list does not give by that name: ZQXA. Check it.']);
 });

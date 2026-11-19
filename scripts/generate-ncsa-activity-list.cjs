@@ -52,11 +52,17 @@ const ALSO_NAMED = [
   [/^Engineering Technologies Academy/i, ['Engineering Technology Academy']]
 ];
 
-// Codes a record prints for an activity of the list, not yet ruled on, so empty: the importer counts a row given only by a code as it always did and tells
-// the member which codes it counted. When the owner says what a code is, add one line: [code, the activity's name as the list prints it], for example
-//   ['ABCD', 'Civic Leadership Academy'],
-// and rerun this script: the code becomes one of that activity's other names, and its rows are credits of the list.
+// Codes a record prints for an activity of the list: [code, the name of one of the activity's rows as the list prints it]. The code becomes an other name of
+// every place of that activity, and its rows are credits of the list. Add a line when it is ruled what a code is, and rerun this script.
 const CODE_NAMES = [
+  ['NFAP', 'NFA – FL Wing Powered Flight Academy']
+];
+
+// Activities the list does not have that the owner ruled are national special activities (a code, and the spelled-out names it goes by): a row that
+// leads with one is a credit with no note, one per activity per year. Written into the table as NCSA_CODE_CREDITS, kept apart from the list.
+const OWNER_ACTIVITIES = [
+  { code: 'MKSABA', names: [], activity: 'MKSABA' },
+  { code: 'NESA', names: ['National Emergency Services Academy'], activity: 'NATIONAL EMERGENCY SERVICES ACADEMY' }
 ];
 
 async function readList(pdfPath){
@@ -101,6 +107,15 @@ async function readList(pdfPath){
 function corrected(name){ return SLIPS.reduce((s, [re, to]) => s.replace(re, to), name); }
 const q = s => `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 
+function forms(name){
+  const noParen = corrected(name).replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
+  return [noParen, /^(.*\S)\s+[–-]\s+[A-Z]{2}$/.exec(noParen)];
+}
+function activityOf(noParen, bare){
+  const family = FAMILIES.find(([, re]) => re.test(noParen));
+  return family ? family[0] : (bare ? bare[1] : noParen).toUpperCase();
+}
+
 function build(list){
   const rows = list.entries.map(e => {
     const fixed = corrected(e.name);
@@ -113,9 +128,8 @@ function build(list){
     const bare = /^(.*\S)\s+[–-]\s+[A-Z]{2}$/.exec(noParen);
     if(bare) add(bare[1]);
     for(const [when, names] of ALSO_NAMED) if(when.test(fixed)) names.forEach(add);
-    for(const [code, printed] of CODE_NAMES) if(printed === e.name) add(code);
-    const family = FAMILIES.find(([, re]) => re.test(noParen));
-    const activity = family ? family[0] : (bare ? bare[1] : noParen).toUpperCase();
+    const activity = activityOf(noParen, bare);
+    for(const [code, printed] of CODE_NAMES) if(activityOf(...forms(printed)) === activity) add(code);
     return { name: e.name, others, activity, current: e.years.includes(list.newest), years: e.years };
   }).sort((a, b) => a.name.localeCompare(b.name, 'en'));
   const lines = rows.map(r => `    {name:${q(r.name)},others:[${r.others.map(q).join(',')}],activity:${q(r.activity)},current:${r.current},years:[${r.years.join(',')}]}`);
@@ -127,6 +141,8 @@ function build(list){
     '  const NCSA_ACTIVITY_LIST=[',
     lines.join(',\n'),
     '  ];',
+    '  // Activities the list does not have that count all the same: a row that leads with the code or one of the names is a credit, with no note.',
+    `  const NCSA_CODE_CREDITS=[${OWNER_ACTIVITIES.map(o => `{name:${q(o.code)},others:[${o.names.map(q).join(',')}],activity:${q(o.activity)}}`).join(',')}];`,
     `  ${END}`
   ].join('\n');
 }

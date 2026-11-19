@@ -85,30 +85,30 @@
     {name:'NER Honor Acedemy',others:['NER Honor Academy'],activity:'NER HONOR ACADEMY',current:false,years:[2017,2016,2015]},
     {name:'NER NCO Leadership School',others:[],activity:'NER NCO LEADERSHIP SCHOOL',current:false,years:[2017]},
     {name:'New Hampshire Wing Non-Commissioned Officer School',others:[],activity:'NEW HAMPSHIRE WING NON-COMMISSIONED OFFICER SCHOOL',current:false,years:[2024,2022,2021,2020,2016,2015]},
-    {name:'NFA – AK Wing Flight Academy (Powered or Glider)',others:['NFA – AK Wing Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017]},
-    {name:'NFA – FL Wing Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2018,2017,2016,2015,2014]},
-    {name:'NFA – Great Lakes Region Flight Academy (Powered or Glider)',others:['NFA – Great Lakes Region Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – HI Wing Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024]},
-    {name:'NFA – IL Wing Lt Col Raymond Johnson Flight Academy (Powered, Glider, or Balloon)',others:['NFA – IL Wing Lt Col Raymond Johnson Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – MAR Col Roland Butler Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – MD Wing Robert Ayres Solo & Ground Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – NC Wing Richard Augur Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2021]},
-    {name:'NFA – NJ Wing Falcon Flight Powered Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2018,2017,2016,2015,2014]},
-    {name:'NFA – Northcentral Region Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – Northeast Region Powered Flight Academy (Powered or Glider)',others:['NFA – Northeast Region Powered Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – NY Wing Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023]},
-    {name:'NFA – Pacfic Coast Region Flight Academy (Glider)',others:['NFA – Pacific Coast Region Flight Academy (Glider)','NFA – Pacific Coast Region Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017,2016]},
-    {name:'NFA – Rocky Mountain Region Flight Academy (Glider)',others:['NFA – Rocky Mountain Region Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2023,2022,2021,2019,2018,2017,2016]},
-    {name:'NFA – Southeast Region Flight Academy (Glider)',others:['NFA – Southeast Region Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – Southwest Region Flight Academy (Powered or Glider)',others:['NFA – Southwest Region Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2018,2017,2016,2015]},
-    {name:'NFA – TNWG Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025]},
-    {name:'NFA – TX Wing Flight Academy (Glider)',others:['NFA – TX Wing Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2017,2016,2015,2014]},
-    {name:'NFA – TX Wing North Flight Academy (Glider)',others:['NFA – TX Wing North Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2017,2016,2015]},
-    {name:'NFA – TX Wing Shirley Martin Powered Flight Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016]},
-    {name:'NFA – TX Wing South Flight Academy (Glider)',others:['NFA – TX Wing South Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
-    {name:'NFA – UT Wing Flight Academy (Powered or Glider)',others:['NFA – UT Wing Flight Academy','NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017]},
-    {name:'NFA – WA Wing Powered Flight Academy – Desert Eagle',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2022,2021]},
-    {name:'NFA –TX Wing Advance Flight Training Academy',others:['NFA','National Flight Academy'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2019]},
+    {name:'NFA – AK Wing Flight Academy (Powered or Glider)',others:['NFA – AK Wing Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017]},
+    {name:'NFA – FL Wing Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2018,2017,2016,2015,2014]},
+    {name:'NFA – Great Lakes Region Flight Academy (Powered or Glider)',others:['NFA – Great Lakes Region Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – HI Wing Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024]},
+    {name:'NFA – IL Wing Lt Col Raymond Johnson Flight Academy (Powered, Glider, or Balloon)',others:['NFA – IL Wing Lt Col Raymond Johnson Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – MAR Col Roland Butler Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – MD Wing Robert Ayres Solo & Ground Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – NC Wing Richard Augur Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2021]},
+    {name:'NFA – NJ Wing Falcon Flight Powered Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2018,2017,2016,2015,2014]},
+    {name:'NFA – Northcentral Region Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – Northeast Region Powered Flight Academy (Powered or Glider)',others:['NFA – Northeast Region Powered Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – NY Wing Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023]},
+    {name:'NFA – Pacfic Coast Region Flight Academy (Glider)',others:['NFA – Pacific Coast Region Flight Academy (Glider)','NFA – Pacific Coast Region Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017,2016]},
+    {name:'NFA – Rocky Mountain Region Flight Academy (Glider)',others:['NFA – Rocky Mountain Region Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2023,2022,2021,2019,2018,2017,2016]},
+    {name:'NFA – Southeast Region Flight Academy (Glider)',others:['NFA – Southeast Region Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – Southwest Region Flight Academy (Powered or Glider)',others:['NFA – Southwest Region Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2018,2017,2016,2015]},
+    {name:'NFA – TNWG Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025]},
+    {name:'NFA – TX Wing Flight Academy (Glider)',others:['NFA – TX Wing Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2017,2016,2015,2014]},
+    {name:'NFA – TX Wing North Flight Academy (Glider)',others:['NFA – TX Wing North Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2017,2016,2015]},
+    {name:'NFA – TX Wing Shirley Martin Powered Flight Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017,2016]},
+    {name:'NFA – TX Wing South Flight Academy (Glider)',others:['NFA – TX Wing South Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017,2016,2015,2014]},
+    {name:'NFA – UT Wing Flight Academy (Powered or Glider)',others:['NFA – UT Wing Flight Academy','NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2024,2023,2022,2021,2019,2018,2017]},
+    {name:'NFA – WA Wing Powered Flight Academy – Desert Eagle',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:true,years:[2025,2024,2022,2021]},
+    {name:'NFA –TX Wing Advance Flight Training Academy',others:['NFA','National Flight Academy','NFAP'],activity:'NATIONAL FLIGHT ACADEMY',current:false,years:[2019]},
     {name:'Pacific Coast/Rocky Mountain Region Honor Guard Academy',others:['Honor Guard Academy'],activity:'HONOR GUARD ACADEMY',current:false,years:[2022]},
     {name:'RMR Cyberspace Academies',others:[],activity:'RMR CYBERSPACE ACADEMIES',current:true,years:[2025,2024,2023,2022,2021,2019,2018,2017]},
     {name:'Space & Rocketry School',others:[],activity:'SPACE & ROCKETRY SCHOOL',current:true,years:[2025]},
@@ -121,6 +121,8 @@
     {name:'WA Wing Green Darner Cyber Education Academy',others:[],activity:'WA WING GREEN DARNER CYBER EDUCATION ACADEMY',current:true,years:[2025,2024,2023]},
     {name:'WA Wing Ground Search and Rescue Academy',others:[],activity:'WA WING GROUND SEARCH AND RESCUE ACADEMY',current:true,years:[2025,2024,2023]}
   ];
+  // Activities the list does not have that count all the same: a row that leads with the code or one of the names is a credit, with no note.
+  const NCSA_CODE_CREDITS=[{name:'MKSABA',others:[],activity:'MKSABA'},{name:'NESA',others:['National Emergency Services Academy'],activity:'NATIONAL EMERGENCY SERVICES ACADEMY'}];
   // END NCSA ACTIVITY LIST
 
   // A name as compared: lower case, "&" as "and", every dash and mark a space, so "NFA \u2013 TX Wing" and "NFA TX Wing" are one text.
@@ -130,7 +132,7 @@
 
   // Each name of each entry, compared as words; the longest name found wins, so "Engineering Technologies Academy (Robotics)" is not read as a
   // shorter name inside it.
-  const NCSA_NAMES=NCSA_ACTIVITY_LIST.flatMap(entry=>[entry.name,...entry.others].map(name=>({entry,words:ncsaWords(name)})))
+  const NCSA_NAMES=[...NCSA_ACTIVITY_LIST,...NCSA_CODE_CREDITS].flatMap(entry=>[entry.name,...entry.others].map(name=>({entry,words:ncsaWords(name)})))
     .sort((a,b)=>b.words.length-a.words.length);
 
   // The entry of the list a row of a record names, or null: the row's words contain one of its names as whole words.
