@@ -519,8 +519,15 @@ by('expandPatches').addEventListener('click', ()=> openGalleryModal('patches'));
 const unitPatchSearchEl = by('unitPatchSearch');
 const unitPatchSelectEl = by('unitPatchSelect');
 if(unitPatchSearchEl){
+  // The list of 1,455 units is made again once for a burst of letters, after the frame that shows the letter typed (a phone made it for each letter, in the handler, before the letter was painted).
+  let unitSearchQueued = false;
   unitPatchSearchEl.addEventListener('input', () => {
-    if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(unitPatchSearchEl.value);
+    if(unitSearchQueued) return;
+    unitSearchQueued = true;
+    let ran = false;
+    const run = () => { if(ran) return; ran = true; unitSearchQueued = false; if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector(unitPatchSearchEl.value); };
+    requestAnimationFrame(() => setTimeout(run, 0));
+    setTimeout(run, 400);
   });
 }
 if(unitPatchSelectEl){
