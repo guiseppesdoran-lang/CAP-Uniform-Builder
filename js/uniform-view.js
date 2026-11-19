@@ -11,6 +11,7 @@
   let renderSeq = 0;
   let lastScene = null;
   let lastSvg = null;
+  let lastDrawKey = null;   // what the drawing on screen was made from
 
   // The manifest and specs come from js/asset-packs.js: in the source tree MANIFEST.json and one file per spec, revalidated
   // because artwork is updated in place (a 304 when unchanged); in the built site, a slim manifest and a pack per uniform and cut.
@@ -315,7 +316,7 @@
     if(!host) return null;
     if(!State.membership || !State.gender || !State.rank || !CAPUBEngine.profiles.PROFILES[State.uniform]){
       host.querySelectorAll('svg.uniformSvg').forEach(n => n.remove());
-      lastScene = null; lastSvg = null;
+      lastScene = null; lastSvg = null; lastDrawKey = null;
       updateBadgeChooser(null);
       return null;
     }
@@ -326,12 +327,23 @@
       patchNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
       ribbonNotes.forEach(n => { if(!scene.notes.includes(n)) scene.notes.push(n); });
       if(seq !== renderSeq) return null; // a newer render started
-      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, Object.assign({ pad: 0.4, measure: !!State.showMeasurements }, window.CAPUBMeasure ? window.CAPUBMeasure.renderOptions(State.uniform) : null));
+      const drawOptions = Object.assign({ pad: 0.4, measure: !!State.showMeasurements }, window.CAPUBMeasure ? window.CAPUBMeasure.renderOptions(State.uniform) : null);
+      // A drawing is made from the scene's layers, its bounds and its title (what buildSvg reads) and the options: the same ones make the same drawing, so the one on screen is kept (a ribbon
+      // chosen on a uniform that does not wear ribbons, a badge left off, a patch with no place changes the scene's notes and nothing drawn). The page is told, as for any drawing.
+      const drawKey = JSON.stringify([scene.layers, scene.bounds, scene.title, drawOptions, State.uniform, State.gender]);
+      if(drawKey === lastDrawKey && lastSvg && lastSvg.isConnected && host.contains(lastSvg)){
+        lastScene = scene;
+        host.dataset.rendered = String(seq);
+        updateBadgeChooser(scene);
+        document.dispatchEvent(new CustomEvent('capub:rendered', { detail: { scene } }));
+        return scene;
+      }
+      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, drawOptions);
       if(seq !== renderSeq) return null;
       host.querySelectorAll('svg.uniformSvg, .layer').forEach(n => n.remove());
       sizeStage(svg);
       host.appendChild(svg);
-      lastScene = scene; lastSvg = svg;
+      lastScene = scene; lastSvg = svg; lastDrawKey = drawKey;
       host.dataset.rendered = String(seq);
       updateBadgeChooser(scene);
       document.dispatchEvent(new CustomEvent('capub:rendered', { detail: { scene } }));
