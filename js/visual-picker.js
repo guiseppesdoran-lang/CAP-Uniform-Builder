@@ -305,17 +305,22 @@
     function paint(){
       const picked = toggle ? -1 : indexOfValue(value);
       if(stop < 0 || stop >= tiles.length) stop = 0;
+      const attr = toggle ? 'aria-pressed' : 'aria-checked';
+      // A tile is written only where it differs: a write of the value a node already has still marks it for style work, and a list is a hundred tiles and more.
       tiles.forEach((t, i) => {
         const on = toggle ? selected.has(t.option.value) : i === picked;
-        t.button.setAttribute(toggle ? 'aria-pressed' : 'aria-checked', on ? 'true' : 'false');
-        t.button.tabIndex = i === stop ? 0 : -1;
-        t.button.classList.toggle('isPicked', on);
+        const b = t.button;
+        const word = on ? 'true' : 'false';
+        if(b.getAttribute(attr) !== word) b.setAttribute(attr, word);
+        const tab = i === stop ? 0 : -1;
+        if(b.tabIndex !== tab) b.tabIndex = tab;
+        if(t.on !== on){ t.on = on; b.classList.toggle('isPicked', on); }
         // Toggle mode: chosen and left off by the drawing (option.notWorn) shows the not-worn mark in the tick's place, only while the tile is on.
         const away = toggle && on && !!t.option.notWorn;
-        t.button.classList.toggle('isNotWorn', away);
-        const words = t.button.querySelector('.vpOffWords');
-        if(words) words.hidden = !away;
-        if(t.controls) t.controls.hidden = !on;
+        if(t.away !== away){ t.away = away; b.classList.toggle('isNotWorn', away); }
+        if(t.words === undefined) t.words = b.querySelector('.vpOffWords');
+        if(t.words && t.words.hidden !== !away) t.words.hidden = !away;
+        if(t.controls && t.controls.hidden !== !on) t.controls.hidden = !on;
       });
       const text = picked >= 0 && tiles[picked].option.note ? String(tiles[picked].option.note) : '';
       if(note.textContent !== text) note.textContent = text;
