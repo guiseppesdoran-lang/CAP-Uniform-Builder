@@ -735,8 +735,9 @@
     // hidden or occluded tabs, where the browser pauses rAF and the UI would go stale.
     let ran=false;
     const run=()=>{ if(ran) return; ran=true; refreshQueued=false; refreshAll(); };
-    requestAnimationFrame(run);
-    setTimeout(run,100);
+    // After the frame that shows the change itself, not in it: the refresh is a long task on a phone.
+    requestAnimationFrame(()=>setTimeout(run,0));
+    setTimeout(run,400);
   }
   ['change','click','input'].forEach(evt=>document.addEventListener(evt,scheduleRefresh,true));
   document.addEventListener('capub:history',scheduleRefresh);

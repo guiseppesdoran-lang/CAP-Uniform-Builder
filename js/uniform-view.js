@@ -358,16 +358,17 @@
     }
   }
 
-  // Coalesce bursts of changes into one render per frame. The timer is the fallback for hidden
-  // tabs, where the browser pauses animation frames.
+  // Coalesce bursts of changes into one render. The render is made after the frame that shows the tap's own result (the tile pressed, the switch on): it is
+  // asked for in the animation callback, which comes before that frame is painted, and runs in the task after it. The timer is the fallback for hidden tabs,
+  // where the browser pauses animation frames.
   let pending = null;
   function scheduleRender(){
     if(pending) return pending;
     pending = new Promise(resolve => {
       let ran = false;
       const run = () => { if(ran) return; ran = true; pending = null; resolve(render()); };
-      requestAnimationFrame(run);
-      setTimeout(run, 100);
+      requestAnimationFrame(() => setTimeout(run, 0));
+      setTimeout(run, 400);
     });
     return pending;
   }
