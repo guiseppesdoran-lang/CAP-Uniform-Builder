@@ -180,16 +180,41 @@ async function launch(){
     else {
       await ev(`${pickCell('goddard_achievement')}.querySelector('.vpOption').click()`);
       await sleep(300);
-      const awards = await ev(`[...${pickCell('goddard_achievement')}.querySelectorAll('.vpRow .vpOption')].map(t => t.dataset.value)`);
-      console.log('Goddard options:', JSON.stringify(awards));
-      if(awards.length < 2) fails.push('the Goddard ribbon has no award options under its tile');
+      // Under a ribbon the controls are a switch (the Goddard's honor credit) and, on a ribbon with a count, a dropdown: each takes the focus, is changed, the list is rebuilt, nothing throws,
+      // the focus stays on that control and the tile's picture shows the device.
+      const art = id => ev(`(() => { const c = ${pickCell(id)}; const v = c && c.querySelector('.vpOption svg'); return v ? v.outerHTML.length : 0; })()`);
+      const before = await art('goddard_achievement');
+      const sw = `${pickCell('goddard_achievement')}.querySelector('.ribbonToggle[data-value="honor"]')`;
+      if(await focusClick(sw) !== 'ok') fails.push('the Goddard ribbon has no honor credit switch under its tile');
       else {
-        const want = awards[awards.length - 1];
-        await focusClick(`${pickCell('goddard_achievement')}.querySelector('.vpRow .vpOption[data-value="${want}"]')`);
-        await sleep(300);
+        await sleep(900);
         const f2 = await focusOn();
-        console.log('focus after the award pick:', JSON.stringify(f2));
-        if(!f2 || f2.cell !== 'goddard_achievement' || f2.option !== want) fails.push('after picking an award the focus is not on the same option: ' + JSON.stringify(f2));
+        console.log('focus after the honor credit switch:', JSON.stringify(f2));
+        if(!f2 || f2.cell !== 'goddard_achievement' || f2.option !== 'honor') fails.push('after the honor credit switch the focus is not on the switch: ' + JSON.stringify(f2));
+        const pressed = await ev(`${sw}.getAttribute('aria-pressed')`);
+        const after = await art('goddard_achievement');
+        console.log('Goddard picture size before and after the star:', before, after);
+        if(pressed !== 'true') fails.push('the honor credit switch is not pressed after the click');
+        if(!(after > before)) fails.push('the Goddard tile\'s picture did not gain the star');
+      }
+      let countId = '';
+      for(const id of ['encampment_ribbon', 'community_service_ribbon', 'distinguished_service_award']) if(!countId && await ev(`!!${pickCell(id)}`)) countId = id;
+      if(!countId) fails.push('the Ribbons window has no ribbon with a count');
+      else {
+        await ev(`${pickCell(countId)}.querySelector('.vpOption').click()`);
+        await sleep(500);
+        const sel = `${pickCell(countId)}.querySelector('select.ribbonCountSelect')`;
+        const size0 = await art(countId);
+        const r = await ev(`(() => { const s = ${sel}; if(!s) return 'missing'; s.focus(); s.value = s.options[5].value; s.dispatchEvent(new Event('change', { bubbles: true })); return 'ok'; })()`);
+        if(r !== 'ok') fails.push(countId + ' has no award dropdown under its tile');
+        else {
+          await sleep(900);
+          const f3 = await focusOn();
+          console.log('focus after the award dropdown:', JSON.stringify(f3));
+          if(!f3 || f3.cell !== countId || !/ribbonCountSelect/.test(f3.cls)) fails.push('after choosing an award the focus is not on the dropdown: ' + JSON.stringify(f3));
+          const size1 = await art(countId);
+          if(!(size1 > size0)) fails.push(countId + ' tile\'s picture did not gain the device');
+        }
       }
     }
     const errs = await ev('window.__errs');
