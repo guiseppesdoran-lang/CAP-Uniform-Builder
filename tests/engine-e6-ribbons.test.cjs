@@ -274,7 +274,7 @@ test('rows of three stay centred and untouched when the lapel is clear of them; 
   assert.ok(layersBy(fstd, l => l.role === 'ribbon').some(t => awards.coverage(t, flapel.points) > awards.LAPEL_COVER_TOLERANCE), 'the explicit standard arrangement (the member\'s choice) is left alone, lapel over the ribbons');
   const fauto = await P.composeUniform(build('blues_a', 'cadet', 'C/Maj', { gender: 'female', ribbons: rs, opt: { rackArrangement: 'lapel' } }), store());
   const counts = rowCounts(layersBy(fauto, l => l.role === 'ribbon'));
-  assert.deepEqual(counts, [1, 2, 2, 2, 3, 3]);
+  assert.deepEqual(counts, [2, 2, 3, 3, 3]);
   assert.ok(layersBy(fauto, l => l.role === 'ribbon').every(t => awards.coverage(t, flapel.points) <= awards.LAPEL_COVER_TOLERANCE));
   // Custom row counts are the member's own choice and are not shortened, where they are a layout 11.2.7 allows (rows of four, all full but the top row, bottom row first here);
   // rows that are not (a short row under a longer one) are declined and the regular rows are drawn (tests/ribbon-rack-rule.test.cjs).

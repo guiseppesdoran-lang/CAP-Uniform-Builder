@@ -135,8 +135,8 @@ test('a woman\'s coat with four across and the automatic arrangement: the lapel 
       assert.ok(auto.notes.some(n => /covers the bottom row.*11\.1\.8/.test(n)), 'the page says why');
     }
     // Three across still keeps the lapel clear on the same coat: that is the arrangement's own work.
-    const three = await P.composeUniform(buildOf('blues_a', membership, rank, 'female', 9, Object.assign({ rackArrangement: 'lapel' }, WIDTHS['3'])), store);
-    assert.deepEqual(rowsOfLayers(three.layers.filter(l => l.role === 'ribbon')).map(r => r.length), [1, 2, 3, 3], 'rows shortened above the bottom one');
+    const three = await P.composeUniform(buildOf('blues_a', membership, rank, 'female', 13, Object.assign({ rackArrangement: 'lapel' }, WIDTHS['3'])), store);
+    assert.deepEqual(rowsOfLayers(three.layers.filter(l => l.role === 'ribbon')).map(r => r.length), [2, 2, 3, 3, 3], 'rows shortened above the bottom one');
     assert.ok(!three.notes.some(n => /covers the bottom row/.test(n)));
   }
 });

@@ -81,10 +81,10 @@ test('Class A and cadet semi-formal: every badge is below the lapel foreground, 
 });
 
 test('Class A: the lapel foreground group covers the lapel where the wings cross it (its face polygon is the coat sheet\'s lapel polygon), and the wings stay below it', async () => {
-  // Seven ribbons: two full rows and one. (With twelve, the top rows are shortened away from the lapel and the wings, centred over the highest row
-  // (4.1.9.4.4.1), no longer reach it: tests/engine-badge-top-row.test.cjs.)
+  // Ten ribbons: three full rows and one. (With fewer the wings sit clear of the lapel's straight outer edge, and with twelve the top rows are shortened away from the
+  // lapel, so the wings, centred over the highest row (4.1.9.4.4.1), no longer reach it: tests/engine-badge-top-row.test.cjs.)
   const seven = [];
-  for(let i = 0; i < 7; i++) seven.push(RACK[i % RACK.length]);
+  for(let i = 0; i < 10; i++) seven.push(RACK[i % RACK.length]);
   const scene = await compose(build('blues_a', 'female', 'senior', 'Capt', [PILOT], { ribbons: seven }));
   const fg = scene.layers.find(l => /lapel-foreground$/.test(l.key || ''));
   const fgSpec = await store.load(fg.id);

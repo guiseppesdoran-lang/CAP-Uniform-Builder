@@ -184,18 +184,6 @@
     517.88
    ],
    [
-    801.68,
-    617.14
-   ],
-   [
-    921.8,
-    813.65
-   ],
-   [
-    1062.34,
-    1030.74
-   ],
-   [
     1244.23,
     1311.64
    ]
@@ -208,18 +196,6 @@
    [
     1668.13,
     517.88
-   ],
-   [
-    1637.15,
-    617.14
-   ],
-   [
-    1517.03,
-    813.65
-   ],
-   [
-    1376.5,
-    1030.74
    ],
    [
     1243.44,
@@ -354,6 +330,16 @@
    "depth_over_mouth": 0.661,
    "mouth_over_lapel_width": 0.524,
    "depth_over_lapel_width": 0.346
+  },
+  "lapel_edge": {
+   "tip_inside_collar_tip_in": 0.25,
+   "tip_height_in": 4.963,
+   "edge_to_front_at_in": [
+    -0.248,
+    12.901
+   ],
+   "edge_deg_from_vertical": 28.1,
+   "edge": "one straight line"
   }
  },
  "documented": [

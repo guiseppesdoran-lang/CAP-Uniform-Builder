@@ -168,7 +168,7 @@ test('a chosen four-wide rack is drawn in full with the lapel over it, on every 
 });
 
 test('upper-row arrangement: the standard and the automatic arrangement as the engine lays them against the lapel, the lapel over both; not offered where they are the same rack', async () => {
-  member({ gender: 'female' });
+  member({ gender: 'female', ribbons: 13 });
   const pics = await scenesOf('rackArrangement', ['standard', 'lapel']);
   assert.ok(pics.standard && pics.standard.scene && pics.lapel && pics.lapel.scene);
   assert.ok(!same(ribbonBoxes(pics.standard.scene), ribbonBoxes(pics.lapel.scene)), 'two different racks');
@@ -181,7 +181,7 @@ test('upper-row arrangement: the standard and the automatic arrangement as the e
   // nothing to pick between (tests/ribbon-rack-rule.test.cjs); her three across has the choice.
   member({ gender: 'female', layout: '4-left' });
   assert.deepEqual(await picturesOf('rackArrangement', ['standard', 'lapel']), { standard: false, lapel: false });
-  member({ gender: 'female', layout: '3' });
+  member({ gender: 'female', layout: '3', ribbons: 13 });
   assert.ok((await scenesOf('rackArrangement', ['standard', 'lapel'])).lapel);
   // A man's nine ribbons clear the lapel either way: the two are one rack, and there is nothing to pick between.
   member({ gender: 'male' });

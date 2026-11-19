@@ -24,7 +24,7 @@ const WINGS = 'CAPPilot1_FA9D33EA587D8', GT = 'ground_team_basic_badge';
 const RIBBON_H = 0.375;
 
 // A Colonel's ribbons in precedence order (the audit's full rack), one award each.
-const IDS = ['air_medal', 'air_force_aerial_achievement_medal', 'Air_Force_Organizational_Excellence_Award', 'distinguished_service_award', 'exceptional_service_award', 'meritorious_service_award', 'commander_commendation_award', 'cap_achievment_award', 'lifesaving_award', 'air_search_and_rescue_ribbon', 'search_find_ribbon', 'disaster_relief_ribbon', 'cap_counterdrug_ribbon', 'homeland_security_ribbon', 'cap_cadet_orientation_pilot_ribbon', 'cap_gill_robb_wilson_ribbon', 'cap_command_service_ribbon', 'cap_leadership_ribbon', 'red_service_ribbon', 'cap_senior_recruiter_ribbon', 'iace_ribbon', 'unit_citation_award', 'national_commander_unit_citation_award', 'bronze_medal_of_valor', 'encampment_ribbon', 'community_service_ribbon', 'cap_membership_ribbon', 'cap_paul_e_garber_ribbon'];
+const IDS = ['air_medal', 'air_force_aerial_achievement_medal', 'Air_Force_Organizational_Excellence_Award', 'distinguished_service_award', 'exceptional_service_award', 'meritorious_service_award', 'commander_commendation_award', 'cap_achievment_award', 'lifesaving_award', 'air_search_and_rescue_ribbon', 'search_find_ribbon', 'disaster_relief_ribbon', 'cap_counterdrug_ribbon', 'homeland_security_ribbon', 'cap_cadet_orientation_pilot_ribbon', 'cap_gill_robb_wilson_ribbon', 'cap_command_service_ribbon', 'cap_leadership_ribbon', 'red_service_ribbon', 'cap_senior_recruiter_ribbon', 'iace_ribbon', 'unit_citation_award', 'national_commander_unit_citation_award', 'bronze_medal_of_valor', 'encampment_ribbon', 'community_service_ribbon', 'cap_membership_ribbon', 'cap_paul_e_garber_ribbon', 'silver_medal_of_valor', 'national_commanders_citation'];
 const MEDALS = [['distinguished_service_award', 'capub_total_2', null], ['exceptional_service_award', 'capub_total_6', null], ['meritorious_service_award', 'capub_total_3', null], ['commander_commendation_award', 'national_region', null], ['cap_achievment_award', 'capub_total_11', null], ['lifesaving_award', 'lifesaving_star', 'silver star'], ['air_search_and_rescue_ribbon', 'capub_total_4', 'aircrew propeller'], ['search_find_ribbon', 'capub_total_3', 'aircrew propeller'], ['disaster_relief_ribbon', 'capub_total_3', 'silver_v'], ['cap_gill_robb_wilson_ribbon', null, 'Silver Star'], ['cap_command_service_ribbon', null, 'Wing'], ['cap_leadership_ribbon', null, 'Bronze Star Silver Star'], ['red_service_ribbon', null, '10 years'], ['cap_senior_recruiter_ribbon', null, '17 recruits'], ['iace_ribbon', 'capub_total_3', null], ['unit_citation_award', 'capub_total_2', null], ['bronze_medal_of_valor', 'capub_total_2', null], ['encampment_ribbon', 'capub_total_3', null], ['cap_membership_ribbon', null, null], ['cap_paul_e_garber_ribbon', null, 'Bronze Star']];
 
 // `n` ribbons: the first n awards, one ribbon each (an award with extra devices still makes one ribbon).
@@ -89,13 +89,13 @@ function seamClearance(scene, sheetId, box){
 }
 
 test('Women\'s Class A, tall racks: the wings stop below the shoulder board and the scene says the rack is too tall (4.1.9.4.4.1)', async () => {
-  for(const n of [20, 26, 27, 28]){
+  for(const n of [20, 26, 28, 29, 30]){
     const scene = await compose(build('blues_a', 'female', n));
     const w = wingsOf(scene), sheet = scene.layers.find(l => l.key === 'base:jacket').id;
     assert.ok(w.y > 0, `${n}: the wings are on the sheet`);
     assert.ok(seamClearance(scene, sheet, w) >= -1e-6, `${n}: the wings clear the shoulder board (${seamClearance(scene, sheet, w).toFixed(3)} in)`);
     const note = scene.notes.find(t => TALL.test(t));
-    if(n < 28) assert.ok(!note, `${n}: the wings still sit 1/2 in above the highest row`);
+    if(n < 30) assert.ok(!note, `${n}: the wings still sit 1/2 in above the highest row`);
     else{
       assert.ok(note, `${n}: tall-rack note`);
       assert.match(note, /4\.1\.9\.4\.4\.1/);
