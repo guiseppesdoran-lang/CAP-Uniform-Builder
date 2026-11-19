@@ -48622,8 +48622,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-navy-eod.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_explosive_ordnance_disposal__officer",
     "source_raster": "vanguardmil.com product usn-regulation-size-explosive-ordnance-disposal-officer-badge (Navy Badge: Explosive Ordnance Disposal Officer - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -48638,10 +48638,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 1,
-     "tone_rms": 6.7,
-     "face_ratio": 1.09,
+     "silhouette_iou": 0.8232,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-explosive-ordnance-disposal-officer"
@@ -48681,8 +48678,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-navy-eod.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_explosive_ordnance_disposal__basic",
     "source_raster": "vanguardmil.com product regulation-size-oxidized-explosive-ordnance-disposal-badge (Badge: Explosive Ordnance Disposal - regulation, oxidized), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -48697,10 +48694,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 1,
-     "tone_rms": 4.5,
-     "face_ratio": 1.22,
+     "silhouette_iou": 0.8848,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-explosive-ordnance-disposal-basic"
@@ -48908,8 +48902,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-nws.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_nuclear_weapons_security__default",
     "source_raster": "vanguardmil.com product navy-badge-nuclear-weapons-security-regulation-size (Navy Badge: Nuclear Weapons Security - regulation size), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -48924,10 +48918,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 1,
-     "tone_rms": 5.2,
-     "face_ratio": 1.37,
+     "silhouette_iou": 0.9851,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-nuclear-weapons-security-default"
@@ -50182,8 +50173,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-rpa.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/remotely_piloted_aircraft_pilot__basic",
     "source_raster": "vanguardmil.com product air-force-badge-unmanned-aircraft-systems-basic-regulation-size (Air Force Badge: Unmanned Aircraft Systems Basic - Regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -50198,10 +50189,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 5.4,
-     "face_ratio": 1,
+     "silhouette_iou": 0.9272,
      "note": ""
     },
     "art_tree": "military/v3/out/af-remotely-piloted-aircraft-pilot-basic"
@@ -50241,8 +50229,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-rpa.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/remotely_piloted_aircraft_pilot__senior",
     "source_raster": "vanguardmil.com product air-force-badge-unmanned-aircraft-systems-senior-regulation-size (Air Force Badge: Unmanned Aircraft Systems Senior - Regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -50257,10 +50245,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.999,
-     "tone_rms": 6.2,
-     "face_ratio": 1.02,
+     "silhouette_iou": 0.9065,
      "note": ""
     },
     "art_tree": "military/v3/out/af-remotely-piloted-aircraft-pilot-senior"
@@ -50300,8 +50285,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-rpa.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/remotely_piloted_aircraft_pilot__command",
     "source_raster": "vanguardmil.com product air-force-badge-unmanned-aircraft-systems-master-regulation-size (Air Force Badge: Unmanned Aircraft Systems Master - Regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -50316,10 +50301,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 0.998,
-     "tone_rms": 6.2,
-     "face_ratio": 1,
+     "silhouette_iou": 0.8629,
      "note": ""
     },
     "art_tree": "military/v3/out/af-remotely-piloted-aircraft-pilot-command"
@@ -51351,8 +51333,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-missile.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/missile_operations__senior",
     "source_raster": "vanguardmil.com product usaf-regulation-size-senior-missile-operator-badge (Air Force Badge: Missile Operator: Senior - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -51367,10 +51349,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 0.994,
-     "tone_rms": 6.7,
-     "face_ratio": 1.03,
+     "silhouette_iou": 0.8931,
      "note": ""
     },
     "art_tree": "military/v3/out/af-missile-operations-senior"
@@ -51410,8 +51389,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-missile.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/missile_operations__master",
     "source_raster": "vanguardmil.com product usaf-regulation-size-master-missile-operator-badge (Air Force Badge: Missile Operator: Master - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -51426,10 +51405,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.993,
-     "edge_recall": 0.998,
-     "tone_rms": 7.6,
-     "face_ratio": 1.11,
+     "silhouette_iou": 0.8673,
      "note": ""
     },
     "art_tree": "military/v3/out/af-missile-operations-master"
@@ -51469,8 +51445,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-space.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/space__basic",
     "source_raster": "vanguardmil.com product usaf-regulation-size-space-badge (Air Force and Army Badge: Space Basic- regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -51485,10 +51461,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 6.5,
-     "face_ratio": 1.11,
+     "silhouette_iou": 0.8374,
      "note": ""
     },
     "art_tree": "military/v3/out/af-space-basic"
@@ -51784,8 +51757,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-cyber.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/cyberspace_support__basic",
     "source_raster": "vanguardmil.com product air-force-badge-cyberspace-support-senior-regulation-size (Air Force Badge: Cyberspace Support: Senior - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -51800,10 +51773,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.994,
-     "tone_rms": 8.5,
-     "face_ratio": 1.1,
+     "silhouette_iou": 0.8533,
      "note": ""
     },
     "art_tree": "military/v3/out/af-cyberspace-support-basic"
@@ -51843,8 +51813,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-cyber.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/cyberspace_support__senior",
     "source_raster": "vanguardmil.com product air-force-badge-cyberspace-support-senior-regulation-size (Air Force Badge: Cyberspace Support: Senior - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -51859,10 +51829,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.994,
-     "tone_rms": 8.5,
-     "face_ratio": 1.14,
+     "silhouette_iou": 0.831,
      "note": ""
     },
     "art_tree": "military/v3/out/af-cyberspace-support-senior"
@@ -51902,8 +51869,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-cyber.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/cyberspace_support__master",
     "source_raster": "vanguardmil.com product air-force-badge-cyberspace-support-master-regulation-size (Air Force Badge: Cyberspace Support: Master - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -51918,10 +51885,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.995,
-     "tone_rms": 8.4,
-     "face_ratio": 1.09,
+     "silhouette_iou": 0.8365,
      "note": ""
     },
     "art_tree": "military/v3/out/af-cyberspace-support-master"
@@ -52465,8 +52429,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-logi.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/logistics_readiness__basic",
     "source_raster": "vanguardmil.com product usaf-regulation-size-logistics-readiness-badge (Air Force Badge: Logistics Readiness - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -52481,10 +52445,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.99,
-     "tone_rms": 6.9,
-     "face_ratio": 1.06,
+     "silhouette_iou": 0.9476,
      "note": ""
     },
     "art_tree": "military/v3/out/af-logistics-readiness-basic"
@@ -52524,8 +52485,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-logi.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/logistics_readiness__senior",
     "source_raster": "vanguardmil.com product usaf-regulation-size-senior-logistics-readiness-badge (Air Force Badge: Logistics Readiness: Senior - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -52540,10 +52501,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 0.996,
-     "tone_rms": 7.5,
-     "face_ratio": 1.14,
+     "silhouette_iou": 0.9307,
      "note": ""
     },
     "art_tree": "military/v3/out/af-logistics-readiness-senior"
@@ -52583,8 +52541,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-logi.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/logistics_readiness__master",
     "source_raster": "vanguardmil.com product usaf-regulation-size-master-logistics-readiness-badge (Air Force Badge: Logistics Readiness: Master - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -52599,10 +52557,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.962,
-     "tone_rms": 6.3,
-     "face_ratio": 1.06,
+     "silhouette_iou": 0.9095,
      "note": ""
     },
     "art_tree": "military/v3/out/af-logistics-readiness-master"
@@ -52810,8 +52765,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-fire.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/fire_protection__default",
     "source_raster": "vanguardmil.com product usaf-regulation-size-fire-protection-badge (Air Force Badge: Fire Protection Fire Fighter - regulation size), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -52826,10 +52781,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.998,
-     "tone_rms": 4.1,
-     "face_ratio": 0.92,
+     "silhouette_iou": 0.9267,
      "note": ""
     },
     "art_tree": "military/v3/out/af-fire-protection-default"
@@ -54309,8 +54261,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-ce.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/civil_engineer_readiness__basic",
     "source_raster": "vanguardmil.com product usaf-basic-civil-engineer-readiness-badge (Air Force Badge: Civil Engineer Readiness: Basic - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -54325,10 +54277,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 1,
-     "tone_rms": 5.9,
-     "face_ratio": 1.03,
+     "silhouette_iou": 0.8886,
      "note": ""
     },
     "art_tree": "military/v3/out/af-civil-engineer-readiness-basic"
@@ -54368,8 +54317,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-ce.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/civil_engineer_readiness__senior",
     "source_raster": "vanguardmil.com product usaf-senior-civil-engineer-readiness-badge (Air Force Badge: Civil Engineer Readiness: Senior - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -54384,10 +54333,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 1,
-     "tone_rms": 7.1,
-     "face_ratio": 1.1,
+     "silhouette_iou": 0.8469,
      "note": ""
     },
     "art_tree": "military/v3/out/af-civil-engineer-readiness-senior"
@@ -54427,8 +54373,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-ce.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/civil_engineer_readiness__master",
     "source_raster": "vanguardmil.com product usaf-master-civil-engineer-readiness-badge (Air Force Badge: Civil Engineer Readiness: Master - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -54443,10 +54389,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.996,
-     "tone_rms": 8.1,
-     "face_ratio": 1.07,
+     "silhouette_iou": 0.858,
      "note": ""
     },
     "art_tree": "military/v3/out/af-civil-engineer-readiness-master"
@@ -54806,8 +54749,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-assault.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_glider__default",
     "source_raster": "vanguardmil.com product army-silver-oxidized-finish-airborne-glider-badge (Army Badge: Airborne Glider - silver oxidized finish), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -54822,10 +54765,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 4.2,
-     "face_ratio": 1.18,
+     "silhouette_iou": 0.9242,
      "note": ""
     },
     "art_tree": "military/v3/out/army-glider-default"
@@ -55151,8 +55091,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-maint.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/aircraft_maintenance__basic",
     "source_raster": "vanguardmil.com product air-force-badge-air-maintenance (Air Force Badge: Air Maintenance - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -55167,10 +55107,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 7.1,
-     "face_ratio": 1.07,
+     "silhouette_iou": 0.9368,
      "note": ""
     },
     "art_tree": "military/v3/out/af-aircraft-maintenance-basic"
@@ -55210,8 +55147,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-maint.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/aircraft_maintenance__senior",
     "source_raster": "vanguardmil.com product air-force-badge-air-maintenance-senior (Air Force Badge: Air Maintenance : Senior - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -55226,10 +55163,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.998,
-     "tone_rms": 6.3,
-     "face_ratio": 0.95,
+     "silhouette_iou": 0.9205,
      "note": ""
     },
     "art_tree": "military/v3/out/af-aircraft-maintenance-senior"
@@ -55269,8 +55203,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-maint.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/aircraft_maintenance__master",
     "source_raster": "vanguardmil.com product air-force-badge-air-maintenance-master (Air Force Badge: Air Maintenance : Master - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -55285,10 +55219,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 6.7,
-     "face_ratio": 1.15,
+     "silhouette_iou": 0.9152,
      "note": ""
     },
     "art_tree": "military/v3/out/af-aircraft-maintenance-master"
@@ -56216,8 +56147,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-radar.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/ground_radar_airfield_systems__basic",
     "source_raster": "vanguardmil.com product air-force-badge-ground-radar-airfield-systems (Air Force Badge: Ground Radar Airfield Systems), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -56232,10 +56163,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.998,
-     "tone_rms": 6,
-     "face_ratio": 1.06,
+     "silhouette_iou": 0.9225,
      "note": ""
     },
     "art_tree": "military/v3/out/af-ground-radar-airfield-systems-basic"
@@ -56275,8 +56203,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-radar.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/ground_radar_airfield_systems__master",
     "source_raster": "vanguardmil.com product air-force-badge-ground-radar-airfield-systems-master (Air Force Badge: Ground Radar Airfield Systems Master - regulation size), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -56291,10 +56219,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 6.5,
-     "face_ratio": 1.04,
+     "silhouette_iou": 0.9066,
      "note": ""
     },
     "art_tree": "military/v3/out/af-ground-radar-airfield-systems-master"
@@ -57006,8 +56931,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-supply.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/supply_fuels__basic",
     "source_raster": "vanguardmil.com product usaf-midsize-supply-fuels-badge (Air Force Badge: Supply Fuels - midsize), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57022,10 +56947,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 7.1,
-     "face_ratio": 1.06,
+     "silhouette_iou": 0.9569,
      "note": ""
     },
     "art_tree": "military/v3/out/af-supply-fuels-basic"
@@ -57065,8 +56987,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-supply.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/supply_fuels__senior",
     "source_raster": "vanguardmil.com product usaf-regulation-size-senior-supply-fuels-badge (Air Force Badge: Supply Fuels: Senior - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57081,10 +57003,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 5.7,
-     "face_ratio": 1.07,
+     "silhouette_iou": 0.9423,
      "note": ""
     },
     "art_tree": "military/v3/out/af-supply-fuels-senior"
@@ -57124,8 +57043,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-supply.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/supply_fuels__master",
     "source_raster": "vanguardmil.com product usaf-regulation-size-master-supply-fuels-badge (Air Force Badge: Supply Fuels: Master - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57140,10 +57059,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 8.2,
-     "face_ratio": 1.03,
+     "silhouette_iou": 0.9278,
      "note": ""
     },
     "art_tree": "military/v3/out/af-supply-fuels-master"
@@ -57183,8 +57099,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-transport.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/transportation__basic",
     "source_raster": "vanguardmil.com product usaf-regulation-size-transportation-badge (Air Force Badge: Transportation - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57199,10 +57115,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.985,
-     "tone_rms": 8.1,
-     "face_ratio": 1.2,
+     "silhouette_iou": 0.8507,
      "note": ""
     },
     "art_tree": "military/v3/out/af-transportation-basic"
@@ -57242,8 +57155,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-transport.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/transportation__senior",
     "source_raster": "vanguardmil.com product usaf-regulation-size-senior-transportation-badge (Air Force Badge: Transportation: Senior - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57258,10 +57171,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 7.7,
-     "face_ratio": 1.03,
+     "silhouette_iou": 0.8247,
      "note": ""
     },
     "art_tree": "military/v3/out/af-transportation-senior"
@@ -57301,8 +57211,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-transport.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/transportation__master",
     "source_raster": "vanguardmil.com product usaf-regulation-size-master-transportation-badge (Air Force Badge: Transportation: Master - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57317,10 +57227,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 7,
-     "face_ratio": 1,
+     "silhouette_iou": 0.8327,
      "note": ""
     },
     "art_tree": "military/v3/out/af-transportation-master"
@@ -57864,8 +57771,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-mdwo.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/multi_domain_warfare_officer__basic",
     "source_raster": "vanguardmil.com product air-force-badge-basic-multi-domain-warfare-officer-regulation-size (Air Force Badge: Basic Multi Domain Warfare Officer - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57880,10 +57787,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.996,
-     "tone_rms": 5.1,
-     "face_ratio": 1.04,
+     "silhouette_iou": 0.8364,
      "note": ""
     },
     "art_tree": "military/v3/out/af-multi-domain-warfare-officer-basic"
@@ -57923,8 +57827,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-mdwo.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/multi_domain_warfare_officer__senior",
     "source_raster": "vanguardmil.com product air-force-badge-senior-multi-domain-warfare-officer-regulation-size (Air Force Badge: Senior Multi Domain Warfare Officer - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57939,10 +57843,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.982,
-     "tone_rms": 5.6,
-     "face_ratio": 1.06,
+     "silhouette_iou": 0.8354,
      "note": ""
     },
     "art_tree": "military/v3/out/af-multi-domain-warfare-officer-senior"
@@ -57982,8 +57883,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-mdwo.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/multi_domain_warfare_officer__master",
     "source_raster": "vanguardmil.com product air-force-badge-master-multi-domain-warfare-officer-regulation-size (Air Force Badge: Master Multi Domain Warfare Officer - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -57998,10 +57899,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.983,
-     "tone_rms": 5.1,
-     "face_ratio": 1.03,
+     "silhouette_iou": 0.8384,
      "note": ""
     },
     "art_tree": "military/v3/out/af-multi-domain-warfare-officer-master"
@@ -59249,8 +59147,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-sci.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/scientific_applications_specialist__master",
     "source_raster": "vanguardmil.com product air-force-badge-scientific-applications-specialist-master (Air Force Badge: Scientific Applications Specialist - Master - regulation size), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -59265,10 +59163,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.994,
-     "edge_recall": 0.999,
-     "tone_rms": 8.1,
-     "face_ratio": 1.11,
+     "silhouette_iou": 0.821,
      "note": ""
     },
     "art_tree": "military/v3/out/af-scientific-applications-specialist-master"
@@ -59412,8 +59307,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-cct.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/combat_control_team__default",
     "source_raster": "vanguardmil.com product usaf-combat-control-team-badge (Air Force Badge: Combat Control Team), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -59428,10 +59323,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 0.999,
-     "tone_rms": 4.8,
-     "face_ratio": 0.97,
+     "silhouette_iou": 0.8411,
      "note": ""
     },
     "art_tree": "military/v3/out/af-combat-control-team-default"
@@ -59471,8 +59363,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-cro.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/combat_rescue_officer__default",
     "source_raster": "vanguardmil.com product usaf-combat-rescue-officer-badge (Air Force Badge: Combat Rescue Officer), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -59487,10 +59379,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 0.992,
-     "tone_rms": 4.1,
-     "face_ratio": 0.92,
+     "silhouette_iou": 0.946,
      "note": ""
     },
     "art_tree": "military/v3/out/af-combat-rescue-officer-default"
@@ -59953,8 +59842,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-navy-eod.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_explosive_ordnance_disposal__senior",
     "source_raster": "vanguardmil.com product army-mirror-finish-senior-explosive-ordnance-disposal-badge (Army Badge: Senior Explosive Ordnance Disposal - mirror finish), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -59969,10 +59858,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 0.997,
-     "tone_rms": 4.9,
-     "face_ratio": 1.09,
+     "silhouette_iou": 0.8739,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-explosive-ordnance-disposal-senior"
@@ -60012,8 +59898,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-navy-eod.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_explosive_ordnance_disposal__master",
     "source_raster": "vanguardmil.com product regulation-oxidized-master-explosive-ordnance-disposal-badge (Badge: Master Explosive Ordnance Disposal - regulation, oxidized), 427 x 427 px, measurement reference only",
     "source_px": [
@@ -60028,10 +59914,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 1,
-     "tone_rms": 4.3,
-     "face_ratio": 1.1,
+     "silhouette_iou": 0.8674,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-explosive-ordnance-disposal-master"
@@ -60464,8 +60347,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-assault.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_air_assault__default",
     "source_raster": "vanguardmil.com product army-silver-oxidized-air-assault-badge (Army Badge: Air Assault - silver oxidized), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -60480,10 +60363,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 1,
-     "tone_rms": 3.8,
-     "face_ratio": 1.13,
+     "silhouette_iou": 0.9344,
      "note": ""
     },
     "art_tree": "military/v3/out/army-air-assault-default"
@@ -61131,8 +61011,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-army-sea/src/build.js (d-diver.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_diver__second_class",
     "source_raster": "vanguardmil.com product oxidized-diver-second-class-badge (Badge: Diver Second Class - oxidized), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -61147,10 +61027,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 0.998,
-     "tone_rms": 6,
-     "face_ratio": 1.16,
+     "silhouette_iou": 0.9245,
      "note": ""
     },
     "art_tree": "military/v3/out/army-diver-second-class"
@@ -61249,8 +61126,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-army-sea/src/build.js (d-diver.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_diver__salvage",
     "source_raster": "vanguardmil.com product army-silver-oxidized-salvage-diver-badge (Army Badge: Salvage Diver - silver oxidized), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -61265,10 +61142,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 1,
-     "tone_rms": 4.4,
-     "face_ratio": 1.04,
+     "silhouette_iou": 0.9178,
      "note": ""
     },
     "art_tree": "military/v3/out/army-diver-salvage"
@@ -61367,8 +61241,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-army-sea/src/build.js (d-diver.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_diver__special_operations",
     "source_raster": "vanguardmil.com product army-badge-special-operation-diver-regulation-size-oxidized-finish (Army Badge: Special Operation Diver - regulation size, oxidized finish), 427 x 427 px, measurement reference only",
     "source_px": [
@@ -61383,10 +61257,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 1,
-     "tone_rms": 3.9,
-     "face_ratio": 1.04,
+     "silhouette_iou": 0.8092,
      "note": ""
     },
     "art_tree": "military/v3/out/army-diver-special-operations"
@@ -61426,8 +61297,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-army-sea/src/build.js (d-diver.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_diver__special_operations_supervisor",
     "source_raster": "vanguardmil.com product army-badge-special-operations-diving-supervisor-mirror-finish (Army Badge: Special Operations Diving Supervisor - mirror finish), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -61442,10 +61313,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 0.999,
-     "tone_rms": 3.9,
-     "face_ratio": 1.11,
+     "silhouette_iou": 0.8399,
      "note": ""
     },
     "art_tree": "military/v3/out/army-diver-special-operations-supervisor"
@@ -62061,8 +61929,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-mff.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_military_freefall_parachutist__basic",
     "source_raster": "vanguardmil.com product army-badge-freefall-jump-wings-halo-regulation-size-silver-oxidized (Army Badge: Freefall Jump Wings Halo - regulation size, silver oxidized), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62077,10 +61945,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 0.999,
-     "tone_rms": 4.5,
-     "face_ratio": 1.12,
+     "silhouette_iou": 0.8885,
      "note": ""
     },
     "art_tree": "military/v3/out/army-military-freefall-parachutist-basic"
@@ -62120,8 +61985,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-mff.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_military_freefall_parachutist__jumpmaster",
     "source_raster": "vanguardmil.com product army-badge-free-fall-master-jump-wings-halo-silver-oxidized (Army Badge: Free Fall Master Jump Wings Halo - silver oxidized), 1001 x 1001 px, measurement reference only",
     "source_px": [
@@ -62136,10 +62001,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.995,
-     "tone_rms": 6.1,
-     "face_ratio": 1.14,
+     "silhouette_iou": 0.8569,
      "note": ""
     },
     "art_tree": "military/v3/out/army-military-freefall-parachutist-jumpmaster"
@@ -62294,8 +62156,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-mariner.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_mariner__basic",
     "source_raster": "vanguardmil.com product army-badge-mariner-basic-regulation-mirror-finish (Army Badge: Mariner: Basic- regulation mirror finish), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62310,10 +62172,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 4,
-     "face_ratio": 1.09,
+     "silhouette_iou": 0.8475,
      "note": ""
     },
     "art_tree": "military/v3/out/army-mariner-basic"
@@ -62353,8 +62212,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-mariner.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_mariner__senior",
     "source_raster": "vanguardmil.com product army-badge-mariner-senior-regulation-mirror-finish (Army Badge: Mariner: Senior - regulation mirror finish), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62369,10 +62228,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 3.8,
-     "face_ratio": 1.1,
+     "silhouette_iou": 0.8386,
      "note": ""
     },
     "art_tree": "military/v3/out/army-mariner-senior"
@@ -62412,8 +62268,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-mariner.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_mariner__master",
     "source_raster": "vanguardmil.com product army-badge-mariner-master-regulation-mirror-finish (Army Badge: Mariner: Master - regulation mirror finish), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62428,10 +62284,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 0.99,
-     "tone_rms": 5.5,
-     "face_ratio": 1.2,
+     "silhouette_iou": 0.8163,
      "note": ""
     },
     "art_tree": "military/v3/out/army-mariner-master"
@@ -62471,8 +62324,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-space.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_space__basic",
     "source_raster": "vanguardmil.com product army-badge-space-basic-regulation-size-silver-oxidized (Army Badge: Space Basic- regulation size silver oxidized), 1500 x 1500 px, measurement reference only",
     "source_px": [
@@ -62487,10 +62340,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.995,
-     "edge_recall": 1,
-     "tone_rms": 5.2,
-     "face_ratio": 0.99,
+     "silhouette_iou": 0.9324,
      "note": ""
     },
     "art_tree": "military/v3/out/army-space-basic"
@@ -62530,8 +62380,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-space.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_space__senior",
     "source_raster": "vanguardmil.com product army-badge-space-senior-regulation-size-silver-oxidized (Army Badge: Space Senior - regulation size silver oxidized), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62546,10 +62396,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 1,
-     "tone_rms": 4.2,
-     "face_ratio": 1.13,
+     "silhouette_iou": 0.9142,
      "note": ""
     },
     "art_tree": "military/v3/out/army-space-senior"
@@ -62589,8 +62436,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-space.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_space__master",
     "source_raster": "vanguardmil.com product army-badge-space-master-badge-regulation-size-silver-oxidized (Army Badge: Space Master Badge - regulation size silver oxidized), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62605,10 +62452,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 1,
-     "tone_rms": 4.3,
-     "face_ratio": 1.19,
+     "silhouette_iou": 0.8878,
      "note": ""
     },
     "art_tree": "military/v3/out/army-space-master"
@@ -63223,8 +63067,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-radar.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/ground_radar_airfield_systems__senior",
     "source_raster": "vanguardmil.com product air-force-badge-ground-radar-airfield-systems-senior (Air Force Badge: Ground Radar Airfield Systems Senior - regulation size), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -63239,10 +63083,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 5.7,
-     "face_ratio": 1.12,
+     "silhouette_iou": 0.906,
      "note": ""
     },
     "art_tree": "military/v3/out/af-ground-radar-airfield-systems-senior"
@@ -63282,8 +63123,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-sci.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/scientific_applications_specialist__senior",
     "source_raster": "vanguardmil.com product air-force-badge-scientific-applications-specialist-senior (Air Force Badge: Scientific Applications Specialist - Senior - regulation size), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -63298,10 +63139,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.993,
-     "edge_recall": 0.999,
-     "tone_rms": 9.5,
-     "face_ratio": 1.18,
+     "silhouette_iou": 0.8071,
      "note": ""
     },
     "art_tree": "military/v3/out/af-scientific-applications-specialist-senior"
@@ -63341,8 +63179,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-aoo.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/airfield_operations_officer__basic",
     "source_raster": "vanguardmil.com product air-force-badge-basic-airfield-operations-officer-regulation-size (Air Force Badge: Basic Airfield Operations Officer - regulation size), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -63357,10 +63195,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.997,
-     "tone_rms": 8.4,
-     "face_ratio": 1.23,
+     "silhouette_iou": 0.9537,
      "note": ""
     },
     "art_tree": "military/v3/out/af-airfield-operations-officer-basic"
@@ -63400,8 +63235,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-aoo.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/airfield_operations_officer__senior",
     "source_raster": "vanguardmil.com product air-force-badge-senior-airfield-operations-officer-regulation-size (Air Force Badge: Senior Airfield Operations Officer - regulation size), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -63416,10 +63251,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.998,
-     "tone_rms": 7.6,
-     "face_ratio": 1.17,
+     "silhouette_iou": 0.9502,
      "note": ""
     },
     "art_tree": "military/v3/out/af-airfield-operations-officer-senior"
@@ -63459,8 +63291,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-aoo.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/airfield_operations_officer__master",
     "source_raster": "vanguardmil.com product air-force-badge-master-airfield-operations-officer-regulation-size (Air Force Badge: Master Airfield Operations Officer - regulation size), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -63475,10 +63307,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.996,
-     "tone_rms": 7.3,
-     "face_ratio": 1.19,
+     "silhouette_iou": 0.9323,
      "note": ""
     },
     "art_tree": "military/v3/out/af-airfield-operations-officer-master"
