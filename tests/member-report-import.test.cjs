@@ -483,7 +483,7 @@ test('the professional development awards come from their names or the Level row
   assert.ok(r.selected.cap_leadership_ribbon, 'Level II');
   for(const id of ['cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon'])
     assert.equal(r.ribbon(id), undefined, `${id}: Level III and above not completed (the member is named Wilson; the ceremony is a Local Activity)`);
-  assert.ok(r.parsed.notes.some(n => /^Leadership Award: a senior or master specialty rating earns a star/.test(n)), 'the senior AE rating star is left to the member');
+  assert.deepEqual(r.devices('cap_leadership_ribbon'), [{ devices: ['star-bronze'], centered: false }], 'the recorded senior AE rating supplies its bronze star (ecf06816)');
   // Level V completed: every level's award; a "Level 2" in a ground team title is not a level row.
   const five = runImport(SENIOR.replace('Level II 01 Jun 2018', 'Level II 01 Jun 2018\nLevel III 01 Jun 2019\nLevel IV 01 Jun 2020\nLevel V 01 Jun 2021'));
   for(const id of ['cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon']) assert.ok(five.selected[id], id);
@@ -1758,8 +1758,7 @@ const NOTE_KINDS = [
   [/^The report lists the .+ \d+ times and does not say what a repeated row stands for/, 'sight', 'The report lists the Air Search and Rescue Ribbon 3 times and does not say what a repeated row stands for: check its device under Ribbons.'],
   [/^National Cadet Competition Ribbon: .+ add it under Ribbons if it applies\.$/, 'sight', 'National Cadet Competition Ribbon: the report does not say whether the team won its region (bronze star) or the national sweepstakes (silver star), so no star is added; add it under Ribbons if it applies.'],
   [/^The Certificate of Recognition for Lifesaving is the Lifesaving Award ribbon/, 'sight', 'The Certificate of Recognition for Lifesaving is the Lifesaving Award ribbon. The report does not say whether the save was a blood or organ transport, so the silver star for a save of another kind is not added; add it under Ribbons if it applies (CAPR 39-3, 9h).'],
-  [/^Leadership Award: a senior or master specialty rating earns a star/, 'sight', 'Leadership Award: a senior or master specialty rating earns a star (bronze for senior, silver for master), which is not added; add it under Ribbons if it applies.'],
-  [/^Garber and Gill Robb Wilson Awards: /, 'sight', 'Garber and Gill Robb Wilson Awards: the report does not show Squadron Officer School, Air Command and Staff College or Air War College, so no star is added; add it under Ribbons if it applies.'],
+  [/^Garber and Gill Robb Wilson Awards: /, 'sight', 'Garber and Gill Robb Wilson Awards: no completed PME course was found in Professional Development, so no star is added; add it under Ribbons if it applies.'],
   [/^.+: taken from the .+ qualifications?, since the report names no /, 'sight', 'Observer Badge: taken from the Mission Observer qualification, since the report names no observer badge. Change it in the badge list.'],
   [/^The report names these aviation badges: /, 'sight', 'The report names these aviation badges: Solo Badge and Observer Badge. One CAP aviation badge is worn at a time (CAPR 39-1, 4.1.5.2.2.4.1); the others are listed under Authorized by member report in the badge list.'],
   [/^Counted as special activities by their code, /, 'sight', 'Counted as special activities by their code, which the national list does not give by that name: NFAP and MKSABA. Check them.'],
@@ -1770,6 +1769,7 @@ const NOTE_KINDS = [
   [/^The name is longer than 40 letters/, 'sight', 'The name is longer than 40 letters, so the uniform shows the first 40 of each part.'],
   [/^The Cadet Achievements heading was not found/, 'sight', 'The Cadet Achievements heading was not found; its Achievement rows were read without it.'],
   // The fold.
+  [/^Leadership Award: the highest recorded rating/, 'more', 'Leadership Award: the highest recorded rating in each specialty sets its star; at most three stars are selected, with master ratings first.'],
   [/^\d+ rows? listed twice in the report/, 'more', '1 row listed twice in the report was counted once.'],
   [/^Current First Sergeant duty found/, 'more', 'Current First Sergeant duty found, so the Cadet First Sergeant diamond is chosen for the Class B shirt (CAPR 39-1, 10.10.4).'],
   [/records found; the ribbon picker offers at most|: the picker offers at most \d+ awards/, 'more', 'Disaster Relief Ribbon: the picker offers at most 84 awards, so 84 are used.'],
@@ -2105,4 +2105,68 @@ test('each of the three codes is a credit by itself, once per activity per year,
   // Any other code still brings the note.
   const other = runImport(withTraining(PERSONNEL, ['ZQXA   Anytown, ZZ   05 Jul 2023', 'NFAP   Anytown, ZZ   05 Jul 2023']));
   assert.deepEqual(other.parsed.notes.filter(n => CODE_NOTE.test(n)), ['Counted as special activities by their code, which the national list does not give by that name: ZQXA. Check it.']);
+});
+
+// ---- Day 2: behaviours that GitHub main's two import commits (ecf06816, 6dd18ed1) add, proven against made-up reports -----------------------------------------
+// A made-up senior report in the form of the new print (the heading names every table) and one in the form of the older printed senior report
+// (tests/fixtures/eservices-member-details-senior-printed.txt: Personnel Information heading, Achievements, a Level table, awards by code, ribbons with
+// a midnight time after each date). No row is a member's.
+const SENIOR_RECORDED = "Printer Friendly View - Member Details\nMaj Gen Example Member\nGeneral Information\nCAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit\n000001 MEMBER, EXAMPLE FEMALE SENIOR Maj Gen 01 Jan 2024 01 Jan 1991 31 Dec 2027 ACTIVE NHQ\nCurrent Duty Positions\nDuty Position Unit Echelon Asst Start Date End Date\nNational Commander NHQ NATIONAL No 01 Jan 2024\nPast Duty Positions\nProfessional Development\nCourse Date Completed\nLevel I 01 Jan 1992\nLevel II 01 Jan 1993\nLevel III 01 Jan 1994\nLevel IV 01 Jan 1995\nLevel V 01 Jan 1996\nSquadron Officer School (SOS) 01 Jan 2000\nAir Command and Staff College (ACSC) 01 Jan 2002\nSpecialty Tracks\nSpecialty Track Level Completed\nADMINISTRATION MASTER 01 Jan 2003\nAEROSPACE EDUCATION MASTER 02 Jan 2003\nCADET PROGRAMS MASTER 03 Jan 2003\nCOMMUNICATIONS MASTER 04 Jan 2003\nEMERGENCY SERVICES MASTER 05 Jan 2003\nFINANCE MASTER 06 Jan 2003\nHISTORIAN MASTER 07 Jan 2003\nPROFESSIONAL DEVELOPMENT MASTER 08 Jan 2003\nCadet Training\nActivity Date Completed\nPararescue Orientation Course (PJOC) 10 Jul 1995\nNational Blue Beret 10 Jul 1996\nNational Blue Beret 10 Jul 1997\nNational Blue Beret 10 Jul 1998\nNational Blue Beret 10 Jul 1999\nNational Blue Beret 10 Jul 2000\nNational Blue Beret 10 Jul 2001\nNational Blue Beret 10 Jul 2002\nNational Blue Beret 10 Jul 2003\nNational Blue Beret 10 Jul 2004\nNational Blue Beret Staff 10 Jul 2005\nNBB Senior Staff 11 Jul 2005\nInternational Air Cadet Exchange 10 Jul 1994\nEncampments\nEncampment Date Completed\nExample Wing Encampment 20 Jul 1991\nExample Wing Encampment 20 Jul 1992\nExample Wing Encampment 20 Jul 1993\nExample Wing Encampment 20 Jul 1994\nExample Wing Encampment 20 Jul 1995\nExample Wing Encampment 20 Jul 1996\nExample Wing Encampment 20 Jul 1997\nExample Wing Encampment 20 Jul 1998\nExample Wing Encampment 20 Jul 1999\nExample Wing Encampment 20 Jul 2000\nExample Wing Encampment 20 Jul 2001\nExample Wing Encampment 20 Jul 2002\nExample Wing Encampment 20 Jul 2003\nOrientation Flights\nCadet Achievements\nAchievement Date Completed Test Score\nAwards\nSpaatz Award 1142 01 Jan 1994\nPromotions\nDate Rank\n01 Jan 2024 Maj Gen\nDecorations\nAir Force Organizational Excellence Award 01 Jan 2008\nDistinguished Service Award 01 Jan 2010\nDistinguished Service Award 01 Jan 2011\nDistinguished Service Award 01 Jan 2012\nDistinguished Service Award 01 Jan 2013\nExceptional Service Award 01 Jan 2009\nCommander's Commendation Award (Wing) 01 Jan 2005\nCommander's Commendation Award (Wing) 01 Jan 2006\nCommander's Commendation Award (Region) 01 Jan 2007\nBrig Gen Charles E. Yeager Aerospace Education Achievement Award 01 Jan 2004\nActivity/Service Ribbon\nCrisis Service Ribbon 01 Jan 2020\nSearch \"Find\" Ribbon 01 Jan 2019\nAir Search and Rescue Ribbon 01 Jan 2019\nDisaster Relief Ribbon 01 Jan 2019\nCommunity Service Ribbon 01 Jan 2019\nInternational Air Cadet Exchange Ribbon 10 Jul 1994\nNational Color Guard Competition Ribbon 01 Jan 1994\nCadet Advisory Council Ribbon 01 Jan 1993\nEncampment Ribbon 20 Jul 1990\nSenior Recruiter Ribbon 01 Jan 2018\nLocal Activities\nActivity Date\nSpaatz Award Presentation 01 Jan 2025\n";
+const RECORDED_24 = ['Air_Force_Organizational_Excellence_Award', 'distinguished_service_award', 'exceptional_service_award',
+  'commander_commendation_award', 'cap_gill_robb_wilson_ribbon', 'cap_paul_e_garber_ribbon', 'cap_grover_loening_aerospace_ribbon',
+  'cap_leadership_ribbon', 'cap_membership_ribbon', 'cap_bridgadier_general_charles_yaeger_ribbon', 'spaatz_award',
+  'cap_command_service_ribbon', 'crisis_ribbon', 'red_service_ribbon', 'search_find_ribbon', 'air_search_and_rescue_ribbon',
+  'disaster_relief_ribbon', 'community_service_ribbon', 'iace_ribbon', 'national_color_guard_competition_ribbon',
+  'cadet_advisory_council_ribbon', 'cadet_special_activity_ribbon', 'encampment_ribbon', 'cap_senior_recruiter_ribbon'];
+
+test('a senior report imports every supported ribbon with the devices the record shows (ecf06816)', () => {
+  const r = runImport(SENIOR_RECORDED);
+  assert.deepEqual(Object.keys(r.selected).sort(), [...RECORDED_24].sort());
+  assert.deepEqual(r.devices('distinguished_service_award'), [{ devices:['clasp-bronze', 'clasp-bronze', 'clasp-bronze'], centered:false }]);
+  assert.deepEqual(r.devices('commander_commendation_award'), [{ devices:['star-bronze', 'clasp-bronze', 'clasp-bronze'], centered:false }]);
+  assert.deepEqual(r.devices('cap_gill_robb_wilson_ribbon'), [{ devices:['star-silver'], centered:false }]);
+  assert.deepEqual(r.devices('cap_paul_e_garber_ribbon'), [{ devices:['star-bronze'], centered:false }]);
+  assert.deepEqual(r.devices('cap_leadership_ribbon'), [{ devices:['star-silver', 'star-silver', 'star-silver'], centered:false }]);
+  assert.deepEqual(r.devices('cap_command_service_ribbon'), [{ devices:['star-gold', 'star-gold'], centered:false }]);
+  for(const id of ['cadet_advisory_council_ribbon', 'national_color_guard_competition_ribbon', 'disaster_relief_ribbon', 'air_search_and_rescue_ribbon', 'search_find_ribbon'])
+    assert.deepEqual(r.devices(id), [{ devices:[], centered:false }], id + ': no level, V or propeller that the record does not give');
+  for(const [id, count] of [['cadet_special_activity_ribbon', 11], ['encampment_ribbon', 14]]){
+    const s = r.selected[id];
+    assert.equal(RA.readCount(id, s.awardValue, s.awardLabel), count, id);
+  }
+});
+
+test('the first encampment award joins later table dates without counting the same event twice (ecf06816)', () => {
+  const existing = 'Encampment Ribbon 20 Jul 1990';
+  const r = runImport(SENIOR_RECORDED.replace(existing, 'Encampment Ribbon 20 Jul 1991'));
+  const s = r.selected.encampment_ribbon;
+  assert.equal(RA.readCount('encampment_ribbon', s.awardValue, s.awardLabel), 13, 'the same day as a table row: still thirteen');
+  assert.equal(runImport(SENIOR_RECORDED.replace(existing, 'Encampment Ribbon')).selected.encampment_ribbon.awardLabel, s.awardLabel, 'an undated ribbon is not a separate event');
+});
+
+test('the Garber and Gill Robb Wilson stars need completed courses in Professional Development, allocated once (ecf06816)', () => {
+  const noPme = SENIOR_RECORDED.replace('Squadron Officer School (SOS) 01 Jan 2000\n', '').replace('Air Command and Staff College (ACSC) 01 Jan 2002\n', '');
+  const r = runImport(noPme);
+  assert.deepEqual(r.devices('cap_gill_robb_wilson_ribbon'), [{ devices:[], centered:false }]);
+  assert.deepEqual(r.devices('cap_paul_e_garber_ribbon'), [{ devices:[], centered:false }]);
+  assert.ok(r.parsed.notes.some(n => /^Garber and Gill Robb Wilson Awards: .*no star is added; add it under Ribbons if it applies/.test(n)));
+  for(const extra of ['Air Command and Staff College planned 01 Jan 2002', 'Air Command and Staff College 01 Jan 2099']){
+    assert.deepEqual(runImport(noPme.replace('Specialty Tracks\n', extra + '\nSpecialty Tracks\n')).devices('cap_gill_robb_wilson_ribbon'), [{ devices:[], centered:false }], extra);
+  }
+  const awc = runImport(SENIOR_RECORDED.replace('Specialty Tracks\n', 'Air War College 01 Jan 2004\nSpecialty Tracks\n'));
+  assert.deepEqual(awc.devices('cap_gill_robb_wilson_ribbon'), [{ devices:['star-gold'], centered:false }]);
+  assert.deepEqual(awc.devices('cap_paul_e_garber_ribbon'), [{ devices:['star-silver'], centered:false }]);
+});
+
+test('the Leadership stars are the highest rating of each specialty, mixed stars map to the picker option, at most three (ecf06816)', () => {
+  const r = runImport(SENIOR.replace('AEROSPACE EDUCATION SENIOR 10 Jan 2019', 'AEROSPACE EDUCATION TECHNICIAN 10 Jan 2017\nAEROSPACE EDUCATION SENIOR 10 Jan 2019\nAEROSPACE EDUCATION MASTER 10 Jan 2020')
+    .replace('CADET PROGRAMS TECHNICIAN 01 Jun 2017', 'CADET PROGRAMS SENIOR 01 Jun 2017'));
+  assert.deepEqual(r.devices('cap_leadership_ribbon'), [{ devices:['star-silver', 'star-bronze'], centered:false }]);
+  assert.deepEqual(runImport(SENIOR).devices('cap_leadership_ribbon'), [{ devices:['star-bronze'], centered:false }], 'one senior rating: one bronze star');
+});
+
+test('Awards-table milestones import, and a presentation or ceremony title does not award one (ecf06816)', () => {
+  assert.ok(runImport(SENIOR_RECORDED).ribbon('spaatz_award'));
+  assert.equal(runImport(SENIOR_RECORDED.replace('Spaatz Award 1142 01 Jan 1994', 'Spaatz Award Presentation 01 Jan 1994')).ribbon('spaatz_award'), undefined);
+  assert.equal(runImport(SENIOR_RECORDED.replace('Spaatz Award 1142 01 Jan 1994', '')).ribbon('spaatz_award'), undefined, 'not in the report at all: not credited; the Local Activities row is no award');
 });
