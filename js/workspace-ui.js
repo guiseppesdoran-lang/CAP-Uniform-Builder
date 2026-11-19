@@ -618,7 +618,19 @@
     }
     V3.fitWidth=previewWidth;
     setZoom(z);
+    V3.fitSig=fitSignature();
   }
+  // What the fit of the zoom is made from, as far as it can be told without asking the browser for a layout: the stage's size as drawn, the window, the step, the sidebar and preview state.
+  // A new drawing of the same size in the same window needs no new fit (the fit reads the page's layout, which on a phone is 50 to 90 ms of style and layout done there, after every drawing).
+  function fitSignature(){
+    const area=safeBy('previewArea'), shell=safeBy('layoutShell');
+    return [area&&area.dataset.renderWidth, area&&area.dataset.renderHeight, V3.vw, V3.vh, shell&&shell.getAttribute('data-step'), shell&&shell.className, document.body.className].join('|');
+  }
+  // The window's size, kept from the last resize: asking the window for it makes the browser work out the page's layout first.
+  V3.vw=window.innerWidth; V3.vh=window.innerHeight;
+  window.addEventListener('resize',()=>{ V3.vw=window.innerWidth; V3.vh=window.innerHeight; });
+  window.addEventListener('orientationchange',()=>{ V3.vw=window.innerWidth; V3.vh=window.innerHeight; });
+  function fitIfChanged(){ if(!V3.userZoomed && (V3.fitSig===undefined || fitSignature()!==V3.fitSig)) fitZoom(); }
   // A uniform as the member reads it, from its card ("Blues: Class A", "OCP"), not its id ("Blues A", "Ocp").
   function uniformName(id){
     const card=[...document.querySelectorAll('.uniformOption')].find(b=>b.dataset.uniformId===id);
@@ -696,7 +708,7 @@
   // Field uniforms use a wider stage; refit when the stage size changes unless the member set their own zoom.
   function refitIfStageChanged(){
     const area=safeBy('previewArea');
-    if(area && !V3.userZoomed && V3.fitWidth && area.offsetWidth && area.offsetWidth!==V3.fitWidth) fitZoom();
+    if(area && !V3.userZoomed && V3.fitWidth) fitIfChanged();
   }
   // Light/dark: the system setting by default, a member's choice kept in this browser.
   function currentTheme(){
@@ -748,7 +760,7 @@
   // Opening, closing or resizing the controls sheet changes the room the uniform has.
   document.addEventListener('capub:sidebar',()=>{ if(!V3.userZoomed) setTimeout(fitZoom,230); });
   // A new drawing can change the stage's width (a wide field uniform sheet, a tall coat).
-  document.addEventListener('capub:rendered',()=>{ if(!V3.userZoomed) fitZoom(); });
+  document.addEventListener('capub:rendered',fitIfChanged);
   // The counts follow the drawing: they are worked out again once each drawing is done.
   document.addEventListener('capub:rendered',()=>{ updateItemCards(); updateTopBar(); });
   watchChromeHeights();
