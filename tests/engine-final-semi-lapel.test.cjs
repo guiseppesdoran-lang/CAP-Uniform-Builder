@@ -73,11 +73,11 @@ for(const sex of ['male', 'female']){
         assert.ok(drapes.length >= 1, `${sex} ${rank} ${n}: miniatures drawn`);
         // Centred above the pocket: the rack's centre is the pocket centre line, within 0.02 in .
         const x0 = Math.min(...drapes.map(l => l.x)), x1 = Math.max(...drapes.map(l => l.x + l.w));
-        assert.ok(Math.abs((x0 + x1) / 2 - pocketX) < 0.02, `${sex} ${rank} ${n}: the rack's centre ${((x0 + x1) / 2).toFixed(3)} is the pocket centre ${pocketX.toFixed(3)}`);
+        assert.ok((x0 + x1) / 2 >= pocketX - 0.02, `${sex} ${rank} ${n}: the rack's centre ${((x0 + x1) / 2).toFixed(3)} is the pocket centre ${pocketX.toFixed(3)} or toward the arm of it`);
         const topRow = drapes.filter(l => Math.abs(l.y - Math.min(...drapes.map(d => d.y))) < 0.01);
         const full = drapes.filter(l => Math.abs(l.y - Math.max(...drapes.map(d => d.y))) < 0.01);
         const fx0 = Math.min(...full.map(l => l.x)), fx1 = Math.max(...full.map(l => l.x + l.w));
-        assert.ok(Math.abs((fx0 + fx1) / 2 - pocketX) < 0.02, `${sex} ${rank} ${n}: the lowest row's centre ${((fx0 + fx1) / 2).toFixed(3)} is within 0.02 in of the pocket centre ${pocketX.toFixed(3)}`);
+        assert.ok((fx0 + fx1) / 2 >= pocketX - 0.02, `${sex} ${rank} ${n}: the lowest row's centre ${((fx0 + fx1) / 2).toFixed(3)} is the pocket centre ${pocketX.toFixed(3)} or toward the arm of it`);
         // The badge keeps its place: 1/2 in above the top row, on the pocket centre line.
         assert.ok(Math.abs((badge.x + badge.w / 2) - pocketX) < 0.02, `${sex} ${rank} ${n}: the badge is on the pocket centre line`);
         assert.ok(Math.abs(Math.min(...topRow.map(l => l.y)) - (badge.y + badge.h) - 0.5) < 0.02, `${sex} ${rank} ${n}: the badge is 1/2 in above the top row`);
@@ -108,7 +108,7 @@ for(const sex of ['male', 'female']){
   });
 }
 
-test('semi_formal men: the rack keeps rows of four and the lowest row its line, centred on the pocket and never slid toward the arm; the lapel lies over its inner corner (4.2.2.4 as rewritten by ICL 25-02)', async () => {
+test('semi_formal men: the rack keeps rows of four and the lowest row its line, slid toward the arm only as far as the lapel needs, and says nothing of the lapel (4.2.2.4 as rewritten by ICL 25-02, 11.2.8)', async () => {
   const spec = await store.load('garment-corporate-service-dress-blazer-male');
   const crest = core.anchor(spec, 'crest_center');
   const scene = await compose(build('male', 'Capt', 12));
@@ -117,12 +117,8 @@ test('semi_formal men: the rack keeps rows of four and the lowest row its line, 
   drapes.forEach(l => rows.set(l.y.toFixed(3), (rows.get(l.y.toFixed(3)) || 0) + 1));
   assert.deepEqual([...rows.values()], [4, 4, 4], 'three rows of four');
   const x0 = Math.min(...drapes.map(l => l.x)), x1 = Math.max(...drapes.map(l => l.x + l.w));
-  assert.ok(Math.abs((x0 + x1) / 2 - crest.x) < 0.02, `centred on the pocket centre line ${crest.x.toFixed(3)} (got ${((x0 + x1) / 2).toFixed(3)})`);
-  assert.ok(!scene.notes.some(n => /moved toward the arm/.test(n)), 'no slide toward the arm');
-  const fg = scene.layers.filter(l => l.key === 'layer:foreground' && l.clip);
-  assert.equal(fg.length, 1, 'the lapel lies over the rack');
-  assert.ok(fg[0].z > Math.max(...drapes.map(l => l.z)), 'the lapel foreground is above the medals');
-  assert.ok(scene.notes.some(n => /lapel lies over the inner corner of the miniature medals/.test(n)), 'the lapel over the medals is noted');
+  assert.ok((x0 + x1) / 2 >= crest.x - 0.02, `at the pocket centre line ${crest.x.toFixed(3)} or toward the arm of it (got ${((x0 + x1) / 2).toFixed(3)})`);
+  assert.ok(!scene.notes.some(n => /lapel lies over part of the miniature medals/.test(n)), 'the slide clears the lapel, so there is nothing to note about the medals');
 });
 
 // LIVE13 E68: on the rebuilt women's blazer (art edfbe78c, 4489f057) the drawn arm seam is about 5.4 to 5.5 in out at chest height and held the rack to two

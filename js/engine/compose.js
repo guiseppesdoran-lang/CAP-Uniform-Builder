@@ -434,6 +434,8 @@
   // apart' (1.65 in, the old 50% of the drape). The pitch is the tallest body that hangs below a drape plus a band of the lower
   // ribbon left in view: MINI_ROW_BAND (0.05 in) where no lower row carries a device, else enough for the half-size device and its
   // gaps above the drape's V point (a device on a lower row stays in view, 11.4.2), never under MINI_ROW_MIN.
+  // A drape or a body box under the lapel by no more than this share of its area is under only the lapel's edge stroke: not a hit.
+  const HAIRLINE = 0.005;
   const MINI_ROW_MIN = 0.5, MINI_ROW_BAND = 0.05, MINI_DEVICE_BAND = 0.5;
   // 11.3: 'Miniature medals are approximately 1/2 the size of regular medals': the attachments on a miniature medal's ribbon
   // (11.4.2, 'either full size or miniature attachments') are drawn at that half size, on the 11/16 in drape.
@@ -505,25 +507,49 @@
     const drawnTop = Math.min(...out.placements.map(p => p.y));
     const shift = slot.centerY != null ? slot.centerY - (drawnTop + drawnBottom) / 2 : slot.bottomY - drawnBottom;
     for(const p of out.placements) p.y += shift;
-    // The rack never lies under a part of the garment that would cover it (the blazer's lapel, 11.2.8: the medal
-    // nearest the lapel is fully exposed): when `avoid` polygons are given, the whole rack slides toward
-    // `avoidDir` (+1 toward larger x) in 0.02 in steps until no drape or body touches one, at most `maxShift`
-    // (rows keep their alignment, the lowest row keeps its line).
-    // `report` (an object the caller passes) gets `blocked` (a drape or body still touches an `avoid` polygon after
-    // the slide), `slide`, and `boxes` (each medal's drape and body box, x0/x1/y0/y1, as drawn), so the caller can
-    // try a narrower rack and measure how far the rack lies from the rest of the garment.
+    // The rack never lies under a part of the garment that would cover it (the blazer's lapel, 11.2.8: the medal nearest the lapel is fully exposed; the owner,
+    // 2026-11-18): when `avoid` polygons are given, the whole rack slides toward `avoidDir` (+1 toward larger x) by the least amount, in 0.01 in steps, that leaves no drape
+    // (cut to its V point) and no medal body under one, a hairline (HAIRLINE of a drape's or a body box's area, the edge stroke) not being a hit. The rows, the medals in each
+    // row and the overlap within a row stay as laid; the lowest row keeps its line. `o.slideOk(boxes, dx)` may stop the slide short (the blazer's sleeve limit and shoulder
+    // line); it is asked at 0 first. `report` (an object the caller passes) gets `blocked` (a hit remains), `slide`, and `boxes` (each medal's drape and body box,
+    // x0/x1/y0/y1, as drawn), so the caller can try a narrower rack and measure how far the rack lies from the rest of the garment.
     let slide = 0;
-    const gap = o.avoidGap != null ? o.avoidGap : 0.03;
     const boxOf = p => { const r = reach.get(p.item) || { left: 0, right: MINI_DRAPE.w }; return { x0: p.x + r.left, x1: p.x + r.right, y0: p.y, y1: p.y + MINI_DRAPE.h + (hang.get(p.item) || 0) }; };
+    const pointIn = (q, poly) => { const pts = poly.map(v => Array.isArray(v) ? { x: v[0], y: v[1] } : v); let c = false; for(let i = 0, j = pts.length - 1; i < pts.length; j = i++){ const a = pts[i], b = pts[j]; if(((a.y > q.y) !== (b.y > q.y)) && (q.x < (b.x - a.x) * (q.y - a.y) / (b.y - a.y) + a.x)) c = !c; } return c; };
+    // the share of a shape (a polygon of {x, y}) that lies under any `avoid` polygon, by sampling
+    const shareUnder = shape => {
+      const xs = shape.map(q => q.x), ys = shape.map(q => q.y), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+      let n = 0, hit = 0;
+      for(let i = 0; i < 24; i++) for(let j = 0; j < 48; j++){
+        const q = { x: x0 + (i + 0.5) * (x1 - x0) / 24, y: y0 + (j + 0.5) * (y1 - y0) / 48 };
+        if(!pointIn(q, shape)) continue;
+        n++;
+        if(o.avoid.some(poly => pointIn(q, poly))) hit++;
+      }
+      return n ? hit / n : 0;
+    };
+    const coveredAt = dx => out.placements.some(p => {
+      const x = p.x + dx, D = MINI_DRAPE, b = boxAt(p, dx);
+      const drape = [{ x, y: p.y }, { x: x + D.w, y: p.y }, { x: x + D.w, y: p.y + D.h - D.point }, { x: x + D.w / 2, y: p.y + D.h }, { x, y: p.y + D.h - D.point }];
+      if(shareUnder(drape) > HAIRLINE) return true;
+      const hang_ = hang.get(p.item) || 0;
+      return hang_ > 0 && shareUnder([{ x: b.x0, y: p.y + D.h }, { x: b.x1, y: p.y + D.h }, { x: b.x1, y: p.y + D.h + hang_ }, { x: b.x0, y: p.y + D.h + hang_ }]) > HAIRLINE;
+    });
+    function boxAt(p, dx){ const r = boxOf(p); return { x0: r.x0 + dx, x1: r.x1 + dx, y0: r.y0, y1: r.y1 }; }
     if(o.report) o.report.blocked = false;
     if(o.avoid && o.avoid.length){
-      const dir = o.avoidDir < 0 ? -1 : 1, maxShift = o.maxShift != null ? o.maxShift : 2.5;
-      const boxes = out.placements.map(boxOf);
-      const hits = d => boxes.some(b => o.avoid.some(poly => rectHitsPolygon({ x: b.x0 - gap + d, y: b.y0, w: b.x1 - b.x0 + 2 * gap, h: b.y1 - b.y0 }, poly)));
-      while(slide < maxShift && hits(dir * slide)) slide += 0.02;
-      if(o.report) o.report.blocked = hits(dir * slide);
-      else if(hits(dir * slide)) ctx.note('The miniature medals reach the lapel: there is no room to move them clear of it');
-      slide *= dir;
+      const dir = o.avoidDir < 0 ? -1 : 1, STEP = 0.01, MAX = 6;
+      const okAt = d => !o.slideOk || o.slideOk(out.placements.map(p => boxAt(p, d)), d);
+      okAt(0);
+      let d = 0;
+      while(coveredAt(dir * d) && d < MAX){
+        if(!okAt(dir * (d + STEP))) break;
+        d += STEP;
+      }
+      const stuck = coveredAt(dir * d);
+      if(o.report) o.report.blocked = stuck;
+      else if(stuck) ctx.note('The lapel lies over part of the miniature medals: they cannot be moved clear of it within the sleeve limit and the shoulder line (CAPR 39-1 11.2.8)');
+      slide = dir * d;
       for(const p of out.placements) p.x += slide;
     }
     if(o.report){ o.report.slide = slide; o.report.boxes = out.placements.map(boxOf); }

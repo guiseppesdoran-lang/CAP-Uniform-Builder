@@ -3193,6 +3193,16 @@
     const lapelPoly = blazerLapel(ctx);
     const widest = b.opt.miniStyle !== 'holding' ? 4 : 7;
     const TOLERANCE = 0.1;
+    // The slide toward the arm that keeps the lapel clear (compose.drawMiniMedals) never takes the rack past the sleeve limit or the shoulder line: it may not score worse than
+    // the tolerance, or than the rack scores unslid where that is already worse (the columns are chosen below by that same score).
+    const slideLimit = () => {
+      let lim = null;
+      return (boxes, dx) => {
+        const sc = overScore(boxes.map(q => blazerOvershoot(ctx, q)).reduce(worseOver, { seam: 0, shoulder: 0 }));
+        if(lim == null) lim = Math.max(TOLERANCE, sc);
+        return sc <= lim + 1e-9;
+      };
+    };
     const cs = chaplain ? await ctx.spec(chaplain.art) : null;
     const cb = ctx.point('chaplain_badge_semiformal');
     const tries = [];
@@ -3200,7 +3210,7 @@
     for(let cols = widest; cols >= 1; cols--){
       const snap = { layers: ctx.layers.length, notes: ctx.notes.length };
       const report = {};
-      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, report });
+      const bx = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, report, avoid: lapelPoly.length ? [lapelPoly] : null, avoidDir: 1, slideOk: slideLimit() });
       if(!bx) break;
       let over = report.boxes.map(q => blazerOvershoot(ctx, q)).reduce(worseOver, { seam: 0, shoulder: 0 });
       let badgeAt = null;
@@ -3221,7 +3231,7 @@
     if(tries.length){
       if(win){
         cols = win.cols;
-        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols });
+        box = await C.drawMiniMedals(ctx, b.medals || [], { w: ms.w, centerX: medalX, bottomY }, { style: b.opt.miniStyle, perRow: cols, avoid: lapelPoly.length ? [lapelPoly] : null, avoidDir: 1, slideOk: slideLimit() });
         if(overScore(win.over) > TOLERANCE) ctx.note('The miniature medals' + (cs ? ' and the chaplain badge' : '') + ' do not all fit 1 in inside the sleeve\'s edge and under the shoulder line on this coat: up to ' + Math.max(win.over.seam, win.over.shoulder).toFixed(1) + ' in of them lies past the sleeve limit or the shoulder line (CAPR 39-1 11.2.8)');
         if(cols < Math.min(widest, (b.medals || []).length)) ctx.note(`The miniature medals are worn ${cols} to a row: 1 in inside the sleeve's edge there is no room for more (CAPR 39-1 11.2.8)`);
       }
@@ -3249,7 +3259,6 @@
       ctx.foreground(['lapel-foreground'], Z.badge + 0.5);
       ctx.layers[ctx.layers.length - 1].clip = growPolygon(lapelPoly, 0.03);
     }
-    if(touching.some(l => RACK_ROLES.includes(l.role))) ctx.note('The lapel lies over the inner corner of the miniature medals: the rack is centered above the pocket (CAPR 39-1 4.2.2.4, ICL 25-02) and the collar is worn over awards (11.1.8)');
     for(const l of touching.filter(l => l.role === 'badge')) ctx.note(`The lapel lies over part of the ${l.title || 'badge'}: it is worn under the collar there (CAPR 39-1 11.1.8)`);
   }
 

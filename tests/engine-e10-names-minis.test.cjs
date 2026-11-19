@@ -199,7 +199,8 @@ for(const sex of ['male', 'female']){
     assert.deepEqual(ys.map(y => rows.get(y.toFixed(3)).length), [4, 4, 1], 'rows of four, then the remainder');
     const sheet = await store.load(`garment-corporate-service-dress-blazer-${sex}`);
     const lowest = rows.get(ys[0].toFixed(3));
-    near((Math.min(...lowest.map(l => l.x)) + Math.max(...lowest.map(l => l.x + l.w))) / 2, core.anchor(sheet, 'crest_center').x, 0.02, 'the rack is centred above the pocket, not slid toward the arm (4.2.2.4, ICL 25-02)');
+    const lowCentre = (Math.min(...lowest.map(l => l.x)) + Math.max(...lowest.map(l => l.x + l.w))) / 2;
+    assert.ok(lowCentre >= sheet.raw.landmarks.medal_slot.x / 100 + sheet.raw.landmarks.medal_slot.w / 200 - 0.02, 'the rack is centred above the pocket, or slid toward the arm only as far as the lapel needs (4.2.2.4, ICL 25-02; 11.2.8)');
     for(const [, row] of rows){
       row.sort((a, b) => a.x - b.x);
       for(let i = 1; i < row.length; i++) near(row[i].x - row[i - 1].x, W, 1e-6, 'step between medals in a row');

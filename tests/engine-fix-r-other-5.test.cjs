@@ -88,15 +88,12 @@ test('the blue shirt\'s epaulet sleeves keep the cadet officer\'s miniature meta
 
 // ---- 2. The blazer's left lapel and the semi-formal's miniature medals --------------------------------------------------
 
-test('semi-formal blazer: the rack is centred above the pocket and the lapel lies over its inner corner, so a lapel foreground is clipped above the miniature medals and the note says so (CAPR 39-1 4.2.2.4 with ICL 25-02, 11.1.8; D8: it was clear of the lapel before the ICL ruling)', async () => {
+test('semi-formal blazer: twelve miniatures slide toward the arm until the lapel no longer lies over them, so there is no note about it (CAPR 39-1 11.2.8; tests/engine-mini-lapel-slide.test.cjs)', async () => {
   for(const gender of ['male', 'female']){
     const scene = await compose(crit(`semi_formal-${gender}-senior-Capt-12minis`));
     const drapes = scene.layers.filter(l => l.role === 'mini-drape');
     assert.ok(drapes.length, `${gender}: miniature medals drawn`);
-    const fg = scene.layers.filter(l => l.key === 'layer:foreground' && l.clip);
-    assert.equal(fg.length, 1, `${gender}: the lapel foreground is clipped over the miniature medals`);
-    assert.ok(fg[0].z > Math.max(...drapes.map(l => l.z)), `${gender}: above every medal`);
-    assert.ok(scene.notes.some(n => /lapel lies over the inner corner of the miniature medals/.test(n)), `${gender}: the note about the lapel over the medals`);
+    assert.ok(!scene.notes.some(n => /lapel lies over part of the miniature medals/.test(n)), `${gender}: nothing to note about the lapel over the medals`);
   }
 });
 
