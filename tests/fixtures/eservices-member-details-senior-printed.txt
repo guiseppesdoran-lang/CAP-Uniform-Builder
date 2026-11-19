@@ -2,7 +2,7 @@ Personnel Information For: Col Taylor Vance Okafor 000002 Commander LSCode: A
 General Info
 Organization XYZ-XYZ-002
 Gender Type Rank Date of Rank Joined Expires Profession
-MALE SENIOR Col 12 Sep 2023 17 Mar 1996 30 Jun 2028 Engineering - Civil
+MALE SENIOR Col 13 Sep 2023 17 Mar 1996 28 Jun 2028 Engineering - Civil
 Achievements
 Achievements Functional Area Completed Expires
 Achievement 1 (Curry) Cadet_Programs 22 Jan 1996 Does not Expire
@@ -12,13 +12,13 @@ CAP Master Ground Team Badge OPS-Emergency_Services 09 Sep 2017 Does not Expire
 CAP Senior Emergency Services Qualification Badge OPS-Emergency_Services 09 Sep 2017 Does not Expire
 Current Duty Positions
 Duty Position Wing-Unit Scope Assistant Assign Date
-Commander XYZ-002 NATIONAL No 12 Sep 2023
+Commander XYZ-002 NATIONAL No 13 Sep 2023
 Past Duty Positions
 Duty Position Wing-Unit Scope Assistant Assign Date End Date
 Commander QRS-014 REGION No 03 Apr 2013 19 Apr 2017
 Commander XYZ-002 NATIONAL No 11 Jun 2021 24 Jun 2021
 Commander XYZ-002 NATIONAL No 08 Feb 2022 20 Feb 2022
-Commander XYZ-002 NATIONAL No 12 Sep 2023 14 Jan 2025
+Commander XYZ-002 NATIONAL No 13 Sep 2023 14 Jan 2025
 Transfer History
 From To Date Transferred
 QRS-QRS-014 XYZ-XYZ-002 4/17/2017 12:00:00 AM
@@ -117,13 +117,13 @@ GARBER 0 07 Mar 2006
 WILSON 20004 13 Apr 2007
 Promotions
 Rank Date of Rank Criteria
-Col 12 Sep 2023 Commander Promotion
+Col 13 Sep 2023 Commander Promotion
 Lt Col 07 Mar 2018 Commander Promotion
 Maj 22 Apr 2010 Commander Promotion
 C/Col 09 Dec 1997
 Decorations
 Decoration Date of Decoration Approval Date
-Commander's Commendation Award (Region) 04 Aug 2019 to 30 Aug 2019 18 May 2021
+Commander's Commendation Award (Region) 04 Aug 2019 to 30 Aug 2019 19 May 2021
 Crisis Service Award 02 Apr 2019 to 28 Nov 2021 07 Jan 2021
 Commander's Commendation Award (Wing) 14 Dec 2018 to 14 Dec 2018 20 Dec 2018
 Air Force Organizational Excellence Award 06 Nov 2011 to 25 Sep 2015 09 Apr 2017
@@ -136,10 +136,10 @@ Distinguished Service Award 11 Jun 2015 to 02 Jun 2019
 Ribbons
 Activity/Service Ribbon Type Date Earned
 Encampment Ribbon Cadet 10/06/1995 12:00:00 AM
-Cadet Special Activity Ribbon Cadet 8/09/1997 12:00:00 AM
+Cadet Special Activity Ribbon Cadet 10/09/1997 12:00:00 AM
 IACE Ribbon Cadet 8/24/1998 12:00:00 AM
 Disaster Relief Ribbon Cadet 5/18/1997 12:00:00 AM
-Cadet Advisory Council Ribbon Cadet 5/21/1998 12:00:00 AM
+Cadet Advisory Council Ribbon Cadet 4/21/1998 12:00:00 AM
 Air Search and Rescue Ribbon Senior 8/20/2004 12:00:00 AM
 Search “Find” Ribbon Senior 8/20/2004 12:00:00 AM
 Senior Recruiter Ribbon Senior 9/15/2005 12:00:00 AM
