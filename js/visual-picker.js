@@ -220,6 +220,17 @@
     return api;
   }
 
+  // What a tap sets off (the page's rules, the drawing) runs in the task after the frame that shows the tile pressed, so a phone shows the press at once; taps are kept in order.
+  // Only where the page turns it on (js/bootstrap.js: `VisualPicker.deferTaps = true`, the real page with its animation frames); a page that is not on screen (and the Node tests) runs it at once.
+  let deferTaps = false;
+  function afterFrame(fn){
+    if(!deferTaps || typeof document === 'undefined' || document.visibilityState !== 'visible' || typeof requestAnimationFrame !== 'function' || typeof setTimeout !== 'function'){ fn(); return; }
+    let ran = false;
+    const run = () => { if(ran) return; ran = true; try{ fn(); }catch(e){ console.error(e); } };
+    requestAnimationFrame(() => setTimeout(run, 0));
+    setTimeout(run, 400);
+  }
+
   function render(host, config){
     if(config && config.mode === 'action') return renderActions(host, config);
     const cfg = config || {};
@@ -335,13 +346,13 @@
         const on = !selected.has(t.option.value);
         if(on) selected.add(t.option.value); else selected.delete(t.option.value);
         paint();
-        if(typeof cfg.onToggle === 'function') cfg.onToggle(t.option.value, on);
+        if(typeof cfg.onToggle === 'function') afterFrame(() => cfg.onToggle(t.option.value, on));
         return;
       }
       if(t.option.value === value){ paint(); return; }
       value = t.option.value;
       paint();
-      if(typeof cfg.onChange === 'function') cfg.onChange(value);
+      if(typeof cfg.onChange === 'function'){ const now = value; afterFrame(() => cfg.onChange(now)); }
     }
 
     function move(from, step){
@@ -515,5 +526,5 @@
     return api;
   }
 
-  return { render, emptyMark, SVG_NS };
+  return { render, emptyMark, SVG_NS, get deferTaps(){ return deferTaps; }, set deferTaps(v){ deferTaps = !!v; } };
 });

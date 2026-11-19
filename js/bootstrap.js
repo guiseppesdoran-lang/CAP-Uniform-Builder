@@ -205,6 +205,8 @@ function selectHighestWearableImportedBadges(ids, membershipHint){
   wireMemberReportImporter();
   buildPatchGallery();
 
+  // A tap on a picture tile shows the tile pressed in the next frame and does the work it sets off after it (js/visual-picker.js).
+  if(window.VisualPicker) window.VisualPicker.deferTaps = true;
   fullRender();
   // The scripts are deferred, so the page shows (and the access gate answers) before they run; this marks the
   // moment the controls work, for styling a loading state (LIVE13 E65).
