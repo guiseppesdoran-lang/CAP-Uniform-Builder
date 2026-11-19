@@ -1515,6 +1515,11 @@ function buildUnitPatchSelector(filterText=''){
   if(!sel) return;
 
   const selected = State.unitPatchCharter || '';
+  // The list is made again only when what it is made from has changed: the search, the unit chosen (and whether the uniform wears it), the patches that have art. It was made
+  // again, 1,455 options, by every drawing of anything (a ribbon tapped, a badge turned on).
+  const signature = JSON.stringify([String(filterText || '').trim().toLowerCase(), selected, selected ? isUnitCharterWornOnUniform(selected) : null, Object.keys(PATCH_META).length]);
+  if(sel.unitListSignature === signature && sel.options && sel.options.length){ renderUnitPatchStatus(); return; }
+  sel.unitListSignature = signature;
   const matches = getUnitPatchOptions(filterText);
 
   sel.innerHTML = '';
