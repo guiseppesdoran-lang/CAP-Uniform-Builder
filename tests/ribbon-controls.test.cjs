@@ -34,7 +34,7 @@ test('the dropdown of a clasp ribbon says each count with the clasps the rule gi
     if(id !== 'bronze_medal_of_valor'){
       assert.equal(c.lines[2].text, '3rd award: 2 bronze clasps', id);
       assert.equal(c.lines[5].text, '6th award: silver clasp', id);
-      assert.equal(c.lines[6].text, '7th award: silver clasp, bronze clasp', id);
+      assert.equal(c.lines[6].text, '7th award: silver and bronze clasps', id);
       // Count n is the clasps the 39-3 6b rule gives (a silver clasp for five bronze), one ribbon while they fit on one.
       c.lines.slice(0, 9).forEach((line, i) => assert.equal(line.text, i ? `${i + 1}${['', '', 'nd', 'rd'][i + 1] || 'th'} award: ${RA.deviceWords(RA.clasps(i, 'clasps'))}` : '1st award', `${id} line ${i + 1}`));
     }
@@ -62,22 +62,43 @@ test('each line has a short form for the closed dropdown (the count alone) and i
   reset();
   set('community_service_ribbon', 'mcchord_15701');
   const lines = controls('community_service_ribbon').lines;
-  assert.deepEqual(lines.slice(0, 3).map(l => [l.short, l.words]), [['60 hours', ''], ['120 hours', 'bronze clasp'], ['180 hours', '2 bronze clasps']]);
+  assert.deepEqual(lines.slice(0, 3).map(l => [l.short, l.words]), [['60', '60 hours'], ['120', '120 hours: bronze clasp'], ['180', '180 hours: 2 bronze clasps']], 'the count alone closed; the unit and the devices in the line under it');
   set('cap_leadership_ribbon', 'mcchord_26900');
-  assert.deepEqual(controls('cap_leadership_ribbon').lines.slice(0, 5).map(l => [l.short, l.words]), [['Basic award', ''], ['Bronze', 'bronze star'], ['Silver', 'silver star'], ['B-B', '2 bronze stars'], ['S-B', 'silver star, bronze star']]);
+  assert.deepEqual(controls('cap_leadership_ribbon').lines.slice(0, 5).map(l => [l.short, l.words]), [['Basic award', ''], ['Bronze', 'Bronze star'], ['Silver', 'Silver star'], ['B-B', '2 bronze stars'], ['S-B', 'Silver and bronze stars']]);
   set('cadet_recruiter_ribbon', 'recruits_2');
-  assert.equal(controls('cadet_recruiter_ribbon').lines[1].short, '4 members');
+  assert.deepEqual([controls('cadet_recruiter_ribbon').lines[1].short, controls('cadet_recruiter_ribbon').lines[1].words], ['4', '4 members recruited: bronze clasp']);
   for(const id of ['distinguished_service_award', 'encampment_ribbon', 'community_service_ribbon', 'cap_counterdrug_ribbon', 'red_service_ribbon', 'cap_command_service_ribbon']){
     set(id, ev(`capubFirstRibbonOptionValue(${q(id)})`));
-    for(const l of controls(id).lines) assert.ok(l.short.length <= 12 && !/:/.test(l.short), `${id}: "${l.short}"`);
+    for(const l of controls(id).lines) assert.ok(l.short.length <= 12 && !/[:.]/.test(l.short), `${id}: "${l.short}"`);
   }
+});
+
+test('the line under the dropdown counts repeated devices and names the unit, the same for every counted ribbon', () => {
+  reset();
+  for(const [id, at, short, words] of [['encampment_ribbon', 1, '2nd', '2nd award: bronze clasp'], ['red_service_ribbon', 2, '10', '10 years: 2 bronze clasps'], ['community_service_ribbon', 5, '360', '360 hours: silver clasp']]){
+    set(id, ev(`capubFirstRibbonOptionValue(${q(id)})`));
+    const line = controls(id).lines[at];
+    assert.deepEqual([line.short, line.words], [short, words], id);
+  }
+  assert.equal(RA.deviceWords(['device-clasp-silver', 'device-clasp-bronze', 'device-clasp-bronze']), '1 silver and 2 bronze clasps');
+  assert.equal(RA.deviceWords(['device-clasp-silver', 'device-clasp-bronze']), 'silver and bronze clasps');
+  assert.equal(RA.deviceWords(['device-clasp-silver', 'device-star-bronze']), 'silver clasp, bronze star');
+  assert.equal(RA.deviceWords(Array(4).fill('mil-device-olc-silver')), '4 silver oak leaf clusters');
+  assert.equal(RA.deviceWords(['mil-device-olc-silver', 'mil-device-olc-silver', 'mil-device-olc-bronze']), '2 silver and 1 bronze oak leaf clusters');
+  const id = evj('getMilitaryRibbonIds().find(id => getRibbonAwardOptions(id).some(o => /Oak Leaf Cluster \\+ /i.test(o.label)))');
+  set(id, 'military_award_1');
+  const lines = controls(id).lines;
+  const last = lines[lines.length - 1];
+  assert.match(last.words, /^21st award: \d+ (?:silver|bronze)(?: and \d+ (?:silver|bronze))? oak leaf clusters?$/, last.words);
+  assert.ok(!/\+/.test(lines.map(l => l.words).join(' ')), 'no plus signs');
+  assert.equal(last.short, '21st');
 });
 
 test('a count that needs a second ribbon says so', () => {
   reset();
   set('distinguished_service_award', 'mcchord_17700');
   const lines = controls('distinguished_service_award').lines;
-  assert.match(lines.find(l => /^10th award/.test(l.text)).text, /^10th award: 2 ribbons \(/);
+  assert.equal(lines.find(l => /^10th award/.test(l.text)).text, '10th award: 2 ribbons');
   assert.match(lines.find(l => /^84th award/.test(l.text)).text, /^84th award: \d ribbons$/);
 });
 

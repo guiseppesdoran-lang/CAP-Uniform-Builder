@@ -422,40 +422,54 @@
   const sentenceCase = t => { const x = String(t || '').replace(LOWER_WORDS, w => w.toLowerCase()); return x.charAt(0).toUpperCase() + x.slice(1); };
   const plural = (name, n) => n > 1 ? `${n} ${name}s` : name;
   // Devices in words, "silver clasp, 3 bronze clasps": the same names the picker's summary has always used.
-  function deviceWords(devices){
-    const runs = [];
-    for(const d of devices || []){
-      const text = deviceName(d), last = runs[runs.length - 1];
-      if(last && last.text === text) last.n++; else runs.push({ text, n: 1 });
-    }
-    return runs.map(r => plural(r.text, r.n)).join(', ');
-  }
+  function deviceWords(devices){ return militaryWords((devices || []).map(deviceName).join(' + ')); }
   // What one dropdown line says about its option: the count, then the devices the rule gives it, "2nd award: bronze clasp". A count that needs a second ribbon says so.
+  // The count alone, for the closed dropdown: "6th", "120", "1,320"; the unit is in the line under it.
+  function countOf(name){ const m = /^([\d,]+(?:st|nd|rd|th)?)\b/i.exec(name); return m ? m[1] : name; }
+  // A military award's devices from its label ("Silver Oak Leaf Cluster + Silver Oak Leaf Cluster + Bronze Oak Leaf Cluster"), counted, highest first: "2 silver and 1 bronze oak leaf
+  // clusters", "4 silver oak leaf clusters", "Silver star, bronze oak leaf cluster".
+  function militaryWords(text){
+    const items = String(text || '').split(/\s\+\s/).map(t => t.trim()).filter(Boolean);
+    if(!items.length) return '';
+    const runs = [];
+    for(const t of items){ const last = runs[runs.length - 1]; if(last && last.t === t) last.n++; else runs.push({ t, n: 1 }); }
+    const parse = r => { const m = /^(bronze|silver|gold)\s+(.+)$/i.exec(r.t); return m ? { metal: m[1].toLowerCase(), noun: m[2] } : { metal: '', noun: r.t }; };
+    const info = runs.map(parse);
+    const plural = (noun, n) => n > 1 ? noun.replace(/(\S+)$/, '$1s') : noun;
+    if(runs.length > 1 && info.every(i => i.metal && i.noun === info[0].noun)){
+      const total = runs.reduce((a, r) => a + r.n, 0);
+      return runs.map(r => `${r.n > 1 || runs.some(x => x.n > 1) ? r.n + ' ' : ''}${parse(r).metal}`).join(' and ') + ' ' + plural(info[0].noun, total);
+    }
+    return runs.map((r, i) => r.n > 1 ? `${r.n} ${plural(info[i].metal ? info[i].metal + ' ' + info[i].noun : info[i].noun, r.n)}` : r.t).join(', ');
+  }
   function linePieces(id, opt, ctx, drop, strip){
     const fam = FAMILIES[id] || {};
     const label = (strip || []).reduce((t, re) => t.replace(re, ''), String(opt.label || ''));
     if(ctx.military){
       const [head, ...rest] = label.split(/\s-\s/);
-      const short = sentenceCase(head);
-      return { short, words: rest.join(' - ').toLowerCase(), text: sentenceCase(label.replace(/\s-\s/g, ': ')) };
+      const name = sentenceCase(head), devs = militaryWords(rest.join(' - ').toLowerCase());
+      const words = devs ? `${name}: ${devs}` : name;
+      return { short: countOf(name), words, text: sentenceCase(label.replace(/\s-\s/g, ': ')) };
     }
     const counted = fam.devices === 'clasps' || fam.devices === 'stars' || fam.devices === 'olc';
     const name = counted && /^Basic\b/i.test(label) ? '1st award' : sentenceCase(label);
     const parts = resolve(id, { awardValue: opt.value, awardLabel: opt.label, membership: ctx.membership });
     // A count that only has options with a switch on (the finds past the 21st with the propeller) is worded without that switch's device.
     for(const d of drop || []){ const at = parts[0].devices.indexOf(d); if(at >= 0) parts[0] = Object.assign({}, parts[0], { devices: parts[0].devices.filter((x, i) => i !== at) }); }
-    // A count that needs a second ribbon says so with what each carries; past two ribbons only how many.
-    const words = parts.length > 1
-      ? `${parts.length} ribbons${parts.length === 2 ? ` (${parts.map(p => deviceWords(p.devices) || 'plain').join('; ')})` : ''}`
-      : deviceWords(parts[0].devices);
-    // The short form is what the closed dropdown shows, short enough for a phone's narrow tile: the count, a star's metal, a combination's letters, "members" for recruits.
-    let short = name.replace(/ recruited$/, '').replace(/ encampments$/, ' encamp.');
+    // A second ribbon needs no list of what each carries: the picture shows it.
+    const many = parts.length > 1 ? `${parts.length} ribbons` : '';
+    const devs = many || deviceWords(parts[0].devices);
     const single = /^(bronze|silver|gold) star$/i.exec(name), combo = /^([bsg](?:-[bsg])+) stars?$/i.exec(name);
-    if(single) short = sentenceCase(single[1]);
+    // A counted ribbon (awards, hours, years, recruits): the dropdown shows the count alone and the line under it the count with its unit and the devices, the same for every one.
+    const countedRibbon = counted || !!fam.per || fam.devices === 'years' || fam.devices === 'recruiter';
+    let short = name, words = devs;
+    if(countedRibbon){ short = countOf(name); words = devs ? `${name}: ${devs}` : name; }
+    else if(single) short = sentenceCase(single[1]);
     else if(combo) short = combo[1].toUpperCase();
     else if(/^\d+ (?:bronze|silver|gold) stars$/i.test(name)) short = name.replace(/^(\d+) (\w)\w+ stars$/i, (m, n, c) => Array(Number(n)).fill(c.toUpperCase()).join('-'));
+    words = sentenceCase(words);
     const star = !!(single || combo);
-    const text = !words ? name : star ? sentenceCase(words) : `${name}: ${words}`;
+    const text = !devs ? name : star ? sentenceCase(devs) : `${name}: ${devs}`;
     return { short, words, text };
   }
   function lineText(id, opt, ctx, drop, strip){ return linePieces(id, opt, ctx, drop, strip).text; }

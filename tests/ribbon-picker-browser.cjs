@@ -111,9 +111,9 @@ async function launch(){
     if(!high.inRack) bad.push('the ribbon should be in the rack');
     if(!high.focus) bad.push('the focus should stay on the dropdown');
     if(high.shown !== high.value) bad.push('the dropdown should show the award that was chosen');
-    if(!/^42 members/.test(high.text || '')) bad.push('the closed dropdown shows the count alone: ' + high.text);
+    if(high.text !== '42') bad.push('the closed dropdown shows the count alone: ' + high.text);
     const capt = await ev(`${cellOf(id)}.querySelector('.ribbonDeviceWords').textContent`);
-    if(!/clasp/.test(capt)) bad.push('the line under the dropdown says the devices in words: ' + capt);
+    if(!/42 members recruited: .*clasp/.test(capt)) bad.push('the line under the dropdown says the devices in words: ' + capt);
     const top2 = await topOf(id);
     if(top2 !== top0) bad.push(`the tapped tile moved when a count was chosen: ${top0} -> ${top2}`);
     // The tiles of the other ribbons keep their size.
