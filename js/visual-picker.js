@@ -165,7 +165,7 @@
         if(key === 'ArrowRight' || key === 'ArrowDown') move(at, 1);
         else if(key === 'ArrowLeft' || key === 'ArrowUp') move(at, -1);
         else if(key === 'Home') move(0, 0);
-        else if(key === 'End') move(tiles.length - 1, 0);
+        else if(key === 'End')move(tiles.length - 1, 0);
         else return;   // Enter and the space bar press the button itself
         e.preventDefault();
       });
@@ -410,7 +410,7 @@
         if(key === 'ArrowRight' || key === 'ArrowDown') move(at, 1);
         else if(key === 'ArrowLeft' || key === 'ArrowUp') move(at, -1);
         else if(key === 'Home') move(0, 0);
-        else if(key === 'End') move(tiles.length - 1, 0);
+        else if(key === 'End'){ completeFill(); move(tiles.length - 1, 0); }
         else if(key === 'Enter' || key === ' ' || key === 'Spacebar') pick(at);
         else return;
         e.preventDefault();
@@ -418,6 +418,12 @@
       return b;
     }
 
+    // A long list on a page that is on screen is made in pieces: the first screenful at once, the rest in the tasks after the frames that show it (a window of 173 ribbons held a phone
+    // for half a second before anything showed). The tiles come in below those already there, so nothing moves; whatever needs every tile (a search, a new set of options, the End key)
+    // makes the rest first.
+    const FIRST = 30, CHUNK = 40;
+    let fillToken = 0, filling = null;
+    function completeFill(){ if(filling) filling(); }
     function draw(){
       boxed = toggle || !!cfg.boxed || options.some(o => o && o.caption);
       if(boxed) rootEl.dataset.boxed = '1'; else delete rootEl.dataset.boxed;
@@ -425,22 +431,33 @@
       const focused = document.activeElement;
       const had = tiles.find(t => t.button === focused);
       const hadValue = had ? had.option.value : undefined;
+      const token = ++fillToken;
+      filling = null;
       list.textContent = '';
       tiles = [];
-      sections(options).forEach((s, si) => {
-        const sec = make('div', 'vpSection');
-        let headId = null;
-        if(s.group){
-          headId = `vp-${id}-group-${si}`;
-          const head = make('div', 'vpGroupHead', s.group);
-          head.id = headId;
-          sec.append(head);
-          // A line under the heading, from the first of its options that has one (toggle mode: the Ranger tabs' note).
-          const noted = toggle ? s.items.find(o => o.groupNote) : null;
-          if(noted) sec.append(make('div', 'vpGroupNote', String(noted.groupNote)));
-        }
-        const grid = make('div', 'vpGrid');
-        for(const o of s.items){
+      const flat = [];
+      sections(options).forEach((s, si) => s.items.forEach(o => flat.push([s, si, o])));
+      let at = 0, curSi = -1, sec = null, grid = null, headId = null;
+      const build = to => {
+        for(; at < to && at < flat.length; at++){
+          const [s, si, o] = flat[at];
+          if(si !== curSi){
+            curSi = si;
+            sec = make('div', 'vpSection');
+            headId = null;
+            if(s.group){
+              headId = `vp-${id}-group-${si}`;
+              const head = make('div', 'vpGroupHead', s.group);
+              head.id = headId;
+              sec.append(head);
+              // A line under the heading, from the first of its options that has one (toggle mode: the Ranger tabs' note).
+              const noted = toggle ? s.items.find(x => x.groupNote) : null;
+              if(noted) sec.append(make('div', 'vpGroupNote', String(noted.groupNote)));
+            }
+            grid = make('div', 'vpGrid');
+            sec.append(grid);
+            list.append(sec);
+          }
           const b = tile(o, tiles.length, headId);
           if(!boxed){
             tiles.push({ option: o, button: b });
@@ -463,15 +480,37 @@
           tiles.push({ option: o, button: b, cell, controls, section: sec, controlsKey: o.controlsKey });
           grid.append(cell);
         }
-        sec.append(grid);
-        list.append(sec);
-      });
+      };
+      const progressive = flat.length > FIRST + 20 && deferTaps && typeof document !== 'undefined' && document.visibilityState === 'visible' && typeof requestAnimationFrame === 'function' && typeof setTimeout === 'function';
+      build(progressive ? FIRST : flat.length);
+      let refocus = !!had;
+      const settle = () => {
+        if(refocus && indexOfValue(hadValue) >= 0){ stop = indexOfValue(hadValue); refocus = false; paint(); if(tiles[stop]) tiles[stop].button.focus(); return; }
+        paint();
+      };
       const picked = indexOfValue(value);
       stop = picked >= 0 ? picked : 0;
-      if(had && indexOfValue(hadValue) >= 0) stop = indexOfValue(hadValue);
+      if(had && indexOfValue(hadValue) >= 0){ stop = indexOfValue(hadValue); refocus = false; }
       paint();
-      if(had && tiles[stop]) tiles[stop].button.focus();
+      if(had && tiles[stop] && !refocus) tiles[stop].button.focus();
       centerPicked();
+      if(!progressive) return;
+      const more = () => { settle(); if(query) applyFilter(query); if(typeof cfg.onBuilt === 'function') cfg.onBuilt(); };
+      filling = () => { filling = null; build(flat.length); more(); };
+      const schedule = () => {
+        let ran = false;
+        const go = () => {
+          if(ran) return;
+          ran = true;
+          if(token !== fillToken || !filling) return;
+          build(at + CHUNK);
+          more();
+          if(at < flat.length) schedule(); else filling = null;
+        };
+        requestAnimationFrame(() => setTimeout(go, 0));
+        setTimeout(go, 300);
+      };
+      schedule();
     }
     // A row of tiles that scrolls sideways shows the picked tile in the middle of what is seen (on a draw, and when the value is set).
     function centerPicked(){
@@ -479,6 +518,22 @@
       const t = tiles[indexOfValue(value)];
       const grid = t && t.button.parentNode;
       if(grid && typeof grid.clientWidth === 'number' && grid.clientWidth) grid.scrollLeft = Math.max(0, t.button.offsetLeft - (grid.clientWidth - t.button.offsetWidth) / 2);
+    }
+
+    function applyFilter(text){
+      query = String(text || '').trim().toLowerCase();
+      let shown = 0;
+      for(const t of tiles){
+        const o = t.option;
+        const hit = !query || [o.label, o.caption, o.search, o.group].filter(Boolean).join(' ').toLowerCase().includes(query);
+        if(t.cell) t.cell.hidden = !hit;
+        if(hit) shown++;
+      }
+      list.querySelectorAll('.vpSection').forEach(sec => {
+        const mine = tiles.filter(t => t.section === sec);
+        sec.hidden = mine.length > 0 && mine.every(t => t.cell && t.cell.hidden);
+      });
+      return shown;
     }
 
     const api = {
@@ -491,19 +546,10 @@
       },
       // Toggle mode: show the tiles whose name, caption or search words contain `text` (all with none); a section with none left is hidden. Returns how many are shown.
       filter(text){
-        query = String(text || '').trim().toLowerCase();
-        let shown = 0;
-        for(const t of tiles){
-          const o = t.option;
-          const hit = !query || [o.label, o.caption, o.search, o.group].filter(Boolean).join(' ').toLowerCase().includes(query);
-          if(t.cell) t.cell.hidden = !hit;
-          if(hit) shown++;
-        }
-        list.querySelectorAll('.vpSection').forEach(sec => {
-          const mine = tiles.filter(t => t.section === sec);
-          sec.hidden = mine.length > 0 && mine.every(t => t.cell && t.cell.hidden);
-        });
-        return shown;
+        // No search and none before: nothing is hidden, and the tiles still to come need no filter, so the list is not made whole for it (the window's search box asks as it opens).
+        if(filling && !query && !String(text || '').trim()) return options.length;
+        completeFill();
+        return applyFilter(text);
       },
       setValue(v){
         value = v;
@@ -513,9 +559,10 @@
         centerPicked();
       },
       setOptions(next){
+        completeFill();
         options = Array.isArray(next) ? next.filter(o => o && typeof o === 'object') : [];
         if(patch()) paint(); else draw();
-        if(query) api.filter(query);
+        if(query) applyFilter(query);
       }
     };
     api.setOptions(cfg.options);

@@ -657,7 +657,9 @@
     container.append(host);
     const picker = d.VisualPicker.render(host, {
       name: spec.name, ariaLabel: spec.ariaLabel, mode: 'toggle', size: 'large', shape: 'wide', options: options(), values: on(),
-      onToggle: (id, wantOn) => { selectRibbon(id, wantOn, d); after(); }
+      onToggle: (id, wantOn) => { selectRibbon(id, wantOn, d); after(); },
+      // The tiles made after the first screenful (a long list is made in pieces) get their drawn ribbon too.
+      onBuilt: () => draw()
     });
     // The drawn ribbon, devices and all, in place of the plain picture of a ribbon that is on, drawn again whenever its choice changes (the picture is always the ribbon as it is worn);
     // a ribbon that is off has its plain picture back; a picture that fails to load falls back to the ribbon's plain one. The tile's own picture only: the pictures of the switches
