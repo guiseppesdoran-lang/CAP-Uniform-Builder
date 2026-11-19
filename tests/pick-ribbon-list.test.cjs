@@ -88,9 +88,9 @@ test('a tap turns a ribbon on and off: the selection, its first choice, the tile
   assert.equal(lines[1].textContent, '2nd');
   assert.equal(lines[5].textContent, '6th');
   const words = () => p.cell(id).querySelector('.ribbonDeviceWords').textContent;
-  assert.equal(words(), '1st award', 'the count with its unit, and its devices in words, under the dropdown');
+  assert.equal(words(), '', 'a first award with nothing on it: the line is empty and holds its height');
   pick(select, lines[5].value);
-  assert.equal(words(), '6th award: silver clasp');
+  assert.equal(words(), 'Silver clasp', 'what is worn for the count, never a repeat of the dropdown');
   assert.equal(controls.querySelectorAll('.ribbonToggle').length, 1, 'the silver star of the lifesaving ribbon is its one switch');
   assert.ok(drawn.includes(id), 'the drawn ribbon, devices and all, takes the place of the plain picture');
   assert.ok(p.cell('cap_leadership_ribbon').querySelector('.vpControls') === null, 'the other tiles have none');

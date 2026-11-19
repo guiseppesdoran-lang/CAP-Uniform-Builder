@@ -448,11 +448,13 @@
     if(ctx.military){
       const [head, ...rest] = label.split(/\s-\s/);
       const name = sentenceCase(head), devs = militaryWords(rest.join(' - ').toLowerCase());
-      const words = devs ? `${name}: ${devs}` : name;
-      return { short: countOf(name), words, text: sentenceCase(label.replace(/\s-\s/g, ': ')) };
+      // The line under the dropdown is what is worn for the count; a first award with nothing on it has nothing to say.
+      return { short: countOf(name), words: sentenceCase(devs), text: sentenceCase(label.replace(/\s-\s/g, ': ')) };
     }
     const counted = fam.devices === 'clasps' || fam.devices === 'stars' || fam.devices === 'olc';
-    const name = counted && /^Basic\b/i.test(label) ? '1st award' : sentenceCase(label);
+    // What the count is of: an award, or the thing the ribbon counts (an encampment, an activity); hours, years and the rest carry their unit in the label.
+    const noun = { encampment_ribbon: 'encampment', cadet_special_activity_ribbon: 'activity' }[id] || 'award';
+    const name = counted && /^Basic\b/i.test(label) ? `1st ${noun}` : sentenceCase(label).replace(/ award$/, ` ${noun}`);
     const parts = resolve(id, { awardValue: opt.value, awardLabel: opt.label, membership: ctx.membership });
     // A count that only has options with a switch on (the finds past the 21st with the propeller) is worded without that switch's device.
     for(const d of drop || []){ const at = parts[0].devices.indexOf(d); if(at >= 0) parts[0] = Object.assign({}, parts[0], { devices: parts[0].devices.filter((x, i) => i !== at) }); }
@@ -463,7 +465,8 @@
     // A counted ribbon (awards, hours, years, recruits): the dropdown shows the count alone and the line under it the count with its unit and the devices, the same for every one.
     const countedRibbon = counted || !!fam.per || fam.devices === 'years' || fam.devices === 'recruiter';
     let short = name, words = devs;
-    if(countedRibbon){ short = countOf(name); words = devs ? `${name}: ${devs}` : name; }
+    // The line under the dropdown never repeats it: the count with its unit where the unit says something (hours, years, an encampment), then what is worn; for "Nth award" only what is worn.
+    if(countedRibbon){ short = countOf(name); words = / award$/.test(name) ? devs : (devs ? `${name}: ${devs}` : name); }
     else if(single) short = sentenceCase(single[1]);
     else if(combo) short = combo[1].toUpperCase();
     else if(/^\d+ (?:bronze|silver|gold) stars$/i.test(name)) short = name.replace(/^(\d+) (\w)\w+ stars$/i, (m, n, c) => Array(Number(n)).fill(c.toUpperCase()).join('-'));

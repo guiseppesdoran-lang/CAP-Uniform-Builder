@@ -104,13 +104,13 @@ const sortJ = a => JSON.stringify([...a].sort());
     expect(IMPLIED_LT_COL.every(id => a.values[id] === firstChoice[id]), 'each implied ribbon is its row\'s first real choice');
     // The ribbon picker, opened the way the page opens it: every implied tile is on and its row of counts shows that choice, the Encampment Ribbon's included.
     await ev(`(async () => { document.getElementById('expandRibbons').click(); await new Promise(r => setTimeout(r, 1500)); })()`);
-    const tiles = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => { const t = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === id); const s = t && t.querySelector('.ribbonCountSelect'); const on = t && t.querySelector('.vpOption').getAttribute('aria-pressed') === 'true'; const sel = State.ribbonSelections[id]; return [id, t ? { on, value: s ? s.value : sel.awardValue, text: s ? s.options[s.selectedIndex].textContent : sel.awardLabel, line: s ? s.options[s.selectedIndex].textContent : '' } : null]; }))`);
+    const tiles = await ev(`Object.fromEntries(${JSON.stringify(IMPLIED_LT_COL)}.map(id => { const t = [...document.querySelectorAll('#galleryModalHost .vpCell')].find(c => c.dataset.value === id); const s = t && t.querySelector('.ribbonCountSelect'); const on = t && t.querySelector('.vpOption').getAttribute('aria-pressed') === 'true'; const sel = State.ribbonSelections[id]; return [id, t ? { on, value: s ? s.value : sel.awardValue, text: s ? s.options[s.selectedIndex].textContent : sel.awardLabel, line: t.querySelector('.ribbonDeviceWords') ? t.querySelector('.ribbonDeviceWords').textContent : '' } : null]; }))`);
     console.log('picker tiles:', JSON.stringify(tiles.encampment_ribbon), Object.values(tiles).filter(Boolean).length, 'tiles');
     for(const id of IMPLIED_LT_COL){
       const t = tiles[id];
       expect(t && t.on && t.value === firstChoice[id] && t.value !== '', `${id} tile is on, its count dropdown shows the first choice: ${JSON.stringify(t)}`);
     }
-    expect(tiles.encampment_ribbon && tiles.encampment_ribbon.text === '1st award' && tiles.encampment_ribbon.line === '1st award', `the Encampment tile: ${JSON.stringify(tiles.encampment_ribbon)}`);
+    expect(tiles.encampment_ribbon && tiles.encampment_ribbon.text === '1st' && tiles.encampment_ribbon.line === '1st encampment', `the Encampment tile: ${JSON.stringify(tiles.encampment_ribbon)}`);
     await shot('1b-picker');
     await ev(`document.getElementById('galleryModalCloseBtn').click()`);
     await sleep(300);

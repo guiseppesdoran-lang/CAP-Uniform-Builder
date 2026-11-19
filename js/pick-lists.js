@@ -541,7 +541,7 @@
       if(hint) select.setAttribute('title', hint);
       // The devices of the line chosen, in words, in a line under the dropdown that always holds its height (so choosing moves nothing): the closed dropdown shows the count alone.
       const words = el('div', 'ribbonDeviceWords');
-      const say = value => { const line = model.lines.find(l => l.value === value); const t = line ? (line.words || 'No device') : ''; words.textContent = t.charAt(0).toUpperCase() + t.slice(1); };
+      const say = value => { const line = model.lines.find(l => l.value === value); const t = line ? (line.words || '') : ''; words.textContent = t.charAt(0).toUpperCase() + t.slice(1); };
       say(model.selected);
       select.addEventListener('change', () => { say(select.value); d.setRibbon(id, select.value); after(); });
       row.append(select, words);

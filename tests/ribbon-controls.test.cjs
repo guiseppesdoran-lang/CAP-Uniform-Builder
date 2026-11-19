@@ -45,7 +45,7 @@ test('the dropdown of a clasp ribbon says each count with the clasps the rule gi
 test('a star ribbon, an hours ribbon, a sorties ribbon, a level ribbon and an oak leaf ribbon say their lines the same way', () => {
   reset();
   for(const id of ['cadet_special_activity_ribbon', 'community_service_ribbon', 'cap_counterdrug_ribbon', 'red_service_ribbon', 'cadet_recruiter_ribbon', 'cap_leadership_ribbon', 'air_medal', 'cap_command_service_ribbon']) set(id, ev(`capubFirstRibbonOptionValue(${q(id)})`));
-  assert.deepEqual(controls('cadet_special_activity_ribbon').lines.slice(0, 3).map(l => l.text), ['1st award', '2nd award: bronze star', '3rd award: 2 bronze stars']);
+  assert.deepEqual(controls('cadet_special_activity_ribbon').lines.slice(0, 3).map(l => l.text), ['1st activity', '2nd activity: bronze star', '3rd activity: 2 bronze stars']);
   const hours = controls('community_service_ribbon');
   assert.deepEqual(hours.lines.slice(0, 3).map(l => l.text), ['60 hours', '120 hours: bronze clasp', '180 hours: 2 bronze clasps']);
   assert.equal(hours.label, 'Hours');
@@ -75,7 +75,7 @@ test('each line has a short form for the closed dropdown (the count alone) and i
 
 test('the line under the dropdown counts repeated devices and names the unit, the same for every counted ribbon', () => {
   reset();
-  for(const [id, at, short, words] of [['encampment_ribbon', 1, '2nd', '2nd award: bronze clasp'], ['red_service_ribbon', 2, '10', '10 years: 2 bronze clasps'], ['community_service_ribbon', 5, '360', '360 hours: silver clasp']]){
+  for(const [id, at, short, words] of [['encampment_ribbon', 0, '1st', '1st encampment'], ['encampment_ribbon', 1, '2nd', '2nd encampment: bronze clasp'], ['distinguished_service_award', 0, '1st', ''], ['distinguished_service_award', 2, '3rd', '2 bronze clasps'], ['distinguished_service_award', 5, '6th', 'Silver clasp'], ['red_service_ribbon', 2, '10', '10 years: 2 bronze clasps'], ['community_service_ribbon', 5, '360', '360 hours: silver clasp']]){
     set(id, ev(`capubFirstRibbonOptionValue(${q(id)})`));
     const line = controls(id).lines[at];
     assert.deepEqual([line.short, line.words], [short, words], id);
@@ -89,7 +89,7 @@ test('the line under the dropdown counts repeated devices and names the unit, th
   set(id, 'military_award_1');
   const lines = controls(id).lines;
   const last = lines[lines.length - 1];
-  assert.match(last.words, /^21st award: \d+ (?:silver|bronze)(?: and \d+ (?:silver|bronze))? oak leaf clusters?$/, last.words);
+  assert.match(last.words, /^\d+ (?:silver|bronze)(?: and \d+ (?:silver|bronze))? oak leaf clusters?$/, last.words);
   assert.ok(!/\+/.test(lines.map(l => l.words).join(' ')), 'no plus signs');
   assert.equal(last.short, '21st');
 });
