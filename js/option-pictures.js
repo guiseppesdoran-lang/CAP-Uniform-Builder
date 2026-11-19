@@ -640,6 +640,9 @@
   const KEEP = 30;   // member-and-choice sets kept: the newest; a member who changes grade or cut a few times has the earlier ones back at once
   function create(env){
     const cache = new Map();    // key -> { value, promise }; the newest last
+    const yieldTask = () => new Promise(resolve => setTimeout(resolve, 0));
+    let line = Promise.resolve();   // the jobs, one after another
+    const enqueue = job => { const run = line.then(() => new Promise(resolve => setTimeout(resolve, 60))).then(job); line = run.catch(() => {}); return run; };
     const latest = new Map();   // option and choices -> the last pictures made for them, shown while the pictures for a changed member are being made
     function drop(){
       while(cache.size > KEEP){
@@ -668,12 +671,14 @@
       if(hit){ cache.delete(key); cache.set(key, hit); }
       else{
         hit = { value: null };
-        hit.promise = Promise.resolve()
-          .then(() => recipe.make(env, build, list, about))
-          .then(async specs => {
+        // The pictures of a change are made after the change has been shown (one job at a time, a moment after the frame of the tap), and each drawing in a task of its own: a
+        // picture is a whole uniform drawn and written out (megabytes for the OCP), and a set of six drawn in a row held the page for seconds after one tap on a phone.
+        hit.promise = enqueue(async () => {
+            const specs = await recipe.make(env, build, list, about);
             const done = {};
             for(const v of list){
               const s = specs[v];
+              if(s && s.markup == null) await yieldTask();
               done[v] = s === false ? false : !s ? null : s.markup != null ? s.markup : await env.draw(s.scene, s.pad);
             }
             return done;
