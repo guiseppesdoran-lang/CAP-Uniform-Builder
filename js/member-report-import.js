@@ -295,6 +295,9 @@ function normalizeMemberReportDates(text){
 function stripMemberReportPageFurniture(text){
   let titles = 0;
   return String(text || '')
+    // eServices stores an earned date at midnight. Keep its date; browser print
+    // timestamps below are page furniture, but these are award records.
+    .replace(/\b(\d{1,2}\/\d{1,2}\/\d{4})\s+12\s*:\s*00\s*:\s*00\s+AM\b/gi, '$1')
     .replace(/\bhttps?:\/\/\S+(?:\s+\d{1,3}\s*\/\s*\d{1,3}(?=\s|$))?/gi, ' ')
     .replace(/\?\s*CAPID\s*=\s*\d+/gi, ' ')
     .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4},?\s+\d{1,2}\s*:\s*\d{2}(?:\s*:\s*\d{2})?(?:\s*[AP]\.?M\.?)?/gi, ' ')
@@ -757,7 +760,7 @@ function extractEncampmentCountFromReport(text){
   const dates = new Set((section.match(datePattern) || []).map(dateKey).filter(Boolean));
   // A dated first award may predate every later Encampments-table entry. Merge those dates, rather than choosing one table and losing the original
   // credit. An award repeated for a date already in the table is still just one credit; an undated one proves nothing.
-  const ribbonRows = new RegExp('\\bEncampment\\s+Ribbon\\b(?:\\s*\\([^)]{0,40}\\))?\\s+(' + MEMBER_REPORT_DATE + ')', 'gi');
+  const ribbonRows = new RegExp('\\bEncampment\\s+Ribbon\\b(?:\\s*\\([^)]{0,40}\\))?(?:\\s+(?:Cadet|Senior))?\\s+(' + MEMBER_REPORT_DATE + ')', 'gi');
   let row;
   while((row = ribbonRows.exec(source))){
     const key = dateKey(row[1]);
@@ -868,6 +871,7 @@ const IMPORTED_TRAINING_CODE = /^([A-Z]{3,8})(?:-[A-Za-z0-9]+)?(?=\s|$)/;
 // encampment, an orientation flight, and the International Air Cadet Exchange, which has its own ribbon. A row the list does not have earns none
 // and is told to the member as a row not understood.
 const IMPORTED_TRAINING_NO_CREDIT = [
+  ['a correspondence course', /\bECI[\s-]*13\b|\bAFIADL[\s-]*13\b/i],
   ['a region or wing school', /\bRCLS\b|Region(?:al)?\s+Cadet\s+Leadership\s+School|\bNCOLS\b|Non-?\s?commissioned\s+Officer\s+Leadership\s+(?:School|Academy)|(?<![A-Za-z])NCO\s+Leadership\s+Academy|\bSNCO\s+Leadership\s+Academy|\bCCC\s+Leadership\s+Academy|Cadet\s+Command(?:er)?(?:'?s)?\s+(?:Course|Leadership\s+Academy)|Pathfinders?\s+Technical\s+School|Medical\s+Orientation\s+Training|Honor\s+Guard\s+College/i],
   ['Required Staff Training', /Required\s+Staff\s+Training|\bRST\b/i],
   ['an encampment', /Encampment/i],
@@ -1296,7 +1300,7 @@ function normalizeSpecialtyTrackLevel(level){
 function getMemberReportSpecialtyTracksSection(text){
   return getReportSectionUntilAny(text, 'Specialty Tracks', [
     'Encampments', 'Cadet Training', 'Awards', 'Promotions', 'Decorations',
-    'Current Duty Positions', 'Past Duty Positions', 'Professional Development',
+    'Current Duty Positions', 'Past Duty Positions', 'Professional Development(?!\\s+(?:TECHNICIAN|SENIOR|MASTER|NONE)\\b)',
     'Local Activities', 'Transfer History', 'Cadet Achievements'
   ]);
 }
@@ -1533,7 +1537,7 @@ const MEMBER_REPORT_COUNTED_AWARDS = [
   { id:'silver_medal_of_valor', name:'Silver Medal of Valor', re:/\bSilver\s+Medal\s+of\s+Valor\b/i, once:true,
     note:'Silver Medal of Valor: shown as the plain ribbon, with no device, however many times the report lists it.' },
   { id:'bronze_medal_of_valor', name:'Bronze Medal of Valor', re:/\bBronze\s+Medal\s+of\s+Valor\b/i },
-  { id:'distinguished_service_award', name:'Distinguished Service Award', re:/\bDistinguished\s+Service\s+Award\b/i },
+  { id:'distinguished_service_award', name:'Distinguished Service Award', re:/\bDistinguished\s+Service\s+(?:Award|Medal)\b/i },
   { id:'national_commander_unit_citation_award', name:"National Commander's Unit Citation Award", re:/\bNational\s+Commander[’'‘`´]?s?[’']?\s+Unit\s+Citation\b/i },
   { id:'unit_citation_award', name:'Unit Citation Award', re:/\bUnit\s+Citation\b/i, skipAfter:/Commander[’'‘`´]?s?[’']?\s+$/i },
   { id:'national_commanders_citation', name:"National Commander's Citation", re:/\bNational\s+Commander[’'‘`´]?s?[’']?\s+Citation\b/i, once:true },
@@ -1601,7 +1605,7 @@ const MEMBER_REPORT_PD_AWARDS = [
 
 function highestProfessionalDevelopmentLevelFromReport(text){
   const source = String(text || '');
-  const re = /\bLevel\s+(V|IV|III|II|I|[1-5])\b(?:\s*[-–:]\s*[A-Za-z][A-Za-z.'’ ]{0,40}?)?\s+(?:Complete(?:d)?\s+)?\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/gi;
+  const re = /\b(?:Level\s+|LV)(V|IV|III|II|I|[1-5])\b(?:\s*[-–:]\s*[A-Za-z][A-Za-z.'’ ]{0,40}?)?\s+(?:Complete(?:d)?\s+)?\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}\b/gi;
   const value = { I:1, II:2, III:3, IV:4, V:5 };
   let highest = 0, m;
   while((m = re.exec(source))){
@@ -1874,6 +1878,14 @@ function importedMilestoneAwardsSection(text){
   ]);
 }
 
+// The Awards table uses codes followed by an award number and completion date.
+// Scope these short names to that table so a surname or course title earns nothing.
+function memberReportHasCompletedAwardCode(text, code){
+  if(!code) return false;
+  return new RegExp('\\b' + code + '\\s+\\d+\\s+' + MEMBER_REPORT_DATE + '\\b', 'i')
+    .test(importedMilestoneAwardsSection(text));
+}
+
 function parseCapMemberReport(textRaw){
   const text = labelCurrentDutyPositionsHeading(normalizeMemberReportText(removeLocalActivitiesFromMemberReport(textRaw)));
   const result = {
@@ -2015,7 +2027,7 @@ function parseCapMemberReport(textRaw){
   if(/Air Force Organizational Excellence Award/i.test(text)){
     result.ribbons.push({ id:'Air_Force_Organizational_Excellence_Award', value:'earned', reason:'Air Force Organizational Excellence Award' });
   }
-  const exceptionalServiceCount = extractAwardCountFromAwardsTable(text, 'Exceptional\\s+Service\\s+Award') || countOccurrences(text, /Exceptional Service Award/gi);
+  const exceptionalServiceCount = extractAwardCountFromAwardsTable(text, 'Exceptional\\s+Service\\s+(?:Award|Medal)') || countOccurrences(text, /Exceptional Service (?:Award|Medal)/gi);
   if(exceptionalServiceCount > 0){
     result.ribbons.push({ id:'exceptional_service_award', value:chooseSpecialRibbonValueByAwardCount('exceptional_service_award', exceptionalServiceCount), reason:`${exceptionalServiceCount} Exceptional Service Award record(s)` });
   }
@@ -2025,13 +2037,15 @@ function parseCapMemberReport(textRaw){
   }
 
   const pdLevel = highestProfessionalDevelopmentLevelFromReport(awardText);
+  const pdCodes = { cap_membership_ribbon:'MBRRBN', cap_leadership_ribbon:'DAVIS', cap_grover_loening_aerospace_ribbon:'LOENING',
+    cap_paul_e_garber_ribbon:'GARBER', cap_gill_robb_wilson_ribbon:'WILSON' };
   for(const award of MEMBER_REPORT_PD_AWARDS){
-    const named = award.re.test(awardText);
+    const named = award.re.test(awardText) || memberReportHasCompletedAwardCode(text, pdCodes[award.id]);
     if(named || pdLevel >= award.level){
       result.ribbons.push({ id:award.id, value:'earned', reason:named ? award.name : `${award.name} (Level ${pdLevel} completed)` });
     }
   }
-  if(/\bYeager\s+(?:Aerospace|Award|AE|Ribbon)\b|\bCharles\s+E\.?\s+(?:["“”]?Chuck["“”]?\s+)?Yeager\b|\bChuck\s+Yeager\b/i.test(awardText)){
+  if(memberReportHasCompletedAwardCode(text, 'YEAGER') || /\bYeager\s+(?:Aerospace|Award|AE|Ribbon)\b|\bCharles\s+E\.?\s+(?:["“”]?Chuck["“”]?\s+)?Yeager\b|\bChuck\s+Yeager\b/i.test(awardText)){
     result.ribbons.push({ id:'cap_bridgadier_general_charles_yaeger_ribbon', value:'earned', reason:'Yeager Award' });
   }
   applyImportedProfessionalDevelopmentDevices(result, text);

@@ -67,7 +67,7 @@ function capubExtractCommanderDutyWindows(section){
     // Only the unit commander's own title qualifies: "Commander", or Squadron, Group, Wing, Region or National Commander, as a cell of its own
     // (the text before it is the previous row's date or the table's heading). A Flight, Encampment, Honor Guard, Ground Team, Drill Team or
     // Acting Commander is another position.
-    if(!/(?:\b\d{4}|End\s+Date|Duty\s+(?:Positions|Assignments))\s*$/i.test(source.slice(0, m.index))) continue;
+    if(!/(?:\b\d{4}|(?:End|Assign|Start)\s+Date|Duty\s+(?:Positions|Assignments))\s*$/i.test(source.slice(0, m.index))) continue;
     // The Asst column: Yes is an assistant's row, never the commander's.
     if(/^yes$/i.test(m[4])) continue;
 

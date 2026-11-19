@@ -2112,6 +2112,23 @@ test('each of the three codes is a credit by itself, once per activity per year,
 // (tests/fixtures/eservices-member-details-senior-printed.txt: Personnel Information heading, Achievements, a Level table, awards by code, ribbons with
 // a midnight time after each date). No row is a member's.
 const SENIOR_RECORDED = "Printer Friendly View - Member Details\nMaj Gen Example Member\nGeneral Information\nCAPID Name Gender Type Rank Date of Rank Joined Expires Status Unit\n000001 MEMBER, EXAMPLE FEMALE SENIOR Maj Gen 01 Jan 2024 01 Jan 1991 31 Dec 2027 ACTIVE NHQ\nCurrent Duty Positions\nDuty Position Unit Echelon Asst Start Date End Date\nNational Commander NHQ NATIONAL No 01 Jan 2024\nPast Duty Positions\nProfessional Development\nCourse Date Completed\nLevel I 01 Jan 1992\nLevel II 01 Jan 1993\nLevel III 01 Jan 1994\nLevel IV 01 Jan 1995\nLevel V 01 Jan 1996\nSquadron Officer School (SOS) 01 Jan 2000\nAir Command and Staff College (ACSC) 01 Jan 2002\nSpecialty Tracks\nSpecialty Track Level Completed\nADMINISTRATION MASTER 01 Jan 2003\nAEROSPACE EDUCATION MASTER 02 Jan 2003\nCADET PROGRAMS MASTER 03 Jan 2003\nCOMMUNICATIONS MASTER 04 Jan 2003\nEMERGENCY SERVICES MASTER 05 Jan 2003\nFINANCE MASTER 06 Jan 2003\nHISTORIAN MASTER 07 Jan 2003\nPROFESSIONAL DEVELOPMENT MASTER 08 Jan 2003\nCadet Training\nActivity Date Completed\nPararescue Orientation Course (PJOC) 10 Jul 1995\nNational Blue Beret 10 Jul 1996\nNational Blue Beret 10 Jul 1997\nNational Blue Beret 10 Jul 1998\nNational Blue Beret 10 Jul 1999\nNational Blue Beret 10 Jul 2000\nNational Blue Beret 10 Jul 2001\nNational Blue Beret 10 Jul 2002\nNational Blue Beret 10 Jul 2003\nNational Blue Beret 10 Jul 2004\nNational Blue Beret Staff 10 Jul 2005\nNBB Senior Staff 11 Jul 2005\nInternational Air Cadet Exchange 10 Jul 1994\nEncampments\nEncampment Date Completed\nExample Wing Encampment 20 Jul 1991\nExample Wing Encampment 20 Jul 1992\nExample Wing Encampment 20 Jul 1993\nExample Wing Encampment 20 Jul 1994\nExample Wing Encampment 20 Jul 1995\nExample Wing Encampment 20 Jul 1996\nExample Wing Encampment 20 Jul 1997\nExample Wing Encampment 20 Jul 1998\nExample Wing Encampment 20 Jul 1999\nExample Wing Encampment 20 Jul 2000\nExample Wing Encampment 20 Jul 2001\nExample Wing Encampment 20 Jul 2002\nExample Wing Encampment 20 Jul 2003\nOrientation Flights\nCadet Achievements\nAchievement Date Completed Test Score\nAwards\nSpaatz Award 1142 01 Jan 1994\nPromotions\nDate Rank\n01 Jan 2024 Maj Gen\nDecorations\nAir Force Organizational Excellence Award 01 Jan 2008\nDistinguished Service Award 01 Jan 2010\nDistinguished Service Award 01 Jan 2011\nDistinguished Service Award 01 Jan 2012\nDistinguished Service Award 01 Jan 2013\nExceptional Service Award 01 Jan 2009\nCommander's Commendation Award (Wing) 01 Jan 2005\nCommander's Commendation Award (Wing) 01 Jan 2006\nCommander's Commendation Award (Region) 01 Jan 2007\nBrig Gen Charles E. Yeager Aerospace Education Achievement Award 01 Jan 2004\nActivity/Service Ribbon\nCrisis Service Ribbon 01 Jan 2020\nSearch \"Find\" Ribbon 01 Jan 2019\nAir Search and Rescue Ribbon 01 Jan 2019\nDisaster Relief Ribbon 01 Jan 2019\nCommunity Service Ribbon 01 Jan 2019\nInternational Air Cadet Exchange Ribbon 10 Jul 1994\nNational Color Guard Competition Ribbon 01 Jan 1994\nCadet Advisory Council Ribbon 01 Jan 1993\nEncampment Ribbon 20 Jul 1990\nSenior Recruiter Ribbon 01 Jan 2018\nLocal Activities\nActivity Date\nSpaatz Award Presentation 01 Jan 2025\n";
+const SENIOR_PRINTED = fixtureText('eservices-member-details-senior-printed.txt');
+function runPrinted(text = SENIOR_PRINTED){
+  const { context, referenceErrors } = loadPageScripts();
+  assert.deepEqual(referenceErrors, []);
+  return JSON.parse(vm.runInContext(`text => {
+    for(const n of ['buildRibbonGallery','buildBadgeGallery','fullRender','refreshUI','populateRankSetup','updateSetupGates',
+      'highlightActiveUniformButton','applyMemberTypeToUniformOptions','syncCadetFirstSergeantControl','renderCACShoulderCord',
+      'syncShoulderCordControl','clearUnauthorizedPatchesForCurrentUniform','renderRack','renderAllBadges']) globalThis[n] = function(){};
+    State.uniform = 'blues_a';
+    const parsed = parseCapMemberReport(text);
+    applyCapMemberReportImport(parsed);
+    return JSON.stringify({ parsed, selections:State.ribbonSelections, badges:State.badges, rank:State.rank,
+      tracks:parseMemberReportSpecialtyTracks(normalizeMemberReportText(text)),
+      build:CAPUBUniformView.buildFromState(), normalized:normalizeMemberReportText(text) });
+  }`, context)(text));
+}
+const printedDevices = (r, id) => r.build.ribbons.filter(row => row.id === id).map(row => row.devices.map(short));
 const RECORDED_24 = ['Air_Force_Organizational_Excellence_Award', 'distinguished_service_award', 'exceptional_service_award',
   'commander_commendation_award', 'cap_gill_robb_wilson_ribbon', 'cap_paul_e_garber_ribbon', 'cap_grover_loening_aerospace_ribbon',
   'cap_leadership_ribbon', 'cap_membership_ribbon', 'cap_bridgadier_general_charles_yaeger_ribbon', 'spaatz_award',
@@ -2169,4 +2186,87 @@ test('Awards-table milestones import, and a presentation or ceremony title does 
   assert.ok(runImport(SENIOR_RECORDED).ribbon('spaatz_award'));
   assert.equal(runImport(SENIOR_RECORDED.replace('Spaatz Award 1142 01 Jan 1994', 'Spaatz Award Presentation 01 Jan 1994')).ribbon('spaatz_award'), undefined);
   assert.equal(runImport(SENIOR_RECORDED.replace('Spaatz Award 1142 01 Jan 1994', '')).ribbon('spaatz_award'), undefined, 'not in the report at all: not credited; the Local Activities row is no award');
+});
+
+test('the older printed senior report reaches the drawing as every ribbon type, with only the highest cadet ribbon (6dd18ed1)', () => {
+  const r = runPrinted();
+  assert.deepEqual([...new Set(r.build.ribbons.map(row => row.id))].sort(), [...RECORDED_24].sort());
+  assert.equal(r.rank, 'Col');
+  assert.deepEqual(printedDevices(r, 'distinguished_service_award'), [['clasp-bronze', 'clasp-bronze', 'clasp-bronze']], 'three Awards and the Medal of the legacy entry');
+  assert.deepEqual(printedDevices(r, 'exceptional_service_award'), [[]], 'the Medal spelling');
+  assert.deepEqual(printedDevices(r, 'commander_commendation_award'), [['star-bronze', 'clasp-bronze', 'clasp-bronze']]);
+  assert.deepEqual(printedDevices(r, 'cap_gill_robb_wilson_ribbon'), [['star-silver']]);
+  assert.deepEqual(printedDevices(r, 'cap_paul_e_garber_ribbon'), [['star-bronze']]);
+  assert.deepEqual(printedDevices(r, 'cap_leadership_ribbon'), [['star-silver', 'star-silver', 'star-silver']]);
+  assert.deepEqual(printedDevices(r, 'cap_command_service_ribbon'), [['star-gold', 'star-gold']]);
+});
+
+test('a Professional Development specialty row does not end the Specialty Tracks table (6dd18ed1)', () => {
+  const r = runPrinted();
+  assert.equal(r.tracks.length, 14);
+  assert.equal(r.tracks.filter(row => row.level === 'MASTER').length, 8);
+  assert.ok(r.tracks.some(row => row.name === 'SAFETY' && row.level === 'MASTER'));
+});
+
+test('LV1 to LV5 rows and dated Awards codes each import the senior awards by themselves, and a surname or a course is no award code (6dd18ed1)', () => {
+  const ids = ['cap_membership_ribbon', 'cap_leadership_ribbon', 'cap_grover_loening_aerospace_ribbon', 'cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon'];
+  const withoutLevels = SENIOR_PRINTED.replace(/LV[1-5] [^\n]+\n/g, '');
+  const withoutCodes = SENIOR_PRINTED.replace(/(?:MBRRBN|DAVIS|LOENING|GARBER|WILSON) \d+ [^\n]+\n/g, '');
+  assert.notEqual(withoutLevels, SENIOR_PRINTED); assert.notEqual(withoutCodes, SENIOR_PRINTED);
+  for(const text of [withoutLevels, withoutCodes]){
+    const r = runPrinted(text);
+    for(const id of ids) assert.ok(r.build.ribbons.some(row => row.id === id), id);
+  }
+  const neither = runPrinted(withoutLevels.replace(/(?:MBRRBN|DAVIS|LOENING|GARBER|WILSON|YEAGER) \d+ [^\n]+\n/g, '').replace('Taylor Vance Okafor', 'Taylor Vance Wilson').replace('Yeager 28 Feb 2002', 'Wilson Training 28 Feb 2002'));
+  assert.ok(!neither.build.ribbons.some(row => row.id === 'cap_gill_robb_wilson_ribbon'), 'a surname or a course is not an award code');
+  assert.ok(!neither.build.ribbons.some(row => row.id === 'cap_bridgadier_general_charles_yaeger_ribbon'), 'a row that only names Wilson is not the Yeager row');
+  // A code that is not in the Awards table is a word like any other.
+  const outside = runPrinted(withoutCodes.replace('Local Activities\n', 'Local Activities\nGARBER 5 01 Jan 2020\n'));
+  assert.equal(outside.build.ribbons.some(row => row.id === 'cap_paul_e_garber_ribbon'), true, 'it is there from the Level rows; the Local Activities row adds nothing and breaks nothing');
+});
+
+test('a midnight earned date keeps its date through the print cleanup, a browser print time goes, and the dated ribbon joins the Encampments table (6dd18ed1)', () => {
+  const r = runPrinted();
+  assert.match(r.normalized, /Encampment Ribbon Cadet 06 Oct 1995/);
+  assert.match(r.normalized, /Disaster Relief Ribbon Cadet 18 May 1997/);
+  assert.ok(!r.normalized.includes('11/03/2026'), 'the browser print time is removed');
+  for(const [id, count] of [['cadet_special_activity_ribbon', 11], ['encampment_ribbon', 14]]){
+    const s = r.selections[id];
+    assert.equal(RA.readCount(id, s.awardValue, s.awardLabel), count, id);
+  }
+  const senior = runPrinted(SENIOR_PRINTED.replace('Encampment Ribbon Cadet 10/06/1995', 'Encampment Ribbon Senior 10/06/1995'));
+  const s = senior.selections.encampment_ribbon;
+  assert.equal(RA.readCount('encampment_ribbon', s.awardValue, s.awardLabel), 14, 'Encampment Ribbon Senior <date>: the same');
+});
+
+test('a correspondence course (ECI-13, AFIADL-13) is no special activity and no code row (6dd18ed1)', () => {
+  const credits = text => runImport(text).parsed.activities.length;
+  const base = credits(withTraining(PERSONNEL, []));
+  for(const row of ['ECI-13   Home study   03 Apr 2004', 'ECI 13   Home study   03 Apr 2004', 'AFIADL-13   Home study   03 Apr 2004'])
+    assert.equal(credits(withTraining(PERSONNEL, [row])), base, row);
+  const told = runImport(withTraining(PERSONNEL, ['ECI-13   Home study   03 Apr 2004'])).parsed;
+  assert.ok(!told.notes.some(n => CODE_NOTE.test(n)), 'not counted by code');
+  assert.ok(!told.unreadRows.some(w => /ECI/.test(w)), 'and not listed as not understood');
+  assert.equal(runPrinted(SENIOR_PRINTED.replace('ECI-13 24 Apr 2004\n', '')).selections.cadet_special_activity_ribbon.awardLabel, runPrinted().selections.cadet_special_activity_ribbon.awardLabel);
+});
+
+test('the commander windows are found after an Assign Date or Start Date heading, current and past (6dd18ed1)', () => {
+  const { context } = loadPageScripts();
+  const windows = vm.runInContext('(s) => JSON.stringify(capubExtractCommanderDutyWindows(s))', context);
+  for(const heading of ['Assign Date', 'Start Date', 'End Date']){
+    const rows = JSON.parse(windows(`Duty Position Wing-Unit Scope Assistant ${heading} Commander XYZ-002 NATIONAL No 12 Sep 2023`));
+    assert.equal(rows.length, 1, heading);
+    assert.equal(rows[0].unit, 'XYZ-002');
+  }
+  assert.equal(JSON.parse(windows('Duty Position Wing-Unit Scope Assistant Assign Date Deputy Commander XYZ-002 NATIONAL No 12 Sep 2023')).length, 0, 'a deputy is no commander');
+  assert.equal(JSON.parse(windows('Duty Position Wing-Unit Scope Assistant Assign Date Commander XYZ-002 NATIONAL Yes 12 Sep 2023')).length, 0, 'an assistant is none');
+  const has = vm.runInContext('(t) => hasCurrentCommanderDutyPosition(normalizeMemberReportText(t))', context);
+  assert.equal(has(SENIOR_PRINTED), true, 'the current table of the older print');
+  // End to end: a lieutenant colonel whose current commander row sits under an Assign Date heading is a current commander (the pin over the name tag),
+  // where it was read as a graduated one.
+  const asLtCol = SENIOR_PRINTED.replace('MALE SENIOR Col 12 Sep 2023', 'MALE SENIOR Lt Col 12 Sep 2023');
+  assert.notEqual(asLtCol, SENIOR_PRINTED);
+  const ltcol = runPrinted(asLtCol);
+  assert.ok(ltcol.badges.includes('squadron_commander_badge'));
+  assert.equal(ltcol.parsed.commandStatus, 'current');
 });
