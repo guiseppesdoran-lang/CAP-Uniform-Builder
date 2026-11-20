@@ -486,3 +486,25 @@ test('toggle mode: a list set again with the same tiles is patched in place (sam
   p.setOptions(opts('images/two.svg', 'k2', true).reverse());
   assert.notEqual(p.el.querySelector('.vpCell'), cell, 'another order: drawn whole');
 });
+
+// The whole box chooses its tile (the owner, 2026-11-19: "it should work if you click the box around the ribbon, not just the ribbon"): a tap anywhere in a tile's box that is not a control
+// is the tap on its button; a tap on a control inside the box, or in the room its controls take, is that control's alone. One button per tile, none in a button.
+test('a tap on the box around a tile chooses it as a tap on the button does; a tap on a control in the box, or in the room of its controls, does not', () => {
+  const host = doc.createElement('div'); doc.body.append(host);
+  const calls = [];
+  const inner = [];
+  const controls = () => { const row = doc.createElement('div'); const sel = doc.createElement('select'); sel.className = 'count'; row.append(sel); const gap = doc.createElement('span'); gap.className = 'gap'; row.append(gap); inner.push(sel, gap); return row; };
+  const p = VisualPicker.render(host, { name: 'boxes', mode: 'toggle', options: [{ value: 'a', label: 'A', picture: SQUARE, controls }, { value: 'b', label: 'B', picture: SQUARE }], values: ['a'], onToggle: (v, on) => calls.push([v, on]) });
+  const cell = v => p.el.querySelectorAll('.vpCell').find(c => c.dataset.value === v);
+  cell('b').dispatchEvent({ type: 'click', bubbles: true, target: cell('b') });
+  assert.deepEqual(calls, [['b', true]], 'a tap on the padding of the box');
+  cell('b').querySelector('.vpLabel').dispatchEvent({ type: 'click', bubbles: true });
+  assert.deepEqual(calls, [['b', true], ['b', false]], 'a tap on the name is the button\'s own tap, handled once (the box adds none)');
+  calls.length = 0;
+  assert.equal(p.el.querySelectorAll('button').filter(b => b.querySelector && b.querySelector('button')).length, 0, 'no button in a button');
+  inner[0].dispatchEvent({ type: 'click', bubbles: true });
+  inner[1].dispatchEvent({ type: 'click', bubbles: true });
+  assert.deepEqual(calls, [], 'a tap on the dropdown or in the room of the controls does nothing to the tile');
+  cell('a').dispatchEvent({ type: 'click', bubbles: true, target: cell('a') });
+  assert.deepEqual(calls, [['a', false]], 'the box of a chosen tile drops it');
+});

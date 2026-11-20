@@ -109,4 +109,8 @@ test('in a real browser, the ribbons are picture tiles, a tap turns one on with 
   const r=require('node:child_process').spawnSync(process.execPath,[path.join(__dirname,'ribbon-picker-browser.cjs')],{encoding:'utf8',timeout:150000});
   assert.equal(r.status,0,r.stdout+r.stderr);
   assert.match(r.stdout,/^PASS$/m);
+  // and at an iPhone SE's width (two tiles a row), where the closed dropdowns have the least room
+  const narrow=require('node:child_process').spawnSync(process.execPath,[path.join(__dirname,'ribbon-picker-browser.cjs'),'--width','320'],{encoding:'utf8',timeout:150000});
+  assert.equal(narrow.status,0,narrow.stdout+narrow.stderr);
+  assert.match(narrow.stdout,/^PASS$/m);
 });

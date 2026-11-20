@@ -600,26 +600,35 @@ function syncCommandBadgeAndRibbonSelections(){
   }
 }
 
-// The Goddard's silver star for the Model Rocketry Badge (CAPR 39-3, 14h) is not a choice: it is worn while the badge is chosen and the Mitchell is earned, and it goes when either
-// stops being true. Nothing is stored for it; the honor credit is the member's own switch and keeps its place in the value.
+// The Goddard's silver star for the Model Rocketry Badge (CAPR 39-3, 14h) is a fact about the member: a cadet who has earned the Mitchell and completed the badge's requirements may
+// attach it, whether or not the badge is drawn on today's uniform. The fact is the Goddard selection's own `rocketryCredit`, as `honorCredit` is for the honor credit: the member's switch
+// sets it, choosing the Model Rocketry Badge turns it on once at that moment, a value that names the star (a setup saved before the switch, the member report) is it, and taking the badge
+// off does not turn it off. The star is worn (the value says so) only while the Mitchell is earned; without the Mitchell the fact is kept and comes back with it.
 function syncGoddardRocketryStar(){
   normalizeRibbonSelections();
   normalizeBadgeSelections();
 
-  const goddard = State.ribbonSelections.goddard_achievement;
-  if(!goddard?.checked) return false;
-
-  const currentValue = goddard.awardValue || 'earned';
   const rocketrySelected = !!State.badgeSelections.model_rocketry_badge?.checked ||
     (State.badges || []).includes('model_rocketry_badge');
   const mitchellEarned = !!State.ribbonSelections.mitchell_award?.checked ||
     (State.ribbons || []).some(r => r?.id === 'mitchell_award');
+  // The badge chosen now where it was not chosen at the last look: the first look (a page just made, a setup just loaded) turns nothing on.
+  const was = State.rocketryBadgeWas;
+  State.rocketryBadgeWas = rocketrySelected;
 
+  const goddard = State.ribbonSelections.goddard_achievement;
+  if(!goddard) return false;
+  const currentValue = goddard.awardValue || 'earned';
   if(goddard.honorCredit === undefined){
     goddard.honorCredit = ['honor_credit','honor_credit_and_rocketry','earned_both_devices'].includes(currentValue);
   }
+  if(/rocketry|earned_both_devices?$/.test(currentValue)) goddard.rocketryCredit = true;
+  else if(goddard.rocketryCredit === undefined) goddard.rocketryCredit = false;
+  if(was === false && rocketrySelected) goddard.rocketryCredit = true;
+  if(!goddard.checked) return false;
+
   const honorCredit = !!goddard.honorCredit;
-  const rocketryCredit = rocketrySelected && mitchellEarned;
+  const rocketryCredit = !!goddard.rocketryCredit && mitchellEarned;
 
   let desiredValue = 'earned';
   if(honorCredit && rocketryCredit) desiredValue = 'honor_credit_and_rocketry';
@@ -635,10 +644,18 @@ function syncGoddardRocketryStar(){
   return true;
 }
 
-// Whether the Goddard wears the silver star for the Model Rocketry Badge now (the picker says so under the ribbon).
-function goddardWearsRocketryStar(){
-  const sel = State.ribbonSelections?.goddard_achievement;
-  return !!(sel?.checked && /rocketry/.test(String(sel.awardValue || '')));
+// The member's own switch for one of the Goddard's two stars ('honor' or 'rocketry'): the fact is set and the value follows.
+function setGoddardFact(key, on){
+  normalizeRibbonSelections();
+  const goddard = State.ribbonSelections.goddard_achievement;
+  if(!goddard) return;
+  syncGoddardRocketryStar();
+  if(key === 'honor') goddard.honorCredit = !!on;
+  else if(key === 'rocketry') goddard.rocketryCredit = !!on;
+  // The value is recomputed from the facts: leave the old one where it names a star that is now off.
+  goddard.awardValue = goddard.honorCredit ? 'honor_credit' : 'earned';
+  syncGoddardRocketryStar();
+  if(typeof rebuildRibbonsFromGallery === 'function') rebuildRibbonsFromGallery();
 }
 
 // The first real choice of a ribbon's award select (its basic award, a count of one), as the select lists it.
@@ -652,7 +669,14 @@ function getRibbonControls(id){
   const sel = State.ribbonSelections?.[id] || {};
   const options = getRibbonAwardOptions(id);
   const found = sel.awardValue ? (options.find(o => o.value === sel.awardValue) || getRibbonSelectionOption(id, sel.awardValue)) : null;
-  return CAPUBRibbonAwards.controls(id, options, found && found.value ? found : null, { membership: State.membership, military: isMilitaryRibbonId(id) });
+  const model = CAPUBRibbonAwards.controls(id, options, found && found.value ? found : null, { membership: State.membership, military: isMilitaryRibbonId(id) });
+  if(id === 'goddard_achievement'){
+    // The rocketry switch is shown while the Mitchell is earned, and is on while the member's fact is (the value only says so while the Mitchell is earned).
+    const mitchell = !!State.ribbonSelections?.mitchell_award?.checked;
+    model.toggles = model.toggles.filter(t => t.key !== 'rocketry' || mitchell);
+    for(const t of model.toggles) t.on = t.key === 'rocketry' ? !!sel.rocketryCredit : !!sel.honorCredit || (t.on && sel.honorCredit === undefined);
+  }
+  return model;
 }
 
 function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=false}={}){
@@ -691,7 +715,7 @@ function setRibbonSelectionFromDropdown(id, value,{deferRender=false,byGrade=fal
 
   if(id === 'goddard_achievement'){
     sel.honorCredit = ['honor_credit','honor_credit_and_rocketry'].includes(value);
-    delete sel.rocketryCredit;   // a setup saved when the star was a stored credit: the star follows the badge and the Mitchell now
+    if(['rocketry_star','honor_credit_and_rocketry'].includes(value)) sel.rocketryCredit = true;   // a value that names the star is the fact; any other leaves the fact as it was
   }
 
   State.ribbonSelections[id] = sel;

@@ -1566,6 +1566,10 @@ html[data-access="guest"] #accessGate{display:none}
    its mark) and a switch tile's controls (the level, the count, the devices, shown while it is on) are inside the box. The box takes the picked edge and shade. */
 .vp[data-boxed] .vpCell{position:relative;display:flex;flex-direction:column;gap:var(--s1);min-width:0;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
 .vp[data-boxed] .vpCell:hover{border-color:var(--ink);background:var(--panel-2)}
+/* The whole box chooses its tile (js/visual-picker.js): the pointer says so; the controls inside keep their own. */
+.vp[data-boxed] .vpCell{cursor:pointer}
+.vp[data-boxed] .vpControls{cursor:default}
+.vp[data-boxed] .vpControls select,.vp[data-boxed] .vpControls button{cursor:pointer}
 .vp[data-boxed] .vpCell:has(> .vpOption[aria-pressed="true"]),.vp[data-boxed] .vpCell:has(> .vpOption[aria-checked="true"]){border:2px solid var(--select-line);background:var(--select-bg);padding:5px}
 .vp[data-boxed] .vpOption,.vp[data-boxed] .vpOption:hover{border:0;background:transparent;padding:0;min-height:0}
 /* A picture fills its frame as far as the frame's shape lets it (it is fitted whole, never cropped): a badge taller than the frame is wide fills the frame's height, and the frame's edge
@@ -1581,7 +1585,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpCell[hidden],.vpSection[hidden],.vpControls[hidden]{display:none}
 /* Ribbons: two to a row at a phone's width (and on a touch tablet), wide enough for the count dropdown under a tile to show its short form whole at 16 px (a count such as
    "22 encampments" or "1,320 hours"); on a desktop the tiles stay seven to a row. */
-@media (max-width:699px){.vp[data-mode="toggle"][data-shape="wide"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
+@media (max-width:699px){.vp[data-mode="toggle"][data-shape="wide"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
 @media (pointer:coarse) and (min-width:700px){.vp[data-mode="toggle"][data-shape="wide"] .vpGrid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}}
 /* Ribbons (shape "wide"): a ribbon is about 3.7 times as wide as it is high, so its picture box is wide and low and a row holds more of them; the drawn ribbon of one that is on has its devices. */
 .vp[data-shape="wide"] .vpPicture,.vp[data-size="large"][data-shape="wide"] .vpPicture{aspect-ratio:3 / 1;padding:4px}
@@ -1620,11 +1624,16 @@ html[data-access="guest"] #accessGate{display:none}
 .vpControlStack .ribbonAwardLabel{margin:0}
 /* The controls under a chosen ribbon: one row that wraps, the count as one native dropdown and each separate fact as a small switch (the device's picture and its name). The dropdown is
    16 px on a touch screen so that Safari on a phone does not zoom the page when it opens; every control is at least 36 px high, so a ribbon that has only a dropdown and one that has a switch are as tall. */
-.ribbonControlRow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;min-width:0}
-.ribbonControlRow select{flex:1 1 100%;min-width:0;max-width:100%;min-height:36px;font-size:var(--t-xs);-webkit-appearance:none;appearance:none;padding:0 18px 0 6px;font-family:inherit;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23999' stroke-width='1.6'/></svg>") no-repeat right 7px center;color:var(--ink)}
-.ribbonControlRow .ribbonDeviceWords{flex:1 1 100%;min-height:2.6em;font-size:var(--t-xs);line-height:1.3;color:var(--muted);overflow-wrap:anywhere}
-@media (pointer:coarse){.ribbonControlRow select,.ribbonControlRow .ribbonNumeral input{font-size:16px}}
-.ribbonControlRow .ribbonToggle{display:inline-flex;align-items:center;gap:6px;flex:1 1 auto;min-width:0;min-height:36px;padding:2px 8px;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel);color:var(--ink);font-size:var(--t-xs);font-weight:600;line-height:1.15;text-align:left;cursor:pointer}
+.ribbonControlRow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;align-content:flex-start;min-width:0}
+/* The count dropdown: a native select laid, invisible, over a box that shows the short form of the line chosen, so the closed control is never cut and the open list has the full lines. */
+.ribbonSelectWrap{position:relative;flex:1 1 100%;min-width:0;min-height:36px;display:flex;align-items:center;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel)}
+.ribbonSelectWrap:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.ribbonSelectShown{flex:1 1 auto;min-width:0;padding:0 22px 0 8px;font-size:var(--t-xs);font-weight:600;color:var(--ink);white-space:nowrap}
+.ribbonSelectWrap::after{content:"";position:absolute;right:9px;top:50%;width:6px;height:6px;margin-top:-5px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg)}
+.ribbonSelectWrap select{z-index:1;position:absolute;inset:0;width:100%;height:100%;min-height:0;max-height:100%;margin:0;padding:0;opacity:0;font-size:16px;cursor:pointer;-webkit-appearance:none;appearance:none}
+.ribbonControlRow .ribbonServiceSelect{flex:1 1 100%;min-width:0;max-width:100%;min-height:36px;font-size:16px}
+@media (pointer:coarse){.ribbonSelectShown{font-size:16px}}
+.ribbonControlRow .ribbonToggle{margin:0;display:inline-flex;align-items:center;gap:6px;flex:1 1 auto;min-width:0;min-height:36px;padding:2px 8px;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel);color:var(--ink);font-size:var(--t-xs);font-weight:600;line-height:1.15;text-align:left;cursor:pointer}
 .ribbonControlRow .ribbonToggle:hover:not([disabled]){border-color:var(--ink);background:var(--panel-2)}
 .ribbonControlRow .ribbonToggle[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:1px 7px}
 .ribbonControlRow .ribbonToggle[disabled]{cursor:default;opacity:.55}
@@ -1635,8 +1644,7 @@ html[data-access="guest"] #accessGate{display:none}
 .vpBarRow .ribbonToggle>span{white-space:nowrap}
 .vpBarRow .ribbonToggleArt{width:24px;height:42px}
 .ribbonControlRow .ribbonNumeral{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs)}
-.ribbonControlRow .ribbonNumeral input{width:64px;min-height:36px;font-size:var(--t-xs)}
-.ribbonAutoNote{margin:0;font-size:var(--t-xs);line-height:1.3}
+.ribbonControlRow .ribbonNumeral input{width:64px;min-height:36px;font-size:16px}
 .vpSwitch{width:100%;min-height:36px;padding:0 var(--s2);font-size:var(--t-xs)}
 .vpSwitch[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg)}
 /* Small tiles (data-size="small"): a group of many choices whose pictures are small, such as the grades' insignia, wrap to four or five to a row at the sidebar's width. */

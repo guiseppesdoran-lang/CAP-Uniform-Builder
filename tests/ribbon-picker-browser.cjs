@@ -102,6 +102,23 @@ async function launch(){
     if(top1 !== top0) bad.push(`the tapped tile moved when its dropdown opened: ${top0} -> ${top1}`);
     await shot('1-recruiter-on');
 
+    // The closed dropdown is never cut: the short form of every line of every ribbon fits the box that shows it, at this width (16 px on a touch screen, as Safari on a phone has it).
+    const fit = await ev(`(() => {
+      const c = ${cellOf(id)}; const sh = c.querySelector('.ribbonSelectShown'); const cs = getComputedStyle(sh);
+      const avail = sh.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight); const cv = document.createElement('canvas').getContext('2d');
+      cv.font = cs.fontWeight + ' ' + (window.innerWidth < 700 ? 16 : parseFloat(cs.fontSize)) + 'px ' + cs.fontFamily;
+      const keep = JSON.stringify(State.ribbonSelections); let worst = { w: 0 };
+      for(const rid of [...getEligibleRibbonIds(), ...getMilitaryRibbonIds()]){
+        if(isRotcRibbonId(rid)) continue;
+        setRibbonSelectionFromDropdown(rid, capubFirstRibbonOptionValue(rid), { deferRender: true });
+        for(const l of getRibbonControls(rid).lines){ const w = cv.measureText(l.short).width; if(w > worst.w) worst = { w, rid, t: l.short }; }
+      }
+      State.ribbonSelections = JSON.parse(keep); normalizeRibbonSelections();
+      return { avail, worst };
+    })()`);
+    console.log('widest closed dropdown text:', JSON.stringify(fit));
+    if(fit.worst.w > fit.avail) bad.push(`a closed dropdown would be cut at ${width} px: "${fit.worst.t}" of ${fit.worst.rid} needs ${Math.round(fit.worst.w)} px of ${Math.round(fit.avail)}`);
+
     // The highest count, chosen by the dropdown: the award changes, the tile stays where it is, the focus stays on the dropdown, the ribbon is drawn with its devices in its tile.
     await ev(`(() => { const sel = ${cellOf(id)}.querySelector('select.ribbonCountSelect'); sel.focus(); sel.value = sel.options[sel.options.length - 1].value; sel.dispatchEvent(new Event('change', { bubbles: true })); })()`);
     await sleep(1500);
@@ -111,20 +128,59 @@ async function launch(){
     if(!high.inRack) bad.push('the ribbon should be in the rack');
     if(!high.focus) bad.push('the focus should stay on the dropdown');
     if(high.shown !== high.value) bad.push('the dropdown should show the award that was chosen');
-    if(high.text !== '42') bad.push('the closed dropdown shows the count alone: ' + high.text);
-    const capt = await ev(`${cellOf(id)}.querySelector('.ribbonDeviceWords').textContent`);
-    if(!/42 members recruited: .*clasp/.test(capt)) bad.push('the line under the dropdown says the devices in words: ' + capt);
+    if(!/42 members recruited: .*clasp/.test(high.text || '')) bad.push('the open list has the full line, the count and the devices in words: ' + high.text);
+    const shownText = await ev(`${cellOf(id)}.querySelector('.ribbonSelectShown').textContent`);
+    if(shownText !== '42') bad.push('the closed dropdown shows the short form: ' + shownText);
+    if(await ev(`${cellOf(id)}.querySelectorAll('.ribbonDeviceWords').length`)) bad.push('no line under the dropdown');
     const top2 = await topOf(id);
     if(top2 !== top0) bad.push(`the tapped tile moved when a count was chosen: ${top0} -> ${top2}`);
     // The tiles of the other ribbons keep their size.
     const sizeAfter = await ev(`(() => { const c = [...document.querySelectorAll('${root} .vpCell')].find(c => c.dataset.value === 'cap_leadership_ribbon'); const r = c.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()`);
     if(sizeBefore[0] !== sizeAfter[0] || Math.abs(sizeBefore[1] - sizeAfter[1]) > 1) bad.push(`another ribbon's tile changed size: ${sizeBefore} -> ${sizeAfter}`);
     await shot('2-highest');
+    // A tap in the box beside the picture (the padding at the bottom of the tile, and the name) turns the ribbon off as a tap on the picture does; the tile does not move.
+    const boxTap = await ev(`(() => { const c = ${cellOf(id)}; const r = c.getBoundingClientRect(); const lab = c.querySelector('.vpLabel').getBoundingClientRect(); return { pad: [r.left + r.width / 2, r.bottom - 2], name: [lab.left + lab.width / 2, lab.top + lab.height / 2] }; })()`);
+    for(const [what, at] of [['the spare space at the bottom of the box', boxTap.pad]]){
+      for(const type of ['mousePressed', 'mouseReleased']) await S('Input.dispatchMouseEvent', { type, x: at[0], y: at[1], button: 'left', clickCount: 1 });
+      await sleep(900);
+      const st = await ev(`State.ribbonSelections['${id}'].checked`);
+      if(st) bad.push('a tap on ' + what + ' should drop the ribbon');
+      const topNow = await topOf(id);
+      if(topNow !== top0) bad.push(`the tile moved when ${what} was tapped: ${top0} -> ${topNow}`);
+    }
+    // A tap on the dropdown of a ribbon that is off again does nothing but is not there; turn it on by the name instead.
+    {
+      const nm = await ev(`(() => { const c = ${cellOf(id)}; const lab = c.querySelector('.vpLabel').getBoundingClientRect(); return [lab.left + lab.width / 2, lab.top + lab.height / 2]; })()`);
+      for(const type of ['mousePressed', 'mouseReleased']) await S('Input.dispatchMouseEvent', { type, x: nm[0], y: nm[1], button: 'left', clickCount: 1 });
+      await sleep(900);
+      if(!(await ev(`State.ribbonSelections['${id}'].checked`))) bad.push('a tap on the ribbon\'s name should choose it');
+      // a tap on the dropdown's box chooses nothing and drops nothing
+      const sw = await ev(`(() => { const c = ${cellOf(id)}; const b = c.querySelector('.ribbonSelectWrap').getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+      for(const type of ['mousePressed', 'mouseReleased']) await S('Input.dispatchMouseEvent', { type, x: sw[0], y: sw[1], button: 'left', clickCount: 1 });
+      await sleep(500);
+      if(!(await ev(`State.ribbonSelections['${id}'].checked`))) bad.push('a tap on the dropdown must not drop the ribbon');
+    }
     // And off again: the controls are gone.
     await tapTop(id);
     await sleep(800);
     const off = await ev(`(() => { const c = ${cellOf(id)}; return { on: c.querySelector('.vpOption').getAttribute('aria-pressed'), controls: !!c.querySelector('.vpControls'), state: State.ribbonSelections['${id}'].checked }; })()`);
     if(off.on !== 'false' || off.controls || off.state) bad.push('a second tap should turn the ribbon off and take its controls away: ' + JSON.stringify(off));
+    // No empty space inside a tile: the controls sit directly under the name, and a dropdown and a switch have only the small gap between them (a ribbon with both).
+    for(const rid of ['search_find_ribbon', 'lifesaving_award', 'disaster_relief_ribbon', 'commander_commendation_award']){
+      if(!(await ev(`!!(${cellOf(rid)})`))) continue;
+      await tapTop(rid);
+      await sleep(900);
+      const sp = await ev(`(() => { const c = ${cellOf(rid)}; const w = c.querySelector('.ribbonSelectWrap'), t = c.querySelector('.ribbonToggle'), name = c.querySelector('.vpLabel'), ctl = c.querySelector('.vpControls'); if(!w || !t) return null; const r = e => e.getBoundingClientRect(); return { gap: Math.round(r(t).top - r(w).bottom), under: Math.round(r(ctl).top - r(name).bottom), band: Math.round(r(ctl).bottom - Math.max(r(w).bottom, r(t).bottom)), words: c.querySelectorAll('.ribbonDeviceWords').length }; })()`);
+      if(!sp) continue;
+      console.log('space in', rid, JSON.stringify(sp));
+      if(sp.gap > 10 || sp.gap < 0) bad.push(`${rid}: ${sp.gap} px between the dropdown and its switch`);
+      if(sp.under > 10) bad.push(`${rid}: ${sp.under} px between the name and the controls`);
+      if(sp.band > 10) bad.push(`${rid}: a band of ${sp.band} px under the controls`);
+      if(sp.words) bad.push(`${rid}: a line is left under the dropdown`);
+      await tapTop(rid);
+      await sleep(600);
+      break;
+    }
     console.log(bad.length ? `FAIL (${bad.length}):\n  ${bad.slice(0, 12).join('\n  ')}` : 'PASS');
     if(bad.length) code = 1;
   } catch (e) { console.error(e); code = 2; }

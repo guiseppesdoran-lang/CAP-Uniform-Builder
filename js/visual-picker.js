@@ -266,6 +266,17 @@
     note.setAttribute('aria-live', 'polite');
     note.hidden = true;
     rootEl.append(list, note);
+    // A tile that is a box of its own is chosen by a tap anywhere in the box (the picture, the name, the padding, the spare space under them), as by a tap on its button. A tap on a control
+    // inside the box (the dropdown, a switch, the reference mark) or in the room its controls take does that control's work only; the button is still the one control for the keyboard
+    // and assistive technology, and there is no button in a button.
+    list.addEventListener('click', e => {
+      const from = e.target;
+      if(!from || !from.closest) return;
+      const cell = from.closest('.vpCell');
+      if(!cell || from.closest('.vpOption') || from.closest('.vpControls') || from.closest('button, a, select, input, label, .citeBtn')) return;
+      const at = tiles.findIndex(t => t.cell === cell);
+      if(at >= 0) pick(at);
+    });
 
     const indexOfValue = v => tiles.findIndex(t => t.option.value === v);
 

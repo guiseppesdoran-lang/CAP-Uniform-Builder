@@ -407,8 +407,8 @@
     if(MODS[id]) return MODS[id];
     if(HONOR_CREDIT_RIBBONS.has(id)){
       const out = [{ key: 'honor', label: 'Honor credit', device: D.starS, title: 'A silver star for honor credit.', test: o => /honor_credit/.test(o.value) }];
-      // The Goddard's rocketry star is not asked: the page wears it while the Model Rocketry Badge is chosen and the Mitchell is earned (CAPR 39-3, 14h).
-      if(id === 'goddard_achievement') out.push({ key: 'rocketry', hidden: true, test: o => /rocketry/.test(o.value) });
+      // The Goddard's silver star for the Model Rocketry Badge, for a cadet who has earned the Mitchell (CAPR 39-3, 14h): a switch of its own, shown while the Mitchell is earned.
+      if(id === 'goddard_achievement') out.push({ key: 'rocketry', label: 'Model rocketry', device: D.starS, title: 'A silver star for the Model Rocketry Badge, for a cadet who has earned the Mitchell (CAPR 39-3, 14h).', test: o => /rocketry/.test(o.value) });
       return out;
     }
     if(fam.devices === 'cadet' && (id === 'mitchell_award' || COS_MOVES_TO.has(id))){
@@ -462,14 +462,16 @@
     const many = parts.length > 1 ? `${parts.length} ribbons` : '';
     const devs = many || deviceWords(parts[0].devices);
     const single = /^(bronze|silver|gold) star$/i.exec(name), combo = /^([bsg](?:-[bsg])+) stars?$/i.exec(name);
-    // A counted ribbon (awards, hours, years, recruits): the dropdown shows the count alone and the line under it the count with its unit and the devices, the same for every one.
+    // A counted ribbon: the closed dropdown says what the count is of in the fewest true words, an award or the ribbon's own thing (an encampment, an activity) by its number, a quantity
+    // with its unit ("5 years", "120 hours", "10 sorties"); the open list has the full line, the count and what is worn for it.
     const countedRibbon = counted || !!fam.per || fam.devices === 'years' || fam.devices === 'recruiter';
+    const unitShown = fam.devices === 'years' || !!(fam.per && (fam.per.hour || fam.per.sortie));   // flights and recruits by their number: the ribbon's name says what they are, and the unit would not fit a phone's narrow tile
     let short = name, words = devs;
-    // The line under the dropdown never repeats it: the count with its unit where the unit says something (hours, years, an encampment), then what is worn; for "Nth award" only what is worn.
-    if(countedRibbon){ short = countOf(name); words = / award$/.test(name) ? devs : (devs ? `${name}: ${devs}` : name); }
+    if(countedRibbon){ short = unitShown ? name.replace(/ recruited$/, '') : countOf(name); words = / award$/.test(name) ? devs : (devs ? `${name}: ${devs}` : name); }
     else if(single) short = sentenceCase(single[1]);
     else if(combo) short = combo[1].toUpperCase();
     else if(/^\d+ (?:bronze|silver|gold) stars$/i.test(name)) short = name.replace(/^(\d+) (\w)\w+ stars$/i, (m, n, c) => Array(Number(n)).fill(c.toUpperCase()).join('-'));
+    short = short.replace(/ level$/, '').replace(/\/CC$/, '').replace(/^Basic award$/, 'Basic');   // "National level" under the Cadet Advisory Council's own name is "National"
     words = sentenceCase(words);
     const star = !!(single || combo);
     const text = !devs ? name : star ? sentenceCase(devs) : `${name}: ${devs}`;

@@ -670,7 +670,8 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
         checked: !!sel.checked,
         devices,
         awardValue: safeToken(sel.awardValue),
-        honorCredit: !!sel.honorCredit
+        honorCredit: !!sel.honorCredit,
+        rocketryCredit: !!sel.rocketryCredit
       };
       if(isMilitaryRibbonId(id)){
         // getMilitarySelectionService() still checks the service against the award's own list.
@@ -785,6 +786,7 @@ if(typeof buildUnitPatchSelector === 'function') buildUnitPatchSelector('');
     State.badges = p.badges;
     State.patches = p.patches;
     State.ribbonSelections = p.ribbonSelections;
+    State.rocketryBadgeWas = undefined;   // a setup just loaded: the Model Rocketry Badge in it is not one just chosen
     State.badgeSelections = p.badgeSelections;
     State.badgeChoices = p.badgeChoices || {};
     State.badgeOrder = p.badgeOrder || {};

@@ -17,7 +17,7 @@
     /* global State, ASSET, getBadgeAssetPath, getBadgeDisplayName, isCommandInsigniaBadge, CAPUBBadgeCatalog, canSelectCommandInsigniaForCurrentRank,
        chooseOnlyCommandInsignia, rebuildBadgesFromGallery, isCommandInsigniaGradeEligible, fullRender, getAvailableMilitaryBadgeVariants, militaryServiceLabel, PATCH_META,
        capubBadgeSummary, patchTileWords, setPatchPlacement, normalizePatchSelections, rebuildPatchesFromGallery, getEligibleRibbonIds, isAwardWornOnUniform, isRotcRibbonId, isMilitaryRibbonId, groupRibbonIds,
-       getRibbonDisplayName, getRibbonImagePath, getRibbonAwardOptions, getRibbonControls, goddardWearsRocketryStar, capubFirstRibbonOptionValue, setRibbonSelectionFromDropdown, normalizeRibbonSelections, CAPUBRibbonAwards,
+       getRibbonDisplayName, getRibbonImagePath, getRibbonAwardOptions, getRibbonControls, setGoddardFact, capubFirstRibbonOptionValue, setRibbonSelectionFromDropdown, normalizeRibbonSelections, CAPUBRibbonAwards,
        CAPUBUniformRules, hasMiniMedal, CAPUBUniformView, capubInstallImageFallback, ROTC_RIBBONS, capubRotcLimitMessage, getMilitaryRibbonIds, getMilitaryRibbonAward, getMilitaryAwardBranch,
        militaryAwardFilterType, getMilitarySelectionService, deviceMeta, MILITARY_BRANCH_ORDER, MILITARY_BRANCH_LABELS, isMilitaryAwardWornOnUniform, getMilitaryUIState */
     return {
@@ -68,7 +68,7 @@
       ribbonArt: id => getRibbonImagePath(id),
       ribbonOptions: id => getRibbonAwardOptions(id),
       ribbonControls: id => getRibbonControls(id),
-      goddardStar: () => goddardWearsRocketryStar(),
+      setGoddard: (key, on) => setGoddardFact(key, on),
       deviceSrc: deviceId => (deviceMeta[deviceId] && deviceMeta[deviceId].src) || '',
       firstOption: id => capubFirstRibbonOptionValue(id),
       setRibbon: (id, value) => setRibbonSelectionFromDropdown(id, value),
@@ -529,23 +529,26 @@
     }
     // How many awards (or which level): one dropdown, a line for each count. Where a line has no option with the facts that are on, it is greyed and the fact is turned off first.
     if(model.lines.length > 1){
+      // A native dropdown laid over a box that shows the short form of the line chosen ("5 years", "6th"): the open list has the full lines (the count and the devices in words), the
+      // closed control is never cut. The dropdown itself takes the tap, so a phone shows its own list; it is 16 px on a touch screen so that Safari does not zoom.
+      const wrap = el('div', 'ribbonSelectWrap');
+      const shown = el('span', 'ribbonSelectShown');
+      shown.setAttribute('aria-hidden', 'true');
       const select = el('select', 'ribbonCountSelect');
       select.setAttribute('aria-label', model.label);
       for(const line of model.lines){
-        const o = el('option', null, line.short);
+        const o = el('option', null, line.text);
         o.value = line.value;
         if(!line.enabled && line.value !== model.selected) o.setAttribute('disabled', '');
         select.append(o);
       }
       select.value = model.selected;
       if(hint) select.setAttribute('title', hint);
-      // The devices of the line chosen, in words, in a line under the dropdown that always holds its height (so choosing moves nothing): the closed dropdown shows the count alone.
-      const words = el('div', 'ribbonDeviceWords');
-      const say = value => { const line = model.lines.find(l => l.value === value); const t = line ? (line.words || '') : ''; words.textContent = t.charAt(0).toUpperCase() + t.slice(1); };
-      say(model.selected);
-      select.addEventListener('change', () => { say(select.value); d.setRibbon(id, select.value); after(); });
-      row.append(select, words);
-      
+      const show = value => { const line = model.lines.find(l => l.value === value); shown.textContent = line ? line.short : ''; };
+      show(model.selected);
+      select.addEventListener('change', () => { show(select.value); d.setRibbon(id, select.value); after(); });
+      wrap.append(shown, select);
+      row.append(wrap);
     }
     // One switch for each separate fact: a small picture of the device and its name, pressed or not.
     const toggle = (key, label, src, on, enabled, title, press) => {
@@ -566,7 +569,7 @@
       row.append(b);
     };
     for(const t of model.toggles){
-      toggle(t.key, t.label, d.asset(`devices/${t.device}.svg`), t.on, !!t.next, t.title, () => { if(t.next){ d.setRibbon(id, t.next); after(); } });
+      toggle(t.key, t.label, d.asset(`devices/${t.device}.svg`), t.on, !!t.next, t.title, () => { if(id === 'goddard_achievement'){ d.setGoddard(t.key, !t.on); after(); } else if(t.next){ d.setRibbon(id, t.next); after(); } });
     }
     if(military){
       const rules = d.militaryRules(award, d.militaryService(id, sel), ui.advancedMode);
@@ -609,8 +612,6 @@
     }
     const box = el('div', 'vpControlStack');
     if(row.children && row.children.length) box.append(row);
-    // What the page decided by itself, said once, with its paragraph.
-    if(id === 'goddard_achievement' && d.goddardStar()) box.append(el('div', 'sub ribbonAutoNote', 'Silver star worn for the Model Rocketry Badge, with the Mitchell earned (CAPR 39-3, 14h).'));
     if(sel.deviceWarnings && sel.deviceWarnings.length) box.append(el('div', 'sub ribbonDeviceSummary', sel.deviceWarnings.join(' ')));
     const mini = d.miniMedal(id);
     if(mini === 'yes'){
@@ -635,7 +636,7 @@
     const sel = d.State.ribbonSelections[id] || {};
     if(!chosenRibbon(d, id)) return 'off';
     return [sel.awardValue, sel.militaryService, (sel.specialAuthorizations || []).join(','), sel.manualNumeral, military && d.ui().advancedMode ? 'adv' : '', (sel.deviceWarnings || []).join(' '),
-      d.State.membership, d.State.uniform, id === 'goddard_achievement' && d.goddardStar() ? 'star' : '', d.miniMedal(id)].join('|');
+      d.State.membership, d.State.uniform, d.miniMedal(id)].join('|');
   }
 
   // One list of ribbon tiles. spec: { name, ids(): the ribbons shown, in order of precedence; groups(): [{ key, note, ids }] where they are under headings; military: the tiles are

@@ -62,20 +62,20 @@ test('each line has a short form for the closed dropdown (the count alone) and i
   reset();
   set('community_service_ribbon', 'mcchord_15701');
   const lines = controls('community_service_ribbon').lines;
-  assert.deepEqual(lines.slice(0, 3).map(l => [l.short, l.words]), [['60', '60 hours'], ['120', '120 hours: bronze clasp'], ['180', '180 hours: 2 bronze clasps']], 'the count alone closed; the unit and the devices in the line under it');
+  assert.deepEqual(lines.slice(0, 3).map(l => [l.short, l.words]), [['60 hours', '60 hours'], ['120 hours', '120 hours: bronze clasp'], ['180 hours', '180 hours: 2 bronze clasps']], 'the closed dropdown says what is counted; the open list has the devices too');
   set('cap_leadership_ribbon', 'mcchord_26900');
-  assert.deepEqual(controls('cap_leadership_ribbon').lines.slice(0, 5).map(l => [l.short, l.words]), [['Basic award', ''], ['Bronze', 'Bronze star'], ['Silver', 'Silver star'], ['B-B', '2 bronze stars'], ['S-B', 'Silver and bronze stars']]);
+  assert.deepEqual(controls('cap_leadership_ribbon').lines.slice(0, 5).map(l => [l.short, l.words]), [['Basic', ''], ['Bronze', 'Bronze star'], ['Silver', 'Silver star'], ['B-B', '2 bronze stars'], ['S-B', 'Silver and bronze stars']]);
   set('cadet_recruiter_ribbon', 'recruits_2');
   assert.deepEqual([controls('cadet_recruiter_ribbon').lines[1].short, controls('cadet_recruiter_ribbon').lines[1].words], ['4', '4 members recruited: bronze clasp']);
   for(const id of ['distinguished_service_award', 'encampment_ribbon', 'community_service_ribbon', 'cap_counterdrug_ribbon', 'red_service_ribbon', 'cap_command_service_ribbon']){
     set(id, ev(`capubFirstRibbonOptionValue(${q(id)})`));
-    for(const l of controls(id).lines) assert.ok(l.short.length <= 12 && !/[:.]/.test(l.short), `${id}: "${l.short}"`);
+    for(const l of controls(id).lines) assert.ok(l.short.length <= 13 && !/[:.]/.test(l.short), `${id}: "${l.short}"`);
   }
 });
 
 test('the line under the dropdown counts repeated devices and names the unit, the same for every counted ribbon', () => {
   reset();
-  for(const [id, at, short, words] of [['encampment_ribbon', 0, '1st', '1st encampment'], ['encampment_ribbon', 1, '2nd', '2nd encampment: bronze clasp'], ['distinguished_service_award', 0, '1st', ''], ['distinguished_service_award', 2, '3rd', '2 bronze clasps'], ['distinguished_service_award', 5, '6th', 'Silver clasp'], ['red_service_ribbon', 2, '10', '10 years: 2 bronze clasps'], ['community_service_ribbon', 5, '360', '360 hours: silver clasp']]){
+  for(const [id, at, short, words] of [['encampment_ribbon', 0, '1st', '1st encampment'], ['encampment_ribbon', 1, '2nd', '2nd encampment: bronze clasp'], ['distinguished_service_award', 0, '1st', ''], ['distinguished_service_award', 2, '3rd', '2 bronze clasps'], ['distinguished_service_award', 5, '6th', 'Silver clasp'], ['red_service_ribbon', 2, '10 years', '10 years: 2 bronze clasps'], ['community_service_ribbon', 5, '360 hours', '360 hours: silver clasp']]){
     set(id, ev(`capubFirstRibbonOptionValue(${q(id)})`));
     const line = controls(id).lines[at];
     assert.deepEqual([line.short, line.words], [short, words], id);
@@ -262,24 +262,15 @@ test('a ribbon\'s facts that are choices of the rule are switches: aircrew prope
   assert.equal(controls(aircrew).toggles[0].on, true);
 });
 
-test('the Goddard has one switch, the honor credit: its model rocketry star is the page\'s own and is not a switch', () => {
+test('the Goddard has two switches, honor credit and, while the Mitchell is earned, model rocketry; neither is a count', () => {
   reset('cadet');
-  const goddard = () => devicesOf('goddard_achievement', sel('goddard_achievement').awardValue, sel('goddard_achievement').awardLabel);
   set('goddard_achievement', 'earned');
-  ev(`State.badgeSelections.model_rocketry_badge = { checked: true }; State.badges = ['model_rocketry_badge'];`);
+  let c = controls('goddard_achievement');
+  assert.deepEqual(c.toggles.map(t => [t.key, t.label, t.device]), [['honor', 'Honor credit', 'device-star-silver']]);
+  assert.equal(c.lines.length, 1, 'nothing to count');
   set('mitchell_award', 'earned');
-  assert.equal(sel('goddard_achievement').awardValue, 'rocketry_star', 'the star the page wears');
-  const c = controls('goddard_achievement');
-  assert.deepEqual(c.toggles.map(t => t.key), ['honor'], 'the star is not a switch');
-  assert.equal(c.lines.length, 1, 'and nothing to count');
-  assert.equal(c.toggles[0].on, false);
-  set('goddard_achievement', c.toggles[0].next);
-  assert.equal(sel('goddard_achievement').awardValue, 'honor_credit_and_rocketry', 'honor credit and the page\'s star: both');
-  assert.deepEqual(goddard(), ['device-star-silver', 'device-star-silver']);
-  assert.equal(controls('goddard_achievement').toggles[0].on, true);
-  set('goddard_achievement', controls('goddard_achievement').toggles[0].next);
-  assert.equal(sel('goddard_achievement').awardValue, 'rocketry_star', 'honor off: the page\'s star stays');
-  assert.deepEqual(goddard(), ['device-star-silver']);
+  c = controls('goddard_achievement');
+  assert.deepEqual(c.toggles.map(t => [t.key, t.label, t.device]), [['honor', 'Honor credit', 'device-star-silver'], ['rocketry', 'Model rocketry', 'device-star-silver']]);
 });
 
 test('the Silver Medal of Valor has no count and no device, from the picker, a saved setup and the page\'s own pick', () => {

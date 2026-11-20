@@ -84,13 +84,15 @@ test('a tap turns a ribbon on and off: the selection, its first choice, the tile
   assert.ok(lines.length > 5, 'its counts');
   assert.ok(lines.every(o => o.value && !/^- Select -/.test(o.textContent)), 'no "- Select -": off is the tile\'s tap');
   assert.equal(select.value, sel.awardValue, 'the one picked is the award');
-  assert.equal(lines[0].textContent, '1st', 'the count alone');
-  assert.equal(lines[1].textContent, '2nd');
-  assert.equal(lines[5].textContent, '6th');
-  const words = () => p.cell(id).querySelector('.ribbonDeviceWords').textContent;
-  assert.equal(words(), '', 'a first award with nothing on it: the line is empty and holds its height');
+  // The open list has the full lines (the count and the devices in words); the closed control shows the short form, in a box under the dropdown that takes no tap.
+  assert.equal(lines[0].textContent, '1st award');
+  assert.equal(lines[1].textContent, '2nd award: bronze clasp');
+  assert.equal(lines[5].textContent, '6th award: silver clasp');
+  const shown = () => p.cell(id).querySelector('.ribbonSelectShown').textContent;
+  assert.equal(shown(), '1st', 'the closed dropdown: the count alone');
+  assert.equal(p.cell(id).querySelectorAll('.ribbonDeviceWords').length, 0, 'no line under the dropdown');
   pick(select, lines[5].value);
-  assert.equal(words(), 'Silver clasp', 'what is worn for the count, never a repeat of the dropdown');
+  assert.equal(shown(), '6th');
   assert.equal(controls.querySelectorAll('.ribbonToggle').length, 1, 'the silver star of the lifesaving ribbon is its one switch');
   assert.ok(drawn.includes(id), 'the drawn ribbon, devices and all, takes the place of the plain picture');
   assert.ok(p.cell('cap_leadership_ribbon').querySelector('.vpControls') === null, 'the other tiles have none');
@@ -224,8 +226,8 @@ test('the U.S. military ribbons are a menu by branch whose tiles are made when t
   assert.equal(tile().querySelectorAll('.vpRow').length, 0, 'no row of tiles under a military ribbon');
   const count = () => sel1(tile(), 'ribbonCountSelect');
   assert.ok(count().querySelectorAll('option').length > 3, 'its counts are the lines of one dropdown');
-  assert.equal(count().querySelectorAll('option')[0].textContent, '1st');
-  assert.equal(count().querySelectorAll('option')[1].textContent, '2nd', 'the second award');
+  assert.equal(count().querySelectorAll('option')[0].textContent, '1st award');
+  assert.match(count().querySelectorAll('option')[1].textContent, /^2nd award/, 'the second award');
   pick(count(), 'military_award_3');
   assert.equal(State.ribbonSelections[id].awardValue, 'military_award_3');
   assert.equal(State.ribbonSelections[id].awardCount, 3);
