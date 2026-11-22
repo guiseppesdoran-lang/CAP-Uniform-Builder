@@ -660,12 +660,24 @@
     const military = !!spec.military;
     const shown = () => spec.ids();
     const on = () => shown().filter(id => chosenRibbon(d, id));
-    const option = (id, group, note) => ({
-      value: id, label: d.ribbonName(id), picture: d.ribbonArt(id) ? d.asset(d.ribbonArt(id)) : undefined,
-      caption: spec.caption ? spec.caption(id) : undefined, group, groupNote: note, search: spec.search ? spec.search(id) : (group || ''),
-      controls: isOn => isOn ? ribbonControls(d, id, military, after) : null,
-      controlsKey: ribbonControlsKey(d, id, military)
+    // The record of a ribbon is made for all of them (a window holds 170) at every change, and the picker reads only some fields of most of them (the name, the words the search
+    // reads and what the controls were made from are read when its tile is made, when a search is typed or when the list is refreshed): those are worked out on first read.
+    const lazy = (o, key, make) => Object.defineProperty(o, key, {
+      enumerable: true, configurable: true,
+      get(){ const v = make(); Object.defineProperty(o, key, { value: v, enumerable: true, writable: true, configurable: true }); return v; },
+      set(v){ Object.defineProperty(o, key, { value: v, enumerable: true, writable: true, configurable: true }); }
     });
+    const option = (id, group, note) => {
+      const o = {
+        value: id, picture: d.ribbonArt(id) ? d.asset(d.ribbonArt(id)) : undefined,
+        caption: spec.caption ? spec.caption(id) : undefined, group, groupNote: note,
+        controls: isOn => isOn ? ribbonControls(d, id, military, after) : null
+      };
+      lazy(o, 'label', () => d.ribbonName(id));
+      lazy(o, 'search', () => (spec.search ? spec.search(id) : (group || '')));
+      lazy(o, 'controlsKey', () => ribbonControlsKey(d, id, military));
+      return o;
+    };
     const options = () => spec.groups
       ? spec.groups().flatMap(g => g.ids.map(id => option(id, g.key, g.note)))
       : shown().map(id => option(id));
@@ -820,14 +832,19 @@
     const all = d.militaryIds();
     const matches = () => {
       const q = String(ui.gallerySearchValue || '').trim().toLowerCase();
+      const noService = ui.galleryServiceFilter === 'ALL', noType = ui.galleryAwardTypeFilter === 'ALL';
+      // With no filter and no search every award is listed: what a filter or the search reads is worked out only when one is set.
+      if(noService && noType && !q) return all.slice();
       return all.filter(id => {
         const award = d.militaryAward(id);
         const services = ((award && award.authorizedServices) || []).map(service => String(service).toUpperCase());
         const branch = d.militaryBranchOf(award);
-        const serviceMatch = ui.galleryServiceFilter === 'ALL' || branch === ui.galleryServiceFilter || services.includes(ui.galleryServiceFilter);
-        const typeMatch = ui.galleryAwardTypeFilter === 'ALL' || d.militaryType(award) === ui.galleryAwardTypeFilter;
+        const serviceMatch = noService || branch === ui.galleryServiceFilter || services.includes(ui.galleryServiceFilter);
+        const typeMatch = noType || d.militaryType(award) === ui.galleryAwardTypeFilter;
+        if(!serviceMatch || !typeMatch) return false;
+        if(!q) return true;
         const haystack = [award && award.name, award && award.officialName, ...((award && award.aliases) || []), award && award.id, ...services, d.militaryType(award)].join(' ').toLowerCase();
-        return serviceMatch && typeMatch && (!q || haystack.includes(q));
+        return haystack.includes(q);
       });
     };
     const menu = el('details', 'militaryRibbonMenu');
