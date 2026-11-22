@@ -338,11 +338,14 @@
         document.dispatchEvent(new CustomEvent('capub:rendered', { detail: { scene } }));
         return scene;
       }
-      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, drawOptions);
+      // The drawing on screen is changed into the new one where it can be (its parts that are the same stay, so the browser does not style and lay out the whole drawing again after a
+      // tap); only while this is still the newest render, so a render that is dropped leaves the drawing as it was.
+      const keepable = () => (seq === renderSeq && lastSvg && lastSvg.isConnected && host.contains(lastSvg) ? lastSvg : null);
+      const svg = await E.renderSvg.buildSvg(scene, id => s.entry(id).path, Object.assign({ patchOnto: keepable }, drawOptions));
       if(seq !== renderSeq) return null;
-      host.querySelectorAll('svg.uniformSvg, .layer').forEach(n => n.remove());
+      host.querySelectorAll('svg.uniformSvg, .layer').forEach(n => { if(n !== svg && !svg.contains(n)) n.remove(); });
       sizeStage(svg);
-      host.appendChild(svg);
+      if(svg.parentNode !== host) host.appendChild(svg);
       lastScene = scene; lastSvg = svg; lastDrawKey = drawKey;
       host.dataset.rendered = String(seq);
       updateBadgeChooser(scene);

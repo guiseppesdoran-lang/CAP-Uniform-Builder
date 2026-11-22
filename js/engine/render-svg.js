@@ -329,27 +329,75 @@
   // the reference goes there, and a pattern or gradient that lives in a drawing the browser does not paint paints nothing: the mess dress bullion eagle came out as
   // the board's blue with its grey outline (LIVE10-5). Reproduced in Chrome with a hidden decoy pattern of the same id ahead of the uniform; tests/bullion-browser.cjs.
   let drawingCount = 0;
-  function scopeIds(svg){
-    const suffix = '--d' + (++drawingCount).toString(36);
-    const ids = new Set();
-    svg.querySelectorAll('[id]').forEach(n => ids.add(n.getAttribute('id')));
-    if(!ids.size) return suffix;
-    const refUrl = /url\(\s*(['"]?)#([^)'"\s]+)\1\s*\)/g;
-    // Only the elements that can carry an id or a reference are visited (the OCP camouflage pattern's thousands of plain shapes carry neither;
-    // LIVE13 E85): an id, an href, or one of the attributes that take url(#id).
-    const REFS = '[id],[href],[*|href],[fill*="url("],[stroke*="url("],[clip-path],[mask],[filter],[style*="url("],[marker-start],[marker-mid],[marker-end]';
-    for(const n of [svg, ...svg.querySelectorAll(REFS)]){
-      for(const a of Array.from(n.attributes)){
-        const v = a.value;
-        if(a.name === 'id'){ if(ids.has(v)) a.value = v + suffix; continue; }
-        if((a.localName === 'href') && v.charAt(0) === '#'){ if(ids.has(v.slice(1))) a.value = v + suffix; continue; }
-        if(v.indexOf('url(') >= 0){
-          const w = v.replace(refUrl, (m, q, id) => ids.has(id) ? `url(${q}#${id}${suffix}${q})` : m);
-          if(w !== v) a.value = w;
+  const REFS = '[id],[href],[*|href],[fill*="url("],[stroke*="url("],[clip-path],[mask],[filter],[style*="url("],[marker-start],[marker-mid],[marker-end]';
+  const REF_URL = /url\(\s*(['"]?)#([^)'"\s]+)\1\s*\)/g;
+  // The ids of `ids` renamed, and every reference to them, in the elements of `roots` and what they hold. Only the elements that can carry an id or a reference are visited (the OCP
+  // camouflage pattern's thousands of plain shapes carry neither; LIVE13 E85): an id, an href, or one of the attributes that take url(#id).
+  function scopeNodes(roots, ids, suffix){
+    for(const root0 of roots){
+      for(const n of [root0, ...root0.querySelectorAll(REFS)]){
+        for(const a of Array.from(n.attributes)){
+          const v = a.value;
+          if(a.name === 'id'){ if(ids.has(v)) a.value = v + suffix; continue; }
+          if((a.localName === 'href') && v.charAt(0) === '#'){ if(ids.has(v.slice(1))) a.value = v + suffix; continue; }
+          if(v.indexOf('url(') >= 0){
+            const w = v.replace(REF_URL, (m, q, id) => ids.has(id) ? `url(${q}#${id}${suffix}${q})` : m);
+            if(w !== v) a.value = w;
+          }
         }
       }
     }
+  }
+  function idsOf(svg){
+    const ids = new Set();
+    svg.querySelectorAll('[id]').forEach(n => ids.add(n.getAttribute('id')));
+    return ids;
+  }
+  function scopeIds(svg){
+    const suffix = '--d' + (++drawingCount).toString(36);
+    const ids = idsOf(svg);
+    if(!ids.size) return suffix;
+    scopeNodes([svg], ids, suffix);
     return suffix;
+  }
+
+  // ---- A drawing kept and changed in place (LIVE14 speed) ----------------------------------------------------------------------------------------------------------------------
+  // A tap changes a layer or two and the browser then styled and laid out all 12,000 to 16,000 elements of a drawing made from scratch. The drawing on screen is kept instead and only
+  // the parts that differ are replaced: each child of its <defs> and each layer group (and measurement) is known by a signature (a symbol by its id, which names its content; the rest
+  // by its markup, before the ids are scoped), a part with the signature of a part of the new drawing stays, the others are taken out and the new ones put in, in the new order. Every
+  // id a drawing holds is scoped by one suffix, kept, so the parts that stay and the parts that come in refer to each other. The result is the drawing a fresh build gives, ids apart.
+  const PARTS = '__capubParts';
+  const signatureOf = n => (n.nodeName === 'symbol' && n.getAttribute('id') ? 'symbol:' + n.getAttribute('id') : n.outerHTML);
+  const partsOf = n => Array.from(n.children, c => ({ node: c, sig: signatureOf(c) }));
+  function reconcileChildren(parent, kept, fresh, scopeNew, firstAfterTakeOut){
+    const pool = new Map();
+    for(const it of kept){ const q = pool.get(it.sig); if(q) q.push(it); else pool.set(it.sig, [it]); }
+    const out = fresh.map(it => {
+      const q = pool.get(it.sig);
+      if(q && q.length) return q.shift();
+      scopeNew(it.node);
+      return it;
+    });
+    for(const q of pool.values()) for(const it of q) parent.removeChild(it.node);
+    let at = firstAfterTakeOut();
+    for(const it of out){
+      if(it.node === at) at = at.nextSibling; else parent.insertBefore(it.node, at);
+    }
+    return out;
+  }
+  // `old` (a drawing buildSvg made, with its parts recorded) is changed into `svg`, a drawing just built and not yet scoped; `old` is what stays on screen.
+  function patchDrawing(old, svg){
+    const rec = old[PARTS];
+    const ids = idsOf(svg);
+    const scopeNew = n => { if(ids.size) scopeNodes([n], ids, rec.suffix); };
+    const oldDefs = old.firstElementChild, newDefs = svg.firstElementChild;
+    const defsParts = reconcileChildren(oldDefs, rec.defs, partsOf(newDefs), scopeNew, () => oldDefs.firstChild);
+    const bodyParts = reconcileChildren(old, rec.body, Array.from(svg.children).filter(c => c !== newDefs).map(c => ({ node: c, sig: signatureOf(c) })), scopeNew, () => oldDefs.nextSibling);
+    for(const name of ['viewBox', 'width', 'height', 'aria-label']){
+      const v = svg.getAttribute(name);
+      if(v == null) old.removeAttribute(name); else if(old.getAttribute(name) !== v) old.setAttribute(name, v);
+    }
+    old[PARTS] = { suffix: rec.suffix, defs: defsParts, body: bodyParts };
   }
 
   // Build the <svg> for a scene. `manifestPath(id)` resolves an asset id to its path.
@@ -508,6 +556,8 @@
 
     const layers = [...drawing].sort((a, b2) => (a.z || 0) - (b2.z || 0));
     const clipIds = new Map();
+    // A clip path's id comes from the clip itself (as the silhouette clips' do), so the same clip has the same id in every drawing.
+    const clipId = k => 'clip-' + hashText(k) + '-' + k.length;
     const silIds = new Map();
     // The sheet's silhouette path with only its largest subpath (by the area of its M/L vertices): the garment's outer outline without the holes
     // between arm and body (`clipOuter`, the shoulder cord: LIVE13 E120).
@@ -529,9 +579,10 @@
       const path = defs.querySelector(`[id="${garmentId}__clipSil"] path`), art = defs.querySelector(`[id="${garmentId}__art"]`);
       if(base && data && path && art){
         const vbox = data.viewBox.split(/\s+/).map(Number);
-        const cp = el('clipPath', { id: 'clipsil-' + silIds.size, clipPathUnits: 'userSpaceOnUse' });
-        const copy = el('path', { d: outer ? outerSubpath(path.getAttribute('d')) : path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null,
-          transform: `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}` });
+        const transform = `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}`;
+        // The id comes from what the clip is (the key and the transform), so the same clip has the same id in every drawing and a drawing kept in place can hold it (patchDrawing).
+        const cp = el('clipPath', { id: 'clipsil-' + hashText(key + '|' + transform), clipPathUnits: 'userSpaceOnUse' });
+        const copy = el('path', { d: outer ? outerSubpath(path.getAttribute('d')) : path.getAttribute('d'), 'clip-rule': path.getAttribute('clip-rule') || null, transform });
         cp.appendChild(copy);
         if(extra) cp.appendChild(el('polygon', { points: extra }));
         defs.appendChild(cp);
@@ -596,7 +647,7 @@
         const key = layer.clip.map(p => fmt(p.x) + ',' + fmt(p.y)).join(' ');
         let cid = clipIds.get(key);
         if(!cid){
-          cid = 'clip-' + clipIds.size;
+          cid = clipId(key);
           const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
           cp.appendChild(el('polygon', { points: key }));
           defs.appendChild(cp);
@@ -613,7 +664,7 @@
           const d = 'M-1000 -1000H2000V2000H-1000Z M' + poly.map(p => fmt(p.x) + ' ' + fmt(p.y)).join('L') + 'Z';
           let cid = clipIds.get('out:' + d);
           if(!cid){
-            cid = 'clip-' + clipIds.size;
+            cid = clipId('out:' + d);
             const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
             cp.appendChild(el('path', { d, 'clip-rule': 'evenodd' }));
             defs.appendChild(cp);
@@ -639,7 +690,7 @@
         const key = 'below:' + fmt(layer.cutBelow);
         let cid = clipIds.get(key);
         if(!cid){
-          cid = 'clip-' + clipIds.size;
+          cid = clipId(key);
           const cp = el('clipPath', { id: cid, clipPathUnits: 'userSpaceOnUse' });
           cp.appendChild(el('rect', { x: -1000, y: -1000, width: 3000, height: fmt(1000 + layer.cutBelow) }));
           defs.appendChild(cp);
@@ -709,7 +760,15 @@
       for(const e of ML.catalogue(scene).entries) if(e.ref) for(const k of e.keys) cites.set(k, { id: e.id, label: e.name + ', ' + e.value });
       measureNodes(drawings, px, ML.PX.font, defs, copies, cites).forEach(n => svg.appendChild(n));
     }
-    scopeIds(svg);
+    // The drawing on screen, when the caller keeps it (the function says which, at this moment: nothing is awaited from here on), is changed into this one; otherwise this one is scoped and returned.
+    const keep = typeof options.patchOnto === 'function' ? options.patchOnto() : null;
+    if(keep && keep[PARTS]){
+      patchDrawing(keep, svg);
+      return keep;
+    }
+    // What each part is, known before the ids are scoped.
+    const defsParts = partsOf(defs), bodyParts = Array.from(svg.children).filter(c => c !== defs).map(c => ({ node: c, sig: signatureOf(c) }));
+    svg[PARTS] = { suffix: scopeIds(svg), defs: defsParts, body: bodyParts };
     return svg;
   }
 

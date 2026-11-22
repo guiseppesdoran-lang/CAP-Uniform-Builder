@@ -18,12 +18,21 @@ const STEPS = [
   { ribbons: ['lifesaving_award'] },
   { ribbons: ['lifesaving_award'], badges: ['ground_team_basic_badge'] },
   { ribbons: ['lifesaving_award'], badges: ['ground_team_basic_badge', 'emt_basic_badge'] },
-  { ribbons: [], badges: ['ground_team_basic_badge', 'emt_basic_badge'] }
+  { ribbons: [], badges: ['ground_team_basic_badge', 'emt_basic_badge'] },
+  { ribbons: [], badges: ['ground_team_basic_badge', 'emt_basic_badge'], measure: true },
+  { ribbons: [], badges: ['ground_team_basic_badge', 'emt_basic_badge'], measure: false, grade: true },
+  { ribbons: ['lifesaving_award'], badges: ['ground_team_basic_badge'], grade: true, uniform: true, measure: true }
 ];
+// The grade and the uniform a step changes to (a different one from the setup's own).
+const ALT_RANK = { senior: 'Maj', cadet: 'C/Maj' };
+const ALT_UNIFORMS = ['blues_a', 'blues_b', 'polo'];
 
 const apply = (setup, step) => `(async () => {
-  const [uniform, membership, rank, gender] = ${JSON.stringify(setup)};
+  const [uniform0, membership, rank0, gender] = ${JSON.stringify(setup)};
   const step = ${JSON.stringify(step)};
+  const uniform = step.uniform ? ${JSON.stringify(ALT_UNIFORMS)}.find(u => u !== uniform0) : uniform0;
+  const rank = step.grade ? ${JSON.stringify(ALT_RANK)}[membership] : rank0;
+  State.showMeasurements = !!step.measure;
   const fire = (el, v) => { el.value = v; el.dispatchEvent(new Event('change', { bubbles: true })); };
   if(State.uniform !== uniform || State.membership !== membership || State.rank !== rank || State.gender !== gender){
     fire(document.getElementById('membershipType'), membership); fire(document.getElementById('rankSetupSelect'), rank); fire(document.getElementById('jacketSelect'), gender);
