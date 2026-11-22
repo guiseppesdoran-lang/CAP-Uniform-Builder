@@ -54899,8 +54899,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/army/src/build.js (d-expert.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/army/army_marksmanship__expert",
     "source_raster": "vanguardmil.com product army-regulation-size-silver-oxidized-expert-shooting-badge (Army Badge: Expert Shooting - regulation size, silver oxidized), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -54915,10 +54915,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 5.2,
-     "face_ratio": 1.16,
+     "silhouette_iou": 0.8506,
      "note": ""
     },
     "art_tree": "military/v3/out/army-marksmanship-expert"
