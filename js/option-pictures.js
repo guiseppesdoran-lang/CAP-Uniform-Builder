@@ -718,6 +718,21 @@
     }
   }
 
+  // The scene with only the layers that reach the picture's window (its bounds and pad, and a margin): a picture of a badge's place is a small window on a whole uniform, and the layers
+  // beyond it (the cap views, the other figure, the rack of a pocket picture) were drawn and written out with their sheets, megabytes of markup, for nothing to show. A layer whose box
+  // cannot be told is kept.
+  function inWindow(core, scene, pad){
+    const b = scene.bounds, m = (pad || 0) + 0.5;
+    const x0 = b.x - m, y0 = b.y - m, x1 = b.x + b.w + m, y1 = b.y + b.h + m;
+    const layers = scene.layers.filter(l => {
+      let q = null;
+      try{ q = core && core.layerBounds ? core.layerBounds(l) : null; }catch(e){ q = null; }
+      if(!q || ![q.x, q.y, q.w, q.h].every(Number.isFinite)) return true;
+      return q.x < x1 && q.x + q.w > x0 && q.y < y1 && q.y + q.h > y0;
+    });
+    return layers.length === scene.layers.length ? scene : Object.assign({}, scene, { layers });
+  }
+
   function pageEnv(){
     const E = window.CAPUBEngine;
     const assets = window.CAPUBAssetPacks.createLoader((path, cache) => fetch(ASSET(path), cache ? { cache } : undefined).then(r => r.ok ? r.json() : null));
@@ -738,7 +753,7 @@
       url: path => ASSET(path),
       async draw(scene, pad){
         const store = await getStore();
-        const svg = await E.renderSvg.buildSvg(scene, id => store.entry(id).path, { pad: pad == null ? 0.1 : pad });
+        const svg = await E.renderSvg.buildSvg(inWindow(E.core, scene, pad == null ? 0.1 : pad), id => store.entry(id).path, { pad: pad == null ? 0.1 : pad });
         return URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml;charset=utf-8' }));
       },
       empty: () => window.VisualPicker.emptyMark(),
@@ -753,5 +768,5 @@
     return page.pictures(optionKey, values);
   }
 
-  return { create, pictures, bare, RECIPES, layoutMarkup, stateBuildWith };
+  return { create, pictures, bare, RECIPES, layoutMarkup, stateBuildWith, inWindow };
 });

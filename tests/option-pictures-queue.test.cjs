@@ -46,3 +46,17 @@ test('a set of pictures is made after the call returns, each drawing in its own 
     assert.equal(log.filter(x => x.startsWith('draw')).length, 5);
   }finally{ delete OP.RECIPES.__t; }
 });
+
+test('a picture draws only the layers that reach its window, and keeps one whose box cannot be told', () => {
+  const core = { layerBounds: l => (l.box === 'unknown' ? null : { x: l.x, y: l.y, w: l.w, h: l.h }) };
+  const layer = (name, x, y, w, h, extra) => Object.assign({ name, x, y, w, h }, extra);
+  const scene = { title: 't', bounds: { x: 0, y: 0, w: 4, h: 4 }, notes: [], layers: [
+    layer('sheet', -2, -2, 20, 20), layer('inside', 1, 1, 1, 1), layer('far', 30, 30, 2, 2), layer('near', 4.3, 0, 1, 1), layer('unknown', 40, 40, 1, 1, { box: 'unknown' })
+  ] };
+  const cut = OP.inWindow(core, scene, 0.1);
+  assert.deepEqual(cut.layers.map(l => l.name), ['sheet', 'inside', 'near', 'unknown']);
+  assert.equal(scene.layers.length, 5, 'the scene is not changed');
+  assert.deepEqual(cut.bounds, scene.bounds);
+  const all = { title: 't', bounds: scene.bounds, layers: [scene.layers[0], scene.layers[1]] };
+  assert.equal(OP.inWindow(core, all, 0.1), all, 'a scene that loses nothing is handed back as it is');
+});
