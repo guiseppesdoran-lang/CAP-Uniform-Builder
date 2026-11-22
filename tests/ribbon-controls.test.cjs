@@ -162,7 +162,9 @@ test('every option of every ribbon: its line and switches give exactly its devic
           const again = controls(id).toggles.find(x => x.key === t.key);
           assert.equal(again.on, !t.on, `${id} ${o.value}: ${t.key} pressed`);
           assert.equal(sel(id).awardValue, t.next, `${id}: the option's own value is what is stored`);
-          if(again.next){ set(id, again.next); assert.equal(sel(id).awardValue, o.value, `${id} ${o.value}: ${t.key} pressed twice`); }
+          // (The Commander's Commendation's second star at the first award makes the count two, so the second press leaves it at two: tests/commendation-stars.test.cjs.)
+          const rose = RA.readCount(id, t.next, label(t.next)) > RA.readCount(id, o.value, o.label);
+          if(again.next && !rose){ set(id, again.next); assert.equal(sel(id).awardValue, o.value, `${id} ${o.value}: ${t.key} pressed twice`); }
           set(id, o.value);
           switches++;
         }
@@ -243,10 +245,10 @@ test('a ribbon\'s facts that are choices of the rule are switches: aircrew prope
   c = controls(id);
   assert.equal(c.toggles.find(t => t.key === 'national').next, 'mcchord_46202', 'both stars from the second award');
   assert.equal(c.selected, controls(id).lines.find(l => /^2nd award/.test(l.text)).value);
-  set(id, 'mcchord_13700');          // basic: both at once is no option
+  set(id, 'mcchord_13700');          // basic: one award has one authority, so the second star raises the count to two (tests/commendation-stars.test.cjs)
   c = controls(id);
   set(id, c.toggles.find(t => t.key === 'region').next);
-  assert.equal(controls(id).toggles.find(t => t.key === 'national').next, null, 'no basic award with both stars: the switch is not offered');
+  assert.equal(controls(id).toggles.find(t => t.key === 'national').next, 'mcchord_46202', 'the second star is never a blocked switch: it makes the count two');
   // The facts on stay on when the count changes, where an option for them exists; a count with none is greyed.
   set('lifesaving_award', 'mcchord_28001');   // basic with star
   c = controls('lifesaving_award');

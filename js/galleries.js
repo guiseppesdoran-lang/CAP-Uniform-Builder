@@ -361,6 +361,13 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
       devices:{},
       duplicates:rendered.duplicates
     });
+    // The Commander's Commendation's stars (CAPR 39-3, 9f) go with every count, so the two star switches are never without an option: the region star, the National star, and
+    // both (one of each type). The list's own options for the first 21 awards already have all three; the values and labels here are read by data/ribbon-awards.js.
+    if(id === 'commander_commendation_award'){
+      for(const [suffix, tag] of [['region', 'Region Cmdr'], ['national', 'National Cmdr'], ['national_region', 'Region+Natl']]){
+        extended.push({ label:`${label} (${tag})`, value:`capub_total_${count}_${suffix}`, devices:{}, duplicates:rendered.duplicates });
+      }
+    }
   }
   return extended;
 }

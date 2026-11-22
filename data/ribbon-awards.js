@@ -388,6 +388,29 @@
     return order.indexOf(a) - order.indexOf(b);
   }
 
+  // The Commander's Commendation's two star switches (CAPR 39-3, 9f): a bronze star when the region commander authorized the award, a silver star when the National Commander did, and with
+  // several awards "only one bronze or silver star (one star of each type) will be worn", so both stars together are allowed from the second award on (one award has one authority).
+  // The general limit of devices is 6b: at most four on a ribbon (the stars count), then a second ribbon to the wearer's left that counts as one subsequent award; `resolve` places them.
+  // What turning the second star on does while the count is one is decided here and only here: 'raise' makes the count two (the dropdown shows it), 'swap' turns the first star off.
+  const SECOND_STAR_AT_ONE = 'raise';
+  // The count and the facts on after a press of the switch `key`: { count, flags } from the count now (a number) and the keys on now.
+  function pressStar(count, have, key, mode = SECOND_STAR_AT_ONE){
+    const flags = new Set(have);
+    if(flags.has(key)){ flags.delete(key); return { count, flags }; }
+    flags.add(key);
+    if(flags.size > 1 && count < 2){
+      if(mode === 'swap'){ flags.clear(); flags.add(key); return { count, flags }; }
+      return { count: 2, flags };
+    }
+    return { count, flags };
+  }
+  // The facts that stay on when the count falls to one: one award has one authority, so both stars cannot stay, and the higher, the National star, is the one kept.
+  function starsAtCount(count, flags){
+    const on = new Set(flags);
+    if(count < 2 && on.has('national') && on.has('region')) on.delete('region');
+    return on;
+  }
+
   // ---- the controls under a chosen ribbon -------------------------------------------------------------------------------------------------
   // The choices of a ribbon (its option list in js/galleries.js, which saved setups and the report import keep using) read as one dropdown for how many awards and one switch for each
   // separate fact: the option list spells out combinations ("2nd with Star", "Earned with Honor Credit"), and a combination is a count and the facts on it. `controls` splits an option
@@ -507,10 +530,11 @@
     const find = (idn, flags) => first.get(idn + '\u0001' + flags);
     const curId = cur ? (info.get(cur) || { idn: identity(cur) }).idn : '', curKey = cur ? (info.get(cur) || { key: flagsOf(cur).join('+') }).key : '';
     const lines = [], seen = new Set();
+    const keyAt = idn => fam.levelStars && curKey ? [...starsAtCount(Number(idn), curKey.split('+'))].sort().join('+') : curKey;
     for(const o of real){
       const idn = info.get(o).idn;
       if(seen.has(idn)) continue;
-      const base = find(idn, '') || o, kept = find(idn, curKey);
+      const base = find(idn, '') || o, kept = find(idn, keyAt(idn));
       seen.add(idn);
       const piece = linePieces(id, base, c, mods.filter(m => m.device && m.test(base)).map(m => m.device), mods.filter(m => m.strip && m.test(base)).map(m => m.strip));
       lines.push({ value: (kept || base).value, text: piece.text, short: piece.short, words: piece.words, enabled: !!kept, id: idn });
@@ -519,9 +543,10 @@
     if(!selected && cur && lines.length){ const piece = linePieces(id, cur, c); lines.unshift({ value: cur.value, text: piece.text, short: piece.short, words: piece.words, enabled: true, id: curId }); selected = cur.value; }
     const have = new Set(cur ? flagsOf(cur) : []);
     const toggles = mods.filter(m => !m.hidden).map(m => {
-      const next = new Set(have);
-      if(next.has(m.key)) next.delete(m.key); else next.add(m.key);
-      const target = find(curId, [...next].sort().join('+'));
+      let next = new Set(have), at = curId;
+      if(fam.levelStars){ const p = pressStar(Number(curId) || 1, have, m.key); next = p.flags; at = String(p.count); }
+      else if(next.has(m.key)) next.delete(m.key); else next.add(m.key);
+      const target = find(at, [...next].sort().join('+'));
       return { key: m.key, label: m.label, device: m.device, title: m.title, on: have.has(m.key), next: target ? target.value : null };
     });
     const unit = fam.per ? { hour: 'Hours', sortie: 'Sorties', flight: 'Flights', find: 'Finds', encampment: 'Encampments', activit: 'Activities' }[Object.keys(fam.per)[0]] : '';
@@ -529,5 +554,5 @@
     return { lines, selected, toggles, label };
   }
 
-  return { DEVICES: D, controls, deviceWords, lineText, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, hint, readCount, starsFromText, spread, clasps };
+  return { DEVICES: D, controls, pressStar, starsAtCount, deviceWords, lineText, FAMILIES, HONOR_CREDIT_RIBBONS, resolve, describe, explain, hint, readCount, starsFromText, spread, clasps };
 });
