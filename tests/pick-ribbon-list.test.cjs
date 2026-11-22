@@ -94,6 +94,10 @@ test('a tap turns a ribbon on and off: the selection, its first choice, the tile
   pick(select, lines[5].value);
   assert.equal(shown(), '6th');
   assert.equal(controls.querySelectorAll('.ribbonToggle').length, 1, 'the silver star of the lifesaving ribbon is its one switch');
+  // The picture on a switch is a box with the drawing as its background, never an <img> (an image fitted by object-fit can show a hairline at its edge): the device's file is named in the box.
+  const art = controls.querySelector('.ribbonToggleArt');
+  assert.ok(art && art.tagName === 'SPAN' && /devices\/device-star-silver\.svg/.test(art.dataset.src) && art.style.backgroundImage.includes('device-star-silver'), 'the star on the switch is a background');
+  assert.equal(controls.querySelectorAll('img').length, 0, 'no image element on a switch');
   assert.ok(drawn.includes(id), 'the drawn ribbon, devices and all, takes the place of the plain picture');
   assert.ok(p.cell('cap_leadership_ribbon').querySelector('.vpControls') === null, 'the other tiles have none');
   p.button(id).click();
@@ -278,7 +282,7 @@ test('devices of a U.S. military award are small switches with aria-pressed; cho
   const devices = () => tile().querySelectorAll('.ribbonToggle');
   assert.ok(devices().length >= 1, 'a switch for each device the award allows');
   const pressed = c => c.getAttribute('aria-pressed');
-  assert.ok(devices().every(c => c.nodeName === 'BUTTON' && pressed(c) === 'false' && c.querySelector('img')), 'buttons with aria-pressed, each with the device\'s picture');
+  assert.ok(devices().every(c => c.nodeName === 'BUTTON' && pressed(c) === 'false' && c.querySelector('.ribbonToggleArt')), 'buttons with aria-pressed, each with the device\'s picture');
   assert.equal(tile().querySelectorAll('input').length, 0, 'no numeral until devices are chosen by hand');
   const device = devices()[0].dataset.value;
   devices()[0].click();

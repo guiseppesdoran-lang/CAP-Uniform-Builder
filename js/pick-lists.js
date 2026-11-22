@@ -118,6 +118,16 @@
     return node;
   };
 
+  // The picture on a switch (a device, a bar): a box with the drawing as its background, fitted whole inside the box's padding and centred, so nothing of it can fall outside the
+  // device or touch the box's edge whatever a browser does with a drawing whose size is in inches (an <img> fitted with object-fit can show a hairline beside the star).
+  const deviceArt = src => {
+    const art = el('span', 'ribbonToggleArt');
+    art.setAttribute('aria-hidden', 'true');
+    art.dataset.src = src;
+    art.style.backgroundImage = `url("${String(src).replace(/["\\\n\r]/g, encodeURIComponent)}")`;
+    return art;
+  };
+
   // ---- badges ------------------------------------------------------------------------------------------------------------------------------
 
   // The badges turned on, as the page's selections have them.
@@ -236,12 +246,7 @@
           b.setAttribute('aria-pressed', on ? 'true' : 'false');
           b.dataset.value = key;
           const src = d.barArt ? d.barArt(id, key) : '';
-          if(src){
-            const img = el('img', 'ribbonToggleArt');
-            img.setAttribute('alt', '');
-            img.setAttribute('src', d.asset(src));
-            b.append(img);
-          }
+          if(src) b.append(deviceArt(d.asset(src)));
           b.append(el('span', null, label));
           b.addEventListener('click', () => { setBadgeBar(id, key, !on, deps); entry.setOptions(); });
           row.append(b);
@@ -558,12 +563,7 @@
       b.dataset.value = key;
       if(title) b.setAttribute('title', title);
       if(!enabled) b.setAttribute('disabled', '');
-      if(src){
-        const img = el('img', 'ribbonToggleArt');
-        img.setAttribute('alt', '');
-        img.setAttribute('src', src);
-        b.append(img);
-      }
+      if(src) b.append(deviceArt(src));
       b.append(el('span', null, label));
       b.addEventListener('click', press);
       row.append(b);

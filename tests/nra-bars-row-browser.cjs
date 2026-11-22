@@ -66,7 +66,7 @@ class Cdp {
       const cell = document.querySelector(${JSON.stringify(NRA)});
       const box = e => { const r = e.getBoundingClientRect(); return { x: +r.x.toFixed(1), y: +r.y.toFixed(1), w: +r.width.toFixed(1), h: +r.height.toFixed(1) }; };
       const tile = cell.querySelector(':scope > .vpOption');
-      const bars = [...cell.querySelectorAll('.vpBarRow .ribbonToggle')].map(b => { const s = b.querySelector('span'); const lh = parseFloat(getComputedStyle(s).lineHeight) || parseFloat(getComputedStyle(s).fontSize) * 1.2;
+      const bars = [...cell.querySelectorAll('.vpBarRow .ribbonToggle')].map(b => { const s = b.lastElementChild; const lh = parseFloat(getComputedStyle(s).lineHeight) || parseFloat(getComputedStyle(s).fontSize) * 1.2;
         return Object.assign(box(b), { name: s.textContent, lines: Math.round(s.getBoundingClientRect().height / lh), cut: s.scrollWidth > s.clientWidth + 1 || b.scrollWidth > b.clientWidth + 1, pressed: b.getAttribute('aria-pressed') }); });
       const row = cell.querySelector('.vpBarRow');
       return { tile: tile && box(tile), row: row && box(row), bars, scroll: [document.querySelector('#galleryModal .modalBody')].filter(Boolean).map(s => s.scrollTop)[0], page: window.scrollY };

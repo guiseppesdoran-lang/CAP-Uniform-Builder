@@ -1638,7 +1638,8 @@ html[data-access="guest"] #accessGate{display:none}
 .ribbonControlRow .ribbonToggle[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:1px 7px}
 .ribbonControlRow .ribbonToggle[disabled]{cursor:default;opacity:.55}
 .ribbonControlRow .ribbonToggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.ribbonToggleArt{display:block;flex:0 0 auto;width:20px;height:20px;object-fit:contain}
+/* The picture on a switch: a box with the drawing as its background, fitted whole inside a whole pixel of clear padding on every side and centred, so no edge of it can show (js/pick-lists.js deviceArt). */
+.ribbonToggleArt{display:block;flex:0 0 auto;box-sizing:border-box;width:20px;height:20px;padding:1px;background-repeat:no-repeat;background-position:center;background-size:contain;background-origin:content-box;background-clip:content-box}
 .vpBarRow{flex-wrap:nowrap}
 .vpBarRow .ribbonToggle{flex:1 1 0;width:auto;min-height:48px;flex-direction:column;justify-content:center;gap:2px;text-align:center}
 .vpBarRow .ribbonToggle>span{white-space:nowrap}
