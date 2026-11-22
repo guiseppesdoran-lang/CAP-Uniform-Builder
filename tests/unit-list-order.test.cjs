@@ -56,7 +56,7 @@ test('a search returns the same relative order', () => {
 });
 
 test('the select built with no search holds every unit in that order, and a chosen unit is not added twice', () => {
-  const select = { id: 'unitPatchSelect', options: [], value: '', appendChild(o){ this.options.push(o); }, set innerHTML(v){ this.options = []; }, get innerHTML(){ return ''; } };
+  const select = { id: 'unitPatchSelect', options: [], value: '', appendChild(o){ this.options.push(o); }, replaceChildren(...nodes){ this.options = nodes; }, set innerHTML(v){ this.options = []; }, get innerHTML(){ return ''; } };
   const real = context.document;
   context.document = new Proxy({}, { get: (_t, key) => key === 'getElementById' ? id => id === 'unitPatchSelect' ? select : id === 'unitPatchSearch' ? { value: '' } : real.getElementById(id)
     : key === 'createElement' ? tag => tag === 'option' ? { value: '', textContent: '' } : real.createElement(tag) : real[key] });

@@ -1522,11 +1522,13 @@ function buildUnitPatchSelector(filterText=''){
   sel.unitListSignature = signature;
   const matches = getUnitPatchOptions(filterText);
 
-  sel.innerHTML = '';
+  // The options are made first and put in the list at once (one replacement of its children, not 1,455 insertions into a list the browser keeps laying out); a browser without
+  // replaceChildren has them added one after another as before.
+  const made = [];
   const none = document.createElement('option');
   none.value = '';
   none.textContent = 'No unit chosen';
-  sel.appendChild(none);
+  made.push(none);
 
   // The list shows every unit that matches; the unit the member has chosen is on it whatever the search says, or after the others.
   const shown = matches;
@@ -1534,7 +1536,7 @@ function buildUnitPatchSelector(filterText=''){
     const opt = document.createElement('option');
     opt.value = unit.code;
     opt.textContent = unit.text;
-    sel.appendChild(opt);
+    made.push(opt);
   });
 
   if(selected && !shown.some(unit => unit.code === selected)){
@@ -1543,8 +1545,11 @@ function buildUnitPatchSelector(filterText=''){
     opt.value = selected;
     const kept = isUnitCharterWornOnUniform(selected) ? '(selected)' : '(selected, not worn on this uniform)';
     opt.textContent = unit ? `${unit.code} - ${unit.name}  ${kept}` : `${selected}  ${kept}`;
-    sel.appendChild(opt);
+    made.push(opt);
   }
+
+  if(typeof sel.replaceChildren === 'function') sel.replaceChildren(...made);
+  else{ sel.innerHTML = ''; made.forEach(o => sel.appendChild(o)); }
 
   sel.value = selected;
   renderUnitPatchStatus();
