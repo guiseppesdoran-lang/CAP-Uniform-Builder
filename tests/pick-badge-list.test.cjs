@@ -1,9 +1,8 @@
 'use strict';
 // The owner (2026-11-12): "Badge selection ... should be like the other selections (no checkboxes, those are annoying)". The badges of the chooser window are picture tiles (js/pick-lists.js
 // on the picture picker's toggle mode): the badge's own drawing and its name, nothing under the name; a tap turns it on or off, the tile shows it, and the window's status line says where the
-// drawing wore it or why it left it off; the level of a badge (a row of tiles,
-// each the badge drawn at that level) and the way a command pin is worn (two tiles, each the pin as the engine draws it) are under the tile while it is on. No checkbox, no drop-down and
-// no switch button is in the list.
+// drawing wore it or why it left it off; the level of a badge (one dropdown, the way a ribbon's count is) and the way a command pin is worn (one switch, Graduated commander) are under the
+// tile while it is on, and the tile's own picture is the badge at the level chosen (2026-11-19: a badge with levels stays one tile). No checkbox is in the list.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -107,80 +106,88 @@ test('a command pin above the grade that wears one turns back and is not selecte
   assert.deepEqual(p.d.State.badges, []);
 });
 
-test('the level of a badge earned in levels is a row of tiles under its tile, there only while the tile is on, each the badge drawn at that level; picking one changes the selection and the drawing the tile shows, and the focus stays', () => {
+test('the level of a badge earned in levels is one dropdown under its tile, there only while the tile is on; picking a line changes the selection and the drawing the tile shows, and the focus stays', () => {
   const p = make();
   assert.equal(p.tile(STEM).querySelector('.vpControls').hidden, true, 'not shown while the badge is off');
   assert.ok(p.tile(PILOT).querySelector('.vpControls') === null, 'a badge with no levels has no control');
   p.button(STEM).click();
   assert.equal(p.tile(STEM).querySelector('.vpControls').hidden, false);
-  const row = () => p.tile(STEM).querySelector('.vpRow');
-  assert.ok(row(), 'a row of tiles');
-  assert.equal(p.tile(STEM).querySelectorAll('select').length, 0, 'no drop-down');
-  const levels = () => row().querySelectorAll('.vpOption');
-  assert.deepEqual(levels().map(t => t.dataset.value), ['basic', 'senior', 'master']);
-  assert.deepEqual(levels().map(t => t.querySelector('.vpLabel').textContent), ['Basic', 'Senior', 'Master']);
-  assert.ok(levels().every(t => t.nodeName === 'BUTTON' && t.getAttribute('role') === 'radio'), 'a radio button each, aria-checked');
-  assert.deepEqual(levels().map(t => t.querySelector('img').getAttribute('src')), ['basic', 'senior', 'master'].map(k => `images/badges/${STEM}-${k}.svg`), 'each is the badge at its level');
-  assert.equal(levels().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), 'basic');
-  levels()[1].focus();
-  levels()[1].click();
+  assert.equal(p.tile(STEM).querySelectorAll('.vpRow').length, 0, 'no row of tiles');
+  assert.equal(p.tile(STEM).querySelectorAll('select').length, 1, 'one dropdown');
+  const select = () => p.tile(STEM).querySelector('select.badgeLevelSelect');
+  assert.equal(select().getAttribute('aria-label'), `Level of the ${NAMES[STEM]}`);
+  assert.deepEqual(select().querySelectorAll('option').map(o => o.value), ['basic', 'senior', 'master']);
+  assert.deepEqual(select().querySelectorAll('option').map(o => o.textContent), ['Basic', 'Senior', 'Master']);
+  assert.equal(select().value, 'basic', 'the level a badge starts at');
+  const shown = () => p.tile(STEM).querySelector('.ribbonSelectShown').textContent;
+  assert.equal(shown(), 'Basic');
+  assert.equal(p.tile(STEM).querySelectorAll('.vpOption').length, 1, 'the tile is the only picture: no level tiles');
+  assert.equal(p.tile(STEM).querySelector('img').getAttribute('src'), `images/badges/${STEM}.svg`);
+  select().focus();
+  select().value = 'senior';
+  select().dispatchEvent({ type: 'change', target: select() });
   assert.equal(p.d.State.badgeSelections[STEM].level, 'senior');
   assert.equal(p.tile(STEM).querySelector('img').getAttribute('src'), `images/badges/${STEM}-senior.svg`, 'the drawing of the level');
-  assert.equal(levels().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), 'senior');
-  assert.ok(doc.activeElement === levels()[1], 'the member is still on that tile');
+  assert.equal(select().value, 'senior');
+  assert.equal(shown(), 'Senior');
+  assert.ok(doc.activeElement === select(), 'the member is still on the dropdown');
   assert.equal(p.button(STEM).getAttribute('aria-pressed'), 'true', 'still on');
   p.button(STEM).click();
-  assert.equal(p.tile(STEM).querySelector('.vpControls').hidden, true, 'off, the row is hidden');
+  assert.equal(p.tile(STEM).querySelector('.vpControls').hidden, true, 'off, the dropdown is hidden');
+  assert.equal(p.tile(STEM).querySelector('img').getAttribute('src'), `images/badges/${STEM}-senior.svg`, 'the tile keeps the level it was at');
   assert.equal(p.host.querySelectorAll('input').length, 0);
 });
 
-test('a level\'s long name (the paragraph in brackets) is the tile\'s title, not its label: the label is the name alone', () => {
+test('a level\'s long name (the paragraph in brackets) is in the open list, and the closed dropdown shows the name alone', () => {
   const d = deps();
   d.levels = id => id === STEM ? [['standard', 'No device'], ['gold-star', 'Gold star (National Complaints Resolution or Compliance Inspection Officer)']] : null;
+  d.level = (id, level) => level || 'standard';
   const host = doc.createElement('div'); doc.body.append(host);
   Lists.badgeList(host, GROUPS, d);
-  host.querySelectorAll('.vpCell').find(c => c.dataset.value === STEM).querySelector('.vpOption').click();
-  const tiles = host.querySelectorAll('.vpCell').find(c => c.dataset.value === STEM).querySelector('.vpRow').querySelectorAll('.vpOption');
-  assert.deepEqual(tiles.map(t => t.querySelector('.vpLabel').textContent), ['No device', 'Gold star']);
-  assert.deepEqual(tiles.map(t => t.getAttribute('title')), [null, 'Gold star (National Complaints Resolution or Compliance Inspection Officer)']);
+  const cell = host.querySelectorAll('.vpCell').find(c => c.dataset.value === STEM);
+  cell.querySelector('.vpOption').click();
+  assert.deepEqual(cell.querySelectorAll('option').map(o => o.textContent), ['No device', 'Gold star (National Complaints Resolution or Compliance Inspection Officer)']);
+  assert.equal(cell.querySelector('.ribbonSelectShown').textContent, 'No device');
+  const select = cell.querySelector('select');
+  select.value = 'gold-star';
+  select.dispatchEvent({ type: 'change', target: select });
+  assert.equal(cell.querySelector('.ribbonSelectShown').textContent, 'Gold star');
 });
 
 const PINS = { current: 'blob:current', graduated: 'blob:graduated' };
-test('a command pin has two tiles under it while it is on, current and graduated commander, each the pin as the engine draws it worn that way; no switch button', () => {
+test('a command pin has one switch under it while it is on, Graduated commander, off for a current commander; pressing it sets the way the pin is worn and keeps the pin and the focus', () => {
   const p = make({ pictures: PINS });
   const worn = id => p.tile(id).querySelector('.vpCommandWorn');
   assert.ok(p.tile(SQUADRON).querySelector('.vpControls') === null, 'not there while the pin is off');
   p.button(SQUADRON).click();
-  assert.ok(worn(SQUADRON) && !worn(SQUADRON).hidden, 'the two ways, under the tile');
-  assert.equal(p.tile(SQUADRON).querySelectorAll('button.vpSwitch').length, 0, 'no switch');
-  const tiles = () => worn(SQUADRON).querySelectorAll('.vpOption');
-  assert.deepEqual(tiles().map(t => t.dataset.value), ['current', 'graduated']);
-  assert.deepEqual(tiles().map(t => t.querySelector('.vpLabel').textContent), ['Current commander', 'Graduated commander']);
-  assert.deepEqual(tiles().map(t => t.querySelector('img').getAttribute('src')), ['blob:current', 'blob:graduated'], 'the engine\'s own drawing of each');
-  assert.ok(tiles().every(t => t.getAttribute('role') === 'radio'));
-  assert.equal(tiles().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), 'current');
-  tiles()[1].focus();
-  tiles()[1].click();
+  assert.ok(worn(SQUADRON) && !worn(SQUADRON).hidden, 'the switch, under the tile');
+  assert.equal(worn(SQUADRON).querySelectorAll('.vpOption').length, 0, 'no tiles for the two ways');
+  const sw = () => worn(SQUADRON).querySelector('.ribbonToggle');
+  assert.equal(worn(SQUADRON).querySelectorAll('.ribbonToggle').length, 1);
+  assert.equal(sw().textContent, 'Graduated commander');
+  assert.equal(sw().getAttribute('aria-pressed'), 'false', 'a current commander at first');
+  sw().focus();
+  sw().click();
   assert.equal(p.d.State.commandInsignia.graduatedCommander, true);
   assert.equal(p.d.State.badgeSelections[SQUADRON].checked, true, 'the pin stays on');
-  assert.equal(tiles().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), 'graduated');
-  assert.ok(doc.activeElement === tiles()[1], 'the focus stays');
-  tiles()[0].click();
+  assert.equal(sw().getAttribute('aria-pressed'), 'true');
+  assert.ok(doc.activeElement === sw(), 'the focus stays');
+  sw().click();
   assert.equal(p.d.State.commandInsignia.graduatedCommander, false);
-  assert.equal(tiles().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), 'current');
-  // The other pin: the one held turns off and its row goes.
+  assert.equal(sw().getAttribute('aria-pressed'), 'false');
+  // The other pin: the one held turns off and its switch goes.
   p.button(GROUP).click();
-  assert.ok(p.tile(SQUADRON).querySelector('.vpControls') === null, 'the pin turned off has no row');
+  assert.ok(p.tile(SQUADRON).querySelector('.vpControls') === null, 'the pin turned off has no switch');
   assert.ok(worn(GROUP) && !worn(GROUP).hidden);
   assert.equal(p.host.querySelectorAll('input').length, 0);
 });
 
-test('a way the uniform does not draw the pin worn is not offered, and one way is no choice; the pictures that arrive late fill the row when they come', async () => {
+test('a way the uniform does not draw the pin worn is not offered, and one way is no choice; the switch is made when the answer arrives late', async () => {
   const p = make({ pictures: { current: 'blob:current', graduated: false } });
   p.button(SQUADRON).click();
   const row = p.tile(SQUADRON).querySelector('.vpCommandWorn');
   assert.ok(row === null || row.hidden === true, 'no graduated pin on this uniform: no choice, nothing shown');
-  assert.equal(p.tile(SQUADRON).querySelectorAll('.vpOption').length, 1, 'only the pin\'s own tile');
+  assert.equal(p.tile(SQUADRON).querySelectorAll('.ribbonToggle').length, 0, 'no switch');
   let release;
   const late = new Promise(res => { release = res; });
   const q = make({ pictures: PINS, late });
@@ -190,7 +197,7 @@ test('a way the uniform does not draw the pin worn is not offered, and one way i
   await late; await Promise.resolve(); await Promise.resolve();
   const filled = q.tile(SQUADRON).querySelector('.vpCommandWorn');
   assert.equal(filled.hidden, false);
-  assert.deepEqual(filled.querySelectorAll('img').map(i => i.getAttribute('src')), ['blob:current', 'blob:graduated']);
+  assert.equal(filled.querySelectorAll('.ribbonToggle').length, 1);
 });
 
 test('the search: the tiles whose name, place or category do not contain the words are hidden, and a category with none left; a hidden tile is passed over by the keys', () => {
@@ -203,7 +210,7 @@ test('the search: the tiles whose name, place or category do not contain the wor
   assert.ok(p.host.querySelectorAll('.vpCell').every(c => !c.hidden));
 });
 
-test('the military badges of a branch are tiles too: a row of tiles for the levels under the tile while it is on, each the badge at that level, the choice kept in State.militaryBadges', () => {
+test('the military badges of a branch are tiles too: a dropdown for the levels under the tile while it is on, the tile the badge at that level, the choice kept in State.militaryBadges', () => {
   const d = deps();
   d.State.militaryBadges = {};
   let renders = 0;
@@ -221,17 +228,20 @@ test('the military badges of a branch are tiles too: a row of tiles for the leve
   cell('wings').querySelector('.vpOption').click();
   assert.deepEqual(JSON.parse(JSON.stringify(d.State.militaryBadges)), { wings: { selected: true, variant: 'basic' } });
   assert.equal(renders, 1, 'the uniform is drawn again');
-  const levels = () => cell('wings').querySelector('.vpRow').querySelectorAll('.vpOption');
-  assert.equal(cell('wings').querySelectorAll('select').length, 0, 'no drop-down');
-  assert.deepEqual(levels().map(t => t.dataset.value), ['basic', 'senior']);
-  assert.deepEqual(levels().map(t => t.querySelector('img').getAttribute('src')), ['m/wings-basic.svg', 'm/wings-senior.svg'], 'each is the badge at its level');
-  assert.equal(levels().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), 'basic');
-  levels()[1].focus();
-  levels()[1].click();
+  assert.equal(cell('wings').querySelectorAll('.vpRow').length, 0, 'no row of tiles');
+  assert.equal(cell('wings').querySelectorAll('select').length, 1, 'one dropdown');
+  const select = () => cell('wings').querySelector('select.badgeLevelSelect');
+  assert.deepEqual(select().querySelectorAll('option').map(o => o.value), ['basic', 'senior']);
+  assert.equal(select().value, 'basic');
+  assert.equal(cell('wings').querySelector('img').getAttribute('src'), 'm/wings-basic.svg', 'the tile is the badge at its level');
+  select().focus();
+  select().value = 'senior';
+  select().dispatchEvent({ type: 'change', target: select() });
   assert.equal(d.State.militaryBadges.wings.variant, 'senior');
   assert.equal(cell('wings').querySelector('img').getAttribute('src'), 'm/wings-senior.svg');
+  assert.equal(select().value, 'senior');
   assert.equal(cell('wings').querySelector('.vpOption').getAttribute('aria-pressed'), 'true');
-  assert.ok(doc.activeElement === levels()[1], 'the focus stays on the tile');
+  assert.ok(doc.activeElement === select(), 'the focus stays on the dropdown');
   cell('wings').querySelector('.vpOption').click();
   assert.deepEqual(d.State.militaryBadges, {});
   void entry;

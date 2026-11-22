@@ -5,7 +5,7 @@
 //   node tests/picker-steady-browser.cjs [--out DIR] [--json] [--measure]
 //
 // Serves the repo, opens the page in headless Chrome at a desktop and a phone viewport, and taps (real mouse events, not clicks made by script) through the chooser window's lists:
-// a cadet's STEM and Cyber badges (a level row opens under each), one of their level tiles, a ribbon with a row of choices and a patch with places. For each tap it records, from the
+// a cadet's STEM and Cyber badges (a level dropdown opens under each), a level picked in one of them (a change of the dropdown: a native list is not tapped from a script), a ribbon with a row of choices and a patch with places. For each tap it records, from the
 // moment of the press to 600 ms after the drawing: how far the tapped tile moved in the window (it must not move), how far the tiles above it moved, how far the window's scroller and the
 // page scrolled, how many tiles of the list were made again (the list must not be built whole), and the time to the first stable frame. Also checks that no tile that is on has a dimmed picture
 // (opacity under 1) and that a badge chosen but left off by the drawing carries the not-worn mark in the tick's place. Prints PASS when every check holds.
@@ -130,7 +130,18 @@ const PROBE = `(() => {
       await sleep(1800);
     };
     const tileSel = (value, extra) => `#galleryModalHost .vpCell[data-value="${value}"]${extra || ''} > .vpOption`;
-    const levelSel = (id, level) => `#galleryModalHost .vpCell[data-value="${id}"] .vpRow .vpOption[data-value="${level}"]`;
+    // A level picked in the dropdown under a badge: the dropdown is set and told it changed (a native list does not open for a script), with the probe watching the badge's tile.
+    const levelChange = async (label, id, level, wait) => {
+      const sel = tileSel(id);
+      await bring(sel);
+      await sleep(250);
+      await ev(`(${PROBE}, window.__watch(${JSON.stringify(sel)}, '#galleryModalHost'), true)`);
+      const set = await ev(`(() => { const s = document.querySelector('#galleryModalHost .vpCell[data-value="${id}"] select.badgeLevelSelect'); if(!s) return false; document.dispatchEvent(new MouseEvent('click')); s.focus(); s.value = ${JSON.stringify(level)}; s.dispatchEvent(new Event('change', { bubbles: true })); return s.value === ${JSON.stringify(level)}; })()`);
+      if(!set) fails.push(`${label}: no dropdown with the level ${level}`);
+      await sleep(wait || 1500);
+      const r = await ev('window.__result()');
+      return Object.assign({ what: label }, r);
+    };
     const dimmed = () => ev(`(() => [...document.querySelectorAll('#galleryModalHost .vpOption[aria-pressed="true"]')].filter(b => { const p = b.querySelector('.vpPicture'); if(!p) return false; for(let n = p; n && n !== document.body; n = n.parentElement){ if(Number(getComputedStyle(n).opacity) < 1) return true; } return false; }).map(b => b.dataset.value))()`);
     const check = (label, r, opts) => {
       const o = Object.assign({ cells: 0 }, opts || {});
@@ -155,11 +166,11 @@ const PROBE = `(() => {
       R.stemOn = await watched('stem on', tileSel('stem_badges'));
       check(`${view.name} STEM on`, R.stemOn);
       await shot(`${view.name}-1-stem-open`);
-      R.stemLevel = await watched('stem level', levelSel('stem_badges', 'advanced'));
+      R.stemLevel = await levelChange('stem level', 'stem_badges', 'advanced');
       check(`${view.name} STEM level`, R.stemLevel);
       R.cyberOn = await watched('cyber on', tileSel('cyber_badges'));
       check(`${view.name} Cyber on`, R.cyberOn);
-      R.cyberLevel = await watched('cyber level', levelSel('cyber_badges', 'master'));
+      R.cyberLevel = await levelChange('cyber level', 'cyber_badges', 'master');
       check(`${view.name} Cyber level`, R.cyberLevel);
       R.cyberOff = await watched('cyber off', tileSel('cyber_badges'));
       check(`${view.name} Cyber off`, R.cyberOff);

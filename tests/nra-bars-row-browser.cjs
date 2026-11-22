@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Browser check that the three Distinguished Expert bar switches (rifle, pistol, shotgun) sit in one row of three equal tiles under the NRA badge's tile, at 320, 390 and 1280 px
+// Browser check that the three Distinguished Expert bar switches (rifle, pistol, shotgun) sit in one row of three equal tiles under the NRA badge's level dropdown, in the tile's box, at 320, 390 and 1280 px
 // wide: side by side, their names on one line and not cut, each at least 44 px high, and nothing moves when the row appears or a bar is turned on (run by tests/nra-bars-row.test.cjs;
 // needs Chrome).   node tests/nra-bars-row-browser.cjs [--out DIR]
 const fs = require('node:fs');
@@ -80,7 +80,11 @@ class Cdp {
       await ev(`(async () => { State.membership = 'cadet'; State.gender = 'male'; State.rank = 'C/Capt'; State.uniform = 'blues_a'; State.badgeSelections = {}; State.badges = []; fullRender(); await CAPUBUniformView.render(); document.getElementById('expandBadges').click(); })()`);
       await sleep(1800);
       await tap(NRA + ' > .vpOption');
-      await tap(NRA + ' .vpRow .vpOption[data-value="distinguished-expert"]');
+      // The level is one dropdown under the tile (no row of level tiles); at Distinguished Expert the three switches come in one row under it, all inside the tile's box.
+      await ev(`(() => { const s = document.querySelector(${JSON.stringify(NRA + ' select.badgeLevelSelect')}); s.focus(); s.value = 'distinguished-expert'; s.dispatchEvent(new Event('change', { bubbles: true })); })()`);
+      await sleep(900);
+      const parts = await ev(`(() => { const c = document.querySelector(${JSON.stringify(NRA)}); const b = c.getBoundingClientRect(), s = c.querySelector('.ribbonSelectWrap').getBoundingClientRect(), r = c.querySelector('.vpBarRow').getBoundingClientRect(); return { rows: c.querySelectorAll('.vpRow').length, selects: c.querySelectorAll('select').length, selectAbove: s.bottom <= r.top + 0.5, inside: s.left >= b.left && s.right <= b.right && r.left >= b.left && r.right <= b.right && r.bottom <= b.bottom, shown: c.querySelector('.ribbonSelectShown').textContent }; })()`);
+      if(parts.rows || parts.selects !== 1 || !parts.selectAbove || !parts.inside || parts.shown !== 'Distinguished Expert') fails.push(`${view.name} px: the level is one dropdown with the three switches in a row under it, inside the box: ${JSON.stringify(parts)}`);
       const before = await measure();
       await shot(`${view.name}-bars-off`);
       await tap(NRA + ' .vpBarRow .ribbonToggle[data-value="pistol"]');

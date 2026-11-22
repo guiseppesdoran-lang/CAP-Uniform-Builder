@@ -128,6 +128,30 @@
     return art;
   };
 
+  // One native dropdown laid, invisible, over a box that shows the short form of the line chosen ("5 years", "6th", "Advanced"): the open list has the full lines, the closed control is
+  // never cut. The dropdown itself takes the tap, so a phone shows its own list; it is 16 px on a touch screen so that Safari does not zoom. cfg: { className (of the select), label (its
+  // aria-label), lines: [{ value, text, short, enabled }], selected, title, onChange(value) }. A line that is not `enabled` is greyed unless it is the one chosen.
+  function dropdown(cfg){
+    const wrap = el('div', 'ribbonSelectWrap');
+    const shown = el('span', 'ribbonSelectShown');
+    shown.setAttribute('aria-hidden', 'true');
+    const select = el('select', cfg.className);
+    select.setAttribute('aria-label', cfg.label);
+    for(const line of cfg.lines){
+      const o = el('option', null, line.text);
+      o.value = line.value;
+      if(line.enabled === false && line.value !== cfg.selected) o.setAttribute('disabled', '');
+      select.append(o);
+    }
+    select.value = cfg.selected;
+    if(cfg.title) select.setAttribute('title', cfg.title);
+    const show = value => { const line = cfg.lines.find(l => l.value === value); shown.textContent = line ? (line.short != null ? line.short : line.text) : ''; };
+    show(cfg.selected);
+    select.addEventListener('change', () => { show(select.value); cfg.onChange(select.value); });
+    wrap.append(shown, select);
+    return wrap;
+  }
+
   // ---- badges ------------------------------------------------------------------------------------------------------------------------------
 
   // The badges turned on, as the page's selections have them.
@@ -190,23 +214,24 @@
   const shortLevel = text => String(text || '').replace(/\s*\(.*$/, '') || String(text || '');
   const graduatedNow = d => !!(d.State.commandInsignia && d.State.commandInsignia.graduatedCommander);
 
-  // The command pin worn each way, as the engine draws the uniform with it: two tiles (current commander over the name tag, graduated commander under it), the one the member has picked
-  // marked. The pictures are made as the page is free to; a way the uniform does not draw (the flight suit has no graduated pin) is not offered, and one way is no choice.
+  // The command pin worn each way: one switch, Graduated commander (the pin under the name tag), off for a current commander (over it). It is offered only where the engine draws the
+  // uniform both ways (the flight suit has no graduated pin): the pictures are made as the page is free to, and a way the uniform does not draw is the answer, not a picture shown.
   function commandRow(d, id, deps, again){
     const host = el('div', 'vpCommandWorn');
     host.hidden = true;
-    const values = ['current', 'graduated'];
-    const words = { current: 'Current commander', graduated: 'Graduated commander' };
-    const made = d.commandPictures ? d.commandPictures(values) : null;
+    const made = d.commandPictures ? d.commandPictures(['current', 'graduated']) : null;
     const paint = known => {
       host.textContent = '';
-      const offered = values.filter(v => known[v] !== false);
-      if(offered.length < 2){ host.hidden = true; return; }
-      host.append(pictureRow(d, {
-        name: `commandWorn-${id}`, label: 'Where the command pin is worn', value: graduatedNow(d) ? 'graduated' : 'current', pictureHeight: '56px',
-        options: offered.map(v => ({ value: v, label: words[v], picture: known[v] || undefined })),
-        onChange: v => { setGraduated(id, v === 'graduated', deps); again(); }
-      }).host);
+      if(['current', 'graduated'].some(v => known[v] === false)){ host.hidden = true; return; }
+      const row = el('div', 'ribbonControlRow');
+      const b = el('button', 'ribbonToggle');
+      b.setAttribute('type', 'button');
+      b.setAttribute('aria-pressed', graduatedNow(d) ? 'true' : 'false');
+      b.dataset.value = 'graduated';
+      b.append(el('span', null, 'Graduated commander'));
+      b.addEventListener('click', () => { setGraduated(id, !graduatedNow(d), deps); again(); });
+      row.append(b);
+      host.append(row);
       host.hidden = false;
     };
     if(!made) paint({});
@@ -224,13 +249,16 @@
     const controls = id => {
       const box = el('div', 'vpControlStack');
       const levels = d.levels(id);
-      // The level of a badge earned in levels: a tile for each, the badge's own drawing at that level.
+      // The level of a badge earned in levels: one dropdown, a line for each level (the closed control shows the name alone, the open list has the paragraph in brackets too). The tile's
+      // own picture is the badge at the level chosen.
       if(levels){
-        box.append(pictureRow(d, {
-          name: `badgeLevel-${id}`, label: `Level of the ${d.name(id)}`, value: d.level(id, sel(d, id).level), pictureHeight: '52px',
-          options: levels.map(([key, text]) => ({ value: key, label: shortLevel(text), title: shortLevel(text) !== text ? text : undefined, picture: d.levelArt ? d.asset(d.levelArt(id, key)) : undefined })),
+        const row = el('div', 'ribbonControlRow');
+        row.append(dropdown({
+          className: 'badgeLevelSelect', label: `Level of the ${d.name(id)}`, selected: d.level(id, sel(d, id).level),
+          lines: levels.map(([key, text]) => ({ value: key, text, short: shortLevel(text) })),
           onChange: key => { setBadgeLevel(id, key, deps); entry.setOptions(); }
-        }).host);
+        }));
+        box.append(row);
       }
       // The bars of a Distinguished Expert: one small switch for each group it was earned in, none on at first, under the level row only at that level.
       const own = d.State.badgeSelections[id] || {};
@@ -259,8 +287,8 @@
     // The controls of a badge that has levels are made for every tile and shown while it is on; a command pin's are made only while it is on (the pin as drawn depends on which pin is held),
     // so the list is made again when the pin held changes.
     const pinsOn = () => ids.filter(id => d.isCommand(id) && d.State.badgeSelections[id] && d.State.badgeSelections[id].checked).join();
-    // What a tile's controls were made from: a badge's own level row keeps its own state (a tap on a level tile moves it), a command pin's row depends on the pin held and on how it is worn.
-    const controlsKeyOf = id => d.isCommand(id) ? `pin:${pinsOn()}:${graduatedNow(d)}` : (d.hasBars && d.hasBars(id) ? `levels:${(d.State.badgeSelections[id] || {}).level || ''}:${((d.State.badgeSelections[id] || {}).bars || []).join()}` : 'levels');
+    // What a tile's controls were made from: a badge's level (and the bars at the level that has them), so the dropdown shows the level the state has; a command pin's switch depends on the pin held and on how it is worn.
+    const controlsKeyOf = id => d.isCommand(id) ? `pin:${pinsOn()}:${graduatedNow(d)}` : `levels:${(d.State.badgeSelections[id] || {}).level || ''}:${((d.State.badgeSelections[id] || {}).bars || []).join()}`;
     let built = '';
     const options = () => { built = pinsOn(); const rows = d.badgeRows(), on = new Set(selectedIn(d, ids)); return groups.flatMap(g => g.ids.map(id => ({ value: id, label: d.name(id), picture: d.asset(d.artPath(id)), notWorn: leftOff(rows, id, d.name(id), on.has(id)), group: g.key, search: g.key, controls: isOn => !d.isCommand(id) || isOn ? controls(id) : null, controlsKey: controlsKeyOf(id) }))); };
     // The last badge the member turned on: the window's status line says what the drawing did with it, as soon as the drawing has been made.
@@ -303,21 +331,23 @@
     const nameOf = badge => badge.officialName || badge.id;
     let tapped = null;
     const options = () => { const rows = d.badgeRows(), on = new Set(chosen()); return records.map(badge => ({
-      value: badge.id, label: nameOf(badge), picture: pictureOf(badge), notWorn: leftOff(rows, badge.id, nameOf(badge), on.has(badge.id)), search: `${branch} ${badge.family || ''}`, controlsKey: `variants:${variantOf(badge).variants.map(v => v.id).join()}`,
+      value: badge.id, label: nameOf(badge), picture: pictureOf(badge), notWorn: leftOff(rows, badge.id, nameOf(badge), on.has(badge.id)), search: `${branch} ${badge.family || ''}`, controlsKey: `variants:${variantOf(badge).variants.map(v => v.id).join()}:${variantOf(badge).active}`,
       controls: () => {
         const { variants, active } = variantOf(badge);
         if(variants.length < 2) return null;
-        // The level or variant of the badge: a tile for each, the badge's own drawing at that level.
-        return pictureRow(d, {
-          name: `militaryVariant-${badge.id}`, label: `Level of the ${badge.officialName || badge.id}`, value: active, pictureHeight: '52px',
-          options: variants.map(v => ({ value: v.id, label: v.id.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase()), picture: v.record.asset })),
+        // The level or variant of the badge: one dropdown, a line for each; the tile's own picture is the badge at the one chosen.
+        const row = el('div', 'ribbonControlRow');
+        row.append(dropdown({
+          className: 'badgeLevelSelect', label: `Level of the ${badge.officialName || badge.id}`, selected: active,
+          lines: variants.map(v => ({ value: v.id, text: v.id.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase()) })),
           onChange: variant => {
             if(!d.State.militaryBadges) d.State.militaryBadges = {};
             d.State.militaryBadges[badge.id] = { selected: true, variant };
             d.fullRender();
             again();
           }
-        }).host;
+        }));
+        return row;
       }
     })); };
     const host = el('div');
@@ -534,26 +564,11 @@
     }
     // How many awards (or which level): one dropdown, a line for each count. Where a line has no option with the facts that are on, it is greyed and the fact is turned off first.
     if(model.lines.length > 1){
-      // A native dropdown laid over a box that shows the short form of the line chosen ("5 years", "6th"): the open list has the full lines (the count and the devices in words), the
-      // closed control is never cut. The dropdown itself takes the tap, so a phone shows its own list; it is 16 px on a touch screen so that Safari does not zoom.
-      const wrap = el('div', 'ribbonSelectWrap');
-      const shown = el('span', 'ribbonSelectShown');
-      shown.setAttribute('aria-hidden', 'true');
-      const select = el('select', 'ribbonCountSelect');
-      select.setAttribute('aria-label', model.label);
-      for(const line of model.lines){
-        const o = el('option', null, line.text);
-        o.value = line.value;
-        if(!line.enabled && line.value !== model.selected) o.setAttribute('disabled', '');
-        select.append(o);
-      }
-      select.value = model.selected;
-      if(hint) select.setAttribute('title', hint);
-      const show = value => { const line = model.lines.find(l => l.value === value); shown.textContent = line ? line.short : ''; };
-      show(model.selected);
-      select.addEventListener('change', () => { show(select.value); d.setRibbon(id, select.value); after(); });
-      wrap.append(shown, select);
-      row.append(wrap);
+      row.append(dropdown({
+        className: 'ribbonCountSelect', label: model.label, title: hint, selected: model.selected,
+        lines: model.lines.map(line => ({ value: line.value, text: line.text, short: line.short, enabled: line.enabled })),
+        onChange: value => { d.setRibbon(id, value); after(); }
+      }));
     }
     // One switch for each separate fact: a small picture of the device and its name, pressed or not.
     const toggle = (key, label, src, on, enabled, title, press) => {

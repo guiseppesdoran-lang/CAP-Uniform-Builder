@@ -1,5 +1,5 @@
 'use strict';
-// A member on a tile or field under a picker tile (a level of a badge, the count of a ribbon) keeps the focus when the list is made again. In a browser querySelectorAll gives a
+// A member on a field under a picker tile (the level of a badge, the count of a ribbon) keeps the focus when the list is made again. In a browser querySelectorAll gives a
 // NodeList, which has no find or map: keepingFocus in js/pick-lists.js used to call find on it and threw, so the focus fell to the body and the status line was not written. These tests
 // run on a document whose lists are a browser's (mini-dom strictLists), so an array method called straight on one throws here as it does there.
 
@@ -25,7 +25,7 @@ test('the test document gives lists like a browser: indexed, iterable, no array 
   for(const name of ['find', 'map', 'filter', 'slice', 'some', 'every']) assert.equal(typeof list[name], 'undefined', name);
 });
 
-test('a badge level picked with the focus on its tile: the list is made again, nothing throws, the same level tile has the focus', () => {
+test('a badge level picked in its dropdown with the focus on it: the list is made again, nothing throws, the same dropdown has the focus', () => {
   const STEM = 'cadet_stem_badge';
   const State = { badgeSelections: {}, badges: [], commandInsignia: {}, rank: 'C/Capt' };
   const d = {
@@ -37,11 +37,12 @@ test('a badge level picked with the focus on its tile: the list is made again, n
   Lists.badgeList(host, [{ key: 'Cadet', ids: [STEM] }], d);
   const cell = () => all(host, '.vpCell').find(c => c.dataset.value === STEM);
   cell().querySelector('.vpOption').click();
-  const levels = () => all(cell().querySelector('.vpRow'), '.vpOption');
-  levels()[2].focus();
-  assert.doesNotThrow(() => levels()[2].click());
+  const select = () => all(cell(), 'select')[0];
+  select().focus();
+  select().value = 'master';
+  assert.doesNotThrow(() => select().dispatchEvent({ type: 'change', target: select() }));
   assert.equal(State.badgeSelections[STEM].level, 'master');
-  assert.ok(doc.activeElement === levels()[2], 'the member is still on that tile');
+  assert.ok(doc.activeElement === select() && select().value === 'master', 'the member is still on that dropdown, at that level');
 });
 
 test('a ribbon award picked in its dropdown, and a switch pressed, with the focus on it: the list is made again, nothing throws, the same field has the focus', () => {

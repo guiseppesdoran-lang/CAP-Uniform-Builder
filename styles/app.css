@@ -1640,6 +1640,9 @@ html[data-access="guest"] #accessGate{display:none}
 .ribbonControlRow .ribbonToggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 /* The picture on a switch: a box with the drawing as its background, fitted whole inside a whole pixel of clear padding on every side and centred, so no edge of it can show (js/pick-lists.js deviceArt). */
 .ribbonToggleArt{display:block;flex:0 0 auto;box-sizing:border-box;width:20px;height:20px;padding:1px;background-repeat:no-repeat;background-position:center;background-size:contain;background-origin:content-box;background-clip:content-box}
+/* A badge with its bar switches showing (the NRA badge at Distinguished Expert) takes two places of the grid, so the three switches in one row have room for their names; every other badge
+   with a level is one tile and one dropdown, at its place and size. */
+.vp[data-boxed]:not([data-layout="row"]) .vpCell:has(> .vpControls:not([hidden]) .vpBarRow){grid-column:span 2}
 .vpBarRow{flex-wrap:nowrap}
 .vpBarRow .ribbonToggle{flex:1 1 0;width:auto;min-height:48px;flex-direction:column;justify-content:center;gap:2px;text-align:center}
 .vpBarRow .ribbonToggle>span{white-space:nowrap}

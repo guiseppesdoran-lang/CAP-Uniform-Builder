@@ -68,6 +68,13 @@ test('a tile that is on with a row of choices under it takes the width of the li
   assert.doesNotMatch(css, /\.vpCell:has\(> \.vpControls \.vpRow\)/);
 });
 
+test('a badge with a level is one tile and one dropdown at its place and size; only a badge whose bar switches show (the NRA badge at Distinguished Expert) takes two places, so the row of three has room', () => {
+  const lists = fs.readFileSync(path.join(__dirname, '..', 'js', 'pick-lists.js'), 'utf8');
+  assert.match(css, /\.vpCell:has\(> \.vpControls:not\(\[hidden\]\) \.vpBarRow\)\{grid-column:span 2\}/);
+  assert.doesNotMatch(lists.replace(/\/\/.*$/gm, ''), /name: `badgeLevel-|name: `militaryVariant-|name: `commandWorn-/, 'no row of level tiles is made for a badge');
+  assert.match(lists, /className: 'badgeLevelSelect'/);
+});
+
 test('a picker tile draws its picture inside an even margin on all four sides (the box keeps its size, border-box), so a picture that reaches its own edge, such as the Cyber triangle, is not cut by the border or the rounded corners', () => {
   const box = rule('.vpPicture');
   const pad = /padding:(\d+)px/.exec(box);

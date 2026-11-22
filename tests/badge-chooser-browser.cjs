@@ -141,8 +141,8 @@ async function launch(){
     if(new Set(Object.values(moved)).size !== 3) fails.push('after the arrow key a badge sits in two places');
     if(c.groups.find(g => g.position === 'aviation').own.options.filter(o => o.checked).length !== 1) fails.push('the aviation pick was disturbed');
     await shot('2-arrow');
-    // The picker windows keep the focus: with the focus on a tile under a tile (a level of a badge, an award option of a ribbon) a pick makes the list again, which must not throw, and
-    // the focus must come back to the same tile; with the focus on a level tile, picking the Model Rocketry Badge writes the window's status line. (Live crash: a NodeList has no find.)
+    // The picker windows keep the focus: with the focus on a field under a tile (the level dropdown of a badge, the count or a switch of a ribbon) a pick makes the list again, which must not throw, and
+    // the focus must come back to the same field; with the focus on a level dropdown, picking the Model Rocketry Badge writes the window's status line. (Live crash: a NodeList has no find.)
     await ev(`(async () => {
       window.__errs = []; window.addEventListener('error', e => window.__errs.push(String(e.message)));
       State.membership = 'cadet'; State.gender = 'male'; State.rank = 'C/Capt'; State.uniform = 'blues_a';
@@ -160,13 +160,16 @@ async function launch(){
     else {
       await ev(`${pickCell('stem_badges')}.querySelector('.vpOption').click()`);
       await sleep(300);
-      const level = `${pickCell('stem_badges')}.querySelector('.vpRow .vpOption[data-value="advanced"]')`;
-      if(await focusClick(level) !== 'ok') fails.push('the STEM badge has no Advanced level tile');
-      await sleep(300);
-      const f1 = await focusOn();
+      // One dropdown for the level (no row of tiles under the tile, the tile alone as the picture); picked with the focus on it, the list is made again and the focus is on the same dropdown at that level.
+      const dd = `${pickCell('stem_badges')}.querySelector('select.badgeLevelSelect')`;
+      if(await ev(`!${dd}`)) fails.push('the STEM badge has no level dropdown');
+      if(await ev(`${pickCell('stem_badges')}.querySelectorAll('.vpRow').length`)) fails.push('a row of level tiles is left under the STEM badge');
+      await ev(`(() => { const s = ${dd}; s.focus(); s.value = 'advanced'; s.dispatchEvent(new Event('change', { bubbles: true })); })()`);
+      await sleep(400);
+      const f1 = await ev(`(() => { const a = document.activeElement; const c = a && a.closest && a.closest('.vpCell'); return a ? { cell: c ? c.dataset.value : null, cls: a.className, value: a.value, level: State.badgeSelections.stem_badges && State.badgeSelections.stem_badges.level } : null; })()`);
       console.log('focus after the level pick:', JSON.stringify(f1));
-      if(!f1 || f1.cell !== 'stem_badges' || f1.option !== "advanced") fails.push('after picking a level the focus is not on the same level tile: ' + JSON.stringify(f1));
-      await ev(`${pickCell('stem_badges')}.querySelector('.vpRow .vpOption[data-value="advanced"]').focus()`);
+      if(!f1 || f1.cell !== 'stem_badges' || f1.cls !== 'badgeLevelSelect' || f1.value !== 'advanced' || f1.level !== 'advanced') fails.push('after picking a level the focus is not on the same dropdown, at that level: ' + JSON.stringify(f1));
+      await ev(`${pickCell('stem_badges')}.querySelector('select.badgeLevelSelect').focus()`);
       await ev(`${pickCell('model_rocketry_badge')}.querySelector('.vpOption').click()`);
       await sleep(300);
       const say = await ev(`(() => { const n = document.getElementById('capubV2ModalSay'); return n ? { hidden: n.hidden, text: n.textContent } : null; })()`);
