@@ -367,7 +367,20 @@
   // by its markup, before the ids are scoped), a part with the signature of a part of the new drawing stays, the others are taken out and the new ones put in, in the new order. Every
   // id a drawing holds is scoped by one suffix, kept, so the parts that stay and the parts that come in refer to each other. The result is the drawing a fresh build gives, ids apart.
   const PARTS = '__capubParts';
-  const signatureOf = n => (n.nodeName === 'symbol' && n.getAttribute('id') ? 'symbol:' + n.getAttribute('id') : n.outerHTML);
+  // A picture carried in the markup (a patch's data URI, a megabyte or more) is known by a short stand-in while the markup is written out for the signature: the same picture is the same text.
+  const POSTAGE = 'data:'.length;
+  function markupSignature(n){
+    const pics = n.nodeName === 'image' ? [n] : Array.from(n.querySelectorAll('image'));
+    const held = [];
+    for(const im of pics){
+      for(const name of ['href', 'xlink:href']){
+        const v = im.getAttribute(name);
+        if(v && v.length > 400 && v.startsWith('data:')){ held.push([im, name, v]); im.setAttribute(name, 'data:' + v.length + ':' + hashText(v.slice(POSTAGE, POSTAGE + 4000) + v.slice(-4000))); }
+      }
+    }
+    try{ return n.outerHTML; }finally{ held.forEach(([im, name, v]) => im.setAttribute(name, v)); }
+  }
+  const signatureOf = n => (n.nodeName === 'symbol' && n.getAttribute('id') ? 'symbol:' + n.getAttribute('id') : markupSignature(n));
   const partsOf = n => Array.from(n.children, c => ({ node: c, sig: signatureOf(c) }));
   function reconcileChildren(parent, kept, fresh, scopeNew, firstAfterTakeOut){
     const pool = new Map();
