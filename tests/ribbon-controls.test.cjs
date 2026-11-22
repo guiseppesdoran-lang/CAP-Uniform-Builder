@@ -249,7 +249,7 @@ test('a ribbon\'s facts that are choices of the rule are switches: aircrew prope
   c = controls(id);
   set(id, c.toggles.find(t => t.key === 'region').next);
   assert.equal(controls(id).toggles.find(t => t.key === 'national').next, 'mcchord_46202', 'the second star is never a blocked switch: it makes the count two');
-  // The facts on stay on when the count changes, where an option for them exists; a count with none is greyed.
+  // The facts on stay on when the count changes: every count has an option for them.
   set('lifesaving_award', 'mcchord_28001');   // basic with star
   c = controls('lifesaving_award');
   assert.equal(c.toggles[0].on, true);
@@ -257,7 +257,7 @@ test('a ribbon\'s facts that are choices of the rule are switches: aircrew prope
   assert.equal(third.value, 'mcchord_28003');
   assert.equal(third.enabled, true);
   const past = c.lines.find(l => /^22nd award/.test(l.text));
-  assert.equal(past.enabled, false, 'no 22nd award with the star among the options');
+  assert.equal(past.enabled, true, 'the 22nd award has an option with the star: no line is greyed (tests/commendation-stars.test.cjs)');
   const aircrew = 'search_find_ribbon';
   set(aircrew, 'mcchord_24500');               // 2nd with propeller
   assert.equal(controls(aircrew).lines.find(l => l.value === controls(aircrew).selected).text, '2nd award: bronze clasp', 'the count line does not carry the switch\'s propeller');

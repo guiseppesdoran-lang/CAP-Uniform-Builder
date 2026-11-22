@@ -161,3 +161,28 @@ test('the tile\'s two switches are both pressable at the first award: the second
   assert.equal(sw('national').getAttribute('aria-pressed'), 'true');
   assert.equal(cell().querySelector('.ribbonSelectShown').textContent, '2nd', 'the count rose to the second award');
 });
+
+// ---- the ribbons with one device switch: the lifesaving star, the Presidential V, the aircrew propeller ------------------------------------------------
+
+test('the lifesaving star, the Presidential V and the aircrew propeller have an option with the device and one without at every count: no switch and no line is ever greyed', () => {
+  const D = RA.DEVICES;
+  const ones = { lifesaving_award: { key: 'star', device: D.starS, per: 3 }, disaster_relief_ribbon: { key: 'v', device: D.vS, per: 4 }, search_find_ribbon: { key: 'aircrew', device: D.propB, per: 4 }, air_search_and_rescue_ribbon: { key: 'aircrew', device: D.propB, per: 4 } };
+  for(const [id, spec] of Object.entries(ones)){
+    const opts = evj(`getRibbonAwardOptions(${q(id)}).filter(o => o.value).map(o => ({ value: o.value, label: o.label }))`);
+    const counts = opts.map(o => RA.readCount(id, o.value, o.label));
+    const top = Math.max(...counts);
+    assert.ok(top >= 21, `${id}: counts to ${top}`);
+    const key = new Set(opts.map(o => `${RA.readCount(id, o.value, o.label)}|${RA.resolve(id, { awardValue: o.value, awardLabel: o.label, membership: 'senior' })[0].devices.includes(spec.device) ? 1 : 0}`));
+    for(let n = 1; n <= top; n++){ assert.ok(key.has(`${n}|0`), `${id}: award ${n} without the device`); assert.ok(key.has(`${n}|1`), `${id}: award ${n} with the device`); }
+    assert.deepEqual(counts, [...counts].sort((a, b) => a - b), `${id}: the options are in the order of their counts`);
+    for(const o of opts){
+      const c = evj(`CAPUBRibbonAwards.controls(${q(id)}, getRibbonAwardOptions(${q(id)}).filter(x => x.value), ${q(o)}, { membership: 'senior', military: false })`);
+      for(const t of c.toggles) assert.ok(t.next, `${id} ${o.value}: the ${t.key} switch has an option to go to`);
+      for(const l of c.lines) assert.equal(l.enabled, true, `${id} ${o.value}: the line ${l.text} is not greyed`);
+      // 9h / 21g / 21c / 21d and 6b: the limit of devices on a ribbon, the device once, a second ribbon only with clasps.
+      const parts = RA.resolve(id, { awardValue: o.value, awardLabel: o.label, membership: 'senior' });
+      for(const p of parts) assert.ok(p.devices.length <= spec.per, `${id} ${o.value}: ${p.devices.length} devices on a ribbon`);
+      assert.ok(parts.flatMap(p => p.devices).filter(d => d === spec.device).length <= 1, `${id} ${o.value}: the device once`);
+    }
+  }
+});

@@ -372,6 +372,37 @@ function capubExtendMcchordOptionsTo84(id, sourceOptions){
   return extended;
 }
 
+// The ribbons with one device switch (the lifesaving star, the Presidential V, the aircrew propeller): every count has an option with the device and one without, so the switch is never
+// greyed for want of an option. The regulation forbids the device at no count: 9h (lifesaving) a silver star and at most two clasps on a ribbon, a second ribbon beyond three devices;
+// 21g (Disaster Relief) one V with the clasps beside it; 21c (Air Search and Rescue) and 21d (Search "Find") a propeller centred with at most two clasps, a second ribbon beyond three
+// devices; 6b the general limit of four devices. data/ribbon-awards.js `resolve` places them within those limits. The values and labels added here are read by `controls` there.
+const CAPUB_ONE_DEVICE_RIBBONS = {
+  lifesaving_award:{ max:84, suffix:'star', device:n => `${ordinalLabel(n)} with Star`, plain:n => `${ordinalLabel(n)} Award`, has:/with Star/i },
+  disaster_relief_ribbon:{ max:84, suffix:'v', device:n => `${ordinalLabel(n)} with V-Device`, plain:n => `${ordinalLabel(n)} Award`, has:/V-Device/i },
+  search_find_ribbon:{ suffix:'prop', device:n => `${ordinalLabel(n)} w/Prop`, plain:n => `${ordinalLabel(n)} Award`, has:/w\/Prop/i },
+  air_search_and_rescue_ribbon:{ suffix:'prop', device:n => `${(n * 10).toLocaleString()} Sorties (Aircrew)`, plain:n => `${(n * 10).toLocaleString()} Sorties`, has:/\(Aircrew\)/i }
+};
+function capubCompleteDeviceOptions(id, options){
+  const config = CAPUB_ONE_DEVICE_RIBBONS[id], RA = globalThis.CAPUBRibbonAwards;
+  if(!config || !RA?.readCount) return options;
+  const real = options.filter(o => o && o.value);
+  const countOf = o => RA.readCount(id, o.value, String(o.label || ''));
+  if(real.some(o => countOf(o) == null)) return options;
+  const have = new Set(real.map(o => `${countOf(o)}|${config.has.test(o.label) ? 1 : 0}`));
+  const top = config.max || Math.max(...real.map(countOf));
+  const added = [];
+  for(let n = 1; n <= top; n++){
+    const twin = real.find(o => countOf(o) === n && !config.has.test(o.label));
+    if(!have.has(`${n}|0`)) added.push({ label:config.plain(n), value:`capub_total_${n}`, devices:{}, duplicates:[] });
+    if(!have.has(`${n}|1`)) added.push({ label:config.device(n), value:`capub_total_${n}_${config.suffix}`, devices:{}, duplicates:twin?.duplicates || [] });
+  }
+  if(!added.length) return options;
+  const merged = [...real, ...added];
+  const order = new Map(merged.map((o, i) => [o, i]));
+  merged.sort((a, b) => countOf(a) - countOf(b) || order.get(a) - order.get(b));
+  return [...options.filter(o => !(o && o.value)), ...merged];
+}
+
 // Ribbons whose choices CAPR 39-3 sets directly. These come before the older option lists, which
 // carried a COS star on the Eaker for cadets (the regulation allows it on the Mitchell only) and named
 // the Cadet Advisory Council choices by star instead of by level.
@@ -448,7 +479,7 @@ function getRibbonAwardOptions(id){
     const expanded = capubExtendMcchordOptionsTo84(id, mcchordOptions);
     return [
       { label:'- Select -', value:'', devices:{} },
-      ...capubCompositeStarComboOptions(id, capubCompositeAwardOptions(id, expanded))
+      ...capubCompleteDeviceOptions(id, capubCompositeStarComboOptions(id, capubCompositeAwardOptions(id, expanded)))
     ];
   }
   const specialImageOptions = ribbonImageOptionList(id);
