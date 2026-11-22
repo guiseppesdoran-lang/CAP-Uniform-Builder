@@ -48011,8 +48011,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-jcs.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/joint_chiefs_of_staff_identification__default",
     "source_raster": "vanguardmil.com product army-identification-badge-joint-chiefs-of-staff-blouse-size-oxidized (Identification Badge: Joint Chiefs of Staff - Full Regulation size oxidized), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -48027,10 +48027,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.996,
-     "tone_rms": 6.5,
-     "face_ratio": 0.86,
+     "silhouette_iou": 0.8375,
      "note": ""
     },
     "art_tree": "military/v3/out/army-joint-chiefs-of-staff-identification-default"
@@ -49014,8 +49011,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-smallcraft.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_small_craft__default",
     "source_raster": "vanguardmil.com product navy-badge-small-craft-enlisted-regulation-size-mirror-finish (Navy Badge: Small Craft Enlisted - regulation size, mirror finish), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -49030,10 +49027,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.999,
-     "edge_recall": 0.999,
-     "tone_rms": 4.8,
-     "face_ratio": 0.94,
+     "silhouette_iou": 0.9868,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-small-craft-default"
@@ -49073,8 +49067,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-seal.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_special_warfare__default",
     "source_raster": "vanguardmil.com product usn-regulation-size-special-warfare-badge (Navy Badge: Special Warfare - regulation size), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -49089,10 +49083,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.998,
-     "tone_rms": 4.6,
-     "face_ratio": 1.08,
+     "silhouette_iou": 0.8299,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-special-warfare-default"
@@ -49132,8 +49123,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-sso.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_strategic_sealift_officer_warfare__default",
     "source_raster": "vanguardmil.com product navy-badge-strategic-sealift-officer-warfare-regulation-size (Navy Badge: Strategic Sealift Officer Warfare - regulation size), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -49148,10 +49139,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.999,
-     "tone_rms": 4.4,
-     "face_ratio": 0.98,
+     "silhouette_iou": 0.8464,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-strategic-sealift-officer-warfare-default"
@@ -49855,8 +49843,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-navy-diving.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_diving__diving_officer",
     "source_raster": "images/military-badges/navy/navy_diving_insignia/diving_officer.png (builder tree, byte-identical to artwork-samples/assets/military/navy/ref/navy_diving__diving_officer.png)",
     "source_px": [
@@ -49871,10 +49859,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.989,
-     "edge_recall": 1,
-     "tone_rms": 4.5,
-     "face_ratio": 1.01,
+     "silhouette_iou": 0.8186,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-diving-diving-officer"
@@ -49914,8 +49899,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-navy-diving.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_diving__diving_officer_medical",
     "source_raster": "images/military-badges/navy/navy_diving_insignia/diving_officer_medical.png (builder tree, byte-identical to artwork-samples/assets/military/navy/ref/navy_diving__diving_officer_medical.png)",
     "source_px": [
@@ -49930,10 +49915,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.99,
-     "edge_recall": 0.997,
-     "tone_rms": 5.7,
-     "face_ratio": 0.96,
+     "silhouette_iou": 0.8189,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-diving-diving-officer-medical"
@@ -54976,8 +54958,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-tombguard.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_tomb_guard_identification__default",
     "source_raster": "vanguardmil.com product army-badge-tomb-of-the-unknown-regulation-size-mirror-finish (Army Badge: Tomb of the Unknown - regulation size, mirror finish), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -54992,10 +54974,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.995,
-     "tone_rms": 4.8,
-     "face_ratio": 1.02,
+     "silhouette_iou": 0.8881,
      "note": ""
     },
     "art_tree": "military/v3/out/army-tomb-guard-identification-default"
@@ -59419,8 +59398,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/second-af/src/build.js (d-cmdr.js, capkit.js, afwings.js)",
     "reference": "images/military-badges/air-force/commanders__default",
     "source_raster": "vanguardmil.com product usaf-commanders-badge-badge (Air Force Badge: Commanders Badge), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -59435,10 +59414,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.993,
-     "edge_recall": 0.999,
-     "tone_rms": 4.9,
-     "face_ratio": 1.05,
+     "silhouette_iou": 0.8051,
      "note": ""
     },
     "art_tree": "military/v3/out/af-commanders-default"
@@ -59727,8 +59703,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-scuba.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/coast-guard/coast_guard_scuba_diver__default",
     "source_raster": "vanguardmil.com product uscg-regulation-size-scuba-diver-officer-badge (Coast Guard Badge: Scuba Diver Officer - regulation size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -59743,10 +59719,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 1,
-     "tone_rms": 5.6,
-     "face_ratio": 1.01,
+     "silhouette_iou": 0.8956,
      "note": ""
     },
     "art_tree": "military/v3/out/uscg-scuba-diver-default"
@@ -59954,8 +59927,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-fmf.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_fleet_marine_force__officer",
     "source_raster": "vanguardmil.com product usn-regulation-size-fleet-marine-force-officer-badge (Navy Badge: Fleet Marine Force Officer - regulation size), 1001 x 1001 px, measurement reference only",
     "source_px": [
@@ -59970,10 +59943,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.865,
-     "tone_rms": 10.8,
-     "face_ratio": 0.84,
+     "silhouette_iou": 0.8455,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-fleet-marine-force-officer"
@@ -60013,8 +59983,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-fmf.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/navy/navy_fleet_marine_force__chaplain",
     "source_raster": "vanguardmil.com product usn-regulation-size-fleet-marine-force-chaplain-breast-badge (Navy Breast Badge: Fleet Marine Force Chaplain - regulation size), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -60029,10 +59999,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.995,
-     "tone_rms": 6.5,
-     "face_ratio": 1.09,
+     "silhouette_iou": 0.8283,
      "note": ""
     },
     "art_tree": "military/v3/out/navy-fleet-marine-force-chaplain"
@@ -60288,8 +60255,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-marsoc.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/marine-corps/marine_corps_special_operator__default",
     "source_raster": "vanguardmil.com product marine-corps-badge-marsoc-marine-corps-forces-special-operations-command (Marine Corps Badge: MARSOC Marine Corps Forces Special Operations Command), 600 x 600 px, measurement reference only",
     "source_px": [
@@ -60304,10 +60271,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 1,
-     "tone_rms": 6.1,
-     "face_ratio": 1.01,
+     "silhouette_iou": 0.8071,
      "note": ""
     },
     "art_tree": "military/v3/out/usmc-special-operator-default"
@@ -61067,8 +61031,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-armydiver.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_diver__first_class",
     "source_raster": "vanguardmil.com product regulation-size-oxidized-diver-first-class-badge (Badge: Diver First Class - regulation, oxidized), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -61083,10 +61047,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 0.998,
-     "tone_rms": 5,
-     "face_ratio": 1.2,
+     "silhouette_iou": 0.8439,
      "note": ""
     },
     "art_tree": "military/v3/out/army-diver-first-class"
@@ -61182,8 +61143,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-armydiver.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_diver__master",
     "source_raster": "vanguardmil.com product army-badge-master-diver-oxidized (Army Badge: Master Diver - oxidized), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -61198,10 +61159,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 1,
-     "tone_rms": 5.2,
-     "face_ratio": 1.05,
+     "silhouette_iou": 0.8386,
      "note": ""
     },
     "art_tree": "military/v3/out/army-diver-master"
@@ -61570,7 +61528,7 @@
    "issues": [],
    "provenance": {
     "data_source": "reference-art-measured",
-    "generator": "artwork-samples/assets/military/pilot-2026-11-18/src/build.js (d-army-eod.js, capkit.js, afwings.js)",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-army-eod-master.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_explosive_ordnance_disposal__senior",
     "source_raster": "vanguardmil.com product army-mirror-finish-senior-explosive-ordnance-disposal-badge (Army Badge: Senior Explosive Ordnance Disposal - mirror finish), 500 x 500 px, measurement reference only",
     "source_px": null,
@@ -61618,7 +61576,7 @@
    "issues": [],
    "provenance": {
     "data_source": "reference-art-measured",
-    "generator": "artwork-samples/assets/military/pilot-2026-11-18/src/build.js (d-army-eod.js, capkit.js, afwings.js)",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-army-eod-master.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_explosive_ordnance_disposal__master",
     "source_raster": "vanguardmil.com product regulation-oxidized-master-explosive-ordnance-disposal-badge (Badge: Master Explosive Ordnance Disposal - regulation, oxidized), 427 x 427 px, measurement reference only",
     "source_px": null,
@@ -62097,8 +62055,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-pathfinder.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_pathfinder__default",
     "source_raster": "vanguardmil.com product army-mirror-finish-pathfinder-badge (Army Badge: Pathfinder - gold finish), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -62113,10 +62071,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.999,
-     "tone_rms": 7.1,
-     "face_ratio": 1.06,
+     "silhouette_iou": 0.8124,
      "note": ""
     },
     "art_tree": "military/v3/out/army-pathfinder-default"
@@ -62492,8 +62447,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-careercounselor.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_career_counselor_identification__default",
     "source_raster": "vanguardmil.com product army-regulation-size-silver-oxidized-career-counselor-badge (Army Badge: Career Counselor - regulation size, silver oxidized), 500 x 500 px, measurement reference only",
     "source_px": [
@@ -62508,10 +62463,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.994,
-     "edge_recall": 0.998,
-     "tone_rms": 4.4,
-     "face_ratio": 1.13,
+     "silhouette_iou": 0.8098,
      "note": ""
     },
     "art_tree": "military/v3/out/army-career-counselor-identification-default"
@@ -62831,8 +62783,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-mastergunner.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_master_gunner_identification__default",
     "source_raster": "vanguardmil.com product army-identification-badge-master-gunner-silver-oxidized-1 (Army Identification Badge: Master Gunner - Silver Oxidized), 2000 x 2000 px, measurement reference only",
     "source_px": [
@@ -62847,10 +62799,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 1,
-     "tone_rms": 5.6,
-     "face_ratio": 1.05,
+     "silhouette_iou": 0.8157,
      "note": ""
     },
     "art_tree": "military/v3/out/army-master-gunner-identification-default"
@@ -62890,8 +62839,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-horseman.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_military_horseman_identification__default",
     "source_raster": "vanguardmil.com product army-identification-badge-us-military-horseman-blouse-size (Army Identification Badge: US Military Horseman - blouse size), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -62906,10 +62855,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.996,
-     "edge_recall": 0.994,
-     "tone_rms": 5.5,
-     "face_ratio": 1.07,
+     "silhouette_iou": 0.8758,
      "note": ""
     },
     "art_tree": "military/v3/out/army-military-horseman-identification-default"
@@ -62949,8 +62895,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-recruiter.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_recruiter_identification__basic",
     "source_raster": "vanguardmil.com product army-silver-recruiter-identification-badge (Army Identification Badge: Recruiter - silver), 1200 x 1200 px, measurement reference only",
     "source_px": [
@@ -62965,10 +62911,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.997,
-     "edge_recall": 1,
-     "tone_rms": 4.1,
-     "face_ratio": 1.11,
+     "silhouette_iou": 0.8894,
      "note": ""
     },
     "art_tree": "military/v3/out/army-recruiter-identification-basic"
@@ -63008,8 +62951,8 @@
    "has_spec": false,
    "issues": [],
    "provenance": {
-    "data_source": "reference-art-traced",
-    "generator": "artwork-samples/assets/military/v3/make-badge.js (trace: v3/trace-badge.js, gates: v3/gate-badge.js)",
+    "data_source": "reference-art-measured",
+    "generator": "artwork-samples/assets/military/redraw-2026-11-18/hard-army-sea/src/build.js (d-recruiter.js, capkit.js, afwings.js, letters.js, parts.js)",
     "reference": "images/military-badges/army/army_recruiter_identification__master",
     "source_raster": "vanguardmil.com product army-identification-badge-master-recruiter-gold (Army Identification Badge: Master Recruiter - gold), 1001 x 1001 px, measurement reference only",
     "source_px": [
@@ -63024,10 +62967,7 @@
     ],
     "fidelity": {
      "pass": true,
-     "silhouette_iou": 0.998,
-     "edge_recall": 1,
-     "tone_rms": 5.6,
-     "face_ratio": 1.09,
+     "silhouette_iou": 0.8433,
      "note": ""
     },
     "art_tree": "military/v3/out/army-recruiter-identification-master"
