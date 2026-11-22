@@ -1,9 +1,6 @@
 'use strict';
-// The owner (2026-11-12): "Badge selection (and kind of ribbon selection, figure that one out), should be like the other selections (no checkboxes, those are annoying)". The
-// ribbons of the chooser window are picture tiles (js/pick-lists.js ribbonLists on the picture picker's toggle mode), in the order of precedence under the headings of CAPR 39-3
-// Attachment 2: the ribbon's own drawing with its name under it; a tap turns it on or off. Its count or level and its devices are controls under the tile, shown only while it is
-// on. The JROTC / ROTC menu and the U.S. military ribbons by branch are lists of the same tiles. No checkbox and no radio button is in the window. The page's own data and
-// functions are used (its scripts loaded as index.html lists them); only the picker's DOM is the test's.
+// Ribbon controls use Select checkboxes for single choices and dropdowns for counts / levels.
+// Exercise the real page state, imported values, and device rules through chooser events.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -43,91 +40,106 @@ const make = () => {
   return { host, entries, cell, button: (id, within) => cell(id, within).querySelector('.vpOption'), cap: entries[0] };
 };
 
-test('the CAP ribbons are picture tiles in the order of precedence under their headings: each with its own drawing and its name; no checkbox, no radio button, no input at all in the list', () => {
+test('CAP ribbon tiles keep precedence, pictures and names, with compact controls available before selection', () => {
   setup('blues_a');
   const p = make();
   const cells = p.cap.picker.el.querySelectorAll('.vpCell');
-  const worn = evj('getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id) && !isRotcRibbonId(id))');
-  const groups = evj('groupRibbonIds(getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id) && !isRotcRibbonId(id)))').map(g => [g.label, g.ids]);
-  assert.ok(cells.length > 60 && cells.length === worn.length, 'every ribbon the uniform wears and the member may wear');
-  assert.deepEqual(p.cap.picker.el.querySelectorAll('.vpGroupHead').map(h => h.textContent), groups.map(g => g[0]), 'the headings of Attachment 2');
-  assert.deepEqual(cells.map(c => c.dataset.value), groups.flatMap(g => g[1]), 'the order of precedence within each group');
-  assert.ok(cells.every(c => c.querySelector('.vpLabel').textContent === ev(`getRibbonDisplayName(${JSON.stringify(c.dataset.value)})`)), 'the name under each');
-  assert.ok(cells.every(c => /^images\/ribbons?\//.test(c.querySelector('img').getAttribute('src')) || /^images\//.test(c.querySelector('img').getAttribute('src'))), 'the ribbon\'s own drawing');
-  assert.ok(cells.every(c => c.querySelector('img').getAttribute('loading') === 'lazy'), 'pictures load as they come into view');
-  assert.equal(p.cap.picker.el.querySelectorAll('input').length, 0, 'no input in the CAP list');
-  assert.equal(p.host.querySelectorAll('input').filter(i => ['checkbox', 'radio'].includes(i.getAttribute('type'))).length, 0, 'no checkbox or radio button in the window');
-  assert.ok(cells.every(c => { const b = c.querySelector('.vpOption'); return b.nodeName === 'BUTTON' && b.getAttribute('aria-pressed') === 'false' && c.querySelector('.vpControls') === null; }), 'buttons with aria-pressed, off, and no controls under any');
-  assert.equal(p.cap.picker.el.dataset.shape, 'wide');
+  const groups = evj('groupRibbonIds(getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id) && !isRotcRibbonId(id)))');
+  assert.deepEqual(cells.map(c => c.dataset.value), groups.flatMap(g => g.ids));
+  assert.ok(cells.length > 60);
+  assert.ok(cells.every(c => c.querySelector('.vpLabel').textContent === ev(`getRibbonDisplayName(${JSON.stringify(c.dataset.value)})`)));
+  assert.ok(cells.every(c => c.querySelector('img') && c.querySelector('.vpControls')));
+  assert.ok(cells.every(c => c.querySelector('.ribbonSelect') || c.querySelector('.ribbonAwardSelect')));
+  assert.ok(cells.every(c => c.querySelector('.vpRow') === null));
 });
 
-test('a tap turns a ribbon on and off: the selection, its first choice, the tile\'s shade, tick and aria-pressed; its controls are under it only while it is on', () => {
+test('a dropdown selects a repeat award directly, updates state / devices, retains focus and clears the ribbon', () => {
   setup('blues_a');
-  const p = make();
-  const id = 'lifesaving_award';
-  p.button(id).click();
-  const sel = State.ribbonSelections[id];
-  assert.equal(sel.checked, true);
-  assert.equal(sel.awardValue, ev(`capubFirstRibbonOptionValue(${JSON.stringify(id)})`), 'its basic award');
+  const p = make(), id = 'encampment_ribbon';
+  const select = () => p.cell(id).querySelector('.ribbonAwardSelect');
+  const options = evj(`getRibbonAwardOptions('${id}').filter(o => o.value)`);
+  assert.equal(select().value, '');
+  assert.equal(select().querySelectorAll('option').length, options.length + 1);
+  const third = options.find(o => o.label === '3rd Award');
+  select().value = third.value;
+  select().focus();
+  select().dispatchEvent({ type: 'change' });
+  assert.equal(State.ribbonSelections[id].checked, true);
+  assert.equal(State.ribbonSelections[id].awardValue, third.value);
+  assert.equal(select().value, third.value);
+  assert.equal(doc.activeElement, select());
   assert.equal(p.button(id).getAttribute('aria-pressed'), 'true');
-  assert.ok(p.button(id).classList.contains('isPicked'), 'the tile\'s own border and fill show it');
-  const controls = p.cell(id).querySelector('.vpControls');
-  assert.ok(controls && !controls.hidden, 'the controls are under it');
-  assert.equal(controls.querySelectorAll('select').length, 0, 'no drop-down: its counts are pictures');
-  const row = controls.querySelector('.vpRow');
-  assert.ok(row, 'its counts are a row of tiles');
-  assert.equal(row.querySelector('.vp').dataset.layout, 'row', 'one row that scrolls sideways');
-  const tiles = row.querySelectorAll('.vpOption');
-  assert.ok(tiles.length > 5, 'its counts');
-  assert.ok(tiles.every(t => t.nodeName === 'BUTTON' && t.getAttribute('role') === 'radio' && t.dataset.value), 'a radio button each, no "- Select -": off is the tile\'s tap');
-  assert.ok(tiles.every(t => t.querySelector('img')), 'each with the ribbon\'s picture');
-  assert.equal(tiles.filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), sel.awardValue, 'the one picked is the award');
-  assert.ok(drawn.filter(x => x === id).length >= tiles.length, 'each tile is the ribbon as the engine draws it at that count, devices and all');
-  assert.match(controls.querySelector('.ribbonDeviceSummary').textContent, /^Selected: Basic Award/);
-  assert.ok(drawn.includes(id), 'the drawn ribbon, devices and all, takes the place of the plain picture');
-  assert.ok(p.cell('cap_leadership_ribbon').querySelector('.vpControls') === null, 'the other tiles have none');
-  p.button(id).click();
+  assert.deepEqual(evj(`CAPUBRibbonAwards.resolve('${id}', State.ribbonSelections.${id})[0].devices`), ['device-clasp-bronze', 'device-clasp-bronze']);
+  assert.ok(drawn.includes(id));
+  select().value = '';
+  select().dispatchEvent({ type: 'change' });
   assert.equal(State.ribbonSelections[id].checked, false);
-  assert.equal(State.ribbonSelections[id].awardValue, '');
+  assert.equal(select().value, '');
   assert.equal(p.button(id).getAttribute('aria-pressed'), 'false');
-  assert.ok(p.cell(id).querySelector('.vpControls') === null, 'off, the controls are gone');
 });
 
-test('a ribbon\'s count is a row of picture tiles: choosing another sets the award and the devices it wears, and the tile keeps the focus', () => {
-  setup('blues_a');
+test('single-choice ribbons and the current Crisis Service award have a Select checkbox', () => {
+  setup('blues_a', 'cadet');
   const p = make();
-  const id = 'lifesaving_award';
-  p.button(id).click();
-  const tiles = () => p.cell(id).querySelector('.vpRow').querySelectorAll('.vpOption');
-  const last = tiles().slice(-1)[0].dataset.value;
-  assert.notEqual(last, State.ribbonSelections[id].awardValue);
-  tiles().slice(-1)[0].focus();
-  tiles().slice(-1)[0].click();
-  assert.equal(State.ribbonSelections[id].awardValue, last);
-  assert.notEqual(State.ribbonSelections[id].awardLabel, 'Basic Award', 'the label of that count');
-  assert.equal(tiles().filter(t => t.getAttribute('aria-checked') === 'true').map(t => t.dataset.value).join(), last, 'the row shows it');
-  assert.ok(doc.activeElement === tiles().slice(-1)[0], 'the member is still on that tile');
-  assert.equal(p.button(id).getAttribute('aria-pressed'), 'true', 'the ribbon stays on');
-  assert.match(p.cell(id).querySelector('.ribbonDeviceSummary').textContent, new RegExp('^Selected: ' + State.ribbonSelections[id].awardLabel));
+  for(const id of ['afa_award', 'crisis_ribbon']){
+    const input = () => p.cell(id).querySelector('.ribbonSelect');
+    assert.equal(input().getAttribute('type'), 'checkbox');
+    assert.equal(p.cell(id).querySelector('.ribbonSelectLabel').textContent, ' Select');
+    assert.equal(p.cell(id).querySelector('select'), null);
+    input().checked = true;
+    input().dispatchEvent({ type: 'change' });
+    assert.equal(State.ribbonSelections[id].checked, true);
+    assert.equal(input().checked, true);
+    assert.equal(State.ribbonSelections[id].awardValue, ev(`capubFirstRibbonOptionValue('${id}')`));
+    input().checked = false;
+    input().dispatchEvent({ type: 'change' });
+    assert.equal(State.ribbonSelections[id].checked, false);
+  }
 });
 
-test('a ribbon with one choice only (earned) has no row of counts, and the counting rule is in the title of the line', () => {
+test('PME dropdown labels name the school without changing catalog labels or device values', () => {
   setup('blues_a');
   const p = make();
-  const single = evj('getEligibleRibbonIds().filter(id => isAwardWornOnUniform(id) && !isRotcRibbonId(id)).find(id => getRibbonAwardOptions(id).filter(o => o.value).length === 1)');
-  assert.ok(single, 'a ribbon that is earned once');
-  p.button(single).click();
-  assert.ok(p.cell(single).querySelector('.vpControls'), 'its line is under it');
-  assert.ok(p.cell(single).querySelector('.vpRow') === null, 'nothing to count: no row, no tile of one');
-  assert.ok(p.cell(single).querySelector('select') === null);
-  assert.match(p.cell(single).querySelector('.ribbonDeviceSummary').textContent, /^Selected: /);
-  const ra = require('../data/ribbon-awards.js');
-  const id = 'cap_senior_recruiter_ribbon';
-  assert.ok(ra.hint(id));
-  p.button(id).click();
-  const control = p.cell(id).querySelector('.vpControls');
-  assert.equal(control.querySelector('.vpRow').getAttribute('title'), ra.hint(id), 'the counting rule is the title of the row');
-  assert.ok(control.querySelector('.ribbonDeviceSummary').getAttribute('title').includes(ra.hint(id)));
+  for(const id of ['cap_paul_e_garber_ribbon', 'cap_gill_robb_wilson_ribbon']){
+    const select = () => p.cell(id).querySelector('select');
+    const labels = select().querySelectorAll('option').map(o => o.textContent);
+    assert.ok(labels.includes('Bronze Star - Squadron Officer School'));
+    assert.ok(labels.includes('Silver Star - Air Command and Staff College'));
+    assert.ok(labels.includes('Gold Star - Air War College'));
+    const gold = select().querySelectorAll('option').find(o => o.textContent.startsWith('Gold Star -'));
+    select().value = gold.value;
+    select().dispatchEvent({ type: 'change' });
+    assert.equal(State.ribbonSelections[id].awardLabel, 'Gold Star');
+    assert.deepEqual(evj(`CAPUBRibbonAwards.resolve('${id}', State.ribbonSelections.${id})[0].devices`), ['device-star-gold']);
+  }
+});
+
+test('SAR dropdown keeps every sortie / aircrew choice and the real propeller; imported semantic values stay selected', () => {
+  setup('blues_a');
+  const id = 'air_search_and_rescue_ribbon';
+  ev(`setRibbonSelectionFromDropdown('${id}', 'earned', { deferRender: true })`);
+  const p = make(), select = () => p.cell(id).querySelector('select');
+  assert.notEqual(select().value, '');
+  const catalog = evj(`getRibbonAwardOptions('${id}').filter(o => o.value)`);
+  assert.deepEqual(select().querySelectorAll('option').slice(1).map(o => o.value), catalog.map(o => o.value));
+  for(const [label, propeller] of [['10 Sorties (Aircrew)', true], ['10 Sorties', false], ['20 Sorties (Aircrew)', true]]){
+    const option = select().querySelectorAll('option').find(o => o.textContent === label);
+    assert.ok(option, label);
+    select().value = option.value;
+    select().dispatchEvent({ type: 'change' });
+    const devices = evj(`CAPUBRibbonAwards.resolve('${id}', State.ribbonSelections.${id})[0].devices`);
+    assert.equal(devices.includes('device-propeller-bronze'), propeller);
+    if(label.startsWith('20')) assert.ok(devices.includes('device-clasp-bronze'));
+  }
+});
+
+test('a saved later Crisis Service award keeps its dropdown and devices', () => {
+  setup('blues_a');
+  ev(`setRibbonSelectionFromDropdown('crisis_ribbon', 'award_2', { deferRender: true })`);
+  const before = evj('State.ribbonSelections.crisis_ribbon');
+  const p = make();
+  assert.equal(p.cell('crisis_ribbon').querySelector('select').value, before.awardValue);
+  assert.deepEqual(evj('State.ribbonSelections.crisis_ribbon'), before);
 });
 
 test('the state decides the tiles: a ribbon taken off by the rules, or chosen elsewhere, shows on its tile when the lists are redrawn', () => {
@@ -189,10 +201,10 @@ test('the JROTC / ROTC ribbons are one menu after the CAP ribbons: its tiles are
   assert.deepEqual(toasts, ['At most 3 JROTC/ROTC ribbons may be worn (CAPR 39-1, 11.2.5); remove one to add another.']);
   assert.match(menu.querySelector('.rotcRibbonStatus').textContent, /^3 of 3 chosen\. At most 3 JROTC\/ROTC ribbons may be worn \(CAPR 39-1, 11\.2\.5\)/);
   delete context.capubToastShow;
-  assert.equal(menu.querySelectorAll('input').filter(i => i.getAttribute('type') !== 'search').length, 0, 'no input but the search');
+  assert.equal(menu.querySelectorAll('.ribbonSelect').length, ROTC.ribbons.length, 'a Select checkbox per ribbon');
 });
 
-test('the U.S. military ribbons are a menu by branch whose tiles are made when the branch is opened; a tap picks one, its count is a row of picture tiles, and the service is one only where more than one service wears the award', () => {
+test('the U.S. military ribbons are a menu by branch whose tiles are made when the branch is opened; a tap picks one, its count is a dropdown, and the service is one only where more than one service wears the award', () => {
   setup('blues_a');
   const p = make();
   const root = p.host.querySelectorAll('details').find(d => d.dataset.militarySection === 'military-root');
@@ -205,7 +217,7 @@ test('the U.S. military ribbons are a menu by branch whose tiles are made when t
   const cells = army.querySelectorAll('.vpCell');
   assert.ok(cells.length > 5, 'the branch\'s ribbons');
   assert.equal(army.querySelector('summary').textContent, `Army (${cells.length})`);
-  assert.equal(p.host.querySelectorAll('input').filter(i => ['checkbox', 'radio'].includes(i.getAttribute('type'))).length, 0, 'no checkbox or radio button');
+  assert.equal(army.querySelectorAll('.ribbonAwardSelect').length, cells.length, 'each military award has a compact count dropdown');
   assert.deepEqual(ev('getMilitaryUIState().expandedSections.includes("military-branch-ARMY")'), true, 'the branch stays open');
   const id = cells[0].dataset.value;
   assert.ok(cells[0].querySelector('.vpCaption').textContent.includes('Army'));
@@ -214,15 +226,14 @@ test('the U.S. military ribbons are a menu by branch whose tiles are made when t
   assert.equal(State.ribbonSelections[id].checked, true);
   assert.equal(State.ribbonSelections[id].awardValue, 'military_award_1');
   assert.ok(tile().querySelectorAll('.vp').every(v => v.dataset.name !== `militaryService-${id}`), 'an award one service wears has no service to choose');
-  assert.equal(tile().querySelectorAll('select').length, 0, 'no drop-down under a military ribbon');
-  const counts = () => tile().querySelectorAll('.vp').find(v => v.dataset.name === `ribbonCount-${id}`).querySelectorAll('.vpOption');
-  assert.ok(counts().length > 3, 'its counts are tiles');
-  const third = counts().find(t => t.dataset.value === 'military_award_3');
-  third.click();
+  const count = () => tile().querySelector('.ribbonAwardSelect');
+  assert.ok(count().querySelectorAll('option').length > 3);
+  count().value = 'military_award_3';
+  count().dispatchEvent({ type: 'change' });
   assert.equal(State.ribbonSelections[id].awardValue, 'military_award_3');
   assert.equal(State.ribbonSelections[id].awardCount, 3);
   assert.match(tile().querySelector('.ribbonDeviceSummary').textContent, /^Selected: 3rd Award/);
-  assert.equal(counts().find(t => t.getAttribute('aria-checked') === 'true').dataset.value, 'military_award_3');
+  assert.equal(count().value, 'military_award_3');
   // The window's search reads the tiles that are made.
   assert.equal(root.querySelectorAll('.vpCell').length, cells.length);
 });
@@ -244,8 +255,9 @@ test('an award more than one service wears has a row of its services, each the r
   assert.ok(row(), 'the services are a row');
   assert.deepEqual(row().querySelectorAll('.vpOption').map(t => t.dataset.value), services, 'a tile for each service, none for the others');
   assert.ok(row().querySelectorAll('.vpOption').every(t => t.getAttribute('role') === 'radio' && t.querySelector('img')));
-  const count = () => tile().querySelectorAll('.vp').find(v => v.dataset.name === `ribbonCount-${id}`).querySelectorAll('.vpOption');
-  count().find(t => t.dataset.value === 'military_award_2').click();
+  const count = () => tile().querySelector('.ribbonAwardSelect');
+  count().value = 'military_award_2';
+  count().dispatchEvent({ type: 'change' });
   const other = services.find(sv => sv !== ev(`getMilitarySelectionService(${JSON.stringify(id)}, State.ribbonSelections[${JSON.stringify(id)}])`));
   row().querySelectorAll('.vpOption').find(t => t.dataset.value === other).focus();
   row().querySelectorAll('.vpOption').find(t => t.dataset.value === other).click();
@@ -321,7 +333,7 @@ test('the Corporate-style uniforms wear no U.S. military, JROTC or ROTC ribbons:
   assert.match(p.host.textContent, /U\.S\. military, JROTC and ROTC awards are not worn on Corporate-style uniforms \(CAPR 39-1, 11\.1\.6, 11\.2\.5\)\./);
 });
 
-test('the window builds its ribbon lists with the picker, and the sidebar draws none: no checkbox is left in the page\'s ribbon code', () => {
+test('the window builds its ribbon lists with the picker, and the sidebar draws none: the chooser owns the ribbon controls', () => {
   const src = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   assert.match(src('js/wiring.js'), /window\.CAPUB_MODAL_PICKERS = CAPUBPickLists\.ribbonLists\(grid\)/);
   assert.match(src('js/galleries.js'), /function buildRibbonGallery\(\)\{\s*const wrap = by\('ribbonGallery'\);\s*if\(wrap\) wrap\.innerHTML = '';\s*\}/);

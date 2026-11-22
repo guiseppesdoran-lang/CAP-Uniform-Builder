@@ -105,7 +105,7 @@ test('the chooser gives each command pin the two ways it is worn as picture tile
   assert.match(src, /d\.chooseOnlyCommand\(id\)/);
   assert.match(src, /chooseOnlyCommand: id => chooseOnlyCommandInsignia\(id\)/);
   assert.doesNotMatch(src, /id\s*===?\s*'squadron_commander_badge'/, 'asks for the squadron pin by name');
-  assert.doesNotMatch(src.replace(/\/\/.*$/gm, ''), /checkbox|cmdGradChk/);
+  assert.doesNotMatch(src.slice(0, src.indexOf('// ---- ribbons')).replace(/\/\/.*$/gm, ''), /checkbox|cmdGradChk/, 'badge controls remain picture tiles; ribbon controls are separate');
   // The old sidebar lists, with their boxes, are gone: the chooser window is the one list.
   for(const f of ['js/galleries.js', 'js/patches.js']) assert.doesNotMatch(read(f), /class="cmdGradChk"|class="bdChk"/, f);
 });
