@@ -12,7 +12,7 @@ There is no build step for development. Serve the repository folder with any sta
 python3 -m http.server 8811
 ```
 
-Then open http://localhost:8811/. The builder opens directly without an access code.
+Then open http://localhost:8811/. The page asks for an access code first. "Continue as guest" opens it without one. The gate is a courtesy, not security (`js/access-gate.js`).
 
 The page posts usage counts to `/api/events` and feedback to `/api/feedback` on its own origin. A plain static server has no such paths, so the counts are dropped and a feedback message reports that it was not sent. Everything else works. Set `metrics` and `feedback` to `false` in `config.js` to turn both off.
 

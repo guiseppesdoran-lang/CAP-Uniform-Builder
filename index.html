@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-access="guest">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,9 +13,25 @@
 <meta property="og:description" content="An unofficial planning tool for arranging Civil Air Patrol uniform items. Your setup stays in your browser; the site gets only anonymous usage counts and any feedback you send.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
-<link rel="stylesheet" href="styles/app.css?v=befe220151">
+<link rel="stylesheet" href="styles/app.css?v=290f9ccf47">
+<script src="js/access-gate.js?v=680d5e58db"></script>
 </head>
 <body>
+
+<div id="accessGate" role="dialog" aria-modal="true" aria-labelledby="accessGateTitle">
+  <form id="accessGateForm" autocomplete="off">
+    <h1 id="accessGateTitle">Uniform Builder</h1>
+    <label for="accessGateInput">Access code</label>
+    <input id="accessGateInput" type="text" inputmode="numeric" autocomplete="off" required>
+    <button type="submit">Enter</button>
+    <p id="accessGateError" role="alert"></p>
+    <button id="accessGateGuest" class="ghost" type="button">Continue as guest</button>
+    <details class="accessGateHint"><summary>Need a hint?</summary><p>It is the second creator's CAPID.</p></details>
+    <p class="accessGateNote">Developed by C/Col Guiseppe Doran and C/Lt Col Ethan Hillard.</p>
+    <p class="accessGateNote">Unofficial member resource. Not affiliated with or endorsed by Civil Air Patrol or the U.S. Air Force.</p>
+    <p class="accessGateNote">Anonymous usage counts only, to improve this tool. Names are kept out and member searches are never stored.</p>
+  </form>
+</div>
 
 <header>
   <h1>Uniform Builder</h1>
@@ -533,8 +549,8 @@
   </div>
 </div>
 
-<!-- App scripts. Every one is defer: the browser fetches them while it parses and paints the page,
-     then runs them in this order before DOMContentLoaded.
+<!-- App scripts. Every one is defer: the browser fetches them while it parses and paints the page (the access gate
+     answers as soon as parsing ends, js/access-gate.js), then runs them in this order before DOMContentLoaded.
      A new script tag must keep src first and carry defer (tests/script-tags.test.cjs); npm run stamp:assets adds its ?v=. -->
 <script src="config.js?v=750a021e35" defer></script>
 <script src="purchase-catalog.js?v=a4f9f1df55" defer></script>

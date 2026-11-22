@@ -1,5 +1,9 @@
 'use strict';
-// App scripts defer execution until parsing finishes and keep their content hashes.
+// The page's script tags load without blocking the parser (LIVE13 E65, Ethan: "right now it's kind of slow. I'd like it
+// to load faster"). Every app script is `defer`, so the browser paints the page and the access gate answers while the
+// scripts download; they still run in document order before DOMContentLoaded. The access gate is the one exception:
+// it stays a plain script in <head> so a returning member never sees the gate flash. And npm run stamp:assets still
+// gives every script and stylesheet tag its ?v= content hash, so a deploy never pairs a new page with an old file.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -15,8 +19,9 @@ assert.doesNotMatch(html.match(/<!--[\s\S]*?-->/g).join(''), /<(script|link)\b/,
 const [head, body] = html.split('</head>');
 const tags = src => [...src.matchAll(/<script\b[^>]*>/g)].map(m => m[0]);
 
-test('the page has no blocking scripts in head', () => {
-  assert.deepEqual(tags(head), []);
+test('the access gate is the only script in <head>, a plain blocking script', () => {
+  const inHead = tags(head);
+  assert.deepEqual(inHead.map(t => t.replace(/\?v=[^"]*/, '')), ['<script src="js/access-gate.js">']);
 });
 
 test('every script in <body> is a local file with src first and defer, and none is async', () => {
@@ -30,6 +35,11 @@ test('every script in <body> is a local file with src first and defer, and none 
   assert.doesNotMatch(body, /<script(?![^>]*\bsrc=)[^>]*>/, 'no inline script');
 });
 
+test('the gate wires its buttons when parsing ends, before the deferred scripts run', () => {
+  const gate = fs.readFileSync(path.join(ROOT, 'js/access-gate.js'), 'utf8');
+  assert.match(gate, /addEventListener\('readystatechange'/);
+  assert.doesNotMatch(gate, /addEventListener\('DOMContentLoaded'/, 'DOMContentLoaded waits for every deferred script');
+});
 
 test('stamping still covers every script and stylesheet tag', () => {
   // Stamp a copy of the page and the files it names, then check each tag carries its file's hash.
