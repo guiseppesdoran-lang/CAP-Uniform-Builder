@@ -181,6 +181,26 @@ async function launch(){
       await sleep(600);
       break;
     }
+    // A pressed switch looks pressed while the pointer is over it: the hover rule must not take the pressed border and shade (the owner's pictures showed a white border on a pressed switch).
+    {
+      const rid = 'commander_commendation_award';
+      if(await ev(`!!(${cellOf(rid)})`)){
+        await tapTop(rid);
+        await sleep(900);
+        const sw = `(${cellOf(rid)}).querySelector('.ribbonToggle[data-value="region"]')`;
+        await ev(`${sw}.click()`);
+        await sleep(700);
+        const look = () => ev(`(() => { const b = ${sw}; const s = getComputedStyle(b); return { pressed: b.getAttribute('aria-pressed'), border: s.borderTopColor, width: s.borderTopWidth, bg: s.backgroundColor }; })()`);
+        const rest = await look();
+        const at = await ev(`(() => { const r = ${sw}.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()`);
+        await S('Input.dispatchMouseEvent', { type: 'mouseMoved', x: at[0], y: at[1] });
+        await sleep(300);
+        const over = await look();
+        console.log('pressed switch at rest and under the pointer:', JSON.stringify(rest), JSON.stringify(over));
+        if(rest.pressed !== 'true') bad.push('the region star switch did not press');
+        if(over.border !== rest.border || over.width !== rest.width || over.bg !== rest.bg) bad.push('a pressed switch changes under the pointer: ' + JSON.stringify({ rest, over }));
+      }
+    }
     console.log(bad.length ? `FAIL (${bad.length}):\n  ${bad.slice(0, 12).join('\n  ')}` : 'PASS');
     if(bad.length) code = 1;
   } catch (e) { console.error(e); code = 2; }

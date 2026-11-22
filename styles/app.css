@@ -1634,7 +1634,7 @@ html[data-access="guest"] #accessGate{display:none}
 .ribbonControlRow .ribbonServiceSelect{flex:1 1 100%;min-width:0;max-width:100%;min-height:36px;font-size:16px}
 @media (pointer:coarse){.ribbonSelectShown{font-size:16px}}
 .ribbonControlRow .ribbonToggle{margin:0;display:inline-flex;align-items:center;gap:6px;flex:1 1 auto;min-width:0;min-height:36px;padding:2px 8px;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--panel);color:var(--ink);font-size:var(--t-xs);font-weight:600;line-height:1.15;text-align:left;cursor:pointer}
-.ribbonControlRow .ribbonToggle:hover:not([disabled]){border-color:var(--ink);background:var(--panel-2)}
+.ribbonControlRow .ribbonToggle:hover:not([disabled]):not([aria-pressed="true"]){border-color:var(--ink);background:var(--panel-2)}
 .ribbonControlRow .ribbonToggle[aria-pressed="true"]{border:2px solid var(--select-line);background:var(--select-bg);padding:1px 7px}
 .ribbonControlRow .ribbonToggle[disabled]{cursor:default;opacity:.55}
 .ribbonControlRow .ribbonToggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
