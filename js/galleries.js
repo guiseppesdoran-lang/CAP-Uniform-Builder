@@ -386,20 +386,26 @@ function capubCompleteDeviceOptions(id, options){
   const config = CAPUB_ONE_DEVICE_RIBBONS[id], RA = globalThis.CAPUBRibbonAwards;
   if(!config || !RA?.readCount) return options;
   const real = options.filter(o => o && o.value);
-  const countOf = o => RA.readCount(id, o.value, String(o.label || ''));
-  if(real.some(o => countOf(o) == null)) return options;
-  const have = new Set(real.map(o => `${countOf(o)}|${config.has.test(o.label) ? 1 : 0}`));
-  const top = config.max || Math.max(...real.map(countOf));
+  // The count each option stands for, read once for each (it is read by a pattern match or several, and was read again for every count up to the limit).
+  const counts = real.map(o => RA.readCount(id, o.value, String(o.label || '')));
+  if(counts.some(c => c == null)) return options;
+  const wears = real.map(o => (config.has.test(o.label) ? 1 : 0));
+  const have = new Set(real.map((o, i) => `${counts[i]}|${wears[i]}`));
+  const top = config.max || Math.max(...counts);
   const added = [];
   for(let n = 1; n <= top; n++){
-    const twin = real.find(o => countOf(o) === n && !config.has.test(o.label));
     if(!have.has(`${n}|0`)) added.push({ label:config.plain(n), value:`capub_total_${n}`, devices:{}, duplicates:[] });
-    if(!have.has(`${n}|1`)) added.push({ label:config.device(n), value:`capub_total_${n}_${config.suffix}`, devices:{}, duplicates:twin?.duplicates || [] });
+    if(!have.has(`${n}|1`)){
+      const at = real.findIndex((o, i) => counts[i] === n && !wears[i]);
+      added.push({ label:config.device(n), value:`capub_total_${n}_${config.suffix}`, devices:{}, duplicates:(at >= 0 && real[at].duplicates) || [] });
+    }
   }
   if(!added.length) return options;
   const merged = [...real, ...added];
   const order = new Map(merged.map((o, i) => [o, i]));
-  merged.sort((a, b) => countOf(a) - countOf(b) || order.get(a) - order.get(b));
+  const countOf = new Map(real.map((o, i) => [o, counts[i]]));
+  added.forEach(o => countOf.set(o, RA.readCount(id, o.value, String(o.label || ''))));
+  merged.sort((a, b) => countOf.get(a) - countOf.get(b) || order.get(a) - order.get(b));
   return [...options.filter(o => !(o && o.value)), ...merged];
 }
 

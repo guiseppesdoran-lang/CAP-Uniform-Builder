@@ -162,7 +162,8 @@
   // The most awards (up to `limit`) one ribbon can show with `room` device slots.
   function maxAwardsWith(room, kind, limit){
     let best = 1;
-    for(let a = 1; a <= limit; a++) if(clasps(a - 1, kind).length <= room) best = a;
+    // The devices `a` awards wear are a silver clasp for each five more than the first and a bronze one for each of the rest (clasps(), of whatever kind), counted here without making them.
+    for(let a = 1; a <= limit; a++){ const more = a - 1; if(Math.floor(more / 5) + more % 5 <= room) best = a; }
     return best;
   }
 
