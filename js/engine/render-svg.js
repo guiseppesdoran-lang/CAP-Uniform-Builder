@@ -402,6 +402,7 @@
   function patchDrawing(old, svg){
     const rec = old[PARTS];
     const ids = idsOf(svg);
+    for(const n of svg.firstElementChild.children) if(n.__heldIds) n.__heldIds.forEach(id => ids.add(id));
     const scopeNew = n => { if(ids.size) scopeNodes([n], ids, rec.suffix); };
     const oldDefs = old.firstElementChild, newDefs = svg.firstElementChild;
     const defsParts = reconcileChildren(oldDefs, rec.defs, partsOf(newDefs), scopeNew, () => oldDefs.firstChild);
@@ -431,6 +432,22 @@
     svg.setAttribute('xmlns:xlink', XLINK_NS);
     const defs = el('defs');
     svg.appendChild(defs);
+    // The symbols the drawing on screen already holds (when the caller keeps it) are not made again: a symbol is the largest part of a drawing (the OCP sheet is 377 KB of markup, its
+    // variants more), and a copy of one that is then thrown away for the one in the page was cloned, and its ids read, in every drawing. A held symbol is an empty stand-in of the same id
+    // that patchDrawing matches to the symbol in the page; it carries the ids that symbol holds (the references of the symbols made new may name them).
+    const heldNow = typeof options.patchOnto === 'function' ? options.patchOnto() : null;
+    const heldSigs = heldNow && heldNow[PARTS] ? new Set(heldNow[PARTS].defs.map(i => i.sig)) : null;
+    const standIns = [];
+    const idsInNode = node => node.__heldIds || (node.__heldIds = new Set([node.getAttribute('id'), ...Array.from(node.querySelectorAll('[id]'), n => n.getAttribute('id'))]));
+    const standInFor = (node, id) => {
+      const sig = 'symbol:' + id;
+      if(!heldSigs || !heldSigs.has(sig)) return false;
+      const stand = el('symbol', { id });
+      stand.__heldIds = idsInNode(node);
+      defs.appendChild(stand);
+      standIns.push(sig);
+      return true;
+    };
     const fontStyle = el('style', { class: 'engraved-fonts' });
     fontStyle.textContent = fontFaceCss(fontUrl(ENGRAVED_FONT.file));
     defs.appendChild(fontStyle);
@@ -478,7 +495,7 @@
         s.node = el('symbol', { id: 'sym-' + id, viewBox: s.viewBox, preserveAspectRatio: 'none' });
         s.node.innerHTML = s.inner;
       }
-      defs.appendChild(s.node.cloneNode(true));
+      if(!standInFor(s.node, 'sym-' + id)) defs.appendChild(s.node.cloneNode(true));
       loaded.set(id, true);
     });
     if(AW && AW.deviceInner){
@@ -502,7 +519,8 @@
       // every drawing (LIVE13 E85).
       s.variants = s.variants || new Map();
       if(s.variants.has(key)){
-        defs.appendChild(s.variants.get(key).cloneNode(true));
+        const kept = s.variants.get(key);
+        if(!standInFor(kept, 'sym-' + key)) defs.appendChild(kept.cloneNode(true));
         loaded.set(key, true);
         continue;
       }
@@ -589,7 +607,8 @@
       let cid = null;
       const base = scene.layers.find(l => l.type === 'asset' && l.id === garmentId && l.role === 'garment');
       const data = symbolData.get(garmentId);
-      const path = defs.querySelector(`[id="${garmentId}__clipSil"] path`), art = defs.querySelector(`[id="${garmentId}__art"]`);
+      // Read from the sheet's own symbol (the one made once per sheet), not the copy in this drawing, which may be a stand-in for the one in the page.
+      const path = data && data.node && data.node.querySelector(`[id="${garmentId}__clipSil"] path`), art = data && data.node && data.node.querySelector(`[id="${garmentId}__art"]`);
       if(base && data && path && art){
         const vbox = data.viewBox.split(/\s+/).map(Number);
         const transform = `translate(${fmt(base.x)} ${fmt(base.y)}) scale(${fmt(base.w / vbox[2])} ${fmt(base.h / vbox[3])}) translate(${fmt(-vbox[0])} ${fmt(-vbox[1])}) ${art.getAttribute('transform') || ''}`;
@@ -775,6 +794,10 @@
     }
     // The drawing on screen, when the caller keeps it (the function says which, at this moment: nothing is awaited from here on), is changed into this one; otherwise this one is scoped and returned.
     const keep = typeof options.patchOnto === 'function' ? options.patchOnto() : null;
+    // A drawing with stand-ins is only whole in a page that still holds those symbols; if it is not, it is made again with none.
+    if(standIns.length && !(keep && keep[PARTS] && standIns.every(sig => keep[PARTS].defs.some(i => i.sig === sig)))){
+      return buildSvg(scene, manifestPath, Object.assign({}, options, { patchOnto: null }));
+    }
     if(keep && keep[PARTS]){
       patchDrawing(keep, svg);
       return keep;
