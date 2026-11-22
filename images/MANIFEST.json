@@ -2490,42 +2490,42 @@
    "id": "device-propeller-bronze",
    "path": "devices/device-propeller-bronze.svg",
    "category": "devices",
-   "w_in": 0.3,
-   "h_in": 0.2623,
+   "w_in": 0.274,
+   "h_in": 0.2538,
    "size_source": "estimated",
-   "basis": "0.30 in wide, the ribbon-device scale used in the app (same width as the clasp); the bare propeller measured from the CAP propeller drawn on the clasps and the cap device; ESTIMATED: CAPR 39-3 Attachment 3 lists the Bronze Propeller but gives no dimension and no figure is held in this repo",
+   "basis": "drawn at the ribbon-device scale of the app (the blade tips and hub box with 1.5 px each side was 0.30 in wide, the same width as the clasp), the frame being the propeller as painted, stroke included; the bare propeller measured from the CAP propeller drawn on the clasps and the cap device; ESTIMATED: CAPR 39-3 Attachment 3 lists the Bronze Propeller but gives no dimension and no figure is held in this repo",
    "anchors": {
     "top_center": [
-     15,
+     13.7,
      0
     ],
     "bottom_center": [
-     15,
-     26.23
+     13.7,
+     25.38
     ],
     "center": [
-     15,
-     13.12
+     13.7,
+     12.69
     ],
     "left_edge": [
      0,
-     13.12
+     12.69
     ],
     "right_edge": [
-     30,
-     13.12
+     27.4,
+     12.69
     ],
     "apex": [
-     15,
-     0.94
+     13.7,
+     0.62
     ],
     "base_center": [
-     15,
-     25.29
+     13.7,
+     23.11
     ],
     "hub": [
-     15,
-     17.18
+     13.7,
+     14.99
     ]
    },
    "landmarks": [],
@@ -2536,42 +2536,42 @@
    "id": "device-propeller-silver",
    "path": "devices/device-propeller-silver.svg",
    "category": "devices",
-   "w_in": 0.3,
-   "h_in": 0.2623,
+   "w_in": 0.274,
+   "h_in": 0.2538,
    "size_source": "estimated",
-   "basis": "0.30 in wide, the ribbon-device scale used in the app (same width as the clasp); the bare propeller measured from the CAP propeller drawn on the clasps and the cap device; ESTIMATED: CAPR 39-3 Attachment 3 lists the Bronze Propeller but gives no dimension and no figure is held in this repo",
+   "basis": "drawn at the ribbon-device scale of the app (the blade tips and hub box with 1.5 px each side was 0.30 in wide, the same width as the clasp), the frame being the propeller as painted, stroke included; the bare propeller measured from the CAP propeller drawn on the clasps and the cap device; ESTIMATED: CAPR 39-3 Attachment 3 lists the Bronze Propeller but gives no dimension and no figure is held in this repo",
    "anchors": {
     "top_center": [
-     15,
+     13.7,
      0
     ],
     "bottom_center": [
-     15,
-     26.23
+     13.7,
+     25.38
     ],
     "center": [
-     15,
-     13.12
+     13.7,
+     12.69
     ],
     "left_edge": [
      0,
-     13.12
+     12.69
     ],
     "right_edge": [
-     30,
-     13.12
+     27.4,
+     12.69
     ],
     "apex": [
-     15,
-     0.94
+     13.7,
+     0.62
     ],
     "base_center": [
-     15,
-     25.29
+     13.7,
+     23.11
     ],
     "hub": [
-     15,
-     17.18
+     13.7,
+     14.99
     ]
    },
    "landmarks": [],

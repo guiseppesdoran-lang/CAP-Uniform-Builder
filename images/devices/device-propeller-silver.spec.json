@@ -2,56 +2,56 @@
  "asset_id": "device-propeller-silver",
  "name": "Silver Propeller",
  "size_in": {
-  "w": 0.3,
-  "h": 0.2623
+  "w": 0.274,
+  "h": 0.2538
  },
  "units": "1 user unit = 0.01 in",
  "viewBox": [
   0,
   0,
-  30,
-  26.23
+  27.4,
+  25.38
  ],
  "size_source": "estimated",
- "size_basis": "0.30 in wide, the ribbon-device scale used in the app (same width as the clasp); the bare propeller measured from the CAP propeller drawn on the clasps and the cap device; ESTIMATED: CAPR 39-3 Attachment 3 lists the Bronze Propeller but gives no dimension and no figure is held in this repo",
+ "size_basis": "drawn at the ribbon-device scale of the app (the blade tips and hub box with 1.5 px each side was 0.30 in wide, the same width as the clasp), the frame being the propeller as painted, stroke included; the bare propeller measured from the CAP propeller drawn on the clasps and the cap device; ESTIMATED: CAPR 39-3 Attachment 3 lists the Bronze Propeller but gives no dimension and no figure is held in this repo",
  "anchors": {
   "top_center": [
-   15,
+   13.7,
    0
   ],
   "bottom_center": [
-   15,
-   26.23
+   13.7,
+   25.38
   ],
   "center": [
-   15,
-   13.12
+   13.7,
+   12.69
   ],
   "left_edge": [
    0,
-   13.12
+   12.69
   ],
   "right_edge": [
-   30,
-   13.12
+   27.4,
+   12.69
   ],
   "apex": [
-   15,
-   0.94
+   13.7,
+   0.62
   ],
   "base_center": [
-   15,
-   25.29
+   13.7,
+   23.11
   ],
   "hub": [
-   15,
-   17.18
+   13.7,
+   14.99
   ]
  },
  "dimensions": {
   "shape": "bare 3-blade propeller, no triangle (aircrew device, 39-3 Attachment 3)",
   "blades": 3,
-  "width_in": 0.3,
+  "width_in": 0.274,
   "drawing_scale_units_per_local_px": 0.62457
  },
  "metal": "silver",
